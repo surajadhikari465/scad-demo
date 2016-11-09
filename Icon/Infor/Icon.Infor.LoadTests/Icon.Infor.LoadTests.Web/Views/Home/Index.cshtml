@@ -1,0 +1,31 @@
+﻿@using Icon.Infor.LoadTests.Web.Helpers
+@model IEnumerable<Icon.Infor.LoadTests.Web.Models.LoadTestViewModel>
+
+@{
+    ViewBag.Title = "Infor Load Tests";
+}
+
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <p>@ViewBag.Message.ToString()</p>
+}
+else
+{
+    <META HTTP-EQUIV="REFRESH" CONTENT="2">
+    foreach (var item in Model)
+    {
+        using (Html.BuildTestCard(item.Status))
+        {
+            <h4 class="card-title">@Html.ActionLink(item.Name, "Details", new { testName = item.Name })</h4>
+            if (item.Status == "Idle")
+            {
+                <p class="card-text">@Html.DisplayFor(modelItem => item.Status)</p>
+            }
+            else
+            {
+                <p class="card-text">@Html.DisplayFor(modelItem => item.Status) | @Html.DisplayFor(modelItem => item.ElapsedTime)</p>
+            }
+        }
+    }
+}

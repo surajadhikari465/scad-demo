@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Irma.Framework</RootNamespace>
+    <AssemblyName>Irma.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>
+    </NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\Test\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <ErrorReport>prompt</ErrorReport>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <OutputPath>bin\QA\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppConfigApp.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AppConfigEnv.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AppConfigKey.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AppConfigValue.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetAppConfigKeysResult.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetJobStatusList_Result.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IconItemChangeQueue.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IconItemLastChange.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IConPOSPushPublish.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IrmaContext.cs" />
+    <Compile Include="IrmaModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IrmaModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IrmaModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IrmaModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IrmaModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Item.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemBrand.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemCategory.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemIdentifier.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemNutrition.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemOverride.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemScale.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemSignAttribute.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemUnit.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JobStatus.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MammothItemChangeEventType.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MammothItemLocaleChangeQueue.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MammothPriceChangeQueue.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NatItemClass.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NutriFacts.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Price.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Region.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RenewableContext\GlobalIrmaContext.cs" />
+    <Compile Include="Sales_SumByItem.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Store.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoreSubTeam.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubTeam.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxClass.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TlogReprocessRequest.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Users.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ValidatedBrand.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ValidatedScanCode.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Version.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="IrmaModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>IrmaModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="IrmaModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>IrmaModel.edmx</DependentUpon>
+      <LastGenOutput>IrmaModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="IrmaModel.edmx.diagram">
+      <DependentUpon>IrmaModel.edmx</DependentUpon>
+    </None>
+    <None Include="IrmaModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>IrmaModel.edmx</DependentUpon>
+      <LastGenOutput>IrmaModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

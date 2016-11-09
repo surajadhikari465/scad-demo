@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconRegional.Core", "IconRegional.Core\IconRegional.Core.csproj", "{8BBA94D7-40CE-43DE-BAD9-29F68ECF0AA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconRegional.Web", "IconRegional.Web\IconRegional.Web.csproj", "{06362D9F-71B4-4E35-AD07-2A5DA8006392}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconRegional.Web.Tests", "IconRegional.Web.Tests\IconRegional.Web.Tests.csproj", "{0310F439-1A02-4AB9-B29A-733DA34AB99D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BBA94D7-40CE-43DE-BAD9-29F68ECF0AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BBA94D7-40CE-43DE-BAD9-29F68ECF0AA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BBA94D7-40CE-43DE-BAD9-29F68ECF0AA6}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{8BBA94D7-40CE-43DE-BAD9-29F68ECF0AA6}.QA|Any CPU.Build.0 = Release|Any CPU
+		{8BBA94D7-40CE-43DE-BAD9-29F68ECF0AA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BBA94D7-40CE-43DE-BAD9-29F68ECF0AA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BBA94D7-40CE-43DE-BAD9-29F68ECF0AA6}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{8BBA94D7-40CE-43DE-BAD9-29F68ECF0AA6}.Test|Any CPU.Build.0 = Release|Any CPU
+		{06362D9F-71B4-4E35-AD07-2A5DA8006392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06362D9F-71B4-4E35-AD07-2A5DA8006392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06362D9F-71B4-4E35-AD07-2A5DA8006392}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{06362D9F-71B4-4E35-AD07-2A5DA8006392}.QA|Any CPU.Build.0 = Release|Any CPU
+		{06362D9F-71B4-4E35-AD07-2A5DA8006392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06362D9F-71B4-4E35-AD07-2A5DA8006392}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06362D9F-71B4-4E35-AD07-2A5DA8006392}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{06362D9F-71B4-4E35-AD07-2A5DA8006392}.Test|Any CPU.Build.0 = Release|Any CPU
+		{0310F439-1A02-4AB9-B29A-733DA34AB99D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0310F439-1A02-4AB9-B29A-733DA34AB99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0310F439-1A02-4AB9-B29A-733DA34AB99D}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{0310F439-1A02-4AB9-B29A-733DA34AB99D}.QA|Any CPU.Build.0 = Release|Any CPU
+		{0310F439-1A02-4AB9-B29A-733DA34AB99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0310F439-1A02-4AB9-B29A-733DA34AB99D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0310F439-1A02-4AB9-B29A-733DA34AB99D}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{0310F439-1A02-4AB9-B29A-733DA34AB99D}.Test|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = IconRegional.Core\\IconRegional.Core.csproj
+		SccProjectName1 = IconRegional.Core
+		SccLocalPath1 = IconRegional.Core
+		SccProjectUniqueName2 = IconRegional.Web\\IconRegional.Web.csproj
+		SccProjectName2 = IconRegional.Web
+		SccLocalPath2 = IconRegional.Web
+		SccProjectUniqueName3 = IconRegional.Web.Tests\\IconRegional.Web.Tests.csproj
+		SccProjectName3 = IconRegional.Web.Tests
+		SccLocalPath3 = IconRegional.Web.Tests
+	EndGlobalSection
+EndGlobal

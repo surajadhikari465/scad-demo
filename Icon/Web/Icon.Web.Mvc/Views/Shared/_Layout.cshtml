@@ -1,0 +1,133 @@
+﻿@using Icon.Web.Mvc.Utility
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico?v=2" />
+    <title>@ViewBag.Title - Icon</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @RenderSection("headerScripts", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Item Search <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Consolidated Items", "Index", "Item")</li>
+                            <li>@Html.ActionLink("New Items", "Index", "IrmaItem")</li>
+                            <li>@Html.ActionLink("Bulk Scan Code", "Index", "BulkScanCodeSearch")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hierarchies <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Brand", "Index", "Brand")</li>
+                            <li>@Html.ActionLink("Financial", "Index", "Financial")</li>
+                            <li>@Html.ActionLink("National Class", "Index", "NationalClass")</li>
+                            <li>@Html.ActionLink("Merchandise to Tax Association", "Index", "MerchTaxMapping")</li>
+                            <li>@Html.ActionLink("Certification Agency Management", "Index", "CertificationAgency")</li>
+                            <li>@Html.ActionLink("Others", "Index", "Hierarchy")</li>
+                            <li>@Html.ActionLink("Clear Hierarchy Class Cache", "ClearCache", "HierarchyClass")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Stores", "Index", "Store")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bulk Import <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Item Import", "Index", "BulkItemImport")</li>
+                            <li>@Html.ActionLink("New Item Import", "Index", "BulkItemAdd")</li>
+                            <li>@Html.ActionLink("PLU Import", "Index", "BulkPluMapping")</li>
+                            <li>@Html.ActionLink("Brand Import", "Index", "BulkBrandImport")</li>
+                            <li>@Html.ActionLink("Certification Agency Import", "Index", "BulkCertificationAgencyImport")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PLU <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("PLU Mapping", "Index", "PluMapping")</li>                            
+                            <li>@Html.ActionLink("PLU Assignment", "Index", "PluAssignment")</li>
+                            <li>@Html.ActionLink("PLU Ranges", "Index", "PluCategory")</li>
+                            <li>@Html.ActionLink("PLU Request", "Index", "PluRequest")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">eWIC <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Exclusions", "Exclusions", "Ewic")</li>
+                            <li>@Html.ActionLink("Mappings", "Mappings", "Ewic")</li>
+                        </ul>
+                    </li>
+                    
+                    @if (ViewHelpers.DisplayAdminLink(Request, User))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Refresh Items", "Items", "RefreshData")</li>
+                                <li>@Html.ActionLink("Refresh Brands", "Brands", "RefreshData")</li>
+                                <li>@Html.ActionLink("Refresh Locales", "Locales", "RefreshData")</li>
+                                <li>@Html.ActionLink("Refresh Merchandise", "Merchandise", "RefreshData")</li>
+                                <li>@Html.ActionLink("Global Events", "Index", "GlobalEvent")</li>
+                                <li>@Html.ActionLink("Global POS Push", "Index", "GlobalPOSPush")</li>
+                                <li>@Html.ActionLink("Regional Events", "Index", "RegionalEvent")</li>
+                                <li>@Html.ActionLink("Regional POS Push", "Index", "RegionalPosPush")</li>
+                                <li>@Html.ActionLink("Message History", "Index", "MessageHistory")</li>
+                                <li>@Html.ActionLink("Product Selection Groups", "Index", "ProductSelectionGroup")</li>
+                                <li>@Html.ActionLink("Failed Hierarchy Messages", "Index", "FailedHierarchyMessage")</li>
+                                <li>@Html.ActionLink("Failed Item Locale Messages", "Index", "FailedItemLocaleMessage")</li>
+                                <li>@Html.ActionLink("Failed Locale Messages", "Index", "FailedLocaleMessage")</li>
+                                <li>@Html.ActionLink("Failed Price Messages", "Index", "FailedPriceMessage")</li>
+                                <li>@Html.ActionLink("Failed Product Messages", "Index", "FailedProductMessage")</li>
+                                <li>@Html.ActionLink("Failed Product Selection Group Messages", "Index", "FailedProductSelectionGroupMessage")</li>
+                                <li>@Html.ActionLink("Configuration", "Index", "Configuration")</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="navbar-text">Hello, @User.Identity.Name!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <span>&copy; 2013 - @DateTime.Now.Year Whole Foods Market</span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Icon.Web.Mvc.MvcApplication.IconVersionWithDate</span>
+            <span class="server-name">@System.Environment.MachineName.ToString()</span>
+            <br />
+            <span>To report an issue with Icon, please create a support ticket in <a href=@System.Configuration.ConfigurationManager.AppSettings["OrchardLinkForIcon"].ToString(), target="_blank">Orchard</a>.</span>
+        </footer>
+    </div>
+
+    <div id="divLoading" 
+        style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001;
+        opacity: .8; filter: alpha(opacity=70);display:none">
+            <p style="position: absolute; top: 30%; left: 33%; color: White;">
+                Loading Excel spreadsheet, please wait...  <img src="../../Content/themes/base/images/ui-icons_file_loading.gif">
+            </p>
+    </div>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

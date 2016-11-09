@@ -1,0 +1,507 @@
+﻿<hierarchy xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:p3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" p3:Action="AddOrUpdate">
+  <name>Merchandise</name>
+  <prototype>
+    <hpt:hierarchyLevelName>Sub Brick</hpt:hierarchyLevelName>
+    <hpt:itemsAttached>1</hpt:itemsAttached>
+  </prototype>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83431</hcl:id>
+    <hcl:name>Asian: Noodles  Meal Kits &amp; Bowls</hcl:name>
+    <hcl:parentId>83338</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83433</hcl:id>
+    <hcl:name>Jerky Snacks Beef - Made In House</hcl:name>
+    <hcl:parentId>83066</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83434</hcl:id>
+    <hcl:name>Misc Body Care</hcl:name>
+    <hcl:parentId>83201</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83435</hcl:id>
+    <hcl:name>Miscellaneous Baby and Child</hcl:name>
+    <hcl:parentId>83047</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83436</hcl:id>
+    <hcl:name>Salad Greens Bulk</hcl:name>
+    <hcl:parentId>83261</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83437</hcl:id>
+    <hcl:name>Accessories: EyeWear Accessories</hcl:name>
+    <hcl:parentId>83313</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83438</hcl:id>
+    <hcl:name>Accoutrements: Honey</hcl:name>
+    <hcl:parentId>83233</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83442</hcl:id>
+    <hcl:name>Accoutrements: Artisan Jams/Marmalade (In House Packaged)</hcl:name>
+    <hcl:parentId>83244</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83444</hcl:id>
+    <hcl:name>Accoutrements: Moustarde</hcl:name>
+    <hcl:parentId>83277</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83445</hcl:id>
+    <hcl:name>Acne/Rosacea Treatments</hcl:name>
+    <hcl:parentId>83027</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83446</hcl:id>
+    <hcl:name>Adult Incontinence - Pads</hcl:name>
+    <hcl:parentId>83028</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83447</hcl:id>
+    <hcl:name>Adult Incontinence - Underwear (Disposable)</hcl:name>
+    <hcl:parentId>83029</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83448</hcl:id>
+    <hcl:name>After Shave Care</hcl:name>
+    <hcl:parentId>83030</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83449</hcl:id>
+    <hcl:name>After Sun Moisturisers</hcl:name>
+    <hcl:parentId>83031</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83450</hcl:id>
+    <hcl:name>Air Fresheners/Deodorisers (Non Powered)</hcl:name>
+    <hcl:parentId>83032</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83451</hcl:id>
+    <hcl:name>Alternative Meat/Poultry Species - Prepared/Processed</hcl:name>
+    <hcl:parentId>83033</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83452</hcl:id>
+    <hcl:name>Alternative Meat/Poultry Species - Unprepared/Unprocessed</hcl:name>
+    <hcl:parentId>83034</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83453</hcl:id>
+    <hcl:name>Antiperspirants/Deodorants</hcl:name>
+    <hcl:parentId>83035</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83454</hcl:id>
+    <hcl:name>Apparel Accessories</hcl:name>
+    <hcl:parentId>83114</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83455</hcl:id>
+    <hcl:name>Apparel: Miscellaneous Baby and Child Apparel</hcl:name>
+    <hcl:parentId>83114</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83456</hcl:id>
+    <hcl:name>Appetizers</hcl:name>
+    <hcl:parentId>83338</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83457</hcl:id>
+    <hcl:name>Apples</hcl:name>
+    <hcl:parentId>83036</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83458</hcl:id>
+    <hcl:name>Apricots</hcl:name>
+    <hcl:parentId>83037</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83459</hcl:id>
+    <hcl:name>Aquatic Invertebrates - Prepared/Processed (Perishable)</hcl:name>
+    <hcl:parentId>83038</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83460</hcl:id>
+    <hcl:name>Aquatic Invertebrates - Unprepared/Unprocessed (Perishable)</hcl:name>
+    <hcl:parentId>83039</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83461</hcl:id>
+    <hcl:name>Aquatic Invertebrates/Fish/Shellfish/Seafood Mixes - Unprepared/Unprocessed (Perishable)</hcl:name>
+    <hcl:parentId>83040</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83462</hcl:id>
+    <hcl:name>Aquatic Plants Prepared/Processed (Perishable)</hcl:name>
+    <hcl:parentId>83041</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83463</hcl:id>
+    <hcl:name>Aromatherapy Other</hcl:name>
+    <hcl:parentId>83042</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83464</hcl:id>
+    <hcl:name>Asian: Coconut Milk</hcl:name>
+    <hcl:parentId>83338</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83465</hcl:id>
+    <hcl:name>Asian: Macrobiotic</hcl:name>
+    <hcl:parentId>83338</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83466</hcl:id>
+    <hcl:name>Asian: Misc. Asian</hcl:name>
+    <hcl:parentId>83338</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83467</hcl:id>
+    <hcl:name>Asian: Rice Bowls</hcl:name>
+    <hcl:parentId>83338</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83468</hcl:id>
+    <hcl:name>Asparagus</hcl:name>
+    <hcl:parentId>83043</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83469</hcl:id>
+    <hcl:name>Aubergines</hcl:name>
+    <hcl:parentId>83044</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83470</hcl:id>
+    <hcl:name>Avocados - Pebbled Peel (HassûType)</hcl:name>
+    <hcl:parentId>83045</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83471</hcl:id>
+    <hcl:name>Babacos</hcl:name>
+    <hcl:parentId>83046</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83472</hcl:id>
+    <hcl:name>Baby and Child: Apparel: Accessories</hcl:name>
+    <hcl:parentId>83114</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83473</hcl:id>
+    <hcl:name>Baby and Child: Apparel: Clothes</hcl:name>
+    <hcl:parentId>83114</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83474</hcl:id>
+    <hcl:name>Baby and Child: Baby and Child: Baby Accessories</hcl:name>
+    <hcl:parentId>83114</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83475</hcl:id>
+    <hcl:name>Baby Diapers (Disposable)</hcl:name>
+    <hcl:parentId>83048</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83476</hcl:id>
+    <hcl:name>Baby Diapers (Non Disposable)</hcl:name>
+    <hcl:parentId>83049</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83477</hcl:id>
+    <hcl:name>Baby Diapers Accessories</hcl:name>
+    <hcl:parentId>83050</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83478</hcl:id>
+    <hcl:name>Baby Feeding - Bottles</hcl:name>
+    <hcl:parentId>83051</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83479</hcl:id>
+    <hcl:name>Baby Feeding Accessories</hcl:name>
+    <hcl:parentId>83052</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83480</hcl:id>
+    <hcl:name>Baby Hygiene Products</hcl:name>
+    <hcl:parentId>83053</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83481</hcl:id>
+    <hcl:name>Baby Hygiene Products</hcl:name>
+    <hcl:parentId>83053</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83482</hcl:id>
+    <hcl:name>Baby Hygiene/Grooming Other</hcl:name>
+    <hcl:parentId>83054</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83483</hcl:id>
+    <hcl:name>Baby/Infant - Formula (Shelf Stable)</hcl:name>
+    <hcl:parentId>83055</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83484</hcl:id>
+    <hcl:name>Baby/Infant - Specialised Beverages (Shelf Stable)</hcl:name>
+    <hcl:parentId>83056</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83485</hcl:id>
+    <hcl:name>Baby/Infant - Specialised Foods (Frozen)</hcl:name>
+    <hcl:parentId>83057</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83486</hcl:id>
+    <hcl:name>Baby/Infant - Specialised Foods (Frozen)</hcl:name>
+    <hcl:parentId>83057</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83487</hcl:id>
+    <hcl:name>Baby/Infant - Specialised Foods (Shelf Stable)</hcl:name>
+    <hcl:parentId>83058</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83488</hcl:id>
+    <hcl:name>Bags: Baby and Child</hcl:name>
+    <hcl:parentId>83227</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83489</hcl:id>
+    <hcl:name>Bakeware/Ovenware/Grillware (Non Disposable)</hcl:name>
+    <hcl:parentId>83059</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83490</hcl:id>
+    <hcl:name>Baking/Cooking Mixes (Shelf Stable)</hcl:name>
+    <hcl:parentId>83060</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83491</hcl:id>
+    <hcl:name>Baking/Cooking Mixes (Shelf Stable)</hcl:name>
+    <hcl:parentId>83060</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83492</hcl:id>
+    <hcl:name>Baking/Cooking Mixes (Shelf Stable)</hcl:name>
+    <hcl:parentId>83060</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83493</hcl:id>
+    <hcl:name>Baking/Cooking Supplies (Perishable)</hcl:name>
+    <hcl:parentId>83061</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83494</hcl:id>
+    <hcl:name>Bananas</hcl:name>
+    <hcl:parentId>83062</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83495</hcl:id>
+    <hcl:name>Leaf Lettuces - Includes Green, Red and Oak</hcl:name>
+    <hcl:parentId>83063</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83496</hcl:id>
+    <hcl:name>Bath Additives</hcl:name>
+    <hcl:parentId>83064</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83497</hcl:id>
+    <hcl:name>Bedding Other</hcl:name>
+    <hcl:parentId>83065</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83498</hcl:id>
+    <hcl:name>Beef - Prepared/Processed</hcl:name>
+    <hcl:parentId>83066</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83500</hcl:id>
+    <hcl:name>Beef - Unprepared/Unprocessed</hcl:name>
+    <hcl:parentId>83067</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83501</hcl:id>
+    <hcl:name>Beef Sausages - Prepared/Processed</hcl:name>
+    <hcl:parentId>83068</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83502</hcl:id>
+    <hcl:name>Beer</hcl:name>
+    <hcl:parentId>83069</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83505</hcl:id>
+    <hcl:name>Berries: Berries Other: Berries Other Loose</hcl:name>
+    <hcl:parentId>83198</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83506</hcl:id>
+    <hcl:name>Berries: Berries Other: Berries Other Packaged</hcl:name>
+    <hcl:parentId>83198</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83507</hcl:id>
+    <hcl:name>Biscuits/Cookies (Perishable)</hcl:name>
+    <hcl:parentId>83070</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83508</hcl:id>
+    <hcl:name>Biscuits/Cookies (Perishable)</hcl:name>
+    <hcl:parentId>83070</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83509</hcl:id>
+    <hcl:name>Biscuits/Cookies (Shelf Stable)</hcl:name>
+    <hcl:parentId>83071</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83510</hcl:id>
+    <hcl:name>Biscuits/Cookies (Shelf Stable)</hcl:name>
+    <hcl:parentId>83071</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83511</hcl:id>
+    <hcl:name>Bison/Buffalo - Prepared/Processed</hcl:name>
+    <hcl:parentId>83072</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83512</hcl:id>
+    <hcl:name>Bison/Buffalo - Unprepared/Unprocessed</hcl:name>
+    <hcl:parentId>83073</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83513</hcl:id>
+    <hcl:name>Blackberries</hcl:name>
+    <hcl:parentId>83074</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83514</hcl:id>
+    <hcl:name>Blueberries</hcl:name>
+    <hcl:parentId>83075</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83515</hcl:id>
+    <hcl:name>Board Games/Cards/Puzzles Variety Packs</hcl:name>
+    <hcl:parentId>83076</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83516</hcl:id>
+    <hcl:name>Body  Face &amp; Foot Accessories</hcl:name>
+    <hcl:parentId>83201</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83517</hcl:id>
+    <hcl:name>Body Massage/Toning Other</hcl:name>
+    <hcl:parentId>83077</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83518</hcl:id>
+    <hcl:name>Body Washing Other</hcl:name>
+    <hcl:parentId>83078</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83519</hcl:id>
+    <hcl:name>Bottle Stoppers/Pourers</hcl:name>
+    <hcl:parentId>83079</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83520</hcl:id>
+    <hcl:name>Bread (Includes Gluten Free)</hcl:name>
+    <hcl:parentId>83080</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83521</hcl:id>
+    <hcl:name>Bread (Perishable)</hcl:name>
+    <hcl:parentId>83081</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83522</hcl:id>
+    <hcl:name>Bread (Shelf Stable) - In House Packaged (includes Packaged, Brioche, Rolls, Hearth, Focaccia)</hcl:name>
+    <hcl:parentId>83082</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83523</hcl:id>
+    <hcl:name>Bread (Shelf Stable) - Vendor Packaged</hcl:name>
+    <hcl:parentId>83082</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83524</hcl:id>
+    <hcl:name>Breath Fresheners/Mouth Rinses</hcl:name>
+    <hcl:parentId>83084</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83525</hcl:id>
+    <hcl:name>Briefcases</hcl:name>
+    <hcl:parentId>83085</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83526</hcl:id>
+    <hcl:name>Broccoli</hcl:name>
+    <hcl:parentId>83086</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83527</hcl:id>
+    <hcl:name>Brussels Sprouts</hcl:name>
+    <hcl:parentId>83087</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83528</hcl:id>
+    <hcl:name>Bulbs/Corms/Rhizomes/Tubers</hcl:name>
+    <hcl:parentId>83088</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83529</hcl:id>
+    <hcl:name>Bulk</hcl:name>
+    <hcl:parentId>83365</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83530</hcl:id>
+    <hcl:name>Bulk</hcl:name>
+    <hcl:parentId>83109</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83531</hcl:id>
+    <hcl:name>Butter/Butter Substitutes (Perishable)</hcl:name>
+    <hcl:parentId>83089</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83532</hcl:id>
+    <hcl:name>Butter/Butter Substitutes (Perishable)</hcl:name>
+    <hcl:parentId>83089</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83533</hcl:id>
+    <hcl:name>Cakes - Sweet (Perishable)</hcl:name>
+    <hcl:parentId>83090</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83534</hcl:id>
+    <hcl:name>Calendars/Planners</hcl:name>
+    <hcl:parentId>83091</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83535</hcl:id>
+    <hcl:name>Candle Holders/Accessories</hcl:name>
+    <hcl:parentId>83092</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83537</hcl:id>
+    <hcl:name>Candles and Candle Accessories</hcl:name>
+    <hcl:parentId>83093</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83538</hcl:id>
+    <hcl:name>Carrots</hcl:name>
+    <hcl:parentId>83094</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>83539</hcl:id>
+    <hcl:name>Catering</hcl:name>
+    <hcl:parentId>83338</hcl:parentId>
+  </class>
+</hierarchy>

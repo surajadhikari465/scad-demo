@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:itemMovementTransaction xmlns:ns0="http://services.wfm.com/Enterprise/TransactionMgmt/ItemMovement/V1">
+    <ns0:transactionNumber>71HOVPQVL6</ns0:transactionNumber>
+    <ns0:sequenceNumber>400</ns0:sequenceNumber>
+    <ns0:retailTransaction>
+        <ns1:isVoided xmlns:ns1="http://schemas.wfm.com/Enterprise/TransactionMgmt/ItemMovement/CommonRefTypes/V1">false</ns1:isVoided>
+        <ns1:status xmlns:ns1="http://schemas.wfm.com/Enterprise/TransactionMgmt/ItemMovement/CommonRefTypes/V1">Finished</ns1:status>
+        <ns1:lineItems xmlns:ns1="http://schemas.wfm.com/Enterprise/TransactionMgmt/ItemMovement/CommonRefTypes/V1">
+            <ns1:lineItem>
+                <ns1:isVoided>false</ns1:isVoided>
+                <ns1:sequenceNumber>1</ns1:sequenceNumber>
+                <ns1:subTeam/>
+                <ns1:endDateTIme>2015-01-12T13:00:01.9712345</ns1:endDateTIme>
+                <ns1:type>
+                    <ns1:sale>
+                        <ns1:itemId>100989</ns1:itemId>
+                        <ns1:quantity>
+                            <ns2:value xmlns:ns2="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1">1</ns2:value>
+                            <pfx4:units xmlns:pfx16="http://schemas.wfm.com/Enterprise/StoreMgmt/CommonRefTypes/V1" xmlns:pfx15="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" xmlns:pfx14="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx13="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaIdentifier/V2" xmlns:pfx12="http://schemas.wfm.com/Enterprise/PersonaMgmt/CommonRefTypes/V1" xmlns:pfx11="http://schemas.wfm.com/Enterprise/PersonaMgmt/Persona/V2" xmlns:pfx10="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualName/V2" xmlns:pfx19="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/V1" xmlns:pfx18="http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionType/V1" xmlns:pfx17="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx53="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Tender/V1" xmlns:pfx54="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1" xmlns:pfx52="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1" xmlns:ns16="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TransactionTax/V1" xmlns:pfx51="http://schemas.wfm.com/Enterprise/TransactionMgmt/Void/V1" xmlns:ns17="http://schemas.wfm.com/Enterprise/TransactionMgmt/OnlineService/V1" xmlns:pfx50="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1" xmlns:ns14="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Sale/V1" xmlns:ns15="http://schemas.wfm.com/Enterprise/TransactionMgmt/RetailTransaction/LineItemType/TransactionItemBaseType/V1" xmlns:ns18="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns19="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns13="http://schemas.wfm.com/Enterprise/Transactions/RetailTransaction/LineItemType/TransactionPromotion/V1" xmlns:pfx="http://www.nrf-arts.org/IXRetail/namespace/" xmlns:ns10="http://schemas.wfm.com/Enterprise/AddressMgmt/PhoneAddress/V1" xmlns:ns11="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx48="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefItemTypes/V1" xmlns:pfx49="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:pfx46="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:pfx47="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx44="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:pfx45="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:pfx42="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:pfx43="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx41="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx40="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns21="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaIdentifierType/V2" xmlns:ns22="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V1" xmlns:ns23="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaType/V2" xmlns:ns24="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaTrait/V1" xmlns:ns20="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:pfx39="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx5="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:pfx31="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1" xmlns:pfx32="http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:pfx33="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/TransactionMgmt/Transaction/V1" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx34="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pfx35="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V1" xmlns:pfx9="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualNameType/V1" xmlns:pfx36="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:pfx8="http://schemas.wfm.com/Enterprise/IndividualMgmt/CommonRefTypes/V1" xmlns:pfx37="http://schemas.wfm.com/Enterprise/PromoMgmt/CommonRefTypes/V1" xmlns:pfx7="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualBase/V1" xmlns:pfx38="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Return/V1" xmlns:pfx6="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyType/V2" xmlns:pfx30="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1" xmlns:ns9="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualAddress/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/IndividualMgmt/Individual/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1" xmlns:ns8="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/V1" xmlns:ns2="http://www.Retalix.com/Extensions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:pfx28="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2" xmlns:ns4="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:pfx29="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx22="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1" xmlns:pfx23="http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1" xmlns:pfx20="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/TotalBaseType/V1" xmlns:pfx21="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pfx26="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1" xmlns:pfx27="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" xmlns:pfx24="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2" xmlns:pfx25="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+                                <pfx4:value>1</pfx4:value>
+                                <pfx4:uom>
+                                    <pfx21:code>EA</pfx21:code>
+                                </pfx4:uom>
+                            </pfx4:units>
+                        </ns1:quantity>
+                        <ns1:price>
+                            <ns2:currencyTypeCode xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">USD</ns2:currencyTypeCode>
+                            <ns2:priceAmount xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
+                                <ns3:amount xmlns:ns3="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1">10.99</ns3:amount>
+                            </ns2:priceAmount>
+                            <ns2:priceMultiple xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">1</ns2:priceMultiple>
+                        </ns1:price>
+                    </ns1:sale>
+                </ns1:type>
+            </ns1:lineItem>
+        </ns1:lineItems>
+    </ns0:retailTransaction>
+   
+   <ns0:locale>
+        <ns1:id xmlns:ns1="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2">10476</ns1:id>
+        <ns1:name xmlns:ns1="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2">CMA Camelback</ns1:name>
+        <ns1:type xmlns:ns1="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2">
+            <ns2:code xmlns:ns2="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</ns2:code>
+            <ns2:description xmlns:ns2="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</ns2:description>
+        </ns1:type>
+        <ns1:store xmlns:ns1="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2">
+            <ns2:pointOfSaleRegisters xmlns:ns2="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2">
+                <ns3:types xmlns:ns3="http://schemas.wfm.com/Enterprise/StoreMgmt/CommonRefTypes/V1">
+                    <ns3:type>
+                        <ns3:register>
+                            <ns3:id>2</ns3:id>
+                            <ns3:description>200</ns3:description>
+                        </ns3:register>
+                    </ns3:type>
+                </ns3:types>
+            </ns2:pointOfSaleRegisters>
+        </ns1:store>
+    </ns0:locale>
+	
+    <ns0:party>
+        <pfx5:type xmlns:pfx16="http://schemas.wfm.com/Enterprise/StoreMgmt/CommonRefTypes/V1" xmlns:pfx15="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" xmlns:pfx14="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx13="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaIdentifier/V2" xmlns:pfx12="http://schemas.wfm.com/Enterprise/PersonaMgmt/CommonRefTypes/V1" xmlns:pfx11="http://schemas.wfm.com/Enterprise/PersonaMgmt/Persona/V2" xmlns:pfx10="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualName/V2" xmlns:pfx19="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/V1" xmlns:pfx18="http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionType/V1" xmlns:pfx17="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx53="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Tender/V1" xmlns:pfx54="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1" xmlns:pfx52="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1" xmlns:ns16="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TransactionTax/V1" xmlns:pfx51="http://schemas.wfm.com/Enterprise/TransactionMgmt/Void/V1" xmlns:ns17="http://schemas.wfm.com/Enterprise/TransactionMgmt/OnlineService/V1" xmlns:pfx50="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1" xmlns:ns14="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Sale/V1" xmlns:ns15="http://schemas.wfm.com/Enterprise/TransactionMgmt/RetailTransaction/LineItemType/TransactionItemBaseType/V1" xmlns:ns18="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns19="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns13="http://schemas.wfm.com/Enterprise/Transactions/RetailTransaction/LineItemType/TransactionPromotion/V1" xmlns:pfx="http://www.nrf-arts.org/IXRetail/namespace/" xmlns:ns10="http://schemas.wfm.com/Enterprise/AddressMgmt/PhoneAddress/V1" xmlns:ns11="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx48="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefItemTypes/V1" xmlns:pfx49="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:pfx46="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:pfx47="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx44="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:pfx45="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:pfx42="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:pfx43="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx41="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx40="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns21="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaIdentifierType/V2" xmlns:ns22="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V1" xmlns:ns23="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaType/V2" xmlns:ns24="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaTrait/V1" xmlns:ns20="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:pfx39="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx5="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:pfx31="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1" xmlns:pfx32="http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:pfx33="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/TransactionMgmt/Transaction/V1" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx34="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pfx35="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V1" xmlns:pfx9="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualNameType/V1" xmlns:pfx36="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:pfx8="http://schemas.wfm.com/Enterprise/IndividualMgmt/CommonRefTypes/V1" xmlns:pfx37="http://schemas.wfm.com/Enterprise/PromoMgmt/CommonRefTypes/V1" xmlns:pfx7="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualBase/V1" xmlns:pfx38="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Return/V1" xmlns:pfx6="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyType/V2" xmlns:pfx30="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1" xmlns:ns9="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualAddress/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/IndividualMgmt/Individual/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1" xmlns:ns8="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/V1" xmlns:ns2="http://www.Retalix.com/Extensions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:pfx28="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2" xmlns:ns4="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:pfx29="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx22="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1" xmlns:pfx23="http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1" xmlns:pfx20="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/TotalBaseType/V1" xmlns:pfx21="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pfx26="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1" xmlns:pfx27="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" xmlns:pfx24="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2" xmlns:pfx25="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+            <pfx6:typeCode>IND</pfx6:typeCode>
+            <pfx6:typeDescription>Individual</pfx6:typeDescription>
+            <pfx6:individual>
+                <ns5:baseAttributes>
+                    <pfx7:names>
+                        <pfx8:name>
+                            <pfx9:name>
+                                <pfx10:fullName>Ajay Sambhangi</pfx10:fullName>
+                            </pfx9:name>
+                        </pfx8:name>
+                    </pfx7:names>
+                </ns5:baseAttributes>
+                <ns5:personas>
+                    <pfx11:persona>
+                        <pfx11:type>
+                            <ns23:code>TM</ns23:code>
+                            <ns23:description>Team Member</ns23:description>
+                        </pfx11:type>
+                        <pfx11:personaIdentifiers>
+                            <pfx12:identifier>
+                                <pfx13:type>
+                                    <ns21:name>TMID</ns21:name>
+                                    <ns21:description>Team Member ID</ns21:description>
+                                </pfx13:type>
+                                <pfx13:value>3000010</pfx13:value>
+                            </pfx12:identifier>
+                            <pfx12:identifier>
+                                <pfx13:type>
+                                    <ns21:name>POSWID</ns21:name>
+                                    <ns21:description>POS Worker ID</ns21:description>
+                                </pfx13:type>
+                                <pfx13:value/>
+                            </pfx12:identifier>
+                        </pfx11:personaIdentifiers>
+                        <pfx11:traits>
+                            <ns24:trait>
+                                <pfx44:code>POSOP</pfx44:code>
+                                <pfx44:type>
+                                    <pfx45:description>POS Operator</pfx45:description>
+                                    <pfx45:value>
+                                        <pfx46:value>X:Administrator</pfx46:value>
+                                    </pfx45:value>
+                                </pfx44:type>
+                            </ns24:trait>
+                        </pfx11:traits>
+                    </pfx11:persona>
+                </ns5:personas>
+            </pfx6:individual>
+        </pfx5:type>
+    </ns0:party>
+</ns0:itemMovementTransaction>

@@ -1,0 +1,75 @@
+﻿@model Icon.Web.Mvc.Models.ProductSelectionGroupCreateViewModel
+
+@{
+    ViewBag.Title = "Create PSG";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Product Selection Group Management");}
+
+<div class="page-section">
+
+    <div id="psgAlert">
+        @if (ViewData["Error"] != null)
+        {
+            <div id="createItemAlert" class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>@ViewData["Error"].ToString()</strong>
+            </div>
+        }
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Create Product Selection Group</legend>
+
+        <div class="row">
+            @Html.LabelFor(model => model.ProductSelectionGroupName, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.TextBoxFor(model => model.ProductSelectionGroupName, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => model.ProductSelectionGroupName, null, new { @class = "col-md-4 form-property-val" })
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(model => model.SelectedProductSelectionGroupTypeId, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.DropDownListFor(model => model.SelectedProductSelectionGroupTypeId, Model.ProductSelectionGroupTypes, String.Empty, new { @class = "col-md-6 form-input" })
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(model => model.SelectedTraitId, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.DropDownListFor(model => model.SelectedTraitId, Model.Traits, String.Empty, new { @class = "col-md-6 form-input" })
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(model => model.TraitValue, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.TextBoxFor(model => model.TraitValue, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => model.TraitValue, null, new { @class = "col-md-4 form-property-val" })
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(model => model.SelectedMerchandiseHierarchyClassId, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.DropDownListFor(model => model.SelectedMerchandiseHierarchyClassId, Model.MerchandiseHierarchyClasses, String.Empty, new { @class = "col-md-6 form-input" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-offset-3">
+                <input type="submit" value="Create" class="btn btn-default form-submit" />
+            </div>
+        </div>
+    </fieldset>
+    }
+
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/R10/R10Request/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/R10/R10Request/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1" schemaLocation="R10CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="r10Request" type="R10RequestType">
+		<xs:annotation>
+			<xs:documentation>R10Request Schema</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="R10RequestType">
+		<xs:sequence>
+			<xs:element name="applicationName" type="xs:string" minOccurs="1"/>
+			<xs:element name="requestDetails" type="crf:RequestDetailsType" minOccurs="1"/>
+			<xs:element name="destination" type="crf:DestinationType" minOccurs="0"/>
+			<xs:element name="notification" type="crf:NotificationType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

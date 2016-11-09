@@ -1,0 +1,123 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(SolutionDir)..\Mammoth.Shared\Mammoth.Framework\bin\Debug\Mammoth.Framework.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Mammoth.Framework" #>
+<#@ import namespace="System.CodeDom.Compiler" #>
+<#@ import namespace="Microsoft.CSharp" #>
+<#@ import namespace="System.CodeDom" #>
+<#@ output extension=".txt" #>
+<#
+	//This is a template for creating Test Builders. Specify the name of the builder, the namespace of the builder, the class the builder creates, and 
+	//the namespace the class is in.
+	//Then copy the generated class to a new file and update with default values.
+
+	Type type = typeof(MessageQueuePrice);
+	string builderClassName = "TestMessageQueuePriceBuilder";
+	string builderNamespace = "Mammoth.ApiController.Tests.Builders";
+	string className = "MessageQueuePrice";
+	string classNamespace = "Mammoth.Framework";
+#>
+using System;
+using <#= classNamespace #>;
+
+namespace <#= builderNamespace #>
+{
+	public class <#= builderClassName #>
+	{
+<#
+	//Write the fields of the TestBuilder
+	foreach(var property in type.GetProperties())
+	{
+#>
+		private <#= GetPropertyTypeName(property.PropertyType) #> <#= ConvertToCamelCase(property.Name) #>;
+<#
+	}
+#>
+		
+		public <#= builderClassName #>()
+		{
+<#
+	//Write the constructor of the TestBuilder
+	foreach(var property in type.GetProperties())
+	{
+#>
+			this.<#= ConvertToCamelCase(property.Name) #> = <#= GetDefaultValue(property.PropertyType) #>;
+<#
+	}
+#>
+		}
+<#
+	//Write the setter methods of the TestBuilder
+	foreach(var property in type.GetProperties())
+	{
+#>
+
+		public <#= builderClassName #> With<#= property.Name #>(<#= GetPropertyTypeName(property.PropertyType) #> <#= ConvertToCamelCase(property.Name) #>)
+		{
+			this.<#= ConvertToCamelCase(property.Name) #> = <#= ConvertToCamelCase(property.Name) #>;
+			return this;
+		}
+<#
+	}
+#>
+
+		public <#= className #> Build()
+		{
+			<#= className #> <#= ConvertToCamelCase(className) #> = new <#= className #>();
+
+<#
+	//Write the build method of the TestBuilder
+	foreach(var property in type.GetProperties())
+	{
+#>
+			<#= ConvertToCamelCase(className) #>.<#= property.Name #> = this.<#= ConvertToCamelCase(property.Name) #>;
+<#
+	}
+#>			
+			return <#= ConvertToCamelCase(className) #>;
+		}		
+
+        public static implicit operator <#= className #>(<#= builderClassName #> builder)
+        {
+            return builder.Build();
+        }
+	}
+}<#+
+	private string GetPropertyTypeName(Type propertyType)
+	{
+		var compiler = new CSharpCodeProvider();
+		return compiler.GetTypeOutput(new CodeTypeReference(propertyType));
+	}
+#>
+<#+
+	private string GetDefaultValue(Type type)
+	{
+		if(type == typeof(DateTime))
+		{
+			return "DateTime.Now";
+		}
+		if(type.IsValueType)
+		{
+			var value = Activator.CreateInstance(type);
+			if(value != null)
+			{
+				if(type == typeof(bool))
+				{
+					return value.ToString().ToLower();
+				}
+				return value.ToString();
+			}
+		}
+
+		return "null";
+	}
+#>
+<#+
+	private string ConvertToCamelCase(string value)
+	{
+		return value[0].ToString().ToLower() + value.Substring(1);
+	}
+#>

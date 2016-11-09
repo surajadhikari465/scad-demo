@@ -1,0 +1,507 @@
+﻿<hierarchy xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:p3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" p3:Action="AddOrUpdate">
+  <name>Brands</name>
+  <prototype>
+    <hpt:hierarchyLevelName>Brand</hpt:hierarchyLevelName>
+    <hpt:itemsAttached>1</hpt:itemsAttached>
+  </prototype>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40430</hcl:id>
+    <hcl:name>BREADSMITH</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40431</hcl:id>
+    <hcl:name>BIG TREE FARMS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40432</hcl:id>
+    <hcl:name>ESKA</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40433</hcl:id>
+    <hcl:name>EDUCO HAPE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40434</hcl:id>
+    <hcl:name>BIRCH BENDERS GRIDDLE CAKES</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40435</hcl:id>
+    <hcl:name>AXEL KRAFT</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40441</hcl:id>
+    <hcl:name>HARBOR HOUSE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40447</hcl:id>
+    <hcl:name>PRICHARDS DISTILLERY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40449</hcl:id>
+    <hcl:name>FERNANDO DE CASTILLA</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40450</hcl:id>
+    <hcl:name>BURNHAM &amp; MILLS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40454</hcl:id>
+    <hcl:name>DOMAINE LA GRANGE TIPHAINE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40457</hcl:id>
+    <hcl:name>MA KITCHEN AND BAKERY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40459</hcl:id>
+    <hcl:name>THE SYNERGY COMPANY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40460</hcl:id>
+    <hcl:name>CANTILLON LOU PEPE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40465</hcl:id>
+    <hcl:name>BJORNSTEAD</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40466</hcl:id>
+    <hcl:name>SOME YOUNG PUNKS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40467</hcl:id>
+    <hcl:name>SHEILAS SWEETS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40468</hcl:id>
+    <hcl:name>GREENLEAF NURSERY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40472</hcl:id>
+    <hcl:name>FOLONARI</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40473</hcl:id>
+    <hcl:name>LAUGHING COW</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40477</hcl:id>
+    <hcl:name>DOMAINE FOUASSIER</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40478</hcl:id>
+    <hcl:name>EVERYDAY COCONUT</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40480</hcl:id>
+    <hcl:name>BOON</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40486</hcl:id>
+    <hcl:name>FRUIT D OR</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40487</hcl:id>
+    <hcl:name>FAMOUS MINERAL WATER</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40489</hcl:id>
+    <hcl:name>DERLEA</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40492</hcl:id>
+    <hcl:name>SAUCES N LOVE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40493</hcl:id>
+    <hcl:name>AYALAS HERBAL WATER</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40501</hcl:id>
+    <hcl:name>DOMAINE BERTHET RAYNE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40504</hcl:id>
+    <hcl:name>TENNESSEE MOON CAKES</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40506</hcl:id>
+    <hcl:name>PRECIOUS CHEESE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40509</hcl:id>
+    <hcl:name>CHATEAU FONPLEGADE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40512</hcl:id>
+    <hcl:name>MUDPUPPY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40514</hcl:id>
+    <hcl:name>ARNAUD SOUBEYRAN</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40515</hcl:id>
+    <hcl:name>AZALEA</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40520</hcl:id>
+    <hcl:name>PIXIE POUCH</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40522</hcl:id>
+    <hcl:name>PAYMON</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40530</hcl:id>
+    <hcl:name>CYRUS NOBLE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40531</hcl:id>
+    <hcl:name>KITCHEN ACCOMPLICE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40533</hcl:id>
+    <hcl:name>CASAL GARCIA</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40534</hcl:id>
+    <hcl:name>MAURO VEGLIO</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40536</hcl:id>
+    <hcl:name>PIE MINISTER</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40538</hcl:id>
+    <hcl:name>DRY FLY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40539</hcl:id>
+    <hcl:name>DIVINE PIE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40540</hcl:id>
+    <hcl:name>JASON STEPHENS WINERY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40541</hcl:id>
+    <hcl:name>COFFEE SOCK</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40543</hcl:id>
+    <hcl:name>DAMILANO</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40545</hcl:id>
+    <hcl:name>PEDERNALES CELLARS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40546</hcl:id>
+    <hcl:name>CYAN</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40547</hcl:id>
+    <hcl:name>ALEXS UGLY SAUCE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40548</hcl:id>
+    <hcl:name>MANOA CHOCOLATE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40549</hcl:id>
+    <hcl:name>MURPHY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40550</hcl:id>
+    <hcl:name>FROG HOLLOW FARMS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40551</hcl:id>
+    <hcl:name>VAN GOGH</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40552</hcl:id>
+    <hcl:name>JESSICA FOSTER CONFECTIONS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40553</hcl:id>
+    <hcl:name>FULL CIRCLE EXCHANGE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40554</hcl:id>
+    <hcl:name>CHI TOWN</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40555</hcl:id>
+    <hcl:name>OLIVER BENTLEYS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40556</hcl:id>
+    <hcl:name>SEVEN TROUGHS DISTILLING</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40558</hcl:id>
+    <hcl:name>IBARRA</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40559</hcl:id>
+    <hcl:name>GIRARDS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40560</hcl:id>
+    <hcl:name>THE PEOPLES PINT</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40561</hcl:id>
+    <hcl:name>MOULIN DE TRICOT</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40562</hcl:id>
+    <hcl:name>BIGI</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40563</hcl:id>
+    <hcl:name>MAHONIA VINEYARDS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40564</hcl:id>
+    <hcl:name>CHATEAU HAUT CHAIGNEAU</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40566</hcl:id>
+    <hcl:name>CEDAR GROVE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40567</hcl:id>
+    <hcl:name>NEW PATH</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40568</hcl:id>
+    <hcl:name>MOULIN D ASCQ</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40574</hcl:id>
+    <hcl:name>CHATEAU MANGOT</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40576</hcl:id>
+    <hcl:name>ECOSYSTEM</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40579</hcl:id>
+    <hcl:name>LA MARCA</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40582</hcl:id>
+    <hcl:name>PHELPS CREEK VINEYARD</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40583</hcl:id>
+    <hcl:name>GOLDBAUM</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40584</hcl:id>
+    <hcl:name>BOLD BEAN</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40586</hcl:id>
+    <hcl:name>TASTY KALE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40590</hcl:id>
+    <hcl:name>BORGO CONVENTI</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40592</hcl:id>
+    <hcl:name>SADDLEBACK</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40595</hcl:id>
+    <hcl:name>RIVER ROAD</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40601</hcl:id>
+    <hcl:name>JETZONE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40602</hcl:id>
+    <hcl:name>THE DIRTY PURE PROJECT</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40603</hcl:id>
+    <hcl:name>ERIC BORDELET</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40606</hcl:id>
+    <hcl:name>JUNIPER RIDGE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40607</hcl:id>
+    <hcl:name>PIZZERIA ITALIANA</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40608</hcl:id>
+    <hcl:name>LA BELLA TERRE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40609</hcl:id>
+    <hcl:name>FONTAINE GAGNARD</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40611</hcl:id>
+    <hcl:name>BOULDER HOT SAUCE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40616</hcl:id>
+    <hcl:name>PETERSON WINERY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40617</hcl:id>
+    <hcl:name>BULLERS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40619</hcl:id>
+    <hcl:name>SOLA BEE FARMS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40620</hcl:id>
+    <hcl:name>ALTO CREAMERY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40621</hcl:id>
+    <hcl:name>NEW YORK SUPERFOODS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40622</hcl:id>
+    <hcl:name>TENUTA IL TESORO</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40625</hcl:id>
+    <hcl:name>RUBISSOW SARGENT</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40626</hcl:id>
+    <hcl:name>TANDOOR CHEF</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40627</hcl:id>
+    <hcl:name>CLOS DU BOIS</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40629</hcl:id>
+    <hcl:name>MISSOURI HONEY</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40633</hcl:id>
+    <hcl:name>SORBEE INTERNATIONAL</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40634</hcl:id>
+    <hcl:name>NINE STONES</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>40635</hcl:id>
+    <hcl:name>CHATEAU DE PARENCHERE</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+</hierarchy>

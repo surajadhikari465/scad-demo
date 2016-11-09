@@ -1,0 +1,101 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slaw.ItemLocale.Service", "Slaw.ItemLocale.Service\Slaw.ItemLocale.Service.csproj", "{25030D9A-FCC0-435F-9B2E-DDBCFA1DE603}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{4C3135B0-ED9B-406D-A12F-822C1E2F284E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb", "..\..\Shared\Icon.Esb\Icon.Esb.csproj", "{0CAAE719-F316-4902-B9B4-C8F832EE79E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.Schemas.Wfm", "..\..\ESB\Schemas\Icon.Esb.Schemas.Wfm\Icon.Esb.Schemas.Wfm.csproj", "{A6AE6B2D-D838-4188-817F-4C48090A4465}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.Schemas.Common", "..\..\ESB\Schemas\Icon.Esb.Schemas.Common\Icon.Esb.Schemas.Common.csproj", "{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common.DataAccess", "..\..\Mammoth\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj", "{82505A9B-2264-4428-9806-D5EF838109B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{25030D9A-FCC0-435F-9B2E-DDBCFA1DE603}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25030D9A-FCC0-435F-9B2E-DDBCFA1DE603}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25030D9A-FCC0-435F-9B2E-DDBCFA1DE603}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{25030D9A-FCC0-435F-9B2E-DDBCFA1DE603}.QA|Any CPU.Build.0 = Release|Any CPU
+		{25030D9A-FCC0-435F-9B2E-DDBCFA1DE603}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25030D9A-FCC0-435F-9B2E-DDBCFA1DE603}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25030D9A-FCC0-435F-9B2E-DDBCFA1DE603}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{25030D9A-FCC0-435F-9B2E-DDBCFA1DE603}.Test|Any CPU.Build.0 = Release|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.QA|Any CPU.Build.0 = QA|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Test|Any CPU.Build.0 = Test|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.QA|Any CPU.Build.0 = QA|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Test|Any CPU.Build.0 = Test|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.QA|Any CPU.Build.0 = Release|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Test|Any CPU.Build.0 = Release|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.Build.0 = QA|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.Build.0 = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7} = {4C3135B0-ED9B-406D-A12F-822C1E2F284E}
+		{A6AE6B2D-D838-4188-817F-4C48090A4465} = {4C3135B0-ED9B-406D-A12F-822C1E2F284E}
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2} = {4C3135B0-ED9B-406D-A12F-822C1E2F284E}
+		{82505A9B-2264-4428-9806-D5EF838109B3} = {4C3135B0-ED9B-406D-A12F-822C1E2F284E}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Slaw.ItemLocale.Service\\Slaw.ItemLocale.Service.csproj
+		SccProjectName1 = Slaw.ItemLocale.Service
+		SccLocalPath1 = Slaw.ItemLocale.Service
+		SccProjectUniqueName2 = ..\\..\\Shared\\Icon.Esb\\Icon.Esb.csproj
+		SccProjectTopLevelParentUniqueName2 = Slaw.ItemLocale.sln
+		SccProjectName2 = ../../Shared/Icon.Esb
+		SccLocalPath2 = ..\\..\\Shared\\Icon.Esb
+		SccProjectUniqueName3 = ..\\..\\ESB\\Schemas\\Icon.Esb.Schemas.Wfm\\Icon.Esb.Schemas.Wfm.csproj
+		SccProjectTopLevelParentUniqueName3 = Slaw.ItemLocale.sln
+		SccProjectName3 = ../../ESB/Schemas/Icon.Esb.Schemas.Wfm
+		SccLocalPath3 = ..\\..\\ESB\\Schemas\\Icon.Esb.Schemas.Wfm
+		SccProjectUniqueName4 = ..\\..\\ESB\\Schemas\\Icon.Esb.Schemas.Common\\Icon.Esb.Schemas.Common.csproj
+		SccProjectTopLevelParentUniqueName4 = Slaw.ItemLocale.sln
+		SccProjectName4 = ../../ESB/Schemas/Icon.Esb.Schemas.Common
+		SccLocalPath4 = ..\\..\\ESB\\Schemas\\Icon.Esb.Schemas.Common
+		SccProjectUniqueName5 = ..\\..\\Mammoth\\Mammoth.Shared\\Mammoth.Common.DataAccess\\Mammoth.Common.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName5 = Slaw.ItemLocale.sln
+		SccProjectName5 = ../../Mammoth/Mammoth.Shared/Mammoth.Common.DataAccess
+		SccLocalPath5 = ..\\..\\Mammoth\\Mammoth.Shared\\Mammoth.Common.DataAccess
+	EndGlobalSection
+EndGlobal

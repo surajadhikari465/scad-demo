@@ -1,0 +1,14 @@
+﻿@using ApplicationDashboard.Helpers
+@model ApplicationDashboard.ViewModels.ApplicationViewModel
+
+<div class="application-details @CssHelper.AppStatus(Model.Status)">
+    <h1>@Model.DisplayName</h1>
+    <div>
+        <div class="row">
+            @Html.LabelFor(m => m.MachineName, new { @class = "col-sm-2" }) <p class="col-sm-3">@Model.MachineName</p>
+        </div>
+        <div class="row">
+            @Html.LabelFor(m => m.Status, new { @class = "col-sm-2" }) <p class="col-sm-3">@Model.Status</p>
+        </div>
+    </div>
+</div>

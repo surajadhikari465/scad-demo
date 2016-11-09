@@ -1,0 +1,171 @@
+﻿@using Infragistics.Web.Mvc
+@using Icon.Framework
+@model Icon.Web.Mvc.Models.HierarchySearchViewModel
+
+@{ string hierarchyName = Model.Hierarchy.hierarchyName; }
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+<div class="page-subsection">
+    @if (hierarchyName == HierarchyNames.Brands)
+    {
+        @Html.ActionLink("Add New " + Model.Hierarchy.hierarchyName + " Hierarchy Class", "Create", "HierarchyClass", new { parentId = 0, hierarchyId = Model.SelectedHierarchyId }, null)
+    }
+</div>
+
+<hr />
+
+@if (hierarchyName == HierarchyNames.Merchandise || hierarchyName == HierarchyNames.Browsing)
+{
+    <div class="form-inline">
+        <div class="form-group">
+            <div class="input-group">
+                <input id="filterText" class="form-control" type="text" placeholder="Filter Grid..." />
+            </div>
+            <span class="form-group">
+                <button id="filterButton" class="btn btn-default" type="button">Search</button>
+            </span>
+            <span class="form-group">
+                <button id="filterClear" class="btn btn-default" type="button">Clear</button>
+            </span>
+        </div>
+    </div> 
+}
+
+<div id="searchResults" class="page-subsection">
+    @if (Model.HierarchyClasses.Any())
+    {
+        // In order to compose hierarchical grids you must create ColumnLayouts for each subgrid.
+        // Because different buisness logic applies to different levels of each hierarchy, some columns are rendered conditionally.
+        @(Html.Infragistics().Grid(Model.HierarchyClasses)
+            .ID("hierarchyGrid")
+            .AutoGenerateColumns(false)
+            .Columns(columns =>
+                {
+                    if (hierarchyName == HierarchyNames.Tax)
+                    {
+                        columns.For(h => h.HierarchyClassId).Hidden(true);
+                        columns.For(h => h.HierarchyClassName).HeaderText("Tax Class");
+                        columns.For(h => h.TaxAbbreviation).HeaderText("Tax Abbreviation");
+                        columns.For(h => h.TaxRomance).HeaderText("Tax Romance");
+                        columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+                        columns.For(h => h.DeleteNodeLink).HeaderText("Administration Delete Link");
+                    }
+
+                    if (hierarchyName == HierarchyNames.Brands)
+                    {
+                        columns.For(h => h.HierarchyClassId).HeaderText("Brand ID");
+                        columns.For(h => h.HierarchyClassName).HeaderText("Brand Name");
+                        columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+                        columns.For(h => h.DeleteNodeLink).HeaderText("Administration Delete Link");
+                    }
+
+                    if (hierarchyName == HierarchyNames.Merchandise)
+                    {
+                        columns.For(h => h.HierarchyClassId).Hidden(true);
+                        columns.For(h => h.HierarchyClassName).HeaderText("Segment");
+                    }
+
+                    if (hierarchyName == HierarchyNames.Browsing)
+                    {
+                        columns.For(h => h.HierarchyClassId).Hidden(true);
+                        columns.For(h => h.HierarchyClassName).HeaderText("Parent");
+                        columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+                    }
+                })
+            .ColumnLayouts(level2 =>
+                {
+                    level2.For(h => h.HierarchySubClasses)
+                        .AutoGenerateColumns(false)
+                        .Columns(columns =>
+                            {
+                                columns.For(h => h.HierarchyClassId).Hidden(true);
+                                columns.For(h => h.HierarchyClassName).HeaderText("Family");
+                                columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+                                if (hierarchyName == HierarchyNames.Browsing)
+                                {
+                                    columns.For(h => h.AddNodeLink).HeaderText("Administration Add Links");
+                                }
+
+                            })
+                        .ColumnLayouts(level3 =>
+                            {
+                                level3.For(h => h.HierarchySubClasses)
+                                    .AutoGenerateColumns(false)
+                                    .Columns(columns =>
+                                        {
+                                            columns.For(h => h.HierarchyClassId).Hidden(true);
+                                            columns.For(h => h.HierarchyClassName).HeaderText("Class");
+                                            columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+
+                                            if (hierarchyName == HierarchyNames.Browsing)
+                                            {
+                                                columns.For(h => h.DeleteNodeLink).HeaderText("Administration Delete Link");
+                                            }
+                                        })
+                                    .ColumnLayouts(level4 =>
+                                        {
+                                            level4.For(h => h.HierarchySubClasses)
+                                                .Features(features => features.Paging().PageSize(120))
+                                                .AutoGenerateColumns(false)
+                                                .Columns(columns =>
+                                                    {
+                                                        columns.For(h => h.HierarchyClassId).Hidden(true);
+                                                        columns.For(h => h.HierarchyClassName).HeaderText("Brick");
+                                                        columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+
+                                                        if (hierarchyName == HierarchyNames.Merchandise)
+                                                        {
+                                                            columns.For(h => h.AddNodeLink).HeaderText("Administration Add Links");
+                                                        }
+                                                    })
+                                                .ColumnLayouts(level5 =>
+                                                    {
+                                                        level5.For(h => h.HierarchySubClasses)
+                                                            .AutoGenerateColumns(false)
+                                                            .Columns(columns =>
+                                                                {
+                                                                    columns.For(h => h.HierarchyClassId).Hidden(true);
+                                                                    columns.For(h => h.HierarchyClassName).HeaderText("Sub-Brick");
+                                                                    columns.For(h => h.SubTeam).HeaderText("Sub-Team Association");
+                                                                    columns.For(h => h.NonMerchandiseTrait).HeaderText("Non-Merchandise Trait");
+                                                                    columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+
+                                                                    if (hierarchyName == HierarchyNames.Merchandise)
+                                                                    {
+                                                                        columns.For(h => h.DeleteNodeLink).HeaderText("Administration Delete Link");
+                                                                        columns.For(h => h.SubBrickCode).HeaderText("Sub-Brick Code");
+                                                                    }
+                                                                });
+                                                    });
+                                        });
+                            });
+                })
+                .Features(features =>
+                {
+                    features.Sorting().Inherit(true);
+                    features.Paging().PageSize(25).Inherit(true);
+
+                    if (hierarchyName != HierarchyNames.Merchandise && hierarchyName != HierarchyNames.Tax)
+                    {
+                        features.Filtering().Inherit(true);
+                    }
+                })
+            .DataBind()
+            .Render()
+        );
+
+        // Export Hierarchy List
+        <input type="button" id="export" class="btn btn-default form-submit" value="Export" />
+
+                <div id="hierarchyName" class="hidden">@hierarchyName</div>
+    }
+    else
+    {
+                <h4>No hierarchy data was found.</h4>
+    }
+        </div>

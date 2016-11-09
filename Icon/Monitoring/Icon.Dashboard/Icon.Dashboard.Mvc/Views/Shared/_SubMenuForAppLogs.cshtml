@@ -1,0 +1,33 @@
+﻿@model IDictionary<Icon.Dashboard.Mvc.ViewModels.IconAppViewModel, bool>
+
+@if (Model != null)
+{
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            Log Viewer
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" href="@Url.Action("Index", "Logs", new { id = "" })">
+                    All
+                </a>
+            </li>
+
+            @foreach (var appTypeEntry in Model)
+            {
+                var logPage = Url.Action("Index", "Logs", new { id = appTypeEntry.Key.AppName });
+                <li class="@(appTypeEntry.Value ? "active" : String.Empty)">
+                    <a class="dropdown-item" href="@logPage">
+                        @appTypeEntry.Key.AppName
+                    </a>
+                </li>
+            }
+        </ul>
+    </li>
+}
+else
+{
+    <li>
+        <a href="@Url.Action("Index", "Logs")">Log Viewer</a>
+    </li>
+}

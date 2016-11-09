@@ -1,0 +1,7 @@
+﻿CREATE TABLE [infor].[Errors]
+(
+	[ErrorId] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	[AppId] INT NOT NULL,
+	[ErrorCode] NVARCHAR(50) NOT NULL,
+	[ErrorDetails] NVARCHAR(255) NOT NULL
+)

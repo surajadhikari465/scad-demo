@@ -1,0 +1,103 @@
+﻿using Icon.ApiController.Common;
+using Icon.ApiController.Controller.HistoryProcessors;
+using Icon.ApiController.DataAccess.Commands;
+using Icon.ApiController.DataAccess.Queries;
+using Icon.RenewableContext;
+using Icon.Common.DataAccess;
+using Icon.Esb.Producer;
+using Icon.Framework;
+using Icon.Logging;
+using Icon.Testing.Builders;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+
+namespace Icon.ApiController.Tests.Integration
+{
+    [TestClass]
+    public class MessageHistoryProcessorIntegrationTests
+    {
+        private MessageHistoryProcessor historyProcessor;
+        private IconContext context;
+        private Mock<IRenewableContext<IconContext>> mockGlobalContext;
+        private DbContextTransaction transaction;
+        private Mock<ILogger<MessageHistoryProcessor>> mockLogger;
+        private Mock<ICommandHandler<MarkUnsentMessagesAsInProcessCommand>> mockMarkUnsentMessagesAsInProcessCommandHandler;
+        private Mock<IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>> mockGetMessageHistoryQuery;
+        private UpdateMessageHistoryStatusCommandHandler updateMessageHistoryCommandHandler;
+        private Mock<ICommandHandler<UpdateStagedProductStatusCommand>> mockUpdateStagedProductCommandHandler;
+        private Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>> mockUpdateSentToEsbHierarchyTraitCommandHandler;
+        private Mock<IEsbProducer> mockProducer;
+        private ApiControllerSettings settings;
+        
+        [TestInitialize]
+        public void Initialize()
+        {
+            context = new IconContext();
+
+            mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
+            mockLogger = new Mock<ILogger<MessageHistoryProcessor>>();
+            mockMarkUnsentMessagesAsInProcessCommandHandler = new Mock<ICommandHandler<MarkUnsentMessagesAsInProcessCommand>>();
+            mockGetMessageHistoryQuery = new Mock<IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>>();
+            updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new Mock<ILogger<UpdateMessageHistoryStatusCommandHandler>>().Object, mockGlobalContext.Object);
+            mockUpdateSentToEsbHierarchyTraitCommandHandler = new Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>>();
+            mockUpdateStagedProductCommandHandler = new Mock<ICommandHandler<UpdateStagedProductStatusCommand>>();
+            mockProducer = new Mock<IEsbProducer>();
+            settings = new ApiControllerSettings();
+
+            mockGlobalContext.SetupGet(c => c.Context).Returns(context);
+
+            this.historyProcessor = new MessageHistoryProcessor(
+                settings,
+                mockLogger.Object,
+                mockGlobalContext.Object,
+                mockMarkUnsentMessagesAsInProcessCommandHandler.Object,
+                mockGetMessageHistoryQuery.Object,
+                updateMessageHistoryCommandHandler,
+                mockUpdateStagedProductCommandHandler.Object,
+                mockUpdateSentToEsbHierarchyTraitCommandHandler.Object,
+                mockProducer.Object,
+                MessageTypes.Product);
+
+            transaction = context.Database.BeginTransaction();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            transaction.Rollback();
+        }
+
+        [TestMethod]
+        public void ProcessMessageHistory_MessageSentToEsb_MessageStatusShouldBeUpdated()
+        {
+            // Given.
+            var fakeMessageHistory = new List<MessageHistory>
+            {
+                new TestMessageHistoryBuilder()
+            };
+
+            var fakeEmptyMessageHistory = new List<MessageHistory>();
+
+            var fakeMessageHistoryQueue = new Queue<List<MessageHistory>>();
+            fakeMessageHistoryQueue.Enqueue(fakeMessageHistory);
+            fakeMessageHistoryQueue.Enqueue(fakeEmptyMessageHistory);
+
+            context.MessageHistory.AddRange(fakeMessageHistory);
+            context.SaveChanges();
+
+            mockGetMessageHistoryQuery.Setup(q => q.Search(It.IsAny<GetMessageHistoryParameters>())).Returns(fakeMessageHistoryQueue.Dequeue);
+
+            // When.
+            this.historyProcessor.ProcessMessageHistory();
+
+            // Then.
+            int messageHistoryId = fakeMessageHistory[0].MessageHistoryId;
+            var message = context.MessageHistory.Single(mh => mh.MessageHistoryId == messageHistoryId);
+
+            Assert.AreEqual(MessageStatusTypes.Sent, message.MessageStatusId);
+        }
+    }
+}

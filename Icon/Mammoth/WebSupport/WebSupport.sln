@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSupport", "WebSupport\WebSupport.csproj", "{C5E3E64B-CF38-409C-A04B-E47104EC790B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2AC1469A-E9C7-41F4-8809-C8F5647BAB68} = {2AC1469A-E9C7-41F4-8809-C8F5647BAB68}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSupport.Tests", "WebSupport.Tests\WebSupport.Tests.csproj", "{36B0EB78-347F-49AD-A57B-1F926DE6537F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSupport.DataAccess", "WebSupport.DataAccess\WebSupport.DataAccess.csproj", "{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSupport.DataAccess.Test", "WebSupport.DataAccess.Test\WebSupport.DataAccess.Test.csproj", "{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5E3E64B-CF38-409C-A04B-E47104EC790B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E3E64B-CF38-409C-A04B-E47104EC790B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E3E64B-CF38-409C-A04B-E47104EC790B}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E3E64B-CF38-409C-A04B-E47104EC790B}.QA|Any CPU.Build.0 = Release|Any CPU
+		{C5E3E64B-CF38-409C-A04B-E47104EC790B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E3E64B-CF38-409C-A04B-E47104EC790B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5E3E64B-CF38-409C-A04B-E47104EC790B}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E3E64B-CF38-409C-A04B-E47104EC790B}.Test|Any CPU.Build.0 = Release|Any CPU
+		{36B0EB78-347F-49AD-A57B-1F926DE6537F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36B0EB78-347F-49AD-A57B-1F926DE6537F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36B0EB78-347F-49AD-A57B-1F926DE6537F}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{36B0EB78-347F-49AD-A57B-1F926DE6537F}.QA|Any CPU.Build.0 = Release|Any CPU
+		{36B0EB78-347F-49AD-A57B-1F926DE6537F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36B0EB78-347F-49AD-A57B-1F926DE6537F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36B0EB78-347F-49AD-A57B-1F926DE6537F}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{36B0EB78-347F-49AD-A57B-1F926DE6537F}.Test|Any CPU.Build.0 = Release|Any CPU
+		{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}.QA|Any CPU.Build.0 = Release|Any CPU
+		{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}.Test|Any CPU.Build.0 = Release|Any CPU
+		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.QA|Any CPU.Build.0 = Release|Any CPU
+		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.Test|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WebSupport.Tests\\WebSupport.Tests.csproj
+		SccProjectName1 = WebSupport.Tests
+		SccLocalPath1 = WebSupport.Tests
+		SccProjectUniqueName2 = WebSupport\\WebSupport.csproj
+		SccProjectName2 = WebSupport
+		SccLocalPath2 = WebSupport
+		SccProjectUniqueName3 = WebSupport.DataAccess\\WebSupport.DataAccess.csproj
+		SccProjectName3 = WebSupport.DataAccess
+		SccLocalPath3 = WebSupport.DataAccess
+		SccProjectUniqueName4 = WebSupport.DataAccess.Test\\WebSupport.DataAccess.Test.csproj
+		SccProjectName4 = WebSupport.DataAccess.Test
+		SccLocalPath4 = WebSupport.DataAccess.Test
+	EndGlobalSection
+EndGlobal

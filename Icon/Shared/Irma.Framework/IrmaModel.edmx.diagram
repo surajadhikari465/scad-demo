@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="94e7f0f3bbf44464a5efdbbc019481aa" Name="Diagram1" ZoomLevel="63">
+        <EntityTypeShape EntityType="Irma.Framework.Model.IconItemLastChange" Width="1.5" PointX="0.875" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.Item" Width="1.5" PointX="8.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ItemBrand" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ItemIdentifier" Width="1.5" PointX="10.5" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.TaxClass" Width="1.5" PointX="6" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.Users" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ValidatedBrand" Width="1.5" PointX="5.25" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ValidatedScanCode" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__Brand_ID__15368D9F" ManuallyRouted="false" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__User_ID__378BA5A3" ManuallyRouted="false" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__ItemIdent__Item___46CDE933" ManuallyRouted="false" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_Item_TaxClass1" ManuallyRouted="false" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemBrand_1__13" ManuallyRouted="false" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemBrand_Brand_ID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.Price" Width="1.5" PointX="10.5" PointY="18.25" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Price__Item_Key__4E6F0AFB" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_Price_LinkCode" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.Region" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.AppConfigApp" Width="1.5" PointX="5.25" PointY="15.375" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.AppConfigEnv" Width="1.5" PointX="3" PointY="15.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.AppConfigKey" Width="1.5" PointX="3" PointY="19" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.AppConfigValue" Width="1.5" PointX="5.25" PointY="19.5" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_AppConfigApp_EnvID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_AppConfigApp_UserID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_AppConfigEnv_UserID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_AppConfigKey_UserID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_AppConfigValue_AppConfigKey" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_AppConfigValue_UserID" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.IconItemChangeQueue" Width="1.5" PointX="10.5" PointY="9.375" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_IconItemChangeQueue_Item" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.Version" Width="1.5" PointX="2.625" PointY="4.625" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ItemUnit" Width="1.5" PointX="3" PointY="22.875" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__Cost_Unit___1FB41C12" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__Distributi__1EBFF7D9" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__Freight_Un__20A8404B" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__Package_Un__0E899010" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__Retail_Uni__1BE38B2E" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__Vendor_Uni__1DCBD3A0" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemUnit_1__13" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.Sales_SumByItem" Width="1.5" PointX="10.5" PointY="30.5" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_Sales_SumByItem_Item" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.TlogReprocessRequest" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.StoreSubTeam" Width="1.5" PointX="14.625" PointY="3.25" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ItemCategory" Width="1.5" PointX="14.625" PointY="9.125" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__Category_I__162AB1D8" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemCategory_1__13" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.IConPOSPushPublish" Width="1.5" PointX="13.375" PointY="12.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.NatItemClass" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.JobStatus" Width="1.5" PointX="15.375" PointY="12.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ItemOverride" Width="1.5" PointX="17.25" PointY="16.125" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.SubTeam" Width="1.5" PointX="12.5" PointY="3" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Item__SubTeam_No__0BAD2365" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_Item_SubTeam" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemOverride_Item_Key" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemCategory_SubTeam" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemOverride_Distribution_Unit_ID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemOverride_Manufacturing_Unit_ID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemOverride_Package_Unit_ID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemOverride_Retail_Unit_ID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemOverride_Vendor_Unit_ID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ExceptionSubTeam_SubTeam" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_Sales_SumByItem_SubTeam" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_StoreSubTeam_SubTeam" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ItemScale" Width="1.5" PointX="19.5" PointY="20" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemScale_Item" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemScale_ItemUnit" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ItemNutrition" Width="1.5" PointX="22.625" PointY="12.625" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemNutrition_ItemKey" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.MammothItemChangeEventType" Width="1.5" PointX="15.25" PointY="0.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.MammothItemLocaleChangeQueue" Width="1.5" PointX="17.5" PointY="9" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemLocaleChangeQueue_Item" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemLocaleChangeQueue_ItemChangeEventType" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ItemSignAttribute" Width="1.5" PointX="12.75" PointY="36.25" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.NutriFacts" Width="1.5" PointX="15.625" PointY="22.5" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.Store" Width="1.5" PointX="0.75" PointY="14.75" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_IConPOSPushPublish_Store_No" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemSignAttribute_Item_Item_Key" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemNutrition_NutriFactsID" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemScale_NutriFacts1" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Price__Store_No__4F632F34" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Sales_Sum__Store__1943E849" />
+        <AssociationConnector Association="Irma.Framework.Model.FK__Store__RecvLogUs__6CDF4ED9" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_ItemLocaleChangeQueue_Store" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_StoreSubTeam_Store" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_Users_Store1" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_Users_TelxonStoreLimit" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.MammothPriceChangeQueue" Width="1.5" PointX="19.5" PointY="13.125" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_PriceChangeQueue_Item" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_PriceChangeQueue_Store" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_PriceChangeQueue_ItemChangeEventType" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

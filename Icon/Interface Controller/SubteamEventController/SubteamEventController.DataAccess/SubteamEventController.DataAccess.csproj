@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7DF0C943-1827-4D70-BA4C-988574E55D93}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SubteamEventController.DataAccess</RootNamespace>
+    <AssemblyName>SubteamEventController.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\Test\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <OutputPath>bin\QA\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq, Version=1.1.18418.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\morelinq.1.1.1\lib\net35\MoreLinq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BulkCommands\BulkAddUpdateLastChangeSubTeamCommand.cs" />
+    <Compile Include="BulkCommands\BulkAddUpdateLastChangeSubTeamCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkGetItemsWithSubTeamQuery.cs" />
+    <Compile Include="BulkCommands\BulkGetItemsWithSubTeamQueryHandler.cs" />
+    <Compile Include="BulkCommands\BulkUpdateItemSubTeamCommand.cs" />
+    <Compile Include="BulkCommands\BulkUpdateItemSubTeamCommandHandler.cs" />
+    <Compile Include="Commands\AddUpdateItemSubTeamLastChangeCommand.cs" />
+    <Compile Include="Commands\AddUpdateItemSubTeamLastChangeCommandHandler.cs" />
+    <Compile Include="Commands\UpdateItemSubTeamCommand.cs" />
+    <Compile Include="Commands\UpdateItemSubTeamCommandHandler.cs" />
+    <Compile Include="Commands\UpdateSubTeamCommand.cs" />
+    <Compile Include="Commands\UpdateSubTeamCommandHandler.cs" />
+    <Compile Include="DataServices\UpdateItemSubTeamDataService.cs" />
+    <Compile Include="DataServices\UpdateItemSubTeamDataServiceHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetSubTeamParameters.cs" />
+    <Compile Include="Queries\GetSubTeamQuery.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Icon.Common\Icon.Common.csproj">
+      <Project>{36bbc477-8a9c-4451-8614-932bd665a82a}</Project>
+      <Name>Icon.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\Icon.Framework\Icon.Framework.csproj">
+      <Project>{272a6b53-57a0-4895-9ca6-e41c2d4ec061}</Project>
+      <Name>Icon.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\Icon.Logging\Icon.Logging.csproj">
+      <Project>{5de3a9d5-0e64-4ee5-87d3-3b4b55b9b5ac}</Project>
+      <Name>Icon.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\Irma.Framework\Irma.Framework.csproj">
+      <Project>{7f5d0bb1-7e2f-4a05-8ba7-b52315c1851c}</Project>
+      <Name>Irma.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\InterfaceController.Common.csproj">
+      <Project>{7c794291-1d50-44e9-bc9d-4fb95b2ec889}</Project>
+      <Name>InterfaceController.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Global Event Controller\GlobalEventController.Common\GlobalEventController.Common.csproj">
+      <Project>{3eeedfc4-da9b-4d46-b7cf-e96e83077d1d}</Project>
+      <Name>GlobalEventController.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Global Event Controller\GlobalEventController.DataAccess\GlobalEventController.DataAccess.csproj">
+      <Project>{d83dd846-a441-473e-bb4e-749c98be0492}</Project>
+      <Name>GlobalEventController.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Regional Event Controller\RegionalEventController.Common\RegionalEventController.Common.csproj">
+      <Project>{9a07ae95-4e4a-4d5e-8aa9-f2aac77deef4}</Project>
+      <Name>RegionalEventController.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

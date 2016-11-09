@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ApplicationMonitor.Web.ViewModels.GlobalControllerViewModel>
+
+@{
+    ViewBag.Title = "Global Controllers";
+}
+
+<h2>Global Controllers</h2>
+
+@foreach (var group in Model.GroupBy(vm => vm.IconEnvironment))
+{
+    <div style="margin-bottom:50px">
+        <h3>Icon @group.Key Environment</h3>
+        <div style="margin-left:50px">
+            @foreach (var controller in group)
+            {
+                <div style="margin-bottom:50px">
+                    <div class="row">
+                        <div class="col-md-4"><b>Icon @Html.DisplayNameFor(model => model.Server)</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">@controller.Server</div>
+                    </div>
+                    <div class="row" style="margin-left:50px">
+                        <div class="col-md-12">
+                            <div class="row"><h4>Jobs</h4></div>
+                            <div class="row">
+                                <div class="col-md-6"><b>Name</b></div>
+                                <div class="col-md-6"><b>Status</b></div>
+                            </div>
+                            @foreach (var job in controller.Jobs)
+                            {
+                                <div class="row">
+                                    <div class="col-md-6">@job.Name</div>
+                                    <div class="col-md-6">@job.Status</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

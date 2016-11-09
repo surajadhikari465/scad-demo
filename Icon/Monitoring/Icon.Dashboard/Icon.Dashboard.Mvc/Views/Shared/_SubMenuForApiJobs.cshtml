@@ -1,0 +1,35 @@
+﻿@model IDictionary<string, bool>
+
+@if (Model != null)
+{
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            API Job Monitor
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" href="@Url.Action("Index", "ApiJobs", new { id = "" })">
+                    All
+                </a>
+            </li>
+            <li>
+                @Html.ActionLink("Pending", "Pending", "ApiJobs", null, htmlAttributes: new { @class = "dropdown-item" })
+            </li>
+            @foreach (var messageTypeEntry in Model)
+            {
+                var apiJobPage = Url.Action("Index", "ApiJobs", new { id = messageTypeEntry.Key });
+                <li class="@(messageTypeEntry.Value ? "active" : String.Empty)">
+                    <a class="dropdown-item" href="@apiJobPage">
+                        @messageTypeEntry.Key
+                    </a>
+                </li>
+            }
+        </ul>
+    </li>
+}
+else
+{
+    <li>
+        <a href="@Url.Action("Index", "ApiJobs")">API Job Monitor</a>
+    </li>
+}

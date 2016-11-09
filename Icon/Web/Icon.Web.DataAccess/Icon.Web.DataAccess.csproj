@@ -1,0 +1,551 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A4972528-84BC-40D4-A961-7C343EB94D2B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Icon.Web.DataAccess</RootNamespace>
+    <AssemblyName>Icon.Web.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <OutputPath>bin\QA\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\Test\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <ErrorReport>prompt</ErrorReport>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.2016.10.21.2\lib\net45\Icon.Esb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Ewic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Ewic.2016.10.20.1\lib\net45\Icon.Esb.Schemas.Ewic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Ewic.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Ewic.Serialization.2016.10.20.3\lib\net45\Icon.Ewic.Models.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Ewic.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Ewic.Serialization.2016.10.20.3\lib\net45\Icon.Ewic.Serialization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Ewic.Transmission, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Ewic.Transmission.2016.10.21.1\lib\net45\Icon.Ewic.Transmission.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Framework.2016.10.21.1\lib\net45\Icon.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irma.Framework.2016.10.20.1\lib\net45\Irma.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TIBCO.EMS, Version=1.0.800.9, Culture=neutral, PublicKeyToken=5b83db8ff05c64ba, processorArchitecture=MSIL">
+      <HintPath>..\packages\TIBCO.EMS.2016.10.21.1\lib\TIBCO.EMS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\SqlParameterAttribute.cs" />
+    <Compile Include="Attributes\SqlResultAttribute.cs" />
+    <Compile Include="Commands\RefreshBrandsCommand.cs" />
+    <Compile Include="Commands\RefreshBrandsCommandHandler.cs" />
+    <Compile Include="Commands\RefreshLocalesCommand.cs" />
+    <Compile Include="Commands\RefreshLocalesCommandHandler.cs" />
+    <Compile Include="Commands\RefreshMerchandiseHierarchyClassesCommand.cs" />
+    <Compile Include="Commands\RefreshMerchandiseHierarchyClassesCommandHandler.cs" />
+    <Compile Include="Commands\AddNationalHierarchyCommand.cs" />
+    <Compile Include="Commands\AddNationalHierarchyCommandHandler.cs" />
+    <Compile Include="Commands\AddCertificationAgencyCommand.cs" />
+    <Compile Include="Commands\AddCertificationAgencyCommandHandler.cs" />
+    <Compile Include="Commands\AddEwicMappingCommandHandler.cs" />
+    <Compile Include="Commands\AddEwicMappingCommand.cs" />
+    <Compile Include="Commands\AddPluRequestChangeHistoryCommand.cs" />
+    <Compile Include="Commands\AddPluRequestCommand.cs" />
+    <Compile Include="Commands\AddPluRequestChangeHistoryCommandHandler.cs" />
+    <Compile Include="Commands\AddPluRequestCommandHandler.cs" />
+    <Compile Include="Commands\RefreshItemsCommand.cs" />
+    <Compile Include="Commands\RefreshItemsCommandHandler.cs" />
+    <Compile Include="Commands\AddVimEventCommand.cs" />
+    <Compile Include="Commands\AddVimEventCommandHandler.cs" />
+    <Compile Include="Commands\ApplyMerchTaxAssociationToItemsCommand.cs" />
+    <Compile Include="Commands\ApplyMerchTaxAssociationToItemsCommandHandler.cs" />
+    <Compile Include="Commands\BulkImportCertificationAgencyCommandHandler.cs" />
+    <Compile Include="Commands\ClearHierarchyClassCacheCommand.cs" />
+    <Compile Include="Commands\ClearHierarchyClassCacheCommandHandler.cs" />
+    <Compile Include="Commands\RemoveEwicMappingCommandHandler.cs" />
+    <Compile Include="Commands\RemoveEwicMappingCommand.cs" />
+    <Compile Include="Commands\RemoveEwicExclusionCommandHandler.cs" />
+    <Compile Include="Commands\RemoveEwicExclusionCommand.cs" />
+    <Compile Include="Commands\AddEwicExclusionCommand.cs" />
+    <Compile Include="Commands\AddAddressCommand.cs" />
+    <Compile Include="Commands\AddEwicExclusionCommandHandler.cs" />
+    <Compile Include="Commands\AddAddressCommandHandler.cs" />
+    <Compile Include="Commands\AddBrandCommand.cs" />
+    <Compile Include="Commands\AddBrandCommandHandler.cs" />
+    <Compile Include="Commands\AddMerchTaxMappingCommand.cs" />
+    <Compile Include="Commands\AddPluCategoryCommand.cs" />
+    <Compile Include="Commands\AddBrandMessageCommand.cs" />
+    <Compile Include="Commands\AddMerchTaxMappingCommandHandler.cs" />
+    <Compile Include="Commands\AddPluCategoryCommandHandler.cs" />
+    <Compile Include="Commands\AddBrandMessageCommandHandler.cs" />
+    <Compile Include="Commands\AddProductMessageCommand.cs" />
+    <Compile Include="Commands\AddProductMessageCommandHandler.cs" />
+    <Compile Include="Commands\AddSubTeamEventsCommand.cs" />
+    <Compile Include="Commands\AddSubTeamEventsCommandHandler.cs" />
+    <Compile Include="Commands\AddHierarchyClassCommand.cs" />
+    <Compile Include="Commands\AddHierarchyClassCommandHandler.cs" />
+    <Compile Include="Commands\AddHierarchyClassMessageCommand.cs" />
+    <Compile Include="Commands\AddHierarchyClassMessageCommandHandler.cs" />
+    <Compile Include="Commands\AddLocaleMessageCommand.cs" />
+    <Compile Include="Commands\AddLocaleMessageCommandHandler.cs" />
+    <Compile Include="Commands\AddProductMessagesBySubTeamCommand.cs" />
+    <Compile Include="Commands\AddProductMessagesBySubTeamCommandHandler.cs" />
+    <Compile Include="Commands\AddProductSelectionGroupCommand.cs" />
+    <Compile Include="Commands\AddProductSelectionGroupCommandHandler.cs" />
+    <Compile Include="Commands\AddProductSelectionGroupMessageCommand.cs" />
+    <Compile Include="Commands\AddProductSelectionGroupMessageCommandHandler.cs" />
+    <Compile Include="Commands\AddressCommand.cs" />
+    <Compile Include="Commands\AddTaxEventCommand.cs" />
+    <Compile Include="Commands\AddTaxEventCommandHandler.cs" />
+    <Compile Include="Commands\BulkImportBrandCommandHandler.cs" />
+    <Compile Include="Commands\BulkImportNewItemCommandHandler.cs" />
+    <Compile Include="Commands\DeleteMerchTaxMappingByIdCommand.cs" />
+    <Compile Include="Commands\DeletePluCategoryByIdCommand.cs" />
+    <Compile Include="Commands\DeleteMerchTaxMappingByIdCommandHandler.cs" />
+    <Compile Include="Commands\DeletePluCategoryByIdCommandHandler.cs" />
+    <Compile Include="Commands\DeleteHierarchyClassCommandHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Commands\DeleteIrmaItemCommand.cs" />
+    <Compile Include="Commands\DeleteIrmaItemCommandHandler.cs" />
+    <Compile Include="Commands\RemoveHierarchyClassFromIrmaItemsCommandHandler.cs" />
+    <Compile Include="Commands\RemoveHierarchyClassFromIrmaItemsCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedEventsCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedEventsCommandHandler.cs" />
+    <Compile Include="Commands\ReprocessFailedHierarchyMessageCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedHierarchyMessageCommandHandler.cs" />
+    <Compile Include="Commands\ReprocessFailedIrmaPushCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedIrmaPushCommandHandler.cs" />
+    <Compile Include="Commands\ReprocessFailedItemLocaleMessageCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedItemLocaleMessageCommandHandler.cs" />
+    <Compile Include="Commands\ReprocessFailedLocaleMessageCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedLocaleMessageCommandHandler.cs" />
+    <Compile Include="Commands\ReprocessFailedMessagesCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedMessagesCommandHandler.cs" />
+    <Compile Include="Commands\ReprocessFailedPriceMessageCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedPriceMessageCommandHandler.cs" />
+    <Compile Include="Commands\ReprocessFailedProductMessageCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedProductMessageCommandHandler.cs" />
+    <Compile Include="Commands\ReprocessFailedProductSelectionGroupMessageCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedProductSelectionGroupMessageCommandHandler.cs" />
+    <Compile Include="Commands\ReprocessIconItemChangesCommand.cs" />
+    <Compile Include="Commands\ReprocessIconItemChangesCommandHandler.cs" />
+    <Compile Include="Commands\SaveToMessageHistoryCommand.cs" />
+    <Compile Include="Commands\SaveToMessageHistoryCommandHandler.cs" />
+    <Compile Include="Commands\UpdateNationalHierarchyCommand.cs" />
+    <Compile Include="Commands\UpdateBrandCommand.cs" />
+    <Compile Include="Commands\UpdateNationalHierarchyCommandHandler.cs" />
+    <Compile Include="Commands\UpdateBrandCommandHandler.cs" />
+    <Compile Include="Commands\UpdateNationalHierarchyTraitsCommand.cs" />
+    <Compile Include="Commands\UpdateNationalHierarchyTraitsCommandHandler.cs" />
+    <Compile Include="Commands\UpdateCertificationAgencyCommand.cs" />
+    <Compile Include="Commands\UpdateCertificationAgencyCommandHandler.cs" />
+    <Compile Include="Commands\UpdateHierarchyClassTraitCommand.cs" />
+    <Compile Include="Commands\UpdateHierarchyClassTraitCommandHandler.cs" />
+    <Compile Include="Commands\UpdateBrandHierarchyClassTraitsCommand.cs" />
+    <Compile Include="Commands\UpdateBrandHierarchyClassTraitsCommandHandler.cs" />
+    <Compile Include="Commands\UpdateMerchTaxMappingCommand.cs" />
+    <Compile Include="Commands\UpdateMessageHistoryMessageCommand.cs" />
+    <Compile Include="Commands\UpdateMessageHistoryMessageCommandHandler.cs" />
+    <Compile Include="Commands\UpdateMessageHistoryStatusCommand.cs" />
+    <Compile Include="Commands\UpdateMessageHistoryStatusCommandHandler.cs" />
+    <Compile Include="Commands\UpdatePluRequestCommand.cs" />
+    <Compile Include="Commands\UpdatePluCategoryCommand.cs" />
+    <Compile Include="Commands\UpdateMerchTaxMappingCommandHandler.cs" />
+    <Compile Include="Commands\UpdatePluRequestCommandHandler.cs" />
+    <Compile Include="Commands\UpdatePluCategoryCommandHandler.cs" />
+    <Compile Include="Commands\UpdateProductSelectionGroupCommand.cs" />
+    <Compile Include="Commands\UpdateProductSelectionGroupCommandHandler.cs" />
+    <Compile Include="Commands\UpdateRegionalSettingsCommand.cs" />
+    <Compile Include="Commands\UpdateRegionalSettingsCommandHandler.cs" />
+    <Compile Include="Decorators\AddBrandMammothEventDecorator.cs" />
+    <Compile Include="Decorators\AddHierarchyClassMammothEventDecorator.cs" />
+    <Compile Include="Decorators\AddProductMammothEventDecorator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Decorators\BulkImportBrandMammothEventDecorator.cs" />
+    <Compile Include="Decorators\CachingQueryHandlerDecorator.cs" />
+    <Compile Include="Decorators\DeleteHierarchyClassMammothEventDecorator.cs" />
+    <Compile Include="Decorators\TransactionCommandHandlerDecorator.cs" />
+    <Compile Include="Decorators\TransactionManagerHandlerDecorator.cs" />
+    <Compile Include="Decorators\UpdateBrandMammothEventDecorator.cs" />
+    <Compile Include="Decorators\UpdateHierarchyClassMammothEventDecorator.cs" />
+    <Compile Include="Decorators\UpdateProductMammothEventDecorator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Decorators\UpdateSubTeamMammothEventDecorator.cs" />
+    <Compile Include="Infrastructure\CacheRefreshNeededHandler.cs" />
+    <Compile Include="Infrastructure\ConfigurationConstants.cs" />
+    <Compile Include="Infrastructure\IGenericQuery.cs" />
+    <Compile Include="Infrastructure\MessageHierarchyData.cs" />
+    <Compile Include="Managers\AddNationalHierarchyManager.cs" />
+    <Compile Include="Managers\AddNationalHierarchyManagerHandler.cs" />
+    <Compile Include="Managers\AddCertificationAgencyManager.cs" />
+    <Compile Include="Managers\AddCertificationAgencyManagerHandler.cs" />
+    <Compile Include="Managers\DeleteNationalHierarchyManager.cs" />
+    <Compile Include="Managers\DeleteNationalHierarchyManagerHandler.cs" />
+    <Compile Include="Managers\RemoveEwicMappingManager.cs" />
+    <Compile Include="Managers\RemoveEwicExclusionManager.cs" />
+    <Compile Include="Managers\RemoveEwicMappingManagerHandler.cs" />
+    <Compile Include="Managers\RemoveEwicExclusionManagerHandler.cs" />
+    <Compile Include="Managers\AddEwicMappingManager.cs" />
+    <Compile Include="Managers\AddEwicExclusionManager.cs" />
+    <Compile Include="Managers\AddEwicMappingManagerHandler.cs" />
+    <Compile Include="Managers\AddEwicExclusionManagerHandler.cs" />
+    <Compile Include="Managers\AddPluRequestManager.cs" />
+    <Compile Include="Managers\AddPluRequestManagerHandler.cs" />
+    <Compile Include="Managers\UpdateNationalHierarchyManager.cs" />
+    <Compile Include="Managers\UpdateNationalHierarchyManagerHandler.cs" />
+    <Compile Include="Managers\UpdateCertificationAgencyManager.cs" />
+    <Compile Include="Managers\UpdateCertificationAgencyManagerHandler.cs" />
+    <Compile Include="Managers\AddMerchTaxAssociationManager.cs" />
+    <Compile Include="Managers\UpdateMerchTaxAssociationManager.cs" />
+    <Compile Include="Managers\AddMerchTaxAssociationManagerHandler.cs" />
+    <Compile Include="Managers\UpdateMerchTaxAssociationManagerHandler.cs" />
+    <Compile Include="Managers\UpdatePluRequestManager.cs" />
+    <Compile Include="Managers\UpdatePluRequestManagerHandler.cs" />
+    <Compile Include="Managers\UpdatePluCategoryManager.cs" />
+    <Compile Include="Managers\AddPluCategoryManager.cs" />
+    <Compile Include="Managers\AddBrandManager.cs" />
+    <Compile Include="Managers\UpdatePluCategoryManagerHandler.cs" />
+    <Compile Include="Managers\AddPluCategoryManagerHandler.cs" />
+    <Compile Include="Managers\AddBrandManagerHandler.cs" />
+    <Compile Include="Managers\AddHierarchyClassManager.cs" />
+    <Compile Include="Managers\AddHierarchyClassManagerHandler.cs" />
+    <Compile Include="Managers\AddItemManager.cs" />
+    <Compile Include="Managers\AddItemManagerHandler.cs" />
+    <Compile Include="Commands\AddLocaleCommand.cs" />
+    <Compile Include="Commands\AddLocaleCommandHandler.cs" />
+    <Compile Include="Commands\HierarchyClassCommand.cs" />
+    <Compile Include="Managers\AddLocaleManager.cs" />
+    <Compile Include="Managers\AddLocaleManagerHandler.cs" />
+    <Compile Include="Managers\AddProductSelectionGroupManager.cs" />
+    <Compile Include="Managers\AddProductSelectionGroupManagerHandler.cs" />
+    <Compile Include="Managers\DeleteHierarchyClassManager.cs" />
+    <Compile Include="Managers\DeleteHierarchyClassManagerHandler.cs" />
+    <Compile Include="Managers\LocaleManager.cs" />
+    <Compile Include="Managers\UpdateBrandManager.cs" />
+    <Compile Include="Managers\UpdateBrandManagerHandler.cs" />
+    <Compile Include="Managers\UpdateLocaleManager.cs" />
+    <Compile Include="Managers\UpdateLocaleManagerHandler.cs" />
+    <Compile Include="Managers\UpdateHierarchyClassManager.cs" />
+    <Compile Include="Managers\UpdateHierarchyClassManagerHandler.cs" />
+    <Compile Include="Managers\UpdateProductSelectionGroupManagerHandler.cs" />
+    <Compile Include="Managers\UpdateProductSelectionGroupManager.cs" />
+    <Compile Include="Managers\UpdateSubTeamManager.cs" />
+    <Compile Include="Managers\UpdateSubTeamManagerHandler.cs" />
+    <Compile Include="Managers\ValidateItemManagerHandler.cs" />
+    <Compile Include="Managers\ValidateItemManager.cs" />
+    <Compile Include="Managers\UpdateItemManager.cs" />
+    <Compile Include="Managers\UpdateItemManagerHandler.cs" />
+    <Compile Include="Commands\UpdateSubTeamCommand.cs" />
+    <Compile Include="Commands\UpdateSubTeamCommandHandler.cs" />
+    <Compile Include="Infrastructure\HierarchyClassTraitUpdateException.cs" />
+    <Compile Include="Infrastructure\IManagerHandler.cs" />
+    <Compile Include="Infrastructure\MessageQueueException.cs" />
+    <Compile Include="Models\BrandModel.cs" />
+    <Compile Include="Models\BulkImportBrandModel.cs" />
+    <Compile Include="Models\BulkImportCertificationAgencyModel.cs" />
+    <Compile Include="Models\CertificationAgencyModel.cs" />
+    <Compile Include="Models\DefaultTaxClassMismatchExportModel.cs" />
+    <Compile Include="Models\DefaultTaxClassMismatchModel.cs" />
+    <Compile Include="Models\EwicExclusionModel.cs" />
+    <Compile Include="Models\EwicMappingModel.cs" />
+    <Compile Include="Models\ExportPluRequestModel.cs" />
+    <Compile Include="Models\HierarchyClassListModel.cs" />
+    <Compile Include="Models\HierarchyClassModel.cs" />
+    <Compile Include="Models\BulkImportNewItemModel.cs" />
+    <Compile Include="Models\BulkImportItemModel.cs" />
+    <Compile Include="Models\BulkImportPluModel.cs" />
+    <Compile Include="Commands\BulkImportCommand.cs" />
+    <Compile Include="Commands\BulkImportItemCommandHandler.cs" />
+    <Compile Include="Commands\BulkImportPluCommandHandler.cs" />
+    <Compile Include="Models\BulkImportPluRemapModel.cs" />
+    <Compile Include="Commands\DeleteHierarchyClassCommand.cs" />
+    <Compile Include="Commands\UpdateHierarchyClassCommand.cs" />
+    <Compile Include="Commands\UpdateHierarchyClassCommandHandler.cs" />
+    <Compile Include="Commands\UpdateIrmaItemCommand.cs" />
+    <Compile Include="Commands\UpdateIrmaItemCommandHandler.cs" />
+    <Compile Include="Commands\UpdateLocaleCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Commands\UpdateLocaleCommandHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Commands\UpdatePluCommand.cs" />
+    <Compile Include="Commands\UpdatePluCommandHandler.cs" />
+    <Compile Include="Infrastructure\DuplicateValueException.cs" />
+    <Compile Include="Infrastructure\DataAccessEnums.cs" />
+    <Compile Include="Infrastructure\IQueryProcessor.cs" />
+    <Compile Include="Infrastructure\ItemEditNoChangesDetectedException.cs" />
+    <Compile Include="Infrastructure\ItemEditSaveException.cs" />
+    <Compile Include="Infrastructure\ItemTraitUpdateException.cs" />
+    <Compile Include="Infrastructure\ItemHierarchyClassUpdateException.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Models\ExportItemModel.cs" />
+    <Compile Include="Models\IImportItemModel.cs" />
+    <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\ItemsBySearchResultsModel.cs" />
+    <Compile Include="Models\ItemSearchModel.cs" />
+    <Compile Include="Models\MerchTaxMappingModel.cs" />
+    <Compile Include="Models\MessageModel.cs" />
+    <Compile Include="Models\PluCategoryModel.cs" />
+    <Compile Include="Models\RegionalSettingsModel.cs" />
+    <Compile Include="Models\EwicAplScanCodeModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetAffinitySubBricksParameters.cs" />
+    <Compile Include="Queries\GetAffinitySubBricksQuery.cs" />
+    <Compile Include="Queries\GetAvailablePlusByCategoryParameters.cs" />
+    <Compile Include="Queries\GetAvailablePlusByCategoryQuery.cs" />
+    <Compile Include="Queries\GetAvailableScanCodesByCategoryParameters.cs" />
+    <Compile Include="Queries\GetAvailableScanCodesByCategoryQuery.cs" />
+    <Compile Include="Queries\GetBrandAbbreviationsThatExistParameters.cs" />
+    <Compile Include="Queries\GetBrandAbbreviationsThatExistQuery.cs" />
+    <Compile Include="Queries\GetAplScanCodesQuery.cs" />
+    <Compile Include="Queries\GetAplScanCodesParameters.cs" />
+    <Compile Include="Queries\GetCertificationAgencyIdsAssociatedToItemsParameters.cs" />
+    <Compile Include="Queries\GetCertificationAgencyIdsAssociatedToItemsQuery.cs" />
+    <Compile Include="Queries\GetCertificationAgenciesByTraitParameters.cs" />
+    <Compile Include="Queries\GetCertificationAgenciesByTraitQuery.cs" />
+    <Compile Include="Queries\GetCertificationAgenciesParameters.cs" />
+    <Compile Include="Queries\GetCertificationAgenciesQuery.cs" />
+    <Compile Include="Queries\GetCurrentEwicMappingParameters.cs" />
+    <Compile Include="Queries\GetDefaultTaxClassMismatchesParameters.cs" />
+    <Compile Include="Queries\GetDefaultTaxClassMismatchesQuery.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithMappingParameters.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithExclusionParameters.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithMappingQuery.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithExclusionQuery.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithoutMappingParameters.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithoutExclusionParameters.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithoutMappingQuery.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithoutExclusionQuery.cs" />
+    <Compile Include="Queries\GetCurrentEwicMappingQuery.cs" />
+    <Compile Include="Queries\GetEwicMappingsQuery.cs" />
+    <Compile Include="Queries\GetEwicMappingParameters.cs" />
+    <Compile Include="Queries\GetEwicExclusionsParameters.cs" />
+    <Compile Include="Queries\GetEwicExclusionsQuery.cs" />
+    <Compile Include="Queries\GetExistingBrandsParameters.cs" />
+    <Compile Include="Queries\GetExistingBrandsQuery.cs" />
+    <Compile Include="Queries\GetDuplicateBrandsByTrimmedNameParameters.cs" />
+    <Compile Include="Queries\GetDuplicateBrandsByTrimmedNameQuery.cs" />
+    <Compile Include="Queries\GetFailedHierarchyMessageParameters.cs" />
+    <Compile Include="Queries\GetFailedHierarchyMessageQuery.cs" />
+    <Compile Include="Queries\GetFailedItemLocaleMessageParameters.cs" />
+    <Compile Include="Queries\GetFailedItemLocaleMessageQuery.cs" />
+    <Compile Include="Queries\GetFailedLocaleMessageParameters.cs" />
+    <Compile Include="Queries\GetFailedLocaleMessageQuery.cs" />
+    <Compile Include="Queries\GetFailedPriceMessageParameters.cs" />
+    <Compile Include="Queries\GetFailedPriceMessageQuery.cs" />
+    <Compile Include="Queries\GetFailedProductMessageParameters.cs" />
+    <Compile Include="Queries\GetFailedProductMessageQuery.cs" />
+    <Compile Include="Queries\GetFailedProductSelectionGroupMessageParameters.cs" />
+    <Compile Include="Queries\GetFailedProductSelectionGroupMessageQuery.cs" />
+    <Compile Include="Queries\GetNationalClassByClassCodeParameters.cs" />
+    <Compile Include="Queries\GetNationalClassByClassCodeQuery.cs" />
+    <Compile Include="Queries\GetItemTraitByTraitCodeParameters.cs" />
+    <Compile Include="Queries\GetItemTraitByTraitCodeQuery.cs" />
+    <Compile Include="Queries\GetLocalesByChainParameters.cs" />
+    <Compile Include="Queries\GetLocalesByChainQuery.cs" />
+    <Compile Include="Queries\GetMessageHistoryParameters.cs" />
+    <Compile Include="Queries\GetMessageHistoryQuery.cs" />
+    <Compile Include="Queries\GetPluRequestChangeHistoryByIdParameters.cs" />
+    <Compile Include="Queries\GetPluRequestByIdParameters.cs" />
+    <Compile Include="Queries\GetPluRequestChangeHistoryByIdQuery.cs" />
+    <Compile Include="Queries\GetPluRequestByIdQuery.cs" />
+    <Compile Include="Queries\GetPluRequestsParameters.cs" />
+    <Compile Include="Queries\GetPluRequestsQuery.cs" />
+    <Compile Include="Queries\GetMerchTaxMappingsParameters.cs" />
+    <Compile Include="Queries\GetMerchTaxMappingsQuery.cs" />
+    <Compile Include="Queries\GetPluCategoryByIdParameters.cs" />
+    <Compile Include="Queries\GetPluCategoryByIdQuery.cs" />
+    <Compile Include="Queries\GetTaxClassByTaxRomanceParameters.cs" />
+    <Compile Include="Queries\GetTaxClassByTaxRomanceQuery.cs" />
+    <Compile Include="Queries\GetPluCategoriesParameters.cs" />
+    <Compile Include="Queries\GetBrandsParameters.cs" />
+    <Compile Include="Queries\GetPluCategoriesQuery.cs" />
+    <Compile Include="Queries\GetBrandsQuery.cs" />
+    <Compile Include="Queries\GetHierarchyLineageQuery.cs" />
+    <Compile Include="Queries\GetHierarchyLineageParameters.cs" />
+    <Compile Include="Queries\GetExistingHierarchyClassesParameters.cs" />
+    <Compile Include="Queries\GetExistingHierarchyClassesQuery.cs" />
+    <Compile Include="Queries\GetExistingScanCodeUploadsParameters.cs" />
+    <Compile Include="Queries\GetFailedEventsParameters.cs" />
+    <Compile Include="Queries\GetFailedEventsQuery.cs" />
+    <Compile Include="Queries\GetFailedIconItemChangesParameters.cs" />
+    <Compile Include="Queries\GetFailedIconItemChangesQuery.cs" />
+    <Compile Include="Queries\GetFailedIconPosPushPublishesQuery.cs" />
+    <Compile Include="Queries\GetFailedIconPosPushPublishesParameters.cs" />
+    <Compile Include="Queries\GetFailedIrmaPushParameters.cs" />
+    <Compile Include="Queries\GetFailedIrmaPushQuery.cs" />
+    <Compile Include="Queries\GetFailedMessagesParameters.cs" />
+    <Compile Include="Queries\GetFailedMessagesQuery.cs" />
+    <Compile Include="Queries\GetIrmaItemsQuery.cs" />
+    <Compile Include="Queries\GetIrmaItemsParameters.cs" />
+    <Compile Include="Queries\GetItemsByBulkScanCodeSearchParameters.cs" />
+    <Compile Include="Queries\GetItemsBySearchParameters.cs" />
+    <Compile Include="Queries\GetItemsByBulkScanCodeSearchQuery.cs" />
+    <Compile Include="Queries\GetItemsBySearchQuery.cs" />
+    <Compile Include="Queries\GetProductSelectionGroupsParameters.cs" />
+    <Compile Include="Queries\GetProductSelectionGroupsQuery.cs" />
+    <Compile Include="Queries\GetProductSelectionGroupTypesParameters.cs" />
+    <Compile Include="Queries\GetProductSelectionGroupTypesQuery.cs" />
+    <Compile Include="Queries\GetRegionalSettingsBySettingsKeyNameQuery.cs" />
+    <Compile Include="Queries\GetRegionalSettingsBySettingsKeyNameParameters.cs" />
+    <Compile Include="Queries\GetRegionalSettingsByRegionParameters.cs" />
+    <Compile Include="Queries\GetRegionalSettingsByRegionQuery.cs" />
+    <Compile Include="Queries\GetRegionsParameters.cs" />
+    <Compile Include="Queries\GetRegionsQuery.cs" />
+    <Compile Include="Queries\GetScanCodesNotReadyToValidateParameters.cs" />
+    <Compile Include="Queries\GetScanCodesNotReadyToValidateQuery.cs" />
+    <Compile Include="Queries\GetTaxHierarchyClassesWithNoAbbreviationParameters.cs" />
+    <Compile Include="Queries\GetTaxHierarchyClassesWithNoAbbreviationQuery.cs" />
+    <Compile Include="Queries\GetTraitsParameters.cs" />
+    <Compile Include="Queries\GetTraitsQuery.cs" />
+    <Compile Include="Queries\HierarchyClassExistsParameters.cs" />
+    <Compile Include="Queries\HierarchyClassExistsQuery.cs" />
+    <Compile Include="Queries\GetHierarchyClassByNameParameters.cs" />
+    <Compile Include="Queries\GetHierarchyClassByNameQuery.cs" />
+    <Compile Include="Queries\GetNewScanCodeUploadsParameters.cs" />
+    <Compile Include="Queries\GetTaxClassesWithNoAbbreviationQuery.cs" />
+    <Compile Include="Queries\GetTaxClassesWithNoAbbreviationParameters.cs" />
+    <Compile Include="Queries\GenericGetDbSet.cs" />
+    <Compile Include="Queries\GetHierarchyClassByIdParameters.cs" />
+    <Compile Include="Queries\GetHierarchyClassByIdQuery.cs" />
+    <Compile Include="Queries\GetLocaleParameters.cs" />
+    <Compile Include="Queries\GetLocaleQuery.cs" />
+    <Compile Include="Queries\GetExistingScanCodeUploadsQuery.cs" />
+    <Compile Include="Queries\GetTraitGroupParameters.cs" />
+    <Compile Include="Queries\GetTraitGroupQuery.cs" />
+    <Compile Include="Queries\GetPluRemappingsParameters.cs" />
+    <Compile Include="Queries\GetPluRemappingsQuery.cs" />
+    <Compile Include="Queries\GetNewScanCodeUploadsQuery.cs" />
+    <Compile Include="Queries\GetHierarchyQuery.cs" />
+    <Compile Include="Queries\GetHierarchyParameters.cs" />
+    <Compile Include="Queries\GetItemByIdParameters.cs" />
+    <Compile Include="Queries\GetItemByIdQuery.cs" />
+    <Compile Include="Queries\GetPluMappingParameters.cs" />
+    <Compile Include="Queries\GetPluMappingQuery.cs" />
+    <Compile Include="Models\ScanCodeModel.cs" />
+    <Compile Include="Queries\GetUomParameters.cs" />
+    <Compile Include="Queries\GetUomQuery.cs" />
+    <Compile Include="Commands\ReprocessFailedIconPosPushPublishCommand.cs" />
+    <Compile Include="Commands\ReprocessFailedIconPosPushPublishCommandHandler.cs" />
+    <Compile Include="Validators\AddEwicMappingManagerValidator.cs" />
+    <Compile Include="Validators\AddEwicExclusionManagerValidator.cs" />
+    <Compile Include="Validators\UpdatePluRequestManagerValidator.cs" />
+    <Compile Include="Validators\AddPluRequestManagerValidator.cs" />
+    <Compile Include="Validators\AddItemManagerValidator.cs" />
+    <Compile Include="Validators\UpdateItemManagerValidator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Icon.Web.Common\Icon.Web.Common.csproj">
+      <Project>{b602f553-38ea-44d2-a94b-4f9d504f4f30}</Project>
+      <Name>Icon.Web.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="lib\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

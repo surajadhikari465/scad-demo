@@ -1,0 +1,124 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.HierarchyClassViewModel
+
+@{
+	ViewBag.Title = "Delete Hierarchy Class";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Hierarchy Class Management");}
+
+<div class="page-section">
+	@using (Html.BeginForm("Delete", "HierarchyClass", FormMethod.Post, new { @class = "begin-form" }))
+	{
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary(true)
+
+		@Html.HiddenFor(model => model.HierarchyId)
+		@Html.HiddenFor(model => model.HierarchyName)
+		@Html.HiddenFor(model => model.HierarchyClassId)
+		@Html.HiddenFor(model => model.HierarchyClassName)
+		@Html.HiddenFor(model => model.HierarchyLevel)
+		@Html.HiddenFor(model => model.HierarchyParentClassId)
+		@Html.HiddenFor(model => model.HierarchyParentClassName)
+        @Html.HiddenFor(model => model.SubTeam)
+        @Html.HiddenFor(model => model.GlAccount)
+        @Html.HiddenFor(model => model.TaxAbbreviation)
+        @Html.HiddenFor(model => model.NonMerchandiseTrait)
+
+		<fieldset>
+			<legend>Delete Hierarchy Class</legend>
+
+			<div class="row">
+				@Html.LabelFor(model => model.HierarchyName, "Hierarchy", new { @class = "col-md-2 form-label" })
+				<div>
+					@Html.TextBoxFor(model => model.HierarchyName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+				</div>
+			</div>
+
+			@if (!String.IsNullOrEmpty(Model.HierarchyParentClassName))
+			{
+				<div class="row">
+					@Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "col-md-2 form-label" })
+					<div>
+						@Html.TextBoxFor(model => model.HierarchyParentClassName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+					</div>
+				</div>
+			}
+
+			<div class="row">
+				@Html.LabelFor(model => model.HierarchyClassName, "Deleted Class Name", new { @class = "col-md-2 form-label" })
+				<div>
+					@Html.TextBoxFor(model => model.HierarchyClassName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+				</div>
+			</div>
+            <br />
+			@* Display Appropriate Hierarchy Class Traits where available *@
+			@if (!String.IsNullOrEmpty(Model.TaxAbbreviation))
+			{
+				<div class="row">
+					@Html.LabelFor(model => model.TaxAbbreviation, new { @class = "col-md-2 form-label" })
+					<div>
+						@Html.TextBoxFor(model => model.TaxAbbreviation, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+					</div>
+				</div>
+			}
+            @if (!String.IsNullOrEmpty(Model.TaxRomance))
+            {
+                <div class="row">
+                    @Html.LabelFor(model => model.TaxRomance, new { @class = "col-md-2 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.TaxRomance, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+            }
+            @if (!String.IsNullOrEmpty(Model.GlAccount))
+            {
+                <div class="row">
+                    @Html.LabelFor(model => model.GlAccount, new { @class = "col-md-2 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.GlAccount, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+            }
+            @if (!String.IsNullOrEmpty(Model.SubTeam))
+            {
+                <div class="row">
+                    @Html.LabelFor(model => model.SubTeam, new { @class = "col-md-2 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.SubTeam, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+            }
+            
+		</fieldset>
+
+		<div class="row">
+			<div class="col-md-offset-2 col-md-1">
+				<input type="submit" value="Delete" class="btn btn-default form-submit" />
+			</div>
+		</div>
+
+		<div class="validation-section page-subsection">
+			@if (ViewData["ErrorMessage"] != null)
+			{
+				<div class="alert alert-danger alert-dismissable">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<strong>@ViewData["ErrorMessage"].ToString()</strong>
+				</div>
+            }
+            else
+            {
+                <div class="alert alert-info alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>Upon successful deletion, you will be directed to Hierarchy Management</strong>
+                </div>
+            }
+      
+		</div>
+	}
+</div>
+
+<div class="form-footer">
+	@Html.ActionLink("Back to Hierarchy Management", "Index")
+</div>

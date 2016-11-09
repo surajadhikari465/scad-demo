@@ -1,0 +1,50 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.EsbEnvironmentViewModel
+
+<p></p>
+<div class="container-wide">
+    @if (Model == null)
+    {
+        @: no valid data found
+    }
+    else
+    {
+        using (Html.BeginForm("Edit", "EsbSwitch", new { name = Model.Name }, FormMethod.Post, null))
+        {
+            @Html.EditorForModel();
+
+            <div class="row">
+                <div class="col-xs-offset-1 col-xs-10">
+                    <button type="submit" value="Save" class="btn btn-warning btn-block">Save</button>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="row">
+        <p></p>
+        <div class="col-xs-offset-1 col-xs-10 text-center">
+            @using (Html.BeginForm("Delete", "EsbSwitch", new { name = Model.Name }, FormMethod.Post, null))
+            {
+                <button type="submit" value="@("Delete")" class="btn btn-danger btn-block margin-top-10">@("Delete")</button>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <p></p>
+        <div class="col-xs-offset-1 col-xs-10 text-center">
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        @* set js variable from razor, for use in script when editing/creating the esb environment *@
+        var urlToAddEsbEnvironmentApp = "@Url.Action("AddApplicationRow")";
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/dashboardCustomEsbSwitchAddRemove.js")
+    @Scripts.Render("~/Scripts/esbSwitch.js")
+}

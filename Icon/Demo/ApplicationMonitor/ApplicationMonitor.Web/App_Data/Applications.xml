@@ -1,0 +1,82 @@
+﻿<applications>
+  <application>
+    <name>API Controller</name>
+    <type>ScheduledTask</type>
+    <exeName>Icon.ApiController.Controller.exe</exeName>
+    <configFileName>Icon.ApiController.Controller.exe.config</configFileName>
+    <instances>
+      <instance>
+        <server>vm-icon-test1</server>
+        <directoryPath>Icon\API Controller Phase 2\Test</directoryPath>
+      </instance>
+      <instance>
+        <server>vm-icon-test2</server>
+        <directoryPath>Icon\API Controller Phase 2\Test</directoryPath>
+      </instance>
+      <instance>
+        <server>vm-icon-qa1</server>
+        <directoryPath>e$\Icon\API Controller Phase 2\QA</directoryPath>
+      </instance>
+      <instance>
+        <server>vm-icon-qa2</server>
+        <directoryPath>e$\Icon\API Controller Phase 2\QA</directoryPath>
+      </instance>
+    </instances>
+  </application>
+  <application>
+    <name>Global Controller</name>
+    <type>ScheduledTask</type>
+    <exeName>GlobalEventController.Controller.exe</exeName>
+    <configFileName>GlobalEventController.Controller.exe.config</configFileName>
+    <instances>
+      <instance>
+        <server>vm-icon-test1</server>
+        <directoryPath>Icon\Global Controller\Test</directoryPath>
+      </instance>
+      <instance>
+        <server>vm-icon-test2</server>
+        <directoryPath>Icon\Global Controller\Test</directoryPath>
+      </instance>
+      <instance>
+        <server>vm-icon-qa1</server>
+        <directoryPath>e$\Icon\Global Controller\QA</directoryPath>
+      </instance>
+      <instance>
+        <server>vm-icon-qa2</server>
+        <directoryPath>e$\Icon\Global Controller\QA</directoryPath>
+      </instance>
+    </instances>
+  </application>
+  <!--<application>
+    <name>API Controller</name>
+    <server>vm-icon-test2</server>
+    <directoryPath>Icon\API Controller Phase 2\Test</directoryPath>
+    <exeName>Icon.ApiController.Controller.exe</exeName>
+    <configFileName>Icon.ApiController.Controller.exe.config</configFileName>
+    <type>ScheduledTask</type>
+  </application>
+  <application>
+    <name>API Controller</name>
+    <server>vm-icon-qa1</server>
+    <directoryPath>e$\Icon\API Controller Phase 2\QA</directoryPath>
+    <exeName>Icon.ApiController.Controller.exe</exeName>
+    <configFileName>Icon.ApiController.Controller.exe.config</configFileName>
+    <type>ScheduledTask</type>
+  </application>
+  <application>
+    <name>API Controller</name>
+    <server>vm-icon-qa2</server>
+    <directoryPath>e$\Icon\API Controller Phase 2\QA</directoryPath>
+    <exeName>Icon.ApiController.Controller.exe</exeName>
+    <configFileName>Icon.ApiController.Controller.exe.config</configFileName>
+    <type>ScheduledTask</type>
+  </application>
+  <application>
+    <name>GloCon</name>
+    <server>vm-icon-test1</server>
+    <directoryPath>Icon\Global Controller\Test</directoryPath>
+    <exeName>Icon.ApiController.Controller.exe</exeName>
+    <configFileName>GlobalEventController.Controller.exe.config</configFileName>
+    <type>ScheduledTask</type>
+  </application>-->
+</applications>

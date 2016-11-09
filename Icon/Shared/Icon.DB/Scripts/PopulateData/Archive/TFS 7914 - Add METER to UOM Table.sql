@@ -1,0 +1,1 @@
+insert into dbo.UOM values (18, 'MT', 'METER')

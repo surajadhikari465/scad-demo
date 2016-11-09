@@ -1,0 +1,130 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.ConfigurationSearchViewModel
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Resources("igCombo")
+    .Render()
+)
+
+<span class="search-alert page-subsection"></span>
+
+<hr />
+
+<div id="tabs">
+    <ul>
+        <li><a href="#Item-Tab">Item</a></li>
+        <li><a href="#Fin-Tab">Financial</a></li>
+    </ul>
+    <div id="Item-Tab">
+
+        @if (Model.RegionItemConfigurationList.Count > 0)
+        {
+            @(Html.Infragistics().Grid(Model.RegionItemConfigurationList.AsQueryable())
+                .AutoGenerateColumns(false)
+                .ID("igGrid")
+                .Width("100%")
+                .PrimaryKey("RegionalSettingsId")
+                .RenderCheckboxes(true)
+                .Columns(column =>
+                {
+                    column.For(item => item.RegionalSettingsId).HeaderText("ID").Hidden(true).DataType("number");
+                    column.For(item => item.KeyName).HeaderText("Configuration Option").DataType("string").Width("35%");
+                    column.For(item => item.Value).HeaderText("Value").DataType("bool").Width("10%");
+                    column.For(item => item.SectionName).HeaderText("ConfigType").Hidden(true).DataType("string");
+                    column.For(item => item.Description).HeaderText("Description").DataType("string");
+                })
+                .Features(features =>
+                {
+                    features.Paging().PageSize(25);
+                    features.Sorting().ApplyColumnCss(false);           
+                    features.Tooltips()
+                            .Visibility(TooltipsVisibility.Overflow);
+                    features.Updating()
+                        .EditMode(GridEditMode.Row)
+                        .EnableDeleteRow(false)
+                        .EnableAddRow(false)
+                        .ShowDoneCancelButtons(true)
+                        .StartEditTriggers(GridStartEditTriggers.DblClick)
+                        .DoneLabel("Apply")
+                        .ColumnSettings(settings =>
+                        {
+                            settings.ColumnSetting().ColumnKey("ID").ReadOnly(true);
+                            settings.ColumnSetting().ColumnKey("KeyName").ReadOnly(true);
+                            settings.ColumnSetting().ColumnKey("Description").ReadOnly(true);
+                        });
+                })
+                .DataSource(Model.RegionItemConfigurationList.AsQueryable())
+                .UpdateUrl(Url.Action("SaveChangesInGrid"))
+                .AggregateTransactions(true)
+                .DataBind()
+                .Render()
+            );
+        }
+        else
+        {
+            <h4>No items found.</h4>
+        }
+    </div>    
+
+    <div id="Fin-Tab" >
+
+        @if (Model.RegionFinancialSubTeamConfigurationList.Count > 0)
+        {
+            @(Html.Infragistics().Grid(Model.RegionFinancialSubTeamConfigurationList.AsQueryable())
+                .AutoGenerateColumns(false)
+                .ID("igGrid2")
+                .Width("100%")
+                .PrimaryKey("RegionalSettingsId")
+                .RenderCheckboxes(true)
+                .Columns(column =>
+                {
+                    column.For(item => item.RegionalSettingsId).HeaderText("ID").Hidden(true).DataType("number");
+                    column.For(item => item.KeyName).HeaderText("Configuration Option").DataType("string").Width("35%");
+                    column.For(item => item.Value).HeaderText("Value").DataType("bool").Width("10%");
+                    column.For(item => item.SectionName).HeaderText("ConfigType").Hidden(true).DataType("string");
+                    column.For(item => item.Description).HeaderText("Description").DataType("string").Width("55%");       
+                })
+                .Features(features =>
+                {
+                    features.Paging().PageSize(25);
+                    features.Sorting().ApplyColumnCss(false);            
+                    features.Tooltips()
+                            .Visibility(TooltipsVisibility.Overflow);
+                    features.Updating()
+                        .EditMode(GridEditMode.Row)
+                        .EnableDeleteRow(false)
+                        .EnableAddRow(false)
+                        .ShowDoneCancelButtons(true)
+                        .StartEditTriggers(GridStartEditTriggers.DblClick)
+                        .DoneLabel("Apply")
+                        .ColumnSettings(settings =>
+                        {
+                            settings.ColumnSetting().ColumnKey("RegionalSettingsId").ReadOnly(true);
+                            settings.ColumnSetting().ColumnKey("KeyName").ReadOnly(true);
+                            settings.ColumnSetting().ColumnKey("Description").ReadOnly(true);
+                        });
+                })
+                .DataSource(Model.RegionFinancialSubTeamConfigurationList.AsQueryable())
+                .UpdateUrl(Url.Action("SaveChangesInGrid"))
+                .AggregateTransactions(true)
+                .DataBind()
+                .Render()
+            );           
+        }
+        else
+        {
+            <h4>No items found.</h4>
+        }
+    </div>
+</div>
+<script>
+
+    $(function () {
+
+        $("#tabs").tabs();
+
+    });
+
+</script>

@@ -1,0 +1,63 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.FinancialGridViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@{Html.RenderPartial("_HeaderPartial", "Financial SubTeam Management");}
+
+<hr />
+
+<div id="subTeamView" class="page-section">
+    @if (Model.SubTeams != null && Model.SubTeams.Count() > 0)
+    {
+        @(Html.Infragistics().Grid(Model.SubTeams.AsQueryable())
+            .ID("subTeamGrid")
+            .PrimaryKey("HierarchyClassId")
+            .AutoGenerateColumns(false)
+            .AvgRowHeight("30px")
+            .Height("600px")
+            .Width("100%")
+            .RowVirtualization(true)
+            .VirtualizationMode(VirtualizationMode.Fixed)
+            .Columns(columns =>
+            {
+                columns.For(c => c.HierarchyClassId).Hidden(true);
+                columns.For(c => c.HierarchyId).Hidden(true);
+                columns.For(c => c.SubTeamName).HeaderText("Sub-Team Name").DataType("string").Width("35%");
+                columns.For(c => c.PeopleSoftNumber).HeaderText("PeopleSoft Number").DataType("string").Width("10%");
+                columns.For(c => c.PosDeptNumber).HeaderText("POS Dept Number").DataType("string").Width("10%");
+                columns.For(c => c.TeamNumber).HeaderText("Team Number").DataType("string").Width("10%");
+                columns.For(c => c.TeamName).HeaderText("Team Name").DataType("string").Width("20%");
+                columns.For(c => c.NonAlignedSubteam).HeaderText("Non-Aligned Subteam").DataType("bool").Width("15%").FormatterFunction("boolFormatter");
+            })
+            .Features(features =>
+            {
+                features.Sorting().Inherit(true);
+                features.Filtering().Inherit(true);
+            })
+            .DataSource(Model.SubTeams.AsQueryable())
+            .DataBind()
+            .Render()
+        );
+    }
+    else
+    {
+        <h4>No data was found.</h4>
+    }
+    <div class="search-alert page-subsection"></div>
+</div>
+
+@Scripts.Render("~/Scripts/Common/common-grid-functions.js")
+@Scripts.Render("~/Scripts/financial-view.js")
+@Scripts.Render("~/Scripts/common-search.js")

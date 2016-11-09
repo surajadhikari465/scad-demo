@@ -1,0 +1,89 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Ewic.Serialization", "Icon.Ewic.Serialization\Icon.Ewic.Serialization.csproj", "{A96D397C-1A86-47E5-B8D4-8E0BB87C995F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Ewic.Models", "Icon.Ewic.Models\Icon.Ewic.Models.csproj", "{7596AB8A-6F84-4685-8B2E-B6E210215DBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Ewic.Transmission", "Icon.Ewic.Transmission\Icon.Ewic.Transmission.csproj", "{E8E3D2B0-AA35-49EE-897A-41B0DDDE6D0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Ewic.Tests.Serialization", "Icon.Ewic.Tests.Serialization\Icon.Ewic.Tests.Serialization.csproj", "{77BBBAB9-0DCA-4F3F-BBED-449723470C4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Ewic.Tests.Transmission", "Icon.Ewic.Tests.Transmission\Icon.Ewic.Tests.Transmission.csproj", "{B953604E-3C07-44C9-B0BD-5A408DC230AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A96D397C-1A86-47E5-B8D4-8E0BB87C995F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A96D397C-1A86-47E5-B8D4-8E0BB87C995F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A96D397C-1A86-47E5-B8D4-8E0BB87C995F}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{A96D397C-1A86-47E5-B8D4-8E0BB87C995F}.QA|Any CPU.Build.0 = Release|Any CPU
+		{A96D397C-1A86-47E5-B8D4-8E0BB87C995F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A96D397C-1A86-47E5-B8D4-8E0BB87C995F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A96D397C-1A86-47E5-B8D4-8E0BB87C995F}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{A96D397C-1A86-47E5-B8D4-8E0BB87C995F}.Test|Any CPU.Build.0 = Release|Any CPU
+		{7596AB8A-6F84-4685-8B2E-B6E210215DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7596AB8A-6F84-4685-8B2E-B6E210215DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7596AB8A-6F84-4685-8B2E-B6E210215DBD}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{7596AB8A-6F84-4685-8B2E-B6E210215DBD}.QA|Any CPU.Build.0 = Release|Any CPU
+		{7596AB8A-6F84-4685-8B2E-B6E210215DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7596AB8A-6F84-4685-8B2E-B6E210215DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7596AB8A-6F84-4685-8B2E-B6E210215DBD}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{7596AB8A-6F84-4685-8B2E-B6E210215DBD}.Test|Any CPU.Build.0 = Release|Any CPU
+		{E8E3D2B0-AA35-49EE-897A-41B0DDDE6D0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8E3D2B0-AA35-49EE-897A-41B0DDDE6D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8E3D2B0-AA35-49EE-897A-41B0DDDE6D0D}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{E8E3D2B0-AA35-49EE-897A-41B0DDDE6D0D}.QA|Any CPU.Build.0 = Release|Any CPU
+		{E8E3D2B0-AA35-49EE-897A-41B0DDDE6D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8E3D2B0-AA35-49EE-897A-41B0DDDE6D0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8E3D2B0-AA35-49EE-897A-41B0DDDE6D0D}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{E8E3D2B0-AA35-49EE-897A-41B0DDDE6D0D}.Test|Any CPU.Build.0 = Release|Any CPU
+		{77BBBAB9-0DCA-4F3F-BBED-449723470C4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77BBBAB9-0DCA-4F3F-BBED-449723470C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77BBBAB9-0DCA-4F3F-BBED-449723470C4B}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{77BBBAB9-0DCA-4F3F-BBED-449723470C4B}.QA|Any CPU.Build.0 = Release|Any CPU
+		{77BBBAB9-0DCA-4F3F-BBED-449723470C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77BBBAB9-0DCA-4F3F-BBED-449723470C4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77BBBAB9-0DCA-4F3F-BBED-449723470C4B}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{77BBBAB9-0DCA-4F3F-BBED-449723470C4B}.Test|Any CPU.Build.0 = Release|Any CPU
+		{B953604E-3C07-44C9-B0BD-5A408DC230AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B953604E-3C07-44C9-B0BD-5A408DC230AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B953604E-3C07-44C9-B0BD-5A408DC230AD}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{B953604E-3C07-44C9-B0BD-5A408DC230AD}.QA|Any CPU.Build.0 = Release|Any CPU
+		{B953604E-3C07-44C9-B0BD-5A408DC230AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B953604E-3C07-44C9-B0BD-5A408DC230AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B953604E-3C07-44C9-B0BD-5A408DC230AD}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{B953604E-3C07-44C9-B0BD-5A408DC230AD}.Test|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Icon.Ewic.Serialization\\Icon.Ewic.Serialization.csproj
+		SccProjectName1 = Icon.Ewic.Serialization
+		SccLocalPath1 = Icon.Ewic.Serialization
+		SccProjectUniqueName2 = Icon.Ewic.Models\\Icon.Ewic.Models.csproj
+		SccProjectName2 = Icon.Ewic.Models
+		SccLocalPath2 = Icon.Ewic.Models
+		SccProjectUniqueName3 = Icon.Ewic.Transmission\\Icon.Ewic.Transmission.csproj
+		SccProjectName3 = Icon.Ewic.Transmission
+		SccLocalPath3 = Icon.Ewic.Transmission
+		SccProjectUniqueName4 = Icon.Ewic.Tests.Serialization\\Icon.Ewic.Tests.Serialization.csproj
+		SccProjectName4 = Icon.Ewic.Tests.Serialization
+		SccLocalPath4 = Icon.Ewic.Tests.Serialization
+		SccProjectUniqueName5 = Icon.Ewic.Tests.Transmission\\Icon.Ewic.Tests.Transmission.csproj
+		SccProjectName5 = Icon.Ewic.Tests.Transmission
+		SccLocalPath5 = Icon.Ewic.Tests.Transmission
+	EndGlobalSection
+EndGlobal

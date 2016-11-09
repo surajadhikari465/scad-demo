@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.IconAppLogViewModel>
+
+@if (ViewBag.RecentLogEntriesReportList != null && ViewBag.RecentLogEntriesReportList is IEnumerable<Icon.Dashboard.Mvc.ViewModels.RecentLogEntriesReportViewModel>)
+{
+    <div class="container-wide">
+        <div class="row">
+            @{
+                var reports = ViewBag.RecentLogEntriesReportList as IEnumerable<Icon.Dashboard.Mvc.ViewModels.RecentLogEntriesReportViewModel>;
+                Html.RenderPartial("_RecentLogEntriesReportCollectionPartial", reports);
+            }
+        </div>
+    </div>
+}
+
+<p></p>
+
+<div class="container-wide">
+    @{ Html.RenderPartial("_AppLogTablePartial", Model); }
+</div>
+
+<div id="pagingDiv">
+    @if (ViewBag.PaginationPageSetViewModel != null && ViewBag.PaginationPageSetViewModel is Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel)
+    {
+        Html.RenderPartial("_PaginationPartial", ViewBag.PaginationPageSetViewModel as Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel);
+    }
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        @{
+            int millisecondsForRecentErrorsPolling = 30;
+            int hoursConsideredRecent = 24;
+            List<int> appIDs = new List<int>();
+
+            if (ViewBag.MillisecondsForRecentErrorsPolling != null)
+            {
+                Int32.TryParse(ViewBag.MillisecondsForRecentErrorsPolling.ToString(), out millisecondsForRecentErrorsPolling);
+            }
+            if (ViewBag.RecentLogEntriesHours != null)
+            {
+                Int32.TryParse(ViewBag.RecentLogEntriesHours.ToString(), out hoursConsideredRecent);
+            }
+
+            if (ViewBag.RecentLogEntriesReportList != null && ViewBag.RecentLogEntriesReportList is IEnumerable<Icon.Dashboard.Mvc.ViewModels.RecentLogEntriesReportViewModel>)
+            {
+                var reports = ViewBag.RecentLogEntriesReportList as IEnumerable<Icon.Dashboard.Mvc.ViewModels.RecentLogEntriesReportViewModel>;
+                foreach (var appID in reports.Where(e => e.AppID > 0).Select(e => e.AppID))
+                {
+                    appIDs.Add(appID);
+                }
+            }
+        }
+
+        @* javascript variables set from server-side Razor code for appLogs.js*@
+        var intervalMilliseconds = @millisecondsForRecentErrorsPolling;
+        var urlForGetRecentErrorsAction = '@(Url.Action("RecentErrors", "Logs"))';
+        var arrayOfFunctions = [];
+
+        function buildArrayOfFunctions() {
+            @foreach (var appID in appIDs)
+            {
+                @: var func@(appID) = function(){ getRecentErrors(@(appID), @(hoursConsideredRecent));}
+                @: arrayOfFunctions.push( func@(appID) );
+            }
+        }
+    
+        @* javascript variables set from server-side Razor code for readrawPaging.js*@
+        var urlForRedrawPagingAction = '@(Url.Action("RedrawPaging", "Logs", new { routeParameter = ViewBag.AppName ?? String.Empty }))';
+    </script>
+
+    @Scripts.Render("~/Scripts/appLogs.js")
+
+    @Scripts.Render("~/Scripts/redrawPaging.js")
+}

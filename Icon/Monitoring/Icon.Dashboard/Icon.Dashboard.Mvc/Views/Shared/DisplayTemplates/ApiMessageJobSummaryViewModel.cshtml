@@ -1,0 +1,32 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.ApiMessageJobSummaryViewModel
+
+@{
+    string rowId = $"row{Model.APIMessageMonitorLogID}";
+}
+
+<tr id="@rowId">
+    <td class="text-center hidden-xs hidden-sm hidden-md">
+        @Html.DisplayFor(model => model.APIMessageMonitorLogID)
+    </td>
+    <td class="text-center">
+        @Html.DisplayFor(model => model.MessageType)
+    </td>
+    <td class="text-center hidden-xs hidden-sm">
+        @Html.DisplayFor(model => model.StartTime)
+    </td>
+    <td class="text-center hidden-xs hidden-sm">
+        @Html.DisplayFor(model => model.EndTime)
+    </td>
+    <td class="text-center">
+        @Html.DisplayFor(model => model.ElapsedTime)
+    </td>
+    <td class="text-center">
+        @Html.DisplayFor(model => model.CountProcessedMessages)
+    </td>
+    <td class="text-center @(Model.SomeFailed ? "danger" : "")">
+        @Html.DisplayFor(model => model.CountFailedMessages)
+    </td>
+    <td class="text-center hidden-xs hidden-sm">
+        @Html.DisplayFor(model => model.CountTotalMessages)
+    </td>
+</tr>

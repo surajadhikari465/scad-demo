@@ -1,0 +1,1140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="IconDatabaseModelForDashboard.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="APIMessageMonitorLog">
+          <Key>
+            <PropertyRef Name="APIMessageMonitorLogID" />
+          </Key>
+          <Property Name="APIMessageMonitorLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageTypeID" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime2" Precision="7" />
+          <Property Name="EndTime" Type="datetime2" Precision="7" />
+          <Property Name="CountProcessedMessages" Type="int" />
+          <Property Name="CountFailedMessages" Type="int" />
+        </EntityType>
+        <EntityType Name="App">
+          <Key>
+            <PropertyRef Name="AppID" />
+          </Key>
+          <Property Name="AppID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppName" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AppLog">
+          <Key>
+            <PropertyRef Name="AppLogID" />
+          </Key>
+          <Property Name="AppLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppID" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="LogDate" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="Level" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="Logger" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="MachineName" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="MessageQueueHierarchy">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageTypeId" Type="int" Nullable="false" />
+          <Property Name="MessageStatusId" Type="int" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="int" />
+          <Property Name="MessageActionId" Type="int" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HierarchyId" Type="int" Nullable="false" />
+          <Property Name="HierarchyName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="HierarchyLevelName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ItemsAttached" Type="bit" Nullable="false" />
+          <Property Name="HierarchyClassId" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="HierarchyClassName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="HierarchyLevel" Type="int" Nullable="false" />
+          <Property Name="HierarchyParentClassId" Type="int" />
+          <Property Name="InProcessBy" Type="int" />
+          <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="MessageQueueItemLocale">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageTypeId" Type="int" Nullable="false" />
+          <Property Name="MessageStatusId" Type="int" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="int" />
+          <Property Name="MessageActionId" Type="int" Nullable="false" />
+          <Property Name="IRMAPushID" Type="int" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="RegionCode" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="BusinessUnit_ID" Type="int" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="ItemTypeCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="ItemTypeDesc" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LocaleId" Type="int" Nullable="false" />
+          <Property Name="LocaleName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ScanCodeId" Type="int" Nullable="false" />
+          <Property Name="ScanCode" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="ScanCodeTypeId" Type="int" Nullable="false" />
+          <Property Name="ScanCodeTypeDesc" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ChangeType" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="LockedForSale" Type="bit" Nullable="false" />
+          <Property Name="Recall" Type="bit" Nullable="false" />
+          <Property Name="TMDiscountEligible" Type="bit" Nullable="false" />
+          <Property Name="Case_Discount" Type="bit" Nullable="false" />
+          <Property Name="AgeCode" Type="int" />
+          <Property Name="Restricted_Hours" Type="bit" Nullable="false" />
+          <Property Name="Sold_By_Weight" Type="bit" Nullable="false" />
+          <Property Name="ScaleForcedTare" Type="bit" Nullable="false" />
+          <Property Name="Quantity_Required" Type="bit" Nullable="false" />
+          <Property Name="Price_Required" Type="bit" Nullable="false" />
+          <Property Name="QtyProhibit" Type="bit" Nullable="false" />
+          <Property Name="VisualVerify" Type="bit" Nullable="false" />
+          <Property Name="LinkedItemScanCode" Type="nvarchar" MaxLength="13" />
+          <Property Name="PreviousLinkedItemScanCode" Type="varchar" MaxLength="13" />
+          <Property Name="PosScaleTare" Type="int" />
+          <Property Name="InProcessBy" Type="int" />
+          <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="MessageQueueLocale">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageTypeId" Type="int" Nullable="false" />
+          <Property Name="MessageStatusId" Type="int" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="int" />
+          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="LocaleId" Type="int" Nullable="false" />
+          <Property Name="OwnerOrgPartyId" Type="int" Nullable="false" />
+          <Property Name="StoreAbbreviation" Type="nvarchar" MaxLength="3" />
+          <Property Name="LocaleName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LocaleOpenDate" Type="date" />
+          <Property Name="LocaleCloseDate" Type="date" />
+          <Property Name="LocaleTypeId" Type="int" Nullable="false" />
+          <Property Name="ParentLocaleId" Type="int" />
+          <Property Name="BusinessUnitId" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="AddressId" Type="int" />
+          <Property Name="AddressUsageCode" Type="nvarchar" MaxLength="3" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CountryCode" Type="nvarchar" MaxLength="3" />
+          <Property Name="TerritoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="TerritoryCode" Type="nvarchar" MaxLength="3" />
+          <Property Name="CityName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="15" />
+          <Property Name="Latitude" Type="nvarchar" MaxLength="255" />
+          <Property Name="Longitude" Type="nvarchar" MaxLength="255" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="255" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="255" />
+          <Property Name="AddressLine3" Type="nvarchar" MaxLength="255" />
+          <Property Name="TimezoneCode" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="TimezoneName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InProcessBy" Type="int" />
+          <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="MessageQueuePrice">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageTypeId" Type="int" Nullable="false" />
+          <Property Name="MessageStatusId" Type="int" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="int" />
+          <Property Name="IRMAPushID" Type="int" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="RegionCode" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="BusinessUnit_ID" Type="int" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="ItemTypeCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="ItemTypeDesc" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LocaleId" Type="int" Nullable="false" />
+          <Property Name="LocaleName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ScanCodeId" Type="int" Nullable="false" />
+          <Property Name="ScanCode" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="ScanCodeTypeId" Type="int" Nullable="false" />
+          <Property Name="ScanCodeTypeDesc" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ChangeType" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="UomCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="UomName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CurrencyCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="Price" Type="money" />
+          <Property Name="Multiple" Type="int" />
+          <Property Name="SalePrice" Type="money" />
+          <Property Name="SaleMultiple" Type="int" />
+          <Property Name="SaleStartDate" Type="datetime2" Precision="7" />
+          <Property Name="SaleEndDate" Type="datetime2" Precision="7" />
+          <Property Name="PreviousSalePrice" Type="money" />
+          <Property Name="PreviousSaleMultiple" Type="int" />
+          <Property Name="PreviousSaleStartDate" Type="datetime2" Precision="7" />
+          <Property Name="PreviousSaleEndDate" Type="datetime2" Precision="7" />
+          <Property Name="InProcessBy" Type="int" />
+          <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="MessageQueueProduct">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageTypeId" Type="int" Nullable="false" />
+          <Property Name="MessageStatusId" Type="int" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="int" />
+          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="LocaleId" Type="int" Nullable="false" />
+          <Property Name="ItemTypeCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="ItemTypeDesc" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ScanCodeId" Type="int" Nullable="false" />
+          <Property Name="ScanCode" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="ScanCodeTypeId" Type="int" Nullable="false" />
+          <Property Name="ScanCodeTypeDesc" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ProductDescription" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="PosDescription" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="PackageUnit" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="RetailSize" Type="nvarchar" MaxLength="255" />
+          <Property Name="RetailUom" Type="nvarchar" MaxLength="255" />
+          <Property Name="FoodStampEligible" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ProhibitDiscount" Type="bit" Nullable="false" />
+          <Property Name="DepartmentSale" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="BrandId" Type="int" Nullable="false" />
+          <Property Name="BrandName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="BrandLevel" Type="int" Nullable="false" />
+          <Property Name="BrandParentId" Type="int" />
+          <Property Name="BrowsingClassId" Type="int" />
+          <Property Name="BrowsingClassName" Type="nvarchar" MaxLength="255" />
+          <Property Name="BrowsingLevel" Type="int" />
+          <Property Name="BrowsingParentId" Type="int" />
+          <Property Name="MerchandiseClassId" Type="int" Nullable="false" />
+          <Property Name="MerchandiseClassName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MerchandiseLevel" Type="int" Nullable="false" />
+          <Property Name="MerchandiseParentId" Type="int" />
+          <Property Name="TaxClassId" Type="int" Nullable="false" />
+          <Property Name="TaxClassName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TaxLevel" Type="int" Nullable="false" />
+          <Property Name="TaxParentId" Type="int" />
+          <Property Name="FinancialClassId" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="FinancialClassName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FinancialLevel" Type="int" Nullable="false" />
+          <Property Name="FinancialParentId" Type="int" />
+          <Property Name="InProcessBy" Type="int" />
+          <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+          <Property Name="AnimalWelfareRating" Type="nvarchar" MaxLength="50" />
+          <Property Name="Biodynamic" Type="nvarchar" MaxLength="1" />
+          <Property Name="CheeseMilkType" Type="nvarchar" MaxLength="50" />
+          <Property Name="CheeseRaw" Type="nvarchar" MaxLength="1" />
+          <Property Name="EcoScaleRating" Type="nvarchar" MaxLength="50" />
+          <Property Name="GlutenFreeAgency" Type="nvarchar" MaxLength="255" />
+          <Property Name="HealthyEatingRating" Type="nvarchar" MaxLength="50" />
+          <Property Name="KosherAgency" Type="nvarchar" MaxLength="50" />
+          <Property Name="Msc" Type="nvarchar" MaxLength="1" />
+          <Property Name="NonGmoAgency" Type="nvarchar" MaxLength="255" />
+          <Property Name="OrganicAgency" Type="nvarchar" MaxLength="255" />
+          <Property Name="PremiumBodyCare" Type="nvarchar" MaxLength="1" />
+          <Property Name="SeafoodFreshOrFrozen" Type="nvarchar" MaxLength="50" />
+          <Property Name="SeafoodCatchType" Type="nvarchar" MaxLength="50" />
+          <Property Name="VeganAgency" Type="nvarchar" MaxLength="255" />
+          <Property Name="Vegetarian" Type="nvarchar" MaxLength="1" />
+          <Property Name="WholeTrade" Type="nvarchar" MaxLength="1" />
+          <Property Name="GrassFed" Type="nvarchar" MaxLength="1" />
+          <Property Name="PastureRaised" Type="nvarchar" MaxLength="1" />
+          <Property Name="FreeRange" Type="nvarchar" MaxLength="1" />
+          <Property Name="DryAged" Type="nvarchar" MaxLength="1" />
+          <Property Name="AirChilled" Type="nvarchar" MaxLength="1" />
+          <Property Name="MadeInHouse" Type="nvarchar" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="MessageQueueProductSelectionGroup">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="MessageTypeId" Type="int" Nullable="false" />
+          <Property Name="MessageStatusId" Type="int" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="int" />
+          <Property Name="MessageActionId" Type="int" Nullable="false" />
+          <Property Name="ProductSelectionGroupId" Type="int" Nullable="false" />
+          <Property Name="ProductSelectionGroupName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ProductSelectionGroupTypeId" Type="int" Nullable="false" />
+          <Property Name="ProductSelectionGroupTypeName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="InProcessBy" Type="int" />
+          <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="MessageType">
+          <Key>
+            <PropertyRef Name="MessageTypeId" />
+          </Key>
+          <Property Name="MessageTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageTypeName" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <Association Name="App_AppLog_FK">
+          <End Role="App" Type="Self.App" Multiplicity="1" />
+          <End Role="AppLog" Type="Self.AppLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="App">
+              <PropertyRef Name="AppID" />
+            </Principal>
+            <Dependent Role="AppLog">
+              <PropertyRef Name="AppID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_APIMessageMonitorLog_MessageTypeId">
+          <End Role="MessageType" Type="Self.MessageType" Multiplicity="1" />
+          <End Role="APIMessageMonitorLog" Type="Self.APIMessageMonitorLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="APIMessageMonitorLog">
+              <PropertyRef Name="MessageTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_MessageQueueLocale_MessageType">
+          <End Role="MessageType" Type="Self.MessageType" Multiplicity="1" />
+          <End Role="MessageQueueLocale" Type="Self.MessageQueueLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueLocale">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueHierarchy_MessageTypeId">
+          <End Role="MessageType" Type="Self.MessageType" Multiplicity="1" />
+          <End Role="MessageQueueHierarchy" Type="Self.MessageQueueHierarchy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueHierarchy">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueItemLocale_MessageTypeId">
+          <End Role="MessageType" Type="Self.MessageType" Multiplicity="1" />
+          <End Role="MessageQueueItemLocale" Type="Self.MessageQueueItemLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueItemLocale">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueuePrice_MessageTypeID">
+          <End Role="MessageType" Type="Self.MessageType" Multiplicity="1" />
+          <End Role="MessageQueuePrice" Type="Self.MessageQueuePrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueuePrice">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueProduct_MessageTypeId">
+          <End Role="MessageType" Type="Self.MessageType" Multiplicity="1" />
+          <End Role="MessageQueueProduct" Type="Self.MessageQueueProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueProduct">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueProductSelectionGroup_MessageType">
+          <End Role="MessageType" Type="Self.MessageType" Multiplicity="1" />
+          <End Role="MessageQueueProductSelectionGroup" Type="Self.MessageQueueProductSelectionGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueProductSelectionGroup">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IconLoggingDataModelStoreContainer">
+          <EntitySet Name="APIMessageMonitorLog" EntityType="Self.APIMessageMonitorLog" Schema="app" store:Type="Tables" />
+          <EntitySet Name="App" EntityType="Self.App" Schema="app" store:Type="Tables" />
+          <EntitySet Name="AppLog" EntityType="Self.AppLog" Schema="app" store:Type="Tables" />
+          <EntitySet Name="MessageQueueHierarchy" EntityType="Self.MessageQueueHierarchy" Schema="app" store:Type="Tables" />
+          <EntitySet Name="MessageQueueItemLocale" EntityType="Self.MessageQueueItemLocale" Schema="app" store:Type="Tables" />
+          <EntitySet Name="MessageQueueLocale" EntityType="Self.MessageQueueLocale" Schema="app" store:Type="Tables" />
+          <EntitySet Name="MessageQueuePrice" EntityType="Self.MessageQueuePrice" Schema="app" store:Type="Tables" />
+          <EntitySet Name="MessageQueueProduct" EntityType="Self.MessageQueueProduct" Schema="app" store:Type="Tables" />
+          <EntitySet Name="MessageQueueProductSelectionGroup" EntityType="Self.MessageQueueProductSelectionGroup" Schema="app" store:Type="Tables" />
+          <EntitySet Name="MessageType" EntityType="Self.MessageType" Schema="app" store:Type="Tables" />
+          <AssociationSet Name="App_AppLog_FK" Association="Self.App_AppLog_FK">
+            <End Role="App" EntitySet="App" />
+            <End Role="AppLog" EntitySet="AppLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_APIMessageMonitorLog_MessageTypeId" Association="Self.FK_APIMessageMonitorLog_MessageTypeId">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="APIMessageMonitorLog" EntitySet="APIMessageMonitorLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app_MessageQueueLocale_MessageType" Association="Self.FK_app_MessageQueueLocale_MessageType">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueHierarchy_MessageTypeId" Association="Self.FK_MessageQueueHierarchy_MessageTypeId">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueItemLocale_MessageTypeId" Association="Self.FK_MessageQueueItemLocale_MessageTypeId">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueuePrice_MessageTypeID" Association="Self.FK_MessageQueuePrice_MessageTypeID">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageQueuePrice" EntitySet="MessageQueuePrice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueProduct_MessageTypeId" Association="Self.FK_MessageQueueProduct_MessageTypeId">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueProductSelectionGroup_MessageType" Association="Self.FK_MessageQueueProductSelectionGroup_MessageType">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageQueueProductSelectionGroup" EntitySet="MessageQueueProductSelectionGroup" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IconDatabaseModelForDashboard" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="App">
+          <Key>
+            <PropertyRef Name="AppID" />
+          </Key>
+          <Property Name="AppID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AppLogs" Relationship="Self.App_AppLog_FK" FromRole="App" ToRole="AppLog" />
+        </EntityType>
+        <EntityType Name="AppLog">
+          <Key>
+            <PropertyRef Name="AppLogID" />
+          </Key>
+          <Property Name="AppLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppID" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LogDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Level" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Logger" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MachineName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="App" Relationship="Self.App_AppLog_FK" FromRole="AppLog" ToRole="App" />
+        </EntityType>
+        <Association Name="App_AppLog_FK">
+          <End Role="App" Type="Self.App" Multiplicity="1" />
+          <End Role="AppLog" Type="Self.AppLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="App">
+              <PropertyRef Name="AppID" />
+            </Principal>
+            <Dependent Role="AppLog">
+              <PropertyRef Name="AppID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IconDatabaseContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Apps" EntityType="Self.App" />
+          <EntitySet Name="AppLogs" EntityType="Self.AppLog" />
+          <AssociationSet Name="App_AppLog_FK" Association="Self.App_AppLog_FK">
+            <End Role="App" EntitySet="Apps" />
+            <End Role="AppLog" EntitySet="AppLogs" />
+          </AssociationSet>
+          <EntitySet Name="APIMessageMonitorLogs" EntityType="IconDatabaseModelForDashboard.APIMessageMonitorLog" />
+          <EntitySet Name="MessageQueueHierarchies" EntityType="IconDatabaseModelForDashboard.MessageQueueHierarchy" />
+          <EntitySet Name="MessageQueueItemLocales" EntityType="IconDatabaseModelForDashboard.MessageQueueItemLocale" />
+          <EntitySet Name="MessageQueueLocales" EntityType="IconDatabaseModelForDashboard.MessageQueueLocale" />
+          <EntitySet Name="MessageQueuePrices" EntityType="IconDatabaseModelForDashboard.MessageQueuePrice" />
+          <EntitySet Name="MessageQueueProducts" EntityType="IconDatabaseModelForDashboard.MessageQueueProduct" />
+          <EntitySet Name="MessageQueueProductSelectionGroups" EntityType="IconDatabaseModelForDashboard.MessageQueueProductSelectionGroup" />
+          <EntitySet Name="MessageTypes" EntityType="IconDatabaseModelForDashboard.MessageType" />
+          <AssociationSet Name="FK_APIMessageMonitorLog_MessageTypeId" Association="IconDatabaseModelForDashboard.FK_APIMessageMonitorLog_MessageTypeId">
+            <End Role="MessageType" EntitySet="MessageTypes" />
+            <End Role="APIMessageMonitorLog" EntitySet="APIMessageMonitorLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueHierarchy_MessageTypeId" Association="IconDatabaseModelForDashboard.FK_MessageQueueHierarchy_MessageTypeId">
+            <End Role="MessageType" EntitySet="MessageTypes" />
+            <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueItemLocale_MessageTypeId" Association="IconDatabaseModelForDashboard.FK_MessageQueueItemLocale_MessageTypeId">
+            <End Role="MessageType" EntitySet="MessageTypes" />
+            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app_MessageQueueLocale_MessageType" Association="IconDatabaseModelForDashboard.FK_app_MessageQueueLocale_MessageType">
+            <End Role="MessageType" EntitySet="MessageTypes" />
+            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueuePrice_MessageTypeID" Association="IconDatabaseModelForDashboard.FK_MessageQueuePrice_MessageTypeID">
+            <End Role="MessageType" EntitySet="MessageTypes" />
+            <End Role="MessageQueuePrice" EntitySet="MessageQueuePrices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueProduct_MessageTypeId" Association="IconDatabaseModelForDashboard.FK_MessageQueueProduct_MessageTypeId">
+            <End Role="MessageType" EntitySet="MessageTypes" />
+            <End Role="MessageQueueProduct" EntitySet="MessageQueueProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueProductSelectionGroup_MessageType" Association="IconDatabaseModelForDashboard.FK_MessageQueueProductSelectionGroup_MessageType">
+            <End Role="MessageType" EntitySet="MessageTypes" />
+            <End Role="MessageQueueProductSelectionGroup" EntitySet="MessageQueueProductSelectionGroups" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="APIMessageMonitorLog">
+          <Key>
+            <PropertyRef Name="APIMessageMonitorLogID" />
+          </Key>
+          <Property Name="APIMessageMonitorLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeID" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="7" />
+          <Property Name="EndTime" Type="DateTime" Precision="7" />
+          <Property Name="CountProcessedMessages" Type="Int32" />
+          <Property Name="CountFailedMessages" Type="Int32" />
+          <NavigationProperty Name="MessageType" Relationship="IconDatabaseModelForDashboard.FK_APIMessageMonitorLog_MessageTypeId" FromRole="APIMessageMonitorLog" ToRole="MessageType" />
+        </EntityType>
+        <EnumType Name="IconApiControllerMessageType" a:ExternalTypeName="Icon.Dashboard.LoggingDataAccess.IconApiControllerMessageType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EntityType Name="MessageQueueHierarchy">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="Int32" />
+          <Property Name="MessageActionId" Type="Int32" Nullable="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HierarchyId" Type="Int32" Nullable="false" />
+          <Property Name="HierarchyName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HierarchyLevelName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ItemsAttached" Type="Boolean" Nullable="false" />
+          <Property Name="HierarchyClassId" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="HierarchyClassName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HierarchyLevel" Type="Int32" Nullable="false" />
+          <Property Name="HierarchyParentClassId" Type="Int32" />
+          <Property Name="InProcessBy" Type="Int32" />
+          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="MessageType" Relationship="IconDatabaseModelForDashboard.FK_MessageQueueHierarchy_MessageTypeId" FromRole="MessageQueueHierarchy" ToRole="MessageType" />
+        </EntityType>
+        <EntityType Name="MessageQueueItemLocale">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="Int32" />
+          <Property Name="MessageActionId" Type="Int32" Nullable="false" />
+          <Property Name="IRMAPushID" Type="Int32" Nullable="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="RegionCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="BusinessUnit_ID" Type="Int32" Nullable="false" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="ItemTypeCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ItemTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LocaleId" Type="Int32" Nullable="false" />
+          <Property Name="LocaleName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ScanCodeId" Type="Int32" Nullable="false" />
+          <Property Name="ScanCode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="ScanCodeTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ScanCodeTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ChangeType" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="LockedForSale" Type="Boolean" Nullable="false" />
+          <Property Name="Recall" Type="Boolean" Nullable="false" />
+          <Property Name="TMDiscountEligible" Type="Boolean" Nullable="false" />
+          <Property Name="Case_Discount" Type="Boolean" Nullable="false" />
+          <Property Name="AgeCode" Type="Int32" />
+          <Property Name="Restricted_Hours" Type="Boolean" Nullable="false" />
+          <Property Name="Sold_By_Weight" Type="Boolean" Nullable="false" />
+          <Property Name="ScaleForcedTare" Type="Boolean" Nullable="false" />
+          <Property Name="Quantity_Required" Type="Boolean" Nullable="false" />
+          <Property Name="Price_Required" Type="Boolean" Nullable="false" />
+          <Property Name="QtyProhibit" Type="Boolean" Nullable="false" />
+          <Property Name="VisualVerify" Type="Boolean" Nullable="false" />
+          <Property Name="LinkedItemScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="PreviousLinkedItemScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="PosScaleTare" Type="Int32" />
+          <Property Name="InProcessBy" Type="Int32" />
+          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="MessageType" Relationship="IconDatabaseModelForDashboard.FK_MessageQueueItemLocale_MessageTypeId" FromRole="MessageQueueItemLocale" ToRole="MessageType" />
+        </EntityType>
+        <EntityType Name="MessageQueueLocale">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="Int32" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="LocaleId" Type="Int32" Nullable="false" />
+          <Property Name="OwnerOrgPartyId" Type="Int32" Nullable="false" />
+          <Property Name="StoreAbbreviation" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="LocaleName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LocaleOpenDate" Type="DateTime" Precision="0" />
+          <Property Name="LocaleCloseDate" Type="DateTime" Precision="0" />
+          <Property Name="LocaleTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ParentLocaleId" Type="Int32" />
+          <Property Name="BusinessUnitId" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddressId" Type="Int32" />
+          <Property Name="AddressUsageCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CountryName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CountryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="TerritoryName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TerritoryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CityName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Longitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine3" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TimezoneCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="TimezoneName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InProcessBy" Type="Int32" />
+          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="MessageType" Relationship="IconDatabaseModelForDashboard.FK_app_MessageQueueLocale_MessageType" FromRole="MessageQueueLocale" ToRole="MessageType" />
+        </EntityType>
+        <EntityType Name="MessageQueuePrice">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="Int32" />
+          <Property Name="IRMAPushID" Type="Int32" Nullable="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="RegionCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="BusinessUnit_ID" Type="Int32" Nullable="false" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="ItemTypeCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ItemTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LocaleId" Type="Int32" Nullable="false" />
+          <Property Name="LocaleName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ScanCodeId" Type="Int32" Nullable="false" />
+          <Property Name="ScanCode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="ScanCodeTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ScanCodeTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ChangeType" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="UomCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="UomName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CurrencyCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Multiple" Type="Int32" />
+          <Property Name="SalePrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SaleMultiple" Type="Int32" />
+          <Property Name="SaleStartDate" Type="DateTime" Precision="7" />
+          <Property Name="SaleEndDate" Type="DateTime" Precision="7" />
+          <Property Name="PreviousSalePrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PreviousSaleMultiple" Type="Int32" />
+          <Property Name="PreviousSaleStartDate" Type="DateTime" Precision="7" />
+          <Property Name="PreviousSaleEndDate" Type="DateTime" Precision="7" />
+          <Property Name="InProcessBy" Type="Int32" />
+          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="MessageType" Relationship="IconDatabaseModelForDashboard.FK_MessageQueuePrice_MessageTypeID" FromRole="MessageQueuePrice" ToRole="MessageType" />
+        </EntityType>
+        <EntityType Name="MessageQueueProduct">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="Int32" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="LocaleId" Type="Int32" Nullable="false" />
+          <Property Name="ItemTypeCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ItemTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ScanCodeId" Type="Int32" Nullable="false" />
+          <Property Name="ScanCode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="ScanCodeTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ScanCodeTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PosDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PackageUnit" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RetailSize" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RetailUom" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FoodStampEligible" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ProhibitDiscount" Type="Boolean" Nullable="false" />
+          <Property Name="DepartmentSale" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BrandId" Type="Int32" Nullable="false" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BrandLevel" Type="Int32" Nullable="false" />
+          <Property Name="BrandParentId" Type="Int32" />
+          <Property Name="BrowsingClassId" Type="Int32" />
+          <Property Name="BrowsingClassName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BrowsingLevel" Type="Int32" />
+          <Property Name="BrowsingParentId" Type="Int32" />
+          <Property Name="MerchandiseClassId" Type="Int32" Nullable="false" />
+          <Property Name="MerchandiseClassName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MerchandiseLevel" Type="Int32" Nullable="false" />
+          <Property Name="MerchandiseParentId" Type="Int32" />
+          <Property Name="TaxClassId" Type="Int32" Nullable="false" />
+          <Property Name="TaxClassName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TaxLevel" Type="Int32" Nullable="false" />
+          <Property Name="TaxParentId" Type="Int32" />
+          <Property Name="FinancialClassId" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="FinancialClassName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FinancialLevel" Type="Int32" Nullable="false" />
+          <Property Name="FinancialParentId" Type="Int32" />
+          <Property Name="InProcessBy" Type="Int32" />
+          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <Property Name="AnimalWelfareRating" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Biodynamic" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="CheeseMilkType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CheeseRaw" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="EcoScaleRating" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GlutenFreeAgency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HealthyEatingRating" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KosherAgency" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Msc" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="NonGmoAgency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OrganicAgency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PremiumBodyCare" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="SeafoodFreshOrFrozen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SeafoodCatchType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VeganAgency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Vegetarian" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="WholeTrade" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="GrassFed" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PastureRaised" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="FreeRange" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="DryAged" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="AirChilled" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="MadeInHouse" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MessageType" Relationship="IconDatabaseModelForDashboard.FK_MessageQueueProduct_MessageTypeId" FromRole="MessageQueueProduct" ToRole="MessageType" />
+        </EntityType>
+        <EntityType Name="MessageQueueProductSelectionGroup">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="Int32" />
+          <Property Name="MessageActionId" Type="Int32" Nullable="false" />
+          <Property Name="ProductSelectionGroupId" Type="Int32" Nullable="false" />
+          <Property Name="ProductSelectionGroupName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSelectionGroupTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ProductSelectionGroupTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="InProcessBy" Type="Int32" />
+          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="MessageType" Relationship="IconDatabaseModelForDashboard.FK_MessageQueueProductSelectionGroup_MessageType" FromRole="MessageQueueProductSelectionGroup" ToRole="MessageType" />
+        </EntityType>
+        <EntityType Name="MessageType">
+          <Key>
+            <PropertyRef Name="MessageTypeId" />
+          </Key>
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="APIMessageMonitorLogs" Relationship="IconDatabaseModelForDashboard.FK_APIMessageMonitorLog_MessageTypeId" FromRole="MessageType" ToRole="APIMessageMonitorLog" />
+          <NavigationProperty Name="MessageQueueHierarchies" Relationship="IconDatabaseModelForDashboard.FK_MessageQueueHierarchy_MessageTypeId" FromRole="MessageType" ToRole="MessageQueueHierarchy" />
+          <NavigationProperty Name="MessageQueueItemLocales" Relationship="IconDatabaseModelForDashboard.FK_MessageQueueItemLocale_MessageTypeId" FromRole="MessageType" ToRole="MessageQueueItemLocale" />
+          <NavigationProperty Name="MessageQueueLocales" Relationship="IconDatabaseModelForDashboard.FK_app_MessageQueueLocale_MessageType" FromRole="MessageType" ToRole="MessageQueueLocale" />
+          <NavigationProperty Name="MessageQueuePrices" Relationship="IconDatabaseModelForDashboard.FK_MessageQueuePrice_MessageTypeID" FromRole="MessageType" ToRole="MessageQueuePrice" />
+          <NavigationProperty Name="MessageQueueProducts" Relationship="IconDatabaseModelForDashboard.FK_MessageQueueProduct_MessageTypeId" FromRole="MessageType" ToRole="MessageQueueProduct" />
+          <NavigationProperty Name="MessageQueueProductSelectionGroups" Relationship="IconDatabaseModelForDashboard.FK_MessageQueueProductSelectionGroup_MessageType" FromRole="MessageType" ToRole="MessageQueueProductSelectionGroup" />
+        </EntityType>
+        <Association Name="FK_APIMessageMonitorLog_MessageTypeId">
+          <End Type="IconDatabaseModelForDashboard.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="IconDatabaseModelForDashboard.APIMessageMonitorLog" Role="APIMessageMonitorLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="APIMessageMonitorLog">
+              <PropertyRef Name="MessageTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueHierarchy_MessageTypeId">
+          <End Type="IconDatabaseModelForDashboard.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="IconDatabaseModelForDashboard.MessageQueueHierarchy" Role="MessageQueueHierarchy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueHierarchy">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueItemLocale_MessageTypeId">
+          <End Type="IconDatabaseModelForDashboard.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="IconDatabaseModelForDashboard.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueItemLocale">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_MessageQueueLocale_MessageType">
+          <End Type="IconDatabaseModelForDashboard.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="IconDatabaseModelForDashboard.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueLocale">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueuePrice_MessageTypeID">
+          <End Type="IconDatabaseModelForDashboard.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="IconDatabaseModelForDashboard.MessageQueuePrice" Role="MessageQueuePrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueuePrice">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueProduct_MessageTypeId">
+          <End Type="IconDatabaseModelForDashboard.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="IconDatabaseModelForDashboard.MessageQueueProduct" Role="MessageQueueProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueProduct">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueProductSelectionGroup_MessageType">
+          <End Type="IconDatabaseModelForDashboard.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="IconDatabaseModelForDashboard.MessageQueueProductSelectionGroup" Role="MessageQueueProductSelectionGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueProductSelectionGroup">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IconLoggingDataModelStoreContainer" CdmEntityContainer="IconDatabaseContext">
+          <EntitySetMapping Name="Apps">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.App">
+              <MappingFragment StoreEntitySet="App">
+                <ScalarProperty Name="AppID" ColumnName="AppID" />
+                <ScalarProperty Name="AppName" ColumnName="AppName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppLogs">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.AppLog">
+              <MappingFragment StoreEntitySet="AppLog">
+                <ScalarProperty Name="AppLogID" ColumnName="AppLogID" />
+                <ScalarProperty Name="AppID" ColumnName="AppID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Logger" ColumnName="Logger" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APIMessageMonitorLogs">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.APIMessageMonitorLog">
+              <MappingFragment StoreEntitySet="APIMessageMonitorLog">
+                <ScalarProperty Name="CountFailedMessages" ColumnName="CountFailedMessages" />
+                <ScalarProperty Name="CountProcessedMessages" ColumnName="CountProcessedMessages" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="MessageTypeID" ColumnName="MessageTypeID" />
+                <ScalarProperty Name="APIMessageMonitorLogID" ColumnName="APIMessageMonitorLogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueueHierarchies">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.MessageQueueHierarchy">
+              <MappingFragment StoreEntitySet="MessageQueueHierarchy">
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="HierarchyParentClassId" ColumnName="HierarchyParentClassId" />
+                <ScalarProperty Name="HierarchyLevel" ColumnName="HierarchyLevel" />
+                <ScalarProperty Name="HierarchyClassName" ColumnName="HierarchyClassName" />
+                <ScalarProperty Name="HierarchyClassId" ColumnName="HierarchyClassId" />
+                <ScalarProperty Name="ItemsAttached" ColumnName="ItemsAttached" />
+                <ScalarProperty Name="HierarchyLevelName" ColumnName="HierarchyLevelName" />
+                <ScalarProperty Name="HierarchyName" ColumnName="HierarchyName" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="MessageActionId" ColumnName="MessageActionId" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueueItemLocales">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.MessageQueueItemLocale">
+              <MappingFragment StoreEntitySet="MessageQueueItemLocale">
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="PosScaleTare" ColumnName="PosScaleTare" />
+                <ScalarProperty Name="PreviousLinkedItemScanCode" ColumnName="PreviousLinkedItemScanCode" />
+                <ScalarProperty Name="LinkedItemScanCode" ColumnName="LinkedItemScanCode" />
+                <ScalarProperty Name="VisualVerify" ColumnName="VisualVerify" />
+                <ScalarProperty Name="QtyProhibit" ColumnName="QtyProhibit" />
+                <ScalarProperty Name="Price_Required" ColumnName="Price_Required" />
+                <ScalarProperty Name="Quantity_Required" ColumnName="Quantity_Required" />
+                <ScalarProperty Name="ScaleForcedTare" ColumnName="ScaleForcedTare" />
+                <ScalarProperty Name="Sold_By_Weight" ColumnName="Sold_By_Weight" />
+                <ScalarProperty Name="Restricted_Hours" ColumnName="Restricted_Hours" />
+                <ScalarProperty Name="AgeCode" ColumnName="AgeCode" />
+                <ScalarProperty Name="Case_Discount" ColumnName="Case_Discount" />
+                <ScalarProperty Name="TMDiscountEligible" ColumnName="TMDiscountEligible" />
+                <ScalarProperty Name="Recall" ColumnName="Recall" />
+                <ScalarProperty Name="LockedForSale" ColumnName="LockedForSale" />
+                <ScalarProperty Name="ChangeType" ColumnName="ChangeType" />
+                <ScalarProperty Name="ScanCodeTypeDesc" ColumnName="ScanCodeTypeDesc" />
+                <ScalarProperty Name="ScanCodeTypeId" ColumnName="ScanCodeTypeId" />
+                <ScalarProperty Name="ScanCode" ColumnName="ScanCode" />
+                <ScalarProperty Name="ScanCodeId" ColumnName="ScanCodeId" />
+                <ScalarProperty Name="LocaleName" ColumnName="LocaleName" />
+                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
+                <ScalarProperty Name="ItemTypeDesc" ColumnName="ItemTypeDesc" />
+                <ScalarProperty Name="ItemTypeCode" ColumnName="ItemTypeCode" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="BusinessUnit_ID" ColumnName="BusinessUnit_ID" />
+                <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="IRMAPushID" ColumnName="IRMAPushID" />
+                <ScalarProperty Name="MessageActionId" ColumnName="MessageActionId" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueueLocales">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.MessageQueueLocale">
+              <MappingFragment StoreEntitySet="MessageQueueLocale">
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="TimezoneName" ColumnName="TimezoneName" />
+                <ScalarProperty Name="TimezoneCode" ColumnName="TimezoneCode" />
+                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="TerritoryCode" ColumnName="TerritoryCode" />
+                <ScalarProperty Name="TerritoryName" ColumnName="TerritoryName" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="AddressUsageCode" ColumnName="AddressUsageCode" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="BusinessUnitId" ColumnName="BusinessUnitId" />
+                <ScalarProperty Name="ParentLocaleId" ColumnName="ParentLocaleId" />
+                <ScalarProperty Name="LocaleTypeId" ColumnName="LocaleTypeId" />
+                <ScalarProperty Name="LocaleCloseDate" ColumnName="LocaleCloseDate" />
+                <ScalarProperty Name="LocaleOpenDate" ColumnName="LocaleOpenDate" />
+                <ScalarProperty Name="LocaleName" ColumnName="LocaleName" />
+                <ScalarProperty Name="StoreAbbreviation" ColumnName="StoreAbbreviation" />
+                <ScalarProperty Name="OwnerOrgPartyId" ColumnName="OwnerOrgPartyId" />
+                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueuePrices">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.MessageQueuePrice">
+              <MappingFragment StoreEntitySet="MessageQueuePrice">
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="PreviousSaleEndDate" ColumnName="PreviousSaleEndDate" />
+                <ScalarProperty Name="PreviousSaleStartDate" ColumnName="PreviousSaleStartDate" />
+                <ScalarProperty Name="PreviousSaleMultiple" ColumnName="PreviousSaleMultiple" />
+                <ScalarProperty Name="PreviousSalePrice" ColumnName="PreviousSalePrice" />
+                <ScalarProperty Name="SaleEndDate" ColumnName="SaleEndDate" />
+                <ScalarProperty Name="SaleStartDate" ColumnName="SaleStartDate" />
+                <ScalarProperty Name="SaleMultiple" ColumnName="SaleMultiple" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="Multiple" ColumnName="Multiple" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="CurrencyCode" ColumnName="CurrencyCode" />
+                <ScalarProperty Name="UomName" ColumnName="UomName" />
+                <ScalarProperty Name="UomCode" ColumnName="UomCode" />
+                <ScalarProperty Name="ChangeType" ColumnName="ChangeType" />
+                <ScalarProperty Name="ScanCodeTypeDesc" ColumnName="ScanCodeTypeDesc" />
+                <ScalarProperty Name="ScanCodeTypeId" ColumnName="ScanCodeTypeId" />
+                <ScalarProperty Name="ScanCode" ColumnName="ScanCode" />
+                <ScalarProperty Name="ScanCodeId" ColumnName="ScanCodeId" />
+                <ScalarProperty Name="LocaleName" ColumnName="LocaleName" />
+                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
+                <ScalarProperty Name="ItemTypeDesc" ColumnName="ItemTypeDesc" />
+                <ScalarProperty Name="ItemTypeCode" ColumnName="ItemTypeCode" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="BusinessUnit_ID" ColumnName="BusinessUnit_ID" />
+                <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="IRMAPushID" ColumnName="IRMAPushID" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueueProducts">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.MessageQueueProduct">
+              <MappingFragment StoreEntitySet="MessageQueueProduct">
+                <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
+                <ScalarProperty Name="AirChilled" ColumnName="AirChilled" />
+                <ScalarProperty Name="DryAged" ColumnName="DryAged" />
+                <ScalarProperty Name="FreeRange" ColumnName="FreeRange" />
+                <ScalarProperty Name="PastureRaised" ColumnName="PastureRaised" />
+                <ScalarProperty Name="GrassFed" ColumnName="GrassFed" />
+                <ScalarProperty Name="WholeTrade" ColumnName="WholeTrade" />
+                <ScalarProperty Name="Vegetarian" ColumnName="Vegetarian" />
+                <ScalarProperty Name="VeganAgency" ColumnName="VeganAgency" />
+                <ScalarProperty Name="SeafoodCatchType" ColumnName="SeafoodCatchType" />
+                <ScalarProperty Name="SeafoodFreshOrFrozen" ColumnName="SeafoodFreshOrFrozen" />
+                <ScalarProperty Name="PremiumBodyCare" ColumnName="PremiumBodyCare" />
+                <ScalarProperty Name="OrganicAgency" ColumnName="OrganicAgency" />
+                <ScalarProperty Name="NonGmoAgency" ColumnName="NonGmoAgency" />
+                <ScalarProperty Name="Msc" ColumnName="Msc" />
+                <ScalarProperty Name="KosherAgency" ColumnName="KosherAgency" />
+                <ScalarProperty Name="HealthyEatingRating" ColumnName="HealthyEatingRating" />
+                <ScalarProperty Name="GlutenFreeAgency" ColumnName="GlutenFreeAgency" />
+                <ScalarProperty Name="EcoScaleRating" ColumnName="EcoScaleRating" />
+                <ScalarProperty Name="CheeseRaw" ColumnName="CheeseRaw" />
+                <ScalarProperty Name="CheeseMilkType" ColumnName="CheeseMilkType" />
+                <ScalarProperty Name="Biodynamic" ColumnName="Biodynamic" />
+                <ScalarProperty Name="AnimalWelfareRating" ColumnName="AnimalWelfareRating" />
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="FinancialParentId" ColumnName="FinancialParentId" />
+                <ScalarProperty Name="FinancialLevel" ColumnName="FinancialLevel" />
+                <ScalarProperty Name="FinancialClassName" ColumnName="FinancialClassName" />
+                <ScalarProperty Name="FinancialClassId" ColumnName="FinancialClassId" />
+                <ScalarProperty Name="TaxParentId" ColumnName="TaxParentId" />
+                <ScalarProperty Name="TaxLevel" ColumnName="TaxLevel" />
+                <ScalarProperty Name="TaxClassName" ColumnName="TaxClassName" />
+                <ScalarProperty Name="TaxClassId" ColumnName="TaxClassId" />
+                <ScalarProperty Name="MerchandiseParentId" ColumnName="MerchandiseParentId" />
+                <ScalarProperty Name="MerchandiseLevel" ColumnName="MerchandiseLevel" />
+                <ScalarProperty Name="MerchandiseClassName" ColumnName="MerchandiseClassName" />
+                <ScalarProperty Name="MerchandiseClassId" ColumnName="MerchandiseClassId" />
+                <ScalarProperty Name="BrowsingParentId" ColumnName="BrowsingParentId" />
+                <ScalarProperty Name="BrowsingLevel" ColumnName="BrowsingLevel" />
+                <ScalarProperty Name="BrowsingClassName" ColumnName="BrowsingClassName" />
+                <ScalarProperty Name="BrowsingClassId" ColumnName="BrowsingClassId" />
+                <ScalarProperty Name="BrandParentId" ColumnName="BrandParentId" />
+                <ScalarProperty Name="BrandLevel" ColumnName="BrandLevel" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="DepartmentSale" ColumnName="DepartmentSale" />
+                <ScalarProperty Name="ProhibitDiscount" ColumnName="ProhibitDiscount" />
+                <ScalarProperty Name="FoodStampEligible" ColumnName="FoodStampEligible" />
+                <ScalarProperty Name="RetailUom" ColumnName="RetailUom" />
+                <ScalarProperty Name="RetailSize" ColumnName="RetailSize" />
+                <ScalarProperty Name="PackageUnit" ColumnName="PackageUnit" />
+                <ScalarProperty Name="PosDescription" ColumnName="PosDescription" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="ScanCodeTypeDesc" ColumnName="ScanCodeTypeDesc" />
+                <ScalarProperty Name="ScanCodeTypeId" ColumnName="ScanCodeTypeId" />
+                <ScalarProperty Name="ScanCode" ColumnName="ScanCode" />
+                <ScalarProperty Name="ScanCodeId" ColumnName="ScanCodeId" />
+                <ScalarProperty Name="ItemTypeDesc" ColumnName="ItemTypeDesc" />
+                <ScalarProperty Name="ItemTypeCode" ColumnName="ItemTypeCode" />
+                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueueProductSelectionGroups">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.MessageQueueProductSelectionGroup">
+              <MappingFragment StoreEntitySet="MessageQueueProductSelectionGroup">
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="ProductSelectionGroupTypeName" ColumnName="ProductSelectionGroupTypeName" />
+                <ScalarProperty Name="ProductSelectionGroupTypeId" ColumnName="ProductSelectionGroupTypeId" />
+                <ScalarProperty Name="ProductSelectionGroupName" ColumnName="ProductSelectionGroupName" />
+                <ScalarProperty Name="ProductSelectionGroupId" ColumnName="ProductSelectionGroupId" />
+                <ScalarProperty Name="MessageActionId" ColumnName="MessageActionId" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageTypes">
+            <EntityTypeMapping TypeName="IconDatabaseModelForDashboard.MessageType">
+              <MappingFragment StoreEntitySet="MessageType">
+                <ScalarProperty Name="MessageTypeName" ColumnName="MessageTypeName" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

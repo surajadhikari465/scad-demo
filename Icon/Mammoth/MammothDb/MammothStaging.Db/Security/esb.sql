@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [esb]
+    AUTHORIZATION [dbo];
+

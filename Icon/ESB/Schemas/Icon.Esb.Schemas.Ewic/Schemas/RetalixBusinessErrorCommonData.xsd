@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="BusinessErrorCommonDataV1.2.0.xsd"/>
+	<xs:include schemaLocation="BusinessErrorAdditionalData.xsd"/>
+	<xs:complexType name="RetalixBusinessErrorCommonData">
+		<xs:complexContent>
+			<xs:extension base="BusinessErrorCommonData">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="ExecuteDate" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Execute date and time of this
+								entity</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="OriginalEntityInRequest">
+						<xs:annotation>
+							<xs:documentation>The original element in the request that produced the error data when it was processed</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:any namespace="##other" processContents="skip" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="AdditionalData" type="BusinessErrorAdditionalData" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Addition data related to the error</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Sequence" type="xs:long">
+					<xs:annotation>
+						<xs:documentation>Sequence number of the entity in the request</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="Status">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:documentation>Request Status</xs:documentation>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="OK"/>
+							<xs:enumeration value="Rejected"/>
+							<xs:enumeration value="Partial"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

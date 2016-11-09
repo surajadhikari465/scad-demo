@@ -1,0 +1,21 @@
+﻿@model Supporty.ViewModels.ServiceViewModel
+@{
+    ViewBag.Title = "Services";
+}
+
+<h2>Manage Services</h2>
+
+<div>
+    @Html.DisplayFor(m => m.Server)
+    @Html.TextBoxFor(m => m.Server)
+</div>
+
+<div>
+    @Html.DisplayFor(m => m.Name)
+    @Html.TextBoxFor(m => m.Name)
+</div>
+
+<div>
+    @Html.DisplayFor(m => m.Status)
+    @Html.TextBoxFor(m => m.Status)
+</div>

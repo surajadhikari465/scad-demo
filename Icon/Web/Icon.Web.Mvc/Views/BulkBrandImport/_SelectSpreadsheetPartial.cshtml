@@ -1,0 +1,22 @@
+﻿@using Icon.Web.DataAccess.Models
+@model Icon.Web.Mvc.Models.BulkImportViewModel<BulkImportBrandModel>
+
+
+@using (Html.BeginForm("Import", "BulkBrandImport", null, FormMethod.Post, new { enctype = "multipart/form-data", @class="begin-form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Select a spreadsheet to import.</legend>
+
+        @Html.LabelFor(model => Model.ExcelAttachment)
+        <input type="file" name="ExcelAttachment" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <p class="help-block">Only the Excel .xlsx file format is currently supported.</p>
+        <div class="validation-section">
+            @Html.ValidationMessageFor(model => Model.ExcelAttachment)
+        </div>
+    </fieldset>
+    
+    <input type="submit" value="Import Spreadsheet" id="importButton" class="btn btn-default form-submit" onclick="importButtonClick()" />
+}

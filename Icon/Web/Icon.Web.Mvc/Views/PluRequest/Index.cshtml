@@ -1,0 +1,29 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.PluRequestSearchViewModel
+
+@{
+    ViewBag.Title = "PLU Request Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@{Html.RenderPartial("_HeaderPartial", "PLU Request Search");}
+
+<div id="searchOptions" class="page-section">
+    @{Html.RenderPartial("_PluRequestSearchOptionsPartial");}    
+</div>
+
+@Html.ActionLink("Add New Request", "Create", "PluRequest", null, new { @class = "btn btn-default form-submit" })
+
+<div id="searchResults" class="page-section"></div>
+
+
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/apply-autocomplete.js")
+    @Scripts.Render("~/Scripts/common-search.js")
+    @Scripts.Render("~/Scripts/PluRequest/plu-request-search.js")
+    @Scripts.Render("~/Scripts/jquery.fileDownload.js")
+}

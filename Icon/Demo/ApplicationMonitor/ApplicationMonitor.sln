@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationMonitor.Core", "ApplicationMonitor.Core\ApplicationMonitor.Core.csproj", "{3BF05210-F5D5-4234-9CEA-0CA469156C4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationMonitor.Core.Tests", "ApplicationMonitor.Core.Tests\ApplicationMonitor.Core.Tests.csproj", "{260780A3-8CB2-4511-BA72-5261A2CAE131}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationMonitor.Web", "ApplicationMonitor.Web\ApplicationMonitor.Web.csproj", "{4DA6D08C-3F7C-47A3-8BCE-45626CBE1C50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationMonitor.Web.Tests", "ApplicationMonitor.Web.Tests\ApplicationMonitor.Web.Tests.csproj", "{DC1CB0E7-EE49-467A-B46B-10D8A27AAA1F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3BF05210-F5D5-4234-9CEA-0CA469156C4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BF05210-F5D5-4234-9CEA-0CA469156C4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BF05210-F5D5-4234-9CEA-0CA469156C4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BF05210-F5D5-4234-9CEA-0CA469156C4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{260780A3-8CB2-4511-BA72-5261A2CAE131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{260780A3-8CB2-4511-BA72-5261A2CAE131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{260780A3-8CB2-4511-BA72-5261A2CAE131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{260780A3-8CB2-4511-BA72-5261A2CAE131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DA6D08C-3F7C-47A3-8BCE-45626CBE1C50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DA6D08C-3F7C-47A3-8BCE-45626CBE1C50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DA6D08C-3F7C-47A3-8BCE-45626CBE1C50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DA6D08C-3F7C-47A3-8BCE-45626CBE1C50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC1CB0E7-EE49-467A-B46B-10D8A27AAA1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC1CB0E7-EE49-467A-B46B-10D8A27AAA1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC1CB0E7-EE49-467A-B46B-10D8A27AAA1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC1CB0E7-EE49-467A-B46B-10D8A27AAA1F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ApplicationMonitor.Core\\ApplicationMonitor.Core.csproj
+		SccProjectName1 = ApplicationMonitor.Core
+		SccLocalPath1 = ApplicationMonitor.Core
+		SccProjectUniqueName2 = ApplicationMonitor.Core.Tests\\ApplicationMonitor.Core.Tests.csproj
+		SccProjectName2 = ApplicationMonitor.Core.Tests
+		SccLocalPath2 = ApplicationMonitor.Core.Tests
+		SccProjectUniqueName3 = ApplicationMonitor.Web\\ApplicationMonitor.Web.csproj
+		SccProjectName3 = ApplicationMonitor.Web
+		SccLocalPath3 = ApplicationMonitor.Web
+		SccProjectUniqueName4 = ApplicationMonitor.Web.Tests\\ApplicationMonitor.Web.Tests.csproj
+		SccProjectName4 = ApplicationMonitor.Web.Tests
+		SccLocalPath4 = ApplicationMonitor.Web.Tests
+	EndGlobalSection
+EndGlobal

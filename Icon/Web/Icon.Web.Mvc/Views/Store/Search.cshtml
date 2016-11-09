@@ -1,0 +1,22 @@
+﻿@model Icon.Web.Mvc.Models.LocaleGridViewModel
+
+@{
+    ViewBag.Title = "Stores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@{Html.RenderPartial("_HeaderPartial", "Store Management");}
+
+<div id="grid" class="page-section">
+    @{Html.RenderPartial("_StoreViewPartial", Model);}
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/Locale/store-view-edit.js")
+    @Scripts.Render("~/Scripts/Common/display-alert.js")
+    @Scripts.Render("~/Scripts/jquery-disable.js")
+}
+

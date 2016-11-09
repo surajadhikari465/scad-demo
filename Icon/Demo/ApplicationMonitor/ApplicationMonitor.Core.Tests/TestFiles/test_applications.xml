@@ -1,0 +1,20 @@
+﻿<applications>
+  <application>
+    <name>API Controller</name>
+    <server>vm-icon-test1</server>
+    <directoryPath>Icon\API Controller Phase 2\Test</directoryPath>
+    <configFileName>Icon.ApiController.Controller.exe.config</configFileName>
+  </application>
+  <application>
+    <name>API Controller</name>
+    <server>vm-icon-test2</server>
+    <directoryPath>Icon\API Controller Phase 2\Test</directoryPath>
+    <configFileName>Icon.ApiController.Controller.exe.config</configFileName>
+  </application>
+  <application>
+    <name>GloCon</name>
+    <server>vm-icon-test1</server>
+    <directoryPath>Icon\Global Controller\Test</directoryPath>
+    <configFileName>GlobalEventController.Controller.exe</configFileName>
+  </application>
+</applications>

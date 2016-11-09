@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://retalix.com/R10/services" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import schemaLocation="ActionTypeCodes.xsd"/>
+	<xs:complexType name="BarcodeMapping1">
+		<xs:sequence>
+			<xs:element name="ID" type="xs:long" minOccurs="0"/>
+			<xs:element name="StateIdentifierCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessUnitID" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessUnitBarcode" type="xs:string" minOccurs="0"/>
+			<xs:element name="NationalBarcode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductDescription" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Action" type="ActionTypeAddUpdateDeleteCodes"/>
+	</xs:complexType>
+	<xs:complexType name="ArrayOfFailedBarcodeMapping1">
+		<xs:sequence>
+			<xs:element name="ID" type="xs:long" minOccurs="0"/>
+			<xs:element name="StateIdentifierCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessUnitID" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessUnitBarcode" type="xs:string" minOccurs="0"/>
+			<xs:element name="NationalBarcode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorMessage" type="xs:string" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProductExclusion1">
+		<xs:sequence>
+			<xs:element name="ID" type="xs:long" minOccurs="0"/>
+			<xs:element name="StateIdentifierCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessUnitID" type="xs:string" minOccurs="0"/>
+			<xs:element name="NationalBarcode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductDescription" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Action" type="ActionTypeAddUpdateDeleteCodes"/>
+	</xs:complexType>
+	<xs:complexType name="ArrayOfFailedProductExclusion1">
+		<xs:sequence>
+			<xs:element name="ID" type="xs:long" minOccurs="0"/>
+			<xs:element name="StateIdentifierCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessUnitID" type="xs:string" minOccurs="0"/>
+			<xs:element name="NationalBarcode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorMessage" type="xs:string" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

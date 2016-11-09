@@ -1,0 +1,63 @@
+﻿@using Infragistics.Web.Mvc
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@{Html.RenderPartial("_HeaderPartial", "Brand Management");}
+
+<div class="page-subsection">@Html.ActionLink("Add New Brand", "Create")</div>
+
+<hr />
+
+<div id="brands" class="page-section">
+
+    @Html.ActionLink("Export All Brands", "Export", "Brand", null, new { @class = "btn btn-default form-submit" })
+
+    <hr />
+
+    @(Html.Infragistics().Grid<Icon.Web.Mvc.Models.BrandViewModel>()
+            .ID("brandGrid")
+            .PrimaryKey("HierarchyClassId")
+            .AvgRowHeight("30px")
+            .Height("600px")
+            .Width("100%")
+            .RowVirtualization(true)
+            .VirtualizationMode(VirtualizationMode.Fixed)
+            .AutoGenerateColumns(false)
+            .Columns(columns =>
+            {
+                columns.For(c => c.HierarchyClassId).HeaderText("Brand ID").DataType("int").Width("20%");
+                columns.For(c => c.BrandName).HeaderText("Brand Name").DataType("string").Width("20%");
+                columns.For(c => c.BrandAbbreviation).HeaderText("Brand Abbreviation").DataType("string").Width("20%");
+                columns.Unbound("Edit").Template("<a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("20%").HeaderText("Edit Link");
+                columns.Unbound("Delete").Template("<a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("20%").HeaderText("Delete Link");
+            })
+            .Features(features => 
+            {
+                    features.Paging().PageSize(20);
+                    features.Sorting().Inherit(true);
+                    features.Filtering().Inherit(true);
+                
+            })
+            .DataSourceUrl(Url.Action("All", "Brand"))
+            .DataBind()
+            .Render()
+    )
+
+    <div class="search-alert page-subsection"></div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/jquery.fileDownload.js")
+}

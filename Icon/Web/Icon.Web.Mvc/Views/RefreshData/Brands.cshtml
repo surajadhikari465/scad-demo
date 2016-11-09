@@ -1,0 +1,35 @@
+﻿@model Icon.Web.Mvc.Models.RefreshData.RefreshDataViewModel
+
+@{
+    ViewBag.Title = "Refresh Brands";
+}
+
+<h2>Refresh Items</h2>
+
+
+<div id="searchOptions" class="page-section">
+    <div class="row">
+        @using (Html.BeginForm("Brands", "RefreshData", FormMethod.Post))
+        {
+            <div class="row">
+                @Html.Label(String.Format("Brand IDs (one per line, maximum {0})", 3000), new { @class = "form-label col-md-4" })
+                <div>
+                    @Html.TextAreaFor(model => Model.Identifiers, 20, 13, new { @class = "form-input", @type = "number" })
+                    <div class="row col-md-offset-4">
+                        @Html.ValidationMessageFor(model => model.Identifiers, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <input type="submit" value="Refresh" class="btn btn-default form-submit col-md-offset-4" id="refresh-button" />
+            </div>
+        }
+    </div>
+    @if (ViewBag.Message != null)
+    {
+        <div>
+            <p>@ViewBag.Message</p>
+        </div>
+    }
+</div>

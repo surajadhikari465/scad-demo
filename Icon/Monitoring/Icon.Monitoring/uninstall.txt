@@ -1,0 +1,2 @@
+Run the below command in a command prompt to uninstall the service. You will need to replace the {Path} with the path to the exe.
+{Path}\Icon.Monitoring.exe uninstall

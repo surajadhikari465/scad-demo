@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [vim]
+    AUTHORIZATION [dbo];
+

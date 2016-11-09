@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EsbUnhandledExceptionEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Unhandled Exception in ESB Module</value>
+  </data>
+  <data name="EsbUnhandledExceptionMessage" xml:space="preserve">
+    <value>An unhandled exception occurred in the ESB processing module (controller {0}).</value>
+  </data>
+  <data name="IrmaPushEntityBuildFailureEmailMessage" xml:space="preserve">
+    <value>IRMAPush entities could not be created for the following items:</value>
+  </data>
+  <data name="IrmaPushEntityBuildFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Build IRMAPush Entities</value>
+  </data>
+  <data name="IrmaPushEntitySaveFailureEmailMessage" xml:space="preserve">
+    <value>The following IconPosPushPublish records could not be saved to Icon:</value>
+  </data>
+  <data name="IrmaPushEntitySaveFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Save IRMAPush Entities</value>
+  </data>
+  <data name="IrmaPushEntitySaveFallbackEmailMessage" xml:space="preserve">
+    <value>The POS Push Controller encountered an error while staging IRMAPush entities.  Falling back to row-by-row processing for the current batch.</value>
+  </data>
+  <data name="IrmaPushEntitySaveFallbackEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Warning: Falling Back to Row-By-Row Processing</value>
+  </data>
+  <data name="ItemLocaleMessageBuildFailureEmailMessage" xml:space="preserve">
+    <value>ItemLocale messages could not be created for the following items:</value>
+  </data>
+  <data name="ItemLocaleMessageBuildFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Build ItemLocale Messages</value>
+  </data>
+  <data name="ItemLocaleMessageSaveFailureEmailMessage" xml:space="preserve">
+    <value>The following ItemLocale messages could not be saved to the database:</value>
+  </data>
+  <data name="ItemLocaleMessageSaveFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Save ItemLocale Messages</value>
+  </data>
+  <data name="ItemLocaleMessageSaveFallbackEmailMessage" xml:space="preserve">
+    <value>The POS Push Controller encountered an error during bulk ItemLocale message processing.  Falling back to row-by-row processing for the current batch.</value>
+  </data>
+  <data name="ItemLocaleMessageSaveFallbackEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Warning: Falling Back to Row-By-Row Processing</value>
+  </data>
+  <data name="ItemPriceEntityBuildFailureEmailMessage" xml:space="preserve">
+    <value>ItemPrice updates could not be created for the following items:</value>
+  </data>
+  <data name="ItemPriceEntityBuildFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Build ItemPrice Entities</value>
+  </data>
+  <data name="ItemPriceEntitySaveFailureEmailMessage" xml:space="preserve">
+    <value>The following ItemPrice entities could not be saved to the database:</value>
+  </data>
+  <data name="ItemPriceEntitySaveFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Save ItemPrice Entities</value>
+  </data>
+  <data name="ItemPriceEntitySaveFallbackEmailMessage" xml:space="preserve">
+    <value>The POS Push Controller encountered an error during bulk ItemPrice entity processing.  Falling back to row-by-row processing for the current batch.</value>
+  </data>
+  <data name="ItemPriceEntitySaveFallbackEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Warning: Falling Back to Row-By-Row Processing</value>
+  </data>
+  <data name="ItemLinkEntityBuildFailureEmailMessage" xml:space="preserve">
+    <value>ItemLink updates could not be created for the following items:</value>
+  </data>
+  <data name="ItemLinkEntityBuildFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Build ItemLink Entities</value>
+  </data>
+  <data name="ItemLinkEntitySaveFailureEmailMessage" xml:space="preserve">
+    <value>The following ItemLink entities could not be saved to the database:</value>
+  </data>
+  <data name="ItemLinkEntitySaveFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Save ItemLink Entities</value>
+  </data>
+  <data name="ItemLinkEntitySaveFallbackEmailMessage" xml:space="preserve">
+    <value>The POS Push Controller encountered an error during bulk ItemLink entity processing.  Falling back to row-by-row processing for the current batch.</value>
+  </data>
+  <data name="ItemLinkEntitySaveFallbackEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Warning: Falling Back to Row-By-Row Processing</value>
+  </data>
+  <data name="PriceMessageBuildFailureEmailMessage" xml:space="preserve">
+    <value>Price messages could not be created for the following items:</value>
+  </data>
+  <data name="PriceMessageBuildFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Build Price Messages</value>
+  </data>
+  <data name="PriceMessageSaveFailureEmailMessage" xml:space="preserve">
+    <value>The following Price messages could not be saved to the database:</value>
+  </data>
+  <data name="PriceMessageSaveFailureEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Failed to Save Price Messages</value>
+  </data>
+  <data name="PriceMessageSaveFallbackEmailMessage" xml:space="preserve">
+    <value>The POS Push Controller encountered an error during bulk Price message processing.  Falling back to row-by-row processing for the current batch.</value>
+  </data>
+  <data name="PriceMessageSaveFallbackEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Warning: Falling Back to Row-By-Row Processing</value>
+  </data>
+  <data name="StagingUnhandledExceptionEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Unhandled Exception in IRMAPush Staging Module</value>
+  </data>
+  <data name="StagingUnhandledExceptionMessage" xml:space="preserve">
+    <value>{0} - An unhandled exception occurred in the IRMAPush staging processing module (controller {1}).</value>
+  </data>
+  <data name="UdmUnhandledExceptionEmailSubject" xml:space="preserve">
+    <value>POS Push Controller Error: Unhandled Exception in UDM Module</value>
+  </data>
+  <data name="UdmUnhandledExceptionMessage" xml:space="preserve">
+    <value>An unhandled exception occurred in the UDM processing module (controller {0}).</value>
+  </data>
+  <data name="InvalidSaleDatesEmailMessage" xml:space="preserve">
+    <value>The following items have a sale start date that occurs after the sale end date and cannot be transmitted to R10:</value>
+  </data>
+  <data name="InvalidSaleDatesEmailSubject" xml:space="preserve">
+    <value>POS Push Error - Incorrect Sale Start and End Dates</value>
+  </data>
+  <data name="ItemSubscriptionDeleteFailureEmailMessage" xml:space="preserve">
+    <value>Item scubscription could not be marked as deleted for the following items:</value>
+  </data>
+  <data name="ItemSubscriptionDeleteFallbackEmailSubject" xml:space="preserve">
+    <value>The POS Push Controller encountered an error during Item subscription delete processing.  Falling back to row-by-row processing for the current batch.</value>
+  </data>
+</root>

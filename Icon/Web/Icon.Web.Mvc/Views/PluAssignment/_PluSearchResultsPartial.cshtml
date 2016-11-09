@@ -1,0 +1,157 @@
+﻿@using Infragistics.Web.Mvc
+@using Icon.Framework
+@using Icon.Web.Common
+@model Icon.Web.Mvc.Models.PluAssignmentSearchViewModel
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+<span class="search-alert page-subsection"></span>
+
+<div class="validation-section page-subsection">
+    @if (ViewData["SearchWarning"] != null)
+    {
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>@ViewData["SearchWarning"].ToString()</strong>
+        </div>
+    }
+</div>
+
+<hr />
+
+@if (Model.Items.Count > 0)
+{
+    @(Html.Infragistics().Grid(Model.Items.AsQueryable())
+            .ID("igGrid")
+            .Width("100%")
+            .PrimaryKey("Identifier")
+            .AutoGenerateColumns(false)
+            .AutoCommit(false)
+            .Columns(column =>
+            {
+                column.For(item => item.IrmaItemId).Hidden(true);
+                column.For(item => item.Region).Hidden(true);
+                column.For(item => item.Identifier).HeaderText("Identifier").Width("10%");
+                column.For(item => item.BrandName).HeaderText("Brand").Width("10%").DataType("string");
+                column.For(item => item.ItemDescription).HeaderText("Item Description").Width("15%").DataType("string");
+                column.For(item => item.PosDescription).HeaderText("POS Description").Width("10%").DataType("string");
+                column.For(item => item.PackageUnit).HeaderText("Item Pack").Width("3%").DataType("number");
+                column.For(item => item.RetailSize).HeaderText("Size").Width("3%").DataType("number");
+                column.For(item => item.RetailUom).HeaderText("UOM").Width("5%");
+                column.For(item => item.FoodStamp).HeaderText("Food Stamp").Width("4%").DataType("bool");
+                column.For(item => item.PosScaleTare).HeaderText("Tare").Width("3%").DataType("number");
+                column.For(item => item.MerchandiseHierarchyClassId).HeaderText("Merchandise Class").Width("20%").FormatterFunction("lookupMerchName");
+                column.For(item => item.TaxHierarchyClassId).HeaderText("Tax Class").Width("15%").FormatterFunction("lookupTaxName");
+                column.For(item => item.NationalHierarchyClassId).HeaderText("National Class").Width("15%").FormatterFunction("lookupNational");
+            })
+            .Features(features =>
+            {
+                features.Paging().PageSize(20);
+                features.Resizing();
+                features.Sorting().ApplyColumnCss(false);
+                features.Tooltips().Visibility(TooltipsVisibility.Overflow);
+                features.Selection().MultipleSelection(true).Mode(SelectionMode.Row);
+                features.RowSelectors().EnableCheckBoxes(true).EnableRowNumbering(false);
+                features.Updating()
+                    .DoneLabel("Apply")
+                    .EnableAddRow(false)
+                    .EnableDeleteRow(false)
+                    .StartEditTriggers(GridStartEditTriggers.DblClick)
+                    .SaveChangesSuccessHandler("onItemUpdateSuccess")
+                    .SaveChangesErrorHandler("onItemUpdateError")
+                    .ColumnSettings(colSettings =>
+                        {
+                            colSettings.ColumnSetting().ColumnKey("IrmaItemId").ReadOnly(true);
+                            colSettings.ColumnSetting().ColumnKey("Region").ReadOnly(true);
+                            colSettings.ColumnSetting().ColumnKey("Identifier").ReadOnly(true);
+                            colSettings.ColumnSetting().ColumnKey("BrandName")
+                                .Required(true)
+                                .EditorType(ColumnEditorType.Combo)
+                                .ComboEditorOptions(brandOptions =>
+                                    brandOptions.DataSource(Model.BrandHierarchyClasses.AsQueryable())
+                                        .ValueKey("HierarchyClassName")
+                                        .TextKey("HierarchyClassLineage")
+                                        .ShowDropDownButton(true)
+                                        .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                        .AllowCustomValue(false)
+                                        .Virtualization(true)
+                                        .DropDownWidth(600)
+                                        .ValidatorOptions(vo => vo.RegExp( CustomValidationPatterns.BrandNamePattern))
+                                        .ValidatorOptions(vo => vo.CustomErrorMessage("Value Required, " + ValidatorErrorMessages.BrandNameError)));
+                            colSettings.ColumnSetting().ColumnKey("ItemDescription").Required(true)
+                                .EditorOptions(@"validatorOptions: {errorMessage: 'Value Required, " + ValidatorErrorMessages.ProductDescriptionError + "', regExp:/" + TraitPatterns.ProductDescription + "/}");
+                            colSettings.ColumnSetting().ColumnKey("PosDescription").Required(true)
+                                .EditorOptions(@"validatorOptions: {errorMessage: 'Value Required, " + ValidatorErrorMessages.PosDescriptionError + "', regExp:/" + TraitPatterns.PosDescription + "/}");
+                            colSettings.ColumnSetting().ColumnKey("PackageUnit").Required(true).Validation(true)
+                                .NumericEditorOptions(options => options.DataMode(NumericEditorDataMode.Int).MinValue(0).MaxValue(999));
+                            colSettings.ColumnSetting().ColumnKey("Size").Validation(true)
+                                .NumericEditorOptions(options => options.DataMode(NumericEditorDataMode.Decimal).MinValue(0.001).MaxValue(999));
+                            colSettings.ColumnSetting().ColumnKey("RetailUom")
+                                .EditorType(ColumnEditorType.Combo)
+                                .ComboEditorOptions(uomOptions =>
+                                    uomOptions.DataSource(Model.RetailUoms.AsQueryable())
+                                        .ValueKey("Text")
+                                        .ShowDropDownButton(true)
+                                        .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                        .AllowCustomValue(false)
+                                        .Virtualization(true)
+                                        .DropDownWidth(300)
+                                );
+                            colSettings.ColumnSetting().ColumnKey("FoodStamp");
+                            colSettings.ColumnSetting().ColumnKey("PosScaleTare").Required(true).Validation(true)
+                        .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Decimal).MinDecimals(0).MaxDecimals(3).MinValue(0).MaxValue(9.999));
+                            colSettings.ColumnSetting().ColumnKey("MerchandiseHierarchyClassId").Required(true)
+                                .EditorType(ColumnEditorType.Combo)
+                                .ComboEditorOptions(merchOptions =>
+                                    merchOptions.DataSource(Model.MerchandiseHierarchyClasses.AsQueryable())
+                                        .ValueKey("HierarchyClassId")
+                                        .TextKey("HierarchyClassLineage")
+                                        .ShowDropDownButton(true)
+                                        .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                        .AllowCustomValue(false)
+                                        .Virtualization(true)
+                                        .DropDownWidth(1500)
+                                );
+                            colSettings.ColumnSetting().ColumnKey("TaxHierarchyClassId").Required(true)
+                                .EditorType(ColumnEditorType.Combo)
+                                .ComboEditorOptions(taxOptions =>
+                                    taxOptions.DataSource(Model.TaxHierarchyClasses.AsQueryable())
+                                        .ValueKey("HierarchyClassId")
+                                        .TextKey("HierarchyClassLineage")
+                                        .ShowDropDownButton(true)
+                                        .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                        .AllowCustomValue(false)
+                                        .Virtualization(true)
+                                        .DropDownWidth(600)
+                                );
+                            colSettings.ColumnSetting().ColumnKey("NationalHierarchyClassId")
+                                .EditorType(ColumnEditorType.Combo)
+                                .ComboEditorOptions(taxOptions =>
+                                    taxOptions.DataSource(Model.NationalHierarchyClasses.AsQueryable())
+                                        .ValueKey("HierarchyClassId")
+                                        .TextKey("HierarchyClassLineage")
+                                        .ShowDropDownButton(true)
+                                        .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                        .AllowCustomValue(false)
+                                        .Virtualization(true)
+                                        .DropDownWidth(600)
+                                );
+                            colSettings.ColumnSetting().ColumnKey("DepartmentSale").ReadOnly(true);
+                        });
+            })
+            .UpdateUrl(Url.Action("SaveChangesInGrid"))
+            .AggregateTransactions(true)
+            .DataBind()
+            .Render()
+    )
+
+    <input type="button" id="export" class="btn btn-default form-submit" value="Export" />
+}
+else
+{
+    <h4>No items found.</h4>
+}

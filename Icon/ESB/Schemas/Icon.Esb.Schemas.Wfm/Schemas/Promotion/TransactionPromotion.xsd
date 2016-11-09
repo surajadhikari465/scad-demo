@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/Transactions/RetailTransaction/LineItemType/TransactionPromotion/V1" xmlns:prm="http://schemas.wfm.com/Enterprise/PromoMgmt/Promotion/V1" xmlns:pof="http://schemas.wfm.com/Enterprise/PromoMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/Transactions/RetailTransaction/LineItemType/TransactionPromotion/V1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PromoMgmt/Promotion/V1" schemaLocation="Promotion.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PromoMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="transactionPromotions" type="TransactionPromosType"/>	
+	<xs:element name="transactionPromotion" type="TransactionPromoType"/>
+	<xs:complexType name="TransactionPromosType">
+		<xs:sequence>
+			<xs:element name="promotion" type="TransactionPromoType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransactionPromoType">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>THIS SCHEMA IS STILL YET TO BE DEFINED AND IS A PLACEHOLDER UNTIL ALL PROMO REQUIREMENTS DISCOVERED</xs:documentation>
+			</xs:annotation>
+			<xs:element name="transactionAttributes" type="pof:TransactionPromotionAttrType"/>
+			<xs:element name="promotion" type="crf:PromotionIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

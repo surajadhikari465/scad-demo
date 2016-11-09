@@ -1,0 +1,375 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.ItemCreateViewModel
+
+@{
+    ViewBag.Title = "Create Item";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@{Html.RenderPartial("_HeaderPartial", "Item Management");}
+
+<div class="page-section">
+    @using (Html.BeginForm("Create", "Item", FormMethod.Post, new { @class = "begin-form" }))
+    {
+        @Html.AntiForgeryToken()
+        
+        @Html.HiddenFor(model => model.MerchandiseHierarchyClassId)
+         @Html.HiddenFor(model => model.NationalHierarchyClassId)
+
+    <fieldset>
+        <legend>Create Item</legend>
+        <div style="min-width:2300px;">
+            <div id="canonicalTraits" style="float: left;width: 900px;">
+                <div class="row">
+                    @Html.LabelFor(model => model.ScanCode, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.ScanCode, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => model.ScanCode, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.BrandName, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.BrandName, new { @class = "col-md-6 form-input .ui-autocomplete", data_icon_autocomplete = @Url.Action("BrandAutocomplete") })
+                        @Html.ValidationMessageFor(model => model.BrandName, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.ProductDescription, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.ProductDescription, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => model.ProductDescription, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.PosDescription, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.PosDescription, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => model.PosDescription, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.PackageUnit, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.PackageUnit, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => model.PackageUnit, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.RetailSize, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.RetailSize, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => model.RetailSize, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.RetailUom, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.RetailUom, Model.RetailUoms, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => model.RetailUom, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.DeliverySystem, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.DeliverySystem, Model.DeliverySystems, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.FoodStampEligible, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.CheckBoxFor(model => model.FoodStampEligible, new { @class = "checkbox" })
+                        @Html.ValidationMessageFor(model => model.FoodStampEligible, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.PosScaleTare, "POS Scale Tare", new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.PosScaleTare, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => model.PosScaleTare, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.MerchandiseHierarchyName, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => Model.MerchandiseHierarchyName, new { @class = "col-md-6 form-input .ui-autocomplete", data_icon_searchabledropdown = @Url.Action("MerchandiseWithSubTeamAutocomplete"), data_dropdown_selectedId = "MerchandiseHierarchyClassId" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.TaxHierarchyClassName, "Tax Hierarchy", new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => Model.TaxHierarchyClassName, new { @class = "col-md-6 form-input .ui-autocomplete", data_icon_autocomplete = @Url.Action("TaxAutocomplete") })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.AlcoholByVolume, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => Model.AlcoholByVolume, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => Model.AlcoholByVolume, null, new { @class = "col-md-4 form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.NationalHierarchyName, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => Model.NationalHierarchyName, new { @class = "col-md-6 form-input .ui-autocomplete", data_icon_searchabledropdown = @Url.Action("NationalAutocompleteWithClassCode"), data_dropdown_selectedId = "NationalHierarchyClassId" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.BrowsingHierarchyClassId, "Browsing Hierarchy", new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.BrowsingHierarchyClassId, Model.BrowsingHierarchyClasses, "", new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.CaseinFree, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.CheckBoxFor(model => model.CaseinFree, new { @class = "checkbox" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.DrainedWeight, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => Model.DrainedWeight, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => Model.DrainedWeight, null, new { @class = "col-md-4 form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.DrainedWeightUom, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.DrainedWeightUom, Model.DrainedWeightUomOptions, "", new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.FairTradeCertified, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.FairTradeCertified, Model.FairTradeCertifiedOptions, "", new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.Hemp, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.CheckBoxFor(model => model.Hemp, new { @class = "checkbox" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.LocalLoanProducer, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.CheckBoxFor(model => model.LocalLoanProducer, new { @class = "checkbox" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.MainProductName, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => Model.MainProductName, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => Model.MainProductName, null, new { @class = "col-md-4 form-property-val" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.NutritionRequired, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.CheckBoxFor(model => model.NutritionRequired, new { @class = "checkbox" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.OrganicPersonalCare, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.CheckBoxFor(model => model.OrganicPersonalCare, new { @class = "checkbox" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.Paleo, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.CheckBoxFor(model => model.Paleo, new { @class = "checkbox" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.ProductFlavorType, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => Model.ProductFlavorType, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => Model.ProductFlavorType, null, new { @class = "col-md-4 form-property-val" })
+                    </div>
+                </div>
+            </div>
+            <div id="signAttributes" style="float: left;margin-left: -280px;width: 1200px;">
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedAirChilledOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedAirChilledOption, Model.AirChilledOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedAnimalWelfareRatingId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedAnimalWelfareRatingId, Model.AnimalWelfareRatings, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => Model.SelectedBiodynamicOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedBiodynamicOption, Model.BiodynamicOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedCheeseMilkTypeId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedCheeseMilkTypeId, Model.CheeseMilkTypes, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedCheeseRawOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedCheeseRawOption, Model.CheeseRawOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedDryAgedOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedDryAgedOption, Model.DryAgedOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedEcoScaleRatingId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedEcoScaleRatingId, Model.EcoScaleRatings, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedFreeRangeOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedFreeRangeOption, Model.FreeRangeOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedSeafoodFreshOrFrozenId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedSeafoodFreshOrFrozenId, Model.SeafoodFreshOrFrozen, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.GlutenFreeAgencyId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.GlutenFreeAgencyId, Model.GlutenFreeAgencies, String.Empty, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedGrassFedOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedGrassFedOption, Model.GrassFedOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.KosherAgencyId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.KosherAgencyId, Model.KosherAgencies, String.Empty, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedMadeInHouseOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedMadeInHouseOption, Model.MadeInHouseOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedMscOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedMscOption, Model.MscOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.NonGmoAgencyId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.NonGmoAgencyId, Model.NonGmoAgencies, String.Empty, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.OrganicAgencyId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.OrganicAgencyId, Model.OrganicAgencies, String.Empty, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedPastureRaisedOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedPastureRaisedOption, Model.PastureRaisedOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedPremiumBodyCareOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedPremiumBodyCareOption, Model.PremiumBodyCareOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedSeafoodCatchTypeId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedSeafoodCatchTypeId, Model.SeafoodCatchTypes, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.VeganAgencyId, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.VeganAgencyId, Model.VeganAgencies, String.Empty, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedVegetarianOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedVegetarianOption, Model.VegetarianOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedWholeTradeOption, new { @class = "col-md-3 form-label" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedWholeTradeOption, Model.WholeTradeOptions, new { @class = "col-md-6 form-input" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+        <div class="row">
+            <div class="col-md-offset-3 col-md-1">
+                <input type="submit" value="Create" class="btn btn-default form-submit" />
+            </div>
+        </div>
+
+        <div class="validation-section page-subsection">
+            @if (ViewData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>@ViewData["ErrorMessage"].ToString()</strong>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<div class="page-subsection">
+    @if (TempData["CreateItemMessage"] != null)
+    {
+        <div id="createItemAlert" class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>@TempData["CreateItemMessage"].ToString()</strong>
+        </div>
+    }
+</div>
+
+<div class="form-footer">
+    @Html.ActionLink("Back to Consolidated Item Search", "Index")
+</div>
+
+@section Scripts 
+{
+    @Scripts.Render("~/Scripts/apply-autocomplete.js")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/searchable-dropdown.js")
+}

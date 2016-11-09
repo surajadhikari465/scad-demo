@@ -1,0 +1,50 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.RecentLogEntriesReportViewModel
+
+@{ 
+    var logName = Model.Name;
+    if (logName.Length > 22)
+    {
+        logName = logName.Substring(0, 23);
+    }
+    else
+    {
+        if (logName.Length < 20)
+        {
+            logName += " Log";
+        }
+    }
+}
+        
+<a id="logEntryReportContent@(Model.AppID)" href="@Url.Action("Index", "Logs", new { id = Model.Name })" class="btn btn-link btn-block">
+    @logName
+    @if (Model.AppID > 0)
+    {
+        if (Model.LogEntryCount.HasValue)
+        {
+            if (Model.LogEntryCount.Value > 0)
+            {
+                <span class="label label-danger">
+                    @Model.LogEntryCount
+                </span>
+            }
+            else
+            {
+                <span class="label label-success">
+                    @Model.LogEntryCount
+                </span>
+            }
+        }
+        else
+        {
+            <span class="label label-warning">
+                ?
+            </span>
+        }
+    }
+    else
+    {
+        <span class="label label-default">
+            ???
+        </span>
+    }
+</a>

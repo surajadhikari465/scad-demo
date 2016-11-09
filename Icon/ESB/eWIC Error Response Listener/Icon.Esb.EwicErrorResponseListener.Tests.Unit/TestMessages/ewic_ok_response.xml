@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pfx5:r10Response xmlns:ns9="http://schema.wfm.com/Common/SharedLoginSchema" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns12="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns6="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns7="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:ns10="http://schemas.wfm.com/Enterprise/R10/R10RequestActivity/V1" xmlns:pfx="http://retalix.com/R10/services" xmlns:ns8="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1" xmlns:ns11="http://schemas.wfm.com/Enterprise/R10/AscIIResponse/V1" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://xmlns.tibco.com/encodings/mime" xmlns:ns4="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns3="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pfx5="http://schemas.wfm.com/Enterprise/R10/R10Response/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ClickCollectItemEntity/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/R10/R10Request/V1" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib" xmlns:pfx6="http://schemas.wfm.com/Enterprise/R10/Request/MessageMetadata/V1">
+    <pfx5:applicationName>EWICPROCESSING</pfx5:applicationName>
+    <pfx5:requestSuccess>true</pfx5:requestSuccess>
+    <pfx5:r10Message>
+        <ns8:errorCount>0</ns8:errorCount>
+        <ns8:r10ResponseReason>
+            <ns8:reasonCode>200</ns8:reasonCode>
+            <ns8:messageDescription>OK</ns8:messageDescription>
+        </ns8:r10ResponseReason>
+        <ns8:xmlAscii>&lt;?xml version="1.0" encoding="utf-8"?>&lt;WicBarcodeMappingManagementResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" MajorVersion="1" xmlns="http://retalix.com/R10/services">&lt;Header>&lt;Response ResponseCode="OK">&lt;RequestID>107188&lt;/RequestID>&lt;ResponseTimestamp>2015-12-02T12:01:57.4636919-06:00&lt;/ResponseTimestamp>&lt;/Response>&lt;/Header>&lt;FailedBarcodeMappings>&lt;FailedBarcodeMapping xmlns="http://schemas.datacontract.org/2004/07/Ncr.Wic.AplManagement.Entities">&lt;ID>0&lt;/ID>&lt;StateIdentifierCode>MA&lt;/StateIdentifierCode>&lt;BusinessUnitBarcode>000000000094044&lt;/BusinessUnitBarcode>&lt;NationalBarcode>000076163520430&lt;/NationalBarcode>&lt;ErrorMessage>This is non-apl product. Product barcode is 000076163520430&lt;/ErrorMessage>&lt;/FailedBarcodeMapping>&lt;/FailedBarcodeMappings>&lt;/WicBarcodeMappingManagementResponse></ns8:xmlAscii>
+    </pfx5:r10Message>
+    <pfx5:r10Grouping>
+        <ns8:groupSize>0</ns8:groupSize>
+    </pfx5:r10Grouping>
+    <pfx5:destination>
+        <ns8:replyDestination/>
+    </pfx5:destination>
+</pfx5:r10Response>

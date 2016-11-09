@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="IconApplicationData" type="IconApplicationData">
+  </xs:element>
+  
+  <xs:complexType name="IconApplicationData">
+    <xs:sequence>
+      <xs:element name="Applications" minOccurs="0" maxOccurs="1" type="Applications"></xs:element>
+      <xs:element name="EsbEnvironments" minOccurs="0" maxOccurs="1" type="EsbEnvironments"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Applications">
+    <xs:sequence>
+      <xs:element name="Application" minOccurs="0" maxOccurs="unbounded" type="Application"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Application">
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="ConfigFilePath" type="xs:string" use="required"/>
+    <xs:attribute name="DisplayName" type="xs:string" use="required" />
+    <xs:attribute name="Environment" type="xs:string" use="required" />
+    <xs:attribute name="Server" type="xs:string" use="required" />
+    <xs:attribute name="TypeOfApplication" type="xs:string" use="required" />
+    <xs:attribute name="DataFlowFrom" type="xs:string" use="optional"/>
+    <xs:attribute name="DataFlowTo" type="xs:string" use="optional"/>
+    <xs:attribute name="LoggingName" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="EsbEnvironments">
+    <xs:sequence>
+      <xs:element name="EsbEnvironment" minOccurs="0" maxOccurs="unbounded" type="EsbEnvironment"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="EsbEnvironment">
+    <xs:sequence>
+      <xs:element name="ApplicationsInEnvironment" minOccurs="0" maxOccurs="1" type="ApplicationsInEnvironment">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="ServerUrl" type="xs:string" use="required" />
+    <xs:attribute name="TargetHostName" type="xs:string" use="required"/>
+    <xs:attribute name="JmsUsername" type="xs:string" use="required" />
+    <xs:attribute name="JmsPassword" type="xs:string" use="required" />
+    <xs:attribute name="JndiUsername" type="xs:string" use="required" />
+    <xs:attribute name="JndiPassword" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ApplicationsInEnvironment">
+    <xs:sequence>
+      <xs:element name="ApplicationInEnvironment" minOccurs="0" maxOccurs="unbounded" type="ApplicationIdentifier"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ApplicationIdentifier">
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Server" type="xs:string" use="required" />
+  </xs:complexType>
+</xs:schema>

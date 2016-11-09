@@ -1,0 +1,1 @@
+alter table app.messagehistory drop column Note

@@ -1,0 +1,183 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.ApiController", "Mammoth.ApiController\Mammoth.ApiController.csproj", "{EBF0D923-69EC-4E6B-AAE5-8C842E7908FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{A78961CB-A7A3-4E3B-80FB-7B4F608CE956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Framework", "..\Mammoth.Shared\Mammoth.Framework\Mammoth.Framework.csproj", "{799950FA-6F28-43CA-A60C-769BBE9DE6A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.Controller", "..\..\API Controller Phase2\Icon.ApiController.Controller\Icon.ApiController.Controller.csproj", "{693B3840-E93C-4FC6-931E-CA9334E3B6C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.DataAccess", "..\..\API Controller Phase2\Icon.ApiController.DataAccess\Icon.ApiController.DataAccess.csproj", "{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.Common", "..\..\API Controller Phase2\Icon.ApiController.Common\Icon.ApiController.Common.csproj", "{FF85E818-177C-48FC-9765-47B0804668EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.ApiController.DataAccess", "Mammoth.ApiController.DataAccess\Mammoth.ApiController.DataAccess.csproj", "{484D3C46-00BF-4A17-BDD8-5D2320CF7117}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.ApiController.Tests", "Mammoth.ApiController.Tests\Mammoth.ApiController.Tests.csproj", "{9311FF6B-1572-4A3A-9E0F-859E51D3D5E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.ApiController.DataAccess.Tests", "Mammoth.ApiController.DataAccess.Tests\Mammoth.ApiController.DataAccess.Tests.csproj", "{046BAF6E-7A03-408A-BC08-023985225AF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common.Testing", "..\Mammoth.Shared\Mammoth.Common.Testing\Mammoth.Common.Testing.csproj", "{1F642581-F7FF-4B48-B9C9-71B6350A1496}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.ApiController.Tests.Specification", "Mammoth.ApiController.Tests.Specification\Mammoth.ApiController.Tests.Specification.csproj", "{92D55CDB-86AB-4411-AFAC-E87EC09081C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common.DataAccess", "..\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj", "{82505A9B-2264-4428-9806-D5EF838109B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBF0D923-69EC-4E6B-AAE5-8C842E7908FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF0D923-69EC-4E6B-AAE5-8C842E7908FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF0D923-69EC-4E6B-AAE5-8C842E7908FF}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{EBF0D923-69EC-4E6B-AAE5-8C842E7908FF}.QA|Any CPU.Build.0 = QA|Any CPU
+		{EBF0D923-69EC-4E6B-AAE5-8C842E7908FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF0D923-69EC-4E6B-AAE5-8C842E7908FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBF0D923-69EC-4E6B-AAE5-8C842E7908FF}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{EBF0D923-69EC-4E6B-AAE5-8C842E7908FF}.Test|Any CPU.Build.0 = Test|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.QA|Any CPU.Build.0 = QA|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Test|Any CPU.Build.0 = Test|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.QA|Any CPU.Build.0 = QA|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Test|Any CPU.Build.0 = Test|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.QA|Any CPU.Build.0 = QA|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Test|Any CPU.Build.0 = Test|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.QA|Any CPU.Build.0 = QA|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Test|Any CPU.Build.0 = Test|Any CPU
+		{484D3C46-00BF-4A17-BDD8-5D2320CF7117}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{484D3C46-00BF-4A17-BDD8-5D2320CF7117}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{484D3C46-00BF-4A17-BDD8-5D2320CF7117}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{484D3C46-00BF-4A17-BDD8-5D2320CF7117}.QA|Any CPU.Build.0 = QA|Any CPU
+		{484D3C46-00BF-4A17-BDD8-5D2320CF7117}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{484D3C46-00BF-4A17-BDD8-5D2320CF7117}.Release|Any CPU.Build.0 = Release|Any CPU
+		{484D3C46-00BF-4A17-BDD8-5D2320CF7117}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{484D3C46-00BF-4A17-BDD8-5D2320CF7117}.Test|Any CPU.Build.0 = Test|Any CPU
+		{9311FF6B-1572-4A3A-9E0F-859E51D3D5E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9311FF6B-1572-4A3A-9E0F-859E51D3D5E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9311FF6B-1572-4A3A-9E0F-859E51D3D5E8}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{9311FF6B-1572-4A3A-9E0F-859E51D3D5E8}.QA|Any CPU.Build.0 = QA|Any CPU
+		{9311FF6B-1572-4A3A-9E0F-859E51D3D5E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9311FF6B-1572-4A3A-9E0F-859E51D3D5E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9311FF6B-1572-4A3A-9E0F-859E51D3D5E8}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{9311FF6B-1572-4A3A-9E0F-859E51D3D5E8}.Test|Any CPU.Build.0 = Test|Any CPU
+		{046BAF6E-7A03-408A-BC08-023985225AF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{046BAF6E-7A03-408A-BC08-023985225AF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{046BAF6E-7A03-408A-BC08-023985225AF5}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{046BAF6E-7A03-408A-BC08-023985225AF5}.QA|Any CPU.Build.0 = QA|Any CPU
+		{046BAF6E-7A03-408A-BC08-023985225AF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{046BAF6E-7A03-408A-BC08-023985225AF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{046BAF6E-7A03-408A-BC08-023985225AF5}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{046BAF6E-7A03-408A-BC08-023985225AF5}.Test|Any CPU.Build.0 = Test|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.QA|Any CPU.Build.0 = Release|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Test|Any CPU.Build.0 = Release|Any CPU
+		{92D55CDB-86AB-4411-AFAC-E87EC09081C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92D55CDB-86AB-4411-AFAC-E87EC09081C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92D55CDB-86AB-4411-AFAC-E87EC09081C3}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{92D55CDB-86AB-4411-AFAC-E87EC09081C3}.QA|Any CPU.Build.0 = QA|Any CPU
+		{92D55CDB-86AB-4411-AFAC-E87EC09081C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92D55CDB-86AB-4411-AFAC-E87EC09081C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92D55CDB-86AB-4411-AFAC-E87EC09081C3}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{92D55CDB-86AB-4411-AFAC-E87EC09081C3}.Test|Any CPU.Build.0 = Test|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.Build.0 = QA|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.Build.0 = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9} = {A78961CB-A7A3-4E3B-80FB-7B4F608CE956}
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0} = {A78961CB-A7A3-4E3B-80FB-7B4F608CE956}
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61} = {A78961CB-A7A3-4E3B-80FB-7B4F608CE956}
+		{FF85E818-177C-48FC-9765-47B0804668EC} = {A78961CB-A7A3-4E3B-80FB-7B4F608CE956}
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496} = {A78961CB-A7A3-4E3B-80FB-7B4F608CE956}
+		{82505A9B-2264-4428-9806-D5EF838109B3} = {A78961CB-A7A3-4E3B-80FB-7B4F608CE956}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 12
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Mammoth.ApiController\\Mammoth.ApiController.csproj
+		SccProjectName1 = Mammoth.ApiController
+		SccLocalPath1 = Mammoth.ApiController
+		SccProjectUniqueName2 = ..\\Mammoth.Shared\\Mammoth.Framework\\Mammoth.Framework.csproj
+		SccProjectTopLevelParentUniqueName2 = Mammoth.ApiController.sln
+		SccProjectName2 = ../Mammoth.Shared/Mammoth.Framework
+		SccLocalPath2 = ..\\Mammoth.Shared\\Mammoth.Framework
+		SccProjectUniqueName3 = ..\\..\\API\u0020Controller\u0020Phase2\\Icon.ApiController.Controller\\Icon.ApiController.Controller.csproj
+		SccProjectTopLevelParentUniqueName3 = Mammoth.ApiController.sln
+		SccProjectName3 = ../../API\u0020Controller\u0020Phase2/Icon.ApiController.Controller
+		SccLocalPath3 = ..\\..\\API\u0020Controller\u0020Phase2\\Icon.ApiController.Controller
+		SccProjectUniqueName4 = ..\\..\\API\u0020Controller\u0020Phase2\\Icon.ApiController.DataAccess\\Icon.ApiController.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName4 = Mammoth.ApiController.sln
+		SccProjectName4 = ../../API\u0020Controller\u0020Phase2/Icon.ApiController.DataAccess
+		SccLocalPath4 = ..\\..\\API\u0020Controller\u0020Phase2\\Icon.ApiController.DataAccess
+		SccProjectUniqueName5 = ..\\..\\API\u0020Controller\u0020Phase2\\Icon.ApiController.Common\\Icon.ApiController.Common.csproj
+		SccProjectTopLevelParentUniqueName5 = Mammoth.ApiController.sln
+		SccProjectName5 = ../../API\u0020Controller\u0020Phase2/Icon.ApiController.Common
+		SccLocalPath5 = ..\\..\\API\u0020Controller\u0020Phase2\\Icon.ApiController.Common
+		SccProjectUniqueName6 = Mammoth.ApiController.DataAccess\\Mammoth.ApiController.DataAccess.csproj
+		SccProjectName6 = Mammoth.ApiController.DataAccess
+		SccLocalPath6 = Mammoth.ApiController.DataAccess
+		SccProjectUniqueName7 = Mammoth.ApiController.Tests\\Mammoth.ApiController.Tests.csproj
+		SccProjectName7 = Mammoth.ApiController.Tests
+		SccLocalPath7 = Mammoth.ApiController.Tests
+		SccProjectUniqueName8 = Mammoth.ApiController.DataAccess.Tests\\Mammoth.ApiController.DataAccess.Tests.csproj
+		SccProjectName8 = Mammoth.ApiController.DataAccess.Tests
+		SccLocalPath8 = Mammoth.ApiController.DataAccess.Tests
+		SccProjectUniqueName9 = ..\\Mammoth.Shared\\Mammoth.Common.Testing\\Mammoth.Common.Testing.csproj
+		SccProjectTopLevelParentUniqueName9 = Mammoth.ApiController.sln
+		SccProjectName9 = ../Mammoth.Shared/Mammoth.Common.Testing
+		SccLocalPath9 = ..\\Mammoth.Shared\\Mammoth.Common.Testing
+		SccProjectUniqueName10 = Mammoth.ApiController.Tests.Specification\\Mammoth.ApiController.Tests.Specification.csproj
+		SccProjectName10 = Mammoth.ApiController.Tests.Specification
+		SccLocalPath10 = Mammoth.ApiController.Tests.Specification
+		SccProjectUniqueName11 = ..\\Mammoth.Shared\\Mammoth.Common.DataAccess\\Mammoth.Common.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName11 = Mammoth.ApiController.sln
+		SccProjectName11 = ../Mammoth.Shared/Mammoth.Common.DataAccess
+		SccLocalPath11 = ..\\Mammoth.Shared\\Mammoth.Common.DataAccess
+	EndGlobalSection
+EndGlobal

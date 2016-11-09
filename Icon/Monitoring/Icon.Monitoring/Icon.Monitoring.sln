@@ -1,0 +1,95 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Monitoring", "Icon.Monitoring\Icon.Monitoring.csproj", "{00642D17-3F93-4759-AB8E-3F8754A18C54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Monitoring.DataAccess", "Icon.Monitoring.DataAccess\Icon.Monitoring.DataAccess.csproj", "{1EC2D3CB-5E75-4801-9270-ACF839194DFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Monitoring.Common", "Icon.Monitoring.Common\Icon.Monitoring.Common.csproj", "{5353DDBB-DC41-4D4E-995A-3C87262F0AE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Monitoring.Tests", "Icon.Monitoring.Tests\Icon.Monitoring.Tests.csproj", "{92272CD3-4235-4FE1-8F6E-ECA66958696E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Monitoring.DataAccess.Tests", "Icon.Monitoring.DataAccess.Tests\Icon.Monitoring.DataAccess.Tests.csproj", "{B7F46218-F3A1-4EE6-B5CA-1E8279469A19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{CC6C1285-3E70-47CD-B30F-A18CB5CA5584}"
+	ProjectSection(SolutionItems) = preProject
+		install.txt = install.txt
+		uninstall.txt = uninstall.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00642D17-3F93-4759-AB8E-3F8754A18C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00642D17-3F93-4759-AB8E-3F8754A18C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00642D17-3F93-4759-AB8E-3F8754A18C54}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{00642D17-3F93-4759-AB8E-3F8754A18C54}.QA|Any CPU.Build.0 = QA|Any CPU
+		{00642D17-3F93-4759-AB8E-3F8754A18C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00642D17-3F93-4759-AB8E-3F8754A18C54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00642D17-3F93-4759-AB8E-3F8754A18C54}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{00642D17-3F93-4759-AB8E-3F8754A18C54}.Test|Any CPU.Build.0 = Test|Any CPU
+		{1EC2D3CB-5E75-4801-9270-ACF839194DFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EC2D3CB-5E75-4801-9270-ACF839194DFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EC2D3CB-5E75-4801-9270-ACF839194DFE}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{1EC2D3CB-5E75-4801-9270-ACF839194DFE}.QA|Any CPU.Build.0 = QA|Any CPU
+		{1EC2D3CB-5E75-4801-9270-ACF839194DFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EC2D3CB-5E75-4801-9270-ACF839194DFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EC2D3CB-5E75-4801-9270-ACF839194DFE}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{1EC2D3CB-5E75-4801-9270-ACF839194DFE}.Test|Any CPU.Build.0 = Test|Any CPU
+		{5353DDBB-DC41-4D4E-995A-3C87262F0AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5353DDBB-DC41-4D4E-995A-3C87262F0AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5353DDBB-DC41-4D4E-995A-3C87262F0AE4}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{5353DDBB-DC41-4D4E-995A-3C87262F0AE4}.QA|Any CPU.Build.0 = QA|Any CPU
+		{5353DDBB-DC41-4D4E-995A-3C87262F0AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5353DDBB-DC41-4D4E-995A-3C87262F0AE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5353DDBB-DC41-4D4E-995A-3C87262F0AE4}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{5353DDBB-DC41-4D4E-995A-3C87262F0AE4}.Test|Any CPU.Build.0 = Test|Any CPU
+		{92272CD3-4235-4FE1-8F6E-ECA66958696E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92272CD3-4235-4FE1-8F6E-ECA66958696E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92272CD3-4235-4FE1-8F6E-ECA66958696E}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{92272CD3-4235-4FE1-8F6E-ECA66958696E}.QA|Any CPU.Build.0 = QA|Any CPU
+		{92272CD3-4235-4FE1-8F6E-ECA66958696E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92272CD3-4235-4FE1-8F6E-ECA66958696E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92272CD3-4235-4FE1-8F6E-ECA66958696E}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{92272CD3-4235-4FE1-8F6E-ECA66958696E}.Test|Any CPU.Build.0 = Test|Any CPU
+		{B7F46218-F3A1-4EE6-B5CA-1E8279469A19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7F46218-F3A1-4EE6-B5CA-1E8279469A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7F46218-F3A1-4EE6-B5CA-1E8279469A19}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{B7F46218-F3A1-4EE6-B5CA-1E8279469A19}.QA|Any CPU.Build.0 = QA|Any CPU
+		{B7F46218-F3A1-4EE6-B5CA-1E8279469A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7F46218-F3A1-4EE6-B5CA-1E8279469A19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7F46218-F3A1-4EE6-B5CA-1E8279469A19}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{B7F46218-F3A1-4EE6-B5CA-1E8279469A19}.Test|Any CPU.Build.0 = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Icon.Monitoring.Common\\Icon.Monitoring.Common.csproj
+		SccProjectName1 = Icon.Monitoring.Common
+		SccLocalPath1 = Icon.Monitoring.Common
+		SccProjectUniqueName2 = Icon.Monitoring.DataAccess\\Icon.Monitoring.DataAccess.csproj
+		SccProjectName2 = Icon.Monitoring.DataAccess
+		SccLocalPath2 = Icon.Monitoring.DataAccess
+		SccProjectUniqueName3 = Icon.Monitoring\\Icon.Monitoring.csproj
+		SccProjectName3 = Icon.Monitoring
+		SccLocalPath3 = Icon.Monitoring
+		SccProjectUniqueName4 = Icon.Monitoring.Tests\\Icon.Monitoring.Tests.csproj
+		SccProjectName4 = Icon.Monitoring.Tests
+		SccLocalPath4 = Icon.Monitoring.Tests
+		SccProjectUniqueName5 = Icon.Monitoring.DataAccess.Tests\\Icon.Monitoring.DataAccess.Tests.csproj
+		SccProjectName5 = Icon.Monitoring.DataAccess.Tests
+		SccLocalPath5 = Icon.Monitoring.DataAccess.Tests
+	EndGlobalSection
+EndGlobal

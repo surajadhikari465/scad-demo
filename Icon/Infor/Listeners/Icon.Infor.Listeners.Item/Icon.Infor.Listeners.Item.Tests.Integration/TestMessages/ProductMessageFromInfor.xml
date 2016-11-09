@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:pry="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:icr="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:lcy="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:itp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ama="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ici="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:psg="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:iea="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2">
+  <item crf:Action="AddOrUpdate">
+    <id>4000110</id>
+    <base>
+      <ibi:type>
+        <itp:code>RTL</itp:code>
+        <itp:description>Desc</itp:description>
+      </ibi:type>
+    </base>
+    <locale>
+      <lcl:id>1</lcl:id>
+      <lcl:name>Whole Foods Market</lcl:name>
+      <lcl:type>
+        <lcy:code>CHN</lcy:code>
+        <lcy:description>Chain</lcy:description>
+      </lcl:type>
+      <lcl:enterpriseItemAttributes>
+        <iea:scanCodes>
+          <sis:scanCode>
+            <sis:code>1000397</sis:code>
+            <sis:typeDescription>UPC</sis:typeDescription>
+          </sis:scanCode>
+        </iea:scanCodes>
+        <iea:hierarchies>
+          <crf:hierarchy xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <ihy:name>Brands</ihy:name>
+            <ihy:class>
+              <hcl:id>40430</hcl:id>
+              <hcl:name>BREADSMITH</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <ihy:name>Tax</ihy:name>
+            <ihy:class>
+              <hcl:id>0000000</hcl:id>
+              <hcl:name>0000000 GENERAL MERCHANDISE</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <ihy:name>Financial</ihy:name>
+            <ihy:class>
+              <hcl:id>6460</hcl:id>
+              <hcl:name>Lifestyle (6460)</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <ihy:name>Merchandise</ihy:name>
+            <ihy:class>
+              <hcl:id>83431</hcl:id>
+              <hcl:parentId>83338</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <ihy:name>National</ihy:name>
+            <ihy:class>
+              <hcl:id>124295</hcl:id>
+              <hcl:parentId>121692</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+        </iea:hierarchies>
+        <iea:traits>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>INS</tra:code>
+            <tra:type>
+              <trt:description/>
+              <trt:value>
+                <trv:value>2016-08-01T14:49:29.284Z</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>USR</tra:code>
+            <tra:type>
+              <trt:description/>
+              <trt:value>
+                <trv:value>eb92b391-debf-4429-91ee-2e505aac0aba</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>MOD</tra:code>
+            <tra:type>
+              <trt:description/>
+              <trt:value>
+                <trv:value>2016-08-01T16:04:20.940Z</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>MSC</tra:code>
+            <tra:type>
+              <trt:description>MSC</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>PLO</tra:code>
+            <tra:type>
+              <trt:description>Paleo</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>RSZ</tra:code>
+            <tra:type>
+              <trt:description>Retail Size</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>PAS</tra:code>
+            <tra:type>
+              <trt:description>Pasture Raised</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>ACH</tra:code>
+            <tra:type>
+              <trt:description>Air Chilled</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>HEM</tra:code>
+            <tra:type>
+              <trt:description>Hemp</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>DAG</tra:code>
+            <tra:type>
+              <trt:description>Dry Aged</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>DS</tra:code>
+            <tra:type>
+              <trt:description>Delivery System</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>SCT</tra:code>
+            <tra:type>
+              <trt:description>POS Scale Tare</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>MPN</tra:code>
+            <tra:type>
+              <trt:description>Main Product Name</trt:description>
+              <trt:value>
+                <trv:value>Phasor Two I1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>GRF</tra:code>
+            <tra:type>
+              <trt:description>Grass Fed</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>FSE</tra:code>
+            <tra:type>
+              <trt:description>Food Stamp Eligible</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>HID</tra:code>
+            <tra:type>
+              <trt:description>Item Status</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>CR</tra:code>
+            <tra:type>
+              <trt:description>Cheese Attribute: Raw</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>NGM</tra:code>
+            <tra:type>
+              <trt:description>Non-GMO</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>CMT</tra:code>
+            <tra:type>
+              <trt:description>Cheese Attribute: Milk Type</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>GF</tra:code>
+            <tra:type>
+              <trt:description>Gluten Free</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>FRR</tra:code>
+            <tra:type>
+              <trt:description>Free Range</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>OPC</tra:code>
+            <tra:type>
+              <trt:description>Organic Personal Care</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>NTS</tra:code>
+            <tra:type>
+              <trt:description>Notes</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>NR</tra:code>
+            <tra:type>
+              <trt:description>Nutrition Required</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>SFT</tra:code>
+            <tra:type>
+              <trt:description>Seafood: Wild Or Farm Raised</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>OG</tra:code>
+            <tra:type>
+              <trt:description>Organic</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>RUM</tra:code>
+            <tra:type>
+              <trt:description>UOM</trt:description>
+              <trt:value>
+                <trv:value>EA</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>POS</tra:code>
+            <tra:type>
+              <trt:description>POS Description</trt:description>
+              <trt:value>
+                <trv:value>Phasor Two I1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>BIO</tra:code>
+            <tra:type>
+              <trt:description>Biodynamic</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>PKG</tra:code>
+            <tra:type>
+              <trt:description>Item Pack</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>PBC</tra:code>
+            <tra:type>
+              <trt:description>Premium Body Care</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>DWU</tra:code>
+            <tra:type>
+              <trt:description>Drained Weight UOM</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>PRH</tra:code>
+            <tra:type>
+              <trt:description>Prohibit Discount</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>VEG</tra:code>
+            <tra:type>
+              <trt:description>Vegetarian</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>MIH</tra:code>
+            <tra:type>
+              <trt:description>Made In House</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>DW</tra:code>
+            <tra:type>
+              <trt:description>Drained Weight</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>PFT</tra:code>
+            <tra:type>
+              <trt:description>Product Flavor or Type</trt:description>
+              <trt:value>
+                <trv:value>HEAVY</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>FTC</tra:code>
+            <tra:type>
+              <trt:description>Fair Trade Certified</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>VGN</tra:code>
+            <tra:type>
+              <trt:description>Vegan</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>SFF</tra:code>
+            <tra:type>
+              <trt:description>Fresh or Frozen</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>ABV</tra:code>
+            <tra:type>
+              <trt:description>Alcohol By Volume</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>AWR</tra:code>
+            <tra:type>
+              <trt:description>Animal Welfare Rating</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>ECO</tra:code>
+            <tra:type>
+              <trt:description>Eco-Scale Rating</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>CF</tra:code>
+            <tra:type>
+              <trt:description>Casein Free</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>PRD</tra:code>
+            <tra:type>
+              <trt:description>Product Description</trt:description>
+              <trt:value>
+                <trv:value>Phasor Two I1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>LLP</tra:code>
+            <tra:type>
+              <trt:description>Local Loan Producer</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>KSH</tra:code>
+            <tra:type>
+              <trt:description>Kosher</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:infor="http://infor.com/infor-custom" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+            <tra:code>WT</tra:code>
+            <tra:type>
+              <trt:description>Whole Trade</trt:description>
+              <trt:value>
+                <trv:value/>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+        </iea:traits>
+      </lcl:enterpriseItemAttributes>
+    </locale>
+  </item>
+</items>

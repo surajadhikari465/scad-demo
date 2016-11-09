@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+  
+  <Applications>
+    <Application Name="Mammoth.Price.Controller"
+                 ConfigFilePath="\\vm-icon-test1\e$\Mammoth\Price Controller\Test\Mammoth.Price.Controller.exe.config"
+                 DisplayName="Mammoth Price Controller"
+                 Environment="Test"
+                 Server="vm-icon-test1"
+                 TypeOfApplication="WindowsService"
+                 DataFlowFrom="Icon"
+               />
+  </Applications>

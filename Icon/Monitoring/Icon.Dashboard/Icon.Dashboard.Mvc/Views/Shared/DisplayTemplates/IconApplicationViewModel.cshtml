@@ -1,0 +1,37 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel
+
+@{
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
+    string rowColorClass = Model.StatusIsGreen ? "success" : "danger";
+    string rowTargetId = $"target{Model.Name}{Model.Server}";
+}
+
+<tr id="@rowTargetId" class="@rowColorClass">
+    <td class="hidden-xs ">
+        @Html.DisplayFor(model => model.TypeOfApplication)
+    </td>
+    <td>
+        @Html.ActionLink(Model.DisplayName, "Details", controllerName, new { application = Model.Name, server = Model.Server }, null)
+    </td>
+    <td  class="text-nowrap">
+        @Html.DisplayFor(model => model.Server)
+    </td>
+    <td class="hidden-xs hidden-sm hidden-md breakText">
+        @Html.ActionLink(Model.Name, "Details", controllerName, new { application = Model.Name, server = Model.Server }, null)
+    </td>
+    <td class="hidden-xs hidden-sm text-left breakText" style="max-width:50%;@(Model.ConfigFilePathIsValid?"":"background-color:#ffff99;")">
+        @Html.ActionLink(Model.ConfigFilePath, "Configure", controllerName, new { application = Model.Name, server = Model.Server }, null)
+    </td>
+    <td class="hidden-xs hidden-sm">
+        @Html.DisplayFor(model => model.CurrentEsbEnvironment)
+    </td>
+    <td class="hidden-xs hidden-sm hidden-md">
+        @Html.DisplayFor(model => model.DataFlowFrom) ⇒ @Html.DisplayFor(model => model.DataFlowTo)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Status)
+    </td>
+    <td>
+        @{Html.RenderPartial("_CommandsPartial", Model);}
+    </td>
+</tr>

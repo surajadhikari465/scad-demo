@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="ActionTypeCodes">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="AddUpdate">
+				<xs:annotation>
+					<xs:documentation>
+						AddUpdate is obsolete and
+						supported, need to use AddOrUpdate
+						instead
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AddOrUpdate">
+				<xs:annotation>
+					<xs:documentation>
+            Add new entity if not exist or Update existing
+            (Upsert statement).
+            For entities that can be replaced partially,
+            and support Replace action, this is the same as PartialUpdate.
+          </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Update">
+				<xs:annotation>
+					<xs:documentation>
+            Update the entity if exists, fail if the entity do not exists.
+          </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Delete">
+				<xs:annotation>
+					<xs:documentation>
+            Delete an existing entity by criteria. 
+            Ignored is entity do not exists.
+          </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DeleteAll">
+				<xs:annotation>
+					<xs:documentation>
+            Remove all entities that fits a specified criteria.
+          </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Lookup">
+				<xs:annotation>
+					<xs:documentation>
+            Search for an entity based on criteria.
+            Behavior when fail to find the entity, depends on specific service implementation. 
+          </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Add">
+				<xs:annotation>
+					<xs:documentation>
+            Add a new entity, fails if it already exists by unique id.
+          </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PartialUpdate">
+				<xs:annotation>
+					<xs:documentation>
+            Obsolete.
+            Same as Update, only allow specifying 
+            only part of the data to update, though leaving
+            other data part the same.
+            In new interfaces, this is the same as Update.
+          </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Replace">
+				<xs:annotation>
+					<xs:documentation>
+            Delete entity if exists and add it anew.
+            For entities that can be cannot be replaced partially,
+            this is the same as AddOrUpdate.
+          </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Inherit">
+				<xs:annotation>
+					<xs:documentation>
+						Indicates that the action is the same as in the parent element.
+						Example: If Product-Action is Replace, the Product-Hierarchies-Action is Replace as well.
+						Note that in some cases the inheritance is not symetric. 
+						I.e. in the previous example  Product-Hierarchies-Hierarchy-Action do not support replace, so it will logically be AddOrUpdate. 
+						This is not evident in the schema today.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReplaceExisting">
+				<xs:annotation>
+					<xs:documentation>
+            Delete entity and add it anew. 
+            If the entity do not exist, it will fail.
+          </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActionTypeAddUpdateReplaceCodes">
+		<xs:restriction base="ActionTypeCodes">
+			<xs:enumeration value="AddOrUpdate"/>
+			<xs:enumeration value="Replace"/>
+			<xs:enumeration value="Inherit"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActionTypeAddUpdateReplaceDeleteCodes">
+		<xs:restriction base="ActionTypeCodes">
+			<xs:enumeration value="AddOrUpdate"/>
+			<xs:enumeration value="Replace"/>
+			<xs:enumeration value="Delete"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActionTypeAddUpdateDeleteCodes">
+		<xs:restriction base="ActionTypeCodes">
+			<xs:enumeration value="AddOrUpdate"/>
+			<xs:enumeration value="Delete"/>
+			<xs:enumeration value="Inherit"/>
+		</xs:restriction>
+	</xs:simpleType>
+		<xs:simpleType name="DataExtensionActionCodes">
+		<xs:annotation>
+		  <xs:documentation>Use these action codes in data extension contracts. The core extension contract mapper will handle them</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+		  <xs:enumeration value="AddOrUpdate"/>
+		  <xs:enumeration value="Remove" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

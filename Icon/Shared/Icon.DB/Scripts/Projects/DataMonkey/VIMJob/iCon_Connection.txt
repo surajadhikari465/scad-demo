@@ -1,0 +1,1 @@
+SQLSERVER,Data Source=cewd1815\SQLSHAREd2012D;Initial Catalog=iCon;User Id=iConUser;Password=3Kz5&33mZW

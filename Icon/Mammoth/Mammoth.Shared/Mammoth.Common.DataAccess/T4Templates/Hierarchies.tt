@@ -1,0 +1,91 @@
+﻿<#@ template language="C#" debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Data" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ include file="ConfigurationAccessor.ttinclude" #>
+<#
+    string tableName = "dbo.Hierarchy";
+    string path = Path.GetDirectoryName(Host.TemplateFile);
+	string idColumn = "hierarchyID";
+	string nameColumn = "hierarchyName";
+
+	var ids = new List<int>();
+	var names = new List<string>();
+#>
+using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+
+namespace Mammoth.Common.DataAccess
+{
+    /// <summary>
+    /// <#= tableName #> auto generated Ids
+    /// </summary>
+
+    [GeneratedCode("TextTemplatingFileGenerator", "10")]
+    public static class Hierarchies
+    {
+<#
+	string fullPath = Host.ResolvePath("") + @"App.config";
+	var config = new ConfigurationAccessor((IServiceProvider)this.Host, fullPath);
+    string connectionString = config.ConnectionStrings["Mammoth"].ConnectionString;
+    SqlConnection conn = new SqlConnection(connectionString);
+    string command = string.Format("select {0}, {1} from {2} order by {0}", idColumn, nameColumn, tableName);
+    SqlCommand comm = new SqlCommand(command, conn);
+
+    conn.Open();
+
+    SqlDataReader reader = comm.ExecuteReader();
+    bool loop = reader.Read();
+
+    while(loop)
+    {
+		ids.Add(int.Parse(reader[idColumn].ToString()));
+		names.Add(reader[nameColumn].ToString());
+
+		loop = reader.Read();
+    }
+
+	for(int i = 0;i < ids.Count;i++)
+	{
+#>
+		public const int <#= Pascalize(names[i]) #> = <#= ids[i] #>;
+<#	
+	}
+#>
+		private static Dictionary<string, int> idToNamesDictionary = new Dictionary<string, int>
+		{
+<#
+	for(int i = 0; i < names.Count;i++)
+    {
+#>
+				{ "<#= names[i] #>", <#= ids[i] #> }<#= i < names.Count - 1 ? "," : "" #>
+<#
+	}
+#>			};
+		public static Dictionary<string, int> ByName { get { return idToNamesDictionary; } }
+
+		public class Names
+		{
+<#
+	for(int i = 0; i < names.Count;i++)
+    {
+#>
+			public const string <#= Pascalize(names[i]) #> = "<#= names[i] #>";
+<#
+    }
+#>		
+		}
+	}
+}
+<#+
+    private string Pascalize(object value)
+    {
+        Regex rx = new Regex(@"(?:[^a-zA-Z0-9]*)(?<first>[a-zA-Z0-9])(?<reminder>[a-zA-Z0-9]*)(?:[^a-zA-Z0-9]*)");
+        return rx.Replace(value.ToString(), m => m.Groups["first"].ToString().ToUpper() + m.Groups["reminder"].ToString().ToLower());
+    }
+#>

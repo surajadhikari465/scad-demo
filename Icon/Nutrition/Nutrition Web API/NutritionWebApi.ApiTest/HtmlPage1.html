@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Nutrition Api Page</title>
+</head>
+<body>
+
+    <div>
+        <h2>All Nutrition Items</h2>
+        <ul id="products" />
+    </div>
+    <div>
+        <h2>Search by ID</h2>
+        <input type="text" id="prodId" size="5" />
+        <input type="button" value="Search" onclick="find();" />        
+        <p id="product" />
+        <input type="button" value="PostItem" onclick="PostProducts();" />
+    </div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+        //var uri = 'api/nutrition';
+        var uri = 'http://cewd6589/Nutrition-Dev/api/Nutrition';
+
+        $(document).ready(function () {
+            // Send an AJAX request
+            $.getJSON(uri)
+                .done(function (data) {
+                    // On success, 'data' contains a list of products.
+                    $.each(data, function (key, item) {
+                        // Add a list item for the product.
+                        $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+                    });
+                });
+        });
+
+        function formatItem(item) {
+            return item.ID + ': #' + item.PluNo;
+        }
+
+        function find() {
+            var id = $('#prodId').val();
+            $.getJSON(uri + '/' + id)
+                .done(function (data) {
+                    $('#product').text(formatItem(data));
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    $('#product').text('Error: ' + err);
+                });
+        }
+
+        function PostProducts() {
+            var product = [{ RecipeId: 0, Plu: "9", RecipeName: "Integration Test", Allergens: null, Ingredients: null, ServingsPerPortion: null, ServingSizeDesc: null, ServingPerContainer: null, OverwriteServingSizeFlag: null, HshRating: null, ServingUnits: null, SizeWeight: null, Calories: null, CaloriesFat: null, CaloriesSaturatedFat: null, TotalFatWeight: null, TotalFatPercentage: null, SaturatedFatWeight: null, SaturatedFatPercent: null, PolyunsaturatedFat: null, MonounsaturatedFat: null, CholesterolWeight: null, CholesterolPercent: null, SodiumWeight: null, SodiumPercent: null, PotassiumWeight: null, PotassiumPercent: null, TotalCarbohydrateWeight: null, TotalCarbohydratePercent: null, DietaryFiberWeight: null, DietaryFiberPercent: null, SolubleFiber: null, InsolubleFiber: null, Sugar: null, SugarAlcohol: null, OtherCarbohydrates: null, ProteinWeight: null, ProteinPercent: null, VitaminA: null, Betacarotene: null, VitaminC: null, Calcium: null, Iron: null, VitaminD: null, VitaminE: null, Thiamin: null, Riboflavin: null, Niacin: null, VitaminB6: null, Folate: null, VitaminB12: null, Biotin: null, PantothenicAcid: null, Phosphorous: null, Iodine: null, Magnesium: null, Zinc: null, Copper: null, Transfat: null, CaloriesFromTransfat: null, Om6Fatty: null, Om3Fatty: null, Starch: null, Chloride: null, Chromium: null, VitaminK: null, Manganese: null, Molybdenum: null, Selenium: null, TransfatWeight: null, Descriptors: null }];
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(product),
+                url: uri,
+                contentType: "application/json"
+            })
+            .done(function (data) {
+                $('#product').text(data);
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#product').text('Error: ' + jqXHR.responseText);
+            });
+        }
+    </script>
+</body>
+</html>

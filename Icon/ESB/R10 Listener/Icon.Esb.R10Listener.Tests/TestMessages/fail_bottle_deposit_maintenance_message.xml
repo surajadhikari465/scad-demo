@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pfx5:r10Response xmlns:ns9="http://schema.wfm.com/Common/SharedLoginSchema" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns6="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns10="http://schemas.wfm.com/Enterprise/R10/R10RequestActivity/V1" xmlns:ns7="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:pfx="http://retalix.com/R10/services" xmlns:ns11="http://schemas.wfm.com/Enterprise/R10/AscIIResponse/V1" xmlns:ns8="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://xmlns.tibco.com/encodings/mime" xmlns:ns4="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns3="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pfx5="http://schemas.wfm.com/Enterprise/R10/R10Response/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ClickCollectItemEntity/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/R10/R10Request/V1" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib">
+    <pfx5:applicationName>ItemMaintenance</pfx5:applicationName>
+    <pfx5:requestSuccess>false</pfx5:requestSuccess>
+    <pfx5:r10Message>
+        <ns8:errorCount>1</ns8:errorCount>
+        <ns8:xmlAscii>﻿&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;BottleDepositMaintenanceResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" MajorVersion="1" xmlns="http://retalix.com/R10/services"&gt;&lt;Header&gt;&lt;MessageId Timestamp="2014-08-12T13:57:47.4787978-05:00" /&gt;&lt;Response ResponseCode="Rejected"&gt;&lt;BusinessError Severity="Error"&gt;&lt;Code&gt;InvalidRequest&lt;/Code&gt;&lt;Description&gt;Invalid request. Cannot parse request&lt;/Description&gt;&lt;AdditionalData /&gt;&lt;/BusinessError&gt;&lt;/Response&gt;&lt;/Header&gt;&lt;/BottleDepositMaintenanceResponse&gt;</ns8:xmlAscii>
+        <ns8:r10ResponseReason>
+            <ns8:reasonCode>InvalidRequest</ns8:reasonCode>
+            <ns8:messageDescription>Invalid request. Cannot parse request</ns8:messageDescription>
+        </ns8:r10ResponseReason>
+    </pfx5:r10Message>
+    <pfx5:r10Grouping>
+        <ns8:groupSize>0</ns8:groupSize>
+    </pfx5:r10Grouping>
+    <pfx5:destination>
+        <ns8:replyDestination>WFMESB.Commerce.OnePosMgmt.Request.Queue.V1</ns8:replyDestination>
+        <ns8:deadLetterDestination>WFMESB.Commerce.Online.Retalix.Reply.V1</ns8:deadLetterDestination>
+    </pfx5:destination>
+</pfx5:r10Response>

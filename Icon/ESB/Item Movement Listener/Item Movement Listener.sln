@@ -1,0 +1,98 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.ItemMovement.WindowsService", "Icon.Esb.ItemMovementListener.WindowsService\Icon.Esb.ItemMovement.WindowsService.csproj", "{F7C21DCD-F91B-4478-A73E-0909C426B253}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.ItemMovement", "Icon.Esb.ItemMovementListener\Icon.Esb.ItemMovement.csproj", "{7291D488-07D1-49A7-BBEA-0AFB94597535}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.ItemMovement.Tests", "Icon.Esb.ItemMovement.Tests.Unit\Icon.Esb.ItemMovement.Tests.csproj", "{B6439E9A-6139-4189-9198-63AF6555E701}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Any CPU = CD_ROM|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Dev|Any CPU = Dev|Any CPU
+		DVD-5|Any CPU = DVD-5|Any CPU
+		Prod|Any CPU = Prod|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		SingleImage|Any CPU = SingleImage|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Prod|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Prod|Any CPU.Build.0 = Debug|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.QA|Any CPU.Build.0 = QA|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test|Any CPU.Build.0 = Test|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Prod|Any CPU.ActiveCfg = Debug|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Prod|Any CPU.Build.0 = Debug|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.QA|Any CPU.Build.0 = QA|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test|Any CPU.Build.0 = Test|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Prod|Any CPU.ActiveCfg = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Prod|Any CPU.Build.0 = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.QA|Any CPU.Build.0 = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Test|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Icon.Esb.ItemMovementListener.WindowsService\\Icon.Esb.ItemMovement.WindowsService.csproj
+		SccProjectName1 = Icon.Esb.ItemMovementListener.WindowsService
+		SccLocalPath1 = Icon.Esb.ItemMovementListener.WindowsService
+		SccProjectUniqueName2 = Icon.Esb.ItemMovementListener\\Icon.Esb.ItemMovement.csproj
+		SccProjectName2 = Icon.Esb.ItemMovementListener
+		SccLocalPath2 = Icon.Esb.ItemMovementListener
+		SccProjectUniqueName3 = Icon.Esb.ItemMovement.Tests.Unit\\Icon.Esb.ItemMovement.Tests.csproj
+		SccProjectName3 = Icon.Esb.ItemMovement.Tests.Unit
+		SccLocalPath3 = Icon.Esb.ItemMovement.Tests.Unit
+	EndGlobalSection
+EndGlobal

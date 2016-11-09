@@ -1,0 +1,1 @@
+alter table dbo.Locale alter column localeTypeID int not null

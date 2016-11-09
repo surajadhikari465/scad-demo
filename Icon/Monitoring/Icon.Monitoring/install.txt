@@ -1,0 +1,5 @@
+Run the below command in a command prompt to install the service. You will need to replace the {Path} with the path to the exe, {Username} with the username you want, and {Password} with the password of the user.
+{Path}\Icon.Monitoring.exe install -username:{Username} -password:{Password}
+
+You can also use -interactive to bring up a prompt for entering the user credentials like so.
+{Path}\Icon.Monitoring.exe install -interactive

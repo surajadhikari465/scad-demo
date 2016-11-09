@@ -1,0 +1,377 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PushController", "PushController", "{20BB0BD4-9397-45FC-976E-5D79AC894C06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushController.Common", "POS Push Controller\PushController.Common\PushController.Common.csproj", "{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushController.Controller", "POS Push Controller\PushController.Controller\PushController.Controller.csproj", "{CEE34548-6C0D-4666-9135-6603AAD2684C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushController.DataAccess", "POS Push Controller\PushController.DataAccess\PushController.DataAccess.csproj", "{2007FE81-110B-4CCC-920D-D504BF8BDC21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushController.Tests.Controller", "POS Push Controller\PushController.Tests.Controller\PushController.Tests.Controller.csproj", "{28137AC4-0439-4E9D-9127-563F00EE95C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GlobalEventController", "GlobalEventController", "{C863154F-4577-494F-8421-52E099F328DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RegionalEventController", "RegionalEventController", "{D00EA41D-4566-4E78-B33E-145C7BEDD58E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfaceController.Common", "Common\InterfaceController.Common.csproj", "{7C794291-1D50-44E9-BC9D-4FB95B2EC889}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushController.Tests.DataAccess", "POS Push Controller\PushController.Tests.DataAccess\PushController.Tests.DataAccess.csproj", "{3C5E2C2F-2EB0-4607-A275-F051B457D7CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.Common", "Global Event Controller\GlobalEventController.Common\GlobalEventController.Common.csproj", "{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.Controller", "Global Event Controller\GlobalEventController.Controller\GlobalEventController.Controller.csproj", "{0C73548A-E565-45E4-8F34-6A114654864F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.DataAccess", "Global Event Controller\GlobalEventController.DataAccess\GlobalEventController.DataAccess.csproj", "{D83DD846-A441-473E-BB4E-749C98BE0492}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.Tests.DataAccess", "Global Event Controller\GlobalEventController.Tests.DataAccess\GlobalEventController.Tests.DataAccess.csproj", "{189C9DB3-47F3-4D45-BA16-C1C2E3049981}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.Tests.Controller", "Global Event Controller\GlobalEventController.Tests.Controller\GlobalEventController.Tests.Controller.csproj", "{DB6EC23C-81FC-4D53-9E46-3E7524D1F721}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegionalEventController.Controller", "Regional Event Controller\RegionalEventController.Controller\RegionalEventController.Controller.csproj", "{1C6EF94E-0825-4A6E-BA0C-273E7266C823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegionalEventController.DataAccess", "Regional Event Controller\RegionalEventController.DataAccess\RegionalEventController.DataAccess.csproj", "{77E03A6C-C628-4267-B2F0-0442042D31B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegionalEventController.Tests.Controller", "Regional Event Controller\RegionalEventController.Tests.Controller\RegionalEventController.Tests.Controller.csproj", "{75CF9D8A-4454-47B9-A711-FCDF1210F226}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegionalEventController.Tests.DataAccess", "Regional Event Controller\RegionalEventController.Tests.DataAccess\RegionalEventController.Tests.DataAccess.csproj", "{4F0B5507-1D33-43B0-B70C-93858BB38A9C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TlogController", "TlogController", "{23B613A6-83D2-472C-BAD8-703CF58C6FC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TlogController.Common", "Tlog Controller\TlogController.Common\TlogController.Common.csproj", "{909C9382-7F9D-47F0-9B96-79D95B5AAFB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TlogController.Controller", "Tlog Controller\TlogController.Controller\TlogController.Controller.csproj", "{DCF14A0C-711D-4EC6-9674-09D2A53E5D85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TlogController.DataAccess", "Tlog Controller\TlogController.DataAccess\TlogController.DataAccess.csproj", "{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TlogController.Tests.Controller", "Tlog Controller\TlogController.Tests.Controller\TlogController.Tests.Controller.csproj", "{C30A7F3C-D5E0-4BF0-B801-76584E23A386}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TlogController.Tests.DataAccess", "Tlog Controller\TlogController.Tests.DataAccess\TlogController.Tests.DataAccess.csproj", "{479013AD-48C8-4E3F-BE32-6E47C3B953C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegionalEventController.Common", "Regional Event Controller\RegionalEventController.Common\RegionalEventController.Common.csproj", "{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.Tests.Common", "Global Event Controller\GlobalEventController.Tests.Common\GlobalEventController.Tests.Common.csproj", "{7942B5C3-AEB4-4384-B7E3-CAE750379522}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.Testing.Common", "GlobalEventController.Testing.Common\GlobalEventController.Testing.Common.csproj", "{821BE8FC-1DA7-46D0-9869-063E2DDC7592}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8}.QA|Any CPU.Build.0 = QA|Any CPU
+		{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8}.Test|Any CPU.Build.0 = Test|Any CPU
+		{CEE34548-6C0D-4666-9135-6603AAD2684C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE34548-6C0D-4666-9135-6603AAD2684C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE34548-6C0D-4666-9135-6603AAD2684C}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{CEE34548-6C0D-4666-9135-6603AAD2684C}.QA|Any CPU.Build.0 = QA|Any CPU
+		{CEE34548-6C0D-4666-9135-6603AAD2684C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE34548-6C0D-4666-9135-6603AAD2684C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE34548-6C0D-4666-9135-6603AAD2684C}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{CEE34548-6C0D-4666-9135-6603AAD2684C}.Test|Any CPU.Build.0 = Test|Any CPU
+		{2007FE81-110B-4CCC-920D-D504BF8BDC21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2007FE81-110B-4CCC-920D-D504BF8BDC21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2007FE81-110B-4CCC-920D-D504BF8BDC21}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{2007FE81-110B-4CCC-920D-D504BF8BDC21}.QA|Any CPU.Build.0 = QA|Any CPU
+		{2007FE81-110B-4CCC-920D-D504BF8BDC21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2007FE81-110B-4CCC-920D-D504BF8BDC21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2007FE81-110B-4CCC-920D-D504BF8BDC21}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{2007FE81-110B-4CCC-920D-D504BF8BDC21}.Test|Any CPU.Build.0 = Test|Any CPU
+		{28137AC4-0439-4E9D-9127-563F00EE95C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28137AC4-0439-4E9D-9127-563F00EE95C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28137AC4-0439-4E9D-9127-563F00EE95C5}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{28137AC4-0439-4E9D-9127-563F00EE95C5}.QA|Any CPU.Build.0 = QA|Any CPU
+		{28137AC4-0439-4E9D-9127-563F00EE95C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28137AC4-0439-4E9D-9127-563F00EE95C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28137AC4-0439-4E9D-9127-563F00EE95C5}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{28137AC4-0439-4E9D-9127-563F00EE95C5}.Test|Any CPU.Build.0 = Test|Any CPU
+		{7C794291-1D50-44E9-BC9D-4FB95B2EC889}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C794291-1D50-44E9-BC9D-4FB95B2EC889}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C794291-1D50-44E9-BC9D-4FB95B2EC889}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{7C794291-1D50-44E9-BC9D-4FB95B2EC889}.QA|Any CPU.Build.0 = QA|Any CPU
+		{7C794291-1D50-44E9-BC9D-4FB95B2EC889}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C794291-1D50-44E9-BC9D-4FB95B2EC889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C794291-1D50-44E9-BC9D-4FB95B2EC889}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{7C794291-1D50-44E9-BC9D-4FB95B2EC889}.Test|Any CPU.Build.0 = Test|Any CPU
+		{3C5E2C2F-2EB0-4607-A275-F051B457D7CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C5E2C2F-2EB0-4607-A275-F051B457D7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C5E2C2F-2EB0-4607-A275-F051B457D7CD}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{3C5E2C2F-2EB0-4607-A275-F051B457D7CD}.QA|Any CPU.Build.0 = QA|Any CPU
+		{3C5E2C2F-2EB0-4607-A275-F051B457D7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C5E2C2F-2EB0-4607-A275-F051B457D7CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C5E2C2F-2EB0-4607-A275-F051B457D7CD}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{3C5E2C2F-2EB0-4607-A275-F051B457D7CD}.Test|Any CPU.Build.0 = Test|Any CPU
+		{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D}.QA|Any CPU.Build.0 = QA|Any CPU
+		{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D}.Test|Any CPU.Build.0 = Test|Any CPU
+		{0C73548A-E565-45E4-8F34-6A114654864F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C73548A-E565-45E4-8F34-6A114654864F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C73548A-E565-45E4-8F34-6A114654864F}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{0C73548A-E565-45E4-8F34-6A114654864F}.QA|Any CPU.Build.0 = QA|Any CPU
+		{0C73548A-E565-45E4-8F34-6A114654864F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C73548A-E565-45E4-8F34-6A114654864F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C73548A-E565-45E4-8F34-6A114654864F}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{0C73548A-E565-45E4-8F34-6A114654864F}.Test|Any CPU.Build.0 = Test|Any CPU
+		{D83DD846-A441-473E-BB4E-749C98BE0492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D83DD846-A441-473E-BB4E-749C98BE0492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D83DD846-A441-473E-BB4E-749C98BE0492}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{D83DD846-A441-473E-BB4E-749C98BE0492}.QA|Any CPU.Build.0 = QA|Any CPU
+		{D83DD846-A441-473E-BB4E-749C98BE0492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D83DD846-A441-473E-BB4E-749C98BE0492}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D83DD846-A441-473E-BB4E-749C98BE0492}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{D83DD846-A441-473E-BB4E-749C98BE0492}.Test|Any CPU.Build.0 = Test|Any CPU
+		{189C9DB3-47F3-4D45-BA16-C1C2E3049981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{189C9DB3-47F3-4D45-BA16-C1C2E3049981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{189C9DB3-47F3-4D45-BA16-C1C2E3049981}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{189C9DB3-47F3-4D45-BA16-C1C2E3049981}.QA|Any CPU.Build.0 = QA|Any CPU
+		{189C9DB3-47F3-4D45-BA16-C1C2E3049981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{189C9DB3-47F3-4D45-BA16-C1C2E3049981}.Release|Any CPU.Build.0 = Release|Any CPU
+		{189C9DB3-47F3-4D45-BA16-C1C2E3049981}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{189C9DB3-47F3-4D45-BA16-C1C2E3049981}.Test|Any CPU.Build.0 = Test|Any CPU
+		{DB6EC23C-81FC-4D53-9E46-3E7524D1F721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB6EC23C-81FC-4D53-9E46-3E7524D1F721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB6EC23C-81FC-4D53-9E46-3E7524D1F721}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{DB6EC23C-81FC-4D53-9E46-3E7524D1F721}.QA|Any CPU.Build.0 = QA|Any CPU
+		{DB6EC23C-81FC-4D53-9E46-3E7524D1F721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB6EC23C-81FC-4D53-9E46-3E7524D1F721}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB6EC23C-81FC-4D53-9E46-3E7524D1F721}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{DB6EC23C-81FC-4D53-9E46-3E7524D1F721}.Test|Any CPU.Build.0 = Test|Any CPU
+		{1C6EF94E-0825-4A6E-BA0C-273E7266C823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C6EF94E-0825-4A6E-BA0C-273E7266C823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C6EF94E-0825-4A6E-BA0C-273E7266C823}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{1C6EF94E-0825-4A6E-BA0C-273E7266C823}.QA|Any CPU.Build.0 = QA|Any CPU
+		{1C6EF94E-0825-4A6E-BA0C-273E7266C823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C6EF94E-0825-4A6E-BA0C-273E7266C823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C6EF94E-0825-4A6E-BA0C-273E7266C823}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{1C6EF94E-0825-4A6E-BA0C-273E7266C823}.Test|Any CPU.Build.0 = Test|Any CPU
+		{77E03A6C-C628-4267-B2F0-0442042D31B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77E03A6C-C628-4267-B2F0-0442042D31B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77E03A6C-C628-4267-B2F0-0442042D31B4}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{77E03A6C-C628-4267-B2F0-0442042D31B4}.QA|Any CPU.Build.0 = QA|Any CPU
+		{77E03A6C-C628-4267-B2F0-0442042D31B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77E03A6C-C628-4267-B2F0-0442042D31B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77E03A6C-C628-4267-B2F0-0442042D31B4}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{77E03A6C-C628-4267-B2F0-0442042D31B4}.Test|Any CPU.Build.0 = Test|Any CPU
+		{75CF9D8A-4454-47B9-A711-FCDF1210F226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75CF9D8A-4454-47B9-A711-FCDF1210F226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75CF9D8A-4454-47B9-A711-FCDF1210F226}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{75CF9D8A-4454-47B9-A711-FCDF1210F226}.QA|Any CPU.Build.0 = QA|Any CPU
+		{75CF9D8A-4454-47B9-A711-FCDF1210F226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75CF9D8A-4454-47B9-A711-FCDF1210F226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75CF9D8A-4454-47B9-A711-FCDF1210F226}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{75CF9D8A-4454-47B9-A711-FCDF1210F226}.Test|Any CPU.Build.0 = Test|Any CPU
+		{4F0B5507-1D33-43B0-B70C-93858BB38A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0B5507-1D33-43B0-B70C-93858BB38A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0B5507-1D33-43B0-B70C-93858BB38A9C}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{4F0B5507-1D33-43B0-B70C-93858BB38A9C}.QA|Any CPU.Build.0 = QA|Any CPU
+		{4F0B5507-1D33-43B0-B70C-93858BB38A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0B5507-1D33-43B0-B70C-93858BB38A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0B5507-1D33-43B0-B70C-93858BB38A9C}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{4F0B5507-1D33-43B0-B70C-93858BB38A9C}.Test|Any CPU.Build.0 = Test|Any CPU
+		{909C9382-7F9D-47F0-9B96-79D95B5AAFB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{909C9382-7F9D-47F0-9B96-79D95B5AAFB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{909C9382-7F9D-47F0-9B96-79D95B5AAFB2}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{909C9382-7F9D-47F0-9B96-79D95B5AAFB2}.QA|Any CPU.Build.0 = QA|Any CPU
+		{909C9382-7F9D-47F0-9B96-79D95B5AAFB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{909C9382-7F9D-47F0-9B96-79D95B5AAFB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{909C9382-7F9D-47F0-9B96-79D95B5AAFB2}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{909C9382-7F9D-47F0-9B96-79D95B5AAFB2}.Test|Any CPU.Build.0 = Test|Any CPU
+		{DCF14A0C-711D-4EC6-9674-09D2A53E5D85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCF14A0C-711D-4EC6-9674-09D2A53E5D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCF14A0C-711D-4EC6-9674-09D2A53E5D85}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{DCF14A0C-711D-4EC6-9674-09D2A53E5D85}.QA|Any CPU.Build.0 = QA|Any CPU
+		{DCF14A0C-711D-4EC6-9674-09D2A53E5D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCF14A0C-711D-4EC6-9674-09D2A53E5D85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCF14A0C-711D-4EC6-9674-09D2A53E5D85}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{DCF14A0C-711D-4EC6-9674-09D2A53E5D85}.Test|Any CPU.Build.0 = Test|Any CPU
+		{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B}.QA|Any CPU.Build.0 = QA|Any CPU
+		{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B}.Test|Any CPU.Build.0 = Test|Any CPU
+		{C30A7F3C-D5E0-4BF0-B801-76584E23A386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C30A7F3C-D5E0-4BF0-B801-76584E23A386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C30A7F3C-D5E0-4BF0-B801-76584E23A386}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{C30A7F3C-D5E0-4BF0-B801-76584E23A386}.QA|Any CPU.Build.0 = QA|Any CPU
+		{C30A7F3C-D5E0-4BF0-B801-76584E23A386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C30A7F3C-D5E0-4BF0-B801-76584E23A386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C30A7F3C-D5E0-4BF0-B801-76584E23A386}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{C30A7F3C-D5E0-4BF0-B801-76584E23A386}.Test|Any CPU.Build.0 = Test|Any CPU
+		{479013AD-48C8-4E3F-BE32-6E47C3B953C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{479013AD-48C8-4E3F-BE32-6E47C3B953C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{479013AD-48C8-4E3F-BE32-6E47C3B953C2}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{479013AD-48C8-4E3F-BE32-6E47C3B953C2}.QA|Any CPU.Build.0 = QA|Any CPU
+		{479013AD-48C8-4E3F-BE32-6E47C3B953C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{479013AD-48C8-4E3F-BE32-6E47C3B953C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{479013AD-48C8-4E3F-BE32-6E47C3B953C2}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{479013AD-48C8-4E3F-BE32-6E47C3B953C2}.Test|Any CPU.Build.0 = Test|Any CPU
+		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4}.QA|Any CPU.Build.0 = QA|Any CPU
+		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4}.Test|Any CPU.Build.0 = Test|Any CPU
+		{7942B5C3-AEB4-4384-B7E3-CAE750379522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7942B5C3-AEB4-4384-B7E3-CAE750379522}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7942B5C3-AEB4-4384-B7E3-CAE750379522}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{7942B5C3-AEB4-4384-B7E3-CAE750379522}.QA|Any CPU.Build.0 = Release|Any CPU
+		{7942B5C3-AEB4-4384-B7E3-CAE750379522}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7942B5C3-AEB4-4384-B7E3-CAE750379522}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7942B5C3-AEB4-4384-B7E3-CAE750379522}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{7942B5C3-AEB4-4384-B7E3-CAE750379522}.Test|Any CPU.Build.0 = Release|Any CPU
+		{821BE8FC-1DA7-46D0-9869-063E2DDC7592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{821BE8FC-1DA7-46D0-9869-063E2DDC7592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{821BE8FC-1DA7-46D0-9869-063E2DDC7592}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{821BE8FC-1DA7-46D0-9869-063E2DDC7592}.QA|Any CPU.Build.0 = Release|Any CPU
+		{821BE8FC-1DA7-46D0-9869-063E2DDC7592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{821BE8FC-1DA7-46D0-9869-063E2DDC7592}.Release|Any CPU.Build.0 = Release|Any CPU
+		{821BE8FC-1DA7-46D0-9869-063E2DDC7592}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{821BE8FC-1DA7-46D0-9869-063E2DDC7592}.Test|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FDF54914-FCE1-44B7-A14D-F7F152BDC6C8} = {20BB0BD4-9397-45FC-976E-5D79AC894C06}
+		{CEE34548-6C0D-4666-9135-6603AAD2684C} = {20BB0BD4-9397-45FC-976E-5D79AC894C06}
+		{2007FE81-110B-4CCC-920D-D504BF8BDC21} = {20BB0BD4-9397-45FC-976E-5D79AC894C06}
+		{28137AC4-0439-4E9D-9127-563F00EE95C5} = {20BB0BD4-9397-45FC-976E-5D79AC894C06}
+		{3C5E2C2F-2EB0-4607-A275-F051B457D7CD} = {20BB0BD4-9397-45FC-976E-5D79AC894C06}
+		{3EEEDFC4-DA9B-4D46-B7CF-E96E83077D1D} = {C863154F-4577-494F-8421-52E099F328DE}
+		{0C73548A-E565-45E4-8F34-6A114654864F} = {C863154F-4577-494F-8421-52E099F328DE}
+		{D83DD846-A441-473E-BB4E-749C98BE0492} = {C863154F-4577-494F-8421-52E099F328DE}
+		{189C9DB3-47F3-4D45-BA16-C1C2E3049981} = {C863154F-4577-494F-8421-52E099F328DE}
+		{DB6EC23C-81FC-4D53-9E46-3E7524D1F721} = {C863154F-4577-494F-8421-52E099F328DE}
+		{1C6EF94E-0825-4A6E-BA0C-273E7266C823} = {D00EA41D-4566-4E78-B33E-145C7BEDD58E}
+		{77E03A6C-C628-4267-B2F0-0442042D31B4} = {D00EA41D-4566-4E78-B33E-145C7BEDD58E}
+		{75CF9D8A-4454-47B9-A711-FCDF1210F226} = {D00EA41D-4566-4E78-B33E-145C7BEDD58E}
+		{4F0B5507-1D33-43B0-B70C-93858BB38A9C} = {D00EA41D-4566-4E78-B33E-145C7BEDD58E}
+		{909C9382-7F9D-47F0-9B96-79D95B5AAFB2} = {23B613A6-83D2-472C-BAD8-703CF58C6FC9}
+		{DCF14A0C-711D-4EC6-9674-09D2A53E5D85} = {23B613A6-83D2-472C-BAD8-703CF58C6FC9}
+		{3B4005D7-281D-4817-BC6C-A0C5F8F68D6B} = {23B613A6-83D2-472C-BAD8-703CF58C6FC9}
+		{C30A7F3C-D5E0-4BF0-B801-76584E23A386} = {23B613A6-83D2-472C-BAD8-703CF58C6FC9}
+		{479013AD-48C8-4E3F-BE32-6E47C3B953C2} = {23B613A6-83D2-472C-BAD8-703CF58C6FC9}
+		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4} = {D00EA41D-4566-4E78-B33E-145C7BEDD58E}
+		{7942B5C3-AEB4-4384-B7E3-CAE750379522} = {C863154F-4577-494F-8421-52E099F328DE}
+		{821BE8FC-1DA7-46D0-9869-063E2DDC7592} = {C863154F-4577-494F-8421-52E099F328DE}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 24
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = POS\u0020Push\u0020Controller\\PushController.Common\\PushController.Common.csproj
+		SccProjectTopLevelParentUniqueName1 = Interface\u0020Controller.sln
+		SccProjectName1 = POS\u0020Push\u0020Controller/PushController.Common
+		SccLocalPath1 = POS\u0020Push\u0020Controller\\PushController.Common
+		SccProjectUniqueName2 = Common\\InterfaceController.Common.csproj
+		SccProjectName2 = Common
+		SccLocalPath2 = Common
+		SccProjectUniqueName3 = POS\u0020Push\u0020Controller\\PushController.DataAccess\\PushController.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName3 = Interface\u0020Controller.sln
+		SccProjectName3 = POS\u0020Push\u0020Controller/PushController.DataAccess
+		SccLocalPath3 = POS\u0020Push\u0020Controller\\PushController.DataAccess
+		SccProjectUniqueName4 = POS\u0020Push\u0020Controller\\PushController.Controller\\PushController.Controller.csproj
+		SccProjectTopLevelParentUniqueName4 = Interface\u0020Controller.sln
+		SccProjectName4 = POS\u0020Push\u0020Controller/PushController.Controller
+		SccLocalPath4 = POS\u0020Push\u0020Controller\\PushController.Controller
+		SccProjectUniqueName5 = POS\u0020Push\u0020Controller\\PushController.Tests.Controller\\PushController.Tests.Controller.csproj
+		SccProjectTopLevelParentUniqueName5 = Interface\u0020Controller.sln
+		SccProjectName5 = POS\u0020Push\u0020Controller/PushController.Tests.Controller
+		SccLocalPath5 = POS\u0020Push\u0020Controller\\PushController.Tests.Controller
+		SccProjectUniqueName6 = POS\u0020Push\u0020Controller\\PushController.Tests.DataAccess\\PushController.Tests.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName6 = Interface\u0020Controller.sln
+		SccProjectName6 = POS\u0020Push\u0020Controller/PushController.Tests.DataAccess
+		SccLocalPath6 = POS\u0020Push\u0020Controller\\PushController.Tests.DataAccess
+		SccProjectUniqueName7 = Global\u0020Event\u0020Controller\\GlobalEventController.Common\\GlobalEventController.Common.csproj
+		SccProjectTopLevelParentUniqueName7 = Interface\u0020Controller.sln
+		SccProjectName7 = Global\u0020Event\u0020Controller/GlobalEventController.Common
+		SccLocalPath7 = Global\u0020Event\u0020Controller\\GlobalEventController.Common
+		SccProjectUniqueName8 = Global\u0020Event\u0020Controller\\GlobalEventController.DataAccess\\GlobalEventController.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName8 = Interface\u0020Controller.sln
+		SccProjectName8 = Global\u0020Event\u0020Controller/GlobalEventController.DataAccess
+		SccLocalPath8 = Global\u0020Event\u0020Controller\\GlobalEventController.DataAccess
+		SccProjectUniqueName9 = Global\u0020Event\u0020Controller\\GlobalEventController.Controller\\GlobalEventController.Controller.csproj
+		SccProjectTopLevelParentUniqueName9 = Interface\u0020Controller.sln
+		SccProjectName9 = Global\u0020Event\u0020Controller/GlobalEventController.Controller
+		SccLocalPath9 = Global\u0020Event\u0020Controller\\GlobalEventController.Controller
+		SccProjectUniqueName10 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.DataAccess\\GlobalEventController.Tests.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName10 = Interface\u0020Controller.sln
+		SccProjectName10 = Global\u0020Event\u0020Controller/GlobalEventController.Tests.DataAccess
+		SccLocalPath10 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.DataAccess
+		SccProjectUniqueName11 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.Controller\\GlobalEventController.Tests.Controller.csproj
+		SccProjectTopLevelParentUniqueName11 = Interface\u0020Controller.sln
+		SccProjectName11 = Global\u0020Event\u0020Controller/GlobalEventController.Tests.Controller
+		SccLocalPath11 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.Controller
+		SccProjectUniqueName12 = Regional\u0020Event\u0020Controller\\RegionalEventController.Common\\RegionalEventController.Common.csproj
+		SccProjectTopLevelParentUniqueName12 = Interface\u0020Controller.sln
+		SccProjectName12 = Regional\u0020Event\u0020Controller/RegionalEventController.Common
+		SccLocalPath12 = Regional\u0020Event\u0020Controller\\RegionalEventController.Common
+		SccProjectUniqueName13 = Regional\u0020Event\u0020Controller\\RegionalEventController.DataAccess\\RegionalEventController.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName13 = Interface\u0020Controller.sln
+		SccProjectName13 = Regional\u0020Event\u0020Controller/RegionalEventController.DataAccess
+		SccLocalPath13 = Regional\u0020Event\u0020Controller\\RegionalEventController.DataAccess
+		SccProjectUniqueName14 = Regional\u0020Event\u0020Controller\\RegionalEventController.Controller\\RegionalEventController.Controller.csproj
+		SccProjectTopLevelParentUniqueName14 = Interface\u0020Controller.sln
+		SccProjectName14 = Regional\u0020Event\u0020Controller/RegionalEventController.Controller
+		SccLocalPath14 = Regional\u0020Event\u0020Controller\\RegionalEventController.Controller
+		SccProjectUniqueName15 = Regional\u0020Event\u0020Controller\\RegionalEventController.Tests.Controller\\RegionalEventController.Tests.Controller.csproj
+		SccProjectTopLevelParentUniqueName15 = Interface\u0020Controller.sln
+		SccProjectName15 = Regional\u0020Event\u0020Controller/RegionalEventController.Tests.Controller
+		SccLocalPath15 = Regional\u0020Event\u0020Controller\\RegionalEventController.Tests.Controller
+		SccProjectUniqueName16 = Regional\u0020Event\u0020Controller\\RegionalEventController.Tests.DataAccess\\RegionalEventController.Tests.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName16 = Interface\u0020Controller.sln
+		SccProjectName16 = Regional\u0020Event\u0020Controller/RegionalEventController.Tests.DataAccess
+		SccLocalPath16 = Regional\u0020Event\u0020Controller\\RegionalEventController.Tests.DataAccess
+		SccProjectUniqueName17 = Tlog\u0020Controller\\TlogController.Common\\TlogController.Common.csproj
+		SccProjectTopLevelParentUniqueName17 = Interface\u0020Controller.sln
+		SccProjectName17 = Tlog\u0020Controller/TlogController.Common
+		SccLocalPath17 = Tlog\u0020Controller\\TlogController.Common
+		SccProjectUniqueName18 = Tlog\u0020Controller\\TlogController.DataAccess\\TlogController.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName18 = Interface\u0020Controller.sln
+		SccProjectName18 = Tlog\u0020Controller/TlogController.DataAccess
+		SccLocalPath18 = Tlog\u0020Controller\\TlogController.DataAccess
+		SccProjectUniqueName19 = Tlog\u0020Controller\\TlogController.Controller\\TlogController.Controller.csproj
+		SccProjectTopLevelParentUniqueName19 = Interface\u0020Controller.sln
+		SccProjectName19 = Tlog\u0020Controller/TlogController.Controller
+		SccLocalPath19 = Tlog\u0020Controller\\TlogController.Controller
+		SccProjectUniqueName20 = Tlog\u0020Controller\\TlogController.Tests.Controller\\TlogController.Tests.Controller.csproj
+		SccProjectTopLevelParentUniqueName20 = Interface\u0020Controller.sln
+		SccProjectName20 = Tlog\u0020Controller/TlogController.Tests.Controller
+		SccLocalPath20 = Tlog\u0020Controller\\TlogController.Tests.Controller
+		SccProjectUniqueName21 = Tlog\u0020Controller\\TlogController.Tests.DataAccess\\TlogController.Tests.DataAccess.csproj
+		SccProjectTopLevelParentUniqueName21 = Interface\u0020Controller.sln
+		SccProjectName21 = Tlog\u0020Controller/TlogController.Tests.DataAccess
+		SccLocalPath21 = Tlog\u0020Controller\\TlogController.Tests.DataAccess
+		SccProjectUniqueName22 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.Common\\GlobalEventController.Tests.Common.csproj
+		SccProjectTopLevelParentUniqueName22 = Interface\u0020Controller.sln
+		SccProjectName22 = Global\u0020Event\u0020Controller/GlobalEventController.Tests.Common
+		SccLocalPath22 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.Common
+		SccProjectUniqueName23 = GlobalEventController.Testing.Common\\GlobalEventController.Testing.Common.csproj
+		SccProjectTopLevelParentUniqueName23 = Interface\u0020Controller.sln
+		SccProjectName23 = GlobalEventController.Testing.Common
+		SccLocalPath23 = GlobalEventController.Testing.Common
+	EndGlobalSection
+EndGlobal

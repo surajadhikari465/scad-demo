@@ -1,0 +1,1 @@
+update Trait set traitPattern = 'Bottle Deposit|CRV|Coupon|Bottle Return|CRV Credit' where traitCode = 'NM'

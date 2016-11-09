@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <xs:complexType name="AuthenticatedClaimType">
+    <xs:annotation>
+      <xs:documentation>A signed claim from a trusted authority</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Authority" type="xs:string" >
+        <xs:annotation>
+          <xs:documentation>The id of the trusted authority</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Timestamp" type="xs:dateTime" />
+      <xs:element name="Identity" type="ClaimIdentityType">
+        <xs:annotation>
+          <xs:documentation>The Identity that will be logged in when the claim is validated</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Signature" type="xs:base64Binary">
+        <xs:annotation>
+          <xs:documentation>The signed claim from the trusted authority. This claim will be verified with the public key from the trusted authority</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ClaimIdentityType">
+    <xs:annotation>
+      <xs:documentation>The Identity that this claim represents</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="Type" type="xs:string" use="required" >
+          <xs:annotation>
+            <xs:documentation>The type of the identity as know by the R10 server</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+</xs:schema>

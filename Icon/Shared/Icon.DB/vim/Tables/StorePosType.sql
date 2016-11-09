@@ -1,0 +1,5 @@
+﻿CREATE TABLE vim.StorePosType
+(
+	StorePosTypeId INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+	Name NVARCHAR(10) NOT NULL
+)

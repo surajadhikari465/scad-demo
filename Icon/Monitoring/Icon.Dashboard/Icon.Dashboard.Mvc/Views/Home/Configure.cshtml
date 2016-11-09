@@ -1,0 +1,71 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel
+
+@{
+    var action = ViewContext.RouteData.Values["action"].ToString();
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    ViewBag.Title = $"Configuration for \"{Model.DisplayName}\"";
+
+    bool isMultiline = false;
+    const int tooManyCharsForSingleLine = 33;
+    int rowsForTextArea = 2;
+}
+
+<h3 class="text-center">@ViewBag.Title</h3>
+
+<div class="container-fluid">
+    <div class="row">
+        <hr />        
+        @if (Model.AppSettings != null)
+        {
+            using (Html.BeginForm(action, controller, new { application = Model.Name, server = Model.Server }, FormMethod.Post, null))
+            {
+                @Html.HiddenFor(m => m.Name);
+                @Html.HiddenFor(m => m.Server);
+                @Html.HiddenFor(m => m.TypeOfApplication);
+                @Html.HiddenFor(m => m.ConfigFilePath);
+
+                foreach (var entry in Model.AppSettings)
+                {
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.Label(entry.Key, htmlAttributes: new { @class = "control-label col-xs-12" })
+                        <div class="col-xs-12">
+                            @{
+                                if (Model.AppSettings[entry.Key] != null)
+                                {
+                                    int valueStringLength = Model.AppSettings[entry.Key].ToString().Length;
+                                    isMultiline = valueStringLength > tooManyCharsForSingleLine;
+                                    if (isMultiline && tooManyCharsForSingleLine > 0)
+                                    {
+                                        rowsForTextArea = ((valueStringLength - 1) / tooManyCharsForSingleLine) + 1;
+                                    }
+                                }
+                                isMultiline = ((Model.AppSettings[entry.Key] != null) && (Model.AppSettings[entry.Key].ToString().Length > tooManyCharsForSingleLine));
+                                if (isMultiline)
+                                {
+                                    @Html.TextAreaFor(m => m.AppSettings[entry.Key], rowsForTextArea, 0, new { @class = "form-control full-width" })
+                                }
+                                else
+                                {
+                                    @Html.EditorFor(m => m.AppSettings[entry.Key], new { htmlAttributes = new { @class = "form-control full-width" } })
+                               }
+                               }
+                        </div>
+                    </div>
+                }
+
+                <div class="col-xs-offset-1 col-xs-10">
+                    <button type="submit" value="@("Save")" class="btn btn-warning btn-block margin-top-10">@("Save")</button>
+                </div>
+            }
+        }
+    </div>
+
+    <p></p>
+    @{Html.RenderPartial("_BackToListPartial", Model);}
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/dashboardCustomConfigFileSelectAlls.js")
+}

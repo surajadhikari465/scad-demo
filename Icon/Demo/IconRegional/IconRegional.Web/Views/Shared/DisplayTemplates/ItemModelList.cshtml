@@ -1,0 +1,44 @@
+﻿@model IEnumerable<IconRegional.Core.Models.ItemModel>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ScanCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PosDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubTeam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TaxHierarchyClass)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ScanCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PosDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubTeam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaxHierarchyClass)
+            </td>
+        </tr>
+    }
+
+</table>

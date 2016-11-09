@@ -1,0 +1,27 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.PluRequestEditViewModel
+
+@{
+    ViewBag.Title = "Edit PLU Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@{Html.RenderPartial("_HeaderPartial", "PLU Request Management");}
+
+<div id="updateInput" class="page-section">
+    @{Html.RenderPartial("_PluRequestEditInputPartial");}
+</div>
+
+<hr />
+
+<div id="itemForUpdate" class="page-section">
+    @{Html.RenderPartial("_SinglePluRequestDetailsPartial");}
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/apply-autocomplete.js")
+    @Scripts.Render("~/Scripts/PluRequest/plu-request-edit.js")
+}

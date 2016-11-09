@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/StoreMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ntp="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:sgr="http://schemas.wfm.com/Enterprise/StoreMgmt/StoreGroup/V1" targetNamespace="http://schemas.wfm.com/Enterprise/StoreMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.2">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" schemaLocation="../Common/NameType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="../Price/Price.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/StoreMgmt/StoreGroup/V1" schemaLocation="StoreGroup.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="StoreType">
+		<xs:annotation>
+			<xs:documentation>Unique identifier sent by Icon as StoreTypeCode</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="StoreDescType">
+		<xs:annotation>
+			<xs:documentation>examples: “Metro Areas”, “Generation Numbers”, or “Square Footage” </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="StoreNameType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="StoreOpenDateType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmDateType"/>
+	</xs:simpleType>
+	<xs:simpleType name="StoreCloseDateType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmDateType"/>
+	</xs:simpleType>
+	<xs:simpleType name="GroupIdType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="GroupNameType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="GroupDescType">
+		<xs:annotation>
+			<xs:documentation>Description can represent - Iregion, metro, store, bakehouse, office, distribution center and so on..</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="StoreGroupTypeId">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="PointOfSaleIdType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="PointOfSaleDescType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!--  Complex Types              -->
+	<!-- ================== -->
+	<xs:complexType name="StoreGroupsType">
+		<xs:sequence>
+			<xs:element name="storeGroup" type="sgr:StoreGroupType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointOfSaleRegisterType">
+		<xs:sequence>
+			<xs:element name="id" type="PointOfSaleIdType" minOccurs="0"/>
+			<xs:element name="description" type="PointOfSaleDescType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointOfSaleRegisterTypeType">
+		<xs:complexContent>
+			<xs:extension base="ntp:NameTypeType">
+				<xs:sequence>
+					<xs:element name="register" type="PointOfSaleRegisterType" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PointOfSaleRegistersTypesType">
+		<xs:sequence>
+			<xs:element name="type" type="PointOfSaleRegisterTypeType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointOfSaleRegistersType">
+		<xs:sequence>
+			<xs:element name="types" type="PointOfSaleRegistersTypesType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

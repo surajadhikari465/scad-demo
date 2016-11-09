@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<IconApplicationData>
+  <Applications>
+
+    <Application Name="Mammoth.Price.Controller" ConfigFilePath="\\vm-icon-test1\e$\Mammoth\Price Controller\Mammoth.Price.Controller.exe.config" DisplayName="Mammoth Price Controller" Environment="Test" Server="vm-icon-test1" TypeOfApplication="WindowsService" DataFlowFrom="None" />
+
+    <Application Name="Mammoth.Esb.HierarchyClassListener.Service" ConfigFilePath="\\vm-icon-test1\e$\Mammoth\Hierarchy Listener\Mammoth.Esb.HierarchyClassListener.Service.exe.config" DisplayName="Mammoth ESB Hierarchy Listener" Environment="Test" Server="vm-icon-test1" LoggingName="ESB Subscriber" TypeOfApplication="WindowsService" DataFlowTo="Icon" />
+
+    <Application Name="Mammoth.ItemLocale.Controller" ConfigFilePath="\\vm-icon-test1\e$\Mammoth\Item Locale Controller\Mammoth.ItemLocale.Controller.exe.config" DisplayName="Mammoth Item Locale Controller" Environment="Test" Server="vm-icon-test1" TypeOfApplication="WindowsService" DataFlowFrom="None" />
+
+    <Application Name="Mammoth.Esb.LocaleListener.Service" ConfigFilePath="\\vm-icon-test1\e$\Mammoth\Locale Listener\Mammoth.Esb.LocaleListener.Service.exe.config" DisplayName="Mammoth ESB Locale Listener" Environment="Test" Server="vm-icon-test1" TypeOfApplication="WindowsService" DataFlowTo="Icon" />
+
+    <Application ConfigFilePath="\\vm-icon-test1\e$\Mammoth\Product Listener\Mammoth.Esb.ProductListener.Service.exe.config" DataFlowFrom="None" DataFlowTo="Icon" DisplayName="Mammoth ESB Product Listener" Name="Mammoth.Esb.ProductListener.Service" Server="vm-icon-test1" Environment="Test" TypeOfApplication="WindowsService" LoggingName="" />
+
+    <Application Server="vm-icon-test1" ConfigFilePath="\\vm-icon-test1\e$\Icon\Global Controller\GlobalEventController.Controller.exe.config" DataFlowFrom="None" DataFlowTo="None" DisplayName="ICON Global Controller (GloCon)" Environment="Test" Name="GlobalEventControllerService" TypeOfApplication="WindowsService" LoggingName="Global Controller" />
+
+    <Application ConfigFilePath="\\vm-icon-test1\e$\Icon\Tlog Controller\TLogController.Controller.exe.config" DataFlowFrom="None" DataFlowTo="None" DisplayName="ICON TLog Controller" Name="Tlog Controller - Instance ID=1" TypeOfApplication="ScheduledTask" Environment="Test" LoggingName="TLog Controller" Server="vm-icon-test1" />
+
+    <Application DataFlowTo="None" ConfigFilePath="\\vm-icon-test2\e$\Icon\Tlog Controller\TLogController.Controller.exe.config" DataFlowFrom="None" LoggingName="TLog Controller" DisplayName="ICON TLog Controller" Name="Tlog Controller - Instance ID=2" Environment="Test" Server="vm-icon-test2" TypeOfApplication="ScheduledTask" />
+
+    <Application Name="Mammoth.ItemLocale.Controller" Environment="Dev" Server="vm-icon-dev1" ConfigFilePath="\\vm-icon-dev1\E$\Mammoth\Item Locale Controller\Mammoth.ItemLocale.Controller.exe.config" DisplayName="Mammoth ItemLocale Controller" TypeOfApplication="WindowsService" DataFlowFrom="Icon" />
+
+    <Application Name="Mammoth.Esb.LocaleListener.Service" Environment="Dev" Server="vm-icon-dev1" TypeOfApplication="WindowsService" DataFlowTo="Icon" ConfigFilePath="\\vm-icon-dev1\E$\Mammoth\Locale Listener\Mammoth.Esb.LocaleListener.Service.exe.config" DisplayName="Mammoth ESB Locale Listener" />
+
+    <Application Name="Vim Locale Controller" ConfigFilePath="\\vm-icon-dev1\E$\Icon\VIM Controller\Vim.Locale.Controller.exe.config" DisplayName="Vim Locale Controller" Environment="Dev" Server="vm-icon-dev1" TypeOfApplication="ScheduledTask" DataFlowFrom="Icon" LoggingName="Vim Locale Controller" />
+
+    <Application ConfigFilePath="\\vm-icon-test1\E$\Icon\API Controller Phase 2\Hierarchy\Icon.ApiController.Controller.exe.config" DataFlowFrom="Icon" DataFlowTo="ESB" Environment="Test" DisplayName="Icon API Controller - Hierarchy" LoggingName="API Controller" Name="Icon API Controller - Hierarchy" Server="vm-icon-test1" TypeOfApplication="WindowsService" />
+
+    <Application ConfigFilePath="\\vm-icon-test1\E$\Icon\API Controller Phase 2\ItemLocale\Icon.ApiController.Controller.exe.config" DataFlowTo="ESB" DataFlowFrom="Icon" Server="vm-icon-test1" DisplayName="Icon API Controller - Item Locale" LoggingName="API Controller" Environment="Test" Name="Icon API Controller - ItemLocale" TypeOfApplication="WindowsService" />
+
+    <Application ConfigFilePath="\\vm-icon-test1\E$\Icon\API Controller Phase 2\Locale\Icon.ApiController.Controller.exe.config" Environment="Test" DataFlowFrom="Icon" DataFlowTo="ESB" DisplayName="Icon API Controller - Locale" Name="Icon API Controller - Locale" Server="vm-icon-test1" TypeOfApplication="WindowsService" LoggingName="API Controller" />
+
+    <Application DataFlowFrom="Icon" ConfigFilePath="\\vm-icon-test1\E$\Icon\API Controller Phase 2\Price\Icon.ApiController.Controller.exe.config" DisplayName="Icon API Controller - Price" DataFlowTo="ESB" Name="Icon API Controller - Price" Environment="Test" Server="vm-icon-test1" TypeOfApplication="WindowsService" LoggingName="API Controller" />
+
+    <Application ConfigFilePath="\\vm-icon-test1\E$\Icon\API Controller Phase 2\Product\Icon.ApiController.Controller.exe.config" DataFlowFrom="Icon" DataFlowTo="ESB" DisplayName="Icon API Controller - Product" Environment="Test" Name="Icon API Controller - Product" Server="vm-icon-test1" TypeOfApplication="WindowsService" LoggingName="API Controller" />
+
+    <Application ConfigFilePath="\\vm-icon-test1\E$\Icon\API Controller Phase 2\PSG\Icon.ApiController.Controller.exe.config" DataFlowTo="ESB" DataFlowFrom="Icon" DisplayName="Icon API Controller - Product Selection Group" Server="vm-icon-test1" Name="Icon API Controller - Product Selection Group" Environment="Test" TypeOfApplication="WindowsService" LoggingName="API Controller" />
+
+  </Applications>
+
+  <EsbEnvironments>
+    <EsbEnvironment Name="DUP" ServerUrl="ssl://cerd1637.wfm.pvt:17293" TargetHostName="cerd1637.wfm.pvt" JmsUsername="iconUser" JmsPassword="iconUser" JndiPassword="jndiIconUser" JndiUsername="jndiIconUser"><ApplicationsInEnvironment><ApplicationInEnvironment Name="Icon API Controller - Product" Server="vm-icon-test1" /><ApplicationInEnvironment Name="Icon API Controller - Hierarchy" Server="vm-icon-test1" /><ApplicationInEnvironment Name="Icon API Controller - Price" Server="vm-icon-test1" /><ApplicationInEnvironment Name="Icon API Controller - Locale" Server="vm-icon-test1" /><ApplicationInEnvironment Name="Icon API Controller - ItemLocale" Server="vm-icon-test1" /></ApplicationsInEnvironment></EsbEnvironment>
+    <EsbEnvironment Name="FUNC" ServerUrl="ssl://cerd1619.wfm.pvt:27293, ssl://cerd1622.wfm.pvt:27293 " TargetHostName="*.wfm.pvt" JmsUsername="iconUser" JmsPassword="Icond3Up" JndiUsername="iconUser" JndiPassword="jndiI8conUserdUp"><ApplicationsInEnvironment><ApplicationInEnvironment Name="Icon API Controller - Product" Server="vm-icon-test1" /><ApplicationInEnvironment Name="Icon API Controller - Price" Server="vm-icon-test1" /><ApplicationInEnvironment Name="Icon API Controller - Item Locale" Server="vm-icon-test1" /></ApplicationsInEnvironment></EsbEnvironment>
+  <EsbEnvironment Name="DEV" ServerUrl="ssl://cerd1616.wfm.pvt:7233" TargetHostName="cerd1616.wfm.pvt" JmsUsername="iconUser" JmsPassword="iconUser" JndiUsername="jndiIconUser" JndiPassword="jndiIconUser"><ApplicationsInEnvironment><ApplicationInEnvironment Server="vm-icon-test1" Name="Icon API Controller - Product" /><ApplicationInEnvironment Name="Icon API Controller - Locale" Server="vm-icon-test1" /></ApplicationsInEnvironment></EsbEnvironment><EsbEnvironment Name="TEST" ServerUrl="ssl://cerd1617.wfm.pvt:17293" TargetHostName="cerd1617.wfm.pvt" JmsUsername="iconUser" JmsPassword="iconUser" JndiPassword="jndiIconUser" JndiUsername="jndiIconUser"><ApplicationsInEnvironment><ApplicationInEnvironment Server="vm-icon-test1" Name="Icon API Controller - Product" /><ApplicationInEnvironment Name="Icon API Controller - Locale" Server="vm-icon-test1" /><ApplicationInEnvironment Server="vm-icon-test1" Name="Icon API Controller - Hierarchy" /><ApplicationInEnvironment Name="Icon API Controller - ItemLocale" Server="vm-icon-test1" /><ApplicationInEnvironment Name="Icon API Controller - Price" Server="vm-icon-test1" /></ApplicationsInEnvironment></EsbEnvironment>
+  </EsbEnvironments>
+
+</IconApplicationData>

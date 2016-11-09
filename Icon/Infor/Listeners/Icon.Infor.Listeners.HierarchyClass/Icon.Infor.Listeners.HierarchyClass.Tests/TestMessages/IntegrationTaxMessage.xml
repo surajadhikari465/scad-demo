@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hierarchy xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2">
+<name>Tax</name>
+<prototype>
+  <hpt:hierarchyLevelName>Tax</hpt:hierarchyLevelName>
+  <hpt:itemsAttached>1</hpt:itemsAttached>
+</prototype>
+  <class crf:Action="AddOrUpdate">
+    <hcl:id>40212</hcl:id>
+    <hcl:name>0000000 GENERAL MERCHANDISE TEST</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+    <hcl:traits>
+      <crf:trait>
+        <tra:code>ABR</tra:code>
+        <tra:type>
+          <trt:description>Tax Abbreviation</trt:description>
+          <trt:value>
+            <trv:value>0000000 GENERAL MERCHANDISE ABR</trv:value>
+          </trt:value>
+        </tra:type>
+      </crf:trait>
+      <crf:trait>
+        <tra:code>TRM</tra:code>
+        <tra:type>
+          <trt:description>Tax Romance</trt:description>
+          <trt:value>
+            <trv:value>0000000 GENERAL MERCHANDISE ROMANCE</trv:value>
+          </trt:value>
+        </tra:type>
+      </crf:trait>
+    </hcl:traits>
+  </class>
+</hierarchy>

@@ -1,0 +1,14 @@
+﻿CREATE TABLE [app].[AppLog] (
+    [AppLogID]   INT             IDENTITY (1, 1) NOT NULL,
+    [AppID]      INT             NOT NULL,
+    [UserName]   NVARCHAR (255)  NOT NULL,
+    [InsertDate] DATETIME2 (3)   CONSTRAINT [AppLog_InsertDate_DF] DEFAULT (getdate()) NOT NULL,
+    [LogDate]    DATETIME2 (3)   NOT NULL,
+    [Level]      NVARCHAR (16)   NOT NULL,
+    [Logger]     NVARCHAR (255)  NOT NULL,
+    [Message]    NVARCHAR (4000) NOT NULL,
+	[MachineName] [nvarchar](255) NULL,
+    CONSTRAINT [AppLog_PK] PRIMARY KEY CLUSTERED ([AppLogID] ASC) WITH (FILLFACTOR = 80),
+    CONSTRAINT [App_AppLog_FK] FOREIGN KEY ([AppID]) REFERENCES [app].[App] ([AppID])
+);
+

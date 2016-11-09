@@ -1,0 +1,66 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.EwicMappingSearchViewModel
+
+@{
+    ViewBag.Title = "Mappings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@(Html.Infragistics().Loader()
+        .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+        .CssPath(Url.Content("~/Content/Infragistics/css/"))
+        .Resources("igCombo")
+        .Render()
+)
+
+@{Html.RenderPartial("_HeaderPartial", "eWIC Mappings");}
+
+<hr />
+
+<div class="page-section">
+    @if (Model.AplScanCodes.Any())
+    {
+        using (Html.BeginForm("MappingDetail", "Ewic", FormMethod.Get, new { @class = "begin-form form-horizontal" }))
+        {
+            <fieldset>
+                <legend>Select APL Scan Code to View Mappings</legend>
+                <div class="form-group">
+                    <div class="form-offset-left">
+                        @(Html.Infragistics().ComboFor(model => model.AplScanCodeSelectedId)
+                                .DataSource(Model.AplScanCodes)
+                                .Width("20%")
+                                .DropDownWidth(0)
+                                .ValueKey("Value")
+                                .TextKey("Text")
+                                .FilteringCondition("contains")
+                                .FilteringType(ComboFilteringType.Local)
+                                .Render()
+                        )
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-offset-left">
+                        <input type="submit" value="Display" class="btn btn-default" id="displayMappingButton" />
+                        @Html.ValidationMessageFor(model => model.AplScanCodeSelectedId, null, new { @class = "form-property-val" })
+                    </div>
+                </div>
+            </fieldset>
+        }
+    }
+    else
+    {
+        <div class="page-subsection">
+            <h4>No scan codes were found in the APL.</h4>
+        </div>
+    }
+</div>
+
+<div class="page-section" id="mappingResults"></div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/Ewic/mappings.js")
+    @Scripts.Render("~/Scripts/jquery-disable.js")
+}

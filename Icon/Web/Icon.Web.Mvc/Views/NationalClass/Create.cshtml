@@ -1,0 +1,73 @@
+﻿@using Infragistics.Web.Mvc
+@using Icon.Framework
+@model Icon.Web.Mvc.Models.NationalClassViewModel 
+
+@{
+    ViewBag.Title = "New National Class";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/themes/base/all.css")
+
+@{Html.RenderPartial("_HeaderPartial", "National Class Management");}
+
+<div class="page-section">
+    @using (Html.BeginForm("Create", "NationalClass", FormMethod.Post, new { @class = "begin-form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(model => model.HierarchyParentClassId )
+        @Html.HiddenFor(model => model.HierarchyParentClassName)
+        @Html.HiddenFor(model => model.HierarchyLevel)
+        @Html.HiddenFor(model => model.HierarchyId)
+        
+        <fieldset>
+            <legend>Create National Class</legend>
+
+            <div class="row">
+                @Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.HierarchyParentClassName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+                </div>
+            </div>
+            <div class="row">
+                @Html.LabelFor(model => model.HierarchyClassName, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.HierarchyClassName, new { @class = "col-md-6 form-input" })
+                    @Html.ValidationMessageFor(model => model.HierarchyClassName, null, new { @class = "col-md-6 form-property-val" })
+                </div>
+            </div>
+            @if (Model.HierarchyLevel == HierarchyLevels.NationalClass)
+            {
+                <div class="row">
+                    @Html.LabelFor(model => model.NationalClassCode, new { @class = "col-md-2 form-label" })
+                    <div>
+                        @Html.TextBoxFor(model => model.NationalClassCode, new { @class = "col-md-6 form-input" })
+                        @Html.ValidationMessageFor(model => model.NationalClassCode, null, new { @class = "col-md-6 form-property-val" })
+                    </div>
+                </div>
+            }     
+        </fieldset>
+
+        <div class="row">
+            <div class="col-md-offset-2 col-md-1">
+                <input type="submit" id="create-button" value="Create" class="btn btn-default form-submit" />
+            </div>
+        </div>
+
+        <div class="validation-section page-subsection">
+            @if (ViewData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>@ViewData["ErrorMessage"].ToString()</strong>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<div class="form-footer">
+    @Html.ActionLink("National Class Management", "Index")
+</div>

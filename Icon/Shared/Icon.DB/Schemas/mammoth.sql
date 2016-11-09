@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [mammoth]
+    AUTHORIZATION [dbo];
+GO

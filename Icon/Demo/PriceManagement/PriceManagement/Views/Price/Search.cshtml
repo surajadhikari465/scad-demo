@@ -1,0 +1,50 @@
+﻿@model IEnumerable<PriceManagement.ViewModels.ItemViewModel>
+@using PriceManagement.ViewModels
+
+@{
+    ViewBag.Title = "Search";
+}
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script src="~/Scripts/Price/price_edit.js"></script>
+}
+
+<h2>Search</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ScanCode)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ScanCode)
+        </td>
+        <td>
+            <button data-itemId>Edit Prices</button>
+            @*@Html.ActionLink( "Add Prices", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+        </td>
+    </tr>
+}
+
+</table>
+
+<div id="dialog">
+    @Html.DropDownList("regions", RegionsViewModel.All, "Select a Region", null)
+</div>

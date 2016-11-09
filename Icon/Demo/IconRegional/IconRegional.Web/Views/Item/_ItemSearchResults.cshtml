@@ -1,0 +1,23 @@
+﻿@model IconRegional.Web.ViewModels.ItemSearchResultsViewModel
+
+<div>
+    <h4>Search Results</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalNumberOfItems)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalNumberOfItems)
+        </dd>
+
+        <dt>
+            Items
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Items, "ItemModelList")
+        </dd>        
+    </dl>
+</div>

@@ -1,0 +1,79 @@
+﻿@using Infragistics.Web.Mvc
+@model List<Icon.Web.DataAccess.Models.DefaultTaxClassMismatchExportModel>
+
+@{
+    ViewBag.Title = "Import Errors";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@{Html.RenderPartial("_HeaderPartial", "Merchandise Tax Association Management");}
+
+@if (Model.Count > 0)
+{
+    <div class="page-section">
+        <hr />
+
+        <div class="page-subsection">
+            <h4>Errors were found for the following items.  You may export these items, make corrections, and attempt the import again.</h4>
+        </div>
+
+        <div class="page-subsection">
+            @(Html.Infragistics().Grid(Model.AsQueryable())
+                .ID("igGrid")
+                .Width("100%")
+                .AutoGenerateColumns(false)
+                .Columns(column =>
+                    {
+                        column.For(item => item.ScanCode).HeaderText("Scan Code").Width("10%").Template("<div style='text-align:right'> ${ScanCode} </div>");
+                        column.For(item => item.Brand).HeaderText("Brand").Width("10%");
+                        column.For(item => item.ProductDescription).HeaderText("Product Description").Width("10%");
+                        column.For(item => item.MerchandiseLineage).HeaderText("Merchandise").Width("10%");
+                        column.For(item => item.DefaultTaxClass).HeaderText("Default Tax Class").Width("10%");
+                        column.For(item => item.TaxClassOverride).HeaderText("Tax Class Override").Width("10%");
+                        column.For(item => item.Error).HeaderText("Error").Width("40%");
+                    })
+                .Features(features =>
+                    {
+                        features.Paging().PageSize(20);
+                        features.Resizing();
+                        features.Sorting().ApplyColumnCss(false);
+                        features.Tooltips().Visibility(TooltipsVisibility.Overflow);
+                    })
+                .DataBind()
+                .Render()
+            )
+        </div>
+
+        <div class="page-subsection">
+            @using (Html.BeginForm("DefaultTaxMismatchExport", "Excel", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "begin-form" }))
+            {
+                for (int i = 0; i < Model.Count; i++)
+                {
+                    @Html.HiddenFor(model => model[i].ScanCode);
+                    @Html.HiddenFor(model => model[i].Brand);
+                    @Html.HiddenFor(model => model[i].ProductDescription);
+                    @Html.HiddenFor(model => model[i].MerchandiseLineage);
+                    @Html.HiddenFor(model => model[i].DefaultTaxClass);
+                    @Html.HiddenFor(model => model[i].TaxClassOverride);
+                    @Html.HiddenFor(model => model[i].Error);
+                }
+
+                <input type="submit" value="Export" id="exportButton" class="btn btn-default form-submit" />
+            }
+        </div>
+
+        <div class="page-subsection">
+            @Html.ActionLink("Back To Merchandise/Tax Association Management", "Index")
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/Scripts/MerchTaxMapping/import-errors.js")

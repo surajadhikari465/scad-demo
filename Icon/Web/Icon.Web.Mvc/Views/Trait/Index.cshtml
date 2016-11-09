@@ -1,0 +1,67 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.TraitViewModel
+
+@{
+    ViewBag.Title = "Traits";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@{Html.RenderPartial("_HeaderPartial", "Trait Management");}
+
+<div class="page-section">
+    @using (@Html.BeginForm("Index", "Trait", FormMethod.Get))
+    {
+        <fieldset>
+            <legend>View Traits</legend>
+            <div class="row">
+                @Html.LabelFor(model => Model.TraitGroupSelectedId, new { @class = "col-md-2 form-label" })
+                @Html.DropDownListFor(model => Model.TraitGroupSelectedId, Model.TraitGroup)
+            </div>
+        </fieldset>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-1">
+                <input type="submit" value="Search" class="btn btn-default form-submit" />
+            </div>
+        </div>   
+    }
+</div>
+<hr />
+<div id="traitView" class="page-section">
+    @if (Model.Traits != null && Model.Traits.Count > 0)
+    {
+        @(Html.Infragistics().Grid(Model.Traits.AsQueryable())
+            .ID("traitGrid")
+            .PrimaryKey("TraitId")
+            .Width("100%")
+            .Columns(columns =>
+            {
+                columns.For(c => c.TraitId).Hidden(true);
+                columns.For(c => c.TraitGroupId).Hidden(true);
+                columns.For(c => c.TraitPattern).Hidden(true);
+                columns.For(c => c.TraitDesc).HeaderText("Trait Description").Width("50%");
+                columns.For(c => c.TraitGroupDescription).HeaderText("Trait Group Description").Width("50%");
+            })
+            .Features(features =>
+            {
+                features.Sorting().Inherit(true);
+                features.Paging().PageSize(20).Inherit(true);
+                features.Filtering().Inherit(true);
+            })
+            .DataSource(Model.Traits.AsQueryable())
+            .DataBind()
+            .Render()
+        );
+    }
+    else
+    {
+        <h4>No trait data was found.</h4>
+    }
+</div>

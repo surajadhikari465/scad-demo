@@ -1,0 +1,478 @@
+﻿@using Infragistics.Web.Mvc
+@using Icon.Framework
+@using Icon.Web.Common
+@model Icon.Web.Mvc.Models.IrmaItemSearchViewModel
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Resources("igCombo")
+    .Render()
+)
+
+<input type="button" id="loadRows" class="btn btn-default form-submit" value="Load to Icon" />
+<input type="button" id="validateRows" class="btn btn-default form-submit" value="Validate" />
+<input type="button" id="deleteRows" class="btn btn-default form-submit delete-btn" value="Delete" />
+
+<span class="search-alert page-subsection"></span>
+
+<hr />
+
+@if (Model.Items.Count > 0)
+{
+    @(Html.Infragistics().Grid(Model.Items.AsQueryable())
+        .AutoGenerateColumns(false)
+        .ID("igGrid")
+        .Width("100%")
+        .PrimaryKey("IrmaItemId")
+        .Columns(column =>
+        {
+            column.For(item => item.IrmaItemId).HeaderText("ID").Hidden(true).DataType("number");
+            column.For(item => item.Region).HeaderText("Region").Width("60px").DataType("string");
+            column.For(item => item.HasInvalidData).HeaderText("HasInvalidData").Hidden(true).DataType("bool");
+            column.For(item => item.Identifier).HeaderText("Scan Code").Width("120px").DataType("string")
+                .Template("{{if ${HasInvalidData} }}"
+                            + "<div style='text-align:right;background-color:orange'>${Identifier}</div>"
+                            + "{{elseif !${DefaultIdentifier} }}"
+                            + "<div style='text-align:right;background-color:palegreen'>${Identifier}</div>"
+                            + "{{else}}"
+                            + "<div style='text-align:right'>${Identifier}</div>"
+                            + "{{/if}}");
+            column.For(item => item.IsNewBrand).HeaderText("IsNewBrand").Hidden(true).DataType("bool");
+            column.For(item => item.BrandName).HeaderText("Brand").Width("200px").DataType("string")
+                .Template("{{if ${IsNewBrand} }}"
+                            + "<b>${BrandName}</b>"
+                            + "{{else}}"
+                            + "${BrandName}"
+                            + "{{/if}}");
+            column.For(item => item.ItemDescription).HeaderText("Product Description").Width("200px").DataType("string");
+            column.For(item => item.PosDescription).HeaderText("POS Description").Width("200px").DataType("string");
+            column.For(item => item.PackageUnit).HeaderText("Item Pack").Width("80px").DataType("number");
+            column.For(item => item.FoodStamp).HeaderText("Food Stamp Eligible").Width("80px").DataType("bool").FormatterFunction("boolFormatter");
+            column.For(item => item.PosScaleTare).HeaderText("POS Scale Tare").Width("100px").DataType("number");
+            column.For(item => item.RetailSize).HeaderText("Size").Width("50px").DataType("number");
+            column.For(item => item.IsUnsupportedUom).HeaderText("IsUnsupportedUom").Hidden(true).DataType("bool");
+            column.For(item => item.RetailUom).HeaderText("UOM").Width("50px")
+                .Template("{{if ${IsUnsupportedUom} }}"
+                            + "<b>${RetailUom}</b>"
+                            + "{{else}}"
+                            + "${RetailUom}"
+                            + "{{/if}}");
+            column.For(item => item.DeliverySystem).HeaderText("Delivery System").Width("200px").DataType("string");
+            column.For(item => item.IrmaSubTeamName).HeaderText("IRMA SubTeam").Width("200px").DataType("string");
+            column.For(item => item.MerchandiseHierarchyClassId).HeaderText("Merchandise").Width("200px").FormatterFunction("lookupMerchName");
+            column.For(item => item.TaxHierarchyClassId).HeaderText("Tax").Width("200px").FormatterFunction("lookupTaxName");
+            column.For(item => item.AlcoholByVolume).HeaderText("Alcohol By Volume").Width("150px");
+            column.For(item => item.NationalHierarchyClassId).HeaderText("National Class").Width("200px").FormatterFunction("lookupNationalClassName");
+            column.For(item => item.AirChilled).HeaderText("Air Chilled").Width("200px").FormatterFunction("boolFormatter");
+            column.For(item => item.AnimalWelfareRatingId).HeaderText("Animal Welfare Rating").Width("200px").FormatterFunction("formatAnimalWelfareRating");
+            column.For(item => item.Biodynamic).HeaderText("Biodynamic").Width("100px").FormatterFunction("boolFormatter");
+            column.For(item => item.CheeseMilkTypeId).HeaderText("Cheese Attribute: Milk Type").Width("200px").FormatterFunction("formatMilkType");
+            column.For(item => item.CheeseRaw).HeaderText("Cheese Attribute: Raw").Width("200px").FormatterFunction("boolFormatter");
+            column.For(item => item.DryAged).HeaderText("Dry Aged").Width("200px").FormatterFunction("boolFormatter");
+            column.For(item => item.EcoScaleRatingId).HeaderText("Eco Scale Rating").Width("200px").FormatterFunction("formatEcoScaleRating");
+            column.For(item => item.FreeRange).HeaderText("Free Range").Width("200px").FormatterFunction("boolFormatter");
+            column.For(item => item.SeafoodFreshOrFrozenId).HeaderText("Fresh or Frozen").Width("200px").FormatterFunction("formatSeafoodFreshOrFrozenType");
+            column.For(item => item.GlutenFreeAgencyId).HeaderText("Gluten Free").Width("200px").FormatterFunction("formatGlutenFreeAgency");
+            column.For(item => item.GrassFed).HeaderText("Grass Fed").Width("200px").FormatterFunction("boolFormatter");
+            column.For(item => item.KosherAgencyId).HeaderText("Kosher").Width("200px").FormatterFunction("formatKosherAgency");
+            column.For(item => item.MadeInHouse).HeaderText("Made In House").Width("200px").FormatterFunction("boolFormatter");
+            column.For(item => item.Msc).HeaderText("MSC").Width("100px").FormatterFunction("boolFormatter");
+            column.For(item => item.NonGmoAgencyId).HeaderText("Non-GMO").Width("200px").FormatterFunction("formatNonGmoAgency");
+            column.For(item => item.OrganicAgencyId).HeaderText("Organic").Width("200px").FormatterFunction("formatOrganicAgency");
+            column.For(item => item.PastureRaised).HeaderText("Pasture Raised").Width("200px").FormatterFunction("boolFormatter");
+            column.For(item => item.PremiumBodyCare).HeaderText("Premium Body Care").Width("200px").FormatterFunction("boolFormatter");
+            column.For(item => item.SeafoodCatchTypeId).HeaderText("Seafood: Wild or Farm Raised").Width("200px").FormatterFunction("formatSeafoodCatchType");
+            column.For(item => item.VeganAgencyId).HeaderText("Vegan").Width("200px").FormatterFunction("formatVeganAgency");
+            column.For(item => item.Vegetarian).HeaderText("Vegetarian").Width("100px").FormatterFunction("boolFormatter");
+            column.For(item => item.WholeTrade).HeaderText("Whole Trade").Width("100px").FormatterFunction("boolFormatter");
+        })
+        .Features(features =>
+        {
+            features.Paging().PageSize(25);
+            features.Sorting().ApplyColumnCss(false);
+            features.Selection().MultipleSelection(true).Mode(SelectionMode.Row)
+                .AddClientEvent(GridSelectionClientEvents.RowSelectionChanged, "gridSelectionChanged");
+            features.RowSelectors().EnableCheckBoxes(true).EnableRowNumbering(false)
+                .AddClientEvent(GridRowSelectorsClientEvents.CheckBoxStateChanged, "gridSelectionChanged");
+            features.Resizing();
+            features.Tooltips()
+                    .Visibility(TooltipsVisibility.Overflow);
+            features.Updating()
+                .EditMode(GridEditMode.Row)
+                .EnableDeleteRow(false)
+                .EnableAddRow(false)
+                .ShowDoneCancelButtons(true)
+                .StartEditTriggers(GridStartEditTriggers.DblClick)
+                .DoneLabel("Apply")
+                .ColumnSettings(settings =>
+                {
+                    settings.ColumnSetting().ColumnKey("IrmaItemId").ReadOnly(true);
+                    settings.ColumnSetting().ColumnKey("Region").ReadOnly(true);
+                    settings.ColumnSetting().ColumnKey("Identifier").ReadOnly(true);
+                    settings.ColumnSetting().ColumnKey("ItemDescription").Required(true)
+                        .EditorOptions(@"validatorOptions: {errorMessage: 'Value Required, " + ValidatorErrorMessages.ProductDescriptionError + "', regExp:/" + TraitPatterns.ProductDescription + "/}");
+                    settings.ColumnSetting().ColumnKey("PosDescription").Required(true)
+                        .EditorOptions(@"validatorOptions: {errorMessage: 'Value Required, " + ValidatorErrorMessages.PosDescriptionError + "', regExp:/" + TraitPatterns.PosDescription + "/}");
+                    settings.ColumnSetting().ColumnKey("PackageUnit").Required(true).Validation(true)
+                        .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Int).MinValue(0).MaxValue(999));
+                    settings.ColumnSetting().ColumnKey("Size").Required(true).Validation(true)
+                        .NumericEditorOptions(options => options.DataMode(NumericEditorDataMode.Decimal).MinValue(0.0001).MaxValue(99999.9999).MaxDecimals(4));
+                    settings.ColumnSetting().ColumnKey("RetailUom").EditorType(ColumnEditorType.Combo).Required(false).Validation(true)
+                        .ComboEditorOptions(uomOptions =>
+                            uomOptions.DataSource(Model.Uoms.AsQueryable())
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.StartsWith)
+                                .AllowCustomValue(true)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("DeliverySystem").EditorType(ColumnEditorType.Combo).Required(false).Validation(true)
+                        .ComboEditorOptions(deliverySystemOptions =>
+                            deliverySystemOptions.DataSource(Model.DeliverySystems.AsQueryable())
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.StartsWith)
+                                .AllowCustomValue(true)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("FoodStamp");
+                    settings.ColumnSetting().ColumnKey("PosScaleTare").Required(true).Validation(true)
+                        .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Decimal).MinDecimals(0).MaxDecimals(3).MinValue(0).MaxValue(9.999));
+                    settings.ColumnSetting().ColumnKey("BrandName").EditorType(ColumnEditorType.Combo).Required(true).Validation(true)
+                        .ComboEditorOptions(brandOptions =>
+                            brandOptions.DataSource(Model.AllBrands.AsQueryable())
+                                .ValueKey("HierarchyClassName")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(true)
+                                .Virtualization(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .FilteringType(ComboFilteringType.Local)
+                                .ValidatorOptions(vo => vo.RegExp( CustomValidationPatterns.BrandNamePattern))
+                                .ValidatorOptions(vo => vo.CustomErrorMessage("Value Required, " + ValidatorErrorMessages.BrandNameError)));
+                    settings.ColumnSetting().ColumnKey("IrmaSubTeamName").ReadOnly(true);
+                    settings.ColumnSetting().ColumnKey("MerchandiseHierarchyClassId").EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(merchOptions =>
+                            merchOptions.DataSource(Model.MerchandiseHierarchyClasses.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassLineage")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(1500)
+                                .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("NationalHierarchyClassId").EditorType(ColumnEditorType.Combo)
+                       .ComboEditorOptions(nationalOptions =>
+                           nationalOptions.DataSource(Model.NationalHierarchyClasses.AsQueryable())
+                               .ValueKey("HierarchyClassId")
+                               .TextKey("HierarchyClassLineage")
+                               .ShowDropDownButton(true)
+                               .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                               .AllowCustomValue(false)
+                               .Virtualization(true)
+                               .DropDownWidth(1500)
+                               .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("TaxHierarchyClassId").EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(taxOptions =>
+                            taxOptions.DataSource(Model.TaxHierarchyClasses.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassLineage")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(400)
+                                .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("AnimalWelfareRatingId")
+                                            .EditorType(ColumnEditorType.Combo)
+                                            .ComboEditorOptions(options =>
+                                                options.DataSource(Model.AnimalWelfareRatings.AsQueryable())
+                                                    .ValueKey("HierarchyClassId")
+                                                    .TextKey("HierarchyClassLineage")
+                                                    .ShowDropDownButton(true)
+                                                    .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                                    .AllowCustomValue(false)
+                                                    .Virtualization(true)
+                                                    .DropDownWidth(300)
+                                                    .FilteringType(ComboFilteringType.Local)
+                                            );
+                    settings.ColumnSetting().ColumnKey("Biodynamic")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("CheeseMilkTypeId")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.MilkTypes.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassLineage")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("CheeseRaw")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("EcoScaleRatingId")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.EcoScaleRatings.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassLineage")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("GlutenFreeAgencyId")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(taxOptions =>
+                            taxOptions.DataSource(Model.GlutenFreeAgencies.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassName")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(600)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("KosherAgencyId")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(taxOptions =>
+                            taxOptions.DataSource(Model.KosherAgencies.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassName")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(600)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("Msc")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("NonGmoAgencyId")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(taxOptions =>
+                            taxOptions.DataSource(Model.NonGmoAgencies.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassName")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(600)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("OrganicAgencyId")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(taxOptions =>
+                            taxOptions.DataSource(Model.OrganicAgencies.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassName")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(600)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("PremiumBodyCare")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("SeafoodFreshOrFrozenId")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.SeafoodFreshOrFrozenTypes.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassLineage")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("SeafoodCatchTypeId")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.SeafoodCatchTypes.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassLineage")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("VeganAgencyId")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(taxOptions =>
+                            taxOptions.DataSource(Model.VeganAgencies.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassName")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(600)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("Vegetarian")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("WholeTrade")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("GrassFed")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("PastureRaised")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("FreeRange")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("DryAged")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("AirChilled")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("MadeInHouse")
+                        .EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(options =>
+                            options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
+                                .ValueKey("Item1")
+                                .TextKey("Item2")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local)
+                        );
+                    settings.ColumnSetting().ColumnKey("DepartmentSale").ReadOnly(true);
+                    settings.ColumnSetting().ColumnKey("AlcoholByVolume")
+                        .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Decimal).MinDecimals(0).MaxDecimals(2).MinValue(0).MaxValue(99.99));
+                });
+        })
+        .DataSource(Model.Items.AsQueryable())
+        .UpdateUrl(Url.Action("SaveChangesInGrid"))
+        .AggregateTransactions(true)
+        .DataBind()
+        .Render()
+);
+    
+    <input type="button" id="export" class="btn btn-default form-submit" value="Export" />
+}
+else
+{
+    <h4>No items found - @DateTime.Now</h4>
+}

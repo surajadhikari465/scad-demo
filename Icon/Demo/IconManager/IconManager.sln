@@ -1,0 +1,84 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconManager", "IconManager\IconManager.csproj", "{C1956966-7E90-4D98-A77D-9AB939DCC867}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconManager.Tests", "IconManager.Tests\IconManager.Tests.csproj", "{533FFD8A-FCD1-45D5-B2A4-A11BD6DC3578}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{6ADAA72D-93F1-4FC3-B3BA-779AEFE94A62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Framework", "..\..\Shared\Icon.Framework\Icon.Framework.csproj", "{272A6B53-57A0-4895-9CA6-E41C2D4EC061}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irma.Framework", "..\..\Shared\Irma.Framework\Irma.Framework.csproj", "{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1956966-7E90-4D98-A77D-9AB939DCC867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1956966-7E90-4D98-A77D-9AB939DCC867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1956966-7E90-4D98-A77D-9AB939DCC867}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{C1956966-7E90-4D98-A77D-9AB939DCC867}.QA|Any CPU.Build.0 = Release|Any CPU
+		{C1956966-7E90-4D98-A77D-9AB939DCC867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1956966-7E90-4D98-A77D-9AB939DCC867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1956966-7E90-4D98-A77D-9AB939DCC867}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{C1956966-7E90-4D98-A77D-9AB939DCC867}.Test|Any CPU.Build.0 = Release|Any CPU
+		{533FFD8A-FCD1-45D5-B2A4-A11BD6DC3578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{533FFD8A-FCD1-45D5-B2A4-A11BD6DC3578}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{533FFD8A-FCD1-45D5-B2A4-A11BD6DC3578}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{533FFD8A-FCD1-45D5-B2A4-A11BD6DC3578}.QA|Any CPU.Build.0 = Release|Any CPU
+		{533FFD8A-FCD1-45D5-B2A4-A11BD6DC3578}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{533FFD8A-FCD1-45D5-B2A4-A11BD6DC3578}.Release|Any CPU.Build.0 = Release|Any CPU
+		{533FFD8A-FCD1-45D5-B2A4-A11BD6DC3578}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{533FFD8A-FCD1-45D5-B2A4-A11BD6DC3578}.Test|Any CPU.Build.0 = Release|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.QA|Any CPU.Build.0 = QA|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Test|Any CPU.Build.0 = Test|Any CPU
+		{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}.QA|Any CPU.Build.0 = QA|Any CPU
+		{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C}.Test|Any CPU.Build.0 = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061} = {6ADAA72D-93F1-4FC3-B3BA-779AEFE94A62}
+		{7F5D0BB1-7E2F-4A05-8BA7-B52315C1851C} = {6ADAA72D-93F1-4FC3-B3BA-779AEFE94A62}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = IconManager.Tests\\IconManager.Tests.csproj
+		SccProjectName1 = IconManager.Tests
+		SccLocalPath1 = IconManager.Tests
+		SccProjectUniqueName2 = IconManager\\IconManager.csproj
+		SccProjectName2 = IconManager
+		SccLocalPath2 = IconManager
+		SccProjectUniqueName3 = ..\\..\\Shared\\Icon.Framework\\Icon.Framework.csproj
+		SccProjectTopLevelParentUniqueName3 = IconManager.sln
+		SccProjectName3 = ../../Shared/Icon.Framework
+		SccLocalPath3 = ..\\..\\Shared\\Icon.Framework
+		SccProjectUniqueName4 = ..\\..\\Shared\\Irma.Framework\\Irma.Framework.csproj
+		SccProjectTopLevelParentUniqueName4 = IconManager.sln
+		SccProjectName4 = ../../Shared/Irma.Framework
+		SccLocalPath4 = ..\\..\\Shared\\Irma.Framework
+	EndGlobalSection
+EndGlobal

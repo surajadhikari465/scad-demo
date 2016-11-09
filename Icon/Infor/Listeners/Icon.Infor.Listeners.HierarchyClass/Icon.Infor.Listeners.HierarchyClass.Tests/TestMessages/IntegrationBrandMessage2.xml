@@ -1,0 +1,23 @@
+﻿<hierarchy xmlns="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">
+  <name>Brands</name>
+  <prototype>
+    <hpt:hierarchyLevelName>BRAND</hpt:hierarchyLevelName>
+    <hpt:itemsAttached>1</hpt:itemsAttached>
+  </prototype>
+  <class crf:Action="AddOrUpdate">
+    <hcl:id>40487</hcl:id>
+    <hcl:name>Blakes 2 FAMOUS MINERAL WATER</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+    <hcl:traits>
+      <crf:trait xmlns:math="http://www.w3.org/2005/xpath-functions/math" xmlns:udf1="http://infor.com" xmlns:expath-zip="http://expath.org/ns/zip" xmlns:expath-file="http://expath.org/ns/file" xmlns:udf3="http://infor.com/custom" xmlns:exslt-common="http://exslt.org/common" xmlns:saxon="http://saxon.sf.net/" xmlns:map="http://www.w3.org/2005/xpath-functions/map" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:exslt-random="http://exslt.org/random" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:exslt-math="http://exslt.org/math">
+        <tra:code>BA</tra:code>
+        <tra:type>
+          <trt:description>Brand Abbreviatione29f45d7-2488-4bca-a10c-358fc7ea8aa9</trt:description>
+          <trt:value>
+            <trv:value>FMW</trv:value>
+          </trt:value>
+        </tra:type>
+      </crf:trait>
+    </hcl:traits>
+  </class>
+</hierarchy>

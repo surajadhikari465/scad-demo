@@ -1,0 +1,5 @@
+﻿CREATE TABLE [app].[EventType]
+(
+	[EventId] INT NOT NULL CONSTRAINT [PK_EventId] PRIMARY KEY IDENTITY, 
+    [EventName] NVARCHAR(255) NOT NULL	
+)

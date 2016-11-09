@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Prices";
+}
+
+<h2>Price Search</h2>
+
+@using (Html.BeginForm("Search", "Price", FormMethod.Post))
+{
+    @Html.TextArea("scanCodes");
+
+    <input type="submit" value="Search"/>
+}
+

@@ -1,0 +1,79 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<root xmlns:BW = "java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns = "http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1 = "http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns12 = "http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns2 = "http://www.tibco.com/pe/EngineTypes" xmlns:ns3 = "http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns4 = "www.tibco.com/plugin/Sleep" xmlns:pd = "http://xmlns.tibco.com/bw/process/2003" xmlns:pfx = "http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx2 = "http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pfx3 = "http://schemas.wfm.com/Enterprise/R10/R10Response/V1" xmlns:pfx4 = "http://schemas.wfm.com/Enterprise/R10/R10Request/V1" xmlns:tib = "http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsd = "http://www.w3.org/2001/XMLSchema">
+	<pfx3:r10Response>
+		<pfx3:applicationName>ItemMaintenance</pfx3:applicationName>
+		<pfx3:requestSuccess>false</pfx3:requestSuccess>
+		<pfx3:r10Message>
+			<ns0:r10ResponseReason xmlns:ns0 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">
+				<ns0:reasonCode>WFM_DATA_LOGIN</ns0:reasonCode>
+				<ns0:messageDescription>Session Id Invalid Error || After 3 attempts to login, the session id is invalid. Status: Activity timed out (BWENGINE-100029) || JMS Msg Id: UnitTest || Stack: &lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;ns0:ActivityTimedOutException xmlns:ns0="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions">&lt;msg>Activity timed out&lt;/msg>&lt;msgCode>BWENGINE-100029&lt;/msgCode>&lt;/ns0:ActivityTimedOutException> || Full StackTrace: Job-92032 Error in [Processes/Services/R10HttpRequest.process/Send R10 HTTP-Request]
+Activity timed out
+	at com.tibco.pe.core.TaskImpl.eval(Unknown Source)
+	at com.tibco.pe.core.Job.a(Unknown Source)
+	at com.tibco.pe.core.Job.k(Unknown Source)
+	at com.tibco.pe.core.JobDispatcher$JobCourier.a(Unknown Source)
+	at com.tibco.pe.core.JobDispatcher$JobCourier.run(Unknown Source)
+ || Process Stack: Processes/Main/ProcessRequest.process/GetSetR10SessionSharedVar>Processes/Sub/R10Login/GetSetSessionSharedVar.process/Login Set Session>Processes/Sub/R10Requests/RequestLogin.process/Request R10 Login>Processes/Sub/R10Requests/RetryLogin.process/TryLogin/Post R10 Http Request to Login>Processes/Services/R10HttpRequest.process/Send R10 HTTP-Request
+				</ns0:messageDescription>
+			</ns0:r10ResponseReason>
+			<ns0:xmlAscii xmlns:ns0 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">DATA EXCEPTION THROWN</ns0:xmlAscii>
+		</pfx3:r10Message>
+		<pfx3:r10Grouping>
+			<ns0:groupSize xmlns:ns0 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">0</ns0:groupSize>
+		</pfx3:r10Grouping>
+		<pfx3:destination>
+			<ns0:replyDestination xmlns:ns0 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">WFMESB.Commerce.OnePosMgmt.Request.Queue.V1</ns0:replyDestination>
+			<ns0:deadLetterDestination xmlns:ns0 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">WFMESB.Commerce.Online.Retalix.Reply.V1</ns0:deadLetterDestination>
+		</pfx3:destination>
+	</pfx3:r10Response>
+	<ns1:r10Request xmlns:ns1 = "http://schemas.wfm.com/Enterprise/R10/R10Request/V1">
+		<ns1:applicationName>ItemMaintenance</ns1:applicationName>
+		<ns1:requestDetails>
+			<ns2:isPayloadEncrypted xmlns:ns2 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">N</ns2:isPayloadEncrypted>
+			<ns2:r10Payload xmlns:ns2 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;ns0:ProductMaintenanceRequest xmlns:ns0="http://retalix.com/R10/services" MajorVersion="2" MinorVersion="0" FixVersion="0">
+&lt;ns0:Header>
+	&lt;ns0:MessageId Timestamp="2014-07-21T14:38:40.027-05:00">9925dff9-3655-4461-b0ad-1e39f339e60b&lt;/ns0:MessageId>
+	&lt;ns0:Bulk UnitOfWork="false" ReturnResponse="false"/>
+&lt;/ns0:Header>
+&lt;ns0:Product Action="AddOrUpdate" Sequence="1">
+	&lt;ns0:MainId>12&lt;/ns0:MainId>
+	&lt;ns0:Descriptions Action="Inherit">
+		&lt;ns0:Description TypeCode="Long" Culture="en-US" Language="eng" Action="Inherit">Bottle Deposit&lt;/ns0:Description>
+		&lt;ns0:Description TypeCode="Short" Culture="en-US" Language="eng" Action="Inherit">$.10 DEPOSIT BOTTLE&lt;/ns0:Description>
+	&lt;/ns0:Descriptions>
+	&lt;ns0:Identifiers Action="Inherit">
+		&lt;ns0:Identifier Type="EAN" Action="Inherit">216&lt;/ns0:Identifier>
+	&lt;/ns0:Identifiers>
+	&lt;ns0:Hierarchies Action="Replace">
+		&lt;ns0:Hierarchy HierarchyType="Merchandise" Action="Inherit">84530&lt;/ns0:Hierarchy>
+		&lt;ns0:Hierarchy HierarchyType="Brands" Action="Inherit">45179&lt;/ns0:Hierarchy>
+		&lt;ns0:Hierarchy HierarchyType="Tax" Action="Inherit">40424&lt;/ns0:Hierarchy>
+		&lt;ns0:Hierarchy HierarchyType="Financial" Action="Inherit">0&lt;/ns0:Hierarchy>
+	&lt;/ns0:Hierarchies>
+	&lt;ns0:LocationAttributes BusinessUnitId="0" Action="Inherit">
+		&lt;ns0:StoreRange Start="1970-01-01T00:00:00" Action="Inherit">false&lt;/ns0:StoreRange>
+		&lt;ns0:Grouping Action="Inherit">
+			&lt;ns0:Association IsExclude="false" Action="Inherit">Food_Stamp&lt;/ns0:Association>
+		&lt;/ns0:Grouping>
+	&lt;/ns0:LocationAttributes>
+&lt;/ns0:Product>
+&lt;/ns0:ProductMaintenanceRequest>
+			</ns2:r10Payload>
+			<ns2:r10RequestURI xmlns:ns2 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">ProductMaintenance.rti</ns2:r10RequestURI>
+		</ns1:requestDetails>
+		<ns1:destination>
+			<ns2:replyDestination xmlns:ns2 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">WFMESB.Commerce.OnePosMgmt.Request.Queue.V1</ns2:replyDestination>
+			<ns2:deadLetterDestination xmlns:ns2 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">WFMESB.Commerce.Online.Retalix.Reply.V1</ns2:deadLetterDestination>
+		</ns1:destination>
+		<ns1:notification>
+			<ns2:toEmail xmlns:ns2 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">Madelyn.Lescalleet@wholefoods.com</ns2:toEmail>
+			<ns2:ccEmail xmlns:ns2 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">Madelyn.Lescalleet@wholefoods.com</ns2:ccEmail>
+		</ns1:notification>
+	</ns1:r10Request>
+	<JmsMessageId>UnitTest</JmsMessageId>
+	<SequenceID>R10SvcUnitTest</SequenceID>
+	<TransactionID>R10SvcUnitTest</TransactionID>
+	<CorrelationID>R10SvcUnitTest</CorrelationID>
+</root>

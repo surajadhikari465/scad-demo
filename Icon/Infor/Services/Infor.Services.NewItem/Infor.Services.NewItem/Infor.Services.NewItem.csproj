@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Infor.Services.NewItem</RootNamespace>
+    <AssemblyName>Infor.Services.NewItem</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Esb.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Esb.Core.2016.10.21.1\lib\net45\Esb.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.2016.10.21.2\lib\net45\Icon.Esb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2016.10.18.1\lib\net45\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Framework.2016.10.21.1\lib\net45\Icon.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irma.Framework.2016.10.20.1\lib\net45\Irma.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=3.1.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.3.1.3\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
+    <Reference Include="TIBCO.EMS, Version=1.0.800.9, Culture=neutral, PublicKeyToken=5b83db8ff05c64ba, processorArchitecture=MSIL">
+      <HintPath>..\packages\TIBCO.EMS.2016.10.21.1\lib\TIBCO.EMS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Topshelf, Version=3.3.154.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Topshelf.3.3.1\lib\net40-full\Topshelf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\IconCache.cs" />
+    <Compile Include="Cache\IIconCache.cs" />
+    <Compile Include="Commands\AddNewItemsToIconCommand.cs" />
+    <Compile Include="Commands\AddNewItemsToIconCommandHandler.cs" />
+    <Compile Include="Commands\FinalizeNewItemEventsCommand.cs" />
+    <Compile Include="Commands\FinalizeNewItemEventsCommandHandler.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="InforNewItemApplicationSettings.cs" />
+    <Compile Include="Infrastructure\RegionRenewableContext.cs" />
+    <Compile Include="MessageBuilders\IMessageBuilder.cs" />
+    <Compile Include="MessageBuilders\NewItemMessageBuilder.cs" />
+    <Compile Include="Models\BrandModel.cs" />
+    <Compile Include="Models\NationalClassModel.cs" />
+    <Compile Include="Models\NewItemModel.cs" />
+    <Compile Include="Models\SubTeamModel.cs" />
+    <Compile Include="Models\TaxClassModel.cs" />
+    <Compile Include="Processor\INewItemProcessor.cs" />
+    <Compile Include="Processor\NewItemProcessor.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetBrandDictionaryQuery.cs" />
+    <Compile Include="Queries\GetBrandDictionaryQueryHandler.cs" />
+    <Compile Include="Queries\GetHierarchyClassTraitQuery.cs" />
+    <Compile Include="Queries\GetHierarchyClassTraitQueryHandler.cs" />
+    <Compile Include="Queries\GetItemIdsQuery.cs" />
+    <Compile Include="Queries\GetItemIdsQueryHandler.cs" />
+    <Compile Include="Queries\GetNationalClassDictionaryQuery.cs" />
+    <Compile Include="Queries\GetNationalClassDictionaryQueryHandler.cs" />
+    <Compile Include="Queries\GetNewItemsQuery.cs" />
+    <Compile Include="Queries\GetNewItemsQueryHandler.cs" />
+    <Compile Include="Queries\GetHierarchyClassCodesToHierarchyClassIdsDictionaryQuery.cs" />
+    <Compile Include="Queries\GetHierarchyClassCodesToHierarchyClassIdsDictionaryQueryHandler.cs" />
+    <Compile Include="IInforNewItemApplication.cs" />
+    <Compile Include="InforNewItemApplication.cs" />
+    <Compile Include="Infrastructure\IRegionalParameter.cs" />
+    <Compile Include="Queries\GetSubTeamsDictionaryQuery.cs" />
+    <Compile Include="Queries\GetSubTeamsDictionaryQueryHandler.cs" />
+    <Compile Include="Queries\GetTaxClassDictionaryQuery.cs" />
+    <Compile Include="Queries\GetTaxClassDictionaryQueryHandler.cs" />
+    <Compile Include="Services\AddNewItemsToInforRequest.cs" />
+    <Compile Include="Services\AddNewItemsToInforResponse.cs" />
+    <Compile Include="Services\IInforItemService.cs" />
+    <Compile Include="Services\InforItemService.cs" />
+    <Compile Include="SimpleInjectorInitializer.cs" />
+    <Compile Include="Validators\ICollectionValidator.cs" />
+    <Compile Include="Validators\CollectionValidatorResult.cs" />
+    <Compile Include="Validators\PluCollectionValidator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="App.Debug.config" />
+    <None Include="App.QA.config" />
+    <None Include="App.Release.config" />
+    <None Include="App.Test.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="App.Dev.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeAssassin.ConfigTransform.Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets" Condition="Exists('..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

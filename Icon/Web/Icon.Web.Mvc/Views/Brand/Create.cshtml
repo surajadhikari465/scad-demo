@@ -1,0 +1,67 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.BrandViewModel
+
+@{
+    ViewBag.Title = "New Brand";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Brand Management");}
+
+<div class="page-section">
+	@using (Html.BeginForm("Create", "Brand", FormMethod.Post, new { @class = "begin-form" }))
+	{
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary(true)
+
+        <fieldset>
+			<legend>Create New Brand</legend>
+
+			<div class="row">
+				@Html.LabelFor(model => model.BrandName, new { @class = "col-md-2 form-label" })
+				<div>
+					@Html.TextBoxFor(model => model.BrandName, new { @class = "col-md-6 form-input", @id = "brandName" })
+					@Html.ValidationMessageFor(model => model.BrandName, null, new { @class = "col-md-4 form-property-val" })
+				</div>
+			</div>
+            <div class="row">
+                @Html.LabelFor(model => model.BrandAbbreviation, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.BrandAbbreviation, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
+                    @Html.ValidationMessageFor(model => model.BrandAbbreviation, null, new { @class = "col-md-4 form-property-val" })
+                </div>
+            </div>
+		</fieldset>
+
+		<div class="row">
+			<div class="col-md-offset-2 col-md-1">
+				<input type="submit" id="createButton" value="Create" class="btn btn-default form-submit" />
+			</div>
+		</div>
+
+		<div class="validation-section page-subsection">
+            @if (ViewData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>@ViewData["SuccessMessage"].ToString()</strong>
+                </div>
+            }
+			@if (ViewData["ErrorMessage"] != null)
+			{
+				<div class="alert alert-danger alert-dismissable">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<strong>@ViewData["ErrorMessage"].ToString()</strong>
+				</div>
+			}
+		</div>
+	}
+</div>
+
+<div class="form-footer">@Html.ActionLink("Back to Brands", "Index")</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/Brand/brand-create.js")
+    @Scripts.Render("~/Scripts/jquery-disable.js")
+}

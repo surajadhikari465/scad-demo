@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<div class="jumbotron">
+    <h1 id="title">Global Item Consolidation</h1>
+    <p class="lead">Manage consolidated item information and hierarchies.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>New Items</h2>
+        <p>Search for IRMA items which have recently been added by the regions.</p>
+        <p>@Html.ActionLink("Start", "Index", "IrmaItem", null, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Consolidated Items</h2>
+        <p>Review canonical item information.</p>
+        <p>@Html.ActionLink("Start", "Index", "Item", null, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Bulk Load</h2>
+        <p>Make bulk changes to consolidated item information.</p>
+        <p>@Html.ActionLink("Start", "Index", "BulkItemImport", null, new { @class = "btn btn-default" })</p>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+﻿using Icon.ApiController.Common;
+using Icon.ApiController.Controller.Mappers;
+using Icon.ApiController.Controller.Monitoring;
+using Icon.ApiController.Controller.QueueProcessors;
+using Icon.ApiController.Controller.QueueReaders;
+using Icon.ApiController.Controller.Serializers;
+using Icon.ApiController.DataAccess.Commands;
+using Icon.ApiController.DataAccess.Queries;
+using Icon.RenewableContext;
+using Icon.Common.Email;
+using Icon.Esb;
+using Icon.Esb.Producer;
+using Icon.Framework;
+using Icon.Logging;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+
+namespace Icon.ApiController.Controller.ControllerBuilders
+{
+    public class ProductControllerBuilder : IControllerBuilder
+    {
+        public ApiControllerBase ComposeController(IRenewableContext<IconContext> globalContext)
+        {
+            ControllerType.Type = "Product";
+
+            var instance = ControllerType.Instance.ToString();
+            var baseLogger = new NLogLoggerInstance<ApiControllerBase>(instance);
+            var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
+            var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName"));
+            var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
+
+            producer.OpenConnection();
+
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Product, producer, globalContext);
+
+            var queueProcessorLogger = new NLogLoggerInstance<ProductQueueProcessor>(instance);
+            var serializer = new Serializer<Contracts.items>(
+                new NLogLoggerInstance<Serializer<Contracts.items>>(instance),
+                emailClient);
+            var queueReader = new ProductQueueReader(
+                new NLogLoggerInstance<ProductQueueReader>(instance),
+                emailClient,
+                new GetMessageQueueQuery<MessageQueueProduct>(
+                    new NLogLoggerInstance<GetMessageQueueQuery<MessageQueueProduct>>(instance), 
+                    globalContext),
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>(
+                    new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>>(instance), 
+                    globalContext),
+                new ProductSelectionGroupsMapper(new GetProductSelectionGroupsQuery(globalContext)),
+                new UomMapper(new NLogLoggerInstance<UomMapper>(instance)));
+            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(
+                new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance),
+                globalContext);
+            var associateMessageToQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueProduct>(
+                new NLogLoggerInstance<AssociateMessageToQueueCommandHandler<MessageQueueProduct>>(instance),
+                globalContext);
+            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProduct>(
+                new NLogLoggerInstance<UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProduct>>(instance), 
+                globalContext);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new NLogLoggerInstance<UpdateMessageHistoryStatusCommandHandler>(instance), globalContext);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>(
+                new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>>(instance), 
+                globalContext);
+            var markQueuedEntriesAsInProcessCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueProduct>(
+                    new NLogLoggerInstance<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueProduct>>(instance),
+                    globalContext);
+
+            var monitorCommandHandler = new SaveMessageProcessorJobSummaryCommandHandler(
+                new NLogLoggerInstance<SaveMessageProcessorJobSummaryCommandHandler>(instance), globalContext);
+            var monitor = new MessageProcessorMonitor(monitorCommandHandler);
+
+            var productQueueProcessor = new ProductQueueProcessor(
+                settings,
+                queueProcessorLogger,
+                globalContext,
+                queueReader,
+                serializer,
+                saveXmlMessageCommandHandler,
+                associateMessageToQueueCommandHandler,
+                setProcessedDateCommandHandler,
+                updateMessageHistoryCommandHandler,
+                updateMessageQueueStatusCommandHandler,
+                markQueuedEntriesAsInProcessCommandHandler,
+                producer,
+                monitor);
+
+            return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, productQueueProcessor, producer);
+        }
+    }
+}

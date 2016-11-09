@@ -1,0 +1,46 @@
+﻿<#@ template language="C#" debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Data" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ include file="ConfigurationAccessor.ttinclude" #>
+<#	
+    string tableName = "mammoth.ItemChangeEventType";
+	string idColumn = "EventTypeID";
+    string valueColumn = "EventTypeName";
+	Dictionary<string, string> data = new Dictionary<string, string>();
+
+    string fullPath = Host.ResolvePath("") + @"app.config";
+	var config = new ConfigurationAccessor((IServiceProvider)this.Host, fullPath);
+    string connectionString = config.ConnectionStrings["ItemCatalog_FL"].ConnectionString;
+    SqlConnection conn = new SqlConnection(connectionString);
+    string command = string.Format("select {0}, {1} from {2} order by {3}", valueColumn, idColumn, tableName, idColumn);
+    SqlCommand comm = new SqlCommand(command, conn);
+
+	conn.Open();
+
+	SqlDataReader reader = comm.ExecuteReader();
+	while(reader.Read())
+	{
+		data.Add(reader[idColumn].ToString(), reader[valueColumn].ToString());
+	}
+#>
+using System;
+
+namespace Mammoth.Common.DataAccess
+{
+	public class IrmaEventTypes
+	{
+<#	
+	foreach(var row in data) 
+	{
+#>
+		public const int <#= row.Value #> = <#= row.Key #>;
+<# 
+	} 
+#>
+	}
+}

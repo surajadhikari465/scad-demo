@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:wic="http://schemas.datacontract.org/2004/07/Ncr.Wic.AplManagement.Entities" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ewic="http://retalix.com/R10/services" targetNamespace="http://retalix.com/R10/services" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import schemaLocation="RetalixCommonHeader.xsd"/>
+	<xs:include schemaLocation="ActionTypeCodes.xsd"/>
+	<xs:include schemaLocation="Wic_Entities.xsd"/>
+	<xs:element name="WicBarcodeMappingManagementRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Header" type="RetalixCommonHeaderType"/>
+				<xs:sequence>
+					<xs:element name="BarcodeMappings" type="ewic:WicBarcodeMappingWithAction" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:sequence>
+			<xs:attribute name="MajorVersion" type="xs:integer" use="required" fixed="1"/>
+			<xs:attribute name="MinorVersion" type="xs:integer" use="optional" default="1"/>
+			<xs:attribute name="FixVersion" type="xs:integer" use="optional" default="0"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="WicBarcodeMappingManagementResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Header" type="RetalixCommonHeaderType"/>
+				<xs:element name="FailedBarcodeMappings" type="ewic:ArrayOfFailedBarcodeMapping1" nillable="true"/>
+			</xs:sequence>
+			<xs:attribute name="MajorVersion" type="xs:integer" use="required" fixed="1"/>
+			<xs:attribute name="MinorVersion" type="xs:integer" use="optional" default="0"/>
+			<xs:attribute name="FixVersion" type="xs:integer" use="optional" default="0"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="WicBarcodeMappingWithAction" mixed="false">
+		<xs:complexContent>
+			<xs:extension base="ewic:BarcodeMapping1">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

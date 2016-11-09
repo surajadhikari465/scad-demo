@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<hierarchy xmlns="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">
+  <name>National</name>
+  <prototype>
+    <hpt:hierarchyLevelName>National Class</hpt:hierarchyLevelName>
+    <hpt:itemsAttached>1</hpt:itemsAttached>
+  </prototype>
+  <class crf:Action="AddOrUpdate">
+    <hcl:id>124295</hcl:id>
+    <hcl:name>1.5 Box DELETE TEST</hcl:name>
+    <hcl:parentId>121692</hcl:parentId>
+    <hcl:traits>
+      <crf:trait>
+        <tra:code>NCC</tra:code>
+        <tra:type>
+          <trt:description>National Class Code</trt:description>
+          <trt:value>
+            <trv:value>42770</trv:value>
+          </trt:value>
+        </tra:type>
+      </crf:trait>
+    </hcl:traits>
+  </class>
+</hierarchy>

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<IconApplicationData>
+  
+  <Applications>
+    <Application Name="Mammoth.Price.Controller"
+                 ConfigFilePath="\\vm-icon-test1\e$\Mammoth\Price Controller\Mammoth.Price.Controller.exe.config"                 
+                 DisplayName="Mammoth Price Controller"
+                 Environment="Test"
+                 Server="vm-icon-test1"
+                 TypeOfApplication="WindowsService"
+                 DataFlowFrom="Icon"
+               />
+  <Application Name="Mammoth.ApiController - Price"
+               ConfigFilePath="\\vm-icon-test1\e$\Mammoth\API Controller\Price\Mammoth.ApiController.exe.config"
+               DisplayName="Mammoth API Controller - Price"
+               Environment="Test"
+               Server="vm-icon-test1"
+               TypeOfApplication="WindowsService"
+               DataFlowFrom="Icon"
+               />
+    <Application TypeOfApplication="WindowsService"
+                 ConfigFilePath="\\vm-icon-test1\E$\Icon\API Controller Phase 2\Test\Icon.ApiController.Controller.exe.config" 
+                 DisplayName="Icon API Controller - Price" 
+                 LoggingName="API Controller" 
+                 DataFlowFrom="Icon" 
+                 Environment="Test" 
+                 DataFlowTo="ESB" 
+                 Name="Icon API Controller - Price" 
+                 Server="vm-icon-test1"
+                 />
+  </Applications>
+
+  <EsbEnvironments>
+    <EsbEnvironment Name="ENV_A"
+                 ServerUrl="ssl://cerd1617.wfm.pvt:17293"
+                 TargetHostName="cerd1617.wfm.pvt"
+                 JmsUsername="jmsUser1"
+                 JmsPassword="secret1234"
+                 JndiUsername="jndiUserX"
+                 JndiPassword="topSecret99">
+      <ApplicationsInEnvironment>
+        <ApplicationInEnvironment Name="Mammoth.Price.Controller" Server="vm-icon-test1" />
+        <ApplicationInEnvironment Name="Mammoth.ApiController - Price" Server="vm-icon-test1" />
+      </ApplicationsInEnvironment>
+    </EsbEnvironment>
+    <EsbEnvironment Name="BAD_ENV"
+                 ServerUrl="ssl://cerd1617.wfm.pvt:17293"
+                 TargetHostName="cerd1617.wfm.pvt"
+                 JmsUsername="jmsUser1"
+                 JmsPassword="secret1234"
+                 JndiUsername="jndiUserX"
+                 JndiPassword="topSecret99">
+      <ApplicationsInEnvironment>
+        <ApplicationInEnvironment Name="Icon API Controller - Price" Server="vm-icon-test1" />
+      </ApplicationsInEnvironment>
+    </EsbEnvironment>
+  </EsbEnvironments>
+
+</IconApplicationData>

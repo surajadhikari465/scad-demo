@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.ApiMessageJobSummaryViewModel>
+
+@{ 
+    Icon.Dashboard.Mvc.ViewModels.ApiMessageJobTimedReportViewModel jobReportModel = null;
+    if (ViewBag.JobType != null)
+    {
+        jobReportModel = new Icon.Dashboard.Mvc.ViewModels.ApiMessageJobTimedReportViewModel(ViewBag.JobType.ToString());
+    }
+}
+<p></p>
+
+<div class="container-wide">
+    @{ Html.RenderPartial("_ApiJobsTablePartial", Model); }
+</div>
+
+<div id="pagingDiv">
+    @if (ViewBag.PaginationPageSetViewModel != null && ViewBag.PaginationPageSetViewModel is Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel)
+    {
+        <div>
+            @{Html.RenderPartial("_PaginationPartial", ViewBag.PaginationPageSetViewModel as Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel);}
+        </div>
+    }
+</div>
+
+@if (ViewBag.JobType != null)
+{
+    <div id="reportDiv" class="container">
+        @{
+            Html.RenderPartial("_ApiMessageJobTimedReportPartial", jobReportModel);
+        }
+    </div>
+}
+
+@section scripts {
+    <script type="text/javascript">
+        function summarizeFailed(ajaxContext) {
+            var message = "The summarize report request failed with status " + ajaxContext.status + ": " + ajaxContext.statusText;
+            if (typeof console !== "undefined") console.log(message);
+            $('#errorPanel').removeClass('hidden').show();
+            $('#errorPanelContent').text(message);
+        }
+
+        @* javascript data set from server-side Razor code for ApiJobs view*@
+        $(function () {
+            $('#@(nameof(jobReportModel.StartTime))').datetimepicker({
+                defaultDate: '@(jobReportModel?.StartTime.Value.ToString("YYYY-MM-DD HH:mm:ss"))',
+                format: 'YYYY-MM-DD HH:mm:ss',
+                showClose: true,
+                showClear: true,
+                toolbarPlacement: 'top'
+            });
+            $('#@(nameof(jobReportModel.EndTime))').datetimepicker({
+                defaultDate: '@(jobReportModel?.EndTime.Value.ToString("YYYY-MM-DD HH:mm:ss"))',
+                format: 'YYYY-MM-DD HH:mm:ss',
+                showClose: true,
+                showClear: true,
+                toolbarPlacement: 'top',
+                stepping: 15
+            });
+        });
+
+        @* javascript variables set from server-side Razor code for redrawPaging.js*@
+        var urlForRedrawPagingAction = '@(Url.Action("RedrawPaging", "ApiJobs", new { routeParameter = ViewBag.JobType ?? String.Empty}))';
+     </script>
+
+    @Scripts.Render("~/Scripts/redrawPaging.js")
+}

@@ -1,0 +1,13 @@
+<eWICExport xmlns="http://retalix.com/R10/services" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Items>
+    <StateID>ZZ</StateID>
+    <UPC>22222222</UPC>
+    <ItemDescription>APL Item Description</ItemDescription>
+    <UOM>EA</UOM>
+    <PackageSize>100</PackageSize>
+    <BenefitQuantity>1100</BenefitQuantity>
+    <BenefitUnitDescription>EA</BenefitUnitDescription>
+    <ItemPrice>199</ItemPrice>
+    <PriceType>RG</PriceType>
+  </Items>
+</eWICExport>

@@ -1,0 +1,184 @@
+﻿body {
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* set word break for use in bootstrap table*/
+.breakText {
+  word-break: break-word;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0;
+}
+
+.container-wide {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.customScrollColumn {    
+    max-width: 200px;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.likeTableHeader {
+    text-align: center;
+    vertical-align: bottom;
+    font-weight: bold;
+    border: 1px solid #DDD;
+    padding: 5px;
+}
+
+.likeTableCell {
+    text-align: center;
+    border: 1px solid #DDD;
+    padding: 5px;
+    max-height: 32px;
+}
+
+.tableHeaderBackground {
+    background-color: cornsilk;
+}
+
+#errorPanel {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.label-as-badge {
+    border-radius: 1em;
+}
+
+.panel-with-margin {
+    margin: 10px;
+}
+
+.no-right-padding {
+    padding-right: 0;
+}
+
+.no-left-padding {
+    padding-left: 0;
+}
+
+.no-border {
+    border: 0;
+}
+
+.pagingForm {
+    margin: 10px;
+}
+
+.pagingForm form {
+     display: inline;
+     margin: 0px;
+     padding: 0px;
+}
+
+.panel form {
+     display: inline;
+     margin: 0px;
+     padding: 0px;
+}
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+.full-width {
+    max-width: 100%;
+}
+
+.applicationRow {
+    /* empty class just so we can easily count all the elements with this class*/
+}
+
+.margin-bottom-10 {
+    margin-bottom: 10px;
+}
+
+.set-esb-btn {
+    /* empty class just so we can easily count all the elements with this class*/
+}
+
+.disable-link {
+    pointer-events: none;
+}
+
+div.applicationIdentifierPanel {
+     margin-bottom: 0;
+     margin-left: 10px;
+     margin-right: 10px;
+}
+
+div.applicationIdentifierPanelBody {
+     padding-top: 6px;
+     padding-bottom: 6px;
+}
+
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg); }
+    to { transform: scale(1) rotate(360deg); }
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+
+.panel.panel-horizontal {
+    display:table;
+    width:100%;
+}
+.panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-body, .panel.panel-horizontal > .panel-footer {
+    display:table-cell;
+    padding: 0;
+}
+.panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-footer {
+    width: 10%;
+    border:0;
+    vertical-align: middle;
+}
+.panel.panel-horizontal > .panel-heading {
+    border-right: 1px solid #ddd;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 4px;
+}
+.panel.panel-horizontal > .panel-footer {
+    border-left: 1px solid #ddd;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 4px;
+}

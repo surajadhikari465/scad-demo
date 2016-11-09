@@ -1,0 +1,93 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vim.Logging", "Vim.Logging\Vim.Logging.csproj", "{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vim.Common", "Vim.Common\Vim.Common.csproj", "{784F6ADD-F202-433D-809E-2781EFA656C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vim.Common.ControllerApplication", "Vim.Common.ControllerApplication\Vim.Common.ControllerApplication.csproj", "{E7E71D33-F300-4E00-951C-2E4CF9796E82}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60} = {B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}
+		{784F6ADD-F202-433D-809E-2781EFA656C2} = {784F6ADD-F202-433D-809E-2781EFA656C2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vim.Common.DataAcess.Tests", "Vim.Common.DataAcess.Tests\Vim.Common.DataAcess.Tests.csproj", "{DECC7B62-8CA5-4D60-96DE-55CCB8907951}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vim.Common.DataAccess", "Vim.Common.DataAccess\Vim.Common.DataAccess.csproj", "{89B0E863-A9CB-4FA1-BCFC-5A1C851DDEFF}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Vim.Common\\Vim.Common.csproj
+		SccProjectName1 = Vim.Common
+		SccLocalPath1 = Vim.Common
+		SccProjectUniqueName2 = Vim.Logging\\Vim.Logging.csproj
+		SccProjectName2 = Vim.Logging
+		SccLocalPath2 = Vim.Logging
+		SccProjectUniqueName3 = Vim.Common.ControllerApplication\\Vim.Common.ControllerApplication.csproj
+		SccProjectName3 = Vim.Common.ControllerApplication
+		SccLocalPath3 = Vim.Common.ControllerApplication
+		SccProjectUniqueName4 = Vim.Common.DataAcess.Tests\\Vim.Common.DataAcess.Tests.csproj
+		SccProjectName4 = Vim.Common.DataAcess.Tests
+		SccLocalPath4 = Vim.Common.DataAcess.Tests
+		SccProjectUniqueName5 = Vim.Common.DataAccess\\Vim.Common.DataAccess.csproj
+		SccProjectName5 = Vim.Common.DataAccess
+		SccLocalPath5 = Vim.Common.DataAccess
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}.QA|Any CPU.Build.0 = QA|Any CPU
+		{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{B9A3ED66-6F99-453C-8DD0-DFE1C90B2C60}.Test|Any CPU.Build.0 = Test|Any CPU
+		{784F6ADD-F202-433D-809E-2781EFA656C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{784F6ADD-F202-433D-809E-2781EFA656C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{784F6ADD-F202-433D-809E-2781EFA656C2}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{784F6ADD-F202-433D-809E-2781EFA656C2}.QA|Any CPU.Build.0 = QA|Any CPU
+		{784F6ADD-F202-433D-809E-2781EFA656C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{784F6ADD-F202-433D-809E-2781EFA656C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{784F6ADD-F202-433D-809E-2781EFA656C2}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{784F6ADD-F202-433D-809E-2781EFA656C2}.Test|Any CPU.Build.0 = Test|Any CPU
+		{E7E71D33-F300-4E00-951C-2E4CF9796E82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7E71D33-F300-4E00-951C-2E4CF9796E82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7E71D33-F300-4E00-951C-2E4CF9796E82}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{E7E71D33-F300-4E00-951C-2E4CF9796E82}.QA|Any CPU.Build.0 = QA|Any CPU
+		{E7E71D33-F300-4E00-951C-2E4CF9796E82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7E71D33-F300-4E00-951C-2E4CF9796E82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7E71D33-F300-4E00-951C-2E4CF9796E82}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{E7E71D33-F300-4E00-951C-2E4CF9796E82}.Test|Any CPU.Build.0 = Test|Any CPU
+		{DECC7B62-8CA5-4D60-96DE-55CCB8907951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DECC7B62-8CA5-4D60-96DE-55CCB8907951}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DECC7B62-8CA5-4D60-96DE-55CCB8907951}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{DECC7B62-8CA5-4D60-96DE-55CCB8907951}.QA|Any CPU.Build.0 = Release|Any CPU
+		{DECC7B62-8CA5-4D60-96DE-55CCB8907951}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DECC7B62-8CA5-4D60-96DE-55CCB8907951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DECC7B62-8CA5-4D60-96DE-55CCB8907951}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{DECC7B62-8CA5-4D60-96DE-55CCB8907951}.Test|Any CPU.Build.0 = Release|Any CPU
+		{89B0E863-A9CB-4FA1-BCFC-5A1C851DDEFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89B0E863-A9CB-4FA1-BCFC-5A1C851DDEFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89B0E863-A9CB-4FA1-BCFC-5A1C851DDEFF}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{89B0E863-A9CB-4FA1-BCFC-5A1C851DDEFF}.QA|Any CPU.Build.0 = QA|Any CPU
+		{89B0E863-A9CB-4FA1-BCFC-5A1C851DDEFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89B0E863-A9CB-4FA1-BCFC-5A1C851DDEFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89B0E863-A9CB-4FA1-BCFC-5A1C851DDEFF}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{89B0E863-A9CB-4FA1-BCFC-5A1C851DDEFF}.Test|Any CPU.Build.0 = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

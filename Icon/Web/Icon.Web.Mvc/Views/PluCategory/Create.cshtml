@@ -1,0 +1,78 @@
+﻿@model Icon.Web.Mvc.Models.PluCategoryViewModel
+
+@{
+    ViewBag.Title = "Add New PLU Range";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "PLU Range Management");}
+
+@using (Html.BeginForm("Create", "PLUCategory", FormMethod.Post, new { @class = "begin-form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(m => m.PluCategoryId)
+
+    <fieldset>
+        <legend>Add New PLU Range</legend>
+            <div class="row">
+                @Html.LabelFor(model => model.PluCategoryName, new { @class = "form-label col-md-2" })
+                <div>
+                    @Html.TextBoxFor(model => model.PluCategoryName, new { @class = "col-md-6 form-input" })
+                    @Html.ValidationMessageFor(model => model.PluCategoryName, null, new { @class = "col-md-4 form-property-val" })
+                </div>
+            </div>
+
+            <div class="row">
+                @Html.LabelFor(model => model.BeginRange, new { @class = "form-label col-md-2" })
+                <div>
+                    @Html.TextBoxFor(model => model.BeginRange, new { @class = "col-md-6 form-input" })
+                    @Html.ValidationMessageFor(model => model.BeginRange, null, new { @class = "col-md-4 form-property-val" })
+                </div>
+            </div>
+
+            <div class="row">
+                @Html.LabelFor(model => model.EndRange, new { @class = "form-label col-md-2" })
+                <div>
+                    @Html.TextBoxFor(model => model.EndRange, new { @class = "col-md-6 form-input" })
+                    @Html.ValidationMessageFor(model => model.EndRange, null, new { @class = "col-md-4 form-property-val" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-offset-2 col-md-1">
+                    <input type="submit" value="Create" class="btn btn-default form-submit" />
+                </div>
+            </div>
+        
+
+    </fieldset>
+}
+
+<div class="page-subsection">
+    @if (ViewData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>@ViewData["SuccessMessage"].ToString()</strong>
+        </div>
+    }
+
+    @if (ViewData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>@ViewData["ErrorMessage"].ToString()</strong>
+        </div>
+    }
+</div>
+
+<div class="page-subsection">
+    @Html.ActionLink("Return To PLU Ranges", "Index")
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

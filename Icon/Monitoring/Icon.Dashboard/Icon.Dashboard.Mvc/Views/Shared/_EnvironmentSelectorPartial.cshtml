@@ -1,0 +1,44 @@
+﻿@model IDictionary<string, string>
+
+@{
+    string environment = "Environment";
+    string pathAndQuery = Request.Url.PathAndQuery ?? "Home";
+    var activeEnvironment = Model.FirstOrDefault(e => String.Compare(e.Value, Request.Url.Host, StringComparison.InvariantCultureIgnoreCase) == 0).Key;
+    if (String.IsNullOrWhiteSpace(activeEnvironment))
+    {
+        if (Request.Url.Host.Contains("localhost"))
+        {
+            activeEnvironment = "localhost";
+            pathAndQuery = pathAndQuery.Insert(0, "/IconDashboard");
+        }
+    }
+    if (!String.IsNullOrWhiteSpace(activeEnvironment))
+    {
+        environment += $": {activeEnvironment}";
+    }
+    var color = Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment(activeEnvironment);
+}
+
+<li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        @environment
+    </a>
+    <ul class="dropdown-menu">
+    @if (Request.Url.Host.Contains("localhost"))
+    {
+        <li class="active"><a class="dropdown-item" href="@Request.Url.AbsoluteUri" role="button">localhost</a></li>
+    }
+    @foreach (var entry in Model)
+    {
+        var active = Request.Url.Host == entry.Value ? "active" : "";
+        var disabled = entry.Key == "Prod" ? "disabled" : "";
+        var server = entry.Value;
+        var link = $"http://{server}{pathAndQuery}";
+        <li class="btn-@color @active @disabled"><a class="dropdown-item" href="@link">@entry.Key</a></li>
+    }
+</ul>
+
+</li>
+
+  
+

@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.Schemas.Ewic", "Icon.Esb.Schemas.Ewic\Icon.Esb.Schemas.Ewic.csproj", "{E38F12D6-AC10-4DE3-96EA-2099830E2966}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.Schemas.Common", "Icon.Esb.Schemas.Common\Icon.Esb.Schemas.Common.csproj", "{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.Schemas.Wfm", "Icon.Esb.Schemas.Wfm\Icon.Esb.Schemas.Wfm.csproj", "{A6AE6B2D-D838-4188-817F-4C48090A4465}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E38F12D6-AC10-4DE3-96EA-2099830E2966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E38F12D6-AC10-4DE3-96EA-2099830E2966}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E38F12D6-AC10-4DE3-96EA-2099830E2966}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E38F12D6-AC10-4DE3-96EA-2099830E2966}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42D0C134-DA24-4481-8F74-5CEFB4F6D1D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6AE6B2D-D838-4188-817F-4C48090A4465}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Icon.Esb.Schemas.Ewic\\Icon.Esb.Schemas.Ewic.csproj
+		SccProjectName1 = Icon.Esb.Schemas.Ewic
+		SccLocalPath1 = Icon.Esb.Schemas.Ewic
+		SccProjectUniqueName2 = Icon.Esb.Schemas.Common\\Icon.Esb.Schemas.Common.csproj
+		SccProjectName2 = Icon.Esb.Schemas.Common
+		SccLocalPath2 = Icon.Esb.Schemas.Common
+		SccProjectUniqueName3 = Icon.Esb.Schemas.Wfm\\Icon.Esb.Schemas.Wfm.csproj
+		SccProjectName3 = Icon.Esb.Schemas.Wfm
+		SccLocalPath3 = Icon.Esb.Schemas.Wfm
+	EndGlobalSection
+EndGlobal

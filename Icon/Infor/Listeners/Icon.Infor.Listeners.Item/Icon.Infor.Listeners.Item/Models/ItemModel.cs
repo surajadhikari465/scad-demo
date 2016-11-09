@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Icon.Infor.Listeners.Item.Models
+{
+    public class ItemModel
+    {
+        public int ItemId { get; set; }
+        public string ItemTypeCode { get; set; }
+        public string ScanCode { get; set; }
+        public string ScanCodeType { get; set; }
+        public string MerchandiseHierarchyClassId { get; set; }
+        public string BrandsHierarchyClassId { get; set; }
+        public string TaxHierarchyClassId { get; set; }
+        public string FinancialHierarchyClassId { get; set; }
+        public string NationalHierarchyClassId { get; set; }
+        public string ProductDescription { get; set; }
+        public string PosDescription { get; set; }
+        public string FoodStampEligible { get; set; }
+        public string PosScaleTare { get; set; }
+        public string ProhibitDiscount { get; set; }
+        public string PackageUnit { get; set; }
+        public string RetailSize { get; set; }
+        public string RetailUom { get; set; }
+        public string AnimalWelfareRating { get; set; }
+        public string Biodynamic { get; set; }
+        public string CheeseMilkType { get; set; }
+        public string CheeseRaw { get; set; }
+        public string EcoScaleRating { get; set; }
+        public string GlutenFree { get; set; }
+        public string Kosher { get; set; }
+        public string Msc { get; set; }
+        public string NonGmo { get; set; }
+        public string Organic { get; set; }
+        public string PremiumBodyCare { get; set; }
+        public string FreshOrFrozen { get; set; }
+        public string SeafoodCatchType { get; set; }
+        public string Vegan { get; set; }
+        public string Vegetarian { get; set; }
+        public string WholeTrade { get; set; }
+        public string GrassFed { get; set; }
+        public string PastureRaised { get; set; }
+        public string FreeRange { get; set; }
+        public string DryAged { get; set; }
+        public string AirChilled { get; set; }
+        public string MadeInHouse { get; set; }
+        public string AlcoholByVolume { get; set; }
+        public string CaseinFree { get; set; }
+        public string DrainedWeight { get; set; }
+        public string DrainedWeightUom { get; set; }
+        public string FairTradeCertified { get; set; }
+        public string Hemp { get; set; }
+        public string LocalLoanProducer { get; set; }
+        public string MainProductName { get; set; }
+        public string NutritionRequired { get; set; }
+        public string OrganicPersonalCare { get; set; }
+        public string Paleo { get; set; }
+        public string ProductFlavorType { get; set; }
+        public string Notes { get; set; }
+        public string HiddenItem { get; set; }
+        public string DeliverySystem { get; set; }
+        public string InsertDate { get; set; }
+        public string ModifiedDate { get; set; }
+        public string ModifiedUser { get; set; }
+        public Guid InforMessageId { get; set; }
+        public string ErrorCode { get; set; }
+        public string ErrorDetails { get; set; }
+        public bool ContainesDuplicateMerchandiseClass { get; set; }
+        public bool ContainesDuplicateNationalClass { get; set; }
+        public DateTime MessageParseTime { get; internal set; }
+    }
+}

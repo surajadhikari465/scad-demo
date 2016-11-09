@@ -1,0 +1,123 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.PluRequestEditViewModel
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@using (Html.BeginForm("Edit", "PluRequest", FormMethod.Post, new { @class = "begin-form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Edit PLU Request</legend>
+
+        @Html.HiddenFor(model => Model.PluRequestId)
+        @Html.HiddenFor(model => Model.NationalPLU)
+        @Html.HiddenFor(model => Model.MerchandiseHierarchyClassId)
+
+        <div class="row">
+            @Html.LabelFor(model => Model.BrandName, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.BrandName, new { @class = "col-md-6 form-input .ui-autocomplete", data_icon_autocomplete = @Url.Action("BrandAutocomplete") })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.ProductDescription, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.ProductDescription, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => Model.ProductDescription, null, new { @class = "col-md-4 form-property-val" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.PosDescription, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.PosDescription, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => Model.PosDescription, null, new { @class = "col-md-4 form-property-val" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.PackageUnit, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.PackageUnit, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => Model.PackageUnit, null, new { @class = "col-md-4 form-property-val" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.RetailSize, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.RetailSize, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => Model.RetailSize, null, new { @class = "col-md-4 form-property-val" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.RetailUom, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.DropDownListFor(model => Model.RetailUom, Model.RetailUoms, null, new { @class = "col-md-6 form-input" })
+            </div>
+        </div>
+       
+        <div class="row">
+            @Html.LabelFor(model => Model.SubTeamName, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.DropDownListFor(model => Model.FinancialHierarchyClassId, Model.FinanacialHierarchyClasses, "", new { @class = "col-md-6 form-input" })
+            </div>
+        </div>
+        
+        <div class="row">
+            @Html.LabelFor(model => Model.NationalHierarchyName, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.DropDownListFor(model => Model.NationalHierarchyClassId, Model.NationalHierarchyClasses, "", new { @class = "col-md-6 form-input" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.Note, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.Note, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => Model.Note, null, new { @class = "col-md-4 form-property-val" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.RequestStatus, new { @class = "col-md-3 form-label" })
+            <div>
+                @Html.DropDownListFor(model => Model.RequestStatus, Model.Status, null, new { @class = "col-md-6 form-input" })
+            </div>
+        </div>    
+    </fieldset>
+
+    <div class="form-inline">
+        <div class="col-md-offset-3">
+            <div class="form-group">
+                @using (Html.BeginForm("Edit", "PluRequest", FormMethod.Post))
+                {
+                    <input type="submit" value="Save Changes" id="updateButton" class="btn btn-default" onclick="updateButtonClick()" />
+                }
+            </div>            
+        </div>
+    </div>
+
+    <div class="validation-section page-subsection">
+        @if (ViewData["UpdateSuccess"] != null)
+        {
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>@ViewData["UpdateSuccess"].ToString()</strong>
+        </div>
+        }
+
+        @if (ViewData["UpdateFailed"] != null)
+        {
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>@ViewData["UpdateFailed"].ToString()</strong>
+        </div>
+        }
+    </div>
+}
+
+<div class="page-section">
+    @Html.ActionLink("Back to Search", "Index") | @Html.ActionLink("Reload PLU Request Information", "Edit/" + Model.PluRequestId)
+</div>

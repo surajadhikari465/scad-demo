@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Icon.RenewableContext</id>
+    <version>1.0.0</version>
+    <title>Icon.RenewableContext</title>
+    <authors>Whole Foods Market IP. L.P.</authors>
+    <owners>Whole Foods Market IP. L.P.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Icon.RenewableContext</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Icon EntityFramework Framework</tags>
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="EntityFramework" version="6.1.3" />
+      </group>
+    </dependencies>
+    <references>
+      <reference file="Icon.RenewableContext.dll" />
+      <reference file="EntityFramework.dll" />
+      <reference file="EntityFramework.SqlServer.dll" />
+    </references>
+  </metadata>
+  <files>
+    <file src="bin\Release\Icon.RenewableContext.dll" target="lib\net45"/>
+    <file src="bin\Release\EntityFramework.dll" target="lib\net45"/>
+    <file src="bin\Release\EntityFramework.SqlServer.dll" target="lib\net45"/>
+  </files>
+</package>

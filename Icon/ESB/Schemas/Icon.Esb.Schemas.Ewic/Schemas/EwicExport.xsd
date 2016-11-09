@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by Retalix (Retalix) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ewic="http://retalix.com/R10/services" targetNamespace="http://retalix.com/R10/services" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:import schemaLocation="BusinessErrorCommonDataV1.2.0.xsd"/>
+  <xs:element name="eWICExport" type="ewic:eWICExport"/>
+  <xs:complexType name="eWICExport">
+    <xs:sequence>
+      <xs:element name="Items" type="ewic:eWICItemType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Error" type="ewic:BusinessError" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="eWICItemType">
+    <xs:sequence>
+      <xs:element name="StateID" type="xs:string"/>
+      <xs:element name="UPC" type="xs:string"/>
+      <xs:element name="ItemDescription" type="xs:string" minOccurs="0"/>
+      <xs:element name="UOM" type="xs:string" minOccurs="0"/>
+      <xs:element name="PackageSize" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="BenefitQuantity" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="BenefitUnitDescription" type="xs:string" minOccurs="0"/>
+      <xs:element name="ItemPrice" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="PriceType" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BusinessError">
+    <xs:complexContent>
+      <xs:extension base="BusinessErrorCommonData"/>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

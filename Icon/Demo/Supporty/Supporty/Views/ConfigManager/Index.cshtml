@@ -1,0 +1,21 @@
+﻿@model Supporty.ViewModels.ConfigViewModel
+@{
+    ViewBag.Title = "Manage Configs";
+}
+
+<h2>Manage Configs</h2>
+
+<div>
+    @Html.DisplayFor(m => m.Server)
+    @Html.TextBoxFor(m => m.Server)
+</div>
+
+<div>
+    @Html.DisplayFor(m => m.Path)
+    @Html.TextBoxFor(m => m.Path)
+</div>
+
+<div>
+    @Html.DisplayFor(m => m.Text)
+    @Html.TextBoxFor(m => m.Text)
+</div>

@@ -1,0 +1,57 @@
+﻿@model Icon.Web.Mvc.Models.MerchTaxMappingViewModel
+
+@{
+    ViewBag.Title = "Delete Merch Tax Mapping";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Merchandise Tax Association Management");}
+
+@using (Html.BeginForm("Delete", "MerchTaxMapping", FormMethod.Post, new { @class = "begin-form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.MerchandiseHierarchyClassId)
+    
+    <fieldset>
+        <legend>Delete Merchandise/Tax Mapping</legend>
+
+        <div class="row">
+            @Html.LabelFor(model => model.MerchandiseHierarchyClassLineage, new { @class = "form-label col-md-2" })
+            <div>
+                @Html.TextBoxFor(model => model.MerchandiseHierarchyClassLineage, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(model => model.TaxHierarchyClassLineage, new { @class = "form-label col-md-2" })
+            <div>
+                @Html.TextBoxFor(model => model.TaxHierarchyClassLineage, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+            </div>
+        </div>
+    </fieldset>
+      <div class="row">
+        <div class="col-md-offset-3 col-md-1">
+            <input type="submit" value="Delete" class="btn btn-default form-submit" />
+        </div>
+    </div>
+}
+
+<div class="page-subsection">
+   @if (ViewData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>@ViewData["ErrorMessage"].ToString()</strong>
+        </div>
+    }
+</div>
+
+<div class="page-subsection">
+    @Html.ActionLink("Return To Merchandise Tax Association Management", "Index")
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

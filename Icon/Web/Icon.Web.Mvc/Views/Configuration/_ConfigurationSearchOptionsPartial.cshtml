@@ -1,0 +1,39 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.ConfigurationSearchViewModel
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@using (Ajax.BeginForm("Search", "Configuration", null, new AjaxOptions
+{
+    HttpMethod = "GET",
+    UpdateTargetId = "searchResults",
+    InsertionMode = InsertionMode.Replace,
+    OnBegin = "searchButtonClick",
+    OnSuccess = "displayResults",
+    OnFailure = "displayModelValidation"
+}, new { @class = "begin-form" }))
+{
+    <fieldset>
+        <legend>Select Region</legend>
+        
+        <div class="row">            
+            @Html.LabelFor(model => Model.SelectedRegionCode, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.DropDownListFor(model => Model.SelectedRegionCode, Model.RegionList, new { @class = "col-md-6 form-input" })
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-1">
+            <input type="submit" value="Display" class="btn btn-default form-submit" id="search-button" />
+        </div>
+        <div class="col-md-6 page-subsection">
+            @Html.ValidationSummary(true)
+        </div>
+    </div>
+}

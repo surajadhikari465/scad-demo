@@ -1,0 +1,114 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageGenerationWeb", "MessageGenerationWeb\MessageGenerationWeb.csproj", "{D5EF1AD9-B2E9-4465-8433-50FE55C0B4E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{E893681D-9B6D-49B8-BD4C-8AABB5BA079E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Common", "..\..\Shared\Icon.Common\Icon.Common.csproj", "{36BBC477-8A9C-4451-8614-932BD665A82A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb", "..\..\Shared\Icon.Esb\Icon.Esb.csproj", "{0CAAE719-F316-4902-B9B4-C8F832EE79E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Service.Library", "..\..\Service Library\Icon.Service.Library\Icon.Service.Library.csproj", "{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Framework", "..\..\Shared\Icon.Framework\Icon.Framework.csproj", "{272A6B53-57A0-4895-9CA6-E41C2D4EC061}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageGenerationWeb.Tests", "MessageGenerationWeb.Tests\MessageGenerationWeb.Tests.csproj", "{7AFB7093-2D53-4058-8C5C-64241FEA1349}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MessageGenerationWeb\\MessageGenerationWeb.csproj
+		SccProjectName1 = MessageGenerationWeb
+		SccLocalPath1 = MessageGenerationWeb
+		SccProjectUniqueName2 = ..\\..\\Shared\\Icon.Common\\Icon.Common.csproj
+		SccProjectTopLevelParentUniqueName2 = MessageGenerationWeb.sln
+		SccProjectName2 = ../../Shared/Icon.Common
+		SccLocalPath2 = ..\\..\\Shared\\Icon.Common
+		SccProjectUniqueName3 = ..\\..\\Shared\\Icon.Esb\\Icon.Esb.csproj
+		SccProjectTopLevelParentUniqueName3 = MessageGenerationWeb.sln
+		SccProjectName3 = ../../Shared/Icon.Esb
+		SccLocalPath3 = ..\\..\\Shared\\Icon.Esb
+		SccProjectUniqueName4 = ..\\..\\Service\u0020Library\\Icon.Service.Library\\Icon.Service.Library.csproj
+		SccProjectTopLevelParentUniqueName4 = MessageGenerationWeb.sln
+		SccProjectName4 = ../../Service\u0020Library/Icon.Service.Library
+		SccLocalPath4 = ..\\..\\Service\u0020Library\\Icon.Service.Library
+		SccProjectUniqueName5 = ..\\..\\Shared\\Icon.Framework\\Icon.Framework.csproj
+		SccProjectTopLevelParentUniqueName5 = MessageGenerationWeb.sln
+		SccProjectName5 = ../../Shared/Icon.Framework
+		SccLocalPath5 = ..\\..\\Shared\\Icon.Framework
+		SccProjectUniqueName6 = MessageGenerationWeb.Tests\\MessageGenerationWeb.Tests.csproj
+		SccProjectName6 = MessageGenerationWeb.Tests
+		SccLocalPath6 = MessageGenerationWeb.Tests
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5EF1AD9-B2E9-4465-8433-50FE55C0B4E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5EF1AD9-B2E9-4465-8433-50FE55C0B4E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5EF1AD9-B2E9-4465-8433-50FE55C0B4E4}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{D5EF1AD9-B2E9-4465-8433-50FE55C0B4E4}.QA|Any CPU.Build.0 = Release|Any CPU
+		{D5EF1AD9-B2E9-4465-8433-50FE55C0B4E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5EF1AD9-B2E9-4465-8433-50FE55C0B4E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5EF1AD9-B2E9-4465-8433-50FE55C0B4E4}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{D5EF1AD9-B2E9-4465-8433-50FE55C0B4E4}.Test|Any CPU.Build.0 = Release|Any CPU
+		{36BBC477-8A9C-4451-8614-932BD665A82A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36BBC477-8A9C-4451-8614-932BD665A82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36BBC477-8A9C-4451-8614-932BD665A82A}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{36BBC477-8A9C-4451-8614-932BD665A82A}.QA|Any CPU.Build.0 = QA|Any CPU
+		{36BBC477-8A9C-4451-8614-932BD665A82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36BBC477-8A9C-4451-8614-932BD665A82A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36BBC477-8A9C-4451-8614-932BD665A82A}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{36BBC477-8A9C-4451-8614-932BD665A82A}.Test|Any CPU.Build.0 = Test|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.QA|Any CPU.Build.0 = QA|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7}.Test|Any CPU.Build.0 = Test|Any CPU
+		{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC}.QA|Any CPU.Build.0 = QA|Any CPU
+		{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC}.Test|Any CPU.Build.0 = Test|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.QA|Any CPU.Build.0 = QA|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061}.Test|Any CPU.Build.0 = Test|Any CPU
+		{7AFB7093-2D53-4058-8C5C-64241FEA1349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AFB7093-2D53-4058-8C5C-64241FEA1349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AFB7093-2D53-4058-8C5C-64241FEA1349}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{7AFB7093-2D53-4058-8C5C-64241FEA1349}.QA|Any CPU.Build.0 = Release|Any CPU
+		{7AFB7093-2D53-4058-8C5C-64241FEA1349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AFB7093-2D53-4058-8C5C-64241FEA1349}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AFB7093-2D53-4058-8C5C-64241FEA1349}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{7AFB7093-2D53-4058-8C5C-64241FEA1349}.Test|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{36BBC477-8A9C-4451-8614-932BD665A82A} = {E893681D-9B6D-49B8-BD4C-8AABB5BA079E}
+		{0CAAE719-F316-4902-B9B4-C8F832EE79E7} = {E893681D-9B6D-49B8-BD4C-8AABB5BA079E}
+		{CC4D9C1A-A73B-47CB-806C-CFD027DD5FAC} = {E893681D-9B6D-49B8-BD4C-8AABB5BA079E}
+		{272A6B53-57A0-4895-9CA6-E41C2D4EC061} = {E893681D-9B6D-49B8-BD4C-8AABB5BA079E}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,27 @@
+﻿@using Icon.Web.DataAccess.Models
+@model Icon.Web.Mvc.Models.BulkImportViewModel<BulkImportCertificationAgencyModel>
+
+@{
+    ViewBag.Title = "Certification Agency Import";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Certification Agency Import");}
+
+@Html.ActionLink("Download Certification Agency Template", "CertificationAgencyTemplateExport", "Excel", null, null)
+
+<div id="importOptions" class="page-section">
+    @{Html.RenderPartial("_SelectSpreadsheetPartial", Model);}
+</div>
+
+<div id="importResults" class="page-section">
+    @if (Model.ExcelAttachment != null && (Model.ValidSpreadsheetType.HasValue ? !Model.ValidSpreadsheetType.Value : false))
+    {
+        { Html.RenderPartial("_InvalidSpreadsheetTypePartial"); }
+    }
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/bulk-item-import.js")
+}

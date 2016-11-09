@@ -1,0 +1,34 @@
+﻿
+
+namespace Icon.ApiController
+{
+    using Controller.Service;
+    using Topshelf;
+    using System.Configuration;
+
+    class Program
+    {
+        //private static ILogger<Program> logger = new NLogLogger<Program>();
+        //private static IRenewableContext<IconContext> globalContext;
+
+        static void Main(string[] args)
+        {
+            string apiDescription = ConfigurationManager.AppSettings["ApiDescription"].ToString();
+            string apiDisplayName = ConfigurationManager.AppSettings["ApiDisplayName"].ToString();
+            string apiServiceName = ConfigurationManager.AppSettings["ApiServiceName"].ToString();
+
+            HostFactory.Run(r =>
+            {
+                r.Service<IApiControllerService>(s =>
+                {
+                    s.ConstructUsing(c => new ApiControllerService());
+                    s.WhenStarted(cm => cm.Start());
+                    s.WhenStopped(cm => cm.Stop());
+                });
+                r.SetDescription(apiDescription);
+                r.SetDisplayName(apiDisplayName);
+                r.SetServiceName(apiServiceName);
+            });
+        }
+    }
+}

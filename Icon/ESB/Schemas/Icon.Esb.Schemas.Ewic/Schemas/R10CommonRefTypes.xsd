@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="IsEncrypted">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Y"/>
+			<xs:enumeration value="y"/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value="n"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!-- Complex Types                 -->
+	<!-- ================== -->
+	<xs:complexType name="SystemErrorType">
+		<xs:sequence>
+			<xs:element name="description" type="ResponseType" minOccurs="1"/>
+			<xs:element name="exception" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="R10MessageType">
+		<xs:sequence>
+			<xs:element name="errorCount" type="xs:integer" default="1" minOccurs="0"/>
+			<xs:element name="r10ResponseReason" type="ResponseType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="xmlAscii" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResponseType">
+		<xs:sequence>
+			<xs:element name="reasonCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="messageDescription" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="r10SequenceId" type="xs:string" use="optional" />
+	</xs:complexType>
+	<xs:complexType name="RequestDetailsType">
+		<xs:sequence>
+			<xs:element name="isPayloadEncrypted" type="IsEncrypted"/>
+			<xs:element name="r10Payload" type="xs:string"/>
+			<xs:element name="r10RequestURI" type="xs:string"/>
+			<xs:element name="r10Grouping" type="GroupingType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GroupingType">
+		<xs:sequence>
+			<xs:element name="groupSize" type="xs:integer" default="0"/>
+			<xs:element name="subgroupSize" type="xs:integer" default="0" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DestinationType">
+		<xs:sequence>
+			<xs:element name="replyDestination" type="xs:string"/>
+			<xs:element name="deadLetterDestination" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NotificationType">
+		<xs:sequence>
+			<xs:element name="toEmail" type="xs:string"/>
+			<xs:element name="ccEmail" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

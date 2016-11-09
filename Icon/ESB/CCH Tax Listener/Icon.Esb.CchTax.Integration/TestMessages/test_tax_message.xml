@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pfx6:taxHierarchyClasses xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx13="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns21="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V1" xmlns:ns23="http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefType/V1" xmlns:ns122="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:pfx5="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Specific/CCH/WFM_ZoneRequest.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Specific/CCH/WFM_TaxRateRequest.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Specific/CCH/WFM_TaxClassesRequest.xsd" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1" xmlns:pfx7="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxZone/V1" xmlns:pfx6="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxHierarchyClass/V1" xmlns:ns14="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns9="http://schemas.tibco.com/bw/plugins/file/5.0/fileExceptions" xmlns:ns32="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V1" xmlns:ns12="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V1" xmlns:ns13="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns31="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V1" xmlns:ns7="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Specific/CCH/WFM_AuthorityRequest.xsd" xmlns:ns10="http://schemas.tibco.com/bw/plugins/xml/5.0/xmlExceptions" xmlns:ns8="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns11="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns51="http://xmlns.tibco.com/bw/activity/xml/render/bytesEnvelope/2003/05" xmlns:ns1="http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V1" xmlns:ns3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns72="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ns1:cchVersion="1">
+  <pfx6:taxHierarchyClass ns3:Action="Update">
+    <ns7:id>1111111</ns7:id>
+    <ns7:name>1111111 TEST TAX1</ns7:name>
+    <ns7:level>0</ns7:level>
+    <ns7:parentId>0</ns7:parentId>
+  </pfx6:taxHierarchyClass>
+  <pfx6:taxHierarchyClass ns3:Action="Update">
+    <ns7:id>1111112</ns7:id>
+    <ns7:name>1111112 TEST TAX2</ns7:name>
+    <ns7:level>0</ns7:level>
+    <ns7:parentId>0</ns7:parentId>
+  </pfx6:taxHierarchyClass>
+  <pfx6:taxHierarchyClass ns3:Action="Update">
+    <ns7:id>1111113</ns7:id>
+    <ns7:name>1111113 TEST TAX3 WITH MORE THAN 50 CHARACTERS FOR TAX ABBREVIATION TEST</ns7:name>
+    <ns7:level>0</ns7:level>
+    <ns7:parentId>0</ns7:parentId>
+  </pfx6:taxHierarchyClass>
+  <pfx6:taxHierarchyClass ns3:Action="Insert">
+    <ns7:id>1111114</ns7:id>
+    <ns7:name>1111114 TEST TAX4</ns7:name>
+    <ns7:level>0</ns7:level>
+    <ns7:parentId>0</ns7:parentId>
+  </pfx6:taxHierarchyClass>
+  <pfx6:taxHierarchyClass ns3:Action="Insert">
+    <ns7:id>1111115</ns7:id>
+    <ns7:name>1111115 TEST TAX5</ns7:name>
+    <ns7:level>0</ns7:level>
+    <ns7:parentId>0</ns7:parentId>
+  </pfx6:taxHierarchyClass>
+  <pfx6:taxHierarchyClass ns3:Action="Insert">
+    <ns7:id>1111116</ns7:id>
+    <ns7:name>1111116 TEST TAX6 WITH MORE THAN 50 CHARACTERS FOR TAX ABBREVIATION TEST</ns7:name>
+    <ns7:level>0</ns7:level>
+    <ns7:parentId>0</ns7:parentId>
+  </pfx6:taxHierarchyClass>
+</pfx6:taxHierarchyClasses>

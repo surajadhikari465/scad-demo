@@ -1,0 +1,70 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.IrmaItemSearchViewModel
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@Html.ActionLink("Export All New Items", "ExportAll", "IrmaItem", null, new { @class = "btn btn-default form-submit" })
+
+@using (Ajax.BeginForm("Search", "IrmaItem", null, new AjaxOptions
+    {
+        HttpMethod = "GET",
+        UpdateTargetId = "searchResults",
+        InsertionMode = InsertionMode.Replace,
+        OnBegin = "searchButtonClick",
+        OnSuccess = "displayResults",
+        OnFailure = "displayModelValidation"
+    }, new { @class = "begin-form" }))
+{
+    <fieldset>
+        <legend>Search Options</legend>
+        <div class="row">
+            @Html.LabelFor(model => Model.Identifier, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.Identifier, new { @class = "col-md-6 form-input" })
+                <div class="row">
+                    @Html.CheckBoxFor(model => Model.PartialScanCode, new { @class = "col-checkbox" })
+                    @Html.LabelFor(model => Model.PartialScanCode, new { @class = "checkbox-label" })
+                    @Html.ValidationMessageFor(model => Model.Identifier, null, new { @class = "checkbox-label form-property-val" })
+                    @Html.ValidationMessageFor(model => Model.PartialScanCode, null, new { @class = "checkbox-label form-property-val" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.BrandName, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.BrandName, new { @class = "col-md-6 form-input .ui-autocomplete", data_icon_autocomplete = @Url.Action("BrandAutocomplete") })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.ItemDescription, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.ItemDescription, new { @class = "col-md-6 form-input" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.RegionCode, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.RegionCode, new { @class = "col-md-6 form-input" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.TaxHierarchyName, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.TaxHierarchyName, new { @class = "col-md-6 form-input .ui-autocomplete", data_icon_autocomplete = @Url.Action("TaxAutocomplete")})
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-1">
+            <input type="submit" value="Search" class="btn btn-default form-submit" id="search-button" />
+        </div>
+        <div class="col-md-6 page-subsection">
+            @Html.ValidationSummary(true)
+        </div>
+    </div>
+}

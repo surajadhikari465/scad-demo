@@ -1,0 +1,122 @@
+﻿<hierarchy xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:p3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" p3:Action="AddOrUpdate">
+  <name>Merchandise</name>
+  <prototype>
+    <hpt:hierarchyLevelName>Segment</hpt:hierarchyLevelName>
+    <hpt:itemsAttached>1</hpt:itemsAttached>
+  </prototype>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82798</hcl:id>
+    <hcl:name>Baby Care</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82799</hcl:id>
+    <hcl:name>Beauty/Personal Care/Hygiene</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82800</hcl:id>
+    <hcl:name>Cleaning/Hygiene Products</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82801</hcl:id>
+    <hcl:name>Clothing</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82802</hcl:id>
+    <hcl:name>Food/Beverage</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82803</hcl:id>
+    <hcl:name>Footwear</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82804</hcl:id>
+    <hcl:name>Healthcare</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82805</hcl:id>
+    <hcl:name>Home Appliances</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82806</hcl:id>
+    <hcl:name>Household/Office Furniture/Furnishings</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82807</hcl:id>
+    <hcl:name>Kitchen Merchandise</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82808</hcl:id>
+    <hcl:name>Lawn/Garden Supplies</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82809</hcl:id>
+    <hcl:name>Music</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82810</hcl:id>
+    <hcl:name>Personal Accessories</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82811</hcl:id>
+    <hcl:name>Pet Care/Food</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82812</hcl:id>
+    <hcl:name>Sports Equipment</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82813</hcl:id>
+    <hcl:name>Stationery/Office Machinery/Occasion Supplies</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82814</hcl:id>
+    <hcl:name>Storage/Haulage Containers</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82815</hcl:id>
+    <hcl:name>Textual/Printed/Reference Materials</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>82816</hcl:id>
+    <hcl:name>Toys/Games</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>84280</hcl:id>
+    <hcl:name>Electrical Supplies</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>84281</hcl:id>
+    <hcl:name>Fuels/Gases</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>84351</hcl:id>
+    <hcl:name>WFM</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>87605</hcl:id>
+    <hcl:name>Camping</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+  </class>
+</hierarchy>

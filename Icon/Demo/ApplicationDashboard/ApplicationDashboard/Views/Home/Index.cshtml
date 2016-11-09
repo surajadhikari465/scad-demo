@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<ApplicationDashboard.ViewModels.ApplicationViewModel>
+
+<div class="row">
+    <div class="dashboard col-md-4">
+        @foreach (var application in Model)
+        {
+            <a asp-action="Details" asp-controller="Home" asp-route-id="@application.Id" class="details-link">
+                <div class="card card-block">
+                    <p class="card-header">@application.Name</p>
+                    <p class="card-text">Server | @application.MachineName</p>
+                </div>
+            </a>
+        }
+    </div>
+    <div class="details col-md-8">
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/application.js"></script>
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d54bcd72e9694214b58f52d1603692d6" Name="Diagram1" ZoomLevel="62">
+        <EntityTypeShape EntityType="IconLoggingDataModel.App" PointX="0.75" PointY="1.625" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IconLoggingDataModel.AppLog" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector ManuallyRouted="false" Association="IconLoggingDataModel.App_AppLog_FK" />
+        <EntityTypeShape EntityType="IconLoggingDataModel.APIMessageMonitorLog" Width="2" PointX="5.5" PointY="1.125" />
+        <EntityTypeShape EntityType="IconLoggingDataModel.MessageQueueHierarchy" Width="1.5" PointX="0.5" PointY="5.75" />
+        <EntityTypeShape EntityType="IconLoggingDataModel.MessageQueueItemLocale" Width="1.5" PointX="3.875" PointY="7" />
+        <EntityTypeShape EntityType="IconLoggingDataModel.MessageQueueLocale" Width="1.5" PointX="2.125" PointY="7.375" />
+        <EntityTypeShape EntityType="IconLoggingDataModel.MessageQueuePrice" Width="1.5" PointX="6.5" PointY="7.75" />
+        <EntityTypeShape EntityType="IconLoggingDataModel.MessageQueueProduct" Width="1.5" PointX="8.375" PointY="7" />
+        <EntityTypeShape EntityType="IconLoggingDataModel.MessageQueueProductSelectionGroup" Width="1.5" PointX="10.5" PointY="7.75" />
+        <EntityTypeShape EntityType="IconLoggingDataModel.MessageType" Width="1.5" PointX="5.875" PointY="4.125" />
+        <AssociationConnector Association="IconLoggingDataModel.FK_APIMessageMonitorLog_MessageTypeId" />
+        <AssociationConnector Association="IconLoggingDataModel.FK_MessageQueueHierarchy_MessageTypeId" />
+        <AssociationConnector Association="IconLoggingDataModel.FK_MessageQueueItemLocale_MessageTypeId" />
+        <AssociationConnector Association="IconLoggingDataModel.FK_app_MessageQueueLocale_MessageType" />
+        <AssociationConnector Association="IconLoggingDataModel.FK_MessageQueuePrice_MessageTypeID" />
+        <AssociationConnector Association="IconLoggingDataModel.FK_MessageQueueProduct_MessageTypeId" />
+        <AssociationConnector Association="IconLoggingDataModel.FK_MessageQueueProductSelectionGroup_MessageType" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

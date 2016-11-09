@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pfx5:r10Response xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns9="http://schema.wfm.com/Common/SharedLoginSchema" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns6="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns10="http://schemas.wfm.com/Enterprise/R10/R10RequestActivity/V1" xmlns:ns7="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:pfx="http://retalix.com/R10/services" xmlns:ns11="http://schemas.wfm.com/Enterprise/R10/AscIIResponse/V1" xmlns:ns8="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://xmlns.tibco.com/encodings/mime" xmlns:ns3="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pfx5="http://schemas.wfm.com/Enterprise/R10/R10Response/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ClickCollectItemEntity/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/R10/R10Request/V1" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd">
+    <pfx5:applicationName>ItemMaintenance</pfx5:applicationName>
+    <pfx5:requestSuccess>true</pfx5:requestSuccess>
+    <pfx5:r10Message>
+        <ns8:errorCount>0</ns8:errorCount>
+        <ns8:xmlAscii>﻿&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;ProductMaintenanceResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" MajorVersion="2" xmlns="http://retalix.com/R10/services"&gt;&lt;Header&gt;&lt;Response ResponseCode="OK"&gt;&lt;RequestID&gt;a5266f29-fd69-4481-a9f0-de2628cdf10e&lt;/RequestID&gt;&lt;/Response&gt;&lt;Bulk UnitOfWork="false"&gt;&lt;CreatedDate&gt;2014-08-11T12:00:21.3920845-05:00&lt;/CreatedDate&gt;&lt;FirstEntityTimestamp&gt;2014-08-11T12:00:21.3920845-05:00&lt;/FirstEntityTimestamp&gt;&lt;LastEntityTimestamp&gt;2014-08-11T12:00:25.5260315-05:00&lt;/LastEntityTimestamp&gt;&lt;BulkCompleteTimestamp&gt;2014-08-11T12:00:25.5260315-05:00&lt;/BulkCompleteTimestamp&gt;&lt;EntitiesCountTotal&gt;100&lt;/EntitiesCountTotal&gt;&lt;EntitiesCountSuccess&gt;100&lt;/EntitiesCountSuccess&gt;&lt;EntitiesCountFailure&gt;0&lt;/EntitiesCountFailure&gt;&lt;/Bulk&gt;&lt;/Header&gt;&lt;/ProductMaintenanceResponse&gt;</ns8:xmlAscii>
+        <ns8:r10ResponseReason>
+            <ns8:reasonCode>200</ns8:reasonCode>
+            <ns8:messageDescription>OK</ns8:messageDescription>
+        </ns8:r10ResponseReason>
+    </pfx5:r10Message>
+    <pfx5:r10Grouping>
+        <ns8:groupSize>0</ns8:groupSize>
+    </pfx5:r10Grouping>
+    <pfx5:destination>
+        <ns8:replyDestination>WFMESB.Commerce.OnePosMgmt.Request.Queue.V1</ns8:replyDestination>
+        <ns8:deadLetterDestination>WFMESB.Commerce.Online.Retalix.Reply.V1</ns8:deadLetterDestination>
+    </pfx5:destination>
+</pfx5:r10Response>

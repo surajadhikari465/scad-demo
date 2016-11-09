@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:r10Response xmlns:ns0="http://schemas.wfm.com/Enterprise/R10/R10Response/V1">
+    <ns0:applicationName>ItemMaintenance</ns0:applicationName>
+    <ns0:requestSuccess>false</ns0:requestSuccess>
+    <ns0:systemError>
+        <ns1:description xmlns:ns1="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">
+            <ns1:reasonCode>TEST_REASON_CODE</ns1:reasonCode>
+            <ns1:messageDescription>Unable to Successfully Post to R10 Error || Cannot Complete Rqst to PriceMaintenance.rti. No R10 response received after 3 retry attempts Status: Activity timed out (BWENGINE-100029) || JMS Msg Id: UnitTest</ns1:messageDescription>
+        </ns1:description>
+        <ns1:exception xmlns:ns1="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">&amp;lt;?xml version="1.0" encoding="UTF-8"?&amp;gt;
+&amp;lt;ns0:ExceptionRequest xmlns:ns0="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd"&amp;gt;&amp;lt;ns1:Header xmlns:ns1="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd"&amp;gt;&amp;lt;ns1:ApplicationID&amp;gt;R10SVC&amp;lt;/ns1:ApplicationID&amp;gt;&amp;lt;ns1:ComponentName&amp;gt;Processes/Sub/R10Requests/RetryRequest.process&amp;lt;/ns1:ComponentName&amp;gt;&amp;lt;ns1:Hostname&amp;gt;CECEN0254&amp;lt;/ns1:Hostname&amp;gt;&amp;lt;ns1:Timestamp&amp;gt;2014-11-02T21:26:37.217-06:00&amp;lt;/ns1:Timestamp&amp;gt;&amp;lt;ns1:TransactionID&amp;gt;R10SvcUnitTest&amp;lt;/ns1:TransactionID&amp;gt;&amp;lt;ns1:CorrelationID&amp;gt;R10SvcUnitTest&amp;lt;/ns1:CorrelationID&amp;gt;&amp;lt;ns1:Message&amp;gt;Unable to Successfully Post to R10 Error || Cannot Complete Rqst to PriceMaintenance.rti. No R10 response received after 3 retry attempts Status: Activity timed out (BWENGINE-100029) || JMS Msg Id: UnitTest&amp;lt;/ns1:Message&amp;gt;&amp;lt;/ns1:Header&amp;gt;&amp;lt;ExceptionCode&amp;gt;WFM_SYS_HTTP_TIMEOUT&amp;lt;/ExceptionCode&amp;gt;&amp;lt;StackTrace&amp;gt;&amp;amp;lt;?xml version="1.0" encoding="UTF-8"?&amp;amp;gt;
+&amp;amp;lt;ns0:ActivityTimedOutException xmlns:ns0="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions"&amp;amp;gt;&amp;amp;lt;msg&amp;amp;gt;Activity timed out&amp;amp;lt;/msg&amp;amp;gt;&amp;amp;lt;msgCode&amp;amp;gt;BWENGINE-100029&amp;amp;lt;/msgCode&amp;amp;gt;&amp;amp;lt;/ns0:ActivityTimedOutException&amp;amp;gt; || Full StackTrace: Job-92002 Error in [Processes/Services/R10HttpRequest.process/Send R10 HTTP-Request]
+Activity timed out&amp;amp;#xD;
+	at com.tibco.pe.core.TaskImpl.eval(Unknown Source)&amp;amp;#xD;
+	at com.tibco.pe.core.Job.a(Unknown Source)&amp;amp;#xD;
+	at com.tibco.pe.core.Job.k(Unknown Source)&amp;amp;#xD;
+	at com.tibco.pe.core.JobDispatcher$JobCourier.a(Unknown Source)&amp;amp;#xD;
+	at com.tibco.pe.core.JobDispatcher$JobCourier.run(Unknown Source)&amp;amp;#xD;
+ || Process Stack: Processes/Main/ProcessRequest.process/R10 Request Process&amp;amp;gt;Processes/Sub/R10Requests/Request.process/R10 Request Loop&amp;amp;gt;Processes/Sub/R10Requests/RetryRequest.process/TryRequest/Post R10 Http Request&amp;amp;gt;Processes/Services/R10HttpRequest.process/Send R10 HTTP-Request&amp;lt;/StackTrace&amp;gt;&amp;lt;/ns0:ExceptionRequest&amp;gt;</ns1:exception>
+    </ns0:systemError>
+    <ns0:r10Grouping>
+        <ns1:groupSize xmlns:ns1="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">0</ns1:groupSize>
+    </ns0:r10Grouping>
+    <ns0:destination>
+        <ns1:replyDestination xmlns:ns1="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">WFMESB.Commerce.OnePosMgmt.Request.Queue.V1</ns1:replyDestination>
+        <ns1:deadLetterDestination xmlns:ns1="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1">WFMESB.Commerce.Online.Retalix.Reply.V1</ns1:deadLetterDestination>
+    </ns0:destination>
+</ns0:r10Response>

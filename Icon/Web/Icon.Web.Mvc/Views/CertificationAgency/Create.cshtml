@@ -1,0 +1,90 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.CertificationAgencyViewModel
+
+@{
+    ViewBag.Title = "New Certification Agency";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Certification Agency Management");}
+
+<div class="page-section">
+    @using (Html.BeginForm("Create", "CertificationAgency", FormMethod.Post, new { @class = "begin-form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Create New Certification Agency</legend>
+
+            <div class="row">
+                @Html.LabelFor(model => model.AgencyName, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.AgencyName, new { @class = "col-md-6 form-input", @id = "agencyName" })
+                    @Html.ValidationMessageFor(model => model.AgencyName, null, new { @class = "col-md-4 form-property-val" })
+                </div>
+            </div>
+            <div class="row">
+                @Html.LabelFor(model => model.GlutenFree, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.CheckBoxFor(model => model.GlutenFree, new { @class = "col-checkbox" })
+                </div>
+            </div>
+            <div class="row">
+                @Html.LabelFor(model => model.Kosher, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.CheckBoxFor(model => model.Kosher, new { @class = "col-checkbox" })
+                </div>
+            </div>
+            <div class="row">
+                @Html.LabelFor(model => model.NonGMO, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.CheckBoxFor(model => model.NonGMO, new { @class = "col-checkbox" })
+                </div>
+            </div>
+            <div class="row">
+                @Html.LabelFor(model => model.Organic, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.CheckBoxFor(model => model.Organic, new { @class = "col-checkbox" })
+                </div>
+            </div>
+            <div class="row">
+                @Html.LabelFor(model => model.Vegan, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.CheckBoxFor(model => model.Vegan, new { @class = "col-checkbox" })
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="row">
+            <div class="col-md-offset-2 col-md-1">
+                <input type="submit" id="createButton" value="Create" class="btn btn-default form-submit" />
+            </div>
+        </div>
+
+        <div class="validation-section page-subsection">
+            @if (ViewData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>@ViewData["SuccessMessage"].ToString()</strong>
+                </div>
+            }
+            @if (ViewData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>@ViewData["ErrorMessage"].ToString()</strong>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<div class="form-footer">@Html.ActionLink("Back to Certification Agency Management", "Index")</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/CertificationAgency/CertificationAgency-create.js")
+    @Scripts.Render("~/Scripts/jquery-disable.js")
+}

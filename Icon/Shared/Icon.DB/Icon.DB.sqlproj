@@ -1,0 +1,663 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Icon.DB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{ebd98e20-5db9-4be9-93ec-e43ef5aca89d}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Icon.DB</RootNamespace>
+    <AssemblyName>Icon.DB</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <IsChangeTrackingOn>True</IsChangeTrackingOn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <SuppressTSqlWarnings>70588, 71558, 71502</SuppressTSqlWarnings>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <!-- Default to the v10.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
+    <OutputPath>bin\Test\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'QA|AnyCPU' ">
+    <OutputPath>bin\QA\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="Scripts\" />
+    <Folder Include="app\" />
+    <Folder Include="app\Tables\" />
+    <Folder Include="app\Stored Procedures\" />
+    <Folder Include="app\User Defined Types\" />
+    <Folder Include="Security\" />
+    <Folder Include="app\Views\" />
+    <Folder Include="Scripts\Projects" />
+    <Folder Include="Scripts\Jobs" />
+    <Folder Include="Scripts\Projects\DataMonkey" />
+    <Folder Include="Scripts\Projects\DataMonkey\VIMJob" />
+    <Folder Include="Scripts\Projects\DataMonkey\VIMLoad" />
+    <Folder Include="Scripts\Projects\Deprecated Scripts" />
+    <Folder Include="Scripts\Projects\Elmah" />
+    <Folder Include="Scripts\Projects\Hierarchy Loads" />
+    <Folder Include="Scripts\Projects\PLU Alignment" />
+    <Folder Include="Scripts\Projects\Test" />
+    <Folder Include="Scripts\Projects\UDM v3.0" />
+    <Folder Include="Scripts\Projects\Regional On-Boarding" />
+    <Folder Include="Scripts\Projects\ItemSubTeam Alignment" />
+    <Folder Include="Schemas" />
+    <Folder Include="Users" />
+    <Folder Include="ReplicationOnly" />
+    <Folder Include="Scripts\PostRefresh" />
+    <Folder Include="ewic" />
+    <Folder Include="ewic\Tables" />
+    <Folder Include="mammoth\" />
+    <Folder Include="mammoth\Tables\" />
+    <Folder Include="mammoth\Stored Procedures\" />
+    <Folder Include="mammoth\User Defined Types\" />
+    <Folder Include="Scripts\PopulateData" />
+    <Folder Include="Scripts\PopulateData\Archive" />
+    <Folder Include="Scripts\PopulateData\Release" />
+    <Folder Include="nutrition" />
+    <Folder Include="nutrition\Stored Procedures" />
+    <Folder Include="nutrition\Tables" />
+    <Folder Include="nutrition\User Defined Types" />
+    <Folder Include="vim\" />
+    <Folder Include="vim\Tables\" />
+    <Folder Include="app\Functions" />
+    <Folder Include="vim\Stored Procedures" />
+    <Folder Include="Scripts\PopulateData\DevBuild" />
+    <Folder Include="Scripts\PostDeploymentScripts" />
+    <Folder Include="Scripts\PopulateData\DevBuild\TestData" />
+    <Folder Include="infor" />
+    <Folder Include="infor\Stored Procedures" />
+    <Folder Include="infor\Tables" />
+    <Folder Include="infor\User Defined Types" />
+    <Folder Include="infor\Functions\" />
+    <Folder Include="Scripts\Projects\Infor" />
+    <Folder Include="dbo\Functions" />
+    <Folder Include="Scripts\Templates" />
+    <Folder Include="Scripts\Projects\Infor\Performance Scripts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Party.sql" />
+    <Build Include="dbo\Tables\Trait.sql" />
+    <Build Include="dbo\Tables\AddressType.sql" />
+    <Build Include="dbo\Tables\HierarchyPrototype.sql" />
+    <Build Include="dbo\Tables\Timezone.sql" />
+    <Build Include="dbo\Tables\PartyType.sql" />
+    <Build Include="dbo\Tables\LocaleType.sql" />
+    <Build Include="dbo\Tables\UOM.sql" />
+    <Build Include="dbo\Tables\PhysicalAddress.sql" />
+    <Build Include="dbo\Tables\Item.sql" />
+    <Build Include="dbo\Tables\ItemPriceType.sql" />
+    <Build Include="dbo\Tables\Store.sql" />
+    <Build Include="dbo\Tables\ItemTrait.sql" />
+    <Build Include="dbo\Tables\PostalCode.sql" />
+    <Build Include="dbo\Tables\Organization.sql" />
+    <Build Include="dbo\Tables\StoreGroupMember.sql" />
+    <Build Include="dbo\Tables\StoreGroupType.sql" />
+    <Build Include="dbo\Tables\OrganizationType.sql" />
+    <Build Include="dbo\Tables\ItemGroup.sql" />
+    <Build Include="dbo\Tables\StoreGroup.sql" />
+    <Build Include="dbo\Tables\ItemGroupMember.sql" />
+    <Build Include="dbo\Tables\HierarchyClass.sql" />
+    <Build Include="dbo\Tables\Country.sql" />
+    <Build Include="dbo\Tables\CurrencyType.sql" />
+    <Build Include="dbo\Tables\ScanCode.sql" />
+    <Build Include="dbo\Tables\OrganizationName.sql" />
+    <Build Include="dbo\Tables\Territory.sql" />
+    <Build Include="dbo\Tables\LocaleTrait.sql" />
+    <Build Include="dbo\Tables\LocaleAddress.sql" />
+    <Build Include="dbo\Tables\NameType.sql" />
+    <Build Include="dbo\Tables\ScanCodeType.sql" />
+    <Build Include="dbo\Tables\ItemHierarchyClass.sql" />
+    <Build Include="dbo\Tables\City.sql" />
+    <Build Include="dbo\Tables\ItemType.sql" />
+    <Build Include="dbo\Tables\Hierarchy.sql" />
+    <Build Include="dbo\Tables\AddressUsage.sql" />
+    <Build Include="dbo\Tables\ItemPrice.sql" />
+    <Build Include="dbo\Tables\Locale.sql" />
+    <Build Include="dbo\Tables\ItemLink.sql" />
+    <Build Include="dbo\Tables\County.sql" />
+    <Build Include="dbo\Tables\TraitGroup.sql" />
+    <Build Include="dbo\Tables\Address.sql" />
+    <Build Include="app\Tables\ELMAH_Error.sql" />
+    <Build Include="app\Tables\IRMAItem.sql" />
+    <Build Include="app\Stored Procedures\UpdateItemListByTrait.sql" />
+    <Build Include="app\Stored Procedures\PLUMapImportTEST.sql" />
+    <Build Include="app\Stored Procedures\PLUMapImport.sql" />
+    <Build Include="app\Stored Procedures\ItemImport.sql" />
+    <Build Include="app\Stored Procedures\HierarchyClassUpdate.sql" />
+    <Build Include="app\Stored Procedures\ELMAH_LogError.sql" />
+    <Build Include="app\Stored Procedures\ELMAH_GetErrorXml.sql" />
+    <Build Include="app\Stored Procedures\ELMAH_GetErrorsXml.sql" />
+    <Build Include="app\User Defined Types\PLUMapImportType.sql" />
+    <Build Include="app\User Defined Types\ItemListByTraitType.sql" />
+    <Build Include="app\User Defined Types\ItemImportType.sql" />
+    <Build Include="app\User Defined Types\ItemListByHierarchyClassType.sql" />
+    <Build Include="app\User Defined Types\ScanCodeListType.sql" />
+    <Build Include="app\Stored Procedures\UpdateItemHierarchyClass.sql" />
+    <Build Include="app\Tables\IRMAItemSubscription.sql" />
+    <Build Include="app\Tables\EventType.sql" />
+    <Build Include="app\Tables\EventQueue.sql" />
+    <Build Include="app\Tables\AppLog.sql" />
+    <Build Include="app\Tables\App.sql" />
+    <Build Include="app\Views\vNatPLUMap.sql" />
+    <Build Include="app\Views\vItemsAndTraits.sql" />
+    <Build Include="app\Views\vItemImport.sql" />
+    <Build Include="app\Views\vItemBase.sql" />
+    <Build Include="app\Views\vValidatedItems.sql" />
+    <Build Include="app\Tables\PLUMap.sql" />
+    <Build Include="app\Stored Procedures\pivot_query.sql" />
+    <Build Include="dbo\Tables\HierarchyClassTrait.sql" />
+    <Build Include="dbo\Tables\ItemGroupTrait.sql" />
+    <Build Include="app\Stored Procedures\GenerateItemUpdateEvents.sql" />
+    <Build Include="app\User Defined Types\UpdatedItemIDsType.sql" />
+    <Build Include="app\Stored Procedures\AddEventQueue.sql" />
+    <Build Include="app\User Defined Types\RegionAbbrType.sql" />
+    <Build Include="app\User Defined Types\EventQueueEntriesType.sql" />
+    <Build Include="app\Stored Procedures\UpdateTaxHierarchyClass.sql" />
+    <Build Include="app\Tables\MessageHistory.sql" />
+    <Build Include="app\Tables\MessageType.sql" />
+    <Build Include="app\Tables\MessageStatus.sql" />
+    <Build Include="app\Tables\MessageQueuePrice.sql" />
+    <Build Include="app\Tables\IRMAPush.sql" />
+    <Build Include="app\Tables\MessageQueueProduct.sql" />
+    <Build Include="app\Tables\MessageQueueHierarchy.sql" />
+    <Build Include="app\Stored Procedures\GenerateItemUpdateMessages.sql" />
+    <Build Include="app\Tables\MessageAction.sql" />
+    <Build Include="app\Stored Procedures\BulkItemAdd.sql" />
+    <Build Include="app\Tables\MessageQueueLocale.sql" />
+    <Build Include="app\Stored Procedures\GetExistingScanCodesImportValidation.sql" />
+    <Build Include="app\Stored Procedures\GetNewScanCodesImportValidation.sql" />
+    <Build Include="app\Stored Procedures\InitialLoadLocale.sql" />
+    <Build Include="app\Stored Procedures\InitialLoadHierarchy.sql" />
+    <Build Include="app\Stored Procedures\InitialLoadProduct.sql" />
+    <Build Include="app\Tables\MessageQueueItemLocale.sql" />
+    <None Include="Security\Icon.Security.sql" />
+    <None Include="Scripts\Jobs\BrandPurgeJob.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\CreateIconUDM.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\iConAutoMatch BACKOUT.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\iConAutoMatch.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\Initial Populate - Simple.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\InsertBrandFromVIM.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\InsertDataIntoUDM.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\InsertItemFromIRMAToUDM.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\InsertItemFromVIM.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\InsertStoreFromIRMAToUDM.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\InsertSyntheticPLUDataIntoUDM.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\ItemCatalog_CreateTable_IdentifierProduct.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\Load_BPC_Metro_Data_Into_UDM.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\Load_Browsing.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\Load_CCHTax.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\LoadMerchandisingHierarchy_SampleData_DEV.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\PopulateTypeTables.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\ScriptsIgnoredOnImport.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\SelectItemInfoFromUDM.sql" />
+    <None Include="Scripts\Projects\Deprecated Scripts\UDMHierarchyExample.sql" />
+    <None Include="Scripts\Projects\Elmah\ELMAH-1.2-db-SQLServer.sql" />
+    <None Include="Scripts\Projects\Hierarchy Loads\1- Load GS1.sql" />
+    <None Include="Scripts\Projects\Hierarchy Loads\2 - Load Fin.sql" />
+    <None Include="Scripts\Projects\Hierarchy Loads\3 - Load Map.sql" />
+    <None Include="Scripts\Projects\Hierarchy Loads\4 - Load Tax.sql" />
+    <None Include="Scripts\Projects\Hierarchy Loads\5 - Load ItemMerchAssignments.sql" />
+    <None Include="Scripts\Projects\PLU Alignment\Script1.Step0.ExportGlobalPlusFromIcon.sql" />
+    <None Include="Scripts\Projects\PLU Alignment\Script1.Step0.ImportGlobalPluMappingIntoIRMA.sql" />
+    <None Include="Scripts\Projects\PLU Alignment\Script1.Step1.InsertGlobalPlusInIRMA.sql" />
+    <None Include="Scripts\Projects\PLU Alignment\Script1.Step2.UpdateGlobalPlusInIRMA_DefaultIdentifierTrue.sql" />
+    <None Include="Scripts\Projects\PLU Alignment\Script1.Step3.UpdateScaleExtraTextDescriptions.sql" />
+    <None Include="Scripts\Projects\PLU Alignment\Script2.Step1.UpdateRegionalPluInIRMA_SendToScaleFalse.sql" />
+    <None Include="Scripts\Projects\PLU Alignment\Script2.Step2.UpdateGlobalPluInIRMA_SendToScaleTrue.sql" />
+    <None Include="Scripts\Projects\PLU Alignment\Script3.Step0.DeleteRegionalPlusInIRMA.sql" />
+    <None Include="Scripts\Projects\Test\TEST___ItemImport.sql" />
+    <None Include="Scripts\Projects\Test\TEST___PLUMapImport.sql" />
+    <None Include="Scripts\Projects\Test\TEST_AddEventQueue.sql" />
+    <None Include="Scripts\Projects\UDM v3.0\Full Script ICON 3.0 UDM.sql" />
+    <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 1 - Rename Columns.sql" />
+    <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 2 - Alter Schema and Populate Type Codes.sql" />
+    <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 3 - Update Schema to 3.0.sql" />
+    <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 4 - Update LocaleTrait  PSBU.sql" />
+    <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 5 - Populate ItemPriceType and UOM.sql" />
+    <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 6 - Update Trait.sql" />
+    <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 7 - Populate EventTypeTable.sql" />
+    <Build Include="app\Stored Procedures\UpdateItemTypeByHierarchyClass.sql" />
+    <Build Include="app\Stored Procedures\GenerateItemUpdateMessagesByHierarchyClass.sql" />
+    <None Include="Scripts\Projects\Regional On-Boarding\LoadIconItemChangeQueue.sql" />
+    <Build Include="app\User Defined Types\ItemLocaleMessageType.sql" />
+    <Build Include="app\Tables\RetentionPolicy.sql" />
+    <Build Include="app\User Defined Types\ItemPriceEntityType.sql" />
+    <Build Include="app\Stored Procedures\AddOrUpdateItemPriceEntities.sql" />
+    <Build Include="app\Views\DW_icon_item_subbrick.sql" />
+    <Build Include="app\Views\DW_PLUMap.sql" />
+    <Build Include="app\Views\DW_WFMHierarchyAndSubteamMap.sql" />
+    <None Include="Scripts\Projects\PLU Alignment\Script2.Step3.QueueGlobalPluInIRMA.sql" />
+    <Build Include="app\Stored Procedures\StageIrmaPushData.sql" />
+    <Build Include="app\User Defined Types\IrmaPushType.sql" />
+    <Build Include="app\Stored Procedures\InsertEventQueueEntries.sql" />
+    <Build Include="app\Stored Procedures\InsertIRMAItems.sql" />
+    <Build Include="app\Stored Procedures\InsertIRMAItemSubscriptions.sql" />
+    <Build Include="app\User Defined Types\MessageQueueType.sql" />
+    <Build Include="app\Stored Procedures\AssociateMessageToQueue.sql" />
+    <Build Include="app\Stored Procedures\MarkMessageQueueEntriesAsInProcess.sql" />
+    <Build Include="app\Stored Procedures\UpdateMessageQueueProcessedDate.sql" />
+    <Build Include="app\Stored Procedures\UpdateEventQueueInProcess.sql" />
+    <Build Include="app\Stored Procedures\GetValidatedItemModel.sql" />
+    <Build Include="app\Stored Procedures\DeleteEventQueue.sql" />
+    <Build Include="app\User Defined Types\EventNameType.sql" />
+    <Build Include="app\User Defined Types\EventQueueIdType.sql" />
+    <Build Include="app\Stored Procedures\MarkStagingTableEntriesAsInProcessForEsb.sql" />
+    <Build Include="app\Stored Procedures\MarkStagingTableEntriesAsInProcessForUdm.sql" />
+    <Build Include="app\Stored Procedures\UpdateStagingTableDatesForEsb.sql" />
+    <Build Include="app\Stored Procedures\UpdateStagingTableDatesForUdm.sql" />
+    <Build Include="app\User Defined Types\IrmaPushIdType.sql" />
+    <Build Include="app\User Defined Types\IRMAItemType.sql" />
+    <Build Include="app\User Defined Types\IRMAItemSubscriptionType.sql" />
+    <Build Include="app\User Defined Types\EventQueueType.sql" />
+    <Build Include="app\Stored Procedures\GetScanCodeModelsForMessageGeneration.sql" />
+    <Build Include="app\User Defined Types\BusinessUnitType.sql" />
+    <Build Include="app\Tables\MessageQueueProductSelectionGroup.sql" />
+    <Build Include="app\User Defined Types\BusinessUnitType.sql" />
+    <Build Include="app\Tables\BusinessUnitRegionMapping.sql" />
+    <None Include="Scripts\Jobs\MapBusinessUnitToRegionJob.sql" />
+    <Build Include="app\Stored Procedures\GetItemsBySearchParams.sql" />
+    <Build Include="app\Stored Procedures\GetIrmaItemsBySearchParams.sql" />
+    <Build Include="app\Stored Procedures\UpdateItemMovementInProcess.sql" />
+    <Build Include="app\Stored Procedures\InsertItemMovement.sql" />
+    <Build Include="app\Stored Procedures\MassUpdateItemMovement.sql" />
+    <Build Include="app\User Defined Types\ItemMovementIdType.sql" />
+    <Build Include="app\User Defined Types\ItemMovementType.sql" />
+    <Build Include="app\Tables\ItemMovement.sql" />
+    <Build Include="app\Tables\ItemMovementTransactionHistory.sql" />
+    <Build Include="app\Stored Procedures\UpdateIrmaItemBrand.sql" />
+    <Build Include="app\Tables\Regions.sql" />
+    <Build Include="app\Tables\SettingSection.sql" />
+    <Build Include="app\Tables\Settings.sql" />
+    <Build Include="app\Tables\RegionalSettings.sql" />
+    <Build Include="app\Stored Procedures\GetBrands.sql" />
+    <Build Include="app\Stored Procedures\GetItemsByBulkScanCodeSearch.sql" />
+    <Build Include="app\Stored Procedures\GetItemModelWithPosDept.sql" />
+    <None Include="Scripts\Projects\ItemSubTeam Alignment\OnBoarding_BACKOUT_Script_2_BackoutScript for theMAHierarchyChanges.sql" />
+    <None Include="Scripts\Projects\ItemSubTeam Alignment\OnBoarding_Script_1_ExportScanCodesFromIcon.sql" />
+    <None Include="Scripts\Projects\ItemSubTeam Alignment\OnBoarding_Script_2_LoadSubTeamHierarchyLevelsForMARegion.sql" />
+    <None Include="Scripts\Projects\ItemSubTeam Alignment\OnBoarding_Script_2a_DropHierarchyBackupTablesForMARegion.sql" />
+    <None Include="Scripts\Projects\ItemSubTeam Alignment\OnBoarding_Script_3_LoadSubTeamPOSDeptValuesAndUpdateSubTeamTable.sql" />
+    <None Include="Scripts\Projects\ItemSubTeam Alignment\OnBoarding_Script_4_LoadScanCodesInIrmaAndUpdateItemSubTeam.sql" />
+    <Build Include="app\Tables\R10MessageResponse.sql" />
+    <Build Include="app\Tables\MessageResendStatus.sql" />
+    <Build Include="app\Stored Procedures\GetItemPrices.sql" />
+    <Build Include="app\Stored Procedures\GetRegionalConfigurationForSettingName.sql" />
+    <Build Include="Schemas\app.sql" />
+    <Build Include="Schemas\IConInterfaceUser.sql" />
+    <Build Include="app\Stored Procedures\GetScanCodesNotReadyToValidate.sql" />
+    <Build Include="app\Tables\PLUCategory.sql" />
+    <Build Include="app\Stored Procedures\GetAvailablePlusForCategory.sql" />
+    <Build Include="app\Stored Procedures\MarkUnsentMessagesAsInProcess.sql" />
+    <Build Include="app\Tables\PluSequence.sql" />
+    <Build Include="app\Stored Procedures\AddOrUpdateBrands.sql" />
+    <Build Include="app\User Defined Types\ESBMessageIdType.sql" />
+    <None Include="ReplicationOnly\GetItemChanges.sql" />
+    <Build Include="app\Stored Procedures\IconItemTaxExceptions.sql" />
+    <Build Include="app\Stored Procedures\IconItemSubTeamExceptions.sql" />
+    <Build Include="app\Stored Procedures\DeleteIrmaSubscriptions.sql" />
+    <Build Include="app\Stored Procedures\GetIrmaSubscriptions.sql" />
+    <Build Include="app\Stored Procedures\GetMerchTaxMapping.sql" />
+    <Build Include="Schemas\ewic.sql" />
+    <Build Include="ewic\Tables\Agency.sql" />
+    <Build Include="ewic\Tables\AgencyLocale.sql" />
+    <Build Include="ewic\Tables\Exclusion.sql" />
+    <Build Include="ewic\Tables\AuthorizedProductList.sql" />
+    <None Include="Scripts\Projects\Regional On-Boarding\CheckIrmaSettings.sql" />
+    <None Include="Scripts\Projects\Regional On-Boarding\Icon DB - Subscriptions Cleanup.sql" />
+    <None Include="Scripts\Projects\Regional On-Boarding\Icon DB - Subteam Events Cleanup for Onboarding.sql" />
+    <Build Include="ewic\Tables\Mapping.sql" />
+    <Build Include="app\Tables\PluRequest.sql" />
+    <Build Include="app\Tables\PluRequestChangeType.sql" />
+    <Build Include="app\Tables\PluRequestChangeHistory.sql" />
+    <Build Include="app\Stored Procedures\GetPLURequestBySearchParams.sql" />
+    <Build Include="mammoth\Tables\EventQueue.sql" />
+    <Build Include="mammoth\Tables\EventType.sql" />
+    <Build Include="mammoth\Stored Procedures\UpdateEventQueueAsInProcess.sql" />
+    <Build Include="Schemas\mammoth.sql" />
+    <Build Include="mammoth\Stored Procedures\GetProducts.sql" />
+    <Build Include="mammoth\Stored Procedures\BulkInsertProductMammothEvents.sql" />
+    <Build Include="mammoth\Stored Procedures\InsertMammothEvent.sql" />
+    <Build Include="mammoth\User Defined Types\EventMessageType.sql" />
+    <None Include="Scripts\PopulateData\Archive\Drop Unused Note Column from MessageHistory.sql" />
+    <None Include="Scripts\PopulateData\Archive\GiveAllHierarchyClassesSentToEsbTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\GiveAllItemsModifiedDateTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\GiveAllItemsModifiedUserTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\InsertApps.sql" />
+    <None Include="Scripts\PopulateData\Archive\InsertEventTypes.sql" />
+    <None Include="Scripts\PopulateData\Archive\InsertMessageAction.sql" />
+    <None Include="Scripts\PopulateData\Archive\InsertMessageResponseCode.sql" />
+    <None Include="Scripts\PopulateData\Archive\InsertMessageStatus.sql" />
+    <None Include="Scripts\PopulateData\Archive\InsertMessageTypes.sql" />
+    <None Include="Scripts\PopulateData\Archive\InsertTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\IRMA Items Not In VIM.sql" />
+    <None Include="Scripts\PopulateData\Archive\Populate Retention Policy.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateData_AddressTypeAddressUsage.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateData_CountryAndTerritory.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateData_ExistingLocaleAddress.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateData_ItemTypeInsert.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateData_TimeZone.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateData_Traits_NonMerch_Store.sql" />
+    <None Include="Scripts\PopulateData\Archive\Script.PostDeployment.iConUser.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 2858 - AlterIRMAItemBrandNameLengthTo35.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 3358 - As a GDTM I want iCon to block special characters in uploads and free text screens.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 3509 - Alter IRMAItem.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 3509 - MessageQueueItemLocale Drop And Create.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 3509 - RemoveAndInsertRetailSizeUOM_ExistingItems.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 3509 - Update Trait Pattern_RetailUOM.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 3509_4990 - MessageQueueProduct - Add New Columns.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4188 - Update NonMerchandise traitPattern.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4325 - IRMAItem Add New Column.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4726 - Locale ALTER.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4859 - Alter GenerateItemUpdateMessages SPROC to have Merchandise column.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4859 - Alter ItemImport SPROC to use Merchandise column.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4859 - Drop and Create ItemImportType with new Merchandise column.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4859 - MessageQueueLocale ALTER - Make Columns Not Null.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4859 - RenameMessageQueueProductColumns.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4914 - AppTableInsert.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4990 - GenerateItemUpdateMessages ALTER - Populate ProhibitDiscount Column.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 4990 - TraitGroup Update.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5143 - AffinityNode_AddTrait_PopulateTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5222 - As a GDTM I want a Data Team Friendly tax name to be displayed across Icon.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5222 - Auto Populate Friendly tax name.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5256 - Alter AssociateMessageToQueue.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5256 - Alter MarkMessageQueueEntriesAsInProcess.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5256 - Populate ProductSelectionGroup MessageType.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5256 - Populate ProductSelectionGroupType.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5753 - Drop procedure GetBrandOrTaxHierarchyLineage.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5780 - Insert Tlog Controller into  the App table.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 5898 - Trait Insert POS Dept and Team Number and Team Name.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6155 - Add configurationSettings.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6221 - ResendMessagesWithBadFinancialID.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6274 - NonMerchandise_TraitPattern and ItemType Update.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6354 - Add Disable Event Generation Trait.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6386 - Add Brand Abbreviation Trait.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6438 - Icon Script to Truncate EventQueue and IRMAItemSubscription tables.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6519 - AppTableInsert.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6536 - Add Icon Purge to app.App table.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6536 - Add schedule to Data History Purge Retention job.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6674 - Remove SentToEsb Trait from Tax Hierarchy Classes.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 6861 - Remove duplicate IRMAItemSubscriptions.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 7097 - Rename Disable Event Generation Trait to Non-Aligned Subteam Trait.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 7148 - Add Modified User Trait to Items that do not have them.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 7272 - POP Data SQL for Icon QA Financial SubTeam and Merch Event Traits.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 7272 - POP Data SQL for Icon QA Financial SubTeam TeamName_No_POsDept Traits.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 7291 - Add New Hidden Trait.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 7321 - Update UOM table to match GDT list.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 7613 - Add TLog Controller to app.App table.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 7914 - Add METER to UOM Table.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 7957 - As a GDTM I need an SRSS SubTeam and Tax Exceptions Report.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 8070 - Change Online ProductSelectionGroupType to OnlineConsumable.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 8115 - As a GDTM I want to add a National Class Hierarchy to Icon.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 8115 - Pop National HierarchyData.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 8651 - Add new Blackhawk hierarchy class trait.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 8651 - Add new ItemType for Blackhawk fees.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 8750 - Add R10MessageResponse table to RetentionPolicy table.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS 8750 - Remove MessageResponse table from RetentionPolicy table.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS6608 - Add an new EventType for Item Subteam change.sql" />
+    <None Include="Scripts\PopulateData\Archive\TFS7702 - As GDTM I want to enter 11 digit PLU Ranges for PLU Management.sql" />
+    <None Include="Scripts\PopulateData\Archive\Truncate Pos Description.sql" />
+    <None Include="Scripts\PopulateData\Archive\Update Import Sprocs To Validate Items.sql" />
+    <None Include="Scripts\PopulateData\Release\IconMasterData.sql" />
+    <None Include="Scripts\PopulateData\Release\IconPopulateData.sql" />
+    <Build Include="mammoth\Stored Procedures\BulkImportHierarchyClassMammothEvents.sql" />
+    <Build Include="mammoth\User Defined Types\BulkImportedHierarchyClassType.sql" />
+    <Build Include="nutrition\Tables\ItemNutrition.sql" />
+    <Build Include="nutrition\User Defined Types\NutritionItemType.sql" />
+    <Build Include="nutrition\Stored Procedures\AddOrUpdateNutritionItem.sql" />
+    <Build Include="Schemas\nutrition.sql" />
+    <Build Include="dbo\Tables\MilkType.sql" />
+    <Build Include="dbo\Tables\EcoScaleRating.sql" />
+    <Build Include="dbo\Tables\SeafoodFreshOrFrozen.sql" />
+    <Build Include="dbo\Tables\SeafoodCatchType.sql" />
+    <Build Include="dbo\Tables\ItemSignAttribute.sql" />
+    <Build Include="dbo\Tables\AnimalWelfareRating.sql" />
+    <Build Include="app\Stored Procedures\GetCertificationAgencies.sql" />
+    <Build Include="app\User Defined Types\ItemCanonicalDataType.sql" />
+    <Build Include="dbo\Tables\HealthyEatingRating.sql" />
+    <None Include="Security\NutriCon.Security.sql" />
+    <Build Include="app\Stored Procedures\AddOrUpdateCertificationAgencies.sql" />
+    <Build Include="app\User Defined Types\CertificationAgencyImportType.sql" />
+    <Build Include="app\User Defined Types\IntList.sql" />
+    <None Include="Scripts\PostRefresh\Populate RetentionPolicy.sql" />
+    <Build Include="app\Stored Procedures\GetAvailableScanCodesByCategory.sql" />
+    <Build Include="vim\Tables\EventQueue.sql" />
+    <Build Include="vim\Tables\EventType.sql" />
+    <Build Include="Schemas\vim.sql" />
+    <Build Include="vim\Tables\StorePosType.sql" />
+    <None Include="Scripts\PopulateData\Release\IconPredeploymentScript.sql" />
+    <Build Include="app\Functions\fn_GetNextProductKey.sql" />
+    <Build Include="app\Stored Procedures\ApplyMerchTaxMappingToItems.sql" />
+    <Build Include="app\Stored Procedures\GetDefaultTaxClassMismatches.sql" />
+    <Build Include="app\Tables\ItemMovementErrorQueue.sql" />
+    <Build Include="app\Stored Procedures\GenerateItemSubTeamEvents.sql" />
+    <Build Include="app\Tables\MessageQueueNutrition.sql" />
+    <Build Include="vim\Stored Procedures\GetStagedStoresForVIM.sql" />
+    <Build Include="vim\Stored Procedures\UpdateEventQueueAsInProcess.sql" />
+    <Build Include="app\Stored Procedures\GetLinkedScanCodeModelsForMessageGeneration.sql" />
+    <Build Include="app\User Defined Types\ScanCodesByBusinessUnitType.sql" />
+    <Build Include="app\Stored Procedures\GetNationalClassForClassCode.sql" />
+    <Build Include="app\Stored Procedures\MessageQueueDeleteControllerFromBusinessUnitInProcess.sql" />
+    <Build Include="app\Stored Procedures\MessageQueueUpdateControllerBusinessUnitInProcess.sql" />
+    <Build Include="app\Stored Procedures\MessageQueueGetBusinessUnitToProcess.sql" />
+    <Build Include="dbo\Tables\DeliverySystem.sql" />
+    <Build Include="app\Stored Procedures\PDX_ItemHierarchyFile.sql" />
+    <Build Include="app\Stored Procedures\PDX_LocationHierarchyFile.sql" />
+    <Build Include="app\Stored Procedures\PDX_MerchHierarchyFile.sql" />
+    <Build Include="app\Tables\MessageQueueBusinessUnitInProcess.sql" />
+    <Build Include="app\Tables\MessageQueuePriceArchive.sql" />
+    <Build Include="app\Tables\MessageQueueItemLocaleArchive.sql" />
+    <Build Include="app\Stored Procedures\PurgeData.sql" />
+    <Build Include="app\Stored Procedures\RefreshBrands.sql" />
+    <Build Include="app\Stored Procedures\RefreshLocales.sql" />
+    <Build Include="app\Stored Procedures\RefreshMerchandiseHierarchyClasses.sql" />
+    <Build Include="app\Functions\fn_RemoveSpecialChars.sql" />
+    <Build Include="Schemas\infor.sql" />
+    <Build Include="infor\Stored Procedures\ItemAddOrUpdate.sql" />
+    <Build Include="infor\User Defined Types\ItemAddorUpdateType.sql" />
+    <Build Include="infor\User Defined Types\ItemTraitAddOrUpdateType.sql" />
+    <Build Include="infor\Stored Procedures\ItemTraitAddOrUpdate.sql" />
+    <Build Include="infor\User Defined Types\ItemHierarchyClassAddOrUpdateType.sql" />
+    <Build Include="infor\Stored Procedures\ItemHierarchyClassAddOrUpdate.sql" />
+    <Build Include="infor\Stored Procedures\ItemSignAttributeAddOrUpdate.sql" />
+    <Build Include="infor\Functions\GetHierarchyClassIdFromInfor.sql" />
+    <Build Include="infor\User Defined Types\HierarchyClassType.sql" />
+    <Build Include="infor\User Defined Types\HierarchyClassTraitType.sql" />
+    <Build Include="infor\User Defined Types\RegionCodeList.sql" />
+    <Build Include="infor\Stored Procedures\AddNewItems.sql" />
+    <Build Include="app\Tables\PerformanceLog.sql" />
+    <Build Include="infor\Stored Procedures\GenerateItemUpdateMessages.sql" />
+    <Build Include="app\Stored Procedures\AddOrUpdateItemLinkEntities.sql" />
+    <Build Include="app\User Defined Types\ItemLinkEntityType.sql" />
+    <Build Include="app\Tables\PostDeploymentScriptHistory.sql" />
+    <None Include="Scripts\PopulateData\Release\SeedNonGreenFieldScripts.sql" />
+    <Build Include="app\Stored Procedures\IconIRMASignAttributeComparison.sql" />
+    <Build Include="infor\Stored Procedures\GetValidatedItemModel.sql" />
+    <None Include="Scripts\PopulateData\Release\IconTimezonesForPos.sql" />
+    <Build Include="dbo\Functions\fn_ParseStringList.sql" />
+    <Build Include="app\Tables\VimMessageHistory.sql" />
+    <None Include="Scripts\PopulateData\Release\PBI17488_RetentionPolicyIRMAAppLog.sql" />
+    <None Include="Scripts\Templates\EndDataTransformation.sql" />
+    <None Include="Scripts\Templates\StartDataTransformation.sql" />
+    <None Include="Scripts\PopulateData\Release\RetentionPolicyNoTagExlusionProdFix.sql" />
+    <Build Include="infor\Tables\MessageArchiveProduct.sql" />
+    <Build Include="infor\Tables\MessageHistory.sql" />
+    <Build Include="app\Tables\APIMessageMonitorLog.sql" />
+    <Build Include="infor\User Defined Types\ValidateItemType.sql" />
+    <Build Include="infor\Stored Procedures\ValidateItems.sql" />
+    <Build Include="infor\Functions\GetValidationError.sql" />
+    <Build Include="infor\Tables\Errors.sql" />
+    <Build Include="infor\Tables\MessageArchiveHierarchy.sql" />
+    <Build Include="infor\Stored Procedures\ValidateHierarchyClasses.sql" />
+    <None Include="Scripts\Projects\Infor\Infor Item Extract.sql" />
+    <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageViewWithDefaults.sql" />
+    <None Include="Scripts\Projects\Infor\NationalHierarchyLineageView.sql" />
+    <None Include="Scripts\PopulateData\Release\DeleteInvalidValidatedScanCodes.sql" />
+    <Build Include="app\Stored Procedures\DeleteItemLinkEntities.sql" />
+    <None Include="Scripts\PopulateData\Release\AlignIRMABrandsWithIconBrands.sql" />
+    <None Include="Scripts\PopulateData\Release\AddFinancialHierarchyToItemHierarchyClass.sql" />
+    <None Include="Scripts\PopulateData\Archive\UpdateIngredientScanCodesToScalePLUScanCodeType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Project_Readme.txt" />
+    <Build Include="app\User Defined Types\TaxHierarchyClassUpdateType.sql" />
+    <Build Include="app\User Defined Types\ItemAddType.sql" />
+    <None Include="Scripts\Projects\DataMonkey\VIMLoad\iCon_Connection.txt" />
+    <None Include="Scripts\Projects\DataMonkey\VIMLoad\VIM_Item_iCon_Load.cfg" />
+    <None Include="Scripts\Projects\DataMonkey\VIMJob\iCon_Connection.txt" />
+    <None Include="Scripts\Projects\DataMonkey\VIMJob\VIM_Item_iCon_Load.cfg" />
+    <None Include="Scripts\Jobs\DataHistoryPurgeJobIcon.sql" />
+    <None Include="Scripts\Jobs\DataHistoryPurgeJobIconDev.sql" />
+    <Build Include="app\User Defined Types\PriceMessageType.sql" />
+    <Build Include="app\Stored Procedures\GeneratePriceMessages.sql" />
+    <Build Include="app\Stored Procedures\GenerateItemLocaleMessages.sql" />
+    <None Include="Scripts\Jobs\Invalid PLU Notification Job - Icon.sql" />
+    <None Include="Scripts\Jobs\Invalid PLU Notification Job - IconDev.sql" />
+    <Build Include="app\Tables\ProductSelectionGroup.sql" />
+    <Build Include="app\Tables\ProductSelectionGroupType.sql" />
+    <Build Include="app\Stored Procedures\GetAllHierarchyLineage.sql" />
+    <Build Include="app\Stored Procedures\GenerateItemUpdateEventsForHierarchy.sql" />
+    <Build Include="app\Stored Procedures\GetRegionalConfigurationByRegionCode.sql" />
+    <Build Include="app\Stored Procedures\GetItemSubTeamModel.sql" />
+    <Build Include="Users\IConInterfaceUser.sql" />
+    <Build Include="app\User Defined Types\BrandImportType.sql" />
+    <None Include="Scripts\PostRefresh\SeedPsgsAndPsgMessages.sql" />
+    <None Include="Scripts\PostRefresh\SeedLocalePhoneNumbers.sql" />
+    <None Include="Scripts\PopulateData\Archive\WFM_Stores_Addresses.txt" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateApp.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateRegions.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateHierarchy.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateHierarchyPrototype.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateLocaleType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateTraitGroup.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateTrait.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateUOM.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulatePartyType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateParty.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateOrganizationType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateOrganization.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateEventType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateMessageAction.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateMessageStatus.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateMessageType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateProductSelectionGroupType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateAddressType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateAddressUsage.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateAnimalWelfareRating.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateCurrencyType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateDeliverySystem.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateEcoScaleRating.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateHealthyEatingRating.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateItemPriceType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateItemType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateMilkType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateProductionClaim.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateScanCodeType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateSeafoodCatchType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateSeafoodFreshOrFrozen.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateStoreGroupType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateMammothEventType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateVimEventType.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateStorePosType.sql" />
+    <None Include="Scripts\PostDeploymentScripts\PostDeploymentScript_DEV.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\TestData\PopulateItem.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\TestData\PopulateHierarchyClass.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\TestData\PopulateHierarchyClassTrait.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\TestData\PopulateItemTrait.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\TestData\PopulateItemHierarchyClass.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\TestData\PopulateScanCode.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\TestData\PopulateLocale.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\TestData\PopulateLocaleTrait.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateTerritory.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateTimezone.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateCountry.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateCounty.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulateCity.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\PopulatePostalCode.sql" />
+    <None Include="Scripts\PopulateData\DevBuild\TestData\PopulateLocaleAddresses.sql" />
+    <Build Include="infor\User Defined Types\ItemSignAttributeAddOrUpdateType.sql" />
+    <Build Include="infor\Stored Procedures\HierarchyClassAddOrUpdate.sql" />
+    <None Include="Scripts\PopulateData\Release\RetentionPolicyMammothChangeQueueHistory.sql" />
+    <None Include="Scripts\PopulateData\Release\AddInforProductMessageType.sql" />
+    <None Include="Scripts\PopulateData\Release\Add Financial Hierarchy Code to Sub Teams.sql" />
+    <None Include="Icon.DB.publish.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\PopulateData\Release\InsertInforErrors.sql" />
+    <None Include="Scripts\PopulateData\Release\InsertInforHierarchyMessageType.sql" />
+    <Build Include="infor\User Defined Types\ValidateHierarchyClassType.sql" />
+    <None Include="Scripts\PopulateData\Release\InsertInforHierarchyClassErrors.sql" />
+    <None Include="Scripts\PopulateData\Release\InsertInforHierarchyMismatchError.sql" />
+    <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageView.sql" />
+    <None Include="Scripts\Projects\Infor\Brands.sql" />
+    <None Include="Scripts\Projects\Infor\Financial.sql" />
+    <None Include="Scripts\Projects\Infor\National.sql" />
+    <None Include="Scripts\Projects\Infor\Tax.sql" />
+    <None Include="Scripts\Projects\Infor\Merchandise.sql" />
+    <None Include="Scripts\PopulateData\Release\FixSupplementsAndSpiritSubTeams.sql" />
+    <None Include="Scripts\PopulateData\Release\RetentionPolicyInforArchiveTables.sql" />
+    <None Include="Scripts\PopulateData\Release\AddBrandDeleteEventType.sql" />
+    <None Include="Scripts\PopulateData\Release\FixPackageUnitTraitPattern.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Icon.DB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploymentScript.sql" />
+    <None Include="Scripts\PopulateData\Release\RetentionPolicyNoTagExlusion.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="PreDeploymentScript.sql" />
+  </ItemGroup>
+</Project>

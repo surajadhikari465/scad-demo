@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="903ce003-e3a2-4c9d-a606-0861568a24b4" ChangeDateTime="05/12/2015 19:00:35">
+    <Property Name="ElementName" Value="[app].[IRMAItem].[nationalClassName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[app].[IRMAItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="nationalClassID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="94aa796f-9604-4a9e-a8ba-e7cde74793b7" ChangeDateTime="06/27/2016 14:16:46">
+    <Property Name="ElementName" Value="[dbo].[PostDeploymentScriptHistory].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PostDeploymentScriptHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Scriptkey" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1c475db5-14c4-4842-9176-710bdbb7858e" ChangeDateTime="06/29/2016 20:05:06">
+    <Property Name="ElementName" Value="[app].[PostDeploymentScriptHistory].[Scriptkey]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[app].[PostDeploymentScriptHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ScriptKey" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2b95f80a-cd03-49d9-b5e6-eab3e680cab1" ChangeDateTime="08/26/2016 19:18:35">
+    <Property Name="ElementName" Value="[dbo].[MessageHistory].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MessageHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MessageProperties" />
+  </Operation>
+</Operations>

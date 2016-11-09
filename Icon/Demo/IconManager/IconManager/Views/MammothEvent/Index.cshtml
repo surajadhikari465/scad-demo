@@ -1,0 +1,17 @@
+﻿@model IconManager.ViewModels.GenerateMammothEventsViewModel
+@{
+    ViewBag.Title = "Mammoth Events";
+}
+
+<h2>Mammoth Events</h2>
+
+@using (Html.BeginForm("GenerateEvents", "MammothEvent", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(m => m.BusinessUnit)
+    </div>
+    <div>
+        @Html.TextBoxFor(m => m.BusinessUnit)
+    </div>
+}
+

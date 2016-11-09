@@ -1,0 +1,210 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Set width on the Store Management grid so that it uses the full width */
+#storeGrid input,
+#storeGrid select,
+#storeGrid textarea {
+    max-width: 100%;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+    
+    /* Add some padding so that the textbox doesn't appear to shrink. */
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/* Override for Bootstrap 3 / IgniteUI grid incompatibility. */
+.ui-widget.ui-iggrid *, .ui-widget.ui-iggrid *:before, .ui-widget.ui-iggrid *:after {
+    -webkit-box-sizing: initial !important;
+    -moz-box-sizing: initial !important;
+    box-sizing: content-box !important;
+}
+
+/* Override for Bootstrap 3 / IgniteUI grid validation message incompatibility. */
+.ui-igvalidator.ui-widget.ui-state-error.ui-corner-all {
+    -webkit-box-sizing: initial !important;
+    -moz-box-sizing: initial !important;
+    box-sizing: content-box !important;
+}
+
+/* Override for Bootstrap 3 / IgniteUI combo editor missing vertical scrollbar in editable grid. */
+.ui-igcombo-list, .ui-igcombo-listitemholder, .ui-igcombo-listitem {
+    -webkit-box-sizing: initial !important;
+    -moz-box-sizing: initial !important;
+    box-sizing: content-box !important;
+}
+
+/* Override for Bootstrap 3 / IgniteUI autocomplete incompatibility. */
+.ui-autocomplete *, .ui-autocomplete *:before, .ui-autocomplete *:after {
+    -webkit-box-sizing: initial !important;
+    -moz-box-sizing: initial !important;
+    box-sizing: content-box !important;
+}
+
+/* Override for Bootstrap 3 / igcombo padding inconsistency. */
+.ui-igcombo-field {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+/* Override for iggrid cell size inconsistency. */
+.ui-iggrid-editingcell {
+    line-height: inherit !important;
+}
+
+/* Override text color when hovering over the edited igCombo text*/
+span.ui-igcombo.ui-state-hover {
+    color: #444;
+}
+
+/* Scrollbar for jQueryUI autocomplete inputs. */
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Background images for jQueryUI datepicker. */
+.ui-widget-content .ui-icon {
+    background-image: url(themes/base/images/ui-icons_222222_256x240.png);
+}
+
+/* Custom styles for views */
+#title {
+    color: #44d06e;
+}
+
+.scancode-link {
+    color: blue;
+    float: right;
+}
+
+.checkbox {
+    float: left;
+    margin-top: 0px !important;  
+}
+
+.col-checkbox {
+    float: left;
+    margin-bottom: 0px !important;
+    margin-left: 5px !important;   
+}
+
+.checkbox-label {
+     text-align: right;
+     max-width: 15%;
+     margin-left: 5px !important;
+}
+.checkbox-inline-bold {
+    display: inline-block;
+    margin-left: 5px !important;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: right;    
+    margin-bottom: 0;
+}
+
+.delete-btn {
+    margin-left: 6%;
+}
+
+.server-name {
+    float: right;
+}
+
+.form-label {
+    text-align: right;
+}
+
+.form-input {
+    width: 50%;
+}
+
+.validation-section {
+    height: 40px;
+}
+
+.form-property-val {
+    margin-left: 20px;
+}
+
+.page-title, .form-submit, .begin-form, .page-subsection {
+    margin-top: 15px;
+}
+
+.page-section, .form-footer {
+    margin-top: 30px;
+}
+
+.new-brand-cell {
+    background-color: #b94a48;
+}
+
+.form-offset-left {
+    margin-left: 30px;
+} 
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1190px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    width: 1390px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .container {
+    width: 1590px;
+  }
+}
+
+@media (min-width: 1900px) {
+  .container {
+    width: 1890px;
+  }
+
+}
+

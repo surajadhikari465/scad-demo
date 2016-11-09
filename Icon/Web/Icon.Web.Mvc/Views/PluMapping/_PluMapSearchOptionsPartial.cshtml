@@ -1,0 +1,60 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.PluSearchViewModel
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@using (Ajax.BeginForm("Search", "PluMapping", null, new AjaxOptions
+    {
+        HttpMethod = "GET",
+        UpdateTargetId = "searchResults",
+        InsertionMode = InsertionMode.Replace,
+        OnBegin = "searchButtonClick",
+        OnSuccess = "displayResults",
+        OnFailure = "displayModelValidation"
+    }, new { @class = "begin-form" }))
+{
+    <fieldset>
+        <legend>Search Options</legend>
+        <div class="row">
+            @Html.LabelFor(model => Model.NationalPlu, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.NationalPlu, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => Model.NationalPlu, null, new { @class = "col-md-6 form-property-val" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.RegionalPlu, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.RegionalPlu, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => Model.RegionalPlu, null, new { @class = "col-md-6 form-property-val" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.BrandName, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.BrandName, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => Model.BrandName, null, new { @class = "col-md-6 form-property-val" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => Model.PluDescription, new { @class = "col-md-2 form-label" })
+            <div>
+                @Html.TextBoxFor(model => Model.PluDescription, new { @class = "col-md-6 form-input" })
+                @Html.ValidationMessageFor(model => Model.PluDescription, null, new { @class = "col-md-6 form-property-val" })
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-1">
+            <input type="submit" value="Search" id="searchButton" class="btn btn-default form-submit" />
+        </div>
+        <div class="col-md-6 page-subsection">
+            @Html.ValidationSummary(true)
+        </div>
+    </div>
+}

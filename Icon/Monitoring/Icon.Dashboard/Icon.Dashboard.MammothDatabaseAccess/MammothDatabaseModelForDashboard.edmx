@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MammothDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="App">
+          <Key>
+            <PropertyRef Name="AppID" />
+          </Key>
+          <Property Name="AppID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppName" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AppLog">
+          <Key>
+            <PropertyRef Name="AppLogID" />
+          </Key>
+          <Property Name="AppLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppID" Type="int" Nullable="false" />
+          <Property Name="Level" Type="nvarchar" MaxLength="100" />
+          <Property Name="Logger" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="255" />
+          <Property Name="MachineName" Type="nvarchar" MaxLength="255" />
+          <Property Name="InsertDate" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="LogDate" Type="datetime2" Precision="3" />
+          <Property Name="Thread" Type="nvarchar" MaxLength="100" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="CallSite" Type="nvarchar(max)" />
+          <Property Name="Exception" Type="nvarchar(max)" />
+          <Property Name="StackTrace" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="App_AppLog_FK">
+          <End Role="App" Type="Self.App" Multiplicity="1" />
+          <End Role="AppLog" Type="Self.AppLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="App">
+              <PropertyRef Name="AppID" />
+            </Principal>
+            <Dependent Role="AppLog">
+              <PropertyRef Name="AppID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MammothDatabaseModelStoreContainer">
+          <EntitySet Name="App" EntityType="Self.App" Schema="app" store:Type="Tables" />
+          <EntitySet Name="AppLog" EntityType="Self.AppLog" Schema="app" store:Type="Tables" />
+          <AssociationSet Name="App_AppLog_FK" Association="Self.App_AppLog_FK">
+            <End Role="App" EntitySet="App" />
+            <End Role="AppLog" EntitySet="AppLog" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MammothDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="App">
+          <Key>
+            <PropertyRef Name="AppID" />
+          </Key>
+          <Property Name="AppID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AppLogs" Relationship="Self.App_AppLog_FK" FromRole="App" ToRole="AppLog" />
+        </EntityType>
+        <EntityType Name="AppLog">
+          <Key>
+            <PropertyRef Name="AppLogID" />
+          </Key>
+          <Property Name="AppLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppID" Type="Int32" Nullable="false" />
+          <Property Name="Level" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Logger" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MachineName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LogDate" Type="DateTime" Precision="3" />
+          <Property Name="Thread" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CallSite" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Exception" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="App" Relationship="Self.App_AppLog_FK" FromRole="AppLog" ToRole="App" />
+        </EntityType>
+        <Association Name="App_AppLog_FK">
+          <End Role="App" Type="Self.App" Multiplicity="1" />
+          <End Role="AppLog" Type="Self.AppLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="App">
+              <PropertyRef Name="AppID" />
+            </Principal>
+            <Dependent Role="AppLog">
+              <PropertyRef Name="AppID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MammothDatabaseContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Apps" EntityType="Self.App" />
+          <EntitySet Name="AppLogs" EntityType="Self.AppLog" />
+          <AssociationSet Name="App_AppLog_FK" Association="Self.App_AppLog_FK">
+            <End Role="App" EntitySet="Apps" />
+            <End Role="AppLog" EntitySet="AppLogs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MammothDatabaseModelStoreContainer" CdmEntityContainer="MammothDatabaseContext">
+          <EntitySetMapping Name="Apps">
+            <EntityTypeMapping TypeName="MammothDatabaseModel.App">
+              <MappingFragment StoreEntitySet="App">
+                <ScalarProperty Name="AppID" ColumnName="AppID" />
+                <ScalarProperty Name="AppName" ColumnName="AppName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppLogs">
+            <EntityTypeMapping TypeName="MammothDatabaseModel.AppLog">
+              <MappingFragment StoreEntitySet="AppLog">
+                <ScalarProperty Name="AppLogID" ColumnName="AppLogID" />
+                <ScalarProperty Name="AppID" ColumnName="AppID" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Logger" ColumnName="Logger" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+                <ScalarProperty Name="Thread" ColumnName="Thread" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="CallSite" ColumnName="CallSite" />
+                <ScalarProperty Name="Exception" ColumnName="Exception" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

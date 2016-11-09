@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"	attributeFormDefault="unqualified">
+	<xs:include schemaLocation="DescriptionCommonDataV1.2.0.xsd"/>
+  <xs:include schemaLocation="CultureTypeCodeEnumeration.xsd"/>
+  <xs:complexType name="RetalixDescriptionCommonData">
+		<xs:complexContent>
+			<xs:extension base="DescriptionCommonData">
+				<xs:attribute name="Culture" type="CultureTypeCode" use="optional" default="en-US"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

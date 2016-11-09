@@ -1,0 +1,55 @@
+﻿@using Infragistics.Web.Mvc
+@model List<Icon.Web.Mvc.Models.FailedMessageViewModel>
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@{Html.RenderPartial("_HeaderPartial", "Messages to ESB Status");}
+
+<div class="page-section">
+    @if (!Model.Any())
+    {
+        <h4>No failed messages to ESB were found.</h4>
+    }
+    else
+    {
+        @(Html.Infragistics().Grid(Model.AsQueryable())
+            .ID("igGrid")
+            .Width("100%")
+            .PrimaryKey("Id")
+            .AutoGenerateColumns(false)
+            .AutoCommit(true)
+            .Columns(column =>
+            {
+                column.For(vm => vm.Id).Hidden(true);
+                column.For(vm => vm.MessageStatus).HeaderText("Message Status");
+                column.For(vm => vm.MessageType).HeaderText("Message Type");
+                column.For(vm => vm.InsertDate).HeaderText("Insert Date");
+            })
+            .Features(features =>
+            {
+                features.Selection().MultipleSelection(true).Mode(SelectionMode.Row);
+                features.Updating().EnableAddRow(false).EnableDeleteRow(false).EditMode(GridEditMode.None);
+            })
+            .DataBind()
+            .Render()
+        )
+
+        <div id="alert" class="validation-section page-subsection"></div>
+
+        <div class="page-subsection">
+            <button id="reprocess" class="btn btn-default form-submit">Reprocess Failed Messages</button>
+        </div>
+    }
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/common-search.js")
+    @Scripts.Render("~/Scripts/Common/reprocess-failed-data.js")
+    @Scripts.Render("~/Scripts/MessageHistory/index.js")
+}

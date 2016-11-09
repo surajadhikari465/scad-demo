@@ -1,0 +1,19 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationIdentifierViewModel
+
+<div class="row applicationRow">
+    <div class="panel panel-info applicationIdentifierPanel">
+        <div class="panel-body applicationIdentifierPanelBody">
+            <div class="input-group">
+                <span class="input-group-addon">@Html.DisplayNameFor(model => model.Name)</span>
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control full-width" } })
+                <span class="input-group-addon">@Html.DisplayNameFor(model => model.Server)</span>
+                @Html.EditorFor(model => model.Server, new { htmlAttributes = new { @class = "form-control full-width" } })
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

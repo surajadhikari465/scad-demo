@@ -1,0 +1,152 @@
+﻿<hierarchy xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:p3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" p3:Action="AddOrUpdate">
+  <name>Merchandise</name>
+  <prototype>
+    <hpt:hierarchyLevelName>GS1 Brick</hpt:hierarchyLevelName>
+    <hpt:itemsAttached>1</hpt:itemsAttached>
+  </prototype>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>97071</hcl:id>
+    <hcl:name>Lawn/Garden Hand Tools Other</hcl:name>
+    <hcl:parentId>97066</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>97072</hcl:id>
+    <hcl:name>Garden Water Storage Supplies</hcl:name>
+    <hcl:parentId>97067</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>98099</hcl:id>
+    <hcl:name>BEER DEPT PLU</hcl:name>
+    <hcl:parentId>84360</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>98100</hcl:id>
+    <hcl:name>CANDY ISLAND DEPT PLU</hcl:name>
+    <hcl:parentId>84360</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>98101</hcl:id>
+    <hcl:name>CUSTOMER SERVICE NON MARGIN DEPT PLU</hcl:name>
+    <hcl:parentId>84360</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>98102</hcl:id>
+    <hcl:name>WINE DEPT PLU</hcl:name>
+    <hcl:parentId>84360</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>98103</hcl:id>
+    <hcl:name>Milk and Honey Gift Cards</hcl:name>
+    <hcl:parentId>84363</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>98104</hcl:id>
+    <hcl:name>Misc Deposits</hcl:name>
+    <hcl:parentId>98098</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>98619</hcl:id>
+    <hcl:name>Blackhawk Consumer Fee</hcl:name>
+    <hcl:parentId>84361</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>98620</hcl:id>
+    <hcl:name>Delivery Fee</hcl:name>
+    <hcl:parentId>84361</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110636</hcl:id>
+    <hcl:name>Bar Venue</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110637</hcl:id>
+    <hcl:name>Commodity</hcl:name>
+    <hcl:parentId>110632</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110638</hcl:id>
+    <hcl:name>Component</hcl:name>
+    <hcl:parentId>110632</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110639</hcl:id>
+    <hcl:name>Cookie Bar</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110640</hcl:id>
+    <hcl:name>Dry Pastry</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110641</hcl:id>
+    <hcl:name>Gelato</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110642</hcl:id>
+    <hcl:name>Hot Bar</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110643</hcl:id>
+    <hcl:name>Hot Soup</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110644</hcl:id>
+    <hcl:name>Packaging</hcl:name>
+    <hcl:parentId>110633</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110645</hcl:id>
+    <hcl:name>Patisserie</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110646</hcl:id>
+    <hcl:name>Pizza</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110647</hcl:id>
+    <hcl:name>Restaurant</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110648</hcl:id>
+    <hcl:name>Salad Bar</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110649</hcl:id>
+    <hcl:name>Sandwich</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110650</hcl:id>
+    <hcl:name>Smokehouse</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110651</hcl:id>
+    <hcl:name>Supplies</hcl:name>
+    <hcl:parentId>110634</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>110652</hcl:id>
+    <hcl:name>Venue Misc</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>119240</hcl:id>
+    <hcl:name>Bread</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+  <class p3:Action="AddOrUpdate">
+    <hcl:id>119241</hcl:id>
+    <hcl:name>Cakes</hcl:name>
+    <hcl:parentId>110635</hcl:parentId>
+  </class>
+</hierarchy>

@@ -1,0 +1,6 @@
+﻿CREATE TABLE [app].[App] (
+    [AppID]   INT            IDENTITY (1, 1) NOT NULL,
+    [AppName] NVARCHAR (128) NOT NULL,
+    CONSTRAINT [App_PK] PRIMARY KEY CLUSTERED ([AppID] ASC) WITH (FILLFACTOR = 100)
+);
+

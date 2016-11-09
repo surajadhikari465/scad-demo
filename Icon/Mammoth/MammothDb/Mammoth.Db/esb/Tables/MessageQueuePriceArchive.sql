@@ -1,0 +1,26 @@
+﻿CREATE TABLE [esb].[MessageQueuePriceArchive]
+(
+    [MessageQueueId]	INT				NOT NULL,
+    [MessageTypeId]		INT				NOT NULL,
+    [MessageStatusId]	INT				NOT NULL,
+    [MessageHistoryId]	INT				NULL,
+    [MessageActionId]	INT				NOT NULL,
+    [InsertDate]		DATETIME2 (7)   NOT NULL,
+	[ItemId]			INT				NOT NULL,
+	[ItemTypeCode]		NVARCHAR(3)		NOT NULL,
+	[ItemTypeDesc]		NVARCHAR(255)	NOT NULL,
+	[BusinessUnitId]	INT				NOT NULL,
+	[LocaleName]		NVARCHAR(255)	NOT NULL,
+	[ScanCode]			NVARCHAR(13)	NOT NULL,
+	[UomCode]			NVARCHAR(3)		NOT NULL,
+	[CurrencyCode]		NVARCHAR(3)		NOT NULL,
+	[PriceTypeCode]		NVARCHAR(3)		NOT NULL,
+	[SubPriceTypeCode]	NVARCHAR(3)		NULL,
+	[Price]				MONEY			NOT NULL,
+	[Multiple]			INT				NOT NULL,
+	[StartDate]			DATETIME2(7)	NOT NULL,
+	[EndDate]			DATETIME2(7)	NULL,	
+	[InProcessBy]		INT				NULL,
+    [ProcessedDate]		DATETIME2 (7)	NULL,
+);
+go

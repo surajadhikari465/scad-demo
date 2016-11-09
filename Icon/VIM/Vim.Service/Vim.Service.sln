@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vim.Service", "Vim.Service\Vim.Service.csproj", "{2B99CF5A-09A9-45E4-9A4D-307BBE0C21FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vim.Service.Brand.HttpClient", "Vim.Service.HttpBrandClient\Vim.Service.Brand.HttpClient.csproj", "{EA128D0D-E5DA-47A6-85B1-1374126455DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vim.Service.Brand.EsbClient", "Vim.Service.EsbBrandQueue\Vim.Service.Brand.EsbClient.csproj", "{9762DF74-C756-42CA-9353-5E7FBC228A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vim.Service.Tests", "Vim.Service.Tests\Vim.Service.Tests.csproj", "{E85745B3-3E78-42EC-AEB3-04D4DC52B3E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5923DDEE-F746-4254-A966-FD1D9F61AB47}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\BuildSupport\nuget.config = ..\..\BuildSupport\nuget.config
+		Vim.Service.nuspec = Vim.Service.nuspec
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B99CF5A-09A9-45E4-9A4D-307BBE0C21FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B99CF5A-09A9-45E4-9A4D-307BBE0C21FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B99CF5A-09A9-45E4-9A4D-307BBE0C21FC}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{2B99CF5A-09A9-45E4-9A4D-307BBE0C21FC}.QA|Any CPU.Build.0 = Release|Any CPU
+		{2B99CF5A-09A9-45E4-9A4D-307BBE0C21FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B99CF5A-09A9-45E4-9A4D-307BBE0C21FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B99CF5A-09A9-45E4-9A4D-307BBE0C21FC}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{2B99CF5A-09A9-45E4-9A4D-307BBE0C21FC}.Test|Any CPU.Build.0 = Release|Any CPU
+		{EA128D0D-E5DA-47A6-85B1-1374126455DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA128D0D-E5DA-47A6-85B1-1374126455DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA128D0D-E5DA-47A6-85B1-1374126455DB}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{EA128D0D-E5DA-47A6-85B1-1374126455DB}.QA|Any CPU.Build.0 = Release|Any CPU
+		{EA128D0D-E5DA-47A6-85B1-1374126455DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA128D0D-E5DA-47A6-85B1-1374126455DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA128D0D-E5DA-47A6-85B1-1374126455DB}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{EA128D0D-E5DA-47A6-85B1-1374126455DB}.Test|Any CPU.Build.0 = Release|Any CPU
+		{9762DF74-C756-42CA-9353-5E7FBC228A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9762DF74-C756-42CA-9353-5E7FBC228A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9762DF74-C756-42CA-9353-5E7FBC228A5A}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{9762DF74-C756-42CA-9353-5E7FBC228A5A}.QA|Any CPU.Build.0 = Release|Any CPU
+		{9762DF74-C756-42CA-9353-5E7FBC228A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9762DF74-C756-42CA-9353-5E7FBC228A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9762DF74-C756-42CA-9353-5E7FBC228A5A}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{9762DF74-C756-42CA-9353-5E7FBC228A5A}.Test|Any CPU.Build.0 = Release|Any CPU
+		{E85745B3-3E78-42EC-AEB3-04D4DC52B3E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E85745B3-3E78-42EC-AEB3-04D4DC52B3E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E85745B3-3E78-42EC-AEB3-04D4DC52B3E3}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{E85745B3-3E78-42EC-AEB3-04D4DC52B3E3}.QA|Any CPU.Build.0 = Release|Any CPU
+		{E85745B3-3E78-42EC-AEB3-04D4DC52B3E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E85745B3-3E78-42EC-AEB3-04D4DC52B3E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E85745B3-3E78-42EC-AEB3-04D4DC52B3E3}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{E85745B3-3E78-42EC-AEB3-04D4DC52B3E3}.Test|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Vim.Service.Tests\\Vim.Service.Tests.csproj
+		SccProjectName1 = Vim.Service.Tests
+		SccLocalPath1 = Vim.Service.Tests
+		SccProjectUniqueName2 = Vim.Service\\Vim.Service.csproj
+		SccProjectName2 = Vim.Service
+		SccLocalPath2 = Vim.Service
+		SccProjectUniqueName3 = Vim.Service.HttpBrandClient\\Vim.Service.Brand.HttpClient.csproj
+		SccProjectName3 = Vim.Service.HttpBrandClient
+		SccLocalPath3 = Vim.Service.HttpBrandClient
+		SccProjectUniqueName4 = Vim.Service.EsbBrandQueue\\Vim.Service.Brand.EsbClient.csproj
+		SccProjectName4 = Vim.Service.EsbBrandQueue
+		SccLocalPath4 = Vim.Service.EsbBrandQueue
+	EndGlobalSection
+EndGlobal

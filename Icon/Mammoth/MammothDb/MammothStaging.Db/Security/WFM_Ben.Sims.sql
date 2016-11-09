@@ -1,0 +1,2 @@
+﻿CREATE USER [WFM\Ben.Sims] FOR LOGIN [WFM\Ben.Sims];
+

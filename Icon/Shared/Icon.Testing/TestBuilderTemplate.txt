@@ -1,0 +1,233 @@
+﻿using System;
+using Mammoth.Framework;
+
+namespace Mammoth.ApiController.Tests.Builders
+{
+	public class TestMessageQueuePriceBuilder
+	{
+		private int messageQueueId;
+		private int messageTypeId;
+		private int messageStatusId;
+		private System.Nullable<int> messageHistoryId;
+		private System.DateTime insertDate;
+		private int itemId;
+		private int businessUnitId;
+		private string localeName;
+		private string scanCode;
+		private string uomCode;
+		private string currencyCode;
+		private System.Nullable<decimal> price;
+		private System.Nullable<int> multiple;
+		private System.Nullable<decimal> salePrice;
+		private System.Nullable<int> saleMultiple;
+		private System.Nullable<System.DateTime> saleStartDate;
+		private System.Nullable<System.DateTime> saleEndDate;
+		private System.Nullable<decimal> previousSalePrice;
+		private System.Nullable<int> previousSaleMultiple;
+		private System.Nullable<System.DateTime> previousSaleStartDate;
+		private System.Nullable<System.DateTime> previousSaleEndDate;
+		private System.Nullable<int> inProcessBy;
+		private System.Nullable<System.DateTime> processedDate;
+		
+		public TestMessageQueuePriceBuilder()
+		{
+			this.messageQueueId = 0;
+			this.messageTypeId = 0;
+			this.messageStatusId = 0;
+			this.messageHistoryId = null;
+			this.insertDate = DateTime.Now;
+			this.itemId = 0;
+			this.businessUnitId = 0;
+			this.localeName = null;
+			this.scanCode = null;
+			this.uomCode = null;
+			this.currencyCode = null;
+			this.price = null;
+			this.multiple = null;
+			this.salePrice = null;
+			this.saleMultiple = null;
+			this.saleStartDate = null;
+			this.saleEndDate = null;
+			this.previousSalePrice = null;
+			this.previousSaleMultiple = null;
+			this.previousSaleStartDate = null;
+			this.previousSaleEndDate = null;
+			this.inProcessBy = null;
+			this.processedDate = null;
+		}
+
+		public TestMessageQueuePriceBuilder WithMessageQueueId(int messageQueueId)
+		{
+			this.messageQueueId = messageQueueId;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithMessageTypeId(int messageTypeId)
+		{
+			this.messageTypeId = messageTypeId;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithMessageStatusId(int messageStatusId)
+		{
+			this.messageStatusId = messageStatusId;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithMessageHistoryId(System.Nullable<int> messageHistoryId)
+		{
+			this.messageHistoryId = messageHistoryId;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithInsertDate(System.DateTime insertDate)
+		{
+			this.insertDate = insertDate;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithItemId(int itemId)
+		{
+			this.itemId = itemId;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithBusinessUnitId(int businessUnitId)
+		{
+			this.businessUnitId = businessUnitId;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithLocaleName(string localeName)
+		{
+			this.localeName = localeName;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithScanCode(string scanCode)
+		{
+			this.scanCode = scanCode;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithUomCode(string uomCode)
+		{
+			this.uomCode = uomCode;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithCurrencyCode(string currencyCode)
+		{
+			this.currencyCode = currencyCode;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithPrice(System.Nullable<decimal> price)
+		{
+			this.price = price;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithMultiple(System.Nullable<int> multiple)
+		{
+			this.multiple = multiple;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithSalePrice(System.Nullable<decimal> salePrice)
+		{
+			this.salePrice = salePrice;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithSaleMultiple(System.Nullable<int> saleMultiple)
+		{
+			this.saleMultiple = saleMultiple;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithSaleStartDate(System.Nullable<System.DateTime> saleStartDate)
+		{
+			this.saleStartDate = saleStartDate;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithSaleEndDate(System.Nullable<System.DateTime> saleEndDate)
+		{
+			this.saleEndDate = saleEndDate;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithPreviousSalePrice(System.Nullable<decimal> previousSalePrice)
+		{
+			this.previousSalePrice = previousSalePrice;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithPreviousSaleMultiple(System.Nullable<int> previousSaleMultiple)
+		{
+			this.previousSaleMultiple = previousSaleMultiple;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithPreviousSaleStartDate(System.Nullable<System.DateTime> previousSaleStartDate)
+		{
+			this.previousSaleStartDate = previousSaleStartDate;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithPreviousSaleEndDate(System.Nullable<System.DateTime> previousSaleEndDate)
+		{
+			this.previousSaleEndDate = previousSaleEndDate;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithInProcessBy(System.Nullable<int> inProcessBy)
+		{
+			this.inProcessBy = inProcessBy;
+			return this;
+		}
+
+		public TestMessageQueuePriceBuilder WithProcessedDate(System.Nullable<System.DateTime> processedDate)
+		{
+			this.processedDate = processedDate;
+			return this;
+		}
+
+		public MessageQueuePrice Build()
+		{
+			MessageQueuePrice messageQueuePrice = new MessageQueuePrice();
+
+			messageQueuePrice.MessageQueueId = this.messageQueueId;
+			messageQueuePrice.MessageTypeId = this.messageTypeId;
+			messageQueuePrice.MessageStatusId = this.messageStatusId;
+			messageQueuePrice.MessageHistoryId = this.messageHistoryId;
+			messageQueuePrice.InsertDate = this.insertDate;
+			messageQueuePrice.ItemId = this.itemId;
+			messageQueuePrice.BusinessUnitId = this.businessUnitId;
+			messageQueuePrice.LocaleName = this.localeName;
+			messageQueuePrice.ScanCode = this.scanCode;
+			messageQueuePrice.UomCode = this.uomCode;
+			messageQueuePrice.CurrencyCode = this.currencyCode;
+			messageQueuePrice.Price = this.price;
+			messageQueuePrice.Multiple = this.multiple;
+			messageQueuePrice.SalePrice = this.salePrice;
+			messageQueuePrice.SaleMultiple = this.saleMultiple;
+			messageQueuePrice.SaleStartDate = this.saleStartDate;
+			messageQueuePrice.SaleEndDate = this.saleEndDate;
+			messageQueuePrice.PreviousSalePrice = this.previousSalePrice;
+			messageQueuePrice.PreviousSaleMultiple = this.previousSaleMultiple;
+			messageQueuePrice.PreviousSaleStartDate = this.previousSaleStartDate;
+			messageQueuePrice.PreviousSaleEndDate = this.previousSaleEndDate;
+			messageQueuePrice.InProcessBy = this.inProcessBy;
+			messageQueuePrice.ProcessedDate = this.processedDate;
+			
+			return messageQueuePrice;
+		}		
+
+        public static implicit operator MessageQueuePrice(TestMessageQueuePriceBuilder builder)
+        {
+            return builder.Build();
+        }
+	}
+}

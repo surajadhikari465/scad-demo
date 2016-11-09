@@ -1,0 +1,56 @@
+﻿<#@ template language="C#" debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Data" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ include file="ConfigurationAccessor.ttinclude" #>
+<#
+    string tableName = "mammoth.EventType";
+    string path = Path.GetDirectoryName(Host.TemplateFile);
+    string columnName = "Name";
+	string id = "EventTypeId";
+#>
+using System;
+using System.CodeDom.Compiler;
+
+namespace Icon.Framework
+{
+    /// <summary>
+    /// <#= tableName #> auto generated Ids
+    /// </summary>
+
+    [GeneratedCode("TextTemplatingFileGenerator", "10")]
+    public static class MommothEventTypes
+    {
+<#
+    string fullPath = Host.ResolvePath("") + @"App.config";
+	var config = new ConfigurationAccessor((IServiceProvider)this.Host, fullPath);
+    string connectionString = config.ConnectionStrings["T4"].ConnectionString;
+    SqlConnection conn = new SqlConnection(connectionString);
+    string command = string.Format("select {0}, {1} from {2} order by {3}", columnName, id, tableName, id);
+    SqlCommand comm = new SqlCommand(command, conn);
+
+    conn.Open();
+
+    SqlDataReader reader = comm.ExecuteReader();
+    bool loop = reader.Read();
+
+    while(loop)
+
+    {
+#>
+        public static int <#= Pascalize(reader[columnName]) #> = <#= reader[id] #><# loop = reader.Read(); #>;
+<#
+    }
+#>	}
+}
+<#+
+    private string Pascalize(object value)
+    {
+        Regex rx = new Regex(@"(?:[^a-zA-Z0-9]*)(?<first>[a-zA-Z0-9])(?<reminder>[a-zA-Z0-9]*)(?:[^a-zA-Z0-9]*)");
+        return rx.Replace(value.ToString(), m => m.Groups["first"].ToString().ToUpper() + m.Groups["reminder"].ToString().ToLower());
+    }
+#>
+

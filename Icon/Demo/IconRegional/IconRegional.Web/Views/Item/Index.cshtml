@@ -1,0 +1,25 @@
+﻿@model IconRegional.Web.ViewModels.ItemSearchViewModel
+@{
+    ViewBag.Title = "Items";
+}
+
+<h2>Search For Items</h2>
+
+<div id="searchOptions" class="body-content">
+    @using (Ajax.BeginForm("Search", "Item", null, new AjaxOptions
+        {
+            HttpMethod = "POST",
+            UpdateTargetId = "searchResults",
+            InsertionMode = InsertionMode.Replace
+        }, new { @class = "begin-form" }))
+    {
+        @Html.TextAreaFor(model => model.ScanCodes)
+        <div>
+            <input id="searchButton" type="submit" class="btn btn-default form-submit" />
+        </div>
+    }
+</div>
+
+<div id="searchResults">
+
+</div>

@@ -1,0 +1,129 @@
+﻿@using Infragistics.Web.Mvc
+@using Icon.Framework;
+@model Icon.Web.Mvc.Models.NationalClassSearchViewModel
+
+@{
+    ViewBag.Title = "National Class Hierarchy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@{Html.RenderPartial("_HeaderPartial", "National Class Management");}
+
+<div class="form-inline">
+    <div class="form-group">
+        <div class="input-group">
+            <input id="filterText" class="form-control" type="text" placeholder="Filter Grid..." />
+        </div>
+        <span class="form-group">
+            <button id="filterButton" class="btn btn-default" type="button" onclick=" return filterButtonClick()">Search</button>
+        </span>
+        <span class="form-group">
+            <button id="filterClear" class="btn btn-default" type="button" onclick="return clearButtonClikc()">Clear</button>
+        </span>
+    </div>
+</div>
+
+<hr />
+
+<div class="page-section">
+    @Html.ActionLink("Add New Family", "Create")
+</div>
+
+<div id="nationalClasss" class="page-subsection">
+
+    @*Create ColumnLayouts for each subgrid.*@
+
+    @(Html.Infragistics().Grid(Model.NationalClasses)
+            .ID("nationalClassGrid")
+            .LoadOnDemand(false)
+            .AutoGenerateColumns(false)
+            .AutoGenerateLayouts(false)
+            .Width("100%")
+            .InitialExpandDepth(-1)
+            .Columns(columns =>
+                {
+                    columns.For(h => h.HierarchyClassId).Hidden(true);
+                    columns.For(h => h.HierarchyClassName).HeaderText("Family");
+                    columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+                    columns.For(h => h.AddNodeLink).HeaderText("Administration Add Link").Format("ReadOnly");
+                    columns.For(h => h.DeleteNodeLink).HeaderText("Administration Delete Link");
+                })
+            .ColumnLayouts(level2 =>
+                {
+                    level2.For(h => h.HierarchySubClasses)
+                        .PrimaryKey("HierarchyClassId")
+                        .AutoGenerateColumns(false)
+                        .AutoGenerateLayouts(false)
+                        .AutoGenerateColumns(false)
+                        .Columns(columns =>
+                            {
+                                columns.For(h => h.HierarchyClassId).Hidden(true);
+                                columns.For(h => h.HierarchyClassName).HeaderText("Category");
+                                columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+                                columns.For(h => h.AddNodeLink).HeaderText("Administration Add Link").Format("ReadOnly");
+                                columns.For(h => h.DeleteNodeLink).HeaderText("Administration Delete Link");
+                            })
+                        .ColumnLayouts(level3 =>
+                            {
+                                level3.For(h => h.HierarchySubClasses)
+                                    .PrimaryKey("HierarchyClassId")
+                                    .AutoGenerateColumns(false)
+                                    .AutoGenerateLayouts(false)
+                                    .AutoGenerateColumns(false)
+                                    .Columns(columns =>
+                                        {
+                                            columns.For(h => h.HierarchyClassId).Hidden(true);
+                                            columns.For(h => h.HierarchyClassName).HeaderText("Sub Category");
+                                            columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+                                            columns.For(h => h.AddNodeLink).HeaderText("Administration Add Link").Format("ReadOnly");
+                                            columns.For(h => h.DeleteNodeLink).HeaderText("Administration Delete Link");
+                                        })
+                                    .ColumnLayouts(level4 =>
+                                        {
+                                            level4.For(h => h.HierarchySubClasses)
+                                                .PrimaryKey("HierarchyClassId")
+                                                .AutoGenerateColumns(false)
+                                                .AutoGenerateLayouts(false)
+                                                .AutoGenerateColumns(false)
+                                                .Columns(columns =>
+                                                    {
+                                                        columns.For(h => h.HierarchyClassId).Hidden(true);
+                                                        columns.For(h => h.HierarchyLevel).Hidden(true);
+                                                        columns.For(h => h.HierarchyId).Hidden(true);
+                                                        columns.For(h => h.HierarchyParentClassId).Hidden(true);
+                                                        columns.For(h => h.HierarchyClassName).HeaderText("Class");
+                                                        columns.For(h => h.NationalClassCode).HeaderText("Class Code");
+                                                        columns.For(h => h.EditNodeLink).HeaderText("Administration Edit Link");
+                                                        columns.For(h => h.DeleteNodeLink).HeaderText("Administration Delete Link");
+                                                    });
+                                        });
+                            });
+                })
+                        .Features(features =>
+                        {
+                            features.Sorting().Inherit(true);
+                            features.Paging().PageSize(25).Inherit(true);                            
+                            features.Filtering().Inherit(true);                            
+                        })
+                    .DataBind()
+                    .Render()
+    );
+
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/National/national-view-edit.js")
+    @Scripts.Render("~/Scripts/National/national-search.js")
+    @Scripts.Render("~/Scripts/Common/display-alert.js")
+}
+
+

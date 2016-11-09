@@ -1,0 +1,14 @@
+﻿GRANT CONNECT TO [WFM\Ben.Sims];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMA.Developers];
+
+
+GO
+GRANT CONNECT TO [WFM\MammothDev];
+
+
+GO
+GRANT CONNECT TO [WFM\mammothtest];
+

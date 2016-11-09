@@ -1,0 +1,23 @@
+﻿<hierarchy xmlns="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">
+  <name>Brands</name>
+  <prototype>
+    <hpt:hierarchyLevelName>Brand</hpt:hierarchyLevelName>
+    <hpt:itemsAttached>1</hpt:itemsAttached>
+  </prototype>
+  <class crf:Action="AddOrUpdate">
+    <hcl:id>99997</hcl:id>
+    <hcl:name>xerox</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+    <hcl:traits>
+      <crf:trait>
+        <tra:code>BA</tra:code>
+        <tra:type>
+          <trt:description>Brand Abbreviation</trt:description>
+          <trt:value>
+            <trv:value>xex</trv:value>
+          </trt:value>
+        </tra:type>
+      </crf:trait>
+    </hcl:traits>
+  </class>
+</hierarchy>

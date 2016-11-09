@@ -1,0 +1,26 @@
+﻿CREATE TYPE [infor].[ItemSignAttributeAddOrUpdateType] AS TABLE(
+	[ItemId] [int] NOT NULL,
+	[AnimalWelfareRatingId] [int] NULL,
+	[Biodynamic] [bit] NOT NULL,
+	[CheeseMilkTypeId] [int] NULL,
+	[CheeseRaw] [bit] NOT NULL,
+	[EcoScaleRatingId] [int] NULL,
+	[GlutenFreeAgencyName] [nvarchar](255) NULL,
+	[KosherAgencyName] [nvarchar](255) NULL,
+	[Msc] [bit] NOT NULL,
+	[NonGmoAgencyName] [nvarchar](255) NULL,
+	[OrganicAgencyName] [nvarchar](255) NULL,
+	[PremiumBodyCare] [bit] NOT NULL,
+	[SeafoodFreshOrFrozenId] [int] NULL,
+	[SeafoodCatchTypeId] [int] NULL,
+	[VeganAgencyName] [nvarchar](255) NULL,
+	[Vegetarian] [bit] NOT NULL,
+	[WholeTrade] [bit] NOT NULL,
+	[GrassFed] [bit] NOT NULL,
+	[PastureRaised] [bit] NOT NULL,
+	[FreeRange] [bit] NOT NULL,
+	[DryAged] [bit] NOT NULL,
+	[AirChilled] [bit] NOT NULL,
+	[MadeInHouse] [bit] NOT NULL
+)
+GO

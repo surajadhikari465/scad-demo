@@ -1,0 +1,40 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.ItemSearchViewModel
+
+@{
+    ViewBag.Title = "Item Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section headerScripts
+{
+    @Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+    @(Html.Infragistics().Loader()
+            .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+            .CssPath(Url.Content("~/Content/Infragistics/css/"))
+            .Resources("igGrid.Paging.Resizing.Sorting.Tooltips.Selection.RowSelectors.Updating,igCombo,igDialog")
+            .Render()
+    )
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Consolidated Item Search");}
+<div id="searchOptions" class="page-section">
+    @{Html.RenderPartial("_ItemSearchOptionsPartial");}    
+</div>
+
+<div id="searchResults" class="page-section">
+
+</div>
+
+
+@Html.ActionLink("Add New Item", "Create", "Item", null, new { @class = "btn btn-default form-submit" })
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/apply-autocomplete.js")
+    @Scripts.Render("~/Scripts/common-search.js")
+    @Scripts.Render("~/Scripts/Item/item-search.js")
+    @Scripts.Render("~/Scripts/jquery.fileDownload.js")
+    @Scripts.Render("~/Scripts/Item/format-columns.js")
+    <script src="~/Scripts/Item/consolidated-item-search.js"></script>
+}

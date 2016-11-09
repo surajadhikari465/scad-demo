@@ -1,0 +1,22 @@
+﻿@using Icon.Framework;
+@{
+    ViewBag.Title = "Stores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@using (Html.BeginForm("Search", "Store", FormMethod.Post))
+{
+    <fieldset style="margin-top:30px;">
+        <legend>Select a Store Chain</legend>
+
+        <div style="margin-left:10px;">
+            @Html.DropDownList("ChainName", new SelectList( Locales.Names.List ))
+        </div>
+
+        <div style="margin-left:10px;">
+            <input type="submit" value="Search" class="btn btn-default form-submit" />
+        </div>
+    </fieldset>
+}

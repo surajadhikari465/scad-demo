@@ -1,0 +1,74 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.ApiMessageJobTimedReportViewModel
+
+<div class="row">
+    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 text-center">
+        <div class="col-xs-6 col-sm-12 likeTableHeader">
+            @Html.DisplayNameFor(model => model.ElapsedTime)
+        </div>
+        <div class="col-xs-6 col-sm-12 likeTableCell">
+            @if (Model.ElapsedTime.HasValue)
+            {
+                @Html.DisplayFor(model => model.ElapsedTime)
+            }
+            else
+            {
+                @:?
+                @Html.HiddenFor(model => model.ElapsedTime)
+            }
+        </div>
+    </div>
+    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 text-center">
+        <div class="col-xs-6 col-sm-12 likeTableHeader">
+            @Html.DisplayNameFor(model => model.CountProcessedMessages)
+        </div>
+        <div class="col-xs-6 col-sm-12 likeTableCell">
+            @if (Model.CountProcessedMessages.HasValue)
+            {
+                @Html.DisplayFor(model => model.CountProcessedMessages)
+            }
+            else
+            {
+                @:?
+                @Html.HiddenFor(model => model.CountProcessedMessages)
+            }
+        </div>
+    </div>
+    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 text-center">
+        <div class="col-xs-6 col-sm-12 likeTableHeader">
+            @Html.DisplayNameFor(model => model.CountFailedMessages)
+        </div>
+        <div class="col-xs-6 col-sm-12 likeTableCell  @(Model.CountProcessedMessages.HasValue && Model.CountFailedMessages.GetValueOrDefault() > 0 ? "btn-danger" : "")">
+            @if (Model.CountProcessedMessages.HasValue)
+            {
+                @Html.DisplayFor(model => model.CountFailedMessages)
+            }
+            else
+            {
+                @:?
+                @Html.HiddenFor(model => model.CountFailedMessages)
+            }
+        </div>
+    </div>
+    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 text-center">
+        <div class="col-xs-6 col-sm-12 likeTableHeader">
+            @Html.DisplayNameFor(model => model.CountTotalMessages)
+        </div>
+        <div class="col-xs-6 col-sm-12 likeTableCell">
+            @if (Model.CountProcessedMessages.HasValue)
+            {
+                @Html.DisplayFor(model => model.CountTotalMessages)
+            }
+            else
+            {
+                @:?
+            }
+        </div>
+    </div>
+</div>
+
+@*<div id="errorPanelContainer" class="@(String.IsNullOrWhiteSpace(Model.Errors) ? "hidden" : "")">*@
+    <div id="errorPanel" class="panel panel-danger @(String.IsNullOrWhiteSpace(Model.Errors) ? "hidden" : "") ">
+        <div id="errorPanelHeader" class="panel-heading panel-danger">Error(s) Attempting Query</div>
+        <div id="errorPanelContent" class="panel-body panel-warning">@Model.Errors</div>
+    </div>
+@*</div>*@

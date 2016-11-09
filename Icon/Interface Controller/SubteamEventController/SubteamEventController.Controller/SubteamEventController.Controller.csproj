@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EE958C8C-497D-4A4D-A87A-DA623CE0FD99}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SubteamEventController.Controller</RootNamespace>
+    <AssemblyName>SubteamEventController.Controller</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\Test\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <OutputPath>bin\QA\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Label="SlowCheetah">
+    <SlowCheetahToolsPath>$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\..\packages\SlowCheetah.2.5.14\tools\))</SlowCheetahToolsPath>
+    <SlowCheetah_EnableImportFromNuGet Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='' ">true</SlowCheetah_EnableImportFromNuGet>
+    <SlowCheetah_NuGetImportPath Condition=" '$(SlowCheetah_NuGetImportPath)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\Properties\SlowCheetah\SlowCheetah.Transforms.targets ))</SlowCheetah_NuGetImportPath>
+    <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NLog.4.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NLog.Extended.4.0.0\lib\net45-full\NLog.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseClasses\AbstractEventFinalizerEmailBase.cs" />
+    <Compile Include="ControllerProvider.cs" />
+    <Compile Include="EventOperations\SubTeamEventFinalizer.cs" />
+    <Compile Include="SubTeamConstants.cs" />
+    <Compile Include="EventOperations\BulkItemSubTeamEventProcessor.cs" />
+    <Compile Include="EventOperations\ItemSubTeamEventProcessor.cs" />
+    <Compile Include="EventOperations\IItemSubTeamEventBulkProcessor.cs" />
+    <Compile Include="EventOperations\IEventItemSubTeamProcessor.cs" />
+    <Compile Include="EventOperations\ISubTeamEventProcessor.cs" />
+    <Compile Include="EventOperations\SubTeamEventProcessor.cs" />
+    <Compile Include="EventServices\BulkItemSubTeamEventService.cs" />
+    <Compile Include="EventServices\ServiceProvider.cs" />
+    <Compile Include="EventServices\ItemSubTeamEventService.cs" />
+    <Compile Include="EventServices\SubTeamEventService.cs" />
+    <Compile Include="SubteamEventControllerBase.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
+    <None Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App.QA.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App.Release.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App.Test.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="NLog.Debug.config">
+      <DependentUpon>NLog.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="NLog.QA.config">
+      <DependentUpon>NLog.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="NLog.Release.config">
+      <DependentUpon>NLog.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="NLog.Test.config">
+      <DependentUpon>NLog.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Icon.Common\Icon.Common.csproj">
+      <Project>{36bbc477-8a9c-4451-8614-932bd665a82a}</Project>
+      <Name>Icon.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\Icon.Framework\Icon.Framework.csproj">
+      <Project>{272a6b53-57a0-4895-9ca6-e41c2d4ec061}</Project>
+      <Name>Icon.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\Icon.Logging\Icon.Logging.csproj">
+      <Project>{5de3a9d5-0e64-4ee5-87d3-3b4b55b9b5ac}</Project>
+      <Name>Icon.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\Irma.Framework\Irma.Framework.csproj">
+      <Project>{7f5d0bb1-7e2f-4a05-8ba7-b52315c1851c}</Project>
+      <Name>Irma.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\InterfaceController.Common.csproj">
+      <Project>{7c794291-1d50-44e9-bc9d-4fb95b2ec889}</Project>
+      <Name>InterfaceController.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Global Event Controller\GlobalEventController.Common\GlobalEventController.Common.csproj">
+      <Project>{3eeedfc4-da9b-4d46-b7cf-e96e83077d1d}</Project>
+      <Name>GlobalEventController.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Global Event Controller\GlobalEventController.Controller\GlobalEventController.Controller.csproj">
+      <Project>{0c73548a-e565-45e4-8f34-6a114654864f}</Project>
+      <Name>GlobalEventController.Controller</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Global Event Controller\GlobalEventController.DataAccess\GlobalEventController.DataAccess.csproj">
+      <Project>{d83dd846-a441-473e-bb4e-749c98be0492}</Project>
+      <Name>GlobalEventController.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubteamEventController.DataAccess\SubteamEventController.DataAccess.csproj">
+      <Project>{7df0c943-1827-4d70-ba4c-988574e55d93}</Project>
+      <Name>SubteamEventController.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

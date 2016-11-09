@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D83DD846-A441-473E-BB4E-749C98BE0492}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GlobalEventController.DataAccess</RootNamespace>
+    <AssemblyName>GlobalEventController.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\Test\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <OutputPath>bin\QA\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Icon.Framework.2016.10.21.1\lib\net45\Icon.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Irma.Framework.2016.10.20.1\lib\net45\Irma.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BulkCommands\BulkAddBrandCommand.cs" />
+    <Compile Include="BulkCommands\BulkAddBrandCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkAddMammothItemLocaleEventsCommand.cs" />
+    <Compile Include="BulkCommands\BulkAddMammothItemLocaleEventsCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkAddMammothPriceEventsCommand.cs" />
+    <Compile Include="BulkCommands\BulkAddMammothPriceEventsCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkAddUpdateLastChangeCommand.cs" />
+    <Compile Include="BulkCommands\BulkAddUpdateLastChangeCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkAddValidatedScanCodeCommand.cs" />
+    <Compile Include="BulkCommands\BulkAddValidatedScanCodeCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkDeleteEventQueueCommand.cs" />
+    <Compile Include="BulkCommands\BulkDeleteEventQueueCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkGetItemsWithNoNatlClassQuery.cs" />
+    <Compile Include="BulkCommands\BulkGetItemsWithNoNatlClassQueryHandler.cs" />
+    <Compile Include="BulkCommands\BulkGetItemsWithNoRetailUomQuery.cs" />
+    <Compile Include="BulkCommands\BulkGetItemsWithNoRetailUomQueryHandler.cs" />
+    <Compile Include="BulkCommands\BulkGetItemsWithTaxClassQuery.cs" />
+    <Compile Include="BulkCommands\BulkGetValidatedItemsQuery.cs" />
+    <Compile Include="BulkCommands\BulkGetItemsWithTaxClassQueryHandler.cs" />
+    <Compile Include="BulkCommands\BulkGetValidatedItemsQueryHandler.cs" />
+    <Compile Include="BulkCommands\BulkUpdateEventQueueInProcessCommand.cs" />
+    <Compile Include="BulkCommands\BulkUpdateEventQueueInProcessCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkUpdateItemSignAttributesCommand.cs" />
+    <Compile Include="BulkCommands\BulkUpdateItemSignAttributesCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkUpdateNutriFactsCommand.cs" />
+    <Compile Include="BulkCommands\BulkUpdateItemCommand.cs" />
+    <Compile Include="BulkCommands\BulkUpdateNutrifactsCommandHandler.cs" />
+    <Compile Include="BulkCommands\BulkUpdateItemCommandHandler.cs" />
+    <Compile Include="Commands\AddItemCategoryCommand.cs" />
+    <Compile Include="Commands\AddItemCategoryCommandHandler.cs" />
+    <Compile Include="Commands\AddTaxClassCommand.cs" />
+    <Compile Include="Commands\AddTaxClassCommandHandler.cs" />
+    <Compile Include="Commands\AddValidatedScanCodeCommand.cs" />
+    <Compile Include="Commands\AddValidatedScanCodeCommandHandler.cs" />
+    <Compile Include="Commands\BrandDeleteCommand.cs" />
+    <Compile Include="Commands\BrandDeleteCommandHandler.cs" />
+    <Compile Include="Commands\DeleteEventQueueCommand.cs" />
+    <Compile Include="Commands\DeleteEventQueueCommandHandler.cs" />
+    <Compile Include="Commands\AddOrUpdateBrandCommand.cs" />
+    <Compile Include="Commands\AddOrUpdateBrandCommandHandler.cs" />
+    <Compile Include="Commands\UpdateEventQueueFailuresCommand.cs" />
+    <Compile Include="Commands\UpdateEventQueueFailuresCommandHandler.cs" />
+    <Compile Include="Commands\AddUpdateLastChangeByIdentifiersCommand.cs" />
+    <Compile Include="Commands\AddUpdateLastChangeByIdentifiersCommandHandler.cs" />
+    <Compile Include="Commands\AddUpdateLastChangeCommand.cs" />
+    <Compile Include="Commands\AddUpdateLastChangeCommandHandler.cs" />
+    <Compile Include="Commands\UpdateEventQueueStatusCommand.cs" />
+    <Compile Include="Commands\UpdateEventQueueStatusCommandHandler.cs" />
+    <Compile Include="Commands\UpdateTaxClassCommand.cs" />
+    <Compile Include="Commands\UpdateTaxClassCommandHandler.cs" />
+    <Compile Include="DataServices\EmailUomChangeService.cs" />
+    <Compile Include="DataServices\IEmailUomChangeService.cs" />
+    <Compile Include="Infrastructure\ContextManager.cs" />
+    <Compile Include="Infrastructure\EventPriorityComparer.cs" />
+    <Compile Include="Infrastructure\EventQueueCustom.cs" />
+    <Compile Include="Infrastructure\Extensions.cs" />
+    <Compile Include="Infrastructure\ICommandHandler.cs" />
+    <Compile Include="Infrastructure\IContextManager.cs" />
+    <Compile Include="Infrastructure\IQuery.cs" />
+    <Compile Include="Infrastructure\IQueryHandler.cs" />
+    <Compile Include="Infrastructure\IRegionUnitOfWork.cs" />
+    <Compile Include="Infrastructure\RegionUnitOfwork.cs" />
+    <Compile Include="DataServices\AddHierarchyDataService.cs" />
+    <Compile Include="DataServices\AddHierarchyDataServiceHandler.cs" />
+    <Compile Include="DataServices\IDataService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetEventsQuery.cs" />
+    <Compile Include="Queries\GetEventsQueryHandler.cs" />
+    <Compile Include="Queries\GetHierarchyClassQuery.cs" />
+    <Compile Include="Queries\GetHierarchyClassQueryHandler.cs" />
+    <Compile Include="Queries\GetItemNutriFactsQuery.cs" />
+    <Compile Include="Queries\GetItemsByScanCodeQuery.cs" />
+    <Compile Include="Queries\GetItemsByScanCodeQueryHandler.cs" />
+    <Compile Include="Queries\GetItemScaleQuery.cs" />
+    <Compile Include="Queries\GetItemNutriFactsQueryHandler.cs" />
+    <Compile Include="Queries\GetItemScaleQueryHandler.cs" />
+    <Compile Include="Queries\GetNutriFactsQuery.cs" />
+    <Compile Include="Queries\GetNutriFactsQueryHandler.cs" />
+    <Compile Include="Queries\GetItemIdentifiersQueryHandler.cs" />
+    <Compile Include="Queries\GetItemIdentifiersQuery.cs" />
+    <Compile Include="Queries\GetIconItemNutritionQuery.cs" />
+    <Compile Include="Queries\GetRegionalSettingsBySettingsKeyNameParameters.cs" />
+    <Compile Include="Queries\GetRegionalSettingsBySettingsKeyNameQuery.cs" />
+    <Compile Include="Queries\GetScanCodeQuery.cs" />
+    <Compile Include="Queries\GetIconItemNutritionQueryHandler.cs" />
+    <Compile Include="Queries\GetScanCodeQueryHandler.cs" />
+    <Compile Include="Queries\GetSubTeamHierarchyQuery.cs" />
+    <Compile Include="Queries\GetSubTeamHierarchyQueryHandlercs.cs" />
+    <Compile Include="Queries\GetUserQuery.cs" />
+    <Compile Include="Queries\GetUserQueryHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\InterfaceController.Common.csproj">
+      <Project>{7c794291-1d50-44e9-bc9d-4fb95b2ec889}</Project>
+      <Name>InterfaceController.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GlobalEventController.Common\GlobalEventController.Common.csproj">
+      <Project>{3eeedfc4-da9b-4d46-b7cf-e96e83077d1d}</Project>
+      <Name>GlobalEventController.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

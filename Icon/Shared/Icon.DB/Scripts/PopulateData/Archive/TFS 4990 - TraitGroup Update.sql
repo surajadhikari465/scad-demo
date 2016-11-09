@@ -1,0 +1,1 @@
+update TraitGroup set traitGroupDesc = 'Hierarchy Class Traits' where traitGroupDesc = 'Hierarchy Traits'

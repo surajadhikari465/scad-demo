@@ -1,0 +1,15 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel
+
+@{
+    string title = $"Detailed Dashboard Entry for \"{Model.DisplayName}\"";
+    ViewBag.Title = title;
+}
+
+<h3 class="text-center">@title</h3>
+
+<div class="container-fluid">
+    @Html.DisplayForModel("IconApplicationDetailsViewModel")
+
+    <p></p>
+    @{Html.RenderPartial("_BackToListPartial", Model);}
+</div>

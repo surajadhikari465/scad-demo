@@ -1,0 +1,160 @@
+﻿@using Infragistics.Web.Mvc
+@using Icon.Framework
+@using Icon.Web.Common
+@model Icon.Web.Mvc.Models.PluRequestSearchViewModel
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Resources("igCombo")
+    .Render()
+)
+
+<span class="search-alert page-subsection"></span>
+@Html.ActionLink("Export PLU Requests", "Export", "PluRequest", null, new { @class = "btn btn-default form-submit" })
+<hr />
+
+@if (Model.PluRequests.Count > 0)
+{
+    @(Html.Infragistics().Grid(Model.PluRequests.AsQueryable())
+        .AutoGenerateColumns(false)
+        .ID("igGrid")
+        .Width("100%")
+                .PrimaryKey("PluRequestID")
+        .RenderCheckboxes(true)
+        .Columns(column =>
+        {
+            column.For(pr => pr.PluRequestID).HeaderText("ID").Hidden(true).DataType("number");
+            column.Unbound("Edit").Template("<a href='/PluRequest/Edit/${PluRequestID}'>Edit</a>").Width("5%").HeaderText("Edit Link");
+            column.For(pr => pr.NationalPLU).HeaderText("National PLU").Width("8%").DataType("string");
+            column.For(pr => pr.BrandName).HeaderText("Brand").Width("8%").DataType("string")
+                .Template("{{if ${IsNewBrand} }}"
+                            + "<b>${BrandName}</b>"
+                            + "{{else}}"
+                            + "${BrandName}"
+                            + "{{/if}}");
+            column.For(pr => pr.ItemDescription).HeaderText("Product Description").Width("15%").DataType("string");
+            column.For(pr => pr.PosDescription).HeaderText("POS Description").Width("10%").DataType("string");
+            column.For(pr => pr.PackageUnit).HeaderText("Item Pack").Width("3%").DataType("number");
+            column.For(pr => pr.RetailSize).HeaderText("Size").Width("3%").DataType("number");
+            column.For(pr => pr.RetailUom).HeaderText("UOM").Width("5%");
+            column.For(pr => pr.FinancialClassID).HeaderText("SubTeam").Width("15%").FormatterFunction("lookupFinName");
+            column.For(pr => pr.MerchandiseClassID).HeaderText("Merchandise Hierarchy").Width("15%").FormatterFunction("lookupMerchName");
+            column.For(pr => pr.NationalClassID).HeaderText("National Class").Width("15%").FormatterFunction("lookupNationalClassName");
+            column.For(pr => pr.RequestStatus).HeaderText("Status").Width("8%");
+            column.For(pr => pr.RequesterName).HeaderText("Requested By").Width("15%").DataType("string");
+        })
+        .Features(features =>
+        {
+            features.Paging().PageSize(25);
+            features.Filtering().ColumnSettings(setting =>
+            {
+                setting.ColumnSetting().ColumnKey("FinancialClassID").AllowFiltering(false);
+                setting.ColumnSetting().ColumnKey("NationalClassID").AllowFiltering(false);
+                setting.ColumnSetting().ColumnKey("MerchandiseClassID").AllowFiltering(false);
+            });
+
+            features.Sorting().ApplyColumnCss(false);
+            features.Resizing();
+            features.Tooltips()
+                    .Visibility(TooltipsVisibility.Overflow);
+            features.Selection().MultipleSelection(true).Mode(SelectionMode.Row)
+                   .AddClientEvent(GridSelectionClientEvents.RowSelectionChanged, "itemGridSelectionChanged");
+            features.Updating()
+                .EditMode(GridEditMode.Row)
+                .EnableDeleteRow(false)
+                .EnableAddRow(false)
+                .ShowDoneCancelButtons(true)
+                .StartEditTriggers(GridStartEditTriggers.DblClick)
+                .DoneLabel("Apply")
+                .ColumnSettings(settings =>
+                {
+                    settings.ColumnSetting().ColumnKey("PluRequestID").ReadOnly(true);
+                    settings.ColumnSetting().ColumnKey("ItemDescription").Required(true)
+                        .EditorOptions(@"validatorOptions: {errorMessage: 'Value Required, " + ValidatorErrorMessages.ProductDescriptionError + "', regExp:/" + TraitPatterns.ProductDescription + "/}");
+                    settings.ColumnSetting().ColumnKey("PosDescription").Required(true)
+                        .EditorOptions(@"validatorOptions: {errorMessage: 'Value Required, " + ValidatorErrorMessages.PosDescriptionError + "', regExp:/" + TraitPatterns.PosDescription + "/}");
+                    settings.ColumnSetting().ColumnKey("PackageUnit").Required(true).Validation(true)
+                        .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Int).MinValue(0).MaxValue(999));
+                    settings.ColumnSetting().ColumnKey("RetailSize").Required(true).Validation(true)
+                        .NumericEditorOptions(options => options.DataMode(NumericEditorDataMode.Decimal).MinValue(0.0001).MaxValue(99999.9999).MaxDecimals(4));
+                    settings.ColumnSetting().ColumnKey("RetailUom").EditorType(ColumnEditorType.Combo).Required(false).Validation(true)
+                        .ComboEditorOptions(uomOptions =>
+                            uomOptions.DataSource(Model.RetailUoms.AsQueryable())
+                                .ValueKey("Text")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.StartsWith)
+                                .AllowCustomValue(true)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("RequesterName").ReadOnly(true);
+                    settings.ColumnSetting().ColumnKey("RequestStatus").EditorType(ColumnEditorType.Combo).Required(false).Validation(true)
+                        .ComboEditorOptions(stOptions =>
+                            stOptions.DataSource(Model.AllowedStatus.AsQueryable())
+                                .ValueKey("Text")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.StartsWith)
+                                .AllowCustomValue(true)
+                                .Virtualization(true)
+                                .DropDownWidth(300)
+                                .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("BrandName").EditorType(ColumnEditorType.Combo).Required(true).Validation(true)
+                        .ComboEditorOptions(brandOptions =>
+                            brandOptions.DataSource(Model.BrandHierarchyClasses.AsQueryable())
+                                .ValueKey("HierarchyClassName")
+                                .ShowDropDownButton(true)
+                                .AllowCustomValue(true)
+                                .Virtualization(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .FilteringType(ComboFilteringType.Local)
+                                .ValidatorOptions(vo => vo.RegExp( CustomValidationPatterns.BrandNamePattern))
+                                .ValidatorOptions(vo => vo.CustomErrorMessage("Value Required, " + ValidatorErrorMessages.BrandNameError)));
+                    settings.ColumnSetting().ColumnKey("MerchandiseClassID").EditorType(ColumnEditorType.Combo)
+                        .ComboEditorOptions(merchOptions =>
+                            merchOptions.DataSource(Model.MerchandiseHierarchyClasses.AsQueryable())
+                                .ValueKey("HierarchyClassId")
+                                .TextKey("HierarchyClassLineage")
+                                .ShowDropDownButton(true)
+                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                                .AllowCustomValue(false)
+                                .Virtualization(true)
+                                .DropDownWidth(1500)
+                                .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("FinancialClassID").EditorType(ColumnEditorType.Combo)
+                       .ComboEditorOptions(finOptions =>
+                           finOptions.DataSource(Model.FinanacialHierarchyClasses.AsQueryable())
+                               .ValueKey("HierarchyClassId")
+                               .TextKey("HierarchyClassLineage")
+                               .ShowDropDownButton(true)
+                               .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                               .AllowCustomValue(false)
+                               .Virtualization(true)
+                               .DropDownWidth(1500)
+                               .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("NationalClassID").EditorType(ColumnEditorType.Combo)
+                       .ComboEditorOptions(nationalOptions =>
+                           nationalOptions.DataSource(Model.NationalHierarchyClasses.AsQueryable())
+                               .ValueKey("HierarchyClassId")
+                               .TextKey("HierarchyClassLineage")
+                               .ShowDropDownButton(true)
+                               .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
+                               .AllowCustomValue(false)
+                               .Virtualization(true)
+                               .DropDownWidth(1500)
+                               .FilteringType(ComboFilteringType.Local));
+                });
+        })
+        .DataSource(Model.PluRequests.AsQueryable())
+        .UpdateUrl(Url.Action("SaveChangesInGrid"))
+        .AggregateTransactions(true)
+        .DataBind()
+        .Render()
+);
+    
+    @*<input type="button" id="export" class="btn btn-default form-submit" value="Export" />*@
+}
+else
+{
+    <h4>No items found - @DateTime.Now</h4>
+}

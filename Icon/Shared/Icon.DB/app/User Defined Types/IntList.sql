@@ -1,0 +1,4 @@
+﻿CREATE TYPE app.IntList AS TABLE 
+(
+	I INT NOT NULL
+)

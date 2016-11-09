@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [WFM\IRMA.Developers]
+    FROM WINDOWS WITH DEFAULT_DATABASE = [Mammoth_Dev], DEFAULT_LANGUAGE = [us_english];
+

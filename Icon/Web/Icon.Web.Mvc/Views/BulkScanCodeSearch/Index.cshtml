@@ -1,0 +1,110 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.BulkScanCodeSearchViewModel
+
+@{
+    ViewBag.Title = "Bulk Scan Code Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section headerScripts
+{
+    @Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+    @Scripts.Render("~/Scripts/BulkScanCodeSearch/bulk-scan-code-search.js")
+    @Scripts.Render("~/Scripts/Common/display-alert.js")
+    @Scripts.Render("~/Scripts/igGrid/iggrid-item-search-formatting.js")
+    @Scripts.Render("~/Scripts/igGrid/iggrid-item-search-validation.js")
+    @Scripts.Render("~/Scripts/igGrid/iggrid-item-search-editing.js")
+    @Scripts.Render("~/Scripts/jquery-disable.js")
+    @Scripts.Render("~/Scripts/excel-export.js")
+    @Scripts.Render("~/Scripts/jquery.fileDownload.js")
+}
+
+
+@{Html.RenderPartial("_HeaderPartial", "Bulk Scan Code Search");}
+
+<div id="searchOptions" class="page-section">
+    <div class="row">
+        @using (Html.BeginForm("Search", "BulkScanCodeSearch", null, FormMethod.Post, new { @class = "begin-form col-md-6" }))
+        {
+            <fieldset>
+                <legend>Text Entry</legend>
+                <div class="row">
+                    @Html.Label(String.Format("Scan Codes (one per line, maximum {0})", Model.BulkScanCodeSearchLimit), new { @class = "form-label col-md-4" })
+                    <div>
+                        @Html.TextAreaFor(model => Model.TextAreaViewModel.ScanCodes, 20, 13, new { @class = "form-input", @type = "number" })
+                        <div class="row col-md-offset-4">
+                            @Html.ValidationMessageFor(model => Model.TextAreaViewModel.ScanCodes)
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="row">
+                <div>
+                    <input type="submit" value="Search" class="btn btn-default form-submit col-md-offset-4" id="search-button" />
+                </div>
+            </div>
+        }
+
+        @using (Html.BeginForm("Upload", "BulkScanCodeSearch", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "begin-form col-md-6" }))
+        {
+            <fieldset>
+                <legend>File Upload</legend>
+                <div class="row">
+                    @Html.LabelFor(model => Model.FileUploadViewModel.TextFileAttachment, new { @class = "form-label col-md-2" })
+                    <div>
+                        <input type="file" name="FileUploadViewModel.TextFileAttachment" accept="text/plain" />
+                        <div class="row">
+                            <p class="help-block col-md-3">Select a .txt file with up to @Model.BulkScanCodeSearchLimit scan codes (one per line).</p>
+                        </div>
+                        <div class="row col-md-offset-2">
+                            @Html.ValidationMessageFor(model => Model.FileUploadViewModel.TextFileAttachment)
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="row">
+                <div>
+                    <input type="submit" value="Upload" class="btn btn-default form-submit col-md-offset-2" id="upload-button" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="overLimitValidationSummary" class="page-section row">
+
+    @if (Model.OverLimitScanCodeCount > 0)
+    {
+        <hr />
+        
+        <div class="col-md-8 col-md-offset-1">
+            <p class="field-validation-error">
+                The search contained @Model.OverLimitScanCodeCount scan codes over the allowed limit.  To avoid excluding any potential results, please restrict your
+                search to @Model.BulkScanCodeSearchLimit scan codes.
+            </p>
+        </div>
+    }
+    
+</div>
+
+<div id="invalidOrNotFoundValidationSummary" class="page-section row">
+
+    @if (Model.InvalidOrNotFoundScanCodes != null && Model.InvalidOrNotFoundScanCodes.Count > 0)
+    {
+        <hr />
+        
+        <div class="col-md-8 col-md-offset-1">
+            <p class="field-validation-error">The search contained @Model.InvalidOrNotFoundScanCodes.Count scan codes which were invalid or not found in Icon:</p>
+            <p>@String.Join(", ", Model.InvalidOrNotFoundScanCodes)</p>
+        </div>
+    }
+
+</div>
+
+<div id="searchResults" class="page-section">
+
+    @Html.Partial("_ItemSearchResults", Model.ItemSearchResults, new ViewDataDictionary { { "displayAddItemLink", false } })
+
+</div>
+

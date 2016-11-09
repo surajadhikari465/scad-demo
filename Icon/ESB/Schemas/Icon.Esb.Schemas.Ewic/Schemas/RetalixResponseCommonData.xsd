@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	attributeFormDefault="unqualified" >
+	<xs:include schemaLocation="RetalixBusinessErrorCommonData.xsd"/>
+	<xs:include schemaLocation="RetalixDescriptionCommonData.xsd"/>
+	<xs:complexType name="RetalixResponseCommonData">
+		<xs:sequence>
+			<xs:element name="RequestID" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is a UUID which ties this response to the original
+						request (MessageId from the request) </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponderID" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>  of the application responding to the original
+						request</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExternalReferenceId" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>used for tracking purposes and  returns the same id that was sent in the request </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponseTimestamp" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Time stamp when the response was sent</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponseDescription" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>any text information about this response</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="RetalixDescriptionCommonData"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BusinessError" type="RetalixBusinessErrorCommonData" minOccurs="0"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This is the error reporting mechanism between two
+						applications</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LastSuccessfulResponseID" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>In case multiple attempts are made, this identifies the last
+						successful communication attempt. It ties to the MessageID of the last
+						successful message</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--<xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##other"/>-->
+		</xs:sequence>
+		<xs:attribute name="ResponseCode" type="ResponseTypeCode" use="required">
+			<xs:annotation>
+				<xs:documentation>Describes if the message was successful (ok), not (rejected) or
+					represent multiple message with a failure in it (Partial)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="ResponseTypeCode">
+		<xs:union memberTypes="ResponseTypeCodeEnumeration TypeCodeExtension"/>
+	</xs:simpleType>
+	<xs:simpleType name="ResponseTypeCodeEnumeration">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="Rejected"/>
+			<xs:enumeration value="Partial"/>
+			<xs:enumeration value="Ok"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

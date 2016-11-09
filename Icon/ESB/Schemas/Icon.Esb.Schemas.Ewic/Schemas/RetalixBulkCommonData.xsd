@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- BulkTypeV1.0.0 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+  <xs:include schemaLocation="RetalixDescriptionCommonData.xsd"/>
+  <!--Schema Changes -->
+  <xs:annotation>
+    <xs:documentation>
+      Date: 2014-07-07 Changes: * 2 new attributes added: BulkProcessMode,
+      ChunkSize
+      Date: 2014-08-12 Changes:
+      1 – ChunkCount : Total chunk numbers
+      2 - Entity Average Time Per Second in millisecond per Bulk
+      3 – Chunk element with details per chunk with:
+      * Bulk Process Mode
+      * Entity Average Time Per Second per chunk
+      4 –  "Mixed" value for BulkProcessMode
+
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType name="BulkCommonData">
+    <xs:annotation>
+      <xs:documentation> A summary of Bulk activity. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="BulkId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>A unique identifier for this Bulk.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="BulkDescription" type="RetalixDescriptionCommonData" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>A unique identifier for this Bulk.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CreatedDate" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Bulk Created date &amp; </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FirstEntityTimestamp" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The Date &amp; Time of the first entity in this Bulk
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LastEntityTimestamp" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The Date &amp; Time of the last entity in this Bulk.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="BulkCompleteTimestamp" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The Date &amp; Time the process is completes &amp; sent this
+            Bulk
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EntitiesCountTotal" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of Entities in this Bulk</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EntitiesCountSuccess" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of success Entities </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EntitiesCountFailure" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of failure Entities </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ChunkCountTotal" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of chunk in this Bulk</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ChunkCountSuccess" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of success chunk </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ChunkCountFailure" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of failed chunks </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ChunkCountPartial" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of partial chunks </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AverageEntitiesPerSecond" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Average amount of entites processed per second</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Chunk" type="ChunkType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Bulk summary for each chunk</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!--<xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax"/>-->
+    </xs:sequence>
+    <xs:attribute name="UnitOfWork" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>
+          A Unit of Work keeps track of everything you do in one
+          transaction. If UnitofWork=false the entity is execute as a stand alone entity;
+          for example: If I send 10 entities and 1 failed 9 entities will successes
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ReturnResponse" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>
+          "ReturnResponse" is attribute in the Bulk element. Default is
+          false. Explanation: If maintenance services contain data element in the response
+          (except the header) for example: PriceResponse element with (Id, new Price, Old
+          Price); For performance issue the PriceResponse element in the response is not
+          return; If "ReturnResponse"="true" than PriceResponse element will return back
+          by the service;
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="BulkProcessMode" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Bulk Process Mode is an attribute in the Bulk element that
+          represents the actual process in the response: Explanation: If the 'UnitOfWork'
+          request is ,'false', it means that it runs the bulk entity by entity. For
+          performance issues, the Server first runs the service in a bulk mode and only if
+          it fails, then the server will run it in small chunks or entity by entity. If
+          the UnitOfWork="true" then the response is always: BulkProcessMode="SingleTransaction" If
+          the UnitOfWork="false" then the response will be: BulkProcessMode="SingleTransaction" or
+          BulkProcessMode="OneByOne" or BulkProcessMode="Mixed" (one chunk as
+          SingleTransaction and the second chunk as OneByOne)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ChunkSize" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          ChunkSize is an attribute in the Bulk element. The Bulk chunk
+          size is the number of entities that the server will run in one request. It can
+          be defined per entity in R10 in the database (e.g. INFRA_ServiceSettings) or
+          hardcoded by default to all the services, for example 100 for all the services.
+          Explanation: If the Integrator sends 2000 Price changes in one bulk without any
+          definition in a false mode, for performance issues, the Server will split any
+          chunk to the default (e.g. – from configuration). If we know that this Service
+          will run faster with 20 entities or 200 Entities in each chunk, we can then send
+          the chunk size in the request. The Chunk size will also be a parameter in the
+          response.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="UnitOfWorkCount" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          The number of database transactions that were run within this service. If it is UOW=true this will always be 1
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <!--<xs:anyAttribute namespace="##other" processContents="lax"/>-->
+  </xs:complexType>
+  
+  <xs:complexType name="ChunkType">
+    <xs:sequence>
+      <xs:element name="FirstEntityTimestamp" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The Date &amp; Time of the first entity in this Chunk
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LastEntityTimestamp" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The Date &amp; Time of the last entity in this Chunk.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EntitiesCountTotal" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of Entities in this Chunk</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EntitiesCountSuccess" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of success Entities </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="EntitiesCountFailure" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>The number of failure Entities </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AverageEntitiesPerSecond" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Average amount of entites processed per second</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!--<xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax"/>-->
+    </xs:sequence>
+    <xs:attribute name="BulkProcessMode" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          BulkProcessMode in the chunk can be  "SingleTransaction" or "OneByOne"
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="UnitOfWorkCount" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          The number of database transactions that were run within this service. If it is UOW=true this will always be 1
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="StatusCode" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          The final status of this chunk (OK, Rejected, Partial)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <!--<xs:anyAttribute namespace="##other" processContents="lax"/>-->
+  </xs:complexType>
+</xs:schema>

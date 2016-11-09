@@ -1,0 +1,58 @@
+﻿<#@ template language="C#" debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Data" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ include file="ConfigurationAccessor.ttinclude" #>
+<#
+    string tableName = "Trait";
+    string path = Path.GetDirectoryName(Host.TemplateFile);
+    string columnName = "traitPattern";
+    string filterName = "traitCode";
+#>
+using System;
+using System.CodeDom.Compiler;
+
+namespace Icon.Framework
+{
+    /// <summary>
+    /// <#= tableName #> auto generated constants
+	/// Uses trait pattern of the Non-Merchandise trait.
+    /// </summary>
+
+    [GeneratedCode("TextTemplatingFileGenerator", "10")]
+    public static class NonMerchandiseTraits
+    {
+<#
+    string fullPath = Host.ResolvePath("") + @"App.config";
+	var config = new ConfigurationAccessor((IServiceProvider)this.Host, fullPath);
+    string connectionString = config.ConnectionStrings["T4"].ConnectionString;
+    SqlConnection conn = new SqlConnection(connectionString);
+    string command = String.Format("select {0} from {1} where {2} = 'NM'", columnName, tableName, filterName);
+    SqlCommand comm = new SqlCommand(command, conn);
+
+    conn.Open();
+
+    SqlDataReader reader = comm.ExecuteReader();
+    while(reader.Read())
+    {
+		string[] array = reader[columnName].ToString().Split('|');
+		foreach(var trait in array)
+		{
+#>
+		public const string <#= Pascalize(trait) #> = "<#= trait #>";
+<#
+		}
+	}
+#>
+	}
+}
+<#+
+    private string Pascalize(object value)
+    {
+        Regex rx = new Regex(@"(?:[^a-zA-Z0-9]*)(?<first>[a-zA-Z0-9])(?<reminder>[a-zA-Z0-9]*)(?:[^a-zA-Z0-9]*)");
+        return rx.Replace(value.ToString(), m => m.Groups["first"].ToString().ToUpper() + m.Groups["reminder"].ToString().ToLower());
+    }
+#>

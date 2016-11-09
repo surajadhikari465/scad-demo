@@ -1,0 +1,75 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.BulkImportViewModel<Icon.Web.Mvc.Excel.Models.ItemExcelModel>
+
+@{
+    ViewBag.Title = "Import";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@{Html.RenderPartial("_HeaderPartial", "Bulk Item Import");}
+
+<div class="page-section">
+    <hr />
+    @if (Model.ValidItemsCount == 0)
+    {
+        <h4>No items have been imported.</h4>
+        <div>@Html.ActionLink("Back To Bulk Item Import", "Index") | @Html.ActionLink("Back To Consolidated Item Search", "Index", "Item", null, null)</div>
+    }
+    else
+    {
+        <h4>Successfully imported @Model.ValidItemsCount items.</h4>
+        <div>@Html.ActionLink("Back To Bulk Item Import", "Index") | @Html.ActionLink("Back To Consolidated Item Search", "Index", "Item", null, null)</div>
+    }
+</div>
+
+@if (Model.ErrorItems.Count > 0)
+{
+    <div class="page-section">
+        <hr />
+        <div class="page-subsection">
+            <h4>Errors were found for the following items.  You may export these items, make corrections, and attempt the import again.</h4>
+        </div>
+
+        <div class="page-subsection">
+            @(Html.Infragistics().Grid(Model.ErrorItems.AsQueryable())
+            .ID("igGrid")
+            .Width("100%")
+            .AutoGenerateColumns(false)
+            .Columns(column =>
+            {
+                column.For(item => item.ScanCode).HeaderText("Scan Code").Width("10%")
+                    .Template("<div style='text-align:right'> ${ScanCode} </div>");
+                column.For(item => item.Brand).HeaderText("Brand").Width("10%");
+                column.For(item => item.ProductDescription).HeaderText("Product Description").Width("10%");
+                column.For(item => item.PosDescription).HeaderText("POS Description").Width("10%");
+                column.For(item => item.Error).HeaderText("Error").Width("60%");
+            })
+            .Features(features =>
+                {
+                    features.Paging().PageSize(20);
+                    features.Resizing();
+                    features.Sorting().ApplyColumnCss(false);
+                    features.Tooltips()
+                        .Visibility(TooltipsVisibility.Overflow);
+                })
+            .DataBind()
+            .Render()
+            )
+        </div>
+
+        @Html.ActionLink("Export", "BulkItemExport", "Excel", null, new { @class = "btn btn-default form-submit" })
+    </div>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/bulk-item-import-results.js")
+}

@@ -1,0 +1,66 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.ApiMessageJobTimedReportViewModel
+
+<div class="row">
+
+    <div class="panel-group">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapsible">Summary Report</a>
+                </h4>
+            </div>
+            <div id="collapsible" class="panel-collapse collapse">
+                <div class="panel-body">
+                    @using (Ajax.BeginForm("Summarize", "ApiJobs", new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        InsertionMode = InsertionMode.Replace,
+                        UpdateTargetId = "summary",
+                        OnFailure = "summarizeFailed"
+                    }))
+                    {
+                        <div class="row">
+                            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-offset-0 col-sm-3 text-center">
+                                <div class="col-xs-6 col-sm-12 likeTableHeader">
+                                    @Html.DisplayNameFor(model => model.MessageType)
+                                </div>
+                                <div class="col-xs-6 col-sm-12 likeTableCell">
+                                    @Html.DisplayFor(model => model.MessageType)
+                                    @Html.HiddenFor(model => model.MessageType)
+                                </div>
+                            </div>
+                            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 text-center">
+                                <div class="col-xs-6 col-sm-12 likeTableHeader">
+                                    @Html.DisplayNameFor(model => model.StartTime)
+                                </div>
+                                <div class="col-xs-6 col-sm-12 likeTableCell">
+                                    @Html.EditorFor(model => model.StartTime)
+                                </div>
+                            </div>
+                            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 text-center">
+                                <div class="col-xs-6 col-sm-12 likeTableHeader">
+                                    @Html.DisplayNameFor(model => model.EndTime)
+                                </div>
+                                <div class="col-xs-6 col-sm-12  likeTableCell">
+                                    @Html.EditorFor(model => model.EndTime)
+                                </div>
+                            </div>
+                            <div class="col-xs-offset-3 col-xs-6 col-sm-offset-0 col-sm-3">
+                                <input type="submit" class="btn btn-primary btn-block" value="Summarize" style="margin-top:12px" />
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div id="subPanelResults" class="panel panel-info">
+                    <div class="panel-heading">
+                        Results
+                    </div>
+                    <div id="summary" class="panel-body">
+                        @{ Html.RenderPartial("_ApiMessageJobTimedReportResultPartial", Model); }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

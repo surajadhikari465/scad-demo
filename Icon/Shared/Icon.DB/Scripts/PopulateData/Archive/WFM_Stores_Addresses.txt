@@ -1,0 +1,390 @@
+Acro	Name	Status	AddressLine1	AddressLine2	AddressLine3	City	County	State	Zip	Region	Country	CBSA	Longitude	Latitude	Open/Acq Date	Metro	BU	TimeZone Code
+BCA	Boca Raton	open	1400 Glades Road	Ste 110		Boca Raton	Palm Beach	FL	33486	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.114501	26.365658	4/25/2001	MET_FL	10130	EST
+BHL	Orlando	open	8003 Turkey Lake Road			Orlando	Orange	FL	32836	Florida	USA	"Orlando-Kissimmee, FL"	-81.477447	28.446793	6/25/2008	MET_FL	10194	EST
+BIS	Biscayne	open	21105 Biscayne Blvd			Aventura	Miami-Dade	FL	33180	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.140821	25.971134	5/5/1999	MET_FL	10096	EST
+CGB	Coral Gables	open	6701 Red Road			Coral Gables	Miami-Dade	FL	33146	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.284659	25.706282	9/26/2007	MET_FL	10190	EST
+CSP	Coral Springs	open	810 University Drive			Coral Springs	Broward	FL	33071	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.25685	26.24299	9/17/1998	MET_FL	10088	EST
+CWD	Carrollwood	open	3802 Northdale Blvd.			Tampa	Hillsborough	FL	33624	Florida	USA	"Tampa-St. Petersburg et al, FL"	-82.502973	28.093138	11/1/2012	MET_FL	10339	EST
+FTL	Ft. Lauderdale	open	2000 North Federal Highway			Fort Lauderdale	Broward	FL	33305	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.117585	26.153671	8/22/2001	MET_FL	10117	EST
+JAX	Jacksonville	open	10601 San Jose Blvd.			Jacksonville	Duval	FL	32257	Florida	USA	"Jacksonville, FL"	-81.625542	30.186014	12/10/2008	MET_FL	10253	EST
+NPL	Naples	open	9101 Strada Place			Naples	Collier	FL	34108	Florida	USA	"Naples-Marco Island, FL"	-81.798101	26.252808	9/5/2008	MET_FL	10192	EST
+PCR	Pinecrest	open	11701 S Dixie Hwy			Miami	Miami-Dade	FL	33156	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.324703	25.662244	9/28/2007	MET_FL	10274	EST
+PEM	Pembroke Pines	open	14956 Pines Blvd			Pembroke Pines	Broward	FL	33027	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.346037	26.005587	3/28/2012	MET_FL	10193	EST
+PGA	Palm Beach Gardens	open	11701 Lake Victoria Gardens Drive			Palm Bch Gardens	Palm Beach	FL	33410	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.093873	26.847567	10/26/2005	MET_FL	10188	EST
+PLA	Plantation	open	7720 Peters Road			Plantation	Broward	FL	33324	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.25202	26.10417	4/14/1997	MET_FL	10069	EST
+SAR	Sarasota	open	1451 First Street			Sarasota	Sarasota	FL	34236	Florida	USA	"Sarasota-Bradenton-Venice, FL"	-82.541217	27.337654	12/8/2004	MET_FL	10189	EST
+SBE	South Beach	open	1020 Alton Rd			Miami Beach	Miami-Dade	FL	33139	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.14119	25.780968	9/28/2007	MET_FL	10285	EST
+SSC	San Souci	open	12150 Biscayne Blvd			North Miami	Miami-Dade	FL	33181	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.165673	25.888008	5/1/2013	MET_FL	10477	EST
+TLH	Tallahassee	open	1817 Thomasville Road			Tallahassee	Leon	FL	32303	Florida	USA	"Tallahassee, FL"	-84.269931	30.462626	10/9/2013	MET_FL	10478	EST
+TPA	Tampa	open	1548 N Dale Mabry Hwy			Tampa	Hillsborough	FL	33607	Florida	USA	"Tampa-St. Petersburg et al, FL"	-82.507856	27.956819	9/28/2007	MET_FL	10299	EST
+WLL	Wellington	open	2635 State Road 7			Wellington	Palm Beach	FL	33467	Florida	USA	"Miami-Fort Lauderdale et al, FL"	-80.206286	26.64126	11/5/2008	MET_FL	10195	EST
+WPK	Winter Park	open	1989 Aloma Avenue			Winter Park	Orange	FL	32792	Florida	USA	"Orlando-Kissimmee, FL"	-81.324913	28.601065	4/29/1998	MET_FL	10085	EST
+CLJ	Clapham Junction	open	305-311 Lavender Hill	Clapham Junct		London	London	GBR	SW11 1LN	Great Britain	GBR		-0.166615	51.463249	1/31/2004	MET_LDN	11106	GMT
+CMD	Camden	open	49 Parkway	Camden		London	London	GBR	NW1 7PN	Great Britain	GBR		-0.144553	51.53791	1/31/2004	MET_LDN	11102	GMT
+CTM	Cheltenham	open	Retail Unit L	Gallagher Retail Park	Tewkesbury Rd	Cheltenham	Gloucestershire	GBR	GL51 9RR	Great Britain	GBR		-2.10407	51.916659	11/7/2012	MET_ENG	11114	GMT
+FLM	Fulham Broadway	open	Fulham Broadway			London	London	GBR	SW6 1AA	Great Britain	GBR		-0.196419	51.479979	4/8/2014	MET_LDN	11113	GMT
+GFN	Giffnock	open	134 Fenwick Rd			Glasgow	Renfrewshire	GBR	G46 6XN	Great Britain	GBR		-4.294889	55.805641	11/16/2011	MET_SCT	11111	GMT
+HSK	Kensington High Street	open	63-97 Kensington High Street	The Barkers Building		London	London	GBR	W8 5SE	Great Britain	GBR		-0.190509	51.501697	6/10/2007	MET_LDN	11110	GMT
+PCD	Picadilly	open	12-20 Glasshouse Street			London	London	GBR	W1B 5AR	Great Britain	GBR		-0.136316	51.510818	5/10/2012	MET_LDN	11115	GMT
+RCD	Richmond Upon Thames	open	1-3 George Street			London	London	GBR	TW9 1AB	Great Britain	GBR		-0.303179	51.461012	10/8/2013	MET_LDN	11112	GMT
+STK	Stoke Newington	open	32-40 Stoke Newington Church Street			London	London	GBR	N16 0LU	Great Britain	GBR		-0.0759	51.562345	1/31/2004	MET_LDN	11107	GMT
+GTN	Georgetown	open	2323 Wisconsin Avenue N.W			Washington	District of Columbia	DC	20008	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.071286	38.920936	1/31/1996	MET_DC	10039	EST
+GWU	Foggy Bottom	open	2201 Eye Street NW			Washington	District of Columbia	DC	20037	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.049216	38.901275	9/6/2011	MET_DC	10414	EST
+PST	P Street	open	1440 P Street NW			Washington	District of Columbia	DC	20005	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.033419	38.909371	12/14/2000	MET_DC	10135	EST
+TEN	Tenley Town	open	4530 40th Street NW			Washington	District of Columbia	DC	20016	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.079298	38.949055	8/30/1996	MET_DC	10062	EST
+LEX	Lexington Green	open	161 Lexington Green Cir Ste A2			Lexington	Fayette	KY	40503	Mid Atlantic	USA	"Lexington-Fayette, KY"	-84.523822	37.994136	9/28/2007	MET_KY	10325	EST
+LOU	Louisville	open	4944 Shelbyville Rd			Louisville	Jefferson	KY	40207	Mid Atlantic	USA	"Louisville-Jefferson Co., KY-IN"	-85.626752	38.24842	2/12/2004	MET_KY	10186	EST
+ASI	Annapolis	open	200 Harker Place Suite 100			Annapolis	Anne Arundel	MD	21401	Mid Atlantic	USA	"Baltimore-Towson, MD"	-76.540663	38.980722	5/5/2009	MET_MD	10228	EST
+BET	Bethesda	open	5269 River Road			Bethesda	Montgomery	MD	20816	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.104163	38.966156	8/30/1996	MET_MD	10048	EST
+CCH	Chevy Chase	open	Wisconsin & Western			Chevy Chase	Montgomery	MD	20815	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.086646	38.960896	5/18/2010	MET_MD	10211	EST
+INH	Harbor East	open	1001 Fleet Street	Suite A		Baltimore	Baltimore City	MD	21202	Mid Atlantic	USA	"Baltimore-Towson, MD"	-76.59947	39.283863	8/29/2002	MET_MD	10114	EST
+KTL	Kentlands	open	316 Kentlands Blvd.			Gaithersburg	Montgomery	MD	20878	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.237729	39.122641	10/11/2001	MET_MD	10180	EST
+MTW	Mt. Washington	open	1330 Smith Avenue			Baltimore	Baltimore City	MD	21209	Mid Atlantic	USA	"Baltimore-Towson, MD"	-76.649505	39.368299	8/30/1996	MET_MD	10064	EST
+RWF	White Flint	open	Rockville Pike & Exec.			Rockville	Montgomery	MD	20852	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.111525	39.041227	4/12/2011	MET_MD	10235	EST
+SSP	Silver Spring	open	833 Wayne Ave.			Silver Spring	Montgomery	MD	20910	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.024091	38.996059	9/21/2000	MET_MD	10118	EST
+CNJ	Cherry Hill	open	1558 North Kings Highway			Cherry Hill	Camden	NJ	08304	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-75.010725	39.915448	6/18/2014	MET_NJ	10526	EST
+MRL	Marlton	open	940 Route 73 North			Marlton	Burlington	NJ	08053	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-74.937997	39.908072	5/21/1998	MET_NJ	10086	EST
+PRN	Princeton	open	3495 US Route 1 South			Princeton	Mercer	NJ	08540	Mid Atlantic	USA	"Trenton-Ewing, NJ"	-74.668208	40.308146	9/16/2004	MET_NJ	10187	EST
+CHG	Chagrin	open	27249 Chagrin Blvd			Beachwood	Cuyahoga	OH	44122	Mid Atlantic	USA	"Cleveland-Elyria-Mentor, OH"	-81.486034	41.463338	9/28/2007	MET_OH	10309	EST
+CIN	Cincinnati	open	2693 Edmonson Rd			Cincinnati	Hamilton	OH	45209	Mid Atlantic	USA	"Cincinnati-Middletown, OH-KY-IN"	-84.447324	39.14547	9/28/2007	MET_OH	10287	EST
+CTR	Cedar Center	open	13998 Cedar Rd			University Heights	Cuyahoga	OH	44118	Mid Atlantic	USA	"Cleveland-Elyria-Mentor, OH"	-81.537721	41.500156	3/25/2007	MET_OH	10199	EST
+DUB	Dublin	open	3670 W. Dublin-Granville Road			Dublin	Franklin	OH	43235	Mid Atlantic	USA	"Columbus, OH"	-83.086634	40.098628	9/7/2005	MET_OH	10214	EST
+EYE	Ohio State - Relo	open	1555 W. Lane Ave			Columbus	Franklin	OH	43221	Mid Atlantic	USA	"Columbus, OH"	-83.05553	40.00661	3/6/2013	MET_OH	10385	EST
+MSO	Mason	open	5805 Deerfield Blvd			Mason	Warren	OH	45040	Mid Atlantic	USA	"Cincinnati-Middletown, OH-KY-IN"	-84.3175	39.3078	9/28/2007	MET_OH	10340	EST
+CCV	Glen Mills	open	475 Wilmington West Chester Pike			Concordville	Delaware	PA	19342	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-75.541535	39.862958	3/6/2012	MET_PA	10353	EST
+DEV	Devon	open	821 Lancaster Avenue			Wayne	Chester	PA	19087	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-75.411115	40.048876	8/30/1996	MET_PA	10053	EST
+JEN	Jenkintown	open	1575 Fairway Rd.			Rydal	Montgomery	PA	19001	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-75.116061	40.107871	9/22/1999	MET_PA	10100	EST
+NWL	North Wales	open	1210 Bethlehem Pike			North Wales	Montgomery	PA	19002	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-75.227222	40.208796	8/30/1996	MET_PA	10052	EST
+PHL	Philadelphia	open	2001 Pennsylvania Avenue			Philadelphia	Philadelphia	PA	19130	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-75.172472	39.961553	1/8/1997	MET_PA	10067	EST
+PLM	Plymouth Meeting	open	Plymouth Meeting Mall			Plymouth Meeting	Montgomery	PA	19462	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-75.282203	40.113594	1/12/2010	MET_PA	10249	EST
+PTB	Pittsburgh	open	5880 Centre Avenue			Pittsburgh	Allegheny	PA	15206	Mid Atlantic	USA	"Pittsburgh, PA"	-79.928943	40.458457	10/17/2002	MET_PA	10181	EST
+SOS	South Street	open	929 South Street			Philadelphia	Philadelphia	PA	19147	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-75.157883	39.942897	3/22/2001	MET_PA	10112	EST
+WEX	Wexford	open	10576 Perry Highway			Wexford	Allegheny	PA	15090	Mid Atlantic	USA	"Pittsburgh, PA"	-80.053256	40.61462	5/2/2012	MET_PA	10377	EST
+WYN	Wynnewood	open	339 East Lancaster Avenue			Wynnewood	Montgomery	PA	19003	Mid Atlantic	USA	"Philadelphia et al, PA-NJ-DE-MD"	-75.277131	40.001999	8/30/1996	MET_PA	10058	EST
+ARL	Arlington	open	2700 Wilson Blvd			Arlington	Arlington	VA	22201	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.091065	38.889049	2/29/1996	MET_VA	10042	EST
+CHV	Charlottesville	open	1797 Hydraulic Road			Charlottesville	Charlottesville City	VA	22901	Mid Atlantic	USA	"Charlottesville, VA"	-78.490879	38.061699	6/7/2011	MET_VA	10205	EST
+FRL	Fair Lakes	open	4501 Market Commons Drive			Fairfax	Fairfax	VA	22033	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.372771	38.858401	1/17/2007	MET_VA	10223	EST
+OTN	Old Town	open	1700 Duke Street			Alexandria	Alexandria City	VA	22314	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.0602	38.803668	1/17/2006	MET_VA	10185	EST
+RES	Reston	open	11660 Plaza America Drive			Reston	Fairfax	VA	20190	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.347758	38.951382	8/30/1996	MET_VA	10061	EST
+SPP	Short Pump	open	11173 West Broad Street			Richmond	Henrico	VA	23233	Mid Atlantic	USA	"Richmond, VA"	-77.599543	37.64397	9/3/2008	MET_VA	10257	EST
+SPR	Springfield	open	8402 Old Keene Mill Road			Springfield	Fairfax	VA	22152	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.234937	38.780044	8/30/1996	MET_VA	10056	EST
+TYS	Tysons	open	7511 Leesburg Pike			Falls Church	Fairfax	VA	22043	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.205047	38.902898	8/30/1996	MET_VA	10049	EST
+VAB	Virginia Beach	open	1800 Laskin Road			Virginia Beach	Virginia Beach City	VA	23454	Mid Atlantic	USA	"Virginia Beach et al, VA-NC"	-76.027984	36.85069	10/24/2012	MET_VA	10466	EST
+VNA	Vienna	open	143 Maple Avenue East			Vienna	Fairfax	VA	22180	Mid Atlantic	USA	"Washington et al, DC-VA-MD-WV"	-77.262963	38.902421	11/8/1996	MET_VA	10065	EST
+WDM	West Des Moines	open	4100 University Avenue			Des Moines	Polk	IA	50266	Midwest	USA	"Des Moines-West Des Moines, IA"	-93.761185	41.600072	7/18/2012	MET_IA	10460	CST
+CIC	Sauganash	open	6020 N. Cicero Avenue			Chicago	Cook	IL	60646	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.748827	41.990369	2/21/2007	MET_CHI	10170	CST
+DRF	Deerfield	open	760 Waukegan Road			Deerfield	Lake	IL	60015	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.848029	42.166232	8/23/2000	MET_IL	10116	CST
+EVN	Evanston	open	1640 Chicago Avenue			Evanston	Cook	IL	60201	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.679494	42.047623	12/3/1997	MET_CHI	10076	CST
+EVS	Chicago Ave	open	1111 Chicago Ave			Evanston	Cook	IL	60202	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.679832	42.038099	9/28/2007	MET_CHI	10369	CST
+GST	Gold Coast	open	30 West Huron			Chicago	Cook	IL	60610	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.629444	41.895199	9/1/1999	MET_CHI	10107	CST
+HAL	Halsted	open	3640 N. Halsted			Chicago	Cook	IL	60613	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.64977	41.948562	7/25/2007	MET_CHI	10203	CST
+HIN	Hinsdale	open	500 E Ogden Ave			Hinsdale	Cook	IL	60521	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.916802	41.817478	9/28/2007	MET_IL	10364	CST
+KBS	Kingsbury Sq.	open	1500 N. Kingsbury St			Chicago	Cook	IL	60622	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.652053	41.9082	5/20/2009	MET_CHI	10252	CST
+KLD	Kildeer	open	20281 N. Rand Road			Kildeer	Lake	IL	60074	Midwest	USA	"Chicago et al, IL-IN-WI"	-88.043292	42.157396	3/6/2013	MET_IL	10292	CST
+LKV	Lakeview	open	3300 N. Ashland			Chicago	Cook	IL	60657	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.669052	41.941884	2/14/1996	MET_CHI	10040	CST
+NBK	Northbrook	open	840 Willow Rd.			Northbrook	Cook	IL	60062	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.802663	42.107456	8/29/2007	MET_IL	10244	CST
+NPV	Naperville	open	75th Street & Rte 59			Naperville	DuPage	IL	60540	Midwest	USA	"Chicago et al, IL-IN-WI"	-88.19926	41.749014	7/16/2008	MET_IL	10129	CST
+OLP	Orland Park	open	15260 S LaGrange Rd			Orland Park	Cook	IL	60462	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.854975	41.6127	11/1/2012	MET_IL	10481	CST
+PKR	Park Ridge	open	225 W. Toughy Ave			Park Ridge	Cook	IL	60068	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.824619	42.010708	11/6/2013	MET_CHI	10495	CST
+RVF	River Forest	open	7245 Lake St.			River Forest	Cook	IL	60305	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.806366	41.887286	9/21/1994	MET_CHI	10029	CST
+SCH	Schaumburg	open	E. Higgins Rd. at State Hwy 53			Schaumburg	Cook	IL	60173	Midwest	USA	"Chicago et al, IL-IN-WI"	-88.036679	42.042239	5/5/2010	MET_IL	10276	CST
+SLP	SouthLoop	open	1101 S Canal Street			Chicago	Cook	IL	60607	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.638494	41.868502	8/8/2007	MET_CHI	10171	CST
+WBK	Willowbrook	open	201 W. 63rd Street			Willowbrook	DuPage	IL	60527	Midwest	USA	"Chicago et al, IL-IN-WI"	-87.951982	41.773259	11/6/2002	MET_IL	10164	CST
+WTN	Wheaton	open	151 Rice Lake Square			Wheaton	DuPage	IL	60187	Midwest	USA	"Chicago et al, IL-IN-WI"	-88.099374	41.831123	2/5/1997	MET_IL	10068	CST
+CRL	Carmel	open	14598 Clay Terrace Blvd			Carmel	Hamilton	IN	46032	Midwest	USA	"Indianapolis-Carmel, IN"	-86.131178	39.999416	9/28/2007	MET_IN	10404	EST
+IDY	Eighty-Sixth St	open	1300 E 86th St			Indianapolis	Marion	IN	46240	Midwest	USA	"Indianapolis-Carmel, IN"	-86.137108	39.91418	9/28/2007	MET_IN	10378	EST
+SBN	South Bend	open	4230 Grape Road			Mishawaka	St. Joseph	IN	46545	Midwest	USA	"South Bend-Mishawaka, IN-MI"	-86.18618	41.699159	4/10/2013	MET_IN	10482	EST
+ARB	Ann Arbor	open	3135 Washtenaw Ave			Ann Arbor	Washtenaw	MI	48104	Midwest	USA	"Ann Arbor, MI"	-83.698198	42.258059	9/24/2003	MET_MI	10167	EST
+CRB	Cranbrook	open	990 Eisenhower Parkway			Ann Arbor	Washtenaw	MI	48103	Midwest	USA	"Ann Arbor, MI"	-83.758168	42.248543	9/26/2008	MET_MI	10315	EST
+MDT	Detroit	open	115 Mack Ave			Detroit	Wayne	MI	48202	Midwest	USA	"Detroit-Warren-Livonia, MI"	-83.057136	42.348156	6/5/2013	MET_MI	10465	EST
+RCH	Rochester Hills	open	2918 Walton Blvd.			Rochester Hills	Oakland	MI	48307	Midwest	USA	"Detroit-Warren-Livonia, MI"	-83.192161	42.681631	8/6/2008	MET_MI	10330	EST
+SST	Somerset	open	2880 West Maple			Troy	Oakland	MI	48084	Midwest	USA	"Detroit-Warren-Livonia, MI"	-83.185196	42.548559	12/29/1997	MET_MI	10081	EST
+WBF	West Bloomfield	open	7350 Orchard lake Road			West Bloomfield	Oakland	MI	48322	Midwest	USA	"Detroit-Warren-Livonia, MI"	-83.362984	42.529823	2/3/2000	MET_MI	10120	EST
+CHN	Lake Calhoun	open	3060 Excelsior Blvd.			Minneapolis	Hennepin	MN	55416	Midwest	USA	"Minneapolis et al, MN-WI"	-93.322363	44.947565	12/1/1999	MET_MN	10119	CST
+EDI	Edina	open	7401 France Ave South			Edina	Hennepin	MN	55435	Midwest	USA	"Minneapolis et al, MN-WI"	-93.328011	44.867687	4/18/2012	MET_MN	10419	CST
+MGV	Maple Grove	open	12201 Elm Creek Blvd N			Maple Grove	Hennepin	MN	55369	Midwest	USA	"Minneapolis et al, MN-WI"	-93.435945	45.091528	7/17/2013	MET_MN	10490	CST
+MIN	Hennepin - Minneapolis	open	222 Hennepin Avenue			Minneapolis	Hennepin	MN	55401	Midwest	USA	"Minneapolis et al, MN-WI"	-93.269118	44.982964	9/25/2013	MET_MN	10345	CST
+MTK	Minnetonka	open	1001 Plymouth Road			Minnetonka	Hennepin	MN	55305	Midwest	USA	"Minneapolis et al, MN-WI"	-93.44569	44.973958	10/12/2011	MET_MN	10422	CST
+STP	St. Paul	open	30 South Fairview			Saint Paul	Ramsey	MN	55105	Midwest	USA	"Minneapolis et al, MN-WI"	-93.176458	44.940524	5/14/1995	MET_MN	10035	CST
+GAL	Galleria	open	1601 S. Brentwood Blvd			Saint Louis	St. Louis	MO	63144	Midwest	USA	"St. Louis, MO-IL"	-90.347882	38.627625	9/26/2001	MET_MO	10166	CST
+TAC	Town and Country	open	1160 Town and Country Crossing			Saint Louis	St. Louis	MO	63011	Midwest	USA	"St. Louis, MO-IL"	-90.515871	38.622092	6/25/2008	MET_MO	10303	CST
+LIN	Lincoln	open	6055 O Street			Lincoln	Lancaster	NE	68510	Midwest	USA	"Lincoln, NE"	-96.638998	40.81291	12/11/2013	MET_NEB	10493	CST
+RGY	Regency	open	10020 Regency Circle			Regency-Omaha	Douglas	NE	68114	Midwest	USA	"Omaha-Council Bluffs, NE-IA"	-96.068483	41.261903	9/21/2005	MET_NEB	10169	CST
+MKM	Unionville	open	3997 Hwy #7			Markham	Ontario	ON	L3R 5M6	Midwest	CAN		-79.322606	43.857888	10/12/2012	MET_ON	10456	EST
+OAK	Oakville	open	301 Cornwall Road			Oakville	Ontario	ON	L6J 7Z5	Midwest	CAN		-79.678943	43.45677	5/10/2005	MET_ON	10226	EST
+SQO	Square One	open	155 Square One Drive			Mississauga	Ontario	ON	L5B 0E2	Midwest	CAN		-79.643331	43.596321	8/10/2011	MET_ON	10268	EST
+YRK	Yorkville	open	87 Avenue Road			Toronto	Ontario	ON	M5R 3R9	Midwest	CAN		-79.394853	43.67136	5/1/2002	MET_ON	10168	EST
+MAD	Madison	open	3313 University Avenue			Madison	Dane	WI	53705	Midwest	USA	"Madison, WI"	-89.44382	43.07513	6/5/1996	MET_WI	10043	CST
+MLW	Milwaukee	open	2305 N. Prospect Avenue			Milwaukee	Milwaukee	WI	53211	Midwest	USA	"Milwaukee-Waukesha-W. Allis, WI"	-87.884333	43.060745	9/20/2006	MET_WI	10197	CST
+BSH	Bishops Corner	open	340 N Main St & Hwy 44			West Hartford	Hartford	CT	06117	North Atlantic	USA	"Hartford-West Hartford et al, CT"	-72.745477	41.784729	9/28/2007	MET_BOS	10366	EST
+GLA	Glastonbury	open	55 Welles Street			Glastonbury	Hartford	CT	06033	North Atlantic	USA	"Hartford-West Hartford et al, CT"	-72.607763	41.714842	3/12/2008	MET_BOS	10336	EST
+WHF	W Hartford	open	50 Raymond Road			West Hartford	Hartford	CT	06107	North Atlantic	USA	"Hartford-West Hartford et al, CT"	-72.739994	41.760423	10/26/2005	MET_BOS	10217	EST
+ART	Arlington	open	808 Massachusetts Ave			Arlington	Middlesex	MA	02476	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.158903	42.416463	9/18/2013	MET_BOS	10507	EST
+AVR	Andover	open	40 Railroad St			Andover	Essex	MA	01810	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.144555	42.66094	9/28/2007	MET_BOS	10371	EST
+BED	Bedford	open	170 Great Rd			Bedford	Middlesex	MA	01730	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.273584	42.491232	4/30/1999	MET_BOS	10090	EST
+BKL	Brookline	open	1028 Beacon St			Brookline	Norfolk	MA	02466	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.108386	42.345812	4/11/2013	MET_BOS	10508	EST
+BLH	Bellingham	open	255 Hartford Ave.			Bellingham	Norfolk	MA	02019	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.461699	42.111262	4/30/1999	MET_BOS	10091	EST
+BRI	Brighton	open	15 Washington St			Brighton	Suffolk	MA	02135	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.140425	42.342859	10/1/1992	MET_BOS	10015	EST
+CAM	Cambridge	open	115 Prospect St			Cambridge	Middlesex	MA	02139	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.102353	42.368135	10/1/1992	MET_BOS	10010	EST
+CHA	Charleston	open	50 Austin St			Charlestown	Suffolk	MA	02129	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.065805	42.374862	8/7/2013	MET_BOS	10509	EST
+CRP	Charles River	open	181 Cambridge Street			Boston	Suffolk	MA	02114	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.065159	42.361768	9/14/2005	MET_BOS	10158	EST
+DHM	Dedham	open	950 Providence Highway			Dedham	Norfolk	MA	02026	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.178489	42.234037	9/2/2009	MET_BOS	10319	EST
+FPD	Fresh Pond	open	200 Alewife Brook Parkway			Cambridge	Middlesex	MA	02138	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.141156	42.389483	12/2/1993	MET_BOS	10026	EST
+FRA	Framingham	open	575 Worcester Rd. (Rte. 9)			Framingham	Middlesex	MA	01701	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.421094	42.298595	9/29/2001	MET_BOS	10156	EST
+HAD	Hadley	open	327 Russell St			Hadley	Hampshire	MA	01035	North Atlantic	USA	"Springfield, MA"	-72.554264	42.35311	10/1/1992	MET_BOS	10012	EST
+HGM	Hingham	open	94 Derby Street			Hingham	Plymouth	MA	02043	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-70.910736	42.178126	10/14/2004	MET_BOS	10159	EST
+HYS	Hyannis	open	990 Iyannough Road			Hyannis	Barnstable	MA	02601	North Atlantic	USA	"Barnstable Town, MA"	-70.301776	41.672393	5/14/2014	MET_BOS	10512	EST
+JMP	Jamaica Plain	open	415 Centre St			Boston	Suffolk	MA	02130	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.110753	42.321302	10/31/2011	MET_BOS	10438	EST
+LNF	Lynnfield	open	100 Market Street			Lynnfield	Essex	MA	01940	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.030187	42.5144	8/21/2013	MET_BOS	10452	EST
+MDF	Medford	open	2151 Mystic Valley Pkwy			Medford	Middlesex	MA	02155	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.126707	42.417132	9/28/2007	MET_BOS	10380	EST
+MLR	Melrose	open	880 Main St			Melrose	Middlesex	MA	02176	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.061881	42.464836	7/24/2013	MET_BOS	10510	EST
+NEW	Newton	open	916 Walnut Street			Newton	Middlesex	MA	02459	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.206404	42.330017	10/1/1992	MET_BOS	10013	EST
+NTV	Newtonville	open	647 Washington St.			Newtonville	Middlesex	MA	02458	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.200137	42.354128	4/30/1999	MET_BOS	10092	EST
+RVR	River Street	open	340 River Street			Cambridge	Middlesex	MA	02139	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.11452	42.361	8/22/2001	MET_BOS	10113	EST
+SMV	Somerville	open	45 Beacon Street			Somerville	Middlesex	MA	02143	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.103179	42.375849	9/4/2013	MET_BOS	10511	EST
+SWA	Swampscott	open	331 Paradise Road			Swampscott	Essex	MA	01907	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-70.901768	42.481043	2/16/2005	MET_BOS	10222	EST
+SWY	South Weymouth	open	35 Pleasant Street			South Weymouth	Norfolk	MA	02190	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-70.954737	42.172336	7/10/2013	MET_BOS	10506	EST
+SYM	Symphony	open	15 Westland Avenue			Boston	Suffolk	MA	02115	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.087272	42.343962	1/5/1995	MET_BOS	10031	EST
+WAY	Wayland	open	317 Boston Post Road			Wayland	Middlesex	MA	01778	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.36529	42.362084	4/30/1999	MET_BOS	10093	EST
+WLY	Wellesley Relo	open	442 Washington Street			Wellsley	Norfolk	MA	02482	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.286085	42.302	8/22/2011	MET_BOS	10413	EST
+WOB	Woburn	open	400 Cambridge Road			Woburn	Middlesex	MA	01801	North Atlantic	USA	"Boston-Cambridge-Quincy, MA-NH"	-71.163527	42.460479	4/5/2006	MET_BOS	10233	EST
+PTL	Portland Bayside	open	2 Somerset Street			Portland	Cumberland	ME	04101	North Atlantic	USA	"Portland et al, ME"	-70.258754	43.663298	2/14/2007	MET_BOS	10291	EST
+CRN	Cranston	open	151 Sockanosset Cross Rd			Cranston	Providence	RI	02920	North Atlantic	USA	"Providence et al, RI-MA"	-71.456046	41.755906	10/24/2007	MET_BOS	10254	EST
+PRO	Providence	open	261 Waterman St			Providence	Providence	RI	02906	North Atlantic	USA	"Providence et al, RI-MA"	-71.386189	41.827787	10/1/1992	MET_BOS	10014	EST
+UNI	University Heights	open	601 N. Main St			Providence	Providence	RI	02904	North Atlantic	USA	"Providence et al, RI-MA"	-71.408307	41.83714	5/2/2002	MET_BOS	10111	EST
+DAN	Danbury	open	5C Sugar Hollow Road			Danbury	Fairfield	CT	06810	Northeast	USA	"Bridgeport-Stamford-Norwalk, CT"	-73.475708	41.377866	5/17/2013	MET_NE_CT	10455	EST
+DAR	Darien	open	Interstate Hwy 95 at Leroy Ave.			Darien	Fairfield	CT	06820	Northeast	USA	"Bridgeport-Stamford-Norwalk, CT"	-73.476173	41.073271	5/19/2010	MET_NE_CT	10300	EST
+FAI	Fairfield	open	Kings Hwy at Grasmere Ave.			Fairfield	Fairfield	CT	06824	Northeast	USA	"Bridgeport-Stamford-Norwalk, CT"	-73.240704	41.158188	6/2/2011	MET_NE_CT	10317	EST
+GRW	Greenwich	open	90 E. Putnam Avenue			Greenwich	Fairfield	CT	06830	Northeast	USA	"Bridgeport-Stamford-Norwalk, CT"	-73.623931	41.033122	8/30/1996	MET_NE_CT	10057	EST
+MIL	Milford	open	1650 Boston Post Road			Milford	New Haven	CT	06461	Northeast	USA	"New Haven-Milford, CT"	-73.026959	41.246808	11/11/2009	MET_NE_CT	10389	EST
+WPT	Westport	open	399 Post Rd W			Westport	Fairfield	CT	06880	Northeast	USA	"Bridgeport-Stamford-Norwalk, CT"	-73.379973	41.128085	9/28/2007	MET_NE_CT	10355	EST
+EGW	Edgewater	open	905 River Road			Edgewater	Bergen	NJ	07020	Northeast	USA	"New York et al, NY-NJ-PA"	-73.973742	40.824835	5/17/2000	MET_NE_NJ	10102	EST
+MAR	Marlboro	open	113 Route 9 South			marlboro	Monmouth	NJ	07726	Northeast	USA	"New York et al, NY-NJ-PA"	-74.308026	40.352695	5/21/2014	MET_NE_NJ	10451	EST
+MBN	Union Relo	open	2245 Springfield Avenue			Vauxhall	Union	NJ	07088	Northeast	USA	"New York et al, NY-NJ-PA"	-74.28501	40.716259	10/30/2008	MET_NE_NJ	10312	EST
+MID	Middletown	open	471 Route 35 North			Middletown	Monmouth	NJ	07748	Northeast	USA	"New York et al, NY-NJ-PA"	-74.087337	40.375373	6/15/2005	MET_NE_NJ	10213	EST
+MNC	Montclair	open	701 Bloomfield Avenue			Montclair	Essex	NJ	07042	Northeast	USA	"New York et al, NY-NJ-PA"	-74.22274	40.818496	8/30/1996	MET_NE_NJ	10059	EST
+PAR	Paramus	open	300 Bergen Town Center			Paramus	Bergen	NJ	07652	Northeast	USA	"New York et al, NY-NJ-PA"	-74.058239	40.9148	3/19/2009	MET_NE_NJ	10279	EST
+RCM	Rose City	open	222 Main Street			Madison	Morris	NJ	07940	Northeast	USA	"New York et al, NY-NJ-PA"	-74.405429	40.753479	10/17/2002	MET_NE_NJ	10157	EST
+RDW	Ridgewood	open	44 Godwin Avenue			Ridgewood	Bergen	NJ	07450	Northeast	USA	"New York et al, NY-NJ-PA"	-74.122564	40.978372	6/28/2001	MET_NE_NJ	10106	EST
+WOP	West Orange	open	235 Prospect Avenue			West Orange	Essex	NJ	07052	Northeast	USA	"New York et al, NY-NJ-PA"	-74.248906	40.804218	11/1/2006	MET_NE_NJ	10265	EST
+ABN	Albany	open	1425 Central Ave			Albany	Albany	NY	12205	Northeast	USA	"Albany-Schenectady-Troy, NY"	-73.819153	42.707856	6/18/2014	MET_UP_NY	10492	EST
+BKN	Brooklyn	open	214 Third Street			Brooklyn	Kings	NY	11215	Northeast	USA	"New York et al, NY-NJ-PA"	-73.989236	40.675089	12/17/2013	MET_NYC	10220	EST
+CHE	Chelsea	open	250 7th Avenue at 24th Street			New York City	New York	NY	10001	Northeast	USA	"New York et al, NY-NJ-PA"	-73.995347	40.745113	2/15/2001	MET_NYC	10131	EST
+CIR	Columbus Circle	open	10 Columbus Circle	Ste. SC101		New York City	New York	NY	10023	Northeast	USA	"New York et al, NY-NJ-PA"	-73.983007	40.767879	2/5/2004	MET_NYC	10160	EST
+HOU	Bowery	open	95 East Houston St			New York City	New York	NY	10002	Northeast	USA	"New York et al, NY-NJ-PA"	-73.992326	40.723561	3/27/2007	MET_NYC	10236	EST
+JER	Jericho	open	429 North Broadway			Jericho	Nassau	NY	11753	Northeast	USA	"New York et al, NY-NJ-PA"	-73.534703	40.788943	10/6/2005	MET_LI	10161	EST
+LGV	Lake Grove	open	120 New Moriches Road			Lake Grove	Suffolk	NY	11755	Northeast	USA	"New York et al, NY-NJ-PA"	-73.126702	40.865973	3/17/2010	MET_LI	10240	EST
+MHS	Manhasset	open	2101 Northern Blvd.			Munsey Park	Nassau	NY	11030	Northeast	USA	"New York et al, NY-NJ-PA"	-73.670765	40.797214	8/30/1996	MET_LI	10063	EST
+MTE	57th Street	open	226 East 57th St			New York City	New York	NY	10022	Northeast	USA	"New York et al, NY-NJ-PA"	-73.966388	40.759261	8/24/2012	MET_NYC	10408	EST
+POC	Port Chester	open	575 Boston Post Road			Port Chester	Westchester	NY	10573	Northeast	USA	"New York et al, NY-NJ-PA"	-73.67395	40.991771	10/22/2013	MET_WESTCH	10483	EST
+TRB	Tribeca	open	270 Greenwich Street			New York City	New York	NY	10007	Northeast	USA	"New York et al, NY-NJ-PA"	-74.012214	40.715504	7/9/2008	MET_NYC	10245	EST
+USQ	Union Square	open	4 Union Square South			New York City	New York	NY	10003	Northeast	USA	"New York et al, NY-NJ-PA"	-73.991243	40.734741	3/16/2005	MET_NYC	10162	EST
+UWS	Upper West Side	open	808 Columbus Ave			New York City	New York	NY	10025	Northeast	USA	"New York et al, NY-NJ-PA"	-73.9668	40.79417	8/27/2009	MET_NYC	10328	EST
+WHP	White Plains	open	110 Bloomingdale Rd			White Plains	Westchester	NY	10605	Northeast	USA	"New York et al, NY-NJ-PA"	-73.758904	41.028294	6/3/2004	MET_WESTCH	10163	EST
+YON	Yonkers	open	One Ridge Hill Blvd			Yonkers	Westchester	NY	10710	Northeast	USA	"New York et al, NY-NJ-PA"	-73.856582	40.963545	10/19/2011	MET_WESTCH	10343	EST
+ARD	Arden Way	open	4315 Arden Way			Sacramento	Sacramento	CA	95864	Northern California	USA	"Sacramento--Arden et al, CA"	-121.363794	38.596639	6/11/2003	MET_SAC	10152	PST
+BLD	Blithedale	open	731 E Blithedale Ave			Mill Valley	Marin	CA	94941	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.5261	37.9012	6/9/2010	MET_MRN	10337	PST
+BLL	Blossom Hill	open	Alameda Rd at Blossom Hill Rd.			San Jose	Santa Clara	CA	95118	Northern California	USA	"San Jose-Sunnyvale et al, CA"	-121.876362	37.249525	11/10/2010	MET_SJC	10320	PST
+BRK	Berkeley	open	3000 Telegraph Ave			Berkeley	Alameda	CA	94705	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.260418	37.855461	8/1/1990	MET_EBY	10006	PST
+CAP	Capitola	open	1710 41st Ave			Capitola	Santa Cruz	CA	95010	Northern California	USA	"Santa Cruz-Watsonville, CA"	-121.963562	36.974291	7/29/2009	MET_STZ	10365	PST
+CAS	Castro	open	2001 Market Street			San Francisco	San Francisco	CA	94103	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.427282	37.768041	11/6/2013	MET_SFO	10396	PST
+CBL	Campbell	open	1690 S. Bascom Avenue			Campbell	Santa Clara	CA	95008	Northern California	USA	"San Jose-Sunnyvale et al, CA"	-121.930458	37.292464	2/1/1995	MET_SJC	10033	PST
+COD	Coddingtown	open	390 Coddingtown Mall			Santa Rosa	Sonoma	CA	95401	Northern California	USA	"Santa Rosa-Petaluma, CA"	-122.730449	38.457891	9/22/2010	MET_NPA	10370	PST
+DAV	Davis	open	500 First Street			Davis	Yolo	CA	95616	Northern California	USA	"Sacramento--Arden et al, CA"	-121.740848	38.541333	10/24/2012	MET_SAC	10479	PST
+FOL	Folsom	open	270 Palladio Parkway			Folsom	Sacramento	CA	95630	Northern California	USA	"Sacramento--Arden et al, CA"	-121.12124	38.64902	10/26/2011	MET_SAC	10447	PST
+FRE	Fremont - Mowry	open	3111 Mowry Avenue			Fremont	Alameda	CA	94538	Northern California	USA	"San Francisco-Oakland et al, CA"	-121.984389	37.554791	9/25/2013	MET_EBY	10467	PST
+FRK	Franklin	open	1765 California Street			San Francisco	San Francisco	CA	94109	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.423405	37.789948	7/11/1996	MET_SFO	10044	PST
+FRS	Fresno	open	650 West Shaw Avenue			Fresno	Fresno	CA	93704	Northern California	USA	"Fresno, CA"	-119.805345	36.809279	9/13/2000	MET_FRS	10122	PST
+HAR	Harrison	open	230 Bay Place			Oakland	Alameda	CA	94612	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.260504	37.812934	9/26/2007	MET_EBY	10221	PST
+LAF	Lafayette	open	3502 Mt. Diablo Blvd			Lafayette	Contra Costa	CA	94549	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.116649	37.893177	5/18/2011	MET_EBY	10349	PST
+LAT	Los Altos	open	4800 El Camino Real			Los Altos	Santa Clara	CA	94022	Northern California	USA	"San Jose-Sunnyvale et al, CA"	-122.110571	37.398989	9/13/2006	MET_PEN	10155	PST
+LGT	Los Gatos	open	15980 Los Gatos Blvd			Los Gatos	Santa Clara	CA	95032	Northern California	USA	"San Jose-Sunnyvale et al, CA"	-121.961389	37.23612	4/28/1994	MET_SJC	10027	PST
+MLV	Mill Valley	open	414 Miller Ave			Mill Valley	Marin	CA	94941	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.536231	37.896109	7/10/1992	MET_MRN	10009	PST
+MRY	Monterey	open	800 Del Monte Center			Monterey	Monterey	CA	93940	Northern California	USA	"Salinas, CA"	-121.90037	36.58338	6/24/1998	MET_STZ	10087	PST
+NOE	Noe Valley	open	3950  24th Street			San Francisco	San Francisco	CA	94114	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.430835	37.751914	9/30/2009	MET_SFO	10379	PST
+NOV	Novato	open	Delong Ave & Reichert			Novato	Marin	CA	94945	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.56654	38.10638	4/22/2010	MET_MRN	10234	PST
+NPA	Napa	open	3682 Bel Aire Plaza			Napa	Napa	CA	94558	Northern California	USA	"Napa, CA"	-122.306262	38.323455	1/16/2008	MET_NPA	10288	PST
+OCN	Ocean Avenue	open	1150 Ocean Ave			San Francisco	San Francisco	CA	94112	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.455238	37.72391	8/29/2012	MET_SFO	10432	PST
+PAL	Palo Alto	open	774 Emerson Street			Palo Alto	Santa Clara	CA	94301	Northern California	USA	"San Jose-Sunnyvale et al, CA"	-122.159372	37.442281	1/1/1989	MET_PEN	10005	PST
+PET	Petaluma	open	621 E. Washington			Petaluma	Sonoma	CA	94952	Northern California	USA	"Santa Rosa-Petaluma, CA"	-122.634692	38.241054	2/14/2000	MET_NPA	10138	PST
+PTH	Potrero Hill	open	450 Rhode Island Street			San Francisco	San Francisco	CA	94107	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.402995	37.764359	9/12/2007	MET_SFO	10238	PST
+RAM	San Ramon	open	100 Sunset Drive			San Ramon	Contra Costa	CA	94583	Northern California	USA	"San Francisco-Oakland et al, CA"	-121.961301	37.761759	3/29/2000	MET_EBY	10126	PST
+RED	Redwood City	open	1250 Jefferson Ave			Redwood City	San Mateo	CA	94062	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.231638	37.482311	11/17/2004	MET_PEN	10154	PST
+ROS	Roseville	open	1001 Galleria Blvd			Roseville	Placer	CA	95678	Northern California	USA	"Sacramento--Arden et al, CA"	-121.267971	38.767478	11/5/2008	MET_SAC	10230	PST
+SEB	Sebastopol	open	6910 McKinley St.			Sebastopol	Sonoma	CA	95472	Northern California	USA	"Santa Rosa-Petaluma, CA"	-122.824105	38.403778	2/14/2000	MET_NPA	10137	PST
+SMT	San Mateo	open	1010 Park Place			San Mateo	San Mateo	CA	94403	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.291697	37.543935	1/22/2003	MET_PEN	10150	PST
+SNM	Sonoma	open	201 W Napa Street			Sonoma	Sonoma	CA	95476	Northern California	USA	"Santa Rosa-Petaluma, CA"	-122.462716	38.291326	6/27/2007	MET_NPA	10281	PST
+SOM	SOMA	open	399 Fourth Street			San Francisco	San Francisco	CA	94107	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.399626	37.781155	1/15/2004	MET_SFO	10151	PST
+SRF	San Rafael	open	340 Third Street			San Rafael	Marin	CA	94901	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.516766	37.971236	4/9/1997	MET_MRN	10071	PST
+SRS	Santa Rosa	open	1181 Yulupa Ave			Santa Rosa	Sonoma	CA	95405	Northern California	USA	"Santa Rosa-Petaluma, CA"	-122.674965	38.442422	2/14/2000	MET_NPA	10139	PST
+STC	Stevens Creek	open	20955 Stevens Creek Blvd			Cupertino	Santa Clara	CA	95014	Northern California	USA	"San Jose-Sunnyvale et al, CA"	-122.039212	37.324076	8/22/2007	MET_SJC	10267	PST
+STN	Haight	open	690 Stanyan St			San Francisco	San Francisco	CA	94117	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.45278	37.769562	2/16/2011	MET_SFO	10362	PST
+STZ	Santa Cruz	open	911 Soquel Ave			Santa Cruz	Santa Cruz	CA	95062	Northern California	USA	"Santa Cruz-Watsonville, CA"	-122.0139	36.9782	3/18/2009	MET_STZ	10329	PST
+WAL	Walnut Creek	open	1333 E. Newell			Walnut Creek	Contra Costa	CA	94596	Northern California	USA	"San Francisco-Oakland et al, CA"	-122.055304	37.892732	1/31/2001	MET_EBY	10101	PST
+RNO	Reno	open	6139 S. Virginia Street			Reno	Washoe	NV	89511	Northern California	USA	"Reno-Sparks, NV"	-119.78674	39.46955	6/25/2008	MET_REN	10293	PST
+CMB	Cambie	open	510 W 8th Ave.			Vancouver	British Columbia	BC	V5Z 1C5	Pacific Northwest	CAN		-123.115363	49.263701	4/29/2009	MET_CP	10248	PST
+KIT	Kitsilano	open	2285 West 4th Avenue			Vancouver	British Columbia	BC	V6K 1N9	Pacific Northwest	CAN		-123.157172	49.268359	9/28/2007	MET_CP	10348	PST
+PRV	W Vancouver	open	925 Main St			West Vancouver	British Columbia	BC	V7T 2Z3	Pacific Northwest	CAN		-123.143056	49.325758	9/1/2004	MET_CP	10212	PST
+RBS	Robson	open	1675 Robson Street			Vancouver	British Columbia	BC	V6G 1C8	Pacific Northwest	CAN		-123.132668	49.290088	9/28/2007	MET_CP	10360	PST
+BND	Bend	open	2610 NE Hwy 20			Bend	Deschutes	OR	97701	Pacific Northwest	USA	"Bend, OR"	-121.265555	44.057836	9/28/2007	MET_OR	10407	PST
+BRD	Bridgeport	open	7380 SW Bridgeport Road			Lake Oswego	Washington	OR	97224	Pacific Northwest	USA	"Portland-Vancouver et al, OR-WA"	-122.751993	45.393969	11/1/2006	MET_OR	10266	PST
+FMT	Fremont	open	3535 NE 15th Ave			Portland	Multnomah	OR	97212	Pacific Northwest	USA	"Portland-Vancouver et al, OR-WA"	-122.651114	45.54906	9/28/2007	MET_OR	10375	PST
+GNW	Tigard (Greenway)	open	12220 SW Scholls Ferry Road			Tigard	Washington	OR	97223	Pacific Northwest	USA	"Portland-Vancouver et al, OR-WA"	-122.801781	45.442495	5/21/2014	MET_OR	10537	PST
+HWD	East Portland	open	NE Sandy Blvd at NE 44th Ave			Portland	Multnomah	OR	97213	Pacific Northwest	USA	"Portland-Vancouver et al, OR-WA"	-122.61842	45.537352	1/12/2010	MET_OR	10243	PST
+LLH	Laurelhurst	open	2825 E Burnside St			Portland	Multnomah	OR	97232	Pacific Northwest	USA	"Portland-Vancouver et al, OR-WA"	-122.63672	45.523118	9/28/2007	MET_OR	10402	PST
+PRT	Portland	open	1210 NW Couch Street			Portland	Multnomah	OR	97209	Pacific Northwest	USA	"Portland-Vancouver et al, OR-WA"	-122.683686	45.523284	3/20/2002	MET_OR	10148	PST
+TAN	Tanasbourne	open	19440 NW Cornell Rd			Tanasbourne	Washington	OR	97006	Pacific Northwest	USA	"Portland-Vancouver et al, OR-WA"	-122.877	45.533154	4/23/2008	MET_OR	10327	PST
+BLV	Bellevue	open	888 116th Avenue NE			Bellevue	King	WA	98005	Pacific Northwest	USA	"Seattle-Tacoma-Bellevue, WA"	-122.184588	47.618361	6/30/2004	MET_WA	10153	PST
+INT	Interbay	open	2001 15th Avenue West			Seattle	King	WA	98119	Pacific Northwest	USA	"Seattle-Tacoma-Bellevue, WA"	-122.378012	47.636702	10/13/2009	MET_WA	10275	PST
+LNW	Lynnwood	open	2800 SW 196th St. SW			Lynnwood	Snohomish	WA	98036	Pacific Northwest	USA	"Seattle-Tacoma-Bellevue, WA"	-122.271723	47.820296	3/15/2012	MET_WA	10436	PST
+MLP	Mill Plain	open	815 Se 160th Ave			Vancouver	Clark	WA	98683	Pacific Northwest	USA	"Portland-Vancouver et al, OR-WA"	-122.505972	45.615133	9/28/2007	MET_OR	10412	PST
+RMD	Redmond	open	17991 NE Redmond Way			Redmond	King	WA	98052	Pacific Northwest	USA	"Seattle-Tacoma-Bellevue, WA"	-122.101703	47.666262	8/30/2006	MET_WA	10260	PST
+RSQ	Roosevelt Square	open	1026 NE 64th Street			Seattle	King	WA	98115	Pacific Northwest	USA	"Seattle-Tacoma-Bellevue, WA"	-122.316555	47.675254	11/3/1999	MET_WA	10103	PST
+WSL	Westlake	open	2210 Westlake Ave			Westlake	King	WA	98121	Pacific Northwest	USA	"Seattle-Tacoma-Bellevue, WA"	-122.337898	47.618249	11/8/2006	MET_WA	10216	PST
+BLT	Basalt CO	open	340 Reed Street			Basalt	Eagle	CO	81621	Rocky Mountain	USA	"Edwards, CO"	-107.08344	39.380979	8/15/2012	MET_CO	10298	MST
+BMR	BelMar	open	444 South Wadsworth Blvd			Lakewood	Jefferson	CO	80226	Rocky Mountain	USA	"Denver-Aurora, CO"	-105.081034	39.709458	12/7/2005	MET_CO	10218	MST
+BSL	Baseline	open	2584 Baseline Rd			Boulder	Boulder	CO	80305	Rocky Mountain	USA	"Boulder, CO"	-105.261316	39.998855	9/28/2007	MET_CO	10301	MST
+CCK	Cherry Creek	open	2375 E. First Ave			Denver	Denver	CO	80206	Rocky Mountain	USA	"Denver-Aurora, CO"	-104.958408	39.718726	11/1/2000	MET_CO	10095	MST
+CFX	Colfax	open	14357 W Colfax Ave			Golden	Jefferson	CO	80401	Rocky Mountain	USA	"Denver-Aurora, CO"	-105.161477	39.736505	9/28/2007	MET_CO	10350	MST
+COL	Colorado Blvd	open	870 S Colorado Blvd			Denver	Arapahoe	CO	80246	Rocky Mountain	USA	"Denver-Aurora, CO"	-104.939652	39.700741	9/28/2007	MET_CO	10331	MST
+CPH	Capitol Hill	open	900 E 11th Ave			Denver	Denver	CO	80218	Rocky Mountain	USA	"Denver-Aurora, CO"	-104.97578	39.733292	9/28/2007	MET_CO	10405	MST
+FCO	Frisco	open	261 Lusher Court			Frisco	Summit	CO	80443	Rocky Mountain	USA	"Silverthorne, CO"	-106.099586	39.588333	4/29/2014	MET_CO	10470	MST
+FTC	Ft. Collins	open	2201 South College Ave			Fort Collins	Larimer	CO	80525	Rocky Mountain	USA	"Fort Collins-Loveland, CO"	-105.078926	40.558999	6/23/2004	MET_CO	10147	MST
+HLR	Highlands Ranch	open	9366 South Colorado Blvd	Ste B		Highlands Ranch	Douglas	CO	80126	Rocky Mountain	USA	"Denver-Aurora, CO"	-104.942097	39.545043	3/27/2002	MET_CO	10142	MST
+IDL	Alpine Ideal	open	1275 Alpine Ave			Boulder	Boulder	CO	80304	Rocky Mountain	USA	"Boulder, CO"	-105.28081	40.026016	9/28/2007	MET_CO	10423	MST
+LTT	Governers Ranch	open	5155 S Wadsworth Blvd			Littleton	Jefferson	CO	80123	Rocky Mountain	USA	"Denver-Aurora, CO"	-105.092234	39.623154	12/19/2012	MET_CO	10471	MST
+NCP	New Center Point	open	3180 New Center Point			Colorado Springs	El Paso	CO	80922	Rocky Mountain	USA	"Colorado Springs, CO"	-104.718371	38.878082	9/28/2007	MET_CO	10435	MST
+PPK	Pike's Peak	open	7635 N Academy Blvd			Colorado Springs	El Paso	CO	80920	Rocky Mountain	USA	"Colorado Springs, CO"	-104.797565	38.942506	3/3/2004	MET_CO	10146	MST
+PRL	Pearl	open	2905 Pearl Street			Boulder	Boulder	CO	80301	Rocky Mountain	USA	"Boulder, CO"	-105.25558	40.023998	2/25/1998	MET_CO	10083	MST
+SGN	South Glen	open	6853 South York Street Suite 119			Centennial	Arapahoe	CO	80122	Rocky Mountain	USA	"Denver-Aurora, CO"	-104.962116	39.592051	6/15/2009	MET_CO	10273	MST
+SUP	Superior	open	303 Marshall Rd			Louisville	Boulder	CO	80027	Rocky Mountain	USA	"Boulder, CO"	-105.168073	39.957	9/28/2007	MET_CO	10445	MST
+TMC	Tamarac	open	7400 E. Hampden Ave			Denver	Denver	CO	80237	Rocky Mountain	USA	"Denver-Aurora, CO"	-104.901844	39.652019	9/14/2005	MET_CO	10207	MST
+WAS	Whole Foods Wine and Spirits	open	2315 30th St.			Boulder	Boulder	CO	80301	Rocky Mountain	USA	"Boulder, CO"	-105.25558	40.023998	2/25/1998	MET_CO	10454	MST
+WSM	Westminster	open	9229 N Sheridan Blvd			Westminster	Jefferson	CO	80031	Rocky Mountain	USA	"Denver-Aurora, CO"	-105.054823	39.864934	9/28/2007	MET_CO	10394	MST
+WSP	Washington Park	open	1111 S Washington St			Denver	Denver	CO	80210	Rocky Mountain	USA	"Denver-Aurora, CO"	-104.979965	39.695988	9/28/2007	MET_CO	10373	MST
+BOI	Boise	open	401 S. Broadway Street			Boise	Ada	ID	83702	Rocky Mountain	USA	"Boise City-Nampa, ID"	-116.194294	43.60735	11/14/2012	MET_ID	10284	MST
+MET	Metcalf	open	7401 West 91st Street			Overland Park	Johnson	KS	66212	Rocky Mountain	USA	"Kansas City, MO-KS"	-94.671346	38.963433	2/6/2002	MET_KS	10141	CST
+OPK	Overland Park	open	6621 W 119th St			Overland Park	Johnson	KS	66209	Rocky Mountain	USA	"Kansas City, MO-KS"	-94.662459	38.911569	9/28/2007	MET_KS	10410	CST
+ACD	Academy	open	5815 Wyoming Blvd. NE			Albuquerque	Bernalillo	NM	87109	Rocky Mountain	USA	"Albuquerque, NM"	-106.556026	35.146488	9/18/2002	MET_NM	10144	MST
+CER	Cerrillos	open	753 Cerrillos Rd			Santa Fe	Santa Fe	NM	87505	Rocky Mountain	USA	"Santa Fe, NM"	-105.950174	35.678896	12/1/1999	MET_NM	10104	MST
+ISP	Indian School Plaza	open	2103 Carlisle Blvd NE			Albuquerque	Bernalillo	NM	87106	Rocky Mountain	USA	"Albuquerque, NM"	-106.605117	35.102702	9/28/2007	MET_NM	10420	MST
+STF	St. Francis	open	1090 St Francis Dr			Santa Fe	Santa Fe	NM	87505	Rocky Mountain	USA	"Santa Fe, NM"	-105.954386	35.674768	9/28/2007	MET_NM	10314	MST
+DPR	South Valley	open	11479 S. State Street	Suite B		Draper	Salt Lake	UT	84020	Rocky Mountain	USA	"Salt Lake City, UT"	-111.890008	40.542838	5/30/2014	MET_UT	10532	MST
+HDR	Cottonwood Heights	open	6930 S Highland Dr			Salt Lake City	Salt Lake	UT	84121	Rocky Mountain	USA	"Salt Lake City, UT"	-111.835906	40.625077	9/28/2007	MET_UT	10430	MST
+PKC	Park City	open	1736 W Redstone Center Dr			Park City	Summit	UT	84098	Rocky Mountain	USA	"Salt Lake City, UT"	-111.543	40.7208	9/28/2007	MET_UT	10440	MST
+SUH	Sugarhouse	open	1131 E Wilmington			Salt Lake City	Salt Lake	UT	84106	Rocky Mountain	USA	"Salt Lake City, UT"	-111.85894	40.723719	9/28/2007	MET_UT	10415	MST
+TSQ	Trolley Square	open	500 So. 700 East			Salt Lake City	Salt Lake	UT	84102	Rocky Mountain	USA	"Salt Lake City, UT"	-111.871839	40.757926	3/14/2011	MET_UT	10280	MST
+MBK	Mountain Brook	open	3100 Cahaba Village Plaza			Birmingham	Jefferson	AL	35243	South	USA	"Birmingham-Hoover, AL"	-86.752324	33.460088	2/28/2007	MET_AL	10209	CST
+ARE	Alpharetta	open	1180 Upper Hembree Rd.			Roswell	Fulton	GA	30076	South	USA	"Atlanta-Sandy Springs et al, GA"	-84.325205	34.065801	11/1/2001	MET_GA	10182	EST
+BCF	Briarcliff	open	2111 Briarcliff Rd			Atlanta	DeKalb	GA	30329	South	USA	"Atlanta-Sandy Springs et al, GA"	-84.333266	33.815812	4/28/1999	MET_GA	10094	EST
+COB	Cobb	open	70 Powers Ferry Rd. S.E.			Marietta	Cobb	GA	30067	South	USA	"Atlanta-Sandy Springs et al, GA"	-84.513362	33.948082	11/1/2001	MET_GA	10184	EST
+DUL	Duluth	open	5945 State Bridge Road			Duluth	Fulton	GA	30097	South	USA	"Atlanta-Sandy Springs et al, GA"	-84.183577	34.013142	9/20/2006	MET_GA	10215	EST
+MER	Merchant's Walk	open	1311 Johnson Ferry Road NE			Atlanta	Cobb	GA	30068	South	USA	"Atlanta-Sandy Springs et al, GA"	-84.427741	33.982304	7/27/2011	MET_GA	10342	EST
+PNC	Ponce de Leon	open	650 Ponce de Leon Ave NE			Atlanta	Fulton	GA	30308	South	USA	"Atlanta-Sandy Springs et al, GA"	-84.365756	33.774805	3/12/2003	MET_GA	10196	EST
+SAV	Savannah	open	1815 E. Victory Drive			Savannah	Chatham	GA	31404	South	USA	"Savannah, GA"	-81.071326	32.043193	8/13/2013	MET_GA	10489	EST
+SDY	Sandy Springs	open	5930 Roswell Road			Atlanta	Fulton	GA	30328	South	USA	"Atlanta-Sandy Springs et al, GA"	-84.380044	33.91789	8/31/2000	MET_GA	10136	EST
+WPF	W Paces Ferry	open	77 West Paces Ferry Rd NW			West Paces Ferry	Fulton	GA	30305	South	USA	"Atlanta-Sandy Springs et al, GA"	-84.381148	33.840841	9/28/2005	MET_GA	10206	EST
+JKN	Jackson	open	4500 I-55 North			Jackson	Hinds	MS	39211	South	USA	"Jackson, MS"	-90.149828	32.354698	2/4/2014	MET_MS	10486	CST
+APK	Charlotte	open	6610 Fairview Road			Charlotte	Mecklenburg	NC	28210	South	USA	"Charlotte-Gastonia et al, NC-SC"	-80.828946	35.147135	8/29/2012	MET_NC	10443	EST
+ASH	Asheville	open	70 Merrimon Avenue			Asheville	Buncombe	NC	28801	South	USA	"Asheville, NC"	-82.554169	35.601778	5/24/2010	MET_NC	10351	EST
+CAR	Cary	open	102B New Waverly Place			Cary	Wake	NC	27518	South	USA	"Raleigh-Cary, NC"	-78.777234	35.737361	5/11/2000	MET_NC	10132	EST
+CHP	Chapel Hill	open	81 South Elliot			Chapel Hill	Orange	NC	27514	South	USA	"Durham, NC"	-79.027569	35.934529	11/1/1991	MET_NC	10008	EST
+DRH	Durham	open	621 Broad Street			Durham	Durham	NC	27705	South	USA	"Durham, NC"	-78.920644	36.007046	2/29/1996	MET_NC	10041	EST
+GFR	Greensboro	open	3202 West Friendly Avenue			Greensboro	Guilford	NC	27408	South	USA	"Greensboro-High Point, NC"	-79.834028	36.085624	4/12/2012	MET_NC	10426	EST
+NRL	North Raleigh	open	8710 Six Forks Rd			Raleigh	Wake	NC	27615	South	USA	"Raleigh-Cary, NC"	-78.648994	35.89811	3/16/2011	MET_NC	10338	EST
+RAL	Raleigh	open	3540 Wade Avenue			Raleigh	Wake	NC	27607	South	USA	"Raleigh-Cary, NC"	-78.686355	35.802456	12/3/1992	MET_NC	10016	EST
+WIN	Winston-Salem	open	41 Miller Street			Winston-Salem	Forsyth	NC	27104	South	USA	"Winston-Salem, NC"	-80.273806	36.094438	1/12/2000	MET_NC	10110	EST
+WOL	Wilmington	open	3804 Oleander Drive			Wilmington	New Hanover	NC	28403	South	USA	"Wilmington, NC"	-77.901573	34.213673	5/23/2012	MET_NC	10453	EST
+CHL	Charleston	open	923 Houston Northcutt Blvd			Charleston	Charleston	SC	29464	South	USA	"Charleston-North Charleston, SC"	-79.889113	32.802162	5/19/2004	MET_SC	10201	EST
+CRH	Cross Hill	open	702 Cross Hill Rd			Columbia	Richland	SC	29205	South	USA	"Columbia, SC"	-80.975137	33.992611	10/26/2012	MET_SC	10464	EST
+WDF	Woodruff	open	1140 Woodruff Road			Greenville	Greenville	SC	29607	South	USA	"Greenville-Mauldin-Easley, SC"	-82.300837	34.825521	4/26/2006	MET_SC	10224	EST
+CHT	Chattanooga	open	301 Manufacturer's Road			Chattanooga	Hamilton	TN	37405	South	USA	"Chattanooga, TN-GA"	-85.313948	35.062612	5/24/2010	MET_TN	10409	EST
+GHL	Green Hills	open	4021 Hillsboro Pike			Nashville	Davidson	TN	37215	South	USA	"Nashville-Davidson et al, TN"	-86.8185	36.103133	11/1/2007	MET_TN	10241	CST
+MCW	McEwen	open	Mallory Lane at McEwen Drive			Franklin	Williamson	TN	37067	South	USA	"Nashville-Davidson et al, TN"	-86.825167	35.934237	5/18/2011	MET_TN	10321	CST
+PPL	Poplar Avenue	open	5014 Poplar Ave			Memphis	Shelby	TN	38117	South	USA	"Memphis, TN-MS-AR"	-89.894532	35.113017	1/14/2014	MET_TN	10480	CST
+CHR	Chandler	open	2955 West Ray Rd.			Chandler	Maricopa	AZ	85224	Southern Pacific	USA	"Phoenix-Mesa-Scottsdale, AZ"	-111.891175	33.318293	10/26/2007	MET_AZ	10272	MST
+CMA	Camelback	open	4701 N. 20th Street			Phoenix	Maricopa	AZ	85016	Southern Pacific	USA	"Phoenix-Mesa-Scottsdale, AZ"	-112.037799	33.506038	9/18/2013	MET_AZ	10476	MST
+FLG	Flagstaff	open	320 S. Cambridge Ln.			Flagstaff	Coconino	AZ	86001	Southern Pacific	USA	"Flagstaff, AZ"	-111.640919	35.191834	4/24/2014	MET_AZ	10581	MST
+PRE	Prescott	open	1112 Iron Springs Rd.			Prescott	Yavapai	AZ	86305	Southern Pacific	USA	"Prescott, AZ"	-112.483853	34.559583	4/24/2014	MET_AZ	10582	MST
+PVA	Paradise Valley	open	10810 N Tatum Blvd			Paradise Valley	Maricopa	AZ	85028	Southern Pacific	USA	"Phoenix-Mesa-Scottsdale, AZ"	-111.979056	33.585046	11/6/2002	MET_AZ	10172	MST
+RRD	River Road	open	5555 E River Rd			Tucson	Pima	AZ	85750	Southern Pacific	USA	"Tucson, AZ"	-110.873825	32.274292	1/16/2013	MET_AZ	10475	MST
+SCT	Scottsdale	open	7111 E Mayo Blvd			Scottsdale	Maricopa	AZ	85054	Southern Pacific	USA	"Phoenix-Mesa-Scottsdale, AZ"	-111.927193	33.653791	2/27/2008	MET_AZ	10246	MST
+SED	Sedona	open	1420 West Hwy. 89A			Sedona	Yavapai	AZ	86336	Southern Pacific	USA	"Prescott, AZ"	-111.784974	34.863536	4/24/2014	MET_AZ	10583	MST
+SPE	Speedway	open	3360 E Speedway Blvd			Tucson	Pima	AZ	85716	Southern Pacific	USA	"Tucson, AZ"	-110.921476	32.235584	9/28/2007	MET_AZ	10439	MST
+TEM	Tempe	open	5120 S. Rural			Tempe	Maricopa	AZ	85282	Southern Pacific	USA	"Phoenix-Mesa-Scottsdale, AZ"	-111.92984	33.379652	3/4/1998	MET_AZ	10084	MST
+ARR	Arroyo	open	465 S Arroyo Pkwy.			Pasadena	Los Angeles	CA	91105	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.14776	34.1381	11/7/2007	MET_LA_EAST	10237	PST
+BRT	Brentwood	open	11737 San Vicente Blvd			Los Angeles	Los Angeles	CA	90049	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.467401	34.053675	10/29/1997	MET_LA_WEST	10074	PST
+BVH	Beverly Hills	open	239 North Crescent Dr			Beverly Hills	Los Angeles	CA	90210	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.39798	34.06908	9/1/1993	MET_LA_EAST	10022	PST
+DMR	Del Mar	open	2600 Via De La Valle	Suite 100		Del Mar	San Diego	CA	92014	Southern Pacific	USA	"San Diego-Carlsbad et al, CA"	-117.251408	32.980879	2/27/2013	MET_SD	10434	PST
+ENC	Encinitas	open	S. Coast Hwy 101 at F Street			Encinitas	San Diego	CA	92024	Southern Pacific	USA	"San Diego-Carlsbad et al, CA"	-117.293235	33.043747	6/29/2011	MET_SD	10401	PST
+FFX	Fairfax	open	6350 West 3rd Street			Los Angeles	Los Angeles	CA	90036	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.36057	34.070373	5/22/2002	MET_LA_EAST	10177	PST
+GLN	Glendale	open	331 North Glendale Avenue			Glendale	Los Angeles	CA	91206	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.245876	34.150993	5/4/2004	MET_LA_EAST	10179	PST
+HIL	Hillcrest	open	711 University Avenue			San Diego	San Diego	CA	92103	Southern Pacific	USA	"San Diego-Carlsbad et al, CA"	-117.157991	32.747833	4/9/1997	MET_SD	10072	PST
+HOL	West Hollywood	open	7871 West Santa Monica Blvd.			Los Angeles	Los Angeles	CA	90046	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.360767	34.091753	2/16/2000	MET_LA_EAST	10109	PST
+HTB	Huntington Beach	open	7881 Edinger Ave Suite 150			Huntington Beach	Orange	CA	92647	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-117.991344	33.731515	10/13/2010	MET_OC	10399	PST
+JAM	Jamboree	open	2847 Park Avenue			Tustin	Orange	CA	92782	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-117.8256	33.6963	8/29/2007	MET_OC	10231	PST
+LAG	Laguna Beach	open	283 Broadway St			Laguna Beach	Orange	CA	92651	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-117.783815	33.543856	9/28/2007	MET_OC	10406	PST
+LAJ	La Jolla	open	8825 Villa La Jolla Drive			La Jolla	San Diego	CA	92037	Southern Pacific	USA	"San Diego-Carlsbad et al, CA"	-117.230611	32.868764	11/13/1996	MET_SD	10066	PST
+LBC	Long Beach	open	6550 E Pacific Coast Hwy			Long Beach	Los Angeles	CA	90803	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.109353	33.754896	9/28/2007	MET_OC	10442	PST
+LGN	Laguna Niguel	open	23932 Aliso Creek			Laguna Niguel	Orange	CA	92677	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-117.712656	33.555026	5/16/2012	MET_OC	10437	PST
+MON	Montana Avenue	open	1425 Montana Ave			Santa Monica	Los Angeles	CA	90402	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.4947	34.0328	9/28/2007	MET_LA_WEST	10398	PST
+NPT	Newport Beach	open	415 Newport Center Drive			Newport Beach	Orange	CA	92660	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-117.874918	33.616366	9/19/2012	MET_OC	10468	PST
+OKS	Thousand Oaks	open	740 N. Moorpark Rd			Thousand Oaks	Ventura	CA	91360	Southern Pacific	USA	"Oxnard-Thousand Oaks-Ventura, CA"	-118.873257	34.187709	3/9/2005	MET_LA_WEST	10204	PST
+OXN	Oxnard	open	650 Town Center Drive			Oxnard	Ventura	CA	93036	Southern Pacific	USA	"Oxnard-Thousand Oaks-Ventura, CA"	-119.176455	34.243633	6/19/2013	MET_LA_WEST	10318	PST
+PAS	Pasadena	open	3751 East Foothill Blvd			Pasadena	Los Angeles	CA	91107	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.072662	34.151096	5/5/1999	MET_LA_EAST	10108	PST
+PCH	Pacifc Coast Highway	open	760 S. Sepulveda Blvd			El Segundo	Los Angeles	CA	90245	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.394404	33.903671	4/26/2007	MET_OC	10225	PST
+PTR	Porter Ranch	open	19340 Rinaldi Street			Northridge	Los Angeles	CA	91326	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.554934	34.27336	11/1/2001	MET_LA_WEST	10175	PST
+RDB	Redondo Beach	open	405 N. Pacific Coast Hwy			Redondo Beach	Los Angeles	CA	90277	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.389355	33.847366	9/1/1993	MET_OC	10024	PST
+SBR	Santa Barbara	open	3761 State St			Santa Barbara	Santa Barbara	CA	93105	Southern Pacific	USA	"Santa Barbara et al, CA"	-119.744991	34.43996	10/7/2009	MET_LA_WEST	10255	PST
+SHO	Sherman Oaks	open	12905 Riverside Drive			Sherman Oaks	Los Angeles	CA	91423	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.414101	34.157986	9/1/1993	MET_LA_EAST	10020	PST
+SHW	Sherman Oaks West	open	4520 Sepulveda Boulevard			Sherman Oaks	Los Angeles	CA	91403	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.466601	34.151881	1/17/1996	MET_LA_EAST	10038	PST
+SLO	San Luis Obispo	open	1531 Froom Ranch Way			San Luis Obispo	San Luis Obispo	CA	93405	Southern Pacific	USA	"San Luis Obispo-Paso Robles, CA"	-120.687432	35.250638	4/24/2014	MET_LA_WEST	10584	PST
+SMC	Santa Monica	open	2201 Wilshire Blvd			Santa Monica	Los Angeles	CA	90403	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.481209	34.033353	7/16/2003	MET_LA_WEST	10173	PST
+TOR	Torrance	open	2655 Pacific Coast Highway			Torrance	Los Angeles	CA	90505	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.330984	33.792447	9/22/1999	MET_OC	10105	PST
+TRZ	Tarzana	open	Ventura Blvd & Yolana Av			Tarzana	Los Angeles	CA	91356	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.541734	34.16988	5/12/2010	MET_LA_WEST	10282	PST
+VAL	Valencia	open	24130 Valencia Blvd			Valencia	Los Angeles	CA	91355	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.555862	34.41244	8/25/2004	MET_LA_EAST	10178	PST
+VEN	Venice	open	225 Lincoln Blvd.			Venice	Los Angeles	CA	90291	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.46977	34.001301	9/3/2008	MET_LA_WEST	10333	PST
+WDH	Woodland Hills	open	21347 Ventura Blvd			Woodland Hills	Los Angeles	CA	91367	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.596933	34.168227	10/27/1999	MET_LA_WEST	10099	PST
+WLA	West LA	open	11666 National Boulevard			Los Angeles	Los Angeles	CA	90066	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.438023	34.022596	7/23/1996	MET_LA_WEST	10045	PST
+WLB	Wilshire Blvd	open	500 Wilshire Blvd			Santa Monica	Los Angeles	CA	90401	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.49687	34.01979	9/28/2007	MET_LA_WEST	10383	PST
+WWD	Westwood	open	1050 S. Gayley			Westwood	Los Angeles	CA	90024	Southern Pacific	USA	"Los Angeles-Long Beach et al, CA"	-118.446981	34.061192	2/5/2003	MET_LA_EAST	10176	PST
+KAO	Kailua Oahu	open	629 Kailua Rd.			Kailua	Honolulu	HI	96734	Southern Pacific	USA	"Honolulu, HI"	-157.743038	21.393653	4/18/2012	MET_HI	10368	HST
+KMO	Kahala Mall Oahu	open	4211 Wai'alae Ave. Suite 2000			Honolulu	Honolulu	HI	96816	Southern Pacific	USA	"Honolulu, HI"	-157.7863	21.277556	9/10/2008	MET_HI	10363	HST
+MMM	Maui Mall Maui	open	70 Kaahumanu Ave #B			Kahalui	Maui	HI	96732	Southern Pacific	USA	"Kahului-Wailuku, HI"	-156.464368	20.891489	2/24/2010	MET_HI	10374	HST
+FTA	Ft. Apache	open	8855 West Charleston Blvd.			Las Vegas	Clark	NV	89117	Southern Pacific	USA	"Las Vegas-Paradise, NV"	-115.289435	36.157721	8/27/2003	MET_NV	10174	PST
+HEN	Henderson	open	100 S. Green Valley Parkway			Henderson	Clark	NV	89012	Southern Pacific	USA	"Las Vegas-Paradise, NV"	-115.081346	36.022326	4/5/2006	MET_NV	10219	PST
+LVB	Las Vegas Boulevard	open	6689 Las Vegas Blvd. South			Las Vegas	Clark	NV	89119	Southern Pacific	USA	"Las Vegas-Paradise, NV"	-115.176408	36.067844	10/8/2008	MET_NV	10286	PST
+TYA	Tenaya	open	7250 W Lake Mead Blvd			Las Vegas	Clark	NV	89128	Southern Pacific	USA	"Las Vegas-Paradise, NV"	-115.250074	36.19757	9/28/2007	MET_NV	10424	PST
+LTR	Little Rock	open	10700 N Rodney Parham Rd			Little Rock	Pulaski	AR	72212	Southwest	USA	"Little Rock et al, AR"	-92.391851	34.771726	9/28/2007	MET_LR	10296	CST
+ABS	Arabella Station	open	5600 Magazine Street			New Orleans	Orleans	LA	70115	Southwest	USA	"New Orleans-Metairie-Kenner, LA"	-90.117495	29.921124	12/4/2002	MET_NO	10143	CST
+BDS	New Orleans	open	30 N. Broad Street	Ste 103		New Orleans	Orleans	LA	70119	Southwest	USA	"New Orleans-Metairie-Kenner, LA"	-90.084799	29.9672	2/4/2014	MET_NO	10522	CST
+BTR	Baton Rouge	open	7529 Corporate Blvd			Baton Rouge	East Baton Rouge	LA	70809	Southwest	USA	"Baton Rouge, LA"	-91.111903	30.431616	7/20/2005	MET_BR	10198	CST
+VET	Veterans	open	3420 Veterans Highway			New Orleans	Jefferson	LA	70002	Southwest	USA	"New Orleans-Metairie-Kenner, LA"	-90.158701	30.002742	5/18/2005	MET_NO	10202	CST
+OKC	Oklahoma City	open	6001 N. Western Ave			Oklahoma City	Oklahoma	OK	73118	Southwest	USA	"Oklahoma City, OK"	-97.530704	35.533641	10/12/2011	MET_OK	10376	CST
+TLS	Tulsa	open	1401 E 41st St			Tulsa	Tulsa	OK	74105	Southwest	USA	"Tulsa, OK"	-95.973538	36.104783	9/28/2007	MET_OK	10304	CST
+YLE	Yale	open	9136 South Yale Avenue			Tulsa	Tulsa	OK	74137	Southwest	USA	"Tulsa, OK"	-95.923709	36.031001	11/19/2013	MET_OK	10472	CST
+ABT	Arbor Trails	open	4301 W William Cannon			Austin	Travis	TX	78749	Southwest	USA	"Austin-Round Rock, TX"	-97.841947	30.220346	6/19/2012	MET_AUS	10384	CST
+ADN	Addison	open	5100 Belt Line Road	Suite 1012		Dallas	Dallas	TX	75254	Southwest	USA	"Dallas-Fort Worth-Arlington, TX"	-96.821337	32.953654	7/16/2013	MET_DFW	10473	CST
+BEE	Bee Cave	open	12601 Hill Country Blvd			Austin	Travis	TX	78738	Southwest	USA	"Austin-Round Rock, TX"	-97.937572	30.307525	5/16/2012	MET_AUS	10393	CST
+BEL	Bellaire	open	4004 Bellaire Blvd.			Houston	Harris	TX	77005	Southwest	USA	"Houston-Sugar Land-Baytown, TX"	-95.441761	29.706994	12/14/2000	MET_HOU	10134	CST
+CMP	Champions	open	10133 Louetta Road			Houston	Harris	TX	77070	Southwest	USA	"Houston-Sugar Land-Baytown, TX"	-95.56244	29.998897	6/25/2014	MET_HOU	10497	CST
+DOM	Domain	open	11920 Domain Drive			Austin	Travis	TX	78759	Southwest	USA	"Austin-Round Rock, TX"	-97.720906	30.406029	1/15/2014	MET_AUS	10316	CST
+FST	Preston Forest	open	11700 Preston Rd.			Dallas	Dallas	TX	75230	Southwest	USA	"Dallas-Fort Worth-Arlington, TX"	-96.803062	32.907312	12/6/2006	MET_DFW	10227	CST
+FVW	Fairview	open	105 Stacy Rd			Fairview	Collin	TX	75069	Southwest	USA	"Dallas-Fort Worth-Arlington, TX"	-96.655905	33.130751	11/3/2010	MET_DFW	10358	CST
+GWY	Gateway	open	9607 Research Blvd. #300			Austin	Travis	TX	78759	Southwest	USA	"Austin-Round Rock, TX"	-97.74102	30.38861	5/31/1995	MET_AUS	10036	CST
+HPK	Highland Park	open	4100 Lomo Alto Drive			Highland Park	Dallas	TX	75219	Southwest	USA	"Dallas-Fort Worth-Arlington, TX"	-96.81471	32.82044	6/12/2002	MET_DFW	10140	CST
+KIR	Kirby	open	2955 Kirby Dr			Houston	Harris	TX	77098	Southwest	USA	"Houston-Sugar Land-Baytown, TX"	-95.418147	29.739315	5/17/2000	MET_HOU	10115	CST
+KTY	Katy	open	6601 S. Fry Road			Katy	Fort Bend	TX	77494	Southwest	USA	"Houston-Sugar Land-Baytown, TX"	-95.771624	29.712757	1/30/2013	MET_HOU	10474	CST
+LCC	Lamar Culinary Center	open	525 N. Lamar Blvd.			Austin	Travis	TX	78703	Southwest	USA	"Austin-Round Rock, TX"	-97.753318	30.270947	3/3/2005	MET_AUS	10270	CST
+LKW	Lakewood	open	2118 Abrams Rd.			Dallas	Dallas	TX	75214	Southwest	USA	"Dallas-Fort Worth-Arlington, TX"	-96.751932	32.815799	3/2/2009	MET_DFW	10283	CST
+LMR	Lamar	open	525 N Lamar			Austin	Travis	TX	78703	Southwest	USA	"Austin-Round Rock, TX"	-97.753805	30.270788	3/3/2005	MET_AUS	10145	CST
+LSC	Las Cimas Cafe	open	807 Las Cimas Pkwy.			Austin	Travis	TX	78746	Southwest	USA	"Austin-Round Rock, TX"	-97.829016	30.288673	1/14/2013	MET_AUS	10502	CST
+MTS	Montrose	open	701 Waugh Drive			Houston	Harris	TX	77019	Southwest	USA	"Houston-Sugar Land-Baytown, TX"	-95.397559	29.758033	6/22/2011	MET_HOU	10346	CST
+PKL	Park Lane	open	8180 Park Lane			Dallas	Dallas	TX	75231	Southwest	USA	"Dallas-Fort Worth-Arlington, TX"	-96.767962	32.867246	3/15/2010	MET_DFW	10239	CST
+PKY	Parkway	open	801 East Lamar			Arlington	Tarrant	TX	76011	Southwest	USA	"Dallas-Fort Worth-Arlington, TX"	-97.098904	32.766919	8/11/1999	MET_DFW	10098	CST
+PLN	Plano	open	2201 Preston Rd.			Plano	Collin	TX	75093	Southwest	USA	"Dallas-Fort Worth-Arlington, TX"	-96.79681	33.029636	11/2/1994	MET_DFW	10030	CST
+QRY	Quarry	open	255 E. Basse Road	Suite 130		San Antonio	Bexar	TX	78209	Southwest	USA	"San Antonio, TX"	-98.480574	29.493296	10/29/1997	MET_SA	10075	CST
+SGL	Sugarland	open	15900 Southwest Freeway			Sugarland	Fort Bend	TX	77478	Southwest	USA	"Houston-Sugar Land-Baytown, TX"	-95.623042	29.599876	12/5/2007	MET_HOU	10258	CST
+VND	San Antonio (Vineyard)	open	18403 Blanco Road			San Antonio	Bexar	TX	78258	Southwest	USA	"San Antonio, TX"	-98.511283	29.613281	9/19/2012	MET_SA	10444	CST
+WIL	Wilcrest	open	11145 Westheimer Road			Houston	Harris	TX	77042	Southwest	USA	"Houston-Sugar Land-Baytown, TX"	-95.572793	29.734718	9/1/1991	MET_HOU	10007	CST
+WWY	Woodway	open	6401 Woodway #149			Houston	Harris	TX	77057	Southwest	USA	"Houston-Sugar Land-Baytown, TX"	-95.498819	29.754716	10/21/1993	MET_HOU	10025	CST

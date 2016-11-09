@@ -1,0 +1,60 @@
+﻿@using Infragistics.Web.Mvc
+@model IEnumerable<Icon.Web.Mvc.Models.FailedRegionalEventViewModel>
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+@(Html.Infragistics().Loader()
+    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+    .CssPath(Url.Content("~/Content/Infragistics/css/"))
+    .Render()
+)
+
+@{
+    ViewBag.Title = "Regional Events";
+}
+
+<h2>Regional Events</h2>
+
+<div id="alert">
+
+</div>
+
+<div class="page-section">
+    @if (!Model.Any())
+    {
+        <h4>No failed regional events found.</h4>
+    }
+    else
+    {
+        @(Html.Infragistics().Grid(Model.AsQueryable())
+            .ID("igGrid")
+            .Width("100%")
+            .PrimaryKey("Id")
+            .AutoGenerateColumns(false)
+            .AutoCommit(true)
+            .Columns(column =>
+            {
+                column.For(vm => vm.Id).Hidden(true);
+                column.For(vm => vm.RegionAbbreviation).HeaderText("Region");
+                column.For(vm => vm.ScanCode).HeaderText("Scan Code");
+                column.For(vm => vm.ChangeType).HeaderText("Change Type");
+                column.For(vm => vm.ProcessFailedDate).HeaderText("Failed Date");
+            })
+            .Features(features =>
+            {
+                features.Selection().MultipleSelection(true).Mode(SelectionMode.Row);
+                features.Updating().EnableAddRow(false).EnableDeleteRow(false).EditMode(GridEditMode.None);
+            })
+            .DataBind()
+            .Render()
+        )
+
+        <button id="reprocess" class="btn btn-default form-submit">Reprocess Failed Regional Events</button>
+    }
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/common-search.js")
+    @Scripts.Render("~/Scripts/Common/reprocess-failed-data.js")
+    @Scripts.Render("~/Scripts/RegionalEvent/index.js")
+}

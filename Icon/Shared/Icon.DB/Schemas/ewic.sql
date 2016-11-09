@@ -1,0 +1,4 @@
+
+CREATE SCHEMA [ewic]
+    AUTHORIZATION [dbo];
+GO

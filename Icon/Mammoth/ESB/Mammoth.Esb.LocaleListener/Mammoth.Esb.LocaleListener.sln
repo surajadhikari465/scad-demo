@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Esb.LocaleListener", "Mammoth.Esb.LocaleListener\Mammoth.Esb.LocaleListener.csproj", "{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{73A6EEE9-F580-43F5-AABB-22517F86CF3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Esb.LocaleListener.Tests", "Mammoth.Esb.LocaleListener.Tests\Mammoth.Esb.LocaleListener.Tests.csproj", "{67B1E86E-A041-425D-8861-22B045306739}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Esb.LocaleListener.Service", "Mammoth.Esb.LocaleListener.Service\Mammoth.Esb.LocaleListener.Service.csproj", "{83DE9C34-6E66-46E8-97E8-ED98A4EBEAFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common", "..\..\Mammoth.Shared\Mammoth.Common\Mammoth.Common.csproj", "{563F0633-8364-4ED0-88FF-F55302117348}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}.QA|Any CPU.Build.0 = QA|Any CPU
+		{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}.Test|Any CPU.Build.0 = Test|Any CPU
+		{67B1E86E-A041-425D-8861-22B045306739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67B1E86E-A041-425D-8861-22B045306739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67B1E86E-A041-425D-8861-22B045306739}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{67B1E86E-A041-425D-8861-22B045306739}.QA|Any CPU.Build.0 = QA|Any CPU
+		{67B1E86E-A041-425D-8861-22B045306739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67B1E86E-A041-425D-8861-22B045306739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67B1E86E-A041-425D-8861-22B045306739}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{67B1E86E-A041-425D-8861-22B045306739}.Test|Any CPU.Build.0 = Test|Any CPU
+		{83DE9C34-6E66-46E8-97E8-ED98A4EBEAFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83DE9C34-6E66-46E8-97E8-ED98A4EBEAFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83DE9C34-6E66-46E8-97E8-ED98A4EBEAFF}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{83DE9C34-6E66-46E8-97E8-ED98A4EBEAFF}.QA|Any CPU.Build.0 = QA|Any CPU
+		{83DE9C34-6E66-46E8-97E8-ED98A4EBEAFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83DE9C34-6E66-46E8-97E8-ED98A4EBEAFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83DE9C34-6E66-46E8-97E8-ED98A4EBEAFF}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{83DE9C34-6E66-46E8-97E8-ED98A4EBEAFF}.Test|Any CPU.Build.0 = Test|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.QA|Any CPU.Build.0 = QA|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.Test|Any CPU.Build.0 = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{563F0633-8364-4ED0-88FF-F55302117348} = {73A6EEE9-F580-43F5-AABB-22517F86CF3F}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Mammoth.Esb.LocaleListener\\Mammoth.Esb.LocaleListener.csproj
+		SccProjectName1 = Mammoth.Esb.LocaleListener
+		SccLocalPath1 = Mammoth.Esb.LocaleListener
+		SccProjectUniqueName2 = Mammoth.Esb.LocaleListener.Tests\\Mammoth.Esb.LocaleListener.Tests.csproj
+		SccProjectName2 = Mammoth.Esb.LocaleListener.Tests
+		SccLocalPath2 = Mammoth.Esb.LocaleListener.Tests
+		SccProjectUniqueName3 = Mammoth.Esb.LocaleListener.Service\\Mammoth.Esb.LocaleListener.Service.csproj
+		SccProjectName3 = Mammoth.Esb.LocaleListener.Service
+		SccLocalPath3 = Mammoth.Esb.LocaleListener.Service
+		SccProjectUniqueName4 = ..\\..\\Mammoth.Shared\\Mammoth.Common\\Mammoth.Common.csproj
+		SccProjectTopLevelParentUniqueName4 = Mammoth.Esb.LocaleListener.sln
+		SccProjectName4 = ../../Mammoth.Shared/Mammoth.Common
+		SccLocalPath4 = ..\\..\\Mammoth.Shared\\Mammoth.Common
+	EndGlobalSection
+EndGlobal

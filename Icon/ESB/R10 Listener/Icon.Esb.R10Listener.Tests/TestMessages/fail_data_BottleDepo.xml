@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<ns:ActivityInput xmlns:BW = "java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:WFM.Math = "java://com.tibco.wfm.MathExtender" xmlns:ns = "http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns1 = "http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1" xmlns:ns12 = "http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns13 = "http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns14 = "http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns15 = "www.tibco.com/plugin/Sleep" xmlns:ns2 = "http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3 = "http://www.tibco.com/pe/EngineTypes" xmlns:ns4 = "http://schemas.tibco.com/bw/plugins/jms/5.0/jmsExceptions" xmlns:ns5 = "http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pd = "http://xmlns.tibco.com/bw/process/2003" xmlns:pfx = "http://schemas.wfm.com/Enterprise/R10/R10Response/V1" xmlns:pfx2 = "http://schemas.wfm.com/Enterprise/R10/R10Request/V1" xmlns:pfx3 = "http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx4 = "http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib = "http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsd = "http://www.w3.org/2001/XMLSchema">
+	<JMSCorrelationID>R10SvcUnitTest</JMSCorrelationID>
+	<OtherProperties>
+		<applicationName>ItemMaintenance</applicationName>
+		<TransactionID>R10SvcUnitTest</TransactionID>
+		<CorrelationID>R10SvcUnitTest</CorrelationID>
+		<SequenceID>R10SvcUnitTest</SequenceID>
+	</OtherProperties>
+	<Body>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;pfx5:r10Response xmlns:ns9="http://schema.wfm.com/Common/SharedLoginSchema" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns6="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns10="http://schemas.wfm.com/Enterprise/R10/R10RequestActivity/V1" xmlns:ns7="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:pfx="http://retalix.com/R10/services" xmlns:ns11="http://schemas.wfm.com/Enterprise/R10/AscIIResponse/V1" xmlns:ns8="http://schemas.wfm.com/Enterprise/R10/R10CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://xmlns.tibco.com/encodings/mime" xmlns:ns4="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns3="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pfx5="http://schemas.wfm.com/Enterprise/R10/R10Response/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ClickCollectItemEntity/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/R10/R10Request/V1" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib">
+    &lt;pfx5:applicationName>ItemMaintenance&lt;/pfx5:applicationName>
+    &lt;pfx5:requestSuccess>false&lt;/pfx5:requestSuccess>
+    &lt;pfx5:r10Message>
+        &lt;ns8:errorCount>1&lt;/ns8:errorCount>
+        &lt;ns8:r10ResponseReason r10SequenceId="">
+            &lt;ns8:reasonCode>UnhandledError&lt;/ns8:reasonCode>
+            &lt;ns8:messageDescription>An unhandled exception has occurred, please see the log for details&lt;/ns8:messageDescription>
+        &lt;/ns8:r10ResponseReason>
+        &lt;ns8:xmlAscii>&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&amp;lt;BottleDepositMaintenanceResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" MajorVersion="1" xmlns="http://retalix.com/R10/services"&amp;gt;&amp;lt;Header&amp;gt;&amp;lt;MessageId Timestamp="2014-11-02T21:29:20.4742085-06:00" /&amp;gt;&amp;lt;Response ResponseCode="Rejected"&amp;gt;&amp;lt;BusinessError Severity="Error"&amp;gt;&amp;lt;Code&amp;gt;UnhandledError&amp;lt;/Code&amp;gt;&amp;lt;Description&amp;gt;An unhandled exception has occurred, please see the log for details&amp;lt;/Description&amp;gt;&amp;lt;AdditionalData /&amp;gt;&amp;lt;/BusinessError&amp;gt;&amp;lt;/Response&amp;gt;&amp;lt;/Header&amp;gt;&amp;lt;/BottleDepositMaintenanceResponse&amp;gt;&lt;/ns8:xmlAscii>
+    &lt;/pfx5:r10Message>
+    &lt;pfx5:r10Grouping>
+        &lt;ns8:groupSize>0&lt;/ns8:groupSize>
+    &lt;/pfx5:r10Grouping>
+    &lt;pfx5:destination>
+        &lt;ns8:replyDestination>WFMESB.Commerce.OnePosMgmt.Request.Queue.V1&lt;/ns8:replyDestination>
+        &lt;ns8:deadLetterDestination>WFMESB.Commerce.Online.Retalix.Reply.V1&lt;/ns8:deadLetterDestination>
+    &lt;/pfx5:destination>
+&lt;/pfx5:r10Response>
+	</Body>
+</ns:ActivityInput>

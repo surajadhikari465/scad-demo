@@ -1,0 +1,25 @@
+﻿@model Icon.Web.Mvc.Models.IrmaItemSearchViewModel
+
+@{
+    ViewBag.Title = "New Item Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+
+@{Html.RenderPartial("_HeaderPartial", "New Item Search");}
+
+<div id="searchOptions" class="page-section">
+    @{Html.RenderPartial("_IrmaItemSearchOptionsPartial");}
+</div>
+
+<div id="searchResults" class="page-section"></div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/common-search.js")
+    @Scripts.Render("~/Scripts/irma-item-search.js")
+    @Scripts.Render("~/Scripts/apply-autocomplete.js")
+    @Scripts.Render("~/Scripts/jquery.fileDownload.js")
+    @Scripts.Render("~/Scripts/Item/format-columns.js")
+}

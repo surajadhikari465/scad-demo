@@ -1,0 +1,370 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{20B501CC-89AA-48FF-A14A-A7DE8B8C0EA4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Icon.Web.Tests.Unit</RootNamespace>
+    <AssemblyName>Icon.Web.Tests.Unit</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <OutputPath>bin\QA\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\Test\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <ErrorReport>prompt</ErrorReport>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.2016.10.21.2\lib\net45\Icon.Esb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Ewic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Ewic.2016.10.20.1\lib\net45\Icon.Esb.Schemas.Ewic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Ewic.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Ewic.Models.2016.10.20.3\lib\net45\Icon.Ewic.Models.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Ewic.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Ewic.Serialization.2016.10.20.3\lib\net45\Icon.Ewic.Serialization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Ewic.Transmission, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Ewic.Transmission.2016.10.21.1\lib\net45\Icon.Ewic.Transmission.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Framework.2016.10.21.1\lib\net45\Icon.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Testing.2016.10.21.3\lib\net45\Icon.Testing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Web.Mvc, Version=5.14.1.2249, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Icon.Web.Mvc\lib\Infragistics\MVC\MVC5\Bin\Infragistics.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Web.Mvc.Documents.Core, Version=14.1.20141.2249, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Icon.Web.Mvc\lib\Infragistics\MVC\Common\Bin\Infragistics.Web.Mvc.Documents.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Web.Mvc.Documents.Excel, Version=14.1.20141.2249, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Icon.Web.Mvc\lib\Infragistics\MVC\Common\Bin\Infragistics.Web.Mvc.Documents.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=2.8.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.2.8.3\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="TIBCO.EMS, Version=1.0.800.9, Culture=neutral, PublicKeyToken=5b83db8ff05c64ba, processorArchitecture=MSIL">
+      <HintPath>..\packages\TIBCO.EMS.2016.10.21.1\lib\TIBCO.EMS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\SimpleInjectorInitializerTests.cs" />
+    <Compile Include="Attributes\AtLeastOneRequiredSpecifiedAttributeTests.cs" />
+    <Compile Include="Attributes\IconPropertyValidationAttributeTests.cs" />
+    <Compile Include="AutoMapperConverters\LocaleToMessageQueueLocaleConverterTests.cs" />
+    <Compile Include="Controllers\BulkBrandImportControllerTests.cs" />
+    <Compile Include="Controllers\BulkCertificationAgencyImportControllerTests.cs" />
+    <Compile Include="Controllers\BulkItemAddControllerTests.cs" />
+    <Compile Include="Controllers\CertificationAgencyControllerTests.cs" />
+    <Compile Include="Controllers\NationalClassControllerTests.cs" />
+    <Compile Include="Controllers\MerchTaxMappingControllerTests.cs" />
+    <Compile Include="Controllers\PluAssignmentControllerTests.cs" />
+    <Compile Include="Controllers\PluCategoryControllerTests.cs" />
+    <Compile Include="Controllers\ProductSelectionGroupControllerTests.cs" />
+    <Compile Include="Controllers\StoreControllerTests.cs" />
+    <Compile Include="Controllers\IrmaItemControllerTests.cs" />
+    <Compile Include="Controllers\FinancialControllerTests.cs" />
+    <Compile Include="Controllers\HierarchyControllerTests.cs" />
+    <Compile Include="Controllers\BulkScanCodeSearchControllerTests.cs" />
+    <Compile Include="Controllers\BrandControllerTests.cs" />
+    <Compile Include="Controllers\EwicControllerTests.cs" />
+    <Compile Include="Controllers\MessageHistoryControllerTests.cs" />
+    <Compile Include="Decorators\AddProductMammothEventDecoratorTests.cs" />
+    <Compile Include="Decorators\UpdateSubTeamMammothEventDecoratorTests.cs" />
+    <Compile Include="Decorators\UpdateProductMammothEventDecoratorTests.cs" />
+    <Compile Include="Excel\ExcelHelperTests.cs" />
+    <Compile Include="Excel\Validators\DuplicateScanCodeValidatorTests.cs" />
+    <Compile Include="Excel\Validators\Factories\ItemExcelValidatorFactoryTests.cs" />
+    <Compile Include="Excel\Validators\ItemsAreAbleToBeValidatedExcelValidatorTests.cs" />
+    <Compile Include="Excel\Validators\ItemWithoutUpdatesExcelValidatorTests.cs" />
+    <Compile Include="Excel\Validators\PredicateExcelValidatorTests.cs" />
+    <Compile Include="Excel\Validators\CertificationAgencyValidatorTests.cs" />
+    <Compile Include="Excel\Validators\RegexItemModelValidatorTests.cs" />
+    <Compile Include="Exporters\DefaultTaxMismatchesExporterTests.cs" />
+    <Compile Include="Exporters\BulkNewItemExporterTests.cs" />
+    <Compile Include="Exporters\HierarchiesExporterTests.cs" />
+    <Compile Include="Exporters\BrandTemplateExporterTests.cs" />
+    <Compile Include="Exporters\PluCategoryExporterTests.cs" />
+    <Compile Include="Exporters\IrmaItemExporterTests.cs" />
+    <Compile Include="Exporters\PluExporterTests.cs" />
+    <Compile Include="Exporters\BulkPluExporterTests.cs" />
+    <Compile Include="Exporters\NewItemTemplateExporterTests.cs" />
+    <Compile Include="Exporters\ExcelExporterServiceTests.cs" />
+    <Compile Include="Exporters\BrandExporterTests.cs" />
+    <Compile Include="Exporters\BulkBrandExporterTests.cs" />
+    <Compile Include="Extensions\DataAccessExtensionsTests.cs" />
+    <Compile Include="Extensions\ExtensionsTests.cs" />
+    <Compile Include="Extensions\WebExtensionsTests.cs" />
+    <Compile Include="Framework\NonMerchandiseTraitTests.cs" />
+    <Compile Include="Importers\CertificationAgencyImporterTests.cs" />
+    <Compile Include="Importers\NewItemSpreadsheetImporterTests.cs" />
+    <Compile Include="Importers\PluSpreadsheetImporterTests.cs" />
+    <Compile Include="Controllers\PluMappingControllerTests.cs" />
+    <Compile Include="Controllers\HierarchyClassControllerTests.cs" />
+    <Compile Include="Importers\BrandSpreadsheetImporterTests.cs" />
+    <Compile Include="Managers\AddCertificationAgencyManagerHandlerTests.cs" />
+    <Compile Include="Managers\RemoveEwicMappingManagerHandlerTests.cs" />
+    <Compile Include="Managers\RemoveEwicExclusionManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddEwicMappingManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddEwicExclusionManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddPluCategoryManagerHandlerTests.cs" />
+    <Compile Include="Controllers\ItemControllerTests.cs" />
+    <Compile Include="Controllers\ExcelControllerTests.cs" />
+    <Compile Include="Controllers\BulkPluMappingControllerTests.cs" />
+    <Compile Include="Controllers\BulkItemImportControllerTests.cs" />
+    <Compile Include="Managers\AddMerchTaxAssociationManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateMerchTaxAssociationManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateCertificationAgencyManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateBrandManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddHierarchyClassManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddItemManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddLocaleManagerHandlerTests.cs" />
+    <Compile Include="Managers\DeleteHierarchyClassManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddProductSelectionGroupManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdatePluCategoryManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateProductSelectionGroupManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateHierarchyClassManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateItemManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateLocaleManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateSubTeamManagerHandlerTests.cs" />
+    <Compile Include="Managers\ValidateItemManagerHandlerTests.cs" />
+    <Compile Include="Models\ItemSignAttributesSearchViewModelTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controllers\HomeControllerTests.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TestHelpers.cs" />
+    <Compile Include="Managers\AddBrandManagerHandlerTests.cs" />
+    <Compile Include="Utility\ViewModelHelpersTests.cs" />
+    <Compile Include="Validators\AddEwicMappingManagerValidatorTests.cs" />
+    <Compile Include="Validators\DeliverySystemValidatorTests.cs" />
+    <Compile Include="Validators\SeafoodCatchTypeValidatorTests.cs" />
+    <Compile Include="Validators\SeafoodFreshOrFrozenValidatorTests.cs" />
+    <Compile Include="Validators\EcoScaleRatingValidatorTests.cs" />
+    <Compile Include="Validators\BusinessUnitValidatorTests.cs" />
+    <Compile Include="Validators\AnimalWelfareRatingValidatorTests.cs" />
+    <Compile Include="Validators\HierarchyValidatorTests.cs" />
+    <Compile Include="Validators\IconPropertyValidationRulesTests.cs" />
+    <Compile Include="Validators\RetailUomValidatorTests.cs" />
+    <Compile Include="Validators\RetailSizeValidatorTests.cs" />
+    <Compile Include="Validators\ScanCodeValidatorTests.cs" />
+    <Compile Include="Validators\ProductDescriptionValidatorTests.cs" />
+    <Compile Include="Validators\PosDescriptionValidatorTests.cs" />
+    <Compile Include="Validators\PackageUnitValidatorTests.cs" />
+    <Compile Include="Validators\CheeseAttributeMilkTypeValidatorTests.cs" />
+    <Compile Include="Validators\YesNoValidatorTests.cs" />
+    <Compile Include="Validators\PosScaleTareValidatorTests.cs" />
+    <Compile Include="Validators\PluValidatorTests.cs" />
+    <Compile Include="Validators\AddItemManagerValidatorTests.cs" />
+    <Compile Include="Validators\AddEwicExclusionManagerValidatorTests.cs" />
+    <Compile Include="Validators\UpdateItemManagerValidatorTests.cs" />
+    <Compile Include="Validators\ValueRequiredValidatorTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="lib\TIBCO.EMS.dll" />
+    <None Include="Resources\TextFile.txt" />
+    <None Include="TestDocs\IconExport_Item.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\ExcelWorkbook.xlsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Icon.Common\Icon.Common.csproj">
+      <Project>{36bbc477-8a9c-4451-8614-932bd665a82a}</Project>
+      <Name>Icon.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.Web.Common\Icon.Web.Common.csproj">
+      <Project>{b602f553-38ea-44d2-a94b-4f9d504f4f30}</Project>
+      <Name>Icon.Web.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.Web.DataAccess\Icon.Web.DataAccess.csproj">
+      <Project>{a4972528-84bc-40d4-a961-7c343eb94d2b}</Project>
+      <Name>Icon.Web.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.Web.Mvc\Icon.Web.Mvc.csproj">
+      <Project>{273BC688-78CD-443E-BEDB-B532982C95B6}</Project>
+      <Name>Icon.Web.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.Web.Tests.Common\Icon.Web.Tests.Common.csproj">
+      <Project>{83841b8d-56a5-4e53-aaaa-d81c4f61d166}</Project>
+      <Name>Icon.Web.Tests.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(VisualStudioVersion)' == ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(VisualStudioVersion)' != ''" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

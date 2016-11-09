@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--============-->
+	<!--Schema Changes -->
+	<xs:annotation>
+		<xs:documentation>
+      Date: 2014-06-25
+      Changes by Sruly:
+      Added:  AuthenticatedClaimType element
+        A signed claim from an trusted authority.
+        
+      Date: 2014-07-13
+      Changes by Hilik Z:
+      Added:  
+		UserNamePasswordCredentialType element
+		ActiveDirectoryCredentialType element
+		TouchPointCredentialType element
+		BarcodeCredentialType element
+		UserNamePinCredentialType element
+        A identity credential 
+        
+    </xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="RetalixResponseCommonData.xsd"/>
+	<xs:include schemaLocation="RetalixBulkCommonData.xsd"/>
+	<xs:include schemaLocation="RequestIDCommonDataV1.0.0.xsd"/>
+	<xs:include schemaLocation="AuthenticatedClaimType.xsd"/>
+	<xs:include schemaLocation="CredentialType.xsd"/>
+	<xs:element name="RetalixCommonHeader" type="RetalixCommonHeaderType">
+		<xs:annotation>
+			<xs:documentation>
+        The common Retalix header for use in the Flattened Service Schema
+      </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="RetalixCommonHeaderType">
+		<xs:all>
+			<xs:element name="MessageId" type="RequestIDCommonData" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+            The UUID which allows the caller to correlate the response to the original request.
+            It is guaranteed that the server will send in each response the RequestID of that came with the request
+          </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExternalReferenceId" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Used for tracking purposes and will be returned in the response </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Response" type="RetalixResponseCommonData" minOccurs="0"/>
+			<xs:element name="Bulk" type="BulkCommonData" minOccurs="0"/>
+			<xs:element name="Authentication" minOccurs="0">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="AuthenticatedClaim" type="AuthenticatedClaimType">
+							<xs:annotation>
+								<xs:documentation>
+                  A signed claim from an trusted authority.
+                  If a claim is sent the current service will run under the identity provided in the claim
+                </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="UserNamePassword" type="UserNamePasswordCredentialType">
+							<xs:annotation>
+								<xs:documentation>
+                  A user name password credentials.
+                  If a credentials is sent the current service will run under the identity provided in the credentials
+                </xs:documentation>
+							</xs:annotation>						
+						</xs:element>
+						<xs:element name="ActiveDirectory" type="ActiveDirectoryCredentialType">
+							<xs:annotation>
+								<xs:documentation>
+                  A active directory user name password credentials.
+                  If a credentials is sent the current service will run under the identity provided in the credentials
+                </xs:documentation>
+							</xs:annotation>						
+						</xs:element>						
+						<xs:element name="TouchPointIdentifier" type="TouchPointCredentialType">
+							<xs:annotation>
+								<xs:documentation>
+                  A Touch Point credentials.
+                  If a credentials is sent the current service will run under the identity provided in the credentials
+                </xs:documentation>
+							</xs:annotation>						
+						</xs:element>
+						
+						<xs:element name="Barcode" type="BarcodeCredentialType">							
+						<xs:annotation>
+								<xs:documentation>
+                  A Barcode credentials.
+                  If a credentials is sent the current service will run under the identity provided in the credentials
+                </xs:documentation>
+							</xs:annotation>						
+						</xs:element>
+						<xs:element name="UserNamePin" type="UserNamePinCredentialType">
+						<xs:annotation>
+								<xs:documentation>
+                  A user name pin credentials.
+                  If a credentials is sent the current service will run under the identity provided in the credentials
+                </xs:documentation>
+							</xs:annotation>						
+						</xs:element>
+						
+						<!--<xs:any namespace="##other" processContents="lax"/>-->
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{43B95DF0-6DAF-40A9-82B7-4E5B4B5D80B5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Icon.Web.Tests.Integration</RootNamespace>
+    <AssemblyName>Icon.Web.Tests.Integration</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Common.2016.10.18.1\lib\net45\Icon.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Framework.2016.10.21.1\lib\net45\Icon.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Icon.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Testing.2016.10.21.3\lib\net45\Icon.Testing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Web.Mvc.Documents.Core, Version=14.2.20142.2140, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Icon.Web.Mvc\lib\Infragistics\MVC\Common\Bin\Infragistics.Web.Mvc.Documents.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Web.Mvc.Documents.Excel, Version=14.2.20142.2140, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Icon.Web.Mvc\lib\Infragistics\MVC\Common\Bin\Infragistics.Web.Mvc.Documents.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=2.8.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.2.8.3\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="Commands\AddAddressCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddCertificationAgencyCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddEwicMappingCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddVimLocaleEventCommandHandlerTests.cs" />
+    <Compile Include="Commands\BulkImportCertificationAgencyCommandHandlerTests.cs" />
+    <Compile Include="Commands\RemoveEwicMappingCommandHandlerTests.cs" />
+    <Compile Include="Commands\RemoveEwicExclusionCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddEwicExclusionCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddBrandCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddBrandMessageCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddHierarchyClassCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddHierarchyClassMessageCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddLocaleCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddLocaleMessageCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddPluCategoryCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddProductMessageCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddProductSelectionGroupMappingCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddProductSelectionGroupMessageCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddTaxEventCommandHandlerTests.cs" />
+    <Compile Include="Commands\BulkImportBrandCommandHandlerTests.cs" />
+    <Compile Include="Commands\BulkImportItemCommandHandlerTests.cs" />
+    <Compile Include="Commands\BulkImportNewItemCommandHandlerTests.cs" />
+    <Compile Include="Commands\BulkImportPluCommandHandlerTests.cs" />
+    <Compile Include="Commands\DeleteHierarchyClassCommandHandlerTests.cs" />
+    <Compile Include="Commands\DeleteIrmaItemCommandHandlerTests.cs" />
+    <Compile Include="Commands\DeletePluCategoryByIdCommandHandlerTests.cs" />
+    <Compile Include="Commands\RemoveHierarchyClassFromIrmaItemsCommandHandlerTests.cs" />
+    <Compile Include="Commands\SaveToMessageHistoryCommandHandlerTests.cs" />
+    <Compile Include="Commands\ApplyMerchTaxAssociationToItemsCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateCertificationAgencyCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateMessageHistoryStatusCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateBrandCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateBrandHierarchyClassTraitsCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateHierarchyClassCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateHierarchyClassTraitCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateIrmaItemCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateLocaleCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdatePluCategoryCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateProductSelectionGroupMappingCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateRegionalSettingsCommandHandlerTest.cs" />
+    <Compile Include="Commands\UpdateSubTeamCommandHandlerTests.cs" />
+    <Compile Include="Excel\Services\ItemExcelServiceTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetAvailableScanCodesByCategoryQueryTests.cs" />
+    <Compile Include="Queries\GetCertificationAgenciesQueryTests.cs" />
+    <Compile Include="Queries\GetCurrentEwicMappingParametersQueryTests.cs" />
+    <Compile Include="Queries\GetAvailablePlusByCategoryQueryTests.cs" />
+    <Compile Include="Queries\GetBrandAbbreviationsThatExistQueryTests.cs" />
+    <Compile Include="Queries\GetAplScanCodesQueryTests.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithMappingQueryTests.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithExclusionQueryTests.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithoutMappingQueryTests.cs" />
+    <Compile Include="Queries\GetEwicMappingsQueryTests.cs" />
+    <Compile Include="Queries\GetEwicExclusionsQueryTests.cs" />
+    <Compile Include="Queries\GetBrandsQueryTests.cs" />
+    <Compile Include="Queries\GetBrandsThatExistQueryTests.cs" />
+    <Compile Include="Queries\GetExistingScanCodeUploadsQueryTests.cs" />
+    <Compile Include="Queries\GetCertificationAgenciesByTraitQueryTests.cs" />
+    <Compile Include="Queries\GetHierarchyLineageQueryTests.cs" />
+    <Compile Include="Queries\GetIrmaItemsQueryTests.cs" />
+    <Compile Include="Queries\GetItemsByBulkScanCodeSearchQueryTests.cs" />
+    <Compile Include="Queries\GetItemsBySearchQueryTests.cs" />
+    <Compile Include="Queries\GetNewScanCodeUploadsQueryTests.cs" />
+    <Compile Include="Queries\GetPluCategoriesQueryTests.cs" />
+    <Compile Include="Queries\GetPluCategoryByIdQueryTests.cs" />
+    <Compile Include="Queries\GetPluMappingQueryTests.cs" />
+    <Compile Include="Queries\GetPluRemappingsQueryTests.cs" />
+    <Compile Include="Queries\GetScanCodesNotReadyToValidateQueryTests.cs" />
+    <Compile Include="Queries\GetTaxClassesWithNoAbbreviationQueryTests.cs" />
+    <Compile Include="Queries\GetEwicAgenciesWithoutExclusionQueryTests.cs" />
+    <Compile Include="Queries\GetMessageHistoryQueryTests.cs" />
+    <Compile Include="Queries\GetDefaultTaxClassMismatchesQueryTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="TestDocs\Items_10000.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Icon.Web.Common\Icon.Web.Common.csproj">
+      <Project>{b602f553-38ea-44d2-a94b-4f9d504f4f30}</Project>
+      <Name>Icon.Web.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.Web.DataAccess\Icon.Web.DataAccess.csproj">
+      <Project>{a4972528-84bc-40d4-a961-7c343eb94d2b}</Project>
+      <Name>Icon.Web.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.Web.Mvc\Icon.Web.Mvc.csproj">
+      <Project>{273bc688-78cd-443e-bedb-b532982c95b6}</Project>
+      <Name>Icon.Web.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.Web.Tests.Common\Icon.Web.Tests.Common.csproj">
+      <Project>{83841b8d-56a5-4e53-aaaa-d81c4f61d166}</Project>
+      <Name>Icon.Web.Tests.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.Tests", "Icon.ApiController.Tests\Icon.ApiController.Tests.csproj", "{436FE772-9141-4F76-B242-01D49FF02CD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.DataAccess", "Icon.ApiController.DataAccess\Icon.ApiController.DataAccess.csproj", "{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.Common", "Icon.ApiController.Common\Icon.ApiController.Common.csproj", "{FF85E818-177C-48FC-9765-47B0804668EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.Controller", "Icon.ApiController.Controller\Icon.ApiController.Controller.csproj", "{693B3840-E93C-4FC6-931E-CA9334E3B6C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{436FE772-9141-4F76-B242-01D49FF02CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{436FE772-9141-4F76-B242-01D49FF02CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{436FE772-9141-4F76-B242-01D49FF02CD5}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{436FE772-9141-4F76-B242-01D49FF02CD5}.QA|Any CPU.Build.0 = QA|Any CPU
+		{436FE772-9141-4F76-B242-01D49FF02CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{436FE772-9141-4F76-B242-01D49FF02CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{436FE772-9141-4F76-B242-01D49FF02CD5}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{436FE772-9141-4F76-B242-01D49FF02CD5}.Test|Any CPU.Build.0 = Test|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.QA|Any CPU.Build.0 = QA|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}.Test|Any CPU.Build.0 = Test|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.QA|Any CPU.Build.0 = QA|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{FF85E818-177C-48FC-9765-47B0804668EC}.Test|Any CPU.Build.0 = Test|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.QA|Any CPU.Build.0 = QA|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0}.Test|Any CPU.Build.0 = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://irma.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Icon.ApiController.Common\\Icon.ApiController.Common.csproj
+		SccProjectName1 = Icon.ApiController.Common
+		SccLocalPath1 = Icon.ApiController.Common
+		SccProjectUniqueName2 = Icon.ApiController.DataAccess\\Icon.ApiController.DataAccess.csproj
+		SccProjectName2 = Icon.ApiController.DataAccess
+		SccLocalPath2 = Icon.ApiController.DataAccess
+		SccProjectUniqueName3 = Icon.ApiController.Controller\\Icon.ApiController.Controller.csproj
+		SccProjectName3 = Icon.ApiController.Controller
+		SccLocalPath3 = Icon.ApiController.Controller
+		SccProjectUniqueName4 = Icon.ApiController.Tests\\Icon.ApiController.Tests.csproj
+		SccProjectName4 = Icon.ApiController.Tests
+		SccLocalPath4 = Icon.ApiController.Tests
+	EndGlobalSection
+EndGlobal
