@@ -62,7 +62,7 @@ namespace Icon.Framework
         public const string ValidationDate = @"^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$";
         public const string MerchFinMapping = @"^[a-zA-Z0-9_]*$";
         public const string GlAccount = @"^[a-zA-Z0-9_]*$";
-        public const string TaxAbbreviation = @"^[\d]{7} [\w \-\\/%<>&=\+]{0,42}$";
+        public const string TaxAbbreviation = @"^[\d]{7} [^<>]{1,42}$";
         public const string SubBrickCode = @"^[a-zA-Z0-9_]*$";
         public const string FinancialHierarchyCode = @"^[a-zA-Z0-9_]*$";
         public const string SentToEsb = @"^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$";
@@ -78,7 +78,7 @@ namespace Icon.Framework
         public const string TeamName = @"^[a-zA-Z0-9_]*$";
         public const string NonAlignedSubteam = @"1";
         public const string BrandAbbreviation = @"^[a-zA-Z0-9 &]{1,10}$";
-        public const string TaxRomance = @"^[\w \-\\/%<>&=\+]{1,150}$";
+        public const string TaxRomance = @"^[\d]{7} [^<>]{1,142}$";
         public const string MerchDefaultTaxAssociatation = @"^[0-9]*$";
         public const string NationalClassCode = @"^[0-9]*$";
         public const string HiddenItem = @"0|1";

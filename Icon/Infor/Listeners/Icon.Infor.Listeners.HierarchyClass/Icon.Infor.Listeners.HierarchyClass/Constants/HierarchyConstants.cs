@@ -61,5 +61,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Constants
         };
 
         public const string BrandNamePattern = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,35}$";
+        public const string TaxNamePattern = @"^[\d]{7} [^<>]{1,247}$";
     }
 }

@@ -649,6 +649,7 @@
     <None Include="Scripts\PopulateData\Release\RetentionPolicyInforArchiveTables.sql" />
     <None Include="Scripts\PopulateData\Release\AddBrandDeleteEventType.sql" />
     <None Include="Scripts\PopulateData\Release\FixPackageUnitTraitPattern.sql" />
+    <None Include="Scripts\PopulateData\Release\FixTaxAbbreviationAndTaxRomanceTraitPattern.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

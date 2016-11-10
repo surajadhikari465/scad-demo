@@ -74,7 +74,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Validators
                 {
                     // Tax Class Name
                     RuleFor(hc => hc.HierarchyClassName)
-                        .Matches(@"^[\d]{7} [\w \-\\/%<>&=\+]{0,255}$")
+                        .Matches(HierarchyConstants.TaxNamePattern)
                         .WithErrorCode(ValidationErrors.Codes.InvalidTaxClassName)
                         .WithMessage(ValidationErrors.Descriptions.InvalidTaxClassName);
 

@@ -171,6 +171,40 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
         }
 
         [TestMethod]
+        public void HierarchyClassModelValidator_TaxClassIsInvalidWithGreaterThanAndLessThanCharacters_InvalidTaxClassError()
+        {
+            // Given
+            this.testHierarchyClass.HierarchyName = Hierarchies.Names.Tax;
+            this.testHierarchyClass.HierarchyLevelName = HierarchyLevelNames.Tax;
+            this.testHierarchyClass.HierarchyClassName = "1212121 INVALID TAX CLASS NAME WITH < >";
+            this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
+            {
+                { TraitCodes.TaxAbbreviation, "1234567 Test Tax Abbrev"},
+                { TraitCodes.TaxRomance, "1234567 Test Tax Romance" }
+            };
+
+            PerformValidateCollectionWhenAndThenSteps(ValidationErrors.Codes.InvalidTaxClassName,
+                ValidationErrors.Descriptions.InvalidTaxClassName.GetFormattedValidationMessage(nameof(this.testHierarchyClass.HierarchyClassName), this.testHierarchyClass.HierarchyClassName));
+        }
+
+        [TestMethod]
+        public void HierarchyClassModelValidator_TaxClassIsInvalidWith256TotalCharacters_InvalidTaxClassError()
+        {
+            // Given
+            this.testHierarchyClass.HierarchyName = Hierarchies.Names.Tax;
+            this.testHierarchyClass.HierarchyLevelName = HierarchyLevelNames.Tax;
+            this.testHierarchyClass.HierarchyClassName = "1212121 " + new string('a', 248);
+            this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
+            {
+                { TraitCodes.TaxAbbreviation, "1234567 Test Tax Abbrev"},
+                { TraitCodes.TaxRomance, "1234567 Test Tax Romance" }
+            };
+
+            PerformValidateCollectionWhenAndThenSteps(ValidationErrors.Codes.InvalidTaxClassName,
+                ValidationErrors.Descriptions.InvalidTaxClassName.GetFormattedValidationMessage(nameof(this.testHierarchyClass.HierarchyClassName), this.testHierarchyClass.HierarchyClassName));
+        }
+
+        [TestMethod]
         public void HierarchyClassModelValidator_TaxClassIsInvalidWithUnderscores_InvalidTaxClassError()
         {
             // Given
