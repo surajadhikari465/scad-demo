@@ -1478,9 +1478,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         {
             //Given
             testItem.PackageUnit = "1";
-            testItems.Add(CopyTestItem(i => i.PackageUnit = "9.999"));
-            testItems.Add(CopyTestItem(i => i.PackageUnit = "9.9"));
-            testItems.Add(CopyTestItem(i => i.PackageUnit = "9.99"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "999"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "99"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "9"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "900"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "123"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "180"));
 
             PerformValidateCollectionWhenAndThenSteps(null, null);
         }
@@ -1494,6 +1497,10 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.PackageUnit = "1234a"));
             testItems.Add(CopyTestItem(i => i.PackageUnit = " "));
             testItems.Add(CopyTestItem(i => i.PackageUnit = "0"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "0"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "04"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "000"));
+            testItems.Add(CopyTestItem(i => i.PackageUnit = "001"));
 
             PerformValidateCollectionWhenAndThenSteps(
                 ValidationErrors.Codes.InvalidPackageUnit,
