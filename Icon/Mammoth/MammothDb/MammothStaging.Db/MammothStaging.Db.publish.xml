@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeCompositeObjects>False</IncludeCompositeObjects>
+    <TargetDatabaseName>Staging</TargetDatabaseName>
+    <DeployScriptFileName>MammothStaging.Db.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=MAMMOTH-DB01-QA\MAMMOTH;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
+    <DoNotAlterReplicatedObjects>True</DoNotAlterReplicatedObjects>
+    <DropStatisticsNotInSource>False</DropStatisticsNotInSource>
+    <IncludeTransactionalScripts>True</IncludeTransactionalScripts>
+    <ScriptDatabaseCollation>True</ScriptDatabaseCollation>
+    <DropConstraintsNotInSource>False</DropConstraintsNotInSource>
+    <DropDmlTriggersNotInSource>False</DropDmlTriggersNotInSource>
+    <DropExtendedPropertiesNotInSource>False</DropExtendedPropertiesNotInSource>
+    <DropIndexesNotInSource>False</DropIndexesNotInSource>
+    <IgnoreIdentitySeed>True</IgnoreIdentitySeed>
+    <IgnoreNotForReplication>True</IgnoreNotForReplication>
+    <IgnorePartitionSchemes>True</IgnorePartitionSchemes>
+    <IgnoreUserSettingsObjects>True</IgnoreUserSettingsObjects>
+  </PropertyGroup>
+</Project>
