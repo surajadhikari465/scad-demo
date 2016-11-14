@@ -26,7 +26,7 @@ select
 	hc.hierarchyClassName 'Level 5',
 	'Item Type' 'Select an Attribute',
 	case 
-			when hct.traitValue is null then 'N\A'
+			when hct.traitValue is null then 'N/A'
 			else hct.traitValue
 		end 'Attribute Value',
 	'TRUE' 'Force this value to be used on all items',
