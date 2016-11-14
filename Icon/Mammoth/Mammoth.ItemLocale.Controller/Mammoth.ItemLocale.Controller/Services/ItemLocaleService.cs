@@ -38,22 +38,23 @@ namespace Mammoth.ItemLocale.Controller.Services
 
         private void SendData(List<ItemLocaleEventModel> data, int eventTypeId)
         {
-            IEnumerable<ItemLocaleEventModel> filteredData = data.Where(d => d.EventTypeId == eventTypeId);
-            if (!filteredData.Any())
+            IEnumerable<ItemLocaleEventModel> filteredItemLocaleData = data.Where(d => d.EventTypeId == eventTypeId);
+            if (!filteredItemLocaleData.Any())
             {
                 return;
             }
 
             // Pass to Web Api in batches using app setting using Morelinq Batch extension method.
-            var batches = filteredData.Batch(this.settings.ApiRowLimit);
+            // This is to limit the number of rows sent via HTTP request
+            var batches = filteredItemLocaleData.Batch(this.settings.ApiRowLimit);
             foreach (var batch in batches)
             {
                 HttpResponseMessage response = httpClient.PutAsJsonAsync(Uris.ItemLocaleUpdate, batch).Result;
 
-                // If passing records in bulk failed process one at a time.
+                // If passing main batch of records fails, process in smaller bathes/bundles
                 if (!response.IsSuccessStatusCode)
                 {
-                    logger.Error(String.Format("Error occurred when passing processing ItemLocale events. Processing each ItemLocale event one by one. " +
+                    logger.Error(String.Format("Error occurred when passing processing ItemLocale events. Processing this set of events in batches. " +
                         "Region: {0}. URI : {1}. EventTypeId : {2}. Number of ItemLocale Rows : {3}. Number of QueueIDs: {4}. Error : {5}.",
                             settings.CurrentRegion,
                             settings.UriBaseAddress + Uris.ItemLocaleUpdate,
@@ -62,23 +63,18 @@ namespace Mammoth.ItemLocale.Controller.Services
                             batch.DistinctBy(d => d.QueueId).Count(),
                             response.ReasonPhrase));
 
-                    // Send each record one at a time
-                    foreach (var item in batch)
+                    // Send records to web api in batches/bundles recursively
+                    if (filteredItemLocaleData.Count() > 1)
                     {
-                        var singleResponse = httpClient.PutAsJsonAsync(Uris.ItemLocaleUpdate, new[] { item }).Result;
-                        if (!singleResponse.IsSuccessStatusCode)
+                        var bundles = filteredItemLocaleData.Batch(filteredItemLocaleData.Count() / 2);
+                        foreach (var bundle in bundles)
                         {
-                            logger.Error(String.Format("Error occurred when processing ItemLocale events. " +
-                                "Region: {0}. URI : {1}. EventTypeId: {2}. QueueId : {3}. ScanCode: {4}. BusinessUnit: {5}. Error : {6}.",
-                                    settings.CurrentRegion,
-                                    settings.UriBaseAddress + Uris.ItemLocaleUpdate,
-                                    eventTypeId,
-                                    item.QueueId,
-                                    item.ScanCode,
-                                    item.BusinessUnitId,
-                                    response.ReasonPhrase));
-                            item.ErrorMessage = singleResponse.ReasonPhrase;
+                            SendData(bundle.ToList(), eventTypeId);
                         }
+                    }
+                    else
+                    {
+                        filteredItemLocaleData.First().ErrorMessage = response.ReasonPhrase;
                     }
                 }
                 else if (response.Content != null)
@@ -88,7 +84,7 @@ namespace Mammoth.ItemLocale.Controller.Services
                     {
                         foreach (var responseMessage in responseMessages)
                         {
-                            var matchingItems = filteredData.Where(item => item.ScanCode == responseMessage.Model.ScanCode && item.BusinessUnitId == responseMessage.Model.BusinessUnitId);
+                            var matchingItems = filteredItemLocaleData.Where(item => item.ScanCode == responseMessage.Model.ScanCode && item.BusinessUnitId == responseMessage.Model.BusinessUnitId);
                             foreach (var matchingItem in matchingItems)
                             {
                                 matchingItem.ErrorMessage = responseMessage.Error;

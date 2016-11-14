@@ -51,18 +51,18 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
         }
 
         [TestMethod]
-        public void ItemLocaleServiceProcess_ItemLocaleAddUpdateMessageFailed_ShouldReprocessMessagesOneByOne()
+        public void ItemLocaleServiceProcess_ItemLocaleAddUpdateMessageFailed_ShouldReprocessMessagesInBatches()
         {
             //Given
             data = new List<ItemLocaleEventModel>
                 {
                     new ItemLocaleEventModel { ScanCode = "1", EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate },
                     new ItemLocaleEventModel { ScanCode = "2", EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate },
-                    new ItemLocaleEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate }
+                    new ItemLocaleEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate },
+                    new ItemLocaleEventModel { ScanCode = "4", EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate }
                 };
             mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.Is<string>(s => s == Uris.ItemLocaleUpdate), It.IsAny<IEnumerable<ItemLocaleEventModel>>()))
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)))
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)))
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
 
@@ -71,33 +71,33 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
 
             //Then
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
-                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 3
+                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 4
                     && e.Contains(data.First(hc => hc.ScanCode == "1" && hc.EventTypeId == IrmaEventTypes.ItemLocaleAddOrUpdate))
                     && e.Contains(data.First(hc => hc.ScanCode == "2" && hc.EventTypeId == IrmaEventTypes.ItemLocaleAddOrUpdate))
-                    && e.Contains(data.First(hc => hc.ScanCode == "3" && hc.EventTypeId == IrmaEventTypes.ItemLocaleAddOrUpdate)))), Times.Exactly(1));
+                    && e.Contains(data.First(hc => hc.ScanCode == "3" && hc.EventTypeId == IrmaEventTypes.ItemLocaleAddOrUpdate))
+                    && e.Contains(data.First(hc => hc.ScanCode == "4" && hc.EventTypeId == IrmaEventTypes.ItemLocaleAddOrUpdate)))), Times.Exactly(1));
 
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
-                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 1
-                    && e.Contains(data[0]))), Times.Exactly(1));
-
-            mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
-                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 1
+                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 2
+                    && e.Contains(data[0])
                     && e.Contains(data[1]))), Times.Exactly(1));
 
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
-                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 1
-                    && e.Contains(data[2]))), Times.Exactly(1));
+                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 2
+                    && e.Contains(data[2])
+                    && e.Contains(data[3]))), Times.Exactly(1));
         }
 
         [TestMethod]
-        public void ItemLocaleServiceProcess_DeauthorizeMessageFailed_ShouldReprocessMessagesOneByOne()
+        public void ItemLocaleServiceProcess_DeauthorizeMessageFailed_ShouldReprocessMessagesInBatches()
         {
             //Given
             data = new List<ItemLocaleEventModel>
                 {
                     new ItemLocaleEventModel { ScanCode = "1", EventTypeId = IrmaEventTypes.ItemDelete },
                     new ItemLocaleEventModel { ScanCode = "2", EventTypeId = IrmaEventTypes.ItemDelete },
-                    new ItemLocaleEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.ItemDelete }
+                    new ItemLocaleEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.ItemDelete },
+                    new ItemLocaleEventModel { ScanCode = "4", EventTypeId = IrmaEventTypes.ItemDelete }
                 };
 
             mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.Is<string>(s => s == Uris.ItemLocaleUpdate), It.IsAny<IEnumerable<ItemLocaleEventModel>>()))
@@ -111,19 +111,17 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
 
             //Then
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
-                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 3)), Times.Exactly(1));
+                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 4)), Times.Exactly(1));
 
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
-                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 1
-                    && e.ToList()[0].ScanCode == data[0].ScanCode && e.ToList()[0].Region == data[0].Region)), Times.Exactly(1));
+                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 2
+                    && e.ToList()[0].ScanCode == data[0].ScanCode
+                    && e.ToList()[1].ScanCode == data[1].ScanCode)), Times.Exactly(1));
 
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
-                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 1
-                    && e.ToList()[0].ScanCode == data[1].ScanCode && e.ToList()[0].Region == data[1].Region)), Times.Exactly(1));
-
-            mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
-                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 1
-                    && e.ToList()[0].ScanCode == data[2].ScanCode && e.ToList()[0].Region == data[2].Region)), Times.Exactly(1));
+                It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 2
+                    && e.ToList()[0].ScanCode == data[2].ScanCode
+                    && e.ToList()[1].ScanCode == data[3].ScanCode)), Times.Exactly(1));
         }
 
         [TestMethod]
