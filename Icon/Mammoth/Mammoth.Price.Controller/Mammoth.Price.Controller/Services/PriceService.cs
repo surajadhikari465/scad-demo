@@ -1,15 +1,14 @@
 ﻿using Mammoth.Common.ControllerApplication.Http;
+using Mammoth.Common.ControllerApplication.Models;
 using Mammoth.Common.ControllerApplication.Services;
 using Mammoth.Common.DataAccess;
 using Mammoth.Logging;
 using Mammoth.Price.Controller.DataAccess.Models;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MoreLinq;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Mammoth.Common.ControllerApplication.Models;
 
 namespace Mammoth.Price.Controller.Services
 {
@@ -37,37 +36,36 @@ namespace Mammoth.Price.Controller.Services
 
         private void SendData(List<PriceEventModel> data, string uri, int eventTypeId)
         {
-            IEnumerable<PriceEventModel> filteredData = data.Where(e => e.EventTypeId == eventTypeId);
-            if (!filteredData.Any())
+            IEnumerable<PriceEventModel> filteredPriceData = data.Where(e => e.EventTypeId == eventTypeId);
+            if (!filteredPriceData.Any())
             {
                 return;
             }
 
-            HttpResponseMessage response = SendDataViaHttpClient(filteredData, uri);
+            HttpResponseMessage response = SendDataViaHttpClient(filteredPriceData, uri);
 
             // If passing records in bulk failed process one at a time.
             if (!response.IsSuccessStatusCode)
             {
-                logger.Error(String.Format("Error occurred when passing processing Price events. Processing each Price event one by one. URI : {0}. EventTypeId : {1}. Number of Price Events : {2}. Error : {3}.",
+                logger.Error(String.Format("Error occurred when passing processing Price events. Processing Price events in batches. URI : {0}. EventTypeId : {1}. Number of Price Events : {2}. Error : {3}.",
                     uri,
                     eventTypeId,
-                    filteredData.Count(),
+                    filteredPriceData.Count(),
                     response.ReasonPhrase));
 
-                // Send each record one at a time
-                foreach (var item in filteredData)
+                // Send records to web api in batches recursively
+                if (filteredPriceData.Count() > 1)
                 {
-                    var singleResponse = SendDataViaHttpClient(new[] { item }, uri);
-                    if (!singleResponse.IsSuccessStatusCode)
+                    var batches = filteredPriceData.Batch(filteredPriceData.Count() / 2);
+                    foreach (var batch in batches)
                     {
-                        logger.Error(String.Format("Error occurred when processing Price events. URI : {0}. EventTypeId: {1}. QueueId : {2}. Scan Code {3}. Error : {4}.",
-                            uri,
-                            eventTypeId,
-                            item.QueueId,
-                            item.ScanCode,
-                            response.ReasonPhrase));
-                        item.ErrorMessage = singleResponse.ReasonPhrase;
+                        SendData(batch.ToList(), uri, eventTypeId);
                     }
+                }
+                else
+                {
+                    // Set error message if there was one record sent and request failed
+                    data.First().ErrorMessage = response.ReasonPhrase;
                 }
             }
             else if (response.Content != null)
@@ -77,7 +75,7 @@ namespace Mammoth.Price.Controller.Services
                 {
                     foreach (var responseMessage in responseMessages)
                     {
-                        var matchingItems = filteredData.Where(item => item.ScanCode == responseMessage.Model.ScanCode && item.BusinessUnitId == responseMessage.Model.BusinessUnitId);
+                        var matchingItems = filteredPriceData.Where(item => item.ScanCode == responseMessage.Model.ScanCode && item.BusinessUnitId == responseMessage.Model.BusinessUnitId);
                         foreach (var matchingItem in matchingItems)
                         {
                             matchingItem.ErrorMessage = responseMessage.Error;
