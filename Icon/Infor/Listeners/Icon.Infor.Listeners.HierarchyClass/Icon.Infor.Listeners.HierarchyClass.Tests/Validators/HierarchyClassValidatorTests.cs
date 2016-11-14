@@ -205,7 +205,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
         }
 
         [TestMethod]
-        public void HierarchyClassModelValidator_TaxClassIsInvalidWithUnderscores_InvalidTaxClassError()
+        public void HierarchyClassModelValidator_TaxClassIsInvalidWithUnderscoreBetweenCodeAndName_InvalidTaxClassError()
         {
             // Given
             this.testHierarchyClass.HierarchyName = Hierarchies.Names.Tax;
@@ -230,7 +230,26 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
             this.testHierarchyClass.HierarchyClassName = "1212121 VALID TEST TAX CLASS NAME WITH NO TAX CODE";
             this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
             {
-                { TraitCodes.TaxAbbreviation, "1234567 Test Tax Abbrev !@"},
+                { TraitCodes.TaxAbbreviation, "1234567 Test Tax Abbrev <>"},
+                { TraitCodes.TaxRomance, "1234567 Test Tax Romance" }
+            };
+
+            PerformValidateCollectionWhenAndThenSteps(ValidationErrors.Codes.InvalidTaxAbbreviation,
+                ValidationErrors.Descriptions.InvalidTaxAbbreviation.GetFormattedValidationMessage(
+                    nameof(this.testHierarchyClass.HierarchyClassTraits),
+                    this.testHierarchyClass.HierarchyClassTraits[TraitCodes.TaxAbbreviation]));
+        }
+
+        [TestMethod]
+        public void HierarchyClassModelValidator_TaxAbbreviationIsInvalidWithGreaterThan50Characters_InvalidTaxClassError()
+        {
+            // Given
+            this.testHierarchyClass.HierarchyName = Hierarchies.Names.Tax;
+            this.testHierarchyClass.HierarchyLevelName = HierarchyLevelNames.Tax;
+            this.testHierarchyClass.HierarchyClassName = "1212121 VALID TEST TAX CLASS NAME WITH NO TAX CODE";
+            this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
+            {
+                { TraitCodes.TaxAbbreviation, "1234567 " + new string('a', 43) },
                 { TraitCodes.TaxRomance, "1234567 Test Tax Romance" }
             };
 
@@ -250,7 +269,26 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
             this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
             {
                 { TraitCodes.TaxAbbreviation, "1234567 Test Tax Abbrev"},
-                { TraitCodes.TaxRomance, "1234567 Invalid Tax Romance !@" }
+                { TraitCodes.TaxRomance, "1234567 Invalid Tax Romance <>" }
+            };
+
+            PerformValidateCollectionWhenAndThenSteps(ValidationErrors.Codes.InvalidTaxRomance,
+                ValidationErrors.Descriptions.InvalidTaxRomance.GetFormattedValidationMessage(
+                    nameof(this.testHierarchyClass.HierarchyClassTraits),
+                    this.testHierarchyClass.HierarchyClassTraits[TraitCodes.TaxRomance]));
+        }
+
+        [TestMethod]
+        public void HierarchyClassModelValidator_TaxRomanceIsInvalidWithGreaterThan150Characters_InvalidTaxClassError()
+        {
+            // Given
+            this.testHierarchyClass.HierarchyName = Hierarchies.Names.Tax;
+            this.testHierarchyClass.HierarchyLevelName = HierarchyLevelNames.Tax;
+            this.testHierarchyClass.HierarchyClassName = "1212121 VALID TEST TAX CLASS NAME WITH NO TAX CODE";
+            this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
+            {
+                { TraitCodes.TaxAbbreviation, "1234567 Test Tax Abbrev"},
+                { TraitCodes.TaxRomance, "1234567 " +  new string('a', 143)  }
             };
 
             PerformValidateCollectionWhenAndThenSteps(ValidationErrors.Codes.InvalidTaxRomance,
