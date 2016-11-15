@@ -52,6 +52,8 @@ namespace Icon.Infor.LoadTests
 
         public virtual void Run()
         {
+            this.testStopwatch.Reset();
+
             if (Configuration.TestRunTime.TotalSeconds > 0 && Configuration.PopulateTestDataInterval.TotalSeconds > 0)
             {
                 this.populateDataTimer.Interval = Configuration.PopulateTestDataInterval.TotalMilliseconds;
