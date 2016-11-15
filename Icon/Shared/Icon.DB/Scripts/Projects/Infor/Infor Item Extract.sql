@@ -321,6 +321,8 @@ SELECT
 		THEN 'Scale PLU (22000000000-29999900000)'
 		WHEN sctypename in ('2','3') AND scancodebig between 46000000001 and 46000099999
 		THEN 'Ingredient (46000000001-46000099999)'
+		WHEN sctypename in ('2','3') AND scancodebig between 48000000001 and 48000099999
+		THEN 'Ingredient Legacy (48000000001 - 48000099999)'
 		ELSE 'unknown'
 	END AS [Barcode Type],
 	sc.scanCode AS [Scan Code],
