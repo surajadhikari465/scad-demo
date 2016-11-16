@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Esb.Core.MessageBuilders
 {
-    public interface IMessageBuilder<T>
+    public interface IMessageBuilder<TRequest>
     {
-        string BuildMessage(IEnumerable<T> model);
+        string BuildMessage(TRequest request);
     }
 }
