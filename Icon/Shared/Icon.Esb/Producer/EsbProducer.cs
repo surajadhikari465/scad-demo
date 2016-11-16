@@ -12,9 +12,21 @@ namespace Icon.Esb.Producer
 
         public void Send(string message, Dictionary<string, string> messageProperties = null)
         {
-            TextMessage textMessage = session.CreateTextMessage();
-            textMessage.Text = message;
+            TextMessage textMessage = session.CreateTextMessage(message);
 
+            Send(textMessage, messageProperties);
+        }
+
+        public void Send(string message, string messageId, Dictionary<string, string> messageProperties = null)
+        {
+            TextMessage textMessage = session.CreateTextMessage(message);
+            textMessage.MessageID = messageId;
+
+            Send(textMessage, messageProperties);
+        }
+
+        private void Send(TextMessage textMessage, Dictionary<string, string> messageProperties = null)
+        {
             if (messageProperties != null)
             {
                 foreach (var property in messageProperties)

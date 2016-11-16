@@ -1,0 +1,24 @@
+﻿using Icon.Esb;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Esb.Core.EsbServices
+{
+    public interface IEsbService<TRequest>
+    {
+        /// <summary>
+        /// The settings of the connection to the ESB that this service is configured with.
+        /// </summary>
+        EsbConnectionSettings Settings { get; set; }
+
+        /// <summary>
+        /// Delivers the request to the ESB using the current EsbConnectionSettings.
+        /// </summary>
+        /// <param name="request">The request to send to the ESB.</param>
+        /// <returns>The response of the send to the ESB containing a status of whether the message was sent and the text of the message that was sent.</returns>
+        EsbServiceResponse Send(TRequest request);
+    }
+}
