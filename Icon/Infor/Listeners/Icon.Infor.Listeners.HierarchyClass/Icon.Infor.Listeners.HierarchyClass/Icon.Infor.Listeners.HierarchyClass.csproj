@@ -47,7 +47,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Esb.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Esb.Core.2016.10.21.1\lib\net45\Esb.Core.dll</HintPath>
+      <HintPath>..\packages\Esb.Core.2016.11.16.2\lib\net45\Esb.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentValidation, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -59,7 +63,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2016.10.21.2\lib\net45\Icon.Esb.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.2016.11.16.1\lib\net45\Icon.Esb.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -83,15 +87,15 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleInjector, Version=3.2.2.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.3.2.2\lib\net45\SimpleInjector.dll</HintPath>
+    <Reference Include="SimpleInjector, Version=3.2.7.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.3.2.7\lib\net45\SimpleInjector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -109,7 +113,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Topshelf, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Topshelf.4.0.2\lib\net452\Topshelf.dll</HintPath>
+      <HintPath>..\packages\Topshelf.4.0.3\lib\net452\Topshelf.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -120,6 +124,10 @@
     <Compile Include="Commands\ArchiveHierarchyClassesCommandHandler.cs" />
     <Compile Include="Commands\ArchiveMessageCommand.cs" />
     <Compile Include="Commands\ArchiveMessageCommandHandler.cs" />
+    <Compile Include="Commands\ArchiveVimHierarchyClassesCommand.cs" />
+    <Compile Include="Commands\ArchiveVimHierarchyClassesCommandHandler.cs" />
+    <Compile Include="Commands\ArchiveVimMessageCommand.cs" />
+    <Compile Include="Commands\ArchiveVimMessageCommandHandler.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesCommand.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesCommandHandler.cs" />
     <Compile Include="Commands\ValidateHierarchyClassesCommandHandler.cs" />
@@ -127,15 +135,24 @@
     <Compile Include="Constants\ApplicationErrors.cs" />
     <Compile Include="Constants\HierarchyConstants.cs" />
     <Compile Include="Constants\ValidationErrors.cs" />
+    <Compile Include="EsbService\HierarchyClassEsbService.cs" />
+    <Compile Include="EsbService\VimEsbConnectionSettings.cs" />
+    <Compile Include="EsbService\VimEsbConnectionFactory.cs" />
+    <Compile Include="EsbService\VimEsbProducer.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="HierarchyClassListener.cs" />
+    <Compile Include="MessageBuilders\HierarchyClassMessageBuilder.cs" />
     <Compile Include="MessageParsers\HierarchyClassMessageParser.cs" />
     <Compile Include="Models\HierarchyClassDataAccessModel.cs" />
-    <Compile Include="Models\HierarchyClassModel.cs" />
+    <Compile Include="Models\VimHierarchyClassModel.cs" />
+    <Compile Include="Models\VimMessageArchiveHierarchy.cs" />
+    <Compile Include="Requests\HierarchyClassEsbServiceRequest.cs" />
+    <Compile Include="Models\InforHierarchyClassModel.cs" />
     <Compile Include="Models\HierarchyClassTraitDataAccessModel.cs" />
-    <Compile Include="Models\MessageArchiveHierarchyClassModel.cs" />
+    <Compile Include="Models\InforMessageArchiveHierarchy.cs" />
     <Compile Include="Models\ValidateHierarchyClassesResultModel.cs" />
     <Compile Include="Models\ValidateHierarchyClassModel.cs" />
+    <Compile Include="Models\VimMessageHistory.cs" />
     <Compile Include="Notifier\HierarchyClassListenerNotifier.cs" />
     <Compile Include="Notifier\IHierarchyClassListenerNotifier.cs" />
     <Compile Include="Queries\GetTaxIdFromTaxCodeParameters.cs" />
@@ -145,6 +162,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IHierarchyClassService.cs" />
+    <Compile Include="Services\SendHierarchyClassesToVimService.cs" />
     <Compile Include="Validators\HierarchyClassModelValidator.cs" />
     <Compile Include="Validators\ICollectionValidator.cs" />
   </ItemGroup>

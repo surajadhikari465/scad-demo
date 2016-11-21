@@ -18,7 +18,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Notifier
             this.emailClient = emailClient;
         }
 
-        public void NotifyOfError(IEsbMessage message, List<HierarchyClassModel> hierarchyClassModelsWithErrors)
+        public void NotifyOfError(IEsbMessage message, List<InforHierarchyClassModel> hierarchyClassModelsWithErrors)
         {
             if (hierarchyClassModelsWithErrors.Count > 0)
             {

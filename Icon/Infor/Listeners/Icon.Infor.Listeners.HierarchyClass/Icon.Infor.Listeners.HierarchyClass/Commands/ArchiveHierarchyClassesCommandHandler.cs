@@ -1,4 +1,5 @@
-﻿using Icon.Common;
+﻿using FastMember;
+using Icon.Common;
 using Icon.Common.DataAccess;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using System;
@@ -17,10 +18,19 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
         {
             using (var sqlBulkCopy = new SqlBulkCopy(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString))
             {
-                sqlBulkCopy.DestinationTableName = "infor.MessageArchiveHierarchy";
-                sqlBulkCopy.WriteToServer(data.Models
-                    .Select(m => new MessageArchiveHierarchyClassModel(m))
-                    .ToDataTable());
+                using (var reader = ObjectReader.Create(data.Models.Select(hc => new InforMessageArchiveHierarchy(hc)),
+                    nameof(InforMessageArchiveHierarchy.MessageArchiveId),
+                    nameof(InforMessageArchiveHierarchy.HierarchyClassId),
+                    nameof(InforMessageArchiveHierarchy.HierarchyClassName),
+                    nameof(InforMessageArchiveHierarchy.HierarchyName),
+                    nameof(InforMessageArchiveHierarchy.InforMessageId),
+                    nameof(InforMessageArchiveHierarchy.Context),
+                    nameof(InforMessageArchiveHierarchy.ErrorCode),
+                    nameof(InforMessageArchiveHierarchy.ErrorDetails)))
+                {
+                    sqlBulkCopy.DestinationTableName = "infor.MessageArchiveHierarchy";
+                    sqlBulkCopy.WriteToServer(reader);
+                }
             }
         }
     }

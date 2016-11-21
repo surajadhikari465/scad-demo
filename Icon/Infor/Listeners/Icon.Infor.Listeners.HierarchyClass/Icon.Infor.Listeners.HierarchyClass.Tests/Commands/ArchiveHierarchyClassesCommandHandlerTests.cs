@@ -1,15 +1,11 @@
-﻿using Icon.Common.Context;
-using Icon.Framework;
+﻿using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Commands;
+using Icon.Infor.Listeners.HierarchyClass.Extensions;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
@@ -18,16 +14,16 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
     {
         private ArchiveHierarchyClassesCommandHandler commandHandler;
         private ArchiveHierarchyClassesCommand command;
-        private List<HierarchyClassModel> testHierarchyClasses;
-        private Guid testInforMessageId;
+        private List<InforHierarchyClassModel> testHierarchyClasses;
+        private Guid messageId;
 
         [TestInitialize]
         public void Initialize()
         {
             commandHandler = new ArchiveHierarchyClassesCommandHandler();
-            testHierarchyClasses = new List<HierarchyClassModel>();
+            testHierarchyClasses = new List<InforHierarchyClassModel>();
 
-            testInforMessageId = Guid.NewGuid();
+            messageId = Guid.NewGuid();
             command = new ArchiveHierarchyClassesCommand();
         }
 
@@ -37,7 +33,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             using (IconContext context = new IconContext())
             {
                 context.MessageArchiveHierarchy.RemoveRange(
-                    context.MessageArchiveHierarchy.Where(hc => hc.InforMessageId == testInforMessageId));
+                    context.MessageArchiveHierarchy.Where(hc => hc.InforMessageId == messageId));
                 context.SaveChanges();
             }
         }
@@ -46,12 +42,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void ArchiveHierarchyClasses_HierarchyClassesExist_ShouldAddArchiveRecordsForHierarchyClass()
         {
             //Given
-            testHierarchyClasses.AddRange(new List<HierarchyClassModel>
+            testHierarchyClasses.AddRange(new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel { HierarchyClassId = 1234, HierarchyName = Hierarchies.Names.Brands, HierarchyClassName = "Test 1", InforMessageId = testInforMessageId.ToString() },
-                new HierarchyClassModel { HierarchyClassId = 12345, HierarchyName = Hierarchies.Names.Brands, HierarchyClassName = "Test 2", InforMessageId = testInforMessageId.ToString()},
-                new HierarchyClassModel { HierarchyClassId = 123456, HierarchyName = Hierarchies.Names.Brands, HierarchyClassName = "Test 3", InforMessageId = testInforMessageId.ToString() },
-                new HierarchyClassModel { HierarchyClassId = 1234567, HierarchyName = Hierarchies.Names.Brands, HierarchyClassName = "Test 4", InforMessageId = testInforMessageId.ToString() }
+                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyName = Hierarchies.Names.Brands, HierarchyClassName = "Test 1", InforMessageId = messageId.ToString() },
+                new InforHierarchyClassModel { HierarchyClassId = 12345, HierarchyName = Hierarchies.Names.Brands, HierarchyClassName = "Test 2", InforMessageId = messageId.ToString()},
+                new InforHierarchyClassModel { HierarchyClassId = 123456, HierarchyName = Hierarchies.Names.Brands, HierarchyClassName = "Test 3", InforMessageId = messageId.ToString(), ErrorCode = "TestErrorCode", },
+                new InforHierarchyClassModel { HierarchyClassId = 1234567, HierarchyName = Hierarchies.Names.Brands, HierarchyClassName = "Test 4", InforMessageId = messageId.ToString() }
             });
             command.Models = testHierarchyClasses;
 
@@ -61,8 +57,19 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             //Then
             using (IconContext context = new IconContext())
             {
-                var messageArchiveHierarchyRecords = context.MessageArchiveHierarchy.Where(h => h.InforMessageId == testInforMessageId);
+                var messageArchiveHierarchyRecords = context.MessageArchiveHierarchy.Where(h => h.InforMessageId == messageId).ToList();
                 Assert.AreEqual(testHierarchyClasses.Count, messageArchiveHierarchyRecords.Count());
+
+                for (int i = 0; i < testHierarchyClasses.Count; i++)
+                {
+                    Assert.AreEqual(testHierarchyClasses[i].HierarchyClassId, messageArchiveHierarchyRecords[i].HierarchyClassId);
+                    Assert.AreEqual(testHierarchyClasses[i].HierarchyName, messageArchiveHierarchyRecords[i].HierarchyName);
+                    Assert.AreEqual(testHierarchyClasses[i].HierarchyClassName, messageArchiveHierarchyRecords[i].HierarchyClassName);
+                    Assert.AreEqual(testHierarchyClasses[i].InforMessageId, messageArchiveHierarchyRecords[i].InforMessageId.ToString());
+                    Assert.AreEqual(testHierarchyClasses[i].ToJson(), messageArchiveHierarchyRecords[i].Context);
+                    Assert.AreEqual(testHierarchyClasses[i].ErrorCode, messageArchiveHierarchyRecords[i].ErrorCode);
+                    Assert.AreEqual(testHierarchyClasses[i].ErrorDetails, messageArchiveHierarchyRecords[i].ErrorDetails);
+                }
             }
         }
     }

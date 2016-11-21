@@ -9,7 +9,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
 {
     public class ValidateHierarchyClassModel
     {
-        public ValidateHierarchyClassModel(HierarchyClassModel hierarchyClass)
+        public ValidateHierarchyClassModel(InforHierarchyClassModel hierarchyClass)
         {
             HierarchyClassId = hierarchyClass.HierarchyClassId;
             HierarchyClassName = hierarchyClass.HierarchyClassName;

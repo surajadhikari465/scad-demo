@@ -18,22 +18,23 @@ using Newtonsoft.Json;
 using Icon.Infor.Listeners.HierarchyClass.Constants;
 using Icon.Common.Context;
 using Icon.Framework;
+using Icon.Infor.Listeners.HierarchyClass.Extensions;
 
 namespace Icon.Infor.Listeners.HierarchyClass
 {
     public class HierarchyClassListener : ListenerApplication<HierarchyClassListener, ListenerApplicationSettings>
     {
-        private IMessageParser<IEnumerable<HierarchyClassModel>> messageParser;
+        private IMessageParser<IEnumerable<InforHierarchyClassModel>> messageParser;
         private IEnumerable<IHierarchyClassService> services;
-        private ICollectionValidator<HierarchyClassModel> validator;
+        private ICollectionValidator<InforHierarchyClassModel> validator;
         private IHierarchyClassListenerNotifier notifier;
         private IRenewableContext<IconContext> globalContext;
         private ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler;
         private ICommandHandler<ArchiveMessageCommand> archiveMessageCommandHandler;
 
         public HierarchyClassListener(
-            IMessageParser<IEnumerable<HierarchyClassModel>> messageParser,
-            ICollectionValidator<HierarchyClassModel> validator,
+            IMessageParser<IEnumerable<InforHierarchyClassModel>> messageParser,
+            ICollectionValidator<InforHierarchyClassModel> validator,
             IEnumerable<IHierarchyClassService> services,
             IRenewableContext<IconContext> globalContext,
             ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler,
@@ -57,7 +58,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
         {
-            IEnumerable<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>();
+            IEnumerable<InforHierarchyClassModel> hierarchyClasses = new List<InforHierarchyClassModel>();
             try
             {
                 hierarchyClasses = messageParser.ParseMessage(args.Message);
@@ -87,14 +88,14 @@ namespace Icon.Infor.Listeners.HierarchyClass
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(JsonConvert.SerializeObject(
+                    logger.Error(
                         new
                         {
                             ErrorCode = ApplicationErrors.Codes.UnableToArchiveMessage,
-                            ErrorDetails = ApplicationErrors.Descriptions.UnableToArchiveMessage,
-                            Message = args.Message,
-                            Exception = ex
-                        }));
+                            ErrorDescription = ApplicationErrors.Descriptions.UnableToArchiveMessage,
+                            Message = args.Message.ToString(),
+                            Exception = ex.ToString()
+                        }.ToJson());
                 }
                 this.AcknowledgeMessage(args);
                 this.globalContext.Refresh();

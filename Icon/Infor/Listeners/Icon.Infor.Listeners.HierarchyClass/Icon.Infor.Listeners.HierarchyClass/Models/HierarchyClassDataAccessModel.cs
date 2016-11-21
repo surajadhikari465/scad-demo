@@ -19,7 +19,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
 
         public HierarchyClassDataAccessModel() { }
 
-        public HierarchyClassDataAccessModel(HierarchyClassModel model)
+        public HierarchyClassDataAccessModel(InforHierarchyClassModel model)
         {
             HierarchyClassId = model.HierarchyClassId;
             HierarchyClassName = model.HierarchyClassName;

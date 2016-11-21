@@ -11,10 +11,11 @@ using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Constants;
 using Icon.Logging;
 using Newtonsoft.Json;
+using Icon.Infor.Listeners.HierarchyClass.Extensions;
 
 namespace Icon.Infor.Listeners.HierarchyClass
 {
-    public class HierarchyClassMessageParser : MessageParserBase<HierarchyType, IEnumerable<HierarchyClassModel>>
+    public class HierarchyClassMessageParser : MessageParserBase<HierarchyType, IEnumerable<InforHierarchyClassModel>>
     {
         private ILogger<HierarchyClassMessageParser> logger;
 
@@ -23,11 +24,10 @@ namespace Icon.Infor.Listeners.HierarchyClass
             this.logger = logger;
         }
 
-        public override IEnumerable<HierarchyClassModel> ParseMessage(IEsbMessage message)
+        public override IEnumerable<InforHierarchyClassModel> ParseMessage(IEsbMessage message)
         {
             try
             {
-
                 var hierarchy = base.DeserializeMessage(message);
 
                 var inforMessageId = message.GetProperty("IconMessageID");
@@ -36,13 +36,13 @@ namespace Icon.Infor.Listeners.HierarchyClass
                 var hierarchyName = hierarchy.name;
                 var hierarchyLevelName = hierarchy.prototype.hierarchyLevelName;
 
-                List<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>();
+                List<InforHierarchyClassModel> hierarchyClasses = new List<InforHierarchyClassModel>();
 
                 foreach (var hierarchyClass in hierarchy.@class)
                 {
                     try
                     {
-                        hierarchyClasses.Add(new HierarchyClassModel
+                        hierarchyClasses.Add(new InforHierarchyClassModel
                         {
                             Action = hierarchyClass.Action,
                             HierarchyClassId = int.Parse(hierarchyClass.id),
@@ -61,7 +61,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
                     }
                     catch (Exception ex)
                     {
-                        logger.Error(JsonConvert.SerializeObject(
+                        logger.Error(
                             new
                             {
                                 ErrorCode = ApplicationErrors.Codes.UnableToParseHierarchyClass,
@@ -69,7 +69,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
                                 InforMessageId = message.GetProperty("IconMessageID"),
                                 HierarchyClass = hierarchyClass,
                                 Exception = ex
-                            }));
+                            }.ToJson());
                     }
                 }
 

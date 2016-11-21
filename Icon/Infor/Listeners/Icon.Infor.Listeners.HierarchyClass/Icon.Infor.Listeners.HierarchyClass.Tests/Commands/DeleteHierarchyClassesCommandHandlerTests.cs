@@ -69,7 +69,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             context.HierarchyClass.AddRange(hierarchyClasses);
             context.SaveChanges();
 
-            command.HierarchyClasses = hierarchyClasses.Select(hc => new HierarchyClassModel
+            command.HierarchyClasses = hierarchyClasses.Select(hc => new InforHierarchyClassModel
             {
                 HierarchyClassId = hc.hierarchyClassID,
                 HierarchyName = Hierarchies.Names.Brands
@@ -91,11 +91,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         {
             //Given
             var maxId = context.HierarchyClass.Max(hc => hc.hierarchyClassID);
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel { HierarchyClassId = (maxId + 1) },
-                new HierarchyClassModel { HierarchyClassId = (maxId + 2) },
-                new HierarchyClassModel { HierarchyClassId = (maxId + 3) }
+                new InforHierarchyClassModel { HierarchyClassId = (maxId + 1) },
+                new InforHierarchyClassModel { HierarchyClassId = (maxId + 2) },
+                new InforHierarchyClassModel { HierarchyClassId = (maxId + 3) }
             };
 
             //When
@@ -134,7 +134,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             context.HierarchyClass.AddRange(hierarchyClasses);
             context.SaveChanges();
 
-            command.HierarchyClasses = hierarchyClasses.Select(hc => new HierarchyClassModel
+            command.HierarchyClasses = hierarchyClasses.Select(hc => new InforHierarchyClassModel
             {
                 HierarchyClassId = hc.hierarchyClassID,
                 HierarchyName = Hierarchies.Names.Brands

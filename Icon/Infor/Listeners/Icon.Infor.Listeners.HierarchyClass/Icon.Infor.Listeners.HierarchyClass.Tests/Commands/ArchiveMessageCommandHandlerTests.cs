@@ -23,7 +23,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         private IconContext context;
         private DbContextTransaction transaction;
         private Mock<IEsbMessage> mockEsbMessage;
-        private Guid testInforMessageId;
+        private Guid messageId;
 
         [TestInitialize]
         public void Initialize()
@@ -37,9 +37,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             commandHandler = new ArchiveMessageCommandHandler(mockGlobalContext.Object);
             command = new ArchiveMessageCommand();
 
-            testInforMessageId = Guid.NewGuid();
+            messageId = Guid.NewGuid();
             mockEsbMessage = new Mock<IEsbMessage>();
-            mockEsbMessage.Setup(m => m.GetProperty("IconMessageID")).Returns(testInforMessageId.ToString());
+            mockEsbMessage.Setup(m => m.GetProperty("IconMessageID")).Returns(messageId.ToString());
 
             command.Message = mockEsbMessage.Object;
         }
@@ -56,7 +56,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             commandHandler.Execute(command);
 
             //Then
-            var messageHistory = context.InforMessageHistory.Single(mh => mh.InforMessageId == testInforMessageId);
+            var messageHistory = context.InforMessageHistory.Single(mh => mh.InforMessageId == messageId);
             Assert.IsNotNull(messageHistory);
             Assert.AreEqual(MessageTypes.InforHierarchy, messageHistory.MessageTypeId);
             Assert.AreEqual(MessageStatusTypes.Consumed, messageHistory.MessageStatusId);

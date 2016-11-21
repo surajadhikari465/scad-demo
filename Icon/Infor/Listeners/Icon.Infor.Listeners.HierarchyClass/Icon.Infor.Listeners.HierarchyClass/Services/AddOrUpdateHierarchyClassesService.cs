@@ -17,7 +17,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             this.addOrUpdateHierarchyClassesCommandHandler = addOrUpdateHierarchyClassesCommandHandler;
         }
 
-        public void ProcessHierarchyClassMessages(IEnumerable<HierarchyClassModel> hierarchyClasses)
+        public void ProcessHierarchyClassMessages(IEnumerable<InforHierarchyClassModel> hierarchyClasses)
         {
             var addUpdateMessages = GetAddOrUpdateMessages(hierarchyClasses);
 
@@ -28,7 +28,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             }
         }
 
-        private IEnumerable<HierarchyClassModel> GetAddOrUpdateMessages(IEnumerable<HierarchyClassModel> hierarchyClasses)
+        private IEnumerable<InforHierarchyClassModel> GetAddOrUpdateMessages(IEnumerable<InforHierarchyClassModel> hierarchyClasses)
         {
             return hierarchyClasses.Where(hc => hc.Action == ActionEnum.AddOrUpdate && hc.ErrorCode == null);
         }

@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Validators
 {
-    public class HierarchyClassModelValidator : AbstractValidator<HierarchyClassModel>, ICollectionValidator<HierarchyClassModel>
+    public class HierarchyClassModelValidator : AbstractValidator<InforHierarchyClassModel>, ICollectionValidator<InforHierarchyClassModel>
     {
         private ICommandHandler<ValidateHierarchyClassesCommand> validateHierarchyClassesCommandHandler;
 
@@ -270,7 +270,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Validators
             return int.TryParse(id, out result);
         }
 
-        public void ValidateCollection(IEnumerable<HierarchyClassModel> collection)
+        public void ValidateCollection(IEnumerable<InforHierarchyClassModel> collection)
         {
             foreach (var hierarchyClass in collection)
             {

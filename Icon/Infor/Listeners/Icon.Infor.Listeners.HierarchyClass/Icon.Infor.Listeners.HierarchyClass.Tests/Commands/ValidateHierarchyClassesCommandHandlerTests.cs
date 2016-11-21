@@ -32,7 +32,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             mockGlobalContext.SetupGet(m => m.Context).Returns(context);
 
             commandHandler = new ValidateHierarchyClassesCommandHandler(mockGlobalContext.Object);
-            command = new ValidateHierarchyClassesCommand { HierarchyClasses = new List<HierarchyClassModel>() };
+            command = new ValidateHierarchyClassesCommand { HierarchyClasses = new List<InforHierarchyClassModel>() };
         }
 
         [TestCleanup]
@@ -47,9 +47,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void ValidateHierarchyClasses_NoDuplicates_NoError()
         {
             //Given
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Brands, HierarchyLevelName = HierarchyLevelNames.Brand }
+                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Brands, HierarchyLevelName = HierarchyLevelNames.Brand }
             };
 
             //When
@@ -70,9 +70,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 hierarchyLevel = HierarchyLevels.Tax
             });
             context.SaveChanges();
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel
+                new InforHierarchyClassModel
                 {
                     HierarchyClassId = hierarchyClass.hierarchyClassID,
                     HierarchyClassName = "Add Or Update Hierarchy Class",
@@ -94,9 +94,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void ValidateHierarchyClasses_DuplicateBrand_DuplicateHierarchyClassError()
         {
             //Given
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Brands, HierarchyLevelName = HierarchyLevelNames.Brand }
+                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Brands, HierarchyLevelName = HierarchyLevelNames.Brand }
             };
             context.HierarchyClass.Add(new Framework.HierarchyClass
             {
@@ -119,9 +119,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void ValidateHierarchyClasses_DuplicateMerchandise_DuplicateHierarchyClassError()
         {
             //Given
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Merchandise, HierarchyLevelName = HierarchyLevelNames.Segment }
+                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Merchandise, HierarchyLevelName = HierarchyLevelNames.Segment }
             };
             context.HierarchyClass.Add(new Framework.HierarchyClass
             {
@@ -144,9 +144,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void ValidateHierarchyClasses_DuplicateTax_DuplicateHierarchyClassError()
         {
             //Given
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Tax, HierarchyLevelName = HierarchyLevelNames.Tax }
+                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Tax, HierarchyLevelName = HierarchyLevelNames.Tax }
             };
             context.HierarchyClass.Add(new Framework.HierarchyClass
             {
@@ -169,9 +169,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void ValidateHierarchyClasses_NoDuplicateSubBrickCode_NoError()
         {
             //Given
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel
+                new InforHierarchyClassModel
                 {
                     HierarchyClassId = 1234,
                     HierarchyClassName = "Duplicate Test",
@@ -214,9 +214,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             });
             context.SaveChanges();
 
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel
+                new InforHierarchyClassModel
                 {
                     HierarchyClassId = 1234,
                     HierarchyClassName = "Duplicate Test 2",

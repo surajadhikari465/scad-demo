@@ -548,6 +548,8 @@
     <None Include="Scripts\PopulateData\Release\AlignIRMABrandsWithIconBrands.sql" />
     <None Include="Scripts\PopulateData\Release\AddFinancialHierarchyToItemHierarchyClass.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdateIngredientScanCodesToScalePLUScanCodeType.sql" />
+    <Build Include="vim\Tables\MessageArchiveHierarchy.sql" />
+    <Build Include="vim\Tables\MessageHistory.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -630,11 +632,13 @@
     <Build Include="infor\Stored Procedures\HierarchyClassAddOrUpdate.sql" />
     <None Include="Scripts\PopulateData\Release\RetentionPolicyMammothChangeQueueHistory.sql" />
     <None Include="Scripts\PopulateData\Release\AddInforProductMessageType.sql" />
-    <None Include="Scripts\PopulateData\Release\Add Financial Hierarchy Code to Sub Teams.sql" />
+    <None Include="Scripts\PopulateData\Release\AddFinancialHierarchyCodeToSubTeams.sql" />
     <None Include="Icon.DB.publish.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Scripts\PopulateData\Release\InsertInforErrors.sql" />
+    <None Include="Scripts\PopulateData\Release\InsertInforErrors.sql">
+      <CopyToOutputDirectory>DoNotCopy</CopyToOutputDirectory>
+    </None>
     <None Include="Scripts\PopulateData\Release\InsertInforHierarchyMessageType.sql" />
     <Build Include="infor\User Defined Types\ValidateHierarchyClassType.sql" />
     <None Include="Scripts\PopulateData\Release\InsertInforHierarchyClassErrors.sql" />
@@ -650,6 +654,7 @@
     <None Include="Scripts\PopulateData\Release\AddBrandDeleteEventType.sql" />
     <None Include="Scripts\PopulateData\Release\FixPackageUnitTraitPattern.sql" />
     <None Include="Scripts\PopulateData\Release\FixTaxAbbreviationAndTaxRomanceTraitPattern.sql" />
+    <None Include="Scripts\PopulateData\Release\AddVimArchiveTablesToRetentionPolicy.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

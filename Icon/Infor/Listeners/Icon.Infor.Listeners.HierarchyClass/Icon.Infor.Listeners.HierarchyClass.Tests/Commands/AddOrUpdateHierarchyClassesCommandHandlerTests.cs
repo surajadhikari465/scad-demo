@@ -159,7 +159,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         }
 
         private void AddOrUpdateHierarchyClasses_HierarchyClassDoesNotExist_ShouldAddHierarchyClasses(
-            HierarchyClassModel testModel,
+            InforHierarchyClassModel testModel,
             int hierarchyLevel,
             int expectedNumberOfEvents,
             int expectedNumberOfMessages)
@@ -205,7 +205,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         }
 
         private void AddOrUpdateHierarchyClasses_HierarchyClassDoesExist_ShouldUpdateHierarchyClass(
-            HierarchyClassModel testModel,
+            InforHierarchyClassModel testModel,
             int hierarchyLevel,
             string traitCode,
             int expectedNumberOfTraits,
@@ -272,9 +272,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             }
         }
 
-        private HierarchyClassModel AddBrandHierarhyClassModel()
+        private InforHierarchyClassModel AddBrandHierarhyClassModel()
         {
-            var newHierarchyClassModel = new HierarchyClassModel
+            var newHierarchyClassModel = new InforHierarchyClassModel
             {
                 HierarchyClassId = 87654321,
                 HierarchyClassName = "Test HierarchyClass",
@@ -286,7 +286,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                     { Traits.Codes.BrandAbbreviation, "Test HierarchyClass" }
                 }
             };
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
                 newHierarchyClassModel
             };
@@ -296,9 +296,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             return newHierarchyClassModel;
         }
 
-        private HierarchyClassModel AddTaxHierarhyClassModel()
+        private InforHierarchyClassModel AddTaxHierarhyClassModel()
         {
-            var newHierarchyClassModel = new HierarchyClassModel
+            var newHierarchyClassModel = new InforHierarchyClassModel
             {
                 HierarchyClassId = 8765432,
                 HierarchyClassName = "Test HierarchyClass",
@@ -310,7 +310,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                     { Traits.Codes.TaxAbbreviation, "Test HierarchyClass" }
                 }
             };
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
                 newHierarchyClassModel
             };
@@ -320,9 +320,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             return newHierarchyClassModel;
         }
 
-        private HierarchyClassModel AddMerchHierarhyClassModel()
+        private InforHierarchyClassModel AddMerchHierarhyClassModel()
         {
-            var newHierarchyClassModel = new HierarchyClassModel
+            var newHierarchyClassModel = new InforHierarchyClassModel
             {
                 HierarchyClassId = 87654322,
                 HierarchyClassName = "Test HierarchyClass",
@@ -331,7 +331,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 HierarchyLevelName = HierarchyLevelNames.Segment,
                 HierarchyClassTraits = new Dictionary<string, string>()
             };
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
                 newHierarchyClassModel
             };
@@ -341,9 +341,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             return newHierarchyClassModel;
         }
 
-        private HierarchyClassModel AddFinancialHierarhyClassModel()
+        private InforHierarchyClassModel AddFinancialHierarhyClassModel()
         {
-            var newHierarchyClassModel = new HierarchyClassModel
+            var newHierarchyClassModel = new InforHierarchyClassModel
             {
                 HierarchyClassId = 87654323,
                 HierarchyClassName = "Test Financial HierarchyClass (1234)",
@@ -352,7 +352,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 HierarchyLevelName = HierarchyLevelNames.Financial,
                 HierarchyClassTraits = new Dictionary<string, string>()
             };
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
                 newHierarchyClassModel
             };
@@ -362,9 +362,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             return newHierarchyClassModel;
         }
 
-        private HierarchyClassModel AddNationalHierarhyClassModel()
+        private InforHierarchyClassModel AddNationalHierarhyClassModel()
         {
-            var newHierarchyClassModel = new HierarchyClassModel
+            var newHierarchyClassModel = new InforHierarchyClassModel
             {
                 HierarchyClassId = 87654323,
                 HierarchyClassName = "Test National HierarchyClass",
@@ -376,7 +376,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                     { Traits.Codes.NationalClassCode, "Test National HierarchyClass" }
                 }
             };
-            command.HierarchyClasses = new List<HierarchyClassModel>
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
                 newHierarchyClassModel
             };

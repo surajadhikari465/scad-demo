@@ -27,20 +27,20 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         public void ProcessHierarchyClassMessages_DifferentTypesOfActions_ShouldOnlyProcessAddOrUpdateHierarchyClass()
         {
             //Given
-            List<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>
+            List<InforHierarchyClassModel> hierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new HierarchyClassModel { Action = ActionEnum.AddOrUpdate },
-                new HierarchyClassModel { Action = ActionEnum.Delete },
-                new HierarchyClassModel { Action = ActionEnum.AddOrUpdate },
-                new HierarchyClassModel { Action = ActionEnum.Delete },
-                new HierarchyClassModel { Action = ActionEnum.AddOrUpdate },
-                new HierarchyClassModel { Action = ActionEnum.Delete },
-                new HierarchyClassModel { Action = ActionEnum.AddOrUpdate },
-                new HierarchyClassModel { Action = ActionEnum.Delete },
-                new HierarchyClassModel { Action = ActionEnum.AddOrUpdate },
-                new HierarchyClassModel { Action = ActionEnum.Delete },
-                new HierarchyClassModel { Action = ActionEnum.AddOrUpdate },
-                new HierarchyClassModel { Action = ActionEnum.Delete }
+                new InforHierarchyClassModel { Action = ActionEnum.AddOrUpdate },
+                new InforHierarchyClassModel { Action = ActionEnum.Delete },
+                new InforHierarchyClassModel { Action = ActionEnum.AddOrUpdate },
+                new InforHierarchyClassModel { Action = ActionEnum.Delete },
+                new InforHierarchyClassModel { Action = ActionEnum.AddOrUpdate },
+                new InforHierarchyClassModel { Action = ActionEnum.Delete },
+                new InforHierarchyClassModel { Action = ActionEnum.AddOrUpdate },
+                new InforHierarchyClassModel { Action = ActionEnum.Delete },
+                new InforHierarchyClassModel { Action = ActionEnum.AddOrUpdate },
+                new InforHierarchyClassModel { Action = ActionEnum.Delete },
+                new InforHierarchyClassModel { Action = ActionEnum.AddOrUpdate },
+                new InforHierarchyClassModel { Action = ActionEnum.Delete }
             };
 
             //When

@@ -9,6 +9,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
     public class AddOrUpdateHierarchyClassesCommand
     {
-        public IEnumerable<HierarchyClassModel> HierarchyClasses { get; set; }
+        public IEnumerable<InforHierarchyClassModel> HierarchyClasses { get; set; }
     }
 }

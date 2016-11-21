@@ -6,6 +6,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Notifier
 {
     public interface IHierarchyClassListenerNotifier
     {
-        void NotifyOfError(IEsbMessage message, List<HierarchyClassModel> hierarchyClassModelsWithErrors);
+        void NotifyOfError(IEsbMessage message, List<InforHierarchyClassModel> hierarchyClassModelsWithErrors);
     }
 }

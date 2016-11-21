@@ -15,6 +15,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Constants
             public const string DeleteHierarchyClassError = "DeleteHierarchyClassError";
             public const string AddOrUpdateHierarchyClassError = "AddOrUpdateHierarchyClassError";
             public const string UnableToParseHierarchyClass = "UnableToParseHierarchyClass";
+            public const string UnableToArchiveVimMessage = "UnableToArchiveVimMessage";
+            public const string UnableToSendHierarchyClassesToVim = "UnableToSendHierarchyClassesToVim";
         }
         public static class Descriptions
         {
@@ -23,6 +25,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Constants
             public const string DeleteHierarchyClassError = "An unexpected error occurred which caused a failure to delete this Hierarchy Class.";
             public const string AddOrUpdateHierarchyClassError = "An unexpected error occurred which caused a failure to add or update this Hierarchy Class.";
             public const string UnableToParseHierarchyClass = "Unable to parse hierarchy class from message";
+            public const string UnableToArchiveVimMessage = "Error occurred while trying to archive the message sent to VIM.";
+            public const string UnableToSendHierarchyClassesToVim = "Error occurred while trying to send hierarchy classes from Infor to VIM";
         }
     }
 }

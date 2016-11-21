@@ -4,7 +4,7 @@ using System;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Models
 {
-    public class HierarchyClassModel
+    public class InforHierarchyClassModel
     {
         public ActionEnum Action { get; set; }
         public int HierarchyClassId { get; set; }
@@ -16,6 +16,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
         public string ErrorCode { get; set; }
         public string ErrorDetails { get; set; }
         public string InforMessageId { get; set; }
-        public DateTime MessageParseTime { get; internal set; }
+        public DateTime MessageParseTime { get; set; }
     }
 }

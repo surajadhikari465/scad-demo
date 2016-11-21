@@ -20,7 +20,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
             this.deleteHierarchyClassesCommandHandler = deleteHierarchyClassesCommandHandler;
         }
 
-        public void ProcessHierarchyClassMessages(IEnumerable<HierarchyClassModel> hierarchyClasses)
+        public void ProcessHierarchyClassMessages(IEnumerable<InforHierarchyClassModel> hierarchyClasses)
         {
             var deleteMessages = GetDeleteMessages(hierarchyClasses);
 
@@ -31,7 +31,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
             }
         }
 
-        private IEnumerable<HierarchyClassModel> GetDeleteMessages(IEnumerable<HierarchyClassModel> hierarchyClasses)
+        private IEnumerable<InforHierarchyClassModel> GetDeleteMessages(IEnumerable<InforHierarchyClassModel> hierarchyClasses)
         {
             return hierarchyClasses.Where(h => h.Action == ActionEnum.Delete);
         }

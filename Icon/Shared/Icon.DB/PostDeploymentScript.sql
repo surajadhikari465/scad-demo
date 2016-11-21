@@ -16,3 +16,13 @@ Post-Deployment Script Template
 --:r .\Scripts\PopulateData\Release\IconPopulateData.sql
 :r .\Scripts\PopulateData\Release\IconTimezonesForPos.sql
 :r .\Scripts\PopulateData\Release\PBI17488_RetentionPolicyIRMAAppLog.sql
+:r .\Scripts\AddFinancialHierarchyCodeToSubTeams.sql
+:r .\Scripts\AddInforProductMessageType.sql
+:r .\Scripts\FixPackageUnitTraitPattern.sql
+:r .\Scripts\FixSupplementsAndSpiritSubTeams.sql
+:r .\Scripts\FixTaxAbbreviationAndTaxRomanceTraitPattern.sql
+:r .\Scripts\InsertInforErrors.sql
+:r .\Scripts\InsertInforHierarchyClassErrors.sql
+:r .\Scripts\InsertInforHierarchyMessageType.sql
+:r .\Scripts\InsertInforHierarchyMismatchError.sql
+:r .\Scripts\RetentionPolicyInforArchiveTables.sql

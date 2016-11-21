@@ -1,5 +1,6 @@
 ﻿using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Extensions
     public static class Extensions
     {
         public static IEnumerable<HierarchyClassDataAccessModel> ToDataAccessModels(
-            this IEnumerable<HierarchyClassModel> hierarchyClasses)
+            this IEnumerable<InforHierarchyClassModel> hierarchyClasses)
         {
             try
             {
@@ -52,6 +53,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Extensions
         {
             TValue value;
             return dictionary.TryGetValue(key, out value) ? value : defaultValue;
+        }
+
+        public static string ToJson(this object o)
+        {
+            return JsonConvert.SerializeObject(o);
         }
     }
 }

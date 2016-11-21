@@ -23,7 +23,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
     public class HierarchyClassListenerTests
     {
         private HierarchyClassListener listener;
-        private Mock<IMessageParser<IEnumerable<HierarchyClassModel>>> mockMessageParser;
+        private Mock<IMessageParser<IEnumerable<InforHierarchyClassModel>>> mockMessageParser;
         private Mock<IHierarchyClassService> mockService;
         private ListenerApplicationSettings listenerApplicationSettings;
         private EsbConnectionSettings esbConnectionSettings;
@@ -31,7 +31,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
         private Mock<IEmailClient> mockEmailClient;
         private Mock<ILogger<HierarchyClassListener>> mockLogger;
         private Mock<IHierarchyClassListenerNotifier> mockNotifier;
-        private Mock<ICollectionValidator<HierarchyClassModel>> mockValidator;
+        private Mock<ICollectionValidator<InforHierarchyClassModel>> mockValidator;
         private Mock<ICommandHandler<ArchiveHierarchyClassesCommand>> mockArchiveHierarchyClassesCommandHandler;
         private Mock<ICommandHandler<ArchiveMessageCommand>> mockArchiveMessageCommandHandler;
         private Mock<IRenewableContext<IconContext>> mockGlobalContext;
@@ -42,7 +42,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
         [TestInitialize]
         public void Initialize()
         {
-            mockMessageParser = new Mock<IMessageParser<IEnumerable<HierarchyClassModel>>>();
+            mockMessageParser = new Mock<IMessageParser<IEnumerable<InforHierarchyClassModel>>>();
             mockService = new Mock<IHierarchyClassService>();
             listenerApplicationSettings = new ListenerApplicationSettings();
             esbConnectionSettings = new EsbConnectionSettings();
@@ -50,7 +50,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
             mockEmailClient = new Mock<IEmailClient>();
             mockLogger = new Mock<ILogger<HierarchyClassListener>>();
             mockNotifier = new Mock<IHierarchyClassListenerNotifier>();
-            mockValidator = new Mock<ICollectionValidator<HierarchyClassModel>>();
+            mockValidator = new Mock<ICollectionValidator<InforHierarchyClassModel>>();
             mockArchiveHierarchyClassesCommandHandler = new Mock<ICommandHandler<ArchiveHierarchyClassesCommand>>();
             mockArchiveMessageCommandHandler = new Mock<ICommandHandler<ArchiveMessageCommand>>();
             mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
@@ -79,14 +79,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
         {
             //Given
             mockMessageParser.Setup(m => m.ParseMessage(mockMessage.Object))
-                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel() });
+                .Returns(new List<InforHierarchyClassModel> { new InforHierarchyClassModel() });
             esbConnectionSettings.SessionMode = SessionMode.ClientAcknowledge;
 
             //When
             listener.HandleMessage(null, args);
 
             //Then
-            mockService.Verify(m => m.ProcessHierarchyClassMessages(It.IsAny<IEnumerable<HierarchyClassModel>>()), Times.Once);
+            mockService.Verify(m => m.ProcessHierarchyClassMessages(It.IsAny<IEnumerable<InforHierarchyClassModel>>()), Times.Once);
             mockMessage.Verify(m => m.Acknowledge(), Times.Once);
         }
     }

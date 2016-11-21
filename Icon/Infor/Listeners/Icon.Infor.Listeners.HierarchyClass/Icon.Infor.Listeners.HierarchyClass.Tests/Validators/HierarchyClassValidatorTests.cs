@@ -19,16 +19,16 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
     [TestClass]
     public class HierarchyClassValidatorTests
     {
-        private List<HierarchyClassModel> testHierarchyClasses;
-        private HierarchyClassModel testHierarchyClass;
+        private List<InforHierarchyClassModel> testHierarchyClasses;
+        private InforHierarchyClassModel testHierarchyClass;
         private HierarchyClassModelValidator validator;
         private Mock<ICommandHandler<ValidateHierarchyClassesCommand>> mockValidateHierarchyClassesCommandHandler;
         
         [TestInitialize]
         public void InitializeTests()
         {
-            this.testHierarchyClasses = new List<HierarchyClassModel>();
-            this.testHierarchyClass = new HierarchyClassModel
+            this.testHierarchyClasses = new List<InforHierarchyClassModel>();
+            this.testHierarchyClass = new InforHierarchyClassModel
             {
                 HierarchyClassId = 1,
                 HierarchyClassName = "Test HierarchyClass Unit Test",
@@ -770,11 +770,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
             }
         }
 
-        private HierarchyClassModel CopyTestHierarchyClass(Action<HierarchyClassModel> setter = null)
+        private InforHierarchyClassModel CopyTestHierarchyClass(Action<InforHierarchyClassModel> setter = null)
         {
-            HierarchyClassModel newTestHierarchyClassModel = new HierarchyClassModel();
+            InforHierarchyClassModel newTestHierarchyClassModel = new InforHierarchyClassModel();
 
-            foreach (var property in typeof(HierarchyClassModel).GetProperties())
+            foreach (var property in typeof(InforHierarchyClassModel).GetProperties())
             {
                 property.SetValue(
                     newTestHierarchyClassModel,

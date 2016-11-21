@@ -5,6 +5,6 @@ namespace Icon.Infor.Listeners.HierarchyClass
 {
     public interface IHierarchyClassService
     {
-        void ProcessHierarchyClassMessages(IEnumerable<HierarchyClassModel> hierarchyClasses);
+        void ProcessHierarchyClassMessages(IEnumerable<InforHierarchyClassModel> hierarchyClasses);
     }
 }
