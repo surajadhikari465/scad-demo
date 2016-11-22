@@ -309,10 +309,16 @@ SELECT
 		THEN 'Coupon (300000-399999)'
 		WHEN sctypename in ('2','3') AND scancodebig between 400000 and 499999
 		THEN 'Aloha (400000-499999)'
+		WHEN sctypename in ('2','3') AND scancodebig between 500000 and 602999
+		THEN 'Reserved 500000-602999'
 		WHEN sctypename in ('2','3') AND scancodebig between 603000 and 604999
 		THEN 'WTO Produce (603000-604999)'
+		WHEN sctypename in ('2','3') AND scancodebig between 605000 and 692999
+		THEN 'Reserved 605000-692999'
 		WHEN sctypename in ('2','3') AND scancodebig between 693000 and 694999
 		THEN 'WTO Organic Produce (693000-694999)'
+		WHEN sctypename in ('2','3') AND scancodebig between 695000 and 999999
+		THEN 'Reserved 695000-999999'
 		WHEN sctypename in ('2','3') AND scancodebig between 20000000000 and 20999900000
 		THEN 'Scale PLU (20000000000-20999900000)'
 		WHEN sctypename in ('2','3') AND scancodebig between 21000000000 and 21999900000
@@ -429,7 +435,11 @@ SELECT
 		WHEN ISNULL(val.traitValue, '') = ''
 			THEN '"No"'
 		ELSE '"Yes"'
-	END AS [Validated]
+	END AS [Validated],
+	'ICON' AS [Created By],
+	CASE WHEN ISNULL(ins.traitValue, '') = '' THEN 'NULL' ELSE '"' + FORMAT(CAST(ins.traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US') + '"' END AS [Created Date],
+	CASE WHEN ISNULL(usr.traitValue, '') = '' THEN 'NULL' ELSE '"' + usr.traitValue + '"' END AS [Modified By],
+	CASE WHEN ISNULL([mod].traitValue, '') = '' THEN 'NULL' ELSE '"' + FORMAT(CAST([mod].traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US') + '"' END AS [Modified Date]
 FROM scancode sc
 LEFT JOIN ItemSignAttribute ISA ON sc.itemID = isa.ItemID
 LEFT JOIN ORG ON isa.OrganicAgencyId = org.HierarchyClassID
@@ -463,4 +473,7 @@ LEFT JOIN EcoScaleRating esr		on	isa.EcoScaleRatingId = esr.EcoScaleRatingId
 LEFT JOIN SeafoodFreshOrFrozen sff	on	isa.SeafoodFreshOrFrozenId = sff.SeafoodFreshOrFrozenId
 LEFT JOIN SeafoodCatchType sfct	on	isa.SeafoodCatchTypeId = sfct.SeafoodCatchTypeId
 LEFT JOIN NTS ON sc.itemID = NTS.itemID
+LEFT JOIN [mod] ON sc.itemid = [mod].itemid
+LEFT JOIN usr ON sc.itemID = usr.itemID
+LEFT JOIN ins on sc.itemID = ins.itemID
 ORDER BY sc.scanCode
