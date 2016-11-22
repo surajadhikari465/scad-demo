@@ -53,6 +53,7 @@ namespace Icon.Infor.LoadTests
         public virtual void Run()
         {
             this.testStopwatch.Reset();
+            this.populateDataTimer.Elapsed -= PopulateTestDataElapsedCallback;
 
             if (Configuration.TestRunTime.TotalSeconds > 0 && Configuration.PopulateTestDataInterval.TotalSeconds > 0)
             {
