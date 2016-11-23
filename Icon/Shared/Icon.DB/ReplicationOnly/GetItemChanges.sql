@@ -19,7 +19,6 @@ AS
 	DECLARE @merchId int;
 	DECLARE @taxId int;
 	DECLARE @financialId int;
-	DECLARE @financialMapId int;
 	DECLARE @validationDate int;
 	DECLARE @subBrickCode int;
 	DECLARE @posDeptNoId int;
@@ -37,7 +36,6 @@ AS
 	SET @tare				= (SELECT traitID FROM Trait WHERE traitDesc = 'POS Scale Tare');
 	SET @retailSize			= (SELECT traitID FROM Trait WHERE traitDesc = 'Retail Size');
 	SET @retailUOM			= (SELECT traitID FROM Trait WHERE traitDesc = 'Retail UOM');
-	SET @financialMapId		= (SELECT traitID FROM Trait WHERE traitDesc = 'Merch Fin Mapping');
 	SET @validationDate		= (SELECT traitID FROM Trait WHERE traitDesc = 'Validation Date');
 	SET @subBrickCode		= (SELECT traitID FROM Trait WHERE traitDesc = 'Sub Brick Code');
 	SET @posDeptNoId		= (SELECT traitID FROM Trait WHERE traitDesc = 'POS Department Number');
@@ -83,7 +81,8 @@ AS
 			WHERE 
 				(hc.hierarchyID = @brandId
 				OR hc.hierarchyID = @taxId
-				OR hc.hierarchyID = @merchId)
+				OR hc.hierarchyID = @merchId
+				OR hc.hierarchyID = @financialId)
 
 			UNION
 
@@ -96,19 +95,6 @@ AS
 				(hc.hierarchyID = @brandId
 				OR hc.hierarchyID = @taxId
 				OR hc.hierarchyID = @merchId)
-
-			UNION
-
-			SELECT DISTINCT ihc.itemID
-			FROM
-				CHANGETABLE(CHANGES dbo.HierarchyClassTrait, @lastChangeVersion) hctc
-				JOIN HierarchyClass hc on hctc.hierarchyClassID = hc.hierarchyClassID
-				JOIN ItemHierarchyClass ihc on hc.hierarchyClassID = ihc.hierarchyClassID
-			WHERE
-				(hc.hierarchyID = @brandId
-				OR hc.hierarchyID = @taxId
-				OR hc.hierarchyID = @merchId)
-				AND hctc.traitID IN (@financialMapId, @posDeptNoId) -- only specific traits
 
 			UNION
 
@@ -166,9 +152,9 @@ AS
 		brk.hierarchyClassID	as brickId,
 		brk.hierarchyClassName	as brick,
 		sb.hierarchyClassID		as subBrickId,
-		sb.hierarchyClassName	as subBrick,
-		mfm.traitValue			as subteam,
-		pos.traitValue			as posDeptNo
+		sb.hierarchyClassName	as subBrick
+		--mfm.traitValue			as subteam,
+		--pos.traitValue			as posDeptNo
 	INTO #itemMerch
 	FROM 
 		#changes						c
@@ -178,17 +164,29 @@ AS
 		LEFT JOIN HierarchyClass		cls	on  brk.hierarchyParentClassID	= cls.hierarchyClassID
 		LEFT JOIN HierarchyClass		fam	on  cls.hierarchyParentClassID	= fam.hierarchyClassID
 		LEFT JOIN HierarchyClass		seg	on  fam.hierarchyParentClassID	= seg.hierarchyClassID 
-		LEFT JOIN HierarchyClassTrait	mfm	on	sb.hierarchyClassID			= mfm.hierarchyClassID
-												AND mfm.traitID				= @financialMapId
-		LEFT JOIN HierarchyClass		fin	on	mfm.traitValue				= fin.hierarchyClassName
-												AND fin.hierarchyID			= @financialId
-		LEFT JOIN HierarchyClassTrait	pos	on	fin.hierarchyClassID		= pos.hierarchyClassID
-												AND pos.traitID				= @posDeptNoId
 	WHERE
 		sb.hierarchyID = @merchId;
 
 	CREATE NONCLUSTERED INDEX IX_#itemMerch_itemID on #itemMerch (itemID)
-		INCLUDE (segmentId, segment, familyId, family, classId, class, brickId, brick, subBrickId, subBrick, subteam, posDeptNo);
+		INCLUDE (segmentId, segment, familyId, family, classId, class, brickId, brick, subBrickId, subBrick);
+
+	-- financial-item association temp table
+	SELECT
+		c.itemID				as itemID,
+		hc.hierarchyClassName	as subteam,
+		pos.traitValue			as posDeptNo
+	INTO #itemFinancial
+	FROM 
+		#changes						c
+		LEFT JOIN ItemHierarchyClass	ihc on	c.itemID				= ihc.itemID
+		LEFT JOIN HierarchyClass		hc	on	ihc.hierarchyClassID	= hc.hierarchyClassID
+		LEFT JOIN HierarchyClassTrait   pos on	hc.hierarchyClassID		= pos.hierarchyClassID
+												AND pos.traitID			= @posDeptNoId
+	WHERE
+		hc.hierarchyID = @financialId;
+
+	CREATE NONCLUSTERED INDEX IX_#itemFinancial_itemID on #itemFinancial (itemID)
+		INCLUDE (subteam);
 
 	SELECT c.itemID,
 		awr.Description			as AnimalWelfareDescription,
@@ -208,23 +206,19 @@ AS
 		isa.DryAged				as DryAged,
 		isa.AirChilled			as AirChilled,
 		isa.MadeinHouse			as MadeinHouse,
-		case when GlutenFreeAgencyId 
-			is null then 0 else	1 
+		case when ISNULL(GlutenFreeAgencyName, '') = '' then 0
+			else 1 
 		end						as IsCertifiedGlutenFree, 
-		case when KosherAgencyId 
-			is null then 0 
+		case when ISNULL(KosherAgencyName, '') = '' then 0
 			else 1 
 		end						as IsCertifiedKosher,   
-		case when NonGmoAgencyId
-			is null then 0 
-			else 1
+		case when ISNULL(NonGmoAgencyName, '') = '' then 0
+			else 1 
 		end						as IsCertifiedNonGmo,   
-		case when OrganicAgencyId 
-			is null then 0
+		case when ISNULL(OrganicAgencyName, '') = '' then 0
 			else 1 
 		end						as IsCertifiedOrganic,   
-		case when VeganAgencyId
-			is null then 0
+		case when ISNULL(VeganAgencyName, '') = '' then 0
 			else 1 
 		end						as	IsCertifiedVegan
 		INTO #itemAttribute
@@ -269,9 +263,9 @@ AS
 		mrch.subBrickId			as subBrickId,
 		mrch.subBrick			as subBrick,
 		tax.hierarchyClassName	as taxClass,
-		LEFT(mrch.subTeam, CHARINDEX('(', mrch.subTeam) - 1) as subTeamName,
-		REPLACE(REPLACE(SUBSTRING(mrch.subTeam, CHARINDEX('(', mrch.subteam), LEN(mrch.subteam)), '(', ''), ')', '') as psSubTeamNo,
-		mrch.posDeptNo			as posDeptNo,
+		LEFT(fin.subteam, CHARINDEX('(', fin.subTeam) - 1) as subTeamName,
+		REPLACE(REPLACE(SUBSTRING(fin.subTeam, CHARINDEX('(', fin.subteam), LEN(fin.subteam)), '(', ''), ')', '') as psSubTeamNo,
+		fin.posDeptNo			as posDeptNo,
 		ia.AnimalWelfareDescription				as AnimalWelfareDescription,
 		ia.MilkTypeDescription					as MilkTypeDescription, 
 		ia.EcoScaleRatingDescription			as EcoScaleRatingDescription,
@@ -330,7 +324,8 @@ AS
 		LEFT JOIN #itemBrand	brnd	on	i.itemID			= brnd.itemID
 		LEFT JOIN #itemTax		tax		on	i.itemID			= tax.itemID
 		LEFT JOIN #itemMerch	mrch	on	i.itemID			= mrch.itemID
-		LEFT JOIN #itemAttribute ia		on i.itemID = ia.itemID
+		LEFT JOIN #itemFinancial fin	on	i.itemID			= fin.itemID
+		LEFT JOIN #itemAttribute ia		on	i.itemID			= ia.itemID
 	WHERE
 		tp.itemTypeDesc IN ('Retail Sale', 'Deposit')
 	ORDER BY
@@ -341,4 +336,5 @@ AS
 	DROP TABLE #itemTax;
 	DROP TABLE #itemMerch;
 	DROP TABLE #itemAttribute;
+	DROP TABLE #itemFinancial;
 GO
