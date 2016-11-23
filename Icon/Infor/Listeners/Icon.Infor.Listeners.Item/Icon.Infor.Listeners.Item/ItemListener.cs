@@ -53,6 +53,8 @@ namespace Icon.Infor.Listeners.Item
         {
             try
             {
+                context.Refresh();
+
                 models = messageParser.ParseMessage(args.Message).ToList();
                 if (models.Any())
                 {
@@ -87,8 +89,9 @@ namespace Icon.Infor.Listeners.Item
                             Exception = ex
                         }));
                 }
-                context.Refresh();
+
                 AcknowledgeMessage(args);
+                context.Refresh();
                 models.Clear();
             }
         }

@@ -58,6 +58,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
         {
+            this.globalContext.Refresh();
             IEnumerable<InforHierarchyClassModel> hierarchyClasses = new List<InforHierarchyClassModel>();
             try
             {
