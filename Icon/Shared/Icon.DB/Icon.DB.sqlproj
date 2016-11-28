@@ -125,6 +125,7 @@
     <Folder Include="dbo\Functions" />
     <Folder Include="Scripts\Templates" />
     <Folder Include="Scripts\Projects\Infor\Performance Scripts" />
+    <Folder Include="Scripts\Projects\Infor\SubteamTest" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -655,6 +656,8 @@
     <None Include="Scripts\PopulateData\Release\FixPackageUnitTraitPattern.sql" />
     <None Include="Scripts\PopulateData\Release\FixTaxAbbreviationAndTaxRomanceTraitPattern.sql" />
     <None Include="Scripts\PopulateData\Release\AddVimArchiveTablesToRetentionPolicy.sql" />
+    <None Include="Scripts\Projects\Infor\SubteamTest\AddSeasonalGoodsSubTeam.sql" />
+    <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
