@@ -658,6 +658,7 @@
     <None Include="Scripts\PopulateData\Release\AddVimArchiveTablesToRetentionPolicy.sql" />
     <None Include="Scripts\Projects\Infor\SubteamTest\AddSeasonalGoodsSubTeam.sql" />
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
+    <None Include="Scripts\PopulateData\Release\RemoveCharactersInforCantConsumeFromMerchBrickNames.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
