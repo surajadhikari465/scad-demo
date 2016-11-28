@@ -1,8 +1,8 @@
 ﻿--Brand
 select 
-	hc.hierarchyClassID 'Brand ID', 
 	hc.hierarchyClassName 'Brand Name', 
-	case when hct.traitValue is null then 'NULL' else hct.traitValue end 'Brand Abbreviation'
+	case when hct.traitValue is null then 'NULL' else hct.traitValue end 'Brand Abbreviation',
+	hc.hierarchyClassID 'Brand ID'
 from HierarchyClass hc
 join Hierarchy h on hc.hierarchyID = h.hierarchyID
 left join HierarchyClassTrait hct on hc.hierarchyClassID = hct.hierarchyClassID

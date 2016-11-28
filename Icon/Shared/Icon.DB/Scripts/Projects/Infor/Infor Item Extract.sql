@@ -132,6 +132,94 @@ AS (
 	JOIN trait t ON  nm.traitid = t.traitid
 		AND t.traitCode = 'nm'
 	),
+cf
+AS (
+	SELECT cf.itemid,
+		cf.traitValue
+	FROM itemtrait cf
+	JOIN trait t ON  cf.traitid = t.traitid
+		AND t.traitCode = 'cf'
+	),
+ftc
+AS (
+	SELECT ftc.itemid,
+		ftc.traitValue
+	FROM itemtrait ftc
+	JOIN trait t ON  ftc.traitid = t.traitid
+		AND t.traitCode = 'ftc'
+	),
+hem
+AS (
+	SELECT hem.itemid,
+		hem.traitValue
+	FROM itemtrait hem
+	JOIN trait t ON  hem.traitid = t.traitid
+		AND t.traitCode = 'hem'
+	),
+opc
+AS (
+	SELECT opc.itemid,
+		opc.traitValue
+	FROM itemtrait opc
+	JOIN trait t ON  opc.traitid = t.traitid
+		AND t.traitCode = 'opc'
+	),
+nr
+AS (
+	SELECT nr.itemid,
+		nr.traitValue
+	FROM itemtrait nr
+	JOIN trait t ON  nr.traitid = t.traitid
+		AND t.traitCode = 'nr'
+	),
+dw
+AS (
+	SELECT dw.itemid,
+		dw.traitValue
+	FROM itemtrait dw
+	JOIN trait t ON  dw.traitid = t.traitid
+		AND t.traitCode = 'dw'
+	),
+dwu
+AS (
+	SELECT dwu.itemid,
+		dwu.traitValue
+	FROM itemtrait dwu
+	JOIN trait t ON  dwu.traitid = t.traitid
+		AND t.traitCode = 'dwu'
+	),
+abv
+AS (
+	SELECT abv.itemid,
+		abv.traitValue
+	FROM itemtrait abv
+	JOIN trait t ON  abv.traitid = t.traitid
+		AND t.traitCode = 'abv'
+	),
+pft
+AS (
+	SELECT pft.itemid,
+		pft.traitValue
+	FROM itemtrait pft
+	JOIN trait t ON  pft.traitid = t.traitid
+		AND t.traitCode = 'pft'
+	),
+plo
+AS (
+	SELECT plo.itemid,
+		plo.traitValue
+	FROM itemtrait plo
+	JOIN trait t ON  plo.traitid = t.traitid
+		AND t.traitCode = 'plo'
+	),
+llp
+AS (
+	SELECT llp.itemid,
+		llp.traitValue
+	FROM itemtrait llp
+	JOIN trait t ON  llp.traitid = t.traitid
+		AND t.traitCode = 'llp'
+	),
 brand
 AS (
 	SELECT ihc.itemID,
@@ -437,9 +525,20 @@ SELECT
 		ELSE '"Yes"'
 	END AS [Validated],
 	'ICON' AS [Created By],
-	CASE WHEN ISNULL(ins.traitValue, '') = '' THEN 'NULL' ELSE '"' + FORMAT(CAST(ins.traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US') + '"' END AS [Created Date],
+	CASE WHEN ISNULL(ins.traitValue, '') = '' THEN 'NULL' ELSE '"' + FORMAT(CAST(ins.traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US') + '"' END AS [Created On],
 	CASE WHEN ISNULL(usr.traitValue, '') = '' THEN 'NULL' ELSE '"' + usr.traitValue + '"' END AS [Modified By],
-	CASE WHEN ISNULL([mod].traitValue, '') = '' THEN 'NULL' ELSE '"' + FORMAT(CAST([mod].traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US') + '"' END AS [Modified Date]
+	CASE WHEN ISNULL([mod].traitValue, '') = '' THEN 'NULL' ELSE '"' + FORMAT(CAST([mod].traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US') + '"' END AS [Modified On],
+	CASE WHEN ISNULL(cf.traitValue, '') = '' THEN 'NULL' ELSE '"' + cf.traitValue + '"' END AS [Casein Free],
+	CASE WHEN ISNULL(ftc.traitValue, '') = '' THEN 'NULL' ELSE '"' + ftc.traitValue + '"' END AS [Fair Trade Certified],
+	CASE WHEN ISNULL(hem.traitValue, '') = '' THEN 'NULL' ELSE '"' + hem.traitValue + '"' END AS [Hemp],
+	CASE WHEN ISNULL(opc.traitValue, '') = '' THEN 'NULL' ELSE '"' + opc.traitValue + '"' END AS [Organic Personal Care],
+	CASE WHEN ISNULL(nr.traitValue, '') = '' THEN 'NULL' ELSE '"' + nr.traitValue + '"' END AS [Nutrition Required],
+	CASE WHEN ISNULL(dw.traitValue, '') = '' THEN 'NULL' ELSE '"' + dw.traitValue + '"' END AS [Drained Weight],
+	CASE WHEN ISNULL(dwu.traitValue, '') = '' THEN 'NULL' ELSE '"' + dwu.traitValue + '"' END AS [Drained Weight UOM],
+	CASE WHEN ISNULL(abv.traitValue, '') = '' THEN 'NULL' ELSE '"' + abv.traitValue + '"' END AS [Alcohol By Volume],
+	CASE WHEN ISNULL(pft.traitValue, '') = '' THEN 'NULL' ELSE '"' + pft.traitValue + '"' END AS [Product Flavor or Type],
+	CASE WHEN ISNULL(plo.traitValue, '') = '' THEN 'NULL' ELSE '"' + plo.traitValue + '"' END AS [Paleo],
+	CASE WHEN ISNULL(llp.traitValue, '') = '' THEN 'NULL' ELSE '"' + llp.traitValue + '"' END AS [Local Loan Producer]
 FROM scancode sc
 LEFT JOIN ItemSignAttribute ISA ON sc.itemID = isa.ItemID
 LEFT JOIN ORG ON isa.OrganicAgencyId = org.HierarchyClassID
@@ -476,4 +575,15 @@ LEFT JOIN NTS ON sc.itemID = NTS.itemID
 LEFT JOIN [mod] ON sc.itemid = [mod].itemid
 LEFT JOIN usr ON sc.itemID = usr.itemID
 LEFT JOIN ins on sc.itemID = ins.itemID
+LEFT JOIN cf ON sc.itemID = cf.itemID
+LEFT JOIN ftc ON sc.itemID = ftc.itemID
+LEFT JOIN hem ON sc.itemID = hem.itemID
+LEFT JOIN opc ON sc.itemID = opc.itemID
+LEFT JOIN nr ON sc.itemID = nr.itemID
+LEFT JOIN dw ON sc.itemID = dw.itemID
+LEFT JOIN dwu ON sc.itemID = dwu.itemID
+LEFT JOIN abv ON sc.itemID = abv.itemID
+LEFT JOIN pft ON sc.itemID = pft.itemID
+LEFT JOIN plo ON sc.itemID = plo.itemID
+LEFT JOIN llp ON sc.itemID = llp.itemID
 ORDER BY sc.scanCode
