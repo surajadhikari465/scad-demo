@@ -74,45 +74,55 @@ namespace MammothWebApi.DataAccess.Commands
 	                                join dbo.ItemTypes it on i.ItemTypeID = it.ItemTypeID
 	                                join dbo.Locales_{0} l on s.BusinessUnitID = l.BusinessUnitID
 	
-	                                left join stage.ItemLocaleExtended ca	on i.ScanCode = ca.ScanCode
+	                                left join stage.ItemLocaleExtended ca	on  i.ScanCode = ca.ScanCode
 												                                AND l.BusinessUnitID = ca.BusinessUnitId
 												                                AND ca.AttributeID = @ColorAddedId
+                                                                                AND ca.TransactionId = @TransactionId
 
-	                                left join stage.ItemLocaleExtended cop on i.ScanCode = cop.ScanCode
+	                                left join stage.ItemLocaleExtended cop  on  i.ScanCode = cop.ScanCode
 												                                AND l.BusinessUnitID = cop.BusinessUnitId
 												                                AND cop.AttributeID = @CountryOfProcessingId
-
-	                                left join stage.ItemLocaleExtended o on i.ScanCode = o.ScanCode
+                                                                                AND cop.TransactionId = @TransactionId  
+  
+	                                left join stage.ItemLocaleExtended o    on  i.ScanCode = o.ScanCode
 												                                AND l.BusinessUnitID = o.BusinessUnitId
 												                                AND o.AttributeID = @OriginId
+                                                                                AND o.TransactionId = @TransactionId
 
-	                                left join stage.ItemLocaleExtended est on i.ScanCode = est.ScanCode
+	                                left join stage.ItemLocaleExtended est  on  i.ScanCode = est.ScanCode
 												                                AND l.BusinessUnitID = est.BusinessUnitId
 												                                AND est.AttributeID = @EstId
+                                                                                AND est.TransactionId = @TransactionId
 
-	                                left join stage.ItemLocaleExtended exc on	i.ScanCode = exc.ScanCode
+	                                left join stage.ItemLocaleExtended exc  on  i.ScanCode = exc.ScanCode
 												                                AND l.BusinessUnitID = exc.BusinessUnitId
 												                                AND exc.AttributeID = @ExclusiveId
+                                                                                AND exc.TransactionId = @TransactionId
 
-	                                left join stage.ItemLocaleExtended num on	i.ScanCode = num.ScanCode
+	                                left join stage.ItemLocaleExtended num  on  i.ScanCode = num.ScanCode
 												                                AND l.BusinessUnitID = num.BusinessUnitId
 												                                AND num.AttributeID = @NumDigitsToScaleId
+                                                                                AND num.TransactionId = @TransactionId
 
-	                                left join stage.ItemLocaleExtended cb	on i.ScanCode = cb.ScanCode
+	                                left join stage.ItemLocaleExtended cb	on  i.ScanCode = cb.ScanCode
 												                                AND l.BusinessUnitID = cb.BusinessUnitId
 												                                AND cb.AttributeID = @ChicagoBabyId
+                                                                                AND cb.TransactionId = @TransactionId
 
-	                                left join stage.ItemLocaleExtended tag on	i.ScanCode = tag.ScanCode
+	                                left join stage.ItemLocaleExtended tag  on  i.ScanCode = tag.ScanCode
 												                                AND l.BusinessUnitID = tag.BusinessUnitId
 												                                AND tag.AttributeID = @TagUomId
+                                                                                AND tag.TransactionId = @TransactionId
 
-	                                left join stage.ItemLocaleExtended lnk on	i.ScanCode = lnk.ScanCode
+	                                left join stage.ItemLocaleExtended lnk  on  i.ScanCode = lnk.ScanCode
 												                                AND l.BusinessUnitID = lnk.BusinessUnitId
 												                                AND lnk.AttributeID = @LinkedScanCodeId
+                                                                                AND lnk.TransactionId = @TransactionId
 
-	                                left join stage.ItemLocaleExtended sce on	i.ScanCode = sce.ScanCode
+	                                left join stage.ItemLocaleExtended sce  on  i.ScanCode = sce.ScanCode
 												                                AND l.BusinessUnitID = sce.BusinessUnitId
 												                                AND sce.AttributeID = @ScaleExtraTextId
+                                                                                AND sce.TransactionId = @TransactionId
                                 where
 	                                s.Region = @RegionCode and
 	                                s.TransactionId = @TransactionId";
