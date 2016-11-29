@@ -28,4 +28,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="MessageProperties" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="a1744e5c-6855-48d4-ad35-1ecb9e0a9856" ChangeDateTime="11/29/2016 16:46:51">
+    <Property Name="ElementName" Value="[infor].[MessageArchiveProduct].[EsbMessageId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[infor].[MessageArchiveProduct]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InforMessageId" />
+  </Operation>
 </Operations>
