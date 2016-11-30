@@ -27,3 +27,5 @@ Post-Deployment Script Template
 :r .\Scripts\PopulateData\Release\InsertInforHierarchyMismatchError.sql
 :r .\Scripts\PopulateData\Release\RetentionPolicyInforArchiveTables.sql
 :r .\Scripts\PopulateData\Release\RemoveCharactersInforCantConsumeFromMerchBrickNames.sql
+:r .\Scripts\PopulateData\Release\AddBrandDeleteEventType.sql
+:r .\Scripts\PopulateData\Release\AddNationalClassUpdateAndDeleteEventType.sql

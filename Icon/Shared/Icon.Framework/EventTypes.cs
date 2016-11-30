@@ -22,5 +22,7 @@ namespace Icon.Framework
         public static int NutritionUpdate = 9;
         public static int NutritionAdd = 10;
         public static int BrandDelete = 11;
+        public static int NationalClassUpdate = 12;
+        public static int NationalClassDelete = 13;
 	}
 }
