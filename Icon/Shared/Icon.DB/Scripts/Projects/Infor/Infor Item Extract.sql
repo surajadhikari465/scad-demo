@@ -223,19 +223,14 @@ AS (
 brand
 AS (
 	SELECT ihc.itemID,
-		hc.hierarchyclassname,
-		CAST(hc.hierarchyClassID AS NVARCHAR(255)) AS [hierarchyclassid]
+		hc.hierarchyClassName, 
+		hct.traitValue as BrandAbbreviation,
+		hc.hierarchyClassID
 	FROM itemhierarchyclass ihc
-	JOIN HierarchyClass hc ON ihc.hierarchyclassid = hc.hierarchyclassid
-		AND hc.HIERARCHYID = 2
-	),
-ba
-AS (
-	SELECT hct.hierarchyClassID,
-		hct.traitValue AS [Brand Abbreviation]
-	FROM HierarchyClassTrait hct
-	JOIN trait t ON hct.traitID = t.traitID
-	WHERE t.traitCode = 'ba'
+	JOIN HierarchyClass hc on ihc.hierarchyClassID = hc.hierarchyClassID
+	LEFT JOIN HierarchyClassTrait hct ON hc.hierarchyClassID = hct.hierarchyClassID
+		AND hct.traitID = 66 --Brand Abbreviation Trait ID
+	where hc.hierarchyID = 2 --Brand Hierarchy ID
 	),
 tax
 AS (
@@ -244,7 +239,7 @@ AS (
 		CAST(hc.hierarchyclassid AS NVARCHAR(255)) AS [hierarchyclassid]
 	FROM itemhierarchyclass ihc
 	JOIN HierarchyClass hc ON ihc.hierarchyclassid = hc.hierarchyclassid
-		AND hc.HIERARCHYID = 3
+		AND hc.HIERARCHYID = 3 --Tax Hierarchy ID
 	),
 merch
 AS (
@@ -367,7 +362,7 @@ WHERE
 --Main Query Begins
 SELECT 
 	sc.itemid AS [ItemID],
-	'"' + prd.traitValue + '"' AS [Name], --Wrap Name in quotes because it can contain commas which will break the comma delimited extracts
+	'"' + LTRIM(RTRIM(prd.traitValue)) + '"' AS [Name], --Wrap Name in quotes because it can contain commas which will break the comma delimited extracts
 	CASE 
 		WHEN ISNULL(sctypename, 'UPC') = 'UPC'
 			THEN 'NULL'
@@ -398,15 +393,15 @@ SELECT
 		WHEN sctypename in ('2','3') AND scancodebig between 400000 and 499999
 		THEN 'Aloha (400000-499999)'
 		WHEN sctypename in ('2','3') AND scancodebig between 500000 and 602999
-		THEN 'Reserved 500000-602999'
+		THEN 'Reserved (500000-602999)'
 		WHEN sctypename in ('2','3') AND scancodebig between 603000 and 604999
 		THEN 'WTO Produce (603000-604999)'
 		WHEN sctypename in ('2','3') AND scancodebig between 605000 and 692999
-		THEN 'Reserved 605000-692999'
+		THEN 'Reserved (605000-692999)'
 		WHEN sctypename in ('2','3') AND scancodebig between 693000 and 694999
 		THEN 'WTO Organic Produce (693000-694999)'
 		WHEN sctypename in ('2','3') AND scancodebig between 695000 and 999999
-		THEN 'Reserved 695000-999999'
+		THEN 'Reserved (695000-999999)'
 		WHEN sctypename in ('2','3') AND scancodebig between 20000000000 and 20999900000
 		THEN 'Scale PLU (20000000000-20999900000)'
 		WHEN sctypename in ('2','3') AND scancodebig between 21000000000 and 21999900000
@@ -416,29 +411,32 @@ SELECT
 		WHEN sctypename in ('2','3') AND scancodebig between 46000000001 and 46000099999
 		THEN 'Ingredient (46000000001-46000099999)'
 		WHEN sctypename in ('2','3') AND scancodebig between 48000000001 and 48000099999
-		THEN 'Ingredient Legacy (48000000001 - 48000099999)'
+		THEN 'Ingredient Legacy (48000000001-48000099999)'
 		ELSE 'unknown'
 	END AS [Barcode Type],
-	sc.scanCode AS [Scan Code],
+	LTRIM(RTRIM(sc.scanCode)) AS [Scan Code],
 	--Hierarchies
 	'Merchandise' + '|' + CASE WHEN merch.subbrickid IS NULL THEN 'NULL' ELSE merch.subbrickid END AS [Merchandise-Association],
 	'National' + '|' + CASE WHEN ncc.[NationalClassID] IS NULL THEN 'NULL' ELSE ncc.[NationalClassID] END AS [National-Association],
-	'Brand ID' + '|' + CASE WHEN brand.hierarchyClassID IS NULL THEN 'NULL' ELSE brand.hierarchyClassID END AS [Brand],
+	CASE 
+		WHEN brand.hierarchyClassID IS NULL OR brand.hierarchyClassName IS NULL OR brand.BrandAbbreviation IS NULL THEN 'NULL'
+		ELSE brand.hierarchyClassName + '|' + brand.BrandAbbreviation + '|' + CAST (brand.hierarchyClassID AS NVARCHAR(255))
+	END AS [Brand],
 	'Tax Hier ID' + '|' + CASE WHEN tax.hierarchyclassid IS NULL THEN 'NULL' ELSE tax.hierarchyclassid END AS [Tax], 
 	'Subteam Name' + '|' + CASE WHEN merch.SubTeam IS NULL THEN 'NULL' ELSE merch.SubTeam END AS [Subteam],
 	'Item Type' + '|'+ tpe.itemtypecode AS [Item Type],
 	--Attributes
-	'"' + prd.traitValue + '"' AS [Product Description], --Wrap in quotes because it can contain commas which will break the comma delimited extracts
-	'"' + pos.traitValue + '"' AS [POS Description], --Wrap in quotes because it can contain commas which will break the comma delimited extracts
-	pkg.traitValue AS [Item Pack],
+	'"' + LTRIM(RTRIM(prd.traitValue)) + '"' AS [Product Description], --Wrap in quotes because it can contain commas which will break the comma delimited extracts
+	'"' + LTRIM(RTRIM(pos.traitValue)) + '"' AS [POS Description], --Wrap in quotes because it can contain commas which will break the comma delimited extracts
+	LTRIM(RTRIM(pkg.traitValue)) AS [Item Pack],
 	CASE 
 		WHEN ISNULL(fse.traitValue, 0) = 0
-			THEN '"No"'
-		ELSE '"Yes"'
+			THEN '"FALSE"'
+		ELSE '"TRUE"'
 	END AS [Food Stamp Eligible],
-	sct.traitValue AS [POS Scale Tare],
-	CASE WHEN rsz.traitvalue IS NULL THEN 'NULL' ELSE rsz.traitValue END AS [Retail Size],
-	CASE WHEN rum.traitvalue IS NULL THEN 'NULL' ELSE rum.traitvalue END AS [UOM],
+	LTRIM(RTRIM(sct.traitValue)) AS [POS Scale Tare],
+	CASE WHEN LTRIM(RTRIM(rsz.traitvalue)) IS NULL THEN 'NULL' ELSE rsz.traitValue END AS [Retail Size],
+	CASE WHEN LTRIM(RTRIM(rum.traitvalue)) IS NULL THEN 'NULL' ELSE rum.traitvalue END AS [UOM],
 	CASE 
 		WHEN ISNULL(isa.Msc, 0) = 0
 			THEN '"No"'
@@ -449,26 +447,26 @@ SELECT
 			THEN '"No"'
 		ELSE '"Yes"'
 	END AS [Premium Body Care],
-	CASE WHEN sff.Description IS NULL THEN 'NULL' ELSE '"' + sff.Description + '"' END as 'Fresh Or Frozen',
-	CASE WHEN sfct.Description IS NULL THEN 'NULL' ELSE '"' + sfct.Description + '"' END as 'Seafood: Wild Or Farm Raised',
-	CASE WHEN awr.Description IS NULL THEN 'NULL' ELSE '"' + awr.Description + '"' END as 'Animal Welfare Rating',
+	CASE WHEN LTRIM(RTRIM(sff.Description)) IS NULL THEN 'NULL' ELSE '"' + sff.Description + '"' END as 'Fresh Or Frozen',
+	CASE WHEN LTRIM(RTRIM(sfct.Description)) IS NULL THEN 'NULL' ELSE '"' + sfct.Description + '"' END as 'Seafood: Wild Or Farm Raised',
+	CASE WHEN LTRIM(RTRIM(awr.Description)) IS NULL THEN 'NULL' ELSE '"' + awr.Description + '"' END as 'Animal Welfare Rating',
 	CASE 
 		WHEN ISNULL(isa.Biodynamic, 0) = 0
 			THEN '"No"'
 		ELSE '"Yes"'
 	END AS [BioDynamic],
-	CASE WHEN mt.Description IS NULL THEN 'NULL' ELSE '"' + mt.Description + '"' END as 'Cheese Attribute: Milk Type',
+	CASE WHEN LTRIM(RTRIM(mt.Description)) IS NULL THEN 'NULL' ELSE '"' + mt.Description + '"' END as 'Cheese Attribute: Milk Type',
 	CASE 
 		WHEN ISNULL(isa.CheeseRaw, 0) = 0
 			THEN '"No"'
 		ELSE '"Yes"'
 	END AS [Cheese Attribute: Raw],
-	CASE WHEN esr.Description IS NULL THEN 'NULL' ELSE esr.Description END as 'Eco-Scale Rating',
-	CASE WHEN GLU.HierarchyClassName IS NULL THEN 'NULL' ELSE '"' + GLU.HierarchyClassName + '"' END AS 'Gluten Free',
-	CASE WHEN KOS.HierarchyClassName IS NULL THEN 'NULL' ELSE '"' + KOS.HierarchyClassName + '"' END AS 'Kosher',
-	CASE WHEN GMO.HierarchyClassName IS NULL THEN 'NULL' ELSE '"' + GMO.HierarchyClassName + '"' END AS 'Non-Gmo',
-	CASE WHEN ORG.HierarchyClassName IS NULL THEN 'NULL' ELSE '"' + ORG.HierarchyClassName + '"' END AS 'Organic',
-	CASE WHEN VEG.HierarchyClassName IS NULL THEN 'NULL' ELSE '"' + VEG.HierarchyClassName + '"' END AS 'Vegan',
+	CASE WHEN LTRIM(RTRIM(esr.Description)) IS NULL THEN 'NULL' ELSE esr.Description END as 'Eco-Scale Rating',
+	CASE WHEN LTRIM(RTRIM(GLU.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(GLU.HierarchyClassName)) + '"' END AS 'Gluten Free',
+	CASE WHEN LTRIM(RTRIM(KOS.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(KOS.HierarchyClassName)) + '"' END AS 'Kosher',
+	CASE WHEN LTRIM(RTRIM(GMO.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(GMO.HierarchyClassName)) + '"' END AS 'Non-Gmo',
+	CASE WHEN LTRIM(RTRIM(ORG.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ORG.HierarchyClassName)) + '"' END AS 'Organic',
+	CASE WHEN LTRIM(RTRIM(VEG.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(VEG.HierarchyClassName)) + '"' END AS 'Vegan',
 	CASE 
 		WHEN ISNULL(isa.Vegetarian, 0) = 0
 			THEN '"No"'
@@ -509,9 +507,9 @@ SELECT
 			THEN '"No"'
 		ELSE '"Yes"'
 	END AS [Made In House],	   
-	CASE WHEN ISNULL(ds.traitValue, '') = '' THEN 'NULL' ELSE '"' + ds.traitvalue + '"' END AS [Delivery System],
-	CASE WHEN ISNULL(prh.traitValue, '') = '' THEN 0 ELSE prh.traitvalue END AS [Prohibit Discount],
-	CASE WHEN ISNULL(NTS.traitValue, '') = '' THEN 'NULL' ELSE '"' + NTS.traitvalue + '"' END AS [Notes],
+	CASE WHEN ISNULL(ds.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ds.traitvalue)) + '"' END AS [Delivery System],
+	CASE WHEN ISNULL(prh.traitValue, '0') = '0' THEN 'FALSE' ELSE 'TRUE' END AS [Prohibit Discount],
+	CASE WHEN ISNULL(NTS.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(NTS.traitvalue)) + '"' END AS [Notes],
 	CASE 
 		WHEN ISNULL(val.traitValue, '') = ''
 			THEN '"In Process"'
@@ -521,24 +519,52 @@ SELECT
 	END AS [Item Status],
 	CASE 
 		WHEN ISNULL(val.traitValue, '') = ''
-			THEN '"No"'
-		ELSE '"Yes"'
+			THEN '"FALSE"'
+		ELSE '"TRUE"'
 	END AS [Validated],
 	'ICON' AS [Created By],
-	CASE WHEN ISNULL(ins.traitValue, '') = '' THEN 'NULL' ELSE '"' + FORMAT(CAST(ins.traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US') + '"' END AS [Created On],
-	CASE WHEN ISNULL(usr.traitValue, '') = '' THEN 'NULL' ELSE '"' + usr.traitValue + '"' END AS [Modified By],
-	CASE WHEN ISNULL([mod].traitValue, '') = '' THEN 'NULL' ELSE '"' + FORMAT(CAST([mod].traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US') + '"' END AS [Modified On],
-	CASE WHEN ISNULL(cf.traitValue, '') = '' THEN 'NULL' ELSE '"' + cf.traitValue + '"' END AS [Casein Free],
-	CASE WHEN ISNULL(ftc.traitValue, '') = '' THEN 'NULL' ELSE '"' + ftc.traitValue + '"' END AS [Fair Trade Certified],
-	CASE WHEN ISNULL(hem.traitValue, '') = '' THEN 'NULL' ELSE '"' + hem.traitValue + '"' END AS [Hemp],
-	CASE WHEN ISNULL(opc.traitValue, '') = '' THEN 'NULL' ELSE '"' + opc.traitValue + '"' END AS [Organic Personal Care],
-	CASE WHEN ISNULL(nr.traitValue, '') = '' THEN 'NULL' ELSE '"' + nr.traitValue + '"' END AS [Nutrition Required],
-	CASE WHEN ISNULL(dw.traitValue, '') = '' THEN 'NULL' ELSE '"' + dw.traitValue + '"' END AS [Drained Weight],
-	CASE WHEN ISNULL(dwu.traitValue, '') = '' THEN 'NULL' ELSE '"' + dwu.traitValue + '"' END AS [Drained Weight UOM],
-	CASE WHEN ISNULL(abv.traitValue, '') = '' THEN 'NULL' ELSE '"' + abv.traitValue + '"' END AS [Alcohol By Volume],
-	CASE WHEN ISNULL(pft.traitValue, '') = '' THEN 'NULL' ELSE '"' + pft.traitValue + '"' END AS [Product Flavor or Type],
-	CASE WHEN ISNULL(plo.traitValue, '') = '' THEN 'NULL' ELSE '"' + plo.traitValue + '"' END AS [Paleo],
-	CASE WHEN ISNULL(llp.traitValue, '') = '' THEN 'NULL' ELSE '"' + llp.traitValue + '"' END AS [Local Loan Producer]
+	CASE WHEN ISNULL(ins.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(FORMAT(CAST(ins.traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US'))) + '"' END AS [Created On],
+	CASE 
+		WHEN ISNULL(usr.traitValue, '') = '' THEN 'NULL' 
+		WHEN usr.traitValue like '%[0-9]%' THEN 'NULL' --Some of the Modified By values have dates instead of user names because of an old bug. So setting those to NULL if so.
+		ELSE '"' + LTRIM(RTRIM(usr.traitValue)) + '"' 
+	END AS [Modified By],
+	CASE WHEN ISNULL([mod].traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(FORMAT(CAST([mod].traitValue AS datetimeoffset(7)), 'yyyy-MM-ddTHH:mm:ss.fffffff+00:00', 'en-US'))) + '"' END AS [Modified On],
+	CASE 
+		WHEN ISNULL(cf.traitValue, '') = '' THEN 'NULL'
+		WHEN cf.traitValue = '0' THEN '"No"'
+		ELSE '"Yes"' 
+	END AS [Casein Free],
+	CASE WHEN ISNULL(ftc.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ftc.traitValue)) + '"' END AS [Fair Trade Certified],
+	CASE 
+		WHEN ISNULL(hem.traitValue, '') = '' THEN 'NULL' 
+		WHEN hem.traitValue = '0' THEN '"No"'
+		ELSE '"Yes"' 
+	END AS [Hemp],
+	CASE 
+		WHEN ISNULL(opc.traitValue, '') = '' THEN 'NULL' 
+		WHEN opc.traitValue = '0' THEN '"No"'
+		ELSE '"Yes"'
+	END AS [Organic Personal Care],
+	CASE 
+		WHEN ISNULL(nr.traitValue, '') = '' THEN 'NULL' 
+		WHEN nr.traitValue = '0' THEN '"No"'
+		ELSE '"Yes"'
+	END AS [Nutrition Required],
+	CASE WHEN ISNULL(dw.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(dw.traitValue)) + '"' END AS [Drained Weight],
+	CASE WHEN ISNULL(dwu.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(dwu.traitValue)) + '"' END AS [Drained Weight UOM],
+	CASE WHEN ISNULL(abv.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(abv.traitValue)) + '"' END AS [Alcohol By Volume],
+	CASE WHEN ISNULL(pft.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(pft.traitValue)) + '"' END AS [Product Flavor or Type],
+	CASE 
+		WHEN ISNULL(plo.traitValue, '') = '' THEN 'NULL' 
+		WHEN plo.traitValue = '0' THEN '"No"'
+		ELSE '"Yes"'
+	END AS [Paleo],
+	CASE 
+		WHEN ISNULL(llp.traitValue, '') = '' THEN 'NULL' 
+		WHEN plo.traitValue = '0' THEN '"No"'
+		ELSE '"Yes"'
+	END AS [Local Loan Producer]
 FROM scancode sc
 LEFT JOIN ItemSignAttribute ISA ON sc.itemID = isa.ItemID
 LEFT JOIN ORG ON isa.OrganicAgencyId = org.HierarchyClassID
@@ -565,7 +591,6 @@ LEFT JOIN tax ON sc.itemid = tax.itemid
 LEFT JOIN val ON sc.itemid = val.itemid
 LEFT JOIN hid ON sc.itemID = hid.itemID
 LEFT JOIN ncc ON sc.itemID = ncc.itemID
-LEFT JOIN ba ON brand.hierarchyclassid = ba.hierarchyClassID
 LEFT JOIN AnimalWelfareRating awr ON isa.AnimalWelfareRatingId = awr.AnimalWelfareRatingId
 LEFT JOIN MilkType	mt			on	isa.CheeseMilkTypeId = mt.MilkTypeId
 LEFT JOIN EcoScaleRating esr		on	isa.EcoScaleRatingId = esr.EcoScaleRatingId
