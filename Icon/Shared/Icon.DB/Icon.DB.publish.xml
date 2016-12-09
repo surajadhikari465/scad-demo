@@ -6,7 +6,6 @@
     <DeployScriptFileName>Icon.DB.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=NOTASERVER;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
-    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
     <DoNotAlterReplicatedObjects>True</DoNotAlterReplicatedObjects>
     <DropStatisticsNotInSource>False</DropStatisticsNotInSource>
     <IncludeTransactionalScripts>True</IncludeTransactionalScripts>
@@ -19,5 +18,6 @@
     <IgnoreNotForReplication>True</IgnoreNotForReplication>
     <IgnorePartitionSchemes>True</IgnorePartitionSchemes>
     <IgnoreUserSettingsObjects>True</IgnoreUserSettingsObjects>
+    <BlockOnPossibleDataLoss>True</BlockOnPossibleDataLoss>
   </PropertyGroup>
 </Project>
