@@ -12,6 +12,7 @@ using System.IO;
 using Icon.Common.DataAccess;
 using Infor.Services.NewItem.Queries;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Infor.Services.NewItem.Tests.MessageBuilders
 {
@@ -135,6 +136,126 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
             // Then
             var expectedXml = File.ReadAllText(@"TestMessages\OneExistingItemWithNoSubTeam.xml");
             Assert.AreEqual(expectedXml, actualXml);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenAUpc_ShouldBuildMessageWithUpcScanCodeType()
+        {
+            //Given
+            List<NewItemModel> newItemModel = BuildNewItemModel(1);
+            newItemModel[0].ScanCode = "12345678";
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(newItemModel.ToDictionary(
+                    m => m.ScanCode,
+                    m => int.Parse(m.ScanCode)));
+
+            //When
+            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            //Then
+            var actualScanCodeType = XDocument.Parse(actualXml)
+                .Descendants()
+                .Where(e => e.Name.LocalName == "typeDescription")
+                .First()
+                .Value;
+            Assert.AreEqual("UPC", actualScanCodeType);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenAPosPlu_ShouldBuildMessageWithPosPluScanCodeType()
+        {
+            //Given
+            List<NewItemModel> newItemModel = BuildNewItemModel(1);
+            newItemModel[0].ScanCode = "123456";
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(newItemModel.ToDictionary(
+                    m => m.ScanCode,
+                    m => int.Parse(m.ScanCode)));
+
+            //When
+            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            //Then
+            var actualScanCodeType = XDocument.Parse(actualXml)
+                .Descendants()
+                .Where(e => e.Name.LocalName == "typeDescription")
+                .First()
+                .Value;
+            Assert.AreEqual("POS PLU", actualScanCodeType);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenAScalePlu_ShouldBuildMessageWithScalePluType()
+        {
+            //Given
+            List<NewItemModel> newItemModel = BuildNewItemModel(1);
+            newItemModel[0].ScanCode = "27735300000";
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(newItemModel.ToDictionary(
+                    m => m.ScanCode,
+                    m => 1));
+
+            //When
+            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            //Then
+            var actualScanCodeType = XDocument.Parse(actualXml)
+                .Descendants()
+                .Where(e => e.Name.LocalName == "typeDescription")
+                .First()
+                .Value;
+            Assert.AreEqual("Scale PLU", actualScanCodeType);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenA46IngredientPlu_ShouldBuildMessageWithScalePluType()
+        {
+            //Given
+            List<NewItemModel> newItemModel = BuildNewItemModel(1);
+            newItemModel[0].ScanCode = "46000000001";
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(newItemModel.ToDictionary(
+                    m => m.ScanCode,
+                    m => 1));
+
+            //When
+            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            //Then
+            var actualScanCodeType = XDocument.Parse(actualXml)
+                .Descendants()
+                .Where(e => e.Name.LocalName == "typeDescription")
+                .First()
+                .Value;
+            Assert.AreEqual("Scale PLU", actualScanCodeType);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenA48IngredientPlu_ShouldBuildMessageWithScalePluType()
+        {
+            //Given
+            List<NewItemModel> newItemModel = BuildNewItemModel(1);
+            newItemModel[0].ScanCode = "48000000001";
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(newItemModel.ToDictionary(
+                    m => m.ScanCode,
+                    m => 1));
+
+            //When
+            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            //Then
+            var actualScanCodeType = XDocument.Parse(actualXml)
+                .Descendants()
+                .Where(e => e.Name.LocalName == "typeDescription")
+                .First()
+                .Value;
+            Assert.AreEqual("Scale PLU", actualScanCodeType);
         }
 
         private List<NewItemModel> BuildNewItemModel(int numberOfItems)

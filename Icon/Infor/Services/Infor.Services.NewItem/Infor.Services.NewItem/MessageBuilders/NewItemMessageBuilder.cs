@@ -9,6 +9,8 @@ using Esb.Core.Serializer;
 using Infor.Services.NewItem.Cache;
 using Icon.Common.DataAccess;
 using Infor.Services.NewItem.Queries;
+using System.Text.RegularExpressions;
+using Infor.Services.NewItem.Constants;
 
 namespace Infor.Services.NewItem.MessageBuilders
 {
@@ -249,18 +251,25 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetScanCodeType(string scanCode)
         {
-            if(scanCode.Length < 7)
-            {
-                return ScanCodeTypes.Descriptions.PosPlu;
-            }
-            else if (scanCode[0] == 2 && scanCode.Length == 11 && scanCode.EndsWith("00000"))
+            if (IsScalePlu(scanCode))
             {
                 return ScanCodeTypes.Descriptions.ScalePlu;
+            }
+            else if (scanCode.Length < 7)
+            {
+                return ScanCodeTypes.Descriptions.PosPlu;
             }
             else
             {
                 return ScanCodeTypes.Descriptions.Upc;
             }
+        }
+
+        private static bool IsScalePlu(string scanCode)
+        {
+            return Regex.IsMatch(scanCode, CustomRegexPatterns.ScalePlu)
+                || Regex.IsMatch(scanCode, CustomRegexPatterns.IngredientPlu46)
+                || Regex.IsMatch(scanCode, CustomRegexPatterns.IngredientPlu48);
         }
 
         private Contracts.TraitType[] BuildItemTraits(NewItemModel newItemModel)

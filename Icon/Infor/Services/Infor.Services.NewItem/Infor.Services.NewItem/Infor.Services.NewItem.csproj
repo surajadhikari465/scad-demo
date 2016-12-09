@@ -116,6 +116,7 @@
     <Compile Include="Commands\AddNewItemsToIconCommandHandler.cs" />
     <Compile Include="Commands\FinalizeNewItemEventsCommand.cs" />
     <Compile Include="Commands\FinalizeNewItemEventsCommandHandler.cs" />
+    <Compile Include="Constants\CustomRegexPatterns.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="InforNewItemApplicationSettings.cs" />
     <Compile Include="Infrastructure\RegionRenewableContext.cs" />
@@ -175,6 +176,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets" Condition="Exists('..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
