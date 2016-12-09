@@ -126,6 +126,7 @@
     <Folder Include="Scripts\Templates" />
     <Folder Include="Scripts\Projects\Infor\Performance Scripts" />
     <Folder Include="Scripts\Projects\Infor\SubteamTest" />
+    <Folder Include="Scripts\Projects\Infor\DataSurgery" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -551,6 +552,8 @@
     <None Include="Scripts\PopulateData\Archive\UpdateIngredientScanCodesToScalePLUScanCodeType.sql" />
     <Build Include="vim\Tables\MessageArchiveHierarchy.sql" />
     <Build Include="vim\Tables\MessageHistory.sql" />
+    <None Include="Scripts\Projects\Infor\DataSurgery\DeleteNonValidatedItems.sql" />
+    <None Include="Scripts\Projects\Infor\DataSurgery\DeleteNonValidatedItems_Rollback.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
