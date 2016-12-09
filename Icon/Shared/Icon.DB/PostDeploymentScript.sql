@@ -29,3 +29,4 @@ Post-Deployment Script Template
 :r .\Scripts\PopulateData\Release\RemoveCharactersInforCantConsumeFromMerchBrickNames.sql
 :r .\Scripts\PopulateData\Release\AddBrandDeleteEventType.sql
 :r .\Scripts\PopulateData\Release\AddNationalClassUpdateAndDeleteEventType.sql
+:r .\Scripts\PopulateData\Release\InsertInforDuplicateTaxCodeHierarchyClassError.sql

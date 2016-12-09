@@ -3,7 +3,7 @@
 -- Product Backlog Item 17157: As IRMA I need to purge NoTagThreshold table automatically
 set @scriptKey = 'InsertInforErrors'
 
-IF(NOT exists(Select * from app.PostDeploymentScriptHistory where ScriptKey = @scriptKey))
+IF(NOT EXISTS(SELECT * FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @scriptKey))
 BEGIN
 	print '[' + convert(nvarchar, getdate(), 121) + '] ' + @scriptKey
 
