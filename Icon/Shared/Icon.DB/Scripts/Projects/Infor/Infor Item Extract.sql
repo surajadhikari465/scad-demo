@@ -417,11 +417,8 @@ SELECT
 	LTRIM(RTRIM(sc.scanCode)) AS [Scan Code],
 	--Hierarchies
 	'Merchandise' + '|' + CASE WHEN merch.subbrickid IS NULL THEN 'NULL' ELSE merch.subbrickid END AS [Merchandise-Association],
-	'National' + '|' + CASE WHEN ncc.[NationalClassID] IS NULL THEN 'NULL' ELSE ncc.[NationalClassID] END AS [National-Association],
-	CASE 
-		WHEN brand.hierarchyClassID IS NULL OR brand.hierarchyClassName IS NULL OR brand.BrandAbbreviation IS NULL THEN 'NULL'
-		ELSE brand.hierarchyClassName + '|' + brand.BrandAbbreviation + '|' + CAST (brand.hierarchyClassID AS NVARCHAR(255))
-	END AS [Brand],
+	'National' + '|' + CASE WHEN ncc.[NationalClassID] IS NULL THEN 'NULL' ELSE ncc.[NationalClassID] END AS [National-Association],	
+	'"Brand Name' + '|' + CASE WHEN brand.hierarchyClassName IS NULL THEN 'NULL"' ELSE brand.hierarchyClassName + '"' END AS [Brand],
 	'Tax Hier ID' + '|' + CASE WHEN tax.hierarchyclassid IS NULL THEN 'NULL' ELSE tax.hierarchyclassid END AS [Tax], 
 	'Subteam Name' + '|' + CASE WHEN merch.SubTeam IS NULL THEN 'NULL' ELSE merch.SubTeam END AS [Subteam],
 	'Item Type' + '|'+ tpe.itemtypecode AS [Item Type],
