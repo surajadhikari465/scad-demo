@@ -2,7 +2,7 @@
 (
 	MessageArchiveId int primary key identity(1, 1),
 	ItemId int not null,
-	ScanCode nvarchar(13) not null,
+	ScanCode nvarchar(100) not null,
 	InforMessageId uniqueidentifier not null,
 	Context nvarchar(max) not null,
 	ErrorCode nvarchar(100) null,
