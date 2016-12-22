@@ -664,6 +664,7 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <None Include="Scripts\PopulateData\Release\RemoveCharactersInforCantConsumeFromMerchBrickNames.sql" />
     <None Include="Scripts\PopulateData\Release\AddNationalClassUpdateAndDeleteEventType.sql" />
+    <None Include="Scripts\PopulateData\Release\UpdatePOSScaleTare.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
