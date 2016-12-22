@@ -93,10 +93,6 @@
   <ItemGroup>
     <Compile Include="BulkCommands\BulkAddBrandCommand.cs" />
     <Compile Include="BulkCommands\BulkAddBrandCommandHandler.cs" />
-    <Compile Include="BulkCommands\BulkAddMammothItemLocaleEventsCommand.cs" />
-    <Compile Include="BulkCommands\BulkAddMammothItemLocaleEventsCommandHandler.cs" />
-    <Compile Include="BulkCommands\BulkAddMammothPriceEventsCommand.cs" />
-    <Compile Include="BulkCommands\BulkAddMammothPriceEventsCommandHandler.cs" />
     <Compile Include="BulkCommands\BulkAddUpdateLastChangeCommand.cs" />
     <Compile Include="BulkCommands\BulkAddUpdateLastChangeCommandHandler.cs" />
     <Compile Include="BulkCommands\BulkAddValidatedScanCodeCommand.cs" />

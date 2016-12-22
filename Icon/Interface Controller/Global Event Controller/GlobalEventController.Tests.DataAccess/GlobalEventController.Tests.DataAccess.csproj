@@ -119,7 +119,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BulkCommandTests\BulkAddBrandCommandHandlerTests.cs" />
-    <Compile Include="BulkCommandTests\BulkAddMammothItemLocaleEventsCommandHandlerTests.cs" />
     <Compile Include="BulkCommandTests\BulkAddUpdateLastChangeCommandHandlerTests.cs" />
     <Compile Include="BulkCommandTests\BulkAddValidatedScanCodeCommandHandlerTests.cs" />
     <Compile Include="BulkCommandTests\BulkGetItemsWithTaxClassQueryHandlerTest.cs" />
@@ -127,7 +126,6 @@
     <Compile Include="BulkCommandTests\BulkDeleteEventQueueCommandHandlerTests.cs" />
     <Compile Include="BulkCommandTests\BulkGetValidatedItemsQueryHandlerTests.cs" />
     <Compile Include="BulkCommandTests\BulkUpdateItemSignAttributesCommandHandlerTests.cs" />
-    <Compile Include="BulkCommandTests\BulkAddMammothPriceEventsCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddTaxClassCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddUpdateLastChangeByIdentifiersCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddUpdateLastchangeCommandHandlerTests.cs" />
