@@ -112,7 +112,7 @@ namespace Icon.Infor.Listeners.Item.Constants
             public static readonly string InvalidPosDescription = InvalidValueMessage +
                 " {PropertyName} is requried and must be less than " + ItemValues.PosDescriptionMaxLength + " characters and can contain whitespaces, !, #, $, %, &, ', (, ), *, commas, -, ., /, :, ;, <, =, >, ?, or @, following the regular expression " + TraitPatterns.PosDescription;
             public static readonly string InvalidPosScaleTare = InvalidValueMessage +
-                " {PropertyName} is required and must be less than a valid decimal value less than 10 with no more than 4 digits plus the decimal point.";
+                " {PropertyName} is required and must be a valid decimal value less than 10 with no more than 4 digits plus the decimal point, for example any value between 0.0000 and 9.9999.";
             public static readonly string InvalidProductFlavorType = InvalidValueMessage +
                 " {PropertyName} must be empty or a text value with a maximum of 255 characters and can contain whitespaces, !, #, $, %, &, ', (, ), *, commas, -, ., /, :, ;, <, =, >, ?, or @, following the regular expression " + TraitPatterns.ProductFlavorType;
             public static readonly string InvalidRetailSize = InvalidValueMessage +

@@ -1,20 +1,13 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Infor.Listeners.Item.Validators;
-using Icon.Infor.Listeners.Item.Models;
-using System.Collections.Generic;
+﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Infor.Listeners.Item.Constants;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using Icon.Common.DataAccess;
-using Moq;
 using Icon.Infor.Listeners.Item.Commands;
-using Icon.Infor.Listeners.Item.Notifiers;
-using Icon.Common.Email;
-using System.IO;
-using Icon.Esb.Subscriber;
-using System.Linq;
+using Icon.Infor.Listeners.Item.Constants;
+using Icon.Infor.Listeners.Item.Models;
+using Icon.Infor.Listeners.Item.Validators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Collections.Generic;
 
 namespace Icon.Infor.Listeners.Item.Tests.Validators
 {
@@ -1632,6 +1625,58 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
                 ValidationErrors.Messages.InvalidPosDescription,
                 nameof(testItem.PosDescription),
                 (i) => i.PosDescription);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_PosScaleTareIsValid_NoError()
+        {
+            //Given
+            testItem.PosScaleTare = "1";
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "0"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "0.0000"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "2"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "3.765"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "3.7654"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "9"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "9.9"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "9.99"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "9.999"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "9.9999"));
+
+            PerformValidateCollectionWhenAndThenSteps(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_PosScaleTareIsInvalid_InvalidPosScaleTareError()
+        {
+            //Given
+            testItem.PosScaleTare = "a";
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "+"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "/"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "10"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "11"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "19"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "9.99999"));
+            testItems.Add(CopyTestItem(i => i.PosScaleTare = "0.00000"));
+
+            PerformValidateCollectionWhenAndThenSteps(
+                ValidationErrors.Codes.InvalidPosScaleTare,
+                ValidationErrors.Messages.InvalidPosScaleTare,
+                nameof(testItem.PosScaleTare),
+                (i) => i.PosScaleTare);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_PosScaleTareIsEmpty_InvalidPosScaleTareError()
+        {
+            //Given
+            testItem.PosScaleTare = string.Empty;
+
+            PerformValidateCollectionWhenAndThenSteps(
+                ValidationErrors.Codes.InvalidPosScaleTare,
+                ValidationErrors.Messages.InvalidPosScaleTare,
+                nameof(testItem.PosScaleTare),
+                (i) => i.PosScaleTare);
         }
 
         [TestMethod]

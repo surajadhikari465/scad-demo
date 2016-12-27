@@ -234,7 +234,7 @@ namespace Icon.Infor.Listeners.Item.Validators
                 .NotEmpty()
                 .WithErrorCode(ValidationErrors.Codes.InvalidPosScaleTare)
                 .WithMessage(ValidationErrors.Messages.InvalidPosScaleTare)
-                .Must(v => ValidateScaleTare(v))
+                .Matches(TraitPatterns.PosScaleTare)
                 .WithErrorCode(ValidationErrors.Codes.InvalidPosScaleTare)
                 .WithMessage(ValidationErrors.Messages.InvalidPosScaleTare);
             RuleFor(i => i.PremiumBodyCare)
