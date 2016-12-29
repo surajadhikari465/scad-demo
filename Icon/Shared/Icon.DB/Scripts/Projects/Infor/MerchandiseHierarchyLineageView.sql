@@ -1,4 +1,5 @@
-﻿----Original
+﻿--Merchandise
+--Returns the full lineage of every leaf node in the Merchandise Hierarchy. Each node has the ID and Name. Also returns the Sub Brick Code
 select 
 	hc5.hierarchyClassID 'Segment ID',
 	hc5.hierarchyClassName 'Segment Name',

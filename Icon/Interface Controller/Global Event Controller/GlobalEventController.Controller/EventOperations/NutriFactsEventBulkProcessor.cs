@@ -21,12 +21,14 @@ namespace GlobalEventController.Controller.EventOperations
         private IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>> bulkGetValidatedItems;
         private ExceptionHandler<ItemEventBulkProcessor> exceptionHandler;
         private IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>> getIconItemNutritionQueryHandler;
+        private IEventArchiver eventArchiver;
 
         public NutriFactsEventBulkProcessor(IEventQueues queues,
             ILogger<ItemEventBulkProcessor> logger,
             IEventServiceProvider eventServiceProvider,
             IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>> bulkGetValidatedItems,
-            IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>> getIconItemNutritionQueryHandler)
+            IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>> getIconItemNutritionQueryHandler,
+            IEventArchiver eventArchiver)
         {
             this.exceptionHandler = new ExceptionHandler<ItemEventBulkProcessor>(logger);
             this.queues = queues;
@@ -34,6 +36,7 @@ namespace GlobalEventController.Controller.EventOperations
             this.eventServiceProvider = eventServiceProvider;
             this.bulkGetValidatedItems = bulkGetValidatedItems;
             this.getIconItemNutritionQueryHandler = getIconItemNutritionQueryHandler;
+            this.eventArchiver = eventArchiver;
         }
 
         public void BulkProcessEvents()
@@ -79,11 +82,14 @@ namespace GlobalEventController.Controller.EventOperations
                 {
                     logger.Error(String.Format("Class {0} Failed to Update ScanCode {1} for {2} region.  Exception: {3}.  InnerException: {4}",
                         this.GetType().Name, eventsToProcess.First().EventMessage, region, ex, ex.InnerException));
-                    this.queues.FailedEvents.AddRange(eventsToProcess.Select(qe => new FailedEvent
+                    var failedEvents = eventsToProcess.Select(qe => new FailedEvent
                     {
                         Event = qe,
                         FailureReason = ex.ToString()
-                    }));
+                    });
+                    this.queues.FailedEvents.AddRange(failedEvents);
+                    eventArchiver.Events.AddRange(failedEvents.ToEventArchiveList(Constants.ApplicationErrors.Codes.UnexpectedError, ex.ToString()));
+
                     eventServiceProvider.RefreshContexts();
                 }
             }
@@ -107,6 +113,11 @@ namespace GlobalEventController.Controller.EventOperations
 
             // Run Service
             bulkNutritionEventService.Run();
+
+            if (bulkNutritionEventService.ItemNutriFacts != null)
+            {
+                eventArchiver.Events.AddRange(bulkNutritionEventService.ItemNutriFacts.ToEventArchiveList(queuedEvents));
+            }
 
             logger.Info(String.Format("Successfully processed {0} events for {1} region.", queuedEvents.Count.ToString(), regionCode));
 

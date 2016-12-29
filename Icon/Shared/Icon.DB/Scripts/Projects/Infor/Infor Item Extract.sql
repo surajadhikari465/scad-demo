@@ -1,3 +1,5 @@
+--Items
+--Returns all item data in Icon which includes the trait values and hierarchyclass associations
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
 SET NOCOUNT ON;

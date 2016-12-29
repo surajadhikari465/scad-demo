@@ -42,6 +42,8 @@ namespace GlobalEventController.Controller
 
             var contextManager = new ContextManager();
             var dataIssueMessageCollector = new DataIssueMessageCollector(EmailClient.CreateFromConfig());
+            var eventArchiver = new EventArchiver(new ArchiveEventsCommandHandler(contextManager),
+                new NLogLoggerInstance<EventArchiver>(StartupOptions.Instance.ToString()));
 
             return new GlobalControllerBase(
                 queues,
@@ -55,18 +57,21 @@ namespace GlobalEventController.Controller
                     new EventServiceProvider(contextManager),
                     new BulkGetValidatedItemsQueryHandler(contextManager, GlobalControllerSettings.CreateFromConfig()),
                     new GetIconItemNutritionQueryHandler(contextManager),
-                    dataIssueMessageCollector),
+                    dataIssueMessageCollector,
+                    eventArchiver),
                 new NutriFactsEventBulkProcessor(
                     queues,
                     bulkProcessorLogger,
                     new EventServiceProvider(contextManager),
                     new BulkGetValidatedItemsQueryHandler(contextManager, GlobalControllerSettings.CreateFromConfig()),
-                    new GetIconItemNutritionQueryHandler(contextManager)),
+                    new GetIconItemNutritionQueryHandler(contextManager),
+                    eventArchiver),
                 new EventProcessor(
                     queues,
                     processorLogger,
                     new EventServiceProvider(contextManager),
-                    dataIssueMessageCollector),
+                    dataIssueMessageCollector,
+                    eventArchiver),
                 new EventFinalizerEmailDecorator(
                     new EventFinalizer(
                         queues,
@@ -76,7 +81,8 @@ namespace GlobalEventController.Controller
                     queues,
                     EmailClient.CreateFromConfig()),
                 contextManager,
-                dataIssueMessageCollector);
+                dataIssueMessageCollector,
+                eventArchiver);
         }
     }
 }

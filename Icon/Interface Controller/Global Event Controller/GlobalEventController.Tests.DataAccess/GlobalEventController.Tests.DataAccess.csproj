@@ -90,6 +90,10 @@
       <HintPath>..\..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
       <Private>True</Private>
@@ -130,6 +134,7 @@
     <Compile Include="CommandTests\AddUpdateLastChangeByIdentifiersCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddUpdateLastchangeCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddValidatedScanCodeCommandHandlerTests.cs" />
+    <Compile Include="CommandTests\ArchiveEventsCommandHandlerTests.cs" />
     <Compile Include="CommandTests\BrandDeleteCommandHandlerTests.cs" />
     <Compile Include="CommandTests\DeleteEventQueueCommandHandlerTests.cs" />
     <Compile Include="CommandTests\UpdateTaxCommandHandlerTests.cs" />

@@ -88,10 +88,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArchiveItemEventModel.cs" />
+    <Compile Include="ArchiveNutriFactsEventModel.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="ConfigurationConstants.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="EmailHelper.cs" />
+    <Compile Include="ArchiveEventModelWrapper.cs" />
     <Compile Include="EventConstants.cs" />
+    <Compile Include="EventQueueArchive.cs" />
     <Compile Include="EventRegistrationService.cs" />
     <Compile Include="FailedEvent.cs" />
     <Compile Include="GlobalControllerSettings.cs" />

@@ -27,6 +27,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 		private Mock<IEventService> mockEventService;
 		private Mock<IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>>> mockBulkGetScanCodeQuery;
         private Mock<IDataIssueMessageCollector> mockDataIssueMessage;
+        private Mock<IEventArchiver> mockEventArchiver;
 
         [TestInitialize]
 		public void InitializeData()
@@ -36,17 +37,20 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 			this.mockServiceProvider = new Mock<IEventServiceProvider>();
 			this.mockBulkGetScanCodeQuery = new Mock<IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>>>();
             this.mockDataIssueMessage = new Mock<IDataIssueMessageCollector>();
+            this.mockEventArchiver = new Mock<IEventArchiver>();
 
             this.processor = new EventProcessor(this.queues,
 				this.mockLogger.Object,
 				this.mockServiceProvider.Object,
-                this.mockDataIssueMessage.Object);
+                this.mockDataIssueMessage.Object,
+                this.mockEventArchiver.Object);
 
 			this.mockEventService = new Mock<IEventService>();
 			this.mockServiceProvider.Setup(p => p.GetEventService(It.IsAny<Enums.EventNames>(), It.IsAny<string>())).Returns(mockEventService.Object);
-		}
+            this.mockEventArchiver.SetupGet(m => m.Events).Returns(new List<EventQueueArchive>());
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessBrandEvents_NoBrandEventsFound_LoggerInfoCalledOnceAndReturnsNothing()
 		{
 			// Given
@@ -57,6 +61,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			this.mockLogger.Verify(l => l.Info(It.IsAny<string>()), Times.Once, "Logger Info was not called exactly one time.");
+            this.mockEventArchiver.Verify(m => m.Events, Times.Never);
 		}
 
 		[TestMethod]
@@ -71,7 +76,8 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			this.mockEventService.Verify(s => s.Run(), Times.Exactly(expectedCount), "EventService did not Run() for each event.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedCount), "The EventArchiver was not called for each event");
+        }
 
         [TestMethod]
         public void ProcessBrandEvents_ExceptionThrownDuringOneBrandEventService_EventServiceStillCalledForEachQueuedEvent()
@@ -96,9 +102,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
             // Then
             this.mockEventService.Verify(s => s.Run(), Times.Exactly(expectedCount), "EventService was not called for each queued brand event.");
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedCount), "The EventArchiver was not called for each event");
         }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessBrandEvents_BrandEventsFound_LoggerInfoCalledOnceForEachItem()
 		{
 			// Given
@@ -120,9 +127,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
             this.mockLogger.Verify(
                 l => l.Info("Successfully processed event: IconToIrmaBrandNameUpdate.  Region = FL, ReferenceId = 1, Message = TestBrand1"),
                 Times.Once, "Logger Info was not called once per queued event.");
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedCount), "The EventArchiver was not called for each event");
         }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessBrandEvents_ExceptionThrownDuringBrandEventService_LoggerErrorCalledTwice()
 		{
 			// Given
@@ -136,9 +144,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			this.mockLogger.Verify(l => l.Error(It.IsAny<string>()), Times.Exactly(2), "Logger.Error was not called exactly two times.");
-		}
+            this.mockEventArchiver.Verify(m => m.Events, Times.Once);
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessBrandEvents_ExceptionThrownDuringOneBrandEventService_ExceptionNotThrownAndEventServiceRunCalledForEachEvent()
 		{
 			// Given
@@ -160,9 +169,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			this.mockEventService.Verify(s => s.Run(), Times.Exactly(expectedCount), "The EventService was not called for each event.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedCount), "The EventArchiver was not called for each event");
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessBrandEvents_EventNameNotMapped_LoggerErrorCalledTwice()
 		{
 			// Given
@@ -175,9 +185,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			this.mockLogger.Verify(l => l.Error(It.IsAny<string>()), Times.Exactly(2), "Logger Error not called exactly twice.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Once, "The EventArchiver was not called for each event");
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessBrandEvents_NoEventServiceFoundForEventType__LoggerErrorCalledTwice()
 		{
 			// Given
@@ -185,7 +196,9 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 			eventQueue.EventType = new EventType { EventId = EventTypes.BrandNameUpdate, EventName = "Brand Name Update" };
 			this.queues.QueuedEvents.Add(eventQueue);
 			this.mockServiceProvider = new Mock<IEventServiceProvider>();
-			this.processor = new EventProcessor(this.queues, this.mockLogger.Object, this.mockServiceProvider.Object, this.mockDataIssueMessage.Object);
+            this.mockEventArchiver = new Mock<IEventArchiver>();
+            this.mockEventArchiver.SetupGet(m => m.Events).Returns(new List<EventQueueArchive>());
+			this.processor = new EventProcessor(this.queues, this.mockLogger.Object, this.mockServiceProvider.Object, this.mockDataIssueMessage.Object, mockEventArchiver.Object);
 
 			// When
 			this.processor.ProcessBrandNameUpdateEvents();
@@ -209,9 +222,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 			// Then
 			Assert.AreEqual(expectedQueue.Count, this.queues.ProcessedEvents.Count, "The number of ProcessedEvents did not match the expected number");
 			Assert.IsTrue(expectedQueue.Except(this.queues.ProcessedEvents).Count() == 0, "The ProcessedEvents list match the expected event list");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedQueue.Count), "The EventArchiver was not called for each event");
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessBrandEvents_ExceptionThrownDuringBrandEventService_EventsAddedToFailedEventsQueueList()
 		{
 			// Given
@@ -230,7 +244,8 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			Assert.AreEqual(expectedCount, this.queues.FailedEvents.Count, "The events that failed were not added to the FailedEvents list properly.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(this.queues.FailedEvents.Count), "The EventArchiver was not called for each event");
+        }
 
         [TestMethod]
         public void ProcessBrandEvents_BrandEventsProcessedSuccessfully_EventsRemovedFromEventQueueList()
@@ -247,9 +262,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
             {
                 Assert.IsFalse(this.queues.QueuedEvents.Contains(brandEvent));
             }
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(brandEventList.Count), "The EventArchiver was not called for each event");
         }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessTaxEvents_NoTaxEventsFound_LoggerInfoCalledOnceAndReturnsNothing()
 		{
 			// Given
@@ -260,9 +276,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			mockLogger.Verify(l => l.Info(It.IsAny<string>()), Times.Once, "Logger.Info was not called one time.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Never, "The EventArchiver should not be called if there are not events to process.");
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessTaxEvents_TaxEventsFound_TaxEventServiceCalledForEachQueuedTaxEvent()
 		{
 			// Given
@@ -274,7 +291,8 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			this.mockEventService.Verify(s => s.Run(), Times.Exactly(expectedCount), "EventService did not run for each queued event.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedCount), "The EventArchiver was not called for each event.");
+        }
 
         [TestMethod]
         public void ProcessTaxEvents_ExceptionThrownDuringOneTaxEventService_EventServiceStillCalledForEachQueuedEvent()
@@ -299,9 +317,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
             // Then
             this.mockEventService.Verify(s => s.Run(), Times.Exactly(expectedCount), "EventService was not called for each queued tax event.");
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedCount), "The EventArchiver was not called for each event.");
         }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessTaxEvents_TaxEventsFound_LoggerInfoCalledOnceForEachItem()
 		{
 			// Given
@@ -314,9 +333,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			this.mockLogger.Verify(l => l.Info(It.IsAny<string>()), Times.Exactly(expectedCount), "Logger Info did not run for each queued event.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedCount), "The EventArchiver was not called for each event.");
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessTaxEvents_ExceptionThrownDuringTaxEventService_LoggerErrorCalledTwice()
 		{
 			// Given
@@ -330,9 +350,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			this.mockLogger.Verify(l => l.Error(It.IsAny<string>()), Times.Exactly(2), "Logger Error did not run twice after exception.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Once, "The EventArchiver was not called for each event.");
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessTaxEvents_EventNameNotMapped_LoggerErrorCalledTwice()
 		{
 			// Given
@@ -346,9 +367,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			this.mockLogger.Verify(l => l.Error(It.IsAny<string>()), Times.Exactly(2), "Logger Error was not called two time.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Once, "The EventArchiver was not called for each event.");
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessTaxEvents_NoEventServiceFoundForEventType__LoggerErrorCalledTwice()
 		{
 			// Given
@@ -356,16 +378,19 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 			eventQueue.EventType = new EventType { EventId = EventTypes.TaxNameUpdate, EventName = "Tax Name Update" };
 			this.queues.QueuedEvents.Add(eventQueue);
 			this.mockServiceProvider = new Mock<IEventServiceProvider>();
-			this.processor = new EventProcessor(this.queues, this.mockLogger.Object, this.mockServiceProvider.Object, this.mockDataIssueMessage.Object);
+            this.mockEventArchiver = new Mock<IEventArchiver>();
+            this.mockEventArchiver.SetupGet(m => m.Events).Returns(new List<EventQueueArchive>());
+			this.processor = new EventProcessor(this.queues, this.mockLogger.Object, this.mockServiceProvider.Object, this.mockDataIssueMessage.Object, mockEventArchiver.Object);
 
 			// When
 			this.processor.ProcessTaxEvents();
 
 			// Then
 			mockLogger.Verify(l => l.Error(It.IsAny<string>()), Times.Exactly(2), "Logger is not called exactly twice.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Once, "The EventArchiver was not called for each event.");
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessTaxEvents_TaxEventsAreQueuedNoErrors_SuccessfullyProcessedEventsAddedToProcessedEventsList()
 		{
 			// Given
@@ -380,9 +405,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 			// Then
 			Assert.AreEqual(expectedQueue.Count, this.queues.ProcessedEvents.Count, "The number of ProcessedEvents did not match the expected number");
 			Assert.IsTrue(expectedQueue.Except(this.queues.ProcessedEvents).Count() == 0, "The ProcessedEvents list match the expected event list");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(this.queues.ProcessedEvents.Count), "The EventArchiver was not called for each event.");
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public void ProcessTaxEvents_ExceptionThrownDuringTaxEventService_EventsAddedToFailedEventsQueueList()
 		{
 			// Given
@@ -401,9 +427,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
 			// Then
 			Assert.AreEqual(expectedCount, this.queues.FailedEvents.Count, "The events that failed were not added to the FailedEvents list properly.");
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(this.queues.FailedEvents.Count), "The EventArchiver was not called for each event.");
+        }
 
-		[TestMethod]
+        [TestMethod]
         public void ProcessTaxEvents_TaxEventsProcessedSuccessfully_EventsRemovedFromEventQueueList()
 		{
 			// Given
@@ -418,9 +445,10 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 			{
 				Assert.IsFalse(this.queues.QueuedEvents.Contains(taxEvent));
 			}
-		}
+            this.mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(taxEventsList.Count), "The EventArchiver was not called for each event.");
+        }
 
-		private void PopulateQueueWithItemEvents()
+        private void PopulateQueueWithItemEvents()
 		{
 			EventQueue eventOne = new TestEventQueueBuilder().WithEventId(EventTypes.ItemUpdate).WithEventMessage("41341341341").WithRegionCode("FL").Build();
 			eventOne.EventType = new EventType { EventId = eventOne.EventId, EventName = EventConstants.IconItemUpdatedEventName };

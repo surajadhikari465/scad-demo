@@ -1,15 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using GlobalEventController.DataAccess.Queries;
 using Icon.Framework;
-using Moq;
-using Icon.Logging;
-using GlobalEventController.DataAccess.Queries;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using GlobalEventController.DataAccess.Infrastructure;
-using GlobalEventController.Common;
 using Icon.Testing.Builders;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GlobalEventController.Tests.DataAccess.QueryTests
 {

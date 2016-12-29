@@ -31,6 +31,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
         private Mock<IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>>> mockGetIconItemNutritionQueryHandler;
         private Mock<IEmailClient> mockEmailClient;
         private DataIssueMessageCollector dataIssueMessages;
+        private Mock<IEventArchiver> mockEventArchiver;
 
         [TestInitialize]
         public void InitializeData()
@@ -42,17 +43,19 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
             this.mockGetIconItemNutritionQueryHandler = new Mock<IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>>>();
             this.mockEmailClient = new Mock<IEmailClient>();
             this.dataIssueMessages = new DataIssueMessageCollector(mockEmailClient.Object);
-            
+            this.mockEventArchiver = new Mock<IEventArchiver>();
 
             this.processor = new ItemEventBulkProcessor(this.queues,
                 this.mockLogger.Object,
                 this.mockServiceProvider.Object,
                 this.mockBulkGetScanCodeQuery.Object,
                 this.mockGetIconItemNutritionQueryHandler.Object,
-                dataIssueMessages);
+                dataIssueMessages,
+                mockEventArchiver.Object);
 
             this.mockBulkEventService = new Mock<IBulkEventService>();
             this.mockServiceProvider.Setup(p => p.GetBulkItemEventService(It.IsAny<string>())).Returns(this.mockBulkEventService.Object);
+            this.mockEventArchiver.SetupGet(m => m.Events).Returns(new List<EventQueueArchive>());
             StartupOptions.NutritionEnabledRegions = new List<string>();
         }
 
@@ -68,6 +71,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
             // Then
             mockLogger.Verify(l => l.Info(It.Is<string>(s => s == "There are no item events to process.")), Times.Exactly(1));
             mockBulkEventService.Verify(s => s.Run(), Times.Never);
+            mockEventArchiver.VerifyGet(m => m.Events, Times.Never, "The EventArchiver should not be called if there are no events to process.");
         }
 
         [TestMethod]
@@ -121,11 +125,15 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
                 .Distinct()
                 .Count();
 
+            mockBulkEventService.SetupGet(i => i.ValidatedItemList).Returns(new List<ValidatedItemModel>());
+            mockBulkEventService.SetupGet(i => i.RegionalItemMessage).Returns(new List<RegionalItemMessageModel>());
+
             // When
             this.processor.BulkProcessEvents();
 
             // Then
             this.mockBulkEventService.Verify(s => s.Run(), Times.Exactly(expectedCount), "BulkItemEventService was not called the expected number of times");
+            mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedCount), "The EventArchiver was not called for each region.");
         }
 
         [TestMethod]
@@ -271,6 +279,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
                 .Where(q => q.EventId == EventTypes.ItemUpdate || q.EventId == EventTypes.ItemValidation || q.EventId == EventTypes.NewIrmaItem)
                 .Count();
 
+            mockBulkEventService.SetupGet(i => i.ValidatedItemList).Returns(new List<ValidatedItemModel>());
             mockBulkEventService.SetupGet(i => i.RegionalItemMessage).Returns(new List<RegionalItemMessageModel>());
             int count = 0;
             this.mockBulkEventService.Setup(s => s.Run()).Callback(() =>
@@ -285,6 +294,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
             // Then
             Assert.AreEqual(expectedFailedEventCount, this.queues.FailedEvents.Count);
+            mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(4), "The EventArchiver was not called for each region.");
         }
 
 
@@ -298,7 +308,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
             int eventCount = this.queues.QueuedEvents
                 .Where(q => q.EventId == EventTypes.ItemUpdate || q.EventId == EventTypes.ItemValidation || q.EventId == EventTypes.NewIrmaItem)
                 .Count();
-
+            
             mockBulkEventService.SetupGet(i => i.RegionalItemMessage).Returns(new List<RegionalItemMessageModel>());
             int count = 0;
             this.mockBulkEventService.Setup(s => s.Run()).Callback(() =>

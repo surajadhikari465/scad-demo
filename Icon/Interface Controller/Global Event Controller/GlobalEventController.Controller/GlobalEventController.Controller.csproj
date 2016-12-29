@@ -84,6 +84,10 @@
       <HintPath>..\..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
       <Private>True</Private>
@@ -107,11 +111,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArchiveExtensions.cs" />
     <Compile Include="ControllerProvider.cs" />
     <Compile Include="Decorators\BulkItemEventServiceUomChangeEmailDecorator.cs" />
     <Compile Include="Decorators\EventFinalizer\EventFinalizerEmailDecorator.cs" />
     <Compile Include="EventOperations\DataIssueMessageCollector.cs" />
+    <Compile Include="EventOperations\EventArchiver.cs" />
     <Compile Include="EventOperations\IDataIssueMessageCollector.cs" />
+    <Compile Include="EventOperations\IEventArchiver.cs" />
     <Compile Include="EventOperations\NutriFactsEventBulkProcessor.cs" />
     <Compile Include="EventOperations\ItemEventBulkProcessor.cs" />
     <Compile Include="EventOperations\EventCollector.cs" />

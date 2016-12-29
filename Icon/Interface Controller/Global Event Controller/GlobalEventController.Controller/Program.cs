@@ -9,9 +9,6 @@ namespace GlobalEventController.Controller
 
     class Program
     {
-        //private static ILogger<Program> logger = new NLogLogger<Program>();
-        //private static EmailClient emailClient;
-
         static void Main(string[] args)
         {
             string serviceDescription = ConfigurationManager.AppSettings["ServiceDescription"].ToString();

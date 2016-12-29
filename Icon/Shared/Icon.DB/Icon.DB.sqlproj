@@ -554,6 +554,7 @@
     <Build Include="vim\Tables\MessageHistory.sql" />
     <None Include="Scripts\Projects\Infor\DataSurgery\DeleteNonValidatedItems.sql" />
     <None Include="Scripts\Projects\Infor\DataSurgery\DeleteNonValidatedItems_Rollback.sql" />
+    <Build Include="app\Tables\EventQueueArchive.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -665,6 +666,7 @@
     <None Include="Scripts\PopulateData\Release\RemoveCharactersInforCantConsumeFromMerchBrickNames.sql" />
     <None Include="Scripts\PopulateData\Release\AddNationalClassUpdateAndDeleteEventType.sql" />
     <None Include="Scripts\PopulateData\Release\UpdatePOSScaleTare.sql" />
+    <None Include="Scripts\PopulateData\Release\RetentionPolicyEventQueueArchiveTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

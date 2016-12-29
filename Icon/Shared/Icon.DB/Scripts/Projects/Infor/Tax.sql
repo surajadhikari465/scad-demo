@@ -1,4 +1,5 @@
 ﻿--Tax
+--Returns Icon HierarchyClass ID, Tax Code, Tax Name, Tax Abbreviation, and Tax Romance
 select 
 	hc.hierarchyClassID 'Tax Hier ID', 
 	substring(hc.hierarchyClassName, 0, 8) 'Tax Class ID',

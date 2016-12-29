@@ -1,4 +1,6 @@
 --Sub team
+--Returns the trait values of the Sub Bricks in the Merchandise Hierarchy for the following traits: Subteam, Item Type, Prohibit Discount, Default Tax Class
+--
 select 
 	hc5.hierarchyClassName 'Level 1',
 	hc4.hierarchyClassName 'Level 2',

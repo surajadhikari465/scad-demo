@@ -1,3 +1,5 @@
+--National
+--Returns the full lineage of every leaf node in the National Hierarchy. Each node has the ID and Name. Also returns the National Class Code
 select 
 	hc4.hierarchyClassID 'Family ID',
 	hc4.hierarchyClassName 'Family Name',

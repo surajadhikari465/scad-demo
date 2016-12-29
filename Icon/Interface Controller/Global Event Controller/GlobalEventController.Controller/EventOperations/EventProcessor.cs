@@ -18,17 +18,20 @@ namespace GlobalEventController.Controller.EventOperations
 		private IEventServiceProvider eventServiceProvider;
 		private ExceptionHandler<EventProcessor> exceptionHandler;
         private IDataIssueMessageCollector dataIssueMessage;
+        private IEventArchiver eventArchiver;
 
         public EventProcessor(IEventQueues queues,
 			ILogger<EventProcessor> logger,
 			IEventServiceProvider eventServiceProvider,
-            IDataIssueMessageCollector dataIssueMessage)
+            IDataIssueMessageCollector dataIssueMessage,
+            IEventArchiver eventArchiver)
 		{
 			this.exceptionHandler = new ExceptionHandler<EventProcessor>(logger);
 			this.queues = queues;
 			this.logger = logger;
 			this.eventServiceProvider = eventServiceProvider;
             this.dataIssueMessage = dataIssueMessage;
+            this.eventArchiver = eventArchiver;
         }
 
 		public void ProcessBrandNameUpdateEvents()
@@ -112,14 +115,15 @@ namespace GlobalEventController.Controller.EventOperations
 				    eventService.Message = queuedEvent.EventMessage;
 				    eventService.Region = queuedEvent.RegionCode;
                     eventService.EventTypeId = queuedEvent.EventId;
-
 				
 					logger.Debug(String.Format("Start event service for event: {0}. Region = {1}, ReferenceId = {2}, Message = {3}",
 						eventName, queuedEvent.RegionCode, queuedEvent.EventReferenceId, queuedEvent.EventMessage));
 
 					eventService.Run();
+
 					this.queues.ProcessedEvents.Add(queuedEvent);
 					this.queues.QueuedEvents.Remove(queuedEvent);
+                    this.eventArchiver.Events.Add(new ArchiveEventModelWrapper<EventQueue>(queuedEvent).ToEventArchive());
 
                     if (eventService.RegionalItemMessage != null && eventService.RegionalItemMessage.Count() > 0)
                     {
@@ -134,9 +138,18 @@ namespace GlobalEventController.Controller.EventOperations
 				}
 				catch (Exception ex)
 				{
-                    this.queues.FailedEvents.Add(new FailedEvent { Event = queuedEvent, FailureReason = ex.ToString() });
+                    var failedEvent = new FailedEvent { Event = queuedEvent, FailureReason = ex.ToString() };
+                    this.queues.FailedEvents.Add(failedEvent);
+                    this.eventArchiver.Events.Add(
+                        new ArchiveEventModelWrapper<FailedEvent>(failedEvent)
+                        {
+                            ErrorCode = Constants.ApplicationErrors.Codes.UnexpectedError,
+                            ErrorDetails = ex.ToString()
+                        }.ToEventArchive());
+
                     eventServiceProvider.RefreshContexts();
-					logger.Error(String.Format("Execution failed for event handler: {0}.  Processing will continue to the next event in the queue.",
+
+                    logger.Error(String.Format("Execution failed for event handler: {0}.  Processing will continue to the next event in the queue.",
                         eventService != null ? eventService.GetType().ToString() : String.Empty));
 					exceptionHandler.HandleException(ex, this.GetType(), MethodBase.GetCurrentMethod(), 
                         eventService != null ? eventService.GetType() : typeof(IEventService),
