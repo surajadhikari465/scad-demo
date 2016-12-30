@@ -99,10 +99,10 @@ namespace PushController.Tests.Controller.MessageBuilderTests
             this.context.Context.SaveChanges();
         }
 
-        private void StageTestItem(string nonMerchandiseTraitName, bool departmentSale)
+        private void StageTestItem(string nonMerchandiseTraitName, bool departmentSale, string itemTypeCode = ItemTypeCodes.RetailSale)
         {
             this.testItem = new TestItemBuilder().WithScanCode(this.testScanCode);
-            this.testItem.ItemType = this.context.Context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.RetailSale);
+            this.testItem.ItemType = this.context.Context.ItemType.Single(it => it.itemTypeCode == itemTypeCode);
             this.testItem.ScanCode.Single().ScanCodeType = this.context.Context.ScanCodeType.Single(sct => sct.scanCodeTypeID == ScanCodeTypes.Upc);
             this.context.Context.Item.Add(this.testItem);
             this.context.Context.SaveChanges();
@@ -785,7 +785,7 @@ namespace PushController.Tests.Controller.MessageBuilderTests
             this.posDataRecord = new TestIrmaPushBuilder()
                 .WithBusinessUnitId(this.testBusinessUnitId)
                 .WithIdentifier(this.testScanCode)
-                .WithChangeType(this.unknownChangeType);
+                .WithChangeType(Constants.IrmaPushChangeTypes.ItemLocaleAttributeChange);
 
             StagePosData(posDataRecord);
             StageTestItem(NonMerchandiseTraits.Coupon, departmentSale: false);
@@ -805,7 +805,7 @@ namespace PushController.Tests.Controller.MessageBuilderTests
             this.posDataRecord = new TestIrmaPushBuilder()
                 .WithBusinessUnitId(this.testBusinessUnitId)
                 .WithIdentifier(this.testScanCode)
-                .WithChangeType(this.unknownChangeType);
+                .WithChangeType(Constants.IrmaPushChangeTypes.ItemLocaleAttributeChange);
 
             StagePosData(posDataRecord);
             StageTestItem(nonMerchandiseTraitName: null, departmentSale: true);
@@ -825,7 +825,7 @@ namespace PushController.Tests.Controller.MessageBuilderTests
             this.posDataRecord = new TestIrmaPushBuilder()
                 .WithBusinessUnitId(this.testBusinessUnitId)
                 .WithIdentifier(this.testScanCode)
-                .WithChangeType(this.unknownChangeType);
+                .WithChangeType(Constants.IrmaPushChangeTypes.ItemLocaleAttributeChange);
 
             StagePosData(posDataRecord);
             StageTestItem(NonMerchandiseTraits.LegacyPosOnly, departmentSale: true);
@@ -836,6 +836,54 @@ namespace PushController.Tests.Controller.MessageBuilderTests
 
             // Then.
             Assert.AreEqual(0, constructedMessages.Count);
+        }
+
+        [TestMethod]
+        public void BuildItemLocaleMessages_UseItemTypeAndItemTyeIsCoupon_MessageShouldNotBeBuilt()
+        {
+            // Given.
+            StartupOptions.UseItemTypeInsteadOfNonMerchTrait = true;
+
+            this.posDataRecord = new TestIrmaPushBuilder()
+                .WithBusinessUnitId(this.testBusinessUnitId)
+                .WithIdentifier(this.testScanCode)
+                .WithChangeType(Constants.IrmaPushChangeTypes.ItemLocaleAttributeChange);
+
+            StagePosData(posDataRecord);
+            StageTestItem(nonMerchandiseTraitName: null, departmentSale: false, itemTypeCode: ItemTypeCodes.Coupon);
+            StageTestLocale();
+
+            // When.
+            var constructedMessages = messageBuilder.BuildMessages(new List<IRMAPush> { posDataRecord });
+
+            // Then.
+            Assert.AreEqual(0, constructedMessages.Count);
+
+            StartupOptions.UseItemTypeInsteadOfNonMerchTrait = false;
+        }
+
+        [TestMethod]
+        public void BuildItemLocaleMessages_UseItemTypeAndItemTyeIsNonRetail_MessageShouldNotBeBuilt()
+        {
+            // Given.
+            StartupOptions.UseItemTypeInsteadOfNonMerchTrait = true;
+
+            this.posDataRecord = new TestIrmaPushBuilder()
+                .WithBusinessUnitId(this.testBusinessUnitId)
+                .WithIdentifier(this.testScanCode)
+                .WithChangeType(Constants.IrmaPushChangeTypes.ItemLocaleAttributeChange);
+
+            StagePosData(posDataRecord);
+            StageTestItem(nonMerchandiseTraitName: null, departmentSale: true, itemTypeCode: ItemTypeCodes.NonRetail);
+            StageTestLocale();
+
+            // When.
+            var constructedMessages = messageBuilder.BuildMessages(new List<IRMAPush> { posDataRecord });
+
+            // Then.
+            Assert.AreEqual(0, constructedMessages.Count);
+
+            StartupOptions.UseItemTypeInsteadOfNonMerchTrait = false;
         }
     }
 }

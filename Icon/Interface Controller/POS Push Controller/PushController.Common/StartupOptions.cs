@@ -6,5 +6,6 @@ namespace PushController.Common
         public static int Instance { get; set; }
         public static string[] RegionsToProcess { get; set; }
         public static int MaxRecordsToProcess { get; set; }
+        public static bool UseItemTypeInsteadOfNonMerchTrait { get; set; }
     }
 }

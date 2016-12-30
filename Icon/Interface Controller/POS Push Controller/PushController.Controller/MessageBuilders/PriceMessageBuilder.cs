@@ -170,18 +170,33 @@ namespace PushController.Controller.MessageBuilders
 
         private bool PreventMessageGeneration(ScanCodeModel scanCodeModel)
         {
-            if (scanCodeModel.NonMerchandiseTrait == NonMerchandiseTraits.Coupon)
+            if (StartupOptions.UseItemTypeInsteadOfNonMerchTrait)
             {
-                logger.Info(String.Format("Scan code {0} is associated to a sub-brick with the Coupon non-merchandise trait.  No Price message will be generated.",
-                    scanCodeModel.ScanCode));
-                return true;
-            }
+                if (scanCodeModel.ItemTypeCode == ItemTypeCodes.Coupon)
+                {
+                    logger.Info($"Scan code {scanCodeModel.ScanCode} has item type {ItemTypes.Descriptions.Coupon}.  No Price message will be generated.");
+                    return true;
+                }
 
-            if (scanCodeModel.NonMerchandiseTrait == NonMerchandiseTraits.LegacyPosOnly)
+                if (scanCodeModel.ItemTypeCode == ItemTypeCodes.NonRetail)
+                {
+                    logger.Info($"Scan code {scanCodeModel.ScanCode} has item type {ItemTypes.Descriptions.NonRetail}.  No Price message will be generated.");
+                    return true;
+                }
+            }
+            else
             {
-                logger.Info(String.Format("Scan code {0} is associated to a sub-brick with the Legacy POS Only non-merchandise trait.  No Price message will be generated.",
-                    scanCodeModel.ScanCode));
-                return true;
+                if (scanCodeModel.NonMerchandiseTrait == NonMerchandiseTraits.Coupon)
+                {
+                    logger.Info($"Scan code {scanCodeModel.ScanCode} is associated to a sub-brick with the {NonMerchandiseTraits.Coupon} non-merchandise trait.  No Price message will be generated.");
+                    return true;
+                }
+
+                if (scanCodeModel.NonMerchandiseTrait == NonMerchandiseTraits.LegacyPosOnly)
+                {
+                    logger.Info($"Scan code {scanCodeModel.ScanCode} is associated to a sub-brick with the {NonMerchandiseTraits.LegacyPosOnly} non-merchandise trait.  No Price message will be generated.");
+                    return true;
+                }
             }
 
             if (scanCodeModel.DepartmentSaleTrait == "1")

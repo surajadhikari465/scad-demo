@@ -60,6 +60,7 @@ namespace PushController.Controller.Service
                 }
 
                 StartupOptions.MaxRecordsToProcess = maxRecordsToProcess;
+                StartupOptions.UseItemTypeInsteadOfNonMerchTrait = AppSettingsAccessor.GetBoolSetting("UseItemTypeInsteadOfNonMerchTrait");
 
                 var posController = ControllerProvider.ComposeController();
 
