@@ -10,7 +10,7 @@ namespace MammothWebApi.Tests.DataAccess
     public sealed class DatabaseInitialization
     {
         private static SqlDbProvider db;
-        private static string connectionString = "Data Source=MAMMOTH-DB01-DEV\\MAMMOTH;Initial Catalog=Mammoth_Dev;Integrated Security=SSPI";//ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
+        private static string connectionString = @"Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=Mammoth_Dev;Integrated Security=SSPI";
 
         [AssemblyInitialize]
         public static void AssemblyIniitialize(TestContext context)
@@ -26,6 +26,7 @@ namespace MammothWebApi.Tests.DataAccess
         {
             using (db.Connection = new SqlConnection(connectionString))
             {
+                db.Connection.Open();
                 string sql = @"SET IDENTITY_INSERT [app].[App] ON;
                                 IF NOT EXISTS (SELECT * FROM app.App WHERE AppName = 'Web Api')
 	                                INSERT INTO app.App (AppID, AppName) VALUES (1, 'Web Api');

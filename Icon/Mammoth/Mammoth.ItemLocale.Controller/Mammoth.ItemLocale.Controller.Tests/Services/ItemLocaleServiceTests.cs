@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MoreLinq;
+using Mammoth.Common;
 
 namespace Mammoth.ItemLocale.Controller.Tests.Services
 {
@@ -133,11 +134,16 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
                     new ItemLocaleEventModel { ScanCode = "2", EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate },
                     new ItemLocaleEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate }
                 };
+
+            HttpResponseMessage errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            errorResponse.ReasonPhrase = HttpStatusCode.InternalServerError.ToString();
+            errorResponse.Content = new StringContent(@"[{ ""error"":""testing itemLocale there was an error"" }]");
+
             mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.Is<string>(s => s == Uris.ItemLocaleUpdate), It.IsAny<IEnumerable<ItemLocaleEventModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse));
 
             //When
             service.Process(data);
@@ -145,7 +151,9 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
             //Then
             foreach (var il in data)
             {
-                Assert.AreEqual("Bad Request", il.ErrorMessage);
+                Assert.AreEqual(errorResponse.ReasonPhrase, il.ErrorMessage);
+                Assert.AreEqual(errorResponse.Content.ReadAsStringAsync().Result, il.ErrorDetails);
+                Assert.AreEqual(Constants.SourceSystem.MammothWebApi, il.ErrorSource);
             }
 
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
@@ -177,11 +185,15 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
                     new ItemLocaleEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.ItemDelete, Region = "MW" }
                 };
 
+            HttpResponseMessage errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            errorResponse.ReasonPhrase = HttpStatusCode.InternalServerError.ToString();
+            errorResponse.Content = new StringContent(@"[{ ""error"":""testing itemLocale there was an error"" }]");
+
             mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.Is<string>(s => s == Uris.ItemLocaleUpdate), It.IsAny<IEnumerable<ItemLocaleEventModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse));
 
             //When
             service.Process(data);
@@ -189,7 +201,9 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
             //Then
             foreach (var il in data)
             {
-                Assert.AreEqual("Bad Request", il.ErrorMessage);
+                Assert.AreEqual(errorResponse.ReasonPhrase, il.ErrorMessage);
+                Assert.AreEqual(errorResponse.Content.ReadAsStringAsync().Result, il.ErrorDetails);
+                Assert.AreEqual(Constants.SourceSystem.MammothWebApi, il.ErrorSource);
             }
 
 
@@ -289,14 +303,18 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
                     new ItemLocaleEventModel { ScanCode = "5", EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate, Region = "MW" }
                 };
 
+            HttpResponseMessage errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            errorResponse.ReasonPhrase = HttpStatusCode.InternalServerError.ToString();
+            errorResponse.Content = new StringContent(@"[{ ""error"":""testing itemLocale there was an error"" }]");
+
             mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.Is<string>(s => s == Uris.ItemLocaleUpdate), It.IsAny<IEnumerable<ItemLocaleEventModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse));
 
             // When
             service.Process(data);
@@ -304,7 +322,9 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
             // Then
             foreach (var il in data)
             {
-                Assert.AreEqual("Bad Request", il.ErrorMessage);
+                Assert.AreEqual(errorResponse.ReasonPhrase, il.ErrorMessage);
+                Assert.AreEqual(errorResponse.Content.ReadAsStringAsync().Result, il.ErrorDetails);
+                Assert.AreEqual(Constants.SourceSystem.MammothWebApi, il.ErrorSource);
             }
 
 

@@ -53,8 +53,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Mammoth.Price.Controller\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -77,6 +77,7 @@
     <Compile Include="ApplicationErrors.cs" />
     <Compile Include="ConnectionBuilders\RegionConnectionBuilder.cs" />
     <Compile Include="ExceptionManager.cs" />
+    <Compile Include="ExtensionHelpers.cs" />
     <Compile Include="GetEventsResponse.cs" />
     <Compile Include="IControllerApplicationSettings.cs" />
     <Compile Include="IControllerApplication.cs" />
@@ -92,22 +93,22 @@
     <Compile Include="Services\IService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj">
-      <Project>{82505a9b-2264-4428-9806-d5ef838109b3}</Project>
+      <Project>{82505A9B-2264-4428-9806-D5EF838109B3}</Project>
       <Name>Mammoth.Common.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mammoth.Common\Mammoth.Common.csproj">
-      <Project>{563f0633-8364-4ed0-88ff-f55302117348}</Project>
+      <Project>{563F0633-8364-4ED0-88FF-F55302117348}</Project>
       <Name>Mammoth.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mammoth.Logging\Mammoth.Logging.csproj">
-      <Project>{eed6c132-5e76-46e9-bd78-103af9545ac7}</Project>
-      <Name>Mammoth.Logging</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

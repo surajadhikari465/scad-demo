@@ -1,13 +1,16 @@
-﻿using Mammoth.Common.ControllerApplication;
+﻿using Mammoth.Common;
+using Mammoth.Common.ControllerApplication;
 using Mammoth.Common.ControllerApplication.Models;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.Models;
+using Mammoth.Common.Email;
 using Mammoth.ItemLocale.Controller.DataAccess.Commands;
 using Mammoth.ItemLocale.Controller.DataAccess.Models;
 using Mammoth.ItemLocale.Controller.DataAccess.Queries;
 using Mammoth.Logging;
 using MoreLinq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +24,8 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules
         private IQueryHandler<GetItemLocaleDataParameters, List<ItemLocaleEventModel>> getItemLocaleEventsQueryHandler;
         private ICommandHandler<DeleteEventQueueCommand> deleteEventQueueCommandHandler;
         private ICommandHandler<ArchiveEventsCommand> archiveEventsCommandHandler;
+        private IEmailClient emailClient;
+        private IEmailBuilder emailBuilder;
         private ILogger logger;
 
         public ItemLocaleQueueManager(ItemLocaleControllerApplicationSettings settings,
@@ -28,6 +33,8 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules
             IQueryHandler<GetItemLocaleDataParameters, List<ItemLocaleEventModel>> getItemLocaleEventsQueryHandler,
             ICommandHandler<DeleteEventQueueCommand> deleteEventQueueCommandHandler,
             ICommandHandler<ArchiveEventsCommand> archiveEventsCommandHandler,
+            IEmailClient emailClient,
+            IEmailBuilder emailBuilder,
             ILogger logger)
         {
             this.settings = settings;
@@ -35,6 +42,8 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules
             this.getItemLocaleEventsQueryHandler = getItemLocaleEventsQueryHandler;
             this.deleteEventQueueCommandHandler = deleteEventQueueCommandHandler;
             this.archiveEventsCommandHandler = archiveEventsCommandHandler;
+            this.emailClient = emailClient;
+            this.emailBuilder = emailBuilder;
             this.logger = logger;
         }
 
@@ -80,6 +89,7 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules
             {
                 DeleteEvents(queueRecords);
                 ArchiveEvents(queueRecords);
+                SendAlert(queueRecords);
             }
         }
 
@@ -142,6 +152,36 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules
             {
                 Events = changeQueueHistoryModels
             });
+        }
+
+        private void SendAlert(ChangeQueueEvents<ItemLocaleEventModel> queueRecords)
+        {
+            var failedEvents = queueRecords.EventModels
+                .Where(q => !String.IsNullOrEmpty(q.ErrorMessage))
+                .Select(em => new
+                {
+                    Resolution = "Perform Mammoth ItemLocale Refresh",
+                    Region = em.Region,
+                    ScanCode = em.ScanCode,
+                    BusinessUnitId = em.BusinessUnitId,
+                    QueueId = em.QueueId,
+                    EventType = em.EventTypeId == Constants.EventTypes.ItemLocaleAddOrUpdate ? "ItemLocale AddOrUpdate" : "Item Delete",
+                    ErrorMessage = em.ErrorMessage,
+                    ExceptionSource = em.ErrorSource,
+                    ExceptionType = em.ErrorDetails.IsJsonString() ? (string)JObject.Parse(em.ErrorDetails)[Constants.ExceptionProperties.ExceptionType] : em.ErrorDetails,
+                    ExceptionMessage = em.ErrorDetails.IsJsonString() ? (string)JObject.Parse(em.ErrorDetails)[Constants.ExceptionProperties.ExceptionMessage] : em.ErrorDetails
+                });
+
+
+            if (failedEvents.Any())
+            {
+                emailClient.Send(emailBuilder
+                    .BuildEmail(failedEvents.ToList(), "The following ItemLocale changes had errors when being inserted/updated in Mammoth. " +
+                        "The resolution details are provided below. " + Environment.NewLine +
+                        "The regional IRMA table 'mammoth.ChangeQueueHistory' will provide more details if necessary. " +
+                        "Additionally the logs in the Mammoth database are available."),
+                    "Mammoth ItemLocale Error - ACTION REQUIRED");
+            }
         }
     }
 }

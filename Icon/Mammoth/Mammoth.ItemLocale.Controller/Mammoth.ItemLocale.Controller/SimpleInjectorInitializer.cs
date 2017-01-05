@@ -2,7 +2,6 @@
 using Mammoth.Common.ControllerApplication;
 using Mammoth.Common.ControllerApplication.ConnectionBuilders;
 using Mammoth.Common.ControllerApplication.Http;
-using Mammoth.Common.ControllerApplication.Models;
 using Mammoth.Common.ControllerApplication.Services;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.ConnectionBuilders;
@@ -10,13 +9,10 @@ using Mammoth.Common.DataAccess.DbProviders;
 using Mammoth.Common.DataAccess.Decorators;
 using Mammoth.Common.Email;
 using Mammoth.ItemLocale.Controller.ApplicationModules;
-using Mammoth.ItemLocale.Controller.DataAccess.Commands;
 using Mammoth.ItemLocale.Controller.DataAccess.Models;
-using Mammoth.ItemLocale.Controller.DataAccess.Queries;
 using Mammoth.ItemLocale.Controller.Services;
 using Mammoth.Logging;
 using SimpleInjector;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Mammoth.ItemLocale.Controller
@@ -44,7 +40,7 @@ namespace Mammoth.ItemLocale.Controller
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(DbProviderQueryHandlerDecorator<,>), Lifestyle.Singleton);
             container.RegisterDecorator(typeof(IService<ItemLocaleEventModel>), typeof(ValidateItemLocaleServiceDecorator), Lifestyle.Singleton);
             container.RegisterSingleton<IEmailClient>(() => EmailClient.CreateFromConfig());
-            container.RegisterSingleton(typeof(IEmailMessageBuilder<>), typeof(EnumerableEmailMessageBuilder<>));
+            container.RegisterSingleton(typeof(IEmailBuilder), typeof(EmailBuilder));
 
             var settingsRegistration = Lifestyle.Singleton.CreateRegistration<ItemLocaleControllerApplicationSettings>(() => ItemLocaleControllerApplicationSettings.CreateFromConfig(), container);
             container.AddRegistration(typeof(IRegionalControllerApplicationSettings), settingsRegistration);

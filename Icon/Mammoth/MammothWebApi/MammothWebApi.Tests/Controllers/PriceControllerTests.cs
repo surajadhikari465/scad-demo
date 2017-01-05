@@ -9,6 +9,7 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web.Http.Results;
@@ -111,32 +112,75 @@ namespace MammothWebApi.Tests.Controllers
         }
 
         [TestMethod]
-        public void PriceControllerAddOrUpdatePrices_ExceptionDuringService_ReturnsInternalServerError()
+        public void PriceControllerAddOrUpdatePrices_NonSqlExceptionDuringService_ReturnsInternalServerErrorWithExceptionDetails()
         {
             // Given
             List<PriceModel> prices = BuildPriceModel(numberOfItems: 3);
-            this.mockAddUpdatePriceService.Setup(s => s.Handle(It.IsAny<AddUpdatePrice>())).Throws(new NullReferenceException());
+            this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>())).Returns(new List<int>());
+            InvalidOperationException invalidOperationException = new InvalidOperationException("Test Invalid Operation Exception", new Exception("Test Inner Exception"));
+            this.mockAddUpdatePriceService.Setup(s => s.Handle(It.IsAny<AddUpdatePrice>())).Throws(invalidOperationException);
 
             // When
-            var result = this.controller.AddOrUpdatePrices(prices) as InternalServerErrorResult;
+            var result = this.controller.AddOrUpdatePrices(prices) as ExceptionResult;
 
             // Then
-            Assert.IsNotNull(result);
+            Assert.IsNotNull(result, "The InternalServerError with Exception response is null.");
+            Assert.AreEqual(invalidOperationException.Message, result.Exception.Message);
+            Assert.AreEqual(invalidOperationException.InnerException, result.Exception.InnerException);
 
         }
 
         [TestMethod]
-        public void PriceControllerDeletePrices_ExceptionDuringService_ReturnsInternalServerError()
+        public void PriceControllerDeletePrices_NonSqlExceptionDuringService_ReturnsInternalServerErrorWithExceptionDetails()
         {
             // Given
             List<PriceModel> prices = BuildPriceModel(numberOfItems: 3);
-            this.mockDeletePriceService.Setup(s => s.Handle(It.IsAny<DeletePrice>())).Throws(new NullReferenceException());
+            this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>())).Returns(new List<int>());
+            InvalidOperationException invalidOperationException = new InvalidOperationException("Test Invalid Operation Exception", new Exception("Test Inner Exception"));
+            this.mockDeletePriceService.Setup(s => s.Handle(It.IsAny<DeletePrice>())).Throws(invalidOperationException);
 
             // When
-            var result = this.controller.DeletePrices(prices) as InternalServerErrorResult;
+            var result = this.controller.DeletePrices(prices) as ExceptionResult;
 
             // Then
-            Assert.IsNotNull(result);
+            Assert.IsNotNull(result, "The InternalServerError with Exception response is null.");
+            Assert.AreEqual(invalidOperationException.Message, result.Exception.Message);
+            Assert.AreEqual(invalidOperationException.InnerException, result.Exception.InnerException);
+        }
+
+        [TestMethod]
+        public void PriceControllerPrices_SqlExceptionDuringService_ReturnsInternalServerErrorWithSqlExceptionDetails()
+        {
+            // Given
+            List<PriceModel> prices = BuildPriceModel(numberOfItems: 3);
+            SqlException sqlException = CreateSqlException();
+            this.mockDeletePriceService.Setup(s => s.Handle(It.IsAny<DeletePrice>())).Throws(sqlException);
+
+            // When
+            var result = this.controller.DeletePrices(prices) as ExceptionResult;
+
+            // Then
+            Assert.IsNotNull(result, "The InternalServerError with Exception response is null.");
+            Assert.AreEqual(sqlException.Message, result.Exception.Message);
+            Assert.AreEqual(sqlException.InnerException, result.Exception.InnerException);
+        }
+
+        [TestMethod]
+        public void PriceControllerAddOrUpdatePrices_SqlExceptionDuringService_ReturnsInternalServerErrorWithSqlExceptionDetails()
+        {
+            // Given
+            List<PriceModel> prices = BuildPriceModel(numberOfItems: 3);
+            this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>())).Returns(new List<int>());
+            SqlException sqlException = CreateSqlException();
+            this.mockAddUpdatePriceService.Setup(s => s.Handle(It.IsAny<AddUpdatePrice>())).Throws(sqlException);
+
+            // When
+            var result = this.controller.AddOrUpdatePrices(prices) as ExceptionResult;
+
+            // Then
+            Assert.IsNotNull(result, "The InternalServerError with Exception response is null.");
+            Assert.AreEqual(sqlException.Message, result.Exception.Message);
+            Assert.AreEqual(sqlException.InnerException, result.Exception.InnerException);
         }
 
         [TestMethod]
@@ -297,6 +341,22 @@ namespace MammothWebApi.Tests.Controllers
                 string json = JsonConvert.SerializeObject(prices);
                 file.WriteLine(json);
             }
+        }
+
+        private SqlException CreateSqlException()
+        {
+            SqlException exception = null;
+            try
+            {
+                SqlConnection connection = new SqlConnection(@"Data Source=.;Initial Catalog=FAIL;Connection Timeout=1");
+                connection.Open();
+            }
+            catch (SqlException sqlException)
+            {
+                exception = sqlException;
+            }
+
+            return exception;
         }
     }
 }

@@ -4,6 +4,7 @@ using Mammoth.Common.DataAccess.Models;
 using MoreLinq;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace Mammoth.Price.Controller.DataAccess.Commands
 {
@@ -18,12 +19,14 @@ namespace Mammoth.Price.Controller.DataAccess.Commands
         
         public void Execute(ArchiveEventsCommand data)
         {
-            // Sql Bulk Copy List into Staging Table
-            using (SqlBulkCopy bulkCopy = new SqlBulkCopy(this.dbProvider.Connection as SqlConnection))
+            if (data.Events.Any())
             {
-                bulkCopy.DestinationTableName = "mammoth.ChangeQueueHistory";
-                DataTable dataTable = data.Events.ToDataTable();
-                bulkCopy.WriteToServer(dataTable);
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(this.dbProvider.Connection as SqlConnection))
+                {
+                    bulkCopy.DestinationTableName = "mammoth.ChangeQueueHistory";
+                    DataTable dataTable = data.Events.ToDataTable();
+                    bulkCopy.WriteToServer(dataTable);
+                }
             }
         }
     }

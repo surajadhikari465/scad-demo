@@ -1,4 +1,5 @@
-﻿using Mammoth.Common.ControllerApplication.Http;
+﻿using Mammoth.Common;
+using Mammoth.Common.ControllerApplication.Http;
 using Mammoth.Common.DataAccess;
 using Mammoth.Logging;
 using Mammoth.Price.Controller.DataAccess.Models;
@@ -105,11 +106,16 @@ namespace Mammoth.Price.Controller.Tests.Services
                     new PriceEventModel { ScanCode = "2", EventTypeId = IrmaEventTypes.Price },
                     new PriceEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.Price }
                 };
+
+            HttpResponseMessage errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            errorResponse.ReasonPhrase = HttpStatusCode.InternalServerError.ToString();
+            errorResponse.Content = new StringContent(@"[{ ""error"":""testing there was an error"" }]");
+
             mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse));
 
             //When
             service.Process(data);
@@ -117,7 +123,9 @@ namespace Mammoth.Price.Controller.Tests.Services
             //Then
             foreach (var il in data)
             {
-                Assert.AreEqual("Bad Request", il.ErrorMessage);
+                Assert.AreEqual(errorResponse.ReasonPhrase, il.ErrorMessage);
+                Assert.AreEqual(errorResponse.Content.ReadAsStringAsync().Result, il.ErrorDetails);
+                Assert.AreEqual(Constants.SourceSystem.MammothWebApi, il.ErrorSource);
             }
 
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.PriceUpdate,
@@ -180,7 +188,40 @@ namespace Mammoth.Price.Controller.Tests.Services
         }
 
         [TestMethod]
-        public void PriceServiceProcess_MessageFailedWithPostCall_ShouldReprocessMessagesInBatches()
+        public void PriceServiceProcess_OneRecordExceptionThrownDuringPriceModelMapping_ShouldSetErrorDetailsAndHttpPutNotCalled()
+        {
+            //Given
+            string expectedErrorMessage = "ArgumentException";
+            string expectedErrorDetails = "Missing a property for the Cancelled Sale: {0}";
+            string expectedErrorSource = Constants.SourceSystem.MammothPriceController;
+
+            data = new List<PriceEventModel>
+                {
+                    new PriceEventModel { ScanCode = "1", EventTypeId = IrmaEventTypes.Price, CancelAllSales = true, CurrentSaleStartDate = null }
+                };
+
+            // Mapping throws exception before bulk call and call with first item.
+            mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
+                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)))
+                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+
+            //When
+            service.Process(data);
+
+            //Then
+            var actual = data.First();
+
+            Assert.AreEqual(expectedErrorMessage, actual.ErrorMessage, "ErrorMessage property incorrect");
+            Assert.IsTrue(actual.ErrorDetails.Contains(expectedErrorMessage), "ErrorDetails property incorrect");
+            Assert.AreEqual(expectedErrorSource, actual.ErrorSource, "ErrorSource property incorrect");
+
+            mockClientWrapper.Verify(m => m.PostAsJsonAsync(Uris.PriceUpdate,
+                It.Is<IEnumerable<PriceModel>>(e => e.Count() == 1
+                    && e.Select(p => p.ScanCode).Contains("1"))), Times.Never);
+        }
+
+        [TestMethod]
+        public void PriceServiceProcess_MessageFailedWithPostCallForPriceRollback_ShouldReprocessMessagesInBatches()
         {
             //Given
             data = new List<PriceEventModel>
@@ -190,8 +231,13 @@ namespace Mammoth.Price.Controller.Tests.Services
                     new PriceEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.PriceRollback },
                     new PriceEventModel { ScanCode = "4", EventTypeId = IrmaEventTypes.PriceRollback }
                 };
+
+            HttpResponseMessage errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            errorResponse.ReasonPhrase = HttpStatusCode.InternalServerError.ToString();
+            errorResponse.Content = new StringContent(@"[{ ""error"":""testing there was an error"" }]");
+
             mockClientWrapper.SetupSequence(m => m.PostAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
+                .Returns(Task.FromResult(errorResponse))
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)))
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
 
@@ -244,6 +290,8 @@ namespace Mammoth.Price.Controller.Tests.Services
 
             //Then
             Assert.IsNotNull(data.First().ErrorMessage);
+            Assert.IsNotNull(data.First().ErrorDetails);
+            Assert.IsNotNull(data.First().ErrorSource);
             data.Skip(1).Select(d => d.ErrorMessage).ToList().ForEach(Assert.IsNull);
 
             mockClientWrapper.Verify(m => m.PostAsJsonAsync(Uris.PriceUpdate,
@@ -281,11 +329,16 @@ namespace Mammoth.Price.Controller.Tests.Services
                     new PriceEventModel { ScanCode = "2", EventTypeId = IrmaEventTypes.PriceRollback },
                     new PriceEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.PriceRollback }
                 };
+
+            HttpResponseMessage errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            errorResponse.ReasonPhrase = HttpStatusCode.InternalServerError.ToString();
+            errorResponse.Content = new StringContent(@"[{ ""error"":""testing there was an error"" }]");
+
             mockClientWrapper.SetupSequence(m => m.PostAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse));
 
             //When
             service.Process(data);
@@ -293,7 +346,9 @@ namespace Mammoth.Price.Controller.Tests.Services
             //Then
             foreach (var il in data)
             {
-                Assert.AreEqual("Bad Request", il.ErrorMessage);
+                Assert.AreEqual(errorResponse.ReasonPhrase, il.ErrorMessage);
+                Assert.AreEqual(errorResponse.Content.ReadAsStringAsync().Result, il.ErrorDetails);
+                Assert.AreEqual(Constants.SourceSystem.MammothWebApi, il.ErrorSource);
             }
 
             mockClientWrapper.Verify(m => m.PostAsJsonAsync(Uris.PriceRollback,
@@ -316,7 +371,7 @@ namespace Mammoth.Price.Controller.Tests.Services
         }
 
         [TestMethod]
-        public void PriceServiceProcess_DataHasPriceUpdateAndRollbackEventTypesAndMessageFailedOnReprocessForPutCallForPriceEvents_ShouldSetErrorMessage()
+        public void PriceServiceProcess_DataHasPriceUpdateAndRollbackEventTypesAndMessageFailedOnReprocessForPutCallForPriceEvents_ShouldSetErrorMessageDetails()
         {
             data = new List<PriceEventModel>
                 {
@@ -324,10 +379,15 @@ namespace Mammoth.Price.Controller.Tests.Services
                     new PriceEventModel { ScanCode = "2", EventTypeId = IrmaEventTypes.Price },
                     new PriceEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.PriceRollback }
                 };
+
+            HttpResponseMessage errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            errorResponse.ReasonPhrase = HttpStatusCode.InternalServerError.ToString();
+            errorResponse.Content = new StringContent(@"[{ ""error"":""testing there was an error"" }]");
+
             mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse));
 
             mockClientWrapper.SetupSequence(m => m.PostAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
@@ -345,7 +405,9 @@ namespace Mammoth.Price.Controller.Tests.Services
 
             foreach (var il in data.Where(d => d.EventTypeId == IrmaEventTypes.Price))
             {
-                Assert.AreEqual("Bad Request", il.ErrorMessage);
+                Assert.AreEqual(errorResponse.ReasonPhrase, il.ErrorMessage);
+                Assert.AreEqual(errorResponse.Content.ReadAsStringAsync().Result, il.ErrorDetails);
+                Assert.AreEqual(Constants.SourceSystem.MammothWebApi, il.ErrorSource);
             }
 
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.PriceUpdate,
@@ -367,7 +429,7 @@ namespace Mammoth.Price.Controller.Tests.Services
         }
 
         [TestMethod]
-        public void PriceServiceProcess_DataHasPriceAndRollbackEventTypesAndMessageFailedOnReprocessForPostCallForRollbackEvents_ShouldSetErrorMessage()
+        public void PriceServiceProcess_DataHasPriceAndRollbackEventTypesAndMessageFailedOnReprocessForPostCallForRollbackEvents_ShouldSetErrorMessageAndErrorDetails()
         {
             data = new List<PriceEventModel>
                 {
@@ -377,12 +439,15 @@ namespace Mammoth.Price.Controller.Tests.Services
                 };
             mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
-                
+
+            HttpResponseMessage errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            errorResponse.ReasonPhrase = HttpStatusCode.InternalServerError.ToString();
+            errorResponse.Content = new StringContent(@"[{ ""error"":""testing there was an error"" }]");
 
             mockClientWrapper.SetupSequence(m => m.PostAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse));
 
 
             //When
@@ -391,7 +456,9 @@ namespace Mammoth.Price.Controller.Tests.Services
             //Then
             foreach (var il in data.Where(d => d.EventTypeId == IrmaEventTypes.PriceRollback))
             {
-                Assert.AreEqual("Bad Request", il.ErrorMessage);
+                Assert.AreEqual(errorResponse.ReasonPhrase, il.ErrorMessage);
+                Assert.AreEqual(errorResponse.Content.ReadAsStringAsync().Result, il.ErrorDetails);
+                Assert.AreEqual(Constants.SourceSystem.MammothWebApi, il.ErrorSource);
             }
 
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.PriceUpdate,
@@ -413,7 +480,7 @@ namespace Mammoth.Price.Controller.Tests.Services
         }
 
         [TestMethod]
-        public void PriceServiceProcess_DataHasPriceAndRollbackEventTypesAndMessageFailedOnReprocessAllEventTypes_ShouldSetErrorMessage()
+        public void PriceServiceProcess_DataHasPriceAndRollbackEventTypesAndMessagesFailedOnReprocess_ShouldSetErrorMessageAndErrorDetails()
         {
             data = new List<PriceEventModel>
                 {
@@ -421,13 +488,18 @@ namespace Mammoth.Price.Controller.Tests.Services
                     new PriceEventModel { ScanCode = "2", EventTypeId = IrmaEventTypes.PriceRollback },
                     new PriceEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.PriceRollback }
                 };
+
+            HttpResponseMessage errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            errorResponse.ReasonPhrase = HttpStatusCode.InternalServerError.ToString();
+            errorResponse.Content = new StringContent(@"[{ ""error"":""testing there was an error"" }]");
+
             mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(errorResponse));
 
             mockClientWrapper.SetupSequence(m => m.PostAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse))
+                .Returns(Task.FromResult(errorResponse));
 
 
             //When
@@ -436,7 +508,9 @@ namespace Mammoth.Price.Controller.Tests.Services
             //Then
             foreach (var il in data)
             {
-                Assert.AreEqual("Bad Request", il.ErrorMessage);
+                Assert.AreEqual(errorResponse.ReasonPhrase, il.ErrorMessage);
+                Assert.AreEqual(errorResponse.Content.ReadAsStringAsync().Result, il.ErrorDetails);
+                Assert.AreEqual(Constants.SourceSystem.MammothWebApi, il.ErrorSource);
             }
 
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.PriceUpdate,

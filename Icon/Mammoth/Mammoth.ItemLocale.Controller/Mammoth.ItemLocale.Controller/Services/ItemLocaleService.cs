@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using MoreLinq;
 using Mammoth.Common.ControllerApplication.Models;
+using Mammoth.Common;
 
 namespace Mammoth.ItemLocale.Controller.Services
 {
@@ -54,7 +55,7 @@ namespace Mammoth.ItemLocale.Controller.Services
                 // If passing main batch of records fails, process in smaller bathes/bundles
                 if (!response.IsSuccessStatusCode)
                 {
-                    logger.Error(String.Format("Error occurred when passing processing ItemLocale events. Processing this set of events in batches. " +
+                    logger.Error(String.Format("Error occurred when processing ItemLocale events. Processing this set of events in batches. " +
                         "Region: {0}. URI : {1}. EventTypeId : {2}. Number of ItemLocale Rows : {3}. Number of QueueIDs: {4}. Error : {5}.",
                             settings.CurrentRegion,
                             settings.UriBaseAddress + Uris.ItemLocaleUpdate,
@@ -74,7 +75,13 @@ namespace Mammoth.ItemLocale.Controller.Services
                     }
                     else
                     {
-                        filteredItemLocaleData.First().ErrorMessage = response.ReasonPhrase;
+                        string errorResponseContent = response.Content.ReadAsStringAsync().Result;
+                        if (!string.IsNullOrEmpty(errorResponseContent))
+                        {
+                            filteredItemLocaleData.First().ErrorMessage = response.ReasonPhrase;
+                            filteredItemLocaleData.First().ErrorDetails = errorResponseContent;
+                            filteredItemLocaleData.First().ErrorSource = Constants.SourceSystem.MammothWebApi;
+                        }
                     }
                 }
                 else if (response.Content != null)

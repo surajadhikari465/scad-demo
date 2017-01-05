@@ -3,7 +3,6 @@ using Mammoth.Common.DataAccess.DbProviders;
 using Mammoth.Common.Email;
 using Mammoth.Logging;
 using MammothWebApi.Common;
-using MammothWebApi.DataAccess.Commands;
 using MammothWebApi.DataAccess.Queries;
 using MammothWebApi.Email;
 using MammothWebApi.Service.Decorators;
@@ -44,8 +43,6 @@ namespace MammothWebApi
             // Decorators
             container.RegisterDecorator(typeof(IService<AddUpdatePrice>), typeof(CancelAllSalesAddUpdatePriceServiceDecorator));
             container.RegisterDecorator(typeof(IService<>), typeof(DbConnectionServiceDecorator<>));
-            container.RegisterDecorator(typeof(IService<>), typeof(EmailErrorServiceDecorator<>));
-            container.RegisterDecorator(typeof(IService<>), typeof(LoggingServiceDecorator<>));
             container.RegisterDecorator<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>, DbConnectionQueryHandlerDecorator<GetAllBusinessUnitsQuery, List<int>>>();
             
             container.RegisterWebApiControllers(GlobalConfiguration.Configuration);

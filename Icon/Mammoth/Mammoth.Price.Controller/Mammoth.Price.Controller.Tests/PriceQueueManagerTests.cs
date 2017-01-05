@@ -12,6 +12,7 @@ using Mammoth.Price.Controller.DataAccess.Commands;
 using Mammoth.Price.Controller.ApplicationModules;
 using System.Linq;
 using Mammoth.Common.ControllerApplication;
+using Mammoth.Common;
 
 namespace Mammoth.Price.Controller.Tests
 {
@@ -25,6 +26,8 @@ namespace Mammoth.Price.Controller.Tests
         private Mock<ICommandHandler<DeleteEventQueueCommand>> mockDeleteEventQueueCommandHandler;
         private Mock<ICommandHandler<ArchiveEventsCommand>> mockArchiveEventsCommandHandler;
         private Mock<ILogger> logger;
+        private Mock<IEmailClient> mockEmailClient;
+        private Mock<IEmailBuilder> mockEmailBuilder;
 
         private PriceQueueManager queueManager;
 
@@ -37,6 +40,8 @@ namespace Mammoth.Price.Controller.Tests
             this.mockDeleteEventQueueCommandHandler = new Mock<ICommandHandler<DeleteEventQueueCommand>>();
             this.mockArchiveEventsCommandHandler = new Mock<ICommandHandler<ArchiveEventsCommand>>();
             this.logger = new Mock<ILogger>();
+            this.mockEmailClient = new Mock<IEmailClient>();
+            this.mockEmailBuilder = new Mock<IEmailBuilder>();
 
             this.settings = new PriceControllerApplicationSettings
             {
@@ -54,6 +59,8 @@ namespace Mammoth.Price.Controller.Tests
                 this.mockGetExistingPricesQueryHandler.Object,
                 this.mockDeleteEventQueueCommandHandler.Object,
                 this.mockArchiveEventsCommandHandler.Object,
+                this.mockEmailClient.Object,
+                this.mockEmailBuilder.Object,
                 this.logger.Object);
         }
 
@@ -310,13 +317,18 @@ namespace Mammoth.Price.Controller.Tests
             ChangeQueueEvents<PriceEventModel> changeQueueEvents = new ChangeQueueEvents<PriceEventModel>();
             var eventQueueModel = new EventQueueModel
             {
-                QueueId = 1
+                QueueId = 1,
             };
 
             var priceEventModel = new PriceEventModel
             {
                 QueueId = 1,
-                ErrorMessage = "Error Adding Price"
+                BusinessUnitId = 1,
+                ScanCode = "1",
+                EventTypeId = Constants.EventTypes.Price,
+                ErrorMessage = "Error Adding Price",
+                ErrorDetails = "Error Details Adding Price",
+                ErrorSource = Constants.SourceSystem.MammothWebApi
             };
 
             changeQueueEvents.QueuedEvents.Add(eventQueueModel);
@@ -330,8 +342,10 @@ namespace Mammoth.Price.Controller.Tests
                 .Verify(d => d.Execute(It.Is<DeleteEventQueueCommand>(c => c.QueueIds.Count() == 1)), Times.Once);
             this.mockArchiveEventsCommandHandler
                 .Verify(a => a.Execute(It.Is<ArchiveEventsCommand>(c =>
-                    c.Events.All(e => e.ErrorCode == priceEventModel.ErrorMessage)
+                    c.Events.All(e => e.ErrorCode == priceEventModel.ErrorMessage
+                    && c.Events.All(y => y.ErrorDetails == priceEventModel.ErrorDetails))
                     && c.Events.All(x => x.QueueID == eventQueueModel.QueueId))), Times.Once);
+            this.mockEmailClient.Verify(c => c.Send(It.IsAny<string>(), "Mammoth Price Error - ACTION REQUIRED"), Times.Once);
         }
 
         private List<EventQueueModel> BuildEventQueueModels(int numberOfItems)

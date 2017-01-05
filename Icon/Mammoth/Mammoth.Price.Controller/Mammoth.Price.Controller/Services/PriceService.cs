@@ -1,4 +1,5 @@
-﻿using Mammoth.Common.ControllerApplication.Http;
+﻿using Mammoth.Common;
+using Mammoth.Common.ControllerApplication.Http;
 using Mammoth.Common.ControllerApplication.Models;
 using Mammoth.Common.ControllerApplication.Services;
 using Mammoth.Common.DataAccess;
@@ -8,6 +9,7 @@ using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 
 namespace Mammoth.Price.Controller.Services
@@ -64,12 +66,22 @@ namespace Mammoth.Price.Controller.Services
                 }
                 else
                 {
-                    // Set error message if there was one record sent and request failed
-                    data.First().ErrorMessage = response.ReasonPhrase;
+                    // Set error properties for the one failed record
+                    if (response.Content != null)
+                    {
+                        string errorResponseContent = response.Content.ReadAsStringAsync().Result;
+                        if (!string.IsNullOrEmpty(errorResponseContent))
+                        {
+                            filteredPriceData.First().ErrorMessage = response.ReasonPhrase;
+                            filteredPriceData.First().ErrorDetails = errorResponseContent;
+                            filteredPriceData.First().ErrorSource = Constants.SourceSystem.MammothWebApi;
+                        }
+                    }
                 }
             }
             else if (response.Content != null)
             {
+                // set error properties for records returned within a successful response (e.g. BusinessUnit does not exist)
                 var responseMessages = response.Content.ReadAsAsync<List<ErrorResponseModel<PriceEventModel>>>().Result;
                 if (responseMessages != null)
                 {
@@ -106,9 +118,9 @@ namespace Mammoth.Price.Controller.Services
                         break;
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+                response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
 
             return response;

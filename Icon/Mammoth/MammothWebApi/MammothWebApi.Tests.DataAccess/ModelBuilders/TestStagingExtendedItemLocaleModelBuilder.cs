@@ -76,16 +76,16 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         {
             var extendedAttributes = new List<StagingItemLocaleExtendedModel>
             {
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.ColorAdded, AttributeValue = colorAdded, Timestamp = timestamp },
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.CountryOfProcessing, AttributeValue = countryOfProcessing, Timestamp = timestamp },
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.Origin, AttributeValue = origin, Timestamp = timestamp },
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.ElectronicShelfTag, AttributeValue = electronicShelfTag, Timestamp = timestamp },
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.Exclusive, AttributeValue = exclusive, Timestamp = timestamp },
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.NumberOfDigitsSentToScale, AttributeValue = numberOfDigitsSentToScale, Timestamp = timestamp },
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.ChicagoBaby, AttributeValue = chicagoBaby, Timestamp = timestamp },
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.TagUom, AttributeValue = tagUom, Timestamp = timestamp },
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.LinkedScanCode, AttributeValue = linkedItem, Timestamp = timestamp },
-                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.ScaleExtraText, AttributeValue = scaleExtraText, Timestamp = timestamp },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.ColorAdded, AttributeValue = colorAdded, Timestamp = timestamp, TransactionId = this.transactionId },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.CountryOfProcessing, AttributeValue = countryOfProcessing, Timestamp = timestamp, TransactionId = this.transactionId },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.Origin, AttributeValue = origin, Timestamp = timestamp, TransactionId = this.transactionId },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.ElectronicShelfTag, AttributeValue = electronicShelfTag, Timestamp = timestamp, TransactionId = this.transactionId },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.Exclusive, AttributeValue = exclusive, Timestamp = timestamp, TransactionId = this.transactionId },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.NumberOfDigitsSentToScale, AttributeValue = numberOfDigitsSentToScale, Timestamp = timestamp, TransactionId = this.transactionId },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.ChicagoBaby, AttributeValue = chicagoBaby, Timestamp = timestamp, TransactionId = this.transactionId },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.TagUom, AttributeValue = tagUom, Timestamp = timestamp, TransactionId = this.transactionId },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.LinkedScanCode, AttributeValue = linkedItem, Timestamp = timestamp, TransactionId = this.transactionId },
+                new StagingItemLocaleExtendedModel { ScanCode = scanCode, BusinessUnitId = businessUnit, Region = region, AttributeId = Attributes.ScaleExtraText, AttributeValue = scaleExtraText, Timestamp = timestamp, TransactionId = this.transactionId },
             };
 
             return extendedAttributes;

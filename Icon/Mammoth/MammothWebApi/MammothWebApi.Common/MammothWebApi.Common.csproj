@@ -70,6 +70,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceSettings.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Common\Mammoth.Common.csproj">
+      <Project>{563F0633-8364-4ED0-88FF-F55302117348}</Project>
+      <Name>Mammoth.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

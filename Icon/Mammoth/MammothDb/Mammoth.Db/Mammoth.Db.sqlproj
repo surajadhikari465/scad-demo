@@ -595,6 +595,7 @@
     <None Include="Scripts\Templates\StartDataTransformation.sql" />
     <Build Include="stage\Tables\Items.sql" />
     <Build Include="stage\Tables\HierarchyClass.sql" />
+    <None Include="Scripts\PostDeploymentScripts\PopulateRetentionPolicyForStagingTables.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
