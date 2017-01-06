@@ -364,7 +364,7 @@ WHERE
 --Main Query Begins
 SELECT 
 	sc.itemid AS [ItemID],
-	'"' + LTRIM(RTRIM(prd.traitValue)) + '"' AS [Name], --Wrap Name in quotes because it can contain commas which will break the comma delimited extracts
+	'"' + LTRIM(RTRIM(prd.traitValue)) + '"' AS [ItemName], --Wrap Name in quotes because it can contain commas which will break the comma delimited extracts
 	CASE 
 		WHEN ISNULL(sctypename, 'UPC') = 'UPC'
 			THEN 'NULL'
@@ -415,8 +415,8 @@ SELECT
 		WHEN sctypename in ('2','3') AND scancodebig between 48000000001 and 48000099999
 		THEN 'Ingredient Legacy (48000000001-48000099999)'
 		ELSE 'unknown'
-	END AS [Barcode Type],
-	LTRIM(RTRIM(sc.scanCode)) AS [Scan Code],
+	END AS [BarcodeType],
+	LTRIM(RTRIM(sc.scanCode)) AS [ScanCode],
 	--Hierarchies
 	'Merchandise' + '|' + CASE WHEN merch.subbrickid IS NULL THEN 'NULL' ELSE merch.subbrickid END AS [Merchandise-Association],
 	'National' + '|' + CASE WHEN ncc.[NationalClassID] IS NULL THEN 'NULL' ELSE ncc.[NationalClassID] END AS [National-Association],	
@@ -440,20 +440,20 @@ SELECT
 		WHEN ISNULL(isa.Msc, 0) = 0
 			THEN '"No"'
 		ELSE '"Yes"'
-	END AS [Msc],
+	END AS [MSC],
 	CASE 
 		WHEN ISNULL(isa.PremiumBodyCare, 0) = 0
 			THEN '"No"'
 		ELSE '"Yes"'
 	END AS [Premium Body Care],
-	CASE WHEN LTRIM(RTRIM(sff.Description)) IS NULL THEN 'NULL' ELSE '"' + sff.Description + '"' END as 'Fresh Or Frozen',
+	CASE WHEN LTRIM(RTRIM(sff.Description)) IS NULL THEN 'NULL' ELSE '"' + sff.Description + '"' END as 'Fresh or Frozen',
 	CASE WHEN LTRIM(RTRIM(sfct.Description)) IS NULL THEN 'NULL' ELSE '"' + sfct.Description + '"' END as 'Seafood: Wild Or Farm Raised',
 	CASE WHEN LTRIM(RTRIM(awr.Description)) IS NULL THEN 'NULL' ELSE '"' + awr.Description + '"' END as 'Animal Welfare Rating',
 	CASE 
 		WHEN ISNULL(isa.Biodynamic, 0) = 0
 			THEN '"No"'
 		ELSE '"Yes"'
-	END AS [BioDynamic],
+	END AS [Biodynamic],
 	CASE WHEN LTRIM(RTRIM(mt.Description)) IS NULL THEN 'NULL' ELSE '"' + mt.Description + '"' END as 'Cheese Attribute: Milk Type',
 	CASE 
 		WHEN ISNULL(isa.CheeseRaw, 0) = 0
@@ -463,7 +463,7 @@ SELECT
 	CASE WHEN LTRIM(RTRIM(esr.Description)) IS NULL THEN 'NULL' ELSE esr.Description END as 'Eco-Scale Rating',
 	CASE WHEN LTRIM(RTRIM(GLU.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(GLU.HierarchyClassName)) + '"' END AS 'Gluten Free',
 	CASE WHEN LTRIM(RTRIM(KOS.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(KOS.HierarchyClassName)) + '"' END AS 'Kosher',
-	CASE WHEN LTRIM(RTRIM(GMO.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(GMO.HierarchyClassName)) + '"' END AS 'Non-Gmo',
+	CASE WHEN LTRIM(RTRIM(GMO.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(GMO.HierarchyClassName)) + '"' END AS 'Non-GMO',
 	CASE WHEN LTRIM(RTRIM(ORG.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ORG.HierarchyClassName)) + '"' END AS 'Organic',
 	CASE WHEN LTRIM(RTRIM(VEG.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(VEG.HierarchyClassName)) + '"' END AS 'Vegan',
 	CASE 

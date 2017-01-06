@@ -127,6 +127,10 @@
     <Folder Include="Scripts\Projects\Infor\Performance Scripts" />
     <Folder Include="Scripts\Projects\Infor\SubteamTest" />
     <Folder Include="Scripts\Projects\Infor\DataSurgery" />
+    <Folder Include="Scripts\Projects\Infor\Performance Scripts\Brand" />
+    <Folder Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy" />
+    <Folder Include="Scripts\Projects\Infor\Performance Scripts\Item Infor to Icon" />
+    <Folder Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -555,6 +559,30 @@
     <None Include="Scripts\Projects\Infor\DataSurgery\DeleteNonValidatedItems.sql" />
     <None Include="Scripts\Projects\Infor\DataSurgery\DeleteNonValidatedItems_Rollback.sql" />
     <Build Include="app\Tables\EventQueueArchive.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Brand\AddBrand_InforToIcon.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Brand\AddBrand_InforToIcon_Avg.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Brand\AddBrand_InforToIcon_Max.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Brand\AddBrand_InforToIcon_Min.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Brand\EditBrand_InforToIcon.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Brand\EditBrand_InforToIcon_Avg.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Brand\EditBrand_InforToIcon_Max.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Brand\EditBrand_InforToIcon_Min.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy\AddHierarchyNode_InforToIcon.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy\AddHierarchyNode_InforToIcon_Avg.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy\AddHierarchyNode_InforToIcon_Max.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy\AddHierarchyNode_InforToIcon_Min.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy\EditHierarchyNode_InforToIcon.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy\EditHierarchyNode_InforToIcon_Avg.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy\EditHierarchyNode_InforToIcon_Max.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy\EditHierarchyNode_InforToIcon_Min.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Item Infor to Icon\EditItem_InforToIcon.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Item Infor to Icon\EditItem_InforToIcon_Avg.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Item Infor to Icon\EditItem_InforToIcon_Max.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Item Infor to Icon\EditItem_InforToIcon_Min.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor\AddItem_IRMAToInfor.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor\AddItem_IRMAToInfor_Avg.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor\AddItem_IRMAToInfor_Max.sql" />
+    <None Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor\AddItem_IRMAToInfor_Min.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -667,6 +695,8 @@
     <None Include="Scripts\PopulateData\Release\AddNationalClassUpdateAndDeleteEventType.sql" />
     <None Include="Scripts\PopulateData\Release\UpdatePOSScaleTare.sql" />
     <None Include="Scripts\PopulateData\Release\RetentionPolicyEventQueueArchiveTable.sql" />
+    <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageView_MockConcatenation.sql" />
+    <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageViewWithDefaults_MockConcatenation.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
