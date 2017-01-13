@@ -20,7 +20,7 @@
             provider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_FL"].ConnectionString);
             provider.Connection.Open();
 
-            var parameters = new GetIrmaJobStatusQueryParameters { Classname = IrmaJobClassnames.POSPushJob };
+            var parameters = new GetIrmaJobStatusQueryParameters { Classname = IrmaJobClassNames.POSPushJob };
             var query = new GetIrmaJobStatusQuery(provider) { TargetRegion = IrmaRegions.FL };
 
             // When
@@ -44,7 +44,7 @@
             provider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_SP"].ConnectionString);
             provider.Connection.Open();
 
-            var parameters = new GetIrmaJobStatusQueryParameters { Classname = IrmaJobClassnames.CheckSendOrderStatusJob };
+            var parameters = new GetIrmaJobStatusQueryParameters { Classname = IrmaJobClassNames.CheckSendOrderStatusJob };
             var query = new GetIrmaJobStatusQuery(provider) { TargetRegion = IrmaRegions.SP };
 
             // When

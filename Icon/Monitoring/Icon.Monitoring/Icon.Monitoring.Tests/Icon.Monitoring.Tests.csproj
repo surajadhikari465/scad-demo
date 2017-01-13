@@ -116,6 +116,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Monitors\ApiControllerMonitorTests.cs" />
+    <Compile Include="Monitors\DvoBulkImportJobMonitorTests.cs" />
     <Compile Include="Monitors\MammothApiControllerMonitorTests.cs" />
     <Compile Include="Monitors\MammothItemLocaleControllerTests.cs" />
     <Compile Include="Monitors\MammothPriceControllerMonitorTests.cs" />

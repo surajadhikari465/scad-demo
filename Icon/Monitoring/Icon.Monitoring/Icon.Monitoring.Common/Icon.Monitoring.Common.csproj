@@ -85,9 +85,17 @@
   <ItemGroup>
     <Compile Include="AppSettingsAccessor.cs" />
     <Compile Include="Cache.cs" />
-    <Compile Include="Constants\IrmaJobClassnames.cs" />
+    <Compile Include="Constants\IrmaJobClassNames.cs" />
+    <Compile Include="Dvo\DvoRegionalJobStatus.cs" />
     <Compile Include="Enums\IrmaRegions.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="IO\FileInfoAccessor.cs" />
+    <Compile Include="IO\FileInfoWrapper.cs" />
+    <Compile Include="IO\IFileInfo.cs" />
+    <Compile Include="IO\IFileInfoAccessor.cs" />
     <Compile Include="PagerDuty\ConsolePagerDutyTrigger.cs" />
+    <Compile Include="Settings\DvoBulkImportJobMonitorSettings.cs" />
+    <Compile Include="Settings\IDvoBulkImportJobMonitorSettings.cs" />
     <Compile Include="Settings\IMonitorSettings.cs" />
     <Compile Include="PagerDuty\IPagerDutyTrigger.cs" />
     <Compile Include="Settings\MonitorSettings.cs" />

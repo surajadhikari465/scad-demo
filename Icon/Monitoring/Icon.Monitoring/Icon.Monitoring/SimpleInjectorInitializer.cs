@@ -15,6 +15,7 @@
 
     using SimpleInjector;
     using NodaTime;
+    using Common.IO;
 
     public class SimpleInjectorInitializer
     {
@@ -35,13 +36,18 @@
             container.RegisterSingleton<IMonitorSettings>(() => MonitorSettings.CreateFromConfig());
             container.RegisterCollection(typeof(IMonitor), new[] { typeof(SimpleInjectorInitializer).Assembly });
 
+            container.Register(typeof(ICommandHandler<>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
             container.Register(typeof(IQueryHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
             container.Register(typeof(IQueryByRegionHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
             container.Register(typeof(IQueryHandlerMammoth<,>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
 
+            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(IconCommandHandlerDecorator<>), Lifestyle.Singleton);
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(IconQueryHandlerDecorator<,>), Lifestyle.Singleton);
             container.RegisterDecorator(typeof(IQueryByRegionHandler<,>), typeof(IrmaQueryHandlerDecorator<,>), Lifestyle.Singleton);
             container.RegisterDecorator(typeof(IQueryHandlerMammoth<,>), typeof(MammothQueryHandlerDecorator<,>), Lifestyle.Singleton);
+
+            container.RegisterSingleton<IDvoBulkImportJobMonitorSettings, DvoBulkImportJobMonitorSettings>();
+            container.RegisterSingleton<IFileInfoAccessor, FileInfoAccessor>();
 
             container.Verify();
             return container;

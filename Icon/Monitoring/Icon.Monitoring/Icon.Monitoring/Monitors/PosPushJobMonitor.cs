@@ -38,7 +38,7 @@
         {
             var pagerDutyDetails = new Dictionary<string, string>();
             var pagerDutyDescription = new StringBuilder(PosPushPagerDutyDescription);
-            var queryParameters = new GetIrmaJobStatusQueryParameters { Classname = IrmaJobClassnames.POSPushJob };
+            var queryParameters = new GetIrmaJobStatusQueryParameters { Classname = IrmaJobClassNames.POSPushJob };
             int numberFailed = 0;
 
             foreach (IrmaRegions region in Enum.GetValues(typeof(IrmaRegions)))
@@ -49,7 +49,7 @@
                 if (this.CheckPosPushStatus(queryParameters))
                 {
                     pagerDutyDescription.Append(region).Append(" ");
-                    pagerDutyDetails.Add(IrmaJobClassnames.POSPushJob + ":" + region.ToString(), region.ToString());
+                    pagerDutyDetails.Add(IrmaJobClassNames.POSPushJob + ":" + region.ToString(), region.ToString());
                     numberFailed++;
                 }
             }

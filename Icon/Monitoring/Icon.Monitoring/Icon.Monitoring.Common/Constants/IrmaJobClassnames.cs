@@ -1,6 +1,6 @@
 ﻿namespace Icon.Monitoring.Common.Constants
 {
-    public static class IrmaJobClassnames
+    public static class IrmaJobClassNames
     {
         public const string CheckSendOrderStatusJob = "CheckSendOrderStatusJob";
         public const string EXEtoIRMAJob = "EXEtoIRMAJob";
@@ -18,5 +18,10 @@
     public static class IrmaAppConfigAppNames
     {
         public const string PosPushJob = "POS PUSH JOB";
+    }
+
+    public static class CustomJobNames
+    {
+        public const string DvoJobName = "DvoBulkImportJob";
     }
 }

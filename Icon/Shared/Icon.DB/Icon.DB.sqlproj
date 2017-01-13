@@ -131,6 +131,7 @@
     <Folder Include="Scripts\Projects\Infor\Performance Scripts\Hierarchy" />
     <Folder Include="Scripts\Projects\Infor\Performance Scripts\Item Infor to Icon" />
     <Folder Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor" />
+    <Folder Include="monitor" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -583,6 +584,8 @@
     <None Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor\AddItem_IRMAToInfor_Avg.sql" />
     <None Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor\AddItem_IRMAToInfor_Max.sql" />
     <None Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor\AddItem_IRMAToInfor_Min.sql" />
+    <Build Include="Schemas\monitor.sql" />
+    <Build Include="monitor\JobStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
