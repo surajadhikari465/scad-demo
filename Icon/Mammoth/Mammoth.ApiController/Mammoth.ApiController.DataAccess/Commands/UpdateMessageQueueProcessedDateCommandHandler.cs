@@ -24,19 +24,22 @@ namespace Mammoth.ApiController.DataAccess.Commands
 
         public void Execute(UpdateMessageQueueProcessedDateCommand<T> data)
         {
+            Guid transactionId = Guid.NewGuid();
             DateTime timestamp = DateTime.Now;
+
             if (globalContext.Context.Database.CurrentTransaction != null)
             {
                 using (var sqlBulkCopy = new SqlBulkCopy(globalContext.Context.Database.Connection as SqlConnection,
                     SqlBulkCopyOptions.Default,
                     globalContext.Context.Database.CurrentTransaction.UnderlyingTransaction as SqlTransaction))
                 {
-                    sqlBulkCopy.DestinationTableName = "Staging.esb.MessageQueueStaging";
+                    sqlBulkCopy.DestinationTableName = "stage.MessageQueue";
                     var table = data.MessagesToUpdate
                         .Select(m => new
                         {
                             m.MessageQueueId,
-                            Timestamp = timestamp
+                            Timestamp = timestamp,
+                            TransactionId = transactionId
                         }).ToDataTable();
                     sqlBulkCopy.WriteToServer(table);
                 }
@@ -45,12 +48,13 @@ namespace Mammoth.ApiController.DataAccess.Commands
             {
                 using (var sqlBulkCopy = new SqlBulkCopy(globalContext.Context.Database.Connection as SqlConnection))
                 {
-                    sqlBulkCopy.DestinationTableName = "Staging.esb.MessageQueueStaging";
+                    sqlBulkCopy.DestinationTableName = "stage.MessageQueue";
                     var table = data.MessagesToUpdate
                         .Select(m => new
                         {
                             m.MessageQueueId,
-                            Timestamp = timestamp
+                            Timestamp = timestamp,
+                            TransactionId = transactionId
                         }).ToDataTable();
                     sqlBulkCopy.WriteToServer(table);
                 }
@@ -59,8 +63,8 @@ namespace Mammoth.ApiController.DataAccess.Commands
             SqlParameter processedDateParameter = new SqlParameter("ProcessedDate", data.ProcessedDate);
             processedDateParameter.DbType = DbType.DateTime2;
 
-            SqlParameter timestampParameter = new SqlParameter("Timestamp", timestamp);
-            timestampParameter.DbType = DbType.DateTime2;
+            SqlParameter transactionIdParameterForUpdate = new SqlParameter("TransactionId", transactionId);
+            transactionIdParameterForUpdate.DbType = DbType.Guid; ;
 
             string sql = string.Format(@"UPDATE esb.{0}
                            SET ProcessedDate = @ProcessedDate,
@@ -68,15 +72,17 @@ namespace Mammoth.ApiController.DataAccess.Commands
                            WHERE EXISTS
                            (
 	                           SELECT 1 
-	                           FROM Staging.esb.MessageQueueStaging mqs
+	                           FROM stage.MessageQueue mqs
 	                           WHERE esb.{0}.MessageQueueId = mqs.MessageQueueId
-		                           AND mqs.Timestamp = @Timestamp
+		                           AND mqs.TransactionId = @TransactionId
                            )", typeof(T).Name);
-            globalContext.Context.Database.ExecuteSqlCommand(sql, processedDateParameter, timestampParameter);
+            globalContext.Context.Database.ExecuteSqlCommand(sql, processedDateParameter, transactionIdParameterForUpdate);
+            
+            SqlParameter transactionIdParameterForDelete = new SqlParameter("TransactionId", transactionId);
+            transactionIdParameterForDelete.DbType = DbType.Guid;
 
             globalContext.Context.Database.ExecuteSqlCommand(
-                "DELETE Staging.esb.MessageQueueStaging WHERE Timestamp = @Timestamp",
-                new SqlParameter("Timestamp", timestamp) { DbType = DbType.DateTime2 });
+                "DELETE stage.MessageQueue WHERE TransactionId = @TransactionId", transactionIdParameterForDelete);
         }
     }
 }

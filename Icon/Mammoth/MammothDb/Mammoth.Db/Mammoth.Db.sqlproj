@@ -596,6 +596,7 @@
     <Build Include="stage\Tables\Items.sql" />
     <Build Include="stage\Tables\HierarchyClass.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulateRetentionPolicyForStagingTables.sql" />
+    <Build Include="stage\Tables\MessageQueue.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

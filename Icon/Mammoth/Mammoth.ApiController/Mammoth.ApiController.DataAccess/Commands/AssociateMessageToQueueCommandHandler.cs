@@ -25,6 +25,7 @@ namespace Mammoth.ApiController.DataAccess.Commands
 
         public void Execute(AssociateMessageToQueueCommand<T, MessageHistory> data)
         {
+            Guid transactionId = Guid.NewGuid();
             DateTime timestamp = DateTime.Now;
             if (globalContext.Context.Database.CurrentTransaction != null)
             {
@@ -32,12 +33,13 @@ namespace Mammoth.ApiController.DataAccess.Commands
                     SqlBulkCopyOptions.Default,
                     globalContext.Context.Database.CurrentTransaction.UnderlyingTransaction as SqlTransaction))
                 {
-                    sqlBulkCopy.DestinationTableName = "Staging.esb.MessageQueueStaging";
+                    sqlBulkCopy.DestinationTableName = "stage.MessageQueue";
                     var table = data.QueuedMessages
                         .Select(m => new
                         {
                             m.MessageQueueId,
-                            Timestamp = timestamp
+                            Timestamp = timestamp,
+                            TransactionId = transactionId
                         }).ToDataTable();
                     sqlBulkCopy.WriteToServer(table);
                 }
@@ -46,12 +48,13 @@ namespace Mammoth.ApiController.DataAccess.Commands
             {
                 using (var sqlBulkCopy = new SqlBulkCopy(globalContext.Context.Database.Connection as SqlConnection))
                 {
-                    sqlBulkCopy.DestinationTableName = "Staging.esb.MessageQueueStaging";
+                    sqlBulkCopy.DestinationTableName = "stage.MessageQueue";
                     var table = data.QueuedMessages
                         .Select(m => new
                         {
                             m.MessageQueueId,
-                            Timestamp = timestamp
+                            Timestamp = timestamp,
+                            TransactionId = transactionId
                         }).ToDataTable();
                     sqlBulkCopy.WriteToServer(table);
                 }
@@ -63,8 +66,8 @@ namespace Mammoth.ApiController.DataAccess.Commands
             SqlParameter messageStatusIdParameter = new SqlParameter("MessageStatusId", MessageStatusTypes.Associated);
             messageStatusIdParameter.DbType = DbType.Int32;
 
-            SqlParameter timestampParameter = new SqlParameter("Timestamp", timestamp);
-            timestampParameter.DbType = DbType.DateTime2;
+            SqlParameter transactionIdParameterForUpdate = new SqlParameter("TransactionId", transactionId);
+            transactionIdParameterForUpdate.DbType = DbType.Guid;
 
             string sql = string.Format(@"UPDATE esb.{0}
                            SET MessageHistoryId = @MessageHistoryId,
@@ -72,15 +75,17 @@ namespace Mammoth.ApiController.DataAccess.Commands
                            WHERE EXISTS
                            (
 	                           SELECT 1 
-	                           FROM Staging.esb.MessageQueueStaging mqs
+	                           FROM stage.MessageQueue mqs
 	                           WHERE esb.{0}.MessageQueueId = mqs.MessageQueueId
-		                           AND mqs.Timestamp = @Timestamp
+		                           AND mqs.TransactionId = @TransactionId
                            )", typeof(T).Name);
-            globalContext.Context.Database.ExecuteSqlCommand(sql, messageHistoryIdParameter, messageStatusIdParameter, timestampParameter);
+            globalContext.Context.Database.ExecuteSqlCommand(sql, messageHistoryIdParameter, messageStatusIdParameter, transactionIdParameterForUpdate);
+
+            SqlParameter transactionIdParameterForDelete = new SqlParameter("TransactionId", transactionId);
+            transactionIdParameterForDelete.DbType = DbType.Guid;
 
             globalContext.Context.Database.ExecuteSqlCommand(
-                "DELETE Staging.esb.MessageQueueStaging WHERE Timestamp = @Timestamp",
-                new SqlParameter("Timestamp", timestamp) { DbType = DbType.DateTime2 });
+                "DELETE stage.MessageQueue WHERE TransactionId = @TransactionId", transactionIdParameterForDelete);
         }
     }
 }
