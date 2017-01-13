@@ -1,7 +1,6 @@
 ﻿CREATE PROCEDURE [app].[PurgeData] AS BEGIN
 -- Archive MessageQueue entries from the previous day.
 DECLARE 
-	@FailedMessageStatusId int = (select MessageStatusId from esb.MessageStatus where MessageStatusName = 'Failed'),
 	@ReadyMessageStatusId int = (select MessageStatusId from esb.MessageStatus where MessageStatusName = 'Ready')
 
 DELETE
@@ -10,7 +9,7 @@ OUTPUT
 	deleted.* INTO esb.MessageQueueItemLocaleArchive
 WHERE
 	InsertDate < cast(getdate() as date)
-	and MessageStatusId not in (@FailedMessageStatusId, @ReadyMessageStatusId)
+	and MessageStatusId not in (@ReadyMessageStatusId)
 
 DELETE
 	esb.MessageQueuePrice
@@ -18,7 +17,7 @@ OUTPUT
 	deleted.* INTO esb.MessageQueuePriceArchive
 WHERE
 	InsertDate < cast(getdate() as date)
-	and MessageStatusId not in (@FailedMessageStatusId, @ReadyMessageStatusId)
+	and MessageStatusId not in (@ReadyMessageStatusId)
 
 -- Loop through the tables to be purged and delete them according to the retention policy.
 DECLARE @DeleteCommands TABLE(Command NVARCHAR(255)
