@@ -117,6 +117,7 @@
     <Compile Include="Commands\FinalizeNewItemEventsCommand.cs" />
     <Compile Include="Commands\FinalizeNewItemEventsCommandHandler.cs" />
     <Compile Include="Constants\CustomRegexPatterns.cs" />
+    <Compile Include="Constants\LengthConstants.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="InforNewItemApplicationSettings.cs" />
     <Compile Include="Infrastructure\RegionRenewableContext.cs" />

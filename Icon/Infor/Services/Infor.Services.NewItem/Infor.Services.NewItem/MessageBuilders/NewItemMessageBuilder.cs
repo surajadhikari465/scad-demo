@@ -381,11 +381,14 @@ namespace Infor.Services.NewItem.MessageBuilders
         {
             if (newItemModel.IconBrandId.HasValue && this.iconCache.BrandIdToAbbreviationDictionary.ContainsKey(newItemModel.IconBrandId.Value))
             {
-                return this.iconCache.BrandIdToAbbreviationDictionary[newItemModel.IconBrandId.Value] + " " + newItemModel.PosDescription;
+                var brandAbbrAndPosDescription = this.iconCache.BrandIdToAbbreviationDictionary[newItemModel.IconBrandId.Value] + " " + newItemModel.PosDescription;
+                brandAbbrAndPosDescription = brandAbbrAndPosDescription.Trim();
+
+                return brandAbbrAndPosDescription.Length > LengthConstants.PosDescriptionMaxLength ? brandAbbrAndPosDescription.Substring(0, LengthConstants.PosDescriptionMaxLength) : brandAbbrAndPosDescription;
             }
             else
             {
-                return newItemModel.PosDescription;
+                return newItemModel.PosDescription.Length > LengthConstants.PosDescriptionMaxLength ? newItemModel.PosDescription.Substring(0, LengthConstants.PosDescriptionMaxLength).Trim() : newItemModel.PosDescription.Trim();
             }
         }
     }

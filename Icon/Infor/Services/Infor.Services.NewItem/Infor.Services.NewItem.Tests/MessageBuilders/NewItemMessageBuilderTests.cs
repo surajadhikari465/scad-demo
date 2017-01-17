@@ -13,6 +13,7 @@ using Icon.Common.DataAccess;
 using Infor.Services.NewItem.Queries;
 using System.Linq;
 using System.Xml.Linq;
+using Icon.Framework;
 
 namespace Infor.Services.NewItem.Tests.MessageBuilders
 {
@@ -258,6 +259,32 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
             Assert.AreEqual("Scale PLU", actualScanCodeType);
         }
 
+        [TestMethod]
+        public void BuildMessage_GivenABrandAbbreviationAndPosDescriptionWithMoreThan25CharactersCombined_ShouldTruncatePosDescriptionTo25Characters()
+        {
+            //Given
+            List<NewItemModel> newItemModel = BuildNewItemModel(1);
+            newItemModel[0].PosDescription = new string('a', 26);
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(newItemModel.ToDictionary(
+                    m => m.ScanCode,
+                    m => int.Parse(m.ScanCode)));
+
+            //When
+            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            //Then
+            var posDescription = XDocument.Parse(actualXml)
+                .Descendants()
+                .Single(e => e.Name.LocalName == "code" && e.Value == Traits.Codes.PosDescription)
+                .Parent
+                .Descendants(XName.Get("value", "http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2"))
+                .Single()
+                .Value;
+            Assert.AreEqual(25, posDescription.Length);
+        }
+
         private List<NewItemModel> BuildNewItemModel(int numberOfItems)
         {
             List<NewItemModel> newItemModel = new List<NewItemModel>();
@@ -272,7 +299,7 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                     IconBrandId = 5,
                     BrandName = "Test Brand",
                     ItemDescription = "Test Item Description " + i.ToString(),
-                    PosDescription = "Test POS Description " + i.ToString(),
+                    PosDescription = "TestPOS " + i.ToString(),
                     PackageUnit = 1,
                     RetailSize = 1.1m,
                     RetailUom = "EA",
@@ -301,7 +328,7 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                     IconBrandId = 0,
                     BrandName = "New Brand",
                     ItemDescription = "Test Item Description " + i.ToString(),
-                    PosDescription = "Test POS Description " + i.ToString(),
+                    PosDescription = "TestPOS " + i.ToString(),
                     PackageUnit = 1,
                     RetailSize = 1.1m,
                     RetailUom = "EA",
