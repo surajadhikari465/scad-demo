@@ -196,7 +196,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         }
 
         [TestMethod]
-        public void ProcessDataForUdm_PosDataHasScanCodeDeauthorizeChangeType_BulkSubscriptionDeleteServiceShouldBeCalled()
+        public void ProcessDataForUdm_PosDataHasScanCodeDeauthorizeChangeType_BulkSubscriptionDeleteServiceShouldNotBeCalled()
         {
             // Given.
             var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ScanCodeDeauthorization) };
@@ -215,7 +215,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             processorModule.Execute();
 
             // Then.
-            mockItemSubscriptionDeleteService.Verify(eg => eg.DeleteEntitiesBulk(It.IsAny<List<IRMAItemSubscription>>()), Times.Once);
+            mockItemSubscriptionDeleteService.Verify(eg => eg.DeleteEntitiesBulk(It.IsAny<List<IRMAItemSubscription>>()), Times.Never);
         }
 
         [TestMethod]
@@ -275,7 +275,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_BulkSubscriptionDeleteThrowsException_RowByRowSubscriptionDeleteServiceShouldBeCalled()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ScanCodeDeauthorization) };
+            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ScanCodeDelete) };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();

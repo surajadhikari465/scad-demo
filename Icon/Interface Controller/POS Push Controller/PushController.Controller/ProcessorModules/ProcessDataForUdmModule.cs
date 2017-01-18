@@ -181,7 +181,7 @@ namespace PushController.Controller.ProcessorModules
 
         private List<IRMAPush> CheckForUnsubscribedItems(List<IRMAPush> posDataReadyForUdm)
         {
-            var itemsToUnsubscribe = posDataReadyForUdm.Where(pos => pos.ChangeType == Constants.IrmaPushChangeTypes.ScanCodeDeauthorization || pos.ChangeType == Constants.IrmaPushChangeTypes.ScanCodeDelete).ToList();
+            var itemsToUnsubscribe = posDataReadyForUdm.Where(pos => pos.ChangeType == Constants.IrmaPushChangeTypes.ScanCodeDelete).ToList();
             return itemsToUnsubscribe;
         }
 
