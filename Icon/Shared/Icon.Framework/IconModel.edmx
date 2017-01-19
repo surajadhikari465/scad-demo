@@ -3676,20 +3676,10 @@
             <Parameter Name="InstanceId" Mode="In" Type="Int32" />
             <Parameter Name="MessageTypeId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="MessageQueueGetBusinessUnitToProcess" ReturnType="Collection(Int32)">
-          <Parameter Name="MessageQueueTable" Mode="In" Type="String" />
-            <Parameter Name="InstanceId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="MessageQueueUpdateControllerBusinessUnitInProcess">
             <Parameter Name="InstanceId" Mode="In" Type="Int32" />
             <Parameter Name="BusinessUnit" Mode="In" Type="Int32" />
             <Parameter Name="MessageTypeId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="MarkMessageQueueEntriesAsInProcess">
-            <Parameter Name="MessageQueueTable" Mode="In" Type="String" />
-            <Parameter Name="NumberOfRows" Mode="In" Type="Int32" />
-            <Parameter Name="JobInstance" Mode="In" Type="Int32" />
-            <Parameter Name="BusinessUnit" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="DeliverySystem" EntityType="Icon.Framework.Model.DeliverySystem" />
           <EntitySet Name="MessageQueueBusinessUnitInProcess" EntityType="Icon.Framework.Model.MessageQueueBusinessUnitInProcess" />
@@ -7696,9 +7686,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="MessageQueueDeleteControllerFromBusinessUnitInProcess" FunctionName="Icon.Framework.Model.Store.MessageQueueDeleteControllerFromBusinessUnitInProcess" />
-          <FunctionImportMapping FunctionImportName="MessageQueueGetBusinessUnitToProcess" FunctionName="Icon.Framework.Model.Store.MessageQueueGetBusinessUnitToProcess" />
           <FunctionImportMapping FunctionImportName="MessageQueueUpdateControllerBusinessUnitInProcess" FunctionName="Icon.Framework.Model.Store.MessageQueueUpdateControllerBusinessUnitInProcess" />
-          <FunctionImportMapping FunctionImportName="MarkMessageQueueEntriesAsInProcess" FunctionName="Icon.Framework.Model.Store.MarkMessageQueueEntriesAsInProcess" />
           <EntitySetMapping Name="DeliverySystem">
             <EntityTypeMapping TypeName="Icon.Framework.Model.DeliverySystem">
               <MappingFragment StoreEntitySet="DeliverySystem">

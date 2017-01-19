@@ -292,8 +292,6 @@
     <Build Include="app\Stored Procedures\InsertIRMAItems.sql" />
     <Build Include="app\Stored Procedures\InsertIRMAItemSubscriptions.sql" />
     <Build Include="app\User Defined Types\MessageQueueType.sql" />
-    <Build Include="app\Stored Procedures\AssociateMessageToQueue.sql" />
-    <Build Include="app\Stored Procedures\MarkMessageQueueEntriesAsInProcess.sql" />
     <Build Include="app\Stored Procedures\UpdateMessageQueueProcessedDate.sql" />
     <Build Include="app\Stored Procedures\UpdateEventQueueInProcess.sql" />
     <Build Include="app\Stored Procedures\GetValidatedItemModel.sql" />
@@ -497,7 +495,6 @@
     <Build Include="app\Stored Procedures\GetNationalClassForClassCode.sql" />
     <Build Include="app\Stored Procedures\MessageQueueDeleteControllerFromBusinessUnitInProcess.sql" />
     <Build Include="app\Stored Procedures\MessageQueueUpdateControllerBusinessUnitInProcess.sql" />
-    <Build Include="app\Stored Procedures\MessageQueueGetBusinessUnitToProcess.sql" />
     <Build Include="dbo\Tables\DeliverySystem.sql" />
     <Build Include="app\Stored Procedures\PDX_ItemHierarchyFile.sql" />
     <Build Include="app\Stored Procedures\PDX_LocationHierarchyFile.sql" />
@@ -586,6 +583,20 @@
     <None Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor\AddItem_IRMAToInfor_Min.sql" />
     <Build Include="Schemas\monitor.sql" />
     <Build Include="monitor\JobStatus.sql" />
+    <Build Include="app\Stored Procedures\AssociateMessageToMessageQueuePrice.sql" />
+    <Build Include="app\Stored Procedures\AssociateMessageToMessageQueueItemLocale.sql" />
+    <Build Include="app\Stored Procedures\AssociateMessageToMessageQueueProduct.sql" />
+    <Build Include="app\Stored Procedures\AssociateMessageToMessageQueueHierarchy.sql" />
+    <Build Include="app\Stored Procedures\AssociateMessageToMessageQueueLocale.sql" />
+    <Build Include="app\Stored Procedures\AssociateMessageToMessageQueueProductSelectionGroup.sql" />
+    <Build Include="app\Stored Procedures\MarkMessageQueuePriceEntriesAsInProcess.sql" />
+    <Build Include="app\Stored Procedures\MarkMessageQueueItemLocaleEntriesAsInProcess.sql" />
+    <Build Include="app\Stored Procedures\MarkMessageQueueProductEntriesAsInProcess.sql" />
+    <Build Include="app\Stored Procedures\MarkMessageQueueLocaleEntriesAsInProcess.sql" />
+    <Build Include="app\Stored Procedures\MarkMessageQueueHierarchyEntriesAsInProcess.sql" />
+    <Build Include="app\Stored Procedures\MarkMessageQueueProductSelectionGroupEntriesAsInProcess.sql" />
+    <Build Include="app\Stored Procedures\MessageQueuePriceGetBusinessUnitToProcess.sql" />
+    <Build Include="app\Stored Procedures\MessageQueueItemLocaleGetBusinessUnitToProcess.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

@@ -207,7 +207,6 @@
       <IsTransformFile>True</IsTransformFile>
     </None>
     <Content Include="CodeAssassin.ConfigTransform.Readme.txt" />
-    <None Include="ClassDiagramForIconApiController.cd" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

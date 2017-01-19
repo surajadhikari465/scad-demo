@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Icon.ApiController.DataAccess.Queries
 {
@@ -20,7 +22,12 @@ namespace Icon.ApiController.DataAccess.Queries
 
         public int? Search(GetNextAvailableBusinessUnitParameters parameters)
         {
-            return globalContext.Context.MessageQueueGetBusinessUnitToProcess(parameters.MessageQueueName, parameters.InstanceId).FirstOrDefault();
+            SqlParameter instanceId = new SqlParameter("InstanceId", SqlDbType.Int);
+            instanceId.Value = parameters.InstanceId;
+
+            string sql = $"EXEC app.{parameters.MessageQueueName}GetBusinessUnitToProcess @InstanceId";
+
+            return globalContext.Context.Database.SqlQuery<int?>(sql, instanceId).FirstOrDefault();
         }
     }
 }

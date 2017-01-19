@@ -5,6 +5,8 @@ using Icon.Framework;
 using Icon.Logging;
 using System;
 using System.Linq;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
@@ -48,7 +50,20 @@ namespace Icon.ApiController.DataAccess.Commands
                     ControllerType.Instance.ToString(), currentMessagesInProcess, newMessagesToMark.ToString(), data.BusinessUnit.ToString(), data.LookAhead.ToString()));
                 }
 
-                globalContext.Context.MarkMessageQueueEntriesAsInProcess(typeof(T).Name, newMessagesToMark, data.Instance, data.BusinessUnit);
+                string messageQueueTableName = typeof(T).Name;
+
+                SqlParameter numberOfRows = new SqlParameter("NumberOfRows", SqlDbType.Int);
+                numberOfRows.Value = newMessagesToMark;
+
+                SqlParameter jobInstance = new SqlParameter("JobInstance", SqlDbType.Int);
+                jobInstance.Value = data.Instance;
+
+                SqlParameter businessUnit = new SqlParameter("BusinessUnit", SqlDbType.Int);
+                businessUnit.Value = data.BusinessUnit;
+
+                string sql = $"EXEC app.Mark{messageQueueTableName}EntriesAsInProcess @NumberOfRows, @JobInstance, @BusinessUnit";
+
+                globalContext.Context.Database.ExecuteSqlCommand(sql, numberOfRows, jobInstance, businessUnit);
             }
         }
     }
