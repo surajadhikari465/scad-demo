@@ -1,63 +1,45 @@
-﻿CREATE PROCEDURE [app].[PurgeData] AS BEGIN
--- Archive MessageQueue entries from the previous day.
-DECLARE 
-	@ReadyMessageStatusId int = (select MessageStatusId from esb.MessageStatus where MessageStatusName = 'Ready')
+﻿CREATE PROCEDURE [app].[PurgeData] 
+AS 
+BEGIN
+	-- Loop through the tables to be purged and delete them according to the retention policy.
+	DECLARE @DeleteCommands TABLE(Command NVARCHAR(255)
+	)
 
-DELETE
-	esb.MessageQueueItemLocale
-OUTPUT
-	deleted.* INTO esb.MessageQueueItemLocaleArchive
-WHERE
-	InsertDate < cast(getdate() as date)
-	and MessageStatusId not in (@ReadyMessageStatusId)
+	DECLARE @Command nvarchar(255)
 
-DELETE
-	esb.MessageQueuePrice
-OUTPUT
-	deleted.* INTO esb.MessageQueuePriceArchive
-WHERE
-	InsertDate < cast(getdate() as date)
-	and MessageStatusId not in (@ReadyMessageStatusId)
+	PRINT 'Inserting  Delete Commands'
 
--- Loop through the tables to be purged and delete them according to the retention policy.
-DECLARE @DeleteCommands TABLE(Command NVARCHAR(255)
-)
+	INSERT INTO @DeleteCommands
 
-DECLARE @Command nvarchar(255)
-
-PRINT 'Inserting  Delete Commands'
-
-INSERT INTO @DeleteCommands
-
-SELECT 'DELETE FROM ' +
-	QUOTENAME(rp.[Database]) + '.' + 
-	QUOTENAME(rp.[Schema]) + '.' + 
-	QUOTENAME(rp.[Table]) + 
-	'WHERE InsertDate < DATEADD(d, -' + convert(nvarchar(8), rp.DaysToKeep) + ', GETDATE())
-'
-FROM app.RetentionPolicy rp
+	SELECT 'DELETE FROM ' +
+		QUOTENAME(rp.[Database]) + '.' + 
+		QUOTENAME(rp.[Schema]) + '.' + 
+		QUOTENAME(rp.[Table]) + 
+		'WHERE InsertDate < DATEADD(d, -' + convert(nvarchar(8), rp.DaysToKeep) + ', GETDATE())
+	'
+	FROM app.RetentionPolicy rp
 
 
-DECLARE CommandsCursor CURSOR
-FOR SELECT * FROM @DeleteCommands
+	DECLARE CommandsCursor CURSOR
+	FOR SELECT * FROM @DeleteCommands
 
-OPEN CommandsCursor
-
-FETCH NEXT FROM CommandsCursor INTO @Command
-
-WHILE @@FETCH_STATUS = 0 BEGIN
-
-	PRINT ''
-
-	PRINT 'Executing - ' + @Command
-
-	EXECUTE sp_executesql @Command
+	OPEN CommandsCursor
 
 	FETCH NEXT FROM CommandsCursor INTO @Command
 
-END
+	WHILE @@FETCH_STATUS = 0 BEGIN
 
-CLOSE CommandsCursor
+		PRINT ''
 
-DEALLOCATE CommandsCursor
+		PRINT 'Executing - ' + @Command
+
+		EXECUTE sp_executesql @Command
+
+		FETCH NEXT FROM CommandsCursor INTO @Command
+
+	END
+
+	CLOSE CommandsCursor
+
+	DEALLOCATE CommandsCursor
 END
