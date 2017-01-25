@@ -541,7 +541,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\Stored Procedures\AddOrUpdatePrices_FromStaging.sql" />
-    <Build Include="esb\Stored Procedures\MarkMessageQueueEntriesAsInProcess.sql" />
     <Build Include="esb\Tables\MessageQueuePrice.sql" />
     <Build Include="esb\Stored Procedures\LoadEsbItemLocaleMessagesByRegionOrStores.sql" />
     <Build Include="esb\Functions\fn_Parse_List.sql" />
@@ -597,6 +596,8 @@
     <Build Include="stage\Tables\HierarchyClass.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulateRetentionPolicyForStagingTables.sql" />
     <Build Include="stage\Tables\MessageQueue.sql" />
+    <Build Include="esb\Stored Procedures\MarkMessageQueueItemLocaleEntriesAsInProcess.sql" />
+    <Build Include="esb\Stored Procedures\MarkMessageQueuePriceEntriesAsInProcess.sql" />
     <Build Include="app\Stored Procedures\PurgeMessageQueues.sql" />
     <None Include="Jobs\PurgeMessageQueues.sql" />
   </ItemGroup>

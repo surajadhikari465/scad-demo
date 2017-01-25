@@ -32,8 +32,7 @@ namespace Mammoth.ApiController.DataAccess.Commands
             {
                 int newMessagesToMark = data.LookAhead - currentMessagesInProcess;
 
-                SqlParameter tableNameParameter = new SqlParameter("MessageQueueTable", SqlDbType.NVarChar);
-                tableNameParameter.Value = typeof(T).Name;
+                string messageQueueTableName = typeof(T).Name;
 
                 SqlParameter lookAheadParameter = new SqlParameter("NumberOfRows", SqlDbType.Int);
                 lookAheadParameter.Value = newMessagesToMark;
@@ -41,9 +40,9 @@ namespace Mammoth.ApiController.DataAccess.Commands
                 SqlParameter instanceParameter = new SqlParameter("JobInstance", SqlDbType.Int);
                 instanceParameter.Value = data.Instance;
 
-                string sql = "EXEC esb.MarkMessageQueueEntriesAsInProcess @MessageQueueTable, @NumberOfRows, @JobInstance";
+                string sql = $"EXEC esb.Mark{messageQueueTableName}EntriesAsInProcess @NumberOfRows, @JobInstance";
 
-                globalContext.Context.Database.ExecuteSqlCommand(sql, tableNameParameter, lookAheadParameter, instanceParameter);
+                globalContext.Context.Database.ExecuteSqlCommand(sql, lookAheadParameter, instanceParameter);
             }
         }
     }
