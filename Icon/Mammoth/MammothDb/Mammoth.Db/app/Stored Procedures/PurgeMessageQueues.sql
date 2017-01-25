@@ -3,7 +3,8 @@ AS
 BEGIN
 	-- Archive MessageQueue entries from the previous day.
 	DECLARE 
-		@ReadyMessageStatusId int = (select MessageStatusId from esb.MessageStatus where MessageStatusName = 'Ready')
+		@ReadyMessageStatusId int = (select MessageStatusId from esb.MessageStatus where MessageStatusName = 'Ready'),
+		@FailedMessageStatusId int = (select MessageStatusId from esb.MessageStatus where MessageStatusName = 'Failed')
 
 	DECLARE @numberOfMessageQueueRecords INT = 
 		(
@@ -12,9 +13,9 @@ BEGIN
 			FROM 
 				esb.MessageQueueItemLocale 
 			WHERE 
-				MessageStatusId <> @ReadyMessageStatusId
-				AND MessageHistoryId IS NULL
-				AND ProcessedDate IS NULL
+				InProcessBy IS NULL
+				AND ((MessageStatusId <> @ReadyMessageStatusId AND MessageHistoryId IS NOT NULL AND ProcessedDate IS NOT NULL)
+				OR MessageStatusId = @FailedMessageStatusId)
 		)
 
 	WHILE @numberOfMessageQueueRecords > 0
@@ -23,10 +24,10 @@ BEGIN
 			esb.MessageQueueItemLocale
 		OUTPUT
 			deleted.* INTO esb.MessageQueueItemLocaleArchive
-		WHERE
-			MessageStatusId <> @ReadyMessageStatusId
-			AND MessageHistoryId IS NULL
-			AND ProcessedDate IS NULL
+		WHERE 
+			InProcessBy IS NULL
+			AND ((MessageStatusId <> @ReadyMessageStatusId AND MessageHistoryId IS NOT NULL AND ProcessedDate IS NOT NULL)
+			OR MessageStatusId = @FailedMessageStatusId)
 
 		SET @numberOfMessageQueueRecords = 
 		(
@@ -34,10 +35,10 @@ BEGIN
 				COUNT(*) 
 			FROM 
 				esb.MessageQueueItemLocale 
-			WHERE
-				MessageStatusId <> @ReadyMessageStatusId
-				AND MessageHistoryId IS NULL
-				AND ProcessedDate IS NULL
+			WHERE 
+				InProcessBy IS NULL
+				AND ((MessageStatusId <> @ReadyMessageStatusId AND MessageHistoryId IS NOT NULL AND ProcessedDate IS NOT NULL)
+				OR MessageStatusId = @FailedMessageStatusId)
 		)
 	END
 
@@ -48,9 +49,9 @@ BEGIN
 			FROM 
 				esb.MessageQueuePrice 
 			WHERE 
-				MessageStatusId <> @ReadyMessageStatusId
-				AND MessageHistoryId IS NULL
-				AND ProcessedDate IS NULL
+				InProcessBy IS NULL
+				AND ((MessageStatusId <> @ReadyMessageStatusId AND MessageHistoryId IS NOT NULL AND ProcessedDate IS NOT NULL)
+				OR MessageStatusId = @FailedMessageStatusId)
 		)
 	
 	WHILE @numberOfMessageQueueRecords > 0
@@ -60,9 +61,9 @@ BEGIN
 		OUTPUT
 			deleted.* INTO esb.MessageQueuePriceArchive
 		WHERE
-			MessageStatusId <> @ReadyMessageStatusId
-			AND MessageHistoryId IS NULL
-			AND ProcessedDate IS NULL
+			InProcessBy IS NULL
+			AND ((MessageStatusId <> @ReadyMessageStatusId AND MessageHistoryId IS NOT NULL AND ProcessedDate IS NOT NULL)
+			OR MessageStatusId = @FailedMessageStatusId)
 
 		SET @numberOfMessageQueueRecords = 
 		(
@@ -71,9 +72,9 @@ BEGIN
 			FROM 
 				esb.MessageQueuePrice 
 			WHERE 
-				MessageStatusId <> @ReadyMessageStatusId
-				AND MessageHistoryId IS NULL
-				AND ProcessedDate IS NULL
+				InProcessBy IS NULL
+				AND ((MessageStatusId <> @ReadyMessageStatusId AND MessageHistoryId IS NOT NULL AND ProcessedDate IS NOT NULL)
+				OR MessageStatusId = @FailedMessageStatusId)
 		)
 	END
 END
