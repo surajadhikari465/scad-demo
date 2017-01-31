@@ -251,7 +251,8 @@ AS (
 		h4.hierarchyClassName AS [BrickName],
 		CAST(h5.hierarchyClassID AS NVARCHAR(255)) AS [SubBrickID],
 		h5.hierarchyClassName AS [SubBrickName],
-		hct.traitValue AS [SubTeam],
+		fin.hierarchyClassID AS [FinancialId],
+		nonMerch.traitValue AS [NonMerch],
 		isnull(sbc.traitvalue, '') AS [SubBrickCode],
 		ihc.itemid
 	FROM HierarchyClass h --SEGMENT
@@ -290,8 +291,11 @@ AS (
 	JOIN ItemHierarchyClass ihc ON h5.hierarchyClassID = ihc.hierarchyclassid
 	JOIN hierarchyclasstrait hct ON h5.hierarchyclassid = hct.hierarchyclassid
 		AND hct.traitid = 49
+	JOIN HierarchyClass fin ON hct.traitValue = fin.hierarchyClassName
 	LEFT JOIN hierarchyclasstrait sbc ON h5.hierarchyclassid = sbc.hierarchyclassid
 		AND sbc.traitid = 52
+	LEFT JOIN hierarchyclasstrait nonMerch ON h5.hierarchyclassid = nonMerch.hierarchyclassid
+		AND nonMerch.traitid = 58
 	WHERE h.hierarchyLevel = 1
 	),
 ncc
@@ -366,6 +370,10 @@ SELECT
 	sc.itemid AS [ItemID],
 	'"' + LTRIM(RTRIM(prd.traitValue)) + '"' AS [ItemName], --Wrap Name in quotes because it can contain commas which will break the comma delimited extracts
 	CASE 
+		WHEN scancodebig between 46000000001 and 46000099999
+		THEN 'Ingredient (46000000001-46000099999)'
+		WHEN scancodebig between 48000000001 and 48000099999
+		THEN 'Ingredient Legacy (48000000001-48000099999)'
 		WHEN ISNULL(sctypename, 'UPC') = 'UPC'
 			THEN 'NULL'
 		WHEN sctypename = '1' 
@@ -410,10 +418,6 @@ SELECT
 		THEN 'Customer Facing Scale PLU (21000000000-21999900000)'
 		WHEN sctypename in ('2','3') AND scancodebig between 22000000000 and 29999900000
 		THEN 'Scale PLU (22000000000-29999900000)'
-		WHEN sctypename in ('2','3') AND scancodebig between 46000000001 and 46000099999
-		THEN 'Ingredient (46000000001-46000099999)'
-		WHEN sctypename in ('2','3') AND scancodebig between 48000000001 and 48000099999
-		THEN 'Ingredient Legacy (48000000001-48000099999)'
 		ELSE 'unknown'
 	END AS [BarcodeType],
 	LTRIM(RTRIM(sc.scanCode)) AS [ScanCode],
@@ -422,8 +426,8 @@ SELECT
 	'National' + '|' + CASE WHEN ncc.[NationalClassID] IS NULL THEN 'NULL' ELSE ncc.[NationalClassID] END AS [National-Association],	
 	'"Brand Name' + '|' + CASE WHEN brand.hierarchyClassName IS NULL THEN 'NULL"' ELSE brand.hierarchyClassName + '"' END AS [Brand],
 	'Tax Hier ID' + '|' + CASE WHEN tax.hierarchyclassid IS NULL THEN 'NULL' ELSE tax.hierarchyclassid END AS [Tax], 
-	'Subteam Name' + '|' + CASE WHEN merch.SubTeam IS NULL THEN 'NULL' ELSE merch.SubTeam END AS [Subteam],
-	'Item Type' + '|'+ tpe.itemtypecode AS [Item Type],
+	'Financial Hier ID' + '|' + CASE WHEN merch.FinancialId IS NULL THEN 'NULL' ELSE CONVERT(nvarchar(255), merch.FinancialId) END AS [Subteam],
+	'Non Merch Trait' + '|'+ CASE WHEN merch.NonMerch IS NULL THEN 'N/A' ELSE merch.NonMerch END AS [Item Type],
 	--Attributes
 	'"' + LTRIM(RTRIM(prd.traitValue)) + '"' AS [Product Description], --Wrap in quotes because it can contain commas which will break the comma delimited extracts
 	'"' + LTRIM(RTRIM(pos.traitValue)) + '"' AS [POS Description], --Wrap in quotes because it can contain commas which will break the comma delimited extracts
