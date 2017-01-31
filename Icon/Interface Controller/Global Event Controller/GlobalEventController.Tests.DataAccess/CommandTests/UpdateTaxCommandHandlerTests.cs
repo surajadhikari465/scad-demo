@@ -9,6 +9,7 @@ using System.Data.Entity;
 namespace GlobalEventController.Tests.DataAccess.CommandTests
 {
     [TestClass]
+    [Ignore] //Ignoring these tests since this functionality has been turned off for 2 years
     public class UpdateTaxCommandHandlerTests
     {
         private IrmaContext context;

@@ -91,12 +91,14 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         public void AddUpdateLastChangeByIdentifiers_LastChangeRowsExistsForListOfIdentifiers_InsertDateOfLastChangeRowsIsUpdated()
         {
             // Given
+            int maxNumberOfChanges = 5;
             DateTime preTestDateTime = DateTime.Now; System.Threading.Thread.Sleep(500);
-            this.lastChangeList = GetExistingLastChangeRows(5);
+            this.lastChangeList = GetExistingLastChangeRows(maxNumberOfChanges);
+
             if (this.lastChangeList.Count == 0)
             {
-                this.itemIdentifierList = GetListOfIdentifiers(5);
-                this.lastChangeList = BuildLastChangeList(5);
+                this.itemIdentifierList = GetListOfIdentifiers(maxNumberOfChanges);
+                this.lastChangeList = BuildLastChangeList(maxNumberOfChanges);
                 this.context.IconItemLastChange.AddRange(this.lastChangeList);
                 this.context.SaveChanges();
             }
@@ -104,7 +106,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             if (this.itemIdentifierList.Count == 0)
 	        {
                 IEnumerable<string> identifiers = this.lastChangeList.Select(lc => lc.Identifier);
-		        this.itemIdentifierList = this.context.ItemIdentifier.Where(ii => identifiers.Contains(ii.Identifier)).ToList();
+		        this.itemIdentifierList = this.context.ItemIdentifier.Where(ii => identifiers.Contains(ii.Identifier)).Take(maxNumberOfChanges).ToList();
 	        }
 
             this.command.Identifiers = this.itemIdentifierList;

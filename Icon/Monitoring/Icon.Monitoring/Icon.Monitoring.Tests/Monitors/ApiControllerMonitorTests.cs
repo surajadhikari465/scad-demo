@@ -7,8 +7,10 @@ using Icon.Monitoring.DataAccess.Queries;
 using Icon.Monitoring.Monitors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using ServiceStack.Text;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Icon.Monitoring.Tests.Monitors
 {
@@ -31,6 +33,8 @@ namespace Icon.Monitoring.Tests.Monitors
                 this.mockMessageQueueQuery.Object,
                 this.mockPagerDutyTrigger.Object,
                 new Mock<ILogger>().Object);
+
+            apiControllerMonitor.ByPassConfiguredRunInterval = true;
 
             SetMessageQueueToIdMapperToZeroValues();
         }

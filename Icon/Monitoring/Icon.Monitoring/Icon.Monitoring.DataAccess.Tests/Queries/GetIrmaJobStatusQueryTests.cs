@@ -37,15 +37,15 @@
         }
 
         [TestMethod]
-        public void GetJobStatusForCheckSendOrderInSP_DataExists()
+        public void GetJobStatusForCheckSendOrderInFL_DataExists()
         {
             // Given
             var provider = new SqlDbProvider();
-            provider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_SP"].ConnectionString);
+            provider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_FL"].ConnectionString);
             provider.Connection.Open();
 
             var parameters = new GetIrmaJobStatusQueryParameters { Classname = IrmaJobClassNames.CheckSendOrderStatusJob };
-            var query = new GetIrmaJobStatusQuery(provider) { TargetRegion = IrmaRegions.SP };
+            var query = new GetIrmaJobStatusQuery(provider) { TargetRegion = IrmaRegions.FL };
 
             // When
             var posPushJobStatus = query.Search(parameters);
@@ -53,7 +53,7 @@
             // Then
             Assert.IsNotNull(posPushJobStatus);
             Assert.AreEqual("CheckSendOrderStatusJob", posPushJobStatus.Classname);
-            Assert.AreEqual(IrmaRegions.SP, posPushJobStatus.Region);
+            Assert.AreEqual(IrmaRegions.FL, posPushJobStatus.Region);
             Assert.IsNotNull(posPushJobStatus.LastRun);
             Assert.IsFalse(string.IsNullOrEmpty(posPushJobStatus.Status));
 

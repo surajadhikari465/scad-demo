@@ -6,6 +6,7 @@ using Icon.Web.DataAccess.Queries;
 using Icon.Web.Tests.Common.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Queries
@@ -14,6 +15,7 @@ namespace Icon.Web.Tests.Integration.Queries
     public class GetBrandsQueryTests
     {
         private IconContext context;
+        private DbContextTransaction transaction;
         private GetBrandsParameters queryParameters;
         private GetBrandsQuery query;
         private int testBrandId;
@@ -22,6 +24,8 @@ namespace Icon.Web.Tests.Integration.Queries
         public void InitializeData()
         {
             this.context = new IconContext();
+            this.transaction = context.Database.BeginTransaction();
+
             this.queryParameters = new GetBrandsParameters();
             this.query = new GetBrandsQuery(this.context);
         }
@@ -33,8 +37,12 @@ namespace Icon.Web.Tests.Integration.Queries
                 .RemoveRange(this.context.HierarchyClassTrait.Where(hct => hct.traitID == Traits.BrandAbbreviation && hct.hierarchyClassID == testBrandId));
             this.context.HierarchyClass.RemoveRange(this.context.HierarchyClass.Where(hc => hc.hierarchyClassID == testBrandId));
 
+            if (transaction.UnderlyingTransaction.Connection != null)
+            {
+                this.transaction.Rollback();
+            }
+            this.transaction.Dispose();
             this.context.Dispose();
-            this.query = null;
         }
 
         [TestMethod]

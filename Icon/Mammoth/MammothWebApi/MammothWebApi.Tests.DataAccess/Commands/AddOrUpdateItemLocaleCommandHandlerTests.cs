@@ -136,6 +136,8 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         public void AddOrUpdateItemLocaleCommand_ExistingItemLocaleDataInStaging_UpdatesRowsInRespectiveRegionalItemLocaleTable()
         {
             // Given
+            DateTime addedDate = DateTime.Now;
+
             List<Item> existingItems = this.db.Connection
                 .Query<Item>(@"SELECT * FROM Items WHERE ItemID IN @ItemIDs",
                     new { ItemIDs = this.items.Select(i => i.ItemID) },
@@ -149,7 +151,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                     .WithBusinessUnit(this.locale.BusinessUnitID)
                     .WithItemId(existingItems[i].ItemID)
                     .WithRegion(this.region)
-                    .WithAddedDate(DateTime.Now)
+                    .WithAddedDate(addedDate)
                     .Build());
             }
 
@@ -208,7 +210,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                 Assert.AreEqual(expectedItems[i].Sign_RomanceText_Long, actual[i].Sign_RomanceText_Long, "Sign_RomanceText_Long value did not match expected.");
                 Assert.AreEqual(expectedItems[i].Sign_RomanceText_Short, actual[i].Sign_RomanceText_Short, "Sign_RomanceText_Short value did not match expected.");
                 Assert.AreEqual(expectedItems[i].Msrp, actual[i].Msrp, "Msrp value did not match expected.");
-                Assert.IsTrue(actual[i].AddedDate <= DateTime.Now, "The AddedDate was not greater than the timestamp.");
+                Assert.AreEqual(addedDate.ToShortTimeString(), actual[i].AddedDate.ToShortTimeString(), "The AddedDate does not equal the expected added date.");
                 Assert.IsTrue(actual[i].ItemID == existingItems[i].ItemID, String.Format("The actual ItemID did not match the expected value: {0}.", existingItems[i].ItemID));
                 Assert.IsTrue(actual[i].BusinessUnitID == locale.BusinessUnitID, String.Format("The actual LocaleID did not match the expected value: {0}.", locale.BusinessUnitID));
             }

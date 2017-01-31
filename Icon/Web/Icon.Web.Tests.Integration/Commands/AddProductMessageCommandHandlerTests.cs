@@ -1,4 +1,5 @@
 ﻿using Icon.Framework;
+using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -257,8 +258,9 @@ namespace Icon.Web.Tests.Integration.Commands
         public void AddProductMessage_ItemIsNotValidated_MessageShouldNotBeCreated()
         {
             // Given.
-            Item item = context.Item.Include(i => i.ItemTrait)
-                .First(i => !i.ItemTrait.Any(it => it.Trait.traitCode == TraitCodes.ValidationDate));
+            Item item = new TestItemBuilder();
+            context.Item.Add(item);
+            context.SaveChanges();
 
             // When.
             commandHandler.Execute(new AddProductMessageCommand { ItemId = item.itemID });

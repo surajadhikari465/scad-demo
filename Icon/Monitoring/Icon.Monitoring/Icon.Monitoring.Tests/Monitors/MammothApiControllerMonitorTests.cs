@@ -31,6 +31,8 @@ namespace Icon.Monitoring.Tests.Monitors
                 this.mockPagerDutyTrigger.Object,
                 new Mock<ILogger>().Object);
 
+            mammothApiControllerMonitor.ByPassConfiguredRunInterval = true;
+
             SetMessageQueueToIdMapperToZeroValues();
         }
 

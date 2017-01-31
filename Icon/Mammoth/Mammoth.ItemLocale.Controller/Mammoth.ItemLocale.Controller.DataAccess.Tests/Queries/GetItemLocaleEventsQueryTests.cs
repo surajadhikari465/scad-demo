@@ -28,11 +28,11 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
         public void Initialize()
         {
             dbProvider = new SqlDbProvider();
-            dbProvider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_RM"].ConnectionString);
+            dbProvider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_FL"].ConnectionString);
             dbProvider.Connection.Open();
             dbProvider.Transaction = dbProvider.Connection.BeginTransaction(IsolationLevel.Snapshot);
             query = new GetItemLocaleDataQuery(dbProvider);
-            parameters = new GetItemLocaleDataParameters { Instance = 777, Region = "RM" };
+            parameters = new GetItemLocaleDataParameters { Instance = 777, Region = "FL" };
 
             IEnumerable<int> validStores = this.dbProvider.Connection
                 .Query<int>(@"DECLARE @ExcludedStoreNo varchar(250);
@@ -67,7 +67,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "RM";
+            var expectedRegion = "FL";
             var expectedIdentifier = "22222242";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -296,7 +296,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "RM";
+            var expectedRegion = "FL";
             var expectedIdentifier = "22222242";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -523,7 +523,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "RM";
+            var expectedRegion = "FL";
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -757,7 +757,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "RM";
+            var expectedRegion = "FL";
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -991,7 +991,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "RM";
+            var expectedRegion = "FL";
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -1759,7 +1759,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "RM";
+            var expectedRegion = "FL";
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -2180,7 +2180,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "RM";
+            var expectedRegion = "FL";
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -2835,7 +2835,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
             var expectedRegionTs = "TS";
-            var expectedRegionRm = "RM";
+            var expectedRegionRm = "FL";
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitIdTs = 83472;
             var expectedBusinessUnitIdRm = 7774445;
@@ -3332,12 +3332,14 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 .ToList();
             return storeRegionMapping;
         }
+
         private string GetLinkedIdentifierByItemKey(int itemKey)
         {
             string sql = @"SELECT Identifier FROM ItemIdentifier WHERE Item_Key = @ItemKey AND Default_Identifier = 1";
             string identifier = this.dbProvider.Connection.Query<string>(sql, new { ItemKey = itemKey }, this.dbProvider.Transaction).First();
             return identifier;
         }
+
         private void UpdateLabAndClosedStoreValues(List<int> storeNumbers)
         {
             string key = "LabAndClosedStoreNo";

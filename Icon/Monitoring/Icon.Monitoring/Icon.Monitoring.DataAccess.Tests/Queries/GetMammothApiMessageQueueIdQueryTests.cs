@@ -25,6 +25,9 @@ namespace Icon.Monitoring.DataAccess.Tests.Queries
             provider.Transaction = provider.Connection.BeginTransaction();
             query = new GetMammothApiMessageQueueIdQuery(provider);
             parameters = new GetApiMessageQueueIdParameters();
+
+            provider.Connection.Execute("truncate table esb.MessageQueuePrice", transaction: provider.Transaction);
+            provider.Connection.Execute("truncate table esb.MessageQueueItemLocale", transaction: provider.Transaction);
         }
 
         [TestCleanup]

@@ -18,7 +18,7 @@ namespace PushController.Tests.DataAccess.Queries
         public void Initialize()
         {
             contextProvider = new IrmaContextProvider();
-            context = contextProvider.GetRegionalContext(ConnectionBuilder.GetConnection("SP"));
+            context = contextProvider.GetRegionalContext(ConnectionBuilder.GetConnection("FL"));
             getAppConfigQueryHandler = new GetAppConfigKeysQueryHandler();
         }
 

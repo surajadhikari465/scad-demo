@@ -33,15 +33,18 @@ namespace Infor.Services.NewItem.Tests.Integration
         }
 
         [TestMethod]
-        public void Given10NewItemEvents_WhenTheApplicationIsRun_ShouldGenerateNewItemMessageForEvents()
+        public void Given1NewItemEvent_WhenTheApplicationIsRun_ShouldGenerateNewItemMessageForEvents()
         {
             //Given
-            int messageCount = 0;
             Mock<IEsbProducer> mockProducer = new Mock<IEsbProducer>();
-            mockProducer.Setup(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()))
-                .Callback<string, Dictionary<string, string>>((s, d) => File.WriteAllText(@"message" + ++messageCount + ".xml", s));
+
+            //uncomment to generate the item messages and save them to a locale file for viewing and troubleshooting
+            //int messageCount = 0;
+            //mockProducer.Setup(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()))
+            //    .Callback<string, Dictionary<string, string>>((s, d) => File.WriteAllText(@"message" + ++messageCount + ".xml", s));
 
             string instanceId = AppSettingsAccessor.GetStringSetting("InstanceId");
+            List<string> identifiers = new List<string>();
             using (var context = new IrmaContext("ItemCatalog_FL"))
             {
                 var itemIdentifiers = context.ItemIdentifier
@@ -53,21 +56,23 @@ namespace Infor.Services.NewItem.Tests.Integration
                         && ii.Item.Deleted_Item == false
                         && ii.Item.Remove_Item == 0
                         && context.ValidatedScanCode.Any(vsc => vsc.ScanCode == ii.Identifier))
-                    .Take(10)
+                    .Take(1)
                     .ToList();
                 context.IconItemChangeQueue.AddRange(itemIdentifiers.Select(ii => new IconItemChangeQueue
                 {
                     Identifier = ii.Identifier,
                     Item_Key = ii.Item_Key,
                     ItemChgTypeID = 1,
+                    InProcessBy = instanceId
                 }));
                 context.SaveChanges();
+                identifiers.AddRange(itemIdentifiers.Select(ii => ii.Identifier));
             }
 
             var container = SimpleInjectorInitializer.InitializeContainer(false);
             container.Options.AllowOverridingRegistrations = true;
-            container.Register<IEsbProducer>(() => mockProducer.Object);
-            container.Register<InforNewItemApplicationSettings>(() => new InforNewItemApplicationSettings { Regions = new List<string> { "FL" }, NumberOfItemsPerMessage = 1 });
+            container.Register(() => mockProducer.Object);
+            container.Register(() => new InforNewItemApplicationSettings { Regions = new List<string> { "FL" }, NumberOfItemsPerMessage = 1 });
 
             //When
             var processor = container.GetInstance<INewItemProcessor>();
@@ -76,7 +81,7 @@ namespace Infor.Services.NewItem.Tests.Integration
             //Then
             using (var context = new IrmaContext("ItemCatalog_FL"))
             {
-                Assert.IsFalse(context.IconItemChangeQueue.Any());
+                Assert.IsFalse(context.IconItemChangeQueue.Any(q => identifiers.Contains(q.Identifier)));
             }
         }
     }

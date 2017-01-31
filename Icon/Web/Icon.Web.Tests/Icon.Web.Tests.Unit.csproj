@@ -68,7 +68,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2016.10.21.2\lib\net45\Icon.Esb.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.2016.11.16.1\lib\net45\Icon.Esb.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Ewic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -88,7 +88,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2016.10.21.1\lib\net45\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2016.12.22.1\lib\net45\Icon.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -100,7 +100,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Testing.2016.10.21.3\lib\net45\Icon.Testing.dll</HintPath>
+      <HintPath>..\packages\Icon.Testing.2016.10.27.2\lib\net45\Icon.Testing.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Infragistics.Web.Mvc, Version=5.14.1.2249, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
@@ -325,10 +325,6 @@
     <None Include="Resources\ExcelWorkbook.xlsx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Icon.Common\Icon.Common.csproj">
-      <Project>{36bbc477-8a9c-4451-8614-932bd665a82a}</Project>
-      <Name>Icon.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Icon.Web.Common\Icon.Web.Common.csproj">
       <Project>{b602f553-38ea-44d2-a94b-4f9d504f4f30}</Project>
       <Name>Icon.Web.Common</Name>

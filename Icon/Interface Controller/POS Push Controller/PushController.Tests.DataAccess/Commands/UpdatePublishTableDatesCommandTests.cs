@@ -23,12 +23,13 @@ namespace PushController.Tests.DataAccess.Commands
         private Mock<ILogger<UpdatePublishTableDatesCommandHandler>> mockLogger;
         private List<IConPOSPushPublish> testPosData;
         private Random random;
+        private int testStoreNumber;
 
         [TestInitialize]
         public void Initialize()
         {
             contextProvider = new IrmaContextProvider();
-            context = contextProvider.GetRegionalContext(ConnectionBuilder.GetConnection("SP"));
+            context = contextProvider.GetRegionalContext(ConnectionBuilder.GetConnection("FL"));
 
             mockLogger = new Mock<ILogger<UpdatePublishTableDatesCommandHandler>>();
             updatePublishTableDatesCommandHandler = new UpdatePublishTableDatesCommandHandler(mockLogger.Object);
@@ -36,6 +37,8 @@ namespace PushController.Tests.DataAccess.Commands
             random = new Random();
 
             transaction = context.Database.BeginTransaction();
+
+            testStoreNumber = context.Store.First(s => s.WFM_Store && s.Internal && s.BusinessUnit_ID.HasValue).Store_No;
         }
 
         [TestCleanup]
@@ -96,7 +99,7 @@ namespace PushController.Tests.DataAccess.Commands
             // Given.
             testPosData = new List<IConPOSPushPublish>
             {
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInProcessBy(1)
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStoreNumber).WithInProcessBy(1)
             };
 
             StageTestPosData();
@@ -130,11 +133,11 @@ namespace PushController.Tests.DataAccess.Commands
             // Given.
             testPosData = new List<IConPOSPushPublish>
             {
-                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
+                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(testStoreNumber).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(testStoreNumber).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(testStoreNumber).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(testStoreNumber).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithInProcessBy(1).WithStoreNumber(testStoreNumber).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
             };
 
             StageTestPosData();
@@ -173,7 +176,7 @@ namespace PushController.Tests.DataAccess.Commands
             // Given.
             testPosData = new List<IConPOSPushPublish>
             {
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInProcessBy(1)
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStoreNumber).WithInProcessBy(1)
             };
 
             StageTestPosData();
@@ -207,11 +210,11 @@ namespace PushController.Tests.DataAccess.Commands
             // Given.
             testPosData = new List<IConPOSPushPublish>
             {
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStoreNumber).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStoreNumber).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStoreNumber).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStoreNumber).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStoreNumber).WithInProcessBy(1).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
             };
 
             StageTestPosData();

@@ -71,16 +71,17 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
         {
             // Given
             PopulateQueueWithNutritionEvents();
-            int expectedCount = this.queues.QueuedEvents.Select(e => e.RegionCode).Distinct().Count();
+            int expectedRegionCount = this.queues.QueuedEvents.Select(e => e.RegionCode).Distinct().Count();
+            int expectedEventCount = this.queues.QueuedEvents.Count;
 
             // When
             this.processor.BulkProcessEvents();
 
             // Then
-            int actualCount = this.queues.RegionToEventQueueDictionary.Count;
+            int actualRegionCount = this.queues.RegionToEventQueueDictionary.Count;
             Assert.IsTrue(this.queues.RegionToEventQueueDictionary.Count > 0, "The RegionToEventQueue Dictionary is not populated with data");
-            Assert.AreEqual(expectedCount, actualCount, "The actual count of regions in the RegionToEventQueue Dictionary does not match the expected count");
-            mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedCount), "The EventArchiver was not called for each event.");
+            Assert.AreEqual(expectedRegionCount, actualRegionCount, "The actual count of regions in the RegionToEventQueue Dictionary does not match the expected count");
+            mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedEventCount), "The EventArchiver was not called for each event.");
         }
 
         [TestMethod]

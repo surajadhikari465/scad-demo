@@ -15,13 +15,8 @@ namespace Icon.ApiController.Tests.EmailHelperTests
         [TestInitialize]
         public void Initialize()
         {
-            string domain = "wfm.pvt";
-            string username = WindowsIdentity.GetCurrent().Name;
-            PrincipalContext domainContext = new PrincipalContext(ContextType.Domain, domain);
-            UserPrincipal user = UserPrincipal.FindByIdentity(domainContext, username);
-
             var emailClientSettings = EmailHelper.BuildEmailClientSettings();
-            emailClientSettings.Recipients = new string[] { user.EmailAddress };
+            emailClientSettings.Recipients = new string[] { "test@testtesttest.test" };
 
             emailClient = new EmailClient(emailClientSettings);
 

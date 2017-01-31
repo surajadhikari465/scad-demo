@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Esb.ItemMovement.Tests.Commands
 {
@@ -13,12 +14,16 @@ namespace Icon.Esb.ItemMovement.Tests.Commands
     {
         private SaveItemMovementTransactionCommandHandler commandHandler;
         private IconContext context;
+        private TransactionScope transactionScope;
 
         [TestInitialize]
         public void Initialize()
         {
+            transactionScope = new TransactionScope();
+
             commandHandler = new SaveItemMovementTransactionCommandHandler();
             context = new IconContext();
+            context.Database.ExecuteSqlCommand("truncate table app.ItemMovement");
         }
 
         [TestCleanup]
@@ -31,6 +36,7 @@ namespace Icon.Esb.ItemMovement.Tests.Commands
             }
             context.SaveChanges();
             context.Dispose();
+            transactionScope.Dispose();
         }
 
         [TestMethod]

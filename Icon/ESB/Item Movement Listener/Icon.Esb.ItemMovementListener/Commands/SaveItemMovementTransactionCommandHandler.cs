@@ -10,6 +10,7 @@ namespace Icon.Esb.ItemMovementListener.Commands
         public void Execute(SaveItemMovementTransactionCommand data)
         {
             #region SQL to process item movement mesage
+
             string insertItemMovementSql = "EXEC app.InsertItemMovement @ItemMovementTransactions";
 
             SqlParameter itemMovementTransactionsSql = new SqlParameter("ItemMovementTransactions", SqlDbType.Structured)
@@ -17,6 +18,7 @@ namespace Icon.Esb.ItemMovementListener.Commands
                 TypeName = "app.ItemMovementType",
                 Value = Utility.ToDataTable(data.ItemMovementTransactions)
             };
+
             #endregion
 
             using (var context = new IconContext())

@@ -146,7 +146,7 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
         }
 
         [TestMethod]
-        public void BuildItemLinkEntities_PushRecordContainsNoLinkedItem_EntityShouldNotBeConstructed()
+        public void BuildItemLinkEntities_PushRecordContainsNoLinkedItem_ItemLinkDeleteShouldNotBeConstructed()
         {
             // Given.
             this.posDataRecord = new TestIrmaPushBuilder()
@@ -162,7 +162,7 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
             var constructedEntities = entityBuilder.BuildEntities(new List<IRMAPush> { posDataRecord });
 
             // Then.
-            Assert.AreEqual(0, constructedEntities.Count);
+            Assert.AreEqual(1, constructedEntities.Count);
         }
 
         [TestMethod]

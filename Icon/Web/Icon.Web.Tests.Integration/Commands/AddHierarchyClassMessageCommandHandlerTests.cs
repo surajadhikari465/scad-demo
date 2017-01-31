@@ -67,6 +67,7 @@ namespace Icon.Web.Tests.Integration.Commands
         }
 
         [TestMethod]
+        [Ignore] //Ignoring because this functionality is no longer used
         public void MessageGeneratorHierarchy_Tax_MessageCreated()
         {
             // Given
