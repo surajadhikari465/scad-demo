@@ -33,11 +33,10 @@
             Assert.AreEqual("Mammoth.Price.Controller", app.Name);
             Assert.AreEqual("\\\\vm-icon-test1\\e$\\Mammoth\\Price Controller\\Mammoth.Price.Controller.exe.config", app.ConfigFilePath);
             Assert.AreEqual("Mammoth Price Controller", app.DisplayName);
-            Assert.AreEqual(EnvironmentEnum.Test, app.Environment);
             Assert.AreEqual("vm-icon-test1", app.Server);
             Assert.AreEqual(ApplicationTypeEnum.WindowsService, app.TypeOfApplication);
-            Assert.AreEqual(DataFlowSystemEnum.Icon, app.DataFlowFrom);
-            Assert.AreEqual(DataFlowSystemEnum.None, app.DataFlowTo);
+            Assert.AreEqual("Icon", app.DataFlowFrom);
+            Assert.AreEqual(string.Empty, app.DataFlowTo);
         }
     }
 }

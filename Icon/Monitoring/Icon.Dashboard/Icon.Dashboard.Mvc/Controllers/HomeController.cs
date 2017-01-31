@@ -49,8 +49,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Index()
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var environment = ConfigurationManager.AppSettings["activeEnvironment"];
-            var viewModels = DashboardDataFileService.GetApplicationListViewModels(ServerUtility, XmlDataFile, environment);
+            var viewModels = DashboardDataFileService.GetApplicationListViewModels(ServerUtility, XmlDataFile);
             return View(viewModels);
         }
 
@@ -106,7 +105,6 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Configure(IconApplicationViewModel appViewModel)
         {
             ViewBag.EnvironmentOptions = new EnvironmentSwitcher().GetServersForEnvironments();
-            ViewBag.DataFlowSystemOptions = Utils.GetDataFlowSystemSelections();
             DashboardDataFileService.SaveAppSettings(appViewModel);
             return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
         }

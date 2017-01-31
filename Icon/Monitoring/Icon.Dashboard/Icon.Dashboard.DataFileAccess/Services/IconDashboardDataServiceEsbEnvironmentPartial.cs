@@ -26,8 +26,8 @@
 
         public IEnumerable<IEsbEnvironment> GetEsbEnvironments(string pathToXmlDataFile)
         {
-            var applications = new ConcurrentBag<IEsbEnvironment>();
-            var factories = this.EsbEnvironmentFactories.ToDictionary(af => af.GetType().Name.ToLowerInvariant());
+            var environments = new ConcurrentBag<IEsbEnvironment>();
+
             var dataFile = this.LoadDataFile(pathToXmlDataFile);
             if (dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments) == null ||
                 dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments).Elements(EsbEnvironmentSchema.EsbEnvironment)==null)
@@ -36,18 +36,41 @@
             }
             var elements = dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments).Elements(EsbEnvironmentSchema.EsbEnvironment);
 
-            Parallel.ForEach(elements, e =>
+            Parallel.ForEach(elements, element =>
             {
-                // Convention that the factory for an application must be named <ApplicationType>Factory.
-                EsbEnvironmentFactory esbEnvironmentFactory;
-                var factoryName = $"{EsbEnvironmentSchema.EsbEnvironment}Factory";
-                if (factories.TryGetValue(factoryName.ToLowerInvariant(), out esbEnvironmentFactory))
-                {
-                    applications.Add(esbEnvironmentFactory.GetEsbEnvironment(e));
-                }
+                var environment = ManufactureEsbEnvironment(element);
+                if (environment!=null)  environments.Add(environment);
             });
 
-            return applications;
+            return environments;
+        }
+
+        private IEsbEnvironment ManufactureEsbEnvironment(XElement dataFileEsbEnvironmentElement)
+        {
+            try
+            {
+                if (dataFileEsbEnvironmentElement != default(XElement))
+                {
+                    var factories = this.EsbEnvironmentFactories.ToDictionary(af => af.GetType().Name.ToLowerInvariant());
+                    EsbEnvironmentFactory esbEnvironmentFactory;
+                    var factoryName = $"{EsbEnvironmentSchema.EsbEnvironment}Factory";
+                    if (factories.TryGetValue(factoryName.ToLowerInvariant(), out esbEnvironmentFactory))
+                    {
+                        return esbEnvironmentFactory.GetEsbEnvironment(dataFileEsbEnvironmentElement);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Unable to generate esb environment factory named {factoryName}");
+                    }
+                }
+                return (IEsbEnvironment)null;
+            }
+            catch (Exception ex)
+            {
+                //for debugging
+                string msg = ex.Message;
+                return (IEsbEnvironment)null;
+            }
         }
 
         public IEsbEnvironment GetEsbEnvironment(string pathToXmlDataFile, string name)

@@ -45,7 +45,8 @@
         {
             nameof(IApplication.AppSettings),
             nameof(IApplication.ValidCommands),
-            nameof(IApplication.StatusIsGreen)
+            nameof(IApplication.StatusIsGreen),
+            nameof(IApplication.EsbConnectionSettings)
         };
 
         /// <summary>
@@ -101,46 +102,48 @@
             targetConfig.Save(pathToXmlDataFile);
         }
 
+        private IApplication ManufactureApplication(XElement dataFileApplicationElement)
+        {
+            try
+            {
+                if (dataFileApplicationElement != default(XElement))
+                {
+                    ApplicationFactory appFactory;
+                    var factories = this.ApplicationFactories.ToDictionary(af => af.GetType().Name.ToLowerInvariant());
+                    // Convention that the factory for an application must be named <ApplicationType>Factory.
+                    var factoryName = dataFileApplicationElement.Attribute(ApplicationSchema.TypeOfApplication).Value + "Factory";
+                    if (factories.TryGetValue(factoryName.ToLowerInvariant(), out appFactory))
+                    {
+                        return appFactory.GetApplication(dataFileApplicationElement);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Unable to generate app factory named {factoryName}");
+                    }
+                }
+                return (IApplication)null;
+            }
+            catch (Exception ex)
+            {
+                //for debugging
+                string msg = ex.Message;
+                return (IApplication)null;
+            }
+        }
+
         public IApplication GetApplication(string pathToXmlDataFile, string appName, string server)
         {
             if (pathToXmlDataFile == null) throw new ArgumentNullException(nameof(pathToXmlDataFile));
             if (appName == null) throw new ArgumentNullException(nameof(appName));
             if (server == null) throw new ArgumentNullException(nameof(server));
-
-            var applications = new ConcurrentBag<IApplication>();
-            var factories = this.ApplicationFactories.ToDictionary(af => af.GetType().Name.ToLowerInvariant());
+            
             var dataFile = this.LoadDataFile(pathToXmlDataFile);
-
             var applicationElements = dataFile.Root.Element(ApplicationSchema.Applications).Elements(ApplicationSchema.Application);
-
             var matchingApplicationElement = applicationElements.FirstOrDefault(el =>
                 String.Compare(el.Attribute("Name")?.Value, appName, StringComparison.InvariantCultureIgnoreCase) == 0 &&
                 String.Compare(el.Attribute("Server")?.Value,server, StringComparison.InvariantCultureIgnoreCase)==0);
 
-            if (matchingApplicationElement != default(XElement))
-            {
-                // Convention that the factory for an application must be named <ApplicationType>Factory.
-                ApplicationFactory appFactory;
-                var factoryName = matchingApplicationElement.Attribute(ApplicationSchema.TypeOfApplication).Value + "Factory";
-                if (factories.TryGetValue(factoryName.ToLowerInvariant(), out appFactory))
-                {
-                    return appFactory.GetApplication(matchingApplicationElement);
-                }
-            }
-
-            return (IApplication)null;
-        }
-
-        /// <summary>
-        /// Retrieves all applications from configuration.
-        /// </summary>
-        /// <param name="targetConfig">The xml config where the applications are defined.</param>
-        /// <param name="environment">Filter by environment (DEV/TEST/QA/PROD)</param>
-        /// <returns>Applications from the configuration file that the service could create.</returns>
-        public IEnumerable<IApplication> GetApplications(string pathToXmlDataFile, EnvironmentEnum environment)
-        {
-            var applications = GetApplications(pathToXmlDataFile);
-            return applications.Where(a => a.Environment == environment).OrderBy(a => a.DisplayName);
+            return ManufactureApplication(matchingApplicationElement);
         }
 
         /// <summary>
@@ -177,12 +180,44 @@
             try
             {
                 var appConfig = XDocument.Load(application.ConfigFilePath);
+                var configAppSettingsElement = appConfig.Root.Element("appSettings");
+                var configEsbConnectionsElement = appConfig.Root.Element("esbConnections");
 
-                appConfig.Root.Element("appSettings").ReplaceNodes(
+                configAppSettingsElement.ReplaceNodes(
                     application.AppSettings.Select(i =>
                         new XElement("add",
                             new XAttribute("key", i.Key),
                             new XAttribute("value", i.Value))));
+
+                //skip saving esb connections for now, need more time to test
+                if (application.EsbConnectionSettings == null)
+                {
+                    if (configEsbConnectionsElement != null)
+                    {
+                        configEsbConnectionsElement.Remove();
+                    }
+                }
+                else
+                {
+                    if (configEsbConnectionsElement == null)
+                    {
+                        //make sure the esbConnections element structure is there
+                        var newContainerElement = new XElement("esbConnections");
+                        newContainerElement.Add(new XElement("connections"));
+                        appConfig.Root.Add(newContainerElement);
+                    }
+
+                    foreach (var esbConnectionToBeSaved in application.EsbConnectionSettings)
+                    {
+                        var esbConnection = new XElement("esbConnection");
+
+                        esbConnection.Add(
+                            esbConnectionToBeSaved.Select(eachDictionaryEntry =>
+                               new XAttribute(eachDictionaryEntry.Key, eachDictionaryEntry.Value))
+                       );
+                        configEsbConnectionsElement.Element("connections").Add(esbConnection);
+                    }
+                }
 
                 appConfig.Save(application.ConfigFilePath);
             }
@@ -250,35 +285,29 @@
             }
         }
 
-        #region Private Methods
-
         /// <summary>
         /// Retrieves all applications from configuration.
         /// </summary>
         /// <param name="targetConfig">The xml config where the applications are defined.</param>
         /// <returns>Applications from the configuration file that the service could create.</returns>
-        private IEnumerable<IApplication> GetApplications(string pathToXmlDataFile)
+        public IEnumerable<IApplication> GetApplications(string pathToXmlDataFile)
         {
             var applications = new ConcurrentBag<IApplication>();
-            var factories = this.ApplicationFactories.ToDictionary(af => af.GetType().Name.ToLowerInvariant());
+
             var dataFile = this.LoadDataFile(pathToXmlDataFile);
             var applicationElements = dataFile.Root.Element(ApplicationSchema.Applications).Elements(ApplicationSchema.Application);
 
             Parallel.ForEach(applicationElements, ac =>
             {
-                // Convention that the factory for an application must be named <ApplicationType>Factory.
-                ApplicationFactory appFactory;
-                var factoryName = ac.Attribute(ApplicationSchema.TypeOfApplication).Value + "Factory";
-
-                if (factories.TryGetValue(factoryName.ToLowerInvariant(), out appFactory))
-                {
-                    applications.Add(appFactory.GetApplication(ac));
-                }
+                var manufactured = ManufactureApplication(ac);
+                if (manufactured != null) applications.Add(manufactured);
             });
 
             return applications;
         }
- 
+
+        #region Private Methods
+
         private XDocument LoadDataFile(string pathToXmlDataFile)
         {
             if (!System.IO.File.Exists(pathToXmlDataFile))

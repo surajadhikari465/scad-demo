@@ -3,32 +3,35 @@
 @{
     var action = ViewContext.RouteData.Values["action"].ToString();  //"Index"
     var controller = ViewContext.RouteData.Values["controller"].ToString(); //"Home"
-    string bootstrapClass ="primary";
+    string bootstrapClass = "primary";
     //string confirmMsg = $"Are you sure you want to {command} the {Model.TypeOfApplication.ToString()}?";
 }
 
-@foreach (var cmd in Model.ValidCommands)
+@if (Model != null && Model.ValidCommands != null)
 {
-    switch (cmd.ToLower())
+    foreach (var cmd in Model.ValidCommands)
     {
-        case "run now":
-        case "run":
-        case "start":
-        case "enable":
-            bootstrapClass = "success";
-            break;
-        case "stop":
-        case "disable":
-            bootstrapClass = "danger";
-            break;
-        default:
-            bootstrapClass = "warning";
-            break;
-    }
-    using (Html.BeginForm(action, controller, new { environment = Model.Environment, application = Model.Name, server = Model.Server, command = cmd }, FormMethod.Post, null))
-    {
-        <button type="submit" value="@cmd" class="btn btn-@bootstrapClass btn-sm btn-block">
-            @cmd
-        </button>
+        switch (cmd.ToLower())
+        {
+            case "run now":
+            case "run":
+            case "start":
+            case "enable":
+                bootstrapClass = "success";
+                break;
+            case "stop":
+            case "disable":
+                bootstrapClass = "danger";
+                break;
+            default:
+                bootstrapClass = "warning";
+                break;
+        }
+        using (Html.BeginForm(action, controller, new { application = Model.Name, server = Model.Server, command = cmd }, FormMethod.Post, null))
+        {
+            <button type="submit" value="@cmd" class="btn btn-@bootstrapClass btn-sm btn-block">
+                @cmd
+            </button>
+        }
     }
 }

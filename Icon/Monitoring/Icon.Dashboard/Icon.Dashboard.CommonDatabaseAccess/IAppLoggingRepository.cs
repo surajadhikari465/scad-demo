@@ -47,18 +47,5 @@ namespace Icon.Dashboard.CommonDatabaseAccess
         IAppLogSummary GetRecentLogEntriesForApp(string appName, TimeSpan timePeriod, LoggingLevel logLevel = LoggingLevel.Error);
 
         IAppLogSummary GetRecentLogEntriesForApp(IApp app, TimeSpan timePeriod, LoggingLevel logLevel = LoggingLevel.Error);
-
-        //IEnumerable<IAPIMessageMonitorLog> GetPagedApiJobSummaries(
-        //    int page = PagingConstants.DefaultPage,
-        //    int pageSize = PagingConstants.DefaultPageSize);
-
-        //IEnumerable<IAPIMessageMonitorLog> GetPagedApiJobSummariesByMessageType(
-        //    string messageType,
-        //    int page = PagingConstants.DefaultPage,
-        //    int pageSize = PagingConstants.DefaultPageSize);
-
-        //IApiJobSummary GetApiJobSummaryReport(string messageType, DateTime startTime, DateTime endTime);
-
-        //Dictionary<string, int> GetPendingMessageCountByMessageType();
     }
 }

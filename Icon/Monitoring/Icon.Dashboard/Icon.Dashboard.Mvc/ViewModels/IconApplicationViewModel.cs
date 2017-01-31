@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -24,7 +25,6 @@ namespace Icon.Dashboard.Mvc.ViewModels
             this.Server = app.Server;
             this.ConfigFilePath = app.ConfigFilePath;
             this.DisplayName = app.DisplayName;
-            this.Environment = app.Environment;
             this.TypeOfApplication = app.TypeOfApplication;
             this.DataFlowFrom = app.DataFlowFrom;
             this.DataFlowTo = app.DataFlowTo;
@@ -32,7 +32,16 @@ namespace Icon.Dashboard.Mvc.ViewModels
             this.ValidCommands = app.ValidCommands;
             this.StatusIsGreen = app.StatusIsGreen;
             this.LoggingName = app.LoggingName;
+            this.LoggingID = app.LoggingID;
             this.AppSettings = app.AppSettings;
+            this.EsbConnectionSettings = new List<Dictionary<string, string>>();
+            if (app.EsbConnectionSettings != null)
+            {
+                foreach (var esbConnectionSetting in app.EsbConnectionSettings)
+                {
+                    this.EsbConnectionSettings.Add(esbConnectionSetting);
+                }
+            }
         }
 
         public IconApplicationViewModel(IApplication app) : this()
@@ -41,6 +50,8 @@ namespace Icon.Dashboard.Mvc.ViewModels
         }
 
         public Dictionary<string, string> AppSettings { get; set; }
+
+        public List<Dictionary<string, string>> EsbConnectionSettings { get; set; }
 
         [DisplayName("Full Name")]
         public string Name { get; set; }
@@ -52,19 +63,17 @@ namespace Icon.Dashboard.Mvc.ViewModels
         [DisplayName("Display Name")]
         public string DisplayName { get; set; }
 
-        public EnvironmentEnum Environment { get; set; }
-
         public string Server { get; set; }
 
         [DisplayName("App Type")]
         public virtual ApplicationTypeEnum TypeOfApplication { get; set; }
 
         [DisplayName("Data From")]
-        public DataFlowSystemEnum DataFlowFrom { get; set; }
+        public string DataFlowFrom { get; set; }
 
         [DisplayName("Data To")]
-        public DataFlowSystemEnum DataFlowTo { get; set; }
-
+        public string DataFlowTo { get; set; }
+        
         public string Status { get; set; }
 
         [DisplayName("Commands")]
@@ -78,11 +87,12 @@ namespace Icon.Dashboard.Mvc.ViewModels
         [DisplayName("Logging Name")]
         public string LoggingName { get; set; }
 
-        public int? DatabaseId { get; set; }
+        [DisplayName("LogID")]
+        public int? LoggingID { get; set; }
 
         public string GetBootstrapClassForEnvironment()
         {
-            return Utils.GetBootstrapClassForEnvironment(this.Environment);
+            return Utils.GetBootstrapClassForEnvironment(Utils.Environment);
         }
 
         [DisplayName("ESB Environment")]

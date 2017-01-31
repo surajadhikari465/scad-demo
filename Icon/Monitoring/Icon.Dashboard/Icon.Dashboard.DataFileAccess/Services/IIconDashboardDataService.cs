@@ -12,7 +12,7 @@
         void AddApplication(IApplication application, string pathToXmlDataFile);
         void DeleteApplication(IApplication application, string pathToXmlDataFile);
         IApplication GetApplication(string pathToXmlDataFile, string appName, string server);
-        IEnumerable<IApplication> GetApplications(string pathToXmlDataFile, EnvironmentEnum environment);
+        IEnumerable<IApplication> GetApplications(string pathToXmlDataFile);
         void UpdateApplication(IApplication application, string pathToXmlDataFile);
         void SaveAppSettings(IApplication application);
         void Start(IApplication application, params string[] args);

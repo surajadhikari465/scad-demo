@@ -11,7 +11,7 @@ namespace Icon.Dashboard.Mvc.Services
     public interface IDataFileServiceWrapper
     {
         IIconDashboardDataService IconMonitoringService { get; }
-        IEnumerable<IconApplicationViewModel> GetApplicationListViewModels(HttpServerUtilityBase serverUtility, string configFile, string environment);
+        IEnumerable<IconApplicationViewModel> GetApplicationListViewModels(HttpServerUtilityBase serverUtility, string configFile);
         IApplication GetApplication(HttpServerUtilityBase serverUtility, string configFile, string application, string server);
         IconApplicationViewModel GetApplicationViewModel(HttpServerUtilityBase serverUtility, string configFile, string application, string server);
         TaskViewModel GetTaskViewModel(HttpServerUtilityBase serverUtility, string configFile, string application, string server);
@@ -31,5 +31,6 @@ namespace Icon.Dashboard.Mvc.Services
         void DeleteEsbEnvironment(HttpServerUtilityBase serverUtility, EsbEnvironmentViewModel esbEnvironment, string pathToXmlDataFile);
         List<Tuple<bool,string>> SetEsbEnvironment(HttpServerUtilityBase serverUtility, EsbEnvironmentViewModel esbEnvironment, string pathToXmlDataFile);
         EsbEnvironmentViewModel GetCurrentEsbEnvironment(HttpServerUtilityBase serverUtility, string pathToXmlDataFile);
+        IEnumerable<IApplication> GetApplications(HttpServerUtilityBase serverUtility, string dataFileName);
     }
 }

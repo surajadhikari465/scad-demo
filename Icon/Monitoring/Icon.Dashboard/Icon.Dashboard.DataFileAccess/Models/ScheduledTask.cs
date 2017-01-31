@@ -29,6 +29,8 @@
 
         private Lazy<Dictionary<string, string>> appSettings = new Lazy<Dictionary<string, string>>(
             () => new Dictionary<string, string>());
+        private Lazy<List<Dictionary<string, string>>> esbConnectionSettings = new Lazy<List<Dictionary<string, string>>>(
+            () => new List<Dictionary<string, string>>());
 
         public Dictionary<string, string> AppSettings
         {
@@ -37,9 +39,15 @@
 
         public string ConfigFilePath { get; set; }
 
-        public DataFlowSystemEnum DataFlowFrom { get; set; }
+        public string DataFlowFrom { get; set; }
 
-        public DataFlowSystemEnum DataFlowTo { get; set; }
+        public string DataFlowTo { get; set; }
+
+        public List<Dictionary<string, string>> EsbConnectionSettings
+        {
+            get { return this.esbConnectionSettings.Value; }
+        }
+
 
         public string DisplayName { get; set; }
 
@@ -60,6 +68,11 @@
         ///  to look up associated logging data for the applicatoin
         /// </summary>
         public string LoggingName { get; set; }
+
+        /// <summary>
+        /// AppID used in the database when logging
+        /// </summary>
+        public int? LoggingID { get; set; }
 
         public string GetStatus()
         {
@@ -183,7 +196,7 @@
                 }
             }
         }
-
+                
         private void SetValidCommands(string status)
         {
             this.ValidCommands = new List<string>();

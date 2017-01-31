@@ -25,8 +25,6 @@ namespace Icon.Dashboard.Mvc.Helpers
 
             viewBag.EnvironmentOptions = new EnvironmentSwitcher().GetServersForEnvironments();
 
-            viewBag.DataFlowSystemOptions = Utils.GetDataFlowSystemSelections();
-
             var allMessageTypes = IconApiControllerMessageType.GetAll();
             viewBag.MenuOptionsForApiJobs = GetMenuOptionsForApiJobs(url, controllerName, allMessageTypes);
 

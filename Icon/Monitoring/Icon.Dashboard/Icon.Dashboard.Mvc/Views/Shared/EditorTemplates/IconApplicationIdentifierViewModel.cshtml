@@ -5,7 +5,9 @@
         <div class="panel-body applicationIdentifierPanelBody">
             <div class="input-group">
                 <span class="input-group-addon">@Html.DisplayNameFor(model => model.Name)</span>
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control full-width" } })
+                @*@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control full-width" } })
+                 display dropdown with list of applications*@
+             @Html.DropDownListFor(model => model.Name, new SelectList(Model.ApplicationsList, "Name", "Name"), new { @class = "form-control full-width" })
                 <span class="input-group-addon">@Html.DisplayNameFor(model => model.Server)</span>
                 @Html.EditorFor(model => model.Server, new { htmlAttributes = new { @class = "form-control full-width" } })
                 <span class="input-group-btn">

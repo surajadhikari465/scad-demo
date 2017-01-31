@@ -15,30 +15,11 @@ namespace Icon.Dashboard.Mvc.ViewModels
             TextForLink = PageNumber.ToString();
         }
 
-        //public PaginationPageViewModel(string actionName, string controllerName) 
-        //    : this()
-        //{
-        //    ActionName = actionName;
-        //    ControllerName = controllerName;
-        //}
-
         public PaginationPageViewModel( int page, int pageSize) : this()
         {
             PageNumber = page;
             PageSize = pageSize;
         }
-
-        //public PaginationPageViewModel(string actionName, string controllerName, int page, int pageSize, string textForLink)
-        //    : this(actionName, controllerName, page, pageSize)
-        //{
-        //    TextForLink = textForLink;
-        //}
-
-        //public PaginationPageViewModel(string actionName, string controllerName, int page, int pageSize, string id)
-        //    : this(actionName, controllerName, page, pageSize)
-        //{
-        //    ID = id;
-        //}
 
         public PaginationPageViewModel(int page, int pageSize, string id, string textForLink)
             : this(page, pageSize)
@@ -46,16 +27,6 @@ namespace Icon.Dashboard.Mvc.ViewModels
             RouteParameter = id;
             TextForLink = textForLink;
         }
-
-        ///// <summary>
-        ///// Name of MVC Action to use when building link
-        ///// </summary>
-        //public string ActionName { get; set; }
-
-        ///// <summary>
-        ///// Name of MVC Controller to use when building link
-        ///// </summary>
-        //public string ControllerName { get; set; }
 
         /// <summary>
         /// Current page number for this page, used when building the route

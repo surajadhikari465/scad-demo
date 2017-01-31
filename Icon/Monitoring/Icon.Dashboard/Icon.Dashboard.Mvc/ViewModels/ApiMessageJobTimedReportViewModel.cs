@@ -69,22 +69,10 @@ namespace Icon.Dashboard.Mvc.ViewModels
             }
         }
 
-        //[HiddenInput(DisplayValue = false)]
-        //public bool SomeFailed
-        //{
-        //    get
-        //    {
-        //        return CountProcessedMessages.HasValue && CountFailedMessages.GetValueOrDefault() > 0;
-        //    }
-        //}
-
         public TimeSpan? SetElapsedTime(DateTime? start, DateTime? end)
         {
             this.StartTime = start;
             this.EndTime = end;
-            //_elapsedTime = (start.HasValue && end.HasValue)
-            //    ? _elapsedTime = end.Value - start.Value
-            //    : null;
             return this.ElapsedTime;
         }
 

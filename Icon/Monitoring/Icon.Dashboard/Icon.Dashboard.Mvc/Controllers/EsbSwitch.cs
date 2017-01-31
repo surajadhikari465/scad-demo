@@ -3,6 +3,7 @@ using Icon.Dashboard.Mvc.Infrastructure;
 using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -89,6 +90,17 @@ namespace Icon.Dashboard.Mvc.Controllers
                 return RedirectToAction("Index");
             }
             var esbEnvironment = DashboardDataFileService.GetEsbEnvironment(ServerUtility, XmlDataFile, name);
+            var currentEnvironment = DashboardDataFileService.GetCurrentEsbEnvironment(ServerUtility, XmlDataFile);
+            // populate ApplicationsList for each model. We need this to display in dropdown
+            if (esbEnvironment.Applications != null && esbEnvironment.Applications.Count>0)
+            {
+                esbEnvironment.Applications[0].ApplicationsList = DashboardDataFileService.GetApplications(ServerUtility, XmlDataFile);
+            }
+            foreach (IconApplicationIdentifierViewModel app in esbEnvironment.Applications)
+            {
+                app.ApplicationsList = esbEnvironment.Applications[0].ApplicationsList;
+            }
+   
             ViewBag.Title = $"Edit ESB Environment \"{esbEnvironment?.Name}\" Configuration";
             return View(esbEnvironment);
         }
@@ -146,7 +158,20 @@ namespace Icon.Dashboard.Mvc.Controllers
         [HttpGet]
         public ActionResult AddApplicationRow()
         {
-            var emptyViewModel = new IconApplicationIdentifierViewModel("appName", "server");
+            // pass all appplications to it
+            IconApplicationIdentifierViewModel emptyViewModel;
+            IEnumerable<DataFileAccess.Models.IApplication> ApplicationsList = DashboardDataFileService.GetApplications(ServerUtility, XmlDataFile);
+            // check if application list is not null and set selected item as first item in the list
+            if(ApplicationsList!= null && ApplicationsList.Count() > 0)
+            {
+                 emptyViewModel = new IconApplicationIdentifierViewModel(ApplicationsList.First().Name, "test");
+            }
+            else
+            {
+                emptyViewModel = new IconApplicationIdentifierViewModel("appName", "server");
+            }
+            emptyViewModel.ApplicationsList = ApplicationsList;
+
             return PartialView("EditorTemplates/IconApplicationIdentifierViewModel", emptyViewModel);
         }
 

@@ -3,7 +3,7 @@
 
   <xs:element name="IconApplicationData" type="IconApplicationData">
   </xs:element>
-  
+
   <xs:complexType name="IconApplicationData">
     <xs:sequence>
       <xs:element name="Applications" minOccurs="0" maxOccurs="1" type="Applications"></xs:element>
@@ -17,16 +17,33 @@
     </xs:sequence>
   </xs:complexType>
 
+
   <xs:complexType name="Application">
     <xs:attribute name="Name" type="xs:string" use="required" />
     <xs:attribute name="ConfigFilePath" type="xs:string" use="required"/>
     <xs:attribute name="DisplayName" type="xs:string" use="required" />
-    <xs:attribute name="Environment" type="xs:string" use="required" />
+    <xs:attribute name="Environment" type="xs:string" use="optional" />
     <xs:attribute name="Server" type="xs:string" use="required" />
     <xs:attribute name="TypeOfApplication" type="xs:string" use="required" />
     <xs:attribute name="DataFlowFrom" type="xs:string" use="optional"/>
+    <xs:attribute name="DataFlowVia" type="xs:string" use="optional"/>
     <xs:attribute name="DataFlowTo" type="xs:string" use="optional"/>
     <xs:attribute name="LoggingName" type="xs:string" use="optional"/>
+    <xs:attribute name='LoggingID'>
+      <xs:simpleType>
+        <xs:union>
+          <xs:simpleType>
+            <xs:restriction base='xs:string'>
+              <xs:length value='0'/>
+            </xs:restriction>
+          </xs:simpleType>
+          <xs:simpleType>
+            <xs:restriction base='xs:integer'>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="EsbEnvironments">
@@ -34,7 +51,7 @@
       <xs:element name="EsbEnvironment" minOccurs="0" maxOccurs="unbounded" type="EsbEnvironment"></xs:element>
     </xs:sequence>
   </xs:complexType>
-  
+
   <xs:complexType name="EsbEnvironment">
     <xs:sequence>
       <xs:element name="ApplicationsInEnvironment" minOccurs="0" maxOccurs="1" type="ApplicationsInEnvironment">
@@ -47,6 +64,14 @@
     <xs:attribute name="JmsPassword" type="xs:string" use="required" />
     <xs:attribute name="JndiUsername" type="xs:string" use="required" />
     <xs:attribute name="JndiPassword" type="xs:string" use="required" />
+    <xs:attribute name="ConnectionFactoryName" type="xs:string" use="optional" />
+    <xs:attribute name="SslPassword" type="xs:string" use="optional" />
+    <xs:attribute name="QueueName" type="xs:string" use="optional" />
+    <xs:attribute name="SessionMode" type="xs:string" use="optional" />
+    <xs:attribute name="CertificateName" type="xs:string" use="optional" />
+    <xs:attribute name="CrtificateStoreName" type="xs:string" use="optional" />
+    <xs:attribute name="CrtificateStoreLocation" type="xs:string" use="optional" />
+    <xs:attribute name="ReconnectDelay" type="xs:integer" use="optional" />
   </xs:complexType>
 
   <xs:complexType name="ApplicationsInEnvironment">

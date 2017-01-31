@@ -1,69 +1,118 @@
 ﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel
-
 @{
     var action = ViewContext.RouteData.Values["action"].ToString();
     var controller = ViewContext.RouteData.Values["controller"].ToString();
-    ViewBag.Title = $"Configuration for \"{Model.DisplayName}\"";
+    ViewBag.Title = $"Configuration for \"{Model.Server}: {Model.DisplayName}\"  ";
 
     bool isMultiline = false;
     const int tooManyCharsForSingleLine = 33;
     int rowsForTextArea = 2;
 }
-
 <h3 class="text-center">@ViewBag.Title</h3>
-
 <div class="container-fluid">
+
+@using (Html.BeginForm(action, controller, new { application = Model.Name, server = Model.Server }, FormMethod.Post, null))
+{
+    @Html.HiddenFor(m => m.Name);
+    @Html.HiddenFor(m => m.Server);
+    @Html.HiddenFor(m => m.TypeOfApplication);
+    @Html.HiddenFor(m => m.ConfigFilePath);
+
     <div class="row">
-        <hr />        
-        @if (Model.AppSettings != null)
-        {
-            using (Html.BeginForm(action, controller, new { application = Model.Name, server = Model.Server }, FormMethod.Post, null))
-            {
-                @Html.HiddenFor(m => m.Name);
-                @Html.HiddenFor(m => m.Server);
-                @Html.HiddenFor(m => m.TypeOfApplication);
-                @Html.HiddenFor(m => m.ConfigFilePath);
-
-                foreach (var entry in Model.AppSettings)
-                {
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.Label(entry.Key, htmlAttributes: new { @class = "control-label col-xs-12" })
-                        <div class="col-xs-12">
-                            @{
-                                if (Model.AppSettings[entry.Key] != null)
+        <hr />
+           @foreach (var entry in Model.AppSettings ?? new Dictionary<string, string>())
+           {
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.Label(entry.Key, htmlAttributes: new { @class = "control-label col-xs-12" })
+                    <div class="col-xs-12">
+                        @{
+                            if (Model.AppSettings[entry.Key] != null)
+                            {
+                                int valueStringLength = Model.AppSettings[entry.Key].ToString().Length;
+                                isMultiline = valueStringLength > tooManyCharsForSingleLine;
+                                if (isMultiline && tooManyCharsForSingleLine > 0)
                                 {
-                                    int valueStringLength = Model.AppSettings[entry.Key].ToString().Length;
-                                    isMultiline = valueStringLength > tooManyCharsForSingleLine;
-                                    if (isMultiline && tooManyCharsForSingleLine > 0)
-                                    {
-                                        rowsForTextArea = ((valueStringLength - 1) / tooManyCharsForSingleLine) + 1;
-                                    }
+                                    rowsForTextArea = ((valueStringLength - 1) / tooManyCharsForSingleLine) + 1;
                                 }
-                                isMultiline = ((Model.AppSettings[entry.Key] != null) && (Model.AppSettings[entry.Key].ToString().Length > tooManyCharsForSingleLine));
-                                if (isMultiline)
-                                {
-                                    @Html.TextAreaFor(m => m.AppSettings[entry.Key], rowsForTextArea, 0, new { @class = "form-control full-width" })
-                                }
-                                else
-                                {
-                                    @Html.EditorFor(m => m.AppSettings[entry.Key], new { htmlAttributes = new { @class = "form-control full-width" } })
-                               }
-                               }
-                        </div>
+                            }
+                            isMultiline = ((Model.AppSettings[entry.Key] != null) && (Model.AppSettings[entry.Key].ToString().Length > tooManyCharsForSingleLine));
+                            if (isMultiline)
+                            {
+                                @Html.TextAreaFor(m => m.AppSettings[entry.Key], rowsForTextArea, 0, new { @class = "form-control full-width" })
+                            }
+                            else
+                            {
+                                @Html.EditorFor(m => m.AppSettings[entry.Key], new { htmlAttributes = new { @class = "form-control full-width" } })
+                            }
+                        }
                     </div>
-                }
-
-                <div class="col-xs-offset-1 col-xs-10">
-                    <button type="submit" value="@("Save")" class="btn btn-warning btn-block margin-top-10">@("Save")</button>
                 </div>
-            }
-        }
+           }
     </div>
 
-    <p></p>
-    @{Html.RenderPartial("_BackToListPartial", Model);}
+    <div class="row">
+        @for (int i = 0; i < Model.EsbConnectionSettings?.Count(); i++)
+        {
+            var name = @Model.EsbConnectionSettings[i].FirstOrDefault(a => a.Key == "name").Value;
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapsible@(name)">
+                                @name ESB environment
+                            </a>
+                        </h4>
+                    </div>
 
-</div>
+                    <div id="collapsible@(name)" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            @foreach (var keyValuePair in Model.EsbConnectionSettings[i])
+                            {
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                    @Html.Label(keyValuePair.Key, htmlAttributes: new { @class = "control-label col-xs-12" })
+                                    <div class="col-xs-12">
+                                        @{
+                                            if (keyValuePair.Key != null)
+                                            {
+                                                int valueStringLength = Model.EsbConnectionSettings[i][keyValuePair.Key].ToString().Length;
+                                                isMultiline = valueStringLength > tooManyCharsForSingleLine;
+                                                if (isMultiline && tooManyCharsForSingleLine > 0)
+                                                {
+                                                    rowsForTextArea = ((valueStringLength - 1) / tooManyCharsForSingleLine) + 1;
+                                                }
+                                            }
+                                            isMultiline = ((Model.EsbConnectionSettings[i][keyValuePair.Key] != null) && (Model.EsbConnectionSettings[i][keyValuePair.Key].ToString().Length > tooManyCharsForSingleLine));
+                                            if (isMultiline)
+                                            {
+                                                @Html.TextAreaFor(m => m.EsbConnectionSettings[i][keyValuePair.Key], rowsForTextArea, 0, new { @class = "form-control full-width" })
+                                            }
+                                            else
+                                            {
+                                                @Html.EditorFor(m => m.EsbConnectionSettings[i][keyValuePair.Key], new { htmlAttributes = new { @class = "form-control full-width" } })
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+          }
+    </div>
+
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-10">
+            <button type="submit" value="@("Save")" class="btn btn-warning btn-block margin-top-10">@("Save")</button>
+        </div>
+    </div>
+}
+
+        <div class="row">
+            <p></p>
+            @{Html.RenderPartial("_BackToListPartial", Model);}
+        </div>
+    </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

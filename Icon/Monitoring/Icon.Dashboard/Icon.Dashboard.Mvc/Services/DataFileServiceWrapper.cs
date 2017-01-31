@@ -21,20 +21,18 @@ namespace Icon.Dashboard.Mvc.Services
             LoggingService = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
         }
 
-        protected IEnumerable<IApplication> GetApplications(HttpServerUtilityBase serverUtility, string dataFileName, string environment)
+        public IEnumerable<IApplication> GetApplications(HttpServerUtilityBase serverUtility, string dataFileName)
         {
-            var environmentEnum = EnvironmentEnum.Undefined;
-            Enum.TryParse<EnvironmentEnum>(environment, out environmentEnum);
             var configFile = GetPathForDataFile(serverUtility, dataFileName);
-            var apps = IconMonitoringService.GetApplications(configFile, environmentEnum);
+            var apps = IconMonitoringService.GetApplications(configFile);
             return apps;
         }
 
-        public IEnumerable<IconApplicationViewModel> GetApplicationListViewModels(HttpServerUtilityBase serverUtility, string dataFileName, string environment)
+        public IEnumerable<IconApplicationViewModel> GetApplicationListViewModels(HttpServerUtilityBase serverUtility, string dataFileName)
         {
-            var apps = this.GetApplications(serverUtility, dataFileName, environment);
+            var apps = this.GetApplications(serverUtility, dataFileName);
             var viewModels = new List<IconApplicationViewModel>(apps.Count());
-            
+
             foreach (var app in apps)
             {
                 viewModels.Add(CreateViewModel<IconApplicationViewModel>(serverUtility, dataFileName, LoggingService, app));
@@ -161,7 +159,6 @@ namespace Icon.Dashboard.Mvc.Services
         {
             app.Server = viewModel.Server;
             app.Name = viewModel.Name;
-            app.Environment = viewModel.Environment;
             app.DisplayName = viewModel.DisplayName;
             app.DataFlowFrom = viewModel.DataFlowFrom;
             app.DataFlowTo = viewModel.DataFlowTo;
@@ -184,17 +181,7 @@ namespace Icon.Dashboard.Mvc.Services
 
             if (app != null) {
                 viewModel.PopulateFromApplication(app);
-                if (!String.IsNullOrWhiteSpace(app.LoggingName))
-                {
-                    var queryResult = loggingDataService.GetApp(app.LoggingName);
-                    if (queryResult != null)
-                    {
-                        viewModel.DatabaseId = queryResult.AppID;
-                    }
-                }
-
                 viewModel.CurrentEsbEnvironment = GetCurrentEsbEnvironmentForApplication(serverUtility, dataFileName, app);
-
                 viewModel.ConfigFilePathIsValid = File.Exists(viewModel.ConfigFilePath);
             }
             return viewModel;
@@ -213,7 +200,7 @@ namespace Icon.Dashboard.Mvc.Services
             environment.JmsPassword = viewModel.JmsPassword;
             environment.JndiUsername = viewModel.JndiUsername;
             environment.JndiPassword = viewModel.JndiPassword;
-            
+
             viewModel.Applications?.ToList().ForEach(a => environment.AddApplication(a.Name, a.Server));
 
             return environment;
@@ -265,7 +252,7 @@ namespace Icon.Dashboard.Mvc.Services
             IconMonitoringService.DeleteEsbEnvironment(toDelete, configFile);
         }
 
-        public List<Tuple<bool,string>> SetEsbEnvironment(HttpServerUtilityBase serverUtility, EsbEnvironmentViewModel esbEnvironment, string pathToXmlDataFile)
+        public List<Tuple<bool, string>> SetEsbEnvironment(HttpServerUtilityBase serverUtility, EsbEnvironmentViewModel esbEnvironment, string pathToXmlDataFile)
         {
             var configFile = GetPathForDataFile(serverUtility, pathToXmlDataFile);
             var results = IconMonitoringService.UpdateApplicationsToEsbEnvironment(FromViewModel(esbEnvironment), configFile);
@@ -285,28 +272,74 @@ namespace Icon.Dashboard.Mvc.Services
 
         public string GetCurrentEsbEnvironmentForApplication(HttpServerUtilityBase serverUtility, string pathToXmlDataFile, IApplication application)
         {
-            const string AppSettingsKeyForServerUrl = "ServerUrl";
-            const string AppSettingsKeyForTargetHostNamel = "TargetHostName";
+            const string keyForServerUrl = "ServerUrl";
+            const string keyForTargetHostNamel = "TargetHostName";
+            string applicationName = $"{application.Name}-{application.Server}";
             var possibleEsbEnvironments = GetEsbEnvironments(serverUtility, pathToXmlDataFile);
-            if (application.AppSettings != null)
+            string currentEsbEnvironment = null;
+
+            //check for an explict EsbConfigurationSettings section
+            if (application.EsbConnectionSettings!=null && application.EsbConnectionSettings.Count > 0)
             {
-                if (application.AppSettings.ContainsKey(AppSettingsKeyForServerUrl) && application.AppSettings.ContainsKey(AppSettingsKeyForTargetHostNamel))
+                foreach (var esbConnectionSetting in application.EsbConnectionSettings)
+                {
+                    currentEsbEnvironment = ReadEsbEnvironmentFromConfiguration(
+                        configSection: esbConnectionSetting,
+                        knownEsbEnvironments: possibleEsbEnvironments,
+                        keyForServerName: keyForServerUrl,
+                        keyForTargetHost: keyForTargetHostNamel,
+                        nameOfApplication: applicationName);
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(currentEsbEnvironment))
+            {
+                //didn't find anything yet, check the AppSettings
+                currentEsbEnvironment = ReadEsbEnvironmentFromConfiguration(
+                    configSection: application.AppSettings,
+                    knownEsbEnvironments: possibleEsbEnvironments,
+                    keyForServerName: keyForServerUrl,
+                    keyForTargetHost: keyForTargetHostNamel,
+                    nameOfApplication: applicationName);
+            }
+            return currentEsbEnvironment;
+        }
+
+        /// <summary>
+        /// Checks a dictionary (such as from an app.settings file section) for a key/value pair which indicates that the 
+        ///   application using the configration data is configured for communication with a known ESB environment
+        /// </summary>
+        /// <param name="configSection">A Dictionary of strings represeentng the key/value pair settings</param>
+        /// <param name="knownEsbEnvironments">An enumerable collection of EsbEnvironment models, to use when searching for a match</param>
+        /// <param name="keyForServerName">Key for the key/value pair in the configuration dictionary representing the target ESB server</param>
+        /// <param name="keyForTargetHost">Key for the key/value pair in the configuration dictionary representing the target ESB Host Name</param>
+        /// <param name="nameOfApplication">Name of the application associated with the config data, used when potentially building an error message</param>
+        /// <returns></returns>
+        private string ReadEsbEnvironmentFromConfiguration(Dictionary<string,string> configSection,
+            IEnumerable<EsbEnvironmentViewModel> knownEsbEnvironments,
+            string keyForServerName,
+            string keyForTargetHost,
+            string nameOfApplication)
+        {
+            if (configSection != null)
+            {
+                if (configSection.ContainsKey(keyForServerName) && configSection.ContainsKey(keyForTargetHost))
                 {
                     string esbServer = String.Empty;
                     string esbTargetHost = String.Empty;
-                    if (application.AppSettings.TryGetValue(AppSettingsKeyForServerUrl, out esbServer) && application.AppSettings.TryGetValue(AppSettingsKeyForTargetHostNamel, out esbTargetHost))
+                    if (configSection.TryGetValue(keyForServerName, out esbServer) && configSection.TryGetValue(keyForTargetHost, out esbTargetHost))
                     {
-                        var matchingEsbEnvironments = possibleEsbEnvironments.Where(e =>
+                        var matchingEsbEnvironments = knownEsbEnvironments.Where(e =>
                             String.Compare(e.ServerUrl, esbServer, StringComparison.CurrentCultureIgnoreCase) == 0 &&
                             String.Compare(e.TargetHostName, esbTargetHost, StringComparison.CurrentCultureIgnoreCase) == 0);
 
-                        if (matchingEsbEnvironments!=null && matchingEsbEnvironments.Count() == 1)
+                        if (matchingEsbEnvironments != null && matchingEsbEnvironments.Count() == 1)
                         {
                             return matchingEsbEnvironments.First().Name;
                         }
                         else if (matchingEsbEnvironments != null && matchingEsbEnvironments.Count() > 1)
                         {
-                            throw new ArgumentOutOfRangeException($"{application.Name}-{application.Server} is configured for more than 1 esb environment");
+                            throw new ArgumentOutOfRangeException($"{nameOfApplication} is configured for more than 1 esb environment");
                         }
                     }
                 }
