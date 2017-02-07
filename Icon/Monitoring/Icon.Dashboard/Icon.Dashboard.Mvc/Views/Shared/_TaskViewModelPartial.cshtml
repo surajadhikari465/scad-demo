@@ -1,18 +1,14 @@
 ﻿@model Icon.Dashboard.Mvc.ViewModels.TaskViewModel
 
-<div class="form-group row">
-    <div class="col-xs-3 col-form-label">
-        @Html.DisplayNameFor(model => model.LastRun)
-    </div>
+<div class="form-group col-xs-12 col-sm-6 col-lg-4">
+    @Html.LabelFor(model => model.LastRun, htmlAttributes: new { @class = "control-label col-xs-3" })
     <div class="col-xs-9">
         @Html.DisplayFor(model => model.LastRun)
     </div>
 </div>
 
-<div class="form-group row">
-    <div class="col-xs-3 col-form-label">
-        @Html.DisplayNameFor(model => model.NextRun)
-    </div>
+<div class="form-group col-xs-12 col-sm-6 col-lg-4">
+    @Html.LabelFor(model => model.NextRun, htmlAttributes: new { @class = "control-label col-xs-3" })
     <div class="col-xs-9">
         @Html.DisplayFor(model => model.NextRun)
     </div>

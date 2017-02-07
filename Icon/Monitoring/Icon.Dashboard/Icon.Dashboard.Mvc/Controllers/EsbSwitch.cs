@@ -56,8 +56,6 @@ namespace Icon.Dashboard.Mvc.Controllers
             ViewBag.Title = $"ESB Environments";
             var esbEnvironments = DashboardDataFileService.GetEsbEnvironments(ServerUtility, XmlDataFile)
                 .OrderBy(e => e.Name);
-            //var currentEnvironment = DashboardDataFileService.GetCurrentEsbEnvironment(ServerUtility, XmlDataFile);
-            //ViewBag.CurrentEsbEnvironment = currentEnvironment?.Name;
             return View(esbEnvironments);
         }
 
@@ -111,7 +109,6 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                //try {
                 DashboardDataFileService.UpdateEsbEnvironment(ServerUtility, model, XmlDataFile);
                 return RedirectToAction("Details", "EsbSwitch", new { name = model.Name });
             }
@@ -193,7 +190,6 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult GetCurrentEsbEnvironment()
         {
             var currentEnvironment = DashboardDataFileService.GetCurrentEsbEnvironment(ServerUtility, XmlDataFile);
-            //ViewBag.CurrentEsbEnvironment = currentEnvironment?.Name;
             return Json(currentEnvironment?.Name, JsonRequestBehavior.AllowGet);
         }
     }
