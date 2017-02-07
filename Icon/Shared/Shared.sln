@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.RenewableContext", "Icon.RenewableContext\Icon.RenewableContext.csproj", "{D4D5B609-A1FF-4288-84FC-E04306B08EED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.DbContextFactory", "Icon.DbContextFactory\Icon.DbContextFactory.csproj", "{0C958F3B-4A51-4938-A69D-D911ABFF60D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -150,53 +152,16 @@ Global
 		{D4D5B609-A1FF-4288-84FC-E04306B08EED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D4D5B609-A1FF-4288-84FC-E04306B08EED}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{D4D5B609-A1FF-4288-84FC-E04306B08EED}.Test|Any CPU.Build.0 = Release|Any CPU
+		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.QA|Any CPU.Build.0 = Release|Any CPU
+		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.Test|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 14
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Icon.Logging\\Icon.Logging.csproj
-		SccProjectName1 = Icon.Logging
-		SccLocalPath1 = Icon.Logging
-		SccProjectUniqueName2 = Icon.Framework\\Icon.Framework.csproj
-		SccProjectName2 = Icon.Framework
-		SccLocalPath2 = Icon.Framework
-		SccProjectUniqueName3 = Icon.DB\\Icon.DB.sqlproj
-		SccProjectName3 = Icon.DB
-		SccLocalPath3 = Icon.DB
-		SccProjectUniqueName4 = Icon.Common\\Icon.Common.csproj
-		SccProjectName4 = Icon.Common
-		SccLocalPath4 = Icon.Common
-		SccProjectUniqueName5 = Irma.Framework\\Irma.Framework.csproj
-		SccProjectName5 = Irma.Framework
-		SccLocalPath5 = Irma.Framework
-		SccProjectUniqueName6 = Icon.Testing\\Icon.Testing.csproj
-		SccProjectName6 = Icon.Testing
-		SccLocalPath6 = Icon.Testing
-		SccProjectUniqueName7 = Icon.Esb\\Icon.Esb.csproj
-		SccProjectName7 = Icon.Esb
-		SccLocalPath7 = Icon.Esb
-		SccProjectUniqueName8 = Icon.Esb.Tests\\Icon.Esb.Tests.csproj
-		SccProjectName8 = Icon.Esb.Tests
-		SccLocalPath8 = Icon.Esb.Tests
-		SccProjectUniqueName9 = Irma.Testing\\Irma.Testing.csproj
-		SccProjectName9 = Irma.Testing
-		SccLocalPath9 = Irma.Testing
-		SccProjectUniqueName10 = Icon.Shared.DataAccess.Dapper\\Icon.Shared.DataAccess.Dapper.csproj
-		SccProjectName10 = Icon.Shared.DataAccess.Dapper
-		SccLocalPath10 = Icon.Shared.DataAccess.Dapper
-		SccProjectUniqueName11 = Testing.Core\\Testing.Core.csproj
-		SccProjectName11 = Testing.Core
-		SccLocalPath11 = Testing.Core
-		SccProjectUniqueName12 = Esb.Core\\Esb.Core.csproj
-		SccProjectName12 = Esb.Core
-		SccLocalPath12 = Esb.Core
-		SccProjectUniqueName13 = Icon.RenewableContext\\Icon.RenewableContext.csproj
-		SccProjectName13 = Icon.RenewableContext
-		SccLocalPath13 = Icon.RenewableContext
 	EndGlobalSection
 EndGlobal
