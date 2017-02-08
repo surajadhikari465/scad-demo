@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 
-namespace Icon.ApiController.Common
+namespace Icon.DbContextFactory
 {
     public interface IDbContextFactory<T>
         where T : DbContext, new()
