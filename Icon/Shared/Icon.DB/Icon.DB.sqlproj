@@ -597,6 +597,7 @@
     <Build Include="app\Stored Procedures\MarkMessageQueueProductSelectionGroupEntriesAsInProcess.sql" />
     <Build Include="app\Stored Procedures\MessageQueuePriceGetBusinessUnitToProcess.sql" />
     <Build Include="app\Stored Procedures\MessageQueueItemLocaleGetBusinessUnitToProcess.sql" />
+    <Build Include="infor\Tables\infor.MessageArchiveNewItem.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -711,6 +712,7 @@
     <None Include="Scripts\PopulateData\Release\RetentionPolicyEventQueueArchiveTable.sql" />
     <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageView_MockConcatenation.sql" />
     <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageViewWithDefaults_MockConcatenation.sql" />
+    <None Include="Scripts\PopulateData\Release\RetentionPolicyInforMessageArchiveNewItem.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

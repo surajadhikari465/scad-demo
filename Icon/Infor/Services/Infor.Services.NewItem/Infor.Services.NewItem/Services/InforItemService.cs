@@ -2,6 +2,7 @@
 using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
+using Infor.Services.NewItem.Constants;
 using Infor.Services.NewItem.MessageBuilders;
 using Infor.Services.NewItem.Models;
 using Infor.Services.NewItem.Validators;
@@ -68,6 +69,18 @@ namespace Infor.Services.NewItem.Services
                             messageHistory.MessageStatusId = MessageStatusTypes.Failed;
                             context.SaveChanges();
                         }
+                        foreach (var item in request.NewItems.Where(ni => ni.ErrorCode == null))
+                        {
+                            item.ErrorCode = ApplicationErrors.Codes.FailedToSendMessageToEsb;
+                            item.ErrorDetails = ex.ToString();
+                        }
+                    }
+                    finally
+                    {
+                        foreach (var item in validItems)
+                        {
+                            item.MessageHistoryId = messageHistory?.MessageHistoryId;
+                        }
                     }
                 }
             }
@@ -78,7 +91,7 @@ namespace Infor.Services.NewItem.Services
         {
             var result = validator.Validate(request.NewItems);
 
-            if(result.InvalidEntities.Any())
+            if (result.InvalidEntities.Any())
             {
                 logger.Error(string.Format(
                     "{0} Region: {1}, NumberOfItems: {2}, ScanCodes: {3}",
@@ -95,7 +108,7 @@ namespace Infor.Services.NewItem.Services
         {
             logger.Info(
                 string.Format(
-                    "InforItemService sent message to Infor. MessageHistoryId: {0}, Region: {1}, NumberOfItems: {2}, ScanCodes: {3}", 
+                    "InforItemService sent message to Infor. MessageHistoryId: {0}, Region: {1}, NumberOfItems: {2}, ScanCodes: {3}",
                     message.MessageHistoryId,
                     region,
                     items.Count(),

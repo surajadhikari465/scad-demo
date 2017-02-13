@@ -27,6 +27,7 @@ namespace Infor.Services.NewItem.Tests.Processors
         private Mock<ICommandHandler<AddNewItemsToIconCommand>> mockAddNewItemsToIconCommandHandler;
         private Mock<IInforItemService> mockInforItemService;
         private Mock<ICommandHandler<FinalizeNewItemEventsCommand>> mockFinalizeNewItemEventsCommandHandler;
+        private Mock<ICommandHandler<ArchiveNewItemsCommand>> mockArchiveNewItemsCommandHandler;
         private Mock<ILogger<NewItemProcessor>> mockLogger;
         private AddNewItemsToInforResponse response;
         private Mock<IRenewableContext<IconContext>> mockIconContext;
@@ -40,6 +41,7 @@ namespace Infor.Services.NewItem.Tests.Processors
             mockAddNewItemsToIconCommandHandler = new Mock<ICommandHandler<AddNewItemsToIconCommand>>();
             mockInforItemService = new Mock<IInforItemService>();
             mockFinalizeNewItemEventsCommandHandler = new Mock<ICommandHandler<FinalizeNewItemEventsCommand>>();
+            mockArchiveNewItemsCommandHandler = new Mock<ICommandHandler<ArchiveNewItemsCommand>>();
             mockLogger = new Mock<ILogger<NewItemProcessor>>();
             response = new AddNewItemsToInforResponse();
             mockIconContext = new Mock<IRenewableContext<IconContext>>();
@@ -50,6 +52,7 @@ namespace Infor.Services.NewItem.Tests.Processors
                 mockAddNewItemsToIconCommandHandler.Object,
                 mockInforItemService.Object,
                 mockFinalizeNewItemEventsCommandHandler.Object,
+                mockArchiveNewItemsCommandHandler.Object,
                 mockIconContext.Object,
                 mockIrmaContext.Object,
                 mockLogger.Object);

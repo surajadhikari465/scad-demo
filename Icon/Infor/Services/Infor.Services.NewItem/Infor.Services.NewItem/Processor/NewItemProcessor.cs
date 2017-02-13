@@ -3,6 +3,7 @@ using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Infor.Services.NewItem.Commands;
+using Infor.Services.NewItem.Constants;
 using Infor.Services.NewItem.Infrastructure;
 using Infor.Services.NewItem.Models;
 using Infor.Services.NewItem.Queries;
@@ -26,6 +27,7 @@ namespace Infor.Services.NewItem.Processor
         private IRenewableContext<IconContext> iconContext;
         private IRenewableContext<IrmaContext> irmaContext;
         private ILogger<NewItemProcessor> logger;
+        private ICommandHandler<ArchiveNewItemsCommand> archiveNewItemsCommandHandler;
 
         public NewItemProcessor(
             InforNewItemApplicationSettings settings,
@@ -33,6 +35,7 @@ namespace Infor.Services.NewItem.Processor
             ICommandHandler<AddNewItemsToIconCommand> addNewItemsToIconCommandHandler,
             IInforItemService inforItemService,
             ICommandHandler<FinalizeNewItemEventsCommand> finalizeNewItemEventsCommandHandler,
+            ICommandHandler<ArchiveNewItemsCommand> archiveNewItemsCommandHandler,
             IRenewableContext<IconContext> iconContext,
             IRenewableContext<IrmaContext> irmaContext,
             ILogger<NewItemProcessor> logger)
@@ -42,6 +45,7 @@ namespace Infor.Services.NewItem.Processor
             this.addNewItemsToIconCommandHandler = addNewItemsToIconCommandHandler;
             this.inforItemService = inforItemService;
             this.finalizeNewItemEventsCommandHandler = finalizeNewItemEventsCommandHandler;
+            this.archiveNewItemsCommandHandler = archiveNewItemsCommandHandler;
             this.iconContext = iconContext;
             this.irmaContext = irmaContext;
             this.logger = logger;
@@ -62,12 +66,17 @@ namespace Infor.Services.NewItem.Processor
                         newItems = getNewItemsQueryHandler.Search(new GetNewItemsQuery { Instance = controllerInstanceId, Region = region, NumberOfItemsInMessage = settings.NumberOfItemsPerMessage });
                         addNewItemsToIconCommandHandler.Execute(new AddNewItemsToIconCommand { NewItems = newItems });
                         AddNewItemsToInforResponse response = inforItemService.AddNewItemsToInfor(new AddNewItemsToInforRequest { NewItems = newItems, Region = region });
-                        errorOccurredWhileProcessing = response.ErrorOccurred;              
+                        errorOccurredWhileProcessing = response.ErrorOccurred;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         logger.Error(ex.ToString());
                         errorOccurredWhileProcessing = true;
+                        foreach (var item in newItems.Where(i => i.ErrorCode == null))
+                        {
+                            item.ErrorCode = ApplicationErrors.Codes.UnexpectedProcessingError;
+                            item.ErrorDetails = ex.ToString();
+                        }
                     }
                     finally
                     {
@@ -77,6 +86,10 @@ namespace Infor.Services.NewItem.Processor
                             Region = region,
                             NewItems = newItems,
                             ErrorOccurred = errorOccurredWhileProcessing
+                        });
+                        archiveNewItemsCommandHandler.Execute(new ArchiveNewItemsCommand
+                        {
+                            NewItems = newItems
                         });
                     }
                 } while (newItems.Any());

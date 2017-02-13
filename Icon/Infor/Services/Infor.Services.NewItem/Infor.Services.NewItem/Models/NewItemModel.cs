@@ -25,5 +25,8 @@ namespace Infor.Services.NewItem.Models
         public string SubTeamNumber { get; set; }
         public string NationalClassCode { get; set; }
         public string TaxClassCode { get; set; }
+        public int? MessageHistoryId { get; set; }
+        public string ErrorCode { get; set; }
+        public string ErrorDetails { get; set; }
     }
 }

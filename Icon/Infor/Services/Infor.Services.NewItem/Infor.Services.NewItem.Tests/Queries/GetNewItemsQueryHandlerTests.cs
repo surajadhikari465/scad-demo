@@ -54,6 +54,7 @@ namespace Infor.Services.NewItem.Tests.Queries
             testNatItemClass = context.NatItemClass.Add(new NatItemClass { ClassID = 56789, ClassName = "Test National Class", NatCatID = 555 });
             testTaxClass = context.TaxClass.Add(new TaxClass { TaxClassDesc = "1111111 Test Tax Class", ExternalTaxGroupCode = "1111111" });
 
+            context.Database.ExecuteSqlCommand("delete IconItemChangeQueue");
             context.SaveChanges();
 
             testItemIdentifiers = new List<ItemIdentifier>();
@@ -102,9 +103,6 @@ namespace Infor.Services.NewItem.Tests.Queries
         [TestMethod]
         public void GetNewItemsQuery_QueueIsEmpty_ShouldReturnEmptyList()
         {
-            //Given
-            Assert.IsFalse(context.IconItemChangeQueue.Any());
-
             //When
             var results = queryHandler.Search(query);
 

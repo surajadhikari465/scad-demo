@@ -3,6 +3,7 @@ using Icon.Common.Context;
 using Icon.Common.DataAccess;
 using Icon.Framework;
 using Infor.Services.NewItem.Cache;
+using Infor.Services.NewItem.Constants;
 using Infor.Services.NewItem.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Infor.Services.NewItem.Commands
     {
         private IRenewableContext<IconContext> context;
         private IIconCache cache;
-        
+
         public AddNewItemsToIconCommandHandler(IRenewableContext<IconContext> context, IIconCache cache)
         {
             this.context = context;
@@ -25,7 +26,7 @@ namespace Infor.Services.NewItem.Commands
 
         public void Execute(AddNewItemsToIconCommand data)
         {
-            if(data.NewItems.Any())
+            if (data.NewItems.Any())
             {
                 var taxClassCodesToIdDictionary = cache.TaxClassCodesToIdDictionary;
                 var nationalClassCodesToIdDictionary = cache.NationalClassCodesToIdDictionary;
@@ -54,7 +55,19 @@ namespace Infor.Services.NewItem.Commands
                     })
                     .ToTvp("items", "app.IRMAItemType");
 
-                context.Context.Database.ExecuteSqlCommand("EXEC infor.AddNewItems @items", newItemsParameter);
+                try
+                {
+                    context.Context.Database.ExecuteSqlCommand("EXEC infor.AddNewItems @items", newItemsParameter);
+                }
+                catch (Exception ex)
+                {
+                    foreach (var item in data.NewItems.Where(i => i.ErrorCode == null))
+                    {
+                        item.ErrorCode = ApplicationErrors.Codes.FailedToAddItemsToIcon;
+                        item.ErrorDetails = ex.ToString();
+                    }
+                    throw;
+                }
             }
         }
 
