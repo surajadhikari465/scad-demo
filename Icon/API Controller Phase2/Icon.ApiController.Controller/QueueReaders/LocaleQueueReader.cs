@@ -65,7 +65,7 @@ namespace Icon.ApiController.Controller.QueueReaders
             // Unlike the other types, locale messages aren't bundled.  They are sent one at a time.
             var groupedMessages = new List<MessageQueueLocale> { messages.First() };
 
-            logger.Info(String.Format("Grouped {0} queued messages to be included in the mini-bulk.", groupedMessages.Count));
+            logger.Info(string.Format("Grouped {0} queued messages to be included in the mini-bulk.", groupedMessages.Count));
 
             return groupedMessages;
         }
@@ -109,7 +109,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
         private void HandleMiniBulkException(MessageQueueLocale message, Exception ex)
         {
-            logger.Error(String.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
+            logger.Error(string.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
             message.MessageQueueId));
 
             ExceptionLogger<LocaleQueueReader> exceptionLogger = new ExceptionLogger<LocaleQueueReader>(logger);
@@ -124,7 +124,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
             updateMessageQueueStatusCommandHandler.Execute(command);
 
-            string errorMessage = String.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
+            string errorMessage = string.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
             string emailSubject = Resource.FailedToAddQueuedMessageToMiniBulkEmailSubject;
             string emailBody = EmailHelper.BuildMessageBodyForMiniBulkError(errorMessage, message.MessageQueueId, ex.ToString());
 

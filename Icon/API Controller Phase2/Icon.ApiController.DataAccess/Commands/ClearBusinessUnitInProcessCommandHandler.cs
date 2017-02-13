@@ -1,21 +1,25 @@
 ﻿using Icon.RenewableContext;
 using Icon.Common.DataAccess;
 using Icon.Framework;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
     public class ClearBusinessUnitInProcessCommandHandler : ICommandHandler<ClearBusinessUnitInProcessCommand>
     {
-        IRenewableContext<IconContext> globalContext;
+        IDbContextFactory<IconContext> iconContextFactory;
 
-        public ClearBusinessUnitInProcessCommandHandler(IRenewableContext<IconContext> globalContext)
+        public ClearBusinessUnitInProcessCommandHandler(IDbContextFactory<IconContext> iconContextFactory)
         {
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(ClearBusinessUnitInProcessCommand data)
         {
-            globalContext.Context.MessageQueueDeleteControllerFromBusinessUnitInProcess(data.InstanceId, data.MessageTypeId);
+            using (var context = iconContextFactory.CreateContext())
+            {
+                context.MessageQueueDeleteControllerFromBusinessUnitInProcess(data.InstanceId, data.MessageTypeId);
+            }
         }
     }
 }

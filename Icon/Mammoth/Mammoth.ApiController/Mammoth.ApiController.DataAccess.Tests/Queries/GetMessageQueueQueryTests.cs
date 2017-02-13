@@ -14,7 +14,8 @@ namespace Mammoth.ApiController.DataAccess.Tests.Queries
     {
         protected override void Initialize()
         {
-            queryHandler = new MammothQueries.GetMessageQueueQuery<MessageQueueItemLocale>(new GlobalContext<MammothContext>(context));
+            queryHandler = new MammothQueries.GetMessageQueueQuery<MessageQueueItemLocale>(new MammothContextFactory());
+            context.Database.ExecuteSqlCommand("truncate table esb.MessageQueueItemLocale;");
         }
 
         [TestMethod]

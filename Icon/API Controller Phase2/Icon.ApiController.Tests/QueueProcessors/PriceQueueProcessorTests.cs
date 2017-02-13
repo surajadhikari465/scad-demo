@@ -25,7 +25,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
     {
         private PriceQueueProcessor queueProcessor;
         private Mock<ILogger<PriceQueueProcessor>> mockLogger;
-        private Mock<IRenewableContext<IconContext>> mockContext;
         private Mock<ISerializer<Contracts.items>> mockSerializer;
         private Mock<IQueueReader<MessageQueuePrice, Contracts.items>> mockQueueReader;
         private Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>> mockSaveToMessageHistoryCommandHandler;
@@ -46,7 +45,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
         public void Initialize()
         {
             mockLogger = new Mock<ILogger<PriceQueueProcessor>>();
-            mockContext = new Mock<IRenewableContext<IconContext>>();
             mockSerializer = new Mock<ISerializer<Contracts.items>>();
             mockQueueReader = new Mock<IQueueReader<MessageQueuePrice, Contracts.items>>();
             mockSaveToMessageHistoryCommandHandler = new Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>>();
@@ -69,7 +67,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
             queueProcessor = new PriceQueueProcessor(
                 settings,
                 mockLogger.Object,
-                mockContext.Object,
                 mockQueueReader.Object,
                 mockSerializer.Object,
                 mockSaveToMessageHistoryCommandHandler.Object,
@@ -159,7 +156,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
             mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueuePrice>>())).Returns(fakeMessageQueuePrices);
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueuePrice>>())).Returns(new Contracts.items { item = new Contracts.ItemType[] { new Contracts.ItemType { id = 1 } } });
-            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>())).Returns(String.Empty);
+            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>())).Returns(string.Empty);
 
             // When.
             queueProcessor.ProcessMessageQueue();

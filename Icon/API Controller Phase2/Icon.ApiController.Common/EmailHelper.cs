@@ -21,7 +21,7 @@ namespace Icon.ApiController.Common
 
             messageBody.AppendLine(exceptionText);
 
-            string footerMessage = String.Empty;
+            string footerMessage = string.Empty;
             BuildMessageFooter(footerMessage, messageBody);
 
             return messageBody.ToString();
@@ -33,10 +33,10 @@ namespace Icon.ApiController.Common
 
             BuildMessageHeader(errorMessage, messageBody);
 
-            messageBody.AppendLine(String.Format("<table {0}>", tableStyle));
-            messageBody.AppendLine(String.Format("<tr {0}><th {0}>Message Queue ID</th></tr>", tableStyle));
+            messageBody.AppendLine(string.Format("<table {0}>", tableStyle));
+            messageBody.AppendLine(string.Format("<tr {0}><th {0}>Message Queue ID</th></tr>", tableStyle));
 
-            messageBody.AppendLine(String.Format("<tr {0}><td {0}>{1}</td></tr>", tableStyle, messageQueueId));
+            messageBody.AppendLine(string.Format("<tr {0}><td {0}>{1}</td></tr>", tableStyle, messageQueueId));
 
             messageBody.AppendLine("</table>");
 

@@ -57,7 +57,7 @@ namespace Icon.ApiController.Controller.CollectionProcessors
                 {
                     string serializedMessage = SerializeMiniBulk(miniBulk);
 
-                    if (!String.IsNullOrEmpty(serializedMessage))
+                    if (!string.IsNullOrEmpty(serializedMessage))
                     {
                         var productMessage = BuildProductMessage(serializedMessage);
                         SaveXmlMessageToMessageHistory(productMessage);
@@ -66,7 +66,7 @@ namespace Icon.ApiController.Controller.CollectionProcessors
                     }
                 }
 
-                logger.Info(String.Format("Linked item message generation complete.  Number of linked items processed: {0}.", miniBulk.item.Length));
+                logger.Info(string.Format("Linked item message generation complete.  Number of linked items processed: {0}.", miniBulk.item.Length));
             }
         }
 
@@ -74,7 +74,7 @@ namespace Icon.ApiController.Controller.CollectionProcessors
         {
             if (messageSent)
             {
-                logger.Info(String.Format("Message {0} has been sent successfully.", message.MessageHistoryId));
+                logger.Info(string.Format("Message {0} has been sent successfully.", message.MessageHistoryId));
 
                 var updateMessageHistoryCommand = new UpdateMessageHistoryStatusCommand<MessageHistory>
                 {
@@ -86,7 +86,7 @@ namespace Icon.ApiController.Controller.CollectionProcessors
             }
             else
             {
-                logger.Error(String.Format("Message {0} failed to send.  Message will remain in Ready state for re-processing during the next controller execution.", message.MessageHistoryId));
+                logger.Error(string.Format("Message {0} failed to send.  Message will remain in Ready state for re-processing during the next controller execution.", message.MessageHistoryId));
             }
         }
 
@@ -98,7 +98,7 @@ namespace Icon.ApiController.Controller.CollectionProcessors
             }
             catch (Exception ex)
             {
-                logger.Error(String.Format("Failed to send message {0}.  Error: {1}", message.MessageHistoryId, ex.ToString()));
+                logger.Error(string.Format("Failed to send message {0}.  Error: {1}", message.MessageHistoryId, ex.ToString()));
                 return false;
             }
 
@@ -185,7 +185,7 @@ namespace Icon.ApiController.Controller.CollectionProcessors
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(String.Format("An error occurred while attempting to add item {0} to the mini-bulk.  The item will not be included in the message to ESB.",
+                    logger.Error(string.Format("An error occurred while attempting to add item {0} to the mini-bulk.  The item will not be included in the message to ESB.",
                         item.itemID));
 
                     ExceptionLogger<ProductCollectionProcessor> exceptionLogger = new ExceptionLogger<ProductCollectionProcessor>(logger);

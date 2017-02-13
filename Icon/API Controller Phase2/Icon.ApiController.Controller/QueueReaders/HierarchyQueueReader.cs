@@ -92,7 +92,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 }
             }
 
-            logger.Info(String.Format("Grouped {0} queued messages to be included in the mini-bulk.", groupedMessages.Count));
+            logger.Info(string.Format("Grouped {0} queued messages to be included in the mini-bulk.", groupedMessages.Count));
 
             return groupedMessages;
         }
@@ -141,7 +141,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(String.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
+                    logger.Error(string.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
                         message.MessageQueueId));
 
                     ExceptionLogger<HierarchyQueueReader> exceptionLogger = new ExceptionLogger<HierarchyQueueReader>(logger);
@@ -156,7 +156,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
                     updateMessageQueueStatusCommandHandler.Execute(command);
 
-                    string errorMessage = String.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
+                    string errorMessage = string.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
                     string emailSubject = Resource.FailedToAddQueuedMessageToMiniBulkEmailSubject;
                     string emailBody = EmailHelper.BuildMessageBodyForMiniBulkError(errorMessage, message.MessageQueueId, ex.ToString());
 
@@ -186,7 +186,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                     return Contracts.ActionEnum.Delete;
 
                 default:
-                    throw new ArgumentException(String.Format("Invalid message action {0}:  Provided messageActionId does not match any available actions in the schema.", messageActionId));
+                    throw new ArgumentException(string.Format("Invalid message action {0}:  Provided messageActionId does not match any available actions in the schema.", messageActionId));
             }
         }
 

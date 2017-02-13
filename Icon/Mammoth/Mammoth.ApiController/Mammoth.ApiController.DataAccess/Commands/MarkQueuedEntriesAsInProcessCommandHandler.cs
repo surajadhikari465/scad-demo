@@ -1,48 +1,46 @@
 ﻿using Icon.ApiController.DataAccess.Commands;
-using Icon.Common;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Mammoth.Framework;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mammoth.ApiController.DataAccess.Commands
 {
     public class MarkQueuedEntriesAsInProcessCommandHandler<T> : ICommandHandler<MarkQueuedEntriesAsInProcessCommand<T>> where T : class, IMessageQueue
     {
-        private IRenewableContext<MammothContext> globalContext;
+        private IDbContextFactory<MammothContext> mammothContextFactory;
 
-        public MarkQueuedEntriesAsInProcessCommandHandler(IRenewableContext<MammothContext> globalContext)
+        public MarkQueuedEntriesAsInProcessCommandHandler(IDbContextFactory<MammothContext> mammothContextFactory)
         {
-            this.globalContext = globalContext;
+            this.mammothContextFactory = mammothContextFactory;
         }
 
         public void Execute(MarkQueuedEntriesAsInProcessCommand<T> data)
         {
-            var messageQueueTable = globalContext.Context.Set<T>();
-
-            int currentMessagesInProcess = messageQueueTable.Count(q => q.InProcessBy == data.Instance);
-
-            if (currentMessagesInProcess < data.LookAhead)
+            using (var context = mammothContextFactory.CreateContext())
             {
-                int newMessagesToMark = data.LookAhead - currentMessagesInProcess;
+                var messageQueueTable = context.Set<T>();
 
-                string messageQueueTableName = typeof(T).Name;
+                int currentMessagesInProcess = messageQueueTable.Count(q => q.InProcessBy == data.Instance);
 
-                SqlParameter lookAheadParameter = new SqlParameter("NumberOfRows", SqlDbType.Int);
-                lookAheadParameter.Value = newMessagesToMark;
+                if (currentMessagesInProcess < data.LookAhead)
+                {
+                    int newMessagesToMark = data.LookAhead - currentMessagesInProcess;
 
-                SqlParameter instanceParameter = new SqlParameter("JobInstance", SqlDbType.Int);
-                instanceParameter.Value = data.Instance;
+                    string messageQueueTableName = typeof(T).Name;
 
-                string sql = $"EXEC esb.Mark{messageQueueTableName}EntriesAsInProcess @NumberOfRows, @JobInstance";
+                    SqlParameter lookAheadParameter = new SqlParameter("NumberOfRows", SqlDbType.Int);
+                    lookAheadParameter.Value = newMessagesToMark;
 
-                globalContext.Context.Database.ExecuteSqlCommand(sql, lookAheadParameter, instanceParameter);
+                    SqlParameter instanceParameter = new SqlParameter("JobInstance", SqlDbType.Int);
+                    instanceParameter.Value = data.Instance;
+
+                    string sql = $"EXEC esb.Mark{messageQueueTableName}EntriesAsInProcess @NumberOfRows, @JobInstance";
+
+                    context.Database.ExecuteSqlCommand(sql, lookAheadParameter, instanceParameter);
+                }
             }
         }
     }

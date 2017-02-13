@@ -8,16 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Queries
 {
     public class GetNextAvailableBusinessUnitQuery : IQueryHandler<GetNextAvailableBusinessUnitParameters, int?>
     {
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
-        public GetNextAvailableBusinessUnitQuery(IRenewableContext<IconContext> globalContext)
+        public GetNextAvailableBusinessUnitQuery(IDbContextFactory<IconContext> iconContextFactory)
         {
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public int? Search(GetNextAvailableBusinessUnitParameters parameters)
@@ -27,7 +28,10 @@ namespace Icon.ApiController.DataAccess.Queries
 
             string sql = $"EXEC app.{parameters.MessageQueueName}GetBusinessUnitToProcess @InstanceId";
 
-            return globalContext.Context.Database.SqlQuery<int?>(sql, instanceId).FirstOrDefault();
+            using (var context = iconContextFactory.CreateContext())
+            {
+                return context.Database.SqlQuery<int?>(sql, instanceId).FirstOrDefault();
+            }
         }
     }
 }

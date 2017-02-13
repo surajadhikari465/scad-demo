@@ -6,37 +6,41 @@ using Icon.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Queries
 {
     public class GetMessageHistoryQuery : IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>
     {
         private ILogger<GetMessageHistoryQuery> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
-        public GetMessageHistoryQuery(ILogger<GetMessageHistoryQuery> logger, IRenewableContext<IconContext> globalContext)
+        public GetMessageHistoryQuery(ILogger<GetMessageHistoryQuery> logger, IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public List<MessageHistory> Search(GetMessageHistoryParameters parameters)
         {
-            var messages = globalContext.Context.MessageHistory
-                .Where(mh => mh.InProcessBy == parameters.Instance && mh.MessageTypeId == parameters.MessageTypeId)
-                .ToList();
-
-            if (messages.Count > 0)
+            using (var context = iconContextFactory.CreateContext())
             {
-                logger.Info(String.Format("Controller {0} found {1} MessageHistory entries ready for processing.  Starting with MessageHistoryId {2}.",
-                    ControllerType.Instance, messages.Count, messages[0].MessageHistoryId));
-            }
-            else
-            {
-                logger.Info(String.Format("Controller {0} found 0 MessageHistory entries ready for processing.", ControllerType.Instance));
-            }
+                var messages = context.MessageHistory
+                    .Where(mh => mh.InProcessBy == parameters.Instance && mh.MessageTypeId == parameters.MessageTypeId)
+                    .ToList();
 
-            return messages;
+                if (messages.Count > 0)
+                {
+                    logger.Info(string.Format("Controller {0} found {1} MessageHistory entries ready for processing.  Starting with MessageHistoryId {2}.",
+                        ControllerType.Instance, messages.Count, messages[0].MessageHistoryId));
+                }
+                else
+                {
+                    logger.Info(string.Format("Controller {0} found 0 MessageHistory entries ready for processing.", ControllerType.Instance));
+                }
+
+                return messages;
+            }
         }
     }
 }

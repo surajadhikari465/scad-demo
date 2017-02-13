@@ -1,21 +1,25 @@
 ﻿using Icon.RenewableContext;
 using Icon.Common.DataAccess;
 using Icon.Framework;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
     public class UpdateInProcessBusinessUnitCommandHandler : ICommandHandler<UpdateInProcessBusinessUnitCommand>
     {
-        IRenewableContext<IconContext> globalContext;
+        IDbContextFactory<IconContext> iconContextFactory;
 
-        public UpdateInProcessBusinessUnitCommandHandler(IRenewableContext<IconContext> globalContext)
+        public UpdateInProcessBusinessUnitCommandHandler(IDbContextFactory<IconContext> iconContextFactory)
         {
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(UpdateInProcessBusinessUnitCommand data)
         {
-            globalContext.Context.MessageQueueUpdateControllerBusinessUnitInProcess(data.InstanceId, data.BusinessUnitId, data.MessageTypeId);
+            using (var context = iconContextFactory.CreateContext())
+            {
+                context.MessageQueueUpdateControllerBusinessUnitInProcess(data.InstanceId, data.BusinessUnitId, data.MessageTypeId);
+            }
         }
     }
 }

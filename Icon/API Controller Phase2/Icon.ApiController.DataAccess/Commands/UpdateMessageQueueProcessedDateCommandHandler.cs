@@ -6,20 +6,21 @@ using Icon.Logging;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
     public class UpdateMessageQueueProcessedDateCommandHandler<T> : ICommandHandler<UpdateMessageQueueProcessedDateCommand<T>> where T : class, IMessageQueue
     {
         private ILogger<UpdateMessageQueueProcessedDateCommandHandler<T>> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
         public UpdateMessageQueueProcessedDateCommandHandler(
             ILogger<UpdateMessageQueueProcessedDateCommandHandler<T>> logger, 
-            IRenewableContext<IconContext> globalContext)
+            IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(UpdateMessageQueueProcessedDateCommand<T> data)
@@ -46,9 +47,12 @@ namespace Icon.ApiController.DataAccess.Commands
 
             string sql = "EXEC app.UpdateMessageQueueProcessedDate @MessageQueueTable, @MessagesToUpdate, @ProcessedDate";
 
-            globalContext.Context.Database.ExecuteSqlCommand(sql, tableNameParameter, messagesParameter, dateParameter);
+            using (var context = iconContextFactory.CreateContext())
+            {
+                context.Database.ExecuteSqlCommand(sql, tableNameParameter, messagesParameter, dateParameter);
+            }
 
-            logger.Info(String.Format("Successfully updated {0} MessageQueue record(s) with a ProcessedDate of {1}.",
+            logger.Info(string.Format("Successfully updated {0} MessageQueue record(s) with a ProcessedDate of {1}.",
                 data.MessagesToUpdate.Count, data.ProcessedDate));
         }
     }

@@ -1,13 +1,13 @@
 ﻿namespace Mammoth.ApiController.Service
 {
     using Icon.ApiController.Controller;
+    using Icon.Common;
     using Icon.Logging;
     using System;
+    using System.Configuration;
     using System.Linq;
     using System.Timers;
-    using Icon.Common;
-    using System.Configuration;
-    using Icon.ApiController.Common;
+
     public class ApiControllerService : IApiControllerService
     {       
         private System.Timers.Timer timer;

@@ -36,12 +36,11 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             }
         };
 
-        public static ApiControllerBase GetController(string controllerType, IRenewableContext<IconContext> globalContext)
+        public static ApiControllerBase GetController(string controllerType)
         {
             try
             {
-                globalContext.Context.Database.Connection.Open();
-                return controllerMap[controllerType]().ComposeController(globalContext);
+                return controllerMap[controllerType]().ComposeController();
             }
             catch (KeyNotFoundException)
             {

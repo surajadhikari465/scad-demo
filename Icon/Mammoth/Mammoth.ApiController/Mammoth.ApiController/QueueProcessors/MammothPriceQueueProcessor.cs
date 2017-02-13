@@ -20,7 +20,6 @@ namespace Mammoth.ApiController.QueueProcessors
     public class MammothPriceQueueProcessor : MammothQueueProcessor<MessageQueuePrice, Contracts.items>
     {
         public MammothPriceQueueProcessor(ILogger logger,
-            IRenewableContext globalContext,
             IQueueReader<MessageQueuePrice, Contracts.items> queueReader,
             ISerializer<Contracts.items> serializer,
             ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>> saveToMessageHistoryCommandHandler,
@@ -32,7 +31,6 @@ namespace Mammoth.ApiController.QueueProcessors
             IEsbProducer producer,
             ApiControllerSettings settings)
             : base(logger,
-                  globalContext,
                   queueReader,
                   serializer,
                   saveToMessageHistoryCommandHandler,

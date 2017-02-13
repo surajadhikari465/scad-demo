@@ -16,7 +16,7 @@ namespace Mammoth.ApiController.DataAccess.Tests.Commands
     {
         protected override void Initialize()
         {
-            commandHandler = new MammothCommands.SaveToMessageHistoryCommandHandler(new GlobalContext<MammothContext>(context));
+            commandHandler = new MammothCommands.SaveToMessageHistoryCommandHandler(new MammothContextFactory());
         }
 
         [TestMethod]

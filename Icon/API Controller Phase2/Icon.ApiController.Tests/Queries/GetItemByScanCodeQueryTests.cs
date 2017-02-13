@@ -8,32 +8,36 @@ using Moq;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Queries
 {
     [TestClass]
     public class GetItemByScanCodeQueryTests
     {
+        private GetItemByScanCodeQuery getItemByScanCodeQuery;
+        private Mock<ILogger<GetItemByScanCodeQuery>> mockLogger;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private Item testItem;
         private string testScanCode;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
             testScanCode = "1112223334445";
 
-            transaction = context.Database.BeginTransaction();
+            mockLogger = new Mock<ILogger<GetItemByScanCodeQuery>>();
+            getItemByScanCodeQuery = new GetItemByScanCodeQuery(mockLogger.Object, new IconDbContextFactory());
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         private void StageTestScanCode()
@@ -49,8 +53,6 @@ namespace Icon.ApiController.Tests.Queries
         public void GetItemByScanCodeQuery_ScanCodeDoesNotExist_ReturnsNull()
         {
             // Given.
-            var getItemByScanCodeQuery = new GetItemByScanCodeQuery(new Mock<ILogger<GetItemByScanCodeQuery>>().Object, globalContext);
-
             var parameters = new GetItemByScanCodeParameters
             {
                 ScanCode = "-1"
@@ -69,8 +71,6 @@ namespace Icon.ApiController.Tests.Queries
             // Given.
             StageTestScanCode();
 
-            var getItemByScanCodeQuery = new GetItemByScanCodeQuery(new Mock<ILogger<GetItemByScanCodeQuery>>().Object, globalContext);
-
             var parameters = new GetItemByScanCodeParameters
             {
                 ScanCode = testScanCode
@@ -81,7 +81,7 @@ namespace Icon.ApiController.Tests.Queries
 
             // Then.
             Assert.IsNotNull(item);
-            Assert.AreEqual(item.ScanCode.Single().scanCode, testScanCode);
+            Assert.AreEqual(item.itemID, testItem.itemID);
         }
     }
 }

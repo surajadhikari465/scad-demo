@@ -1,28 +1,26 @@
 ﻿using Icon.ApiController.DataAccess.Commands;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Mammoth.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mammoth.ApiController.DataAccess.Commands
 {
     public class SaveToMessageHistoryCommandHandler : ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>
     {
-        private IRenewableContext<MammothContext> globalContext;
+        private IDbContextFactory<MammothContext> mammothContextFactory;
 
-        public SaveToMessageHistoryCommandHandler(IRenewableContext<MammothContext> context)
+        public SaveToMessageHistoryCommandHandler(IDbContextFactory<MammothContext> mammothContextFactory)
         {
-            globalContext = context;
+            this.mammothContextFactory = mammothContextFactory;
         }
 
         public void Execute(SaveToMessageHistoryCommand<MessageHistory> data)
         {
-            globalContext.Context.MessageHistories.Add(data.Message);
-            globalContext.Context.SaveChanges();
+            using (var context = mammothContextFactory.CreateContext())
+            {
+                context.MessageHistories.Add(data.Message);
+                context.SaveChanges();
+            }
         }
     }
 }

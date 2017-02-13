@@ -19,7 +19,6 @@ namespace Mammoth.ApiController.QueueProcessors
         protected Dictionary<string, string> esbMessageProperties;
 
         public MammothQueueProcessor(ILogger logger,
-            IRenewableContext globalContext,
             IQueueReader<TMessageQueue, TContract> queueReader,
             ISerializer<TContract> serializer,
             ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>> saveToMessageHistoryCommandHandler,
@@ -31,7 +30,6 @@ namespace Mammoth.ApiController.QueueProcessors
             IEsbProducer producer,
             ApiControllerSettings settings)
             : base(logger, 
-                  globalContext, 
                   queueReader, 
                   serializer, 
                   saveToMessageHistoryCommandHandler,

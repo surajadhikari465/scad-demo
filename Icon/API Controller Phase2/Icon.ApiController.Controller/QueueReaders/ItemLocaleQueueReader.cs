@@ -97,7 +97,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 currentMessageIndex++;
             }
 
-            logger.Info(String.Format("Grouped {0} queued messages to be included in the mini-bulk.  Mini-bulk type: {1}",
+            logger.Info(string.Format("Grouped {0} queued messages to be included in the mini-bulk.  Mini-bulk type: {1}",
                 groupedMessages.Count, groupedMessages[0].LinkedItemScanCode == null ? "ItemLocale" : "LinkedItem"));
 
             return groupedMessages;
@@ -320,7 +320,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(String.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
+                    logger.Error(string.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
                         message.MessageQueueId));
 
                     ExceptionLogger<ItemLocaleQueueReader> exceptionLogger = new ExceptionLogger<ItemLocaleQueueReader>(logger);
@@ -335,7 +335,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
                     updateMessageQueueStatusCommandHandler.Execute(command);
 
-                    string errorMessage = String.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
+                    string errorMessage = string.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
                     string emailSubject = Resource.FailedToAddQueuedMessageToMiniBulkEmailSubject;
                     string emailBody = EmailHelper.BuildMessageBodyForMiniBulkError(errorMessage, message.MessageQueueId, ex.ToString());
 
@@ -355,24 +355,24 @@ namespace Icon.ApiController.Controller.QueueReaders
             // there will be null elements in the array that were never assigned or initialized.  Exclude those elements so that only valid data is returned.
             miniBulk.item = miniBulk.item.Where(i => i != null).ToArray();
 
-            logger.Info(String.Format("Gathered a mini-bulk of count: {0}", miniBulk.item.Length));
+            logger.Info(string.Format("Gathered a mini-bulk of count: {0}", miniBulk.item.Length));
 
             return miniBulk;
         }
 
         private void ProcessLinkedItem(MessageQueueItemLocale message, Contracts.ItemType miniBulkEntry)
         {
-            if (!String.IsNullOrEmpty(message.LinkedItemScanCode) || !String.IsNullOrEmpty(message.PreviousLinkedItemScanCode))
+            if (!string.IsNullOrEmpty(message.LinkedItemScanCode) || !string.IsNullOrEmpty(message.PreviousLinkedItemScanCode))
             {
                 var links = new List<Contracts.LinkTypeType>();
                 var groups = new List<Contracts.GroupTypeType>();
 
-                if (!String.IsNullOrEmpty(message.LinkedItemScanCode))
+                if (!string.IsNullOrEmpty(message.LinkedItemScanCode))
                 {
                     AddLinkedItem(message, message.LinkedItemScanCode, links, groups, Contracts.ActionEnum.AddOrUpdate);
                 }
 
-                if (sendPreviousItemLinkGroup && !String.IsNullOrWhiteSpace(message.PreviousLinkedItemScanCode) && message.LinkedItemScanCode != message.PreviousLinkedItemScanCode)
+                if (sendPreviousItemLinkGroup && !string.IsNullOrWhiteSpace(message.PreviousLinkedItemScanCode) && message.LinkedItemScanCode != message.PreviousLinkedItemScanCode)
                 {
                     AddLinkedItem(message, message.PreviousLinkedItemScanCode, links, groups, Contracts.ActionEnum.Delete);
                 }
@@ -404,7 +404,7 @@ namespace Icon.ApiController.Controller.QueueReaders
             }
             else
             {
-                logger.Warn(String.Format("Attempted to process linked item {0} for MessageQueueId {1} / ScanCode {2}, but it does not appear to be a bottle deposit, CRV, or Blackhawk item.",
+                logger.Warn(string.Format("Attempted to process linked item {0} for MessageQueueId {1} / ScanCode {2}, but it does not appear to be a bottle deposit, CRV, or Blackhawk item.",
                     linkedItemScanCode, message.MessageQueueId, message.ScanCode));
                 return;
             }
@@ -436,20 +436,20 @@ namespace Icon.ApiController.Controller.QueueReaders
                     return Contracts.ActionEnum.Delete;
 
                 default:
-                    throw new ArgumentException(String.Format("Invalid message action {0}:  Provided messageActionId does not match any available actions in the schema.", messageActionId));
+                    throw new ArgumentException(string.Format("Invalid message action {0}:  Provided messageActionId does not match any available actions in the schema.", messageActionId));
             }
         }
 
         private bool LinkedItemPresenceDoesNotMatchBaseMessage(string baseLinkedItem, string linkedItem)
         {
-            if (String.IsNullOrEmpty(baseLinkedItem))
+            if (string.IsNullOrEmpty(baseLinkedItem))
             {
-                bool neitherMessageHasLinkedItem = (String.IsNullOrEmpty(baseLinkedItem) && String.IsNullOrEmpty(linkedItem));
+                bool neitherMessageHasLinkedItem = (string.IsNullOrEmpty(baseLinkedItem) && string.IsNullOrEmpty(linkedItem));
                 return !neitherMessageHasLinkedItem;
             }
             else
             {
-                bool bothMessagesHaveLinkedItem = (!String.IsNullOrEmpty(baseLinkedItem) && !String.IsNullOrEmpty(linkedItem));
+                bool bothMessagesHaveLinkedItem = (!string.IsNullOrEmpty(baseLinkedItem) && !string.IsNullOrEmpty(linkedItem));
                 return !bothMessagesHaveLinkedItem;
             }
         }

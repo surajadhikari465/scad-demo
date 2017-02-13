@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Integration
 {
@@ -14,23 +15,21 @@ namespace Icon.ApiController.Tests.Integration
     {
         private GetProductSelectionGroupsQuery query;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
-            context = new IconContext();
-            globalContext = new GlobalIconContext(context);
-            query = new GetProductSelectionGroupsQuery(globalContext);
+            transaction = new TransactionScope();
 
-            transaction = context.Database.BeginTransaction();
+            context = new IconContext();
+            query = new GetProductSelectionGroupsQuery(new IconDbContextFactory());
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [TestMethod]

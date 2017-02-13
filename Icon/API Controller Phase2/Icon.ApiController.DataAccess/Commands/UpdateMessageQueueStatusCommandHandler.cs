@@ -3,43 +3,55 @@ using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using System;
+using Icon.DbContextFactory;
+using System.Data.Entity;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
     public class UpdateMessageQueueStatusCommandHandler<T> : ICommandHandler<UpdateMessageQueueStatusCommand<T>> where T : class, IMessageQueue
     {
         private ILogger<UpdateMessageQueueStatusCommandHandler<T>> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
         public UpdateMessageQueueStatusCommandHandler(
             ILogger<UpdateMessageQueueStatusCommandHandler<T>> logger,
-            IRenewableContext<IconContext> globalContext)
+            IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(UpdateMessageQueueStatusCommand<T> data)
         {
-            if (data.QueuedMessages == null || data.QueuedMessages.Count == 0)
+            using (var context = iconContextFactory.CreateContext())
             {
-                logger.Warn("UpdateMessageQueueStatus was called with a null or empty list.  Check the calling method for errors.");
-                return;
-            }
-
-            logger.Info(String.Format("Updating MessageStatusId from {0} to {1} for {2} queued message(s).", data.QueuedMessages[0], data.MessageStatusId, data.QueuedMessages.Count));
-
-            foreach (var messageToUpdate in data.QueuedMessages)
-            {
-                messageToUpdate.MessageStatusId = data.MessageStatusId;
-
-                if (data.ResetInProcessBy)
+                if (data.QueuedMessages == null || data.QueuedMessages.Count == 0)
                 {
-                    messageToUpdate.InProcessBy = null;
+                    logger.Warn("UpdateMessageQueueStatus was called with a null or empty list.  Check the calling method for errors.");
+                    return;
                 }
-            }
 
-            globalContext.Context.SaveChanges();
+                logger.Info(string.Format("Updating MessageStatusId from {0} to {1} for {2} queued message(s).", data.QueuedMessages[0], data.MessageStatusId, data.QueuedMessages.Count));
+                
+                var set = GetDbSet(context);
+                foreach (var messageToUpdate in data.QueuedMessages)
+                {
+                    set.Attach(messageToUpdate);
+                    messageToUpdate.MessageStatusId = data.MessageStatusId;
+
+                    if (data.ResetInProcessBy)
+                    {
+                        messageToUpdate.InProcessBy = null;
+                    }
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        private DbSet<T> GetDbSet(IconContext context)
+        {
+            return context.Set<T>();
         }
     }
 }

@@ -22,7 +22,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
     {
         private ApiControllerSettings settings;
         private ILogger<ProductQueueProcessor> logger;
-        private IRenewableContext globalContext;
         private IQueueReader<MessageQueueProduct, Contracts.items> queueReader;
         private ISerializer<Contracts.items> serializer;
         private ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>> saveToMessageHistoryCommandHandler;
@@ -39,7 +38,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
         public ProductQueueProcessor(
             ApiControllerSettings settings,
             ILogger<ProductQueueProcessor> logger,
-            IRenewableContext globalContext,
             IQueueReader<MessageQueueProduct, Contracts.items> queueReader,
             ISerializer<Contracts.items> serializer,
             ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>> saveToMessageHistoryCommandHandler,
@@ -53,7 +51,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
         {
             this.settings = settings;
             this.logger = logger;
-            this.globalContext = globalContext;
             this.serializer = serializer;
             this.queueReader = queueReader;
             this.saveToMessageHistoryCommandHandler = saveToMessageHistoryCommandHandler;
@@ -131,7 +128,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
                 logger.Info("Ending the main processing loop.  Now preparing to retrieve a new set of queued messages.");
 
-                globalContext.Refresh();
                 MarkQueuedMessagesAsInProcess();
                 messagesReadyToProcess = GetQueuedMessages();
             }

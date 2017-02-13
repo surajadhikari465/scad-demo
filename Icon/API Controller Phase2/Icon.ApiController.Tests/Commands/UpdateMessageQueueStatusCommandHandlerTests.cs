@@ -8,6 +8,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Commands
 {
@@ -17,20 +18,17 @@ namespace Icon.ApiController.Tests.Commands
         private UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale> updateMessageQueueStatusCommandHandler;
         private Mock<ILogger<UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>>> mockLogger;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private IRMAPush testIrmaPush;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
             mockLogger = new Mock<ILogger<UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>>>();
-            updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockLogger.Object, globalContext);
-
-            transaction = context.Database.BeginTransaction();
+            updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockLogger.Object, new IconDbContextFactory());
 
             testIrmaPush = new TestIrmaPushBuilder();
             context.IRMAPush.Add(testIrmaPush);
@@ -40,7 +38,7 @@ namespace Icon.ApiController.Tests.Commands
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [TestMethod]

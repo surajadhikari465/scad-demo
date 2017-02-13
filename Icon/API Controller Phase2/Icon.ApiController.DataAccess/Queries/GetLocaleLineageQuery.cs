@@ -6,51 +6,55 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Queries
 {
     public class GetLocaleLineageQuery : IQueryHandler<GetLocaleLineageParameters, LocaleLineageModel>
     {
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
-        public GetLocaleLineageQuery(IRenewableContext<IconContext> globalContext)
+        public GetLocaleLineageQuery(IDbContextFactory<IconContext> iconContextFactory)
         {
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public LocaleLineageModel Search(GetLocaleLineageParameters parameters)
         {
             LocaleLineageModel localeLineage = new LocaleLineageModel();
 
-            switch (parameters.LocaleTypeId)
+            using (var context = iconContextFactory.CreateContext())
             {
-                case (LocaleTypes.Region):
-                    {
-                        localeLineage = BuildLineageFromRegion(parameters.LocaleId);
-                        break;
-                    }
-                case (LocaleTypes.Metro):
-                    {
-                        localeLineage = BuildLineageFromMetro(parameters.LocaleId);
-                        break;
-                    }
-                case (LocaleTypes.Store):
-                    {
-                        localeLineage = BuildLineageFromStore(parameters.LocaleId);
-                        break;
-                    }
-                default:
-                    {
-                        throw new ArgumentException("An invalid LocaleTypeId was provided to GetLocaleLineageQuery.");
-                    }
+                switch (parameters.LocaleTypeId)
+                {
+                    case (LocaleTypes.Region):
+                        {
+                            localeLineage = BuildLineageFromRegion(context, parameters.LocaleId);
+                            break;
+                        }
+                    case (LocaleTypes.Metro):
+                        {
+                            localeLineage = BuildLineageFromMetro(context, parameters.LocaleId);
+                            break;
+                        }
+                    case (LocaleTypes.Store):
+                        {
+                            localeLineage = BuildLineageFromStore(context, parameters.LocaleId);
+                            break;
+                        }
+                    default:
+                        {
+                            throw new ArgumentException("An invalid LocaleTypeId was provided to GetLocaleLineageQuery.");
+                        }
+                }
             }
 
             return localeLineage;
         }
 
-        private LocaleLineageModel BuildLineageFromStore(int localeId)
+        private LocaleLineageModel BuildLineageFromStore(IconContext context, int localeId)
         {
-            var store = globalContext.Context.Locale
+            var store = context.Locale
                 .Include(l => l.LocaleTrait.Select(lt => lt.Trait))
                 .Include(l => l.LocaleAddress)
                 .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.City))
@@ -94,9 +98,9 @@ namespace Icon.ApiController.DataAccess.Queries
             return localeLineage;
         }
 
-        private LocaleLineageModel BuildLineageFromMetro(int localeId)
+        private LocaleLineageModel BuildLineageFromMetro(IconContext context, int localeId)
         {
-            var metro = globalContext.Context.Locale.Single(l => l.localeID == localeId);
+            var metro = context.Locale.Single(l => l.localeID == localeId);
             var region = metro.Locale2;
             var chain = region.Locale2;
 
@@ -126,9 +130,9 @@ namespace Icon.ApiController.DataAccess.Queries
             return localeLineage;
         }
 
-        private LocaleLineageModel BuildLineageFromRegion(int localeId)
+        private LocaleLineageModel BuildLineageFromRegion(IconContext context, int localeId)
         {
-            var region = globalContext.Context.Locale.Single(l => l.localeID == localeId);
+            var region = context.Locale.Single(l => l.localeID == localeId);
 
             var regionLocaleLineage = new LocaleLineageModel
             {
@@ -141,7 +145,7 @@ namespace Icon.ApiController.DataAccess.Queries
 
             foreach (var metro in metros)
             {
-                bool metroContainsStores = globalContext.Context.Locale.Any(l => l.parentLocaleID == metro.localeID);
+                bool metroContainsStores = context.Locale.Any(l => l.parentLocaleID == metro.localeID);
 
                 if (metroContainsStores)
                 {
@@ -152,7 +156,7 @@ namespace Icon.ApiController.DataAccess.Queries
                         DescendantLocales = new List<LocaleLineageModel>()
                     });
 
-                    var stores = globalContext.Context.Locale.Where(l => l.parentLocaleID == metro.localeID)
+                    var stores = context.Locale.Where(l => l.parentLocaleID == metro.localeID)
                         .Include(l => l.LocaleTrait.Select(lt => lt.Trait))
                         .Include(l => l.LocaleAddress)
                         .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.City))

@@ -93,7 +93,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 currentMessageIndex++;
             }
 
-            logger.Info(String.Format("Grouped {0} queued messages to be included in the mini-bulk.  Mini-bulk type: {1}",
+            logger.Info(string.Format("Grouped {0} queued messages to be included in the mini-bulk.  Mini-bulk type: {1}",
                 groupedMessages.Count, groupedMessages[0].DepartmentSale == "1" ? "DepartmentSale" : "Product"));
 
             return groupedMessages;
@@ -385,7 +385,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
         private void HandleMiniBulkException(MessageQueueProduct message, Exception ex)
         {
-            logger.Error(String.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
+            logger.Error(string.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
                 message.MessageQueueId));
 
             ExceptionLogger<ProductQueueReader> exceptionLogger = new ExceptionLogger<ProductQueueReader>(logger);
@@ -400,7 +400,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
             updateMessageQueueStatusCommandHandler.Execute(command);
 
-            string errorMessage = String.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
+            string errorMessage = string.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
             string emailSubject = Resource.FailedToAddQueuedMessageToMiniBulkEmailSubject;
             string emailBody = EmailHelper.BuildMessageBodyForMiniBulkError(errorMessage, message.MessageQueueId, ex.ToString());
 
@@ -510,7 +510,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.RetailSize == null ? String.Empty : message.RetailSize.ToString()
+                                    value = message.RetailSize == null ? string.Empty : message.RetailSize.ToString()
                                 }
                             }
                         }
@@ -525,7 +525,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.RetailUom == null ? String.Empty : message.RetailUom,
+                                    value = message.RetailUom == null ? string.Empty : message.RetailUom,
                                     uom = new Contracts.UomType
                                     {
                                         code = uomMapper.GetEsbUomCode(message.RetailUom),
@@ -554,7 +554,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.AnimalWelfareRating == null ? String.Empty : message.AnimalWelfareRating
+                                    value = message.AnimalWelfareRating == null ? string.Empty : message.AnimalWelfareRating
                                 }
                             }
                         }
@@ -569,7 +569,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.Biodynamic == null ? String.Empty : message.Biodynamic.ToString()
+                                    value = message.Biodynamic == null ? string.Empty : message.Biodynamic.ToString()
                                 }
                             }
                         }
@@ -584,7 +584,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.CheeseMilkType == null ? String.Empty : message.CheeseMilkType
+                                    value = message.CheeseMilkType == null ? string.Empty : message.CheeseMilkType
                                 }
                             }
                         }
@@ -599,7 +599,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.CheeseRaw == null ? String.Empty : message.CheeseRaw.ToString()
+                                    value = message.CheeseRaw == null ? string.Empty : message.CheeseRaw.ToString()
                                 }
                             }
                         }
@@ -614,7 +614,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.EcoScaleRating == null ? String.Empty : message.EcoScaleRating
+                                    value = message.EcoScaleRating == null ? string.Empty : message.EcoScaleRating
                                 }
                             }
                         }
@@ -629,7 +629,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.GlutenFreeAgency == null ? String.Empty : message.GlutenFreeAgency
+                                    value = message.GlutenFreeAgency == null ? string.Empty : message.GlutenFreeAgency
                                 }
                             }
                         }
@@ -644,7 +644,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.HealthyEatingRating == null ? String.Empty : message.HealthyEatingRating
+                                    value = message.HealthyEatingRating == null ? string.Empty : message.HealthyEatingRating
                                 }
                             }
                         }
@@ -659,7 +659,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.KosherAgency == null ? String.Empty : message.KosherAgency
+                                    value = message.KosherAgency == null ? string.Empty : message.KosherAgency
                                 }
                             }
                         }
@@ -674,7 +674,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.Msc == null ? String.Empty : message.Msc.ToString()
+                                    value = message.Msc == null ? string.Empty : message.Msc.ToString()
                                 }
                             }
                         }
@@ -689,7 +689,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.NonGmoAgency == null ? String.Empty : message.NonGmoAgency
+                                    value = message.NonGmoAgency == null ? string.Empty : message.NonGmoAgency
                                 }
                             }
                         }
@@ -704,7 +704,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.OrganicAgency == null ? String.Empty : message.OrganicAgency
+                                    value = message.OrganicAgency == null ? string.Empty : message.OrganicAgency
                                 }
                             }
                         }
@@ -719,7 +719,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.PremiumBodyCare == null ? String.Empty : message.PremiumBodyCare.ToString()
+                                    value = message.PremiumBodyCare == null ? string.Empty : message.PremiumBodyCare.ToString()
                                 }
                             }
                         }
@@ -734,7 +734,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.SeafoodFreshOrFrozen == null ? String.Empty : message.SeafoodFreshOrFrozen
+                                    value = message.SeafoodFreshOrFrozen == null ? string.Empty : message.SeafoodFreshOrFrozen
                                 }
                             }
                         }
@@ -749,7 +749,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.SeafoodCatchType == null ? String.Empty : message.SeafoodCatchType
+                                    value = message.SeafoodCatchType == null ? string.Empty : message.SeafoodCatchType
                                 }
                             }
                         }
@@ -764,7 +764,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.VeganAgency == null ? String.Empty : message.VeganAgency
+                                    value = message.VeganAgency == null ? string.Empty : message.VeganAgency
                                 }
                             }
                         }
@@ -779,7 +779,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.Vegetarian == null ? String.Empty : message.Vegetarian.ToString()
+                                    value = message.Vegetarian == null ? string.Empty : message.Vegetarian.ToString()
                                 }
                             }
                         }
@@ -794,7 +794,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.WholeTrade == null ? String.Empty : message.WholeTrade.ToString()
+                                    value = message.WholeTrade == null ? string.Empty : message.WholeTrade.ToString()
                                 }
                             }
                         }
@@ -809,7 +809,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.GrassFed == null ? String.Empty : message.GrassFed.ToString()
+                                    value = message.GrassFed == null ? string.Empty : message.GrassFed.ToString()
                                 }
                             }
                         }
@@ -824,7 +824,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.PastureRaised == null ? String.Empty : message.PastureRaised.ToString()
+                                    value = message.PastureRaised == null ? string.Empty : message.PastureRaised.ToString()
                                 }
                             }
                         }
@@ -839,7 +839,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.FreeRange == null ? String.Empty : message.FreeRange.ToString()
+                                    value = message.FreeRange == null ? string.Empty : message.FreeRange.ToString()
                                 }
                             }
                         }
@@ -854,7 +854,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.DryAged == null ? String.Empty : message.DryAged.ToString()
+                                    value = message.DryAged == null ? string.Empty : message.DryAged.ToString()
                                 }
                             }
                         }
@@ -869,7 +869,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             {
                                 new Contracts.TraitValueType
                                 {
-                                    value = message.AirChilled == null ? String.Empty : message.AirChilled.ToString()
+                                    value = message.AirChilled == null ? string.Empty : message.AirChilled.ToString()
                                 }
                             }
                         }
@@ -956,7 +956,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                         {
                             new Contracts.TraitValueType
                             {
-                                value = message.RecipeName == null ? String.Empty : message.RecipeName
+                                value = message.RecipeName == null ? string.Empty : message.RecipeName
                             }
                         }
                     }
@@ -971,7 +971,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                         {
                             new Contracts.TraitValueType
                             {
-                                value = message.Allergens == null ? String.Empty : message.Allergens
+                                value = message.Allergens == null ? string.Empty : message.Allergens
                             }
                         }
                     }
@@ -986,7 +986,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                         {
                             new Contracts.TraitValueType
                             {
-                                value = message.Ingredients == null ? String.Empty : message.Ingredients
+                                value = message.Ingredients == null ? string.Empty : message.Ingredients
                             }
                         }
                     }

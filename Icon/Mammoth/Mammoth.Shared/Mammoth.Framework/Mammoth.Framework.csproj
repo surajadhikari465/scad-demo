@@ -60,6 +60,10 @@
       <HintPath>$(SolutionDir)\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Mammoth.ApiController\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -86,6 +90,7 @@
     <Compile Include="Item.cs" />
     <Compile Include="ItemType.cs" />
     <Compile Include="MammothContext.cs" />
+    <Compile Include="MammothDbContextFactory.cs" />
     <Compile Include="MessageAction.cs" />
     <Compile Include="MessageHistory.cs" />
     <Compile Include="MessageQueueItemLocale.cs" />

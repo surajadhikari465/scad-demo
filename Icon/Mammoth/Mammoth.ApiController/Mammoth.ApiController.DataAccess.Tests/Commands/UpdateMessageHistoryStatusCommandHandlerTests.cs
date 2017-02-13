@@ -13,7 +13,7 @@ namespace Mammoth.ApiController.DataAccess.Tests.Commands
     {
         protected override void Initialize()
         {
-            commandHandler = new MammothCommands.UpdateMessageHistoryStatusCommandHandler(new GlobalContext<MammothContext>(context));
+            commandHandler = new MammothCommands.UpdateMessageHistoryStatusCommandHandler(new MammothContextFactory());
         }
 
         [TestMethod]

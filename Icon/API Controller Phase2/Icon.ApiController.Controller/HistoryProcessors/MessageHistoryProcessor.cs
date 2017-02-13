@@ -18,7 +18,6 @@ namespace Icon.ApiController.Controller.HistoryProcessors
     {
         private ApiControllerSettings settings;
         private ILogger<MessageHistoryProcessor> logger;
-        private IRenewableContext<IconContext> globalContext;
         private ICommandHandler<MarkUnsentMessagesAsInProcessCommand> markUnsentMessagesAsInProcessCommandHandler;
         private IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>> getMessageHistoryQuery;
         private ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>> updateMessageHistoryCommandHandler;
@@ -30,7 +29,6 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         public MessageHistoryProcessor(
             ApiControllerSettings settings,
             ILogger<MessageHistoryProcessor> logger,
-            IRenewableContext<IconContext> globalContext,
             ICommandHandler<MarkUnsentMessagesAsInProcessCommand> markUnsentMessagesAsInProcessCommandHandler,
             IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>> getMessageHistoryQuery,
             ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>> updateMessageHistoryCommandHandler,
@@ -41,7 +39,6 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         {
             this.settings = settings;
             this.logger = logger;
-            this.globalContext = globalContext;
             this.markUnsentMessagesAsInProcessCommandHandler = markUnsentMessagesAsInProcessCommandHandler;
             this.getMessageHistoryQuery = getMessageHistoryQuery;
             this.updateMessageHistoryCommandHandler = updateMessageHistoryCommandHandler;
@@ -74,7 +71,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     }
                     catch (Exception ex)
                     {
-                        logger.Error(String.Format("Failed to send message {0}.  Error: {1}", message.MessageHistoryId, ex.ToString()));
+                        logger.Error(string.Format("Failed to send message {0}.  Error: {1}", message.MessageHistoryId, ex.ToString()));
                         messageSent = false;
                     }
 
@@ -83,7 +80,6 @@ namespace Icon.ApiController.Controller.HistoryProcessors
 
                 logger.Info("Ending the main processing loop.  Now preparing to retrieve a new set of unsent messages.");
 
-                globalContext.Refresh();
                 MarkUnsentMessagesAsInProcess();
                 messagesReadyToSend = GetUnsentMessages();
             }
@@ -94,7 +90,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         private void EnsureNonReceivingSystemPropertiesAreSet(MessageHistory message,
             Dictionary<string, string> messageProperties, string nonReceivingSystemsJmsKey, string nonReceivingSystemsAllValue)
         {
-            if (!String.IsNullOrWhiteSpace(nonReceivingSystemsAllValue))
+            if (!string.IsNullOrWhiteSpace(nonReceivingSystemsAllValue))
             {
                 messageProperties.Add(nonReceivingSystemsJmsKey, nonReceivingSystemsAllValue);
             }
@@ -103,7 +99,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
             {
                 case MessageTypes.ItemLocale:
                     //is there a settings value for systems which should not receive item locale messages?
-                    if (!String.IsNullOrWhiteSpace(settings.NonReceivingSystemsItemLocale))
+                    if (!string.IsNullOrWhiteSpace(settings.NonReceivingSystemsItemLocale))
                     {
                         //make sure systems which should not receive item locale messages are listed in the properties
                         PrependValueToDictionaryEntry(messageProperties, nonReceivingSystemsJmsKey, settings.NonReceivingSystemsItemLocale);
@@ -111,7 +107,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     break;
                 case MessageTypes.Price:
                     //is there a settings value for systems which should not receive price messages?
-                    if (!String.IsNullOrWhiteSpace(settings.NonReceivingSystemsPrice))
+                    if (!string.IsNullOrWhiteSpace(settings.NonReceivingSystemsPrice))
                     {
                         //make sure systems which should not receive price messages are listed in the properties
                         PrependValueToDictionaryEntry(messageProperties, nonReceivingSystemsJmsKey, settings.NonReceivingSystemsPrice);
@@ -177,7 +173,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         {
             if (messageSent)
             {
-                logger.Info(String.Format("Message {0} has been sent successfully.", message.MessageHistoryId));
+                logger.Info(string.Format("Message {0} has been sent successfully.", message.MessageHistoryId));
 
                 var updateMessageHistoryCommand = new UpdateMessageHistoryStatusCommand<MessageHistory>
                 {
@@ -208,7 +204,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
             }
             else
             {
-                logger.Error(String.Format("Message {0} failed to send.  The message will remain in Ready state for re-processing during the next controller execution.", message.MessageHistoryId));
+                logger.Error(string.Format("Message {0} failed to send.  The message will remain in Ready state for re-processing during the next controller execution.", message.MessageHistoryId));
             }
         }
 

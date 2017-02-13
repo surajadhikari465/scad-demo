@@ -22,7 +22,6 @@ namespace Icon.ApiController.Tests.HistoryProcessors
     {
         private MessageHistoryProcessor historyProcessor;
         private Mock<ILogger<MessageHistoryProcessor>> mockLogger;
-        private Mock<IRenewableContext<IconContext>> mockContext;
         private Mock<ICommandHandler<MarkUnsentMessagesAsInProcessCommand>> mockMarkUnsentMessagesCommand;
         private Mock<IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>> mockGetMessageHistoryQuery;
         private Mock<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>> mockUpdateMessageHistoryCommand;
@@ -41,7 +40,6 @@ namespace Icon.ApiController.Tests.HistoryProcessors
         public void Initialize()
         {
             mockLogger = new Mock<ILogger<MessageHistoryProcessor>>();
-            mockContext = new Mock<IRenewableContext<IconContext>>();
             mockMarkUnsentMessagesCommand = new Mock<ICommandHandler<MarkUnsentMessagesAsInProcessCommand>>();
             mockGetMessageHistoryQuery = new Mock<IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>>();
             mockUpdateMessageHistoryCommand = new Mock<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>>();
@@ -53,7 +51,6 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             this.historyProcessor = new MessageHistoryProcessor(
                 settings,
                 mockLogger.Object,
-                mockContext.Object,
                 mockMarkUnsentMessagesCommand.Object,
                 mockGetMessageHistoryQuery.Object,
                 mockUpdateMessageHistoryCommand.Object,
@@ -135,7 +132,6 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             historyProcessor = new MessageHistoryProcessor(
                 settings,
                 mockLogger.Object,
-                mockContext.Object,
                 mockMarkUnsentMessagesCommand.Object,
                 mockGetMessageHistoryQuery.Object,
                 mockUpdateMessageHistoryCommand.Object,
@@ -188,7 +184,6 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             historyProcessor = new MessageHistoryProcessor(
               settings,
               mockLogger.Object,
-              mockContext.Object,
               mockMarkUnsentMessagesCommand.Object,
               mockGetMessageHistoryQuery.Object,
               mockUpdateMessageHistoryCommand.Object,

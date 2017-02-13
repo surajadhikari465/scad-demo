@@ -7,20 +7,21 @@ using System;
 using System.Linq;
 using System.Data.SqlClient;
 using System.Data;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
     public class MarkQueuedEntriesAsInProcessCommandHandler<T> : ICommandHandler<MarkQueuedEntriesAsInProcessCommand<T>> where T : class, IMessageQueue
     {
         private ILogger<MarkQueuedEntriesAsInProcessCommandHandler<T>> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
         public MarkQueuedEntriesAsInProcessCommandHandler(
-            ILogger<MarkQueuedEntriesAsInProcessCommandHandler<T>> logger, 
-            IRenewableContext<IconContext> globalContext)
+            ILogger<MarkQueuedEntriesAsInProcessCommandHandler<T>> logger,
+            IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(MarkQueuedEntriesAsInProcessCommand<T> data)
@@ -31,39 +32,42 @@ namespace Icon.ApiController.DataAccess.Commands
                 return;
             }
 
-            var messageQueueTable = globalContext.Context.Set<T>();
-
-            int currentMessagesInProcess = messageQueueTable.Count(q => q.InProcessBy == data.Instance);
-
-            if (currentMessagesInProcess < data.LookAhead)
+            using (var context = iconContextFactory.CreateContext())
             {
-                int newMessagesToMark = data.LookAhead - currentMessagesInProcess;
+                var messageQueueTable = context.Set<T>();
 
-                if (data.BusinessUnit == default(int))
+                int currentMessagesInProcess = messageQueueTable.Count(q => q.InProcessBy == data.Instance);
+
+                if (currentMessagesInProcess < data.LookAhead)
                 {
-                    logger.Info(String.Format("Controller {0} has {1} records in process and will attempt to mark {2} additional records.  The look-ahead value is {3}.",
-                    ControllerType.Instance.ToString(), currentMessagesInProcess, newMessagesToMark.ToString(), data.LookAhead.ToString()));
+                    int newMessagesToMark = data.LookAhead - currentMessagesInProcess;
+
+                    if (data.BusinessUnit == default(int))
+                    {
+                        logger.Info(string.Format("Controller {0} has {1} records in process and will attempt to mark {2} additional records.  The look-ahead value is {3}.",
+                        ControllerType.Instance.ToString(), currentMessagesInProcess, newMessagesToMark.ToString(), data.LookAhead.ToString()));
+                    }
+                    else
+                    {
+                        logger.Info(string.Format("Controller {0} has {1} records in process and will attempt to mark {2} additional records for business unit {3}.  The look-ahead value is {4}.",
+                        ControllerType.Instance.ToString(), currentMessagesInProcess, newMessagesToMark.ToString(), data.BusinessUnit.ToString(), data.LookAhead.ToString()));
+                    }
+
+                    string messageQueueTableName = typeof(T).Name;
+
+                    SqlParameter numberOfRows = new SqlParameter("NumberOfRows", SqlDbType.Int);
+                    numberOfRows.Value = newMessagesToMark;
+
+                    SqlParameter jobInstance = new SqlParameter("JobInstance", SqlDbType.Int);
+                    jobInstance.Value = data.Instance;
+
+                    SqlParameter businessUnit = new SqlParameter("BusinessUnit", SqlDbType.Int);
+                    businessUnit.Value = data.BusinessUnit;
+
+                    string sql = $"EXEC app.Mark{messageQueueTableName}EntriesAsInProcess @NumberOfRows, @JobInstance, @BusinessUnit";
+
+                    context.Database.ExecuteSqlCommand(sql, numberOfRows, jobInstance, businessUnit);
                 }
-                else
-                {
-                    logger.Info(String.Format("Controller {0} has {1} records in process and will attempt to mark {2} additional records for business unit {3}.  The look-ahead value is {4}.",
-                    ControllerType.Instance.ToString(), currentMessagesInProcess, newMessagesToMark.ToString(), data.BusinessUnit.ToString(), data.LookAhead.ToString()));
-                }
-
-                string messageQueueTableName = typeof(T).Name;
-
-                SqlParameter numberOfRows = new SqlParameter("NumberOfRows", SqlDbType.Int);
-                numberOfRows.Value = newMessagesToMark;
-
-                SqlParameter jobInstance = new SqlParameter("JobInstance", SqlDbType.Int);
-                jobInstance.Value = data.Instance;
-
-                SqlParameter businessUnit = new SqlParameter("BusinessUnit", SqlDbType.Int);
-                businessUnit.Value = data.BusinessUnit;
-
-                string sql = $"EXEC app.Mark{messageQueueTableName}EntriesAsInProcess @NumberOfRows, @JobInstance, @BusinessUnit";
-
-                globalContext.Context.Database.ExecuteSqlCommand(sql, numberOfRows, jobInstance, businessUnit);
             }
         }
     }

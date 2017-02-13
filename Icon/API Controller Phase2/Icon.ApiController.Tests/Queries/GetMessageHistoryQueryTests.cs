@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Queries
 {
@@ -16,23 +17,21 @@ namespace Icon.ApiController.Tests.Queries
     {
         private GetMessageHistoryQuery getMessageHistoryQuery;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private Mock<ILogger<GetMessageHistoryQuery>> mockLogger;
         private List<MessageHistory> testMessages;
         
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
             mockLogger = new Mock<ILogger<GetMessageHistoryQuery>>();
-            getMessageHistoryQuery = new GetMessageHistoryQuery(mockLogger.Object, globalContext);
+            getMessageHistoryQuery = new GetMessageHistoryQuery(mockLogger.Object, new IconDbContextFactory());
             ControllerType.Instance = 99;
-
-            transaction = context.Database.BeginTransaction();
-
+            
             testMessages = new List<MessageHistory>
             {
                 new TestMessageHistoryBuilder().WithInProcessBy(null),
@@ -46,7 +45,7 @@ namespace Icon.ApiController.Tests.Queries
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [TestMethod]

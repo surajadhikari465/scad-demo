@@ -9,7 +9,7 @@ namespace Icon.ApiController
     class Program
     {
         //private static ILogger<Program> logger = new NLogLogger<Program>();
-        //private static IRenewableContext<IconContext> globalContext;
+        //private static IRenewableContext<IconContext> iconContextFactory;
 
         static void Main(string[] args)
         {

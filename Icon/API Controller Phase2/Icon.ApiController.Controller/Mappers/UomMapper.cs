@@ -17,7 +17,7 @@ namespace Icon.ApiController.Controller.Mappers
         public WfmUomDescEnumType GetEsbUomDescription(string uomCode)
         {
             WfmUomDescEnumType esbUomDescription = WfmUomDescEnumType.EACH;
-            uomCode = String.IsNullOrEmpty(uomCode) ? uomCode : uomCode.ToUpper();
+            uomCode = string.IsNullOrEmpty(uomCode) ? uomCode : uomCode.ToUpper();
 
             switch (uomCode)
             {
@@ -79,7 +79,7 @@ namespace Icon.ApiController.Controller.Mappers
                     esbUomDescription = WfmUomDescEnumType.FLUIDOUNCES;
                     break;
                 default:
-                    logger.Warn(String.Format("No matching {0} for UOM {1}.  Defaulting to {2}.", typeof(WfmUomDescEnumType).Name, uomCode, esbUomDescription));
+                    logger.Warn(string.Format("No matching {0} for UOM {1}.  Defaulting to {2}.", typeof(WfmUomDescEnumType).Name, uomCode, esbUomDescription));
                     break;
             }
 
@@ -151,7 +151,7 @@ namespace Icon.ApiController.Controller.Mappers
                     esbUomCode = WfmUomCodeEnumType.FZ;
                     break;
                 default:
-                    logger.Warn(String.Format("No matching {0} for UOM {1}.  Defaulting to {2}.", typeof(WfmUomCodeEnumType).Name, uomCode, esbUomCode));
+                    logger.Warn(string.Format("No matching {0} for UOM {1}.  Defaulting to {2}.", typeof(WfmUomCodeEnumType).Name, uomCode, esbUomCode));
                     break;
             }
 

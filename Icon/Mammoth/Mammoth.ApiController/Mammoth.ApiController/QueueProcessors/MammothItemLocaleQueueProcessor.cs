@@ -21,7 +21,6 @@ namespace Mammoth.ApiController.QueueProcessors
     public class MammothItemLocaleQueueProcessor : MammothQueueProcessor<MessageQueueItemLocale, Contracts.items>
     {
         public MammothItemLocaleQueueProcessor(ILogger logger,
-            IRenewableContext globalContext,
             IQueueReader<MessageQueueItemLocale, Contracts.items> queueReader,
             ISerializer<Contracts.items> serializer,
             ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>> saveToMessageHistoryCommandHandler,
@@ -33,7 +32,6 @@ namespace Mammoth.ApiController.QueueProcessors
             IEsbProducer producer,
             ApiControllerSettings settings)
             : base(logger, 
-                  globalContext, 
                   queueReader, 
                   serializer, 
                   saveToMessageHistoryCommandHandler,

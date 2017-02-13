@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Mammoth.Framework;
-using Icon.ApiController.DataAccess.Commands;
-using MammothCommands = Mammoth.ApiController.DataAccess.Commands;
-using Icon.Common.Context;
-using System.Collections.Generic;
+﻿using Icon.ApiController.DataAccess.Commands;
 using Mammoth.Common.Testing.Builders;
+using Mammoth.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using MammothCommands = Mammoth.ApiController.DataAccess.Commands;
 
 namespace Mammoth.ApiController.DataAccess.Tests.Commands
 {
@@ -15,7 +14,7 @@ namespace Mammoth.ApiController.DataAccess.Tests.Commands
     {
         protected override void Initialize()
         {
-            commandHandler = new MammothCommands.UpdateMessageQueueProcessedDateCommandHandler<MessageQueueItemLocale>(new GlobalContext<MammothContext>(context));
+            commandHandler = new MammothCommands.UpdateMessageQueueProcessedDateCommandHandler<MessageQueueItemLocale>(new MammothContextFactory());
         }
 
         [TestMethod]

@@ -1,25 +1,24 @@
 ﻿using Icon.ApiController.Common;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
-using System;
 using System.Data;
 using System.Data.SqlClient;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
     public class AssociateMessageToQueueCommandHandler<T> : ICommandHandler<AssociateMessageToQueueCommand<T, MessageHistory>> where T : class, IMessageQueue
     {
         private ILogger<AssociateMessageToQueueCommandHandler<T>> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
         public AssociateMessageToQueueCommandHandler(
             ILogger<AssociateMessageToQueueCommandHandler<T>> logger,
-            IRenewableContext<IconContext> globalContext)
+            IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(AssociateMessageToQueueCommand<T, MessageHistory> data)
@@ -47,9 +46,12 @@ namespace Icon.ApiController.DataAccess.Commands
 
             string sql = $"EXEC app.AssociateMessageTo{messageQueueTableName} @MessagesToUpdate, @MessageHistoryId, @MessageStatusId";
 
-            globalContext.Context.Database.ExecuteSqlCommand(sql, messagesParameter, messageHistoryParameter, messageStatusParameter);
+            using (var context = iconContextFactory.CreateContext())
+            {
+                context.Database.ExecuteSqlCommand(sql, messagesParameter, messageHistoryParameter, messageStatusParameter);
+            }
 
-            logger.Info(String.Format("Associated MessageHistoryId {0} to {1} MessageQueue record(s).",
+            logger.Info(string.Format("Associated MessageHistoryId {0} to {1} MessageQueue record(s).",
                 data.MessageHistory.MessageHistoryId, data.QueuedMessages.Count));
         }
     }

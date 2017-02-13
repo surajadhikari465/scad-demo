@@ -85,7 +85,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
                     {
                         string xml = SerializeMiniBulk(miniBulk);
 
-                        if (String.IsNullOrEmpty(xml))
+                        if (string.IsNullOrEmpty(xml))
                         {
                             MarkQueuedMessagesAsFailed(messagesReadyForMiniBulk);
                             monitorData.CountFailedMessages = monitorData.CountFailedMessages.GetValueOrDefault(0) + messagesReadyToProcess.Count;
@@ -136,10 +136,10 @@ namespace Icon.ApiController.Controller.QueueProcessors
         private void SetMessageProperties()
         {
             messageProperties = new Dictionary<string, string>();
-            messageProperties.Add("IconMessageID", String.Empty);
+            messageProperties.Add("IconMessageID", string.Empty);
             messageProperties.Add("Source", "Icon");
 
-            if (!String.IsNullOrWhiteSpace(settings.NonReceivingSystemsAll))
+            if (!string.IsNullOrWhiteSpace(settings.NonReceivingSystemsAll))
             {
                 messageProperties.Add(EsbConstants.NonReceivingSystemsJmsProperty, settings.NonReceivingSystemsAll);
             }
@@ -149,7 +149,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
         {
             if (messageSent)
             {
-                logger.Info(String.Format("Message {0} has been sent successfully.", message.MessageHistoryId));
+                logger.Info(string.Format("Message {0} has been sent successfully.", message.MessageHistoryId));
 
                 var updateMessageHistoryCommand = new UpdateMessageHistoryStatusCommand<MessageHistory>
                 {
@@ -161,13 +161,13 @@ namespace Icon.ApiController.Controller.QueueProcessors
             }
             else
             {
-                logger.Error(String.Format("Message {0} failed to send.  Message will remain in Ready state for re-processing during the next controller execution.", message.MessageHistoryId));
+                logger.Error(string.Format("Message {0} failed to send.  Message will remain in Ready state for re-processing during the next controller execution.", message.MessageHistoryId));
             }
         }
 
         private bool PublishMessage(string xml, int messageHistoryId)
         {
-            logger.Info(String.Format("Preparing to send message {0}.", messageHistoryId));
+            logger.Info(string.Format("Preparing to send message {0}.", messageHistoryId));
 
             try
             {
@@ -177,7 +177,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
             }
             catch (Exception ex)
             {
-                logger.Error(String.Format("Failed to send message {0}.  Error: {1}", messageHistoryId, ex.ToString()));
+                logger.Error(string.Format("Failed to send message {0}.  Error: {1}", messageHistoryId, ex.ToString()));
                 return false;
             }
         }

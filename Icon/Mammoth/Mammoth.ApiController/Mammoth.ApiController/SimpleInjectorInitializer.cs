@@ -6,9 +6,9 @@ using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
+using Icon.DbContextFactory;
 using Icon.Esb;
 using Icon.Esb.Producer;
 using Icon.Logging;
@@ -19,7 +19,6 @@ using Mammoth.Framework;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
-using TIBCO.EMS;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using MammothDataAccess = Mammoth.ApiController.DataAccess;
 
@@ -31,12 +30,9 @@ namespace Mammoth.ApiController
         {
             var container = new Container();
 
-            var globalContext = new GlobalContext<MammothContext>(new MammothContext());
-
             container.Register<ILogger<Serializer<Contracts.items>>, NLogLogger<Serializer<Contracts.items>>>();
+            container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton(() => ApiControllerSettings.CreateFromConfig("Mammoth", instance));
-            container.RegisterSingleton<IRenewableContext<MammothContext>>(() => globalContext);
-            container.RegisterSingleton<IRenewableContext>(() => globalContext);
             container.RegisterSingleton<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName")));
             container.Register<IQueueReader<MessageQueuePrice, Contracts.items>, MammothPriceQueueReader>();
             container.Register<IQueueReader<MessageQueueItemLocale, Contracts.items>, MammothItemLocaleQueueReader>();

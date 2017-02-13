@@ -33,7 +33,7 @@ namespace Icon.ApiController.Controller.Extensions
             //this one should fail the message incase of wrong format.. once Bug is fixed we can remove tryparsing.
             //Bug: Not removign 'InProcessBy" by value when marking failed events 
             Decimal decimalValue = Decimal.Zero;
-            if (!String.IsNullOrEmpty(stringValue))
+            if (!string.IsNullOrEmpty(stringValue))
             {
                 Decimal.TryParse(stringValue, out decimalValue);
             }

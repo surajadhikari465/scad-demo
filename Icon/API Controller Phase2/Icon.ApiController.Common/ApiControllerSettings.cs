@@ -27,7 +27,7 @@ namespace Icon.ApiController.Common
                 QueueLookAhead = AppSettingsAccessor.GetIntSetting("QueueLookAhead", 1000),
                 MiniBulkLimitItemLocale = AppSettingsAccessor.GetIntSetting("MiniBulkLimitItemLocale", 100),
                 MiniBulkLimitPrice = AppSettingsAccessor.GetIntSetting("MiniBulkLimitPrice", 100),
-                ConfiguredBusinessUnits = AppSettingsAccessor.GetStringSetting("ConfiguredBusinessUnits", String.Empty).Split(',').ToList(),
+                ConfiguredBusinessUnits = AppSettingsAccessor.GetStringSetting("ConfiguredBusinessUnits", string.Empty).Split(',').ToList(),
                 NonReceivingSystemsAll = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsAll", false),
                 NonReceivingSystemsItemLocale = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsItemLocale", false),
                 NonReceivingSystemsPrice = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsPrice", false),

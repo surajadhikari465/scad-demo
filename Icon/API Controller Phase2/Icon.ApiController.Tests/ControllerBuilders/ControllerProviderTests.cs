@@ -10,8 +10,6 @@ namespace Icon.ApiController.Tests.ControllerBuilders
     [TestClass]
     public class ControllerProviderTests
     {
-        private IRenewableContext<IconContext> globalContext = new GlobalIconContext(new IconContext());
-
         [TestMethod]
         public void ControllerProvider_ProductControllerType_ReturnsProductQueueProcessor()
         {
@@ -19,7 +17,7 @@ namespace Icon.ApiController.Tests.ControllerBuilders
             string controllerType = "p";
 
             // When.
-            var controller = ControllerProvider.GetController(controllerType, globalContext);
+            var controller = ControllerProvider.GetController(controllerType);
 
             // Then.
             Assert.AreEqual("Product", ControllerType.Type);
@@ -32,7 +30,7 @@ namespace Icon.ApiController.Tests.ControllerBuilders
             string controllerType = "i";
 
             // When.
-            var controller = ControllerProvider.GetController(controllerType, globalContext);
+            var controller = ControllerProvider.GetController(controllerType);
 
             // Then.
             Assert.AreEqual("ItemLocale", ControllerType.Type);
@@ -45,7 +43,7 @@ namespace Icon.ApiController.Tests.ControllerBuilders
             string controllerType = "r";
 
             // When.
-            var controller = ControllerProvider.GetController(controllerType, globalContext);
+            var controller = ControllerProvider.GetController(controllerType);
 
             // Then.
             Assert.AreEqual("Price", ControllerType.Type);
@@ -58,7 +56,7 @@ namespace Icon.ApiController.Tests.ControllerBuilders
             string controllerType = "h";
 
             // When.
-            var controller = ControllerProvider.GetController(controllerType, globalContext);
+            var controller = ControllerProvider.GetController(controllerType);
 
             // Then.
             Assert.AreEqual("Hierarchy", ControllerType.Type);
@@ -71,7 +69,7 @@ namespace Icon.ApiController.Tests.ControllerBuilders
             string controllerType = "l";
 
             // When.
-            var controller = ControllerProvider.GetController(controllerType, globalContext);
+            var controller = ControllerProvider.GetController(controllerType);
 
             // Then.
             Assert.AreEqual("Locale", ControllerType.Type);
@@ -84,7 +82,7 @@ namespace Icon.ApiController.Tests.ControllerBuilders
             string controllerType = "z";
 
             // When.
-            var controller = ControllerProvider.GetController(controllerType, globalContext);
+            var controller = ControllerProvider.GetController(controllerType);
 
             // Then.
             Assert.IsNull(controller);

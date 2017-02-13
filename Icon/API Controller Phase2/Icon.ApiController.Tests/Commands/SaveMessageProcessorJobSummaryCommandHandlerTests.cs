@@ -7,6 +7,8 @@ using Moq;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
+
 namespace Icon.ApiController.Tests.Commands
 {
     /// <summary>
@@ -18,25 +20,22 @@ namespace Icon.ApiController.Tests.Commands
         private SaveMessageProcessorJobSummaryCommandHandler commandHandler;
         private Mock<ILogger<SaveMessageProcessorJobSummaryCommandHandler>> mockLogger;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
             mockLogger = new Mock<ILogger<SaveMessageProcessorJobSummaryCommandHandler>>();
-            commandHandler = new SaveMessageProcessorJobSummaryCommandHandler(mockLogger.Object, globalContext);
-
-            transaction = context.Database.BeginTransaction();
+            commandHandler = new SaveMessageProcessorJobSummaryCommandHandler(mockLogger.Object, new IconDbContextFactory());
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         private APIMessageProcessorLogEntry GetCopy(APIMessageProcessorLogEntry original)

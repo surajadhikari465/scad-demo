@@ -17,7 +17,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 {
     public class LocaleControllerBuilder : IControllerBuilder
     {
-        public ApiControllerBase ComposeController(IRenewableContext<IconContext> globalContext)
+        public ApiControllerBase ComposeController()
         {
             ControllerType.Type = "Locale";
 
@@ -29,7 +29,9 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             producer.OpenConnection();
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Locale, producer, globalContext);
+            IconDbContextFactory iconContextFactory = new IconDbContextFactory();
+
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Locale, producer, iconContextFactory);
 
             var queueProcessorLogger = new NLogLoggerInstance<LocaleQueueProcessor>(instance);
             var serializer = new Serializer<Contracts.LocaleType>(
@@ -38,34 +40,33 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             var queueReader = new LocaleQueueReader(
                 new NLogLoggerInstance<LocaleQueueReader>(instance),
                 emailClient,
-                new GetMessageQueueQuery<MessageQueueLocale>(new NLogLoggerInstance<GetMessageQueueQuery<MessageQueueLocale>>(instance), globalContext),
-                new GetLocaleLineageQuery(globalContext),
+                new GetMessageQueueQuery<MessageQueueLocale>(new NLogLoggerInstance<GetMessageQueueQuery<MessageQueueLocale>>(instance), iconContextFactory),
+                new GetLocaleLineageQuery(iconContextFactory),
                 new UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>(
                     new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>>(instance), 
-                    globalContext));
+                    iconContextFactory));
             var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(
                 new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance),
-                globalContext);
+                iconContextFactory);
             var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueLocale>(
                 new NLogLoggerInstance<AssociateMessageToQueueCommandHandler<MessageQueueLocale>>(instance),
-                globalContext);
+                iconContextFactory);
             var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueLocale>(
                 new NLogLoggerInstance<UpdateMessageQueueProcessedDateCommandHandler<MessageQueueLocale>>(instance), 
-                globalContext);
-            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new NLogLoggerInstance<UpdateMessageHistoryStatusCommandHandler>(instance), globalContext);
+                iconContextFactory);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new NLogLoggerInstance<UpdateMessageHistoryStatusCommandHandler>(instance), iconContextFactory);
             var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>(
                 new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>>(instance), 
-                globalContext);
-            var markQueuedEntriesAsInProcessCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueLocale>(new NLogLoggerInstance<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueLocale>>(instance), globalContext);
+                iconContextFactory);
+            var markQueuedEntriesAsInProcessCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueLocale>(new NLogLoggerInstance<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueLocale>>(instance), iconContextFactory);
             
             var monitorCommandHandler = new SaveMessageProcessorJobSummaryCommandHandler(
-                new NLogLoggerInstance<SaveMessageProcessorJobSummaryCommandHandler>(instance), globalContext);
+                new NLogLoggerInstance<SaveMessageProcessorJobSummaryCommandHandler>(instance), iconContextFactory);
             var monitor = new MessageProcessorMonitor(monitorCommandHandler);
 
             var localeQueueProcessor = new LocaleQueueProcessor(
                 settings,
                 queueProcessorLogger,
-                globalContext,
                 queueReader,
                 serializer,
                 saveXmlMessageCommandHandler,
