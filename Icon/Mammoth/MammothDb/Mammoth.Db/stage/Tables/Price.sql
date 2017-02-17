@@ -13,3 +13,8 @@
     [Timestamp] DATETIME2(7) NULL,
 	[TransactionId] UNIQUEIDENTIFIER NOT NULL
 )
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Price_TransactionId_Region] ON [stage].[Price] ([TransactionId] ASC, [Region] ASC)
+	INCLUDE ([ScanCode], [BusinessUnitId], [Multiple], [Price], [PriceType], [StartDate], [EndDate], [PriceUom], [CurrencyCode])
+GO

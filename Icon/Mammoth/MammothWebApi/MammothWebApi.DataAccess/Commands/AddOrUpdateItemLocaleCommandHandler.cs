@@ -114,7 +114,7 @@ namespace MammothWebApi.DataAccess.Commands
 			                    );";
 
             int affectedRows = this.db.Connection.Execute(String.Format(sql, data.Region),
-                new { Region = data.Region, Timestamp = data.Timestamp, TransactionId = data.TransactionId },
+                new { Region = new DbString { Value = data.Region, Length = 2 }, Timestamp = data.Timestamp, TransactionId = data.TransactionId },
                 transaction: this.db.Transaction);
             return;            
         }

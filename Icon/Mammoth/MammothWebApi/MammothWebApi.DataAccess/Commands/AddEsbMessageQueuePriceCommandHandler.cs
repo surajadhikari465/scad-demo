@@ -80,7 +80,7 @@ namespace MammothWebApi.DataAccess.Commands
                     MessageStatusId = MessageStatusTypes.Ready,
                     MessageActionId = data.MessageActionId,
                     Timestamp = data.Timestamp,
-                    Region = data.Region,
+                    Region = new DbString { Value = data.Region, Length = 2 },
                     TransactionId = data.TransactionId
                 },
                 this.db.Transaction);

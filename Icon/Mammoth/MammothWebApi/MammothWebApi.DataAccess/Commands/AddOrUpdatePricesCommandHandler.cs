@@ -83,7 +83,15 @@ namespace MammothWebApi.DataAccess.Commands
             // format sql specific to regional Price_XX table
             string sql = String.Format(mergeSql, data.Region);
             int affectedRows = this.db.Connection
-                .Execute(sql, new { Timestamp = data.Timestamp, Region = data.Region, TransactionId = data.TransactionId }, transaction: this.db.Transaction);
+                .Execute(
+                    sql, 
+                    new
+                    {
+                        Timestamp = data.Timestamp,
+                        Region = new DbString { Value = data.Region, Length = 2 },
+                        TransactionId = data.TransactionId
+                    },
+                    transaction: this.db.Transaction);
         }
     }
 }
