@@ -1,0 +1,168 @@
+﻿using Icon.Logging;
+using Icon.Common.DataAccess;
+using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Settings;
+using Icon.Monitoring.DataAccess.Queries;
+using Icon.Monitoring.Monitors;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Icon.Monitoring.Tests.Monitors
+{
+    [TestClass]
+    public class TLogConJobMonitorTests
+    {
+        private Mock<IMonitorSettings> mockSettings;
+        private Mock<ITLogConJobMonitorSettings> mockTLogConMonitorSettings;
+        private Mock<IQueryHandler<GetTConLogServiceLastLogDateParameters, string>> mockGetTLogConJobMonitorStatusQueryHandler;
+        private Mock<IQueryHandler<GetItemMovementTableRowCountParameters, string>> mockGetItemMovementTableRowCountQueryHandler;
+        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<ILogger> mockLogger;
+        private TLogConJobMonitor monitor;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            mockSettings = new Mock<IMonitorSettings>();
+            mockTLogConMonitorSettings = new Mock<ITLogConJobMonitorSettings>();
+            mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            mockGetTLogConJobMonitorStatusQueryHandler = new Mock<IQueryHandler<GetTConLogServiceLastLogDateParameters, string>>();
+            mockGetItemMovementTableRowCountQueryHandler = new Mock<IQueryHandler<GetItemMovementTableRowCountParameters, string>>();
+            mockLogger = new Mock<ILogger>();
+
+            monitor = new TLogConJobMonitor(
+                mockSettings.Object,
+                mockTLogConMonitorSettings.Object,
+               mockGetTLogConJobMonitorStatusQueryHandler.Object,
+                mockGetItemMovementTableRowCountQueryHandler.Object,
+               mockPagerDutyTrigger.Object,
+                mockLogger.Object
+                );
+         }
+
+        // EnableTLogConJobMonitor flag is false--it should not monitor
+        [TestMethod]
+        public void TimedCheckStatusAndNotify_EnableTLogConJobMonitorIsFalse_DoesNotCheckStatusAndNotify()
+        {
+            //Given
+            mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(false);
+
+            //When
+            monitor.CheckStatusAndNotify();
+
+            //Then
+            mockTLogConMonitorSettings.VerifyGet(m => m.MaxLastTLogConJobLogTime, Times.Never);
+        }
+
+        // EnableTLogConJobMonitor flag is true--it should  monitor
+        [TestMethod]
+        public void TimedCheckStatusAndNotify_EnableTLogConJobMonitorIsTrue_DoesCheckStatusAndNotify()
+        {
+            //Given
+            mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(true);
+
+            //When
+            monitor.CheckStatusAndNotify();
+
+            //Then
+            mockTLogConMonitorSettings.VerifyGet(m => m.MaxLastTLogConJobLogTime, Times.Once);
+        }
+
+        // EnableTLogConJobMonitor flag is true--Set up so that last log by Tlog controller is more than configured one --will send pager alert
+        [TestMethod]
+        public void TimedCheckStatusAndNotify_TLogConServiceNotRunning()
+        {
+            //Given
+            SetUpSettingsValue(true, false, 10, -2, 500000, "400000");
+   
+            monitor.AlertSendForItemTableMovement = false;
+            //When
+            monitor.CheckStatusAndNotify();
+
+            //Then
+            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+        }
+
+        // EnableTLogConJobMonitor flag is true--Set up so thatnumber of rown in app movement table is more than configured one --will send pager alert
+        [TestMethod]
+        public void TimedCheckStatusAndNotify_TLogConServiceRunning_ItemMovementRowsCountMoreThanConfigured()
+        {
+            //Given
+            SetUpSettingsValue(true, true, 200, -1, 500000, "1000000");
+            monitor.AlertSendForItemTableMovement = false;
+            //When
+            monitor.CheckStatusAndNotify();
+
+            //Then
+            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+        }
+
+        // EnableTLogConJobMonitor flag is true--Set up so that both app movement row count and last log valies are less than configurd value
+        // in this case program will not send pager alert
+        [TestMethod]
+        public void TimedCheckStatusAndNotify_TLogConServiceRunning_ItemMovementRowsCountLessThanConfigured()
+        {
+            //Given
+         
+            SetUpSettingsValue(true, true, 200, -1, 500000, "400000");
+            monitor.AlertSendForItemTableMovement = false;
+            //When
+            monitor.CheckStatusAndNotify();
+
+            //Then
+            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+        }
+
+        // make sure it nly send pager duty alert once if rows in app movement table is greater than configured value
+        [TestMethod]
+        public void TimedCheckStatusAndNotify_TLogConServiceRunning_ItemMovementRowsCountMoreThanConfigured_PagerAlertAlreadySend()
+        {
+            //Given
+            SetUpSettingsValue(true, true, 200, -1, 500000, "1000000");
+            monitor.AlertSendForItemTableMovement = false;
+            //When
+            // call this method twice --alert should only be send first time.
+            monitor.CheckStatusAndNotify();
+            monitor.CheckStatusAndNotify();
+
+            //Then
+            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+        }
+
+
+        // both conditions fail--it should send pager duty alert only once
+        [TestMethod]
+        public void TimedCheckStatusAndNotify_TLogConServiceNotRunning_ItemMovementRowsCountMoreThanConfigured()
+        {
+            //Given   
+            SetUpSettingsValue(true, true, 10, -1, 500000, "1000000");
+            monitor.AlertSendForItemTableMovement = false;
+            //When
+            // call this method twice --alert should only be send first time.
+            monitor.CheckStatusAndNotify();
+   
+            //Then
+            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+        }
+
+
+        private void SetUpSettingsValue(Boolean EnableTLogConJobMonitor, Boolean EnableItemMovementTableCheck, int MaxLastTLogConJobLogTime, int AddHours, int ItemMovementMaxRows, string setUpItemMovementRows)
+        {
+            mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(EnableTLogConJobMonitor);
+            mockTLogConMonitorSettings.SetupGet(m => m.EnableItemMovementTableCheck).Returns(EnableItemMovementTableCheck);
+            mockTLogConMonitorSettings.SetupGet(m => m.MaxLastTLogConJobLogTime).Returns(MaxLastTLogConJobLogTime);
+            mockGetTLogConJobMonitorStatusQueryHandler.Setup(m => m.Search(It.IsAny<GetTConLogServiceLastLogDateParameters>()))
+            .Returns(DateTime.Now.AddHours(AddHours).ToString());
+            mockTLogConMonitorSettings.SetupGet(m => m.ItemMovementMaxRows).Returns(500000);
+            mockGetItemMovementTableRowCountQueryHandler.Setup(m => m.Search(It.IsAny<GetItemMovementTableRowCountParameters>()))
+          .Returns(setUpItemMovementRows);
+
+        }
+
+    }
+}

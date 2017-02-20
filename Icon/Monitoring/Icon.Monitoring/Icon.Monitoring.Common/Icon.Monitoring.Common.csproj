@@ -98,10 +98,12 @@
     <Compile Include="Settings\IDvoBulkImportJobMonitorSettings.cs" />
     <Compile Include="Settings\IMonitorSettings.cs" />
     <Compile Include="PagerDuty\IPagerDutyTrigger.cs" />
+    <Compile Include="Settings\ITLogConJobMonitorSettings.cs" />
     <Compile Include="Settings\MonitorSettings.cs" />
     <Compile Include="PagerDuty\PagerDutyResponse.cs" />
     <Compile Include="PagerDuty\PagerDutyTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\TLogConJobMonitorSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

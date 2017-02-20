@@ -49,6 +49,8 @@
             container.RegisterSingleton<IDvoBulkImportJobMonitorSettings, DvoBulkImportJobMonitorSettings>();
             container.RegisterSingleton<IFileInfoAccessor, FileInfoAccessor>();
 
+            container.RegisterSingleton<ITLogConJobMonitorSettings, TLogConJobMonitorSettings>();
+
             container.Verify();
             return container;
         }
