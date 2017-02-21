@@ -23,6 +23,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 new UpdateMessageHistoryStatusCommandHandler(new NLogLoggerInstance<UpdateMessageHistoryStatusCommandHandler>(instance), iconContextFactory),
                 new UpdateStagedProductStatusCommandHandler(new NLogLoggerInstance<UpdateStagedProductStatusCommandHandler>(instance), iconContextFactory),
                 new UpdateSentToEsbHierarchyTraitCommandHandler(new NLogLoggerInstance<UpdateSentToEsbHierarchyTraitCommandHandler>(instance), iconContextFactory),
+                new IsMessageHistoryANonRetailProductMessageQuery(iconContextFactory),
                 producer,
                 messageTypeId);
 

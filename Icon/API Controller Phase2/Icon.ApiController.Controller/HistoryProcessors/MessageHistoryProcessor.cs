@@ -23,6 +23,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         private ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>> updateMessageHistoryCommandHandler;
         private ICommandHandler<UpdateStagedProductStatusCommand> updateStagedProductStatusCommandHandler;
         private ICommandHandler<UpdateSentToEsbHierarchyTraitCommand> updateSentToEsbHierarchyTraitCommandHandler;
+        private IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool> isMessageHistoryANonRetailProductMessageQueryHandler;
         private IEsbProducer producer;
         private int messageTypeId;
 
@@ -34,6 +35,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
             ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>> updateMessageHistoryCommandHandler,
             ICommandHandler<UpdateStagedProductStatusCommand> updateStagedProductStatusCommandHandler,
             ICommandHandler<UpdateSentToEsbHierarchyTraitCommand> updateSentToEsbHierarchyTraitCommandHandler,
+            IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool> isMessageHistoryANonRetailProductMessageQueryHandler,
             IEsbProducer producer,
             int messageTypeId)
         {
@@ -44,6 +46,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
             this.updateMessageHistoryCommandHandler = updateMessageHistoryCommandHandler;
             this.updateStagedProductStatusCommandHandler = updateStagedProductStatusCommandHandler;
             this.updateSentToEsbHierarchyTraitCommandHandler = updateSentToEsbHierarchyTraitCommandHandler;
+            this.isMessageHistoryANonRetailProductMessageQueryHandler = isMessageHistoryANonRetailProductMessageQueryHandler;
             this.producer = producer;
             this.messageTypeId = messageTypeId;
         }
@@ -115,8 +118,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     break;
                 case MessageTypes.Product:
                     //is the message for a non-retail product?
-                    if (message.MessageQueueProduct.FirstOrDefault() != default(MessageQueueProduct)
-                        && message.MessageQueueProduct.FirstOrDefault().ItemTypeCode == ItemTypeCodes.NonRetail)
+                    if (isMessageHistoryANonRetailProductMessageQueryHandler.Search(new IsMessageHistoryANonRetailProductMessageParameters { Message = message }))
                     {
                         //make sure R10 is in the list of systems which do not want to receive the message
                         PrependValueToDictionaryEntry(messageProperties, nonReceivingSystemsJmsKey, "R10");
