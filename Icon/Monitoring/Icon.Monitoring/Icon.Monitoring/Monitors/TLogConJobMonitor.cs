@@ -15,6 +15,8 @@ namespace Icon.Monitoring.Monitors
         private IQueryHandler<GetTConLogServiceLastLogDateParameters, string> getTLogConJobMonitorStatusQueryHandler;
         private IQueryHandler<GetItemMovementTableRowCountParameters, string> getItemMovementTableRowCountQueryHandler;
         private Boolean _alertSendForItemTableMovement = false;
+        private int currentRowCount = 0;
+        private DateTime lastLogDateTime;
         private const string TLogConServiceNotRunningMessage = "TLog Controller Service stopped running.";
         private const string ItemMovementTableRowCountExceededMessage = "Item Movement table has more than ";
         public TLogConJobMonitor
@@ -54,7 +56,7 @@ namespace Icon.Monitoring.Monitors
                 if (!CheckTLogConServiceRunning())
                 {
                     logger.Info("TLog Controller Monitor has detected that TLog Controller service is not running.");
-                    TriggerPagerDutyForTLogConJob(TLogConServiceNotRunningMessage);
+                    TriggerPagerDutyForTLogConJob(TLogConServiceNotRunningMessage, "Last Log Date Time:", lastLogDateTime.ToString());
 
                 }
                 // AlertSendForItemTableMovement -- to make sure we only send one
@@ -63,7 +65,7 @@ namespace Icon.Monitoring.Monitors
                 {
                     logger.Info("TLog Controller Monitor has detected that Item Movement Table is getting processed slowly.");
 
-                    TriggerPagerDutyForTLogConJob(ItemMovementTableRowCountExceededMessage + tLogConMonitorSettings.ItemMovementMaxRows.ToString() + " Rows.");
+                    TriggerPagerDutyForTLogConJob(ItemMovementTableRowCountExceededMessage + tLogConMonitorSettings.ItemMovementMaxRows.ToString() + " Rows.", "Current Row Count:", currentRowCount.ToString());
                     AlertSendForItemTableMovement = true;
                 }
                 else
@@ -90,7 +92,8 @@ namespace Icon.Monitoring.Monitors
 
             if (!String.IsNullOrEmpty(lastLoggedDateTime))
             {
-                TimeSpan span = DateTime.Now - Convert.ToDateTime(lastLoggedDateTime);
+                lastLogDateTime = Convert.ToDateTime(lastLoggedDateTime);
+                TimeSpan span = DateTime.Now - lastLogDateTime;
                 if (span.TotalMinutes > tLogConMonitorSettings.MaxLastTLogConJobLogTime)
                     return false;
                 else
@@ -100,26 +103,27 @@ namespace Icon.Monitoring.Monitors
             {
                 return false;
             }
-           
+
         }
         // thie method will check no of rows in item movement and compare to app settings count
         private Boolean CheckItemMovementTableRowCount()
         {
-            if (Convert.ToInt32(getItemMovementTableRowCountQueryHandler.Search(new GetItemMovementTableRowCountParameters())) > tLogConMonitorSettings.ItemMovementMaxRows)
+            currentRowCount = Convert.ToInt32(getItemMovementTableRowCountQueryHandler.Search(new GetItemMovementTableRowCountParameters()));
+            if (currentRowCount > tLogConMonitorSettings.ItemMovementMaxRows)
                 return false;
             else
                 return true;
         }
 
-        private void TriggerPagerDutyForTLogConJob(string Message)
+        private void TriggerPagerDutyForTLogConJob(string errorMessage, string key, String value)
         {
-            logger.Info(Message);
+            logger.Info(errorMessage);
 
             var response = this.pagerDutyTrigger.TriggerIncident(
-                            Message,
+                            errorMessage,
                             new Dictionary<string, string>()
                             {
-                                { Message, System.DateTime.Now.ToString() }
+                                { key, value }
                             });
         }
     }
