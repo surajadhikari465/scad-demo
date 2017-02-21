@@ -56,7 +56,7 @@ namespace Icon.Monitoring.Monitors
                 if (!CheckTLogConServiceRunning())
                 {
                     logger.Info("TLog Controller Monitor has detected that TLog Controller service is not running.");
-                    TriggerPagerDutyForTLogConJob(TLogConServiceNotRunningMessage, "Last Log Date Time:", lastLogDateTime.ToString());
+                    TriggerPagerDutyForTLogConJob(TLogConServiceNotRunningMessage, "Last Log Date Time: ", lastLogDateTime.ToString());
 
                 }
                 // AlertSendForItemTableMovement -- to make sure we only send one
@@ -65,7 +65,7 @@ namespace Icon.Monitoring.Monitors
                 {
                     logger.Info("TLog Controller Monitor has detected that Item Movement Table is getting processed slowly.");
 
-                    TriggerPagerDutyForTLogConJob(ItemMovementTableRowCountExceededMessage + tLogConMonitorSettings.ItemMovementMaxRows.ToString() + " Rows.", "Current Row Count:", currentRowCount.ToString());
+                    TriggerPagerDutyForTLogConJob(ItemMovementTableRowCountExceededMessage + tLogConMonitorSettings.ItemMovementMaxRows.ToString() + " Rows.", "Current Row Count: ", currentRowCount.ToString());
                     AlertSendForItemTableMovement = true;
                 }
                 else
