@@ -43,7 +43,8 @@ namespace Icon.Monitoring.Tests.Monitors
                mockPagerDutyTrigger.Object,
                 mockLogger.Object
                 );
-         }
+        }
+
 
         // EnableTLogConJobMonitor flag is false--it should not monitor
         [TestMethod]
@@ -70,7 +71,7 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockTLogConMonitorSettings.VerifyGet(m => m.MaxLastTLogConJobLogTime, Times.Once);
+            mockTLogConMonitorSettings.VerifyGet(m => m.MaxLastTLogConJobLogTime, Times.Never);
         }
 
         // EnableTLogConJobMonitor flag is true--Set up so that last log by Tlog controller is more than configured one --will send pager alert
@@ -95,6 +96,7 @@ namespace Icon.Monitoring.Tests.Monitors
             //Given
             SetUpSettingsValue(true, true, 200, -1, 500000, "1000000");
             monitor.AlertSendForItemTableMovement = false;
+
             //When
             monitor.CheckStatusAndNotify();
 
@@ -111,6 +113,7 @@ namespace Icon.Monitoring.Tests.Monitors
          
             SetUpSettingsValue(true, true, 200, -1, 500000, "400000");
             monitor.AlertSendForItemTableMovement = false;
+
             //When
             monitor.CheckStatusAndNotify();
 
@@ -118,13 +121,14 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
         }
 
-        // make sure it nly send pager duty alert once if rows in app movement table is greater than configured value
+        // make sure it only send pager duty alert once if row count in app movement table is greater than configured value
         [TestMethod]
         public void TimedCheckStatusAndNotify_TLogConServiceRunning_ItemMovementRowsCountMoreThanConfigured_PagerAlertAlreadySend()
         {
             //Given
             SetUpSettingsValue(true, true, 200, -1, 500000, "1000000");
             monitor.AlertSendForItemTableMovement = false;
+
             //When
             // call this method twice --alert should only be send first time.
             monitor.CheckStatusAndNotify();
@@ -133,7 +137,6 @@ namespace Icon.Monitoring.Tests.Monitors
             //Then
             mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
-
 
         // both conditions fail--it should send pager duty alert only once
         [TestMethod]
@@ -142,15 +145,14 @@ namespace Icon.Monitoring.Tests.Monitors
             //Given   
             SetUpSettingsValue(true, true, 10, -1, 500000, "1000000");
             monitor.AlertSendForItemTableMovement = false;
+
             //When
-            // call this method twice --alert should only be send first time.
             monitor.CheckStatusAndNotify();
    
             //Then
             mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
-
-
+ 
         private void SetUpSettingsValue(Boolean EnableTLogConJobMonitor, Boolean EnableItemMovementTableCheck, int MaxLastTLogConJobLogTime, int AddHours, int ItemMovementMaxRows, string setUpItemMovementRows)
         {
             mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(EnableTLogConJobMonitor);

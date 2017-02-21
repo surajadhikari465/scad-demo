@@ -15,12 +15,13 @@ namespace Icon.Monitoring.DataAccess.Queries
         }
 
         public string Search(GetTConLogServiceLastLogDateParameters parameters)
-        { 
-            string sql = @"SELECT  TOP 1 logdate  from app.AppLog al
-                            join app.App a on al.AppID = a.AppID
-                            where a.AppName = 'TLog Controller'
-                            order by al.AppLogID DESC";
-            string result = (string)(this.db.Connection.ExecuteScalar(sql));
+        { // get the date and time last log was written by tlog controller
+            string sql = @"DECLARE @AppID int ;
+                            SELECT @AppID = (SELECT AppID from app.App a  where a.AppName = 'TLog Controller');
+                          	SELECT TOP 1 LogDate FROM app.AppLog al
+							WHERE AppID =@AppID
+							   ORDER BY al.AppLogID DESC;";
+            string result = (this.db.Connection.ExecuteScalar(sql)).ToString();
             return result;
         }
     }

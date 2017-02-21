@@ -11,7 +11,6 @@ namespace Icon.Monitoring.Common.Settings
         bool EnableTLogConJobMonitor { get; }
         int MaxLastTLogConJobLogTime { get; }
         int ItemMovementMaxRows { get; }
-
         bool EnableItemMovementTableCheck { get; }
     }
 }

@@ -33,8 +33,6 @@ namespace Icon.Monitoring.Monitors
             this.getTLogConJobMonitorStatusQueryHandler = getTLogConJobMonitorStatusQueryHandler;
             this.getItemMovementTableRowCountQueryHandler = getItemMovementTableRowCountQueryHandler;
             this.logger = logger;
-            
-
         }
 
         public Boolean AlertSendForItemTableMovement
@@ -48,7 +46,7 @@ namespace Icon.Monitoring.Monitors
                 _alertSendForItemTableMovement = value;
             }
         }
-  
+
         protected override void TimedCheckStatusAndNotify()
         {
             if (ShouldCheckStatusAndNotify())
@@ -59,6 +57,8 @@ namespace Icon.Monitoring.Monitors
                     TriggerPagerDutyForTLogConJob(TLogConServiceNotRunningMessage);
 
                 }
+                // AlertSendForItemTableMovement -- to make sure we only send one
+                // only do item movement row count check when setting is set to true in app config
                 else if (!AlertSendForItemTableMovement && ShouldCheckItemMovementTableRowCount() && !CheckItemMovementTableRowCount())
                 {
                     logger.Info("TLog Controller Monitor has detected that Item Movement Table is getting processed slowly.");
@@ -77,26 +77,32 @@ namespace Icon.Monitoring.Monitors
         private bool ShouldCheckStatusAndNotify()
         {
             return tLogConMonitorSettings.EnableTLogConJobMonitor;
-
         }
 
         private bool ShouldCheckItemMovementTableRowCount()
         {
             return tLogConMonitorSettings.EnableItemMovementTableCheck;
-
         }
-
+        // this method will check last log by tlog controller and compare it with app settings
         private Boolean CheckTLogConServiceRunning()
         {
-            TimeSpan span = DateTime.Now - Convert.ToDateTime(getTLogConJobMonitorStatusQueryHandler.Search(new GetTConLogServiceLastLogDateParameters()));
+            string lastLoggedDateTime = getTLogConJobMonitorStatusQueryHandler.Search(new GetTConLogServiceLastLogDateParameters());
 
-            if (span.TotalMinutes > tLogConMonitorSettings.MaxLastTLogConJobLogTime)
-                return false;
+            if (!String.IsNullOrEmpty(lastLoggedDateTime))
+            {
+                TimeSpan span = DateTime.Now - Convert.ToDateTime(lastLoggedDateTime);
+                if (span.TotalMinutes > tLogConMonitorSettings.MaxLastTLogConJobLogTime)
+                    return false;
+                else
+                    return true;
+            }
             else
-                return true;
-
+            {
+                return false;
+            }
+           
         }
-
+        // thie method will check no of rows in item movement and compare to app settings count
         private Boolean CheckItemMovementTableRowCount()
         {
             if (Convert.ToInt32(getItemMovementTableRowCountQueryHandler.Search(new GetItemMovementTableRowCountParameters())) > tLogConMonitorSettings.ItemMovementMaxRows)

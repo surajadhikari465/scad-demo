@@ -13,8 +13,8 @@ namespace Icon.Monitoring.DataAccess.Queries
             this.db = db;
         }
         public string Search(GetItemMovementTableRowCountParameters parameters)
-        {
-            string sql = @"SELECT count(*) FROM app.ItemMovement WITH (NOLOCK)";
+        {     // get total rows in app movement
+             string sql = @"SELECT count(*) FROM app.ItemMovement WITH (NOLOCK)";
             string result = (string)this.db.Connection.ExecuteScalar(sql);
             return result;
         }

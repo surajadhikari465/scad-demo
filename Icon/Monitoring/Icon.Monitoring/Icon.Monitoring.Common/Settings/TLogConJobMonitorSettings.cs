@@ -24,7 +24,6 @@ namespace Icon.Monitoring.Common.Settings
             }
         }
 
-       
         public int ItemMovementMaxRows
         {
             get
