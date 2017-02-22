@@ -10,6 +10,9 @@ namespace Icon.Monitoring.Monitors
 {
     public class TLogConJobMonitor : TimedControllerMonitor
     {
+        private const string TLogConServiceNotRunningMessage = "TLog Controller Service stopped running.";
+        private const string ItemMovementTableRowCountExceededMessage = "Item Movement table has more than ";
+
         private ITLogConJobMonitorSettings tLogConMonitorSettings;
         private readonly IPagerDutyTrigger pagerDutyTrigger;
         private IQueryHandler<GetTConLogServiceLastLogDateParameters, string> getTLogConJobMonitorStatusQueryHandler;
@@ -17,8 +20,7 @@ namespace Icon.Monitoring.Monitors
         private Boolean _alertSendForItemTableMovement = false;
         private int currentRowCount = 0;
         private DateTime lastLogDateTime;
-        private const string TLogConServiceNotRunningMessage = "TLog Controller Service stopped running.";
-        private const string ItemMovementTableRowCountExceededMessage = "Item Movement table has more than ";
+     
         public TLogConJobMonitor
             (
              IMonitorSettings settings,
@@ -37,7 +39,7 @@ namespace Icon.Monitoring.Monitors
             this.logger = logger;
         }
 
-        public Boolean AlertSendForItemTableMovement
+        public bool AlertSendForItemTableMovement
         {
             get
             {
@@ -86,7 +88,7 @@ namespace Icon.Monitoring.Monitors
             return tLogConMonitorSettings.EnableItemMovementTableCheck;
         }
         // this method will check last log by tlog controller and compare it with app settings
-        private Boolean IsTLogConServiceRunning()
+        private bool IsTLogConServiceRunning()
         {
             string lastLoggedDateTime = getTLogConJobMonitorStatusQueryHandler.Search(new GetTConLogServiceLastLogDateParameters());
 
@@ -106,7 +108,7 @@ namespace Icon.Monitoring.Monitors
 
         }
         // thie method will check no of rows in item movement and compare to app settings count
-        private Boolean IsItemMovementTableRowCountLessThanConfiguredSetting()
+        private bool IsItemMovementTableRowCountLessThanConfiguredSetting()
         {
             currentRowCount = Convert.ToInt32(getItemMovementTableRowCountQueryHandler.Search(new GetItemMovementTableRowCountParameters()));
             if (currentRowCount > tLogConMonitorSettings.ItemMovementMaxRows)
