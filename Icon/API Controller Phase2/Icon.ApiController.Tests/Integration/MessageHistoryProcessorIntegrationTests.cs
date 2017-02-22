@@ -29,6 +29,7 @@ namespace Icon.ApiController.Tests.Integration
         private UpdateMessageHistoryStatusCommandHandler updateMessageHistoryCommandHandler;
         private Mock<ICommandHandler<UpdateStagedProductStatusCommand>> mockUpdateStagedProductCommandHandler;
         private Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>> mockUpdateSentToEsbHierarchyTraitCommandHandler;
+        private Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>> mockIsMessageHistoryANonRetailProductMessageQueryHandler;
         private Mock<IEsbProducer> mockProducer;
         private ApiControllerSettings settings;
         
@@ -45,6 +46,7 @@ namespace Icon.ApiController.Tests.Integration
             updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new Mock<ILogger<UpdateMessageHistoryStatusCommandHandler>>().Object, new IconDbContextFactory());
             mockUpdateSentToEsbHierarchyTraitCommandHandler = new Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>>();
             mockUpdateStagedProductCommandHandler = new Mock<ICommandHandler<UpdateStagedProductStatusCommand>>();
+            mockIsMessageHistoryANonRetailProductMessageQueryHandler = new Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>>();
             mockProducer = new Mock<IEsbProducer>();
             settings = new ApiControllerSettings();
 
@@ -56,6 +58,7 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageHistoryCommandHandler,
                 mockUpdateStagedProductCommandHandler.Object,
                 mockUpdateSentToEsbHierarchyTraitCommandHandler.Object,
+                mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
                 mockProducer.Object,
                 MessageTypes.Product);
         }

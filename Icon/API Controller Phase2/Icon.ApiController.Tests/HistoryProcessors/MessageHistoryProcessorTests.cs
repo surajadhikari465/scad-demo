@@ -27,6 +27,7 @@ namespace Icon.ApiController.Tests.HistoryProcessors
         private Mock<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>> mockUpdateMessageHistoryCommand;
         private Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>> mockUpdateSentToEsbHierarchyTraitCommand;
         private Mock<ICommandHandler<UpdateStagedProductStatusCommand>> mockUpdateStagedProductStatusCommand;
+        private Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>> mockIsMessageHistoryANonRetailProductMessageQueryHandler;
         private Mock<IEsbProducer> mockProducer;
         private ApiControllerSettings settings;
 
@@ -45,6 +46,7 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             mockUpdateMessageHistoryCommand = new Mock<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>>();
             mockUpdateStagedProductStatusCommand = new Mock<ICommandHandler<UpdateStagedProductStatusCommand>>();
             mockUpdateSentToEsbHierarchyTraitCommand = new Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>>();
+            mockIsMessageHistoryANonRetailProductMessageQueryHandler = new Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>>();
             mockProducer = new Mock<IEsbProducer>();
             settings = new ApiControllerSettings();
 
@@ -56,6 +58,7 @@ namespace Icon.ApiController.Tests.HistoryProcessors
                 mockUpdateMessageHistoryCommand.Object,
                 mockUpdateStagedProductStatusCommand.Object,
                 mockUpdateSentToEsbHierarchyTraitCommand.Object,
+                mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
                 mockProducer.Object,
                 MessageTypes.Product);
         }
@@ -137,6 +140,7 @@ namespace Icon.ApiController.Tests.HistoryProcessors
                 mockUpdateMessageHistoryCommand.Object,
                 mockUpdateStagedProductStatusCommand.Object,
                 mockUpdateSentToEsbHierarchyTraitCommand.Object,
+                mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
                 mockProducer.Object,
                 MessageTypes.Hierarchy);
 
@@ -189,6 +193,7 @@ namespace Icon.ApiController.Tests.HistoryProcessors
               mockUpdateMessageHistoryCommand.Object,
               mockUpdateStagedProductStatusCommand.Object,
               mockUpdateSentToEsbHierarchyTraitCommand.Object,
+              mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
               mockProducer.Object,
               messageTypeId);
         }
@@ -228,6 +233,8 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             settings = new ApiControllerSettings();
             //setup processor object with settings and mocks
             InitMessageHistoryProcessor(settings, MessageTypes.Product);
+            mockIsMessageHistoryANonRetailProductMessageQueryHandler.Setup(m => m.Search(It.IsAny<IsMessageHistoryANonRetailProductMessageParameters>()))
+                .Returns(true);
 
             // When.
             this.historyProcessor.ProcessMessageHistory();
@@ -256,6 +263,8 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             };
             //setup processor object with settings and mocks
             InitMessageHistoryProcessor(settings, MessageTypes.Product);
+            mockIsMessageHistoryANonRetailProductMessageQueryHandler.Setup(m => m.Search(It.IsAny<IsMessageHistoryANonRetailProductMessageParameters>()))
+                .Returns(true);
 
             // When.
             this.historyProcessor.ProcessMessageHistory();
@@ -285,6 +294,8 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             };
             //setup processor object with settings and mocks
             InitMessageHistoryProcessor(settings, MessageTypes.Product);
+            mockIsMessageHistoryANonRetailProductMessageQueryHandler.Setup(m => m.Search(It.IsAny<IsMessageHistoryANonRetailProductMessageParameters>()))
+                .Returns(true);
 
             // When.
             this.historyProcessor.ProcessMessageHistory();
@@ -366,6 +377,9 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             };
             //setup processor object with settings and mocks
             InitMessageHistoryProcessor(settings, MessageTypes.Product);
+            mockIsMessageHistoryANonRetailProductMessageQueryHandler.SetupSequence(m => m.Search(It.IsAny<IsMessageHistoryANonRetailProductMessageParameters>()))
+                .Returns(true)
+                .Returns(false);
 
             // When.
             this.historyProcessor.ProcessMessageHistory();
