@@ -4,8 +4,8 @@ using System;
 
 namespace Icon.Monitoring.DataAccess.Queries
 {
-    public class GetTConLogServiceLastLogDateParameters : IQuery<string>
+    public class GetTLogConServiceLastLogDateParameters : IQuery<string>
     {
-        public bool EmptyParameter { get; set; }
+ 
     }
 }

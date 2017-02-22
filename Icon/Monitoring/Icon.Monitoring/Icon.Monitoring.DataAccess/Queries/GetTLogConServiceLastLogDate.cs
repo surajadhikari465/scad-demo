@@ -5,16 +5,16 @@ using System;
 
 namespace Icon.Monitoring.DataAccess.Queries
 {
-    public class GetTConLogServiceLastLogDate: IQueryHandler<GetTConLogServiceLastLogDateParameters, string>
+    public class GetTLogConServiceLastLogDate: IQueryHandler<GetTLogConServiceLastLogDateParameters, string>
     {
         private IDbProvider db;
 
-        public GetTConLogServiceLastLogDate(IDbProvider db)
+        public GetTLogConServiceLastLogDate(IDbProvider db)
         {
             this.db = db;
         }
 
-        public string Search(GetTConLogServiceLastLogDateParameters parameters)
+        public string Search(GetTLogConServiceLastLogDateParameters parameters)
         { // get the date and time last log was written by tlog controller
             string sql = @"DECLARE @AppID int ;
                             SELECT @AppID = (SELECT AppID from app.App a  where a.AppName = 'TLog Controller');

@@ -10,7 +10,7 @@ namespace Icon.Monitoring.Common.Settings
     {
         bool EnableTLogConJobMonitor { get; }
         bool EnableItemMovementTableCheck { get; }
-        int MinutesAllowedSinceLastTconLog { get; }
+        int MinutesAllowedSinceLastTLogCon { get; }
         int ItemMovementMaximumRows { get; }
      
     }

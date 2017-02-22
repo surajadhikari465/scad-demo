@@ -32,11 +32,11 @@ namespace Icon.Monitoring.Common.Settings
             }
         }
 
-        public int MinutesAllowedSinceLastTconLog
+        public int MinutesAllowedSinceLastTLogCon
         {
             get
             {
-                return AppSettingsAccessor.GetIntSetting(nameof(MinutesAllowedSinceLastTconLog));
+                return AppSettingsAccessor.GetIntSetting(nameof(MinutesAllowedSinceLastTLogCon));
             }
         }
     }

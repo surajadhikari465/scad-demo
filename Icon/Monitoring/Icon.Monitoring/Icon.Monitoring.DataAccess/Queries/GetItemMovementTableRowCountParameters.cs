@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Monitoring.DataAccess.Queries
 {
-    public class GetItemMovementTableRowCountParameters : IQuery<string>
+    public class GetItemMovementTableRowCountParameters : IQuery<int>
     {
-        public bool EmptyParameter { get; set; }
     }
 }

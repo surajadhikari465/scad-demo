@@ -106,8 +106,8 @@
     <Compile Include="Queries\GetMammothItemLocaleChangeQueueIdQueryParameters.cs" />
     <Compile Include="Queries\GetMammothPriceChangeQueueIdQuery.cs" />
     <Compile Include="Queries\GetMammothPriceChangeQueueIdQueryParameters.cs" />
-    <Compile Include="Queries\GetTConLogServiceLastLogDate.cs" />
-    <Compile Include="Queries\GetTConLogServiceLastLogDateParamters.cs" />
+    <Compile Include="Queries\GetTLogConServiceLastLogDate.cs" />
+    <Compile Include="Queries\GetTLogConServiceLastLogDateParamters.cs" />
     <Compile Include="Queries\IQueryByRegionHandler.cs" />
     <Compile Include="Queries\IQueryHandlerMammoth.cs" />
     <Compile Include="SqlDbProvider.cs" />
