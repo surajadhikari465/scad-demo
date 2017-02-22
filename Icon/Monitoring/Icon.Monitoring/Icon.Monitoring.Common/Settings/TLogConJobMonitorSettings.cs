@@ -24,19 +24,19 @@ namespace Icon.Monitoring.Common.Settings
             }
         }
 
-        public int ItemMovementMaxRows
+        public int ItemMovementMaximumRows
         {
             get
             {
-                return AppSettingsAccessor.GetIntSetting(nameof(ItemMovementMaxRows));
+                return AppSettingsAccessor.GetIntSetting(nameof(ItemMovementMaximumRows));
             }
         }
 
-        public int MaxLastTLogConJobLogTime
+        public int MinutesAllowedSinceLastTconLog
         {
             get
             {
-                return AppSettingsAccessor.GetIntSetting(nameof(MaxLastTLogConJobLogTime));
+                return AppSettingsAccessor.GetIntSetting(nameof(MinutesAllowedSinceLastTconLog));
             }
         }
     }

@@ -57,7 +57,7 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockTLogConMonitorSettings.VerifyGet(m => m.MaxLastTLogConJobLogTime, Times.Never);
+            mockTLogConMonitorSettings.VerifyGet(m => m.MinutesAllowedSinceLastTconLog, Times.Never);
         }
 
         // EnableTLogConJobMonitor flag is true--it should  monitor
@@ -66,7 +66,7 @@ namespace Icon.Monitoring.Tests.Monitors
         {
             //Given
             mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(true);
-            mockTLogConMonitorSettings.SetupGet(m => m.MaxLastTLogConJobLogTime).Returns(30);
+            mockTLogConMonitorSettings.SetupGet(m => m.MinutesAllowedSinceLastTconLog).Returns(30);
             mockGetTLogConJobMonitorStatusQueryHandler.Setup(m => m.Search(It.IsAny<GetTConLogServiceLastLogDateParameters>()))
             .Returns(DateTime.Now.AddHours(-1).ToString());
 
@@ -74,7 +74,7 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockTLogConMonitorSettings.VerifyGet(m => m.MaxLastTLogConJobLogTime, Times.Once);
+            mockTLogConMonitorSettings.VerifyGet(m => m.MinutesAllowedSinceLastTconLog, Times.Once);
         }
 
         // EnableTLogConJobMonitor flag is true--Set up so that last log by Tlog controller is more than configured one --will send pager alert
@@ -155,14 +155,14 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
  
-        private void SetUpSettingsValue(Boolean EnableTLogConJobMonitor, Boolean EnableItemMovementTableCheck, int MaxLastTLogConJobLogTime, int AddHours, int ItemMovementMaxRows, string setUpItemMovementRows)
+        private void SetUpSettingsValue(Boolean EnableTLogConJobMonitor, Boolean EnableItemMovementTableCheck, int MinutesAllowedSinceLastTconLog, int AddHours, int ItemMovementMaxRows, string setUpItemMovementRows)
         {
             mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(EnableTLogConJobMonitor);
             mockTLogConMonitorSettings.SetupGet(m => m.EnableItemMovementTableCheck).Returns(EnableItemMovementTableCheck);
-            mockTLogConMonitorSettings.SetupGet(m => m.MaxLastTLogConJobLogTime).Returns(MaxLastTLogConJobLogTime);
+            mockTLogConMonitorSettings.SetupGet(m => m.MinutesAllowedSinceLastTconLog).Returns(MinutesAllowedSinceLastTconLog);
             mockGetTLogConJobMonitorStatusQueryHandler.Setup(m => m.Search(It.IsAny<GetTConLogServiceLastLogDateParameters>()))
             .Returns(DateTime.Now.AddHours(AddHours).ToString());
-            mockTLogConMonitorSettings.SetupGet(m => m.ItemMovementMaxRows).Returns(500000);
+            mockTLogConMonitorSettings.SetupGet(m => m.ItemMovementMaximumRows).Returns(ItemMovementMaxRows);
             mockGetItemMovementTableRowCountQueryHandler.Setup(m => m.Search(It.IsAny<GetItemMovementTableRowCountParameters>()))
           .Returns(setUpItemMovementRows);
 

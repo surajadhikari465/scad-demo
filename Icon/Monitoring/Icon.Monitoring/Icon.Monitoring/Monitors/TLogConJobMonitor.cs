@@ -67,7 +67,7 @@ namespace Icon.Monitoring.Monitors
                 {
                     logger.Info("TLog Controller Monitor has detected that Item Movement Table is getting processed slowly.");
 
-                    TriggerPagerDutyForTLogConJob(ItemMovementTableRowCountExceededMessage + tLogConMonitorSettings.ItemMovementMaxRows.ToString() + " Rows.", "Current Row Count: ", currentRowCount.ToString());
+                    TriggerPagerDutyForTLogConJob(ItemMovementTableRowCountExceededMessage + tLogConMonitorSettings.ItemMovementMaximumRows.ToString() + " Rows.", "Current Row Count: ", currentRowCount.ToString());
                     AlertSendForItemTableMovement = true;
                 }
                 else
@@ -96,7 +96,7 @@ namespace Icon.Monitoring.Monitors
             {
                 lastLogDateTime = Convert.ToDateTime(lastLoggedDateTime);
                 TimeSpan span = DateTime.Now - lastLogDateTime;
-                if (span.TotalMinutes > tLogConMonitorSettings.MaxLastTLogConJobLogTime)
+                if (span.TotalMinutes > tLogConMonitorSettings.MinutesAllowedSinceLastTconLog)
                     return false;
                 else
                     return true;
@@ -111,7 +111,7 @@ namespace Icon.Monitoring.Monitors
         private bool IsItemMovementTableRowCountLessThanConfiguredSetting()
         {
             currentRowCount = Convert.ToInt32(getItemMovementTableRowCountQueryHandler.Search(new GetItemMovementTableRowCountParameters()));
-            if (currentRowCount > tLogConMonitorSettings.ItemMovementMaxRows)
+            if (currentRowCount > tLogConMonitorSettings.ItemMovementMaximumRows)
                 return false;
             else
                 return true;

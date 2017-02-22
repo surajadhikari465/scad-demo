@@ -9,8 +9,9 @@ namespace Icon.Monitoring.Common.Settings
     public interface ITLogConJobMonitorSettings
     {
         bool EnableTLogConJobMonitor { get; }
-        int MaxLastTLogConJobLogTime { get; }
-        int ItemMovementMaxRows { get; }
         bool EnableItemMovementTableCheck { get; }
+        int MinutesAllowedSinceLastTconLog { get; }
+        int ItemMovementMaximumRows { get; }
+     
     }
 }
