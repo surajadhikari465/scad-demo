@@ -61,7 +61,7 @@ namespace Icon.Monitoring.Monitors
                 }
                 // AlertSendForItemTableMovement -- to make sure we only send one
                 // only do item movement row count check when setting is set to true in app config
-                else if (!AlertSendForItemTableMovement && ShouldCheckItemMovementTableRowCount() && !IstemMovementTableRowCountLessThanConfiguredSetting())
+                else if (!AlertSendForItemTableMovement && ShouldCheckItemMovementTableRowCount() && !IsItemMovementTableRowCountLessThanConfiguredSetting())
                 {
                     logger.Info("TLog Controller Monitor has detected that Item Movement Table is getting processed slowly.");
 
@@ -106,7 +106,7 @@ namespace Icon.Monitoring.Monitors
 
         }
         // thie method will check no of rows in item movement and compare to app settings count
-        private Boolean IstemMovementTableRowCountLessThanConfiguredSetting()
+        private Boolean IsItemMovementTableRowCountLessThanConfiguredSetting()
         {
             currentRowCount = Convert.ToInt32(getItemMovementTableRowCountQueryHandler.Search(new GetItemMovementTableRowCountParameters()));
             if (currentRowCount > tLogConMonitorSettings.ItemMovementMaxRows)

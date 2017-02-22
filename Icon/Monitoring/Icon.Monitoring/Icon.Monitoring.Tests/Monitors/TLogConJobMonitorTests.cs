@@ -52,7 +52,7 @@ namespace Icon.Monitoring.Tests.Monitors
         {
             //Given
             mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(false);
-
+          
             //When
             monitor.CheckStatusAndNotify();
 
@@ -66,12 +66,15 @@ namespace Icon.Monitoring.Tests.Monitors
         {
             //Given
             mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(true);
+            mockTLogConMonitorSettings.SetupGet(m => m.MaxLastTLogConJobLogTime).Returns(30);
+            mockGetTLogConJobMonitorStatusQueryHandler.Setup(m => m.Search(It.IsAny<GetTConLogServiceLastLogDateParameters>()))
+            .Returns(DateTime.Now.AddHours(-1).ToString());
 
             //When
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockTLogConMonitorSettings.VerifyGet(m => m.MaxLastTLogConJobLogTime, Times.Never);
+            mockTLogConMonitorSettings.VerifyGet(m => m.MaxLastTLogConJobLogTime, Times.Once);
         }
 
         // EnableTLogConJobMonitor flag is true--Set up so that last log by Tlog controller is more than configured one --will send pager alert
@@ -89,7 +92,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
-        // EnableTLogConJobMonitor flag is true--Set up so thatnumber of rown in app movement table is more than configured one --will send pager alert
+        // EnableTLogConJobMonitor flag is true--Set up so that number of row in app movement table is more than configured one --will send pager alert
         [TestMethod]
         public void TimedCheckStatusAndNotify_TLogConServiceRunning_ItemMovementRowsCountMoreThanConfigured()
         {
@@ -110,7 +113,6 @@ namespace Icon.Monitoring.Tests.Monitors
         public void TimedCheckStatusAndNotify_TLogConServiceRunning_ItemMovementRowsCountLessThanConfigured()
         {
             //Given
-         
             SetUpSettingsValue(true, true, 200, -1, 500000, "400000");
             monitor.AlertSendForItemTableMovement = false;
 
