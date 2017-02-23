@@ -5,6 +5,7 @@ using Icon.Monitoring.DataAccess.Queries;
 using System.Collections.Generic;
 using System;
 using Icon.Logging;
+using Icon.Monitoring.DataAccess.Model;
 
 namespace Icon.Monitoring.Monitors
 {
@@ -12,10 +13,11 @@ namespace Icon.Monitoring.Monitors
     {
         private const string TLogConServiceNotRunningMessage = "TLog Controller Service stopped running.";
         private const string ItemMovementTableRowCountExceededMessage = "Item Movement table has more than ";
-
+        private const string AppName = "TLog Controller";
+      
         private ITLogConJobMonitorSettings tLogConMonitorSettings;
         private readonly IPagerDutyTrigger pagerDutyTrigger;
-        private IQueryHandler<GetTLogConServiceLastLogDateParameters, string> getTLogConJobMonitorStatusQueryHandler;
+        private IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler;
         private IQueryHandler<GetItemMovementTableRowCountParameters, int> getItemMovementTableRowCountQueryHandler;
         private bool _alertSentForItemTableMovement = false;
         private int currentRowCount = 0;
@@ -25,7 +27,7 @@ namespace Icon.Monitoring.Monitors
             (
              IMonitorSettings settings,
             ITLogConJobMonitorSettings TLogConMonitorSettings,
-             IQueryHandler<GetTLogConServiceLastLogDateParameters, string> getTLogConJobMonitorStatusQueryHandler,
+             IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler,
                   IQueryHandler<GetItemMovementTableRowCountParameters, int> getItemMovementTableRowCountQueryHandler,
              IPagerDutyTrigger pagerDutyTrigger,
               ILogger logger
@@ -34,7 +36,7 @@ namespace Icon.Monitoring.Monitors
             this.settings = settings;
             this.tLogConMonitorSettings = TLogConMonitorSettings;
             this.pagerDutyTrigger = pagerDutyTrigger;
-            this.getTLogConJobMonitorStatusQueryHandler = getTLogConJobMonitorStatusQueryHandler;
+            this.getLatestAppLogByAppNameQueryHandler = getLatestAppLogByAppNameQueryHandler;
             this.getItemMovementTableRowCountQueryHandler = getItemMovementTableRowCountQueryHandler;
             this.logger = logger;
         }
@@ -55,7 +57,7 @@ namespace Icon.Monitoring.Monitors
         {
             if (ShouldCheckStatusAndNotify())
             {
-                if (!IsTLogConServiceRunning())
+                if (!HasTlogConLoggedSinceConfiguredAllowedMinutes(AppName))
                 {
                     logger.Info("TLog Controller Monitor has detected that TLog Controller service is not running.");
                     TriggerPagerDutyForTLogConJob(TLogConServiceNotRunningMessage, "Last Log Date Time: ", lastLogDateTime.ToString());
@@ -88,13 +90,13 @@ namespace Icon.Monitoring.Monitors
             return tLogConMonitorSettings.EnableItemMovementTableCheck;
         }
         // this method will check last log by tlog controller and compare it with app settings
-        private bool IsTLogConServiceRunning()
+        private bool HasTlogConLoggedSinceConfiguredAllowedMinutes(string appName)
         {
-            string lastLoggedDateTime = getTLogConJobMonitorStatusQueryHandler.Search(new GetTLogConServiceLastLogDateParameters());
+            AppLog appLog = getLatestAppLogByAppNameQueryHandler.Search(new GetLatestAppLogByAppNameParameters(appName));
 
-            if (!String.IsNullOrEmpty(lastLoggedDateTime))
+            if (appLog !=null)
             {
-                lastLogDateTime = Convert.ToDateTime(lastLoggedDateTime);
+                lastLogDateTime =appLog.LogDate;
                 TimeSpan span = DateTime.Now - lastLogDateTime;
                 if (span.TotalMinutes > tLogConMonitorSettings.MinutesAllowedSinceLastTLogCon)
                     return false;

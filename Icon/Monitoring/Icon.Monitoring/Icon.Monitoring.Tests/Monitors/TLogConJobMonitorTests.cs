@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Icon.Monitoring.DataAccess.Model;
 
 namespace Icon.Monitoring.Tests.Monitors
 {
@@ -19,11 +20,13 @@ namespace Icon.Monitoring.Tests.Monitors
     {
         private Mock<IMonitorSettings> mockSettings;
         private Mock<ITLogConJobMonitorSettings> mockTLogConMonitorSettings;
-        private Mock<IQueryHandler<GetTLogConServiceLastLogDateParameters, string>> mockGetTLogConJobMonitorStatusQueryHandler;
+        private Mock<IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog>> mockGetTLogConJobMonitorStatusQueryHandler;
         private Mock<IQueryHandler<GetItemMovementTableRowCountParameters, int>> mockGetItemMovementTableRowCountQueryHandler;
         private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
         private Mock<ILogger> mockLogger;
         private TLogConJobMonitor monitor;
+        private const string AppName = "TLog Controller";
+        private AppLog applog;
 
         [TestInitialize]
         public void Initialize()
@@ -31,10 +34,11 @@ namespace Icon.Monitoring.Tests.Monitors
             mockSettings = new Mock<IMonitorSettings>();
             mockTLogConMonitorSettings = new Mock<ITLogConJobMonitorSettings>();
             mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
-            mockGetTLogConJobMonitorStatusQueryHandler = new Mock<IQueryHandler<GetTLogConServiceLastLogDateParameters, string>>();
+            mockGetTLogConJobMonitorStatusQueryHandler = new Mock<IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog>>();
             mockGetItemMovementTableRowCountQueryHandler = new Mock<IQueryHandler<GetItemMovementTableRowCountParameters, int>>();
             mockLogger = new Mock<ILogger>();
-
+            applog = new AppLog();
+          
             monitor = new TLogConJobMonitor(
                 mockSettings.Object,
                 mockTLogConMonitorSettings.Object,
@@ -67,8 +71,9 @@ namespace Icon.Monitoring.Tests.Monitors
             //Given
             mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(true);
             mockTLogConMonitorSettings.SetupGet(m => m.MinutesAllowedSinceLastTLogCon).Returns(30);
-            mockGetTLogConJobMonitorStatusQueryHandler.Setup(m => m.Search(It.IsAny<GetTLogConServiceLastLogDateParameters>()))
-            .Returns(DateTime.Now.AddHours(-1).ToString());
+            applog.LogDate = DateTime.Now.AddHours(-1);
+          mockGetTLogConJobMonitorStatusQueryHandler.Setup(m => m.Search(It.IsAny<GetLatestAppLogByAppNameParameters>()))
+            .Returns(applog);
 
             //When
             monitor.CheckStatusAndNotify();
@@ -154,14 +159,56 @@ namespace Icon.Monitoring.Tests.Monitors
             //Then
             mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
- 
+
+        // both conditions fail--it should send pager duty alert only once
+        [TestMethod]
+        public void TimedCheckStatusAndNotify_TLogConServiceNotRunning_ItemMovementRowsCountMoreThanConfiguredAmit()
+        {
+            //Given 
+
+            mockSettings = new Mock<IMonitorSettings>();
+            mockTLogConMonitorSettings = new Mock<ITLogConJobMonitorSettings>();
+            mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            DataAccess.SqlDbProvider db = new DataAccess.SqlDbProvider();
+            db.Connection = new System.Data.SqlClient.SqlConnection("data source = CEWD1815\\SQLSHARED2012D; initial catalog = Icon; integrated security = True; MultipleActiveResultSets = True");
+            db.Connection.Open();
+            GetLatestAppLogByAppNameQuery mockGetTLogConJobMonitorStatusQueryHandler = new GetLatestAppLogByAppNameQuery(db);
+
+            mockLogger = new Mock<ILogger>();
+
+
+            monitor = new TLogConJobMonitor(
+                mockSettings.Object,
+                mockTLogConMonitorSettings.Object,
+               mockGetTLogConJobMonitorStatusQueryHandler,
+                mockGetItemMovementTableRowCountQueryHandler.Object,
+               mockPagerDutyTrigger.Object,
+                mockLogger.Object
+                );
+
+
+            mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(true);
+            mockTLogConMonitorSettings.SetupGet(m => m.EnableItemMovementTableCheck).Returns(true);
+            mockTLogConMonitorSettings.SetupGet(m => m.MinutesAllowedSinceLastTLogCon).Returns(10);
+            mockTLogConMonitorSettings.SetupGet(m => m.ItemMovementMaximumRows).Returns(500000);
+
+            monitor.AlertSentForItemTableMovement = false;
+
+            //When
+            monitor.CheckStatusAndNotify();
+
+            //Then
+            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+        }
+
         private void SetUpSettingsValue(Boolean EnableTLogConJobMonitor, Boolean EnableItemMovementTableCheck, int MinutesAllowedSinceLastTLogCon, int AddHours, int ItemMovementMaxRows, int setUpItemMovementRows)
         {
             mockTLogConMonitorSettings.SetupGet(m => m.EnableTLogConJobMonitor).Returns(EnableTLogConJobMonitor);
             mockTLogConMonitorSettings.SetupGet(m => m.EnableItemMovementTableCheck).Returns(EnableItemMovementTableCheck);
             mockTLogConMonitorSettings.SetupGet(m => m.MinutesAllowedSinceLastTLogCon).Returns(MinutesAllowedSinceLastTLogCon);
-            mockGetTLogConJobMonitorStatusQueryHandler.Setup(m => m.Search(It.IsAny<GetTLogConServiceLastLogDateParameters>()))
-            .Returns(DateTime.Now.AddHours(AddHours).ToString());
+            applog.LogDate = DateTime.Now.AddHours(AddHours);
+            mockGetTLogConJobMonitorStatusQueryHandler.Setup(m => m.Search(It.IsAny<GetLatestAppLogByAppNameParameters>()))
+            .Returns(applog);
             mockTLogConMonitorSettings.SetupGet(m => m.ItemMovementMaximumRows).Returns(ItemMovementMaxRows);
             mockGetItemMovementTableRowCountQueryHandler.Setup(m => m.Search(It.IsAny<GetItemMovementTableRowCountParameters>()))
           .Returns(setUpItemMovementRows);
