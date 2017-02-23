@@ -117,6 +117,7 @@
     <Compile Include="Monitors\PosPushStartTimeMonitor.cs" />
     <Compile Include="Monitors\PushControllerMonitor.cs" />
     <Compile Include="Monitors\TimedControllerMonitor.cs" />
+    <Compile Include="Monitors\TLogConJobMonitor.cs" />
     <Compile Include="Service\IMonitorService.cs" />
     <Compile Include="Service\MonitorService.cs" />
     <Compile Include="Monitors\IMonitor.cs" />
