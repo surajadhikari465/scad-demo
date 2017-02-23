@@ -106,6 +106,7 @@
     <Compile Include="Queries\GetDvoJobStatusQueryTests.cs" />
     <Compile Include="Queries\GetIrmaJobStatusQueryTests.cs" />
     <Compile Include="Queries\GetIrmaStatusIdTest.cs" />
+    <Compile Include="Queries\GetLatestAppLogByAppNameQueryTests.cs" />
     <Compile Include="Queries\GetMammothApiMessageQueueIdQueryTests.cs" />
     <Compile Include="Queries\GetMammothItemLocaleChangeQueueIdQueryTests.cs" />
     <Compile Include="Queries\GetMammothPriceChangeQueueIdTests.cs" />
