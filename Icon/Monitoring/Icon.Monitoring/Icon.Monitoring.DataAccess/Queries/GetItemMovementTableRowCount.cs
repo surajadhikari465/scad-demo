@@ -14,7 +14,7 @@ namespace Icon.Monitoring.DataAccess.Queries
         }
         public int Search(GetItemMovementTableRowCountParameters parameters)
         {     // get total rows in app movement
-             string sql = @"SELECT count(*) FROM app.ItemMovement WITH (NOLOCK)";
+             string sql = @"SELECT count(*) FROM app.ItemMovement WITH (NOLOCK) WHERE ProcessFailedDate IS NULL";
             int result = (int)this.db.Connection.ExecuteScalar(sql);
             return result;
         }
