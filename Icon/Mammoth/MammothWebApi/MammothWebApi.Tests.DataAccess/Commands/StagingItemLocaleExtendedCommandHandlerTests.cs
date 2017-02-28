@@ -21,6 +21,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         private StagingItemLocaleExtendedCommandHandler handler;
         private DateTime now;
         private Guid transactionId;
+        private string region = "SW";
 
         [TestInitialize]
         public void InitializeTests()
@@ -50,7 +51,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         {
             // Given
             var command = new StagingItemLocaleExtendedCommand();
-            command.ItemLocalesExtended = BuildNewStagingItemLocaleExtendedModelList(numberOfItems: 5, date: this.now);
+            command.ItemLocalesExtended = BuildNewStagingItemLocaleExtendedModelList(numberOfItems: 1000, date: this.now);
 
             // When
             this.handler.Execute(command);
@@ -81,15 +82,19 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         private List<StagingItemLocaleExtendedModel> BuildNewStagingItemLocaleExtendedModelList(int numberOfItems, DateTime date)
         {
             var itemLocaleExtended = new List<StagingItemLocaleExtendedModel>();
+            List<string> scanCodes = this.db.Connection.Query<string>("SELECT TOP (@Records) ScanCode FROM Items", new { Records = numberOfItems }, this.db.Transaction).ToList();
+            int businessUnitId = this.db.Connection.Query<int>($"SELECT TOP 1 BusinessUnitID FROM Locales_{this.region}", transaction: this.db.Transaction).FirstOrDefault();
+            bool scanCodesExist = scanCodes.Count == numberOfItems;
+
             for (int i = 0; i < numberOfItems; i++)
             {
                 itemLocaleExtended.Add(new StagingItemLocaleExtendedModel
                 {
                     AttributeId = Attributes.CountryOfProcessing,
                     AttributeValue = "USA",
-                    BusinessUnitId = 11111,
-                    ScanCode = String.Format("8888877{0}", i),
-                    Region = "SW",
+                    BusinessUnitId = businessUnitId == 0 ? 11111 : businessUnitId,
+                    ScanCode = scanCodesExist ? scanCodes[i] : String.Format("8888877{0}", i),
+                    Region = this.region,
                     Timestamp = date,
                     TransactionId = this.transactionId
                 });

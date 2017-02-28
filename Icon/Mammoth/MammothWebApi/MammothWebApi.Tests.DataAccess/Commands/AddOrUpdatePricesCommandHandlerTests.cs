@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using FastMember;
 using Mammoth.Common.DataAccess.DbProviders;
 using MammothWebApi.DataAccess.Commands;
 using MammothWebApi.DataAccess.Models;
@@ -25,17 +26,18 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         private List<Item> items;
         private Guid transactionId;
         private int? maxItemId;
+        private int numberOfItemsTested;
 
         [TestInitialize]
         public void InitializeTests()
         {
+            this.numberOfItemsTested = 100;
             this.timestamp = DateTime.Now;
             this.transactionId = Guid.NewGuid();
             string connectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
             this.db = new SqlDbProvider();
             this.db.Connection = new SqlConnection(connectionString);
             this.db.Connection.Open();
-            this.db.Transaction = this.db.Connection.BeginTransaction();
 
             this.commandHandler = new AddOrUpdatePricesCommandHandler(this.db);
 
@@ -46,12 +48,8 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 
             this.buId = 1; // the businessUnit inserted above
 
-            // Add Test Items
-            this.maxItemId = this.db.Connection.Query<int?>("SELECT MAX(ItemID) FROM Items", transaction: this.db.Transaction).FirstOrDefault();
-            this.items = new List<Item>();
-            this.items.Add(new TestItemBuilder().WithScanCode("111111777771").WithItemId((maxItemId ?? default(int)) + 1).Build());
-            this.items.Add(new TestItemBuilder().WithScanCode("111111777772").WithItemId((maxItemId ?? default(int)) + 2).Build());
-            this.items.Add(new TestItemBuilder().WithScanCode("111111777773").WithItemId((maxItemId ?? default(int)) + 3).Build());
+            // Add Test Items to DB
+            this.items = BuildItems(this.numberOfItemsTested);
             AddToItemsTable(this.items);
 
             // Currency added in DatabaseInitialization class
@@ -62,6 +60,23 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         [TestCleanup]
         public void CleanupTest()
         {
+            this.db.Connection.Execute("DELETE FROM stage.Price WHERE TransactionId = @TranId", new { TranId = this.transactionId }, this.db.Transaction);
+            this.db.Connection.Execute($@"SELECT ItemID
+                                        INTO #itemsToDelete
+                                        FROM Items
+                                        WHERE ItemID IN @ItemIDs
+    
+                                        DELETE p
+                                        FROM Price_{this.region} p
+                                        JOIN #itemsToDelete d on p.ItemID = d.ItemID
+                                        WHERE BusinessUnitID = @BuId
+
+                                        DELETE i
+                                        FROM Items i
+                                        JOIN #itemsToDelete d on i.ItemID = d.ItemID",
+                new { ItemIDs = this.items.Select(i => i.ItemID).ToList(), BuId = this.buId },
+                this.db.Transaction);
+
             if (this.db.Transaction != null)
             {
                 this.db.Transaction.Rollback();
@@ -227,6 +242,92 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         }
 
         [TestMethod]
+        public void AddOrUpdatePricesCommand_SomePricesInStagingAreNewAndSomeAreExisting_ShouldAddNewPricesAndUpdateExistingPrices()
+        {
+            // Given
+            DateTime existingStartDate = DateTime.Today.AddDays(1);
+            DateTime newStartDate = DateTime.Today.AddDays(3);
+            string newPriceType = "REG";
+            List<Item> itemsForNewPrices = this.items.Take(this.numberOfItemsTested - 10).ToList();
+            List<Item> itemsForUpdatePrices = this.items.Where(i => !itemsForNewPrices.Select(x => x.ItemID).Contains(i.ItemID)).ToList();
+
+            List<Prices> existingPrices = BuildExistingPrices(this.items, this.buId, 2.99M, "REG", existingStartDate);
+            List<StagingPriceModel> expectedPricesNew = BuildStagedPrices(itemsForNewPrices, this.buId, 4.99M, newPriceType, newStartDate);
+            List<StagingPriceModel> expectedPricesUpdate = BuildStagedPrices(itemsForUpdatePrices, this.buId, 3.99M, "REG", existingStartDate);
+
+            AddPriceToPriceTable(existingPrices);
+            AddPricesToStagingTable(expectedPricesNew);
+            AddPricesToStagingTable(expectedPricesUpdate);
+
+            // When
+            this.commandHandler.Execute(commandParameters);
+
+            // Then
+            List<int> itemIds = items.Select(i => i.ItemID).OrderBy(i => i).ToList();
+            string getActualSql = @"SELECT * FROM Price_{0} WHERE ItemID IN @ItemIDs AND BusinessUnitID = @BusinessUnitID AND StartDate = @StartDate AND PriceType = @PriceType ORDER BY ItemID";
+
+            // Make sure old reg price is still there
+            List<Prices> oldActualPrices = this.db.Connection
+                .Query<Prices>(String.Format(getActualSql, this.region),
+                    new { ItemIDs = itemIds, BusinessUnitID = this.buId, StartDate = existingStartDate, PriceType = "REG" },
+                    transaction: this.db.Transaction).ToList();
+
+            Assert.AreEqual(existingPrices.Count, oldActualPrices.Count, "The existing prices do not exist.");
+
+            // updated prices
+            List<Prices> updatedActualPrices = this.db.Connection
+                .Query<Prices>(String.Format(getActualSql, this.region),
+                    new { itemIds = itemsForUpdatePrices.Select(i => i.ItemID), BusinessUnitID = this.buId, StartDate = existingStartDate, PriceType = "REG" },
+                    transaction: this.db.Transaction).ToList();
+
+            if (updatedActualPrices.Count != itemsForUpdatePrices.Count)
+            {
+                Assert.Fail("The updated prices were not found.  Test needs to be updated.");
+            }
+
+            // new prices
+            List<Prices> actualPrices = this.db.Connection
+                .Query<Prices>(String.Format(getActualSql, this.region),
+                    new { ItemIDs = itemIds, BusinessUnitID = this.buId, StartDate = newStartDate, PriceType = newPriceType },
+                    transaction: this.db.Transaction).ToList();
+
+            if (actualPrices.Count == 0)
+            {
+                Assert.Fail("Actual Prices were not found.  Test needs to be updated.");
+            }
+
+            for (int i = 0; i < expectedPricesNew.Count; i++)
+            {
+                Assert.AreEqual(expectedPricesNew[i].BusinessUnitId, actualPrices[i].BusinessUnitID, "BusinessUnitID does not match.");
+                Assert.AreEqual(expectedPricesNew[i].Region, actualPrices[i].Region, "Region does not match.");
+                Assert.AreEqual(itemsForNewPrices.Select(inp => inp.ItemID).ToList()[i], actualPrices[i].ItemID, "ItemID does not match.");
+                Assert.AreEqual(expectedPricesNew[i].Price, actualPrices[i].Price, "Price does not match.");
+                Assert.AreEqual(expectedPricesNew[i].PriceUom, actualPrices[i].PriceUOM, "PriceUOM does not match.");
+                Assert.AreEqual(expectedPricesNew[i].Multiple, actualPrices[i].Multiple, "Multiple does not match.");
+                Assert.AreEqual(expectedPricesNew[i].StartDate, actualPrices[i].StartDate, "BusinessUnitID does not match.");
+                Assert.IsTrue(actualPrices[i].AddedDate.ToString() == this.timestamp.ToString(),
+                    String.Format("AddedDate was not as expected. Expected value: {0}; Actual Value: {1}.", this.timestamp, actualPrices[i].AddedDate));
+                Assert.IsNull(actualPrices[i].ModifiedDate,
+                    String.Format("ModifiedDate was not as expected. Expected Value: null; Actual Value: {0}.", actualPrices[i].ModifiedDate));
+            }
+
+            for (int i = 0; i < expectedPricesUpdate.Count; i++)
+            {
+                Assert.AreEqual(expectedPricesUpdate[i].BusinessUnitId, updatedActualPrices[i].BusinessUnitID, "BusinessUnitID does not match.");
+                Assert.AreEqual(expectedPricesUpdate[i].Region, updatedActualPrices[i].Region, "Region does not match.");
+                Assert.AreEqual(itemsForUpdatePrices.Select(iup => iup.ItemID).ToList()[i], updatedActualPrices[i].ItemID, "ItemID does not match.");
+                Assert.AreEqual(expectedPricesUpdate[i].Price, updatedActualPrices[i].Price, "Price does not match.");
+                Assert.AreEqual(expectedPricesUpdate[i].PriceUom, updatedActualPrices[i].PriceUOM, "PriceUOM does not match.");
+                Assert.AreEqual(expectedPricesUpdate[i].Multiple, updatedActualPrices[i].Multiple, "Multiple does not match.");
+                Assert.AreEqual(expectedPricesUpdate[i].StartDate, updatedActualPrices[i].StartDate, "BusinessUnitID does not match.");
+                Assert.IsTrue(updatedActualPrices[i].AddedDate.ToString() == this.timestamp.ToString(),
+                    String.Format("AddedDate was not as expected. Expected value: {0}; Actual Value: {1}.", this.timestamp, updatedActualPrices[i].AddedDate));
+                Assert.IsTrue(updatedActualPrices[i].ModifiedDate.ToString() == this.timestamp.ToString(),
+                    String.Format("ModifiedDate was not as expected. Expected Value: {0}; Actual Value: {1}.", commandParameters.Timestamp, updatedActualPrices[i].ModifiedDate));
+            }
+        }
+
+        [TestMethod]
         public void AddOrUpdatePricesCommand_PricesInStagingHaveNewPromosAndNewRegularPricesForSameItemAndStore_ShouldAddNewRegularAndPromoPrices()
         {
             // Given
@@ -370,132 +471,93 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 
         private void AddPriceToPriceTable(List<Prices> prices)
         {
-            string sql = String.Format(@"INSERT INTO Price_{0}
-                                        (
-	                                        Region,
-	                                        ItemID,
-	                                        BusinessUnitId,
-	                                        Multiple,
-	                                        Price,
-	                                        StartDate,
-                                            EndDate,
-	                                        PriceUOM,
-                                            PriceType,
-	                                        CurrencyID,
-	                                        AddedDate
-                                        )
-                                        VALUES
-                                        (
-	                                        @Region,
-	                                        @ItemID,
-	                                        @BusinessUnitID,
-	                                        @Multiple,
-	                                        @Price,
-	                                        @StartDate,
-                                            @EndDate,
-	                                        @PriceUom,
-                                            @PriceType,
-	                                        @CurrencyID,
-                                            @AddedDate
-                                        )", this.region);
+            using (SqlBulkCopy bulkCopy = new SqlBulkCopy(this.db.Connection as SqlConnection))
+            {
+                bulkCopy.ColumnMappings.Add("Region", "Region");
+                bulkCopy.ColumnMappings.Add("ItemID", "ItemID");
+                bulkCopy.ColumnMappings.Add("BusinessUnitID", "BusinessUnitID");
+                bulkCopy.ColumnMappings.Add("StartDate", "StartDate");
+                bulkCopy.ColumnMappings.Add("EndDate", "EndDate");
+                bulkCopy.ColumnMappings.Add("Price", "Price");
+                bulkCopy.ColumnMappings.Add("PriceType", "PriceType");
+                bulkCopy.ColumnMappings.Add("PriceUOM", "PriceUOM");
+                bulkCopy.ColumnMappings.Add("CurrencyID", "CurrencyID");
+                bulkCopy.ColumnMappings.Add("Multiple", "Multiple");
+                bulkCopy.ColumnMappings.Add("AddedDate", "AddedDate");
+                bulkCopy.ColumnMappings.Add("ModifiedDate", "ModifiedDate");
 
-            this.db.Connection.Execute(sql, prices, this.db.Transaction);
+                using (var reader = ObjectReader.Create(
+                    prices))
+                {
+                    bulkCopy.DestinationTableName = $"[dbo].[Price_{this.region}]";
+                    bulkCopy.WriteToServer(reader);
+                }
+            }
         }
 
         private void AddPricesToStagingTable(List<StagingPriceModel> pricesInStaging)
         {
-            string sql = @"INSERT INTO stage.Price
-                            (
-	                            Region,
-	                            ScanCode,
-	                            BusinessUnitId,
-	                            Multiple,
-	                            Price,
-	                            PriceType,
-	                            StartDate,
-	                            EndDate,
-                                PriceUom,
-	                            CurrencyCode,
-	                            Timestamp,
-                                TransactionId
-                            )
-                            VALUES
-                            (
-	                            @Region,
-	                            @ScanCode,
-	                            @BusinessUnitId,
-	                            @Multiple,
-	                            @Price,
-	                            @PriceType,
-	                            @StartDate,
-	                            @EndDate,
-                                RTRIM(@PriceUom),
-	                            @CurrencyCode,
-	                            @Timestamp,
-                                @TransactionId
-                            )";
-
-            int affectedRows = this.db.Connection.Execute(sql, pricesInStaging, transaction: this.db.Transaction);
+            using (SqlBulkCopy bulkCopy = new SqlBulkCopy(this.db.Connection as SqlConnection))
+            {
+                using (var reader = ObjectReader.Create(
+                    pricesInStaging,
+                    nameof(StagingPriceModel.Region),
+                    nameof(StagingPriceModel.ScanCode),
+                    nameof(StagingPriceModel.BusinessUnitId),
+                    nameof(StagingPriceModel.Multiple),
+                    nameof(StagingPriceModel.Price),
+                    nameof(StagingPriceModel.PriceType),
+                    nameof(StagingPriceModel.StartDate),
+                    nameof(StagingPriceModel.EndDate),
+                    nameof(StagingPriceModel.PriceUom),
+                    nameof(StagingPriceModel.CurrencyCode),
+                    nameof(StagingPriceModel.Timestamp),
+                    nameof(StagingPriceModel.TransactionId)))
+                {
+                    bulkCopy.DestinationTableName = "stage.Price";
+                    bulkCopy.WriteToServer(reader);
+                }
+            }
         }
 
         private void AddToItemsTable(List<Item> items)
         {
-            string sql = @"INSERT INTO Items
-                            (
-	                            ItemID,
-	                            ItemTypeID,
-	                            ScanCode,
-	                            HierarchyMerchandiseID,
-	                            HierarchyNationalClassID,
-	                            BrandHCID,
-	                            TaxClassHCID,
-	                            PSNumber,
-	                            Desc_POS,
-	                            Desc_Product,
-	                            PackageUnit,
-	                            RetailSize,
-	                            RetailUOM,
-	                            FoodStampEligible
-                            )
-                            VALUES
-                            (
-	                            @ItemID,
-	                            @ItemTypeID,
-	                            @ScanCode,
-	                            @HierarchyMerchandiseID,
-	                            @HierarchyNationalClassID,
-	                            @BrandHCID,
-	                            @TaxClassHCID,
-	                            @PSNumber,
-	                            @Desc_POS,
-	                            @Desc_Product,
-	                            @PackageUnit,
-	                            @RetailSize,
-	                            @RetailUOM,
-	                            @FoodStampEligible
-                            )";
-            int affectedRows = this.db.Connection.Execute(sql, items, transaction: this.db.Transaction);
+            using (SqlBulkCopy bulkCopy = new SqlBulkCopy(this.db.Connection as SqlConnection))
+            {
+                using (var reader = ObjectReader.Create(
+                    items,
+                    nameof(Item.ItemID),
+                    nameof(Item.ItemTypeID),
+                    nameof(Item.ScanCode),
+                    nameof(Item.HierarchyMerchandiseID),
+                    nameof(Item.HierarchyNationalClassID),
+                    nameof(Item.BrandHCID),
+                    nameof(Item.TaxClassHCID),
+                    nameof(Item.PSNumber),
+                    nameof(Item.Desc_POS),
+                    nameof(Item.Desc_Product),
+                    nameof(Item.PackageUnit),
+                    nameof(Item.RetailSize),
+                    nameof(Item.RetailUOM),
+                    nameof(Item.FoodStampEligible)))
+                {
+                    bulkCopy.DestinationTableName = "[dbo].[Items]";
+                    bulkCopy.WriteToServer(reader);
+                }
+            }
         }
 
-        //TODO: Remove Code since it was moved to [AssemblyInitialize] class
-        //private void AddCurrencyToDb()
-        //{
-        //    string sql = @"IF NOT EXISTS (SELECT 1 FROM Currency WHERE CurrencyCode = 'USD')
-        //                    BEGIN
-	       //                     INSERT INTO Currency (CurrencyCode, CurrencyDesc)
-	       //                     VALUES ('USD', 'US Dollar')
-        //                    END
-        //                    IF NOT EXISTS (SELECT 1 FROM Currency WHERE CurrencyCode = 'CAD')
-        //                    BEGIN
-	       //                     INSERT INTO Currency (CurrencyCode, CurrencyDesc)
-	       //                     VALUES ('CAD', 'Canadian Dollar')
-        //                    END
-        //                    IF NOT EXISTS (SELECT 1 FROM Currency WHERE CurrencyCode = 'GBP')
-        //                    BEGIN
-	       //                     INSERT INTO Currency (CurrencyCode, CurrencyDesc)
-	       //                     VALUES ('GBP', 'Pound Sterling')
-        //                    END";
-        //    int affectedRows = this.db.Connection.Execute(sql, transaction: this.db.Transaction);
-        //}
+        private List<Item> BuildItems(int numberOfItems)
+        {
+            this.maxItemId = this.db.Connection.Query<int?>("SELECT MAX(ItemID) FROM Items", transaction: this.db.Transaction).FirstOrDefault();
+            var newItems = new List<Item>();
+
+            for (int i = 0; i < numberOfItems; i++)
+            {
+                newItems.Add(new TestItemBuilder().WithScanCode($"11111177{i.ToString()}").WithItemId((maxItemId ?? default(int)) + (i+1)).Build());
+            }
+
+            return newItems;
+        }
     }
 }

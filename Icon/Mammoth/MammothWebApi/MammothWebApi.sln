@@ -122,43 +122,4 @@ Global
 		{82505A9B-2264-4428-9806-D5EF838109B3} = {EA8FFC46-31B6-4CC1-8E49-01D6941B8CD9}
 		{EED6C132-5E76-46E9-BD78-103AF9545AC7} = {EA8FFC46-31B6-4CC1-8E49-01D6941B8CD9}
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = MammothWebApi.Tests\\MammothWebApi.Tests.csproj
-		SccProjectName1 = MammothWebApi.Tests
-		SccLocalPath1 = MammothWebApi.Tests
-		SccProjectUniqueName2 = MammothWebApi\\MammothWebApi.csproj
-		SccProjectName2 = MammothWebApi
-		SccLocalPath2 = MammothWebApi
-		SccProjectUniqueName3 = MammothWebApi.DataAccess\\MammothWebApi.DataAccess.csproj
-		SccProjectName3 = MammothWebApi.DataAccess
-		SccLocalPath3 = MammothWebApi.DataAccess
-		SccProjectUniqueName4 = MammothWebApi.Tests.DataAccess\\MammothWebApi.Tests.DataAccess.csproj
-		SccProjectName4 = MammothWebApi.Tests.DataAccess
-		SccLocalPath4 = MammothWebApi.Tests.DataAccess
-		SccProjectUniqueName5 = MammothWebApi.Common\\MammothWebApi.Common.csproj
-		SccProjectName5 = MammothWebApi.Common
-		SccLocalPath5 = MammothWebApi.Common
-		SccProjectUniqueName6 = ..\\Mammoth.Shared\\Mammoth.Common\\Mammoth.Common.csproj
-		SccProjectTopLevelParentUniqueName6 = MammothWebApi.sln
-		SccProjectName6 = ../Mammoth.Shared/Mammoth.Common
-		SccLocalPath6 = ..\\Mammoth.Shared\\Mammoth.Common
-		SccProjectUniqueName7 = ..\\Mammoth.Shared\\Mammoth.Common.DataAccess\\Mammoth.Common.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName7 = MammothWebApi.sln
-		SccProjectName7 = ../Mammoth.Shared/Mammoth.Common.DataAccess
-		SccLocalPath7 = ..\\Mammoth.Shared\\Mammoth.Common.DataAccess
-		SccProjectUniqueName8 = ..\\Mammoth.Shared\\Mammoth.Logging\\Mammoth.Logging.csproj
-		SccProjectTopLevelParentUniqueName8 = MammothWebApi.sln
-		SccProjectName8 = ../Mammoth.Shared/Mammoth.Logging
-		SccLocalPath8 = ..\\Mammoth.Shared\\Mammoth.Logging
-		SccProjectUniqueName9 = MammothWebApi.Services\\MammothWebApi.Service.csproj
-		SccProjectName9 = MammothWebApi.Services
-		SccLocalPath9 = MammothWebApi.Services
-		SccProjectUniqueName10 = MammothWebApi.Tests.EndToEnd\\MammothWebApi.Tests.EndToEnd.csproj
-		SccProjectName10 = MammothWebApi.Tests.EndToEnd
-		SccLocalPath10 = MammothWebApi.Tests.EndToEnd
-	EndGlobalSection
 EndGlobal

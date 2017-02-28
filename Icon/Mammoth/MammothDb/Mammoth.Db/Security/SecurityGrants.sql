@@ -19,7 +19,8 @@ GRANT EXECUTE on [dbo].[DeleteHierarchyClass_FromStaging]				to [MammothRole];
 GRANT EXECUTE on [dbo].[DeleteMerchandiseHierarchy_FromStaging]			to [MammothRole];
 GRANT EXECUTE on [esb].[LoadEsbItemLocaleMessagesByRegionOrStores]		to [MammothRole];
 GRANT EXECUTE on [esb].[LoadEsbPriceMessagesByRegionOrStores]			to [MammothRole];
-GRANT EXECUTE on [esb].[MarkMessageQueueEntriesAsInProcess]				to [MammothRole];
+GRANT EXECUTE on [esb].[MarkMessageQueuePriceEntriesAsInProcess]		to [MammothRole];
+GRANT EXECUTE on [esb].[MarkMessageQueueItemLocaleEntriesAsInProcess]	to [MammothRole];
 
 -- IRMA Developers
 GRANT SELECT on SCHEMA::[app] to [WFM\IRMA.Developers]
