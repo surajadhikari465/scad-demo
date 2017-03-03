@@ -36,38 +36,24 @@ namespace Icon.ApiController.DataAccess.Commands
             {
                 var messageQueueTable = context.Set<T>();
 
-                int currentMessagesInProcess = messageQueueTable.Count(q => q.InProcessBy == data.Instance);
+                logger.Info(string.Format("Controller {0} will attempt to mark {1} records.",
+                ControllerType.Instance.ToString(), data.LookAhead.ToString()));
 
-                if (currentMessagesInProcess < data.LookAhead)
-                {
-                    int newMessagesToMark = data.LookAhead - currentMessagesInProcess;
+                string messageQueueTableName = typeof(T).Name;
 
-                    if (data.BusinessUnit == default(int))
-                    {
-                        logger.Info(string.Format("Controller {0} has {1} records in process and will attempt to mark {2} additional records.  The look-ahead value is {3}.",
-                        ControllerType.Instance.ToString(), currentMessagesInProcess, newMessagesToMark.ToString(), data.LookAhead.ToString()));
-                    }
-                    else
-                    {
-                        logger.Info(string.Format("Controller {0} has {1} records in process and will attempt to mark {2} additional records for business unit {3}.  The look-ahead value is {4}.",
-                        ControllerType.Instance.ToString(), currentMessagesInProcess, newMessagesToMark.ToString(), data.BusinessUnit.ToString(), data.LookAhead.ToString()));
-                    }
+                SqlParameter lookAhead = new SqlParameter("LookAhead", SqlDbType.Int);
+                lookAhead.Value = data.LookAhead;
 
-                    string messageQueueTableName = typeof(T).Name;
+                SqlParameter jobInstance = new SqlParameter("JobInstance", SqlDbType.Int);
+                jobInstance.Value = data.Instance;
 
-                    SqlParameter numberOfRows = new SqlParameter("NumberOfRows", SqlDbType.Int);
-                    numberOfRows.Value = newMessagesToMark;
+                SqlParameter businessUnit = new SqlParameter("BusinessUnit", SqlDbType.Int);
+                businessUnit.Value = data.BusinessUnit;
 
-                    SqlParameter jobInstance = new SqlParameter("JobInstance", SqlDbType.Int);
-                    jobInstance.Value = data.Instance;
+                string sql = $"EXEC app.Mark{messageQueueTableName}EntriesAsInProcess @LookAhead, @JobInstance, @BusinessUnit";
 
-                    SqlParameter businessUnit = new SqlParameter("BusinessUnit", SqlDbType.Int);
-                    businessUnit.Value = data.BusinessUnit;
+                context.Database.ExecuteSqlCommand(sql, lookAhead, jobInstance, businessUnit);
 
-                    string sql = $"EXEC app.Mark{messageQueueTableName}EntriesAsInProcess @NumberOfRows, @JobInstance, @BusinessUnit";
-
-                    context.Database.ExecuteSqlCommand(sql, numberOfRows, jobInstance, businessUnit);
-                }
             }
         }
     }
