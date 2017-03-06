@@ -159,6 +159,8 @@
     <Folder Include="stage" />
     <Folder Include="stage\Tables" />
     <Folder Include="Scripts\Templates" />
+    <Folder Include="gpm" />
+    <Folder Include="gpm\Tables" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -600,6 +602,46 @@
     <Build Include="esb\Stored Procedures\MarkMessageQueuePriceEntriesAsInProcess.sql" />
     <Build Include="app\Stored Procedures\PurgeMessageQueues.sql" />
     <None Include="Jobs\PurgeMessageQueues.sql" />
+    <Build Include="Security\gpm.sql" />
+    <Build Include="gpm\Tables\Price_FL.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_MA.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_MW.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_NA.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_NC.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_PN.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_NE.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_RM.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_SO.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_SP.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_SW.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_TS.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_UK.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
