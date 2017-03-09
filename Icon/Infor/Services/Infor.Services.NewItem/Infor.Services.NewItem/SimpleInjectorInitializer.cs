@@ -11,6 +11,7 @@ using Infor.Services.NewItem.Cache;
 using Infor.Services.NewItem.Infrastructure;
 using Infor.Services.NewItem.MessageBuilders;
 using Infor.Services.NewItem.Models;
+using Infor.Services.NewItem.Notifiers;
 using Infor.Services.NewItem.Processor;
 using Infor.Services.NewItem.Services;
 using Infor.Services.NewItem.Validators;
@@ -37,10 +38,13 @@ namespace Infor.Services.NewItem
             container.Register<IMessageBuilder<IEnumerable<NewItemModel>>, NewItemMessageBuilder>();
             container.Register<IUomMapper, UomMapper>();
             container.Register<ISerializer<items>, Serializer<items>>();
-            container.Register<ICollectionValidator<NewItemModel>, PluCollectionValidator>();
+            container.Register<ICollectionValidator<NewItemModel>, NewItemModelCollectionValidator>();
             container.Register(typeof(ICommandHandler<>), new[] { typeof(InforNewItemApplication).Assembly });
             container.Register(typeof(IQueryHandler<,>), new[] { typeof(InforNewItemApplication).Assembly });
-            container.Register<InforNewItemApplicationSettings>(() => InforNewItemApplicationSettings.CreateFromConfig(), Lifestyle.Singleton);
+            container.Register(() => InforNewItemApplicationSettings.CreateFromConfig(), Lifestyle.Singleton);
+            container.Register<INewItemNotifier, NewItemNotifier>();
+            container.Register<NewItemNotifierSettings>(() => NewItemNotifierSettings.CreateFromConfig());
+            container.Register<IRegionalEmailClientFactory, RegionalEmailClientFactory>();
 
             container.Register<IInforNewItemApplication, InforNewItemApplication>();
 

@@ -1,12 +1,6 @@
 ﻿using Icon.Common.Context;
 using Irma.Framework;
-using Irma.Framework.RenewableContext;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infor.Services.NewItem.Infrastructure
 {

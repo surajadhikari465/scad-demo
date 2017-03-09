@@ -55,6 +55,10 @@
       <HintPath>..\packages\Esb.Core.2016.10.21.1\lib\net45\Esb.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentValidation, Version=6.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.6.4.0\lib\Net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
       <Private>True</Private>
@@ -136,7 +140,10 @@
     <Compile Include="Commands\AddNewItemsToIconCommandHandlerTests.cs" />
     <Compile Include="Commands\ArchiveNewItemsCommandHandlerTests.cs" />
     <Compile Include="Commands\FinalizeNewItemEventsCommandHandlerTests.cs" />
+    <Compile Include="Infrastructure\RegionalEmailClientFactoryTests.cs" />
     <Compile Include="MessageBuilders\NewItemMessageBuilderTests.cs" />
+    <Compile Include="Notifiers\NewItemNotifierSettingsTests.cs" />
+    <Compile Include="Notifiers\NewItemNotifierTests.cs" />
     <Compile Include="Processors\NewItemProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetHierarchyClassCodesToHierarchyClassIdsDictionaryQueryHandlerTests.cs" />
@@ -144,7 +151,7 @@
     <Compile Include="Integration\InforNewItemApplicationTests.cs" />
     <Compile Include="Services\InforItemServiceTests.cs" />
     <Compile Include="SimpleInjectorInitializerTests.cs" />
-    <Compile Include="Validators\PluCollectionValidatorTests.cs" />
+    <Compile Include="Validators\NewItemModelCollectionValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Infor.Services.NewItem\Infor.Services.NewItem.csproj">

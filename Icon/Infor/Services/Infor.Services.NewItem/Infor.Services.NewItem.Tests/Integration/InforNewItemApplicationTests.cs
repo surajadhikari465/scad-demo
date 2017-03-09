@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Irma.Framework;
-using System.Linq;
-using Icon.Common;
-using Infor.Services.NewItem.Processor;
+﻿using Icon.Common;
 using Icon.Esb.Producer;
+using Infor.Services.NewItem.Notifiers;
+using Infor.Services.NewItem.Processor;
+using Irma.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 
 namespace Infor.Services.NewItem.Tests.Integration
 {
@@ -72,6 +71,7 @@ namespace Infor.Services.NewItem.Tests.Integration
             var container = SimpleInjectorInitializer.InitializeContainer(false);
             container.Options.AllowOverridingRegistrations = true;
             container.Register(() => mockProducer.Object);
+            container.Register(() => new Mock<INewItemNotifier>().Object);
             container.Register(() => new InforNewItemApplicationSettings { Regions = new List<string> { "FL" }, NumberOfItemsPerMessage = 1 });
 
             //When

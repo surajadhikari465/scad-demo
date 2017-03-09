@@ -222,6 +222,7 @@ namespace Infor.Services.NewItem.Tests.Queries
 
                 Assert.AreEqual(query.Region, result.Region);
                 Assert.AreEqual(testEvent.QID, result.QueueId);
+                Assert.AreEqual(testItem.Item_Key, result.ItemKey);
                 Assert.AreEqual(testItemIdentifier.Identifier, result.ScanCode);
                 Assert.AreEqual(true, result.IsDefaultIdentifier);
                 Assert.AreEqual(testItem.Item_Description, result.ItemDescription);
@@ -236,6 +237,7 @@ namespace Infor.Services.NewItem.Tests.Queries
                 Assert.AreEqual(testSubTeam.Dept_No.ToString(), result.SubTeamNumber);
                 Assert.AreEqual(testNatItemClass.ClassID.ToString(), result.NationalClassCode);
                 Assert.AreEqual(testTaxClass.ExternalTaxGroupCode, result.TaxClassCode);
+                Assert.AreEqual(testEvent.InsertDate, result.QueueInsertDate);
             }
         }
     }

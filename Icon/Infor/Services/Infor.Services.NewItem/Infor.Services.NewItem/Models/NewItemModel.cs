@@ -10,6 +10,7 @@ namespace Infor.Services.NewItem.Models
     {
         public string Region { get; set; }
         public int QueueId { get; set; }
+        public int ItemKey { get; set; }
         public string ScanCode { get; set; }
         public bool IsRetailSale { get; set; }
         public bool IsDefaultIdentifier { get; set; }
@@ -25,6 +26,7 @@ namespace Infor.Services.NewItem.Models
         public string SubTeamNumber { get; set; }
         public string NationalClassCode { get; set; }
         public string TaxClassCode { get; set; }
+        public DateTime QueueInsertDate { get; set; }
         public int? MessageHistoryId { get; set; }
         public string ErrorCode { get; set; }
         public string ErrorDetails { get; set; }

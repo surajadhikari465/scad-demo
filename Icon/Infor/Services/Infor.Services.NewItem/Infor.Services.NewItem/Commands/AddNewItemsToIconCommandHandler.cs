@@ -64,7 +64,7 @@ namespace Infor.Services.NewItem.Commands
                     foreach (var item in data.NewItems.Where(i => i.ErrorCode == null))
                     {
                         item.ErrorCode = ApplicationErrors.Codes.FailedToAddItemsToIcon;
-                        item.ErrorDetails = ex.ToString();
+                        item.ErrorDetails = string.Format(ApplicationErrors.Details.FailedToAddItemsToIcon, ex.ToString());
                     }
                     throw;
                 }

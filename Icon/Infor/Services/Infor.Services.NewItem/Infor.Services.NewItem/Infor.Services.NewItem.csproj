@@ -53,6 +53,10 @@
       <HintPath>..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentValidation, Version=6.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.6.4.0\lib\Net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
       <Private>True</Private>
@@ -131,6 +135,8 @@
     <Compile Include="Constants\LengthConstants.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="InforNewItemApplicationSettings.cs" />
+    <Compile Include="Infrastructure\IRegionalEmailClientFactory.cs" />
+    <Compile Include="Infrastructure\RegionalEmailClientFactory.cs" />
     <Compile Include="Infrastructure\RegionRenewableContext.cs" />
     <Compile Include="MessageBuilders\IMessageBuilder.cs" />
     <Compile Include="MessageBuilders\NewItemMessageBuilder.cs" />
@@ -140,6 +146,9 @@
     <Compile Include="Models\NewItemModel.cs" />
     <Compile Include="Models\SubTeamModel.cs" />
     <Compile Include="Models\TaxClassModel.cs" />
+    <Compile Include="Notifiers\INewItemNotifier.cs" />
+    <Compile Include="Notifiers\NewItemNotifier.cs" />
+    <Compile Include="Notifiers\NewItemNotifierSettings.cs" />
     <Compile Include="Processor\INewItemProcessor.cs" />
     <Compile Include="Processor\NewItemProcessor.cs" />
     <Compile Include="Program.cs" />
@@ -170,7 +179,7 @@
     <Compile Include="SimpleInjectorInitializer.cs" />
     <Compile Include="Validators\ICollectionValidator.cs" />
     <Compile Include="Validators\CollectionValidatorResult.cs" />
-    <Compile Include="Validators\PluCollectionValidator.cs" />
+    <Compile Include="Validators\NewItemModelCollectionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

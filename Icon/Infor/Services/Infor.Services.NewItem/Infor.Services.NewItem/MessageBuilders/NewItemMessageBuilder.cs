@@ -179,7 +179,7 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetSubTeamId(string subTeamNumber)
         {
-            if (String.IsNullOrWhiteSpace(subTeamNumber) || !iconCache.SubTeamModels.ContainsKey(subTeamNumber))
+            if (string.IsNullOrWhiteSpace(subTeamNumber) || !iconCache.SubTeamModels.ContainsKey(subTeamNumber))
             {
                 return NoSubTeamId;
             }
@@ -191,7 +191,7 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetSubTeamName(string subTeamNumber)
         {
-            if(String.IsNullOrWhiteSpace(subTeamNumber) || !iconCache.SubTeamModels.ContainsKey(subTeamNumber))
+            if(string.IsNullOrWhiteSpace(subTeamNumber) || !iconCache.SubTeamModels.ContainsKey(subTeamNumber))
             {
                 return NoSubTeamName;
             }
@@ -203,7 +203,7 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private int GetNationalParentClassId(string key)
         {
-            if (String.IsNullOrEmpty(key) || !iconCache.NationalClassModels.ContainsKey(key))
+            if (string.IsNullOrEmpty(key) || !iconCache.NationalClassModels.ContainsKey(key))
             {
                 return 0;
             }
@@ -215,9 +215,9 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetNationalClassName(string key)
         {
-            if (String.IsNullOrEmpty(key) || !iconCache.NationalClassModels.ContainsKey(key))
+            if (string.IsNullOrEmpty(key) || !iconCache.NationalClassModels.ContainsKey(key))
             {
-                return String.Empty;
+                return string.Empty;
             }
             else
             {
@@ -227,9 +227,9 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetNationalClassId(string key)
         {
-            if (String.IsNullOrEmpty(key) || !iconCache.NationalClassCodesToIdDictionary.ContainsKey(key))
+            if (string.IsNullOrEmpty(key) || !iconCache.NationalClassCodesToIdDictionary.ContainsKey(key))
             {
-                return String.Empty;
+                return string.Empty;
             }
             else
             { 
@@ -239,9 +239,9 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetTaxName(string key)
         {
-            if (String.IsNullOrEmpty(key) || !iconCache.TaxDictionary.ContainsKey(key))
+            if (string.IsNullOrEmpty(key) || !iconCache.TaxDictionary.ContainsKey(key))
             {
-                return String.Empty;
+                return string.Empty;
             }
             else
             { 
@@ -361,7 +361,7 @@ namespace Infor.Services.NewItem.MessageBuilders
                         {
                             new Contracts.TraitValueType
                             {
-                                value = newItemModel.RetailUom == null ? String.Empty : newItemModel.RetailUom,
+                                value = newItemModel.RetailUom == null ? string.Empty : newItemModel.RetailUom,
                                 uom = new Contracts.UomType
                                 {
                                     code = uomMapper.GetEsbUomCode(newItemModel.RetailUom),
