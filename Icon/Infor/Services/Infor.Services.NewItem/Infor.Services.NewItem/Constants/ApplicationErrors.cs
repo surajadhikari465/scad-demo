@@ -24,7 +24,7 @@ namespace Infor.Services.NewItem.Constants
             public const string UnexpectedProcessingError = "An unexpected error occurred while processing the items. Error Details: {0}";
             public const string FailedToAddItemsToIcon = "An unexpected error occurred when attempting to add an IRMA Item Subscription in Icon. Error Details: {0}";
             public const string FailedToSendMessageToEsb = "An unexpected error occurred when attempting to send the item to the ESB. Error Details: {0}";
-            public static readonly string InvalidBrand = "The item's Brand '{0}' has an Infor Brand ID '{1}' which does not exist in Infor. Please choose a different Brand which is managed by Infor and then refresh the item.";
+            public static readonly string InvalidBrand = "The item's Brand '{0}' does not exist in Infor. Please choose a different Brand which is managed by Infor and then refresh the item.";
             public static readonly string InvalidTaxClassCode = "The item's Tax Class has a Tax Class Code '{PropertyValue}' which does not exist in Infor. Please choose a different Tax Class which is managed by Infor and then refresh the item.";
             public static readonly string InvalidNationalClassCode = "The item's National Class has a National Class Code '{PropertyValue}' which does not exist in Infor. Please choose a different National Class which is managed by Infor and then refresh the item.";
             public static readonly string InvalidProductDescription = "Product Description has invalid value '{PropertyValue}'." +

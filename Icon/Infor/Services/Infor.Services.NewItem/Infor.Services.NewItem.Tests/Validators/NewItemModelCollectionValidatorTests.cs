@@ -149,7 +149,7 @@ namespace Infor.Services.NewItem.Tests.Validators
             var item = result.InvalidEntities.Single();
             Assert.AreEqual(ApplicationErrors.Codes.InvalidBrand, item.ErrorCode);
             Assert.AreEqual(
-                "The item's Brand '' has an Infor Brand ID '1' which does not exist in Infor. Please choose a different Brand which is managed by Infor and then refresh the item.",
+                "The item's Brand '' does not exist in Infor. Please choose a different Brand which is managed by Infor and then refresh the item.",
                 item.ErrorDetails);
         }
 

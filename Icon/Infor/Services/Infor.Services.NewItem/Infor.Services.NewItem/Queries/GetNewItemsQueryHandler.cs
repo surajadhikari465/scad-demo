@@ -43,7 +43,7 @@ namespace Infor.Services.NewItem.Queries
 		                                vb.IconBrandId AS IconBrandId,
 		                                i.Package_Desc1 AS PackageUnit,
 		                                i.Package_Desc2 AS RetailSize,
-		                                iu.Unit_Abbreviation AS RetailUom,
+		                                LTRIM(RTRIM(iu.Unit_Abbreviation)) AS RetailUom,
 		                                i.Food_Stamps AS FoodStampEligible,	
 		                                st.SubTeam_Name AS SubTeamName,
                                         CAST(st.Dept_No AS nvarchar(max)) AS SubTeamNumber,
