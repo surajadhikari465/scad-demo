@@ -1,48 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" targetNamespace="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
-	<!-- ================== -->
-	<!-- Schema Imports             -->
-	<!-- ================== -->
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../Amount/Amount.xsd"/>
-	<!-- ================== -->
-	<!-- Simple Types                 -->
-	<!-- ================== -->
-	<xs:simpleType name="PriceDescType">
-		<xs:annotation>
-			<xs:documentation>
-				<!--are there enumerations available for price types?-->
-			</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="crf:WfmStrType"/>
-	</xs:simpleType>	
-	<xs:simpleType name="PriceMultiple">
-		<xs:annotation>
-			<xs:documentation/>
-		</xs:annotation>
-		<xs:restriction base="crf:WfmIntType"/>
-	</xs:simpleType>
-	<xs:simpleType name="BreakPointStartQty">
-		<xs:annotation>
-			<xs:documentation/>
-		</xs:annotation>
-		<xs:restriction base="crf:WfmIntType"/>
-	</xs:simpleType>
-	<xs:simpleType name="BreakPointEndQty">
-		<xs:annotation>
-			<xs:documentation/>
-		</xs:annotation>
-		<xs:restriction base="crf:WfmIntType"/>
-	</xs:simpleType>
-	<!-- ================== -->
-	<!-- Complex Types			   -->
-	<!-- ================== -->
-	<xs:complexType name="PriceAmount">
-		<xs:annotation>
-			<xs:documentation/>
-		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="amt:AmountType"/>
-		</xs:complexContent>
-	</xs:complexType>
+  <!-- ================== -->
+  <!-- Schema Imports             -->
+  <!-- ================== -->
+  <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+  <xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../Amount/Amount.xsd"/>
+  <!-- ================== -->
+  <!-- Simple Types                 -->
+  <!-- ================== -->
+  <xs:simpleType name="PriceDescType">
+    <xs:annotation>
+      <xs:documentation>
+        <!--are there enumerations available for price types?-->
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="crf:WfmStrType"/>
+  </xs:simpleType>
+  <xs:simpleType name="PriceMultiple">
+    <xs:annotation>
+      <xs:documentation/>
+    </xs:annotation>
+    <xs:restriction base="crf:WfmIntType"/>
+  </xs:simpleType>
+  <xs:simpleType name="PriceTypeIdType">
+    <xs:restriction base="PriceTypeIdTypeEnum"/>
+  </xs:simpleType>
+  <xs:simpleType name="PriceTypeDescType">
+    <xs:restriction base="PriceTypeDescTypeEnum"/>
+  </xs:simpleType>
+  <xs:simpleType name="PriceTypeIdTypeEnum">
+    <xs:annotation>
+      <xs:documentation>Price Type Id Type</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="crf:WfmStrType">
+      <xs:enumeration value="REG"/>
+      <xs:enumeration value="CMP"/>
+      <xs:enumeration value="EDV"/>
+      <xs:enumeration value="CLR"/>
+      <xs:enumeration value="DIS"/>
+      <xs:enumeration value="MSAL"/>
+      <xs:enumeration value="SSAL"/>
+      <xs:enumeration value="ISS"/>
+      <xs:enumeration value="SAL"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PriceTypeDescTypeEnum">
+    <xs:annotation>
+      <xs:documentation>Price Type Description Type</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="crf:WfmStrType">
+      <xs:enumeration value="Regular"/>
+      <xs:enumeration value="Competitive"/>
+      <xs:enumeration value="Everyday Value"/>
+      <xs:enumeration value="Clearance"/>
+      <xs:enumeration value="Discontinued"/>
+      <xs:enumeration value="Market Sale"/>
+      <xs:enumeration value="Special Sale"/>
+      <xs:enumeration value="In Store Special"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="BreakPointStartQty">
+    <xs:annotation>
+      <xs:documentation/>
+    </xs:annotation>
+    <xs:restriction base="crf:WfmIntType"/>
+  </xs:simpleType>
+  <xs:simpleType name="BreakPointEndQty">
+    <xs:annotation>
+      <xs:documentation/>
+    </xs:annotation>
+    <xs:restriction base="crf:WfmIntType"/>
+  </xs:simpleType>
+  <!-- ================== -->
+  <!-- Complex Types			   -->
+  <!-- ================== -->
+  <xs:complexType name="PriceAmount">
+    <xs:annotation>
+      <xs:documentation/>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="amt:AmountType"/>
+    </xs:complexContent>
+  </xs:complexType>
 </xs:schema>
