@@ -67,7 +67,7 @@
 
             if (!StartupOptions.ValidArgs.Contains(controllerType))
             {
-                logger.Error(String.Format("Invalid argument specified.  The valid arguments are: {0}", String.Join(",", StartupOptions.ValidArgs)));
+                logger.Error(string.Format("Invalid argument specified.  The valid arguments are: {0}", string.Join(",", StartupOptions.ValidArgs)));
                 return;
             }
 

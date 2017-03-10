@@ -5,15 +5,14 @@
     using Icon.ApiController.Controller.ControllerBuilders;
     using Icon.Common;
     using Icon.Framework;
-    using Icon.Framework.RenewableContext;
     using Icon.Logging;
     using RenewableContext;
     using System;
     using System.Configuration;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading;
     using System.Timers;
-    using System.Diagnostics;
     public class ApiControllerService : IApiControllerService
     {
         private static ILogger<Program> logger = new NLogLogger<Program>();
@@ -145,21 +144,35 @@
                         break;
                 }
 
-                sLog = "Application";
+                //Log to the Event Log
+                try
+                {
+                    sLog = "Application";
 
-                sEvent = "ApiControllerService - RunService " + ex.Message;
+                    sEvent = "ApiControllerService - RunService " + ex.Message;
 
-                if (ex.InnerException != null)
-                    sEvent = sEvent + " -- " + ex.InnerException.Message;
+                    if (ex.InnerException != null)
+                        sEvent = sEvent + " -- " + ex.InnerException.Message;
 
-                if (!EventLog.SourceExists(sSource))
-                    EventLog.CreateEventSource(sSource, sLog);
+                    if (!EventLog.SourceExists(sSource))
+                        EventLog.CreateEventSource(sSource, sLog);
 
-                EventLog.WriteEntry(sSource, sEvent,
-                EventLogEntryType.Error);
+                    EventLog.WriteEntry(sSource, sEvent,
+                    EventLogEntryType.Error);
+                }
+                catch (Exception eventLogException)
+                {
+                    logger.Error($"Unable to log to the Event Log. API Controller type: {sSource}. Error: {eventLogException.ToString()}");
+                }
+                finally
+                {
+                    logger.Error($"An unexpected error occurred. API Controller type: {sSource}. Error: {ex.ToString()}");
+                }
             }
-
-            this.timer.Start();
+            finally
+            {
+                this.timer.Start();
+            }
         }
 
         public void Stop()

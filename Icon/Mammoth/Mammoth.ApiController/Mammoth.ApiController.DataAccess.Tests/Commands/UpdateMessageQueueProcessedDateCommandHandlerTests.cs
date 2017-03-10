@@ -18,14 +18,15 @@ namespace Mammoth.ApiController.DataAccess.Tests.Commands
         }
 
         [TestMethod]
-        public void UpdateMessageQueueProcessedDate_MessageQueuesExist_ShouldUpdateProcessedDate()
+        public void UpdateMessageQueueProcessedDate_MessageQueuesExists_ShouldUpdateProcessedDate()
         {
             //Given
+            var testScanCode = "9888888888888";
             List<MessageQueueItemLocale> messageQueues = new List<MessageQueueItemLocale>
             {
-                new TestMessageQueueItemLocaleBuilder(),
-                new TestMessageQueueItemLocaleBuilder(),
-                new TestMessageQueueItemLocaleBuilder()
+                new TestMessageQueueItemLocaleBuilder().WithScanCode(testScanCode),
+                new TestMessageQueueItemLocaleBuilder().WithScanCode(testScanCode),
+                new TestMessageQueueItemLocaleBuilder().WithScanCode(testScanCode)
             };
             context.MessageQueueItemLocales.AddRange(messageQueues);
             context.SaveChanges();
@@ -37,7 +38,7 @@ namespace Mammoth.ApiController.DataAccess.Tests.Commands
             commandHandler.Execute(command);
 
             //Then
-            var updatedMessageQueues = context.MessageQueueItemLocales.AsNoTracking().Where(mq=>mq.ScanCode == "12345").ToList();
+            var updatedMessageQueues = context.MessageQueueItemLocales.AsNoTracking().Where(mq=>mq.ScanCode == "9888888888888").ToList();
             foreach (var messageQueue in updatedMessageQueues)
             {
                 Assert.AreEqual(command.ProcessedDate, messageQueue.ProcessedDate);
