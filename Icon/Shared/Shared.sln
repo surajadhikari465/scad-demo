@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.RenewableContext", "Ic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.DbContextFactory", "Icon.DbContextFactory\Icon.DbContextFactory.csproj", "{0C958F3B-4A51-4938-A69D-D911ABFF60D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Caching", "Icon.Caching\Icon.Caching.csproj", "{1F06837A-1F91-41B9-8611-C56B9F3FEF0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +162,14 @@ Global
 		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{0C958F3B-4A51-4938-A69D-D911ABFF60D1}.Test|Any CPU.Build.0 = Release|Any CPU
+		{1F06837A-1F91-41B9-8611-C56B9F3FEF0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F06837A-1F91-41B9-8611-C56B9F3FEF0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F06837A-1F91-41B9-8611-C56B9F3FEF0E}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{1F06837A-1F91-41B9-8611-C56B9F3FEF0E}.QA|Any CPU.Build.0 = Release|Any CPU
+		{1F06837A-1F91-41B9-8611-C56B9F3FEF0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F06837A-1F91-41B9-8611-C56B9F3FEF0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F06837A-1F91-41B9-8611-C56B9F3FEF0E}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{1F06837A-1F91-41B9-8611-C56B9F3FEF0E}.Test|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
