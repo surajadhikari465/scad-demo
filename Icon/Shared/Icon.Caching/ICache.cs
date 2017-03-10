@@ -2,6 +2,9 @@
 
 namespace Icon.Caching
 {
+    /// <summary>
+    /// Interface for Initializing, Setting, and Getting from Cache.
+    /// </summary>
     public interface ICache
     {
         void Initialize();

@@ -3,6 +3,9 @@ using System.Runtime.Caching;
 
 namespace Icon.Caching
 {
+    /// <summary>
+    /// Creates, Sets, and Gets from a cache.
+    /// </summary>
     public class Cache : ICache
     {
         private MemoryCache cache;
