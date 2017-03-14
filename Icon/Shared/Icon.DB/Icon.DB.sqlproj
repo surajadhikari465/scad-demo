@@ -598,6 +598,7 @@
     <Build Include="app\Stored Procedures\MessageQueuePriceGetBusinessUnitToProcess.sql" />
     <Build Include="app\Stored Procedures\MessageQueueItemLocaleGetBusinessUnitToProcess.sql" />
     <Build Include="infor\Tables\infor.MessageArchiveNewItem.sql" />
+    <Build Include="Scripts\PopulateData\Release\RemoveInvalidPLUandNon-RetailItemNotification.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
