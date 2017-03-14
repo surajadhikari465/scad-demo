@@ -37,7 +37,7 @@
             ICommandHandler<AddDvoErrorStatusCommand> addDvoErrorStatusCommandHandler,
             ILogger logger)
         {
-            this.settings = settings; 
+            this.settings = settings;
             this.dvoSettings = dvoSettings;
             this.fileInfoAccessor = fileInfoAccessor;
             this.pagerDutyTrigger = pagerDutyTrigger;
@@ -103,7 +103,15 @@
 
         private bool IsDvoFileOlderThanMaxMinuteThreshold(IFileInfo fileInfo, int dvoBulkImportFileMaxMinuteThreshold)
         {
-            return fileInfo.LastWriteTime < DateTime.Now.Subtract(TimeSpan.FromMinutes(dvoBulkImportFileMaxMinuteThreshold));
+            DateTime lastWriteTime = fileInfo.LastWriteTime;
+            DateTime currentDateTime = DateTime.Now;
+            if (lastWriteTime < currentDateTime.Subtract(TimeSpan.FromMinutes(dvoBulkImportFileMaxMinuteThreshold)))
+            {
+                
+                logger.Info($"DVO file '{fileInfo.Name}' Last Write was {lastWriteTime:G}, Current Time is {currentDateTime:G} and Max Minute Threshold Setting is {dvoBulkImportFileMaxMinuteThreshold:G}.");
+                return true;
+            }
+                return false;
         }
 
         private void ProcessErrorJobStatuses(List<DvoRegionalJobStatus> errorStatuses)
