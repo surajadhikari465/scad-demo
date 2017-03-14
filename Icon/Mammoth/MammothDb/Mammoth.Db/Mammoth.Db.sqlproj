@@ -656,6 +656,7 @@
     <None Include="Jobs\DataHistoryPurge.sql" />
     <None Include="Scripts\PreDeploymentScripts\SubTeamCleanUp_PreDeployment.sql" />
     <None Include="Scripts\PostDeploymentScripts\Currency_RemoveTrailingSpaces_PostDeployment.sql" />
+    <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

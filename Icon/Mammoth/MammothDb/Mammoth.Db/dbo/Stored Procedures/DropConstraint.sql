@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE dbo.DropConstraint 
+﻿CREATE PROCEDURE dbo.DropConstraint 
 	@Constraint NVARCHAR(128) AS BEGIN
 
 	DECLARE @sqlText NVARCHAR(MAX)

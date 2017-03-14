@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[DeleteMerchandiseHierarchy_FromStaging]
+﻿CREATE PROCEDURE [dbo].[DeleteMerchandiseHierarchy_FromStaging]
 	@transactionId uniqueidentifier
 AS
 BEGIN

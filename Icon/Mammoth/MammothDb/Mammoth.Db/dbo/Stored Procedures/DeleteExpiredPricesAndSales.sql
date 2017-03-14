@@ -1,90 +1,43 @@
 ﻿CREATE PROCEDURE dbo.DeleteExpiredPricesAndSales
+	@MaxDeleteCount int,
+	@BatchSize int
 AS
 BEGIN
-	DECLARE @expiredPrices table
-			(
-				Region nchar(2),
-				PriceID int,
-				ItemID int,
-				BusinessUnitID int,
-				StartDate datetime,
-				EndDate datetime,
-				Price smallmoney,
-				PriceType nvarchar(3),
-				PriceUOM nvarchar(3),
-				CurrencyID int,
-				Multiple tinyint,
-				AddedDate datetime,
-				ModifiedDate datetime
-			);		
-	DECLARE	@expiredSales table
-			(
-				Region nchar(2),
-				PriceID int,
-				ItemID int,
-				BusinessUnitID int,
-				StartDate datetime,
-				EndDate datetime,
-				Price smallmoney,
-				PriceType nvarchar(3),
-				PriceUOM nvarchar(3),
-				CurrencyID int,
-				Multiple tinyint,
-				AddedDate datetime,
-				ModifiedDate datetime
-			);
+	/* =============================================
+	Author:			Matt Scherping, Blake Jones
+	Create date:	2017-03-10
+	Description:	Deletes any expired REG and TPR prices
+					in batches.					
+	=============================================*/	
+	DECLARE @DefaultMaxDeleteCount int = 100000
+	SET @MaxDeleteCount = COALESCE(@MaxDeleteCount, @DefaultMaxDeleteCount)
 
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'FL'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'MA'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'MW'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'NA'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'NC'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'NE'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'PN'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'RM'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'SO'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'SP'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'SW'
-	INSERT INTO @expiredPrices
-	EXEC dbo.DeleteExpiredPrices @RegionCode = 'UK'
+	DECLARE @DefaultBatchSize int = 20000
+	SET @BatchSize = COALESCE(@BatchSize, @DefaultBatchSize)
 
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'FL'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'MA'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'MW'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'NA'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'NC'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'NE'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'PN'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'RM'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'SO'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'SP'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'SW'
-	INSERT INTO @expiredSales
-	EXEC dbo.DeleteExpiredSales @RegionCode = 'UK'
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'FL', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'MA', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'MW', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'NA', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'NC', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'NE', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'PN', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'RM', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'SO', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'SP', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'SW', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredPrices @RegionCode = 'UK', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 
-	SELECT * FROM @expiredPrices
-
-	SELECT * FROM @expiredSales	
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'FL', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'MA', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'MW', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'NA', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'NC', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'NE', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'PN', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'RM', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'SO', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'SP', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'SW', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC dbo.DeleteExpiredSales @RegionCode = 'UK', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 END
