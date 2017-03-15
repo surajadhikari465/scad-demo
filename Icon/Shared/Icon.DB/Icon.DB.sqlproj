@@ -132,6 +132,7 @@
     <Folder Include="Scripts\Projects\Infor\Performance Scripts\Item Infor to Icon" />
     <Folder Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor" />
     <Folder Include="monitor" />
+    <Folder Include="Scripts\Projects\Infor\GPM Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -599,6 +600,7 @@
     <Build Include="app\Stored Procedures\MessageQueueItemLocaleGetBusinessUnitToProcess.sql" />
     <Build Include="infor\Tables\infor.MessageArchiveNewItem.sql" />
     <Build Include="Scripts\PopulateData\Release\RemoveInvalidPLUandNon-RetailItemNotification.sql" />
+    <Build Include="Scripts\Projects\Infor\GPM Scripts\GPMPriceExtractFromIRMA.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
