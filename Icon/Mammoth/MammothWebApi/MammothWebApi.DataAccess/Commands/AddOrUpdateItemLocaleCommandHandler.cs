@@ -20,7 +20,7 @@ namespace MammothWebApi.DataAccess.Commands
     --declare temp table with index
     CREATE TABLE #tmpStagedItemLocale
     (
-        [Region]                 NVARCHAR (2)     NOT NULL,
+		[Region]                 NVARCHAR (2)     NOT NULL,
         [ItemID]				 INT              NOT NULL,
         [BusinessUnitID]         INT              NOT NULL,
         [Discount_Case]          BIT              NOT NULL,
@@ -76,8 +76,7 @@ namespace MammothWebApi.DataAccess.Commands
             att.[BusinessUnitID] = stage.[BusinessUnitID]
     WHERE 
 	    stage.[Region] =        @Region AND
-        stage.[TransactionId] = @TransactionId AND
-        stage.[Timestamp] =     @Timestamp
+        stage.[TransactionId] = @TransactionId
 			
     DECLARE @staged_row_count int = @@ROWCOUNT;
 

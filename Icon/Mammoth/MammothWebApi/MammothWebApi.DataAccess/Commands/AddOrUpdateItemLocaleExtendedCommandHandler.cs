@@ -24,16 +24,16 @@ namespace MammothWebApi.DataAccess.Commands
 	    --declare temp table with index
 	    CREATE TABLE #tmpStagedItemLocaleExt
 	    (
-		    [Region]				NVARCHAR(2)		NOT NULL,
+            [Region]				NVARCHAR(2)		NOT NULL,
 		    [ItemID]				INT				NOT NULL,
 		    [BusinessUnitID]		INT				NOT NULL,
 	        [LocaleID]				INT				NOT NULL,
-	        [AttributeId]			INT				NULL,
+	        [AttributeId]			INT				NOT NULL,
 	        [AttributeValue]		NVARCHAR(MAX)	NULL,
 	        [ExistingId]			INT				NULL,
 	        [ExistingValue]			NVARCHAR(MAX)	NULL,
 		    [Operation]				CHAR			NULL,
-		    PRIMARY KEY ([Region], [ItemID], [LocaleID])		
+            PRIMARY KEY ([Region], [ItemID], [LocaleID], [AttributeId])
 	    )
 
         --copy staging data into temp table
@@ -52,22 +52,20 @@ namespace MammothWebApi.DataAccess.Commands
                 WHEN stg.[AttributeValue] is null AND ext.[AttributeValue] is not null THEN 'D'
                 WHEN stg.[AttributeValue] is not null AND ext.[AttributeValue] is not null THEN 'U'
             END AS [Operation]
-        FROM 
+      FROM 
             [stage].[ItemLocaleExtended] AS stg
+		    INNER JOIN [dbo].[Locales_{0}] AS loc ON
+                loc.[BusinessUnitID] = stg.[BusinessUnitID]
             INNER JOIN [dbo].[Items] AS item ON
                 item.[ScanCode]   = stg.[ScanCode] 
-		    INNER JOIN [dbo].[Locales_{0}] AS loc   ON
-                loc.[BusinessUnitID] = stg.[BusinessUnitID]
 		    LEFT OUTER JOIN [dbo].[ItemAttributes_Locale_{0}_Ext] AS ext ON
-                ext.[AttributeID]  = stg.[AttributeId] AND
-                ext.[ItemID]   = item.[ItemID] AND
                 ext.[LocaleID]   = loc.[LocaleID] AND
-                ext.[Region]   = stg.[Region]
+                ext.[AttributeID]  = stg.[AttributeId] AND
+                ext.[Region]   = stg.[Region] AND
+                ext.[ItemID]   = item.[ItemID]
         WHERE 
             stg.[TransactionId] = @TransactionId AND 
-            stg.[Timestamp]  = @Timestamp AND
-            stg.[AttributeId] is not null AND
-            IsNull(ext.[Region], stg.[Region]) = @Region 
+            stg.[Region] = @Region 
 
         BEGIN TRY
             BEGIN TRAN

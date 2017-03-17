@@ -294,38 +294,6 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         }
 
         [TestMethod]
-        public void AddOrUpdateItemLocaleExtended_ExistingItemLocaleExtendedDataInStagingTimestampNotMatching_DoesNotUpdateRows()
-        {
-            // Given
-            var now = DateTime.Now;
-            Guid transactionId = Guid.NewGuid();
-            var existingTimestamp = now.AddSeconds(-3);
-            var nonmatchingTimestamp = now.AddSeconds(-1);
-            var expectedItems = new List<StagingItemLocaleExtendedModel>();
-
-            for (int i = 0; i < this.items.Count; i++)
-            {
-                // Add rows to staging table
-                expectedItems.Add(
-                    CreateStagingItemLocaleExtendedModel(transactionId, this.items[i].ScanCode, existingTimestamp, "USA"));
-            }
-            AddRowsToItemLocaleExtendedStagingTable(expectedItems);
-
-            AddOrUpdateItemLocaleExtendedCommand command = new AddOrUpdateItemLocaleExtendedCommand();
-            command.Region = this.region;
-            command.TransactionId = transactionId;
-            command.Timestamp = nonmatchingTimestamp;
-
-            // When
-            this.commandHandler.Execute(command);
-
-            // Then
-            var actualRowCount = GetItemExtendedAttributesCount(this.itemIDs);
-            Assert.AreEqual(0, actualRowCount,
-                $"Rows were added to the ItemAttributes_Locale_{this.region}_Ext table then they should not have been because of non - matching timestamp.");
-        }
-
-        [TestMethod]
         public void AddOrUpdateItemLocaleExtended_MixedDataInStaging_ModifiesExpectedRowsInRegionalItemLocaleTable()
         {
             // Given
