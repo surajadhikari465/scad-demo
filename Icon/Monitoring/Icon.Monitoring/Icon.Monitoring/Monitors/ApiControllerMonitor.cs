@@ -83,6 +83,7 @@
         {
             GetApiMessageUnprocessedRowCountParameters queryParameters = new GetApiMessageUnprocessedRowCountParameters();
             queryParameters.MessageQueueType = MessageQueueTypes.Price;
+            queryParameters.RegionCode = regionCode;
             int numberOfUnprocessedMessageQueuePriceRows = messageQueueUnprocessedRowCountQuery.Search(queryParameters);
             if (numberOfUnprocessedMessageQueuePriceRows > 0)
             {
@@ -102,6 +103,7 @@
         {
             GetApiMessageUnprocessedRowCountParameters queryParameters = new GetApiMessageUnprocessedRowCountParameters();
             queryParameters.MessageQueueType = MessageQueueTypes.ItemLocale;
+            queryParameters.RegionCode = regionCode;
             int numberOfUnprocessedMessageQueuePriceRows = messageQueueUnprocessedRowCountQuery.Search(queryParameters);
 
             if (numberOfUnprocessedMessageQueuePriceRows > 0)

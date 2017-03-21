@@ -351,7 +351,7 @@ namespace Icon.Monitoring.Tests.Monitors
             Assert.AreEqual(expectedQueueId, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
             Assert.AreEqual(expectedNumberOfTimesMatched, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].NumberOfTimesMatched);
         }
-
+      
         [TestMethod]
         public void NumberOfUnprocessedPriceQueueRowsGreaterThanZero_ShouldSendPagerDutyAlert()
         {
@@ -390,6 +390,7 @@ namespace Icon.Monitoring.Tests.Monitors
 
         #endregion MessageQueueIdAndCacheIdAreDifferent
     }
+   
 
 
 }
