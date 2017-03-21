@@ -3,13 +3,18 @@ using Icon.Logging;
 using Icon.Monitoring.Common;
 using Icon.Monitoring.Common.PagerDuty;
 using Icon.Monitoring.Common.Settings;
+using Icon.Monitoring.DataAccess;
 using Icon.Monitoring.DataAccess.Queries;
 using Icon.Monitoring.Monitors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NodaTime;
+using NodaTime.Testing;
 using ServiceStack.Text;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Threading;
 
 namespace Icon.Monitoring.Tests.Monitors
@@ -19,25 +24,51 @@ namespace Icon.Monitoring.Tests.Monitors
     {
         private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
         private Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageQueueIdParameters, int>> mockMessageQueueQuery;
+        private Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageUnprocessedRowCountParameters, int>> mockMessageUnprocessedRowCountQuery;
+
+        private SqlDbProvider db;
+        private List<string> testRegions;
         private Mock<IMonitorSettings> mockSettings;
         private ApiControllerMonitor apiControllerMonitor;
-
+ 
+        private IClock fakeClock;
+        private IDateTimeZoneProvider dateTimeZoneProvider;
         [TestInitialize]
         public void Initialize()
         {
             this.mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
             this.mockMessageQueueQuery = new Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageQueueIdParameters, int>>();
+            this.mockMessageUnprocessedRowCountQuery = new Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageUnprocessedRowCountParameters, int>>();
+            this.fakeClock = new FakeClock(Instant.FromDateTimeUtc(DateTime.UtcNow));
+            this.dateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
             this.mockSettings = new Mock<IMonitorSettings>();
+           
             this.apiControllerMonitor = new ApiControllerMonitor(
-                this.mockSettings.Object, 
+                this.mockSettings.Object,
                 this.mockMessageQueueQuery.Object,
+                 this.mockMessageUnprocessedRowCountQuery.Object,
                 this.mockPagerDutyTrigger.Object,
+                  this.dateTimeZoneProvider,
+                this.fakeClock,
                 new Mock<ILogger>().Object);
-
+            testRegions = new List<string> { "FL" };
+            SetUpApiControllerMonitorSettings();
             apiControllerMonitor.ByPassConfiguredRunInterval = true;
-
             SetMessageQueueToIdMapperToZeroValues();
         }
+
+
+        private void SetUpApiControllerMonitorSettings()
+        {          
+            mockSettings.SetupGet(m => m.ApiControllerMonitorRegions).Returns(testRegions);
+            mockSettings.SetupGet(m => m.NumberOfMinutesBeforeStoreOpens).Returns(120);
+            mockSettings.SetupGet(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(16,0,0));
+
+            Dictionary<string, TimeSpan> MonitorTimers = new Dictionary<string, TimeSpan>();
+            MonitorTimers.Add("ApiControllerMonitorTimer", TimeSpan.FromMilliseconds( 900000));
+            mockSettings.SetupGet(m => m.MonitorTimers).Returns(MonitorTimers);
+        }
+
 
         private string BuildTriggerDescription(string queueType)
         {
@@ -321,6 +352,44 @@ namespace Icon.Monitoring.Tests.Monitors
             Assert.AreEqual(expectedNumberOfTimesMatched, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].NumberOfTimesMatched);
         }
 
+        [TestMethod]
+        public void NumberOfUnprocessedPriceQueueRowsGreaterThanZero_ShouldSendPagerDutyAlert()
+        {
+            //Given   
+            System.DateTime today = System.DateTime.Now;
+            System.TimeSpan duration = new System.TimeSpan(0, 2, -2, 0);
+            today = today.Add(duration);
+            mockSettings.Setup(m => m.NumberOfMinutesBeforeStoreOpens).Returns(120);
+            mockSettings.Setup(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(today.Hour,today.Minute));
+            mockMessageUnprocessedRowCountQuery.Setup(m => m.Search(It.IsAny<GetApiMessageUnprocessedRowCountParameters>())).Returns(1);
+
+            //When
+            apiControllerMonitor.CheckStatusAndNotify();
+
+            //Then
+            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        public void NumberOfUnprocessedPriceQueueRowsEqualToZero_ShouldNotSendPagerDutyAlert()
+        {
+            //Given   
+            System.DateTime today = System.DateTime.Now;
+            System.TimeSpan duration = new System.TimeSpan(0, 2, -2, 0);
+            today = today.Add(duration);
+            mockSettings.Setup(m => m.NumberOfMinutesBeforeStoreOpens).Returns(120);
+            mockSettings.Setup(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(today.Hour, today.Minute));
+            mockMessageUnprocessedRowCountQuery.Setup(m => m.Search(It.IsAny<GetApiMessageUnprocessedRowCountParameters>())).Returns(0);
+
+            //When
+            apiControllerMonitor.CheckStatusAndNotify();
+
+            //Then
+            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+        }
+
         #endregion MessageQueueIdAndCacheIdAreDifferent
     }
+
+
 }
