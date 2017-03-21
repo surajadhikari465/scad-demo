@@ -59,10 +59,10 @@ namespace MammothWebApi.DataAccess.Commands
             INNER JOIN [dbo].[Items] AS item ON
                 item.[ScanCode]   = stg.[ScanCode] 
 		    LEFT OUTER JOIN [dbo].[ItemAttributes_Locale_{0}_Ext] AS ext ON
-                ext.[LocaleID]   = loc.[LocaleID] AND
-                ext.[AttributeID]  = stg.[AttributeId] AND
                 ext.[Region]   = stg.[Region] AND
-                ext.[ItemID]   = item.[ItemID]
+                ext.[ItemID]   = item.[ItemID] AND
+                ext.[LocaleID]   = loc.[LocaleID] AND
+                ext.[AttributeID]  = stg.[AttributeId]
         WHERE 
             stg.[TransactionId] = @TransactionId AND 
             stg.[Region] = @Region 
