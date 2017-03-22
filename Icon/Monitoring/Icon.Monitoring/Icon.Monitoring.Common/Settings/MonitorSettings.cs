@@ -44,6 +44,9 @@
         public LocalTime StoreOpenCentralTime_SW { get; set; }
         public LocalTime StoreOpenCentralTime_UK { get; set; }
         public int NumberOfMinutesBeforeStoreOpens { get; set; }
+        public DateTime ApiControllerMonitorBlackoutStart { get; set; }
+        public DateTime ApiControllerMonitorBlackoutEnd { get; set; }
+        public string ApiControllerMonitorBlackoutDay { get; set; }
 
         public Dictionary<string, TimeSpan> MonitorTimers { get; set; }
 
@@ -62,6 +65,9 @@
             settings.MonitorTimers = ConfigurationManager.AppSettings.AllKeys.Where(k => k.EndsWith("Timer"))
                     .Select(k => new { Key = k, Value = ConfigurationManager.AppSettings[k] })
                     .ToDictionary(x => x.Key, x => TimeSpan.FromMilliseconds(int.Parse(x.Value)));
+            settings.ApiControllerMonitorBlackoutEnd =DateTime.Today.Add(TimeSpan.Parse(AppSettingsAccessor.GetStringSetting(nameof(ApiControllerMonitorBlackoutEnd))));
+            settings.ApiControllerMonitorBlackoutStart = DateTime.Today.Add(TimeSpan.Parse(AppSettingsAccessor.GetStringSetting(nameof(ApiControllerMonitorBlackoutStart))));
+            settings.ApiControllerMonitorBlackoutDay = AppSettingsAccessor.GetStringSetting("ApiControllerMonitorBlackoutDay");
 
             var pattern = LocalTimePattern.CreateWithInvariantCulture("HH:mm:ss");
             string config = String.Empty;

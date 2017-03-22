@@ -14,8 +14,7 @@
 
     public class ApiControllerMonitor : TimedControllerMonitor
     {
-        private const string UnprocessRowsInItemLocale = "There are unprocessed rows in Message Queue Item Locale Table.";
-        private const string UnprocessRowsInMessageQueuePrice = "There are unprocessed rows in Message Queue Price Table.";
+        private const string APIControllerRunningSlow = "API Controller is running very slowly. Please look into it. The cache may need to be cleared on stored procedure. Use SP_WHO to determine the stored procedure.";
         private const string StoreOpenTimeConfigPrefix = "StoreOpenCentralTime_";
         private const string TimeZone = "America/Chicago";
         private readonly IQueryHandler<GetApiMessageQueueIdParameters, int> messageQueueQuery;
@@ -63,8 +62,21 @@
             }
         }
 
+ 
         private bool shouldCheckDataInMessageQueuePriceAndItemTable(string regionCode)
         {
+            DayOfWeek blackOutDay;
+
+            if (!Enum.TryParse(settings.ApiControllerMonitorBlackoutDay, out blackOutDay))
+            {
+                blackOutDay = DayOfWeek.Sunday;
+            }
+
+            if (DateTime.Now.Between(settings.ApiControllerMonitorBlackoutStart, settings.ApiControllerMonitorBlackoutEnd) && DateTime.Now.DayOfWeek == blackOutDay)
+            {
+                return false;
+            }
+
             TimeSpan configuredInterval = TimeSpan.FromMilliseconds(0);
             LocalTime openTime = GetConfiguredOpenTimeByRegion(regionCode);
             long numberOfMinutes = settings.NumberOfMinutesBeforeStoreOpens;
@@ -87,7 +99,7 @@
             int numberOfUnprocessedMessageQueuePriceRows = messageQueueUnprocessedRowCountQuery.Search(queryParameters);
             if (numberOfUnprocessedMessageQueuePriceRows > 0)
             {
-                TriggerPagerDutyIncident(UnprocessRowsInMessageQueuePrice,
+                TriggerPagerDutyIncident(APIControllerRunningSlow,
                              new Dictionary<string, string>()
                              {
                                 { "Number of unprocessed Message Queue Price Rows: ", numberOfUnprocessedMessageQueuePriceRows.ToString() }
@@ -108,7 +120,7 @@
 
             if (numberOfUnprocessedMessageQueuePriceRows > 0)
             {
-                TriggerPagerDutyIncident(UnprocessRowsInItemLocale,
+                TriggerPagerDutyIncident(APIControllerRunningSlow,
                              new Dictionary<string, string>()
                              {
                                 { "Number of unprocessed Message Queue Price Rows: ", numberOfUnprocessedMessageQueuePriceRows.ToString() }

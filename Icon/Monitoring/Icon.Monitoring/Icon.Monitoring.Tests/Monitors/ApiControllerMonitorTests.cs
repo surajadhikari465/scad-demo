@@ -351,18 +351,29 @@ namespace Icon.Monitoring.Tests.Monitors
             Assert.AreEqual(expectedQueueId, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
             Assert.AreEqual(expectedNumberOfTimesMatched, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].NumberOfTimesMatched);
         }
-      
-        [TestMethod]
-        public void NumberOfUnprocessedPriceQueueRowsGreaterThanZero_ShouldSendPagerDutyAlert()
+
+
+        private void SetUpSettingsValue()
         {
-            //Given   
             System.DateTime today = System.DateTime.Now;
             System.TimeSpan duration = new System.TimeSpan(0, 2, -2, 0);
             today = today.Add(duration);
             mockSettings.Setup(m => m.NumberOfMinutesBeforeStoreOpens).Returns(120);
-            mockSettings.Setup(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(today.Hour,today.Minute));
-            mockMessageUnprocessedRowCountQuery.Setup(m => m.Search(It.IsAny<GetApiMessageUnprocessedRowCountParameters>())).Returns(1);
+            mockSettings.Setup(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(today.Hour, today.Minute));
 
+            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutStart).Returns(DateTime.Today.Add(TimeSpan.Parse("00:00:00")));
+            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutEnd).Returns(DateTime.Today.Add(TimeSpan.Parse("11:00:00")));
+
+            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutDay).Returns("Wednesday");
+        }
+
+     
+        [TestMethod]
+        public void NumberOfUnprocessedPriceQueueRowsGreaterThanZero_ShouldSendPagerDutyAlert()
+        {
+            //Given   
+            SetUpSettingsValue();
+             mockMessageUnprocessedRowCountQuery.Setup(m => m.Search(It.IsAny<GetApiMessageUnprocessedRowCountParameters>())).Returns(1);
             //When
             apiControllerMonitor.CheckStatusAndNotify();
 
@@ -374,11 +385,7 @@ namespace Icon.Monitoring.Tests.Monitors
         public void NumberOfUnprocessedPriceQueueRowsEqualToZero_ShouldNotSendPagerDutyAlert()
         {
             //Given   
-            System.DateTime today = System.DateTime.Now;
-            System.TimeSpan duration = new System.TimeSpan(0, 2, -2, 0);
-            today = today.Add(duration);
-            mockSettings.Setup(m => m.NumberOfMinutesBeforeStoreOpens).Returns(120);
-            mockSettings.Setup(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(today.Hour, today.Minute));
+            SetUpSettingsValue();
             mockMessageUnprocessedRowCountQuery.Setup(m => m.Search(It.IsAny<GetApiMessageUnprocessedRowCountParameters>())).Returns(0);
 
             //When
