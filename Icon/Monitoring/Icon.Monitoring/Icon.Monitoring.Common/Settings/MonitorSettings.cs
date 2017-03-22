@@ -44,8 +44,8 @@
         public LocalTime StoreOpenCentralTime_SW { get; set; }
         public LocalTime StoreOpenCentralTime_UK { get; set; }
         public int NumberOfMinutesBeforeStoreOpens { get; set; }
-        public DateTime ApiControllerMonitorBlackoutStart { get; set; }
-        public DateTime ApiControllerMonitorBlackoutEnd { get; set; }
+        public LocalTime ApiControllerMonitorBlackoutStart { get; set; }
+        public LocalTime ApiControllerMonitorBlackoutEnd { get; set; }
         public string ApiControllerMonitorBlackoutDay { get; set; }
 
         public Dictionary<string, TimeSpan> MonitorTimers { get; set; }
@@ -53,7 +53,7 @@
         public static MonitorSettings CreateFromConfig()
         {
             MonitorSettings settings = new MonitorSettings();
-
+            var pattern = LocalTimePattern.CreateWithInvariantCulture("HH:mm:ss");
             settings.IntegrationKey = AppSettingsAccessor.GetStringSetting("IntegrationKey");
             settings.SendPagerDutyNotifications = AppSettingsAccessor.GetBoolSetting("SendPagerDutyNotifications");
             settings.PagerDutyUri = AppSettingsAccessor.GetStringSetting("PagerDutyUri");
@@ -65,11 +65,12 @@
             settings.MonitorTimers = ConfigurationManager.AppSettings.AllKeys.Where(k => k.EndsWith("Timer"))
                     .Select(k => new { Key = k, Value = ConfigurationManager.AppSettings[k] })
                     .ToDictionary(x => x.Key, x => TimeSpan.FromMilliseconds(int.Parse(x.Value)));
-            settings.ApiControllerMonitorBlackoutEnd =DateTime.Today.Add(TimeSpan.Parse(AppSettingsAccessor.GetStringSetting(nameof(ApiControllerMonitorBlackoutEnd))));
-            settings.ApiControllerMonitorBlackoutStart = DateTime.Today.Add(TimeSpan.Parse(AppSettingsAccessor.GetStringSetting(nameof(ApiControllerMonitorBlackoutStart))));
+
+            settings.ApiControllerMonitorBlackoutEnd = pattern.Parse(AppSettingsAccessor.GetStringSetting(nameof(ApiControllerMonitorBlackoutEnd))).Value;
+            settings.ApiControllerMonitorBlackoutStart = pattern.Parse(AppSettingsAccessor.GetStringSetting(nameof(ApiControllerMonitorBlackoutStart))).Value; 
             settings.ApiControllerMonitorBlackoutDay = AppSettingsAccessor.GetStringSetting("ApiControllerMonitorBlackoutDay");
 
-            var pattern = LocalTimePattern.CreateWithInvariantCulture("HH:mm:ss");
+            
             string config = String.Empty;
             string storeOpenTimeConfigSetting = String.Empty;
             foreach (IrmaRegions region in Enum.GetValues(typeof(IrmaRegions)))
@@ -91,5 +92,7 @@
 
             return settings;
         }
+
+
     }
 }

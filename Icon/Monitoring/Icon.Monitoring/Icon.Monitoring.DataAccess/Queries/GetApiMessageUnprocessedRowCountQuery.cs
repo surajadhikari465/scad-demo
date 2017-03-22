@@ -20,7 +20,6 @@ namespace Icon.Monitoring.DataAccess.Queries
 
         public int Search(GetApiMessageUnprocessedRowCountParameters parameters)
         {
-            QueueData queueData = new QueueData();
             string sql = string.Format("SELECT COUNT(*) FROM app.MessageQueue{0} (nolock) WHERE RegionCode ='{1}'  and processedDate IS NULL",
                                         parameters.MessageQueueType, parameters.RegionCode);
             int result = this.db.Connection.Query<int>(sql, transaction: this.db.Transaction).FirstOrDefault();

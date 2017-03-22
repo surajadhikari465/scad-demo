@@ -361,13 +361,40 @@ namespace Icon.Monitoring.Tests.Monitors
             mockSettings.Setup(m => m.NumberOfMinutesBeforeStoreOpens).Returns(120);
             mockSettings.Setup(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(today.Hour, today.Minute));
 
-            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutStart).Returns(DateTime.Today.Add(TimeSpan.Parse("00:00:00")));
-            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutEnd).Returns(DateTime.Today.Add(TimeSpan.Parse("11:00:00")));
+            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutStart).Returns(new LocalTime(0, 0, 0));
+            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutEnd).Returns(new LocalTime(4, 0, 0));
 
             mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutDay).Returns("Wednesday");
         }
+        [TestMethod]
+        public void GetApiMessageUnprocessedRowCountQuery()
+        {
+            this.mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            this.mockMessageQueueQuery = new Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageQueueIdParameters, int>>();
+            this.mockMessageUnprocessedRowCountQuery = new Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageUnprocessedRowCountParameters, int>>();
+            this.fakeClock = new FakeClock(Instant.FromDateTimeUtc(DateTime.UtcNow));
+            this.dateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
+            this.mockSettings = new Mock<IMonitorSettings>();
+            this.db = new SqlDbProvider();
+            this.db.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
+            GetApiMessageUnprocessedRowCountQuery mockGetApiMessageUnprocessedRowCountQueryHandler = new GetApiMessageUnprocessedRowCountQuery(db);
+            this.db.Connection.Open();
+            this.apiControllerMonitor = new ApiControllerMonitor(
+                this.mockSettings.Object,
+                this.mockMessageQueueQuery.Object,
+              mockGetApiMessageUnprocessedRowCountQueryHandler,
+                this.mockPagerDutyTrigger.Object,
+                   this.dateTimeZoneProvider,
+                this.fakeClock,
+                new Mock<ILogger>().Object);
 
-     
+            SetUpApiControllerMonitorSettings();
+            apiControllerMonitor.CheckStatusAndNotify();
+
+        }
+
+
+
         [TestMethod]
         public void NumberOfUnprocessedPriceQueueRowsGreaterThanZero_ShouldSendPagerDutyAlert()
         {

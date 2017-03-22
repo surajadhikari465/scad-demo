@@ -40,8 +40,8 @@ namespace Icon.Monitoring.Common.Settings
         LocalTime StoreOpenCentralTime_SW { get; set; }
         LocalTime StoreOpenCentralTime_UK { get; set; }
         int NumberOfMinutesBeforeStoreOpens { get; set; }
-        DateTime ApiControllerMonitorBlackoutStart { get; set; }
-        DateTime ApiControllerMonitorBlackoutEnd { get; set; }
+        LocalTime ApiControllerMonitorBlackoutStart { get; set; }
+        LocalTime ApiControllerMonitorBlackoutEnd { get; set; }
         string ApiControllerMonitorBlackoutDay { get; set; }
 
     }

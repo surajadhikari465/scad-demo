@@ -56,47 +56,14 @@
             {
                 if (shouldCheckDataInMessageQueuePriceAndItemTable(region))
                 {
-                    CheckMessageQueuePriceTableForUnprocessedRows(region);
-
+                    CheckForUnprocessedRows(region);
                 }
             }
         }
 
- 
-        private bool shouldCheckDataInMessageQueuePriceAndItemTable(string regionCode)
+        private void CheckForUnprocessedRows(string region)
         {
-            DayOfWeek blackOutDay;
-
-            if (!Enum.TryParse(settings.ApiControllerMonitorBlackoutDay, out blackOutDay))
-            {
-                blackOutDay = DayOfWeek.Sunday;
-            }
-
-            if (DateTime.Now.Between(settings.ApiControllerMonitorBlackoutStart, settings.ApiControllerMonitorBlackoutEnd) && DateTime.Now.DayOfWeek == blackOutDay)
-            {
-                return false;
-            }
-
-            TimeSpan configuredInterval = TimeSpan.FromMilliseconds(0);
-            LocalTime openTime = GetConfiguredOpenTimeByRegion(regionCode);
-            long numberOfMinutes = settings.NumberOfMinutesBeforeStoreOpens;
-            LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.Now).TimeOfDay;
-            settings.MonitorTimers.TryGetValue(this.GetType().Name + "Timer", out configuredInterval);
-            // Example: current time 5 a.m, store open time 3 a.m..then only run check for unprocessed rows between 3 and 3:15-assuming job runs every 15 min)
-            if (openTime.PlusMinutes(0 - numberOfMinutes) < currentTime && openTime.PlusMinutes(0 - numberOfMinutes + configuredInterval.Minutes) > currentTime)
-            {
-                return true;
-
-            }
-            return false;
-        }
-
-        private void CheckMessageQueuePriceTableForUnprocessedRows(string regionCode)
-        {
-            GetApiMessageUnprocessedRowCountParameters queryParameters = new GetApiMessageUnprocessedRowCountParameters();
-            queryParameters.MessageQueueType = MessageQueueTypes.Price;
-            queryParameters.RegionCode = regionCode;
-            int numberOfUnprocessedMessageQueuePriceRows = messageQueueUnprocessedRowCountQuery.Search(queryParameters);
+            int numberOfUnprocessedMessageQueuePriceRows = CheckMessageQueuePriceTableForUnprocessedRows(region);
             if (numberOfUnprocessedMessageQueuePriceRows > 0)
             {
                 TriggerPagerDutyIncident(APIControllerRunningSlow,
@@ -107,25 +74,63 @@
             }
             else
             { // only if there are no unprocessed rows in price table, we will check item locale
-                CheckMessageQueueItemLocaleForUnprocessedRows(regionCode);
+                int numberOfUnprocessedMessageQueueItemLocaleRows = CheckMessageQueueItemLocaleForUnprocessedRows(region);
+                if (numberOfUnprocessedMessageQueueItemLocaleRows > 0)
+                {
+                    TriggerPagerDutyIncident(APIControllerRunningSlow,
+                                 new Dictionary<string, string>()
+                                 {
+                                { "Number of unprocessed Item Locale Queue Price Rows: ", numberOfUnprocessedMessageQueueItemLocaleRows.ToString() }
+                                 });
+                }
             }
         }
+        private bool shouldCheckDataInMessageQueuePriceAndItemTable(string regionCode)
+        {
+            DayOfWeek blackOutDay;
+            LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.Now).TimeOfDay;
+            if (!Enum.TryParse(settings.ApiControllerMonitorBlackoutDay, out blackOutDay))
+            {
+                blackOutDay = DayOfWeek.Sunday;
+            }
+           
+            if ((currentTime.LocalDateTime.TimeOfDay> settings.ApiControllerMonitorBlackoutStart && currentTime.LocalDateTime.TimeOfDay < settings.ApiControllerMonitorBlackoutEnd) && DateTime.Now.DayOfWeek == blackOutDay)
+            {
+                return false;
+            }
 
-        private void CheckMessageQueueItemLocaleForUnprocessedRows(string regionCode)
+            TimeSpan configuredInterval = TimeSpan.FromMilliseconds(0);
+       
+            LocalTime openTime = GetConfiguredOpenTimeByRegion(regionCode);
+            long numberOfMinutes = settings.NumberOfMinutesBeforeStoreOpens;
+         
+            settings.MonitorTimers.TryGetValue(this.GetType().Name + "Timer", out configuredInterval);
+            // Example: current time 5 a.m, store open time 3 a.m..then only run check for unprocessed rows between 3 and 3:15-assuming job runs every 15 min)
+            if (openTime.PlusMinutes(0 - numberOfMinutes) < currentTime && openTime.PlusMinutes(0 - numberOfMinutes + configuredInterval.Minutes) > currentTime)
+            {
+                return true;
+
+            }
+            return false;
+        }
+
+        private int CheckMessageQueuePriceTableForUnprocessedRows(string regionCode)
+        {
+            GetApiMessageUnprocessedRowCountParameters queryParameters = new GetApiMessageUnprocessedRowCountParameters();
+            queryParameters.MessageQueueType = MessageQueueTypes.Price;
+            queryParameters.RegionCode = regionCode;
+            int numberOfUnprocessedMessageQueuePriceRows = messageQueueUnprocessedRowCountQuery.Search(queryParameters);
+
+            return numberOfUnprocessedMessageQueuePriceRows;
+        }
+
+        private int CheckMessageQueueItemLocaleForUnprocessedRows(string regionCode)
         {
             GetApiMessageUnprocessedRowCountParameters queryParameters = new GetApiMessageUnprocessedRowCountParameters();
             queryParameters.MessageQueueType = MessageQueueTypes.ItemLocale;
             queryParameters.RegionCode = regionCode;
-            int numberOfUnprocessedMessageQueuePriceRows = messageQueueUnprocessedRowCountQuery.Search(queryParameters);
-
-            if (numberOfUnprocessedMessageQueuePriceRows > 0)
-            {
-                TriggerPagerDutyIncident(APIControllerRunningSlow,
-                             new Dictionary<string, string>()
-                             {
-                                { "Number of unprocessed Message Queue Price Rows: ", numberOfUnprocessedMessageQueuePriceRows.ToString() }
-                             });
-            }
+            int numberOfUnprocessedMessageQueueItemLocaleRows = messageQueueUnprocessedRowCountQuery.Search(queryParameters);
+            return numberOfUnprocessedMessageQueueItemLocaleRows;
         }
 
         private LocalTime GetConfiguredOpenTimeByRegion(string regionCode)
