@@ -716,6 +716,7 @@
     <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageView_MockConcatenation.sql" />
     <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageViewWithDefaults_MockConcatenation.sql" />
     <None Include="Scripts\PopulateData\Release\RetentionPolicyInforMessageArchiveNewItem.sql" />
+    <None Include="Scripts\PopulateData\Release\DeleteBrandPurgeJob.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
