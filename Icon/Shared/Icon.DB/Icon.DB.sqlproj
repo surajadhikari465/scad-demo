@@ -133,6 +133,7 @@
     <Folder Include="Scripts\Projects\Infor\Performance Scripts\Item IRMA to Infor" />
     <Folder Include="monitor" />
     <Folder Include="Scripts\Projects\Infor\GPM Scripts" />
+    <Folder Include="Scripts\Jobs\Archive" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -231,7 +232,6 @@
     <Build Include="app\Stored Procedures\InitialLoadProduct.sql" />
     <Build Include="app\Tables\MessageQueueItemLocale.sql" />
     <None Include="Security\Icon.Security.sql" />
-    <None Include="Scripts\Jobs\BrandPurgeJob.sql" />
     <None Include="Scripts\Projects\Deprecated Scripts\CreateIconUDM.sql" />
     <None Include="Scripts\Projects\Deprecated Scripts\iConAutoMatch BACKOUT.sql" />
     <None Include="Scripts\Projects\Deprecated Scripts\iConAutoMatch.sql" />
@@ -601,6 +601,9 @@
     <Build Include="infor\Tables\infor.MessageArchiveNewItem.sql" />
     <None Include="Scripts\PopulateData\Release\RemoveInvalidPLUandNon-RetailItemNotification.sql" />
     <None Include="Scripts\Projects\Infor\GPM Scripts\GPMPriceExtractFromIRMA.sql" />
+    <None Include="Scripts\Jobs\Archive\BrandPurgeJob.sql" />
+    <None Include="Scripts\Jobs\Archive\Invalid PLU Notification Job - Icon.sql" />
+    <None Include="Scripts\Jobs\Archive\Invalid PLU Notification Job - IconDev.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -615,8 +618,6 @@
     <Build Include="app\User Defined Types\PriceMessageType.sql" />
     <Build Include="app\Stored Procedures\GeneratePriceMessages.sql" />
     <Build Include="app\Stored Procedures\GenerateItemLocaleMessages.sql" />
-    <None Include="Scripts\Jobs\Invalid PLU Notification Job - Icon.sql" />
-    <None Include="Scripts\Jobs\Invalid PLU Notification Job - IconDev.sql" />
     <Build Include="app\Tables\ProductSelectionGroup.sql" />
     <Build Include="app\Tables\ProductSelectionGroupType.sql" />
     <Build Include="app\Stored Procedures\GetAllHierarchyLineage.sql" />
