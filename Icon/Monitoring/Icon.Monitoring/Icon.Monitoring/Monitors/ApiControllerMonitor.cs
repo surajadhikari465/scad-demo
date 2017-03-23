@@ -54,7 +54,7 @@
             // loop through each region
             foreach (var region in regions)
             {
-                if (shouldCheckDataInMessageQueuePriceAndItemTable(region))
+                if (ShouldCheckDataInMessageQueuePriceAndItemTable(region))
                 {
                     CheckForUnprocessedRows(region);
                 }
@@ -62,7 +62,7 @@
         }
 
         private void CheckForUnprocessedRows(string region)
-        {
+        {  //check Message Queue Price
             int numberOfUnprocessedMessageQueuePriceRows = CheckMessageQueuePriceTableForUnprocessedRows(region);
             if (numberOfUnprocessedMessageQueuePriceRows > 0)
             {
@@ -72,20 +72,19 @@
                                 { "Number of unprocessed Message Queue Price Rows: ", numberOfUnprocessedMessageQueuePriceRows.ToString() }
                              });
             }
-            else
-            { // only if there are no unprocessed rows in price table, we will check item locale
-                int numberOfUnprocessedMessageQueueItemLocaleRows = CheckMessageQueueItemLocaleForUnprocessedRows(region);
-                if (numberOfUnprocessedMessageQueueItemLocaleRows > 0)
-                {
-                    TriggerPagerDutyIncident(APIControllerRunningSlow,
-                                 new Dictionary<string, string>()
-                                 {
+           //check item locale
+            int numberOfUnprocessedMessageQueueItemLocaleRows = CheckMessageQueueItemLocaleForUnprocessedRows(region);
+            if (numberOfUnprocessedMessageQueueItemLocaleRows > 0)
+            {
+                TriggerPagerDutyIncident(APIControllerRunningSlow,
+                             new Dictionary<string, string>()
+                             {
                                 { "Number of unprocessed Item Locale Queue Price Rows: ", numberOfUnprocessedMessageQueueItemLocaleRows.ToString() }
-                                 });
-                }
+                             });
+
             }
         }
-        private bool shouldCheckDataInMessageQueuePriceAndItemTable(string regionCode)
+        private bool ShouldCheckDataInMessageQueuePriceAndItemTable(string regionCode)
         {
             DayOfWeek blackOutDay;
             LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.Now).TimeOfDay;
@@ -93,17 +92,17 @@
             {
                 blackOutDay = DayOfWeek.Sunday;
             }
-           
-            if ((currentTime.LocalDateTime.TimeOfDay> settings.ApiControllerMonitorBlackoutStart && currentTime.LocalDateTime.TimeOfDay < settings.ApiControllerMonitorBlackoutEnd) && DateTime.Now.DayOfWeek == blackOutDay)
+
+            if ((currentTime.LocalDateTime.TimeOfDay > settings.ApiControllerMonitorBlackoutStart && currentTime.LocalDateTime.TimeOfDay < settings.ApiControllerMonitorBlackoutEnd) && DateTime.Now.DayOfWeek == blackOutDay)
             {
                 return false;
             }
 
             TimeSpan configuredInterval = TimeSpan.FromMilliseconds(0);
-       
+
             LocalTime openTime = GetConfiguredOpenTimeByRegion(regionCode);
             long numberOfMinutes = settings.NumberOfMinutesBeforeStoreOpens;
-         
+
             settings.MonitorTimers.TryGetValue(this.GetType().Name + "Timer", out configuredInterval);
             // Example: current time 5 a.m, store open time 3 a.m..then only run check for unprocessed rows between 3 and 3:15-assuming job runs every 15 min)
             if (openTime.PlusMinutes(0 - numberOfMinutes) < currentTime && openTime.PlusMinutes(0 - numberOfMinutes + configuredInterval.Minutes) > currentTime)

@@ -366,35 +366,7 @@ namespace Icon.Monitoring.Tests.Monitors
 
             mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutDay).Returns("Wednesday");
         }
-        [TestMethod]
-        public void GetApiMessageUnprocessedRowCountQuery()
-        {
-            this.mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
-            this.mockMessageQueueQuery = new Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageQueueIdParameters, int>>();
-            this.mockMessageUnprocessedRowCountQuery = new Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageUnprocessedRowCountParameters, int>>();
-            this.fakeClock = new FakeClock(Instant.FromDateTimeUtc(DateTime.UtcNow));
-            this.dateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
-            this.mockSettings = new Mock<IMonitorSettings>();
-            this.db = new SqlDbProvider();
-            this.db.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
-            GetApiMessageUnprocessedRowCountQuery mockGetApiMessageUnprocessedRowCountQueryHandler = new GetApiMessageUnprocessedRowCountQuery(db);
-            this.db.Connection.Open();
-            this.apiControllerMonitor = new ApiControllerMonitor(
-                this.mockSettings.Object,
-                this.mockMessageQueueQuery.Object,
-              mockGetApiMessageUnprocessedRowCountQueryHandler,
-                this.mockPagerDutyTrigger.Object,
-                   this.dateTimeZoneProvider,
-                this.fakeClock,
-                new Mock<ILogger>().Object);
-
-            SetUpApiControllerMonitorSettings();
-            apiControllerMonitor.CheckStatusAndNotify();
-
-        }
-
-
-
+      
         [TestMethod]
         public void NumberOfUnprocessedPriceQueueRowsGreaterThanZero_ShouldSendPagerDutyAlert()
         {
