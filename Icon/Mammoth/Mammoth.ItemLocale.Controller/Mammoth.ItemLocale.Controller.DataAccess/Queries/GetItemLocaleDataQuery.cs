@@ -56,7 +56,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Queries
 	                            COALESCE(ovo.Origin_Name, oo.Origin_Name)	as Origin,
 	                            i.Product_Code				as ProductCode,
 	                            p.Restricted_Hours			as RestrictedHours,
-	                            COALESCE(ovu.Unit_Name, iu.Unit_Name)		as RetailUnit,
+	                            COALESCE(uiu.Unit_Name, ovu.Unit_Name, iu.Unit_Name)		as RetailUnit,
                                 COALESCE(soe.ExtraText,sce.ExtraText,iet.ExtraText)		as ScaleExtraText,
 	                            sa.SignRomanceTextLong		as SignRomanceLong,
 	                            sa.SignRomanceTextShort		as SignRomanceShort,
@@ -100,6 +100,9 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Queries
                                                                         AND lsc.Default_Identifier = 1
                                 LEFT JOIN ItemNutrition             nut  ON  nut.ItemKey=ii.Item_Key
                                 LEFT JOIN Item_ExtraText            iet ON  iet.Item_ExtraText_ID = nut.Item_ExtraText_ID
+                                LEFT JOIN ItemUomOverride           iuo ON  iuo.Item_Key = i.Item_Key
+                                                                        AND iuo.Store_No = s.Store_No
+	                            LEFT JOIN ItemUnit					uiu	on	iuo.Retail_Unit_ID	= uiu.Unit_ID 
                             WHERE
 	                            q.InProcessBy = @JobInstance
                                 AND q.Store_No IS NOT NULL
@@ -139,7 +142,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Queries
 	                            COALESCE(ovo.Origin_Name, oo.Origin_Name)	as Origin,
 	                            i.Product_Code				as ProductCode,
 	                            p.Restricted_Hours			as RestrictedHours,
-	                            COALESCE(ovu.Unit_Name, iu.Unit_Name)		as RetailUnit,
+	                            COALESCE(uiu.Unit_Name, ovu.Unit_Name, iu.Unit_Name)		as RetailUnit,
                                 COALESCE(soe.ExtraText,sce.ExtraText,iet.ExtraText)		as ScaleExtraText,
 	                            sa.SignRomanceTextLong		as SignRomanceLong,
 	                            sa.SignRomanceTextShort		as SignRomanceShort,
@@ -182,6 +185,9 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Queries
                                                                         AND lsc.Default_Identifier = 1
                                 LEFT JOIN ItemNutrition             nut  ON  nut.ItemKey=ii.Item_Key
                                 LEFT JOIN Item_ExtraText            iet ON  iet.Item_ExtraText_ID = nut.Item_ExtraText_ID
+                                LEFT JOIN ItemUomOverride           iuo ON  iuo.Item_Key = i.Item_Key
+                                                                        AND iuo.Store_No = s.Store_No
+	                            LEFT JOIN ItemUnit					uiu	on	iuo.Retail_Unit_ID	= uiu.Unit_ID 
                             WHERE
 	                            q.InProcessBy = @JobInstance
                                 AND (s.WFM_Store = 1 OR s.Mega_Store = 1 )
