@@ -133,6 +133,22 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
         }
 
         [TestMethod]
+        public void HandleMessage_FinancialHierarchy_ShouldAddOrUpdateFinancialHierarchyClass()
+        {
+            //Given
+            var messageText = File.ReadAllText(@"TestMessages/FinancialTestMessage.xml");
+            var expectedHierarchyClassId = 1000000;
+            var expectedHierarchyClassName = "Spa Sales (3750)";
+            var expectedTraits = new Dictionary<int, string>
+            {
+                { Traits.PosDepartmentNumber, "206" }
+            };
+
+            //When
+            RunHandleMessageTestForAddOrUpdates(messageText, expectedHierarchyClassId, expectedHierarchyClassName, expectedTraits, false);
+        }
+
+        [TestMethod]
         public void HandleMessage_FailedInforNationalHierarchyMessage_ShouldAddOrUpdateNationalHierarchyClass()
         {
             //Given
@@ -167,7 +183,27 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
             RunHandleMessageTestForDeletes(messageText, hierarchyClassId, hierarchyId, hierarchyClassName, hierarchyClassLevel, hierarchyParentClassId, hierarchyClassTraits);
         }
 
-        private void RunHandleMessageTestForAddOrUpdates(string messageText, int expectedHierarchyClassId, string expectedHierarchyClassName, Dictionary<int, string> expectedTraits)
+
+        [TestMethod]
+        public void HandleMessage_DeleteFinancial_ShouldDeleteFinancialAndTrait()
+        {
+            //Given
+            var messageText = File.ReadAllText(@"TestMessages/DeleteFinancialTestMessage.xml");
+            var hierarchyClassId = 1000000;
+            var hierarchyId = Hierarchies.Financial;
+            var hierarchyClassName = "Spa Sales (3750)";
+            var hierarchyClassLevel = 1;
+            int? hierarchyParentClassId = null;
+            var hierarchyClassTraits = new Dictionary<int, string>
+            {
+                  { Traits.PosDepartmentNumber, "206" }
+            };
+
+            //When
+            RunHandleMessageTestForDeletes(messageText, hierarchyClassId, hierarchyId, hierarchyClassName, hierarchyClassLevel, hierarchyParentClassId, hierarchyClassTraits, false);
+        }
+        // optional parameter commit data. Set it to true if you want to update all changes and save them in database. 
+        private void RunHandleMessageTestForAddOrUpdates(string messageText, int expectedHierarchyClassId, string expectedHierarchyClassName, Dictionary<int, string> expectedTraits, Boolean commitData = false)
         {
             //Given
             using (IconContext context = new IconContext())
@@ -202,13 +238,21 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
 
                     var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == expectedHierarchyClassId);
                     Assert.IsNotNull(messageHierarchyArchive);
+                    // just for testing.by default this flag will be false so that transaction will be rolled back.
+                    if (commitData)
+                    {
+                        transaction.Commit();
+                    }
+                    else
+                    {
+                        transaction.Rollback();
+                    }
 
-                    transaction.Rollback();
                 }
             }
         }
 
-        private void RunHandleMessageTestForDeletes(string messageText, int hierarchyClassId, int hierarchyId, string hierarchyClassName, int hierarchyClassLevel, int? hierarchyParentClassId, Dictionary<int, string> hierarchyClassTraits)
+        private void RunHandleMessageTestForDeletes(string messageText, int hierarchyClassId, int hierarchyId, string hierarchyClassName, int hierarchyClassLevel, int? hierarchyParentClassId, Dictionary<int, string> hierarchyClassTraits, Boolean commitData = false)
         {
             //Given
             using (IconContext context = new IconContext())
@@ -269,8 +313,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
 
                     var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == hierarchyClassId);
                     Assert.IsNotNull(messageHierarchyArchive);
-
-                    transaction.Rollback();
+                    if (commitData)
+                    {
+                        transaction.Commit();
+                    }
+                    else
+                    {
+                        transaction.Rollback();
+                    }
                 }
             }
         }

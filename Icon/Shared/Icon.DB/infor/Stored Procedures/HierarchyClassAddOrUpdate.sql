@@ -25,6 +25,8 @@ BEGIN
 		VALUES (Source.HierarchyClassID, Source.hierarchyLevel, Source.HierarchyId, Source.ParentHierarchyClassId, Source.HierarchyClassName);
 	
 	SET IDENTITY_INSERT dbo.HierarchyClass OFF
+	
+
 
 	MERGE dbo.HierarchyClassTrait AS Target
 	USING @hierarchyClassTraits AS Source
@@ -42,6 +44,29 @@ BEGIN
 			@brandHierarchyId INT		= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Brands'),
 			@financialHierarchyId INT	= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Financial'),
 			@merchHierarchyId INT		= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Merchandise')
+
+  -- add the trait for FIN 
+	IF EXISTS(SELECT 1 FROM @hierarchyClasses WHERE [HierarchyId] = @financialHierarchyId)
+	BEGIN
+			DECLARE @FinTraitId INT
+			SELECT TOP 1 @FinTraitId = TraitID FROM dbo.Trait WHERE TraitCode = 'FIN'
+			-- insert only if record does not exist for Trait code fin
+			INSERT INTO dbo.HierarchyClassTrait
+			(
+				 [traitID]
+				,[hierarchyClassID]
+				,[uomID]
+				,[traitValue]
+			)
+			SELECT  @FinTraitId,
+					HierarchyClassID,
+					null,
+					SUBSTRING(HierarchyClassName,CHARINDEX('(',HierarchyClassName)+1 ,CHARINDEX(')',HierarchyClassName)-CHARINDEX('(',HierarchyClassName)-1) 
+					FROM @hierarchyClasses
+				    WHERE [HierarchyId] = @financialHierarchyId
+			        AND HierarchyClassID NOT IN(  SELECT HierarchyClassID FROM dbo.HierarchyClassTrait WHERE traitid = @FinTraitId)
+	END
+
 
 	INSERT INTO app.EventQueue(EventId, EventMessage, EventReferenceId, RegionCode)
 	SELECT 

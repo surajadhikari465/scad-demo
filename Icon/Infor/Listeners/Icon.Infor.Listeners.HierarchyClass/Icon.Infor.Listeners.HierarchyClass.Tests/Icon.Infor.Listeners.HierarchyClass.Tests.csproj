@@ -167,6 +167,7 @@
     <Content Include="TestMessages\DeleteBrandTestMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestMessages\DeleteFinancialTestMessage.xml" />
     <Content Include="TestMessages\FailedInforHierarchyMessage.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -179,13 +180,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestMessages\FinancialTestMessage.xml" />
     <Content Include="TestMessages\InforMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
