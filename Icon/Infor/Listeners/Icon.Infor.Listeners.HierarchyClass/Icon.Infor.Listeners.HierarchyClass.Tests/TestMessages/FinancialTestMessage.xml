@@ -5,7 +5,7 @@
     <hpt:itemsAttached>1</hpt:itemsAttached>
   </prototype>
   <class p3:Action="AddOrUpdate">
-    <hcl:id>1000000</hcl:id>
+    <hcl:id>3750</hcl:id>
     <hcl:name>Spa Sales (3750)</hcl:name>
     <hcl:parentId>0</hcl:parentId>
     <hcl:traits>

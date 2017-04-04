@@ -201,6 +201,7 @@
     </Content>
     <Content Include="TestMessages\BrandTestMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="TestMessages\IntegrationBrandMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

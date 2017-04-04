@@ -61,7 +61,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
             var expectedHierarchyClassName = "Test Brand For Infor";
             var expectedTraits = new Dictionary<int, string>
             {
-                { Traits.BrandAbbreviation, "TST B ABR" }
+                { Traits.BrandAbbreviation, "BNTS" }
             };
 
             //When
@@ -137,7 +137,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
         {
             //Given
             var messageText = File.ReadAllText(@"TestMessages/FinancialTestMessage.xml");
-            var expectedHierarchyClassId = 1000000;
+            var expectedHierarchyClassId = 3750;
             var expectedHierarchyClassName = "Spa Sales (3750)";
             var expectedTraits = new Dictionary<int, string>
             {
@@ -145,7 +145,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
             };
 
             //When
-            RunHandleMessageTestForAddOrUpdates(messageText, expectedHierarchyClassId, expectedHierarchyClassName, expectedTraits, false);
+            RunHandleMessageTestForAddOrUpdates(messageText, expectedHierarchyClassId, expectedHierarchyClassName, expectedTraits,true, true);
         }
 
         [TestMethod]
@@ -189,7 +189,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
         {
             //Given
             var messageText = File.ReadAllText(@"TestMessages/DeleteFinancialTestMessage.xml");
-            var hierarchyClassId = 1000000;
+            var hierarchyClassId = 3750;
             var hierarchyId = Hierarchies.Financial;
             var hierarchyClassName = "Spa Sales (3750)";
             var hierarchyClassLevel = 1;
@@ -200,10 +200,10 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
             };
 
             //When
-            RunHandleMessageTestForDeletes(messageText, hierarchyClassId, hierarchyId, hierarchyClassName, hierarchyClassLevel, hierarchyParentClassId, hierarchyClassTraits, false);
+            RunHandleMessageTestForDeletes(messageText, hierarchyClassId, hierarchyId, hierarchyClassName, hierarchyClassLevel, hierarchyParentClassId, hierarchyClassTraits, true, true);
         }
         // optional parameter commit data. Set it to true if you want to update all changes and save them in database. 
-        private void RunHandleMessageTestForAddOrUpdates(string messageText, int expectedHierarchyClassId, string expectedHierarchyClassName, Dictionary<int, string> expectedTraits, Boolean commitData = false)
+        private void RunHandleMessageTestForAddOrUpdates(string messageText, int expectedHierarchyClassId, string expectedHierarchyClassName, Dictionary<int, string> expectedTraits, Boolean isfinancialHierarchy = false, Boolean commitData = false)
         {
             //Given
             using (IconContext context = new IconContext())
@@ -227,17 +227,31 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                     var listener = container.GetInstance<IListenerApplication>() as HierarchyClassListener;
                     listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
 
+                    Framework.HierarchyClass hierarchyClass;
                     //Then
-                    var hierarchyClass = context.HierarchyClass.SingleOrDefault(hc => hc.hierarchyClassID == expectedHierarchyClassId);
-                    Assert.IsNotNull(hierarchyClass);
-                    Assert.AreEqual(expectedHierarchyClassName, hierarchyClass.hierarchyClassName);
+                    if (!isfinancialHierarchy)
+                    {
+                        hierarchyClass = context.HierarchyClass.SingleOrDefault(hc => hc.hierarchyClassID == expectedHierarchyClassId);
+                        Assert.IsNotNull(hierarchyClass);
+                        Assert.AreEqual(expectedHierarchyClassName, hierarchyClass.hierarchyClassName);
+                    }
+                    else
+                    {
+                        hierarchyClass = context.HierarchyClass.SingleOrDefault(hc => hc.hierarchyClassName == expectedHierarchyClassName);
+
+                    }
                     foreach (var trait in expectedTraits)
                     {
                         Assert.AreEqual(trait.Value, hierarchyClass.HierarchyClassTrait.First(hct => hct.traitID == trait.Key).traitValue);
                     }
 
-                    var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == expectedHierarchyClassId);
-                    Assert.IsNotNull(messageHierarchyArchive);
+                    if (!isfinancialHierarchy)
+                    {
+                        var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == expectedHierarchyClassId);
+                        Assert.IsNotNull(messageHierarchyArchive);
+                    }
+                  
+                 
                     // just for testing.by default this flag will be false so that transaction will be rolled back.
                     if (commitData)
                     {
@@ -252,14 +266,15 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
             }
         }
 
-        private void RunHandleMessageTestForDeletes(string messageText, int hierarchyClassId, int hierarchyId, string hierarchyClassName, int hierarchyClassLevel, int? hierarchyParentClassId, Dictionary<int, string> hierarchyClassTraits, Boolean commitData = false)
+        private void RunHandleMessageTestForDeletes(string messageText, int hierarchyClassId, int hierarchyId, string hierarchyClassName, int hierarchyClassLevel, int? hierarchyParentClassId, Dictionary<int, string> hierarchyClassTraits, Boolean isfinancialHierarchy = false,Boolean commitData = false)
         {
+            int passedHierarchyClassId = hierarchyClassId;
             //Given
             using (IconContext context = new IconContext())
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
-                    if (!context.HierarchyClass.Any(hc => hc.hierarchyClassID == hierarchyClassId))
+                    if ((!isfinancialHierarchy && !context.HierarchyClass.Any(hc => hc.hierarchyClassID == hierarchyClassId)) || (isfinancialHierarchy && !context.HierarchyClass.Any(hc => hc.hierarchyClassName == hierarchyClassName && hc.hierarchyID == Hierarchies.Financial)))
                     {
                         context.Database.ExecuteSqlCommand(
                             @"SET IDENTITY_INSERT dbo.HierarchyClass ON
@@ -274,8 +289,17 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                             new SqlParameter("hierarchyLevel", SqlDbType.Int) { Value = hierarchyClassLevel },
                             new SqlParameter("hierarchyParentClassID", SqlDbType.Int) { Value = hierarchyParentClassId.HasValue ? (object)hierarchyParentClassId.Value : DBNull.Value });
                     }
-
-                    var hierarchyClass = context.HierarchyClass.First(hc => hc.hierarchyClassID == hierarchyClassId);
+                    Framework.HierarchyClass hierarchyClass;
+                    if (!isfinancialHierarchy)
+                    {
+                        hierarchyClass = context.HierarchyClass.First(hc => hc.hierarchyClassID == hierarchyClassId);
+                    }
+                    else
+                    {
+                        hierarchyClass = context.HierarchyClass.First(hc => hc.hierarchyClassName == hierarchyClassName && hc.hierarchyID == Hierarchies.Financial);
+                        hierarchyClassId = hierarchyClass.hierarchyClassID;
+                    }
+                   
                     foreach (var trait in hierarchyClassTraits)
                     {
                         if (!hierarchyClass.HierarchyClassTrait.Any(hct => hct.hierarchyClassID == hierarchyClassId && hct.traitID == trait.Key))
@@ -310,9 +334,18 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                     //Then
                     Assert.IsFalse(context.HierarchyClass.Any(hc => hc.hierarchyClassID == hierarchyClassId));
                     Assert.IsFalse(context.HierarchyClassTrait.Any(hct => hct.hierarchyClassID == hierarchyClassId));
+                    if(!isfinancialHierarchy)
+                    {
+                        var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == hierarchyClassId);
+                        Assert.IsNotNull(messageHierarchyArchive);
+                    }
+                    else
+                    {
+                        var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == passedHierarchyClassId);
+                        Assert.IsNotNull(messageHierarchyArchive);
 
-                    var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == hierarchyClassId);
-                    Assert.IsNotNull(messageHierarchyArchive);
+                    }
+                  
                     if (commitData)
                     {
                         transaction.Commit();
