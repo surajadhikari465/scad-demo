@@ -1,0 +1,62 @@
+﻿<items xmlns:iea="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:icr="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ama="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:lcy="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:psg="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:ici="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:itp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:pry="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+  <item>
+    <id>2308979</id>
+    <base>
+      <ibi:type>
+        <itp:code>RTL</itp:code>
+        <itp:description>Retail Sale</itp:description>
+      </ibi:type>
+    </base>
+    <locale crf:Action="Replace">
+      <lcl:id>10352</lcl:id>
+      <lcl:name>Pompano Beach</lcl:name>
+      <lcl:type>
+        <lcy:code>STR</lcy:code>
+        <lcy:description>Store</lcy:description>
+      </lcl:type>
+      <lcl:storeItemAttributes>
+        <isa:scanCode>
+          <sis:code>85815900294</sis:code>
+          <sis:typeId>1</sis:typeId>
+          <sis:typeDescription>UPC</sis:typeDescription>
+        </isa:scanCode>
+        <isa:prices>
+          <prc:price crf:Action="Add">
+            <prc:gpmId>0415f02a-4485-4558-bedc-44eb3c7374d3</prc:gpmId>
+            <prc:type>
+              <pry:id>TPR</pry:id>
+              <pry:description>Temprary Price Reduction</pry:description>
+              <pry:type>
+                <pry:id>SAL</pry:id>
+                <pry:description>Special Sale</pry:description>
+              </pry:type>
+            </prc:type>
+            <prc:uom>
+              <uom:code>EA</uom:code>
+              <uom:name>EACH</uom:name>
+            </prc:uom>
+            <prc:currencyTypeCode>USD</prc:currencyTypeCode>
+            <prc:priceAmount>
+              <ama:amount>12.99</ama:amount>
+            </prc:priceAmount>
+            <prc:priceMultiple>1</prc:priceMultiple>
+            <prc:priceStartDate>2017-04-01T00:00:00</prc:priceStartDate>
+            <prc:priceEndDate>2017-04-30T23:59:59.997</prc:priceEndDate>
+            <tra:trait>
+              <tra:code>NTE</tra:code>
+              <tra:type>
+                <trt:description>NewTagExpiration</trt:description>
+                <trt:value>
+                  <trv:value>2018-03-21T00:00:00</trv:value>
+                </trt:value>
+              </tra:type>
+            </tra:trait>
+          </prc:price>
+          <prc:price crf:Action="Delete">
+            <prc:gpmId>1c76d92b-5687-4634-960c-b151981d411c</prc:gpmId>
+          </prc:price>
+        </isa:prices>
+      </lcl:storeItemAttributes>
+    </locale>
+  </item>
+</items>
