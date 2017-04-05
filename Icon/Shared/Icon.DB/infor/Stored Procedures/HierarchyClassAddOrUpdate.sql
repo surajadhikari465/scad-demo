@@ -33,11 +33,9 @@ BEGIN
 		VALUES (Source.HierarchyClassID, Source.hierarchyLevel, Source.HierarchyId, Source.ParentHierarchyClassId, Source.HierarchyClassName);
 	
 	SET IDENTITY_INSERT dbo.HierarchyClass OFF
-	
-
 
 	MERGE dbo.HierarchyClassTrait AS Target
-	USING (SELECT * FROM @hierarchyClassTraits WHERE HierarchyClassId NOT IN ( SELECT hierarchyClassID FROM @hierarchyClasses WHERE [HierarchyId] != @financialHierarchyId )) AS Source
+	USING (SELECT * FROM @hierarchyClassTraits WHERE HierarchyClassId IN (SELECT hierarchyClassID FROM @hierarchyClasses WHERE [HierarchyId] != @financialHierarchyId )) AS Source
 	ON Target.hierarchyClassID = Source.HierarchyClassId
 		AND Target.traitID = Source.TraitId
 	WHEN MATCHED THEN

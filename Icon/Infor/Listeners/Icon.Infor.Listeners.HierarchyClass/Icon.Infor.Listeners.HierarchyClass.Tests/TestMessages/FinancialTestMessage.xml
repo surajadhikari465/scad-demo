@@ -5,8 +5,8 @@
     <hpt:itemsAttached>1</hpt:itemsAttached>
   </prototype>
   <class p3:Action="AddOrUpdate">
-    <hcl:id>3750</hcl:id>
-    <hcl:name>Spa Sales (3750)</hcl:name>
+    <hcl:id>8888</hcl:id>
+    <hcl:name>Spa Test (8888)</hcl:name>
     <hcl:parentId>0</hcl:parentId>
     <hcl:traits>
       <p3:trait>
