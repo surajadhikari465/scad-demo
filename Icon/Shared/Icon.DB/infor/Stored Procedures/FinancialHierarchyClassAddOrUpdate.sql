@@ -67,7 +67,7 @@ BEGIN
 		   null,
 		   TraitValue
 	FROM #tmpTrait
-	WHERE NOT EXISTS (SELECT * FROM dbo.HierarchyClassTrait  WHERE  hierarchyClassID =  #tmpTrait.InsertedHierarchyClassID AND TraitId =  #tmpTrait.TraitId )
+	WHERE NOT EXISTS (SELECT * FROM dbo.HierarchyClassTrait WHERE hierarchyClassID = #tmpTrait.InsertedHierarchyClassID AND TraitId = #tmpTrait.TraitId)
 
 	DECLARE @finTraitId INT
 	SELECT TOP 1 @finTraitId = TraitID FROM dbo.Trait WHERE TraitCode = 'FIN'
