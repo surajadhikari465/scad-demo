@@ -60,6 +60,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         [TestCleanup]
         public void CleanupTest()
         {
+            this.db.Connection.Execute($"DELETE FROM Locales_{this.region} WHERE BusinessUnitID = 1", this.db.Transaction);
             this.db.Connection.Execute("DELETE FROM stage.Price WHERE TransactionId = @TranId", new { TranId = this.transactionId }, this.db.Transaction);
             this.db.Connection.Execute($@"SELECT ItemID
                                         INTO #itemsToDelete

@@ -3,29 +3,48 @@ AS
 BEGIN
 	-- Archive MessageQueue entries from the previous day.
 	DECLARE 
-		@FailedMessageStatusId int = (select MessageStatusId from app.MessageStatus where MessageStatusName = 'Failed'),
-		@ReadyMessageStatusId int = (select MessageStatusId from app.MessageStatus where MessageStatusName = 'Ready')
+		@ReadyMessageStatusId INT = (SELECT MessageStatusId FROM app.MessageStatus WHERE MessageStatusName = 'Ready'),
+		@Today DATETIME = DATEADD(DAY, 0, DATEDIFF(DAY, 0, GETDATE())),
+		@TotalDeletedCount INT = 0,
+		@Count INT = 1;
+		
+	PRINT 'Moving rows to app.MessageQueueItemLocalArchive table at: ' + CONVERT(nvarchar, GETDATE(), 121)
+	WHILE @Count > 0
+	BEGIN
+		DELETE TOP (20000)
+			app.MessageQueueItemLocale
+		OUTPUT
+			deleted.* INTO app.MessageQueueItemLocaleArchive
+		WHERE
+			InsertDate < @Today
+			and MessageStatusId <> (@ReadyMessageStatusId)
 
-	PRINT 'Moving rows to app.MessageQueueItemLocalArchive table...'
-	DELETE
-		app.MessageQueueItemLocale
-	OUTPUT
-		deleted.* INTO app.MessageQueueItemLocaleArchive
-	WHERE
-		InsertDate < cast(getdate() as date)
-		and MessageStatusId not in (@FailedMessageStatusId, @ReadyMessageStatusId);
+		SET @Count = @@ROWCOUNT
+		SET @TotalDeletedCount += @Count
+	END
+	PRINT 'Deleted ' + CAST(@TotalDeletedCount AS NVARCHAR) + ' rows from app.MessageQueueItemLocale table.';
 
-	PRINT 'Moving rows to app.MessageQueuePriceArchive table...'
-	DELETE
-		app.MessageQueuePrice
-	OUTPUT
-		deleted.* INTO app.MessageQueuePriceArchive
-	WHERE
-		InsertDate < cast(getdate() as date)
-		and MessageStatusId not in (@FailedMessageStatusId, @ReadyMessageStatusId);
+	SET @Count = 1;
+	SET @TotalDeletedCount = 0;
+	PRINT 'Moving rows to app.MessageQueuePriceArchive table at: ' + CONVERT(nvarchar, GETDATE(), 121)
+	WHILE @Count > 0
+	BEGIN
+		DELETE TOP (20000)
+			app.MessageQueuePrice
+		OUTPUT
+			deleted.* INTO app.MessageQueuePriceArchive
+		WHERE
+			InsertDate < @Today
+			and MessageStatusId <> (@ReadyMessageStatusId);
+
+		SET @Count = @@ROWCOUNT
+		SET @TotalDeletedCount += @Count
+	END
+	PRINT 'Deleted ' + CAST(@TotalDeletedCount AS NVARCHAR) + ' rows from app.MessageQueuePrice table.';
+	PRINT 'Finished archiving Message Queue tables.';
 
 	-- Execute Delete commands based on RetentionPolicy table.
-	IF OBJECT_ID('tempdb..#DeteleCommands') IS NOT NULL
+	IF OBJECT_ID('tempdb..#DeleteCommands') IS NOT NULL
 		BEGIN
 			DROP TABLE #DeleteCommands
 		END
@@ -38,6 +57,7 @@ BEGIN
 	SELECT
 		'
 			declare @count int = 20000
+			declare @deletedCount int = 0
 
 			while (@count > 0)
 				begin
@@ -52,7 +72,9 @@ BEGIN
 					', GETDATE())
 
 					set @count = @@rowcount
+					set @deletedCount += @count
 				end
+			PRINT ''Deleted '' + CAST(@deletedCount AS NVARCHAR) + '' rows''
 		'      
 	FROM
 		app.RetentionPolicy rp

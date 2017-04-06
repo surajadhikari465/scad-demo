@@ -112,6 +112,52 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             Assert.IsTrue(this.command.BrandId == actual.Brand_ID);
         }
 
+        [TestMethod]
+        public void AddOrUpdateBrand_IrmaBrandExistsButIsNotValidated_ValidatesTheIrmaBrand()
+        {
+            //Given
+            ItemBrand brand = new ItemBrand { Brand_Name = "Test Brand GloCon" };
+            context.ItemBrand.Add(brand);
+            context.SaveChanges();
+
+            this.command.IconBrandId = 4000000;
+            this.command.BrandName = brand.Brand_Name;
+            this.command.Region = "FL";
+
+            //When
+            this.handler.Handle(this.command);
+
+            //Then
+            Assert.IsNotNull(context.ItemBrand.SingleOrDefault(ib => ib.Brand_Name == brand.Brand_Name));
+            Assert.IsNotNull(context.ValidatedBrand.SingleOrDefault(vb => vb.IconBrandId == command.IconBrandId.Value));
+        }
+
+        [TestMethod]
+        public void AddOrUpdateBrand_IrmaBrandExistsButIsAssociatedToDifferentValidatedBrand_DeletesOldAssociationAndAddsNewAssociation()
+        {
+            //Given
+            ItemBrand brand = new ItemBrand
+            {
+                Brand_Name = "Test Brand GloCon"
+            };
+            context.ItemBrand.Add(brand);
+            context.SaveChanges();
+            context.ValidatedBrand.Add(new ValidatedBrand { IconBrandId = 4000000, ItemBrand = brand });
+            context.SaveChanges();
+
+            this.command.IconBrandId = 4000001;
+            this.command.BrandName = brand.Brand_Name;
+            this.command.Region = "FL";
+
+            //When
+            this.handler.Handle(this.command);
+
+            //Then
+            Assert.IsNotNull(context.ItemBrand.SingleOrDefault(ib => ib.Brand_Name == brand.Brand_Name));
+            Assert.IsNotNull(context.ValidatedBrand.SingleOrDefault(vb => vb.IconBrandId == command.IconBrandId.Value));
+            Assert.IsNull(context.ValidatedBrand.SingleOrDefault(vb => vb.IconBrandId == 4000000));
+        }
+
         private ValidatedBrand GetValidatedBrand()
         {
             // Given

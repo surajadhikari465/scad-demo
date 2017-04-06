@@ -7,4 +7,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[PSNumber]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="04b93d8a-6ce8-4600-8d1e-87f68ab4cf64" ChangeDateTime="03/25/2017 04:43:42">
+    <Property Name="ElementName" Value="[gpm].[MessageArchivePrice].[AddedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageArchivePrice]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDate" />
+  </Operation>
 </Operations>
