@@ -11,7 +11,7 @@ BEGIN
 		   hc.HierarchyId as [HierarchyId], 
 		   ParentHierarchyClassId, 
 		   HierarchyClassName,
-		   [dbo].[ExtractFinFromHierarchyClassName](HierarchyClassName)  AS Fin
+		   [dbo].[ExtractPsSubTeamNumberFromSubTeamName](HierarchyClassName)  AS Fin
 	INTO #tmpClass
 	FROM @hierarchyClasses hc
 	JOIN dbo.HierarchyPrototype hp on hc.HierarchyLevelName = hp.HierarchyLevelName
@@ -21,7 +21,7 @@ BEGIN
 	UPDATE dbo.HierarchyClass
 	SET HierarchyClassName =  tmpClass.HierarchyClassName
 	FROM #tmpClass tmpClass
-	WHERE [dbo].[ExtractFinFromHierarchyClassName](dbo.HierarchyClass.HierarchyClassName) = tmpClass.Fin
+	WHERE [dbo].[ExtractPsSubTeamNumberFromSubTeamName](dbo.HierarchyClass.HierarchyClassName) = tmpClass.Fin
 
 	--If not match found then insert into HierarchyClass table from #tmpClass Table
 	INSERT INTO dbo.HierarchyClass
@@ -32,11 +32,11 @@ BEGIN
 			  hierarchyClassName
 			)
 	SELECT hierarchyLevel, 
-		  [HierarchyId],
-		  ParentHierarchyClassId,
-		  HierarchyClassName  
+		   [HierarchyId],
+		   ParentHierarchyClassId,
+		   HierarchyClassName  
 	FROM #tmpClass
-	WHERE #tmpClass.Fin NOT IN (SELECT [dbo].[ExtractFinFromHierarchyClassName](HierarchyClassName)
+	WHERE #tmpClass.Fin NOT IN (SELECT [dbo].[ExtractPsSubTeamNumberFromSubTeamName](HierarchyClassName)
 								  FROM dbo.HierarchyClass)
 
 	SELECT hct.HierarchyClassID AS PassedHierarchyClassID, 
@@ -45,7 +45,7 @@ BEGIN
 		   hc.hierarchyClassID AS InsertedHierarchyClassID
 	INTO #tmpTrait 
 	FROM @hierarchyClassTraits hct  INNER JOIN dbo.HierarchyClass hc
-	ON  hct.HierarchyClassId = [dbo].[ExtractFinFromHierarchyClassName](hc.HierarchyClassName)
+	ON  hct.HierarchyClassId = [dbo].[ExtractPsSubTeamNumberFromSubTeamName](hc.HierarchyClassName)
 	WHERE hc.HierarchyId = @financialHierarchyId
 
 	UPDATE hct
@@ -90,4 +90,3 @@ BEGIN
 	DROP TABLE #tmpTrait
 	DROP TABLE #tmpClass
 END
-
