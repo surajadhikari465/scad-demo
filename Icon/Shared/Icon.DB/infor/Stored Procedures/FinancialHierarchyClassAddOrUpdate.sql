@@ -4,26 +4,29 @@
 	AS
 BEGIN
 
-	DECLARE @financialHierarchyId INT	= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Financial')
+	DECLARE @financialHierarchyId INT = (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Financial')
+	DECLARE @finTraitId INT = (SELECT TOP 1 TraitID FROM dbo.Trait WHERE TraitCode = 'FIN')
 
-	-- Extract Fin (Trait Code)  for example if it is Spa Sales (3750) extract 3750, put data into temporary table
 	SELECT hierarchyLevel, 
 		   hc.HierarchyId as [HierarchyId], 
 		   ParentHierarchyClassId, 
 		   HierarchyClassName,
-		   [dbo].[ExtractPsSubTeamNumberFromSubTeamName](HierarchyClassName)  AS Fin
-	INTO #tmpClass
+		   hct.hierarchyClassId AS HierarchyClassId
+	INTO #tmpFinancialClass
 	FROM @hierarchyClasses hc
-	JOIN dbo.HierarchyPrototype hp on hc.HierarchyLevelName = hp.HierarchyLevelName
+	JOIN dbo.HierarchyPrototype hp ON hc.HierarchyLevelName = hp.HierarchyLevelName
+	LEFT JOIN dbo.HierarchyClassTrait hct ON CAST(hc.HierarchyClassId AS NVARCHAR(255)) = hct.traitValue 
+											 AND hct.traitID = @finTraitId
 	WHERE hc.HierarchyId = @financialHierarchyId
 
-	-- update class name if we find a match 
+	-- Update class name if we find a match based on HierarchyClassId
 	UPDATE dbo.HierarchyClass
-	SET HierarchyClassName =  tmpClass.HierarchyClassName
-	FROM #tmpClass tmpClass
-	WHERE [dbo].[ExtractPsSubTeamNumberFromSubTeamName](dbo.HierarchyClass.HierarchyClassName) = tmpClass.Fin
+	SET HierarchyClassName =  tmpFinancialClass.HierarchyClassName
+	FROM #tmpFinancialClass tmpFinancialClass
+	WHERE dbo.HierarchyClass.hierarchyClassID = tmpFinancialClass.HierarchyClassId
+	     AND tmpFinancialClass.HierarchyClassId IS NOT NULL
 
-	--If not match found then insert into HierarchyClass table from #tmpClass Table
+	--If not match found then insert into HierarchyClass table from #tmpFinancialClass Table
 	INSERT INTO dbo.HierarchyClass
 			(
 			  hierarchyLevel, 
@@ -35,9 +38,8 @@ BEGIN
 		   [HierarchyId],
 		   ParentHierarchyClassId,
 		   HierarchyClassName  
-	FROM #tmpClass
-	WHERE #tmpClass.Fin NOT IN (SELECT [dbo].[ExtractPsSubTeamNumberFromSubTeamName](HierarchyClassName)
-								  FROM dbo.HierarchyClass)
+	FROM #tmpFinancialClass
+	WHERE #tmpFinancialClass.HierarchyClassId IS NULL
 
 	SELECT hct.HierarchyClassID AS PassedHierarchyClassID, 
 		   TraitId,
@@ -63,14 +65,12 @@ BEGIN
 		traitValue
 	)
 	SELECT InsertedHierarchyClassID , 
-		   TraitId,
-		   null,
+		   TraitId,	
+		   NULL,
 		   TraitValue
 	FROM #tmpTrait
 	WHERE NOT EXISTS (SELECT * FROM dbo.HierarchyClassTrait WHERE hierarchyClassID = #tmpTrait.InsertedHierarchyClassID AND TraitId = #tmpTrait.TraitId)
 
-	DECLARE @finTraitId INT
-	SELECT TOP 1 @finTraitId = TraitID FROM dbo.Trait WHERE TraitCode = 'FIN'
 	-- insert only if record does not exist for Trait code fin
 	INSERT INTO dbo.HierarchyClassTrait
 	(
@@ -82,11 +82,11 @@ BEGIN
 	SELECT  DISTINCT 
 			@finTraitId,
 			InsertedHierarchyClassID ,
-			null,
+			NULL,
 			PassedHierarchyClassID 
 	FROM #tmpTrait
 	WHERE InsertedHierarchyClassID NOT IN (SELECT HierarchyClassID FROM dbo.HierarchyClassTrait WHERE traitid = @FinTraitId)
 	
 	DROP TABLE #tmpTrait
-	DROP TABLE #tmpClass
+	DROP TABLE #tmpFinancialClass
 END
