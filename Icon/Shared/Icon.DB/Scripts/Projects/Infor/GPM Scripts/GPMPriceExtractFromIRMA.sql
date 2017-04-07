@@ -19,12 +19,14 @@ CREATE TABLE #LatestPBD(
 insert into #LatestPBD
 select pbd.Item_Key, pbd.Store_No, s.BusinessUnit_ID, max(pbd.PriceBatchDetailId)
 from [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchDetail] pbd
-join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchHeader] pbh on pbd.PriceBatchHeaderID = pbh.PriceBatchHeaderID and pbh.PriceBatchStatusID = 6
+join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchHeader] pbh on pbd.PriceBatchHeaderID = pbh.PriceBatchHeaderID
 join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[Item] i on i.Item_key = pbd.Item_key
-join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemIdentifier] ii on i.Item_Key = ii.Item_key and ii.Default_Identifier = 1
+join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemIdentifier] ii on i.Item_Key = ii.Item_key 
 join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[Store] s on s.Store_No = pbd.Store_No
 where i.Deleted_Item = 0 and i.Remove_Item = 0
 and ii.Deleted_Identifier = 0 and ii.Remove_Identifier = 0 
+and ii.Default_Identifier = 1
+and pbh.PriceBatchStatusID = 6
 and pbd.Expired = 0 
 and pbd.PriceChgTypeId is Not null
 and (s.WFM_Store = 1 or s.Mega_Store = 1)
@@ -55,9 +57,10 @@ CREATE TABLE #FuturePBD(
 insert into #FuturePBD
 select pbd.Item_Key, pbd.Store_No,lpbd.BusinessUnit_ID, pbd.PriceBatchDetailId
 from [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchDetail] pbd
-join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchHeader] pbh on pbd.PriceBatchHeaderID = pbh.PriceBatchHeaderID and pbh.PriceBatchStatusID = 6
+join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchHeader] pbh on pbd.PriceBatchHeaderID = pbh.PriceBatchHeaderID
 join #LatestPBD lpbd on lpbd.Item_key = pbd.Item_key and lpbd.Store_No = pbd.Store_No
 where pbd.Expired = 0 
+and pbh.PriceBatchStatusID = 6
 and pbd.PriceChgTypeId is Not null
 and pbd.PriceBatchDetailID > lpbd.PriceBatchDetailId
 and pbd.StartDate > @today
@@ -70,24 +73,58 @@ from #FuturePBD
 
 --select * from #LatestPBD
 
-select sc.ItemId as 'Item ID', ii.Identifier as 'Scan Code', pbd.Price as Price, 'REG' as 'Price Type', case when pbd.Sale_End_Date is null then pbd.StartDate else Convert(Date,pbd.Sale_End_Date + 1, 102) end as 'Start Date', NULL as 'End Date', pbd.Insert_Date as 'Insert Date', runit.Unit_Abbreviation as 'Selling UOM', pbd.Multiple, l.BusinessUnit_ID as Location
+select 
+	sc.ItemId as 'Item ID', 
+	ii.Identifier as 'Scan Code', 
+	pbd.Price as Price, 
+	'REG' as 'Price Type', 
+	case 
+		when pbd.Sale_End_Date is null 
+			then pbd.StartDate 
+		else Convert(Date,pbd.Sale_End_Date + 1, 102) 
+		end as 'Start Date', 
+	NULL as 'End Date', 
+	pbd.Insert_Date as 'Insert Date', 
+	case 
+		when ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
+			then ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation)
+		 else 'EA' end as 'Selling UOM', 
+	pbd.Multiple, 
+	l.BusinessUnit_ID as Location
 from #LatestPBD l
 join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[Item] i on l.Item_Key = i.Item_Key 
-join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemIdentifier] ii on l.Item_Key = ii.Item_Key and ii.Default_Identifier = 1
-join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchDetail] pbd on l.Item_key = pbd.Item_key and l.Store_No = pbd.Store_No and l.PriceBatchDetailId = pbd.PriceBatchDetailID
+join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemIdentifier] ii on l.Item_Key = ii.Item_Key
+join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchDetail] pbd on l.PriceBatchDetailId = pbd.PriceBatchDetailID
 join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceChgType] pct on pct.PriceChgTypeID = pbd.PriceChgTypeID
 join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemUnit] runit on i.Retail_Unit_ID = runit.Unit_ID
 join ScanCode sc on sc.ScanCode = ii.Identifier
+left join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemUomOverride] iuo on iuo.Item_Key = l.Item_Key and iuo.Store_No = l.Store_No
+left join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemUnit] rounit on iuo.Retail_Unit_ID = rounit.Unit_ID
 where pbd.Price is not null
+and ii.Default_Identifier = 1
 UNION
-select sc.ItemId as 'Item ID', ii.Identifier as 'Scan Code', pbd.Sale_Price as Price, pct.PriceChgTypeDesc as 'Price Type', pbd.StartDate as 'Start Date', pbd.Sale_End_Date as 'End Date', pbd.Insert_Date as 'Insert Date', runit.Unit_Abbreviation as 'Selling UOM', pbd.Multiple, l.BusinessUnit_ID as Location
+select 
+	sc.ItemId as 'Item ID', 
+	ii.Identifier as 'Scan Code', 
+	pbd.Sale_Price as Price, 
+	pct.PriceChgTypeDesc as 'Price Type', 
+	pbd.StartDate as 'Start Date', 
+	pbd.Sale_End_Date as 'End Date', 
+	pbd.Insert_Date as 'Insert Date', 
+	case 
+		when ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
+			then ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation)
+		 else 'EA' end as 'Selling UOM',
+	pbd.Multiple, 
+	l.BusinessUnit_ID as Location
 from #LatestPBD l
 join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[Item] i on l.Item_Key = i.Item_Key 
-join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemIdentifier] ii on l.Item_Key = ii.Item_Key and ii.Default_Identifier = 1
-join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchDetail] pbd on l.Item_key = pbd.Item_key and l.Store_No = pbd.Store_No and l.PriceBatchDetailId = pbd.PriceBatchDetailID
+join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemIdentifier] ii on l.Item_Key = ii.Item_Key 
+join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceBatchDetail] pbd on l.PriceBatchDetailId = pbd.PriceBatchDetailID
 join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[PriceChgType] pct on pct.PriceChgTypeID = pbd.PriceChgTypeID
 join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemUnit] runit on i.Retail_Unit_ID = runit.Unit_ID
 join ScanCode sc on sc.ScanCode = ii.Identifier
+left join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemUomOverride] iuo on iuo.Item_Key = l.Item_Key and iuo.Store_No = l.Store_No
+left join [IDQ-RM\RMQ].[ItemCatalog].[dbo].[ItemUnit] rounit on iuo.Retail_Unit_ID = rounit.Unit_ID
 where pbd.Sale_Price is not null
-
-
+and ii.Default_Identifier = 1
