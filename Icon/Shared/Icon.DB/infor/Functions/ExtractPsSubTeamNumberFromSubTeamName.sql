@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION [dbo].[ExtractPsSubTeamNumberFromSubTeamName]
+﻿CREATE FUNCTION [dbo].[fn_ExtractPsSubTeamNumberFromSubTeamName]
 (
 	@SubTeamName nvarchar(255)
 )

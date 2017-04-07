@@ -47,7 +47,7 @@ BEGIN
 		   hc.hierarchyClassID AS InsertedHierarchyClassID
 	INTO #tmpTrait 
 	FROM @hierarchyClassTraits hct  INNER JOIN dbo.HierarchyClass hc
-	ON  hct.HierarchyClassId = [dbo].[ExtractPsSubTeamNumberFromSubTeamName](hc.HierarchyClassName)
+	ON  hct.HierarchyClassId = [dbo].[fn_ExtractPsSubTeamNumberFromSubTeamName](hc.HierarchyClassName)
 	WHERE hc.HierarchyId = @financialHierarchyId
 
 	UPDATE hct
