@@ -604,6 +604,8 @@
     <None Include="Scripts\Jobs\Archive\BrandPurgeJob.sql" />
     <None Include="Scripts\Jobs\Archive\Invalid PLU Notification Job - Icon.sql" />
     <None Include="Scripts\Jobs\Archive\Invalid PLU Notification Job - IconDev.sql" />
+    <Build Include="infor\Stored Procedures\FinancialHierarchyClassAddOrUpdate.sql" />
+    <Build Include="infor\Functions\ExtractPsSubTeamNumberFromSubTeamName.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

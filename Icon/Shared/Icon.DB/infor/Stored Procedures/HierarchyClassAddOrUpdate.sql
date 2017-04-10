@@ -4,7 +4,14 @@
 	@regions infor.RegionCodeList READONLY
 AS
 BEGIN
+
+	--Generate events and messages for Hierarchy Classes
+	DECLARE @brandEventTypeId INT		= (SELECT EventId FROM app.EventType WHERE EventName = 'Brand Name Update'),
+			@brandHierarchyId INT		= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Brands'),
+			@financialHierarchyId INT	= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Financial'),
+			@merchHierarchyId INT		= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Merchandise')
 	--Add or update Hierarchy Classes
+	-- this sp will work even if @hierarchyClasses table has financial and other heirarchy records
 	SET IDENTITY_INSERT dbo.HierarchyClass ON
 	
 	MERGE dbo.HierarchyClass AS Target
@@ -15,8 +22,9 @@ BEGIN
 				hp.hierarchyLevel
 			FROM @hierarchyClasses hc
 			JOIN dbo.HierarchyPrototype hp on hc.HierarchyLevelName = hp.HierarchyLevelName
+			WHERE hc.[HierarchyId] != @financialHierarchyId
 		)AS Source
-	ON Target.hierarchyClassID = Source.HierarchyClassId
+	ON Target.hierarchyClassID = Source.HierarchyClassId 
 	WHEN MATCHED THEN
 		UPDATE	
 			SET hierarchyClassName = Source.HierarchyClassName
@@ -27,7 +35,7 @@ BEGIN
 	SET IDENTITY_INSERT dbo.HierarchyClass OFF
 
 	MERGE dbo.HierarchyClassTrait AS Target
-	USING @hierarchyClassTraits AS Source
+	USING (SELECT * FROM @hierarchyClassTraits WHERE HierarchyClassId IN (SELECT hierarchyClassID FROM @hierarchyClasses WHERE [HierarchyId] != @financialHierarchyId )) AS Source
 	ON Target.hierarchyClassID = Source.HierarchyClassId
 		AND Target.traitID = Source.TraitId
 	WHEN MATCHED THEN
@@ -36,12 +44,12 @@ BEGIN
 	WHEN NOT MATCHED THEN
 		INSERT (hierarchyClassID, traitID, uomID, traitValue)
 		VALUES (Source.HierarchyClassID, Source.TraitId, null, Source.TraitValue);
-
-	--Generate events and messages for Hierarchy Classes
-	DECLARE @brandEventTypeId INT		= (SELECT EventId FROM app.EventType WHERE EventName = 'Brand Name Update'),
-			@brandHierarchyId INT		= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Brands'),
-			@financialHierarchyId INT	= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Financial'),
-			@merchHierarchyId INT		= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Merchandise')
+    
+	-- if there are records for financial then call the stored procedure.
+	IF EXISTS(SELECT 1 FROM @hierarchyClasses WHERE [HierarchyId] = @financialHierarchyId)
+	BEGIN
+			EXEC infor.FinancialHierarchyClassAddOrUpdate @hierarchyClasses,@hierarchyClassTraits
+	END
 
 	INSERT INTO app.EventQueue(EventId, EventMessage, EventReferenceId, RegionCode)
 	SELECT 

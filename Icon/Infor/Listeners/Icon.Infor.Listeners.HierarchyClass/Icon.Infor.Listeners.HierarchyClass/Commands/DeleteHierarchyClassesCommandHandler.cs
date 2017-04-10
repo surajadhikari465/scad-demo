@@ -26,10 +26,24 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
             string hierarchyName = data.HierarchyClasses.First().HierarchyName;
 
             List<int> hierarchyClassIds = null;
+            List<String> financialHierarchyClassIds = null;
 
-            hierarchyClassIds = data.HierarchyClasses
+            hierarchyClassIds = data.HierarchyClasses.Where(hc=>hc.HierarchyName != HierarchyNames.Financial)
                 .Select(hc => hc.HierarchyClassId)
                 .ToList();
+            // if data has financial heirarchy then HierarchyClassId will have 4 digit number (value for Trait code Fin)
+            financialHierarchyClassIds = data.HierarchyClasses.Where(hc => hc.HierarchyName == HierarchyNames.Financial)
+                .Select(hc => hc.HierarchyClassId.ToString())
+                .ToList();
+         
+            if (financialHierarchyClassIds.Count > 0)
+            {    // add hierarchyClassIds to the list. for the 4 digit number we got, compare it to 4 digit number in hierarchyClassName
+                hierarchyClassIds.AddRange(context.Context.HierarchyClass
+                                          .Where(hc => hc.hierarchyID == Hierarchies.Financial
+                                          && financialHierarchyClassIds.Contains(hc.hierarchyClassName.Substring(hc.hierarchyClassName.Length - 5, 4)))
+                                          .Select(hc1 => hc1.hierarchyClassID));
+            }
+
 
             var hierarchyClassesToRemove = context.Context.HierarchyClass
                 .Where(hc => hierarchyClassIds.Contains(hc.hierarchyClassID))
