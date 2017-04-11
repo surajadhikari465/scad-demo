@@ -20,3 +20,9 @@ CREATE NONCLUSTERED INDEX [IX_ AppID_IncludeLogDate]ON [app].[AppLog]
 )
 INCLUDE ( 	[LogDate]) 
 GO
+
+CREATE NONCLUSTERED INDEX [IX_AppLog_InsertDate] ON [app].[AppLog]
+(
+	[InsertDate] ASC
+)
+GO
