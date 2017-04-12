@@ -134,6 +134,10 @@
     <Folder Include="monitor" />
     <Folder Include="Scripts\Projects\Infor\GPM Scripts" />
     <Folder Include="Scripts\Jobs\Archive" />
+    <Folder Include="Scripts\Projects\Infor\Data Audit Scripts" />
+    <Folder Include="Scripts\Projects\Infor\Data Audit Scripts\IRMA" />
+    <Folder Include="Scripts\Projects\Infor\Data Audit Scripts\Icon" />
+    <Folder Include="Scripts\Projects\Infor\Phase 1" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -545,9 +549,6 @@
     <Build Include="infor\Tables\Errors.sql" />
     <Build Include="infor\Tables\MessageArchiveHierarchy.sql" />
     <Build Include="infor\Stored Procedures\ValidateHierarchyClasses.sql" />
-    <None Include="Scripts\Projects\Infor\Infor Item Extract.sql" />
-    <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageViewWithDefaults.sql" />
-    <None Include="Scripts\Projects\Infor\NationalHierarchyLineageView.sql" />
     <None Include="Scripts\PopulateData\Release\DeleteInvalidValidatedScanCodes.sql" />
     <Build Include="app\Stored Procedures\DeleteItemLinkEntities.sql" />
     <None Include="Scripts\PopulateData\Release\AlignIRMABrandsWithIconBrands.sql" />
@@ -604,6 +605,28 @@
     <None Include="Scripts\Jobs\Archive\BrandPurgeJob.sql" />
     <None Include="Scripts\Jobs\Archive\Invalid PLU Notification Job - Icon.sql" />
     <None Include="Scripts\Jobs\Archive\Invalid PLU Notification Job - IconDev.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\Brands.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\Financial.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\Infor Item Extract.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\Merchandise.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\MerchandiseHierarchyLineageView.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\MerchandiseHierarchyLineageView_MockConcatenation.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\MerchandiseHierarchyLineageViewWithDefaults.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\MerchandiseHierarchyLineageViewWithDefaults_MockConcatenation.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\National.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\NationalHierarchyLineageView.sql" />
+    <None Include="Scripts\Projects\Infor\Phase 1\Tax.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\IRMA\Brands.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\IRMA\Financial.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\IRMA\Items.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\IRMA\National.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\IRMA\Tax.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\Icon\Brands.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\Icon\Financial.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\Icon\Items.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\Icon\MerchandiseHierarchyLineageView.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\Icon\NationalHierarchyLineageView.sql" />
+    <None Include="Scripts\Projects\Infor\Data Audit Scripts\Icon\Tax.sql" />
     <Build Include="infor\Stored Procedures\FinancialHierarchyClassAddOrUpdate.sql" />
     <Build Include="infor\Functions\ExtractPsSubTeamNumberFromSubTeamName.sql" />
   </ItemGroup>
@@ -697,12 +720,6 @@
     <Build Include="infor\User Defined Types\ValidateHierarchyClassType.sql" />
     <None Include="Scripts\PopulateData\Release\InsertInforHierarchyClassErrors.sql" />
     <None Include="Scripts\PopulateData\Release\InsertInforHierarchyMismatchError.sql" />
-    <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageView.sql" />
-    <None Include="Scripts\Projects\Infor\Brands.sql" />
-    <None Include="Scripts\Projects\Infor\Financial.sql" />
-    <None Include="Scripts\Projects\Infor\National.sql" />
-    <None Include="Scripts\Projects\Infor\Tax.sql" />
-    <None Include="Scripts\Projects\Infor\Merchandise.sql" />
     <None Include="Scripts\PopulateData\Release\FixSupplementsAndSpiritSubTeams.sql" />
     <None Include="Scripts\PopulateData\Release\RetentionPolicyInforArchiveTables.sql" />
     <None Include="Scripts\PopulateData\Release\AddBrandDeleteEventType.sql" />
@@ -716,8 +733,6 @@
     <None Include="Scripts\PopulateData\Release\AddNationalClassUpdateAndDeleteEventType.sql" />
     <None Include="Scripts\PopulateData\Release\UpdatePOSScaleTare.sql" />
     <None Include="Scripts\PopulateData\Release\RetentionPolicyEventQueueArchiveTable.sql" />
-    <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageView_MockConcatenation.sql" />
-    <None Include="Scripts\Projects\Infor\MerchandiseHierarchyLineageViewWithDefaults_MockConcatenation.sql" />
     <None Include="Scripts\PopulateData\Release\RetentionPolicyInforMessageArchiveNewItem.sql" />
     <None Include="Scripts\PopulateData\Release\DeleteBrandPurgeJob.sql" />
   </ItemGroup>
