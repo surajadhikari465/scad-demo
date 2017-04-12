@@ -36,9 +36,6 @@ namespace Icon.Infor.Listeners.Price
             Container container = new Container();
 
             container.Register<IListenerApplication, PriceListener>();
-
-            //var types = GetPriceServices();
-            //container.RegisterCollection<IService<PriceModel>>(types);
             container.Register<IMessageParser<IEnumerable<PriceModel>>, PriceMessageParser>();
             container.Register(() => EsbConnectionSettings.CreateSettingsFromConfig());
             container.Register(() => ListenerApplicationSettings.CreateDefaultSettings("Infor Price Listener"));
@@ -54,9 +51,9 @@ namespace Icon.Infor.Listeners.Price
             container.Register(typeof(IService<>), typeof(PriceServiceHandler));
             
             // price service decorators
-            container.RegisterDecorator(typeof(IService<>), typeof(AddValidationPriceServiceDecorator));
-            container.RegisterDecorator(typeof(IService<>), typeof(DeleteValidationPricesServiceDecorator));
-            container.RegisterDecorator(typeof(IService<>), typeof(ReplaceValidationPriceServiceDecorator));
+            container.RegisterDecorator(typeof(IService<>), typeof(ValidateAddPriceServiceDecorator));
+            container.RegisterDecorator(typeof(IService<>), typeof(ValidateDeletePriceServiceDecorator));
+            container.RegisterDecorator(typeof(IService<>), typeof(ValidateReplacePriceServiceDecorator));
             container.RegisterDecorator(typeof(IService<>), typeof(ErrorExceptionServiceDecorator<>));
             container.RegisterDecorator(typeof(IService<>), typeof(ArchivePriceServiceDecorator));
 
@@ -83,19 +80,6 @@ namespace Icon.Infor.Listeners.Price
                 "Code calls dispose");
 
             return container;
-        }
-
-        private static IEnumerable<Type> GetPriceServices()
-        {
-            return new List<Type>
-            {
-                //typeof(AddPricesServiceHandler),
-                //typeof(DeletePricesService),
-                //typeof(ReplacePricesService),
-                //typeof(SendFailedPricesToEsbService)
-                //typeof(SendPricesToEsbService),
-                //typeof(ArchivePriceService)
-            };
         }
 
         private static CachePolicy<T> SetupCachePolicy<T>(string appSetting, double defaultExpiry)

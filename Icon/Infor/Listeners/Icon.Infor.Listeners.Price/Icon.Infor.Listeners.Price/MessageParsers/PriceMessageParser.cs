@@ -6,6 +6,7 @@ using Icon.Infor.Listeners.Price.Extensions;
 using Icon.Infor.Listeners.Price.Models;
 using Icon.Logging;
 using Mammoth.Common.DataAccess.CommandQuery;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,6 @@ namespace Icon.Infor.Listeners.Price.MessageParsers
 
         public override IEnumerable<PriceModel> ParseMessage(IEsbMessage message)
         {
-            this.logger.Info($"Deserializing message: {message}");
             var contract = base.DeserializeMessage(message);
 
             PopulateDictionaryHelpers(contract.item);

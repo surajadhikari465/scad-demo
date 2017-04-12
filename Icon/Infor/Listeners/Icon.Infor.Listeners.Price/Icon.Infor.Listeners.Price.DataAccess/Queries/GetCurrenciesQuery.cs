@@ -22,7 +22,7 @@ namespace Icon.Infor.Listeners.Price.DataAccess.Queries
         public IEnumerable<Currency> Search(GetCurrenciesParameters parameters)
         {
             string sql = "SELECT CurrencyID, CurrencyCode, CurrencyDesc FROM Currency";
-            IEnumerable<Currency> currencies = this.db.Connection.Query<Currency>(sql, null, this.db.Transaction);
+            var currencies = this.db.Connection.Query<Currency>(sql, null, this.db.Transaction);
             return currencies;
         }
     }

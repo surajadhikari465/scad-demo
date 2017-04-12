@@ -34,9 +34,6 @@ namespace Icon.Infor.Listeners.Price.DataAccess.Models
         public virtual int Multiple { get; set; }
         public virtual DateTime? NewTagExpiration { get; set; }
         public virtual DateTime AddedDate { get; set; }
-        public virtual string ErrorCode { get; set; }
-        public virtual string ErrorDetails { get; set; }
-        public virtual string ExceptionDetails { get; set; }
         public virtual Guid? ReplaceGpmId { get; set; }
     }
 

@@ -33,30 +33,6 @@ namespace Icon.Infor.Listeners.Price.Extensions
             return dbPrices;
         }
 
-        //public static IEnumerable<ReplaceDbPriceModel> ToReplaceDbPriceModel(this IEnumerable<PriceModel> prices)
-        //{
-        //    IEnumerable<ReplaceDbPriceModel> dbPrices = prices
-        //        .Select(p => new ReplaceDbPriceModel
-        //        {
-        //            BusinessUnitID = p.BusinessUnitId,
-        //            CurrencyID = p.CurrencyId,
-        //            EndDate = p.EndDate,
-        //            GpmID = p.GpmId,
-        //            ItemID = p.ItemId,
-        //            Multiple = p.Multiple,
-        //            NewTagExpiration = p.NewTagExpiration,
-        //            Price = p.Price,
-        //            PriceType = p.PriceType.ToString(),
-        //            PriceTypeAttribute = p.PriceTypeAttribute.ToString(),
-        //            PriceUOM = p.SellableUom,
-        //            Region = p.Region,
-        //            StartDate = p.StartDate,
-        //            ReplaceGpmId = p.ReplacedGpmId // The GpmId that is being deleted and replace by a new one
-        //        });
-
-        //    return dbPrices;
-        //}
-
         public static DateTime? ParseToNullableDateTime(this string text)
         {
             DateTime date;

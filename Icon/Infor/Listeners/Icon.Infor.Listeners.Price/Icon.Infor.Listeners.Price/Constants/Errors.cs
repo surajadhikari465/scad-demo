@@ -17,7 +17,7 @@ namespace Icon.Infor.Listeners.Price.Constants
             public static readonly string ReplacePricesAddError = "ReplacePricesAddError";
             public static readonly string SendFailedPricesToEsbError = "SendFailedPricesToEsbError";
             public static readonly string SendPricesToEsbError = "SendPricesToEsbError";
-            public static readonly object UnexpectedError = "UnexpectedError";
+            public static readonly string UnexpectedError = "UnexpectedError";
         }
 
         public static class Details

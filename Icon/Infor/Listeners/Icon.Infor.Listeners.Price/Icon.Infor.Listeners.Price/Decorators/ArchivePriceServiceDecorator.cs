@@ -31,14 +31,14 @@ namespace Icon.Infor.Listeners.Price.Decorators
 
             Guid messageId;
 
-            List<ArchivePriceModel> archivePrices = new List<ArchivePriceModel>();
+            var archivePrices = new List<ArchivePriceModel>();
             foreach (var price in data)
             {
                 var archive = new ArchivePriceModel();
                 archive.BusinessUnitID = price.BusinessUnitId;
                 archive.ErrorCode = price.ErrorCode;
                 archive.ErrorDetails = price.ErrorDetails;
-                archive.EsbMessageID = Guid.TryParse(message.GetProperty("MessageID"), out messageId) ? messageId : default(Guid);
+                archive.EsbMessageID = Guid.Parse(message.GetProperty("MessageID"));
                 archive.GpmID = price.GpmId;
                 archive.InsertDate = DateTime.Now;
                 archive.ItemID = price.ItemId;

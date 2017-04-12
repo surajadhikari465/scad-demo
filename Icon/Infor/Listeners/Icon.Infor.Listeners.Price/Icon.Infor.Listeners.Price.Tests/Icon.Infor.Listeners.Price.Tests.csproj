@@ -123,24 +123,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Decorators\AddValidationPriceServiceDecoratorTests.cs" />
-    <Compile Include="Decorators\DeleteValidationPriceServiceDecoratorTests.cs" />
-    <Compile Include="Decorators\ReplaceValidationPriceServiceDecoratorTests.cs" />
+    <Compile Include="Decorators\ValidateAddPriceServiceDecoratorTests.cs" />
+    <Compile Include="Decorators\ValidateDeletePriceServiceDecoratorTests.cs" />
+    <Compile Include="Decorators\ValidateReplacePriceServiceDecoratorTests.cs" />
     <Compile Include="ModelBuilders\TestDbPriceModelBuilder.cs" />
     <Compile Include="ModelBuilders\TestDeletedPriceModelBuilder.cs" />
     <Compile Include="ModelBuilders\TestPriceModelBuilder.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.ExceptBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AddPricesServiceTests.cs" />
-    <Compile Include="Services\ArchivePricesServiceTests.cs" />
-    <Compile Include="Services\DeletePricesServiceTests.cs" />
-    <Compile Include="Services\ReplacePricesServiceTests.cs" />
     <Compile Include="Services\SendFailedPricesToEsbServiceTests.cs" />
     <Compile Include="Services\SendPricesToEsbServiceTests.cs" />
     <Compile Include="SimpleInjectorInitializerTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="TestMessages\PriceMessage.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Icon.Infor.Listeners.Price.DataAccess\Icon.Infor.Listeners.Price.DataAccess.csproj">
