@@ -14,7 +14,7 @@
 
 GO
 
-CREATE NONCLUSTERED INDEX [IX_ AppID_IncludeLogDate]ON [app].[AppLog]
+CREATE NONCLUSTERED INDEX [IX_AppID_IncludeLogDate]ON [app].[AppLog]
 (
 	[AppID] ASC
 )
