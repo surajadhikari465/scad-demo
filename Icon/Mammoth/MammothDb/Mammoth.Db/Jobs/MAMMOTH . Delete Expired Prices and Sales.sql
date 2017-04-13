@@ -8,9 +8,8 @@ SELECT @ReturnCode = 0
 /****** Object:  JobCategory [[Uncategorized (Local)]]    Script Date: 4/13/2017 11:01:15 AM ******/
 IF NOT EXISTS (SELECT name FROM msdb.dbo.syscategories WHERE name=N'[Uncategorized (Local)]' AND category_class=1)
 BEGIN
-EXEC @ReturnCode = msdb.dbo.sp_add_category @class=N'JOB', @type=N'LOCAL', @name=N'[Uncategorized (Local)]'
-IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-
+	EXEC @ReturnCode = msdb.dbo.sp_add_category @class=N'JOB', @type=N'LOCAL', @name=N'[Uncategorized (Local)]'
+	IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 END
 
 DECLARE @jobId BINARY(16)
@@ -25,14 +24,29 @@ EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'MAMMOTH . Delete Expired Pri
 		@category_name=N'[Uncategorized (Local)]', 
 		@owner_login_name=N'sa', @job_id = @jobId OUTPUT
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
+/****** Object:  Step [Check Maintenance Mode]    Script Date: 4/13/2017 11:01:16 AM *****/
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Maintenance Mode', 
+		@step_id=1, 
+		@cmdexec_success_code=0, 
+		@on_success_action=3, 
+		@on_success_step_id=0, 
+		@on_fail_action=4, 
+		@on_fail_step_id=4, 
+		@retry_attempts=0, 
+		@retry_interval=0, 
+		@os_run_priority=0, @subsystem=N'TSQL', 
+		@command=N'IF (SELECT StatusFlagValue FROM app.DbStatus where FlagName = ''IsOfflineForMaintenance'') = 1
+					RAISERROR(''Database is in maintenance mode.'', 16, 1)', 
+		@flags=0
+IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 /****** Object:  Step [Delete prices and sales]    Script Date: 4/13/2017 11:01:16 AM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Delete prices and sales', 
-		@step_id=1, 
+		@step_id=2, 
 		@cmdexec_success_code=0, 
 		@on_success_action=1, 
 		@on_success_step_id=0, 
 		@on_fail_action=4, 
-		@on_fail_step_id=2, 
+		@on_fail_step_id=3, 
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
@@ -42,7 +56,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Delete p
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 /****** Object:  Step [NotifyOnFailure]    Script Date: 4/13/2017 11:01:16 AM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'NotifyOnFailure', 
-		@step_id=2, 
+		@step_id=3, 
 		@cmdexec_success_code=0, 
 		@on_success_action=2, 
 		@on_success_step_id=0, 
@@ -59,7 +73,42 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'NotifyOn
 		@database_name=N'master', 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-EXEC @ReturnCode = msdb.dbo.sp_update_job @job_id = @jobId, @start_step_id = 1
+/****** Object:  Step [Report Maintenance Mode]    Script Date: 4/13/2017 11:01:16 AM ******/
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Report Maintenance Mode', 
+		@step_id=4, 
+		@cmdexec_success_code=0, 
+		@on_success_action=1, 
+		@on_success_step_id=0, 
+		@on_fail_action=2, 
+		@on_fail_step_id=0, 
+		@retry_attempts=0, 
+		@retry_interval=0, 
+		@os_run_priority=0, @subsystem=N'TSQL', 
+		@command=N'IF EXISTS (
+			SELECT *
+			FROM app.DbStatus
+			WHERE StatusFlagName = ''IsOfflineForMaintenance'' AND StatusFlagValue = 1
+		)
+		BEGIN
+			DECLARE @statusMsg nvarchar(256), @appName nvarchar(128), @dbState varchar(128)
+
+			SELECT @appName = ltrim(rtrim(program_name))
+			FROM sys.sysprocesses
+			WHERE spid = @@spid
+
+			SELECT @dbState = N''DbName='' + [name] + '', IsReadOnly='' + convert(nvarchar,is_read_only) 
+				+ N'', UserAccess='' + convert(nvarchar,user_access_desc collate SQL_Latin1_General_CP1_CI_AS )
+				+ N'', State='' + state_desc
+			FROM sys.databases
+			WHERE NAME LIKE db_name()
+
+			SELECT @statusMsg = ''** DB Offline For Maintenance ** --> '' 
+				+ ''AppName='' + @appName + '', '' + @dbstate
+
+			RAISERROR (@statusMsg, 16, 0)
+		END',
+		@database_name=N'master', 
+		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_add_jobschedule @job_id=@jobId, @name=N'Nightly except Sundays from 1 to 4 AM', 
 		@enabled=1, 

@@ -629,6 +629,7 @@
     <None Include="Scripts\Projects\Infor\Data Audit Scripts\Icon\Tax.sql" />
     <Build Include="infor\Stored Procedures\FinancialHierarchyClassAddOrUpdate.sql" />
     <Build Include="infor\Functions\ExtractPsSubTeamNumberFromSubTeamName.sql" />
+    <Build Include="app\Tables\DbStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -735,6 +736,7 @@
     <None Include="Scripts\PopulateData\Release\RetentionPolicyEventQueueArchiveTable.sql" />
     <None Include="Scripts\PopulateData\Release\RetentionPolicyInforMessageArchiveNewItem.sql" />
     <None Include="Scripts\PopulateData\Release\DeleteBrandPurgeJob.sql" />
+    <None Include="Scripts\PopulateData\Release\AddMaintFlagRowToDbStatusTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

@@ -9,23 +9,11 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
-:r ..\PopulateScripts\SeedNonGreeFieldScript.sql -- run this script to skip all the "non green field" scripts.
-:r ..\PopulateScripts\PopulateAppsInAppTable.sql
-:r ..\PopulateScripts\PopulateAttributes.sql
-:r ..\PopulateScripts\PopulateCurrency.sql
-:r ..\PopulateScripts\PopulateHierarchies.sql
-:r ..\PopulateScripts\PopulateItemPriceType.sql
-:r ..\PopulateScripts\PopulateItemType.sql
-:r ..\PopulateScripts\PopulateMessageAction.sql
-:r ..\PopulateScripts\PopulateMessageStatus.sql
-:r ..\PopulateScripts\PopulateMessageType.sql
-:r ..\PopulateScripts\PopulateRetentionPolicyTable.sql
-:r ..\PopulateScripts\PopulateUom.sql
-:r ..\PopulateScripts\PopulateRegionsTable.sql
-:r "..\ETL\MAMMOTH . 03 . ETL . Load.sql"
 
 -- Normal deployments start here.
-:r Currency_RemoveTrailingSpaces_PostDeployment.sql
+--:r Currency_RemoveTrailingSpaces_PostDeployment.sql
+
+:r AddMaintFlagRowToDbStatusTable.sql
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql

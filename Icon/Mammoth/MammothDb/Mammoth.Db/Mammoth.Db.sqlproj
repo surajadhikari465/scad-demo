@@ -645,6 +645,7 @@
     <Build Include="dbo\Views\Locale.sql" />
     <Build Include="gpm\Tables\DeletedPrices.sql" />
     <Build Include="gpm\Tables\MessageArchivePrice.sql" />
+    <Build Include="app\Tables\DbStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -660,6 +661,7 @@
     <None Include="Scripts\PreDeploymentScripts\SubTeamCleanUp_PreDeployment.sql" />
     <None Include="Scripts\PostDeploymentScripts\Currency_RemoveTrailingSpaces_PostDeployment.sql" />
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddMaintFlagRowToDbStatusTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
