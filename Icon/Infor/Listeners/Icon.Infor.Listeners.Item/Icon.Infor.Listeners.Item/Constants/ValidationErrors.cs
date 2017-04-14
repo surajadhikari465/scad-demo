@@ -69,6 +69,12 @@ namespace Icon.Infor.Listeners.Item.Constants
             public const string InvalidWholeTrade = "InvalidWholeTrade";
             public const string DuplicateMerchandiseHierarchyClass = "DuplicateMerchandiseHierarchyClass";
             public const string DuplicateNationalHierarchyClass = "DuplicateNationalHierarchyClass";
+            public const string NonExistentBrand = "NonExistentBrand";
+            public const string NonExistentSubTeam = "NonExistentSubTeam";
+            public const string NonExistentSubBrick = "NonExistentSubBrick";
+            public const string NonExistentNationalClass = "NonExistentNationalClass";
+            public const string NonExistentTax = "NonExistentTax";
+            public const string OutOfSyncItemUpdateErrorCode = "OutOfSyncItemUpdateErrorCode";
         }
 
         public static class Messages
@@ -125,6 +131,12 @@ namespace Icon.Infor.Listeners.Item.Constants
             public static readonly string InvalidTaxHierarchyClassId = RequiredValueMessage;
             public static readonly string DuplicateMerchandiseHierarchyClass = "Item has multiple Merchandise Hierarchy Class associations. An item can only be associated to a single Merchandise Hierarchy Class.";
             public static readonly string DuplicateNationalHierarchyClass = "Item has multiple National Hierarchy Class associations. An item can only be associated to a single National Hierarchy Class.";
+            public const string NonExistentBrand = "No Brand exists in Icon with a hierarchy class ID '{0}'.";
+            public const string NonExistentSubTeam = "No Sub Team exists in Icon with an sub team code '{0}'.";
+            public const string NonExistentSubBrick = "No Sub Brick exists in Icon with a hierarchy class ID '{0}'.";
+            public const string NonExistentNationalClass = "No National Class exists in Icon with a hierarchy class ID '{0}'.";
+            public const string NonExistentTax = "No Tax Class exists in Icon with a tax code '{0}'.";
+            public const string OutOfSyncItemUpdateErrorCode = "Item update rejected: time stamp on update was ''{0}'' but the item was updated more recently at ''{1}''.";
 
             private static string BuildInvalidPropertyMessageForCollection(IEnumerable<string> collection, bool isRequired = false)
             {

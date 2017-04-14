@@ -544,7 +544,6 @@
     <Build Include="infor\Tables\MessageHistory.sql" />
     <Build Include="app\Tables\APIMessageMonitorLog.sql" />
     <Build Include="infor\User Defined Types\ValidateItemType.sql" />
-    <Build Include="infor\Stored Procedures\ValidateItems.sql" />
     <Build Include="infor\Functions\GetValidationError.sql" />
     <Build Include="infor\Tables\Errors.sql" />
     <Build Include="infor\Tables\MessageArchiveHierarchy.sql" />
@@ -629,6 +628,8 @@
     <None Include="Scripts\Projects\Infor\Data Audit Scripts\Icon\Tax.sql" />
     <Build Include="infor\Stored Procedures\FinancialHierarchyClassAddOrUpdate.sql" />
     <Build Include="infor\Functions\ExtractPsSubTeamNumberFromSubTeamName.sql" />
+    <Build Include="infor\Functions\GetValidationErrorWithTwoValues.sql" />
+    <Build Include="infor\Stored Procedures\GetItemValidationProperties.sql" />
     <Build Include="app\Tables\DbStatus.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -737,6 +738,7 @@
     <None Include="Scripts\PopulateData\Release\RetentionPolicyInforMessageArchiveNewItem.sql" />
     <None Include="Scripts\PopulateData\Release\DeleteBrandPurgeJob.sql" />
     <None Include="Scripts\PopulateData\Release\AddMaintFlagRowToDbStatusTable.sql" />
+    <None Include="Scripts\PopulateData\Release\InsertInforOutOfSyncItemUpdateError.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

@@ -8,15 +8,17 @@ using System;
 using System.Globalization;
 using Icon.Common.DataAccess;
 using Icon.Infor.Listeners.Item.Commands;
+using Icon.Infor.Listeners.Item.Queries;
 
 namespace Icon.Infor.Listeners.Item.Validators
 {
     public class ItemModelValidator : AbstractValidator<ItemModel>, ICollectionValidator<ItemModel>
     {
+        private const string DateTimeFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
         private string[] animalWelfareRatingDescriptions = AnimalWelfareRatings.Descriptions.AsArray;
-        private ICommandHandler<ValidateItemsCommand> validateItemsCommandHandler;
+        private IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>> validateItemsCommandHandler;
 
-        public ItemModelValidator(ICommandHandler<ValidateItemsCommand> validateItemsCommandHandler)
+        public ItemModelValidator(IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>> validateItemsCommandHandler)
         {
             CascadeMode = CascadeMode.StopOnFirstFailure;
 
@@ -367,14 +369,60 @@ namespace Icon.Infor.Listeners.Item.Validators
             foreach (var item in collection)
             {
                 var result = Validate(item);
-                if(!result.IsValid)
+                if (!result.IsValid)
                 {
                     item.ErrorCode = result.Errors.First().ErrorCode;
                     item.ErrorDetails = result.Errors.First().ErrorMessage;
                 }
             }
 
-            validateItemsCommandHandler.Execute(new ValidateItemsCommand { Items = collection });
+            ValidateCollectionAgainstDatabase(collection);
+        }
+
+        private void ValidateCollectionAgainstDatabase(IEnumerable<ItemModel> collection)
+        {
+            var itemValidationPropertiesResults = validateItemsCommandHandler.Search(new GetItemValidationPropertiesParameters { Items = collection });
+
+            var joinedItems = collection
+                .Where(i => i.ErrorCode == null)
+                .Join(itemValidationPropertiesResults,
+                    i => i.ItemId,
+                    r => r.ItemId,
+                    (i, r) => new { Item = i, ValidationProperties = r });
+
+            foreach (var joinedItem in joinedItems)
+            {
+                if (!joinedItem.ValidationProperties.BrandId.HasValue)
+                {
+                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentBrand;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentBrand, joinedItem.Item.BrandsHierarchyClassId);
+                }
+                else if (!joinedItem.ValidationProperties.SubTeamId.HasValue)
+                {
+                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentSubTeam;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentSubTeam, joinedItem.Item.FinancialHierarchyClassId);
+                }
+                else if (!joinedItem.ValidationProperties.SubBrickId.HasValue)
+                {
+                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentSubBrick;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentSubBrick, joinedItem.Item.MerchandiseHierarchyClassId);
+                }
+                else if (!joinedItem.ValidationProperties.NationalClassId.HasValue)
+                {
+                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentNationalClass;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentNationalClass, joinedItem.Item.NationalHierarchyClassId);
+                }
+                else if (!joinedItem.ValidationProperties.TaxClassId.HasValue)
+                {
+                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentTax;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentTax, joinedItem.Item.TaxHierarchyClassId);
+                }
+                else if (!string.IsNullOrWhiteSpace(joinedItem.ValidationProperties.ModifiedDate) && DateTime.Parse(joinedItem.Item.ModifiedDate) < DateTime.Parse(joinedItem.ValidationProperties.ModifiedDate))
+                {
+                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.OutOfSyncItemUpdateErrorCode, joinedItem.Item.ModifiedDate, joinedItem.ValidationProperties.ModifiedDate);
+                }
+            }
         }
     }
 }

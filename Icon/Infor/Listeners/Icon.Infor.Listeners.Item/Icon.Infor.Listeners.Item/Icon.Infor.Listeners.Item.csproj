@@ -122,8 +122,6 @@
     <Compile Include="Commands\GenerateItemMessagesCommand.cs" />
     <Compile Include="Commands\ItemAddOrUpdateCommand.cs" />
     <Compile Include="Commands\ItemAddOrUpdateCommandHandler.cs" />
-    <Compile Include="Commands\ValidateItemsCommand.cs" />
-    <Compile Include="Commands\ValidateItemsCommandHandler.cs" />
     <Compile Include="Constants\ApplicationErrors.cs" />
     <Compile Include="Constants\ItemValues.cs" />
     <Compile Include="Constants\CustomRegexPatterns.cs" />
@@ -131,6 +129,7 @@
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="MessageParsers\ItemMessageParser.cs" />
     <Compile Include="ItemListener.cs" />
+    <Compile Include="Models\GetItemValidationPropertiesResultModel.cs" />
     <Compile Include="Models\ItemHierarchyClassModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ItemSignAttributeModel.cs" />
@@ -142,6 +141,8 @@
     <Compile Include="Notifiers\ItemListenerNotifier.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetItemValidationPropertiesQuery.cs" />
+    <Compile Include="Queries\GetItemValidationPropertiesParameters.cs" />
     <Compile Include="Services\IItemService.cs" />
     <Compile Include="Services\ItemService.cs" />
     <Compile Include="Validators\ICollectionValidator.cs" />

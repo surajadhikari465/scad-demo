@@ -3,11 +3,13 @@ using Icon.Framework;
 using Icon.Infor.Listeners.Item.Commands;
 using Icon.Infor.Listeners.Item.Constants;
 using Icon.Infor.Listeners.Item.Models;
+using Icon.Infor.Listeners.Item.Queries;
 using Icon.Infor.Listeners.Item.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Icon.Infor.Listeners.Item.Tests.Validators
 {
@@ -15,9 +17,10 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
     public class ItemModelValidatorTests
     {
         private ItemModelValidator validator;
-        private Mock<ICommandHandler<ValidateItemsCommand>> mockValidateItemsCommandHandler;
+        private Mock<IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>>> mockValidateItemsCommandHandler;
         private List<ItemModel> testItems;
         private ItemModel testItem;
+        private GetItemValidationPropertiesResultModel testItemValidationPropertiesResultModel;
 
         [TestInitialize]
         public void Initialize()
@@ -60,7 +63,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
                 MadeInHouse = string.Empty,
                 MainProductName = string.Empty,
                 MerchandiseHierarchyClassId = "1",
-                ModifiedDate = "2016-08-01T14:49:29.284Z",
+                ModifiedDate = "2017-04-08T12:04:22.287Z",
                 ModifiedUser = string.Empty,
                 Msc = string.Empty,
                 NationalHierarchyClassId = "3",
@@ -92,8 +95,23 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             {
                 testItem
             };
+            testItemValidationPropertiesResultModel = new GetItemValidationPropertiesResultModel
+            {
+                BrandId = 1,
+                ItemId = testItem.ItemId,
+                ModifiedDate = DateTime.Parse(testItem.ModifiedDate).AddMinutes(-1).ToString(),
+                NationalClassId = 1,
+                SubBrickId = 1,
+                SubTeamId = 1,
+                TaxClassId = 1
+            };
+            mockValidateItemsCommandHandler = new Mock<IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>>>();
+            mockValidateItemsCommandHandler.Setup(m => m.Search(It.IsAny<GetItemValidationPropertiesParameters>()))
+                .Returns(new List<GetItemValidationPropertiesResultModel>
+                {
+                    testItemValidationPropertiesResultModel
+                });
 
-            mockValidateItemsCommandHandler = new Mock<ICommandHandler<ValidateItemsCommand>>();
             validator = new ItemModelValidator(mockValidateItemsCommandHandler.Object);
         }
 
@@ -2158,9 +2176,88 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         public void ValidateCollection_WholeTradeIsEmpty_NoError()
         {
             //Given
-            testItem.Vegetarian = string.Empty;
+            testItem.WholeTrade = string.Empty;
 
             PerformValidateCollectionWhenAndThenSteps(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_NonExistentBrand_NonExistentBrandError()
+        {
+            //Given
+            testItemValidationPropertiesResultModel.BrandId = null;
+
+            //Then
+            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+                ValidationErrors.Codes.NonExistentBrand,
+                ValidationErrors.Messages.NonExistentBrand,
+                testItem.BrandsHierarchyClassId);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_NonExistentSubTeam_NonExistentSubTeamError()
+        {
+            //Given
+            testItemValidationPropertiesResultModel.SubTeamId = null;
+
+            //Then
+            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+                ValidationErrors.Codes.NonExistentSubTeam,
+                ValidationErrors.Messages.NonExistentSubTeam,
+                testItem.FinancialHierarchyClassId);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_NonExistentSubBrick_NonExistentSubBrickError()
+        {
+            //Given
+            testItemValidationPropertiesResultModel.SubBrickId = null;
+
+            //Then
+            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+                ValidationErrors.Codes.NonExistentSubBrick,
+                ValidationErrors.Messages.NonExistentSubBrick,
+                testItem.MerchandiseHierarchyClassId);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_NonExistentNational_NonExistentNationalClassError()
+        {
+            //Given
+            testItemValidationPropertiesResultModel.NationalClassId = null;
+
+            //Then
+            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+                ValidationErrors.Codes.NonExistentNationalClass,
+                ValidationErrors.Messages.NonExistentNationalClass,
+                testItem.NationalHierarchyClassId);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_NonExistentTax_NonExistentTaxError()
+        {
+            //Given
+            testItemValidationPropertiesResultModel.TaxClassId = null;
+
+            //Then
+            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+                ValidationErrors.Codes.NonExistentTax,
+                ValidationErrors.Messages.NonExistentTax,
+                testItem.TaxHierarchyClassId);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_OutOfSyncItemupdate_OutOfSyncItemUpdateError()
+        {
+            //Given
+            testItemValidationPropertiesResultModel.ModifiedDate = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
+            //Then
+            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+                ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode,
+                ValidationErrors.Messages.OutOfSyncItemUpdateErrorCode,
+                testItem.ModifiedDate,
+                testItemValidationPropertiesResultModel.ModifiedDate.ToString());
         }
 
         private void PerformValidateCollectionWhenAndThenSteps(string expectedErrorCode, string expectedErrorDetails)
@@ -2187,6 +2284,21 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
                 Assert.AreEqual(expectedErrorCode, item.ErrorCode);
 
                 var expectedErrorDetailsWithFormattedValues = expectedErrorDetails.GetFormattedValidationMessage(propertyName, getValueForErrorDetails(item));
+                Assert.AreEqual(expectedErrorDetailsWithFormattedValues, item.ErrorDetails);
+            }
+        }
+
+        private void PerformValidateCollectionWhenAndThenStepsWithStringFormat(string expectedErrorCode, string expectedErrorDetails, params string[] propertyValues)
+        {
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            foreach (var item in testItems)
+            {
+                Assert.AreEqual(expectedErrorCode, item.ErrorCode);
+
+                var expectedErrorDetailsWithFormattedValues = expectedErrorDetails.GetFormattedValidationMessageWithStringFormat(propertyValues);
                 Assert.AreEqual(expectedErrorDetailsWithFormattedValues, item.ErrorDetails);
             }
         }

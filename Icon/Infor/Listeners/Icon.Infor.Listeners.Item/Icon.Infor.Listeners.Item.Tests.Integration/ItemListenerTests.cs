@@ -16,6 +16,7 @@ using System.Linq;
 using Icon.Infor.Listeners.Item.Validators;
 using Icon.Infor.Listeners.Item.Notifiers;
 using System.Xml.Linq;
+using Icon.Infor.Listeners.Item.Queries;
 
 namespace Icon.Infor.Listeners.Item.Tests.Integration
 {
@@ -26,7 +27,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
         {
             ItemListener il = new ItemListener(
                               new ItemMessageParser(new NLogLogger<ItemMessageParser>()),
-                              new ItemModelValidator(new ValidateItemsCommandHandler(mockGlobalContext.Object)),
+                              new ItemModelValidator(new GetItemValidationPropertiesQuery(mockGlobalContext.Object)),
                               mockGlobalContext.Object,
                               new ItemService(
                                       new ItemAddOrUpdateCommandHandler(mockGlobalContext.Object),
@@ -66,20 +67,21 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
 
                 //Then
                 var item = context.ScanCode.AsNoTracking()
-                    .FirstOrDefault(sc => sc.scanCode == "1000397" && sc.itemID == 4000110)
+                    .FirstOrDefault(sc => sc.scanCode == "888888888" && sc.itemID == 999999999)
                     .Item;
 
                 Assert.IsNotNull(item, "Item was not successfully saved to the database.");
 
-                var messageArchiveProduct = context.MessageArchiveProduct.FirstOrDefault(p => p.ItemId == 4000110);
+                var messageArchiveProduct = context.MessageArchiveProduct.FirstOrDefault(p => p.ItemId == 999999999);
 
                 Assert.IsNotNull(messageArchiveProduct, "Item update was not successfully archived to the database.");
+                Assert.IsNull(messageArchiveProduct.ErrorCode, "Item update was not successfully archived to the database.");
             }
         }
 
 
         [TestMethod]
-        public void HandleMessage_ProductMessageFromInforWithItemThatHasOrganicTrait_SavseItemSignAttributeAsOrganic()
+        public void HandleMessage_ProductMessageFromInforWithItemThatHasOrganicTrait_SavesItemSignAttributeAsOrganic()
         {
             //Given
             IconContext context = new IconContext();
@@ -109,8 +111,10 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
 
                 //Then
                 var itemSignAttribute = context.ScanCode.AsNoTracking()
-                    .FirstOrDefault(sc => sc.scanCode == "1000397" && sc.itemID == 4000110)
-                    .Item.ItemSignAttribute.FirstOrDefault();
+                    .FirstOrDefault(sc => sc.scanCode == "888888888" && sc.itemID == 999999999)
+                    .Item
+                    .ItemSignAttribute
+                    .FirstOrDefault();
 
                 Assert.IsNotNull(itemSignAttribute, "Item was not successfully saved to the database.");
                 Assert.AreEqual(organicAgencyName, itemSignAttribute.OrganicAgencyName);
