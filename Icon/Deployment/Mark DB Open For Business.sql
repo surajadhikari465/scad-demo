@@ -9,9 +9,9 @@ if @dbname like 'itemcat%'
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' and table_schema = @schemaName AND TABLE_NAME='dbstatus')
 begin
 	if @schemaName = 'app'
-		update app.dbstatus set statusFlagValue = 1, lastUpdateDate = getdate() where StatusFlagName = 'IsOfflineForMaintenance'
+		update app.dbstatus set statusFlagValue = 0, lastUpdateDate = getdate() where StatusFlagName = 'IsOfflineForMaintenance'
 	else
-		update dbo.dbstatus set statusFlagValue = 1, lastUpdateDate = getdate() where StatusFlagName = 'IsOfflineForMaintenance'
+		update dbo.dbstatus set statusFlagValue = 0, lastUpdateDate = getdate() where StatusFlagName = 'IsOfflineForMaintenance'
 end
 else
 	print 'DB-Status table does not exist... yet?'
