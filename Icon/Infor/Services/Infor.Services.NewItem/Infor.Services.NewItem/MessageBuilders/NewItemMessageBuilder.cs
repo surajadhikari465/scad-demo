@@ -11,6 +11,7 @@ using Icon.Common.DataAccess;
 using Infor.Services.NewItem.Queries;
 using System.Text.RegularExpressions;
 using Infor.Services.NewItem.Constants;
+using Infor.Services.NewItem.Extensions;
 
 namespace Infor.Services.NewItem.MessageBuilders
 {
@@ -22,17 +23,20 @@ namespace Infor.Services.NewItem.MessageBuilders
         private ISerializer<Contracts.items> serializer;
         private IIconCache iconCache;
         private IQueryHandler<GetItemIdsQuery, Dictionary<string, int>> getItemIdsQueryHandler;
+        private InforNewItemApplicationSettings settings;
 
         public NewItemMessageBuilder(
             IUomMapper uomMapper, 
             ISerializer<Contracts.items> serializer, 
             IIconCache iconCache, 
-            IQueryHandler<GetItemIdsQuery, Dictionary<string, int>> getItemIdsQueryHandler)
+            IQueryHandler<GetItemIdsQuery, Dictionary<string, int>> getItemIdsQueryHandler,
+            InforNewItemApplicationSettings settings)
         {
             this.uomMapper = uomMapper;
             this.serializer = serializer;
             this.iconCache = iconCache;
             this.getItemIdsQueryHandler = getItemIdsQueryHandler;
+            this.settings = settings;
         }
 
         public string BuildMessage(IEnumerable<NewItemModel> model)
@@ -374,6 +378,25 @@ namespace Infor.Services.NewItem.MessageBuilders
                     }
                 }
             };
+
+            if(settings.SendOrganic)
+            {
+                itemTraits.Add(new Contracts.TraitType
+                {
+                    code = TraitCodes.Organic,
+                    type = new Contracts.TraitTypeType
+                    {
+                        description = TraitDescriptions.Organic,
+                        value = new Contracts.TraitValueType[]
+                        {
+                            new Contracts.TraitValueType
+                            {
+                                value = newItemModel.Organic.ToMessageBoolString()
+                            }
+                        }
+                    }
+                });
+            }
             return itemTraits.ToArray();
         }
 

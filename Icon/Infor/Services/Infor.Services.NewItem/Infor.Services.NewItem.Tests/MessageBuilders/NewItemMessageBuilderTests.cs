@@ -24,17 +24,19 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
         private Serializer<Contracts.items> serializer;
         private Mock<IIconCache> mockIconCache;
         private NewItemMessageBuilder newItemMessageBuilder;
-        Mock<IQueryHandler<GetItemIdsQuery, Dictionary<string, int>>> mockGetItemIdsQueryHandler;
+        private Mock<IQueryHandler<GetItemIdsQuery, Dictionary<string, int>>> mockGetItemIdsQueryHandler;
+        private InforNewItemApplicationSettings settings;
 
         [TestInitialize]
         public void InitializeTests()
         {
+            settings = new InforNewItemApplicationSettings { SendOrganic = false };
             this.mockUomMapper = new Mock<IUomMapper>();
             serializer = new Serializer<Contracts.items>();
             this.mockIconCache = new Mock<IIconCache>();
             this.mockGetItemIdsQueryHandler = new Mock<IQueryHandler<GetItemIdsQuery, Dictionary<string, int>>>();
 
-            this.newItemMessageBuilder = new NewItemMessageBuilder(this.mockUomMapper.Object, serializer, this.mockIconCache.Object, this.mockGetItemIdsQueryHandler.Object);
+            this.newItemMessageBuilder = new NewItemMessageBuilder(this.mockUomMapper.Object, serializer, this.mockIconCache.Object, this.mockGetItemIdsQueryHandler.Object, settings);
 
             this.mockIconCache.SetupGet(m => m.NationalClassCodesToIdDictionary)
                 .Returns(new Dictionary<string, int> { { "12345", 22 } });
@@ -283,6 +285,30 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                 .Single()
                 .Value;
             Assert.AreEqual(25, posDescription.Length);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenAListOfThreeNewItemsWithOrganicSet_ShouldReturnItemXmlStringForThreeItemsWithOrganicTraits()
+        {
+            // Given
+            settings.SendOrganic = true;
+
+            List<NewItemModel> newItemModel = BuildNewItemModel(3);
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(new Dictionary<string, int>
+                {
+                    { "test1", 111 },
+                    { "test2", 112},
+                    { "test3", 113 }
+                });
+
+            // When
+            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            // Then
+            var expectedXml = File.ReadAllText(@"TestMessages\ThreeNewItemsWithOrganicSet.xml");
+            Assert.AreEqual(expectedXml, actualXml);
         }
 
         private List<NewItemModel> BuildNewItemModel(int numberOfItems)

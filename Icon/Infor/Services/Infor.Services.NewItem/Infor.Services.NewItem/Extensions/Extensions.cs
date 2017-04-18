@@ -12,5 +12,10 @@ namespace Infor.Services.NewItem.Extensions
         {
             return taxName.Substring(0, 7);
         }
+
+        public static string ToMessageBoolString(this bool value)
+        {
+            return value ? "0" : "1";
+        }
     }
 }

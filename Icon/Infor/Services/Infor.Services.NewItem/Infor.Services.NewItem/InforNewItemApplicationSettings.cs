@@ -11,6 +11,7 @@ namespace Infor.Services.NewItem
     {
         public List<string> Regions { get; set; }
         public int NumberOfItemsPerMessage { get; set; }
+        public bool SendOrganic { get; set; }
 
         public InforNewItemApplicationSettings()
         {
@@ -22,7 +23,8 @@ namespace Infor.Services.NewItem
             return new InforNewItemApplicationSettings
             {
                 Regions = AppSettingsAccessor.GetStringSetting("Regions").Split(',').ToList(),
-                NumberOfItemsPerMessage = AppSettingsAccessor.GetIntSetting("NumberOfItemsPerMessage", 100)
+                NumberOfItemsPerMessage = AppSettingsAccessor.GetIntSetting("NumberOfItemsPerMessage", 100),
+                SendOrganic = AppSettingsAccessor.GetBoolSetting("SendOrganic", false)
             };
         }
     }

@@ -52,6 +52,7 @@ namespace Infor.Services.NewItem.Queries
                                             ELSE nic.ClassID
                                         END AS nvarchar(5)) AS NationalClassCode,
                                         LEFT(tc.TaxClassDesc, 7) AS TaxClassCode,
+                                        COALESCE(isa.Organic, i.Organic) AS Organic,
                                         q.InsertDate AS QueueInsertDate
                                     FROM dbo.IconItemChangeQueue q
                                     JOIN dbo.ItemIdentifier ii on q.Identifier = ii.Identifier
@@ -59,6 +60,7 @@ namespace Infor.Services.NewItem.Queries
                                         and q.Item_Key = i.Item_Key
                                     JOIN dbo.ItemUnit iu on i.Package_Unit_ID = iu.Unit_ID
                                     JOIN dbo.SubTeam st on i.SubTeam_No = st.SubTeam_No
+                                    LEFT JOIN dbo.ItemSignAttribute isa on i.Item_Key = isa.Item_Key
                                     LEFT JOIN dbo.NatItemClass nic on i.ClassID = nic.ClassID
                                     JOIN dbo.ItemBrand ib on i.Brand_ID = ib.Brand_ID
                                     LEFT JOIN dbo.ValidatedBrand vb on i.Brand_ID = vb.IrmaBrandId
