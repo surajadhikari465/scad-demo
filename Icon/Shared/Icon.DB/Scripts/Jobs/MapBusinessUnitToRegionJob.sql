@@ -44,7 +44,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Ma
 		@on_success_action=3, 
 		@on_success_step_id=0, 
 		@on_fail_action=4, 
-		@on_fail_step_id=4, 
+		@on_fail_step_id=5, 
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
@@ -123,12 +123,12 @@ GO',
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 /****** Object:  Step [Clean ItemMovementTransactionHistory Table]    Script Date: 11/25/2014 3:57:10 PM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Clean ItemMovementTransactionHistory Table', 
-		@step_id=3, 
+		@step_id=3,
 		@cmdexec_success_code=0, 
-		@on_success_action=1, 
-		@on_success_step_id=0, 
-		@on_fail_action=2, 
-		@on_fail_step_id=0, 
+		@on_success_action=3,
+		@on_success_step_id=3,
+		@on_fail_action=3,
+		@on_fail_step_id=4,
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
@@ -138,9 +138,40 @@ GO',
 		@database_name=N'Icon', 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
+/****** Object:  Step [Clean ItemMovement Table]    Script Date: 11/25/2014 3:57:10 PM ******/
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Clean ItemMovement Table', 
+		@step_id=4, 
+		@cmdexec_success_code=0, 
+		@on_success_action=1, 
+		@on_success_step_id=0, 
+		@on_fail_action=2, 
+		@on_fail_step_id=0, 
+		@retry_attempts=0, 
+		@retry_interval=0, 
+		@os_run_priority=0, @subsystem=N'TSQL', 
+		@command=N'DECLARE @cutoffdate as datetime
+DECLARE @recPerTran as int = 50000
+DECLARE @recDeleted as int = 50000
+
+SET @cutoffdate = Convert(Date, getdate() - 3, 102)
+
+WHILE (@recDeleted = @recPerTran)
+BEGIN
+
+delete TOP (@recPerTran)
+	   [app].[ItemMovement]
+where [ProcessFailedDate] < @cutoffdate
+
+set @recDeleted = @@ROWCOUNT
+
+END
+GO', 
+		@database_name=N'Icon', 
+		@flags=0
+IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 /****** Object:  Step [Report Maintenance Mode]    Script Date: 3/23/2017 4:34:56 AM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Report Maintenance Mode', 
-		@step_id=4, 
+		@step_id=5, 
 		@cmdexec_success_code=0, 
 		@on_success_action=1, 
 		@on_success_step_id=0, 
