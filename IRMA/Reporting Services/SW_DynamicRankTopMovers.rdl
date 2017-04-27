@@ -1,0 +1,1840 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="ItemCatalog">
+      <DataSourceReference>ItemCatalog</DataSourceReference>
+      <rd:DataSourceID>15805bdb-9b14-4a80-b59a-e0a6d1b4ec98</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <BottomMargin>1in</BottomMargin>
+  <RightMargin>1in</RightMargin>
+  <ReportParameters>
+    <ReportParameter Name="StartDate">
+      <DataType>String</DataType>
+      <Prompt>StartDate</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="EndDate">
+      <DataType>String</DataType>
+      <Prompt>EndDate</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="StoreList">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>StoreList</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="SubteamList">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>SubteamList</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ClassList">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>ClassList</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ItemList">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>ItemList</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="CommodityList">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>CommodityList</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="VenueList">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>VenueList</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="MovementTable">
+      <DataType>Integer</DataType>
+      <Prompt>MovementTable</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="TopNumber">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>TopNumber</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="RankBy">
+      <DataType>String</DataType>
+      <Prompt>RankBy</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="SortOrder">
+      <DataType>String</DataType>
+      <Prompt>SortOrder</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="BreakBy">
+      <DataType>String</DataType>
+      <Prompt>BreakBy</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>8.5in</InteractiveWidth>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <Body>
+    <ReportItems>
+      <Textbox Name="textbox30">
+        <Top>0.875in</Top>
+        <ZIndex>9</ZIndex>
+        <Width>7.375in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>="Sort By: " &amp; Parameters!RankBy.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox12">
+        <Top>2.125in</Top>
+        <ZIndex>8</ZIndex>
+        <Width>7.375in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>="Items:  " &amp; iif(Parameters!ItemList.Value is nothing, "No item list provided", Parameters!ItemList.Value)</Value>
+      </Textbox>
+      <Textbox Name="textbox36">
+        <Top>1.875in</Top>
+        <ZIndex>7</ZIndex>
+        <Width>7.375in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>="Venues:  " &amp; iif(Parameters!VenueList.Value is nothing, "All", Parameters!VenueList.Value)</Value>
+      </Textbox>
+      <Textbox Name="textbox37">
+        <Top>1.625in</Top>
+        <ZIndex>6</ZIndex>
+        <Width>7.375in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>="Sub-teams:  " &amp; iif(Parameters!SubteamList.Value is nothing, "All", Parameters!SubteamList.Value)</Value>
+      </Textbox>
+      <Textbox Name="textbox39">
+        <Top>1.375in</Top>
+        <ZIndex>5</ZIndex>
+        <Width>7.375in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>="Commodity Codes:  " &amp; iif(Parameters!CommodityList.Value is nothing, "All", Parameters!CommodityList.Value)</Value>
+      </Textbox>
+      <Textbox Name="textbox40">
+        <Top>1.125in</Top>
+        <ZIndex>4</ZIndex>
+        <Width>7.375in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>="Stores:  " &amp; iif(Parameters!StoreList.Value is nothing, "All", Parameters!StoreList.Value)</Value>
+      </Textbox>
+      <Textbox Name="textbox43">
+        <Top>0.625in</Top>
+        <ZIndex>3</ZIndex>
+        <Width>7.375in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>="Dates: " &amp; FormatDateTime(Parameters!StartDate.Value, DateFormat.ShortDate) &amp; " to " &amp; FormatDateTime(Parameters!EndDate.Value, DateFormat.ShortDate)</Value>
+      </Textbox>
+      <Matrix Name="matrix1">
+        <MatrixColumns>
+          <MatrixColumn>
+            <Width>0.75in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.75in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.75in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.75in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.75in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.75in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.75in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.75in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.625in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.625in</Width>
+          </MatrixColumn>
+        </MatrixColumns>
+        <RowGroupings>
+          <RowGrouping>
+            <Width>1.125in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="SubTeam_Name_1">
+                  <rd:DefaultName>SubTeam_Name_1</rd:DefaultName>
+                  <ZIndex>23</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!SubTeam_Name.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_RowGroup1">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!SubTeam_Name.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>1in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="Brand_Name">
+                  <rd:DefaultName>Brand_Name</rd:DefaultName>
+                  <ZIndex>22</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Left</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Brand_Name.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_Brand_Name">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Brand_Name.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>1.125in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="Identifier">
+                  <rd:DefaultName>Identifier</rd:DefaultName>
+                  <ZIndex>21</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Identifier.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_Identifier">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Identifier.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>1.375in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="Item_Description">
+                  <rd:DefaultName>Item_Description</rd:DefaultName>
+                  <ZIndex>20</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Item_Description.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_Item_Description">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Item_Description.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.5in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="HR_Rank">
+                  <rd:DefaultName>HR_Rank</rd:DefaultName>
+                  <ZIndex>19</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Center</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>=iif(Fields!HR_Rank.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!HR_Rank.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_HR_Rank">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!HR_Rank.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.875in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="AveragePrice">
+                  <rd:DefaultName>AveragePrice</rd:DefaultName>
+                  <ZIndex>18</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <Format>C</Format>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>=IIf(Fields!AveragePrice.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=iif(Fields!AveragePrice.Value&lt;=0, "", Fields!AveragePrice.Value)</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_AveragePrice">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!AveragePrice.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>1in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="RegionalSalesQuantity">
+                  <rd:DefaultName>RegionalSalesQuantity</rd:DefaultName>
+                  <ZIndex>17</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <Format>F</Format>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>=iif(Fields!RegionalSalesQuantity.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!RegionalSalesQuantity.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_RegionalSalesQuantity">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!RegionalSalesQuantity.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.875in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="RegionalSalesAmount">
+                  <rd:DefaultName>RegionalSalesAmount</rd:DefaultName>
+                  <ZIndex>16</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <Format>C</Format>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>=iif(Fields!RegionalSalesAmount.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!RegionalSalesAmount.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_RegionalSalesAmount">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!RegionalSalesAmount.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.75in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="RegionalSalesCost">
+                  <rd:DefaultName>RegionalSalesCost</rd:DefaultName>
+                  <ZIndex>15</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <Format>C</Format>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>=iif(Fields!RegionalSalesCost.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!RegionalSalesCost.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_RegionalSalesCost">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!RegionalSalesCost.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.875in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="RegionalSalesNetCost">
+                  <rd:DefaultName>RegionalSalesNetCost</rd:DefaultName>
+                  <ZIndex>14</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <Format>C</Format>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>=iif(Fields!RegionalSalesNetCost.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!RegionalSalesNetCost.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_RegionalSalesNetCost">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!RegionalSalesNetCost.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.875in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="GMDollars">
+                  <rd:DefaultName>GMDollars</rd:DefaultName>
+                  <ZIndex>13</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <Format>C</Format>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>=iif(Fields!GMDollars.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!GMDollars.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_GMDollars">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!GMDollars.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.875in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="GMNetDollars">
+                  <rd:DefaultName>GMNetDollars</rd:DefaultName>
+                  <ZIndex>12</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <Format>C</Format>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>=iif(Fields!GMNetDollars.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!GMNetDollars.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_GMNetDollars">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!GMNetDollars.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.625in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="RegionalMargin">
+                  <rd:DefaultName>RegionalMargin</rd:DefaultName>
+                  <ZIndex>11</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>=iif(Fields!RegionalMargin.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!RegionalMargin.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_RegionalMargin">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!RegionalMargin.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.625in</Width>
+            <DynamicRows>
+              <ReportItems>
+                <Textbox Name="RegionalNetMargin">
+                  <rd:DefaultName>RegionalNetMargin</rd:DefaultName>
+                  <ZIndex>10</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontSize>9pt</FontSize>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                      <Right>Black</Right>
+                    </BorderColor>
+                    <BackgroundColor>=iif(Fields!RegionalNetMargin.Value&lt;=0, "Red", "Transparent")</BackgroundColor>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!RegionalNetMargin.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_RegionalNetMargin">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!RegionalNetMargin.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicRows>
+          </RowGrouping>
+        </RowGroupings>
+        <ColumnGroupings>
+          <ColumnGrouping>
+            <DynamicColumns>
+              <ReportItems>
+                <Textbox Name="Store_Name">
+                  <rd:DefaultName>Store_Name</rd:DefaultName>
+                  <ZIndex>34</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Center</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontWeight>700</FontWeight>
+                    <FontSize>9pt</FontSize>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                      <Left>Black</Left>
+                      <Right>Black</Right>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Store_Name.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Grouping Name="matrix1_Store_Name">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Store_Name.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+            </DynamicColumns>
+            <Height>0.25in</Height>
+          </ColumnGrouping>
+          <ColumnGrouping>
+            <Height>0.5in</Height>
+            <StaticColumns>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox25">
+                    <rd:DefaultName>textbox25</rd:DefaultName>
+                    <ZIndex>33</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                        <Left>Black</Left>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Rank</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox28">
+                    <rd:DefaultName>textbox28</rd:DefaultName>
+                    <ZIndex>32</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                        <Left>Black</Left>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Average Retail</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox2">
+                    <rd:DefaultName>textbox2</rd:DefaultName>
+                    <ZIndex>31</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                        <Left>Black</Left>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Sales Quantity</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox3">
+                    <rd:DefaultName>textbox3</rd:DefaultName>
+                    <ZIndex>30</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Sales Amount</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox4">
+                    <rd:DefaultName>textbox4</rd:DefaultName>
+                    <ZIndex>29</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Sales Cost</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox5">
+                    <rd:DefaultName>textbox5</rd:DefaultName>
+                    <ZIndex>28</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Sales Net Cost</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox8">
+                    <rd:DefaultName>textbox8</rd:DefaultName>
+                    <ZIndex>27</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Margin Dollars</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox10">
+                    <rd:DefaultName>textbox10</rd:DefaultName>
+                    <ZIndex>26</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Net Margin Dollars</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox26">
+                    <rd:DefaultName>textbox26</rd:DefaultName>
+                    <ZIndex>25</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Margin</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox27">
+                    <rd:DefaultName>textbox27</rd:DefaultName>
+                    <ZIndex>24</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                        <Right>Black</Right>
+                      </BorderColor>
+                      <BackgroundColor>SteelBlue</BackgroundColor>
+                      <Color>White</Color>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>Net Margin</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+            </StaticColumns>
+          </ColumnGrouping>
+        </ColumnGroupings>
+        <DataSetName>DynamicRankTopMovers</DataSetName>
+        <Top>2.375in</Top>
+        <ZIndex>2</ZIndex>
+        <Corner>
+          <ReportItems>
+            <Rectangle Name="rectangle1">
+              <ReportItems>
+                <Textbox Name="textbox29">
+                  <Left>5.125in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>15</ZIndex>
+                  <Width>0.875in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Average Retail</Value>
+                </Textbox>
+                <Textbox Name="textbox7">
+                  <ZIndex>14</ZIndex>
+                  <Width>4.625in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Center</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontWeight>700</FontWeight>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.25in</Height>
+                  <Value>Item Information</Value>
+                </Textbox>
+                <Textbox Name="textbox24">
+                  <Left>4.625in</Left>
+                  <ZIndex>13</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Center</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <FontWeight>700</FontWeight>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.25in</Height>
+                  <Value>Regional Totals</Value>
+                </Textbox>
+                <Textbox Name="textbox23">
+                  <Left>11.875in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>12</ZIndex>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Net Margin</Value>
+                </Textbox>
+                <Textbox Name="textbox22">
+                  <Left>11.25in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>11</ZIndex>
+                  <Width>0.625in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Margin</Value>
+                </Textbox>
+                <Textbox Name="textbox21">
+                  <Left>10.375in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>10</ZIndex>
+                  <Width>0.875in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Margin Net Dollars</Value>
+                </Textbox>
+                <Textbox Name="textbox20">
+                  <Left>9.5in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>9</ZIndex>
+                  <Width>0.875in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Margin Dollars</Value>
+                </Textbox>
+                <Textbox Name="textbox19">
+                  <Left>8.625in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>8</ZIndex>
+                  <Width>0.875in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Sales Net Cost</Value>
+                </Textbox>
+                <Textbox Name="textbox18">
+                  <Left>7.875in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>7</ZIndex>
+                  <Width>0.75in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Sales Cost</Value>
+                </Textbox>
+                <Textbox Name="textbox17">
+                  <Left>7in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>6</ZIndex>
+                  <Width>0.875in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Sales Amount</Value>
+                </Textbox>
+                <Textbox Name="textbox16">
+                  <Left>6in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>5</ZIndex>
+                  <Width>1in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Right</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Quantity Sold</Value>
+                </Textbox>
+                <Textbox Name="textbox14">
+                  <Left>3.25in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>4</ZIndex>
+                  <Width>1.375in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Description</Value>
+                </Textbox>
+                <Textbox Name="textbox13">
+                  <Left>2.125in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>3</ZIndex>
+                  <Width>1.125in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Identifier</Value>
+                </Textbox>
+                <Textbox Name="textbox1">
+                  <Top>0.25in</Top>
+                  <rd:DefaultName>textbox1</rd:DefaultName>
+                  <ZIndex>2</ZIndex>
+                  <Width>1.125in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Department</Value>
+                </Textbox>
+                <Textbox Name="textbox6">
+                  <Left>1.125in</Left>
+                  <Top>0.25in</Top>
+                  <ZIndex>1</ZIndex>
+                  <Width>1in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Brand</Value>
+                </Textbox>
+                <Textbox Name="textbox11">
+                  <Left>4.625in</Left>
+                  <Top>0.25in</Top>
+                  <rd:DefaultName>textbox11</rd:DefaultName>
+                  <Width>0.5in</Width>
+                  <Style>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <TextAlign>Center</TextAlign>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BackgroundColor>SteelBlue</BackgroundColor>
+                    <Color>White</Color>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                  </Style>
+                  <CanGrow>true</CanGrow>
+                  <Value>Rank</Value>
+                </Textbox>
+              </ReportItems>
+              <ZIndex>35</ZIndex>
+            </Rectangle>
+          </ReportItems>
+        </Corner>
+        <Style>
+          <FontSize>9pt</FontSize>
+        </Style>
+        <MatrixRows>
+          <MatrixRow>
+            <Height>0.25in</Height>
+            <MatrixCells>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="Rank">
+                    <rd:DefaultName>Rank</rd:DefaultName>
+                    <ZIndex>9</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <Format>g</Format>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                        <Left>Black</Left>
+                      </BorderColor>
+                      <BackgroundColor>=IIf(Sum(Fields!Rank.Value)&lt;=0, "Red", "Transparent")</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Sum(Fields!Rank.Value)</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="Rank_1">
+                    <rd:DefaultName>Rank_1</rd:DefaultName>
+                    <ZIndex>8</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <Format>C</Format>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                        <Left>Black</Left>
+                      </BorderColor>
+                      <BackgroundColor>=iif(Code.AvgRetail(sum(Fields!SalesAmount.Value), sum(Fields!SalesQuantity.Value))&lt;=0, "Red", "Transparent")</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=iif(Code.AvgRetail(sum(Fields!SalesAmount.Value), sum(Fields!SalesQuantity.Value))&lt;=0, "", Code.AvgRetail(sum(Fields!SalesAmount.Value), sum(Fields!SalesQuantity.Value)))</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="SalesQuantity">
+                    <rd:DefaultName>SalesQuantity</rd:DefaultName>
+                    <ZIndex>7</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <Format>g</Format>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                        <Left>Black</Left>
+                      </BorderColor>
+                      <BackgroundColor>=IIf(Sum(Fields!SalesQuantity.Value)&lt;=0, "Red", "Transparent")</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Sum(Fields!SalesQuantity.Value)</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="SalesAmount">
+                    <rd:DefaultName>SalesAmount</rd:DefaultName>
+                    <ZIndex>6</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <Format>C</Format>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>=IIf(Sum(Fields!SalesAmount.Value)&lt;=0, "Red", "Transparent")</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Sum(Fields!SalesAmount.Value)</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="SalesCost">
+                    <rd:DefaultName>SalesCost</rd:DefaultName>
+                    <ZIndex>5</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <Format>C</Format>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>=IIf(Sum(Fields!SalesCost.Value)&lt;=0, "Red", "Transparent")</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Sum(Fields!SalesCost.Value)</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="SalesNetCost">
+                    <rd:DefaultName>SalesNetCost</rd:DefaultName>
+                    <ZIndex>4</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <Format>C</Format>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>=IIf(Sum(Fields!SalesNetCost.Value)&lt;=0, "Red", "Transparent")</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Sum(Fields!SalesNetCost.Value)</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox9">
+                    <rd:DefaultName>textbox9</rd:DefaultName>
+                    <ZIndex>3</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <Format>C</Format>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>=Iif((sum(Fields!SalesAmount.Value)-sum(Fields!SalesCost.Value))&lt;=0, "Red", "Transparent" )</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=iif(sum(Fields!SalesAmount.Value)-sum(Fields!SalesCost.Value)=0, "", sum(Fields!SalesAmount.Value)-sum(Fields!SalesCost.Value))</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox15">
+                    <ZIndex>2</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <Format>C</Format>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>=Iif((sum(Fields!SalesAmount.Value)-sum(Fields!SalesNetCost.Value))&lt;=0,"Red", "Transparent" )</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=iif(sum(Fields!SalesAmount.Value)-sum(Fields!SalesNetCost.Value)=0, "", sum(Fields!SalesAmount.Value)-sum(Fields!SalesNetCost.Value))</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="Margin_1">
+                    <rd:DefaultName>Margin_1</rd:DefaultName>
+                    <ZIndex>1</ZIndex>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BackgroundColor>=Iif(sum(Fields!Margin.Value)&lt;=0,"Red", "Transparent" )</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Sum(Fields!Margin.Value)</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="NetMargin_1">
+                    <rd:DefaultName>NetMargin_1</rd:DefaultName>
+                    <Style>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <FontSize>9pt</FontSize>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                        <Right>Black</Right>
+                      </BorderColor>
+                      <BackgroundColor>=Iif(sum(Fields!NetMargin.Value)&lt;=0,"Red", "Transparent" )</BackgroundColor>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Sum(Fields!NetMargin.Value)</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+            </MatrixCells>
+          </MatrixRow>
+        </MatrixRows>
+      </Matrix>
+      <Textbox Name="textbox34">
+        <Top>0.375in</Top>
+        <ZIndex>1</ZIndex>
+        <Width>2.75in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <FontSize>8pt</FontSize>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>= "Report run: " &amp; FormatDateTime(Now)</Value>
+      </Textbox>
+      <Textbox Name="textbox32">
+        <rd:DefaultName>textbox32</rd:DefaultName>
+        <Width>11.625in</Width>
+        <Style>
+          <TextAlign>Center</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <FontFamily>Tahoma</FontFamily>
+          <FontWeight>700</FontWeight>
+          <FontSize>14pt</FontSize>
+          <Color>SteelBlue</Color>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.375in</Height>
+        <Value>=iif(Parameters!SortOrder.Value = "desc", "Top ", "Bottom ") &amp;  iif(Parameters!TopNumber.Value &gt; 0, Parameters!TopNumber.Value, "" ) &amp; " Regional Movers with Store Totals"</Value>
+      </Textbox>
+    </ReportItems>
+    <Height>3.375in</Height>
+  </Body>
+  <rd:ReportID>efdadaf9-e6af-485a-b1b4-05386a1e0bc5</rd:ReportID>
+  <LeftMargin>1in</LeftMargin>
+  <DataSets>
+    <DataSet Name="DynamicRankTopMovers">
+      <Query>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>DynamicMovement</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@StartDate">
+            <Value>=Parameters!StartDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@EndDate">
+            <Value>=Parameters!EndDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@StoreList">
+            <Value>=Parameters!StoreList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@SubteamList">
+            <Value>=Parameters!SubteamList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@ClassList">
+            <Value>=Parameters!ClassList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@ItemList">
+            <Value>=Parameters!ItemList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@CommodityList">
+            <Value>=Parameters!CommodityList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@VenueList">
+            <Value>=Parameters!VenueList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@MovementTable">
+            <Value>=Parameters!MovementTable.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@TopNumber">
+            <Value>=Parameters!TopNumber.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@BreakBy">
+            <Value>=Parameters!BreakBy.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@RankBy">
+            <Value>=Parameters!RankBy.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@SortOrder">
+            <Value>=Parameters!SortOrder.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <DataSourceName>ItemCatalog</DataSourceName>
+      </Query>
+      <Fields>
+        <Field Name="HR_Rank">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>HR_Rank</DataField>
+        </Field>
+        <Field Name="SubTeam_No">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>SubTeam_No</DataField>
+        </Field>
+        <Field Name="Store_Name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Store_Name</DataField>
+        </Field>
+        <Field Name="SubTeam_Name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>SubTeam_Name</DataField>
+        </Field>
+        <Field Name="Item_Key">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>Item_Key</DataField>
+        </Field>
+        <Field Name="Identifier">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Identifier</DataField>
+        </Field>
+        <Field Name="Item_Description">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Item_Description</DataField>
+        </Field>
+        <Field Name="Brand_Name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Brand_Name</DataField>
+        </Field>
+        <Field Name="Package_Desc2">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>Package_Desc2</DataField>
+        </Field>
+        <Field Name="Unit_Name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Unit_Name</DataField>
+        </Field>
+        <Field Name="Commodity">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Commodity</DataField>
+        </Field>
+        <Field Name="RegionalSalesQuantity">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>RegionalSalesQuantity</DataField>
+        </Field>
+        <Field Name="RegionalSalesAmount">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>RegionalSalesAmount</DataField>
+        </Field>
+        <Field Name="RegionalSalesCost">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>RegionalSalesCost</DataField>
+        </Field>
+        <Field Name="RegionalSalesNetCost">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>RegionalSalesNetCost</DataField>
+        </Field>
+        <Field Name="GMDollars">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>GMDollars</DataField>
+        </Field>
+        <Field Name="GMNetDollars">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>GMNetDollars</DataField>
+        </Field>
+        <Field Name="RegionalMargin">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>RegionalMargin</DataField>
+        </Field>
+        <Field Name="RegionalNetMargin">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>RegionalNetMargin</DataField>
+        </Field>
+        <Field Name="Store_No">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>Store_No</DataField>
+        </Field>
+        <Field Name="Rank">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>Rank</DataField>
+        </Field>
+        <Field Name="SalesQuantity">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>SalesQuantity</DataField>
+        </Field>
+        <Field Name="SalesAmount">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>SalesAmount</DataField>
+        </Field>
+        <Field Name="SalesCost">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>SalesCost</DataField>
+        </Field>
+        <Field Name="SalesNetCost">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>SalesNetCost</DataField>
+        </Field>
+        <Field Name="Margin">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>Margin</DataField>
+        </Field>
+        <Field Name="NetMargin">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>NetMargin</DataField>
+        </Field>
+        <Field Name="AveragePrice">
+          <Value>=Fields!RegionalSalesAmount.Value/Fields!RegionalSalesQuantity.Value</Value>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <Code>Public Shared Function AvgRetail (ByVal SalesAmount as Double, _
+ ByVal SalesQuantity as Double) as Double
+	If IsDBNull(SalesQuantity) Or SalesQuantity = 0
+		Return 0
+	Else
+		Return (SalesAmount/SalesQuantity) 
+	End If
+End Function</Code>
+  <Width>19.75in</Width>
+  <InteractiveHeight>11in</InteractiveHeight>
+  <Language>en-US</Language>
+  <TopMargin>1in</TopMargin>
+</Report>

@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12.875, 12.625" name="IRMALibDataClasses">
+  <DataContextMoniker Name="/IRMALibDataClassesDataContext" />
+  <nestedChildShapes>
+    <classShape Id="30af9685-5ae6-40ae-9cd4-eec9ace47830" absoluteBounds="7.125, 2.25, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/AppConfigApp" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b776aec1-208c-446b-a791-7a9cae18bf40" absoluteBounds="7.14, 2.71, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ffff6184-25ca-438f-8b95-10b521ff8d42" absoluteBounds="0.75, 0.75, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/App" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f6ea5330-7acd-4576-b181-dd6a2365b572" absoluteBounds="0.765, 1.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c86b16a2-3241-4cdb-adc6-fbf0d13ab9fb" absoluteBounds="3.5, 6.875, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/AppConfigValue" />
+      <nestedChildShapes>
+        <elementListCompartment Id="29e5b661-ea61-426a-8bfd-cb2c4e081f7d" absoluteBounds="3.515, 7.335, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="26f4df9b-4c97-4d82-b3f8-d28646cb68d9" absoluteBounds="4.75, 3.375, 2, 1.9631982421875005">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/AppConfigEnv" />
+      <nestedChildShapes>
+        <elementListCompartment Id="194456ba-c83b-4e79-9765-b9b2bab9e32b" absoluteBounds="4.765, 3.835, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1bd219ef-65a4-4734-826f-3c9d7801d91c" absoluteBounds="0.75, 2.75, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/AppConfigHistory" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d1bb1822-e083-48aa-95f3-0ce1e4e56cf5" absoluteBounds="0.765, 3.21, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="55108131-c7c6-4dfb-af0a-c97eba14d884" absoluteBounds="0.75, 7.125, 2, 1.7708968098958335">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/AppConfigKey" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d9f1d9f2-e04b-4b42-bb96-f83b11d4a950" absoluteBounds="0.765, 7.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="14012ba4-ac0b-461d-bab0-d83873351450" absoluteBounds="4.75, 1.5, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/AppConfigType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8b477fb3-8a93-4336-95f3-f06626797a8f" absoluteBounds="4.765, 1.96, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.75 : 3.98640055338542); (7.125 : 3.98640055338542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMALibDataClassesDataContext/AppConfigEnv/AppConfigEnv_AppConfigApp" />
+      <nodes>
+        <classShapeMoniker Id="26f4df9b-4c97-4d82-b3f8-d28646cb68d9" />
+        <classShapeMoniker Id="30af9685-5ae6-40ae-9cd4-eec9ace47830" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 8.01044840494792); (3.5 : 8.01044840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMALibDataClassesDataContext/AppConfigKey/AppConfigKey_AppConfigValue" />
+      <nodes>
+        <classShapeMoniker Id="55108131-c7c6-4dfb-af0a-c97eba14d884" />
+        <classShapeMoniker Id="c86b16a2-3241-4cdb-adc6-fbf0d13ab9fb" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(6.75 : 2.47199625651042); (7.125 : 2.47199625651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMALibDataClassesDataContext/AppConfigType/AppConfigType_AppConfigApp" />
+      <nodes>
+        <classShapeMoniker Id="14012ba4-ac0b-461d-bab0-d83873351450" />
+        <classShapeMoniker Id="30af9685-5ae6-40ae-9cd4-eec9ace47830" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="c8289fe8-8aeb-4333-b152-46bc195b29a4" absoluteBounds="7.125, 5.125, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/ConfigurationData" />
+      <nestedChildShapes>
+        <elementListCompartment Id="95be1721-c072-4b22-9143-717feff34d6a" absoluteBounds="7.1400000000000006, 5.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c75acf48-79ef-431b-880b-0185077e9642" absoluteBounds="7.125, 6.625, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/ApplicationConfiguration" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d147f3e8-cf30-4773-9a5b-dd7324da0073" absoluteBounds="7.1400000000000006, 7.085, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9fccff38-7c7c-4b54-a437-694929f8641a" absoluteBounds="10.625, 1.5, 2, 9.6552555338541648">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="724d9fd2-aa7d-4561-8d7e-98b8d734ee4a" absoluteBounds="10.64, 1.96, 1.9700000000000002, 9.0952555338541661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(10.625 : 3.42390055338542); (9.125 : 3.42390055338542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMALibDataClassesDataContext/User/User_AppConfigApp" />
+      <nodes>
+        <classShapeMoniker Id="9fccff38-7c7c-4b54-a437-694929f8641a" />
+        <classShapeMoniker Id="30af9685-5ae6-40ae-9cd4-eec9ace47830" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.625 : 8.60179768880208); (5.5 : 8.60179768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/IRMALibDataClassesDataContext/User/User_AppConfigValue" />
+      <nodes>
+        <classShapeMoniker Id="9fccff38-7c7c-4b54-a437-694929f8641a" />
+        <classShapeMoniker Id="c86b16a2-3241-4cdb-adc6-fbf0d13ab9fb" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.625 : 4.86140055338542); (6.75 : 4.86140055338542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMALibDataClassesDataContext/User/User_AppConfigEnv" />
+      <nodes>
+        <classShapeMoniker Id="9fccff38-7c7c-4b54-a437-694929f8641a" />
+        <classShapeMoniker Id="26f4df9b-4c97-4d82-b3f8-d28646cb68d9" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.7203836153846 : 1.5); (10.1578836153846 : 0.9375); (3.375 : 0.9375); (3.375 : 2.125); (3.18392556509888 : 2.31607443490112 : JumpStart); (3.06607443490112 : 2.43392556509888 : JumpEnd); (2.75 : 2.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMALibDataClassesDataContext/User/User_AppConfigHistory" />
+      <nodes>
+        <classShapeMoniker Id="9fccff38-7c7c-4b54-a437-694929f8641a" />
+        <classShapeMoniker Id="1bd219ef-65a4-4734-826f-3c9d7801d91c" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.625 : 1.53230769230769); (10.2176923076923 : 1.125); (3.45833333333333 : 1.125 : JumpStart); (3.29166666666667 : 1.125 : JumpEnd); (3.125 : 1.125); (3.125 : 6.75); (2.75 : 7.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMALibDataClassesDataContext/User/User_AppConfigKey" />
+      <nodes>
+        <classShapeMoniker Id="9fccff38-7c7c-4b54-a437-694929f8641a" />
+        <classShapeMoniker Id="55108131-c7c6-4dfb-af0a-c97eba14d884" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="0ecb1956-46b9-4c6b-8baa-6765fc7a94d3" absoluteBounds="1.375, 9.875, 2, 2.5401025390625">
+      <DataClassMoniker Name="/IRMALibDataClassesDataContext/Date" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0e5e2aae-300b-4cfc-911d-a3b4afac9710" absoluteBounds="1.3899999999999997, 10.335, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

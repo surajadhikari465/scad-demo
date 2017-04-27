@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="msg_SaveThirdPartyFreightInvoiceError" xml:space="preserve">
+    <value>The following error was encountered.  The invoice was not saved:{0}{1}</value>
+    <comment>0 = carriage return; 1 = error message</comment>
+  </data>
+  <data name="msg_SaveThirdPartyFreightInvoiceWarning" xml:space="preserve">
+    <value>The following warning was encountered when saving the invoice:{0}{1}{0}{0}Do you still want to save this invoice?</value>
+    <comment>0 = carriage return; 1 = warning message</comment>
+  </data>
+  <data name="msg_VendorKeyAndVendorIdMismatch" xml:space="preserve">
+    <value>The vendor ID and vendor key values entered do not map to the same vendor.  You are not required to enter both values, and the search feature can be used to locate the vendor.</value>
+  </data>
+  <data name="msg_VendorKeyMapsToDuplicateVendors" xml:space="preserve">
+    <value>The vendor key entered maps to more than one vendor.  Enter the vendor id to narrow down the vendor match or use the search feature to locate the vendor.</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ControlGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>controlgroup.resx;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ControlGroup_Designer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>controlgroup.designer.vb;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="msg_ApproveWithDocumentData" xml:space="preserve">
+    <value>Warning:  You are approving an order with Document data instead of Invoice data.{0}This order will not be uploaded to PeopleSoft for payment after it is approved.</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_autoCloseConfirm" xml:space="preserve">
+    <value>Invoice/Document data was entered so the order must be closed.{0}Auto-close this order?</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_CannotApproveWithZeroCost" xml:space="preserve">
+    <value>Cost is zero - cannot approve</value>
+  </data>
+  <data name="msg_CannotReOpenUploadedOrder" xml:space="preserve">
+    <value>This order was unable to be re-opened because it has already been uploaded to PeopleSoft.</value>
+  </data>
+  <data name="msg_NoItemsReceived" xml:space="preserve">
+    <value>No items have been received, so the order cannot be closed.{0}{0}Please receive the items or use the Refuse Receiving functionality to refuse the order.</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_CloseBeforeReceivingAllItems" xml:space="preserve">
+    <value>Not all orders received.{0}Close order anyway?</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_ClosedOrderIsSuspended" xml:space="preserve">
+    <value>WARNING: The order was closed, but it is now in the Suspended state.{0}{0}For Pay by Agreed Cost vendors, this is because one or more line items did not match between the eInvoice and the Purchase Order.{0}{0}For Pay by Invoice Vendors, this is because the PO and Invoice did not match within the invoice matching tolerance.{0}{0}The invoice associated with this order will not be uploaded to PeopleSoft until the order has been approved.</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_ClosedOrderIsPartialShipment" xml:space="preserve">
+    <value>WARNING: You have marked this PO as a "Partial Shipment."{0}{0}It will remain in suspended status untill it is re-opened and received in full.</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_closeOrderBeforeExiting" xml:space="preserve">
+    <value>Please close the order or clear all data (choose type None) before exiting this window.</value>
+  </data>
+  <data name="msg_CloseOrderWithLargeCostChanges" xml:space="preserve">
+    <value>This order has items with large change(s) in cost.{0}{0}Continue?</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_ConfirmCloseOrder" xml:space="preserve">
+    <value>Close this order?</value>
+  </data>
+  <data name="msg_ConfirmClosingWithZeroCost" xml:space="preserve">
+    <value>Cost is zero.{0}Close order anyway?</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_ConfirmReOpenOrder" xml:space="preserve">
+    <value>Re-Open this order?</value>
+  </data>
+  <data name="msg_DataOutOfDate" xml:space="preserve">
+    <value>Your request was unable to be processed because the data on this form is out of date.{0}The form has now been reloaded based on the current data and order state.</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_FreightRequired" xml:space="preserve">
+    <value>Freight must be entered even if it is zero.</value>
+  </data>
+  <data name="msg_InvoiceNumUsedByAnotherPO" xml:space="preserve">
+    <value>Invoice Number has been used for another PO:{0}{1}</value>
+    <comment>0 = carriage return; 1 = PO number</comment>
+  </data>
+  <data name="msg_InvoiceRequiredForApproval" xml:space="preserve">
+    <value>Invoice required to approve</value>
+  </data>
+  <data name="msg_OrderStatusMissingCrystal" xml:space="preserve">
+    <value>OrderStatus.vb  CloseOrder(): The Crystal Report CheckList.rpt is normally shown here. It has been disabled until the Crystal dependencies can be removed or replaced.</value>
+  </data>
+  <data name="msg_ReceiveItemsBeforeClosing" xml:space="preserve">
+    <value>No items have been received, so the order cannot be closed.  Either receive items before closing or delete this order.</value>
+  </data>
+  <data name="msg_UnableToApproveWithEdits" xml:space="preserve">
+    <value>Your request was unable to be processed because the data on this form has been updated.{0}Changes to the invoice/document data are not allowed for suspended orders.  The order{0}must be re-opened if you need to update the data.{0}The form has now been reloaded based on the current data and order state.</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="msg_UnableToApproveWithoutData" xml:space="preserve">
+    <value>Your request was unable to be processed because this order does not contain invoice or document data.{0}You must re-open the order and enter data before this order can be approved.</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="Testing_123" xml:space="preserve">
+    <value>This is a test of the modulized resource file</value>
+    <comment>This is only a test.</comment>
+  </data>
+  <data name="msg_InvoiceNumPreviouslyUsed" xml:space="preserve">
+    <value>This invoice number was used on another invoice for this vendor. It cannot be used again.</value>
+  </data>
+  <data name="msg_InvalidVendor" xml:space="preserve">
+    <value>The Vendor_ID must be in the Vendor table and the Vendor.PS_Export_Vendor_ID cannot be null</value>
+  </data>
+  <data name="msg_UnexpectedInvoiceStatus" xml:space="preserve">
+    <value>Internal error: The invoice status was evaluated to an unexpected state.  The invoice is not saved.</value>
+  </data>
+  <data name="msg_3PFInvoiceAmt" xml:space="preserve">
+    <value>The 3rd Party Fright invoice amount is very large. Are you sure you want to save it with this amount?</value>
+  </data>
+  <data name="msg_NumericInvoiceAmt" xml:space="preserve">
+    <value>The amount entered as the invoice total is not numeric.  Please use a numeric value for this field.</value>
+  </data>
+  <data name="msg_ReceivingDiscrepanciesExist" xml:space="preserve">
+    <value>This order cannot be closed.  Before closing this order, please update the {1} item(s) with a reason code on the Receiving List.  A reason code is needed for any item where the received quantity does not match the eInvoice quantity.</value>
+    <comment>1 = Number of Items</comment>
+  </data>
+  <data name="msg_ReceivedOrderNotClosed" xml:space="preserve">
+    <value>This order with an eInvoice required vendor is received but not closed.  Are you sure to exit without closing the order?</value>
+  </data>
+</root>

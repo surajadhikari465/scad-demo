@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DateStringFormat" xml:space="preserve">
+    <value>M/dd/yyyy</value>
+  </data>
+  <data name="label_AccountEnabled" xml:space="preserve">
+    <value>Account Enabled</value>
+  </data>
+  <data name="label_bitOrder" xml:space="preserve">
+    <value>Bit No</value>
+    <comment>POSWriterFileConfig.BitOrder</comment>
+  </data>
+  <data name="label_column" xml:space="preserve">
+    <value>Column No</value>
+    <comment>POSWriterFileConfig.ColumnOrder</comment>
+  </data>
+  <data name="label_configType" xml:space="preserve">
+    <value>Acknowledgment Type</value>
+    <comment>StorePOSConfig.ConfigType</comment>
+  </data>
+  <data name="label_dataElement" xml:space="preserve">
+    <value>Data Element</value>
+    <comment>POSWriterFileConfig.DataElement</comment>
+  </data>
+  <data name="label_dataType" xml:space="preserve">
+    <value>Data Type</value>
+  </data>
+  <data name="label_DecimalPrecision" xml:space="preserve">
+    <value>Decimal Precision</value>
+    <comment>For error message text</comment>
+  </data>
+  <data name="label_defaultVal" xml:space="preserve">
+    <value>Default Value</value>
+    <comment>Config.DefaultValue</comment>
+  </data>
+  <data name="label_delimChar" xml:space="preserve">
+    <value>Delim Char</value>
+    <comment>POSWriter.DelimChar</comment>
+  </data>
+  <data name="label_description" xml:space="preserve">
+    <value>Description</value>
+    <comment>POSDataElement.Description</comment>
+  </data>
+  <data name="label_EMail" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="label_enforceDictionary" xml:space="preserve">
+    <value>Enforce Dictionary</value>
+    <comment>POSWriter.EnforceDictionary</comment>
+  </data>
+  <data name="label_fieldId" xml:space="preserve">
+    <value>Field ID</value>
+    <comment>Config.FieldID</comment>
+  </data>
+  <data name="label_fileWriter" xml:space="preserve">
+    <value>File Writer</value>
+    <comment>POSWriter.POSFileWriterCode</comment>
+  </data>
+  <data name="label_fixedWidth" xml:space="preserve">
+    <value>Fixed Width</value>
+    <comment>POSWriter.FixedWidth</comment>
+  </data>
+  <data name="label_FullName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="label_header_changeDirectory" xml:space="preserve">
+    <value>Change Dir</value>
+    <comment>StoreFTPConfig.ChangeDirectory</comment>
+  </data>
+  <data name="label_header_escapeCharValue" xml:space="preserve">
+    <value>Escape Character</value>
+    <comment>POSWriterFileConfig.EscapeCharValue</comment>
+  </data>
+  <data name="label_header_fileWriterType" xml:space="preserve">
+    <value>Writer Type</value>
+    <comment>StoreFTPConfig.FileWriterType</comment>
+  </data>
+  <data name="label_header_ftpPassword" xml:space="preserve">
+    <value>Password</value>
+    <comment>StoreFTPConfig.FTP_Password</comment>
+  </data>
+  <data name="label_header_ftpUser" xml:space="preserve">
+    <value>User</value>
+    <comment>StoreFTPConfig.FTP_User</comment>
+  </data>
+  <data name="label_header_ipAddress" xml:space="preserve">
+    <value>IP Address</value>
+    <comment>StoreFTPConfig.IP_Address</comment>
+  </data>
+  <data name="label_header_isSecureTransfer" xml:space="preserve">
+    <value>Secure?</value>
+    <comment>StoreFTPConfig.IsSecureTransfer</comment>
+  </data>
+  <data name="label_header_port" xml:space="preserve">
+    <value>Port</value>
+    <comment>StoreFTPConfig.Port</comment>
+  </data>
+  <data name="label_instanceDataStoreOverride" xml:space="preserve">
+    <value>Override?</value>
+    <comment>header for column of checkboxes to override instance data flags for store</comment>
+  </data>
+  <data name="label_jobClassname" xml:space="preserve">
+    <value>Job</value>
+  </data>
+  <data name="label_jobException" xml:space="preserve">
+    <value>Exception</value>
+  </data>
+  <data name="label_jobLastRun" xml:space="preserve">
+    <value>Status Date</value>
+  </data>
+  <data name="label_jobRunDate" xml:space="preserve">
+    <value>Job Run Date</value>
+  </data>
+  <data name="label_jobServer" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="label_jobStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="label_leadingDelim" xml:space="preserve">
+    <value>Leading Delim</value>
+    <comment>POSWriter.LeadingDelim</comment>
+  </data>
+  <data name="label_literal" xml:space="preserve">
+    <value>Literal</value>
+    <comment>POSWriterFileConfig.IsLiteral</comment>
+  </data>
+  <data name="label_maxWidth" xml:space="preserve">
+    <value>Max Width</value>
+    <comment>Config.MaxFieldWidth</comment>
+  </data>
+  <data name="label_Phone_Number" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="label_pirusActiveFlag" xml:space="preserve">
+    <value>PIRUS Active Flag</value>
+    <comment>Form_EditPOSWriterFileConfig.ComboBox_TaxFlagVal drop down item - PIRUS specific</comment>
+  </data>
+  <data name="label_rowNum_withNum" xml:space="preserve">
+    <value>Row {0}</value>
+    <comment>POSWriterFileConfig.RowOrder (includes row number value)</comment>
+  </data>
+  <data name="label_scaleWriter" xml:space="preserve">
+    <value>Scale Writer</value>
+    <comment>ScaleWriter.ScaleFileWriterCode</comment>
+  </data>
+  <data name="label_scaleWriterType" xml:space="preserve">
+    <value>Scale Writer Type</value>
+    <comment>ScaleWriterType.ScaleWriterTypeDesc</comment>
+  </data>
+  <data name="label_storeDesc" xml:space="preserve">
+    <value>{0} - {1}</value>
+    <comment>Description of a store (read only), where {0} is store_no and {1} is store_name</comment>
+  </data>
+  <data name="label_storeName" xml:space="preserve">
+    <value>Store Name</value>
+    <comment>Store.Store_Name</comment>
+  </data>
+  <data name="label_storeNo" xml:space="preserve">
+    <value>Store No</value>
+    <comment>Store.Store_No</comment>
+  </data>
+  <data name="label_tab_itemDataChange" xml:space="preserve">
+    <value>Item Data Change</value>
+    <comment>Tab on Form_EditPOSWriterFileConfig</comment>
+  </data>
+  <data name="label_tab_itemDelete" xml:space="preserve">
+    <value>Item Delete</value>
+    <comment>Tab on Form_EditPOSWriterFileConfig</comment>
+  </data>
+  <data name="label_tab_itemIdAdd" xml:space="preserve">
+    <value>Item Id Add</value>
+    <comment>Tab on Form_EditPOSWriterFileConfig</comment>
+  </data>
+  <data name="label_tab_itemIdDelete" xml:space="preserve">
+    <value>Item Id Delete</value>
+    <comment>Tab on Form_EditPOSWriterFileConfig</comment>
+  </data>
+  <data name="label_tab_properties" xml:space="preserve">
+    <value>Properties</value>
+    <comment>Tab on Form_EditPOSWriterFileConfig</comment>
+  </data>
+  <data name="label_tab_scale_corpItemDataChange" xml:space="preserve">
+    <value>Item Change</value>
+    <comment>Tab on Form_EditPOSWriterFileConfig for Corporate Scale configurations</comment>
+  </data>
+  <data name="label_tab_scale_zoneItemDataChange" xml:space="preserve">
+    <value>Price Change</value>
+    <comment>Tab on Form_EditPOSWriterFileConfig for Zone Scale configurations</comment>
+  </data>
+  <data name="label_taxFlagFalseChar" xml:space="preserve">
+    <value>Tax Flag False Char</value>
+    <comment>POSWriter.TaxFlagFalseChar</comment>
+  </data>
+  <data name="label_taxFlagTrueChar" xml:space="preserve">
+    <value>Tax Flag True Char</value>
+    <comment>POSWriter.TaxFlagTrueChar</comment>
+  </data>
+  <data name="label_Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="label_titleBar_EditPOSWriter_Add" xml:space="preserve">
+    <value>Add File Writer</value>
+    <comment>Title Bar for Edit POS Writer - Add a writer</comment>
+  </data>
+  <data name="label_titleBar_EditPOSWriter_Edit" xml:space="preserve">
+    <value>Edit File Writer</value>
+    <comment>Title Bar for Edit POS Writer - Edit a writer</comment>
+  </data>
+  <data name="label_titleBar_EditPOSWriterFileConfig_Add" xml:space="preserve">
+    <value>Add Column</value>
+    <comment>Title bar for Edit POS Writer details - Add a column</comment>
+  </data>
+  <data name="label_titleBar_EditPOSWriterFileConfig_Edit" xml:space="preserve">
+    <value>Edit Column</value>
+    <comment>Title bar for Edit POS Writer details - Edit a column</comment>
+  </data>
+  <data name="label_titleBar_EditPOSWriterFileConfigBinaryInt_Add" xml:space="preserve">
+    <value>Add Binary Int Column</value>
+    <comment>Title bar for Edit POS Writer details - Add a binary int column</comment>
+  </data>
+  <data name="label_titleBar_EditPOSWriterFileConfigBinaryInt_Edit" xml:space="preserve">
+    <value>Edit Column</value>
+    <comment>Title bar for Edit POS Writer details - Edit a binary int column</comment>
+  </data>
+  <data name="label_titleBar_EditStorePOSConfig_Add" xml:space="preserve">
+    <value>Add Store Record</value>
+    <comment>Title Bar for Edit Store POS Config - Add a store</comment>
+  </data>
+  <data name="label_titleBar_EditStorePOSConfig_Edit" xml:space="preserve">
+    <value>Edit Store Record</value>
+    <comment>Title Bar for Edit Store POS Config - Edit a store</comment>
+  </data>
+  <data name="label_titleBar_EditUser_Add" xml:space="preserve">
+    <value>Add User</value>
+    <comment>Title bar for add a user</comment>
+  </data>
+  <data name="label_titleBar_EditUser_Edit" xml:space="preserve">
+    <value>Edit User</value>
+    <comment>Title bar for edit a user</comment>
+  </data>
+  <data name="label_trailingDelim" xml:space="preserve">
+    <value>Trailing Delim</value>
+    <comment>POSWriter.TrailingDelim</comment>
+  </data>
+  <data name="label_truncateLeft" xml:space="preserve">
+    <value>Truncate Left</value>
+    <comment>Config.TruncLeft</comment>
+  </data>
+  <data name="label_UserName" xml:space="preserve">
+    <value>WFM Login ID</value>
+  </data>
+  <data name="label_value" xml:space="preserve">
+    <value>Value</value>
+    <comment>InstanceDataFlagsStoreOverride.FlagValue</comment>
+  </data>
+  <data name="label_writerClass" xml:space="preserve">
+    <value>VB.Net Class</value>
+    <comment>POSWriter.POSFileWriterClass</comment>
+  </data>
+  <data name="label_writerType" xml:space="preserve">
+    <value>Writer Type</value>
+    <comment>POSWriter.FileWriterType; values in FileWriterType table</comment>
+  </data>
+  <data name="lable_header_escapeCharRepalce" xml:space="preserve">
+    <value>Replacement</value>
+    <comment>POSWriterFileConfig.EscapeCharReplacement</comment>
+  </data>
+  <data name="msg_confirmDeleteOverrides" xml:space="preserve">
+    <value>You have made changes to the store overrides.  Do you wish to delete these store overrides?</value>
+    <comment>confirmation message when closing form</comment>
+  </data>
+  <data name="msg_confirmDeletePOSWriterFileConfig" xml:space="preserve">
+    <value>Warning!  You are about to delete a POS writer detail record.</value>
+    <comment>Confirmation message at the top of the POSWriterFileConfig delete form</comment>
+  </data>
+  <data name="msg_confirmDeletePOSWriterFileConfigRow" xml:space="preserve">
+    <value>Warning!  You are about to delete Row {0} of config data.  Do you wish to proceed?</value>
+    <comment>Confirmation message when deleting a POSWriterFileConfig Row; {0} - row #</comment>
+  </data>
+  <data name="msg_confirmDeletePOSWriterStoreList_noStores" xml:space="preserve">
+    <value>-- no stores are assigned to this writer --</value>
+    <comment>Message on the POS Writer delete form when no stores are assigned to the writer</comment>
+  </data>
+  <data name="msg_confirmDeleteStorePOSConfig" xml:space="preserve">
+    <value>Warning!  You are about to delete a Store POS Push configuration record.</value>
+    <comment>Confirmation message at the top of the Store POS Config delete form</comment>
+  </data>
+  <data name="msg_confirmDisablePOSWriter" xml:space="preserve">
+    <value>Warning!  You are about to delete the following POS Writer record.</value>
+    <comment>Confirmation message at the top of the POS Writer delete form</comment>
+  </data>
+  <data name="msg_confirmDisablePOSWriterStoreList" xml:space="preserve">
+    <value>Deleting the POS Writer will delete the POS Store configurations for these stores: {0}</value>
+    <comment>Message on the POS Writer delete form listing the stores that will no longer have a writer assigned to them</comment>
+  </data>
+  <data name="msg_confirmInstanceDataOverrides" xml:space="preserve">
+    <value>You have made changes to the store overrides.  Do you wish to save these store overrides?</value>
+    <comment>confirmation message when closing form</comment>
+  </data>
+  <data name="msg_confirmJobReset" xml:space="preserve">
+    <value>Click OK to reset the {0} job status from FAILED/RUNNING to COMPLETE, allowing the job to be executed again.</value>
+    <comment>{0} - name of job, {1} current job status</comment>
+  </data>
+  <data name="msg_confirmSaveData" xml:space="preserve">
+    <value>Are you sure you wish to save this data?</value>
+  </data>
+  <data name="msg_deleteConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete item: {0}</value>
+    <comment>delete confirmation message; {0} = deleted item text</comment>
+  </data>
+  <data name="msg_deleteFieldId_associatedColumns" xml:space="preserve">
+    <value>This Field ID is associated to {0} column(s) for the {1} writer.  You can NOT delete this Field ID.</value>
+    <comment>Delete Field Id message; {0} = column count, {1} = POS Writer</comment>
+  </data>
+  <data name="msg_information_TitleAutomaticallySet" xml:space="preserve">
+    <value>The user's Title has been set to the value required by Promo Planner for this Role. This value cannot be changed while the user is in this Promo Planner role.</value>
+    <comment>occurs when the Order Admin role for Promo Planner is associated with the user account.</comment>
+  </data>
+  <data name="msg_required" xml:space="preserve">
+    <value>{0} is required.</value>
+    <comment>{0} = required field</comment>
+  </data>
+  <data name="msg_selectStoreToOverride" xml:space="preserve">
+    <value>Select a store to override</value>
+  </data>
+  <data name="msg_unknownJobResetError" xml:space="preserve">
+    <value>An unexpected error occurred during processing.  The job status reset has not been applied.{0}Please report this information to the help desk:{0}Validation Code = {1}{0}Error Description = {2}</value>
+    <comment>0 = carriage return; 1 = validation code; 2 = error description</comment>
+  </data>
+  <data name="msg_validation_BadNodeMove" xml:space="preserve">
+    <value>Moving {0} to {1} is not allowed.</value>
+    <comment>occurs when a user attempts to move a tree node to an invalid treeview location.</comment>
+  </data>
+  <data name="msg_validation_notNumeric" xml:space="preserve">
+    <value>{0} must be a numeric value</value>
+    <comment>{0} - StoreFTPConfig.Port</comment>
+  </data>
+  <data name="msg_validation_selectChangeTypeRow" xml:space="preserve">
+    <value>You must select a row from the {0} list to edit the value.</value>
+    <comment>{0} - change type</comment>
+  </data>
+  <data name="msg_validation_selectStore" xml:space="preserve">
+    <value>You must select a store from the list.</value>
+  </data>
+  <data name="msg_validation_wrongResetStatus" xml:space="preserve">
+    <value>The {0} job has a status of {1}.  Only jobs in the FAILED/RUNNING status can be reset.</value>
+    <comment>{0} - name of job, {1} - job status</comment>
+  </data>
+  <data name="msg_validation_wrongResetStatusInDB" xml:space="preserve">
+    <value>The {0} job does not have a current status of FAILED/RUNNING.  Only jobs in the FAILED/RUNNING status can be reset.</value>
+    <comment>{0} - name of job</comment>
+  </data>
+  <data name="msg_warning_addChangeTypeRow" xml:space="preserve">
+    <value>You must add data to the current row before adding a new row.</value>
+    <comment>occurs when user attempts to add new row to a tab w/ no column data yet added</comment>
+  </data>
+  <data name="msg_warning_addChangeTypeRowInvalid" xml:space="preserve">
+    <value>You must be on the last row to add a new one.</value>
+    <comment>occurs when user attempts to add new row from a row that isn't the max row num</comment>
+  </data>
+  <data name="msg_warning_NoSubTeamAssociations" xml:space="preserve">
+    <value>This user has no Sub Team associations. Add them using the Sub Teams tab to ensure Promo Planner works properly.</value>
+    <comment>occurs when the Store Buyer role for Promo Planner is chosen but no Sub teams have been associated with the user account.</comment>
+  </data>
+</root>

@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ItemCatalog_Test" EntityNamespace="WholeFoods.Common.IRMALib" ContextNamespace="WholeFoods.Common.IRMALib" Class="IRMALibDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=idt-mw\mwt;Initial Catalog=ItemCatalog_Test;Integrated Security=True" SettingsObjectName="IRMALib.Properties.Settings" SettingsPropertyName="ItemCatalog_TestConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.AppConfigApp" Member="AppConfigApps">
+    <Type Name="AppConfigApp">
+      <Column Name="ApplicationID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="EnvironmentID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Configuration" Type="System.Xml.Linq.XElement" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastUpdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastUpdateUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AppConfigEnv_AppConfigApp" Member="AppConfigEnv" ThisKey="EnvironmentID" OtherKey="EnvironmentID" Type="AppConfigEnv" IsForeignKey="true" />
+      <Association Name="AppConfigType_AppConfigApp" Member="AppConfigType" ThisKey="TypeID" OtherKey="TypeID" Type="AppConfigType" IsForeignKey="true" />
+      <Association Name="User_AppConfigApp" Member="User" ThisKey="LastUpdateUserID" OtherKey="User_ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.App" Member="Apps">
+    <Type Name="App">
+      <Column Name="AppID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AppName" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AppConfigValue" Member="AppConfigValues">
+    <Type Name="AppConfigValue">
+      <Column Name="EnvironmentID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ApplicationID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="KeyID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(350) NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastUpdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastUpdateUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AppConfigKey_AppConfigValue" Member="AppConfigKey" ThisKey="KeyID" OtherKey="KeyID" Type="AppConfigKey" IsForeignKey="true" />
+      <Association Name="User_AppConfigValue" Member="User" ThisKey="LastUpdateUserID" OtherKey="User_ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AppConfigEnv" Member="AppConfigEnvs">
+    <Type Name="AppConfigEnv">
+      <Column Name="EnvironmentID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastUpdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastUpdateUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AppConfigEnv_AppConfigApp" Member="AppConfigApps" ThisKey="EnvironmentID" OtherKey="EnvironmentID" Type="AppConfigApp" />
+      <Association Name="User_AppConfigEnv" Member="User" ThisKey="LastUpdateUserID" OtherKey="User_ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AppConfigHistory" Member="AppConfigHistories">
+    <Type Name="AppConfigHistory">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Action" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="EnvironmentID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="EnvironmentName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ApplicationID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="ApplicationName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Configuration" Type="System.Xml.Linq.XElement" DbType="Xml" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="KeyID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="KeyName" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(350)" CanBeNull="true" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SystemTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="User_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="User_AppConfigHistory" Member="User" ThisKey="User_ID" OtherKey="User_ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AppConfigKey" Member="AppConfigKeys">
+    <Type Name="AppConfigKey">
+      <Column Name="KeyID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastUpdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastUpdateUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AppConfigKey_AppConfigValue" Member="AppConfigValues" ThisKey="KeyID" OtherKey="KeyID" Type="AppConfigValue" />
+      <Association Name="User_AppConfigKey" Member="User" ThisKey="LastUpdateUserID" OtherKey="User_ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AppConfigType" Member="AppConfigTypes">
+    <Type Name="AppConfigType">
+      <Column Name="TypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="AppConfigType_AppConfigApp" Member="AppConfigApps" ThisKey="TypeID" OtherKey="TypeID" Type="AppConfigApp" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ConfigurationData" Member="ConfigurationDatas">
+    <Type Name="ConfigurationData">
+      <Column Name="ConfigKey" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ConfigValue" Type="System.Object" DbType="Variant" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ApplicationConfiguration" Member="ApplicationConfigurations">
+    <Type Name="ApplicationConfiguration">
+      <Column Name="ApplicationId" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="EnvironmentId" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="[Key]" Member="Key" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="User_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Printer" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CoverPage" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="EMail" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Pager_Email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Fax_Number" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="AccountEnabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SuperUser" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PO_Accountant" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Accountant" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Distributor" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FacilityCreditProcessor" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Buyer" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Coordinator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Item_Administrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Vendor_Administrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Lock_Administrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Telxon_Store_Limit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Phone_Number" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="Title" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RecvLog_Store_Limit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Warehouse" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PriceBatchProcessor" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Inventory_Administrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="BatchBuildOnly" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DCAdmin" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PromoAccessLevel" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="CostAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="POApprovalAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="EInvoicing_Administrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="VendorCostDiscrepancyAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ApplicationConfigAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DataAdministrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="JobAdministrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="POSInterfaceAdministrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SecurityAdministrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="StoreAdministrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SystemConfigurationAdministrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UserMaintenance" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Shrink" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShrinkAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="POEditor" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DeletePO" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="TaxAdministrator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="User_AppConfigApp" Member="AppConfigApps" ThisKey="User_ID" OtherKey="LastUpdateUserID" Type="AppConfigApp" />
+      <Association Name="User_AppConfigValue" Member="AppConfigValues" ThisKey="User_ID" OtherKey="LastUpdateUserID" Type="AppConfigValue" />
+      <Association Name="User_AppConfigEnv" Member="AppConfigEnvs" ThisKey="User_ID" OtherKey="LastUpdateUserID" Type="AppConfigEnv" />
+      <Association Name="User_AppConfigHistory" Member="AppConfigHistories" ThisKey="User_ID" OtherKey="User_ID" Type="AppConfigHistory" />
+      <Association Name="User_AppConfigKey" Member="AppConfigKeys" ThisKey="User_ID" OtherKey="LastUpdateUserID" Type="AppConfigKey" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Date" Member="Dates">
+    <Type Name="Date">
+      <Column Name="Date_Key" Type="System.DateTime" DbType="SmallDateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Quarter" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Period" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Week" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Day_Name" Type="System.String" DbType="Char(9)" CanBeNull="true" />
+      <Column Name="Day_Of_Week" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Day_Of_Month" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Day_Of_Year" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.AppConfig_GetConfigList" Method="AppConfig_GetConfigList">
+    <ElementType Name="AppConfig_GetConfigListResult">
+      <Column Name="EnvironmentID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ApplicationID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="TypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="KeyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EnvName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="AppName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="TypeName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="KeyName" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(350) NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.AppConfig_GetConfigKeyList" Method="AppConfig_GetConfigKeyList">
+    <Parameter Name="ApplicationID" Parameter="applicationID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="EnvironmentID" Parameter="environmentID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <ElementType Name="AppConfig_GetConfigKeyListResult">
+      <Column Name="ConfigKey" Type="System.String" DbType="VarChar(522) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.AppConfig_UpdateKeyValue" Method="AppConfig_UpdateKeyValue">
+    <Parameter Name="ApplicationID" Parameter="applicationID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="EnvironmentID" Parameter="environmentID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="KeyID" Parameter="keyID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Value" Parameter="value" Type="System.String" DbType="VarChar(350)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.AppConfig_AddKey" Method="AppConfig_AddKey">
+    <Parameter Name="KeyID" Parameter="keyID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Name" Parameter="name" Type="System.String" DbType="VarChar(150)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>

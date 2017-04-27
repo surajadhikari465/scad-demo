@@ -1,0 +1,187 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WholeFoods.IRMA", "WholeFoods.IRMA", "{DF951614-2504-489F-832B-52226CBDE7B0}"
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WholeFoods.Utility", "WholeFoods.Utility", "{99FE227F-EF06-40DA-B83C-453D67675F3E}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Utility\WholeFoods.Utility Solution\WholeFoods.Utility\WholeFoods.Utility.snk = ..\..\..\Utility\WholeFoods.Utility Solution\WholeFoods.Utility\WholeFoods.Utility.snk
+	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WholeFoods.IRMA", "IRMA\WholeFoods.IRMA.vbproj", "{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D2F2E337-45A4-4406-8E87-DB87880EB919} = {D2F2E337-45A4-4406-8E87-DB87880EB919}
+		{6F732051-5D10-4E07-9388-6AAC3E63A52A} = {6F732051-5D10-4E07-9388-6AAC3E63A52A}
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85} = {E9A653FE-5C38-435C-B6D2-137915ED8E85}
+	EndProjectSection
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ItemCatalogDB", "..\..\Item Catalog DB\ItemCatalogDB Solution\ItemCatalogDB\ItemCatalogDB.sqlproj", "{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WFM.UserAuthentication", "..\..\..\Utility\WholeFoods.Utility Solution\WFM.UserAuthentication\WFM.UserAuthentication.vbproj", "{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WholeFoods.Utility", "..\..\..\Utility\WholeFoods.Utility Solution\WholeFoods.Utility\WholeFoods.Utility.vbproj", "{83E129BF-0B0A-4816-8573-639F794299FA}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WholeFoods.IRMA.Replenishment", "..\..\Replenishment\WholeFoods.IRMA.Replenishment\WholeFoods.IRMA.Replenishment.vbproj", "{6A82DE21-636D-4D61-AABF-57E3DCBB6626}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6F732051-5D10-4E07-9388-6AAC3E63A52A} = {6F732051-5D10-4E07-9388-6AAC3E63A52A}
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85} = {E9A653FE-5C38-435C-B6D2-137915ED8E85}
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ItemCatalogLib", "..\..\ItemCatalogLib\ItemCatalogLib.vbproj", "{3374040D-5A0F-412A-A32A-E70B90339F94}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1} = {BCE1BC17-2FEA-46C3-84AE-DC02935597B1}
+		{83E129BF-0B0A-4816-8573-639F794299FA} = {83E129BF-0B0A-4816-8573-639F794299FA}
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85} = {E9A653FE-5C38-435C-B6D2-137915ED8E85}
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WFM.DataAccess", "..\..\..\WFM\DataAccess\WFM.DataAccess.vbproj", "{E9A653FE-5C38-435C-B6D2-137915ED8E85}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WholeFoods.IRMA.FaxLog", "..\..\..\Libraries\Wholefoods.IRMA.FaxLog\Wholefoods.IRMA.FaxLog\WholeFoods.IRMA.FaxLog.vbproj", "{6F732051-5D10-4E07-9388-6AAC3E63A52A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRMAUnitTests", "IRMAUnitTests\IRMAUnitTests.csproj", "{BE9E41C4-6289-4789-B02B-2C4AF481A560}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagerDutyLib", "..\..\PagerDutyLib\PagerDutyLib\PagerDutyLib.csproj", "{D2F2E337-45A4-4406-8E87-DB87880EB919}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85} = {E9A653FE-5C38-435C-B6D2-137915ED8E85}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}.Release|x86.ActiveCfg = Release|Any CPU
+		{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}.Release|x86.ActiveCfg = Release|Any CPU
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Debug|x86.ActiveCfg = Debug|x86
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Debug|x86.Build.0 = Debug|x86
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Release|x86.ActiveCfg = Release|x86
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Release|x86.Build.0 = Release|x86
+		{83E129BF-0B0A-4816-8573-639F794299FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83E129BF-0B0A-4816-8573-639F794299FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83E129BF-0B0A-4816-8573-639F794299FA}.Debug|x86.ActiveCfg = Debug|x86
+		{83E129BF-0B0A-4816-8573-639F794299FA}.Debug|x86.Build.0 = Debug|x86
+		{83E129BF-0B0A-4816-8573-639F794299FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83E129BF-0B0A-4816-8573-639F794299FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83E129BF-0B0A-4816-8573-639F794299FA}.Release|x86.ActiveCfg = Release|x86
+		{83E129BF-0B0A-4816-8573-639F794299FA}.Release|x86.Build.0 = Release|x86
+		{6A82DE21-636D-4D61-AABF-57E3DCBB6626}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A82DE21-636D-4D61-AABF-57E3DCBB6626}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A82DE21-636D-4D61-AABF-57E3DCBB6626}.Debug|x86.ActiveCfg = Debug|x86
+		{6A82DE21-636D-4D61-AABF-57E3DCBB6626}.Debug|x86.Build.0 = Debug|x86
+		{6A82DE21-636D-4D61-AABF-57E3DCBB6626}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A82DE21-636D-4D61-AABF-57E3DCBB6626}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A82DE21-636D-4D61-AABF-57E3DCBB6626}.Release|x86.ActiveCfg = Release|x86
+		{6A82DE21-636D-4D61-AABF-57E3DCBB6626}.Release|x86.Build.0 = Release|x86
+		{3374040D-5A0F-412A-A32A-E70B90339F94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3374040D-5A0F-412A-A32A-E70B90339F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3374040D-5A0F-412A-A32A-E70B90339F94}.Debug|x86.ActiveCfg = Debug|x86
+		{3374040D-5A0F-412A-A32A-E70B90339F94}.Debug|x86.Build.0 = Debug|x86
+		{3374040D-5A0F-412A-A32A-E70B90339F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3374040D-5A0F-412A-A32A-E70B90339F94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3374040D-5A0F-412A-A32A-E70B90339F94}.Release|x86.ActiveCfg = Release|x86
+		{3374040D-5A0F-412A-A32A-E70B90339F94}.Release|x86.Build.0 = Release|x86
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85}.Debug|x86.ActiveCfg = Debug|x86
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85}.Debug|x86.Build.0 = Debug|x86
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85}.Release|x86.ActiveCfg = Release|x86
+		{E9A653FE-5C38-435C-B6D2-137915ED8E85}.Release|x86.Build.0 = Release|x86
+		{6F732051-5D10-4E07-9388-6AAC3E63A52A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F732051-5D10-4E07-9388-6AAC3E63A52A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F732051-5D10-4E07-9388-6AAC3E63A52A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F732051-5D10-4E07-9388-6AAC3E63A52A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F732051-5D10-4E07-9388-6AAC3E63A52A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F732051-5D10-4E07-9388-6AAC3E63A52A}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE9E41C4-6289-4789-B02B-2C4AF481A560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE9E41C4-6289-4789-B02B-2C4AF481A560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE9E41C4-6289-4789-B02B-2C4AF481A560}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE9E41C4-6289-4789-B02B-2C4AF481A560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE9E41C4-6289-4789-B02B-2C4AF481A560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE9E41C4-6289-4789-B02B-2C4AF481A560}.Release|x86.ActiveCfg = Release|Any CPU
+		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Debug|x86.Build.0 = Debug|Any CPU
+		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Release|x86.ActiveCfg = Release|Any CPU
+		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E} = {DF951614-2504-489F-832B-52226CBDE7B0}
+		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1} = {99FE227F-EF06-40DA-B83C-453D67675F3E}
+		{83E129BF-0B0A-4816-8573-639F794299FA} = {99FE227F-EF06-40DA-B83C-453D67675F3E}
+		{BE9E41C4-6289-4789-B02B-2C4AF481A560} = {DF951614-2504-489F-832B-52226CBDE7B0}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 11
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfsprd:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WFM.UserAuthentication\\WFM.UserAuthentication.vbproj
+		SccProjectTopLevelParentUniqueName1 = WholeFoods.IRMA\u0020Solution.sln
+		SccProjectName1 = ../../../Utility/WholeFoods.Utility\u0020Solution/WFM.UserAuthentication
+		SccLocalPath1 = ..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WFM.UserAuthentication
+		SccProjectUniqueName2 = ..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WholeFoods.Utility\\WholeFoods.Utility.vbproj
+		SccProjectTopLevelParentUniqueName2 = WholeFoods.IRMA\u0020Solution.sln
+		SccProjectName2 = ../../../Utility/WholeFoods.Utility\u0020Solution/WholeFoods.Utility
+		SccLocalPath2 = ..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WholeFoods.Utility
+		SccProjectUniqueName3 = ..\\..\\Replenishment\\WholeFoods.IRMA.Replenishment\\WholeFoods.IRMA.Replenishment.vbproj
+		SccProjectName3 = ../../Replenishment/WholeFoods.IRMA.Replenishment
+		SccLocalPath3 = ..\\..\\Replenishment\\WholeFoods.IRMA.Replenishment
+		SccProjectUniqueName4 = ..\\..\\..\\WFM\\DataAccess\\WFM.DataAccess.vbproj
+		SccProjectName4 = ../../../WFM/DataAccess
+		SccLocalPath4 = ..\\..\\..\\WFM\\DataAccess
+		SccProjectUniqueName5 = IRMA\\WholeFoods.IRMA.vbproj
+		SccProjectTopLevelParentUniqueName5 = WholeFoods.IRMA\u0020Solution.sln
+		SccProjectName5 = IRMA
+		SccLocalPath5 = IRMA
+		SccProjectUniqueName6 = ..\\..\\ItemCatalogLib\\ItemCatalogLib.vbproj
+		SccProjectName6 = ../../ItemCatalogLib
+		SccLocalPath6 = ..\\..\\ItemCatalogLib
+		SccProjectUniqueName7 = ..\\..\\..\\Libraries\\Wholefoods.IRMA.FaxLog\\Wholefoods.IRMA.FaxLog\\WholeFoods.IRMA.FaxLog.vbproj
+		SccProjectName7 = ../../../Libraries/Wholefoods.IRMA.FaxLog/Wholefoods.IRMA.FaxLog
+		SccLocalPath7 = ..\\..\\..\\Libraries\\Wholefoods.IRMA.FaxLog\\Wholefoods.IRMA.FaxLog
+		SccProjectUniqueName8 = ..\\..\\Item\u0020Catalog\u0020DB\\ItemCatalogDB\u0020Solution\\ItemCatalogDB\\ItemCatalogDB.sqlproj
+		SccProjectName8 = ../../Item\u0020Catalog\u0020DB/ItemCatalogDB\u0020Solution/ItemCatalogDB
+		SccLocalPath8 = ..\\..\\Item\u0020Catalog\u0020DB\\ItemCatalogDB\u0020Solution\\ItemCatalogDB
+		SccProjectUniqueName9 = IRMAUnitTests\\IRMAUnitTests.csproj
+		SccProjectTopLevelParentUniqueName9 = WholeFoods.IRMA\u0020Solution.sln
+		SccProjectName9 = IRMAUnitTests
+		SccLocalPath9 = IRMAUnitTests
+		SccProjectUniqueName10 = ..\\..\\PagerDutyLib\\PagerDutyLib\\PagerDutyLib.csproj
+		SccProjectName10 = ../../PagerDutyLib/PagerDutyLib
+		SccLocalPath10 = ..\\..\\PagerDutyLib\\PagerDutyLib
+	EndGlobalSection
+	GlobalSection(TextTemplating) = postSolution
+		TextTemplating = 1
+	EndGlobalSection
+EndGlobal

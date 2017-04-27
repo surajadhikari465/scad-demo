@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 14.375, 20" name="IRMAUserAuditConsoleDataClasses">
+  <DataContextMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext" />
+  <nestedChildShapes>
+    <classShape Id="7b7f6b38-346e-4981-a448-24a151df6d6c" absoluteBounds="9.25, 9.875, 2, 6.3861311848958309">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Store" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4343e141-7f0a-422a-bae7-31f7997dc624" absoluteBounds="9.265, 10.335, 1.9700000000000002, 5.826131184895833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5b68f491-b816-450e-876b-dec653e1108f" absoluteBounds="0.75, 11.125, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Title" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b6d81b82-e61a-4b52-82b4-4fbd932eea59" absoluteBounds="0.765, 11.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6a5a6f96-be74-45ca-a5ac-15f4e9940a2b" absoluteBounds="9.25, 7.25, 2, 1.7708968098958335">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/TitlePermissionOverride" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a71f7090-93a7-401f-81b6-4ad8c08b5de3" absoluteBounds="9.265, 7.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8ec50a57-28b7-49ae-8ab4-b4a63379208e" absoluteBounds="3.5, 10.5, 2, 7.1553369140624987">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/TitleDefaultPermission" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b350e3a0-897d-4004-8a3f-6bb6694eddf4" absoluteBounds="3.515, 10.96, 1.9700000000000002, 6.5953369140625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4175966f-8532-4e05-9ef2-175bce6218de" absoluteBounds="0.75, 8.125, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Team" />
+      <nestedChildShapes>
+        <elementListCompartment Id="779f7e78-0c70-4df3-bf90-c9a2eb5f0226" absoluteBounds="0.765, 8.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c816b251-8164-4439-903b-06c88b0e1dbc" absoluteBounds="3.5, 8, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/UserStoreTeamTitle" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d5e9c422-d674-4376-bc17-dbbfe092d36d" absoluteBounds="3.515, 8.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fb37debe-15e7-45b9-a8d6-0cedcded8dbb" absoluteBounds="1, 13.5, 2, 3.1170068359375005">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/SlimAccess" />
+      <nestedChildShapes>
+        <elementListCompartment Id="33c871bd-80ce-4302-a9c7-717c0339136b" absoluteBounds="1.0150000000000001, 13.96, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="36503dab-31d4-4a7a-95ba-81b61b190522" absoluteBounds="6.5, 6.875, 2, 9.655255533854163">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f43ba2c6-6bdf-4516-a359-57252a00788d" absoluteBounds="6.515, 7.335, 1.9700000000000002, 9.0952555338541661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 11.7219962565104); (3.5 : 11.7219962565104)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Title/Title_TitleDefaultPermission" />
+      <nodes>
+        <classShapeMoniker Id="5b68f491-b816-450e-876b-dec653e1108f" />
+        <classShapeMoniker Id="8ec50a57-28b7-49ae-8ab4-b4a63379208e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.25 : 9.875); (10.25 : 9.27089680989583); (8.75 : 9.27089680989583); (8.75 : 6.625); (5.875 : 6.625); (5.875 : 8.78929768880208); (5.5 : 8.78929768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Store/Store_UserStoreTeamTitle" />
+      <nodes>
+        <classShapeMoniker Id="7b7f6b38-346e-4981-a448-24a151df6d6c" />
+        <classShapeMoniker Id="c816b251-8164-4439-903b-06c88b0e1dbc" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 9.0569482421875); (3.5 : 9.0569482421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Team/Team_UserStoreTeamTitle" />
+      <nodes>
+        <classShapeMoniker Id="4175966f-8532-4e05-9ef2-175bce6218de" />
+        <classShapeMoniker Id="c816b251-8164-4439-903b-06c88b0e1dbc" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 11.125); (3.125 : 10.75); (3.125 : 9.95480868174078); (3.50121330413662 : 9.57859537760417)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Title/Title_UserStoreTeamTitle" />
+      <nodes>
+        <classShapeMoniker Id="5b68f491-b816-450e-876b-dec653e1108f" />
+        <classShapeMoniker Id="c816b251-8164-4439-903b-06c88b0e1dbc" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.5 : 13.0680655924479); (9.25 : 13.0680655924479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/User/User_Store" />
+      <nodes>
+        <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />
+        <classShapeMoniker Id="7b7f6b38-346e-4981-a448-24a151df6d6c" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.5 : 8.13544840494792); (9.25 : 8.13544840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/User/User_TitlePermissionOverride" />
+      <nodes>
+        <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />
+        <classShapeMoniker Id="6a5a6f96-be74-45ca-a5ac-15f4e9940a2b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(9.25 : 11.409032796224); (8.5 : 11.409032796224)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Store/Store_User" />
+      <nodes>
+        <classShapeMoniker Id="7b7f6b38-346e-4981-a448-24a151df6d6c" />
+        <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(9.25 : 14.7270983886719); (8.5 : 14.7270983886719)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Store/Store_User1" />
+      <nodes>
+        <classShapeMoniker Id="7b7f6b38-346e-4981-a448-24a151df6d6c" />
+        <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 11.7532482565104); (3.25 : 11.7532482565104); (3.25 : 17.9053369140625); (7.5 : 17.9053369140625); (7.5 : 16.5302555338542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Title/Title_User" />
+      <nodes>
+        <classShapeMoniker Id="5b68f491-b816-450e-876b-dec653e1108f" />
+        <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="3e027841-514e-40a8-80f5-8e8aef2b5f43" absoluteBounds="11.75, 4.625, 2, 7.3476383463541657">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/UsersHistory" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c496b822-9983-4ae1-943b-129d98c1c7e7" absoluteBounds="11.765, 5.085, 1.9700000000000002, 6.7876383463541661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="694751cd-68ac-46e7-8c81-a78f5081678c" absoluteBounds="12.125, 17.375, 2, 2.3478011067708344">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/AppConfigApp" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e5384be3-6544-4e0c-9bc4-9813b1bea49a" absoluteBounds="12.14, 17.835, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="66871a37-ddb6-4703-8cd3-541d2d4755f5" absoluteBounds="9.25, 17.75, 2, 1.9631982421875023">
+      <DataClassMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/AppConfigEnv" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0ea71c46-a73b-4131-88d0-d895df1fc33b" absoluteBounds="9.265, 18.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.9687475 : 16.5302555338542); (6.9687475 : 17.53125); (7.41666666666667 : 17.53125 : JumpStart); (7.58333333333333 : 17.53125 : JumpEnd); (7.94791916666667 : 17.53125 : JumpStart); (8.11458583333333 : 17.53125 : JumpEnd); (12.125 : 17.53125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/User/User_AppConfigApp" />
+      <nodes>
+        <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />
+        <classShapeMoniker Id="694751cd-68ac-46e7-8c81-a78f5081678c" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11.25 : 18.7315991210938); (12.125 : 18.7315991210938)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/AppConfigEnv/AppConfigEnv_AppConfigApp" />
+      <nodes>
+        <classShapeMoniker Id="66871a37-ddb6-4703-8cd3-541d2d4755f5" />
+        <classShapeMoniker Id="694751cd-68ac-46e7-8c81-a78f5081678c" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.0312525 : 16.5302555338542); (8.0312525 : 18.809267578125); (9.25 : 18.809267578125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/User/User_AppConfigEnv" />
+      <nodes>
+        <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />
+        <classShapeMoniker Id="66871a37-ddb6-4703-8cd3-541d2d4755f5" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

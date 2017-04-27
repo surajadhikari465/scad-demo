@@ -1,0 +1,15 @@
+BODY
+{ background:"ffffff"; font-family:Arial; font-size:8; border:0 }
+
+.headertable 
+{ background-color:Green;width:100%;border-width:thin;border-color:Black;border-style: solid} 
+.innertable 
+{ background-color:Green;width:100%; font-size:18; font-weight:bold}
+.regtable 
+{ text-align:left; font-size:12 } 
+.centertable 
+{ text-align:center; font-size:12 } 
+.smallertable
+{ text-align:left; font-size:10 }
+.bigtable 
+{ width:100%; font-size:14}

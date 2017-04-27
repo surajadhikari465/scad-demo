@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<MageDir>C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin</MageDir>
+		<SolutionDescription>Inventory Replenishment Merchandizing Application</SolutionDescription>
+		<AppName>IRMA</AppName>
+		<Company>Whole Foods Market</Company>
+		<ClickOnceVirtualRootDir>$(DropFolder)</ClickOnceVirtualRootDir>
+		<ClickOnceUrl>$(DeploymentUrl)</ClickOnceUrl>
+		<ClickOnceApplicationUrl>$(DeploymentUrl)$(AppName).application</ClickOnceApplicationUrl>	
+		<ClickOnceAppTitle>$(Region) $(AppName) $(Environment)</ClickOnceAppTitle>
+		<Install>false</Install>
+		<ClickOnceVersion>$(Version)</ClickOnceVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<BootstrapperFile Include="Microsoft.Net.Framework.4.0">
+			<ProductName>Microsoft .NET Framework 4.0</ProductName>
+		</BootstrapperFile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ClickOnceInstallationFiles Include="$(BuildFolder)\$(AppName).application"/>
+		<ClickOnceInstallationFiles Include="$(BuildFolder)\$(AppName).exe.manifest"/>
+	</ItemGroup>
+
+<Target Name="Deploy" DependsOnTargets="PrepareClickOnceDeployment;CopyRelease"/>
+
+	<Target Name="PrepareClickOnceDeployment">
+		<Message Text="Preparing for ClickOnce deployment for $(region) v$(ClickOnceVersion)..."/>
+		<Message Text="Mage Dir: $(MageDir)"/>
+		<Message Text="Build Dir: $(BuildFolder)"/>
+		<Message Text="AppName: $(AppName)"/>
+		<Message Text="ClickOnceAppTitle: $(ClickOnceAppTitle)"/>
+		<Message Text="ClickOnceVersion: $(ClickOnceVersion)"/>
+		
+
+		<CreateItem Include="$(BuildFolder)\**\*.*" AdditionalMetadata="VMServer=%(Server.Identity)" >
+			<Output TaskParameter="Include" ItemName="AppManifestContents"/>
+		</CreateItem>
+		
+		<Exec WorkingDirectory="$(MageDir)" Command="mage.exe -Update %22$(BuildFolder)\$(AppName).exe.manifest%22 -Name &quot;$(ClickOnceAppTitle)&quot; -Version $(ClickOnceVersion)" />
+		<Message Text="***Start SIGN of ManiFest...."/>
+		<Exec WorkingDirectory="$(MageDir)" Command="mage.exe -Sign %22$(BuildFolder)\$(AppName).exe.manifest%22 -CertFile &quot;$(SigningCert)&quot;"/>
+		<Message Text="***END SIGN of ManiFest...."/> 
+		<!--AssemblyName="$(ClickOnceAppTitle).application" -->
+		
+
+		<GenerateDeploymentManifest AssemblyName="$(ClickOnceAppTitle).application"
+				  AssemblyVersion="$(ClickOnceVersion)"
+				  DeploymentUrl="$(ClickOnceApplicationUrl)"
+				  Description="$(SolutionDescription)"
+				  Product="$(ClickOnceAppTitle)"
+				  Publisher="$(Company)"
+				  SupportUrl="$(SupportUrl)"
+				  EntryPoint="$(BuildFolder)\$(AppName).exe.manifest"
+				  Install="$(Install)"
+				  UpdateEnabled="true"
+				  UpdateMode="Foreground"
+				  OutputManifest="$(BuildFolder)\$(AppName).application"
+				  MapFileExtensions="True"
+				  TargetFrameworkVersion="v4.0"
+				  TargetFrameworkMoniker=".NETFramework,Version=v4.0"
+				  Condition=" '$(Install)'=='False' "/> 	
+
+		<GenerateDeploymentManifest AssemblyName="$(ClickOnceAppTitle).application"
+				  AssemblyVersion="$(ClickOnceVersion)"
+				  DeploymentUrl="$(ClickOnceApplicationUrl)"
+				  Description="$(SolutionDescription)"
+				  Product="$(ClickOnceAppTitle)"
+				  Publisher="$(Company)"
+				  SupportUrl="$(SupportUrl)"
+				  EntryPoint="$(BuildFolder)\$(AppName).exe.manifest"
+				  Install="$(Install)"
+				  MinimumRequiredVersion="$(ClickOnceVersion)"
+				  UpdateEnabled="true"
+				  UpdateMode="Foreground"
+				  OutputManifest="$(BuildFolder)\$(AppName).application"
+				  MapFileExtensions="True"
+				  TargetFrameworkVersion="v4.0"
+				  TargetFrameworkMoniker=".NETFramework,Version=v4.0"
+				  Condition=" '$(Install)'=='True' "/> 					  
+				  
+		<Message Text="***Start SIGN of Application...."/>
+		<Exec WorkingDirectory="$(MageDir)" Command="mage.exe -Sign %22$(BuildFolder)\$(AppName).application%22 -CertFile &quot;$(SigningCert)&quot;"/>
+		<Message Text="***End SIGN of Application...."/>
+	</Target>
+	
+	<Target Name="CopyRelease" DependsOnTargets="PrepareClickOnceDeployment">
+		<Message Text="Copying files to $(DropFolder)..."/>
+		
+		<Copy
+            SourceFiles="@(ClickOnceInstallationFiles)"
+            DestinationFolder="$(DropFolder)" />
+
+		<Copy  SourceFiles="@(AppManifestContents)"
+			   DestinationFiles="@(AppManifestContents->'$(DropFolder)%(RecursiveDir)%(Filename)%(Extension).deploy')"/>
+	
+	</Target>
+
+
+
+</Project>

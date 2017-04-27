@@ -1,0 +1,7 @@
+grant select on AppConfigEnv TO IRMAClientRole, IRMASchedJobsRole
+grant select on TitleDefaultPermission TO IRMAClientRole, IRMASchedJobsRole 
+grant select on TitlePermissionOverride TO IRMAClientRole, IRMASchedJobsRole   
+grant select on SlimAccess TO IRMAClientRole, IRMASchedJobsRole
+grant select on AppConfigKey TO IRMAClientRole, IRMASchedJobsRole
+grant select on  AppConfigApp TO IRMAClientRole, IRMASchedJobsRole
+grant select on  AppConfigValue TO IRMAClientRole, IRMASchedJobsRole

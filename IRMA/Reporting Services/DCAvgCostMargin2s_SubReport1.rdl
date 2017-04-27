@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="FSPRD">
+      <rd:DataSourceID>9ff31a0f-8bc7-416a-a042-4aeba0fbd661</rd:DataSourceID>
+      <DataSourceReference>FSPRD</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <InteractiveHeight>11in</InteractiveHeight>
+  <ReportParameters>
+    <ReportParameter Name="Item_Code">
+      <DataType>String</DataType>
+      <Prompt>PS_Item_Code</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>8.5in</InteractiveWidth>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <RightMargin>1in</RightMargin>
+  <LeftMargin>1in</LeftMargin>
+  <BottomMargin>1in</BottomMargin>
+  <rd:ReportID>1bb09f0e-b406-4c87-97ac-cc3fa2abdd24</rd:ReportID>
+  <DataSets>
+    <DataSet Name="FSPRD">
+      <Fields>
+        <Field Name="item_code">
+          <DataField>item code</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="last_avg_cost_update">
+          <DataField>last avg cost update</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="avg_cost">
+          <DataField>avg cost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="irma_identifier">
+          <DataField>irma identifier</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="pack_size">
+          <DataField>pack size</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="retail_size">
+          <DataField>retail size</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="retail_uom">
+          <DataField>retail uom</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="stocking_uom">
+          <DataField>stocking uom</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>FSPRD</DataSourceName>
+        <CommandText>select
+	b.inv_item_id as "item code"
+	, b.dt_timestamp "last avg cost update"
+	, b.CM_UNIT_COST as "avg cost"
+	, a.ITEM_FIELD_C30_A as "irma identifier"
+	, a.replenish_point as "pack size"
+	, c.inv_item_size "retail size"
+	, a.related_item_id as "retail uom"
+	, d.UNIT_OF_MEASURE as "stocking uom"
+from
+	ps_cm_perpavg_cost b
+	, ps_bu_items_inv a
+	, ps_inv_items c
+	, ps_inv_item_uom d
+where
+	a.business_unit=b.business_unit
+	and c.inv_item_id=a.inv_item_id
+	and c.inv_item_id=b.inv_item_id
+	and a.inv_item_id=b.inv_item_id
+	and d.inv_item_id=a.inv_item_id
+	and d.inv_item_id=b.inv_item_id
+	and d.inv_item_id=c.inv_item_id
+	and d.dflt_uom_stock='Y'
+	and b.business_unit='20028'
+	and b.dt_timestamp = (SELECT MAX (b1.dt_timestamp)
+				FROM ps_cm_perpavg_cost b1
+				WHERE b1.business_unit = b.business_unit
+					AND b1.inv_item_id = b.inv_item_id)
+	and b.inv_item_id = ?
+group by
+	b.inv_item_id
+	, cm_unit_cost
+	, b.dt_timestamp
+	,a.ITEM_FIELD_C30_A
+	, a.replenish_point
+	, c.inv_item_size
+	, d.UNIT_OF_MEASURE
+	,a.related_item_id</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="?">
+            <Value>=Parameters!Item_Code.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <Width>1.625in</Width>
+  <Body>
+    <ReportItems>
+      <Table Name="table1">
+        <DataSetName>FSPRD</DataSetName>
+        <Details>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox1">
+                      <rd:DefaultName>textbox1</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <FontFamily>FranklinGothicMedium</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>2</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!item_code.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox3">
+                      <rd:DefaultName>textbox3</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <FontFamily>FranklinGothicMedium</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>1</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Int(Fields!pack_size.Value)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="avg_cost">
+                      <rd:DefaultName>avg_cost</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <FontFamily>FranklinGothicMedium</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Round(Fields!avg_cost.Value,2)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>0.25in</Height>
+            </TableRow>
+          </TableRows>
+        </Details>
+        <TableColumns>
+          <TableColumn>
+            <Width>0.625in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>0.375in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>0.625in</Width>
+          </TableColumn>
+        </TableColumns>
+      </Table>
+    </ReportItems>
+    <Height>0.25in</Height>
+  </Body>
+  <Language>en-US</Language>
+  <TopMargin>1in</TopMargin>
+</Report>

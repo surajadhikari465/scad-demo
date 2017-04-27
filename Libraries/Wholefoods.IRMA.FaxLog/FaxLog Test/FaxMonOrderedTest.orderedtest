@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<OrderedTest name="faxmonorderedtest" storage="c:\workspace\cewp7513\ncprojects\wholefoods.irma.faxlog\faxlog test\faxmonorderedtest.orderedtest" id="9e70c8d5-a9f2-41c3-b15f-cbda690e4f47" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Css projectStructure="" iteration="" />
+  <Execution timeOut="2147483647" id="eb1b8edc-61d8-4757-a813-6f2bb4325cef" />
+  <Owners>
+    <Owner name="" />
+  </Owners>
+  <TestLinks>
+    <TestLink id="9cf84473-c41c-f6b8-c57f-21d5227a67e2" name="CreateEntryTest" storage="bin\debug\faxmonitor.io test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="905aa5a7-738f-edb6-efcc-9fa94f62b155" name="GetEntryTest" storage="bin\debug\faxmonitor.io test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="82c76970-525e-8eee-7545-b7400dae99a8" name="UpdateStatusTestFail" storage="bin\debug\faxmonitor.io test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="e66cac79-f80e-75f5-b8cc-367c82b50b0e" name="UpdateStatusTestSuccess" storage="bin\debug\faxmonitor.io test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="50d4c074-be4e-56a2-0d25-50cb3359ae4f" name="GetUnconfirmedTransmissionsTest" storage="bin\debug\faxmonitor.io test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+  </TestLinks>
+</OrderedTest>
