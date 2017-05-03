@@ -43,6 +43,29 @@ BEGIN
 	PRINT 'Deleted ' + CAST(@TotalDeletedCount AS NVARCHAR) + ' rows from app.MessageQueuePrice table.';
 	PRINT 'Finished archiving Message Queue tables.';
 
+	PRINT 'Copying OutOfSync error rows from infor.MessageArchiveProduct to infor.MessageArchiveOutOfSync'
+
+	INSERT INTO infor.MessageArchiveProductOutOfSync
+		   (ItemId
+           ,ScanCode
+           ,InforMessageId
+           ,Context
+           ,ErrorCode
+           ,ErrorDetails
+           ,InsertDate)
+	SELECT ItemId
+      ,ScanCode
+      ,InforMessageId
+      ,Context
+      ,ErrorCode
+      ,ErrorDetails
+      ,InsertDate
+	FROM infor.MessageArchiveProduct
+	WHERE ErrorCode = 'OutOfSyncItemUpdateErrorCode'
+		AND InsertDate > @Today - 1
+
+	PRINT 'Finished copying OutOfSync error rows from infor.MessageArchiveProduct to infor.MessageArchiveOutOfSync';
+
 	-- Execute Delete commands based on RetentionPolicy table.
 	IF OBJECT_ID('tempdb..#DeleteCommands') IS NOT NULL
 		BEGIN

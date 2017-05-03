@@ -631,6 +631,7 @@
     <Build Include="infor\Functions\GetValidationErrorWithTwoValues.sql" />
     <Build Include="infor\Stored Procedures\GetItemValidationProperties.sql" />
     <Build Include="app\Tables\DbStatus.sql" />
+    <Build Include="infor\Tables\MessageArchiveProductOutOfSync.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -739,6 +740,7 @@
     <None Include="Scripts\PopulateData\Release\DeleteBrandPurgeJob.sql" />
     <None Include="Scripts\PopulateData\Release\AddMaintFlagRowToDbStatusTable.sql" />
     <None Include="Scripts\PopulateData\Release\InsertInforOutOfSyncItemUpdateError.sql" />
+    <None Include="Scripts\PopulateData\Release\RetentionPolicyMessageArchiveProductOutOfSync.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
