@@ -15,7 +15,7 @@
             @if (Model.HasPreviousPage)
             {
 
-                using (Ajax.BeginForm(actionName, controllerName, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pagingDataTable", OnSuccess = "redrawPaging" }))
+                using (Ajax.BeginForm(actionName, controllerName, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pagingDataTable", OnSuccess = "redrawPaging" }))
                 {
                     <button type="submit" class="btn btn-default btn-lg" role="link" value="@Model.PreviousPage.TextForLink">@Model.PreviousPage.TextForLink</button>
                     <input class="hidden" id="routeParameter" name="routeParameter" value="@Model.RouteParameter" />
@@ -27,7 +27,7 @@
             {
                 foreach (var quickLink in Model.QuickLinks)
                 {
-                        using (Ajax.BeginForm(actionName, controllerName, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pagingDataTable", OnSuccess = "redrawPaging" }))
+                        using (Ajax.BeginForm(actionName, controllerName, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pagingDataTable", OnSuccess = "redrawPaging" }))
                         {
                             <button type="submit" class="btn btn-default btn-lg @(quickLink.PageNumber == Model.CurrentPage ? "active" : "")" role="link" value="@quickLink.TextForLink">@quickLink.TextForLink</button>
                             <input class="hidden" id="routeParameter" name="routeParameter" value="@quickLink.RouteParameter" />
@@ -39,7 +39,7 @@
 
             @if (Model.HasNextPage)
             {
-                using (Ajax.BeginForm(actionName, controllerName, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pagingDataTable", OnSuccess = "redrawPaging" }))
+                using (Ajax.BeginForm(actionName, controllerName, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pagingDataTable", OnSuccess = "redrawPaging" }))
                 {
                     <button type="submit" class="btn btn-default btn-lg" role="link" value="@Model.NextPage.TextForLink">@Model.NextPage.TextForLink</button>
                     <input class="hidden" id="routeParameter" name="routeParameter" value="@Model.RouteParameter" />

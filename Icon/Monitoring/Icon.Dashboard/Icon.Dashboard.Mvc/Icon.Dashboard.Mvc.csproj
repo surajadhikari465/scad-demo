@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -16,7 +16,7 @@
     <RootNamespace>Icon.Dashboard.Mvc</RootNamespace>
     <AssemblyName>Icon.Dashboard.Mvc</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
@@ -124,6 +124,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Filters\DashboardAuthorization.cs" />
     <Compile Include="Infrastructure\TempDataKeys.cs" />
     <Compile Include="Controllers\ApiJobsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -133,9 +134,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EnvironmentSwitcher.cs" />
-    <Compile Include="Filters\SetViewBagMenuOptionsFilter.cs" />
+    <Compile Include="Filters\MenuOptionsFilter.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Models\InforEsbEnvironmentEnum.cs" />
+    <Compile Include="Models\UserRoleEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataFileServiceWrapper.cs" />
     <Compile Include="Services\IMammothDatabaseServiceWrapper.cs" />
@@ -151,7 +153,6 @@
     <Compile Include="ViewModels\RecentLogEntriesReportViewModel.cs" />
     <Compile Include="ViewModels\IconAppLogViewModel.cs" />
     <Compile Include="ViewModels\IconAppViewModel.cs" />
-    <Compile Include="ViewModels\IconApiServiceViewModel.cs" />
     <Compile Include="ViewModels\PaginationPageSetViewModel.cs" />
     <Compile Include="ViewModels\PaginationPageViewModel.cs" />
     <Compile Include="ViewModels\PendingMessagesViewModel.cs" />
@@ -169,6 +170,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap.min.css" />
+    <Content Include="Content\Images\denied.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -227,7 +229,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconApplicationViewModel.cshtml" />
     <Content Include="Views\Home\Create.cshtml" />
@@ -235,27 +236,26 @@
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconApplicationDetailsViewModel.cshtml" />
-    <Content Include="Views\Shared\_CommandsPartial.cshtml" />
+    <Content Include="Views\Home\_CommandsPartial.cshtml" />
     <Content Include="Views\Shared\_BackToListPartial.cshtml" />
-    <Content Include="Views\Shared\_TaskViewModelPartial.cshtml" />
+    <Content Include="Views\Home\_TaskViewModelPartial.cshtml" />
     <Content Include="Views\Shared\_EnvironmentSelectorPartial.cshtml" />
     <Content Include="Views\Logs\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconAppLogViewModel.cshtml" />
     <Content Include="Views\Home\Configure.cshtml" />
-    <Content Include="Views\Shared\_IconApiServiceViewModelPartial.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApplicationTypeEnum.cshtml" />
     <Content Include="Views\Shared\_PaginationPartial.cshtml" />
     <Content Include="Views\Shared\_SubMenuForAppLogs.cshtml" />
     <Content Include="Views\ApiJobs\Index.cshtml" />
     <Content Include="Views\Shared\_SubMenuForApiJobs.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApiMessageJobSummaryViewModel.cshtml" />
-    <Content Include="Views\Shared\_ApiMessageJobTimedReportPartial.cshtml" />
+    <Content Include="Views\ApiJobs\_ApiMessageJobTimedReportPartial.cshtml" />
     <Content Include="Views\ApiJobs\Pending.cshtml" />
-    <Content Include="Views\Shared\_ApiMessageJobTimedReportResultPartial.cshtml" />
-    <Content Include="Views\Shared\_RecentLogEntriesReportCollectionPartial.cshtml" />
-    <Content Include="Views\Shared\_RecentLogEntriesReportPartial.cshtml" />
-    <Content Include="Views\Shared\_ApiJobsTablePartial.cshtml" />
-    <Content Include="Views\Shared\_AppLogTablePartial.cshtml" />
+    <Content Include="Views\ApiJobs\_ApiMessageJobTimedReportResultPartial.cshtml" />
+    <Content Include="Views\Logs\_RecentLogEntriesReportCollectionPartial.cshtml" />
+    <Content Include="Views\Logs\_RecentLogEntriesReportPartial.cshtml" />
+    <Content Include="Views\ApiJobs\_ApiJobsTablePartial.cshtml" />
+    <Content Include="Views\Logs\_AppLogTablePartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\EsbSwitch\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\EsbEnvironmentViewModel.cshtml" />
@@ -265,7 +265,9 @@
     <Content Include="Views\EsbSwitch\Edit.cshtml" />
     <Content Include="Views\EsbSwitch\Create.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\IconApplicationIdentifierViewModel.cshtml" />
-    <Content Include="Views\Shared\_SetEsbEnvironmentPartial.cshtml" />
+    <Content Include="Views\EsbSwitch\_SetEsbEnvironmentPartial.cshtml" />
+    <Content Include="Views\Shared\NotAuthorized.cshtml" />
+    <Content Include="Views\Shared\ReadOnlyAuthorized.cshtml" />
     <None Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -298,6 +300,7 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -357,8 +360,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <Import Project="..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets" Condition="Exists('..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets')" />
   <PropertyGroup>

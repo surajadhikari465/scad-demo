@@ -56,6 +56,60 @@
                             @Html.DisplayFor(model => model.JndiPassword)
                         </div>
                     </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                        @Html.LabelFor(model => model.ConnectionFactoryName, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.DisplayFor(model => model.ConnectionFactoryName)
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                        @Html.LabelFor(model => model.SslPassword, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.DisplayFor(model => model.SslPassword)
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                        @Html.LabelFor(model => model.QueueName, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.DisplayFor(model => model.QueueName)
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                        @Html.LabelFor(model => model.SessionMode, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.DisplayFor(model => model.SessionMode)
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                        @Html.LabelFor(model => model.CertificateName, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.DisplayFor(model => model.CertificateName)
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                        @Html.LabelFor(model => model.CertificateStoreName, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.DisplayFor(model => model.CertificateStoreName)
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                        @Html.LabelFor(model => model.CertificateStoreLocation, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.DisplayFor(model => model.CertificateStoreLocation)
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                        @Html.LabelFor(model => model.ReconnectDelay, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.DisplayFor(model => model.ReconnectDelay)
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                        @Html.LabelFor(model => model.NumberOfListenerThreads, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.DisplayFor(model => model.NumberOfListenerThreads)
+                        </div>
+                    </div>
 
                     <div class="form-group col-xs-12">
                         <div class="panel panel-info">
@@ -77,11 +131,9 @@
                             </div>
                         </div>
                     </div>
-
                  </div>
             </div>
         </div>
     </div>
-    
 </div>
 

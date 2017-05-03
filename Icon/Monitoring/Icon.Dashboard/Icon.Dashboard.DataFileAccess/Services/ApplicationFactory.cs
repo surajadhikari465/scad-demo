@@ -53,7 +53,11 @@
             }
         }
 
-        // This method tries to grab the app.config from the configFilePath and load the appsettings
+        /// <summary>
+        /// This method tries to grab the app.config from the configFilePath and load the appsettings
+        /// </summary>
+        /// <param name="application">IApplication definition which will have its AppSettings (and
+        ///     EsbConnectionSettings) property populated</param>
         protected virtual void LoadAppSettings(IApplication application)
         {
             try
@@ -61,56 +65,18 @@
                 if (application.ConfigFilePath != "Unknown")
                 {
                     var appConfig = XDocument.Load(application.ConfigFilePath);
-                    var settings = appConfig.Root.Element("appSettings").Elements().Select(e => new
-                    {
-                        Key = e.Attribute("key").Value,
-                        Value = e.Attribute("value").Value
-                    });
-
-                    settings.ToList().ForEach(e => application.AppSettings.Add(e.Key, e.Value));
-
-                    LoadEsbConnectionSettings(appConfig, application);
-                }
-            }
-            catch (Exception ex)
-            {
-                //debug
-                string msg = ex.Message;
-            }
-        }
-
-        //This method tries to grab the key/value pairs from the esbConnections portion of the config file, if any
-        protected virtual void LoadEsbConnectionSettings(XDocument appConfig, IApplication application)
-        {
-            try
-            {
-                var numConnections = 0;
-
-                if (appConfig.Root.Element("esbConnections") != null && appConfig.Root.Element("esbConnections").Elements("connections") != null)
-                {
-                    numConnections = appConfig.Root.Element("esbConnections").Elements("connections").Count();
-                }
-
-                if (numConnections > 0)
-                {
-                    //var extraSettings = new List<Dictionary<string, string>>(numConnections);
-                    foreach ( var con in appConfig.Root.Element("esbConnections").Elements("connections"))
-                    {
-                        foreach (var esbCon in con.Elements("esbConnection"))
+                    var allAppSettings = appConfig.Root.Element("appSettings").Elements()
+                        .Select(e => new
                         {
-                            var esbConnection = new Dictionary<string, string>();
+                            Key = e.Attribute("key").Value,
+                            Value = e.Attribute("value").Value
+                        });
 
-                            var esbConnectionAttributes = esbCon.Attributes().Select(a => new
-                            {
-                                Key = a.Name.ToString(),
-                                Value = a.Value.ToString()
-                            });
+                    var esbEnvironmentSettings = allAppSettings.Where(s => EsbEnvironment.EsbAppSettingsNames.Contains(s.Key));
+                    var nonEsbSettings = allAppSettings.Where(s => !EsbEnvironment.EsbAppSettingsNames.Contains(s.Key));
 
-                            esbConnectionAttributes.ToList().ForEach(e => esbConnection.Add(e.Key, e.Value));
-                            application.EsbConnectionSettings.Add(esbConnection);
-                        }
-                    }
-
+                    nonEsbSettings.ToList().ForEach(e => application.AppSettings.Add(e.Key, e.Value));
+                    esbEnvironmentSettings.ToList().ForEach(e => application.EsbConnectionSettings.Add(e.Key, e.Value));
                 }
             }
             catch (Exception ex)

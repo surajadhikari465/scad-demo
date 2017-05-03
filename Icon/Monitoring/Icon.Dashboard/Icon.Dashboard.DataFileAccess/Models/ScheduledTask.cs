@@ -18,8 +18,11 @@
             //this.TypeOfApplication = ApplicationTypeEnum.ScheduledTask;
             try
             {
-                this.Instance = new TaskService(this.Server).FindTask(this.Name);
-                SetValidCommands(GetStatus());
+                using (var taskService = new TaskService(this.Server))
+                {
+                    this.Instance = taskService.FindTask(this.Name);
+                    SetValidCommands(GetStatus());
+                }
             }
             catch (IOException)
             {
@@ -27,10 +30,10 @@
             }
         }
 
-        private Lazy<Dictionary<string, string>> appSettings = new Lazy<Dictionary<string, string>>(
-            () => new Dictionary<string, string>());
-        private Lazy<List<Dictionary<string, string>>> esbConnectionSettings = new Lazy<List<Dictionary<string, string>>>(
-            () => new List<Dictionary<string, string>>());
+        private Lazy<Dictionary<string, string>> appSettings = 
+            new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>());
+        private Lazy<Dictionary<string, string>> esbConnectionSettings = 
+            new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>());
 
         public Dictionary<string, string> AppSettings
         {
@@ -43,11 +46,10 @@
 
         public string DataFlowTo { get; set; }
 
-        public List<Dictionary<string, string>> EsbConnectionSettings
+        public Dictionary<string, string> EsbConnectionSettings
         {
             get { return this.esbConnectionSettings.Value; }
         }
-
 
         public string DisplayName { get; set; }
 
@@ -94,7 +96,7 @@
                 //Running = 4
                 return this.Instance.State.ToString();
             }
-            catch
+            catch (Exception ex)
             {
                 //TODO how to handle?
                 return "Unknown";
@@ -154,7 +156,6 @@
                 }
             }
         }
-
 
         public DateTime? LastRun { get
             {

@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
+    using FluentAssertions;
 
     [TestClass]
     public class DataServiceEsbEnvironmentTests
@@ -260,5 +261,36 @@
             // Then
             Assert.IsNull(currentEnvironment);
         }
+
+        [TestMethod]
+        public void WhenUsingValidDataFile_GetEsbEnvironments_ShouldRetrieveExpectedEsbEnvironmentCount()
+        {
+            // Given 
+            var dataFilePath = "IconApplication.xml";
+            const int expectedCount = 3;
+            // When
+            var environments = IconDashboardDataService.Instance.GetEsbEnvironments(dataFilePath);
+            // Then
+            environments.Should().NotBeNull();
+            environments.Count().Should().Be(expectedCount);
+        }
+
+        [TestMethod]
+        public void WhenUsingValidDataFile_GetEsbEnvironments_ShouldRetrieveEnvironmentB_WithExpectedFields()
+        {
+            // Given 
+            var dataFilePath = "IconApplication.xml";
+            var expectedServerUrl = @"ssl://cerd1617.wfm.pvt:17293";
+            var expectedNumberOfListenerThreads = 1;
+            // When
+            var ees = IconDashboardDataService.Instance.GetEsbEnvironments(dataFilePath);
+            // Then
+            var environmentB = ees.First(e => e.Name == "ENV_B");
+            environmentB.Should().NotBeNull();
+            environmentB.ServerUrl.ShouldBeEquivalentTo(expectedServerUrl);
+            environmentB.NumberOfListenerThreads.ShouldBeEquivalentTo(expectedNumberOfListenerThreads);
+        }
+
+        //TODO the same application can be in multiple ESB environments!
     }
 }

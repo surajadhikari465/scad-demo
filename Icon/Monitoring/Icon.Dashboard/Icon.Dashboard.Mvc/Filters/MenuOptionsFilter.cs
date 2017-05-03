@@ -13,7 +13,7 @@ namespace Icon.Dashboard.Mvc.Helpers
     /// ActionFilterAttribute implementation to allow common place to set ViewBag values for
     ///  global menu options
     /// </summary>
-    public class SetViewBagMenuOptionsFilter : ActionFilterAttribute
+    public sealed class MenuOptionsFilter : ActionFilterAttribute
     {
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
@@ -36,12 +36,12 @@ namespace Icon.Dashboard.Mvc.Helpers
             }
         }
 
-        public Dictionary<IconAppViewModel, bool> GetMenuOptionsForAppLogs(
+        public static Dictionary<IconAppViewModel, bool> GetMenuOptionsForAppLogs(
             Uri currentUri,
             string controllerName,
             IEnumerable<IconAppViewModel> knownApps)
         {
-            Dictionary<IconAppViewModel, bool> appLogsMenuOptions = new Dictionary<IconAppViewModel, bool>();
+            var appLogsMenuOptions = new Dictionary<IconAppViewModel, bool>();
             bool isActive;
             var requestIdParameter = Utils.GetIdParameterFronUrl(currentUri);
 
@@ -57,7 +57,7 @@ namespace Icon.Dashboard.Mvc.Helpers
             return appLogsMenuOptions;
         }
 
-        public Dictionary<string, bool> GetMenuOptionsForApiJobs(
+        public static Dictionary<string, bool> GetMenuOptionsForApiJobs(
             Uri currentUri,
             string controllerName,
             IEnumerable<string> knownMessageTypes)

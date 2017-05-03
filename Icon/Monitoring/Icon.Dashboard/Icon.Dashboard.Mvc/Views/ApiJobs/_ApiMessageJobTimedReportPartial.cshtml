@@ -13,7 +13,7 @@
                 <div class="panel-body">
                     @using (Ajax.BeginForm("Summarize", "ApiJobs", new AjaxOptions
                     {
-                        HttpMethod = "POST",
+                        HttpMethod = "GET",
                         InsertionMode = InsertionMode.Replace,
                         UpdateTargetId = "summary",
                         OnFailure = "summarizeFailed"

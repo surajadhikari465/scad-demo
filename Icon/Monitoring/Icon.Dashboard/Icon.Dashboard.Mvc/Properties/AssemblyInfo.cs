@@ -33,3 +33,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+// Make internal calls visible to allow unit testing
+[assembly: InternalsVisibleTo("Icon.Dashboard.Mvc.UnitTests")]
