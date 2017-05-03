@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [WFM\IConWebPrd]
+    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
+

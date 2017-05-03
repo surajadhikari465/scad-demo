@@ -1,0 +1,240 @@
+﻿GRANT CREATE TABLE TO [IRMASchedJobsRole];
+
+
+GO
+GRANT CONNECT TO [IRMAAdmin];
+
+
+GO
+GRANT CONNECT TO [IRSUser];
+
+
+GO
+GRANT CONNECT TO [IRMASchedJobs];
+
+
+GO
+GRANT CONNECT TO [IRMAReports];
+
+
+GO
+GRANT CONNECT TO [SQLExcel];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMA Admin FL];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMA Support FL];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMAAVCISQLPrdFL];
+
+
+GO
+GRANT CONNECT TO [wfm\IRMA NonIRMA Support];
+
+
+GO
+GRANT CONNECT TO [imha_user];
+
+
+GO
+GRANT CONNECT TO [DataMigration];
+
+
+GO
+GRANT CONNECT TO [Planogram];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMARSTSQLPrdFL];
+
+
+GO
+GRANT CONNECT TO [Extract];
+
+
+GO
+GRANT CONNECT TO [SLIM_User];
+
+
+GO
+GRANT CREATE TABLE TO [IRMAPromoRole];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMAPromoSQLPrdFL];
+
+
+GO
+GRANT CONNECT TO [IRMA_FarmMW];
+
+
+GO
+GRANT CONNECT TO [flbluesky];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMA Technical Support];
+
+
+GO
+GRANT VIEW DEFINITION TO [WFM\IRMA Technical Support];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMA DC Analysis];
+
+
+GO
+GRANT CONNECT TO [StoreOrderGuideUser];
+
+
+GO
+GRANT CONNECT TO [IRMA_Teradata];
+
+
+GO
+GRANT CONNECT TO [IRMA_Informatica];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMA Data Warehouse Support];
+
+
+GO
+GRANT CONNECT TO [PromoPlanner_User];
+
+
+GO
+GRANT CONNECT TO [IRMA_Refresh];
+
+
+GO
+GRANT CONNECT TO [BizTalk];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMAAutomatedUserMaintGroup];
+
+
+GO
+GRANT CONNECT TO [WFM\TFSAdmin];
+
+
+GO
+GRANT CONNECT TO [SOXAudit_User];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMA.developers];
+
+
+GO
+GRANT CONNECT TO [WFM\FLIRMADBReaders];
+
+
+GO
+GRANT CONNECT TO [POReports];
+
+
+GO
+GRANT CONNECT TO [iCONReports];
+
+
+GO
+GRANT CONNECT TO [spice_user];
+
+
+GO
+GRANT CONNECT TO [MSSql.RplAgt.Log];
+
+
+GO
+GRANT CONNECT REPLICATION TO [MSSql.RplAgt.Log];
+
+
+GO
+GRANT CONNECT TO [MSSql.RplAgt.Snap];
+
+
+GO
+GRANT CONNECT REPLICATION TO [MSSql.RplAgt.Snap];
+
+
+GO
+GRANT CONNECT TO [MSSql.RplAgt.Dist];
+
+
+GO
+GRANT CONNECT REPLICATION TO [MSSql.RplAgt.Dist];
+
+
+GO
+GRANT CONNECT TO [WFM\sql.rplagt.snap.prd];
+
+
+GO
+GRANT CONNECT TO [WFM\sql.rplagt.log.prd];
+
+
+GO
+GRANT CONNECT TO [NutriChefDataWriter];
+
+
+GO
+GRANT CONNECT TO [WFM\IConInterfaceUserPrd];
+
+
+GO
+GRANT CONNECT TO [WFM\IConWebPrd];
+
+
+GO
+GRANT CONNECT TO [WFM\PRDTFSBuild];
+
+
+GO
+GRANT CONNECT TO [WFM\MammothPrd];
+
+
+GO
+GRANT CONNECT TO [IconPurgeUser];
+
+
+GO
+GRANT CONNECT TO [WFM.R10.Operations.IRMAPriceAudit];
+
+
+GO
+GRANT CONNECT TO [WFM\sql.scom.prd];
+
+
+GO
+GRANT CONNECT TO [LS.ICON02];
+
+
+GO
+GRANT CONNECT TO [WFM\IRMA PRD Testing Users Read-Only];
+
+
+GO
+GRANT CONNECT TO [WFM\audit.sql.sox.prd];
+
+
+GO
+GRANT CONNECT TO [WFM\Infrastructure SQL Server OpsWatch Production];
+
+
+GO
+GRANT ALTER
+    ON SCHEMA::[dbo] TO [IRMASchedJobsRole];
+
+
+GO
+GRANT SELECT
+    ON SCHEMA::[dbo] TO [MammothRole];
+

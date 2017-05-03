@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [WFM\IRMA PRD Testing Users Read-Only]
+    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
+

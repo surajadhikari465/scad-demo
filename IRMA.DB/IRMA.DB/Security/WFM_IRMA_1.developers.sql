@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [WFM\IRMA.developers]
+    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
+

@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [WFM\conns]
+    AUTHORIZATION [WFM\conns];
+

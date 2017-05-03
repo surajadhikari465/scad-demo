@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [WFM\TFSAdmin]
+    AUTHORIZATION [WFM\TFSAdmin];
+
