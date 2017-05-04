@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <items xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:pry="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:icr="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:lcy="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:itp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ama="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ici="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:psg="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:iea="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2">
   <item crf:Action="AddOrUpdate">
-    <id>4000110</id>
+    <id>999999999</id>
     <base>
       <ibi:type>
         <itp:code>RTL</itp:code>
@@ -18,7 +18,7 @@
       <lcl:enterpriseItemAttributes>
         <iea:scanCodes>
           <sis:scanCode>
-            <sis:code>1000397</sis:code>
+            <sis:code>888888888</sis:code>
             <sis:typeDescription>UPC</sis:typeDescription>
           </sis:scanCode>
         </iea:scanCodes>

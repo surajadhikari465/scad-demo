@@ -27,6 +27,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
         private Mock<IBulkEventService> mockBulkEventService;
         private Mock<IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>>> mockBulkGetScanCodeQuery;
         private Mock<IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>>> mockGetIconItemNutritionQueryHandler;
+        private Mock<IEventArchiver> mockEventArchiver;
 
         [TestInitialize]
         public void InitializeData()
@@ -35,16 +36,19 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
             this.mockLogger = new Mock<ILogger<ItemEventBulkProcessor>>();
             this.mockServiceProvider = new Mock<IEventServiceProvider>();
             this.mockBulkGetScanCodeQuery = new Mock<IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>>>();
-            mockGetIconItemNutritionQueryHandler = new Mock<IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>>>();
+            this.mockGetIconItemNutritionQueryHandler = new Mock<IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>>>();
+            this.mockEventArchiver = new Mock<IEventArchiver>();
 
             this.processor = new NutriFactsEventBulkProcessor(this.queues,
                 this.mockLogger.Object,
                 this.mockServiceProvider.Object,
                 this.mockBulkGetScanCodeQuery.Object,
-                this.mockGetIconItemNutritionQueryHandler.Object);
+                this.mockGetIconItemNutritionQueryHandler.Object,
+                this.mockEventArchiver.Object);
 
             this.mockBulkEventService = new Mock<IBulkEventService>();
             this.mockServiceProvider.Setup(p => p.GetBulkItemNutriFactsEventService(It.IsAny<string>())).Returns(this.mockBulkEventService.Object);
+            this.mockEventArchiver.SetupGet(m => m.Events).Returns(new List<EventQueueArchive>());
             StartupOptions.NutritionEnabledRegions = new List<string>() { "FL", "MA", "PN"};
         }
 
@@ -59,6 +63,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
 
             // Then
             mockLogger.Verify(l => l.Info(It.IsAny<string>()), Times.Exactly(1));
+            mockEventArchiver.VerifyGet(m => m.Events, Times.Never, "The EventArchiver should not be called if there are no events to process.");
         }
 
         [TestMethod]
@@ -66,15 +71,17 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
         {
             // Given
             PopulateQueueWithNutritionEvents();
-            int expectedCount = this.queues.QueuedEvents.Select(e => e.RegionCode).Distinct().Count();
+            int expectedRegionCount = this.queues.QueuedEvents.Select(e => e.RegionCode).Distinct().Count();
+            int expectedEventCount = this.queues.QueuedEvents.Count;
 
             // When
             this.processor.BulkProcessEvents();
 
             // Then
-            int actualCount = this.queues.RegionToEventQueueDictionary.Count;
+            int actualRegionCount = this.queues.RegionToEventQueueDictionary.Count;
             Assert.IsTrue(this.queues.RegionToEventQueueDictionary.Count > 0, "The RegionToEventQueue Dictionary is not populated with data");
-            Assert.AreEqual(expectedCount, actualCount, "The actual count of regions in the RegionToEventQueue Dictionary does not match the expected count");
+            Assert.AreEqual(expectedRegionCount, actualRegionCount, "The actual count of regions in the RegionToEventQueue Dictionary does not match the expected count");
+            mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedEventCount), "The EventArchiver was not called for each event.");
         }
 
         [TestMethod]
@@ -97,6 +104,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
             Assert.AreEqual(expectedFlCount, this.queues.RegionToEventQueueDictionary["FL"].Count, "The actual count of queued events for FL does not match the expected count");
             Assert.AreEqual(expectedMaCount, this.queues.RegionToEventQueueDictionary["MA"].Count, "The actual count of queued events for MA does not match the expected count");
             Assert.AreEqual(expectedPnCount, this.queues.RegionToEventQueueDictionary["PN"].Count, "The actual count of queued events for PN does not match the expected count");
+            mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(expectedQueue.Count), "The EventArchiver was not called for each event.");
         }
 
         [TestMethod]
@@ -111,6 +119,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
                 .Distinct()
                 .Count();
             mockGetIconItemNutritionQueryHandler.Setup(gn => gn.Handle(It.IsAny<GetIconItemNutritionQuery>())).Returns(new List<ItemNutrition>());
+            
             // When
             this.processor.BulkProcessEvents();
 
@@ -141,12 +150,15 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
                 .Where(q => q.EventId == EventTypes.NutritionUpdate || q.EventId == EventTypes.NutritionAdd)
                 .ToList();
 
+            int numberOfRegions = onlyNutritionQueue.Select(q => q.RegionCode).Distinct().Count();
+
             // When
             this.processor.BulkProcessEvents();
 
             // Then
             Assert.AreEqual(expectedQueue.Count, this.queues.QueuedEvents.Count, "The number of ProcessedEvents were not properly removed from the QueuedEvents.");
             Assert.IsTrue(onlyNutritionQueue.Intersect(this.queues.QueuedEvents).Count() == 0, "The QueuedEvents list match the expected event list");
+            mockEventArchiver.VerifyGet(m => m.Events, Times.Exactly(numberOfRegions), "The EventArchiver was not called for each region.");
         }
 
         [TestMethod]
@@ -164,6 +176,7 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
             List<EventQueue> expectedQueue = this.queues.QueuedEvents
                 .Where(q => q.EventId == EventTypes.NutritionAdd || q.EventId == EventTypes.NutritionUpdate)
                 .ToList();
+            int numberOfRegions = expectedQueue.Select(q => q.RegionCode).Distinct().Count();
 
             // When
             this.processor.BulkProcessEvents();

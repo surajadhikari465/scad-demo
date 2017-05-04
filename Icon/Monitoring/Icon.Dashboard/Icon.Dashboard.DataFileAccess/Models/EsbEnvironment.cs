@@ -1,9 +1,8 @@
 ﻿namespace Icon.Dashboard.DataFileAccess.Models
 {
-    using Microsoft.Win32.TaskScheduler;
     using System;
     using System.Collections.Generic;
-    using System.IO;
+    using System.Collections.ObjectModel;
     using System.Linq;
 
     /// <summary>
@@ -27,6 +26,24 @@
 
         public string JndiPassword { get; set; }
 
+        public string ConnectionFactoryName { get; set; }
+
+        public string SslPassword { get; set; }
+
+        public string QueueName { get; set; }
+
+        public string SessionMode { get; set; }
+
+        public string CertificateName { get; set; }
+
+        public string CertificateStoreName { get; set; }
+
+        public string CertificateStoreLocation { get; set; }
+
+        public string ReconnectDelay { get; set; }
+
+        public int NumberOfListenerThreads { get; set; }
+
         public virtual IList<IconApplicationIdentifier> Applications { get; set; }
 
         public IconApplicationIdentifier AddApplication(string name, string server)
@@ -39,6 +56,31 @@
             this.Applications.Add(newIdentifier);
             return this.Applications.First(a => a.Name == name && a.Server == server);
         }
-    }
 
+        /// <summary>
+        /// Hard-coded list of EsbEnvironment Properties. This can be used to distinguish App Settings related to 
+        ///   an ESB environment from other App Settings in a .config file
+        /// </summary>
+        public static ReadOnlyCollection<string> EsbAppSettingsNames =>
+            new ReadOnlyCollection<string>(esbEnvironmentPropertyNames);
+
+        private static List<string> esbEnvironmentPropertyNames = new List<string>
+        {
+            nameof(ServerUrl),
+            nameof(TargetHostName),
+            nameof(JmsUsername),
+            nameof(JmsPassword),
+            nameof(JndiUsername),
+            nameof(JndiPassword),
+            nameof(ConnectionFactoryName),
+            nameof(SslPassword),
+            nameof(QueueName),
+            nameof(SessionMode),
+            nameof(CertificateName),
+            nameof(CertificateStoreName),
+            nameof(CertificateStoreLocation),
+            nameof(ReconnectDelay),
+            nameof(NumberOfListenerThreads)
+        };
+    }
 }

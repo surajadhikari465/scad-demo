@@ -25,6 +25,8 @@ BEGIN
 	   declare @natClassCodeTrait int;
 	   declare @retailSize int;
 	   declare @retailUom int;
+	   declare @trueBit bit;
+	   declare @falseBit bit;
               
        -- traits
        set @productDescription = (select traitID from Trait where traitDesc = 'Product Description');
@@ -47,6 +49,10 @@ BEGIN
        set @finId = (select hierarchyID from Hierarchy where hierarchyName = 'Financial');
        set @merchId = (select hierarchyID from Hierarchy where hierarchyName = 'Merchandise');
 	   set @natId = (select hierarchyID from Hierarchy where hierarchyName = 'National');
+
+	   -- helper variables
+	   set @trueBit = 1;
+	   set @falseBit = 0;
 
        --=======================================================
        -- Setup CTEs
@@ -140,29 +146,29 @@ BEGIN
 			  mt.Description					as CheeseMilkType,
 			  isa.CheeseRaw						as CheeseRaw,
 			  esr.Description					as EcoScaleRating,
-			  CASE 
-					WHEN isa.GlutenFreeAgencyName IS NULL THEN NULL
-					ELSE CAST(1 AS BIT)
+			  CASE
+					WHEN isa.GlutenFreeAgencyName IS NULL OR ltrim(rtrim(isa.GlutenFreeAgencyName))='' THEN NULL
+					ELSE @trueBit
 			  END								as GlutenFree,
 			  CASE 
-					WHEN isa.KosherAgencyName IS NULL THEN NULL
-					ELSE CAST(1 AS BIT)
+					WHEN isa.KosherAgencyName IS NULL OR ltrim(rtrim(isa.KosherAgencyName))='' THEN NULL
+					ELSE @trueBit
 			  END								as Kosher,
 			  isa.Msc							as Msc,
 			  CASE 
-					WHEN isa.OrganicAgencyName IS NULL THEN NULL
-					ELSE CAST(1 AS BIT)
+					WHEN isa.OrganicAgencyName IS NULL OR ltrim(rtrim(isa.OrganicAgencyName))='' THEN NULL
+					ELSE @trueBit
 			  END								as Organic,
 			  CASE 
-					WHEN isa.NonGmoAgencyName IS NULL THEN NULL
-					ELSE CAST(1 AS BIT)
+					WHEN isa.NonGmoAgencyName IS NULL OR ltrim(rtrim(isa.NonGmoAgencyName))='' THEN NULL
+					ELSE @trueBit
 			  END								as NonGmo,
 			  isa.PremiumBodyCare				as PremiumBodyCare,
 			  sff.Description					as FreshOrFrozen,
 			  sfct.Description					as SeafoodCatchType,
 			  CASE 
-					WHEN isa.VeganAgencyName IS NULL THEN NULL
-					ELSE CAST(1 AS BIT)
+					WHEN isa.VeganAgencyName IS NULL OR ltrim(rtrim(isa.VeganAgencyName))='' THEN NULL
+					ELSE @trueBit
 			  END								as Vegan,
 			  isa.Vegetarian					as Vegetarian,
 			  isa.WholeTrade					as WholeTrade,
@@ -173,8 +179,8 @@ BEGIN
 			  isa.AirChilled					as AirChilled,
 			  isa.MadeInHouse					as MadeInHouse,
 			  CASE
-				WHEN isa.ItemSignAttributeID IS NULL THEN CAST(0 AS BIT)
-				ELSE CAST(1 AS BIT)
+				WHEN isa.ItemSignAttributeID IS NULL THEN @falseBit
+				ELSE @trueBit
 			  END								as HasItemSignAttributes,
 			  CAST(rsz.TraitValue as decimal(9,4)) as RetailSize,
 			  rum.TraitValue					as RetailUom,

@@ -227,8 +227,8 @@
                 AlcoholByVolume = this.AlcoholByVolume,
                 CaseinFree = this.CaseinFree.GetBoolStringFromCellText(),
                 DrainedWeight = this.DrainedWeight,
-                DrainedWeightUom = this.DrainedWeightUom,
-                FairTradeCertified = this.FairTradeCertified,
+                DrainedWeightUom = this.GetNullableStringValue(this.DrainedWeightUom),
+                FairTradeCertified = this.GetNullableStringValue(this.FairTradeCertified),
                 Hemp = this.Hemp.GetBoolStringFromCellText(),
                 LocalLoanProducer = this.LocalLoanProducer.GetBoolStringFromCellText(),
                 MainProductName = this.MainProductName,
@@ -241,13 +241,25 @@
             return item;
         }
 
+        private string GetNullableStringValue(string value)
+        {
+            if(value == Constants.ExcelImportRemoveValueKeyword)
+            {
+                return null;
+            }
+            else
+            {
+                return value;
+            }
+        }
+
         private string GetIdFromDescription(Dictionary<int, string> descriptions, string description)
         {
             if (description == Constants.ExcelImportRemoveValueKeyword) return null;
 
             var reverseDictionary = descriptions.ToDictionary(e => e.Value, e => e.Key);
 
-            return reverseDictionary.ContainsKey(description) ? reverseDictionary[description].ToString() : null;
+            return reverseDictionary.ContainsKey(description) ? reverseDictionary[description].ToString() : string.Empty;
         }
 
         private string GetAgencyIdFromText(string agencyText)

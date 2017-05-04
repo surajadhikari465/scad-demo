@@ -110,6 +110,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Processor Tests\TlogProcessorIntegrationTest.cs" />
+    <Compile Include="Processor Tests\TLogProcessorIntegrationTestHelper.cs" />
     <Compile Include="Processor Tests\TlogProcessorPerformanceTest.cs" />
     <Compile Include="Processor Tests\IrmaTlogProcessorUnitTest.cs" />
     <Compile Include="ProcessorModules Tests\IrmaTlogProcessorModuleTests.cs" />

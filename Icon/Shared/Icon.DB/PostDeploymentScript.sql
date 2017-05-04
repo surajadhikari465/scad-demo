@@ -12,6 +12,7 @@ Post-Deployment Script Template
 -- uncomment if you want to skip the scripts listed in SeedNonGreeFieldScripts for initial deployments.
 --:r .\Scripts\PopulateData\Release\SeedNonGreenFieldScripts.sql
 
+/*
 --:r .\Scripts\PopulateData\Release\IconMasterData.sql
 --:r .\Scripts\PopulateData\Release\IconPopulateData.sql
 :r .\Scripts\PopulateData\Release\IconTimezonesForPos.sql
@@ -27,3 +28,15 @@ Post-Deployment Script Template
 :r .\Scripts\PopulateData\Release\InsertInforHierarchyMismatchError.sql
 :r .\Scripts\PopulateData\Release\RetentionPolicyInforArchiveTables.sql
 :r .\Scripts\PopulateData\Release\RemoveCharactersInforCantConsumeFromMerchBrickNames.sql
+:r .\Scripts\PopulateData\Release\AddBrandDeleteEventType.sql
+:r .\Scripts\PopulateData\Release\AddNationalClassUpdateAndDeleteEventType.sql
+:r .\Scripts\PopulateData\Release\InsertInforDuplicateTaxCodeHierarchyClassError.sql
+:r .\Scripts\PopulateData\Release\UpdatePOSScaleTare.sql
+
+-- Zhao, 3/14/17: PBI 20493: Removed the unneeded sql agent job.
+:r .\Scripts\PopulateData\Release\AddBrandDeleteEventType.sql
+*/
+
+
+-- Lux, 4/11/17: PBI 21235: Add MaintFlag Row to DbStatus Table
+:r .\Scripts\PopulateData\Release\AddMaintFlagRowToDbStatusTable.sql

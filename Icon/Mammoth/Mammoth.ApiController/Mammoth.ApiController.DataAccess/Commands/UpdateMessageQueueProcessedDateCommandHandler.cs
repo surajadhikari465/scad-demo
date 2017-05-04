@@ -1,82 +1,72 @@
 ﻿using Icon.ApiController.DataAccess.Commands;
 using Icon.Common;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Mammoth.Framework;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mammoth.ApiController.DataAccess.Commands
 {
     public class UpdateMessageQueueProcessedDateCommandHandler<T> : ICommandHandler<UpdateMessageQueueProcessedDateCommand<T>> where T : class, IMessageQueue
     {
-        private IRenewableContext<MammothContext> globalContext;
+        private IDbContextFactory<MammothContext> mammothContextFactory;
 
-        public UpdateMessageQueueProcessedDateCommandHandler(IRenewableContext<MammothContext> globalContext)
+        public UpdateMessageQueueProcessedDateCommandHandler(IDbContextFactory<MammothContext> mammothContextFactory)
         {
-            this.globalContext = globalContext;
+            this.mammothContextFactory = mammothContextFactory;
         }
 
         public void Execute(UpdateMessageQueueProcessedDateCommand<T> data)
         {
+            Guid transactionId = Guid.NewGuid();
             DateTime timestamp = DateTime.Now;
-            if (globalContext.Context.Database.CurrentTransaction != null)
+
+            using (var context = mammothContextFactory.CreateContext())
             {
-                using (var sqlBulkCopy = new SqlBulkCopy(globalContext.Context.Database.Connection as SqlConnection,
-                    SqlBulkCopyOptions.Default,
-                    globalContext.Context.Database.CurrentTransaction.UnderlyingTransaction as SqlTransaction))
+                if (context.Database.Connection.State == ConnectionState.Closed)
                 {
-                    sqlBulkCopy.DestinationTableName = "Staging.esb.MessageQueueStaging";
+                    context.Database.Connection.Open();
+                }
+                using (var sqlBulkCopy = new SqlBulkCopy(context.Database.Connection as SqlConnection))
+                {
+                    sqlBulkCopy.DestinationTableName = "stage.MessageQueue";
                     var table = data.MessagesToUpdate
                         .Select(m => new
                         {
                             m.MessageQueueId,
-                            Timestamp = timestamp
+                            Timestamp = timestamp,
+                            TransactionId = transactionId
                         }).ToDataTable();
                     sqlBulkCopy.WriteToServer(table);
                 }
-            }
-            else
-            {
-                using (var sqlBulkCopy = new SqlBulkCopy(globalContext.Context.Database.Connection as SqlConnection))
-                {
-                    sqlBulkCopy.DestinationTableName = "Staging.esb.MessageQueueStaging";
-                    var table = data.MessagesToUpdate
-                        .Select(m => new
-                        {
-                            m.MessageQueueId,
-                            Timestamp = timestamp
-                        }).ToDataTable();
-                    sqlBulkCopy.WriteToServer(table);
-                }
-            }
 
-            SqlParameter processedDateParameter = new SqlParameter("ProcessedDate", data.ProcessedDate);
-            processedDateParameter.DbType = DbType.DateTime2;
+                SqlParameter processedDateParameter = new SqlParameter("ProcessedDate", data.ProcessedDate);
+                processedDateParameter.DbType = DbType.DateTime2;
 
-            SqlParameter timestampParameter = new SqlParameter("Timestamp", timestamp);
-            timestampParameter.DbType = DbType.DateTime2;
+                SqlParameter transactionIdParameterForUpdate = new SqlParameter("TransactionId", transactionId);
+                transactionIdParameterForUpdate.DbType = DbType.Guid; ;
 
-            string sql = string.Format(@"UPDATE esb.{0}
+                string sql = string.Format(@"UPDATE esb.{0}
                            SET ProcessedDate = @ProcessedDate,
                                InProcessBy = NULL
                            WHERE EXISTS
                            (
 	                           SELECT 1 
-	                           FROM Staging.esb.MessageQueueStaging mqs
+	                           FROM stage.MessageQueue mqs
 	                           WHERE esb.{0}.MessageQueueId = mqs.MessageQueueId
-		                           AND mqs.Timestamp = @Timestamp
+		                           AND mqs.TransactionId = @TransactionId
                            )", typeof(T).Name);
-            globalContext.Context.Database.ExecuteSqlCommand(sql, processedDateParameter, timestampParameter);
+                context.Database.ExecuteSqlCommand(sql, processedDateParameter, transactionIdParameterForUpdate);
 
-            globalContext.Context.Database.ExecuteSqlCommand(
-                "DELETE Staging.esb.MessageQueueStaging WHERE Timestamp = @Timestamp",
-                new SqlParameter("Timestamp", timestamp) { DbType = DbType.DateTime2 });
+                SqlParameter transactionIdParameterForDelete = new SqlParameter("TransactionId", transactionId);
+                transactionIdParameterForDelete.DbType = DbType.Guid;
+
+                context.Database.ExecuteSqlCommand(
+                    "DELETE stage.MessageQueue WHERE TransactionId = @TransactionId", transactionIdParameterForDelete);
+            }
         }
     }
 }

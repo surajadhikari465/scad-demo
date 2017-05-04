@@ -15,7 +15,7 @@ namespace Icon.Dashboard.Mvc.Helpers
             var serverList = new Dictionary<string, string>();
             foreach (var environment in Enum.GetValues(typeof(EnvironmentEnum)).Cast<EnvironmentEnum>())
             {
-                var server = ConfigurationManager.AppSettings[$"appServer_{environment.ToString().ToLower()}"];
+                var server = ConfigurationManager.AppSettings[$"appServer_{environment.ToString()}"];
                 if (server != null)
                 {
                     serverList.Add(environment.ToString(), server);

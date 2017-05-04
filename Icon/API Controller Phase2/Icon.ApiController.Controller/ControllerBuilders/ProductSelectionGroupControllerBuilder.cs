@@ -17,7 +17,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 {
     public class ProductSelectionGroupControllerBuilder : IControllerBuilder
     {
-        public ApiControllerBase ComposeController(IRenewableContext<IconContext> globalContext)
+        public ApiControllerBase ComposeController()
         {
             ControllerType.Type = "ProductSelectionGroup";
 
@@ -29,24 +29,26 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             producer.OpenConnection();
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.ProductSelectionGroup, producer, globalContext);
+            IconDbContextFactory iconContextFactory = new IconDbContextFactory();
+
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.ProductSelectionGroup, producer, iconContextFactory);
 
             var processorLogger = new NLogLoggerInstance<ProductSelectionGroupQueueProcessor>(instance);
             var queueReader = new ProductSelectionGroupQueueReader(new NLogLoggerInstance<ProductSelectionGroupQueueReader>(instance),
-                new GetMessageQueueQuery<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<GetMessageQueueQuery<MessageQueueProductSelectionGroup>>(instance), globalContext),
-                new UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>>(instance), globalContext));
+                new GetMessageQueueQuery<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<GetMessageQueueQuery<MessageQueueProductSelectionGroup>>(instance), iconContextFactory),
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>>(instance), iconContextFactory));
             var serializer = new Serializer<Contracts.SelectionGroupsType>(
                 new NLogLoggerInstance<Serializer<Contracts.SelectionGroupsType>>(instance),
                 emailClient);
-            var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance), globalContext);
-            var associateMessageToQueueBulkCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<AssociateMessageToQueueCommandHandler<MessageQueueProductSelectionGroup>>(instance), globalContext);
-            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProductSelectionGroup>>(instance), globalContext);
-            var updateMessageHistoryStatusCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new NLogLoggerInstance<UpdateMessageHistoryStatusCommandHandler>(instance), globalContext);
-            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>>(instance), globalContext);
-            var markQueuedEntriesAsInProcessCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueProductSelectionGroup>>(instance), globalContext);
+            var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance), iconContextFactory);
+            var associateMessageToQueueBulkCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<AssociateMessageToQueueCommandHandler<MessageQueueProductSelectionGroup>>(instance), iconContextFactory);
+            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProductSelectionGroup>>(instance), iconContextFactory);
+            var updateMessageHistoryStatusCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new NLogLoggerInstance<UpdateMessageHistoryStatusCommandHandler>(instance), iconContextFactory);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>>(instance), iconContextFactory);
+            var markQueuedEntriesAsInProcessCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueProductSelectionGroup>(new NLogLoggerInstance<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueProductSelectionGroup>>(instance), iconContextFactory);
 
             var monitorCommandHandler = new SaveMessageProcessorJobSummaryCommandHandler(
-                new NLogLoggerInstance<SaveMessageProcessorJobSummaryCommandHandler>(instance), globalContext);
+                new NLogLoggerInstance<SaveMessageProcessorJobSummaryCommandHandler>(instance), iconContextFactory);
             var monitor = new MessageProcessorMonitor(monitorCommandHandler);
 
             var psgQueueProcessor = new ProductSelectionGroupQueueProcessor(

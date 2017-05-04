@@ -54,6 +54,8 @@ namespace Mammoth.ItemLocale.Controller
                         foreach (var item in events.EventModels)
                         {
                             item.ErrorMessage = errorCode;
+                            item.ErrorDetails = errorCode;
+                            item.ErrorSource = Constants.SourceSystem.MammothItemLocaleController;
                         }
                     }
                     finally

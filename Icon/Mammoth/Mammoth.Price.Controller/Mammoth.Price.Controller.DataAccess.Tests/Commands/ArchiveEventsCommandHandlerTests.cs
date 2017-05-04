@@ -17,7 +17,8 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Commands
         private ArchiveEventsCommandHandler commandHandler;
         private ArchiveEventsCommand command;
         private SqlDbProvider dbProvider;
-        private string testContext = "Test Context";
+        private string testContext = "Testing Context";
+        private int? maxHistoryId;
 
         [TestInitialize]
         public void Initialize()
@@ -28,12 +29,16 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Commands
 
             this.commandHandler = new ArchiveEventsCommandHandler(dbProvider);
             this.command = new ArchiveEventsCommand();
+            this.maxHistoryId = dbProvider.Connection.Query<int?>("SELECT MAX(HistoryId) FROM mammoth.ChangeQueueHistory").First();
+            this.maxHistoryId = this.maxHistoryId.HasValue ? this.maxHistoryId : 0;
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            dbProvider.Connection.Execute("DELETE mammoth.ChangeQueueHistory WHERE Context = @TestContext", new { TestContext = testContext });
+            dbProvider.Connection.Execute("DELETE mammoth.ChangeQueueHistory WHERE HistoryId > @MaxHistoryId", new { MaxHistoryId = this.maxHistoryId });
+            dbProvider.Connection.Close();
+            dbProvider.Connection.Dispose();
         }
 
         [TestMethod]
@@ -47,8 +52,8 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Commands
 
             //Then
             var numberOfHistoryRecords = dbProvider.Connection.Query<ChangeQueueHistoryModel>(
-                "SELECT * FROM mammoth.ChangeQueueHistory h WHERE h.Context = @TestContext", 
-                new { TestContext = testContext });
+                "SELECT * FROM mammoth.ChangeQueueHistory h WHERE h.HistoryId > @MaxHistoryId", 
+                new { MaxHistoryId = this.maxHistoryId });
 
             Assert.AreEqual(0, numberOfHistoryRecords.Count());
         }
@@ -65,8 +70,8 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Commands
 
             //Then
             var numberOfHistoryRecords = dbProvider.Connection.Query<ChangeQueueHistoryModel>(
-                "SELECT * FROM mammoth.ChangeQueueHistory h WHERE h.Context = @TestContext",
-                new { TestContext = testContext });
+                "SELECT * FROM mammoth.ChangeQueueHistory h WHERE h.HistoryId > @MaxHistoryId",
+                new { MaxHistoryId = this.maxHistoryId });
 
             Assert.AreEqual(expectedNumberOfRecords, numberOfHistoryRecords.Count());
         }
@@ -78,15 +83,15 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Commands
             {
                 events.Add(new ChangeQueueHistoryModel
                 {
-                    QueueID = i,
-                    Store_No = i,
-                    Item_Key = i,
-                    EventReferenceId = i,
-                    Identifier = i.ToString(),
-                    ErrorCode = i.ToString(),
-                    ErrorDetails = i.ToString(),
-                    EventTypeId = i,
-                    MachineName = i.ToString(),
+                    QueueID = i+1,
+                    Store_No = i+1,
+                    Item_Key = i+1,
+                    EventReferenceId = i+1,
+                    Identifier = (i+1).ToString(),
+                    ErrorCode = (i+1).ToString(),
+                    ErrorDetails = (i+1).ToString(),
+                    EventTypeId = 1,
+                    MachineName = "test machine",
                     InsertDate = DateTime.Now,
                     QueueInsertDate = DateTime.Now,
                     Context = testContext

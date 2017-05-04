@@ -12,6 +12,8 @@ namespace Icon.Monitoring.Monitors
         protected ILogger logger;
         protected DateTime? lastTimeExecuted;
 
+        public bool ByPassConfiguredRunInterval { get; set; }
+
         public virtual void CheckStatusAndNotify()
         {
             TimeSpan configuredInterval = TimeSpan.FromMilliseconds(0);
@@ -22,8 +24,11 @@ namespace Icon.Monitoring.Monitors
                     ? configuredInterval
                     : DefaultTimerInterval;
 
-            var shouldRun = this.lastTimeExecuted == null || (DateTime.UtcNow - this.lastTimeExecuted) > configuredInterval;
-            if (!shouldRun) return;
+            if (!ByPassConfiguredRunInterval)
+            {
+                var shouldRun = this.lastTimeExecuted == null || (DateTime.UtcNow - this.lastTimeExecuted) > configuredInterval;
+                if (!shouldRun) return;
+            }
 
             try
             {

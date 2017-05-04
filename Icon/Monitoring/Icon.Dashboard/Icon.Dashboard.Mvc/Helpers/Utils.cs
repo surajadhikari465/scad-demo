@@ -1,6 +1,7 @@
 ﻿using Icon.Dashboard.DataFileAccess.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +10,10 @@ namespace Icon.Dashboard.Mvc.Helpers
 {
     public static class Utils
     {
+        public static string GetBootstrapClassForEnvironment()
+        {
+            return GetBootstrapClassForEnvironment(Utils.Environment);
+        }
 
         public static string GetBootstrapClassForEnvironment(string environment)
         {
@@ -64,43 +69,6 @@ namespace Icon.Dashboard.Mvc.Helpers
             }
             return levelClass;
         }
-        public static IList<SelectListItem> GetDataFlowSystemSelections()
-        {
-            var systemItems = new List<SelectListItem>();
-            foreach (var system in Enum.GetValues(typeof(DataFlowSystemEnum)).Cast<DataFlowSystemEnum>())
-            {
-                if (system == DataFlowSystemEnum.None) continue;
-                var selectItem = new SelectListItem()
-                {
-                    Text = system.ToString(),
-                    Value = ((int)system).ToString()
-                };
-            }
-            return systemItems;
-        }
-
-        //public static int GetIdParameterFronUrl(Uri currentUri)
-        //{
-        //    int requestIdParameter = 0;
-        //    const string parameterName = "id";
-        //    // look for an id parameter in the query string
-        //    var requestQueryDictionary = HttpUtility.ParseQueryString(currentUri.Query);
-        //    if (requestQueryDictionary != null && requestQueryDictionary.Count > 0 && requestQueryDictionary[parameterName] != null)
-        //    {
-        //        Int32.TryParse(requestQueryDictionary[parameterName], out requestIdParameter);
-        //    }
-        //    // did we not find a value in the query?
-        //    if (requestIdParameter < 1)
-        //    {
-        //        // look in the url itself
-        //        var lastSegment = currentUri.Segments.Last();
-        //        if (!String.IsNullOrWhiteSpace(lastSegment))
-        //        {
-        //            Int32.TryParse(lastSegment, out requestIdParameter);
-        //        }
-        //    }
-        //    return requestIdParameter;
-        //}
 
         public static string GetIdParameterFronUrl(Uri currentUri)
         {
@@ -119,6 +87,14 @@ namespace Icon.Dashboard.Mvc.Helpers
                 requestIdParameter = currentUri.Segments.Last();
             }
             return requestIdParameter;
+        }
+        
+        public static string Environment
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["activeEnvironment"] ?? "localhost";
+            }
         }
     }
 }

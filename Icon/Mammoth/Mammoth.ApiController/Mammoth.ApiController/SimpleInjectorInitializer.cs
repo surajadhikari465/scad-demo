@@ -6,9 +6,9 @@ using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
+using Icon.DbContextFactory;
 using Icon.Esb;
 using Icon.Esb.Producer;
 using Icon.Logging;
@@ -17,9 +17,9 @@ using Mammoth.ApiController.QueueProcessors;
 using Mammoth.ApiController.QueueReaders;
 using Mammoth.Framework;
 using SimpleInjector;
+using SimpleInjector.Diagnostics;
 using System;
 using System.Collections.Generic;
-using TIBCO.EMS;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using MammothDataAccess = Mammoth.ApiController.DataAccess;
 
@@ -31,13 +31,10 @@ namespace Mammoth.ApiController
         {
             var container = new Container();
 
-            var globalContext = new GlobalContext<MammothContext>(new MammothContext());
-
             container.Register<ILogger<Serializer<Contracts.items>>, NLogLogger<Serializer<Contracts.items>>>();
+            container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton(() => ApiControllerSettings.CreateFromConfig("Mammoth", instance));
-            container.RegisterSingleton<IRenewableContext<MammothContext>>(() => globalContext);
-            container.RegisterSingleton<IRenewableContext>(() => globalContext);
-            container.RegisterSingleton<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName")));
+            container.Register<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName")));
             container.Register<IQueueReader<MessageQueuePrice, Contracts.items>, MammothPriceQueueReader>();
             container.Register<IQueueReader<MessageQueueItemLocale, Contracts.items>, MammothItemLocaleQueueReader>();
             container.RegisterSingleton<ILogger>(() => new NLogLoggerSingleton(typeof(NLogLoggerSingleton)));
@@ -63,6 +60,11 @@ namespace Mammoth.ApiController
             container.Register<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>, MammothDataAccess.Commands.UpdateMessageHistoryStatusCommandHandler>();
             
             RegisterQueueProcessorImplementation(container, controllerType, instance);
+
+            Registration registration = container.GetRegistration(typeof(IEsbProducer)).Registration;
+
+            registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,
+                "IEsbProducer is disposed of by the code.");
 
             return container;
         }

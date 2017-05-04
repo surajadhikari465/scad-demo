@@ -5,19 +5,18 @@
     using Icon.ApiController.Controller.ControllerBuilders;
     using Icon.Common;
     using Icon.Framework;
-    using Icon.Framework.RenewableContext;
     using Icon.Logging;
     using RenewableContext;
     using System;
     using System.Configuration;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading;
     using System.Timers;
-    using System.Diagnostics;
     public class ApiControllerService : IApiControllerService
     {
         private static ILogger<Program> logger = new NLogLogger<Program>();
-        private static IRenewableContext<IconContext> globalContext;
+        private static IRenewableContext<IconContext> iconContextFactory;
         private System.Timers.Timer timer;
         private string controllerInstanceIdArgs;
         private string controllerType;
@@ -42,8 +41,8 @@
             int startMin = 0;
             int endHour = 0;
             int endMin = 0;
-            int.TryParse(maintenanceDaySetting, out dayOfTheWeek);   
-            
+            int.TryParse(maintenanceDaySetting, out dayOfTheWeek);
+
             int.TryParse(maintenanceStartTimeSetting.Substring(0, maintenanceStartTimeSetting.IndexOf(':')), out startHour);
             int.TryParse(maintenanceStartTimeSetting.Substring(maintenanceStartTimeSetting.IndexOf(':') + 1), out startMin);
             int.TryParse(maintenanceEndTimeSetting.Substring(0, maintenanceEndTimeSetting.IndexOf(':')), out endHour);
@@ -61,12 +60,12 @@
         private void RunService(object sender, ElapsedEventArgs e)
         {
             this.timer.Stop();
-           
+
             if (DateTime.Now.DayOfWeek == (DayOfWeek)dayOfTheWeek
                 && DateTime.Now.TimeOfDay >= startTime
                 && DateTime.Now.TimeOfDay <= endTime)
             {
-                //logger.Info(String.Format("API Controller exited because the it is in the maintenance window. Type: {0} - Instance: {1} - CurrentTime: {2}", controllerType, controllerInstanceIdArgs, DateTime.Now.ToString()));
+                //logger.Info(string.Format("API Controller exited because the it is in the maintenance window. Type: {0} - Instance: {1} - CurrentTime: {2}", controllerType, controllerInstanceIdArgs, DateTime.Now.ToString()));
                 this.timer.Start();
                 return;
             }
@@ -76,10 +75,10 @@
                 logger.Error("Both the controller type argument and the instance ID argument are required.");
                 return;
             }
-            
+
             if (!StartupOptions.ValidArgs.Contains(controllerType))
             {
-                logger.Error(String.Format("Invalid argument specified.  The valid arguments are: {0}", String.Join(",", StartupOptions.ValidArgs)));
+                logger.Error(string.Format("Invalid argument specified.  The valid arguments are: {0}", string.Join(",", StartupOptions.ValidArgs)));
                 return;
             }
 
@@ -96,30 +95,29 @@
 
             try
             {
-            globalContext = new GlobalIconContext(new IconContext());
 
-            ApiControllerBase apiController = null;
+                ApiControllerBase apiController = null;
 
-                apiController = ControllerProvider.GetController(controllerType, globalContext);
+                apiController = ControllerProvider.GetController(controllerType);
 
-            logger.Info(String.Format("Starting API Controller Phase 2 - Type: {0} - Instance: {1}.", ControllerType.Type, ControllerType.Instance));
+                logger.Info(string.Format("Starting API Controller Phase 2 - Type: {0} - Instance: {1}.", ControllerType.Type, ControllerType.Instance));
 
                 if (apiController != null)
                 {
-            apiController.Execute();
+                    apiController.Execute();
                 }
 
-            // There's almost no delay between the last log entry in Execute() and this one, which sometimes causes the statements
-            // to appear in the wrong order in the database.  This brief nap will add enough of a delay to prevent that.
-            Thread.Sleep(100);
+                // There's almost no delay between the last log entry in Execute() and this one, which sometimes causes the statements
+                // to appear in the wrong order in the database.  This brief nap will add enough of a delay to prevent that.
+                Thread.Sleep(100);
 
-            logger.Info(String.Format("Shutting down API Controller Phase 2 - Type: {0} - Instance: {1}.", ControllerType.Type, ControllerType.Instance));
-            
-            //clearing cache at end of process since it is now a service and these are not released.
-            Cache.financialSubteamToHierarchyClassId.Clear();
-            Cache.scanCodeToItem.Clear();
+                logger.Info(string.Format("Shutting down API Controller Phase 2 - Type: {0} - Instance: {1}.", ControllerType.Type, ControllerType.Instance));
+
+                //clearing cache at end of process since it is now a service and these are not released.
+                Cache.financialSubteamToHierarchyClassId.Clear();
+                Cache.scanCodeToItem.Clear();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 switch (controllerType)
                 {
@@ -145,22 +143,36 @@
                         sSource = "Icon - API Controller - Unknown Type";
                         break;
                 }
-                  
-                sLog = "Application";
 
-                sEvent = "ApiControllerService - RunService " + ex.Message;
+                //Log to the Event Log
+                try
+                {
+                    sLog = "Application";
 
-                if (ex.InnerException != null)
-                    sEvent = sEvent + " -- " + ex.InnerException.Message;
+                    sEvent = "ApiControllerService - RunService " + ex.Message;
 
-                if (!EventLog.SourceExists(sSource))
-                    EventLog.CreateEventSource(sSource, sLog);
+                    if (ex.InnerException != null)
+                        sEvent = sEvent + " -- " + ex.InnerException.Message;
 
-                EventLog.WriteEntry(sSource, sEvent,
-                EventLogEntryType.Error);
+                    if (!EventLog.SourceExists(sSource))
+                        EventLog.CreateEventSource(sSource, sLog);
+
+                    EventLog.WriteEntry(sSource, sEvent,
+                    EventLogEntryType.Error);
+                }
+                catch (Exception eventLogException)
+                {
+                    logger.Error($"Unable to log to the Event Log. API Controller type: {sSource}. Error: {eventLogException.ToString()}");
+                }
+                finally
+                {
+                    logger.Error($"An unexpected error occurred. API Controller type: {sSource}. Error: {ex.ToString()}");
+                }
             }
-
-            this.timer.Start();
+            finally
+            {
+                this.timer.Start();
+            }
         }
 
         public void Stop()

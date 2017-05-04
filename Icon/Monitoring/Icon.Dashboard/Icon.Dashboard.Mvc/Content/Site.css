@@ -182,3 +182,11 @@ div.applicationIdentifierPanelBody {
     border-top-left-radius: 0;
     border-bottom-right-radius: 4px;
 }
+
+.denied_background {
+    background-image: url('Images/denied.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 80vh;
+}

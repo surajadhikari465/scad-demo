@@ -70,19 +70,8 @@ namespace PushController.Controller.ProcessorModules
             {
                 logger.Info(String.Format("Found {0} records for UDM processing.", posDataReadyForUdm.Count.ToString()));
 
-                scanCodeCacheHelper.Populate(posDataReadyForUdm.Select(p => p.Identifier).Distinct().ToList());
-
-                var businessUnitsToCache = posDataReadyForUdm.Select(p => p.BusinessUnit_ID).Distinct().ToList();
-                localeCacheHelper.Populate(businessUnitsToCache);
-
-                var itemLinks = BuildItemLinks(posDataReadyForUdm);
-
-                var itemLinkUpdates = itemLinks.Where(il => !il.IsDelete).ToList();
-
-                if (itemLinkUpdates.Count > 0)
-                {
-                    SaveItemLinkUpdates(itemLinkUpdates);
-                }
+                PopulateCaches(posDataReadyForUdm);
+                UpdateItemLinks(posDataReadyForUdm);
 
                 DeleteCancelledTemporaryPriceReductions(posDataReadyForUdm);
 
@@ -100,13 +89,6 @@ namespace PushController.Controller.ProcessorModules
                     DeleteInvalidIrmaItemSubscriptions(unsubscribedItems);
                 }
 
-                List<ItemLinkModel> itemLinkDeletes = itemLinks.Where(il => il.IsDelete).ToList();
-
-                if(itemLinkDeletes.Any())
-                {
-                    DeleteItemLinks(itemLinkDeletes);
-                }
-
                 UpdatePosDataProcessedDate(posDataReadyForUdm);
 
                 logger.Info("Ending the main processing loop for UDM updates.  Now preparing to retrieve a new set of staged POS data.");
@@ -115,6 +97,47 @@ namespace PushController.Controller.ProcessorModules
                 MarkPosDataAsInProcess();
                 posDataReadyForUdm = GetPosDataForUdm();
             }
+        }
+
+        private void PopulateCaches(List<IRMAPush> posDataReadyForUdm)
+        {
+            var identifiersToCache = posDataReadyForUdm.Select(p => p.Identifier).Distinct().ToList();
+            scanCodeCacheHelper.Populate(identifiersToCache);
+
+            var linkedIdentifiersToCache = posDataReadyForUdm.Where(p => !string.IsNullOrEmpty(p.LinkedIdentifier)).Select(p => p.LinkedIdentifier).Distinct().ToList();
+            scanCodeCacheHelper.Populate(linkedIdentifiersToCache);
+
+            var businessUnitsToCache = posDataReadyForUdm.Select(p => p.BusinessUnit_ID).Distinct().ToList();
+            localeCacheHelper.Populate(businessUnitsToCache);
+        }
+
+        private void UpdateItemLinks(List<IRMAPush> posDataReadyForUdm)
+        {
+            var itemLinks = BuildItemLinks(posDataReadyForUdm);
+
+            var itemLinkUpdates = itemLinks.Where(il => !il.IsDelete).ToList();
+
+            if (itemLinkUpdates.Count > 0)
+            {
+                SaveItemLinkUpdates(itemLinkUpdates);
+            }
+
+            List<ItemLinkModel> itemLinkDeletes = itemLinks.Where(il => il.IsDelete).ToList();
+
+            if (itemLinkDeletes.Any())
+            {
+                DeleteItemLinks(itemLinkDeletes);
+            }
+        }
+
+        private List<ItemLinkModel> BuildItemLinks(List<IRMAPush> posDataReadyForUdm)
+        {
+            return itemLinkUpdateGenerator.BuildEntities(posDataReadyForUdm);
+        }
+
+        private void SaveItemLinkUpdates(List<ItemLinkModel> itemLinkUpdates)
+        {
+            itemLinkUpdateGenerator.SaveEntities(itemLinkUpdates);
         }
 
         private void DeleteItemLinks(List<ItemLinkModel> itemLinkDeletes)
@@ -181,7 +204,7 @@ namespace PushController.Controller.ProcessorModules
 
         private List<IRMAPush> CheckForUnsubscribedItems(List<IRMAPush> posDataReadyForUdm)
         {
-            var itemsToUnsubscribe = posDataReadyForUdm.Where(pos => pos.ChangeType == Constants.IrmaPushChangeTypes.ScanCodeDeauthorization || pos.ChangeType == Constants.IrmaPushChangeTypes.ScanCodeDelete).ToList();
+            var itemsToUnsubscribe = posDataReadyForUdm.Where(pos => pos.ChangeType == Constants.IrmaPushChangeTypes.ScanCodeDelete).ToList();
             return itemsToUnsubscribe;
         }
 
@@ -193,16 +216,6 @@ namespace PushController.Controller.ProcessorModules
         private List<ItemPriceModel> BuildItemPriceUpdates(List<IRMAPush> posDataReadyForUdm)
         {
             return itemPriceUpdateGenerator.BuildEntities(posDataReadyForUdm);
-        }
-
-        private void SaveItemLinkUpdates(List<ItemLinkModel> itemLinkUpdates)
-        {
-            itemLinkUpdateGenerator.SaveEntities(itemLinkUpdates);
-        }
-
-        private List<ItemLinkModel> BuildItemLinks(List<IRMAPush> posDataReadyForUdm)
-        {
-            return itemLinkUpdateGenerator.BuildEntities(posDataReadyForUdm);
         }
 
         private List<IRMAPush> GetPosDataForUdm()

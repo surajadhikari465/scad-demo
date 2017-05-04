@@ -22,7 +22,7 @@
         private const string SalePriceType = "SAL";
         private const string ForEachAbbrev = "EA";
 
-        private string region = "RM";
+        private string region = "FL";
         private GetExistingPriceDataQuery query;
         private GetExistingPriceDataParameters parameters;
         private SqlDbProvider dbProvider;

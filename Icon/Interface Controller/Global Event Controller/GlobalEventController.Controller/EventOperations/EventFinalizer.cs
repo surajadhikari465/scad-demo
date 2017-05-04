@@ -20,7 +20,6 @@ namespace GlobalEventController.Controller.EventOperations
         private ICommandHandler<UpdateEventQueueFailuresCommand> updateFailedEventHandler;
         private ICommandHandler<BulkDeleteEventQueueCommand> bulkDeleteEventQueueHandler;
         
-
         public EventFinalizer(IEventQueues queues,
             ILogger<EventFinalizer> logger,
             ICommandHandler<UpdateEventQueueFailuresCommand> updateFailedEventHandler,

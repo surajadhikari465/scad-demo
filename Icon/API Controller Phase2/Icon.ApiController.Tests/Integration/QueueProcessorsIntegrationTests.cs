@@ -22,33 +22,35 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Integration
 {
     [TestClass]
     public class QueueProcessorsIntegrationTests
     {
-        private IconContext context;
-        private GlobalIconContext globalContext;
-        private Mock<IEsbProducer> mockProducer;
-        private DbContextTransaction transaction;
         private ApiControllerSettings settings;
+        private IconContext context;
+        private TransactionScope transaction;
+        private IconDbContextFactory iconContextFactory;
+        private Mock<IEsbProducer> mockProducer;
 
         [TestInitialize]
         public void Initialize()
         {
-            context = new IconContext();
-            globalContext = new GlobalIconContext(context);
-            mockProducer = new Mock<IEsbProducer>();
+            transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted });
 
-            transaction = context.Database.BeginTransaction();
+            context = new IconContext();
+            iconContextFactory = new IconDbContextFactory();
+
+            mockProducer = new Mock<IEsbProducer>();
             settings = new ApiControllerSettings();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [TestMethod]
@@ -95,20 +97,19 @@ namespace Icon.ApiController.Tests.Integration
                 mockQueueReaderLogger.Object,
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
-                new UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>(mockUpdateMessageQueueStatusLogger.Object, globalContext),
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory),
                 mockProductSelectionGroupsMapper.Object,
                 mockUomMapper.Object);
-            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, globalContext);
-            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueProduct>(mockAssociateMessageToQueueLogger.Object, globalContext);
-            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProduct>(mockSetProcessedDateLogger.Object, globalContext);
-            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, globalContext);
-            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>(mockUpdateMessageQueueStatusLogger.Object, globalContext);
+            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
+            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueProduct>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
+            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProduct>(mockSetProcessedDateLogger.Object, iconContextFactory);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, iconContextFactory);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
             var mockMonitor = new Mock<IMessageProcessorMonitor>();
 
             var productQueueProcessor = new ProductQueueProcessor(
                 settings,
                 mockQueueProcessorLogger.Object,
-                mockContext.Object,
                 queueReader,
                 serializer,
                 saveXmlMessageCommandHandler,
@@ -202,22 +203,21 @@ namespace Icon.ApiController.Tests.Integration
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
                 mockGetItemByScanCodeQuery.Object,
-                new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, globalContext),
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory),
                 mockProductSelectionGroupsMapper.Object);
-            var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, globalContext);
-            var associateMessageToQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueItemLocale>(mockAssociateMessageToQueueLogger.Object, globalContext);
-            var updateProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueItemLocale>(mockUpdateProcessedDateLogger.Object, globalContext);
-            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, globalContext);
-            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, globalContext);
+            var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
+            var associateMessageToQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueItemLocale>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
+            var updateProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueItemLocale>(mockUpdateProcessedDateLogger.Object, iconContextFactory);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, iconContextFactory);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
             var mockProductMessageProcessor = new Mock<ICollectionProcessor<List<int>>>();
-            var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(globalContext);
-            var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(globalContext);
+            var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(iconContextFactory);
+            var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(iconContextFactory);
             var mockMonitor = new Mock<IMessageProcessorMonitor>();
 
             var itemLocaleQueueProcessor = new ItemLocaleQueueProcessor(
                 settings,
                 mockQueueProcessorLogger.Object,
-                mockContext.Object,
                 queueReader,
                 serializer,
                 mockProductMessageProcessor.Object,
@@ -319,21 +319,20 @@ namespace Icon.ApiController.Tests.Integration
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
                 mockGetItemByScanCodeQuery.Object,
-                new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, globalContext),
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory),
                 mockProductSelectionGroupsMapper.Object);
-            var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, globalContext);
-            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueItemLocale>(mockAssociateMessageToQueueLogger.Object, globalContext);
-            var updateProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueItemLocale>(mockUpdateProcessedDateLogger.Object, globalContext);
-            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, globalContext);
-            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, globalContext);
+            var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
+            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueItemLocale>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
+            var updateProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueItemLocale>(mockUpdateProcessedDateLogger.Object, iconContextFactory);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, iconContextFactory);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
             var mockProductMessageProcessor = new Mock<ICollectionProcessor<List<int>>>();
-            var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(globalContext);
-            var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(globalContext);
+            var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(iconContextFactory);
+            var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(iconContextFactory);
             
             var itemLocaleQueueProcessor = new ItemLocaleQueueProcessor(
                 settings,
                 mockQueueProcessorLogger.Object,
-                mockContext.Object,
                 queueReader,
                 serializer,
                 mockProductMessageProcessor.Object,
@@ -415,20 +414,19 @@ namespace Icon.ApiController.Tests.Integration
                 mockQueueReaderLogger.Object,
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
-                new UpdateMessageQueueStatusCommandHandler<MessageQueuePrice>(mockUpdateMessageQueueStatusLogger.Object, globalContext));
-            var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, globalContext);
-            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueuePrice>(mockAssociateMessageToQueueLogger.Object, globalContext);
-            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueuePrice>(mockSetProcessedDateLogger.Object, globalContext);
-            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, globalContext);
-            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueuePrice>(mockUpdateMessageQueueStatusLogger.Object, globalContext);
-            var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(globalContext);
-            var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(globalContext);
+                new UpdateMessageQueueStatusCommandHandler<MessageQueuePrice>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory));
+            var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
+            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueuePrice>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
+            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueuePrice>(mockSetProcessedDateLogger.Object, iconContextFactory);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, iconContextFactory);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueuePrice>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
+            var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(iconContextFactory);
+            var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(iconContextFactory);
             var mockMonitor = new Mock<IMessageProcessorMonitor>();
 
             var productQueueProcessor = new PriceQueueProcessor(
                 settings,
                 mockQueueProcessorLogger.Object,
-                mockContext.Object,
                 queueReader,
                 serializer,
                 saveToMessageHistoryCommandHandler,
@@ -522,18 +520,17 @@ namespace Icon.ApiController.Tests.Integration
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
                 mockGetLocaleLineageQuery.Object,
-                new UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>(mockUpdateMessageQueueStatusLogger.Object, globalContext));
-            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, globalContext);
-            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueLocale>(mockAssociateMessageToQueueLogger.Object, globalContext);
-            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueLocale>(mockSetProcessedDateLogger.Object, globalContext);
-            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryStatusLogger.Object, globalContext);
-            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>(mockUpdateMessageQueueStatusLogger.Object, globalContext);
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory));
+            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
+            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueLocale>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
+            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueLocale>(mockSetProcessedDateLogger.Object, iconContextFactory);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryStatusLogger.Object, iconContextFactory);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
             var mockMonitor = new Mock<IMessageProcessorMonitor>();
 
             var localeQueueProcessor = new LocaleQueueProcessor(
                 settings,
                 mockQueueProcessorLogger.Object,
-                mockContext.Object,
                 queueReader,
                 serializer,
                 saveXmlMessageCommandHandler,
@@ -541,7 +538,7 @@ namespace Icon.ApiController.Tests.Integration
                 setProcessedDateCommandHandler,
                 updateMessageHistoryCommandHandler,
                 updateMessageQueueStatusCommandHandler,
-                new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueLocale>(mockMarkQueuedEntriesAsInProcessLogger.Object, globalContext),
+                new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueLocale>(mockMarkQueuedEntriesAsInProcessLogger.Object, iconContextFactory),
                 mockProducer.Object,
                 mockMonitor.Object);
 
@@ -609,14 +606,14 @@ namespace Icon.ApiController.Tests.Integration
                 mockQueueReaderLogger.Object,
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
-                new UpdateMessageQueueStatusCommandHandler<MessageQueueHierarchy>(mockUpdateMessageQueueStatusLogger.Object, globalContext));
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueHierarchy>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory));
             var serializer = new Serializer<Contracts.HierarchyType>(mockSerializerLogger.Object, mockEmailClient.Object);
-            var getFinancialClassesQueryHandler = new GetFinancialHierarchyClassesQuery(globalContext);
-            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, globalContext);
-            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueHierarchy>(mockAssociateMessageToQueueLogger.Object, globalContext);
-            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueHierarchy>(mockSetProcessedDateLogger.Object, globalContext);
-            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryStatusLogger.Object, globalContext);
-            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueHierarchy>(mockUpdateMessageQueueStatusLogger.Object, globalContext);
+            var getFinancialClassesQueryHandler = new GetFinancialHierarchyClassesQuery(iconContextFactory);
+            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
+            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueHierarchy>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
+            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueHierarchy>(mockSetProcessedDateLogger.Object, iconContextFactory);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryStatusLogger.Object, iconContextFactory);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueHierarchy>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
             var mockUpdateStagedProductStatusCommandHandler = new Mock<ICommandHandler<UpdateStagedProductStatusCommand>>();
             var mockUpdateSentToEsbHierarchyTraitCommandHandler = new Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>>();
             var mockMonitor = new Mock<IMessageProcessorMonitor>();
@@ -624,7 +621,6 @@ namespace Icon.ApiController.Tests.Integration
             var hierarchyQueueProcessor = new HierarchyQueueProcessor(
                 settings,
                 mockQueueProcessorLogger.Object,
-                mockContext.Object,
                 queueReader,
                 serializer,
                 getFinancialClassesQueryHandler,
@@ -635,7 +631,7 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageQueueStatusCommandHandler,
                 mockUpdateStagedProductStatusCommandHandler.Object,
                 mockUpdateSentToEsbHierarchyTraitCommandHandler.Object,
-                new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueHierarchy>(mockMarkQueuedEntriesAsInProcess.Object, globalContext),
+                new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueHierarchy>(mockMarkQueuedEntriesAsInProcess.Object, iconContextFactory),
                 mockProducer.Object,
                 mockMonitor.Object);
 
@@ -707,12 +703,12 @@ namespace Icon.ApiController.Tests.Integration
             var queueReader = new ProductSelectionGroupQueueReader(
                 mockQueueReaderLogger.Object,
                 mockGetMessageQueueQuery.Object,
-                new UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>(mockUpdateMessageQueueStatusLogger.Object, globalContext));
-            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, globalContext);
-            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueProductSelectionGroup>(mockAssociateMessageToQueueLogger.Object, globalContext);
-            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProductSelectionGroup>(mockSetProcessedDateLogger.Object, globalContext);
-            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, globalContext);
-            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>(mockUpdateMessageQueueStatusLogger.Object, globalContext);
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory));
+            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
+            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueProductSelectionGroup>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
+            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProductSelectionGroup>(mockSetProcessedDateLogger.Object, iconContextFactory);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, iconContextFactory);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueProductSelectionGroup>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
             var mockMonitor = new Mock<IMessageProcessorMonitor>();
 
             var queueProcessor = new ProductSelectionGroupQueueProcessor(

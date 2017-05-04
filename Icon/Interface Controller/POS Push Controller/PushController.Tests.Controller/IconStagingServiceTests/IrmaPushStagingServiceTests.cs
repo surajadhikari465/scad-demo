@@ -45,7 +45,7 @@ namespace PushController.Tests.Controller.IconStagingServiceTests
         {
             globalIconContext = new GlobalIconContext(new IconContext());
 
-            string irmaConnectionString = ConnectionBuilder.GetConnection("SP");
+            string irmaConnectionString = ConnectionBuilder.GetConnection("FL");
             globalIrmaContext = new GlobalIrmaContext(new IrmaContextProvider().GetRegionalContext(irmaConnectionString), irmaConnectionString);
             irmaContext = globalIrmaContext.Context;
 
@@ -75,11 +75,19 @@ namespace PushController.Tests.Controller.IconStagingServiceTests
 
         private void StagePosPublishData()
         {
+            Store testStore = new TestIrmaStoreBuilder()
+                .WithStore_No(123456789)
+                .WithStore_Name("Unit Test Store")
+                .WithWFM_Store(true)
+                .WithInternal(true);
+            irmaContext.Store.Add(testStore);
+            irmaContext.SaveChanges();
+
             testPosPublishData = new List<IConPOSPushPublish>
             {
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next())),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next())),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next()))
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next())),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next())),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next()))
             };
 
             irmaContext.IConPOSPushPublish.AddRange(testPosPublishData);

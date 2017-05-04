@@ -37,18 +37,6 @@ namespace Icon.Dashboard.Mvc.ViewModels
             this.Name = iconApp.AppName;
         }
 
-        //public IconApplicationRecentLogEntriesReportViewModel(IconApplicationViewModel iconApplicationDefinition)
-        //{
-        //    if (iconApplicationDefinition != null)
-        //    {
-        //        if (iconApplicationDefinition.DatabaseId.HasValue)
-        //        {
-        //            this.AppID = iconApplicationDefinition.DatabaseId.Value;
-        //        }
-        //        this.Name = iconApplicationDefinition.Name;
-        //    }
-        //}
-
         public int AppID { get; set; }
         
         public string Name { get; set; }

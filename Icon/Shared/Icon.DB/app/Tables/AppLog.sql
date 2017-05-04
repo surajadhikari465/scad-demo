@@ -12,3 +12,17 @@
     CONSTRAINT [App_AppLog_FK] FOREIGN KEY ([AppID]) REFERENCES [app].[App] ([AppID])
 );
 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_AppID_IncludeLogDate]ON [app].[AppLog]
+(
+	[AppID] ASC
+)
+INCLUDE ( 	[LogDate]) 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_AppLog_InsertDate] ON [app].[AppLog]
+(
+	[InsertDate] ASC
+)
+GO

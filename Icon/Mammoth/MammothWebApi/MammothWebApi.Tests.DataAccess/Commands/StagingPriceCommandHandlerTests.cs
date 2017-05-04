@@ -20,6 +20,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         private StagingPriceCommandHandler handler;
         private DateTime now;
         private Guid guid;
+        private string region = "MW";
 
         [TestInitialize]
         public void InitializeTests()
@@ -49,7 +50,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         {
             // Given
             var command = new StagingPriceCommand();
-            command.Prices = BuildPriceStagingModel(numberOfItems: 3, priceType: "REG", date: this.now, guid: this.guid);
+            command.Prices = BuildPriceStagingModel(numberOfItems: 200, priceType: "REG", date: this.now, guid: this.guid);
 
             // When
             this.handler.Execute(command);
@@ -113,20 +114,24 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         private List<StagingPriceModel> BuildPriceStagingModel(int numberOfItems, string priceType, DateTime date, Guid guid, DateTime? endDate = null)
         {
             var prices = new List<StagingPriceModel>(numberOfItems);
+            List<string> scanCodes = this.db.Connection.Query<string>("SELECT TOP (@Records) ScanCode FROM Items", new { Records = numberOfItems }, this.db.Transaction).ToList();
+            int businessUnitId = this.db.Connection.Query<int>($"SELECT TOP 1 BusinessUnitID FROM Locales_{this.region}", transaction: this.db.Transaction).FirstOrDefault();
+
+            bool scanCodesExist = scanCodes.Count == numberOfItems;
             for (int i = 0; i < numberOfItems; i++)
             {
                 StagingPriceModel price = new StagingPriceModel
                 {
-                    ScanCode = String.Format("55555555555{0}", i.ToString()),
-                    BusinessUnitId = 1,
-                    Price = (decimal)1.99 + i,
+                    ScanCode = scanCodesExist ? scanCodes[i] : $"5555555{i.ToString()}",
+                    BusinessUnitId = businessUnitId == 0 ? 1 : businessUnitId,
+                    Price = (decimal)1.99 + i/10,
                     PriceType = priceType,
-                    StartDate = new DateTime(1990, 1, 25),
+                    StartDate = DateTime.Today.AddDays(1),
                     EndDate = endDate,
                     Multiple = 1,
                     PriceUom = "EA",
                     CurrencyCode = "USD",
-                    Region = "SW",
+                    Region = this.region,
                     Timestamp = date,
                     TransactionId = guid
                 };

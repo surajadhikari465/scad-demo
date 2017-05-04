@@ -162,11 +162,11 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             testStagingItemLocaleData = new List<StagingItemLocaleModel>
             {
                 new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[0])
-                .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
                 new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[1])
-                .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
                 new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2])
-                .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build()
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build()
             };
 
             string sql = @"INSERT INTO stage.ItemLocale
@@ -224,11 +224,11 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             testStagingExtendedItemLocaleData = new List<List<StagingItemLocaleExtendedModel>>
             {
                 new TestStagingExtendedItemLocaleModelBuilder().WithScanCode(testScanCodes[0])
-                .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
                 new TestStagingExtendedItemLocaleModelBuilder().WithScanCode(testScanCodes[1])
-                .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
                 new TestStagingExtendedItemLocaleModelBuilder().WithScanCode(testScanCodes[2])
-                .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build()
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build()
             };
 
             foreach (var extendedItemSet in testStagingExtendedItemLocaleData)
@@ -466,7 +466,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
             // Then.
             dynamic queuedMessages = db.Connection.Query<dynamic>("select * from esb.MessageQueueItemLocale where RegionCode = @Region and InsertDate > @Timestamp",
-                new { Region = testRegion, Timestamp = now.Subtract(TimeSpan.FromMilliseconds(10000)) }, transaction: db.Transaction).ToList();
+                new { Region = testRegion, Timestamp = now.Subtract(TimeSpan.FromMilliseconds(1000)) }, transaction: db.Transaction).ToList();
 
             Assert.AreEqual(testStagingItemLocaleData.Count, queuedMessages.Count);
 

@@ -6,20 +6,21 @@ using System;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
     public class UpdateSentToEsbHierarchyTraitCommandHandler : ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>
     {
         private ILogger<UpdateSentToEsbHierarchyTraitCommandHandler> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
         public UpdateSentToEsbHierarchyTraitCommandHandler(
             ILogger<UpdateSentToEsbHierarchyTraitCommandHandler> logger, 
-            IRenewableContext<IconContext> globalContext)
+            IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(UpdateSentToEsbHierarchyTraitCommand data)
@@ -30,39 +31,42 @@ namespace Icon.ApiController.DataAccess.Commands
                 return;
             }
 
-            var hierarchyClasses = globalContext.Context.HierarchyClass
-                .Include(hc => hc.HierarchyClassTrait.Select(hct => hct.Trait))
-                .Where(hc => data.PublishedHierarchyClasses.Contains(hc.hierarchyClassID))
-                .ToList();
-
-            foreach (var hierarchyClass in hierarchyClasses)
+            using (var context = iconContextFactory.CreateContext())
             {
-                var sentToEsbTrait = hierarchyClass.HierarchyClassTrait.SingleOrDefault(hct => hct.Trait.traitCode == TraitCodes.SentToEsb);
+                var hierarchyClasses = context.HierarchyClass
+                    .Include(hc => hc.HierarchyClassTrait.Select(hct => hct.Trait))
+                    .Where(hc => data.PublishedHierarchyClasses.Contains(hc.hierarchyClassID))
+                    .ToList();
 
-                if (sentToEsbTrait != null)
+                foreach (var hierarchyClass in hierarchyClasses)
                 {
-                    sentToEsbTrait.traitValue = (DateTime.UtcNow + TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow)).ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    logger.Warn(String.Format("HierarchyClass: {0} [{1}] does not have the Sent To ESB trait.  Attempting to add the trait for this hierarchy class...",
-                        hierarchyClass.hierarchyClassName, hierarchyClass.hierarchyClassID));
+                    var sentToEsbTrait = hierarchyClass.HierarchyClassTrait.SingleOrDefault(hct => hct.Trait.traitCode == TraitCodes.SentToEsb);
 
-                    var newSentToEsbTrait = new HierarchyClassTrait
+                    if (sentToEsbTrait != null)
                     {
-                        hierarchyClassID = hierarchyClass.hierarchyClassID,
-                        traitID = globalContext.Context.Trait.Single(t => t.traitCode == TraitCodes.SentToEsb).traitID,
-                        traitValue = (DateTime.UtcNow + TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow)).ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture)
-                    };
+                        sentToEsbTrait.traitValue = (DateTime.UtcNow + TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow)).ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        logger.Warn(string.Format("HierarchyClass: {0} [{1}] does not have the Sent To ESB trait.  Attempting to add the trait for this hierarchy class...",
+                            hierarchyClass.hierarchyClassName, hierarchyClass.hierarchyClassID));
 
-                    globalContext.Context.HierarchyClassTrait.Add(newSentToEsbTrait);
+                        var newSentToEsbTrait = new HierarchyClassTrait
+                        {
+                            hierarchyClassID = hierarchyClass.hierarchyClassID,
+                            traitID = context.Trait.Single(t => t.traitCode == TraitCodes.SentToEsb).traitID,
+                            traitValue = (DateTime.UtcNow + TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow)).ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture)
+                        };
 
-                    logger.Info(String.Format("Successfully added the Sent To ESB trait for hierarchyClass: {0} [{1}].",
-                        hierarchyClass.hierarchyClassName, hierarchyClass.hierarchyClassID));
+                        context.HierarchyClassTrait.Add(newSentToEsbTrait);
+
+                        logger.Info(string.Format("Successfully added the Sent To ESB trait for hierarchyClass: {0} [{1}].",
+                            hierarchyClass.hierarchyClassName, hierarchyClass.hierarchyClassID));
+                    }
                 }
-            }
 
-            globalContext.Context.SaveChanges();
+                context.SaveChanges();
+            }
 
             logger.Info("The Sent To ESB trait has been successfully updated for all hierarchy classes in the mini-bulk.");
         }

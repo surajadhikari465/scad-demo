@@ -60,7 +60,7 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         // POST: Ewic/AddExclusion
-        [WriteAccessAuthorize]
+        [WriteAccessAuthorize(GlobalDataTeamException = true)]
         [HttpPost]
         public ActionResult AddExclusion(EwicExclusionViewModel viewModel)
         {
@@ -110,7 +110,7 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         // POST: Ewic/RemoveExclusion
-        [WriteAccessAuthorize]
+        [WriteAccessAuthorize(GlobalDataTeamException = true)]
         [HttpPost]
         public ActionResult RemoveExclusion(EwicExclusionViewModel viewModel)
         {
@@ -193,7 +193,7 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         // POST: Ewic/AddMapping
-        [WriteAccessAuthorize]
+        [WriteAccessAuthorize(GlobalDataTeamException = true)]
         [HttpPost]
         public ActionResult AddMapping(EwicMappingDetailViewModel viewModel)
         {
@@ -250,7 +250,7 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         // POST: Ewic/RemoveMapping
-        [WriteAccessAuthorize]
+        [WriteAccessAuthorize(GlobalDataTeamException = true)]
         [HttpPost]
         public ActionResult RemoveMapping(EwicMappingDetailViewModel viewModel)
         {

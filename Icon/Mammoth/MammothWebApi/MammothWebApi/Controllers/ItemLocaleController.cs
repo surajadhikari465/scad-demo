@@ -8,6 +8,7 @@ using MammothWebApi.Service.Models;
 using MammothWebApi.Service.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
 
@@ -83,10 +84,15 @@ namespace MammothWebApi.Controllers
                     return Ok();
                 }
             }
-            catch (Exception ex)
+            catch (SqlException sqlException)
             {
-                logger.Error("Error occurred in AddOrUpdateItemLocales.", ex);
-                return InternalServerError();
+                logger.Error("Sql Exception occurred.", sqlException);
+                return InternalServerError(sqlException);
+            }
+            catch (Exception exception)
+            {
+                logger.Error("Error occurred in AddOrUpdateItemLocales.", exception);
+                return InternalServerError(exception);
             }
         }
     }

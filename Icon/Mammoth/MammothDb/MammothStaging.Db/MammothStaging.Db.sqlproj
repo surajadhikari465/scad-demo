@@ -356,10 +356,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="esb\Tables\MessageQueueStaging_1.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="irma\Stored Procedures\ETL_Populate_ValidatedScanCode.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -465,7 +461,6 @@
     <PostDeploy Include="Scripts\PostDeployment\Script.PostDeployment_TEST.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="esb\Tables\MessageQueueStaging.sql" />
     <None Include="MammothStaging.Db.TEST.publish.xml" />
     <None Include="MammothStaging.Db.QA..publish.xml" />
     <None Include="MammothStaging.Db.publish.xml">

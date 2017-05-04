@@ -166,6 +166,31 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         }
 
         [TestMethod]
+        public void ValidateHierarchyClasses_DuplicateTaxCode_DuplicateTaxCodeError()
+        {
+            //Given
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
+            {
+                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "1234567 Duplicate Test New", HierarchyName = Hierarchies.Names.Tax, HierarchyLevelName = HierarchyLevelNames.Tax }
+            };
+            context.HierarchyClass.Add(new Framework.HierarchyClass
+            {
+                hierarchyClassName = "1234567 Duplicate Test",
+                hierarchyID = Hierarchies.Tax,
+                hierarchyLevel = HierarchyLevels.Tax
+            });
+            context.SaveChanges();
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            string expectedErrorCode = "DuplicateTaxCode";
+            string expectedErrorDetails = "A Tax Hierarchy Class already exists with a Tax Code '1234567' at the start of its name. The first 7 characters of a Tax Class Name which represent the Tax Code must be unique.";
+            AssertValidationTest(expectedErrorCode, expectedErrorDetails);
+        }
+
+        [TestMethod]
         public void ValidateHierarchyClasses_NoDuplicateSubBrickCode_NoError()
         {
             //Given

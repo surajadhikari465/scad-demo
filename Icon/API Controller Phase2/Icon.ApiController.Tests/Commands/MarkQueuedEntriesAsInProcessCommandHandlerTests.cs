@@ -9,6 +9,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Commands
 {
@@ -17,8 +18,7 @@ namespace Icon.ApiController.Tests.Commands
     {
         private MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale> markQueuedEntriesCommandHandler;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private Mock<ILogger<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>>> mockLogger;
         private IRMAPush testIrmaPush;
         private List<MessageQueueItemLocale> testQueuedMessages;
@@ -28,17 +28,15 @@ namespace Icon.ApiController.Tests.Commands
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted });
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
             mockLogger = new Mock<ILogger<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>>>();
-            markQueuedEntriesCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>(mockLogger.Object, globalContext);
+            markQueuedEntriesCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>(mockLogger.Object, new IconDbContextFactory());
 
             ControllerType.Instance = 99;
             lookAhead = 1000;
             businessUnitId = 10101;
-
-            transaction = context.Database.BeginTransaction();
 
             // Because of the order in which the records are marked as InProcessBy, this test class may not execute successfully unless the 
             // MessageQueueItemLocale table is empty.
@@ -54,7 +52,7 @@ namespace Icon.ApiController.Tests.Commands
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         private void StageTestQueuedMessages()
@@ -149,10 +147,6 @@ namespace Icon.ApiController.Tests.Commands
         public void MarkQueuedEntriesAsInProcess_OneMessagePreviouslyMarked_OneMessageShouldBeMarkedAsInProcess()
         {
             // Given.
-            var markQueuedEntriesCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>(
-                mockLogger.Object,
-                globalContext);
-
             testQueuedMessages = new List<MessageQueueItemLocale>
             {
                 new TestItemLocaleMessageBuilder().WithIrmaPushId(testIrmaPush.IRMAPushID).WithInProcessBy(ControllerType.Instance)
@@ -182,10 +176,6 @@ namespace Icon.ApiController.Tests.Commands
         public void MarkQueuedEntriesAsInProcess_ThreeMessagesReadyAndThreeMessagesNotReady_ThreeMessagesShouldBeMarkedAsInProcess()
         {
             // Given.
-            var markQueuedEntriesCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>(
-                mockLogger.Object,
-                globalContext);
-
             testQueuedMessages = new List<MessageQueueItemLocale>
             {
                 new TestItemLocaleMessageBuilder().WithIrmaPushId(testIrmaPush.IRMAPushID).WithBusinessUnitId(businessUnitId),
@@ -229,10 +219,6 @@ namespace Icon.ApiController.Tests.Commands
         public void MarkQueuedEntriesAsInProcess_OneMessageIsReadyAndBusinessUnitEqualsBusinessUnitId_OneMessageShouldBeMarkedAsInProcess()
         {
             // Given.
-            var markQueuedEntriesCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>(
-                mockLogger.Object,
-                globalContext);
-
             testQueuedMessages = new List<MessageQueueItemLocale>
             {
                 new TestItemLocaleMessageBuilder().WithIrmaPushId(testIrmaPush.IRMAPushID).WithBusinessUnitId(businessUnitId)
@@ -263,10 +249,6 @@ namespace Icon.ApiController.Tests.Commands
         public void MarkQueuedEntriesAsInProcess_OneMessageIsReadyAndBusinessUnitIsNot_MessageShouldNotBeMarkedAsInProcess()
         {
             // Given.
-            var markQueuedEntriesCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>(
-                mockLogger.Object,
-                globalContext);
-
             testQueuedMessages = new List<MessageQueueItemLocale>
             {
                 new TestItemLocaleMessageBuilder().WithIrmaPushId(testIrmaPush.IRMAPushID).WithBusinessUnitId(businessUnitId + 1)
@@ -297,10 +279,6 @@ namespace Icon.ApiController.Tests.Commands
         public void MarkQueuedEntriesAsInProcess_CurrentInProcessRecordsAreLessThanLookAheadValue_AdditionalMessagesShouldBeMarkedToMatchLookAhead()
         {
             // Given.
-            var markQueuedEntriesCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>(
-                mockLogger.Object,
-                globalContext);
-
             testQueuedMessages = new List<MessageQueueItemLocale>
             {
                 new TestItemLocaleMessageBuilder().WithIrmaPushId(testIrmaPush.IRMAPushID).WithInProcessBy(ControllerType.Instance).WithBusinessUnitId(businessUnitId),

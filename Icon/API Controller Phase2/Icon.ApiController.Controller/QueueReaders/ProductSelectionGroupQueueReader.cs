@@ -102,7 +102,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
                 default:
                     {
-                        throw new ArgumentException(String.Format("Tried to set Action to {0} for PSG message with MessageQueueId {1}.  {0} is not a valid action for PSG messages.",
+                        throw new ArgumentException(string.Format("Tried to set Action to {0} for PSG message with MessageQueueId {1}.  {0} is not a valid action for PSG messages.",
                             actionId, messageQueueId));
                     }
             }

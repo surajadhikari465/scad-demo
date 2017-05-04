@@ -9,6 +9,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Queries
 {
@@ -18,8 +19,7 @@ namespace Icon.ApiController.Tests.Queries
         private GetMessageQueueQuery<MessageQueueItemLocale> getMessageQueueQuery;
 
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private Mock<ILogger<GetMessageQueueQuery<MessageQueueItemLocale>>> mockLogger;
         private List<MessageQueueItemLocale> testMessages;
         private IRMAPush testIrmaPush;
@@ -28,14 +28,14 @@ namespace Icon.ApiController.Tests.Queries
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
             mockLogger = new Mock<ILogger<GetMessageQueueQuery<MessageQueueItemLocale>>>();
-            getMessageQueueQuery = new GetMessageQueueQuery<MessageQueueItemLocale>(mockLogger.Object, globalContext);
+            getMessageQueueQuery = new GetMessageQueueQuery<MessageQueueItemLocale>(mockLogger.Object, new IconDbContextFactory());
             ControllerType.Instance = 99;
 
-            transaction = context.Database.BeginTransaction();
 
             testIrmaPush = new TestIrmaPushBuilder();
             context.IRMAPush.Add(testIrmaPush);
@@ -56,7 +56,7 @@ namespace Icon.ApiController.Tests.Queries
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [TestMethod]

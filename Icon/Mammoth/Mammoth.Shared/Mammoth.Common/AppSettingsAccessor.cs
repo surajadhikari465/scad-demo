@@ -42,6 +42,21 @@ namespace Mammoth.Common
             return intSetting;
         }
 
+        public static int? GetNullableIntSetting(string settingName)
+        {
+            string setting = ConfigurationManager.AppSettings[settingName];
+
+            int? nullableIntSetting = null;
+            int parsableInt;
+
+            if (int.TryParse(setting, out parsableInt))
+            {
+                nullableIntSetting = parsableInt;
+            }
+
+            return nullableIntSetting;
+        }
+
         public static T GetEnumSetting<T>(string settingName, bool required = true) where T : struct, IComparable, IFormattable, IConvertible
         {
             string setting = ConfigurationManager.AppSettings[settingName];

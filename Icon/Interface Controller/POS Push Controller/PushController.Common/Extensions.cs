@@ -99,6 +99,30 @@ namespace PushController.Common
 
         public static bool ItemIsBottleDepositOrCrv(this ScanCodeModel scanCode)
         {
+            if(StartupOptions.UseItemTypeInsteadOfNonMerchTrait)
+            {
+                return ItemIsBottleDepositOrCrvFromItemType(scanCode);
+            }
+            else
+            {
+                return ItemIsBottleDepositOrCrvFromNonMerchTrait(scanCode);
+            }
+        }
+
+        private static bool ItemIsBottleDepositOrCrvFromItemType(ScanCodeModel scanCode)
+        {
+            if(scanCode.ItemTypeCode == ItemTypeCodes.Deposit || scanCode.ItemTypeCode == ItemTypeCodes.Fee)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool ItemIsBottleDepositOrCrvFromNonMerchTrait(ScanCodeModel scanCode)
+        {
             bool nonMerchandiseTraitExists = !String.IsNullOrEmpty(scanCode.NonMerchandiseTrait);
 
             if (nonMerchandiseTraitExists)

@@ -54,6 +54,7 @@ namespace Infor.Services.NewItem.Tests.Queries
             testNatItemClass = context.NatItemClass.Add(new NatItemClass { ClassID = 56789, ClassName = "Test National Class", NatCatID = 555 });
             testTaxClass = context.TaxClass.Add(new TaxClass { TaxClassDesc = "1111111 Test Tax Class", ExternalTaxGroupCode = "1111111" });
 
+            context.Database.ExecuteSqlCommand("delete IconItemChangeQueue");
             context.SaveChanges();
 
             testItemIdentifiers = new List<ItemIdentifier>();
@@ -73,8 +74,7 @@ namespace Infor.Services.NewItem.Tests.Queries
         public void GetNewItemsQuery_1NewItemEvent_ShouldReturn1NewItemModel()
         {
             //Given
-            SetupTestEvents(1, testItemIdentifiers, testItems, testEvents);            
-            context.SaveChanges();
+            SetupTestEvents(1, testItemIdentifiers, testItems, testEvents); 
 
             //When
             var results = queryHandler.Search(query).ToList();
@@ -102,9 +102,6 @@ namespace Infor.Services.NewItem.Tests.Queries
         [TestMethod]
         public void GetNewItemsQuery_QueueIsEmpty_ShouldReturnEmptyList()
         {
-            //Given
-            Assert.IsFalse(context.IconItemChangeQueue.Any());
-
             //When
             var results = queryHandler.Search(query);
 
@@ -139,6 +136,19 @@ namespace Infor.Services.NewItem.Tests.Queries
         }
 
         [TestMethod]
+        public void GetNewItemsQuery_OrganicIsTrue_ShouldReturnOrganicTrue()
+        {
+            //Given
+            SetupTestEvents(10, testItemIdentifiers, testItems, testEvents, organic: true);
+
+            //When
+            var results = queryHandler.Search(query).ToList();
+
+            //Then
+            AssertResultsAreEqualToTestEvents(results);
+        }
+
+        [TestMethod]
         public void GetNewItemsQuery_QueueHasEventsThatAreProcessableAsWellAsFailedEventsAndEventsInProcessByOtherInstances_ShouldReturnOnlyTheReadyEvents()
         {
             //Given
@@ -161,7 +171,7 @@ namespace Infor.Services.NewItem.Tests.Queries
             AssertResultsAreEqualToTestEvents(results);
         }
 
-        private void SetupTestEvents(int numberOfEvents, List<ItemIdentifier> itemIdentifiers, List<Item> items, List<IconItemChangeQueue> events, int? instanceId = null, DateTime? processFailedDate = null)
+        private void SetupTestEvents(int numberOfEvents, List<ItemIdentifier> itemIdentifiers, List<Item> items, List<IconItemChangeQueue> events, int? instanceId = null, DateTime? processFailedDate = null, bool organic = false)
         {
             for (int i = 0; i < numberOfEvents; i++)
             {
@@ -183,6 +193,7 @@ namespace Infor.Services.NewItem.Tests.Queries
                     .WithPackage_Desc1(3 + i)
                     .WithPackage_Desc2(2.1m + i)
                     .WithFood_Stamps(true)
+                    .WithOrganic(organic)
                     .Build();
 
                 itemIdentifiers.Add(itemIdentifier);
@@ -224,6 +235,7 @@ namespace Infor.Services.NewItem.Tests.Queries
 
                 Assert.AreEqual(query.Region, result.Region);
                 Assert.AreEqual(testEvent.QID, result.QueueId);
+                Assert.AreEqual(testItem.Item_Key, result.ItemKey);
                 Assert.AreEqual(testItemIdentifier.Identifier, result.ScanCode);
                 Assert.AreEqual(true, result.IsDefaultIdentifier);
                 Assert.AreEqual(testItem.Item_Description, result.ItemDescription);
@@ -238,6 +250,8 @@ namespace Infor.Services.NewItem.Tests.Queries
                 Assert.AreEqual(testSubTeam.Dept_No.ToString(), result.SubTeamNumber);
                 Assert.AreEqual(testNatItemClass.ClassID.ToString(), result.NationalClassCode);
                 Assert.AreEqual(testTaxClass.ExternalTaxGroupCode, result.TaxClassCode);
+                Assert.AreEqual(testEvent.InsertDate, result.QueueInsertDate);
+                Assert.AreEqual(testItem.Organic, result.Organic);
             }
         }
     }

@@ -8,7 +8,6 @@
 
 <div class="row">
     <hr />
-
     @using (Html.BeginForm(action, controller, new { application = Model.Name, server = Model.Server }, FormMethod.Post, null))
     {
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -16,7 +15,7 @@
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-xs-3" })
             <div class="col-xs-9">
                 @if (isCreate)
-            {
+                {
                     @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 }
@@ -44,93 +43,89 @@
             </div>
         </div>
 
-    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-        @Html.LabelFor(model => model.TypeOfApplication, htmlAttributes: new { @class = "control-label col-xs-3" })
-        <div class="col-xs-9">
-                @Html.DropDownList(
-      "TypeOfApplication",
-      EnumHelper.GetSelectList(typeof(Icon.Dashboard.DataFileAccess.Models.ApplicationTypeEnum)),
-      "choose application type",
-      new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TypeOfApplication, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-        @Html.LabelFor(model => model.DisplayName, htmlAttributes: new { @class = "control-label col-xs-3" })
-        <div class="col-xs-9">
-                @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DisplayName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-        @Html.LabelFor(model => model.Environment, htmlAttributes: new { @class = "control-label col-xs-3 breakText" })
-        <div class="col-xs-9">
-                @Html.DropDownList(
-                  "Environment",
-                  EnumHelper.GetSelectList(typeof(Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum)),
-                  "choose environment",
-                  new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Environment, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-        @Html.LabelFor(model => model.ConfigFilePath, htmlAttributes: new { @class = "control-label col-xs-3" })
-        <div class="col-xs-9">
-            @Html.TextAreaFor(model => model.ConfigFilePath, 4, 0, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.ConfigFilePath, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-        @Html.LabelFor(model => model.DataFlowFrom, htmlAttributes: new { @class = "control-label col-xs-3" })
-        <div class="col-xs-9">
-            @Html.EnumDropDownListFor(model => model.DataFlowFrom, "choose data flow \"from\" system", new { @class = "form-control" })
-             @Html.ValidationMessageFor(model => model.DataFlowFrom, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-        @Html.LabelFor(model => model.DataFlowTo, htmlAttributes: new { @class = "control-label col-xs-3" })
-        <div class="col-xs-9">
-            @Html.EnumDropDownListFor(model => model.DataFlowTo, "choose data flow \"to\" system", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.DataFlowTo, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-         @Html.LabelFor(model => model.LoggingName, htmlAttributes: new { @class = "control-label col-xs-3" })
-        <div class="col-xs-9">
-            @Html.EditorFor(model => model.LoggingName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.LoggingName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    if (!String.IsNullOrWhiteSpace(Model.CurrentEsbEnvironment))
-    {
         <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-            @Html.LabelFor(model => model.CurrentEsbEnvironment, htmlAttributes: new { @class = "control-label col-xs-3" })
+            @Html.LabelFor(model => model.TypeOfApplication, htmlAttributes: new { @class = "control-label col-xs-3" })
             <div class="col-xs-9">
-                @Html.DisplayFor(model => model.CurrentEsbEnvironment)
+                @Html.DropDownList(
+                       "TypeOfApplication",
+                       EnumHelper.GetSelectList(typeof(Icon.Dashboard.DataFileAccess.Models.ApplicationTypeEnum)),
+                       "choose application type",
+                       new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TypeOfApplication, "", new { @class = "text-danger" })
             </div>
         </div>
-    }
 
-    <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-5 col-lg-offset-1">
-        <button type="submit" value="@(isCreate ? "Create" : "Save")" class="btn btn-warning btn-block margin-top-10">@(isCreate ? "Create" : "Save")</button>
-    </div>
-    }
+        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+            @Html.LabelFor(model => model.DisplayName, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DisplayName, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-5">
+        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+            @Html.LabelFor(model => model.ConfigFilePath, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.TextAreaFor(model => model.ConfigFilePath, 4, 0, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ConfigFilePath, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+            @Html.LabelFor(model => model.DataFlowFrom, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.EditorFor(model => model.DataFlowFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DataFlowFrom, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+            @Html.LabelFor(model => model.DataFlowTo, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.EditorFor(model => model.DataFlowTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DataFlowTo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+            @Html.LabelFor(model => model.LoggingName, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.EditorFor(model => model.LoggingName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LoggingName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+            @Html.LabelFor(model => model.LoggingID, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.EditorFor(model => model.LoggingID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LoggingID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        if (!String.IsNullOrWhiteSpace(Model.CurrentEsbEnvironment))
+        {
+            <div class="form-group col-xs-12 col-sm-6 col-lg-12">
+                @Html.LabelFor(model => model.CurrentEsbEnvironment, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.DisplayFor(model => model.CurrentEsbEnvironment)
+                </div>
+            </div>
+        }
+        <div class="col-xs-offset-2 col-xs-8">
+            <button type="submit" value="@(isCreate ? "Create" : "Save")" class="btn btn-warning btn-block margin-top-10">@(isCreate ? "Create" : "Save")</button>
+        </div>
+    }
+</div>
+
+<div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
         @using (Html.BeginForm("Delete", controller, new { application = Model.Name, server = Model.Server }, FormMethod.Post, null))
         {
             <button type="submit" value="@("Delete")" class="btn btn-danger btn-block margin-top-10">@("Delete")</button>
         }
     </div>
-
-    <div class="col-xs-offset-1 col-xs-10">
+    <div class="col-xs-offset-2 col-xs-8">
         @Html.ActionLink("Edit Configuration", "Configure", "Home", new { application = Model.Name, server = Model.Server }, new { @class = "btn btn-default btn-block margin-top-10" })
     </div>
 </div>

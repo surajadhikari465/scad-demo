@@ -29,7 +29,7 @@ namespace Icon.ApiController.Controller.Serializers
             }
             else
             {
-                throw new ArgumentException(String.Format("No namespaces set for type {0}", t.ToString()));
+                throw new ArgumentException(string.Format("No namespaces set for type {0}", t.ToString()));
             }
 
             return namespaces;

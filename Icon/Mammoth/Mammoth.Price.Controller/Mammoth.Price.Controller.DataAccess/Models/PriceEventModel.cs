@@ -27,5 +27,7 @@ namespace Mammoth.Price.Controller.DataAccess.Models
         public DateTime? CurrentSaleEndDate { get; set; }
         public string CurrentPriceType { get; set; }
         public string ErrorMessage { get; set; }
+        public string ErrorDetails { get; set; }
+        public string ErrorSource { get; set; }
     }
 }

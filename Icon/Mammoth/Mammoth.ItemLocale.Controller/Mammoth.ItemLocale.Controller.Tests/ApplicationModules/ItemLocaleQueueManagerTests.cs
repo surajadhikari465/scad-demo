@@ -13,6 +13,7 @@ using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.ControllerApplication.Models;
 using Mammoth.Common.ControllerApplication;
 using System.Linq;
+using Mammoth.Common;
 
 namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
 {
@@ -26,6 +27,8 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
         private Mock<ICommandHandler<DeleteEventQueueCommand>> mockDeleteEventQueueCommandHandler;
         private Mock<IQueryHandler<UpdateAndGetEventQueueInProcessQuery, List<EventQueueModel>>> mockUpdateAndGetEventQueueInProcessQueryHandler;
         private Mock<ICommandHandler<ArchiveEventsCommand>> mockArchiveEventsCommandHandler;
+        private Mock<IEmailClient> mockEmailClient;
+        private Mock<IEmailBuilder> mockEmailBuilder;
 
         [TestInitialize]
         public void InitializeTests()
@@ -35,6 +38,8 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
             this.mockDeleteEventQueueCommandHandler = new Mock<ICommandHandler<DeleteEventQueueCommand>>();
             this.mockUpdateAndGetEventQueueInProcessQueryHandler = new Mock<IQueryHandler<UpdateAndGetEventQueueInProcessQuery, List<EventQueueModel>>>();
             this.mockArchiveEventsCommandHandler = new Mock<ICommandHandler<ArchiveEventsCommand>>();
+            this.mockEmailClient = new Mock<IEmailClient>();
+            this.mockEmailBuilder = new Mock<IEmailBuilder>();
             this.mockLogger = new Mock<ILogger>();
 
             this.queueManager = new ItemLocaleQueueManager(
@@ -43,6 +48,8 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
                 this.mockGetItemLocaleQuery.Object,
                 this.mockDeleteEventQueueCommandHandler.Object,
                 this.mockArchiveEventsCommandHandler.Object,
+                this.mockEmailClient.Object,
+                this.mockEmailBuilder.Object,
                 this.mockLogger.Object);
         }
 
@@ -114,7 +121,7 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
         }
 
         [TestMethod]
-        public void Finalize_GivenChangeQueueEventModel_ArchivesAndDeletesEventsOneTime()
+        public void Finalize_GivenChangeQueueEventModel_ArchivesAndDeletesEvents()
         {
             // Given
             ChangeQueueEvents<ItemLocaleEventModel> changeQueueEvents = new ChangeQueueEvents<ItemLocaleEventModel>();
@@ -130,6 +137,7 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
             // Then
             this.mockDeleteEventQueueCommandHandler.Verify(d => d.Execute(It.IsAny<DeleteEventQueueCommand>()), Times.Once);
             this.mockArchiveEventsCommandHandler.Verify(a => a.Execute(It.IsAny<ArchiveEventsCommand>()), Times.Once);
+            this.mockEmailClient.Verify(ec => ec.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
@@ -144,6 +152,7 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
             // Then
             this.mockDeleteEventQueueCommandHandler.Verify(d => d.Execute(It.IsAny<DeleteEventQueueCommand>()), Times.Never);
             this.mockArchiveEventsCommandHandler.Verify(a => a.Execute(It.IsAny<ArchiveEventsCommand>()), Times.Never);
+            this.mockEmailClient.Verify(ec => ec.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
@@ -154,7 +163,7 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
             var eventQueueModel = new EventQueueModel
             {
                 QueueId = 1
-            }; ;
+            };
 
             changeQueueEvents.QueuedEvents.Add(eventQueueModel);
 
@@ -166,10 +175,11 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
                 .Verify(d => d.Execute(It.Is<DeleteEventQueueCommand>(c => c.QueueIds.Count() == 1)), Times.Once);
             this.mockArchiveEventsCommandHandler
                 .Verify(a => a.Execute(It.Is<ArchiveEventsCommand>(c => c.Events.All(e => e.ErrorCode == ApplicationErrors.UnprocessableEventCode))), Times.Once);
+            this.mockEmailClient.Verify(ec => ec.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
-        public void Finalize_GivenQueueEventsWithItemLocaleDataAndNoErrors_ArchivesQueuedEventsWithNoUnprocessableEventsError()
+        public void Finalize_GivenQueueEventsWithItemLocaleDataAndNoErrors_DeletesAndArchivesQueuedEventsWithNoErrorsAndDoesNotSendEmailAlert()
         {
             // Given
             ChangeQueueEvents<ItemLocaleEventModel> changeQueueEvents = new ChangeQueueEvents<ItemLocaleEventModel>();
@@ -196,10 +206,11 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
                 .Verify(a => a.Execute(It.Is<ArchiveEventsCommand>(c =>
                     c.Events.All(e => e.ErrorCode != ApplicationErrors.UnprocessableEventCode)
                     && c.Events.All(x => x.QueueID == eventQueueModel.QueueId))), Times.Once);
+            this.mockEmailClient.Verify(ec => ec.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
-        public void Finalize_GivenQueueEventsWithItemLocaleDataWhichHasErrors_ArchivesQueuedEventsWithNoUnprocessableEventsError()
+        public void Finalize_GivenQueueEventsWithItemLocaleDataWhichHasErrors_DeletesAndArchivesQueuedEventsWithEventsErrorAndSendsAlert()
         {
             // Given
             ChangeQueueEvents<ItemLocaleEventModel> changeQueueEvents = new ChangeQueueEvents<ItemLocaleEventModel>();
@@ -211,7 +222,12 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
             var itemLocaleEventModel = new ItemLocaleEventModel
             {
                 QueueId = 1,
-                ErrorMessage = "Error Adding ItemLocale"
+                BusinessUnitId = 1,
+                ScanCode = "1",
+                EventTypeId = Constants.EventTypes.Price,
+                ErrorMessage = "Error Adding ItemLocale",
+                ErrorDetails = "Error Details Adding ItemLocale",
+                ErrorSource = Constants.SourceSystem.MammothWebApi
             };
 
             changeQueueEvents.QueuedEvents.Add(eventQueueModel);
@@ -227,6 +243,7 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
                 .Verify(a => a.Execute(It.Is<ArchiveEventsCommand>(c =>
                     c.Events.All(e => e.ErrorCode == itemLocaleEventModel.ErrorMessage)
                     && c.Events.All(x => x.QueueID == eventQueueModel.QueueId))), Times.Once);
+            this.mockEmailClient.Verify(ec => ec.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         private List<EventQueueModel> BuildEventQueueModels(int numberOfItems)

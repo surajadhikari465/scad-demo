@@ -20,7 +20,7 @@ namespace Mammoth.ApiController.DataAccess.Tests.Commands
     {
         protected override void Initialize()
         {
-            commandHandler = new MammothCommands.AssociateMessageToQueueCommandHandler<MessageQueueItemLocale>(new GlobalContext<MammothContext>(context));
+            commandHandler = new MammothCommands.AssociateMessageToQueueCommandHandler<MessageQueueItemLocale>(new MammothContextFactory());
         }
 
         [TestMethod]

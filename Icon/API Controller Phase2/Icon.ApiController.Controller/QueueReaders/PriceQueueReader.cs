@@ -82,7 +82,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 currentMessageIndex++;
             }
 
-            logger.Info(String.Format("Grouped {0} queued messages to be included in the mini-bulk.", groupedMessages.Count));
+            logger.Info(string.Format("Grouped {0} queued messages to be included in the mini-bulk.", groupedMessages.Count));
 
             return groupedMessages;
         }
@@ -254,7 +254,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
         private void HandleMiniBulkException(MessageQueuePrice message, Exception ex)
         {
-            logger.Error(String.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
+            logger.Error(string.Format("MessageQueueId: {0}.  An error occurred when adding the message to the mini-bulk.  The message status will be marked as Failed.",
                 message.MessageQueueId));
 
             ExceptionLogger<PriceQueueReader> exceptionLogger = new ExceptionLogger<PriceQueueReader>(logger);
@@ -262,7 +262,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
             FailMessageQueueEntry(message);
 
-            string errorMessage = String.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
+            string errorMessage = string.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
             string emailSubject = Resource.FailedToAddQueuedMessageToMiniBulkEmailSubject;
             string emailBody = EmailHelper.BuildMessageBodyForMiniBulkError(errorMessage, message.MessageQueueId, ex.ToString());
 
@@ -761,7 +761,7 @@ namespace Icon.ApiController.Controller.QueueReaders
             }
             else
             {
-                logger.Warn(String.Format("The UOM {0} is not recognized for scan code {1}.  EACH will be sent as the UOM.", uomName, scanCode));
+                logger.Warn(string.Format("The UOM {0} is not recognized for scan code {1}.  EACH will be sent as the UOM.", uomName, scanCode));
                 return Contracts.WfmUomDescEnumType.EACH;
             }
         }

@@ -4,7 +4,16 @@
 
     public interface IApplication
     {
+        /// <summary>
+        /// String Dictionary representing key/value pairs from the appSettings element in the config file
+        /// </summary>
         Dictionary<string, string> AppSettings { get; }
+
+        /// <summary>
+        /// String Dictionary representing a subset of key/value pairs from the appSettings element which 
+        ///   relate to ESB Connection settings (if present)
+        /// </summary>
+        Dictionary<string, string> EsbConnectionSettings { get; }
 
         /// <summary>
         /// Gets or Sets the file path to the app.config
@@ -12,24 +21,19 @@
         string ConfigFilePath { get; set; }
 
         /// <summary>
-        /// Indicates the system originating data used in the application (e.g. Icon, Irma, ESB, etc.)
+        /// Indicates the system providing or originating the data used by the application (e.g. Icon, Irma, ESB, etc.)
         /// </summary>
-        DataFlowSystemEnum DataFlowFrom { get; set; }
+        string DataFlowFrom { get; set; }
 
         /// <summary>
         /// Indicates the system receiving data used in the application (e.g. Icon, Irma, ESB, etc.)
         /// </summary>
-        DataFlowSystemEnum DataFlowTo { get; set; }
-
+        string DataFlowTo { get; set; }
+        
         /// <summary>
         /// Gets or Sets the DisplayName to be user-friendly.
         /// </summary>
         string DisplayName { get; set; }
-
-        /// <summary>
-        /// Gets or Sets the Environment the server belongs i.e. Dev, Test, QA
-        /// </summary>
-        EnvironmentEnum Environment { get; set; }
 
         /// <summary>
         /// Gets or Sets the Name of the e.g. windows service or task.
@@ -42,6 +46,11 @@
         string Server { get; set; }
 
         ApplicationTypeEnum TypeOfApplication { get; }
+
+        /// <summary>
+        /// Gets or Sets the id for the app, as used in the app.App.AppID column
+        /// </summary>
+        int? LoggingID { get; set; }
 
         /// <summary>
         /// Gets the current status of the application i.e. is it Running?

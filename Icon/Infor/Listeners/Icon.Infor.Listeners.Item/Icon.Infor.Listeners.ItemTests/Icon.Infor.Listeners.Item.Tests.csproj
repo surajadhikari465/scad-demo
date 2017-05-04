@@ -121,12 +121,12 @@
     <Compile Include="Commands\ArchiveMessageCommandHandlerTests.cs" />
     <Compile Include="Commands\GenerateItemMessagesCommandHandlerTest.cs" />
     <Compile Include="Commands\ItemAddOrUpdateCommandHandlerTests.cs" />
-    <Compile Include="Commands\ValidateItemsCommandHandlerTests.cs" />
     <Compile Include="ItemListenerTests.cs" />
     <Compile Include="MessageGeneratorTests\MessageGeneratorTests.cs" />
     <Compile Include="MessageParsers\ItemMessageParserTests.cs" />
     <Compile Include="Notifiers\ItemListenerNotifierTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetItemValidationPropertiesQueryTests.cs" />
     <Compile Include="Services\ItemServiceTests.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="Validators\ItemModelValidatorTests.cs" />

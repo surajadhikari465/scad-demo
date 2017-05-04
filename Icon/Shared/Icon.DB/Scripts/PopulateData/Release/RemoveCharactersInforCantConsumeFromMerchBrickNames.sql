@@ -1,7 +1,7 @@
 ﻿declare @scriptKey varchar(128)
 
 -- Product Backlog Item 17157: As IRMA I need to purge NoTagThreshold table automatically
-set @scriptKey = 'InsertInforHierarchyClassErrors'
+set @scriptKey = 'RemoveCharactersInforCantConsumeFromMerchBrickNames'
 
 IF(NOT exists(Select * from app.PostDeploymentScriptHistory where ScriptKey = @scriptKey))
 BEGIN
@@ -13,12 +13,12 @@ BEGIN
 	
 	update HierarchyClass
 	set hierarchyClassName = 
-		'AfteruSun Moisturisers'
+		'After Sun Moisturisers'
 	where hierarchyClassID = 83031
 
 	update HierarchyClass
 	set hierarchyClassName = 
-		'Avocados - Pebbled Peel (HassuType)'
+		'Avocados - Pebbled Peel (Hass Type)'
 	where hierarchyClassID = 83045
 
 	update HierarchyClass

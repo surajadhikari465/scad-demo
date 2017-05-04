@@ -17,9 +17,10 @@
         private readonly IQueryByRegionHandler<GetMammothItemLocaleChangeQueueIdQueryParameters, int> itemLocaleChangeQueueQuery;
         private readonly IPagerDutyTrigger pagerDutyTrigger;
 
-        public MammothItemLocaleControllerMonitor(IMonitorSettings settings,
+        public MammothItemLocaleControllerMonitor(
+            IMonitorSettings settings,
             IPagerDutyTrigger pagerDutyTrigger,
-             IQueryByRegionHandler<GetMammothItemLocaleChangeQueueIdQueryParameters, int> itemLocaleChangeQueueQuery,
+            IQueryByRegionHandler<GetMammothItemLocaleChangeQueueIdQueryParameters, int> itemLocaleChangeQueueQuery,
             ILogger logger)
         {
             this.settings = settings;

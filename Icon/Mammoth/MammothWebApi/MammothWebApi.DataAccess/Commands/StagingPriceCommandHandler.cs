@@ -1,9 +1,9 @@
-﻿using Mammoth.Common.DataAccess;
+﻿using FastMember;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.DbProviders;
 using MammothWebApi.DataAccess.Models;
-using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace MammothWebApi.DataAccess.Commands
 {
@@ -18,12 +18,29 @@ namespace MammothWebApi.DataAccess.Commands
 
         public void Execute(StagingPriceCommand data)
         {
-            // Sql Bulk Copy List into Staging Table
-            using (SqlBulkCopy bulkCopy = new SqlBulkCopy(this.db.Connection as SqlConnection))
+            if (data.Prices.Any())
             {
-                bulkCopy.DestinationTableName = "stage.Price";
-                DataTable dataTable = data.Prices.ToDataTable<StagingPriceModel>();
-                bulkCopy.WriteToServer(dataTable);
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(this.db.Connection as SqlConnection))
+                {
+                    using (var reader = ObjectReader.Create(
+                        data.Prices,
+                        nameof(StagingPriceModel.Region),
+                        nameof(StagingPriceModel.ScanCode),
+                        nameof(StagingPriceModel.BusinessUnitId),
+                        nameof(StagingPriceModel.Multiple),
+                        nameof(StagingPriceModel.Price),
+                        nameof(StagingPriceModel.PriceType),
+                        nameof(StagingPriceModel.StartDate),
+                        nameof(StagingPriceModel.EndDate),
+                        nameof(StagingPriceModel.PriceUom),
+                        nameof(StagingPriceModel.CurrencyCode),
+                        nameof(StagingPriceModel.Timestamp),
+                        nameof(StagingPriceModel.TransactionId)))
+                    {
+                        bulkCopy.DestinationTableName = "stage.Price";
+                        bulkCopy.WriteToServer(reader);
+                    }
+                }
             }
         }
     }

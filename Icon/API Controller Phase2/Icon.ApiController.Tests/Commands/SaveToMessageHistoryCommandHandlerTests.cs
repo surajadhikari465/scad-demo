@@ -7,6 +7,7 @@ using Moq;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Commands
 {
@@ -16,25 +17,22 @@ namespace Icon.ApiController.Tests.Commands
         private SaveToMessageHistoryCommandHandler saveToMessageHistoryCommandHandler;
         private Mock<ILogger<SaveToMessageHistoryCommandHandler>> mockLogger;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
             mockLogger = new Mock<ILogger<SaveToMessageHistoryCommandHandler>>();
-            saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(mockLogger.Object, globalContext);
-
-            transaction = context.Database.BeginTransaction();
+            saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(mockLogger.Object, new IconDbContextFactory());
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [TestMethod]

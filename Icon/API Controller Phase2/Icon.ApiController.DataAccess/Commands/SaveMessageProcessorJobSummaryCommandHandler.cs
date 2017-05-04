@@ -3,6 +3,7 @@ using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using System;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
@@ -14,7 +15,7 @@ namespace Icon.ApiController.DataAccess.Commands
         : ICommandHandler<SaveMessageProcessorJobSummaryCommand<APIMessageProcessorLogEntry>>
     {
         private ILogger<SaveMessageProcessorJobSummaryCommandHandler> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
         /// <summary>
         /// Parametrized constructor
@@ -23,17 +24,21 @@ namespace Icon.ApiController.DataAccess.Commands
         /// <param name="globalContext">The data context the command handler will use to interact with the database</param>
         public SaveMessageProcessorJobSummaryCommandHandler(
             ILogger<SaveMessageProcessorJobSummaryCommandHandler> logger,
-            IRenewableContext<IconContext> globalContext)
+            IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(SaveMessageProcessorJobSummaryCommand<APIMessageProcessorLogEntry> command)
         {
-            globalContext.Context.APIMessageMonitorLog.Add(command.JobSummary);
-            globalContext.Context.SaveChanges();
-            logger.Info($"Saved message processor job summary [{command?.JobSummary}] to the {nameof(globalContext.Context.APIMessageMonitorLog)} table.");
+            using (var context = iconContextFactory.CreateContext())
+            {
+                context.APIMessageMonitorLog.Add(command.JobSummary);
+                context.SaveChanges();
+
+                logger.Info($"Saved message processor job summary [{command?.JobSummary}] to the {nameof(context.APIMessageMonitorLog)} table.");
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             this.mockIrmaPushGenerator = new Mock<IPosDataGenerator<IrmaPushModel>>();
 
             StartupOptions.Instance = 1;
-            StartupOptions.RegionsToProcess = ConfigurationManager.AppSettings["RegionsToProcess"].Split(',');
+            StartupOptions.RegionsToProcess = new [] { "FL" };
 
             mockGetJobStatusQueryHandler.Setup(q => q.Execute(It.IsAny<GetJobStatusQuery>())).Returns(new JobStatus
             {

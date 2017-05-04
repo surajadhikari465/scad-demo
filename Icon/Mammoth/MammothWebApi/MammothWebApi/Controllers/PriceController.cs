@@ -7,6 +7,7 @@ using MammothWebApi.Models;
 using MammothWebApi.Service.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
 
@@ -86,9 +87,15 @@ namespace MammothWebApi.Controllers
                     return Ok();
                 }
             }
-            catch (Exception)
+            catch (SqlException sqlException)
             {
-                return InternalServerError();
+                logger.Error("Sql Exception occurred.", sqlException);
+                return InternalServerError(sqlException);
+            }
+            catch (Exception exception)
+            {
+                logger.Error("An unexpected exception occurred.", exception);
+                return InternalServerError(exception);
             }
         }
 
@@ -117,9 +124,15 @@ namespace MammothWebApi.Controllers
 
                 return Ok();
             }
-            catch (Exception)
+            catch (SqlException sqlException)
             {
-                return InternalServerError();
+                logger.Error("Sql Exception occurred.", sqlException);
+                return InternalServerError(sqlException);
+            }
+            catch (Exception exception)
+            {
+                logger.Error("An unexpected exception occurred.", exception);
+                return InternalServerError(exception);
             }
         }
     }

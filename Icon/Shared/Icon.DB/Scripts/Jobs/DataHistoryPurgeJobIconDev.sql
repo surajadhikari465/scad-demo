@@ -25,9 +25,25 @@ EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'Data History Purge - IconDev
 		@category_name=N'[Uncategorized (Local)]', 
 		@owner_login_name=N'WFM\IconInterfaceUserTes', @job_id = @jobId OUTPUT
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
+/****** Object:  Step [Check Maintenance Mode]    Script Date: 3/23/2017 4:34:56 AM ******/
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Maintenance Mode', 
+		@step_id=1, 
+		@cmdexec_success_code=0, 
+		@on_success_action=3, 
+		@on_success_step_id=0, 
+		@on_fail_action=4, 
+		@on_fail_step_id=5, 
+		@retry_attempts=0, 
+		@retry_interval=0, 
+		@os_run_priority=0, @subsystem=N'TSQL', 
+		@command=N'IF (SELECT StatusFlagValue FROM app.DbStatus where FlagName = ''IsOfflineForMaintenance'') = 1
+RAISERROR(''Database is in maintenance mode.'', 16, 1)', 
+		@database_name=N'IconDev',
+		@flags=0
+IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 /****** Object:  Step [Purge Data]    Script Date: 8/29/2014 1:29:07 PM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Purge Data', 
-		@step_id=1, 
+		@step_id=2, 
 		@cmdexec_success_code=0, 
 		@on_success_action=4, 
 		@on_success_step_id=2, 
@@ -42,7 +58,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Purge Da
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 /****** Object:  Step [Log Success]    Script Date: 8/29/2014 1:29:07 PM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Log Success', 
-		@step_id=2, 
+		@step_id=3, 
 		@cmdexec_success_code=0, 
 		@on_success_action=1, 
 		@on_success_step_id=0, 
@@ -72,7 +88,7 @@ VALUES            		          (@AppId, @UserName, @LogDate, @Level, @Source, @Me
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 /****** Object:  Step [Log Failure]    Script Date: 8/29/2014 1:29:07 PM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Log Failure', 
-		@step_id=3, 
+		@step_id=4, 
 		@cmdexec_success_code=0, 
 		@on_success_action=2, 
 		@on_success_step_id=0, 
@@ -100,6 +116,42 @@ VALUES            		          (@AppId, @UserName, @LogDate, @Level, @Source, @Me
 		@database_name=N'IconDev', 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
+/****** Object:  Step [Report Maintenance Mode]    Script Date: 3/23/2017 4:34:56 AM ******/
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Report Maintenance Mode', 
+		@step_id=5, 
+		@cmdexec_success_code=0, 
+		@on_success_action=1, 
+		@on_success_step_id=0, 
+		@on_fail_action=2, 
+		@on_fail_step_id=0, 
+		@retry_attempts=0, 
+		@retry_interval=0, 
+		@os_run_priority=0, @subsystem=N'TSQL',  
+		@command=N'IF EXISTS (
+					SELECT *
+					FROM app.DbStatus
+					WHERE StatusFlagName = ''IsOfflineForMaintenance'' AND StatusFlagValue = 1
+				)
+				BEGIN
+					DECLARE @statusMsg nvarchar(256), @appName nvarchar(128), @dbState varchar(128)
+
+					SELECT @appName = ltrim(rtrim(program_name))
+					FROM sys.sysprocesses
+					WHERE spid = @@spid
+
+					SELECT @dbState = N''DbName='' + [name] + '', IsReadOnly='' + convert(nvarchar,is_read_only) 
+						+ N'', UserAccess='' + convert(nvarchar,user_access_desc collate SQL_Latin1_General_CP1_CI_AS )
+						+ N'', State='' + state_desc
+					FROM sys.databases
+					WHERE NAME LIKE db_name()
+
+					SELECT @statusMsg = ''** DB Offline For Maintenance ** --> '' 
+						+ ''AppName='' + @appName + '', '' + @dbstate
+
+					RAISERROR (@statusMsg, 16, 0)
+				END',
+		@database_name=N'IconDev',
+		@flags=0
 EXEC @ReturnCode = msdb.dbo.sp_update_job @job_id = @jobId, @start_step_id = 1
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_add_jobserver @job_id = @jobId, @server_name = N'(local)'

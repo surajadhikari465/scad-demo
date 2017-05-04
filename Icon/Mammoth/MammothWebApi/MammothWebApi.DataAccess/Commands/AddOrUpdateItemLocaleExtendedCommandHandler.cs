@@ -16,58 +16,113 @@ namespace MammothWebApi.DataAccess.Commands
 
         public void Execute(AddOrUpdateItemLocaleExtendedCommand data)
         {
-            string sql = @" MERGE dbo.ItemAttributes_Locale_{0}_Ext WITH (updlock, rowlock) ile
-                            USING
-                            (
-	                            SELECT
-		                            s.Region		as Region,
-		                            i.ItemID		as ItemID,
-		                            l.LocaleID		as LocaleID,
-		                            s.AttributeId	as AttributeID,
-		                            s.AttributeValue as AttributeValue
-	                            FROM
-		                            stage.ItemLocaleExtended	s
-		                            JOIN dbo.Items				i on s.ScanCode = i.ScanCode
-		                            JOIN dbo.Locales_{0}		l on s.BusinessUnitId = l.BusinessUnitID
-                                WHERE
-                                    s.TransactionId = @TransactionId
-                                    AND s.Region = @Region
-                            )	stage
-                            ON
-	                            ile.ItemID = stage.ItemID
-	                            AND ile.LocaleID = stage.LocaleID
-	                            AND ile.AttributeID = stage.AttributeID
-                            WHEN MATCHED AND stage.AttributeValue IS NULL THEN
-                                DELETE
-                            WHEN MATCHED AND stage.AttributeValue IS NOT NULL THEN
-	                            UPDATE
-	                            SET
-		                            ile.AttributeValue = stage.AttributeValue,
-		                            ile.ModifiedDate = @Timestamp
-                            WHEN NOT MATCHED AND stage.AttributeValue IS NOT NULL THEN
-	                            INSERT
-	                            (
-		                            ItemID,
-		                            LocaleID,
-		                            AttributeID,
-		                            AttributeValue,
-		                            AddedDate
-	                            )
-	                            VALUES
-	                            (
-		                            stage.ItemID,
-		                            stage.LocaleID,
-		                            stage.AttributeID,
-		                            stage.AttributeValue,
-		                            @Timestamp
-	                            );";
+            // if there is an existing Extended Attribute record and the matching staged record has a Value then UPDATE [U]
+            // if there is an existing Extended Attribute record and the matching staged record has no Value (null) then DELETE [D]
+            // if there is no exising Extended Attribute record matching the staged record then INSERT [I]
+            string sql = @" 
+    
+	    --declare temp table with index
+	    CREATE TABLE #tmpStagedItemLocaleExt
+	    (
+            [Region]				NVARCHAR(2)		NOT NULL,
+		    [ItemID]				INT				NOT NULL,
+		    [BusinessUnitID]		INT				NOT NULL,
+	        [LocaleID]				INT				NOT NULL,
+	        [AttributeId]			INT				NOT NULL,
+	        [AttributeValue]		NVARCHAR(MAX)	NULL,
+	        [ExistingId]			INT				NULL,
+	        [ExistingValue]			NVARCHAR(MAX)	NULL,
+		    [Operation]				CHAR			NULL,
+            PRIMARY KEY ([Region], [ItemID], [LocaleID], [AttributeId])
+	    )
+
+        --copy staging data into temp table
+        INSERT #tmpStagedItemLocaleExt
+        SELECT DISTINCT
+		    stg.[Region],
+		    item.[ItemID],
+		    stg.[BusinessUnitID],
+		    loc.[LocaleID],
+		    stg.[AttributeId],
+		    stg.[AttributeValue],
+		    ext.[AttributeID] AS ExistingId,
+		    ext.[AttributeValue] AS ExistingValue,
+            CASE 
+                WHEN stg.[AttributeValue] is not null AND ext.[AttributeValue] is null THEN 'I'
+                WHEN stg.[AttributeValue] is null AND ext.[AttributeValue] is not null THEN 'D'
+                WHEN stg.[AttributeValue] is not null AND ext.[AttributeValue] is not null THEN 'U'
+            END AS [Operation]
+      FROM 
+            [stage].[ItemLocaleExtended] AS stg
+		    INNER JOIN [dbo].[Locales_{0}] AS loc ON
+                loc.[BusinessUnitID] = stg.[BusinessUnitID]
+            INNER JOIN [dbo].[Items] AS item ON
+                item.[ScanCode]   = stg.[ScanCode] 
+		    LEFT OUTER JOIN [dbo].[ItemAttributes_Locale_{0}_Ext] AS ext ON
+                ext.[Region]   = stg.[Region] AND
+                ext.[ItemID]   = item.[ItemID] AND
+                ext.[LocaleID]   = loc.[LocaleID] AND
+                ext.[AttributeID]  = stg.[AttributeId]
+        WHERE 
+            stg.[TransactionId] = @TransactionId AND 
+            stg.[Region] = @Region 
+
+        BEGIN TRY
+            BEGIN TRAN
+
+            --1/3 update existing records where matching staged data has a new extended attribute value
+            UPDATE ext
+            SET AttributeValue	= tmp.AttributeValue, ModifiedDate	= @Timestamp			
+            FROM [dbo].ItemAttributes_Locale_{0}_Ext ext
+	            JOIN #tmpStagedItemLocaleExt AS tmp ON 
+				    tmp.[Region] = ext.[Region] AND  
+				    tmp.[ItemID] = ext.[ItemID] AND 
+				    tmp.[LocaleID] = ext.[LocaleID] AND 
+				    tmp.[AttributeID] = ext.[AttributeID] 
+            WHERE tmp.[Operation] = 'U'
+
+            --2/3 delete existing records where matching staged data has a NULL extended attribute value
+            DELETE ext
+            FROM [dbo].ItemAttributes_Locale_{0}_Ext ext
+			    JOIN #tmpStagedItemLocaleExt tmp ON 
+				    tmp.[Region] = ext.[Region] AND  
+				    tmp.[ItemID] = ext.[ItemID] AND 
+				    tmp.[LocaleID] = ext.[LocaleID] AND 
+				    tmp.[AttributeID] = ext.[AttributeID]
+            WHERE tmp.[Operation] = 'D'
+
+            --3/3 insert new records when nothing matches the staged data
+            INSERT INTO [dbo].ItemAttributes_Locale_{0}_Ext
+            (
+			    [ItemID],
+			    [LocaleID],
+			    [AttributeID],
+			    [AttributeValue],
+			    [AddedDate]
+		    )
+            SELECT 
+			    tmp.[ItemID],
+			    tmp.[LocaleID],
+			    tmp.[AttributeID],
+			    tmp.[AttributeValue],
+			    @Timestamp
+            FROM #tmpStagedItemLocaleExt tmp		
+            WHERE tmp.[Operation]='I'
+            COMMIT TRAN
+        END TRY
+        BEGIN CATCH
+	        ROLLBACK TRAN;
+            IF OBJECT_ID('tempdb..#tmpStagedItemLocale') IS NOT NULL DROP TABLE #tmpStagedItemLocale;
+            THROW
+        END CATCH
+            ";
 
             sql = String.Format(sql, data.Region);
             int affectedRows = this.db.Connection.Execute(sql,
                 new
                 {
                     Timestamp = data.Timestamp,
-                    Region = data.Region,
+                    Region = new DbString { Value = data.Region, Length = 2 },
                     TransactionId = data.TransactionId
                 },
                 this.db.Transaction);

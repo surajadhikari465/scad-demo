@@ -47,12 +47,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
+    <Reference Include="MoreLinq, Version=2.0.20029.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.0.0\lib\net35\MoreLinq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -78,22 +78,22 @@
     <Compile Include="Queries\GetPriceDataQuery.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Common.ControllerApplication\Mammoth.Common.ControllerApplication.csproj">
-      <Project>{d7953c91-887d-4ca0-8497-e45d4b4897e8}</Project>
+      <Project>{D7953C91-887D-4CA0-8497-E45D4B4897E8}</Project>
       <Name>Mammoth.Common.ControllerApplication</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj">
-      <Project>{82505a9b-2264-4428-9806-d5ef838109b3}</Project>
+      <Project>{82505A9B-2264-4428-9806-D5EF838109B3}</Project>
       <Name>Mammoth.Common.DataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Common\Mammoth.Common.csproj">
-      <Project>{563f0633-8364-4ed0-88ff-f55302117348}</Project>
-      <Name>Mammoth.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

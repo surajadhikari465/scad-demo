@@ -1,30 +1,31 @@
-﻿using Icon.RenewableContext;
-using Icon.Common.DataAccess;
+﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
-using System;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
     public class SaveToMessageHistoryCommandHandler : ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>
     {
         private ILogger<SaveToMessageHistoryCommandHandler> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
         public SaveToMessageHistoryCommandHandler(
             ILogger<SaveToMessageHistoryCommandHandler> logger,
-            IRenewableContext<IconContext> globalContext)
+            IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(SaveToMessageHistoryCommand<MessageHistory> data)
         {
-            globalContext.Context.MessageHistory.Add(data.Message);
-            globalContext.Context.SaveChanges();
-
-            logger.Info(String.Format("Saved message {0} to the MessageHistory table.", data.Message.MessageHistoryId));
+            using (var context = iconContextFactory.CreateContext())
+            {
+                context.MessageHistory.Add(data.Message);
+                context.SaveChanges();
+            }
+            logger.Info(string.Format("Saved message {0} to the MessageHistory table.", data.Message.MessageHistoryId));
         }
     }
 }

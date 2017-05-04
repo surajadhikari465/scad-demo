@@ -26,6 +26,7 @@ function removeRow(e) {
 function addRow(e) {
     //variable should have been set in view
     var url = urlToAddEsbEnvironmentApp;
+  
     //call action to add html for adding a row          
     $.ajax({
         type: "GET",
@@ -42,15 +43,23 @@ function addApplicationSucceeded(html) {
 
     //get count of rows/applications
     var index = $(".applicationRow").length - 1;
-
+    // loop through dropdown--set the attributes 
+    $(justAddedDiv).find("select").each(function (i) {
+        var existingNameVal = $(this).attr('name');
+        var existingIdVal = $(this).attr('id');
+        $(this).attr("name", "Applications[" + index + "]." + existingNameVal);
+        $(this).attr("id", "Applications_" + index + "__" + existingIdVal);
+    });
     //rename some stuff in the added row so the mvc binding will work
     $(justAddedDiv).find("input").each(function (i) {
         var existingNameVal = $(this).attr('name');
         var existingIdVal = $(this).attr('id');
-
+      
         $(this).attr("name", "Applications[" + index + "]." + existingNameVal);
         $(this).attr("id", "Applications_" + index + "__" + existingIdVal);
     });
+
+
     $(justAddedDiv).find("span").each(function (i) {
         var existingVal = $(this).attr('data-valmsg-for');
         $(this).attr("data-valmsg-for", "Applications[" + index + "]." + existingVal);

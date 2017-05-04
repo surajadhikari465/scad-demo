@@ -17,5 +17,10 @@ namespace Icon.Infor.Listeners.Item.Tests
                 .Replace("{PropertyName}", propertyNameWithSpaces)
                 .Replace("{PropertyValue}", propertyValue);
         }
+
+        public static string GetFormattedValidationMessageWithStringFormat(this string message, params string[] propertyValues)
+        {
+            return string.Format(message, propertyValues);
+        }
     }
 }

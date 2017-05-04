@@ -69,7 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettingsAccessor.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Email\EmailBuilder.cs" />
     <Compile Include="Email\EnumerableEmailMessageBuilder.cs" />
+    <Compile Include="Email\IEmailBuilder.cs" />
     <Compile Include="Email\IEmailMessageBuilder.cs" />
     <Compile Include="Email\EmailClient.cs" />
     <Compile Include="Email\EmailClientSettings.cs" />

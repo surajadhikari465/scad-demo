@@ -1,6 +1,4 @@
-﻿
-
-CREATE PROCEDURE [dbo].[DeleteHierarchyClass_FromStaging]
+﻿CREATE PROCEDURE [dbo].[DeleteHierarchyClass_FromStaging]
 	@transactionId uniqueidentifier
 AS
 BEGIN

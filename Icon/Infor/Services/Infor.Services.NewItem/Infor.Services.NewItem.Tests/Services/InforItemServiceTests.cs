@@ -28,8 +28,6 @@ namespace Infor.Services.NewItem.Tests.Services
         private IconContext context;
         private DbContextTransaction transaction;
         private Mock<ILogger<InforItemService>> mockLogger;
-        private Mock<ICollectionValidator<NewItemModel>> mockValidator;
-        private CollectionValidatorResult<NewItemModel> validatorResult;
 
         [TestInitialize]
         public void Initialize()
@@ -39,19 +37,14 @@ namespace Infor.Services.NewItem.Tests.Services
 
             mockEsbConnectionFactory = new Mock<IEsbConnectionFactory>();
             mockMessageBuilder = new Mock<IMessageBuilder<IEnumerable<NewItemModel>>>();
-            mockValidator = new Mock<ICollectionValidator<NewItemModel>>();
             mockLogger = new Mock<ILogger<InforItemService>>();
 
-            service = new InforItemService(mockEsbConnectionFactory.Object, mockMessageBuilder.Object, context, mockValidator.Object, mockLogger.Object);
+            service = new InforItemService(mockEsbConnectionFactory.Object, mockMessageBuilder.Object, context, mockLogger.Object);
             request = new AddNewItemsToInforRequest();
 
             mockProducer = new Mock<IEsbProducer>();
             mockEsbConnectionFactory.Setup(m => m.CreateProducer(true))
                 .Returns(mockProducer.Object);
-
-            validatorResult = new CollectionValidatorResult<NewItemModel>();
-            mockValidator.Setup(m => m.Validate(It.IsAny<IEnumerable<NewItemModel>>()))
-                .Returns(validatorResult);
         }
 
         [TestCleanup]
@@ -87,7 +80,6 @@ namespace Infor.Services.NewItem.Tests.Services
             request.NewItems = new List<NewItemModel> { new NewItemModel() };
             mockMessageBuilder.Setup(m => m.BuildMessage(It.IsAny<IEnumerable<NewItemModel>>()))
                 .Returns("<Test>test</Test>");
-            validatorResult.ValidEntities = request.NewItems;
 
             //When
             var response = service.AddNewItemsToInfor(request);
@@ -114,7 +106,6 @@ namespace Infor.Services.NewItem.Tests.Services
                 .Returns("<Test>test</Test>");
             mockProducer.Setup(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()))
                 .Throws(new Exception("Test"));
-            validatorResult.ValidEntities = request.NewItems;
 
             //When
             var response = service.AddNewItemsToInfor(request);
@@ -138,7 +129,6 @@ namespace Infor.Services.NewItem.Tests.Services
             request.NewItems = new List<NewItemModel> { new NewItemModel() };
             mockMessageBuilder.Setup(m => m.BuildMessage(It.IsAny<IEnumerable<NewItemModel>>()))
                 .Throws(new Exception("Test"));
-            validatorResult.ValidEntities = request.NewItems;
 
             //When
             var response = service.AddNewItemsToInfor(request);
@@ -160,7 +150,6 @@ namespace Infor.Services.NewItem.Tests.Services
             request.NewItems = new List<NewItemModel> { new NewItemModel() };
             mockMessageBuilder.Setup(m => m.BuildMessage(It.IsAny<IEnumerable<NewItemModel>>()))
                 .Returns("<<<Not valid XML. Should create an exception.");
-            validatorResult.ValidEntities = request.NewItems;
 
             //When
             var response = service.AddNewItemsToInfor(request);
@@ -172,50 +161,6 @@ namespace Infor.Services.NewItem.Tests.Services
             mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
 
             Assert.AreEqual(0, response.MessageHistoryId);
-        }
-
-        [TestMethod]
-        public void AddNewItemsToInfor_InvalidItemsExist_ShouldExcludeInvalidItemsWhenBuildingMessage()
-        {
-            //Given
-            request.NewItems = new List<NewItemModel> { new NewItemModel(), new NewItemModel() };
-            mockMessageBuilder.Setup(m => m.BuildMessage(It.IsAny<IEnumerable<NewItemModel>>()))
-                .Returns("<Test>test</Test>");
-            validatorResult.ValidEntities = request.NewItems.Take(1);
-            validatorResult.InvalidEntities = request.NewItems.Skip(1);
-
-            //When
-            var response = service.AddNewItemsToInfor(request);
-
-            //Then
-            Assert.AreEqual(false, response.ErrorOccurred);
-            mockMessageBuilder.Verify(m => m.BuildMessage(validatorResult.ValidEntities), Times.Once);
-            mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-
-            var messageHistory = context.MessageHistory.AsNoTracking().Single(mh => mh.MessageHistoryId == response.MessageHistoryId);
-            Assert.AreEqual(MessageTypes.InforNewItem, messageHistory.MessageTypeId);
-            Assert.AreEqual(MessageStatusTypes.Sent, messageHistory.MessageStatusId);
-            Assert.AreEqual("<Test>test</Test>", messageHistory.Message);
-            Assert.IsTrue(DateTime.Today < messageHistory.InsertDate);
-            Assert.IsTrue(DateTime.Today < messageHistory.ProcessedDate);
-        }
-
-        [TestMethod]
-        public void AddNewItemsToInfor_OnlyInvalidItemsExist_ShouldNotSendItemsToInforAndResponseErrorOccuredIsFalse()
-        {
-            //Given
-            request.NewItems = new List<NewItemModel> { new NewItemModel() };
-            mockMessageBuilder.Setup(m => m.BuildMessage(It.IsAny<IEnumerable<NewItemModel>>()))
-                .Returns("<Test>test</Test>");
-            validatorResult.InvalidEntities = request.NewItems.Skip(1);
-
-            //When
-            var response = service.AddNewItemsToInfor(request);
-
-            //Then
-            Assert.AreEqual(false, response.ErrorOccurred);
-            mockMessageBuilder.Verify(m => m.BuildMessage(It.IsAny<IEnumerable<NewItemModel>>()), Times.Never);
-            mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
         }
     }
 }

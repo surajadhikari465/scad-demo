@@ -159,6 +159,8 @@
     <Folder Include="stage" />
     <Folder Include="stage\Tables" />
     <Folder Include="Scripts\Templates" />
+    <Folder Include="gpm" />
+    <Folder Include="gpm\Tables" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -541,7 +543,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\Stored Procedures\AddOrUpdatePrices_FromStaging.sql" />
-    <Build Include="esb\Stored Procedures\MarkMessageQueueEntriesAsInProcess.sql" />
     <Build Include="esb\Tables\MessageQueuePrice.sql" />
     <Build Include="esb\Stored Procedures\LoadEsbItemLocaleMessagesByRegionOrStores.sql" />
     <Build Include="esb\Functions\fn_Parse_List.sql" />
@@ -595,6 +596,56 @@
     <None Include="Scripts\Templates\StartDataTransformation.sql" />
     <Build Include="stage\Tables\Items.sql" />
     <Build Include="stage\Tables\HierarchyClass.sql" />
+    <None Include="Scripts\PostDeploymentScripts\PopulateRetentionPolicyForStagingTables.sql" />
+    <Build Include="stage\Tables\MessageQueue.sql" />
+    <Build Include="esb\Stored Procedures\MarkMessageQueueItemLocaleEntriesAsInProcess.sql" />
+    <Build Include="esb\Stored Procedures\MarkMessageQueuePriceEntriesAsInProcess.sql" />
+    <Build Include="app\Stored Procedures\PurgeMessageQueues.sql" />
+    <None Include="Jobs\PurgeMessageQueues.sql" />
+    <Build Include="Security\gpm.sql" />
+    <Build Include="gpm\Tables\Price_FL.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_MA.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_MW.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_NA.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_NC.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_PN.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_NE.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_RM.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_SO.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_SP.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_SW.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_TS.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="gpm\Tables\Price_UK.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="dbo\Views\Locale.sql" />
+    <Build Include="gpm\Tables\DeletedPrices.sql" />
+    <Build Include="gpm\Tables\MessageArchivePrice.sql" />
+    <Build Include="app\Tables\DbStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -609,6 +660,8 @@
     <None Include="Jobs\DataHistoryPurge.sql" />
     <None Include="Scripts\PreDeploymentScripts\SubTeamCleanUp_PreDeployment.sql" />
     <None Include="Scripts\PostDeploymentScripts\Currency_RemoveTrailingSpaces_PostDeployment.sql" />
+    <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddMaintFlagRowToDbStatusTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

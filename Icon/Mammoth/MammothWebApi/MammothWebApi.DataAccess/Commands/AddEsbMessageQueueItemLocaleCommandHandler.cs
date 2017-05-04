@@ -133,7 +133,7 @@ namespace MammothWebApi.DataAccess.Commands
             {
                 TransactionId = data.TransactionId,
                 Timestamp = data.Timestamp,
-                RegionCode = data.Region,
+                RegionCode = new DbString { Value = data.Region, Length = 2 },
                 MessageTypeId = MessageTypes.ItemLocale,
                 MessageStatusId = MessageStatusTypes.Ready,
                 MessageActionId = MessageActions.AddOrUpdate,

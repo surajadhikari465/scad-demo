@@ -49,6 +49,10 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
       <Private>True</Private>
@@ -73,6 +77,10 @@
       <HintPath>..\..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
       <Private>True</Private>
@@ -93,10 +101,6 @@
   <ItemGroup>
     <Compile Include="BulkCommands\BulkAddBrandCommand.cs" />
     <Compile Include="BulkCommands\BulkAddBrandCommandHandler.cs" />
-    <Compile Include="BulkCommands\BulkAddMammothItemLocaleEventsCommand.cs" />
-    <Compile Include="BulkCommands\BulkAddMammothItemLocaleEventsCommandHandler.cs" />
-    <Compile Include="BulkCommands\BulkAddMammothPriceEventsCommand.cs" />
-    <Compile Include="BulkCommands\BulkAddMammothPriceEventsCommandHandler.cs" />
     <Compile Include="BulkCommands\BulkAddUpdateLastChangeCommand.cs" />
     <Compile Include="BulkCommands\BulkAddUpdateLastChangeCommandHandler.cs" />
     <Compile Include="BulkCommands\BulkAddValidatedScanCodeCommand.cs" />
@@ -127,6 +131,10 @@
     <Compile Include="Commands\AddTaxClassCommandHandler.cs" />
     <Compile Include="Commands\AddValidatedScanCodeCommand.cs" />
     <Compile Include="Commands\AddValidatedScanCodeCommandHandler.cs" />
+    <Compile Include="Commands\ArchiveEventsCommand.cs" />
+    <Compile Include="Commands\ArchiveEventsCommandHandler.cs" />
+    <Compile Include="Commands\ArchiveFailedEventsCommand.cs" />
+    <Compile Include="Commands\ArchiveFailedEventsCommandHandler.cs" />
     <Compile Include="Commands\BrandDeleteCommand.cs" />
     <Compile Include="Commands\BrandDeleteCommandHandler.cs" />
     <Compile Include="Commands\DeleteEventQueueCommand.cs" />

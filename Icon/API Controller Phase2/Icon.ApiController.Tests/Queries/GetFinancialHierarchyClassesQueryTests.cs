@@ -11,14 +11,12 @@ namespace Icon.ApiController.Tests.Queries
     {
         private GetFinancialHierarchyClassesQuery query;
         private IconContext context;
-        private GlobalIconContext globalContext;
 
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
-            query = new GetFinancialHierarchyClassesQuery(globalContext);
+            query = new GetFinancialHierarchyClassesQuery(new IconDbContextFactory());
         }
 
         [TestMethod]

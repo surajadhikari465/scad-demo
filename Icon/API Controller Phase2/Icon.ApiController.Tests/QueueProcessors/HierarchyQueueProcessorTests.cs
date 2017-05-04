@@ -25,7 +25,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
         private HierarchyQueueProcessor queueProcessor;
 
         private Mock<ILogger<HierarchyQueueProcessor>> mockLogger;
-        private Mock<IRenewableContext<IconContext>> mockContext;
         private Mock<IQueueReader<MessageQueueHierarchy, Contracts.HierarchyType>> mockQueueReader;
         private Mock<ISerializer<Contracts.HierarchyType>> mockSerializer;
         private Mock<IQueryHandler<GetFinancialHierarchyClassesParameters, List<HierarchyClass>>> mockGetFinancialClassesQueryHandler;
@@ -47,7 +46,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
         {
             settings = new ApiControllerSettings();
             mockLogger = new Mock<ILogger<HierarchyQueueProcessor>>();
-            mockContext = new Mock<IRenewableContext<IconContext>>();
             mockQueueReader = new Mock<IQueueReader<MessageQueueHierarchy, Contracts.HierarchyType>>();
             mockSerializer = new Mock<ISerializer<Contracts.HierarchyType>>();
             mockGetFinancialClassesQueryHandler = new Mock<IQueryHandler<GetFinancialHierarchyClassesParameters, List<HierarchyClass>>>();
@@ -71,7 +69,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
             queueProcessor = new HierarchyQueueProcessor(
                 settings,
                 mockLogger.Object,
-                mockContext.Object,
                 mockQueueReader.Object,
                 mockSerializer.Object,
                 mockGetFinancialClassesQueryHandler.Object,
@@ -170,7 +167,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
             mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueHierarchy>>())).Returns(fakeMessageQueueHierarchies);
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueHierarchy>>())).Returns(new Contracts.HierarchyType { @class = new Contracts.HierarchyClassType[] { new Contracts.HierarchyClassType { id = "1" } } });
-            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.HierarchyType>(), It.IsAny<TextWriter>())).Returns(String.Empty);
+            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.HierarchyType>(), It.IsAny<TextWriter>())).Returns(string.Empty);
 
             // When.
             queueProcessor.ProcessMessageQueue();

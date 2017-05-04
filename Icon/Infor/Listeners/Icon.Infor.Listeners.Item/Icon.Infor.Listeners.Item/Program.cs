@@ -8,6 +8,7 @@ using Icon.Framework;
 using Icon.Infor.Listeners.Item.Commands;
 using Icon.Infor.Listeners.Item.MessageParsers;
 using Icon.Infor.Listeners.Item.Notifiers;
+using Icon.Infor.Listeners.Item.Queries;
 using Icon.Infor.Listeners.Item.Services;
 using Icon.Infor.Listeners.Item.Validators;
 using Icon.Logging;
@@ -27,7 +28,7 @@ namespace Icon.Infor.Listeners.Item
                 {
                     s.ConstructUsing(c => new ItemListener(
                         new ItemMessageParser(new NLogLogger<ItemMessageParser>()),
-                        new ItemModelValidator(new ValidateItemsCommandHandler(globalContext)),
+                        new ItemModelValidator(new GetItemValidationPropertiesQuery(globalContext)),
                         globalContext,
                         new ItemService(
                                 new ItemAddOrUpdateCommandHandler(globalContext),

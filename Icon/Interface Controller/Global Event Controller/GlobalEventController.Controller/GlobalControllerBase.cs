@@ -16,6 +16,7 @@ namespace GlobalEventController.Controller
         private IEventBulkProcessor bulkNutriFactsProcessor;
         private IContextManager contextManager;
         private IDataIssueMessageCollector dataIssueMessageCollector;
+        private IEventArchiver eventArchiver;
 
         public GlobalControllerBase(IEventQueues eventQueues,
             IEventCollector collector,
@@ -24,7 +25,8 @@ namespace GlobalEventController.Controller
             IEventProcessor processor,
             IEventFinalizer finalizer,
             IContextManager contextManager,
-            IDataIssueMessageCollector dataIssueMessageCollector)
+            IDataIssueMessageCollector dataIssueMessageCollector,
+            IEventArchiver eventArchiver)
         {
             this.eventQueues = eventQueues;
             this.collector = collector;
@@ -34,6 +36,7 @@ namespace GlobalEventController.Controller
             this.finalizer = finalizer;
             this.contextManager = contextManager;
             this.dataIssueMessageCollector = dataIssueMessageCollector;
+            this.eventArchiver = eventArchiver;
         }
 
         public void Start()
@@ -51,11 +54,13 @@ namespace GlobalEventController.Controller
                 this.bulkNutriFactsProcessor.BulkProcessEvents();
                 this.finalizer.HandleFailedEvents();
                 this.finalizer.DeleteEvents();
+                this.eventArchiver.ArchiveEvents();
 
                 this.eventQueues.QueuedEvents.Clear();
                 this.eventQueues.ProcessedEvents.Clear();
                 this.eventQueues.FailedEvents.Clear();
                 this.eventQueues.RegionToEventQueueDictionary.Clear();
+                this.eventArchiver.ClearArchiveEvents();
                 
                 contextManager.RefreshContexts();
                 this.collector.GetEvents();

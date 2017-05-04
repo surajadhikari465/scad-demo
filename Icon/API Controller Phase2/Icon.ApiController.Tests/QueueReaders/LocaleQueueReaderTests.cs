@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.ApiController.Tests.QueueReaders
@@ -23,8 +24,7 @@ namespace Icon.ApiController.Tests.QueueReaders
     {
         private LocaleQueueReader queueReader;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private Mock<ILogger<LocaleQueueReader>> mockLogger;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueLocale>, List<MessageQueueLocale>>> mockGetMessageQueueQuery;
@@ -63,8 +63,9 @@ namespace Icon.ApiController.Tests.QueueReaders
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
             chainName = "Test Chain";
             regionName = "Central";
@@ -89,10 +90,8 @@ namespace Icon.ApiController.Tests.QueueReaders
             mockLogger = new Mock<ILogger<LocaleQueueReader>>();
             mockEmailClient = new Mock<IEmailClient>();
             mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueLocale>, List<MessageQueueLocale>>>();
-            getLocaleLineageQuery = new GetLocaleLineageQuery(globalContext);
+            getLocaleLineageQuery = new GetLocaleLineageQuery(new IconDbContextFactory());
             mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueLocale>>>();
-
-            transaction = context.Database.BeginTransaction();
 
             BuildTestChain();
             BuildTestRegion();
@@ -112,7 +111,7 @@ namespace Icon.ApiController.Tests.QueueReaders
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         private void BuildStoreAttributes()
@@ -158,7 +157,7 @@ namespace Icon.ApiController.Tests.QueueReaders
                 {
                     addressID = address.addressID,
                     localeID = store.localeID,
-                    addressUsageID = AddressUsages.Shipping
+                    AddressUsage = context.AddressUsage.Single(au => au.addressUsageID == AddressUsages.Shipping)
                 };
 
                 context.LocaleAddress.Add(localeAddress);

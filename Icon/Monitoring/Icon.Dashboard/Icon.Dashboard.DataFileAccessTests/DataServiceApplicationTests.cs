@@ -27,14 +27,13 @@
         public void WhenConfigHasWindowsService_ThenGetApplications_ShouldReturnWindowService()
         {
             // When
-            var applications = IconDashboardDataService.Instance.GetApplications(configPath, EnvironmentEnum.Test);
+            var applications = IconDashboardDataService.Instance.GetApplications(configPath);
             var app = IconDashboardDataService.Instance.GetApplication(configPath, "Mammoth.Price.Controller", "vm-icon-test1");
 
             // Then
             Assert.AreEqual("Mammoth.Price.Controller", app.Name);
             Assert.AreEqual("\\\\vm-icon-test1\\e$\\Mammoth\\Price Controller\\Mammoth.Price.Controller.exe.config", app.ConfigFilePath);
             Assert.AreEqual("Mammoth Price Controller", app.DisplayName);
-            Assert.AreEqual(EnvironmentEnum.Test, app.Environment);
             Assert.AreEqual("vm-icon-test1", app.Server);
             Assert.AreEqual(ApplicationTypeEnum.WindowsService, app.TypeOfApplication);
         }
@@ -48,7 +47,6 @@
                 Name = "Mammoth.ItemLocale.Controller",
                 ConfigFilePath = "\\\\vm-icon-test1\\e$\\Mammoth\\Item Locale Controller\\Mammoth.ItemLocale.Controller.exe.config",
                 DisplayName = "Mammoth ItemLocale Controller",
-                Environment = EnvironmentEnum.Test,
                 Server = "vm-icon-test1",
             };
 
@@ -62,7 +60,6 @@
             Assert.AreEqual("Mammoth.ItemLocale.Controller", app.Name);
             Assert.AreEqual("\\\\vm-icon-test1\\e$\\Mammoth\\Item Locale Controller\\Mammoth.ItemLocale.Controller.exe.config", app.ConfigFilePath);
             Assert.AreEqual("Mammoth ItemLocale Controller", app.DisplayName);
-            Assert.AreEqual(EnvironmentEnum.Test, app.Environment);
             Assert.AreEqual("vm-icon-test1", app.Server);
             Assert.AreEqual(ApplicationTypeEnum.WindowsService, app.TypeOfApplication);
         }
@@ -76,7 +73,6 @@
                 Name = "Mammoth.Delete.Controller",
                 ConfigFilePath = "\\\\vm-icon-test1\\e$\\Mammoth\\Item Locale Controller\\Mammoth.ItemLocale.Controller.exe.config",
                 DisplayName = "Mammoth ItemLocale Controller",
-                Environment = EnvironmentEnum.Test,
                 Server = "vm-icon-test1",
             };
 
@@ -84,7 +80,7 @@
 
             // When
             IconDashboardDataService.Instance.DeleteApplication(winService, this.configPath);
-            var apps = IconDashboardDataService.Instance.GetApplications(this.configPath, EnvironmentEnum.Test)
+            var apps = IconDashboardDataService.Instance.GetApplications(this.configPath)
                 .Where(a => a.Name == "Mammoth.Delete.Controller" && a.Server == "vm-icon-test1");
 
             // Then
@@ -100,7 +96,6 @@
                 Name = "Mammoth.Update.Controller",
                 ConfigFilePath = "\\\\vm-icon-test1\\e$\\Mammoth\\Item Locale Controller\\Mammoth.ItemLocale.Controller.exe.config",
                 DisplayName = "Mammoth Update Controller",
-                Environment = EnvironmentEnum.Test,
                 Server = "vm-icon-test1",
             };
 
@@ -109,16 +104,14 @@
             var updateService = new WindowsService
             {
                 Name = "Mammoth.Update.Controller",
-                Server = "vm-icon-test1",
-
                 ConfigFilePath = "update.config",
                 DisplayName = "update name",
-                Environment = EnvironmentEnum.QA,
+                Server = "vm-icon-test1",
             };
 
             // When
             IconDashboardDataService.Instance.UpdateApplication(updateService, this.configPath);
-            var app = IconDashboardDataService.Instance.GetApplications(this.configPath, EnvironmentEnum.QA)
+            var app = IconDashboardDataService.Instance.GetApplications(this.configPath)
                 .First(a => a.Name == "Mammoth.Update.Controller" && a.Server == "vm-icon-test1");
 
             // Then
@@ -126,7 +119,6 @@
             Assert.AreEqual("vm-icon-test1", app.Server);
             Assert.AreEqual("update.config", app.ConfigFilePath);
             Assert.AreEqual("update name", app.DisplayName);
-            Assert.AreEqual(EnvironmentEnum.QA, app.Environment);
 
             Assert.AreEqual(ApplicationTypeEnum.WindowsService, app.TypeOfApplication);
         }

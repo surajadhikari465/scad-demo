@@ -13,54 +13,22 @@
     using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Linq;
-    
+
     public sealed partial class IconDashboardDataService : IIconDashboardDataService
     {
-        [ImportMany(typeof(EsbEnvironmentFactory))]
-        public IEnumerable<EsbEnvironmentFactory> EsbEnvironmentFactories { get; private set; }
-
         List<string> esbEnvironmentPropertiesToSkipWhenSaving = new List<string>()
         {
             nameof(IEsbEnvironment.Applications)
-        };        
+        };
 
-        public IEnumerable<IEsbEnvironment> GetEsbEnvironments(string pathToXmlDataFile)
-        {
-            var applications = new ConcurrentBag<IEsbEnvironment>();
-            var factories = this.EsbEnvironmentFactories.ToDictionary(af => af.GetType().Name.ToLowerInvariant());
-            var dataFile = this.LoadDataFile(pathToXmlDataFile);
-            if (dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments) == null ||
-                dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments).Elements(EsbEnvironmentSchema.EsbEnvironment)==null)
-            {
-                return null;
-            }
-            var elements = dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments).Elements(EsbEnvironmentSchema.EsbEnvironment);
+        [ImportMany(typeof(EsbEnvironmentFactory))]
+        public IEnumerable<EsbEnvironmentFactory> EsbEnvironmentFactories { get; private set; }
 
-            Parallel.ForEach(elements, e =>
-            {
-                // Convention that the factory for an application must be named <ApplicationType>Factory.
-                EsbEnvironmentFactory esbEnvironmentFactory;
-                var factoryName = $"{EsbEnvironmentSchema.EsbEnvironment}Factory";
-                if (factories.TryGetValue(factoryName.ToLowerInvariant(), out esbEnvironmentFactory))
-                {
-                    applications.Add(esbEnvironmentFactory.GetEsbEnvironment(e));
-                }
-            });
-
-            return applications;
-        }
-
-        public IEsbEnvironment GetEsbEnvironment(string pathToXmlDataFile, string name)
-        {
-            if (pathToXmlDataFile == null) throw new ArgumentNullException(nameof(pathToXmlDataFile));
-            if (name == null) throw new ArgumentNullException(nameof(name));
-
-            var esbEnvironments = GetEsbEnvironments(pathToXmlDataFile);
-
-            return esbEnvironments.FirstOrDefault(
-                a => a.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-        }
-
+        /// <summary>
+        /// Adds an ESB environment definition to the data file
+        /// </summary>
+        /// <param name="esbEnvironment">IEsbEnvironment implementation holding the data to be stored</param>
+        /// <param name="pathToXmlDataFile">Path to the data file where the new definition will be written</param>
         public void AddEsbEnvironment(IEsbEnvironment esbEnvironment, string pathToXmlDataFile)
         {
             var environmentName = esbEnvironment.Name;
@@ -76,7 +44,7 @@
             }
 
             var esbEnvironmentElement = BuildEsbEnvironmentElement(esbEnvironment);
-            
+
             if (dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments) == null)
             {
                 dataFile.Root.Add(new XElement(EsbEnvironmentSchema.EsbEnvironments));
@@ -85,43 +53,12 @@
             dataFile.Save(pathToXmlDataFile);
         }
 
-        private XElement BuildEsbEnvironmentElement(IEsbEnvironment esbEnvironment)
-        {
-            var environmentAttributes = typeof(IEsbEnvironment)
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => !esbEnvironmentPropertiesToSkipWhenSaving.Contains(p.Name))
-                .AsParallel()
-                .Select(p => new XAttribute(p.Name, p.GetValue(esbEnvironment) ?? string.Empty));
-            var esbEnvironmentElement = new XElement(EsbEnvironmentSchema.EsbEnvironment, environmentAttributes);
-
-            var applicationsElement = new XElement(EsbEnvironmentSchema.EsbEnvironmentApplications);
-            if (esbEnvironment.Applications != null)
-            {
-                foreach (var app in esbEnvironment.Applications)
-                {
-                    var appIdentifierAttributes = typeof(IconApplicationIdentifier)
-                        .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                        .AsParallel()
-                        .Select(p => new XAttribute(p.Name, p.GetValue(app) ?? string.Empty));
-                    var appIdentifierElement = new XElement(EsbEnvironmentSchema.EsbEnvironmentAppIdentifier, appIdentifierAttributes);
-                    applicationsElement.Add(appIdentifierElement);
-                }
-            }
-            esbEnvironmentElement.Add(applicationsElement);
-            return esbEnvironmentElement;
-        }
-
-        public void UpdateEsbEnvironment(IEsbEnvironment esbEnvironment, string pathToXmlDataFile)
-        {
-            var dataFile = LoadDataFile(pathToXmlDataFile);
-            var currentData = GetEsbEnvironmentElement(dataFile, esbEnvironment);
-
-            var esbEnvironmentElement = BuildEsbEnvironmentElement(esbEnvironment);
-            currentData?.ReplaceWith(esbEnvironmentElement);
-
-            dataFile.Save(pathToXmlDataFile);
-        }
-
+        /// <summary>
+        /// Removes an ESB environment definition from the data store
+        /// </summary>
+        /// <param name="esbEnvironment">an instance of IEsbEnvironment whose properties will identify
+        ///     the data to be removed</param>
+        /// <param name="pathToXmlDataFile">path to the data file containing the definitions</param>
         public void DeleteEsbEnvironment(IEsbEnvironment esbEnvironment, string pathToXmlDataFile)
         {
             var dataFile = LoadDataFile(pathToXmlDataFile);
@@ -129,72 +66,6 @@
             currentData?.Remove();
 
             dataFile.Save(pathToXmlDataFile);
-        }
-
-        private XElement GetEsbEnvironmentElement(XDocument dataFile, IEsbEnvironment esbEnvironment)
-        {
-            return dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments).Elements(EsbEnvironmentSchema.EsbEnvironment)
-                .FirstOrDefault(e => e.Attribute(nameof(esbEnvironment.Name)).Value.Equals(esbEnvironment.Name, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        public Tuple<bool,string> UpdateApplicationEsbEnvironmentAndRestart(IconApplicationIdentifier applicationIdentifier, IEsbEnvironment esbEnvironment, string pathToXmlDataFile)
-        {
-            try
-            {
-                var application = GetApplication(pathToXmlDataFile, applicationIdentifier.Name, applicationIdentifier.Server);
-
-                if (application != null)
-                {
-                    SetAppSettingsIfItExists(application, EsbAppSettings.ServerUrlKey, esbEnvironment.ServerUrl);
-                    SetAppSettingsIfItExists(application, EsbAppSettings.TargetHostNameKey, esbEnvironment.TargetHostName);
-                    SetAppSettingsIfItExists(application, EsbAppSettings.JmsUsernameKey, esbEnvironment.JmsUsername);
-                    SetAppSettingsIfItExists(application, EsbAppSettings.JmsPasswordKey, esbEnvironment.JmsPassword);
-                    SetAppSettingsIfItExists(application, EsbAppSettings.JndiUsernameKey, esbEnvironment.JndiUsername);
-                    SetAppSettingsIfItExists(application, EsbAppSettings.JndiPasswordKey, esbEnvironment.JndiPassword);
-
-                    SaveAppSettings(application);
-
-                    if (application.TypeOfApplication == ApplicationTypeEnum.WindowsService)
-                    {
-                        application.Stop();
-                        application.Start();
-                    }
-                    return new Tuple<bool, string>(true, String.Empty);
-                }
-                return new Tuple<bool, string>(false, $"Unknown application {applicationIdentifier.Name}-{applicationIdentifier.Server}");
-            }
-            catch (Exception e)
-            {
-                while (e.InnerException != null) e = e.InnerException;
-                return new Tuple<bool, string>(false, e.Message);
-            }
-        }
-
-        public List<Tuple<bool,string>> UpdateApplicationsToEsbEnvironment(IEsbEnvironment esbEnvironment, string dataFile)
-        {
-            var resultCollection = new ConcurrentBag<Tuple<bool, string>>();
-
-            Parallel.ForEach(esbEnvironment.Applications, (eachAppId) => 
-                resultCollection.Add(UpdateApplicationEsbEnvironmentAndRestart(eachAppId, esbEnvironment, dataFile)));
-
-            return resultCollection.ToList();
-        }
-
-        private void SetAppSettingsIfItExists(IApplication application, string key, string value)
-        {
-            if (application.AppSettings.ContainsKey(key))
-            {
-                application.AppSettings[key] = value;
-            }
-        }
-
-        private string GetAppSettingsIfItExists(IApplication application, string key)
-        {
-            if (application.AppSettings.ContainsKey(key))
-            {
-                return application.AppSettings[key];
-            }
-            return null;
         }
 
         /// <summary>
@@ -207,7 +78,7 @@
         /// configured for the same esb environment.</returns>
         public IEsbEnvironment GetCurrentEsbEnvironment(string pathToXmlDataFile)
         {
-            var bestMatchingEnvironment = new Tuple<int, IEsbEnvironment>(0,null);
+            var bestMatchingEnvironment = new Tuple<int, IEsbEnvironment>(0, null);
             var dataFile = LoadDataFile(pathToXmlDataFile);
             var esbEnvironmentDefinitions = GetEsbEnvironments(pathToXmlDataFile);
 
@@ -253,6 +124,169 @@
 
             //return match (or null)
             return bestMatchingEnvironment.Item2;
+        }
+
+        public IEsbEnvironment GetEsbEnvironment(string pathToXmlDataFile, string name)
+        {
+            if (pathToXmlDataFile == null) throw new ArgumentNullException(nameof(pathToXmlDataFile));
+            if (name == null) throw new ArgumentNullException(nameof(name));
+
+            var esbEnvironments = GetEsbEnvironments(pathToXmlDataFile);
+
+            return esbEnvironments.FirstOrDefault(
+                a => a.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public IEnumerable<IEsbEnvironment> GetEsbEnvironments(string pathToXmlDataFile)
+        {
+            var environments = new ConcurrentBag<IEsbEnvironment>();
+
+            var dataFile = this.LoadDataFile(pathToXmlDataFile);
+            if (dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments) == null ||
+                dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments).Elements(EsbEnvironmentSchema.EsbEnvironment) == null)
+            {
+                return null;
+            }
+            var elements = dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments).Elements(EsbEnvironmentSchema.EsbEnvironment);
+
+            Parallel.ForEach(elements, element =>
+            {
+                var environment = ManufactureEsbEnvironment(element);
+                if (environment != null) environments.Add(environment);
+            });
+
+            return environments;
+        }
+
+        public Tuple<bool, string> UpdateApplicationEsbEnvironmentAndRestart(IconApplicationIdentifier applicationIdentifier, IEsbEnvironment esbEnvironment, string pathToXmlDataFile)
+        {
+            try
+            {
+                var application = GetApplication(pathToXmlDataFile, applicationIdentifier.Name, applicationIdentifier.Server);
+
+                if (application != null)
+                {
+                    SetAppSettingsIfItExists(application, EsbAppSettings.ServerUrlKey, esbEnvironment.ServerUrl);
+                    SetAppSettingsIfItExists(application, EsbAppSettings.TargetHostNameKey, esbEnvironment.TargetHostName);
+                    SetAppSettingsIfItExists(application, EsbAppSettings.JmsUsernameKey, esbEnvironment.JmsUsername);
+                    SetAppSettingsIfItExists(application, EsbAppSettings.JmsPasswordKey, esbEnvironment.JmsPassword);
+                    SetAppSettingsIfItExists(application, EsbAppSettings.JndiUsernameKey, esbEnvironment.JndiUsername);
+                    SetAppSettingsIfItExists(application, EsbAppSettings.JndiPasswordKey, esbEnvironment.JndiPassword);
+
+                    SaveAppSettings(application);
+
+                    if (application.TypeOfApplication == ApplicationTypeEnum.WindowsService)
+                    {
+                        application.Stop();
+                        application.Start();
+                    }
+                    return new Tuple<bool, string>(true, String.Empty);
+                }
+                return new Tuple<bool, string>(false, $"Unknown application {applicationIdentifier.Name}-{applicationIdentifier.Server}");
+            }
+            catch (Exception e)
+            {
+                while (e.InnerException != null) e = e.InnerException;
+                return new Tuple<bool, string>(false, e.Message);
+            }
+        }
+
+        public List<Tuple<bool, string>> UpdateApplicationsToEsbEnvironment(IEsbEnvironment esbEnvironment, string dataFile)
+        {
+            var resultCollection = new ConcurrentBag<Tuple<bool, string>>();
+
+            Parallel.ForEach(esbEnvironment.Applications, (eachAppId) =>
+                resultCollection.Add(UpdateApplicationEsbEnvironmentAndRestart(eachAppId, esbEnvironment, dataFile)));
+
+            return resultCollection.ToList();
+        }
+
+        public void UpdateEsbEnvironment(IEsbEnvironment esbEnvironment, string pathToXmlDataFile)
+        {
+            var dataFile = LoadDataFile(pathToXmlDataFile);
+            var currentData = GetEsbEnvironmentElement(dataFile, esbEnvironment);
+
+            var esbEnvironmentElement = BuildEsbEnvironmentElement(esbEnvironment);
+            currentData?.ReplaceWith(esbEnvironmentElement);
+
+            dataFile.Save(pathToXmlDataFile);
+        }
+
+        private static string GetAppSettingsIfItExists(IApplication application, string key)
+        {
+            if (application.AppSettings.ContainsKey(key))
+            {
+                return application.AppSettings[key];
+            }
+            return null;
+        }
+
+        private static XElement GetEsbEnvironmentElement(XDocument dataFile, IEsbEnvironment esbEnvironment)
+        {
+            return dataFile.Root.Element(EsbEnvironmentSchema.EsbEnvironments).Elements(EsbEnvironmentSchema.EsbEnvironment)
+                .FirstOrDefault(e => e.Attribute(nameof(esbEnvironment.Name)).Value.Equals(esbEnvironment.Name, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private static void SetAppSettingsIfItExists(IApplication application, string key, string value)
+        {
+            if (application.AppSettings.ContainsKey(key))
+            {
+                application.AppSettings[key] = value;
+            }
+        }
+
+        private XElement BuildEsbEnvironmentElement(IEsbEnvironment esbEnvironment)
+        {
+            var environmentAttributes = typeof(IEsbEnvironment)
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(p => !esbEnvironmentPropertiesToSkipWhenSaving.Contains(p.Name))
+                .AsParallel()
+                .Select(p => new XAttribute(p.Name, p.GetValue(esbEnvironment) ?? string.Empty));
+            var esbEnvironmentElement = new XElement(EsbEnvironmentSchema.EsbEnvironment, environmentAttributes);
+
+            var applicationsElement = new XElement(EsbEnvironmentSchema.EsbEnvironmentApplications);
+            if (esbEnvironment.Applications != null)
+            {
+                foreach (var app in esbEnvironment.Applications)
+                {
+                    var appIdentifierAttributes = typeof(IconApplicationIdentifier)
+                        .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                        .AsParallel()
+                        .Select(p => new XAttribute(p.Name, p.GetValue(app) ?? string.Empty));
+                    var appIdentifierElement = new XElement(EsbEnvironmentSchema.EsbEnvironmentAppIdentifier, appIdentifierAttributes);
+                    applicationsElement.Add(appIdentifierElement);
+                }
+            }
+            esbEnvironmentElement.Add(applicationsElement);
+            return esbEnvironmentElement;
+        }
+
+        private IEsbEnvironment ManufactureEsbEnvironment(XElement dataFileEsbEnvironmentElement)
+        {
+            try
+            {
+                if (dataFileEsbEnvironmentElement != default(XElement))
+                {
+                    var factories = this.EsbEnvironmentFactories.ToDictionary(af => af.GetType().Name.ToLowerInvariant());
+                    EsbEnvironmentFactory esbEnvironmentFactory;
+                    var factoryName = $"{EsbEnvironmentSchema.EsbEnvironment}Factory";
+                    if (factories.TryGetValue(factoryName.ToLowerInvariant(), out esbEnvironmentFactory))
+                    {
+                        return esbEnvironmentFactory.GetEsbEnvironment(dataFileEsbEnvironmentElement);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Unable to generate esb environment factory named {factoryName}");
+                    }
+                }
+                return (IEsbEnvironment)null;
+            }
+            catch (Exception ex)
+            {
+                //for debugging
+                string msg = ex.Message;
+                return (IEsbEnvironment)null;
+            }
         }
     }
 }

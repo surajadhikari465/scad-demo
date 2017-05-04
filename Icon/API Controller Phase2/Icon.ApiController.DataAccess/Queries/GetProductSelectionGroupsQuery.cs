@@ -4,23 +4,27 @@ using Icon.Framework;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Queries
 {
     public class GetProductSelectionGroupsQuery : IQueryHandler<GetProductSelectionGroupsParameters, List<ProductSelectionGroup>>
     {
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
-        public GetProductSelectionGroupsQuery(IRenewableContext<IconContext> globalContext)
+        public GetProductSelectionGroupsQuery(IDbContextFactory<IconContext> iconContextFactory)
         {
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public List<ProductSelectionGroup> Search(GetProductSelectionGroupsParameters parameters)
         {
-            return globalContext.Context.ProductSelectionGroup
-                .Include(psg => psg.ProductSelectionGroupType)
-                .ToList();
+            using (var context = iconContextFactory.CreateContext())
+            {
+                return context.ProductSelectionGroup
+                    .Include(psg => psg.ProductSelectionGroupType)
+                    .ToList();
+            }
         }
     }
 }

@@ -1,25 +1,24 @@
 ﻿using Icon.ApiController.Common;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
-using System;
 using System.Data;
 using System.Data.SqlClient;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Commands
 {
     public class AssociateMessageToQueueCommandHandler<T> : ICommandHandler<AssociateMessageToQueueCommand<T, MessageHistory>> where T : class, IMessageQueue
     {
         private ILogger<AssociateMessageToQueueCommandHandler<T>> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
         public AssociateMessageToQueueCommandHandler(
             ILogger<AssociateMessageToQueueCommandHandler<T>> logger,
-            IRenewableContext<IconContext> globalContext)
+            IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public void Execute(AssociateMessageToQueueCommand<T, MessageHistory> data)
@@ -30,11 +29,14 @@ namespace Icon.ApiController.DataAccess.Commands
                 return;
             }
 
-            SqlParameter tableNameParameter = new SqlParameter("MessageQueueTable", SqlDbType.NVarChar);
-            tableNameParameter.Value = typeof(T).Name;
+            string messageQueueTableName = typeof(T).Name;
 
             SqlParameter messagesParameter = new SqlParameter("MessagesToUpdate", SqlDbType.Structured);
             messagesParameter.TypeName = "app.MessageQueueType";
+            messagesParameter.Value = data.QueuedMessages.ConvertAll(m => new
+            {
+                MessageQueueId = m.MessageQueueId
+            }).ToDataTable();
 
             SqlParameter messageHistoryParameter = new SqlParameter("MessageHistoryId", SqlDbType.Int);
             messageHistoryParameter.Value = data.MessageHistory.MessageHistoryId;
@@ -42,16 +44,14 @@ namespace Icon.ApiController.DataAccess.Commands
             SqlParameter messageStatusParameter = new SqlParameter("MessageStatusId", SqlDbType.Int);
             messageStatusParameter.Value = MessageStatusTypes.Associated;
 
-            messagesParameter.Value = data.QueuedMessages.ConvertAll(m => new
-                {
-                    MessageQueueId = m.MessageQueueId
-                }).ToDataTable();
+            string sql = $"EXEC app.AssociateMessageTo{messageQueueTableName} @MessagesToUpdate, @MessageHistoryId, @MessageStatusId";
 
-            string sql = "EXEC app.AssociateMessageToQueue @MessageQueueTable, @MessagesToUpdate, @MessageHistoryId, @MessageStatusId";
+            using (var context = iconContextFactory.CreateContext())
+            {
+                context.Database.ExecuteSqlCommand(sql, messagesParameter, messageHistoryParameter, messageStatusParameter);
+            }
 
-            globalContext.Context.Database.ExecuteSqlCommand(sql, tableNameParameter, messagesParameter, messageHistoryParameter, messageStatusParameter);
-
-            logger.Info(String.Format("Associated MessageHistoryId {0} to {1} MessageQueue record(s).",
+            logger.Info(string.Format("Associated MessageHistoryId {0} to {1} MessageQueue record(s).",
                 data.MessageHistory.MessageHistoryId, data.QueuedMessages.Count));
         }
     }

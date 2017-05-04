@@ -58,6 +58,8 @@ namespace Mammoth.Price.Controller
                         foreach (var item in events.EventModels)
                         {
                             item.ErrorMessage = errorCode;
+                            item.ErrorDetails = errorCode;
+                            item.ErrorSource = Constants.SourceSystem.MammothPriceController;
                         }
                     }
                     finally

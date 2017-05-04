@@ -10,7 +10,6 @@ namespace Infor.Services.NewItem.Validators
     {
         public IEnumerable<T> ValidEntities { get; set; }
         public IEnumerable<T> InvalidEntities { get; set; }
-        public string Error { get; set; }
 
         public CollectionValidatorResult()
         {

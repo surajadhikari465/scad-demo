@@ -38,6 +38,7 @@ namespace Mammoth.Price.Controller
             container.RegisterSingleton<HttpClientSettings>(() => HttpClientSettings.CreateFromConfig());
             container.RegisterSingleton<IConnectionBuilder, RegionConnectionBuilder>();
             container.RegisterSingleton<ITopShelfService, PriceTopShelfService>();
+            container.RegisterSingleton<IEmailBuilder, EmailBuilder>();
 
             container.Register(typeof(ICommandHandler<>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
             container.Register(typeof(IQueryHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Singleton);

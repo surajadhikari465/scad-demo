@@ -141,7 +141,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
             mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueProductSelectionGroup>>())).Returns(fakeMessageQueueProductSelectionGroups);
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueProductSelectionGroup>>())).Returns(new Contracts.SelectionGroupsType { group = new Contracts.GroupTypeType[] { new Contracts.GroupTypeType { id = "1" } } });
-            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.SelectionGroupsType>(), It.IsAny<TextWriter>())).Returns(String.Empty);
+            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.SelectionGroupsType>(), It.IsAny<TextWriter>())).Returns(string.Empty);
 
             // When.
             queueProcessor.ProcessMessageQueue();

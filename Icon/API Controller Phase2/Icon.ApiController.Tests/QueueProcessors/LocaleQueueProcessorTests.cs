@@ -24,7 +24,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
         private LocaleQueueProcessor queueProcessor;
 
         private Mock<ILogger<LocaleQueueProcessor>> mockLogger;
-        private Mock<IRenewableContext<IconContext>> mockContext;
         private Mock<ISerializer<Contracts.LocaleType>> mockSerializer;
         private Mock<IQueueReader<MessageQueueLocale, Contracts.LocaleType>> mockQueueReader;
         private Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>> mockSaveXmlMessageCommandHandler;
@@ -42,7 +41,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
         public void Initialize()
         {
             mockLogger = new Mock<ILogger<LocaleQueueProcessor>>();
-            mockContext = new Mock<IRenewableContext<IconContext>>();
             mockSerializer = new Mock<ISerializer<Contracts.LocaleType>>();
             mockQueueReader = new Mock<IQueueReader<MessageQueueLocale, Contracts.LocaleType>>();
             mockSaveXmlMessageCommandHandler = new Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>>();
@@ -62,7 +60,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
             queueProcessor = new LocaleQueueProcessor(
                 settings,
                 mockLogger.Object,
-                mockContext.Object,
                 mockQueueReader.Object,
                 mockSerializer.Object,
                 mockSaveXmlMessageCommandHandler.Object,
@@ -147,7 +144,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
             mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueLocale>>())).Returns(fakeMessageQueueLocales);
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueLocale>>())).Returns(new Contracts.LocaleType());
-            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.LocaleType>(), It.IsAny<TextWriter>())).Returns(String.Empty);
+            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.LocaleType>(), It.IsAny<TextWriter>())).Returns(string.Empty);
 
             // When.
             queueProcessor.ProcessMessageQueue();

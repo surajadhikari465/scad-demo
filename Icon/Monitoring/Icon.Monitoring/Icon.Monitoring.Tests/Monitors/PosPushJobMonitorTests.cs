@@ -50,7 +50,7 @@ namespace Icon.Monitoring.Tests.Monitors
             // Given
             var posPushJobStatusFirstRegionShouldPage = this.allRegions.Select((r, i) => new JobStatus
             {
-                Classname = IrmaJobClassnames.POSPushJob,
+                Classname = IrmaJobClassNames.POSPushJob,
                 LastRun = DateTime.Now.Subtract(TimeSpan.FromMinutes(120)),
                 Region = r,
                 Status = i > 0 ? CompletedStatus : RunningStatus
@@ -81,7 +81,7 @@ namespace Icon.Monitoring.Tests.Monitors
 
             Assert.AreEqual(
                 posPushJobStatusFirstRegionShouldPage.First(x => x.Region == IrmaRegions.FL).LastRun,
-                JobStatusCache.PagerDutyTracker[IrmaJobClassnames.POSPushJob + "_" + IrmaRegions.FL]);
+                JobStatusCache.PagerDutyTracker[IrmaJobClassNames.POSPushJob + "_" + IrmaRegions.FL]);
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace Icon.Monitoring.Tests.Monitors
             // Given
             var posPushJobStatusFirstRegionShouldPage = this.allRegions.Select((r, i) => new JobStatus
             {
-                Classname = IrmaJobClassnames.POSPushJob,
+                Classname = IrmaJobClassNames.POSPushJob,
                 LastRun = DateTime.Now.Subtract(TimeSpan.FromMinutes(20)),
                 Region = r,
                 Status = i > 0 ? CompletedStatus : RunningStatus
@@ -129,7 +129,7 @@ namespace Icon.Monitoring.Tests.Monitors
             var runTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(120));
             var posPushJobStatusFirstRegionShouldPage = this.allRegions.Select((r, i) => new JobStatus
             {
-                Classname = IrmaJobClassnames.POSPushJob,
+                Classname = IrmaJobClassNames.POSPushJob,
                 LastRun = runTime,
                 Region = r,
                 Status = i > 0 ? CompletedStatus : RunningStatus
@@ -147,7 +147,7 @@ namespace Icon.Monitoring.Tests.Monitors
                 this.mockPagerDutyTrigger.Object,
                 this.mockLogger.Object);
 
-            JobStatusCache.PagerDutyTracker.Add(IrmaJobClassnames.POSPushJob + "_" + "FL", runTime);
+            JobStatusCache.PagerDutyTracker.Add(IrmaJobClassNames.POSPushJob + "_" + "FL", runTime);
 
             // When
             testee.CheckStatusAndNotify();
@@ -169,7 +169,7 @@ namespace Icon.Monitoring.Tests.Monitors
             // Given
             var posPushJobStatusFirstRegionShouldPage = this.allRegions.Select((r, i) => new JobStatus
             {
-                Classname = IrmaJobClassnames.POSPushJob,
+                Classname = IrmaJobClassNames.POSPushJob,
                 LastRun = DateTime.Now.Subtract(TimeSpan.FromMinutes(120)),
                 Region = r,
                 Status = CompletedStatus
@@ -208,7 +208,7 @@ namespace Icon.Monitoring.Tests.Monitors
             var runTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(120));
             var posPushJobStatusFirstRegionShouldPage = this.allRegions.Select((r, i) => new JobStatus
             {
-                Classname = IrmaJobClassnames.POSPushJob,
+                Classname = IrmaJobClassNames.POSPushJob,
                 LastRun = runTime,
                 Region = r,
                 Status = i > 1 ? CompletedStatus : RunningStatus
@@ -246,11 +246,11 @@ namespace Icon.Monitoring.Tests.Monitors
 
             Assert.AreEqual(
                 posPushJobStatusFirstRegionShouldPage.First(x => x.Region == IrmaRegions.FL).LastRun,
-                JobStatusCache.PagerDutyTracker[IrmaJobClassnames.POSPushJob + "_" + IrmaRegions.FL]);
+                JobStatusCache.PagerDutyTracker[IrmaJobClassNames.POSPushJob + "_" + IrmaRegions.FL]);
 
             Assert.AreEqual(
                 posPushJobStatusFirstRegionShouldPage.First(x => x.Region == IrmaRegions.MA).LastRun,
-                JobStatusCache.PagerDutyTracker[IrmaJobClassnames.POSPushJob + "_" + IrmaRegions.MA]);
+                JobStatusCache.PagerDutyTracker[IrmaJobClassNames.POSPushJob + "_" + IrmaRegions.MA]);
 
         }
     }

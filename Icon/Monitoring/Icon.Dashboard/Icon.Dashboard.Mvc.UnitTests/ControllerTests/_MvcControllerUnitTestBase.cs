@@ -98,43 +98,44 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         {
             fakeServiceA = Mock.Of<WindowsService>();
             fakeServiceA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            fakeServiceA.DataFlowFrom = DataFlowSystemEnum.None;
+            fakeServiceA.DataFlowFrom = "None";
+            fakeServiceA.DataFlowTo = "ESB";
             fakeServiceA.DisplayName = "AAAAAA Service";
-            fakeServiceA.Environment = EnvironmentEnum.Dev;
             fakeServiceA.Name = "Fake.Name.AAAAAA";
             fakeServiceA.Server = "test-Server1";
             Mock.Get(fakeServiceA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
             FakeServiceViewModelA = Mock.Of<ServiceViewModel>();
             FakeServiceViewModelA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            FakeServiceViewModelA.DataFlowFrom = DataFlowSystemEnum.None;
+            FakeServiceViewModelA.DataFlowFrom = "None";
+            FakeServiceViewModelA.DataFlowTo = "ESB";
             FakeServiceViewModelA.DisplayName = "AAAAAA Service";
-            FakeServiceViewModelA.Environment = EnvironmentEnum.Dev;
             FakeServiceViewModelA.Name = "Fake.Name.AAAAAA";
             FakeServiceViewModelA.Server = "test-Server1";
             Mock.Get(FakeServiceViewModelA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
             fakeServiceB = Mock.Of<WindowsService>();
             fakeServiceB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            fakeServiceB.DataFlowFrom = DataFlowSystemEnum.None;
+            fakeServiceB.DataFlowFrom = "None";
+            fakeServiceB.DataFlowTo = "Unknown";
             fakeServiceB.DisplayName = "BBBB Service";
-            fakeServiceB.Environment = EnvironmentEnum.Dev;
             fakeServiceB.Name = "Fake.Name.BBBBB";
             fakeServiceB.Server = "test-Server1";
             Mock.Get(fakeServiceB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
             FakeServiceViewModelB = Mock.Of<ServiceViewModel>();
             FakeServiceViewModelB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            FakeServiceViewModelB.DataFlowFrom = DataFlowSystemEnum.None;
+            FakeServiceViewModelB.DataFlowFrom = "None";
+            FakeServiceViewModelB.DataFlowTo = "Unknown";
             FakeServiceViewModelB.DisplayName = "BBBB Service";
-            FakeServiceViewModelB.Environment = EnvironmentEnum.Dev;
             FakeServiceViewModelB.Name = "Fake.Name.BBBBB";
             FakeServiceViewModelB.Server = "test-Server1";
             Mock.Get(FakeServiceViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
             fakeTaskA = Mock.Of<ScheduledTask>();
             fakeTaskA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            fakeTaskA.DataFlowFrom = DataFlowSystemEnum.None;
+            fakeTaskA.DataFlowFrom = "None";
+            fakeTaskA.DataFlowTo = "Other";
             fakeTaskA.DisplayName = "AAAAAA Task";
             fakeTaskA.Environment = EnvironmentEnum.Dev;
             fakeTaskA.Name = "Fake.Name.AAAAAA";
@@ -143,16 +144,17 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 
             FakeTaskViewModelA = Mock.Of<TaskViewModel>();
             FakeTaskViewModelA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            FakeTaskViewModelA.DataFlowFrom = DataFlowSystemEnum.None;
+            FakeTaskViewModelA.DataFlowFrom = "None";
+            FakeTaskViewModelA.DataFlowTo = "Unknown";
             FakeTaskViewModelA.DisplayName = "AAAAAA Service";
-            FakeTaskViewModelA.Environment = EnvironmentEnum.Dev;
             FakeTaskViewModelA.Name = "Fake.Name.AAAAAA";
             FakeTaskViewModelA.Server = "test-Server1";
             Mock.Get(FakeTaskViewModelA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
             fakeTaskB = Mock.Of<ScheduledTask>();
             fakeTaskB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            fakeTaskB.DataFlowFrom = DataFlowSystemEnum.None;
+            fakeTaskB.DataFlowFrom = "None";
+            fakeTaskB.DataFlowTo = "FTP";
             fakeTaskB.DisplayName = "BBBB Task";
             fakeTaskB.Environment = EnvironmentEnum.Dev;
             fakeTaskB.Name = "Fake.Name.BBBBB";
@@ -161,9 +163,9 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 
             FakeTaskViewModelB = Mock.Of<TaskViewModel>();
             FakeTaskViewModelB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            FakeTaskViewModelB.DataFlowFrom = DataFlowSystemEnum.None;
+            FakeTaskViewModelB.DataFlowFrom = "None";
+            FakeTaskViewModelB.DataFlowTo = "None";
             FakeTaskViewModelB.DisplayName = "BBBB Task";
-            FakeTaskViewModelB.Environment = EnvironmentEnum.Dev;
             FakeTaskViewModelB.Name = "Fake.Name.BBBBB";
             FakeTaskViewModelB.Server = "test-Server1";
             Mock.Get(FakeTaskViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);

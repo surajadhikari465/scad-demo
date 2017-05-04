@@ -78,7 +78,6 @@
     <Compile Include="Constants\ApplicationSchema.cs" />
     <Compile Include="Constants\EsbSettings.cs" />
     <Compile Include="Models\Enums\EnvironmentEnum.cs" />
-    <Compile Include="Models\Enums\DataFlowDirectionEnum.cs" />
     <Compile Include="Models\IApplication.cs" />
     <Compile Include="Models\Enums\ApplicationTypeEnum.cs" />
     <Compile Include="Models\IconApplicationIdentifier.cs" />

@@ -5,6 +5,7 @@ using Icon.Testing.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Queries
 {
@@ -13,8 +14,7 @@ namespace Icon.ApiController.Tests.Queries
     {
         private GetLocaleLineageQuery getLocaleLineageQuery;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private int localeId;
         private string testRegionName;
         private string testMetroName;
@@ -24,21 +24,21 @@ namespace Icon.ApiController.Tests.Queries
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
-            getLocaleLineageQuery = new GetLocaleLineageQuery(globalContext);
+
+            getLocaleLineageQuery = new GetLocaleLineageQuery(new IconDbContextFactory());
             testRegionName = "Southern Pacific";
             testMetroName = "MET_SD";
             testStoreName = "Hillcrest";
             emptyMetroName = "MET_NOSTORE";
-
-            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         private void StageEmptyMetro()

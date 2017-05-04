@@ -44,6 +44,10 @@
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -93,6 +97,7 @@
       <HintPath>..\packages\Icon.Testing.2016.10.27.2\lib\net45\Icon.Testing.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq, Version=4.5.28.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.28\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -111,6 +116,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -135,6 +141,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Commands\AddOrUpdateHierarchyClassesCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddOrUpdateTaxClassesInMammothCommandHandlerTests.cs" />
     <Compile Include="Commands\ArchiveHierarchyClassesCommandHandlerTests.cs" />
     <Compile Include="Commands\ArchiveMessageCommandHandlerTests.cs" />
     <Compile Include="Commands\ArchiveVimHierarchyClassesCommandHandlerTests.cs" />
@@ -160,6 +167,7 @@
     <Content Include="TestMessages\DeleteBrandTestMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestMessages\DeleteFinancialTestMessage.xml" />
     <Content Include="TestMessages\FailedInforHierarchyMessage.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -172,13 +180,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestMessages\FinancialTestMessage.xml" />
     <Content Include="TestMessages\InforMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -190,6 +201,7 @@
     </Content>
     <Content Include="TestMessages\BrandTestMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="TestMessages\IntegrationBrandMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

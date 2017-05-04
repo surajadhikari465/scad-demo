@@ -13,6 +13,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Integration
 {
@@ -21,53 +22,51 @@ namespace Icon.ApiController.Tests.Integration
     {
         private MessageHistoryProcessor historyProcessor;
         private IconContext context;
-        private Mock<IRenewableContext<IconContext>> mockGlobalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private Mock<ILogger<MessageHistoryProcessor>> mockLogger;
         private Mock<ICommandHandler<MarkUnsentMessagesAsInProcessCommand>> mockMarkUnsentMessagesAsInProcessCommandHandler;
         private Mock<IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>> mockGetMessageHistoryQuery;
         private UpdateMessageHistoryStatusCommandHandler updateMessageHistoryCommandHandler;
         private Mock<ICommandHandler<UpdateStagedProductStatusCommand>> mockUpdateStagedProductCommandHandler;
         private Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>> mockUpdateSentToEsbHierarchyTraitCommandHandler;
+        private Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>> mockIsMessageHistoryANonRetailProductMessageQueryHandler;
         private Mock<IEsbProducer> mockProducer;
         private ApiControllerSettings settings;
         
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+
             context = new IconContext();
 
-            mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
             mockLogger = new Mock<ILogger<MessageHistoryProcessor>>();
             mockMarkUnsentMessagesAsInProcessCommandHandler = new Mock<ICommandHandler<MarkUnsentMessagesAsInProcessCommand>>();
             mockGetMessageHistoryQuery = new Mock<IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>>();
-            updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new Mock<ILogger<UpdateMessageHistoryStatusCommandHandler>>().Object, mockGlobalContext.Object);
+            updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new Mock<ILogger<UpdateMessageHistoryStatusCommandHandler>>().Object, new IconDbContextFactory());
             mockUpdateSentToEsbHierarchyTraitCommandHandler = new Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>>();
             mockUpdateStagedProductCommandHandler = new Mock<ICommandHandler<UpdateStagedProductStatusCommand>>();
+            mockIsMessageHistoryANonRetailProductMessageQueryHandler = new Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>>();
             mockProducer = new Mock<IEsbProducer>();
             settings = new ApiControllerSettings();
-
-            mockGlobalContext.SetupGet(c => c.Context).Returns(context);
 
             this.historyProcessor = new MessageHistoryProcessor(
                 settings,
                 mockLogger.Object,
-                mockGlobalContext.Object,
                 mockMarkUnsentMessagesAsInProcessCommandHandler.Object,
                 mockGetMessageHistoryQuery.Object,
                 updateMessageHistoryCommandHandler,
                 mockUpdateStagedProductCommandHandler.Object,
                 mockUpdateSentToEsbHierarchyTraitCommandHandler.Object,
+                mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
                 mockProducer.Object,
                 MessageTypes.Product);
-
-            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [TestMethod]

@@ -1,5 +1,8 @@
-﻿using Mammoth.Price.Controller.DataAccess.Models;
+﻿using Mammoth.Common;
+using Mammoth.Price.Controller.DataAccess.Models;
 using Mammoth.Price.Controller.Services;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Mammoth.Price.Controller
@@ -106,22 +109,42 @@ namespace Mammoth.Price.Controller
         /// <returns></returns>
         private static PriceModel BuildCancelledSalePrice(PriceEventModel priceEventModel)
         {
-            var updatedCancelledSalePrice = new PriceModel
+            string missingCancelledSaleProperty = ValidateCancelledSalePrice(priceEventModel);
+            if (!String.IsNullOrEmpty(missingCancelledSaleProperty))
             {
-                BusinessUnitId = priceEventModel.BusinessUnitId,
-                ScanCode = priceEventModel.ScanCode,
-                Region = priceEventModel.Region,
-                Multiple = priceEventModel.CurrentSaleMultiple.Value,
-                Price = priceEventModel.CurrentSalePrice.Value,
-                StartDate = priceEventModel.CurrentSaleStartDate.Value,
-                EndDate = priceEventModel.NewStartDate, // confusing but this is how IRMA cancels a sale
-                PriceType = priceEventModel.CurrentPriceType,
-                CurrencyCode = priceEventModel.CurrencyCode,
-                PriceUom = priceEventModel.PriceUom,
-                CancelAllSales = priceEventModel.CancelAllSales ?? false
-            };
+                ArgumentException argumentException = new ArgumentException(String.Format("Missing a property for the Cancelled Sale: {0}", missingCancelledSaleProperty));
+                priceEventModel.ErrorMessage = "ArgumentException";
+                priceEventModel.ErrorDetails = argumentException.ToString();
+                priceEventModel.ErrorSource = Constants.SourceSystem.MammothPriceController;
+                throw argumentException;
+            }   
+
+            var updatedCancelledSalePrice = new PriceModel();
+            updatedCancelledSalePrice.BusinessUnitId = priceEventModel.BusinessUnitId;
+            updatedCancelledSalePrice.ScanCode = priceEventModel.ScanCode;
+            updatedCancelledSalePrice.Region = priceEventModel.Region;
+            updatedCancelledSalePrice.Multiple = priceEventModel.CurrentSaleMultiple.Value;
+            updatedCancelledSalePrice.Price = priceEventModel.CurrentSalePrice.Value;
+            updatedCancelledSalePrice.StartDate = priceEventModel.CurrentSaleStartDate.Value;
+            updatedCancelledSalePrice.EndDate = priceEventModel.NewStartDate; // confusing but this is how IRMA cancels a sale
+            updatedCancelledSalePrice.PriceType = priceEventModel.CurrentPriceType;
+            updatedCancelledSalePrice.CurrencyCode = priceEventModel.CurrencyCode;
+            updatedCancelledSalePrice.PriceUom = priceEventModel.PriceUom;
+            updatedCancelledSalePrice.CancelAllSales = priceEventModel.CancelAllSales ?? false;
 
             return updatedCancelledSalePrice;
+        }
+
+        private static string ValidateCancelledSalePrice(PriceEventModel priceEventModel)
+        {
+            if (!priceEventModel.CurrentSaleMultiple.HasValue)
+                return "CurrentSaleMultiple is null";
+            if (!priceEventModel.CurrentSalePrice.HasValue)
+                return "CurrentSalePrice is null";
+            if (!priceEventModel.CurrentSaleStartDate.HasValue)
+                return "CurrentSaleStartDate is null";
+
+            return String.Empty;
         }
     }
 }

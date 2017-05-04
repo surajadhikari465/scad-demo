@@ -37,7 +37,7 @@
         }
 
         [TestMethod]
-        public void CreateEventsForRegion_WhenSingleScanCodeAndItemLocale_ThenSingleEventIsCreated()
+        public void CreateEventsForRegion_WhenSingleScanCodeAndItemLocale_ThenEventsAreCreatedForEachStore()
         {
             // Given
             var scanCode = "4011";
@@ -52,11 +52,23 @@
             });
 
             // Then
-            var itemEvent = this.context.MammothItemLocaleChangeQueue
-                .Single(i => i.Identifier.Equals(scanCode));
+            var itemEvents = this.context.MammothItemLocaleChangeQueue
+                .Where(i => scanCode == i.Identifier)
+                .ToList();
+            var storeCount = this.context.Database.SqlQuery<int>(
+                @"
+                DECLARE @ExcludedStoreNo varchar(250) = (SELECT dbo.fn_GetAppConfigValue('LabAndClosedStoreNo','IRMA Client'))
+                SELECT count(*)
+	            FROM Store s
+	            WHERE
+		            s.Store_No not in (select Key_Value from dbo.fn_Parse_List(@ExcludedStoreNo, '|'))
+		            AND (s.WFM_Store = 1 OR s.Mega_Store = 1 )
+		            AND (Internal = 1 AND BusinessUnit_ID IS NOT NULL)")
+                .First();
 
-            Assert.AreEqual(EventConstants.ItemLocaleAddOrUpdateEvent, itemEvent.MammothItemChangeEventType.EventTypeName);
-            Assert.IsNull(itemEvent.Store_No);
+            Assert.AreEqual(storeCount, itemEvents.Count());
+            Assert.IsTrue(itemEvents.All(i => i.MammothItemChangeEventType.EventTypeName.Equals(EventConstants.ItemLocaleAddOrUpdateEvent)));
+            Assert.IsTrue(itemEvents.All(i => i.Store_No != null));
         }
 
         [TestMethod]
@@ -100,10 +112,20 @@
             var itemEvents = this.context.MammothItemLocaleChangeQueue
                 .Where(i => scanCodes.Contains(i.Identifier))
                 .ToList();
+            var storeCount = this.context.Database.SqlQuery<int>(
+                @"
+                DECLARE @ExcludedStoreNo varchar(250) = (SELECT dbo.fn_GetAppConfigValue('LabAndClosedStoreNo','IRMA Client'))
+                SELECT count(*)
+	            FROM Store s
+	            WHERE
+		            s.Store_No not in (select Key_Value from dbo.fn_Parse_List(@ExcludedStoreNo, '|'))
+		            AND (s.WFM_Store = 1 OR s.Mega_Store = 1 )
+		            AND (Internal = 1 AND BusinessUnit_ID IS NOT NULL)")
+                .First();
 
-            Assert.AreEqual(3, itemEvents.Count());
+            Assert.AreEqual(scanCodes.Count() * storeCount, itemEvents.Count());
             Assert.IsTrue(itemEvents.All(i => i.MammothItemChangeEventType.EventTypeName.Equals(EventConstants.ItemLocaleAddOrUpdateEvent)));
-            Assert.IsTrue(itemEvents.All(i => i.Store_No == null));
+            Assert.IsTrue(itemEvents.All(i => i.Store_No != null));
         }
 
         [TestMethod]

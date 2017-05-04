@@ -37,7 +37,6 @@ namespace Icon.Web.Tests.Integration.Excel.Services
             var response = excelService.Import(workbook);
 
             //Then
-            Assert.AreEqual(3, response.ErrorItems.Count());
             Assert.IsNull(response.ErrorMessage);
         }
 

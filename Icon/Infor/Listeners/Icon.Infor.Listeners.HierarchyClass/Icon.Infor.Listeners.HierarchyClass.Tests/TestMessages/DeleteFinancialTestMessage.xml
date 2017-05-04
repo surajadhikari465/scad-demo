@@ -1,0 +1,44 @@
+﻿<hierarchy xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:p3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" p3:Action="AddOrUpdate">
+  <name>Financial</name>
+  <prototype>
+    <hpt:hierarchyLevelName>Financial</hpt:hierarchyLevelName>
+    <hpt:itemsAttached>1</hpt:itemsAttached>
+  </prototype>
+  <class p3:Action="Delete">
+    <hcl:id>8888</hcl:id>
+    <hcl:name>Spa Test (8888)</hcl:name>
+    <hcl:parentId>0</hcl:parentId>
+    <hcl:traits>
+      <p3:trait>
+        <code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PDN</code>
+        <type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+          <description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PosDepartmentNumber</description>
+          <value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+            <value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">206</value>
+          </value>
+        </type>
+      </p3:trait>
+
+      <p3:trait>
+        <code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">NUM</code>
+        <type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+          <description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">TeamNumber</description>
+          <value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+            <value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">205</value>
+          </value>
+        </type>
+      </p3:trait>
+
+      <p3:trait>
+        <code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">NAM</code>
+        <type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+          <description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">TeamName</description>
+          <value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+            <value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">Spa</value>
+          </value>
+        </type>
+      </p3:trait>
+
+    </hcl:traits>
+  </class>
+</hierarchy>

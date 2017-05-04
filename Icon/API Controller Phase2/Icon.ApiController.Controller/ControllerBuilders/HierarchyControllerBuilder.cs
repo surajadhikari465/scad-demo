@@ -17,7 +17,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 {
     public class HierarchyControllerBuilder : IControllerBuilder
     {
-        public ApiControllerBase ComposeController(IRenewableContext<IconContext> globalContext)
+        public ApiControllerBase ComposeController()
         {
             ControllerType.Type = "Hierarchy";
 
@@ -27,51 +27,52 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("HierarchyQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
 
+            IconDbContextFactory iconContextFactory = new IconDbContextFactory();
+
             producer.OpenConnection();
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Hierarchy, producer, globalContext);
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Hierarchy, producer, iconContextFactory);
 
             var queueProcessorLogger = new NLogLoggerInstance<HierarchyQueueProcessor>(instance);
             var queueReader = new HierarchyQueueReader(
                 new NLogLoggerInstance<HierarchyQueueReader>(instance),
                 emailClient,
-                new GetMessageQueueQuery<MessageQueueHierarchy>(new NLogLoggerInstance<GetMessageQueueQuery<MessageQueueHierarchy>>(instance), globalContext),
+                new GetMessageQueueQuery<MessageQueueHierarchy>(new NLogLoggerInstance<GetMessageQueueQuery<MessageQueueHierarchy>>(instance), iconContextFactory),
                 new UpdateMessageQueueStatusCommandHandler<MessageQueueHierarchy>(
                     new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueHierarchy>>(instance), 
-                    globalContext));
+                    iconContextFactory));
             var serializer = new Serializer<Contracts.HierarchyType>(
                 new NLogLoggerInstance<Serializer<Contracts.HierarchyType>>(instance),
                 emailClient);
-            var getFinancialHierarchyClassesQueryHandler = new GetFinancialHierarchyClassesQuery(globalContext);
+            var getFinancialHierarchyClassesQueryHandler = new GetFinancialHierarchyClassesQuery(iconContextFactory);
             var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(
                 new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance),
-                globalContext);
+                iconContextFactory);
             var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueHierarchy>(
                 new NLogLoggerInstance<AssociateMessageToQueueCommandHandler<MessageQueueHierarchy>>(instance),
-                globalContext);
+                iconContextFactory);
             var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueHierarchy>(
                 new NLogLoggerInstance<UpdateMessageQueueProcessedDateCommandHandler<MessageQueueHierarchy>>(instance), 
-                globalContext);
+                iconContextFactory);
             var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(
                 new NLogLoggerInstance<UpdateMessageHistoryStatusCommandHandler>(instance), 
-                globalContext);
+                iconContextFactory);
             var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueHierarchy>(
                 new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueHierarchy>>(instance), 
-                globalContext);
+                iconContextFactory);
             var updateStagedProductStatusCommandHandler = new UpdateStagedProductStatusCommandHandler(
                 new NLogLoggerInstance<UpdateStagedProductStatusCommandHandler>(instance), 
-                globalContext);
-            var updateSentToEsbHierarchyTraitCommandHandler = new UpdateSentToEsbHierarchyTraitCommandHandler(new NLogLoggerInstance<UpdateSentToEsbHierarchyTraitCommandHandler>(instance), globalContext);
-            var markQueuedEntriesAsInProcessCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueHierarchy>(new NLogLoggerInstance<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueHierarchy>>(instance), globalContext);
+                iconContextFactory);
+            var updateSentToEsbHierarchyTraitCommandHandler = new UpdateSentToEsbHierarchyTraitCommandHandler(new NLogLoggerInstance<UpdateSentToEsbHierarchyTraitCommandHandler>(instance), iconContextFactory);
+            var markQueuedEntriesAsInProcessCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueHierarchy>(new NLogLoggerInstance<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueHierarchy>>(instance), iconContextFactory);
 
             var monitorCommandHandler = new SaveMessageProcessorJobSummaryCommandHandler(
-                new NLogLoggerInstance<SaveMessageProcessorJobSummaryCommandHandler>(instance), globalContext);
+                new NLogLoggerInstance<SaveMessageProcessorJobSummaryCommandHandler>(instance), iconContextFactory);
             var monitor = new MessageProcessorMonitor(monitorCommandHandler);
 
             var hierarchyQueueProcessor = new HierarchyQueueProcessor(
                 settings,
                 queueProcessorLogger,
-                globalContext,
                 queueReader,
                 serializer,
                 getFinancialHierarchyClassesQueryHandler,

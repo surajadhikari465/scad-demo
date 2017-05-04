@@ -15,7 +15,7 @@ namespace Icon.Framework
         public const string PosDescription = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,25}$";
         public const string PackageUnit = @"^[1-9][0-9]{0,2}$";
         public const string FoodStampEligible = @"0|1";
-        public const string PosScaleTare = @"0|1";
+        public const string PosScaleTare = @"^[0-9](\.[0-9]{1,4})?$";
         public const string DepartmentSale = @"0|1";
         public const string GiftCard = @"0|1";
         public const string RetailSize = @"^[0-9]*\.?[0-9]+$";

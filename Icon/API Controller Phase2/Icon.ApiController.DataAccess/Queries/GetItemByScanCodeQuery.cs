@@ -5,36 +5,40 @@ using Icon.Logging;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Queries
 {
     public class GetItemByScanCodeQuery : IQueryHandler<GetItemByScanCodeParameters, Item>
     {
         private ILogger<GetItemByScanCodeQuery> logger;
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> iconContextFactory;
 
         public GetItemByScanCodeQuery(
             ILogger<GetItemByScanCodeQuery> logger,
-            IRenewableContext<IconContext> globalContext)
+            IDbContextFactory<IconContext> iconContextFactory)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
+            this.iconContextFactory = iconContextFactory;
         }
 
         public Item Search(GetItemByScanCodeParameters parameters)
         {
-            var scanCode = globalContext.Context.ScanCode
-                .Include(sc => sc.Item.ItemType)
-                .SingleOrDefault(sc => sc.scanCode == parameters.ScanCode);
+            using (var context = iconContextFactory.CreateContext())
+            {
+                var scanCode = context.ScanCode
+                    .Include(sc => sc.Item.ItemType)
+                    .SingleOrDefault(sc => sc.scanCode == parameters.ScanCode);
 
-            if (scanCode == null)
-            {
-                logger.Error(String.Format("Failed to find an Item record for ScanCode {0}.", parameters.ScanCode));
-                throw new ArgumentException(String.Format("No item records match scan code {0}.", parameters.ScanCode));
-            }
-            else
-            {
-                return scanCode.Item;
+                if (scanCode == null)
+                {
+                    logger.Error(string.Format("Failed to find an Item record for ScanCode {0}.", parameters.ScanCode));
+                    throw new ArgumentException(string.Format("No item records match scan code {0}.", parameters.ScanCode));
+                }
+                else
+                {
+                    return scanCode.Item;
+                }
             }
         }
     }

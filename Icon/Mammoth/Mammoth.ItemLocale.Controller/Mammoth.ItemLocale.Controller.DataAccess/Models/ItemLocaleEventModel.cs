@@ -73,5 +73,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Models
         public string TagUom { get; set; }
 
         public string ErrorMessage { get; set; }
+        public string ErrorDetails { get; set; }
+        public string ErrorSource { get; set; }
     }
 }

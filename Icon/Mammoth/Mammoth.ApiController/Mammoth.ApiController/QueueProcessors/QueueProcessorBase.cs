@@ -15,7 +15,6 @@ namespace Mammoth.ApiController.QueueProcessors
     public abstract class QueueProcessorBase<TMessageQueue, TContract, TMessageHistory> : IQueueProcessor
     {
         protected ILogger logger;
-        protected IRenewableContext globalContext;
         protected IQueueReader<TMessageQueue, TContract> queueReader;
         protected ISerializer<TContract> serializer;
         protected ICommandHandler<SaveToMessageHistoryCommand<TMessageHistory>> saveToMessageHistoryCommandHandler;
@@ -32,7 +31,6 @@ namespace Mammoth.ApiController.QueueProcessors
         protected ApiControllerSettings settings;
 
         public QueueProcessorBase(ILogger logger,
-            IRenewableContext globalContext,
             IQueueReader<TMessageQueue, TContract> queueReader,
             ISerializer<TContract> serializer,
             ICommandHandler<SaveToMessageHistoryCommand<TMessageHistory>> saveToMessageHistoryCommandHandler,
@@ -44,7 +42,6 @@ namespace Mammoth.ApiController.QueueProcessors
             IEsbProducer producer)
         {
             this.logger = logger;
-            this.globalContext = globalContext;
             this.queueReader = queueReader;
             this.serializer = serializer;
             this.saveToMessageHistoryCommandHandler = saveToMessageHistoryCommandHandler;
@@ -87,7 +84,6 @@ namespace Mammoth.ApiController.QueueProcessors
 
                 logger.Info("Ending the main processing loop.  Now preparing to retrieve a new set of queued messages.");
 
-                globalContext.Refresh();
                 MarkQueuedMessagesAsInProcess();
                 messagesReadyToProcess = GetQueuedMessages();
             }

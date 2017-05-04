@@ -224,19 +224,6 @@ namespace Icon.Framework
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MessageQueueDeleteControllerFromBusinessUnitInProcess", instanceIdParameter, messageTypeIdParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> MessageQueueGetBusinessUnitToProcess(string messageQueueTable, Nullable<int> instanceId)
-        {
-            var messageQueueTableParameter = messageQueueTable != null ?
-                new ObjectParameter("MessageQueueTable", messageQueueTable) :
-                new ObjectParameter("MessageQueueTable", typeof(string));
-    
-            var instanceIdParameter = instanceId.HasValue ?
-                new ObjectParameter("InstanceId", instanceId) :
-                new ObjectParameter("InstanceId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("MessageQueueGetBusinessUnitToProcess", messageQueueTableParameter, instanceIdParameter);
-        }
-    
         public virtual int MessageQueueUpdateControllerBusinessUnitInProcess(Nullable<int> instanceId, Nullable<int> businessUnit, Nullable<int> messageTypeId)
         {
             var instanceIdParameter = instanceId.HasValue ?
@@ -252,27 +239,6 @@ namespace Icon.Framework
                 new ObjectParameter("MessageTypeId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MessageQueueUpdateControllerBusinessUnitInProcess", instanceIdParameter, businessUnitParameter, messageTypeIdParameter);
-        }
-    
-        public virtual int MarkMessageQueueEntriesAsInProcess(string messageQueueTable, Nullable<int> numberOfRows, Nullable<int> jobInstance, Nullable<int> businessUnit)
-        {
-            var messageQueueTableParameter = messageQueueTable != null ?
-                new ObjectParameter("MessageQueueTable", messageQueueTable) :
-                new ObjectParameter("MessageQueueTable", typeof(string));
-    
-            var numberOfRowsParameter = numberOfRows.HasValue ?
-                new ObjectParameter("NumberOfRows", numberOfRows) :
-                new ObjectParameter("NumberOfRows", typeof(int));
-    
-            var jobInstanceParameter = jobInstance.HasValue ?
-                new ObjectParameter("JobInstance", jobInstance) :
-                new ObjectParameter("JobInstance", typeof(int));
-    
-            var businessUnitParameter = businessUnit.HasValue ?
-                new ObjectParameter("BusinessUnit", businessUnit) :
-                new ObjectParameter("BusinessUnit", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MarkMessageQueueEntriesAsInProcess", messageQueueTableParameter, numberOfRowsParameter, jobInstanceParameter, businessUnitParameter);
         }
     }
 }

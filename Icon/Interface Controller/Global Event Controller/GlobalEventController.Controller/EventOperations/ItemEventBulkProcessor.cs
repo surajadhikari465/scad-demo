@@ -14,41 +14,44 @@ using System.Linq;
 namespace GlobalEventController.Controller.EventOperations
 {
     public class ItemEventBulkProcessor : IEventBulkProcessor
-	{
-		private IEventQueues queues;
-		private ILogger<ItemEventBulkProcessor> logger;
-		private IEventServiceProvider eventServiceProvider;
-		private IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>> bulkGetValidatedItems;
-		private ExceptionHandler<ItemEventBulkProcessor> exceptionHandler;
+    {
+        private IEventQueues queues;
+        private ILogger<ItemEventBulkProcessor> logger;
+        private IEventServiceProvider eventServiceProvider;
+        private IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>> bulkGetValidatedItems;
+        private ExceptionHandler<ItemEventBulkProcessor> exceptionHandler;
         private IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>> getIconItemNutritionQueryHandler;
         private IDataIssueMessageCollector dataIssueMessage;
+        private IEventArchiver eventArchiver;
 
         public ItemEventBulkProcessor(IEventQueues queues,
-			ILogger<ItemEventBulkProcessor> logger,
-			IEventServiceProvider eventServiceProvider,
-			IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>> bulkGetValidatedItems,
+            ILogger<ItemEventBulkProcessor> logger,
+            IEventServiceProvider eventServiceProvider,
+            IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>> bulkGetValidatedItems,
             IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>> getIconItemNutritionQueryHandler,
-            IDataIssueMessageCollector dataIssueMessage)
-		{
-			this.exceptionHandler = new ExceptionHandler<ItemEventBulkProcessor>(logger);
-			this.queues = queues;
-			this.logger = logger;
-			this.eventServiceProvider = eventServiceProvider;
-			this.bulkGetValidatedItems = bulkGetValidatedItems;
+            IDataIssueMessageCollector dataIssueMessage,
+            IEventArchiver eventArchiver)
+        {
+            this.exceptionHandler = new ExceptionHandler<ItemEventBulkProcessor>(logger);
+            this.queues = queues;
+            this.logger = logger;
+            this.eventServiceProvider = eventServiceProvider;
+            this.bulkGetValidatedItems = bulkGetValidatedItems;
             this.getIconItemNutritionQueryHandler = getIconItemNutritionQueryHandler;
             this.dataIssueMessage = dataIssueMessage;
-		}
+            this.eventArchiver = eventArchiver;
+        }
 
-		public void BulkProcessEvents()
-		{
+        public void BulkProcessEvents()
+        {
             // Filter Queued Events to Item Event Types
             IEnumerable<EventQueue> itemQueuedEvents = FilterEventQueueByEventTypes(new List<int> { EventTypes.ItemUpdate, EventTypes.ItemValidation, EventTypes.NewIrmaItem });
 
             if (!itemQueuedEvents.Any())
-			{
-				logger.Info("There are no item events to process.");
-				return;
-			}
+            {
+                logger.Info("There are no item events to process.");
+                return;
+            }
 
             // Populate Dictionary with Region as the Key and List of EventQueues as the value
             this.queues.RegionToEventQueueDictionary = itemQueuedEvents
@@ -57,10 +60,10 @@ namespace GlobalEventController.Controller.EventOperations
 
             // Iterate Dictionary and perform Bulk Updates for All Regions
             foreach (KeyValuePair<string, List<EventQueue>> entry in this.queues.RegionToEventQueueDictionary)
-			{
+            {
                 ProcessEvents(entry.Key, entry.Value);
-			}
-		}
+            }
+        }
 
         private void ProcessEvents(string region, IEnumerable<EventQueue> eventsToProcess)
         {
@@ -81,11 +84,14 @@ namespace GlobalEventController.Controller.EventOperations
                 {
                     logger.Error(String.Format("Class {0} Failed to Update ScanCode {1} for {2} region.  Exception: {3}.  InnerException: {4}",
                         this.GetType().Name, eventsToProcess.First().EventMessage, region, ex, ex.InnerException));
-                    this.queues.FailedEvents.AddRange(eventsToProcess.Select(qe => new FailedEvent
+                    var failedEvents = eventsToProcess.Select(qe => new FailedEvent
                     {
                         Event = qe,
                         FailureReason = ex.ToString()
-                    }));
+                    });
+                    this.queues.FailedEvents.AddRange(failedEvents);
+                    eventArchiver.Events.AddRange(failedEvents.ToEventArchiveList(Constants.ApplicationErrors.Codes.UnexpectedError, ex.ToString()));
+
                     eventServiceProvider.RefreshContexts();
                 }
             }
@@ -98,7 +104,7 @@ namespace GlobalEventController.Controller.EventOperations
 
             bulkItemEventService.ValidatedItemList = bulkGetValidatedItems.Handle(new BulkGetValidatedItemsQuery { Events = queuedEvents });
             bulkItemEventService.Region = regionCode;
-                
+
             if (StartupOptions.NutritionEnabledRegions.Contains(regionCode))
             {
                 var iconNutriFacts = getIconItemNutritionQueryHandler.Handle(new GetIconItemNutritionQuery { ScanCodes = queuedEvents.Select(e => e.EventMessage).ToList() });
@@ -113,6 +119,11 @@ namespace GlobalEventController.Controller.EventOperations
             if (bulkItemEventService.RegionalItemMessage.Count() > 0)
             {
                 dataIssueMessage.Message.AddRange(bulkItemEventService.RegionalItemMessage);
+            }
+
+            if (bulkItemEventService.ValidatedItemList != null)
+            {
+                eventArchiver.Events.AddRange(bulkItemEventService.ValidatedItemList.ToEventArchiveList(queuedEvents, bulkItemEventService.ItemNutriFacts));
             }
 
             logger.Info(String.Format("Successfully processed {0} item for {1} region.", queuedEvents.Count.ToString(), regionCode));

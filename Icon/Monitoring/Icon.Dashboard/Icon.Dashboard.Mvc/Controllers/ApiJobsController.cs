@@ -1,5 +1,7 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
+using Icon.Dashboard.Mvc.Filters;
 using Icon.Dashboard.Mvc.Helpers;
+using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
@@ -13,16 +15,8 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class ApiJobsController : Controller
     {
-        public IIconDatabaseServiceWrapper IconDatabaseDataAccess { get; private set; }
 
         private HttpServerUtilityBase _serverUtility;
-        public HttpServerUtilityBase ServerUtility
-        {
-            get
-            {
-                return _serverUtility ?? Server;
-            }
-        }
 
         public ApiJobsController() : this(null, null) { }
 
@@ -32,9 +26,18 @@ namespace Icon.Dashboard.Mvc.Controllers
             IconDatabaseDataAccess = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
             _serverUtility = serverUtility;
         }
+        public IIconDatabaseServiceWrapper IconDatabaseDataAccess { get; private set; }
+        public HttpServerUtilityBase ServerUtility
+        {
+            get
+            {
+                return _serverUtility ?? Server;
+            }
+        }
+        #region GET
 
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Index(string id = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
             //enable filter to use the data service
@@ -44,61 +47,24 @@ namespace Icon.Dashboard.Mvc.Controllers
             return View(jobSummaries);
         }
 
-        [HttpPost]
-        public ActionResult TableRefresh(string routeParameter = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize, string errorLevel = "Any")
+        [HttpGet]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        public ActionResult Pending()
         {
-            var jobSummaries = GetJobSummariesAndSetRelatedViewData(routeParameter, page, pageSize);
-            return PartialView("_ApiJobsTablePartial", jobSummaries);
-        }
-
-        private IEnumerable<ApiMessageJobSummaryViewModel> GetJobSummariesAndSetRelatedViewData(string jobType, int page, int pageSize)
-        {
-            if (String.IsNullOrWhiteSpace(jobType))
-            {
-                return GetJobSummariesAndSetRelatedViewData(page, pageSize);
-            }
-            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseDataAccess.GetPagedApiJobSummariesByMessageType(jobType, page, pageSize);
-
-            ViewBag.JobType = jobType;
-            ViewBag.Title = $"API Controller {jobType} Message Jobs";
-            ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(jobType, page, pageSize);
-
-            return jobSummaries;
-        }
-
-        private IEnumerable<ApiMessageJobSummaryViewModel> GetJobSummariesAndSetRelatedViewData(int page, int pageSize)
-        {
-            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseDataAccess.GetPagedApiJobSummaries(page, pageSize);
-
-            //ViewBag.JobType = null;
-            ViewBag.Title = "API Controller Message Jobs Summary";
-            ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(page, pageSize); 
-
-            return jobSummaries;
-        }
-
-        protected PaginationPageSetViewModel GetPaginationViewModel(int page, int pageSize)
-        {
-            var pagingData = new PaginationPageSetViewModel("TableRefresh", "ApiJobs", PagingConstants.NumberOfQuickLinks, page, pageSize);
-            return pagingData;
-        }
-
-        protected PaginationPageSetViewModel GetPaginationViewModel(string jobType, int page, int pageSize)
-        {
-            var pagingData = String.IsNullOrWhiteSpace(jobType)
-               ? GetPaginationViewModel(page, pageSize)
-               : new PaginationPageSetViewModel("TableRefresh", "ApiJobs", PagingConstants.NumberOfQuickLinks, page, pageSize, jobType);
-            return pagingData;
+            var pendingMessages = IconDatabaseDataAccess.GetPendingMessages();
+            return View(pendingMessages);
         }
 
         [HttpGet]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult RedrawPaging(string routeParameter = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
             var pagingData = GetPaginationViewModel(routeParameter, page, pageSize);
             return PartialView("_PaginationPartial", pagingData);
         }
 
-        [HttpPost]
+        [HttpGet]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Summarize(ApiMessageJobTimedReportViewModel viewModel)
         {
             if (!viewModel.StartTime.HasValue)
@@ -132,11 +98,52 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
-        public ActionResult Pending()
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        public ActionResult TableRefresh(string routeParameter = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize, string errorLevel = "Any")
         {
-            var pendingMessages = IconDatabaseDataAccess.GetPendingMessages();
-            return View(pendingMessages);
+            var jobSummaries = GetJobSummariesAndSetRelatedViewData(routeParameter, page, pageSize);
+            return PartialView("_ApiJobsTablePartial", jobSummaries);
+        }
+        #endregion
+
+        protected PaginationPageSetViewModel GetPaginationViewModel(int page, int pageSize)
+        {
+            var pagingData = new PaginationPageSetViewModel("TableRefresh", "ApiJobs", PagingConstants.NumberOfQuickLinks, page, pageSize);
+            return pagingData;
+        }
+
+        protected PaginationPageSetViewModel GetPaginationViewModel(string jobType, int page, int pageSize)
+        {
+            var pagingData = String.IsNullOrWhiteSpace(jobType)
+               ? GetPaginationViewModel(page, pageSize)
+               : new PaginationPageSetViewModel("TableRefresh", "ApiJobs", PagingConstants.NumberOfQuickLinks, page, pageSize, jobType);
+            return pagingData;
+        }
+
+        private IEnumerable<ApiMessageJobSummaryViewModel> GetJobSummariesAndSetRelatedViewData(string jobType, int page, int pageSize)
+        {
+            if (String.IsNullOrWhiteSpace(jobType))
+            {
+                return GetJobSummariesAndSetRelatedViewData(page, pageSize);
+            }
+            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseDataAccess.GetPagedApiJobSummariesByMessageType(jobType, page, pageSize);
+
+            ViewBag.JobType = jobType;
+            ViewBag.Title = $"API Controller {jobType} Message Jobs";
+            ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(jobType, page, pageSize);
+
+            return jobSummaries;
+        }
+
+        private IEnumerable<ApiMessageJobSummaryViewModel> GetJobSummariesAndSetRelatedViewData(int page, int pageSize)
+        {
+            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseDataAccess.GetPagedApiJobSummaries(page, pageSize);
+
+            //ViewBag.JobType = null;
+            ViewBag.Title = "API Controller Message Jobs Summary";
+            ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(page, pageSize);
+
+            return jobSummaries;
         }
     }
 }

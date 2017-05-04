@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Commands
 {
@@ -17,31 +18,28 @@ namespace Icon.ApiController.Tests.Commands
     {
         private UpdateStagedProductStatusCommandHandler commandHandler;
         private IconContext context;
-        private GlobalIconContext globalContext;
         private Mock<ILogger<UpdateStagedProductStatusCommandHandler>> mockLogger;
         private HierarchyClass testBrandClass;
         private HierarchyClass testBrowsingClass;
         private HierarchyClass testMerchandiseClass;
         private HierarchyClass testFinancialClass;
         private HierarchyClass testTaxClass;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
             mockLogger = new Mock<ILogger<UpdateStagedProductStatusCommandHandler>>();
-            commandHandler = new UpdateStagedProductStatusCommandHandler(mockLogger.Object, globalContext);
-
-            transaction = context.Database.BeginTransaction();
+            commandHandler = new UpdateStagedProductStatusCommandHandler(mockLogger.Object, new IconDbContextFactory());
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         private void StageHierarchyClasses()
@@ -68,6 +66,7 @@ namespace Icon.ApiController.Tests.Commands
                 .WithMerchandiseClassId(testMerchandiseClass.hierarchyClassID)
                 .WithTaxClassId(testTaxClass.hierarchyClassID)
                 .WithFinancialClassId(testFinancialClass.hierarchyClassName.Split('(')[1].TrimEnd(')'))
+                .WithFinancialClassName(testFinancialClass.hierarchyClassName.Split('(')[0].Trim())
                 .WithBrowsingClassId(testBrowsingClass.hierarchyClassID);
         }
 
@@ -239,6 +238,8 @@ namespace Icon.ApiController.Tests.Commands
                     traitValue = null
                 });
 
+            context.SaveChanges();
+
             var command = new UpdateStagedProductStatusCommand
             {
                 PublishedHierarchyClasses = new List<int>
@@ -251,6 +252,7 @@ namespace Icon.ApiController.Tests.Commands
             commandHandler.Execute(command);
 
             // Then.
+            context.Entry(testProductMessage).Reload();
             Assert.AreEqual(MessageStatusTypes.Ready, testProductMessage.MessageStatusId);
         }
 
@@ -315,6 +317,8 @@ namespace Icon.ApiController.Tests.Commands
                     traitValue = null
                 });
 
+            context.SaveChanges();
+
             var command = new UpdateStagedProductStatusCommand
             {
                 PublishedHierarchyClasses = new List<int>
@@ -332,6 +336,7 @@ namespace Icon.ApiController.Tests.Commands
             // Then.
             foreach (var product in testProducts)
             {
+                context.Entry(product).Reload();
                 Assert.AreEqual(MessageStatusTypes.Ready, product.MessageStatusId);
             }
         }
@@ -397,6 +402,8 @@ namespace Icon.ApiController.Tests.Commands
                     traitValue = null
                 });
 
+            context.SaveChanges();
+
             var command = new UpdateStagedProductStatusCommand
             {
                 PublishedHierarchyClasses = new List<int>
@@ -411,6 +418,7 @@ namespace Icon.ApiController.Tests.Commands
             // Then.
             foreach (var product in testProducts)
             {
+                context.Entry(product).Reload();
                 Assert.AreEqual(MessageStatusTypes.Ready, product.MessageStatusId);
             }
         }
@@ -475,6 +483,8 @@ namespace Icon.ApiController.Tests.Commands
                     HierarchyClass = testBrowsingClass,
                     traitValue = null
                 });
+
+            context.SaveChanges();
 
             var command = new UpdateStagedProductStatusCommand
             {
@@ -555,6 +565,8 @@ namespace Icon.ApiController.Tests.Commands
                     traitValue = null
                 });
 
+            context.SaveChanges();
+
             var command = new UpdateStagedProductStatusCommand
             {
                 PublishedHierarchyClasses = new List<int>
@@ -569,6 +581,7 @@ namespace Icon.ApiController.Tests.Commands
             // Then.
             foreach (var product in testProducts)
             {
+                context.Entry(product).Reload();
                 Assert.AreEqual(MessageStatusTypes.Ready, product.MessageStatusId);
             }
         }

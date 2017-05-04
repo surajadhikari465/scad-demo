@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Commands
 {
@@ -16,7 +17,7 @@ namespace Icon.ApiController.Tests.Commands
     public class AssociateMessageToQueueBulkCommandHandlerTests
     {
         private IconContext context;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private AssociateMessageToQueueCommandHandler<MessageQueueItemLocale> associateMessageToQueueCommandHandler;
         private Mock<ILogger<AssociateMessageToQueueCommandHandler<MessageQueueItemLocale>>> mockLogger;
         private int testMessageHistoryId;
@@ -28,21 +29,20 @@ namespace Icon.ApiController.Tests.Commands
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
             context = new IconContext();
             mockLogger = new Mock<ILogger<AssociateMessageToQueueCommandHandler<MessageQueueItemLocale>>>();
 
             associateMessageToQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueItemLocale>(
                 mockLogger.Object,
-                new GlobalIconContext(context));
-
-            transaction = context.Database.BeginTransaction();
+                new IconDbContextFactory());
 
             // Insert a MessageHistory and IRMAPush first because of FK constraints.
             messageHistory = new MessageHistory
             {
                 MessageTypeId = MessageTypes.ItemLocale,
                 MessageStatusId = MessageStatusTypes.Ready,
-                Message = String.Empty,
+                Message = string.Empty,
                 InProcessBy = null,
                 ProcessedDate = null
             };
@@ -78,7 +78,7 @@ namespace Icon.ApiController.Tests.Commands
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [TestMethod]

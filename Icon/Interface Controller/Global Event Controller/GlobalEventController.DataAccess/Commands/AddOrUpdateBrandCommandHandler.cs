@@ -28,25 +28,54 @@ namespace GlobalEventController.DataAccess.Commands
 
             if (validatedBrand == null)
             {
-                validatedBrand = new ValidatedBrand
+                var irmaBrand = context.ItemBrand.SingleOrDefault(ib => ib.Brand_Name == command.BrandName);
+                if (irmaBrand == null)
                 {
-                    IconBrandId = command.IconBrandId.Value,
-                    ItemBrand = new ItemBrand
-                    {
-                        Brand_Name = command.BrandName
-                    }
-                };
-
-                context.ValidatedBrand.Add(validatedBrand);
+                    validatedBrand = AddValidatedBrandAndIrmaBrand(command);
+                }
+                else
+                {
+                    validatedBrand = ValidateExistingIrmaBrand(command, irmaBrand);
+                }
             }
             else
             {
                 validatedBrand.ItemBrand.Brand_Name = command.BrandName;
             }
 
+            validatedBrand.ItemBrand.LastUpdateTimestamp = DateTime.Now;
+
             context.SaveChanges();
 
             command.BrandId = validatedBrand.ItemBrand.Brand_ID;
+        }
+
+        private ValidatedBrand AddValidatedBrandAndIrmaBrand(AddOrUpdateBrandCommand command)
+        {
+            ValidatedBrand validatedBrand = new ValidatedBrand
+            {
+                IconBrandId = command.IconBrandId.Value,
+                ItemBrand = new ItemBrand
+                {
+                    Brand_Name = command.BrandName
+                }
+            };
+            context.ValidatedBrand.Add(validatedBrand);
+            return validatedBrand;
+        }
+
+        private ValidatedBrand ValidateExistingIrmaBrand(AddOrUpdateBrandCommand command, ItemBrand irmaBrand)
+        {
+            ValidatedBrand validatedBrand;
+            var currentValidatedBrands = irmaBrand.ValidatedBrand.ToList();
+            foreach (var currentValidatedBrand in currentValidatedBrands)
+            {
+                context.ValidatedBrand.Remove(currentValidatedBrand);
+                context.SaveChanges();
+            }
+            validatedBrand = new ValidatedBrand { IconBrandId = command.IconBrandId.Value, ItemBrand = irmaBrand };
+            context.ValidatedBrand.Add(validatedBrand);
+            return validatedBrand;
         }
     }
 }

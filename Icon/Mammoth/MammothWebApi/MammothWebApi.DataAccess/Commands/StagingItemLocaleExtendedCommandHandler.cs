@@ -1,9 +1,9 @@
-﻿using Mammoth.Common.DataAccess;
+﻿using FastMember;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.DbProviders;
 using MammothWebApi.DataAccess.Models;
-using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace MammothWebApi.DataAccess.Commands
 {
@@ -18,12 +18,24 @@ namespace MammothWebApi.DataAccess.Commands
 
         public void Execute(StagingItemLocaleExtendedCommand data)
         {
-            // Sql Bulk Copy List into Staging Table
-            using (SqlBulkCopy bulkCopy = new SqlBulkCopy(this.db.Connection as SqlConnection))
+            if (data.ItemLocalesExtended.Any())
             {
-                bulkCopy.DestinationTableName = "[stage].[ItemLocaleExtended]";
-                DataTable dataTable = data.ItemLocalesExtended.ToDataTable<StagingItemLocaleExtendedModel>();
-                bulkCopy.WriteToServer(dataTable);
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(this.db.Connection as SqlConnection))
+                {
+                    using (var reader = ObjectReader.Create(
+                        data.ItemLocalesExtended,
+                        nameof(StagingItemLocaleExtendedModel.Region),
+                        nameof(StagingItemLocaleExtendedModel.ScanCode),
+                        nameof(StagingItemLocaleExtendedModel.BusinessUnitId),
+                        nameof(StagingItemLocaleExtendedModel.AttributeId),
+                        nameof(StagingItemLocaleExtendedModel.AttributeValue),
+                        nameof(StagingItemLocaleExtendedModel.Timestamp),
+                        nameof(StagingItemLocaleExtendedModel.TransactionId)))
+                    {
+                        bulkCopy.DestinationTableName = "[stage].[ItemLocaleExtended]";
+                        bulkCopy.WriteToServer(reader);
+                    }
+                }
             }
         }
     }

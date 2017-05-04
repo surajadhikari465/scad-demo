@@ -43,7 +43,7 @@ namespace Icon.ApiController.Controller
                 ExceptionLogger<ApiControllerBase> exceptionLogger = new ExceptionLogger<ApiControllerBase>(logger);
                 exceptionLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
 
-                string errorMessage = String.Format(Resource.HistoryProcessorUnhandledExceptionMessage, ControllerType.Type, ControllerType.Instance);
+                string errorMessage = string.Format(Resource.HistoryProcessorUnhandledExceptionMessage, ControllerType.Type, ControllerType.Instance);
                 string emailSubject = Resource.HistoryProcessorUnhandledExceptionEmailSubject;
                 string emailBody = EmailHelper.BuildMessageBodyForUnhandledException(errorMessage, ex.ToString());
 
@@ -75,7 +75,7 @@ namespace Icon.ApiController.Controller
                 ExceptionLogger<ApiControllerBase> exceptionLogger = new ExceptionLogger<ApiControllerBase>(logger);
                 exceptionLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
 
-                string errorMessage = String.Format(Resource.QueueProcessorUnhandledExceptionMessage, ControllerType.Type, ControllerType.Instance);
+                string errorMessage = string.Format(Resource.QueueProcessorUnhandledExceptionMessage, ControllerType.Type, ControllerType.Instance);
                 string emailSubject = Resource.QueueProcessorUnhandledExceptionEmailSubject;
                 string emailBody = EmailHelper.BuildMessageBodyForUnhandledException(errorMessage, ex.ToString());
 

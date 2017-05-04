@@ -13,7 +13,7 @@
             @Html.EditorForModel();
 
             <div class="row">
-                <div class="col-xs-offset-1 col-xs-10">
+                <div class="col-xs-offset-2 col-xs-8">
                     <button type="submit" value="Save" class="btn btn-warning btn-block">Save</button>
                 </div>
             </div>
@@ -22,7 +22,7 @@
 
     <div class="row">
         <p></p>
-        <div class="col-xs-offset-1 col-xs-10 text-center">
+        <div class="col-xs-offset-2 col-xs-8 text-center">
             @using (Html.BeginForm("Delete", "EsbSwitch", new { name = Model.Name }, FormMethod.Post, null))
             {
                 <button type="submit" value="@("Delete")" class="btn btn-danger btn-block margin-top-10">@("Delete")</button>
@@ -32,7 +32,7 @@
 
     <div class="row">
         <p></p>
-        <div class="col-xs-offset-1 col-xs-10 text-center">
+        <div class="col-xs-offset-2 col-xs-8 text-center">
             @Html.ActionLink("Back to List", "Index")
         </div>
     </div>

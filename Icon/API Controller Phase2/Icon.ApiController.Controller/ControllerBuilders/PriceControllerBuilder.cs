@@ -17,7 +17,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 {
     public class PriceControllerBuilder : IControllerBuilder
     {
-        public ApiControllerBase ComposeController(IRenewableContext<IconContext> globalContext)
+        public ApiControllerBase ComposeController()
         {
             ControllerType.Type = "Price";
 
@@ -29,7 +29,9 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             producer.OpenConnection();
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Price, producer, globalContext);
+            IconDbContextFactory iconContextFactory = new IconDbContextFactory();
+
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Price, producer, iconContextFactory);
 
             var queueProcessorLogger = new NLogLoggerInstance<PriceQueueProcessor>(instance);
             var serializer = new Serializer<Contracts.items>(
@@ -40,41 +42,40 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 emailClient,
                 new GetMessageQueueQuery<MessageQueuePrice>(
                     new NLogLoggerInstance<GetMessageQueueQuery<MessageQueuePrice>>(instance),
-                    globalContext),
+                    iconContextFactory),
                 new UpdateMessageQueueStatusCommandHandler<MessageQueuePrice>(
                     new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueuePrice>>(instance), 
-                    globalContext));
+                    iconContextFactory));
             var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(
                 new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance),
-                globalContext);
+                iconContextFactory);
             var associateMessageToQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueuePrice>(
                 new NLogLoggerInstance<AssociateMessageToQueueCommandHandler<MessageQueuePrice>>(instance),
-                globalContext);
+                iconContextFactory);
             var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueuePrice>(
                 new NLogLoggerInstance<UpdateMessageQueueProcessedDateCommandHandler<MessageQueuePrice>>(instance), 
-                globalContext);
+                iconContextFactory);
             var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(
                 new NLogLoggerInstance<UpdateMessageHistoryStatusCommandHandler>(instance), 
-                globalContext);
+                iconContextFactory);
             var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueuePrice>(
                 new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueuePrice>>(instance), 
-                globalContext);
+                iconContextFactory);
 
-            var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(globalContext);
-            var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(globalContext);
-            var getNextAvailableBusinessUnitQueryHandler = new GetNextAvailableBusinessUnitQuery(globalContext);
+            var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(iconContextFactory);
+            var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(iconContextFactory);
+            var getNextAvailableBusinessUnitQueryHandler = new GetNextAvailableBusinessUnitQuery(iconContextFactory);
             var markQueuedEntriesAsInProcessCommandHandler = new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueuePrice>(
                     new NLogLoggerInstance<MarkQueuedEntriesAsInProcessCommandHandler<MessageQueuePrice>>(instance),
-                    globalContext);
+                    iconContextFactory);
 
             var monitorCommandHandler = new SaveMessageProcessorJobSummaryCommandHandler(
-                new NLogLoggerInstance<SaveMessageProcessorJobSummaryCommandHandler>(instance), globalContext);
+                new NLogLoggerInstance<SaveMessageProcessorJobSummaryCommandHandler>(instance), iconContextFactory);
             var monitor = new MessageProcessorMonitor(monitorCommandHandler);
 
             var priceQueueProcessor = new PriceQueueProcessor(
                 settings,
                 queueProcessorLogger,
-                globalContext,
                 queueReader,
                 serializer,
                 saveToMessageHistoryCommandHandler,

@@ -69,31 +69,60 @@ namespace Icon.Infor.Listeners.Item
             }
             finally
             {
-                try
-                {
-                    service.ArchiveMessage(args.Message);
-                    if (models.Any())
-                    {
-                        service.ArchiveItems(models);
-                        notifier.NotifyOfItemError(args.Message, models.Where(m => m.ErrorCode != null).ToList());
-                    }
-                }
-                catch(Exception ex)
-                {
-                    logger.Error(JsonConvert.SerializeObject(
-                        new
-                        {
-                            ErrorCode = ApplicationErrors.Codes.UnableToArchiveMessage,
-                            ErrorDetails = ApplicationErrors.Messages.UnableToArchiveMessage,
-                            Message = args.Message,
-                            Exception = ex
-                        }));
-                }
+                ArchiveMessage(args.Message);
+                ArchiveItems(models);
+                NotifyItemErrors(args.Message, models);
 
                 AcknowledgeMessage(args);
                 context.Refresh();
                 models.Clear();
             }
+        }
+
+        private void ArchiveMessage(IEsbMessage message)
+        {
+            try
+            {
+                service.ArchiveMessage(message);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(JsonConvert.SerializeObject(
+                        new
+                        {
+                            ErrorCode = ApplicationErrors.Codes.UnableToArchiveMessage,
+                            ErrorDetails = ApplicationErrors.Messages.UnableToArchiveMessage,
+                            Message = message,
+                            Exception = ex
+                        }));
+            }
+        }
+
+        private void ArchiveItems(List<ItemModel> models)
+        {
+            try
+            {
+                if (models.Any())
+                {
+                    service.ArchiveItems(models);
+                }
+            }
+            catch(Exception ex)
+            {
+                logger.Error(JsonConvert.SerializeObject(
+                        new
+                        {
+                            ErrorCode = ApplicationErrors.Codes.UnableToArchiveItems,
+                            ErrorDetails = ApplicationErrors.Messages.UnableToArchiveItems,
+                            Items = models,
+                            Exception = ex
+                        }));
+            }
+        }
+
+        private void NotifyItemErrors(IEsbMessage message, List<ItemModel> models)
+        {
+            notifier.NotifyOfItemError(message, models.Where(m => m.ErrorCode != null).ToList());
         }
     }
 }

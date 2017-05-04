@@ -1,8 +1,4 @@
-﻿
-
-
-
-CREATE PROCEDURE [dbo].[Truncate_Items] AS BEGIN
+﻿CREATE PROCEDURE [dbo].[Truncate_Items] AS BEGIN
 
 	ALTER TABLE dbo.ItemAttributes_Ext DROP CONSTRAINT FK_ItemAttributes_Ext_ItemID;
 	ALTER TABLE dbo.ItemAttributes_Locale_FL_Ext DROP CONSTRAINT FK_ItemAttributes_Locale_FL_Ext_ItemID;

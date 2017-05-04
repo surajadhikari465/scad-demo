@@ -1,6 +1,7 @@
 ﻿using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Mammoth.Framework;
 using System;
 using System.Collections.Generic;
@@ -12,20 +13,23 @@ namespace Mammoth.ApiController.DataAccess.Queries
 {
     public class GetMessageQueueQuery<T> : IQueryHandler<GetMessageQueueParameters<T>, List<T>> where T : class, IMessageQueue
     {
-        private IRenewableContext<MammothContext> globalContext;
+        private IDbContextFactory<MammothContext> mammothContextFactory;
 
-        public GetMessageQueueQuery(IRenewableContext<MammothContext> globalContext)
+        public GetMessageQueueQuery(IDbContextFactory<MammothContext> mammothContextFactory)
         {
-            this.globalContext = globalContext;
+            this.mammothContextFactory = mammothContextFactory;
         }
 
         public List<T> Search(GetMessageQueueParameters<T> parameters)
         {
-            var messageQueueTable = globalContext.Context.Set<T>();
+            using (var context = mammothContextFactory.CreateContext())
+            {
+                var messageQueueTable = context.Set<T>();
 
-            var messagesReadyForProcessing = messageQueueTable.Where(mq => mq.InProcessBy == parameters.Instance).ToList();
+                var messagesReadyForProcessing = messageQueueTable.Where(mq => mq.InProcessBy == parameters.Instance);
 
-            return messagesReadyForProcessing;
+                return messagesReadyForProcessing.ToList();
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Commands
 {
@@ -15,28 +16,25 @@ namespace Icon.ApiController.Tests.Commands
     public class UpdateSentToEsbHierarchyTraitCommandHandlerIntegrationTests
     {
         private UpdateSentToEsbHierarchyTraitCommandHandler commandHandler;
-        private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
         private Mock<ILogger<UpdateSentToEsbHierarchyTraitCommandHandler>> mockLogger;
+        private IconContext context;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
-            mockLogger = new Mock<ILogger<UpdateSentToEsbHierarchyTraitCommandHandler>>();
+            transaction = new TransactionScope();
 
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
-            commandHandler = new UpdateSentToEsbHierarchyTraitCommandHandler(mockLogger.Object, globalContext);
-
-            transaction = context.Database.BeginTransaction();
+            mockLogger = new Mock<ILogger<UpdateSentToEsbHierarchyTraitCommandHandler>>();
+            commandHandler = new UpdateSentToEsbHierarchyTraitCommandHandler(mockLogger.Object, new IconDbContextFactory());
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [TestMethod]
@@ -93,6 +91,7 @@ namespace Icon.ApiController.Tests.Commands
 
             // Then.
             var result = context.HierarchyClass
+                .AsNoTracking()
                 .Single(hc => hc.hierarchyClassID == testHierarchyClass.hierarchyClassID)
                 .HierarchyClassTrait.SingleOrDefault(hct => hct.traitID == Traits.SentToEsb)
                 .traitValue;
@@ -123,6 +122,7 @@ namespace Icon.ApiController.Tests.Commands
 
             // Then.
             var result = context.HierarchyClass
+                .AsNoTracking()
                 .Single(hc => hc.hierarchyClassID == testHierarchyClass.hierarchyClassID)
                 .HierarchyClassTrait.SingleOrDefault(hct => hct.traitID == Traits.SentToEsb)
                 .traitValue;

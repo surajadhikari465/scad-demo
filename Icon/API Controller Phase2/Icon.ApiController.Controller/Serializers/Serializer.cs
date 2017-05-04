@@ -49,7 +49,7 @@ namespace Icon.ApiController.Controller.Serializers
                 ExceptionLogger<Serializer<T>> exceptionLogger = new ExceptionLogger<Serializer<T>>(logger);
                 exceptionLogger.LogException(miniBulk.ToString(), ex, this.GetType(), MethodBase.GetCurrentMethod());
 
-                string errorMessage = String.Format(Resource.FailedToSerializeMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
+                string errorMessage = string.Format(Resource.FailedToSerializeMiniBulkMessage, ControllerType.Type, ControllerType.Instance);
                 string emailSubject = Resource.FailedToSerializeMiniBulkEmailSubject;
                 string emailBody = EmailHelper.BuildMessageBodyForSerializationFailure(errorMessage, ex.ToString());
 
@@ -63,12 +63,12 @@ namespace Icon.ApiController.Controller.Serializers
                     exceptionLogger.LogException(mailErrorMessage, mailEx, this.GetType(), MethodBase.GetCurrentMethod());
                 }
 
-                return String.Empty;
+                return string.Empty;
             }
 
             string xml = writer.ToString();
 
-            logger.Info(String.Format("Serialization complete.  Message size (bytes): {0}.", System.Text.ASCIIEncoding.Unicode.GetByteCount(xml)));
+            logger.Info(string.Format("Serialization complete.  Message size (bytes): {0}.", System.Text.ASCIIEncoding.Unicode.GetByteCount(xml)));
 
             return xml;
         }

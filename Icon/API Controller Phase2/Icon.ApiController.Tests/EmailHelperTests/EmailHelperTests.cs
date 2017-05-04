@@ -15,13 +15,8 @@ namespace Icon.ApiController.Tests.EmailHelperTests
         [TestInitialize]
         public void Initialize()
         {
-            string domain = "wfm.pvt";
-            string username = WindowsIdentity.GetCurrent().Name;
-            PrincipalContext domainContext = new PrincipalContext(ContextType.Domain, domain);
-            UserPrincipal user = UserPrincipal.FindByIdentity(domainContext, username);
-
             var emailClientSettings = EmailHelper.BuildEmailClientSettings();
-            emailClientSettings.Recipients = new string[] { user.EmailAddress };
+            emailClientSettings.Recipients = new string[] { "test@testtesttest.test" };
 
             emailClient = new EmailClient(emailClientSettings);
 
@@ -34,7 +29,7 @@ namespace Icon.ApiController.Tests.EmailHelperTests
         {
             // Given.
             string message = EmailHelper.BuildMessageBodyForUnhandledException(
-                String.Format(Resource.HistoryProcessorUnhandledExceptionMessage, ControllerType.Type, ControllerType.Instance),
+                string.Format(Resource.HistoryProcessorUnhandledExceptionMessage, ControllerType.Type, ControllerType.Instance),
                 "Exception text goes here.");
 
             string subject = "API Controller Automated Test - Unhandled Exception Occurred";
@@ -51,7 +46,7 @@ namespace Icon.ApiController.Tests.EmailHelperTests
         {
             // Given.
             string message = EmailHelper.BuildMessageBodyForMiniBulkError(
-                String.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance), 
+                string.Format(Resource.FailedToAddQueuedMessageToMiniBulkMessage, ControllerType.Type, ControllerType.Instance), 
                 222, 
                 "Couldn't do it, sorry.");
 
@@ -69,7 +64,7 @@ namespace Icon.ApiController.Tests.EmailHelperTests
         {
             // Given.
             string message = EmailHelper.BuildMessageBodyForSerializationFailure(
-                String.Format(Resource.FailedToSerializeMiniBulkMessage, ControllerType.Type, ControllerType.Instance),
+                string.Format(Resource.FailedToSerializeMiniBulkMessage, ControllerType.Type, ControllerType.Instance),
                 "Nope.");
 
             string subject = "API Controller Automated Test - Serialization Error";

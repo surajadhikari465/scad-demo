@@ -27,6 +27,7 @@ namespace PushController.Tests.DataAccess.Queries
         private List<IConPOSPushPublish> irmaPosDataMarkedByController;
         private List<IConPOSPushPublish> irmaPosDataNotMarkedByController;
         private Random random;
+        private int testStoreNumber;
 
         [TestInitialize]
         public void Initialize()
@@ -36,29 +37,43 @@ namespace PushController.Tests.DataAccess.Queries
 
             StartupOptions.Instance = 99;
 
-            this.context = new IrmaContext(ConnectionBuilder.GetConnection("SP"));
-            this.globalContext = new GlobalIrmaContext(this.context, ConnectionBuilder.GetConnection("SP"));
+            this.context = new IrmaContext(ConnectionBuilder.GetConnection("FL"));
+            this.globalContext = new GlobalIrmaContext(this.context, ConnectionBuilder.GetConnection("FL"));
             this.mockContextProvider = new Mock<IIrmaContextProvider>();
             this.mockContextProvider.Setup(cp => cp.GetRegionalContext(It.IsAny<string>())).Returns(this.context);
 
             this.random = new Random(10000);
+            this.testStoreNumber = context.Store.First(s => s.WFM_Store && s.Internal && s.BusinessUnit_ID.HasValue).Store_No;
 
             irmaPosDataMarkedByController = new List<IConPOSPushPublish>
             {
                 new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier("11111").WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000))).WithInProcessBy(StartupOptions.Instance),
+                    .WithStoreNumber(testStoreNumber)
+                    .WithIdentifier("11111")
+                    .WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000)))
+                    .WithInProcessBy(StartupOptions.Instance),
                 new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier("22222").WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000))).WithInProcessBy(StartupOptions.Instance),
+                    .WithStoreNumber(testStoreNumber)
+                    .WithIdentifier("22222")
+                    .WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000)))
+                    .WithInProcessBy(StartupOptions.Instance),
                 new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier("33333").WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000))).WithInProcessBy(StartupOptions.Instance),
+                    .WithStoreNumber(testStoreNumber)
+                    .WithIdentifier("33333")
+                    .WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000)))
+                    .WithInProcessBy(StartupOptions.Instance),
             };
 
             irmaPosDataNotMarkedByController = new List<IConPOSPushPublish>
             {
                 new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000))).WithInProcessBy(2),
+                    .WithStoreNumber(testStoreNumber)
+                    .WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000)))
+                    .WithInProcessBy(2),
                 new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000))).WithInProcessBy(2),
+                    .WithStoreNumber(testStoreNumber)
+                    .WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000)))
+                    .WithInProcessBy(2),
             };
 
             transaction = context.Database.BeginTransaction();
@@ -77,7 +92,10 @@ namespace PushController.Tests.DataAccess.Queries
         private void StageDuplicatePosDataRecord()
         {
             var duplicatePosDataRecord = new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier("22222").WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000))).WithInProcessBy(StartupOptions.Instance);
+                    .WithStoreNumber(testStoreNumber)
+                    .WithIdentifier("22222")
+                    .WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(10000)))
+                    .WithInProcessBy(StartupOptions.Instance);
 
             context.IConPOSPushPublish.Add(duplicatePosDataRecord);
             context.SaveChanges();

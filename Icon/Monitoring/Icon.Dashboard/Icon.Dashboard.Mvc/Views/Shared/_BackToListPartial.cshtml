@@ -1,13 +1,14 @@
 ﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel
 
+<p></p>
 <div class="row">
-    <div class="col-xs-offset-1 col-xs-10">
+    <div class="col-xs-offset-2 col-xs-8">
         @Html.ActionLink(
-            $"Back to List of Applications for {Model.Environment}",
+            $"Back to List of Applications",
             "Index",
             "Home",
             null,
-            new { @class = $"btn btn-{Model.GetBootstrapClassForEnvironment()} btn-block" }
+            new { @class = $"btn btn-{Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment()} btn-block" }
         )
     </div>
 </div>

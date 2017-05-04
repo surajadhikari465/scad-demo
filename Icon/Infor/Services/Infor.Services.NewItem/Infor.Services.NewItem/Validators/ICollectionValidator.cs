@@ -8,6 +8,6 @@ namespace Infor.Services.NewItem.Validators
 {
     public interface ICollectionValidator<T>
     {
-        CollectionValidatorResult<T> Validate(IEnumerable<T> collection);
+        CollectionValidatorResult<T> ValidateCollection(IEnumerable<T> collection);
     }
 }

@@ -46,6 +46,34 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(10, archivedProducts.Count);
         }
 
+        [TestMethod]
+        public void ArchiveItems_ScanCodeIsGreaterThan13CharactersButLessThan100_ShouldArchiveItems()
+        {
+            //Given
+            testModels = CreateTestModels(1);
+            testModels.First().ScanCode = "test" + new string('t', 96);
+
+            //When
+            commandHandler.Execute(new ArchiveItemsCommand { Models = testModels });
+
+            //Then
+            var archivedProducts = context.MessageArchiveProduct.Where(p => p.ScanCode.StartsWith("test")).ToList();
+
+            Assert.AreEqual(1, archivedProducts.Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ArchiveItems_ScanCodeIsGreaterThan100Characters_ShouldThrowException()
+        {
+            //Given
+            testModels = CreateTestModels(1);
+            testModels.First().ScanCode = "test" + new string('t', 97);
+
+            //When
+            commandHandler.Execute(new ArchiveItemsCommand { Models = testModels });
+        }
+
         private IEnumerable<ItemModel> CreateTestModels(int numberOfModels)
         {
             List<ItemModel> models = new List<ItemModel>();

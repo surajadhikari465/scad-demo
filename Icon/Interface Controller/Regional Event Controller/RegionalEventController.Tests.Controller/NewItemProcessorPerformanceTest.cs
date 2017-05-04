@@ -26,9 +26,11 @@ namespace RegionalEventController.Tests.Controller
     [TestClass]
     public class NewItemProcessorPerformanceTest
     {
+        private const string OrganicCertificationAgency = "Organic";
         private IconContext iconContext = new IconContext();
         private int testNewItemToCreateEachRegion = 200;
         private string currentRegion;
+        private string testDefaultOrganicAgencyName = "NewItemProcessorPerformanceTest DefaultOrganicAgencyName";
 
         [TestInitialize]
         public void AddIRMANewItemsPerformanceInitializeTest()
@@ -40,7 +42,7 @@ namespace RegionalEventController.Tests.Controller
             Cache.taxCodeToTaxId?.Clear();
 
             StartupOptions.Instance = 123;
-            StartupOptions.RegionsToProcess = ConfigurationManager.AppSettings["NewItemsEnabledRegionsList"].Split(',');
+            StartupOptions.RegionsToProcess = new string[] { "FL" };
 
             foreach (string irmaRegion in StartupOptions.RegionsToProcess)
             {
@@ -63,6 +65,27 @@ namespace RegionalEventController.Tests.Controller
                     int returnCode = db.Database.ExecuteSqlCommand(sql);
                 }
             }
+
+            //ReCon relies on the existence of a Default Organic Certification Agency in order to 
+            //assign it to items. Adding it here if it doesn't exist so that this test doesn't break.
+            using (var context = new IconContext())
+            {
+                if (!context.HierarchyClassTrait.Any(hct => hct.traitID == Traits.DefaultCertificationAgency))
+                {
+                    context.HierarchyClass.Add(new HierarchyClass
+                    {
+                        hierarchyID = Hierarchies.CertificationAgencyManagement,
+                        hierarchyClassName = testDefaultOrganicAgencyName,
+                        hierarchyLevel = 1,
+                        HierarchyClassTrait = new List<HierarchyClassTrait>
+                        {
+                            new HierarchyClassTrait { traitID = Traits.DefaultCertificationAgency, traitValue = OrganicCertificationAgency },
+                            new HierarchyClassTrait { traitID = Traits.Organic, traitValue = OrganicCertificationAgency }
+                        }
+                    });
+                    context.SaveChanges();
+                }
+            }
         }
 
         [TestCleanup]
@@ -77,8 +100,21 @@ namespace RegionalEventController.Tests.Controller
                 {
 
                     string sql = @"delete dbo.IconItemChangeQueue 
-                                    where InsertDate = CONVERT(VARCHAR, GETDATE(), 23)";
+                                   where InsertDate = CONVERT(VARCHAR, GETDATE(), 23)";
                     int returnCode = db.Database.ExecuteSqlCommand(sql);
+                }
+            }
+
+            //Removing test default certification agency in case it was added
+            using (var context = new IconContext())
+            {
+                var testDefaultCertificationAgency = context.HierarchyClass.FirstOrDefault(hc => hc.hierarchyClassName == testDefaultOrganicAgencyName);
+                if (testDefaultCertificationAgency != null)
+                {
+                    context.HierarchyClassTrait.RemoveRange(testDefaultCertificationAgency.HierarchyClassTrait);
+                    context.SaveChanges();
+                    context.HierarchyClass.Remove(testDefaultCertificationAgency);
+                    context.SaveChanges();
                 }
             }
         }
@@ -92,6 +128,7 @@ namespace RegionalEventController.Tests.Controller
             //Given
             var iconReferenceProcessor = BuildIconReferenceProcessor();
             iconReferenceProcessor.Run();
+
             Console.WriteLine("Finished preparing the RegionalEventController.");
 
             foreach (string irmaRegion in StartupOptions.RegionsToProcess)
@@ -110,6 +147,7 @@ namespace RegionalEventController.Tests.Controller
 
             Console.WriteLine("Regional Event Controller finished after running for " + stopWatch.Elapsed.ToString("h'h 'm'm 's's'"));
             stopWatch.Stop();
+
             //Then
             foreach (string irmaRegion in StartupOptions.RegionsToProcess)
             {
@@ -167,7 +205,7 @@ namespace RegionalEventController.Tests.Controller
             var getBrandNewScanCodesQueryHandler = new GetBrandNewScanCodesQueryHandler(iconContext);
 
             var getScanCodesNeedSubscriptionQueryHandler = new GetScanCodesNeedSubscriptionQueryHandler(iconContext);
-            
+
             return new NewItemProcessor(
                 logger,
                 iconContext,

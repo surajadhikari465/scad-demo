@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Http.Results;
 using Dapper;
+using System.Data.SqlClient;
 
 namespace MammothWebApi.Tests.Controllers
 {
@@ -53,18 +54,41 @@ namespace MammothWebApi.Tests.Controllers
         }
 
         [TestMethod]
-        public void ItemLocaleController_ExceptionsDuringAddUpdate_ReturnsInternalServerError()
+        public void ItemLocaleController_NonSqlExceptionsDuringAddUpdate_ReturnsInternalServerErrorWithExceptionResponse()
         {
             // Given
             List<ItemLocaleModel> itemLocales = new List<ItemLocaleModel>();
             itemLocales.Add(new TestItemLocaleModelBuilder().Build());
-            this.mockItemLocaleService.Setup(s => s.Handle(It.IsAny<AddUpdateItemLocale>())).Throws<NullReferenceException>();
+            this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>())).Returns(new List<int>());
+            InvalidOperationException invalidOperationException = new InvalidOperationException("Test Invalid Operation Exception", new Exception("Test Inner Exception"));
+            this.mockItemLocaleService.Setup(s => s.Handle(It.IsAny<AddUpdateItemLocale>())).Throws(invalidOperationException);
 
             // When
-            var response = this.itemLocaleController.AddOrUpdateItemLocale(itemLocales) as InternalServerErrorResult;
+            var response = this.itemLocaleController.AddOrUpdateItemLocale(itemLocales) as ExceptionResult;
 
             // Then
-            Assert.IsNotNull(response, "The InternalServerError response is null.");
+            Assert.IsNotNull(response, "The InternalServerError with Exception response is null.");
+            Assert.AreEqual(invalidOperationException.Message, response.Exception.Message);
+            Assert.AreEqual(invalidOperationException.InnerException, response.Exception.InnerException);
+        }
+
+        [TestMethod]
+        public void ItemLocaleController_SqlExceptionsDuringAddUpdate_ReturnsInternalServerErrorWithExceptionResponse()
+        {
+            // Given
+            List<ItemLocaleModel> itemLocales = new List<ItemLocaleModel>();
+            itemLocales.Add(new TestItemLocaleModelBuilder().Build());
+            this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>())).Returns(new List<int>());
+            SqlException sqlException = CreateSqlException();
+            this.mockItemLocaleService.Setup(s => s.Handle(It.IsAny<AddUpdateItemLocale>())).Throws(sqlException);
+
+            // When
+            var response = this.itemLocaleController.AddOrUpdateItemLocale(itemLocales) as ExceptionResult;
+
+            // Then
+            Assert.IsNotNull(response, "The InternalServerError with Sql Exception response is null.");
+            Assert.AreEqual(sqlException.Message, response.Exception.Message);
+            Assert.AreEqual(sqlException.InnerException, response.Exception.InnerException);
         }
 
         [TestMethod]
@@ -144,7 +168,7 @@ namespace MammothWebApi.Tests.Controllers
             this.mockItemLocaleService.Verify(s => s.Handle(It.IsAny<AddUpdateItemLocale>()), Times.Once);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void BuildTestItemLocaleJsonFile()
         {
             int rows = 1;
@@ -193,6 +217,22 @@ namespace MammothWebApi.Tests.Controllers
                 string json = JsonConvert.SerializeObject(itemLocaleList);
                 file.WriteLine(json);
             }
+        }
+
+        private SqlException CreateSqlException()
+        {
+            SqlException exception = null;
+            try
+            {
+                SqlConnection connection = new SqlConnection(@"Data Source=.;Initial Catalog=FAIL;Connection Timeout=1");
+                connection.Open();
+            }
+            catch (SqlException sqlException)
+            {
+                exception = sqlException;
+            }
+
+            return exception;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Mammoth.ApiController.DataAccess.Tests
 {
@@ -17,26 +18,22 @@ namespace Mammoth.ApiController.DataAccess.Tests
         protected TCommandHandler commandHandler;
         protected TCommand command;
         protected TContext context;
-        protected DbContextTransaction transaction;
+        protected TransactionScope transaction;
 
         [TestInitialize]
         public void BaseInitialize()
         {
-            context = new TContext();
+            transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted });
             command = new TCommand();
-            transaction = context.Database.BeginTransaction();
+            context = new TContext();
             Initialize();
         }
 
         [TestCleanup]
         public void BaseCleanup()
         {
-            if (transaction.UnderlyingTransaction.Connection != null && transaction.UnderlyingTransaction.Connection.State == ConnectionState.Open)
-            {
-                transaction.Rollback();
-                transaction.Dispose();
-                context.Dispose();
-            }
+            context.Dispose();
+            transaction.Dispose();
             Cleanup();
         }
 

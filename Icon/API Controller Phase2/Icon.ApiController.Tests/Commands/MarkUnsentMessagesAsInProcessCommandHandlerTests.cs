@@ -9,6 +9,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.ApiController.Tests.Commands
 {
@@ -17,8 +18,7 @@ namespace Icon.ApiController.Tests.Commands
     {
         private MarkUnsentMessagesAsInProcessCommandHandler markUnsentMessagesCommandHandler;
         private IconContext context;
-        private GlobalIconContext globalContext;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private Mock<ILogger<MarkUnsentMessagesAsInProcessCommandHandler>> mockLogger;
         private List<MessageHistory> unsentMessages;
         private int miniBulkLimitMessageHistory;
@@ -26,22 +26,20 @@ namespace Icon.ApiController.Tests.Commands
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted });
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
 
             mockLogger = new Mock<ILogger<MarkUnsentMessagesAsInProcessCommandHandler>>();
-            markUnsentMessagesCommandHandler = new MarkUnsentMessagesAsInProcessCommandHandler(mockLogger.Object, globalContext);
+            markUnsentMessagesCommandHandler = new MarkUnsentMessagesAsInProcessCommandHandler(mockLogger.Object, new IconDbContextFactory());
 
             ControllerType.Instance = 99;
             miniBulkLimitMessageHistory = 100;
-
-            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transaction.Dispose();
         }
 
         private void StageUnsentMessages()

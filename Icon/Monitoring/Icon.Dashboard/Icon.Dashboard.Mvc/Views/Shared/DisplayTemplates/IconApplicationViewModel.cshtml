@@ -6,6 +6,8 @@
     string rowTargetId = $"target{Model.Name}{Model.Server}";
 }
 
+@if (Model != null)
+{
 <tr id="@rowTargetId" class="@rowColorClass">
     <td class="hidden-xs ">
         @Html.DisplayFor(model => model.TypeOfApplication)
@@ -13,14 +15,17 @@
     <td>
         @Html.ActionLink(Model.DisplayName, "Details", controllerName, new { application = Model.Name, server = Model.Server }, null)
     </td>
-    <td  class="text-nowrap">
+    <td class="text-nowrap">
         @Html.DisplayFor(model => model.Server)
     </td>
     <td class="hidden-xs hidden-sm hidden-md breakText">
         @Html.ActionLink(Model.Name, "Details", controllerName, new { application = Model.Name, server = Model.Server }, null)
     </td>
-    <td class="hidden-xs hidden-sm text-left breakText" style="max-width:50%;@(Model.ConfigFilePathIsValid?"":"background-color:#ffff99;")">
-        @Html.ActionLink(Model.ConfigFilePath, "Configure", controllerName, new { application = Model.Name, server = Model.Server }, null)
+    <td class="hidden-xs hidden-sm text-left breakText" style="max-width:50%;@(Model.ConfigFilePathIsValid ? "" : "background-color:#ffff99;")">
+        @if (!String.IsNullOrWhiteSpace(Model.ConfigFilePath))
+        {
+            @Html.ActionLink(Model.ConfigFilePath, "Configure", controllerName, new { application = Model.Name, server = Model.Server }, null)
+        }
     </td>
     <td class="hidden-xs hidden-sm">
         @Html.DisplayFor(model => model.CurrentEsbEnvironment)
@@ -35,3 +40,4 @@
         @{Html.RenderPartial("_CommandsPartial", Model);}
     </td>
 </tr>
+}

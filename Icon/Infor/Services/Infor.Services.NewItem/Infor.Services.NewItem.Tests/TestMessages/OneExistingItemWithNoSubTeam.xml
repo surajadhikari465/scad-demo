@@ -70,7 +70,7 @@
             <tra:type>
               <trt:description>POS Description</trt:description>
               <trt:value>
-                <trv:value>Test Brand Abbr Test POS Description 0</trv:value>
+                <trv:value>Test Brand Abbr TestPOS 0</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>

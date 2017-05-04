@@ -112,10 +112,10 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
             Cache.identifierToScanCode.Add(scanCodeModel.ScanCode, scanCodeModel);
         }
 
-        private void StageTestLinkedItem(string nonMerchandiseTrait)
+        private void StageTestLinkedItem(string nonMerchandiseTrait, string itemTypeCode = ItemTypeCodes.Deposit)
         {
             this.testLinkedItem = new TestItemBuilder().WithScanCode(this.testLinkedIdentifier);
-            this.testLinkedItem.ItemType = this.context.Context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Deposit);
+            this.testLinkedItem.ItemType = this.context.Context.ItemType.Single(it => it.itemTypeCode == itemTypeCode);
             this.testLinkedItem.ScanCode.Single().ScanCodeType = this.context.Context.ScanCodeType.Single(sct => sct.scanCodeTypeID == ScanCodeTypes.PosPlu);
             this.context.Context.Item.Add(this.testLinkedItem);
             this.context.Context.SaveChanges();
@@ -146,7 +146,7 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
         }
 
         [TestMethod]
-        public void BuildItemLinkEntities_PushRecordContainsNoLinkedItem_EntityShouldNotBeConstructed()
+        public void BuildItemLinkEntities_PushRecordContainsNoLinkedItem_ItemLinkDeleteShouldNotBeConstructed()
         {
             // Given.
             this.posDataRecord = new TestIrmaPushBuilder()
@@ -162,7 +162,7 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
             var constructedEntities = entityBuilder.BuildEntities(new List<IRMAPush> { posDataRecord });
 
             // Then.
-            Assert.AreEqual(0, constructedEntities.Count);
+            Assert.AreEqual(1, constructedEntities.Count);
         }
 
         [TestMethod]
@@ -206,6 +206,32 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
 
             // Then.
             Assert.AreEqual(0, constructedEntities.Count);
+        }
+
+        [TestMethod]
+        public void BuildItemLinkEntities_UseItemTypeAndLinkedItemIsNotDepositOrFee_EntityShouldNotBeConstructed()
+        {
+            // Given.
+            StartupOptions.UseItemTypeInsteadOfNonMerchTrait = true;
+
+            this.posDataRecord = new TestIrmaPushBuilder()
+                .WithBusinessUnitId(this.testBusinessUnitId)
+                .WithIdentifier(this.testScanCode)
+                .WithChangeType(Constants.IrmaPushChangeTypes.ItemLocaleAttributeChange)
+                .WithLinkedIdentifier(this.testLinkedIdentifier);
+
+            StagePosData(posDataRecord);
+            StageTestItem();
+            StageTestLinkedItem(nonMerchandiseTrait: null, itemTypeCode: ItemTypeCodes.RetailSale);
+            StageTestLocale();
+
+            // When.
+            var constructedEntities = entityBuilder.BuildEntities(new List<IRMAPush> { posDataRecord });
+
+            // Then.
+            Assert.AreEqual(0, constructedEntities.Count);
+
+            StartupOptions.UseItemTypeInsteadOfNonMerchTrait = false;
         }
 
         [TestMethod]

@@ -14,6 +14,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.ApiController.Tests.Integration
@@ -22,8 +23,8 @@ namespace Icon.ApiController.Tests.Integration
     public class CollectionProcessorIntegrationTests
     {
         private ProductCollectionProcessor productCollectionProcessor;
-        private GlobalIconContext globalContext;
         private IconContext context;
+        private TransactionScope transaction;
         private Mock<IQueryHandler<GetItemsByIdParameters, List<Item>>> mockGetItemsQueryHandler;
         private Mock<ISerializer<Contracts.items>> mockSerializer;
         private Serializer<Contracts.items> serializer;
@@ -38,15 +39,16 @@ namespace Icon.ApiController.Tests.Integration
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+
             context = new IconContext();
-            globalContext = new GlobalIconContext(context);
             mockGetItemsQueryHandler = new Mock<IQueryHandler<GetItemsByIdParameters, List<Item>>>();
             mockSerializer = new Mock<ISerializer<Contracts.items>>();
             serializer = new Serializer<Contracts.items>(new Mock<ILogger<Serializer<Contracts.items>>>().Object, new Mock<IEmailClient>().Object);
             mockSaveXmlMessageCommandHandler = new Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>>();
-            saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(new Mock<ILogger<SaveToMessageHistoryCommandHandler>>().Object, globalContext);
+            saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(new Mock<ILogger<SaveToMessageHistoryCommandHandler>>().Object, new IconDbContextFactory());
             mockUpdateMessageHistoryCommandHandler = new Mock<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>>();
-            updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new Mock<ILogger<UpdateMessageHistoryStatusCommandHandler>>().Object, globalContext);
+            updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(new Mock<ILogger<UpdateMessageHistoryStatusCommandHandler>>().Object, new IconDbContextFactory());
             mockProducer = new Mock<IEsbProducer>();
             mockLogger = new Mock<ILogger<ProductCollectionProcessor>>();
             mockGetFinancialClassQuery = new Mock<IQueryHandler<GetFinancialClassByMerchandiseClassParameters, HierarchyClass>>();
@@ -59,6 +61,12 @@ namespace Icon.ApiController.Tests.Integration
                 saveXmlMessageCommandHandler,
                 updateMessageHistoryCommandHandler,
                 mockProducer.Object);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            transaction.Dispose();
         }
 
         [TestMethod]

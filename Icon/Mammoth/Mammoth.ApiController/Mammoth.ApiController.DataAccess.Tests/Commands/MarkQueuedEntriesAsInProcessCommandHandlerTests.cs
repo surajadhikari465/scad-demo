@@ -15,7 +15,8 @@ namespace Mammoth.ApiController.DataAccess.Tests.Commands
     {
         protected override void Initialize()
         {
-            commandHandler = new MammothCommands.MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>(new GlobalContext<MammothContext>(context));
+            commandHandler = new MammothCommands.MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueItemLocale>(new MammothContextFactory());
+            context.Database.ExecuteSqlCommand("truncate table esb.MessageQueueItemLocale;");
         }
 
         [TestMethod]

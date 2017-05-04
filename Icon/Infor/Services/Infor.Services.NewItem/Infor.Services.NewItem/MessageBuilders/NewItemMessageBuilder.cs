@@ -9,6 +9,9 @@ using Esb.Core.Serializer;
 using Infor.Services.NewItem.Cache;
 using Icon.Common.DataAccess;
 using Infor.Services.NewItem.Queries;
+using System.Text.RegularExpressions;
+using Infor.Services.NewItem.Constants;
+using Infor.Services.NewItem.Extensions;
 
 namespace Infor.Services.NewItem.MessageBuilders
 {
@@ -20,17 +23,20 @@ namespace Infor.Services.NewItem.MessageBuilders
         private ISerializer<Contracts.items> serializer;
         private IIconCache iconCache;
         private IQueryHandler<GetItemIdsQuery, Dictionary<string, int>> getItemIdsQueryHandler;
+        private InforNewItemApplicationSettings settings;
 
         public NewItemMessageBuilder(
             IUomMapper uomMapper, 
             ISerializer<Contracts.items> serializer, 
             IIconCache iconCache, 
-            IQueryHandler<GetItemIdsQuery, Dictionary<string, int>> getItemIdsQueryHandler)
+            IQueryHandler<GetItemIdsQuery, Dictionary<string, int>> getItemIdsQueryHandler,
+            InforNewItemApplicationSettings settings)
         {
             this.uomMapper = uomMapper;
             this.serializer = serializer;
             this.iconCache = iconCache;
             this.getItemIdsQueryHandler = getItemIdsQueryHandler;
+            this.settings = settings;
         }
 
         public string BuildMessage(IEnumerable<NewItemModel> model)
@@ -177,7 +183,7 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetSubTeamId(string subTeamNumber)
         {
-            if (String.IsNullOrWhiteSpace(subTeamNumber) || !iconCache.SubTeamModels.ContainsKey(subTeamNumber))
+            if (string.IsNullOrWhiteSpace(subTeamNumber) || !iconCache.SubTeamModels.ContainsKey(subTeamNumber))
             {
                 return NoSubTeamId;
             }
@@ -189,7 +195,7 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetSubTeamName(string subTeamNumber)
         {
-            if(String.IsNullOrWhiteSpace(subTeamNumber) || !iconCache.SubTeamModels.ContainsKey(subTeamNumber))
+            if(string.IsNullOrWhiteSpace(subTeamNumber) || !iconCache.SubTeamModels.ContainsKey(subTeamNumber))
             {
                 return NoSubTeamName;
             }
@@ -201,7 +207,7 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private int GetNationalParentClassId(string key)
         {
-            if (String.IsNullOrEmpty(key) || !iconCache.NationalClassModels.ContainsKey(key))
+            if (string.IsNullOrEmpty(key) || !iconCache.NationalClassModels.ContainsKey(key))
             {
                 return 0;
             }
@@ -213,9 +219,9 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetNationalClassName(string key)
         {
-            if (String.IsNullOrEmpty(key) || !iconCache.NationalClassModels.ContainsKey(key))
+            if (string.IsNullOrEmpty(key) || !iconCache.NationalClassModels.ContainsKey(key))
             {
-                return String.Empty;
+                return string.Empty;
             }
             else
             {
@@ -225,9 +231,9 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetNationalClassId(string key)
         {
-            if (String.IsNullOrEmpty(key) || !iconCache.NationalClassCodesToIdDictionary.ContainsKey(key))
+            if (string.IsNullOrEmpty(key) || !iconCache.NationalClassCodesToIdDictionary.ContainsKey(key))
             {
-                return String.Empty;
+                return string.Empty;
             }
             else
             { 
@@ -237,9 +243,9 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetTaxName(string key)
         {
-            if (String.IsNullOrEmpty(key) || !iconCache.TaxDictionary.ContainsKey(key))
+            if (string.IsNullOrEmpty(key) || !iconCache.TaxDictionary.ContainsKey(key))
             {
-                return String.Empty;
+                return string.Empty;
             }
             else
             { 
@@ -249,18 +255,25 @@ namespace Infor.Services.NewItem.MessageBuilders
 
         private string GetScanCodeType(string scanCode)
         {
-            if(scanCode.Length < 7)
-            {
-                return ScanCodeTypes.Descriptions.PosPlu;
-            }
-            else if (scanCode[0] == 2 && scanCode.Length == 11 && scanCode.EndsWith("00000"))
+            if (IsScalePlu(scanCode))
             {
                 return ScanCodeTypes.Descriptions.ScalePlu;
+            }
+            else if (scanCode.Length < 7)
+            {
+                return ScanCodeTypes.Descriptions.PosPlu;
             }
             else
             {
                 return ScanCodeTypes.Descriptions.Upc;
             }
+        }
+
+        private static bool IsScalePlu(string scanCode)
+        {
+            return Regex.IsMatch(scanCode, CustomRegexPatterns.ScalePlu)
+                || Regex.IsMatch(scanCode, CustomRegexPatterns.IngredientPlu46)
+                || Regex.IsMatch(scanCode, CustomRegexPatterns.IngredientPlu48);
         }
 
         private Contracts.TraitType[] BuildItemTraits(NewItemModel newItemModel)
@@ -352,7 +365,7 @@ namespace Infor.Services.NewItem.MessageBuilders
                         {
                             new Contracts.TraitValueType
                             {
-                                value = newItemModel.RetailUom == null ? String.Empty : newItemModel.RetailUom,
+                                value = newItemModel.RetailUom == null ? string.Empty : newItemModel.RetailUom,
                                 uom = new Contracts.UomType
                                 {
                                     code = uomMapper.GetEsbUomCode(newItemModel.RetailUom),
@@ -365,6 +378,25 @@ namespace Infor.Services.NewItem.MessageBuilders
                     }
                 }
             };
+
+            if(settings.SendOrganic)
+            {
+                itemTraits.Add(new Contracts.TraitType
+                {
+                    code = TraitCodes.Organic,
+                    type = new Contracts.TraitTypeType
+                    {
+                        description = TraitDescriptions.Organic,
+                        value = new Contracts.TraitValueType[]
+                        {
+                            new Contracts.TraitValueType
+                            {
+                                value = newItemModel.Organic.ToMessageBoolString()
+                            }
+                        }
+                    }
+                });
+            }
             return itemTraits.ToArray();
         }
 
@@ -372,11 +404,14 @@ namespace Infor.Services.NewItem.MessageBuilders
         {
             if (newItemModel.IconBrandId.HasValue && this.iconCache.BrandIdToAbbreviationDictionary.ContainsKey(newItemModel.IconBrandId.Value))
             {
-                return this.iconCache.BrandIdToAbbreviationDictionary[newItemModel.IconBrandId.Value] + " " + newItemModel.PosDescription;
+                var brandAbbrAndPosDescription = this.iconCache.BrandIdToAbbreviationDictionary[newItemModel.IconBrandId.Value] + " " + newItemModel.PosDescription;
+                brandAbbrAndPosDescription = brandAbbrAndPosDescription.Trim();
+
+                return brandAbbrAndPosDescription.Length > LengthConstants.PosDescriptionMaxLength ? brandAbbrAndPosDescription.Substring(0, LengthConstants.PosDescriptionMaxLength) : brandAbbrAndPosDescription;
             }
             else
             {
-                return newItemModel.PosDescription;
+                return newItemModel.PosDescription.Length > LengthConstants.PosDescriptionMaxLength ? newItemModel.PosDescription.Substring(0, LengthConstants.PosDescriptionMaxLength).Trim() : newItemModel.PosDescription.Trim();
             }
         }
     }

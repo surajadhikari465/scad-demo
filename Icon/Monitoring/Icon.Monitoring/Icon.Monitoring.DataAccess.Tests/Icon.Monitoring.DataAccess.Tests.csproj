@@ -99,10 +99,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Commands\AddDvoErrorStatusCommandHandlerTests.cs" />
+    <Compile Include="Commands\DeleteDvoErrorStatusCommandHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetApiMessageQueueIdQueryTests.cs" />
+    <Compile Include="Queries\GetDvoJobStatusQueryTests.cs" />
     <Compile Include="Queries\GetIrmaJobStatusQueryTests.cs" />
     <Compile Include="Queries\GetIrmaStatusIdTest.cs" />
+    <Compile Include="Queries\GetLatestAppLogByAppNameQueryTests.cs" />
     <Compile Include="Queries\GetMammothApiMessageQueueIdQueryTests.cs" />
     <Compile Include="Queries\GetMammothItemLocaleChangeQueueIdQueryTests.cs" />
     <Compile Include="Queries\GetMammothPriceChangeQueueIdTests.cs" />

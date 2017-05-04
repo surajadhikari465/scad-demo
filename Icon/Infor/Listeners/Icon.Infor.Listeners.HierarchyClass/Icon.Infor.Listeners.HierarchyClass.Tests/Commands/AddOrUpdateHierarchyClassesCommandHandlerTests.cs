@@ -43,7 +43,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            if(transaction.UnderlyingTransaction.Connection != null)
+                transaction.Rollback();
             transaction.Dispose();
             context.Dispose();
         }
@@ -165,6 +166,10 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             int expectedNumberOfMessages)
         {
             //Then
+            foreach (var model in command.HierarchyClasses)
+            {
+                Assert.IsNull(model.ErrorCode, $"Hierarchy Class '{model.HierarchyClassName}' has an error. ErrorCode: '{model.ErrorCode}' ErrorDetails: '{model.ErrorDetails}'");
+            }
             var hierarchyClassId = testModel.HierarchyClassId;
             var hierarchyClass = context.HierarchyClass
                 .AsNoTracking()
@@ -231,6 +236,10 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             commandHandler.Execute(command);
 
             //Then
+            foreach (var model in command.HierarchyClasses)
+            {
+                Assert.IsNull(model.ErrorCode, $"Hierarchy Class '{model.HierarchyClassName}' has an error. ErrorCode: '{model.ErrorCode}' ErrorDetails: '{model.ErrorDetails}'");
+            }
             var hierarchyClassId = testModel.HierarchyClassId;
             var hierarchyClass = context.HierarchyClass
                 .AsNoTracking()

@@ -1,17 +1,13 @@
 ﻿using Dapper;
 using Icon.Monitoring.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Monitoring.DataAccess.Tests.Queries
 {
-    [TestClass()]
+    [TestClass]
     public class GetMammothPriceChangeQueueIdTests
     {
         private SqlDbProvider provider;
@@ -48,7 +44,6 @@ namespace Icon.Monitoring.DataAccess.Tests.Queries
 
             //Then
             Assert.AreEqual(insertId, result);
-
         }
 
         [TestMethod]
@@ -58,22 +53,18 @@ namespace Icon.Monitoring.DataAccess.Tests.Queries
             int result;
             UpdateMammothPriceChangeQueueTable_SetProcessFailedDateToNonNull();
 
-
-
             //When
             result = query.Search(parameters);
 
             //Then
             Assert.AreEqual(0, result);
-
         }
+
         private int InsertMammothPriceChangeQueueTable()
         {
             return provider.Connection.Query<int>(
-            @"Set Identity_Insert [mammoth].[PriceChangeQueue] ON
-                INSERT INTO [mammoth].[PriceChangeQueue]
-               ([QueueId]
-               ,[Item_Key]
+            @"INSERT INTO ItemCatalog_Test.mammoth.PriceChangeQueue
+               ([Item_Key]
                ,[Store_No]
                ,[Identifier]
                ,[EventTypeID]
@@ -82,15 +73,16 @@ namespace Icon.Monitoring.DataAccess.Tests.Queries
                ,[ProcessFailedDate]
                ,[InProcessBy])
                 VALUES
-               (1
-               ,16996
+               (16996
                ,NULL
                ,'4011'
                ,1
                ,NULL
                ,GETDATE()
                ,NULL
-               ,456)select SCOPE_IDENTITY() Set Identity_Insert [mammoth].[PriceChangeQueue] OFF",
+               ,456);
+                
+            select SCOPE_IDENTITY();",
             null,
                 provider.Transaction)
                 .FirstOrDefault();
@@ -98,13 +90,10 @@ namespace Icon.Monitoring.DataAccess.Tests.Queries
 
         private void UpdateMammothPriceChangeQueueTable_SetProcessFailedDateToNonNull()
         {
-
             provider.Connection.Query<int>(
                 @"Update [mammoth].[PriceChangeQueue] set [ProcessFailedDate] = GetDate()",
                 null, provider.Transaction)
                 .FirstOrDefault();
-
         }
-
     }
 }

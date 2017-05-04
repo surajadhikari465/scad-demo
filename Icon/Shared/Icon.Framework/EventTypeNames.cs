@@ -21,5 +21,8 @@ namespace Icon.Framework
         public static string ItemSubTeamUpdate = "Item Sub Team Update";
         public static string NutritionUpdate = "Nutrition Update";
         public static string NutritionAdd = "Nutrition Add";
+        public static string BrandDelete = "Brand Delete";
+        public static string NationalClassUpdate = "National Class Update";
+        public static string NationalClassDelete = "National Class Delete";
 	}
 }

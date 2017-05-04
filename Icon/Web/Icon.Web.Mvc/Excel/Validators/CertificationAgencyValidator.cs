@@ -51,7 +51,7 @@ namespace Icon.Web.Mvc.Excel.Validators
                 var agency = (propertyInfo.GetValue(i) as string ?? string.Empty)
                     .GetIdFromCellText();
 
-                if(!validAgencies.Contains(agency))
+                if(agency != Constants.ExcelImportRemoveValueKeyword && !validAgencies.Contains(agency))
                 {
                     i.Error = this.ErrorMessage;
                 }

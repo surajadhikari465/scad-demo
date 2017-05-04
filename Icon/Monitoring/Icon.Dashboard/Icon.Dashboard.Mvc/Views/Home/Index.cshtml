@@ -1,12 +1,20 @@
 ﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel>
 @{
     ViewBag.Title = "ICON Dashboard";
-    var btnClass = Model?.FirstOrDefault()?.GetBootstrapClassForEnvironment() ?? "primary";
+    var btnClass = Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment() ?? "primary";
 }
+@Scripts.Render("~/bundles/jqueryTable")
+@Scripts.Render("~/Content/Table/css")
 
 <p></p>
+@* initialize the datatable and set page size to 25 *@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#Config').DataTable({ "iDisplayLength": 25 });
+    } );
+</script>
 <div class="container-wide">
-    <table class="table table-bordered table-condensed no-bottom-margin">
+    <table class="table table-bordered table-condensed no-bottom-margin table-striped "  id="Config">
         <thead>
             <tr>
                 <th class="text-center hidden-xs">
@@ -43,9 +51,9 @@
         </tbody>
     </table>
     @Html.ActionLink(
-    "Add New Application Definition",
-    "Create",
-    "Home",
-    null,
-    new { @class = $"btn btn-warning btn-block" })
+        "Add New Application Definition",
+        "Create",
+        "Home",
+        null,
+        new { @class = $"btn btn-warning btn-block" })
 </div>

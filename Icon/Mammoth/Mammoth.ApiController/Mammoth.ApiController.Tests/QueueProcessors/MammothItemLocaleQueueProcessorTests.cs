@@ -1,22 +1,17 @@
-﻿using Icon.ApiController.Controller.QueueReaders;
+﻿using Icon.ApiController.Common;
+using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.Esb.Producer;
 using Icon.Logging;
 using Mammoth.ApiController.QueueProcessors;
 using Mammoth.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Esb.Producer;
 using System.IO;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
-using Icon.ApiController.Common;
 
 namespace Mammoth.ApiController.Tests.QueueProcessors
 {
@@ -25,7 +20,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
     {
         private MammothItemLocaleQueueProcessor queueProcessor;
         private Mock<ILogger> mockLogger;
-        private Mock<IRenewableContext> mockGlobalContext;
         private Mock<IQueueReader<MessageQueueItemLocale, Contracts.items>> mockQueueReader;
         private Mock<ISerializer<Contracts.items>> mockSerializer;
         private Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>> mockSaveToMessageHistoryCommandHandler;
@@ -41,7 +35,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
         public void Initialize()
         {
             mockLogger = new Mock<ILogger>();
-            mockGlobalContext = new Mock<IRenewableContext>();
             mockQueueReader = new Mock<IQueueReader<MessageQueueItemLocale, Contracts.items>>();
             mockSerializer = new Mock<ISerializer<Contracts.items>>();
             mockSaveToMessageHistoryCommandHandler = new Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>>();
@@ -54,7 +47,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
             settings = new ApiControllerSettings { Instance = 1 };
 
             queueProcessor = new MammothItemLocaleQueueProcessor(mockLogger.Object,
-                mockGlobalContext.Object,
                 mockQueueReader.Object,
                 mockSerializer.Object,
                 mockSaveToMessageHistoryCommandHandler.Object,
@@ -95,7 +87,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
             mockUpdateMessageHistoryCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()), Times.Once);
             mockSetProcessedDataCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageQueueProcessedDateCommand<MessageQueueItemLocale>>()), Times.Once);
             mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            mockGlobalContext.Verify(m => m.Refresh(), Times.Once);
             mockProducer.Verify(m => m.Dispose(), Times.Once);
         }
 
@@ -127,7 +118,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
             mockUpdateMessageHistoryCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()), Times.Once);
             mockSetProcessedDataCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageQueueProcessedDateCommand<MessageQueueItemLocale>>()), Times.Once);
             mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            mockGlobalContext.Verify(m => m.Refresh(), Times.Once);
             mockProducer.Verify(m => m.Dispose(), Times.Once);
         }
     }

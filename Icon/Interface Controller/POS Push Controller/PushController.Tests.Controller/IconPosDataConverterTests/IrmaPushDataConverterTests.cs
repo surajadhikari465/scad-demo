@@ -34,6 +34,7 @@ namespace PushController.Tests.Controller.IconPosDataConverterTests
         private List<IConPOSPushPublish> testPosData;
         private string testScanCode;
         private Random random;
+        private Store testStore;
 
         [TestInitialize]
         public void Initialize()
@@ -47,7 +48,7 @@ namespace PushController.Tests.Controller.IconPosDataConverterTests
             this.mockUpdatePublishTableDatesCommandHandler = new Mock<ICommandHandler<UpdatePublishTableDatesCommand>>();
             this.updatePublishTableDatesCommandHandler = new UpdatePublishTableDatesCommandHandler(new Mock<ILogger<UpdatePublishTableDatesCommandHandler>>().Object);
 
-            string irmaConnectionString = ConnectionBuilder.GetConnection("SP");
+            string irmaConnectionString = ConnectionBuilder.GetConnection("FL");
             this.globalContext = new GlobalIrmaContext(new IrmaContextProvider().GetRegionalContext(irmaConnectionString), irmaConnectionString);
             this.context = globalContext.Context;
             this.mockContextProvider.Setup(cp => cp.GetRegionalContext(It.IsAny<string>())).Returns(this.context);
@@ -55,6 +56,14 @@ namespace PushController.Tests.Controller.IconPosDataConverterTests
             this.random = new Random();
 
             this.transaction = this.context.Database.BeginTransaction();
+
+            testStore = new TestIrmaStoreBuilder()
+                .WithStore_No(123456789)
+                .WithStore_Name("Unit Test Store")
+                .WithWFM_Store(true)
+                .WithInternal(true);
+            context.Store.Add(testStore);
+            context.SaveChanges();
         }
 
         [TestCleanup]
@@ -75,9 +84,9 @@ namespace PushController.Tests.Controller.IconPosDataConverterTests
             // Given.
             this.testPosData = new List<IConPOSPushPublish>
             {
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
             };
 
             StagePosData();
@@ -136,9 +145,9 @@ namespace PushController.Tests.Controller.IconPosDataConverterTests
             this.testPosData = new List<IConPOSPushPublish>
             {
                 new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))).WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
+                    .WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))).WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
             };
 
             StagePosData();
@@ -166,9 +175,9 @@ namespace PushController.Tests.Controller.IconPosDataConverterTests
             this.testPosData = new List<IConPOSPushPublish>
             {
                 new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))).WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
+                    .WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))).WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
             };
 
             StagePosData();
@@ -203,9 +212,9 @@ namespace PushController.Tests.Controller.IconPosDataConverterTests
             this.testPosData = new List<IConPOSPushPublish>
             {
                 new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))).WithSaleStartDate(DateTime.Now.AddDays(-2)).WithSaleEndDate(DateTime.Now.AddDays(-1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
+                    .WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))).WithSaleStartDate(DateTime.Now.AddDays(-2)).WithSaleEndDate(DateTime.Now.AddDays(-1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
             };
 
             StagePosData();
@@ -241,9 +250,9 @@ namespace PushController.Tests.Controller.IconPosDataConverterTests
             this.testPosData = new List<IConPOSPushPublish>
             {
                 new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))).WithSaleStartDate(DateTime.Now.AddDays(-1)).WithSaleEndDate(DateTime.Now).WithSalePrice(1.99m),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
-                new TestIconPosPushPublishBuilder().WithStoreNumber(113).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000)))
+                    .WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))).WithSaleStartDate(DateTime.Now.AddDays(-1)).WithSaleEndDate(DateTime.Now).WithSalePrice(1.99m),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(1000))),
+                new TestIconPosPushPublishBuilder().WithStoreNumber(testStore.Store_No).WithIdentifier(this.testScanCode).WithInsertDate(DateTime.Now.AddMilliseconds(random.Next(2000)))
             };
 
             StagePosData();

@@ -23,7 +23,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             //Given
             var fakeData = base.AllFakeAppViewModels;
             base.mockDataServiceWrapper
-                .Setup(s => s.GetApplicationListViewModels(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(s => s.GetApplicationListViewModels(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>()))
                 .Returns(fakeData);
             var controller = ConstructController();
 
@@ -41,7 +41,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             var fakeData = base.AllFakeAppViewModels;
             int expectedCount = fakeData.Count;
             base.mockDataServiceWrapper
-                .Setup(s => s.GetApplicationListViewModels(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(s => s.GetApplicationListViewModels(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>()))
                 .Returns(fakeData);
             var controller = ConstructController();
 

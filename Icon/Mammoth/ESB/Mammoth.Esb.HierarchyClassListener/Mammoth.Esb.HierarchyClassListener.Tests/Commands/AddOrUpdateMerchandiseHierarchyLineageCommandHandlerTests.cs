@@ -557,7 +557,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 @"SELECT * FROM dbo.Hierarchy_Merchandise",
                 null,
                 dbProvider.Transaction)
-                .Where(m => expectedSubBrickIds.Contains((int)m.SubBrickHcid))
+                .Where(m => m.SubBrickHcid.HasValue && expectedSubBrickIds.Contains((int)m.SubBrickHcid))
                 .ToList();
 
             Assert.AreEqual(10, merchandiseHierarchies.Count);
