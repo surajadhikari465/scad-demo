@@ -73,6 +73,9 @@
       <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.2016.11.16.1\lib\net45\Icon.Esb.dll</HintPath>
       <Private>True</Private>
@@ -82,8 +85,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2016.11.11.4\lib\net45\Icon.Framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Framework.2017.4.19.1\lib\net45\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -147,6 +149,7 @@
     <Compile Include="Commands\ArchiveVimHierarchyClassesCommandHandlerTests.cs" />
     <Compile Include="Commands\ArchiveVimMessageCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesCommandHandlerTests.cs" />
+    <Compile Include="Commands\GenerateNationalClassEventsCommandHandlerTests.cs" />
     <Compile Include="Commands\ValidateHierarchyClassesCommandHandlerTests.cs" />
     <Compile Include="HierarchyClassListenerTests.cs" />
     <Compile Include="Integration\HierarchyClassListenerTests.cs" />

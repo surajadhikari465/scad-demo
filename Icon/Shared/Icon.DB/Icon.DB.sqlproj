@@ -739,6 +739,7 @@
     <None Include="Scripts\PopulateData\Release\DeleteBrandPurgeJob.sql" />
     <None Include="Scripts\PopulateData\Release\AddMaintFlagRowToDbStatusTable.sql" />
     <None Include="Scripts\PopulateData\Release\InsertInforOutOfSyncItemUpdateError.sql" />
+    <None Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
