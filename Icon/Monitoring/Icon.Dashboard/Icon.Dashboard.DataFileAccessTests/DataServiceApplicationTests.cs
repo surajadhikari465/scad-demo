@@ -104,10 +104,9 @@
             var updateService = new WindowsService
             {
                 Name = "Mammoth.Update.Controller",
-                Server = "vm-icon-test1",
-
                 ConfigFilePath = "update.config",
                 DisplayName = "update name",
+                Server = "vm-icon-test1",
             };
 
             // When

@@ -7,6 +7,8 @@ using Icon.Dashboard.Mvc.ViewModels;
 using Icon.Dashboard.Mvc.Services;
 using System.Configuration;
 using Icon.Dashboard.Mvc.Helpers;
+using Icon.Dashboard.Mvc.Models;
+using Icon.Dashboard.Mvc.Filters;
 
 namespace Icon.Dashboard.Mvc.Controllers
 {
@@ -14,19 +16,7 @@ namespace Icon.Dashboard.Mvc.Controllers
     {
         private const string defaultDataFile = "DashboardApplications.xml";
 
-        public IDataFileServiceWrapper DashboardDataFileService { get; private set; }
-        public IIconDatabaseServiceWrapper IconDatabaseService { get; private set; }
-
-        public string XmlDataFile { get; set; }
-
         private HttpServerUtilityBase _serverUtility;
-        public HttpServerUtilityBase ServerUtility
-        {
-            get
-            {
-                return _serverUtility ?? Server;
-            }
-        }
 
         public HomeController() : this(null, null, null, null)
         {
@@ -40,12 +30,25 @@ namespace Icon.Dashboard.Mvc.Controllers
             XmlDataFile = dataFile ?? defaultDataFile;
             DashboardDataFileService = dataServiceWrapper ?? new DataFileServiceWrapper();
             IconDatabaseService = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
-            
+
             _serverUtility = serverUtility;
         }
 
+        public IDataFileServiceWrapper DashboardDataFileService { get; private set; }
+        public IIconDatabaseServiceWrapper IconDatabaseService { get; private set; }
+        public HttpServerUtilityBase ServerUtility
+        {
+            get
+            {
+                return _serverUtility ?? Server;
+            }
+        }
+
+        public string XmlDataFile { get; set; }
+
+        #region GET
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Index()
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -53,15 +56,8 @@ namespace Icon.Dashboard.Mvc.Controllers
             return View(viewModels);
         }
 
-        [HttpPost]
-        public ActionResult Index(string application, string server, string command)
-        {
-            DashboardDataFileService.ExecuteCommand(ServerUtility, XmlDataFile, application, server, command);
-            return RedirectToAction("Index", "Home" );
-        }
-
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Details(string application, string server)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -69,15 +65,8 @@ namespace Icon.Dashboard.Mvc.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        public ActionResult Details(string application, string server, string command)
-        {
-            DashboardDataFileService.ExecuteCommand(ServerUtility, XmlDataFile, application, server, command);
-            return RedirectToAction("Details", "Home", new { application = application, server = server });
-        }
-
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
         public ActionResult Edit(string application, string server)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -85,15 +74,8 @@ namespace Icon.Dashboard.Mvc.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        public ActionResult Edit(IconApplicationViewModel appViewModel)
-        {
-            DashboardDataFileService.UpdateApplication(ServerUtility, appViewModel, XmlDataFile);
-            return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
-        }
-
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Configure(string application, string server)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -101,16 +83,8 @@ namespace Icon.Dashboard.Mvc.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        public ActionResult Configure(IconApplicationViewModel appViewModel)
-        {
-            ViewBag.EnvironmentOptions = new EnvironmentSwitcher().GetServersForEnvironments();
-            DashboardDataFileService.SaveAppSettings(appViewModel);
-            return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
-        }
-
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Create()
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -118,7 +92,61 @@ namespace Icon.Dashboard.Mvc.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        [ChildActionOnly]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        public ActionResult IconApiServicePartial(string application, string server)
+        {
+            var task = DashboardDataFileService.GetServiceViewModel(ServerUtility, XmlDataFile, application, server);
+            return PartialView("_IconApiServicePartial", task);
+        }
+
+        [HttpGet]
+        [ChildActionOnly]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        public ActionResult TaskPartial(string application, string server)
+        {
+            var task = DashboardDataFileService.GetTaskViewModel(ServerUtility, XmlDataFile, application, server);
+            return PartialView("_TaskViewModelPartial", task);
+        }
+        #endregion
+
+        #region POST
         [HttpPost]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        public ActionResult Index(string application, string server, string command)
+        {
+            DashboardDataFileService.ExecuteCommand(ServerUtility, XmlDataFile, application, server, command);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        public ActionResult Details(string application, string server, string command)
+        {
+            DashboardDataFileService.ExecuteCommand(ServerUtility, XmlDataFile, application, server, command);
+            return RedirectToAction("Details", "Home", new { application = application, server = server });
+        }
+
+        [HttpPost]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        public ActionResult Edit(IconApplicationViewModel appViewModel)
+        {
+            DashboardDataFileService.UpdateApplication(ServerUtility, appViewModel, XmlDataFile);
+            return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
+        }
+
+        [HttpPost]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        public ActionResult Configure(IconApplicationViewModel appViewModel)
+        {
+            ViewBag.EnvironmentOptions = new EnvironmentSwitcher().GetServersForEnvironments();
+            DashboardDataFileService.SaveAppSettings(appViewModel);
+            return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
+        }
+
+        [HttpPost]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
         public ActionResult Create(IconApplicationViewModel appViewModel)
         {
             DashboardDataFileService.AddApplication(ServerUtility, appViewModel, XmlDataFile);
@@ -126,27 +154,13 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
         public ActionResult Delete(string application, string server)
         {
             var app = DashboardDataFileService.GetApplication(ServerUtility, XmlDataFile, application, server);
             DashboardDataFileService.DeleteApplication(ServerUtility, app, XmlDataFile);
             return RedirectToAction("Index", "Home");
         }
-
-        [HttpGet]
-        [ChildActionOnly]
-        public ActionResult TaskPartial(string application, string server)
-        {
-            var task = DashboardDataFileService.GetTaskViewModel(ServerUtility, XmlDataFile, application, server);
-            return PartialView("_TaskViewModelPartial", task);
-        }
-
-        [HttpGet]
-        [ChildActionOnly]
-        public ActionResult IconApiServicePartial(string application, string server)
-        {
-            var task = DashboardDataFileService.GetServiceViewModel(ServerUtility, XmlDataFile, application, server);
-            return PartialView("_IconApiServicePartial", task);
-        }
+        #endregion
     }
 }

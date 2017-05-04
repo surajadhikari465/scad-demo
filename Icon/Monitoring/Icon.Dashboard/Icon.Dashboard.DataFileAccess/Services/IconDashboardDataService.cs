@@ -180,50 +180,37 @@
             try
             {
                 var appConfig = XDocument.Load(application.ConfigFilePath);
-                var configAppSettingsElement = appConfig.Root.Element("appSettings");
-                var configEsbConnectionsElement = appConfig.Root.Element("esbConnections");
 
-                configAppSettingsElement.ReplaceNodes(
-                    application.AppSettings.Select(i =>
+                // combine the AppSettings and the ESB-related subset of AppSettings into 1 collection
+                var combinedDictionary = CombineDictionariesIgnoreDuplicates(
+                    application.AppSettings, application.EsbConnectionSettings);
+
+                // create XML elements for each setting
+                var updatedElements = combinedDictionary.Select(i =>
                         new XElement("add",
                             new XAttribute("key", i.Key),
-                            new XAttribute("value", i.Value))));
+                            new XAttribute("value", i.Value)));
 
-                //skip saving esb connections for now, need more time to test
-                if (application.EsbConnectionSettings == null)
-                {
-                    if (configEsbConnectionsElement != null)
-                    {
-                        configEsbConnectionsElement.Remove();
-                    }
-                }
-                else
-                {
-                    if (configEsbConnectionsElement == null)
-                    {
-                        //make sure the esbConnections element structure is there
-                        var newContainerElement = new XElement("esbConnections");
-                        newContainerElement.Add(new XElement("connections"));
-                        appConfig.Root.Add(newContainerElement);
-                    }
-
-                    foreach (var esbConnectionToBeSaved in application.EsbConnectionSettings)
-                    {
-                        var esbConnection = new XElement("esbConnection");
-
-                        esbConnection.Add(
-                            esbConnectionToBeSaved.Select(eachDictionaryEntry =>
-                               new XAttribute(eachDictionaryEntry.Key, eachDictionaryEntry.Value))
-                       );
-                        configEsbConnectionsElement.Element("connections").Add(esbConnection);
-                    }
-                }
-
+                //replace the existing appSettings node in the XML file with the new element collection
+                var configAppSettingsElement = appConfig.Root.Element("appSettings");
+                configAppSettingsElement.ReplaceNodes(updatedElements);
                 appConfig.Save(application.ConfigFilePath);
             }
-            catch(Exception)
+            catch (Exception ex)
             {
+                throw;
             }
+        }
+
+        private static Dictionary<T,U> CombineDictionariesIgnoreDuplicates<T,U>(params Dictionary<T,U>[] dictionaries)
+        {
+            // In case there are any duplicates between the two dictionaries, convert the 
+            // combined dictionary to a lookup (which handles multiple values per key) and 
+            // then re -convert back to a dictionary using only the first value per key
+            var combinedDictionaryWithDuplicatesIgnored = dictionaries.SelectMany(dict => dict)
+                       .ToLookup(pair => pair.Key, pair => pair.Value)
+                       .ToDictionary(group => group.Key, group => group.First());
+            return combinedDictionaryWithDuplicatesIgnored;
         }
 
         public void Start(IApplication application, params string[] args)

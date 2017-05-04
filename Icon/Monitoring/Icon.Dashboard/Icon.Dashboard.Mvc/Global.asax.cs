@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Icon.Dashboard.Mvc.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,8 @@ namespace Icon.Dashboard.Mvc
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            // add a global filter to add menu options to every action
+            GlobalFilters.Filters.Add(new MenuOptionsFilter());
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

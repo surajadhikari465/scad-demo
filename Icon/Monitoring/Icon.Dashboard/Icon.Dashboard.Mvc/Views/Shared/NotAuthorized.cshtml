@@ -1,0 +1,21 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Not Authorized";
+}
+
+<p></p>
+<div class="container-wide denied_background center-block img-responsive">
+    <h2 class="text-error text-center">Restricted Page</h2>
+    <h3 class="text-warning col-xs-10 col-xs-offset-1">
+        Your account lacks a security group membership necessary to view this page. Please contact
+        the IRMA team for assistance if you need to gain access to the Icon Dashboard.
+    </h3>
+    
+    <div class="row">
+        <p></p>
+        <div class="col-xs-offset-2 col-xs-8 text-center">
+            @Html.ActionLink("Back to Previous Page", null, null, null, new { href = Request.UrlReferrer })
+        </div>
+    </div>
+</div>

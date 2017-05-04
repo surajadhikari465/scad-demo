@@ -138,6 +138,10 @@
     <Compile Include="ControllerTests\LogsControllerUnitTests\LogsControllerIndexUnitTests.cs" />
     <Compile Include="ControllerTests\_MvcControllerUnitTestBase.cs" />
     <Compile Include="ControllerTests\HomeControllerUnitTests\HomeControllerIndexUnitTests.cs" />
+    <Compile Include="FilterTests\IsAuthorizedUnitTests.cs" />
+    <Compile Include="FilterTests\GetUserRoleUnitTests.cs" />
+    <Compile Include="FilterTests\_DashboardAuthorizationFilterTestBase.cs" />
+    <Compile Include="HelperTests\EnvironmentSwitcherUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutingUnitTests\ApiJobsRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\DefaultRoutingUnitTests.cs" />
@@ -162,7 +166,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="FilterTests\" />
     <Folder Include="ViewModelTests\" />
   </ItemGroup>
   <ItemGroup>

@@ -19,39 +19,30 @@ namespace Icon.Dashboard.Mvc.ViewModels
             this.ValidCommands = new List<string>();
         }
 
-        public virtual void PopulateFromApplication(IApplication app)
-        {
-            this.Name = app.Name;
-            this.Server = app.Server;
-            this.ConfigFilePath = app.ConfigFilePath;
-            this.DisplayName = app.DisplayName;
-            this.TypeOfApplication = app.TypeOfApplication;
-            this.DataFlowFrom = app.DataFlowFrom;
-            this.DataFlowTo = app.DataFlowTo;
-            this.Status = app.GetStatus();
-            this.ValidCommands = app.ValidCommands;
-            this.StatusIsGreen = app.StatusIsGreen;
-            this.LoggingName = app.LoggingName;
-            this.LoggingID = app.LoggingID;
-            this.AppSettings = app.AppSettings;
-            this.EsbConnectionSettings = new List<Dictionary<string, string>>();
-            if (app.EsbConnectionSettings != null)
-            {
-                foreach (var esbConnectionSetting in app.EsbConnectionSettings)
-                {
-                    this.EsbConnectionSettings.Add(esbConnectionSetting);
-                }
-            }
-        }
-
         public IconApplicationViewModel(IApplication app) : this()
         {
-            PopulateFromApplication(app);
+            if (app != null)
+            {
+                this.Name = app.Name;
+                this.Server = app.Server;
+                this.ConfigFilePath = app.ConfigFilePath;
+                this.DisplayName = app.DisplayName;
+                this.TypeOfApplication = app.TypeOfApplication;
+                this.DataFlowFrom = app.DataFlowFrom;
+                this.DataFlowTo = app.DataFlowTo;
+                this.Status = app.GetStatus();
+                this.ValidCommands = app.ValidCommands;
+                this.StatusIsGreen = app.StatusIsGreen;
+                this.LoggingName = app.LoggingName;
+                this.LoggingID = app.LoggingID;
+                this.AppSettings = app.AppSettings ?? new Dictionary<string, string>();
+                this.EsbConnectionSettings = app.EsbConnectionSettings ?? new Dictionary<string, string>();
+            }
         }
-
+        
         public Dictionary<string, string> AppSettings { get; set; }
 
-        public List<Dictionary<string, string>> EsbConnectionSettings { get; set; }
+        public Dictionary<string, string> EsbConnectionSettings { get; set; }
 
         [DisplayName("Full Name")]
         public string Name { get; set; }
@@ -81,19 +72,11 @@ namespace Icon.Dashboard.Mvc.ViewModels
 
         public virtual bool StatusIsGreen { get; set; }
 
-        //[DisplayName("Log Errors")]
-        //public int? RecentLogErrorCount { get; set; }
-
         [DisplayName("Logging Name")]
         public string LoggingName { get; set; }
 
         [DisplayName("LogID")]
         public int? LoggingID { get; set; }
-
-        public string GetBootstrapClassForEnvironment()
-        {
-            return Utils.GetBootstrapClassForEnvironment(Utils.Environment);
-        }
 
         [DisplayName("ESB Environment")]
         public string CurrentEsbEnvironment { get; set; }

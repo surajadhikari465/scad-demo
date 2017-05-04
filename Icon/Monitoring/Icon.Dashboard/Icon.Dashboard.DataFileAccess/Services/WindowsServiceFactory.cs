@@ -10,23 +10,21 @@
     {
         public override IApplication GetApplication(XElement applicationElement)
         {
+            var winService = new WindowsService();
             try
             {
-                var winService = new WindowsService();
-
                 base.SetApplicationProperties(winService, applicationElement);
                 base.LoadAppSettings(winService);
 
                 winService.FindAndCreateInstance();
-
-                return winService;
             }
-            catch (Exception ex)
+            catch (System.IO.FileNotFoundException fileNotFoundEx)
             {
+                // unable to read the config file, so just eat this exception
                 //for debugging
-                string msg = ex.Message;
-                throw;
+                var msg = fileNotFoundEx.Message;
             }
+            return winService;
         }
     }
 }

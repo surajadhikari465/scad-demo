@@ -10,9 +10,10 @@
         Dictionary<string, string> AppSettings { get; }
 
         /// <summary>
-        /// String Dictionary representing key/value pairs from the esbConnections element in the config file, if it is present
+        /// String Dictionary representing a subset of key/value pairs from the appSettings element which 
+        ///   relate to ESB Connection settings (if present)
         /// </summary>
-        List<Dictionary<string, string>> EsbConnectionSettings { get; }
+        Dictionary<string, string> EsbConnectionSettings { get; }
 
         /// <summary>
         /// Gets or Sets the file path to the app.config
