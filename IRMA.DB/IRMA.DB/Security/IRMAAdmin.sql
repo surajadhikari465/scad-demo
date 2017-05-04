@@ -1,0 +1,2 @@
+﻿CREATE USER [IRMAAdmin] FOR LOGIN [IRMAAdmin];
+

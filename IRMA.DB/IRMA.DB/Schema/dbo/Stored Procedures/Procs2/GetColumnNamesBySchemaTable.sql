@@ -1,0 +1,13 @@
+﻿
+CREATE PROCEDURE dbo.GetColumnNamesBySchemaTable
+@Schema VARCHAR(50),
+@Table VARCHAR(64)
+AS
+BEGIN
+		SELECT Column_Name
+		FROM INFORMATION_SCHEMA.COLUMNS
+		WHERE TABLE_NAME= @Table and TABLE_SCHEMA = @Schema
+
+END
+
+

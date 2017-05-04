@@ -1,0 +1,3 @@
+﻿CREATE ROLE [IRMAPDXExtractRole]
+    AUTHORIZATION [dbo];
+

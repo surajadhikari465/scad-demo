@@ -1,0 +1,10 @@
+﻿
+CREATE PROCEDURE dbo.GetTablesWithRetentionPolicy
+AS
+BEGIN
+
+	SELECT DISTINCT [TABLE] FROM [RetentionPolicy]
+	ORDER BY [TABLE] ASC
+
+END
+

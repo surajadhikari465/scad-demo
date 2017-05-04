@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [iCONReports]
+    WITH PASSWORD = N'u{bfsjwiyc_lla1ppcak0ovkmsFT7_&#$!~<g;xlBvkosfgw', SID = 0x10FD8CD1092E2D4AA0AAC4160649A6F5, DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
+

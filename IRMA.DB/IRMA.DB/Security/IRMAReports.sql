@@ -1,0 +1,2 @@
+﻿CREATE USER [IRMAReports] FOR LOGIN [IRMAReports];
+
