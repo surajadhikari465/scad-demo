@@ -101,6 +101,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <Choose>
@@ -128,12 +129,14 @@
     <Compile Include="BulkCommandTests\BulkGetValidatedItemsQueryHandlerTests.cs" />
     <Compile Include="BulkCommandTests\BulkUpdateItemSignAttributesCommandHandlerTests.cs" />
     <Compile Include="BulkCommandTests\BulkAddMammothPriceEventsCommandHandlerTests.cs" />
+    <Compile Include="CommandTests\AddOrUpdateNationalHierarchyCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddTaxClassCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddUpdateLastChangeByIdentifiersCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddUpdateLastchangeCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddValidatedScanCodeCommandHandlerTests.cs" />
     <Compile Include="CommandTests\BrandDeleteCommandHandlerTests.cs" />
     <Compile Include="CommandTests\DeleteEventQueueCommandHandlerTests.cs" />
+    <Compile Include="CommandTests\DeleteNationalHierarchyCommandHandlerTests.cs" />
     <Compile Include="CommandTests\UpdateTaxCommandHandlerTests.cs" />
     <Compile Include="CommandTests\UpdateEventQueueFailuresCommandHandlerTests.cs" />
     <Compile Include="CommandTests\AddOrUpdateBrandCommandHandlerTests.cs" />

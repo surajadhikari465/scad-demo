@@ -19,7 +19,9 @@ namespace GlobalEventController.DataAccess.Infrastructure
             { EventConstants.ItemSubTeamUpdate, Enums.EventNames.IconToIrmaItemSubTeamUpdates.ToString() },
             { EventConstants.ItemNutritionUpdate, Enums.EventNames.IconToIrmaNutritionUpdate.ToString() },
             { EventConstants.ItemNutritionAdd, Enums.EventNames.IconToIrmaNutritionAdd.ToString() },
-            { EventConstants.IconToIrmaBrandDelete, Enums.EventNames.IconToIrmaBrandDelete.ToString() }
+            { EventConstants.IconToIrmaBrandDelete, Enums.EventNames.IconToIrmaBrandDelete.ToString() },
+            { EventConstants.IcontoIrmaNationalHierarchyUpdate, Enums.EventNames.IconToIrmaNationalHierarchyUpdate.ToString() },
+            { EventConstants.IconToIrmaNationalHierarchyDelete, Enums.EventNames.IconToIrmaNationalHierarchyDelete.ToString() },
         };
 
         private static IDictionary<string, string> reversedEventMap = new Dictionary<string, string>
@@ -34,7 +36,10 @@ namespace GlobalEventController.DataAccess.Infrastructure
             { Enums.EventNames.IconToIrmaItemSubTeamUpdates.ToString(), EventConstants.ItemSubTeamUpdate },
             { Enums.EventNames.IconToIrmaNutritionUpdate.ToString(), EventConstants.ItemNutritionUpdate },
             { Enums.EventNames.IconToIrmaNutritionAdd.ToString(), EventConstants.ItemNutritionAdd },
-            { Enums.EventNames.IconToIrmaBrandDelete.ToString(), EventConstants.IconToIrmaBrandDelete }
+            { Enums.EventNames.IconToIrmaBrandDelete.ToString(), EventConstants.IconToIrmaBrandDelete },
+            { Enums.EventNames.IconToIrmaNationalHierarchyUpdate.ToString(), EventConstants.IcontoIrmaNationalHierarchyUpdate },
+            { Enums.EventNames.IconToIrmaNationalHierarchyDelete.ToString(), EventConstants.IconToIrmaNationalHierarchyDelete }
+
         };
 
         public static string MapToRegisteredEvent(this string eventName)

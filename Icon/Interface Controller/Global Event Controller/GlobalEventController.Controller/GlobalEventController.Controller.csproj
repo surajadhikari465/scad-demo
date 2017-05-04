@@ -119,6 +119,8 @@
     <Compile Include="EventOperations\EventQueues.cs" />
     <Compile Include="EventOperations\IEventBulkProcessor.cs" />
     <Compile Include="EventOperations\IEventQueues.cs" />
+    <Compile Include="EventServices\DeleteNationalHierarchyEventService.cs" />
+    <Compile Include="EventServices\AddOrUpdateNationalHierarchyEventService.cs" />
     <Compile Include="EventServices\AddTaxClassEventService.cs" />
     <Compile Include="EventServices\BrandDeleteEventService.cs" />
     <Compile Include="EventServices\BulkItemNutriFactsService.cs" />

@@ -12,11 +12,12 @@ namespace Irma.Framework
     using System;
     using System.Collections.Generic;
     
-    public partial class ValidatedScanCode
+    public partial class NatItemFamily
     {
-        public int Id { get; set; }
-        public string ScanCode { get; set; }
-        public System.DateTime InsertDate { get; set; }
-        public Nullable<int> InforItemId { get; set; }
+        public string NatFamilyName { get; set; }
+        public Nullable<int> NatSubTeam_No { get; set; }
+        public Nullable<int> SubTeam_No { get; set; }
+        public Nullable<System.DateTime> LastUpdateTimestamp { get; set; }
+        public int NatFamilyID { get; set; }
     }
 }

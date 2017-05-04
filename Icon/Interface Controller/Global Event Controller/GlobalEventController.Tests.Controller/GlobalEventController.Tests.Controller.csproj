@@ -120,6 +120,8 @@
     <Compile Include="EventServiceTests\BrandDeleteEventServiceTests.cs" />
     <Compile Include="EventServiceTests\BulkItemNutriFactsServiceTests.cs" />
     <Compile Include="EventServiceTests\BulkItemEventServiceTests.cs" />
+    <Compile Include="EventServiceTests\DeleteNationalHierarchyServiceTests.cs" />
+    <Compile Include="EventServiceTests\AddUpdateNationalHierarchyServiceTests.cs" />
     <Compile Include="EventServiceTests\UpdateTaxClassEventServiceTests.cs" />
     <Compile Include="EventServiceTests\UpdateBrandEventServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

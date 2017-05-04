@@ -18,5 +18,7 @@
         public static string MammothItemLocaleAddOrUpdateEvent = "ItemLocaleAddOrUpdate";
         public static string MammothItemPriceEvent = "Price";
         public static string IconToIrmaBrandDelete = "Brand Delete";
+        public static string IcontoIrmaNationalHierarchyUpdate = "National Class Update";
+        public static string IconToIrmaNationalHierarchyDelete = "National Class Delete";
     }
 }

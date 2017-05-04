@@ -17,7 +17,9 @@ namespace InterfaceController.Common
             IconToIrmaItemSubTeamUpdates = 10,
             IconToIrmaNutritionUpdate = 11,
             IconToIrmaNutritionAdd = 12,
-            IconToIrmaBrandDelete = 13
+            IconToIrmaBrandDelete = 13,
+            IconToIrmaNationalHierarchyUpdate = 14,
+            IconToIrmaNationalHierarchyDelete = 15,
         }
 
         public enum IrmaRegion

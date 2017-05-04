@@ -45,11 +45,9 @@ namespace Irma.Framework
         public virtual DbSet<Version> Version { get; set; }
         public virtual DbSet<ItemUnit> ItemUnit { get; set; }
         public virtual DbSet<Sales_SumByItem> Sales_SumByItem { get; set; }
-        public virtual DbSet<TlogReprocessRequest> TlogReprocessRequest { get; set; }
         public virtual DbSet<StoreSubTeam> StoreSubTeam { get; set; }
         public virtual DbSet<ItemCategory> ItemCategory { get; set; }
         public virtual DbSet<IConPOSPushPublish> IConPOSPushPublish { get; set; }
-        public virtual DbSet<NatItemClass> NatItemClass { get; set; }
         public virtual DbSet<JobStatus> JobStatus { get; set; }
         public virtual DbSet<ItemOverride> ItemOverride { get; set; }
         public virtual DbSet<SubTeam> SubTeam { get; set; }
@@ -61,6 +59,12 @@ namespace Irma.Framework
         public virtual DbSet<NutriFacts> NutriFacts { get; set; }
         public virtual DbSet<Store> Store { get; set; }
         public virtual DbSet<MammothPriceChangeQueue> PriceChangeQueue { get; set; }
+        public virtual DbSet<ValidatedNationalClass> ValidatedNationalClass { get; set; }
+        public virtual DbSet<NatItemCat> NatItemCat { get; set; }
+        public virtual DbSet<NatItemFamily> NatItemFamily { get; set; }
+        public virtual DbSet<NatItemClass> NatItemClass { get; set; }
+        public virtual DbSet<ChangeQueueHistory> ChangeQueueHistory { get; set; }
+        public virtual DbSet<TlogReprocessRequest> TlogReprocessRequest { get; set; }
     
         public virtual int MarkPublishTableEntriesAsInProcess(Nullable<int> numberOfRows, Nullable<int> jobInstance)
         {
