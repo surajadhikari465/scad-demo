@@ -122,6 +122,10 @@
     <Folder Include="Schema\mammoth" />
     <Folder Include="Schema\mammoth\Stored Procedures" />
     <Folder Include="Schema\mammoth\Tables" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\PopulateData" />
+    <Folder Include="Scripts\PopulateData\PostDeploy.Scripts" />
+    <Folder Include="Scripts\PopulateData\PreDeploy.Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -381,7 +385,6 @@
     <Build Include="schema\dbo\Functions\fn_GetTorexJulianDate.sql" />
     <Build Include="schema\dbo\Functions\fn_GetUnitCostForSpoilage.sql" />
     <Build Include="schema\dbo\Functions\fn_GetUnsentOrders.sql" />
-    <Build Include="schema\dbo\Functions\fn_GetUOMConversionDivisor.sql" />
     <Build Include="schema\dbo\Functions\fn_GetUOMConversionFactor.sql" />
     <Build Include="schema\dbo\Functions\fn_GetVendor_SubteamsItemCount.sql" />
     <Build Include="schema\dbo\Functions\fn_GetVendorPack.sql" />
@@ -696,7 +699,6 @@
     <Build Include="schema\dbo\Stored Procedures\Procs1\CheckVendorCostHistoryOverlap.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\CheckVendorIdAndVendorKey.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\CheckVendorIsDSDForStore.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs1\CheckVersion.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\CheeseInventoryItems.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\CleanUpTablesForConversion.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\CloseCycleCountHeader.sql" />
@@ -713,11 +715,9 @@
     <Build Include="schema\dbo\Stored Procedures\Procs1\Configuration_SetValue.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\ControlGroup3WayMatchLogReport.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\Conversion_AddItemsFromPrep.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs1\Conversion_RegionAddToItemTemp.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\Conversion_Report.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\Conversion_SaleEnd.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\Conversion_SoPacAddToItemTemp.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs1\Convertion_AddItemFromTemp.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\Convertion_AddItemsFromTemp.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\Convertion_AddToTemp.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\Convertion_PromoLogic.sql" />
@@ -1630,7 +1630,6 @@
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetWasteCorrections.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetWasteTypes.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetWIMPExtract_COSTDATA.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\GetWIMPExtract_ITEMDATA.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetWIMPExtract_PLANOSTATUS.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetZones.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetZoneSubTeams.sql" />
@@ -1894,7 +1893,6 @@
     <Build Include="schema\dbo\Stored Procedures\Procs3\msqGetWFMNCMeatInventory.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\msqGetWFMSCMeatInventory.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\msqNCMeatOrderGuide.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\msqProduceRetailPriceGuide.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\msqSeafoodInventory.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\NoSells.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\NumOfInvoicesInControlGroupReport.sql" />
@@ -3163,7 +3161,6 @@
     <Build Include="schema\dbo\Views\zz_deprecated_CixNatItemFamily.sql" />
     <Build Include="schema\dbo\Views\zz_deprecated_Dist_Sub_Team_View.sql" />
     <Build Include="schema\dbo\Views\zz_deprecated_Item_Temp_Load.sql" />
-    <Build Include="schema\dbo\Views\zz_deprecated_vw_IndexFragmentation.sql" />
     <Build Include="schema\dbo\XMLSchemaCollections\ApplicationConfiguration.sql" />
     <Build Include="schema\infor\Stored Procedures\FailUnprocessedEvents.sql" />
     <Build Include="schema\infor\Stored Procedures\FinalizeNewItemEvents.sql" />
@@ -3184,6 +3181,7 @@
     <Build Include="schema\mammoth\Tables\ItemChangeEventType.sql" />
     <Build Include="schema\mammoth\Tables\ItemLocaleChangeQueue.sql" />
     <Build Include="schema\mammoth\Tables\PriceChangeQueue.sql" />
+    <PostDeploy Include="Scripts\PostDeploy.Main.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
@@ -3197,5 +3195,8 @@
       <SqlOwnerName>dbo</SqlOwnerName>
       <SqlPermissionSet>EXTERNAL_ACCESS</SqlPermissionSet>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\PreDeploy.Main.sql" />
   </ItemGroup>
 </Project>

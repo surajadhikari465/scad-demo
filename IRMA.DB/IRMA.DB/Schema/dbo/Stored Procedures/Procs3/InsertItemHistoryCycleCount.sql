@@ -81,7 +81,7 @@ BEGIN
                          CASE WHEN Item.CostedByWeight = 1 THEN 1 ELSE PackSize END,
                          CASE WHEN Item.CostedByWeight = 1 THEN PackSize ELSE Item.Package_Desc2 END,
                          Item.Package_Unit_ID, Item.CostedByWeight
-                ORDER BY Item_Key
+                ORDER BY I.Item_Key
             
         DECLARE @Store_No int, @SubTeam_No int, @Item_Key int, @EndScan datetime, @PackSize decimal(9,4), @Quantity decimal(18,4), @Weight decimal(18,4), @Package_Desc1 decimal(9,4), @Package_Desc2 decimal(9,4), @Package_Unit_ID int, @CostedByWeight bit
 

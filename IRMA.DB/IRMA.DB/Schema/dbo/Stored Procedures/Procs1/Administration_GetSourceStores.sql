@@ -12,7 +12,7 @@ BEGIN
     WHERE (Mega_Store = 1 OR WFM_Store = 1) 
 		AND spos.POSFileWriterKey = @POSFileWriterKey
 		AND dbo.fn_GetCustomerType(s.Store_No, s.Internal, s.BusinessUnit_ID) = 3 -- Regional   
-    ORDER BY Store_Name, Store_No
+    ORDER BY Store_Name, s.Store_No
     
     SET NOCOUNT OFF
 END

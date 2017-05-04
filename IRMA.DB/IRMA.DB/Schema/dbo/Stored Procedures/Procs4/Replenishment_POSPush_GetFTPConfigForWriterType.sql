@@ -29,7 +29,7 @@ BEGIN
 	WHERE 
 		FileWriterType = @FileWriterType
 	ORDER BY 
-		Store_No
+		SFC.Store_No
 
 END
 GO

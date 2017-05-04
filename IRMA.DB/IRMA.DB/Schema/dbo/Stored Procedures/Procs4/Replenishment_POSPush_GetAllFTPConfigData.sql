@@ -21,7 +21,7 @@ SELECT
 		dbo.Store S ON SFC.Store_No = S.Store_No
 	LEFT OUTER JOIN 
 		dbo.POSSystemTypes PST ON S.POSSystemID = PST.POSSystemID
-	ORDER BY FileWriterType, Store_No	
+	ORDER BY FileWriterType, SFC.Store_No	
 END
 GO
 GRANT EXECUTE

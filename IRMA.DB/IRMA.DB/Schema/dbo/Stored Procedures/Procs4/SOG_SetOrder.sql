@@ -477,7 +477,7 @@ BEGIN
 		OR co.ParentID		= @CatalogOrderID)
 		
 	ORDER BY 
-		OrderHeader_ID, i.Item_Description DESC
+		oh.OrderHeader_ID, i.Item_Description DESC
 		
 	--**************************************************************************
 	--Clean up CatalogOrder and CatalogOrderItem tables
