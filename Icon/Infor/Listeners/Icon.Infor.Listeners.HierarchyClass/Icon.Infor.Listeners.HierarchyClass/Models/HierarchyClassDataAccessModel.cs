@@ -1,4 +1,5 @@
-﻿using Icon.Framework;
+﻿using Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Extensions;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
         public string HierarchyLevelName { get; set; }
         public int? ParentHierarchyClassId { get; set; }
         public Dictionary<int, string> HierarchyClassTraits { get; set; }
+        public int ActionId { get; set; }
 
         public HierarchyClassDataAccessModel() { }
 
@@ -28,6 +30,10 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
             HierarchyLevelName = model.HierarchyLevelName;
             HierarchyClassTraits = model.HierarchyClassTraits
                 .ToDictionary(kvp => Traits.Ids[kvp.Key], kvp => kvp.Value);
+            if (model.Action == ActionEnum.AddOrUpdate)
+                ActionId = MessageActionTypes.AddOrUpdate;
+            else if (model.Action == ActionEnum.Delete)
+                ActionId = MessageActionTypes.Delete;
         }
     }
 }
