@@ -23,8 +23,8 @@
 
         private Lazy<Dictionary<string, string>> appSettings = new Lazy<Dictionary<string, string>>(
             () => new Dictionary<string, string>());
-        private Lazy<List<Dictionary<string, string>>> esbConnectionSettings = new Lazy<List<Dictionary<string, string>>>(
-            () => new List<Dictionary<string, string>>());
+        private Lazy<Dictionary<string, string>> esbConnectionSettings = new Lazy<Dictionary<string, string>>(
+            () => new Dictionary<string, string>());
 
         public Dictionary<string, string> AppSettings
         {
@@ -37,7 +37,7 @@
 
         public string DataFlowTo { get; set; }
 
-        public List<Dictionary<string, string>> EsbConnectionSettings
+        public Dictionary<string, string> EsbConnectionSettings
         {
             get { return this.esbConnectionSettings.Value; }
         }

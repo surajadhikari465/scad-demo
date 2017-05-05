@@ -11,15 +11,20 @@ namespace Icon.Dashboard.Mvc.ViewModels
     {
         public TaskViewModel() : base() { }
 
-        public TaskViewModel(ScheduledTask app) : base(app) { }
-
-        public override void PopulateFromApplication(IApplication app)
+        public TaskViewModel(ScheduledTask app) : base(app)
         {
-            base.PopulateFromApplication(app);
             var task = (ScheduledTask)app;
             this.LastRun = task.LastRun;
             this.NextRun = task.NextRun;
         }
+
+        //public override void PopulateFromApplication(IApplication app)
+        //{
+        //    base.PopulateFromApplication(app);
+        //    var task = (ScheduledTask)app;
+        //    this.LastRun = task.LastRun;
+        //    this.NextRun = task.NextRun;
+        //}
 
         [DisplayName("Last Run")]
         public DateTime? LastRun { get; set; }

@@ -10,6 +10,10 @@ namespace Icon.Dashboard.Mvc.Helpers
 {
     public static class Utils
     {
+        public static string GetBootstrapClassForEnvironment()
+        {
+            return GetBootstrapClassForEnvironment(Utils.Environment);
+        }
 
         public static string GetBootstrapClassForEnvironment(string environment)
         {

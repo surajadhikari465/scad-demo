@@ -11,7 +11,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
     {
         public ServiceViewModel() : base() { }
 
-        public ServiceViewModel(IApplication app) : base(app)
+        public ServiceViewModel(WindowsService app) : base(app)
         {
         }
     }

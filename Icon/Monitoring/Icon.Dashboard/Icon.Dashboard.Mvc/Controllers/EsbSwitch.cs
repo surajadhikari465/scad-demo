@@ -1,5 +1,7 @@
-﻿using Icon.Dashboard.Mvc.Helpers;
+﻿using Icon.Dashboard.Mvc.Filters;
+using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.Infrastructure;
+using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
@@ -12,22 +14,9 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class EsbSwitchController : Controller
     {
-
         private const string defaultDataFile = "DashboardApplications.xml";
 
-        public IDataFileServiceWrapper DashboardDataFileService { get; private set; }
-        public IIconDatabaseServiceWrapper IconDatabaseDataAccess { get; private set; }
-
-        public string XmlDataFile { get; set; }
-
         private HttpServerUtilityBase _serverUtility;
-        public HttpServerUtilityBase ServerUtility
-        {
-            get
-            {
-                return _serverUtility ?? Server;
-            }
-        }
 
         public EsbSwitchController() : this(null, null, null, null)
         {
@@ -45,8 +34,21 @@ namespace Icon.Dashboard.Mvc.Controllers
             _serverUtility = serverUtility;
         }
 
+        public IDataFileServiceWrapper DashboardDataFileService { get; private set; }
+        public IIconDatabaseServiceWrapper IconDatabaseDataAccess { get; private set; }
+        public HttpServerUtilityBase ServerUtility
+        {
+            get
+            {
+                return _serverUtility ?? Server;
+            }
+        }
+
+        public string XmlDataFile { get; set; }
+
+        #region GET
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Index()
         {
             //enable filter to use the logging service for building menus
@@ -60,7 +62,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Details(string name)
         {
             //enable filter to use the logging service for building menus
@@ -77,7 +79,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Edit(string name)
         {
             //enable filter to use the logging service for building menus
@@ -90,7 +92,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             var esbEnvironment = DashboardDataFileService.GetEsbEnvironment(ServerUtility, XmlDataFile, name);
             var currentEnvironment = DashboardDataFileService.GetCurrentEsbEnvironment(ServerUtility, XmlDataFile);
             // populate ApplicationsList for each model. We need this to display in dropdown
-            if (esbEnvironment.Applications != null && esbEnvironment.Applications.Count>0)
+            if (esbEnvironment.Applications != null && esbEnvironment.Applications.Count > 0)
             {
                 esbEnvironment.Applications[0].ApplicationsList = DashboardDataFileService.GetApplications(ServerUtility, XmlDataFile);
             }
@@ -98,26 +100,13 @@ namespace Icon.Dashboard.Mvc.Controllers
             {
                 app.ApplicationsList = esbEnvironment.Applications[0].ApplicationsList;
             }
-   
+
             ViewBag.Title = $"Edit ESB Environment \"{esbEnvironment?.Name}\" Configuration";
             return View(esbEnvironment);
         }
 
-        [HttpPost]
-        [SetViewBagMenuOptionsFilter]
-        public ActionResult Edit(EsbEnvironmentViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                DashboardDataFileService.UpdateEsbEnvironment(ServerUtility, model, XmlDataFile);
-                return RedirectToAction("Details", "EsbSwitch", new { name = model.Name });
-            }
-            
-            return View("Edit", model);
-        }
-
         [HttpGet]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
         public ActionResult Create()
         {
             //enable filter to use the logging service for building menus
@@ -128,8 +117,52 @@ namespace Icon.Dashboard.Mvc.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        public ActionResult GetCurrentEsbEnvironment()
+        {
+            var currentEnvironment = DashboardDataFileService.GetCurrentEsbEnvironment(ServerUtility, XmlDataFile);
+            return Json(currentEnvironment?.Name, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        public ActionResult AddApplicationRow()
+        {
+            // pass all appplications to it
+            IconApplicationIdentifierViewModel emptyViewModel;
+            IEnumerable<DataFileAccess.Models.IApplication> ApplicationsList = DashboardDataFileService.GetApplications(ServerUtility, XmlDataFile);
+            // check if application list is not null and set selected item as first item in the list
+            if (ApplicationsList != null && ApplicationsList.Count() > 0)
+            {
+                emptyViewModel = new IconApplicationIdentifierViewModel(ApplicationsList.First().Name, "test");
+            }
+            else
+            {
+                emptyViewModel = new IconApplicationIdentifierViewModel("appName", "server");
+            }
+            emptyViewModel.ApplicationsList = ApplicationsList;
+
+            return PartialView("EditorTemplates/IconApplicationIdentifierViewModel", emptyViewModel);
+        }
+        #endregion
+
+        #region POST
         [HttpPost]
-        [SetViewBagMenuOptionsFilter]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        public ActionResult Edit(EsbEnvironmentViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                DashboardDataFileService.UpdateEsbEnvironment(ServerUtility, model, XmlDataFile);
+                return RedirectToAction("Details", "EsbSwitch", new { name = model.Name });
+            }
+
+            return View("Edit", model);
+        }
+
+        [HttpPost]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
         public ActionResult Create(EsbEnvironmentViewModel model)
         {
             if (ModelState.IsValid)
@@ -142,6 +175,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
         public ActionResult Delete(string name)
         {
             var esbEnvironment = DashboardDataFileService.GetEsbEnvironment(ServerUtility, XmlDataFile, name);
@@ -152,27 +186,8 @@ namespace Icon.Dashboard.Mvc.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public ActionResult AddApplicationRow()
-        {
-            // pass all appplications to it
-            IconApplicationIdentifierViewModel emptyViewModel;
-            IEnumerable<DataFileAccess.Models.IApplication> ApplicationsList = DashboardDataFileService.GetApplications(ServerUtility, XmlDataFile);
-            // check if application list is not null and set selected item as first item in the list
-            if(ApplicationsList!= null && ApplicationsList.Count() > 0)
-            {
-                 emptyViewModel = new IconApplicationIdentifierViewModel(ApplicationsList.First().Name, "test");
-            }
-            else
-            {
-                emptyViewModel = new IconApplicationIdentifierViewModel("appName", "server");
-            }
-            emptyViewModel.ApplicationsList = ApplicationsList;
-
-            return PartialView("EditorTemplates/IconApplicationIdentifierViewModel", emptyViewModel);
-        }
-
         [HttpPost]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
         public ActionResult SetEsbEnvironment(string name)
         {
             var esbEnvironment = DashboardDataFileService.GetEsbEnvironment(ServerUtility, XmlDataFile, name);
@@ -180,17 +195,11 @@ namespace Icon.Dashboard.Mvc.Controllers
 
             var failures = results.Where(r => r.Item1 == false).ToList();
             string reportMessage = failures != null && failures.Count > 0
-                ? $"Not all aplications set for '{name}' ESB Envrionment.{Environment.NewLine}{String.Join(Environment.NewLine, failures.Select(f=>f.Item2))}"
+                ? $"Not all aplications set for '{name}' ESB Envrionment.{Environment.NewLine}{String.Join(Environment.NewLine, failures.Select(f => f.Item2))}"
                 : $"Applications successfully set for ESB environment '{name}'.";
 
             return Json(new { message = reportMessage });
         }
-
-        [HttpGet]
-        public ActionResult GetCurrentEsbEnvironment()
-        {
-            var currentEnvironment = DashboardDataFileService.GetCurrentEsbEnvironment(ServerUtility, XmlDataFile);
-            return Json(currentEnvironment?.Name, JsonRequestBehavior.AllowGet);
-        }
+        #endregion
     }
 }

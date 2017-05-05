@@ -69,9 +69,10 @@
     <xs:attribute name="QueueName" type="xs:string" use="optional" />
     <xs:attribute name="SessionMode" type="xs:string" use="optional" />
     <xs:attribute name="CertificateName" type="xs:string" use="optional" />
-    <xs:attribute name="CrtificateStoreName" type="xs:string" use="optional" />
-    <xs:attribute name="CrtificateStoreLocation" type="xs:string" use="optional" />
+    <xs:attribute name="CertificateStoreName" type="xs:string" use="optional" />
+    <xs:attribute name="CertificateStoreLocation" type="xs:string" use="optional" />
     <xs:attribute name="ReconnectDelay" type="xs:integer" use="optional" />
+    <xs:attribute name="NumberOfListenerThreads" type="xs:integer" use="optional" />
   </xs:complexType>
 
   <xs:complexType name="ApplicationsInEnvironment">
