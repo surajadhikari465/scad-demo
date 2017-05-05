@@ -125,6 +125,8 @@
     <Compile Include="BulkCommands\BulkUpdateItemCommandHandler.cs" />
     <Compile Include="Commands\AddItemCategoryCommand.cs" />
     <Compile Include="Commands\AddItemCategoryCommandHandler.cs" />
+    <Compile Include="Commands\AddOrUpdateNationalHierarchyCommand.cs" />
+    <Compile Include="Commands\AddOrUpdateNationalHierarchyCommandHandler.cs" />
     <Compile Include="Commands\AddTaxClassCommand.cs" />
     <Compile Include="Commands\AddTaxClassCommandHandler.cs" />
     <Compile Include="Commands\AddValidatedScanCodeCommand.cs" />
@@ -139,6 +141,8 @@
     <Compile Include="Commands\DeleteEventQueueCommandHandler.cs" />
     <Compile Include="Commands\AddOrUpdateBrandCommand.cs" />
     <Compile Include="Commands\AddOrUpdateBrandCommandHandler.cs" />
+    <Compile Include="Commands\DeleteNationalHierarchyCommand.cs" />
+    <Compile Include="Commands\DeleteNationalHierarchyCommandHandler.cs" />
     <Compile Include="Commands\UpdateEventQueueFailuresCommand.cs" />
     <Compile Include="Commands\UpdateEventQueueFailuresCommandHandler.cs" />
     <Compile Include="Commands\AddUpdateLastChangeByIdentifiersCommand.cs" />

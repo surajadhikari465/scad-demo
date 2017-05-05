@@ -46,13 +46,11 @@
         <AssociationConnector Association="Irma.Framework.Model.FK_ItemUnit_1__13" />
         <EntityTypeShape EntityType="Irma.Framework.Model.Sales_SumByItem" Width="1.5" PointX="10.5" PointY="30.5" />
         <AssociationConnector Association="Irma.Framework.Model.FK_Sales_SumByItem_Item" />
-        <EntityTypeShape EntityType="Irma.Framework.Model.TlogReprocessRequest" Width="1.5" PointX="5.375" PointY="6.75" />
         <EntityTypeShape EntityType="Irma.Framework.Model.StoreSubTeam" Width="1.5" PointX="14.625" PointY="3.25" />
         <EntityTypeShape EntityType="Irma.Framework.Model.ItemCategory" Width="1.5" PointX="14.625" PointY="9.125" />
         <AssociationConnector Association="Irma.Framework.Model.FK__Item__Category_I__162AB1D8" />
         <AssociationConnector Association="Irma.Framework.Model.FK_ItemCategory_1__13" />
         <EntityTypeShape EntityType="Irma.Framework.Model.IConPOSPushPublish" Width="1.5" PointX="13.375" PointY="12.75" />
-        <EntityTypeShape EntityType="Irma.Framework.Model.NatItemClass" Width="1.5" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="Irma.Framework.Model.JobStatus" Width="1.5" PointX="15.375" PointY="12.75" />
         <EntityTypeShape EntityType="Irma.Framework.Model.ItemOverride" Width="1.5" PointX="17.25" PointY="16.125" />
         <EntityTypeShape EntityType="Irma.Framework.Model.SubTeam" Width="1.5" PointX="12.5" PointY="3" />
@@ -89,13 +87,19 @@
         <AssociationConnector Association="Irma.Framework.Model.FK__Store__RecvLogUs__6CDF4ED9" />
         <AssociationConnector Association="Irma.Framework.Model.FK_ItemLocaleChangeQueue_Store" />
         <AssociationConnector Association="Irma.Framework.Model.FK_StoreSubTeam_Store" />
-        <AssociationConnector Association="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" />
         <AssociationConnector Association="Irma.Framework.Model.FK_Users_Store1" />
         <AssociationConnector Association="Irma.Framework.Model.FK_Users_TelxonStoreLimit" />
         <EntityTypeShape EntityType="Irma.Framework.Model.MammothPriceChangeQueue" Width="1.5" PointX="19.5" PointY="13.125" />
         <AssociationConnector Association="Irma.Framework.Model.FK_PriceChangeQueue_Item" />
         <AssociationConnector Association="Irma.Framework.Model.FK_PriceChangeQueue_Store" />
         <AssociationConnector Association="Irma.Framework.Model.FK_PriceChangeQueue_ItemChangeEventType" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ValidatedNationalClass" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.NatItemCat" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.NatItemFamily" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.NatItemClass" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.ChangeQueueHistory" Width="1.5" PointX="17.375" PointY="3.75" />
+        <EntityTypeShape EntityType="Irma.Framework.Model.TlogReprocessRequest" Width="1.5" PointX="3" PointY="9.125" />
+        <AssociationConnector Association="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

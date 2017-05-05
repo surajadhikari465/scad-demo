@@ -412,6 +412,15 @@
           <Property Name="StatusDescription" Type="varchar" MaxLength="255" />
           <Property Name="Details" Type="varchar" MaxLength="2000" />
         </EntityType>
+        <EntityType Name="NatItemCat">
+          <Key>
+            <PropertyRef Name="NatCatID" />
+          </Key>
+          <Property Name="NatCatName" Type="varchar" MaxLength="65" />
+          <Property Name="NatFamilyID" Type="int" Nullable="false" />
+          <Property Name="LastUpdateTimestamp" Type="datetime" />
+          <Property Name="NatCatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
         <EntityType Name="NatItemClass">
           <Key>
             <PropertyRef Name="ClassID" />
@@ -420,6 +429,16 @@
           <Property Name="ClassName" Type="varchar" MaxLength="65" />
           <Property Name="NatCatID" Type="int" Nullable="false" />
           <Property Name="LastUpdateTimestamp" Type="datetime" />
+        </EntityType>
+        <EntityType Name="NatItemFamily">
+          <Key>
+            <PropertyRef Name="NatFamilyID" />
+          </Key>
+          <Property Name="NatFamilyName" Type="varchar" MaxLength="65" />
+          <Property Name="NatSubTeam_No" Type="int" />
+          <Property Name="SubTeam_No" Type="int" />
+          <Property Name="LastUpdateTimestamp" Type="datetime" />
+          <Property Name="NatFamilyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="NutriFacts">
           <Key>
@@ -735,6 +754,16 @@
           <Property Name="IrmaBrandId" Type="int" Nullable="false" />
           <Property Name="IconBrandId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="ValidatedNationalClass">
+          <Key>
+            <PropertyRef Name="ValidatedNationalClassId" />
+          </Key>
+          <Property Name="ValidatedNationalClassId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IrmaId" Type="int" />
+          <Property Name="IconId" Type="int" />
+          <Property Name="Level" Type="int" />
+          <Property Name="InsertDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="ValidatedScanCode">
           <Key>
             <PropertyRef Name="Id" />
@@ -742,6 +771,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScanCode" Type="varchar" MaxLength="13" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="InforItemId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -756,6 +786,24 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <Property Name="Version" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Environment" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="UsedByRegion" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChangeQueueHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventTypeId" Type="int" Nullable="false" />
+          <Property Name="Identifier" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="Item_Key" Type="int" Nullable="false" />
+          <Property Name="Store_No" Type="int" />
+          <Property Name="QueueID" Type="int" Nullable="false" />
+          <Property Name="EventReferenceId" Type="int" />
+          <Property Name="QueueInsertDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="MachineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Context" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ErrorCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="ErrorDetails" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ItemChangeEventType">
           <Key>
@@ -1505,7 +1553,9 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <EntitySet Name="ItemSignAttribute" EntityType="Self.ItemSignAttribute" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemUnit" EntityType="Self.ItemUnit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobStatus" EntityType="Self.JobStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NatItemCat" EntityType="Self.NatItemCat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NatItemClass" EntityType="Self.NatItemClass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NatItemFamily" EntityType="Self.NatItemFamily" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NutriFacts" EntityType="Self.NutriFacts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Price" EntityType="Self.Price" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Region" EntityType="Self.Region" Schema="dbo" store:Type="Tables" />
@@ -1517,7 +1567,9 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <EntitySet Name="TlogReprocessRequest" EntityType="Self.TlogReprocessRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ValidatedBrand" EntityType="Self.ValidatedBrand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ValidatedNationalClass" EntityType="Self.ValidatedNationalClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ValidatedScanCode" EntityType="Self.ValidatedScanCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChangeQueueHistory" EntityType="Self.ChangeQueueHistory" Schema="mammoth" store:Type="Tables" />
           <EntitySet Name="ItemChangeEventType" EntityType="Self.ItemChangeEventType" Schema="mammoth" store:Type="Tables" />
           <EntitySet Name="ItemLocaleChangeQueue" EntityType="Self.ItemLocaleChangeQueue" Schema="mammoth" store:Type="Tables" />
           <EntitySet Name="PriceChangeQueue" EntityType="Self.PriceChangeQueue" Schema="mammoth" store:Type="Tables" />
@@ -2020,6 +2072,7 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InforItemId" Type="Int32" />
         </EntityType>
         <Association Name="FK__Item__Brand_ID__15368D9F">
           <End Role="ItemBrand" Type="Self.ItemBrand" Multiplicity="0..1" />
@@ -2211,7 +2264,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
             <End Role="Item" EntitySet="Item" />
             <End Role="Sales_SumByItem" EntitySet="Sales_SumByItem" />
           </AssociationSet>
-          <EntitySet Name="TlogReprocessRequest" EntityType="Irma.Framework.Model.TlogReprocessRequest" />
           <EntitySet Name="StoreSubTeam" EntityType="Irma.Framework.Model.StoreSubTeam" />
           <EntitySet Name="ItemCategory" EntityType="Irma.Framework.Model.ItemCategory" />
           <AssociationSet Name="FK__Item__Category_I__162AB1D8" Association="Irma.Framework.Model.FK__Item__Category_I__162AB1D8">
@@ -2223,7 +2275,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
             <End Role="ItemCategory" EntitySet="ItemCategory" />
           </AssociationSet>
           <EntitySet Name="IConPOSPushPublish" EntityType="Irma.Framework.Model.IConPOSPushPublish" />
-          <EntitySet Name="NatItemClass" EntityType="Irma.Framework.Model.NatItemClass" />
           <FunctionImport Name="GetJobStatusList" ReturnType="Collection(Irma.Framework.Model.GetJobStatusList_Result)" />
           <EntitySet Name="JobStatus" EntityType="Irma.Framework.Model.JobStatus" />
           <EntitySet Name="ItemOverride" EntityType="Irma.Framework.Model.ItemOverride" />
@@ -2339,10 +2390,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
             <End Role="Store" EntitySet="Store" />
             <End Role="StoreSubTeam" EntitySet="StoreSubTeam" />
           </AssociationSet>
-          <AssociationSet Name="FK_TlogReprocessRequest_StoreNo" Association="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo">
-            <End Role="Store" EntitySet="Store" />
-            <End Role="TlogReprocessRequest" EntitySet="TlogReprocessRequest" />
-          </AssociationSet>
           <AssociationSet Name="FK_Users_Store1" Association="Irma.Framework.Model.FK_Users_Store1">
             <End Role="Store" EntitySet="Store" />
             <End Role="Users" EntitySet="Users" />
@@ -2363,6 +2410,16 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <AssociationSet Name="FK_PriceChangeQueue_ItemChangeEventType" Association="Irma.Framework.Model.FK_PriceChangeQueue_ItemChangeEventType">
             <End Role="MammothItemChangeEventType" EntitySet="MammothItemChangeEventType" />
             <End Role="PriceChangeQueue" EntitySet="PriceChangeQueue" />
+          </AssociationSet>
+          <EntitySet Name="ValidatedNationalClass" EntityType="Irma.Framework.Model.ValidatedNationalClass" />
+          <EntitySet Name="NatItemCat" EntityType="Irma.Framework.Model.NatItemCat" />
+          <EntitySet Name="NatItemFamily" EntityType="Irma.Framework.Model.NatItemFamily" />
+          <EntitySet Name="NatItemClass" EntityType="Irma.Framework.Model.NatItemClass" />
+          <EntitySet Name="ChangeQueueHistory" EntityType="Irma.Framework.Model.ChangeQueueHistory" />
+          <EntitySet Name="TlogReprocessRequest" EntityType="Irma.Framework.Model.TlogReprocessRequest" />
+          <AssociationSet Name="FK_TlogReprocessRequest_StoreNo" Association="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="TlogReprocessRequest" EntitySet="TlogReprocessRequest" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Price">
@@ -2775,16 +2832,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="TlogReprocessRequest">
-          <Key>
-            <PropertyRef Name="Date_Key" />
-            <PropertyRef Name="Store_No" />
-          </Key>
-          <Property Name="Date_Key" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Store_No" Type="Int32" Nullable="false" />
-          <Property Name="BusinessUnit_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Store" Relationship="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" FromRole="TlogReprocessRequest" ToRole="Store" />
-        </EntityType>
         <EntityType Name="StoreSubTeam">
           <Key>
             <PropertyRef Name="Store_No" />
@@ -2878,15 +2925,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <Property Name="LinkCode_ItemIdentifier" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
           <Property Name="POSTare" Type="Int32" />
           <NavigationProperty Name="Store" Relationship="Irma.Framework.Model.FK_IConPOSPushPublish_Store_No" FromRole="IConPOSPushPublish" ToRole="Store" />
-        </EntityType>
-        <EntityType Name="NatItemClass">
-          <Key>
-            <PropertyRef Name="ClassID" />
-          </Key>
-          <Property Name="ClassID" Type="Int32" Nullable="false" />
-          <Property Name="ClassName" Type="String" MaxLength="65" FixedLength="false" Unicode="false" />
-          <Property Name="NatCatID" Type="Int32" Nullable="false" />
-          <Property Name="LastUpdateTimestamp" Type="DateTime" Precision="3" />
         </EntityType>
         <ComplexType Name="GetJobStatusList_Result">
           <Property Type="String" Name="job_name" Nullable="false" MaxLength="50" />
@@ -3429,10 +3467,10 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <NavigationProperty Name="Users" Relationship="Irma.Framework.Model.FK__Store__RecvLogUs__6CDF4ED9" FromRole="Store" ToRole="Users" />
           <NavigationProperty Name="ItemLocaleChangeQueue" Relationship="Irma.Framework.Model.FK_ItemLocaleChangeQueue_Store" FromRole="Store" ToRole="MammothItemLocaleChangeQueue" />
           <NavigationProperty Name="StoreSubTeam" Relationship="Irma.Framework.Model.FK_StoreSubTeam_Store" FromRole="Store" ToRole="StoreSubTeam" />
-          <NavigationProperty Name="TlogReprocessRequest" Relationship="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" FromRole="Store" ToRole="TlogReprocessRequest" />
           <NavigationProperty Name="Users1" Relationship="Irma.Framework.Model.FK_Users_Store1" FromRole="Store" ToRole="Users" />
           <NavigationProperty Name="Users2" Relationship="Irma.Framework.Model.FK_Users_TelxonStoreLimit" FromRole="Store" ToRole="Users" />
           <NavigationProperty Name="PriceChangeQueue" Relationship="Irma.Framework.Model.FK_PriceChangeQueue_Store" FromRole="Store" ToRole="PriceChangeQueue" />
+          <NavigationProperty Name="TlogReprocessRequest" Relationship="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" FromRole="Store" ToRole="TlogReprocessRequest" />
         </EntityType>
         <Association Name="FK_IConPOSPushPublish_Store_No">
           <End Type="Irma.Framework.Model.Store" Role="Store" Multiplicity="1" />
@@ -3544,18 +3582,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TlogReprocessRequest_StoreNo">
-          <End Type="Irma.Framework.Model.Store" Role="Store" Multiplicity="1" />
-          <End Type="Irma.Framework.Model.TlogReprocessRequest" Role="TlogReprocessRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="Store_No" />
-            </Principal>
-            <Dependent Role="TlogReprocessRequest">
-              <PropertyRef Name="Store_No" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Users_Store1">
           <End Type="Irma.Framework.Model.Store" Role="Store" Multiplicity="0..1" />
           <End Type="Irma.Framework.Model.Users" Role="Users" Multiplicity="*" />
@@ -3630,6 +3656,84 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
             </Principal>
             <Dependent Role="PriceChangeQueue">
               <PropertyRef Name="EventTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ValidatedNationalClass">
+          <Key>
+            <PropertyRef Name="ValidatedNationalClassId" />
+          </Key>
+          <Property Name="ValidatedNationalClassId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IrmaId" Type="Int32" />
+          <Property Name="IconId" Type="Int32" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="InsertDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="NatItemCat">
+          <Key>
+            <PropertyRef Name="NatCatID" />
+          </Key>
+          <Property Name="NatCatName" Type="String" MaxLength="65" FixedLength="false" Unicode="false" />
+          <Property Name="NatFamilyID" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdateTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="NatCatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="NatItemFamily">
+          <Key>
+            <PropertyRef Name="NatFamilyID" />
+          </Key>
+          <Property Name="NatFamilyName" Type="String" MaxLength="65" FixedLength="false" Unicode="false" />
+          <Property Name="NatSubTeam_No" Type="Int32" />
+          <Property Name="SubTeam_No" Type="Int32" />
+          <Property Name="LastUpdateTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="NatFamilyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="NatItemClass">
+          <Key>
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="65" FixedLength="false" Unicode="false" />
+          <Property Name="NatCatID" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdateTimestamp" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ChangeQueueHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Identifier" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="Item_Key" Type="Int32" Nullable="false" />
+          <Property Name="Store_No" Type="Int32" />
+          <Property Name="QueueID" Type="Int32" Nullable="false" />
+          <Property Name="EventReferenceId" Type="Int32" />
+          <Property Name="QueueInsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="MachineName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Context" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TlogReprocessRequest">
+          <Key>
+            <PropertyRef Name="Date_Key" />
+            <PropertyRef Name="Store_No" />
+          </Key>
+          <Property Name="Date_Key" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Store_No" Type="Int32" Nullable="false" />
+          <Property Name="BusinessUnit_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Store" Relationship="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" FromRole="TlogReprocessRequest" ToRole="Store" />
+        </EntityType>
+        <Association Name="FK_TlogReprocessRequest_StoreNo">
+          <End Type="Irma.Framework.Model.Store" Role="Store" Multiplicity="1" />
+          <End Type="Irma.Framework.Model.TlogReprocessRequest" Role="TlogReprocessRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Store_No" />
+            </Principal>
+            <Dependent Role="TlogReprocessRequest">
+              <PropertyRef Name="Store_No" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3860,6 +3964,7 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <EntitySetMapping Name="ValidatedScanCode">
             <EntityTypeMapping TypeName="Irma.Framework.Model.ValidatedScanCode">
               <MappingFragment StoreEntitySet="ValidatedScanCode">
+                <ScalarProperty Name="InforItemId" ColumnName="InforItemId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ScanCode" ColumnName="ScanCode" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
@@ -4047,15 +4152,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TlogReprocessRequest">
-            <EntityTypeMapping TypeName="Irma.Framework.Model.TlogReprocessRequest">
-              <MappingFragment StoreEntitySet="TlogReprocessRequest">
-                <ScalarProperty Name="BusinessUnit_ID" ColumnName="BusinessUnit_ID" />
-                <ScalarProperty Name="Store_No" ColumnName="Store_No" />
-                <ScalarProperty Name="Date_Key" ColumnName="Date_Key" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="StoreSubTeam">
             <EntityTypeMapping TypeName="Irma.Framework.Model.StoreSubTeam">
               <MappingFragment StoreEntitySet="StoreSubTeam">
@@ -4119,16 +4215,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
                 <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
                 <ScalarProperty Name="PriceBatchHeaderID" ColumnName="PriceBatchHeaderID" />
                 <ScalarProperty Name="IConPOSPushPublishID" ColumnName="IConPOSPushPublishID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NatItemClass">
-            <EntityTypeMapping TypeName="Irma.Framework.Model.NatItemClass">
-              <MappingFragment StoreEntitySet="NatItemClass">
-                <ScalarProperty Name="LastUpdateTimestamp" ColumnName="LastUpdateTimestamp" />
-                <ScalarProperty Name="NatCatID" ColumnName="NatCatID" />
-                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4450,6 +4536,76 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
                 <ScalarProperty Name="Store_No" ColumnName="Store_No" />
                 <ScalarProperty Name="Item_Key" ColumnName="Item_Key" />
                 <ScalarProperty Name="QueueID" ColumnName="QueueID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ValidatedNationalClass">
+            <EntityTypeMapping TypeName="Irma.Framework.Model.ValidatedNationalClass">
+              <MappingFragment StoreEntitySet="ValidatedNationalClass">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="IconId" ColumnName="IconId" />
+                <ScalarProperty Name="IrmaId" ColumnName="IrmaId" />
+                <ScalarProperty Name="ValidatedNationalClassId" ColumnName="ValidatedNationalClassId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NatItemCat">
+            <EntityTypeMapping TypeName="Irma.Framework.Model.NatItemCat">
+              <MappingFragment StoreEntitySet="NatItemCat">
+                <ScalarProperty Name="NatCatID" ColumnName="NatCatID" />
+                <ScalarProperty Name="LastUpdateTimestamp" ColumnName="LastUpdateTimestamp" />
+                <ScalarProperty Name="NatFamilyID" ColumnName="NatFamilyID" />
+                <ScalarProperty Name="NatCatName" ColumnName="NatCatName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NatItemFamily">
+            <EntityTypeMapping TypeName="Irma.Framework.Model.NatItemFamily">
+              <MappingFragment StoreEntitySet="NatItemFamily">
+                <ScalarProperty Name="NatFamilyID" ColumnName="NatFamilyID" />
+                <ScalarProperty Name="LastUpdateTimestamp" ColumnName="LastUpdateTimestamp" />
+                <ScalarProperty Name="SubTeam_No" ColumnName="SubTeam_No" />
+                <ScalarProperty Name="NatSubTeam_No" ColumnName="NatSubTeam_No" />
+                <ScalarProperty Name="NatFamilyName" ColumnName="NatFamilyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NatItemClass">
+            <EntityTypeMapping TypeName="Irma.Framework.Model.NatItemClass">
+              <MappingFragment StoreEntitySet="NatItemClass">
+                <ScalarProperty Name="LastUpdateTimestamp" ColumnName="LastUpdateTimestamp" />
+                <ScalarProperty Name="NatCatID" ColumnName="NatCatID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChangeQueueHistory">
+            <EntityTypeMapping TypeName="Irma.Framework.Model.ChangeQueueHistory">
+              <MappingFragment StoreEntitySet="ChangeQueueHistory">
+                <ScalarProperty Name="ErrorDetails" ColumnName="ErrorDetails" />
+                <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+                <ScalarProperty Name="Context" ColumnName="Context" />
+                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="QueueInsertDate" ColumnName="QueueInsertDate" />
+                <ScalarProperty Name="EventReferenceId" ColumnName="EventReferenceId" />
+                <ScalarProperty Name="QueueID" ColumnName="QueueID" />
+                <ScalarProperty Name="Store_No" ColumnName="Store_No" />
+                <ScalarProperty Name="Item_Key" ColumnName="Item_Key" />
+                <ScalarProperty Name="Identifier" ColumnName="Identifier" />
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TlogReprocessRequest">
+            <EntityTypeMapping TypeName="Irma.Framework.Model.TlogReprocessRequest">
+              <MappingFragment StoreEntitySet="TlogReprocessRequest">
+                <ScalarProperty Name="BusinessUnit_ID" ColumnName="BusinessUnit_ID" />
+                <ScalarProperty Name="Store_No" ColumnName="Store_No" />
+                <ScalarProperty Name="Date_Key" ColumnName="Date_Key" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

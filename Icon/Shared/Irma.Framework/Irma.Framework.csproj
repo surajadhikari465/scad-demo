@@ -88,6 +88,9 @@
     <Compile Include="AppConfigValue.cs">
       <DependentUpon>IrmaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ChangeQueueHistory.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="GetAppConfigKeysResult.cs">
       <DependentUpon>IrmaModel.tt</DependentUpon>
     </Compile>
@@ -159,7 +162,13 @@
     <Compile Include="MammothPriceChangeQueue.cs">
       <DependentUpon>IrmaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="NatItemCat.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="NatItemClass.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NatItemFamily.cs">
       <DependentUpon>IrmaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="NutriFacts.cs">
@@ -195,6 +204,9 @@
       <DependentUpon>IrmaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ValidatedBrand.cs">
+      <DependentUpon>IrmaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ValidatedNationalClass.cs">
       <DependentUpon>IrmaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ValidatedScanCode.cs">

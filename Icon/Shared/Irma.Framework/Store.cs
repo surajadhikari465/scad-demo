@@ -21,10 +21,10 @@ namespace Irma.Framework
             this.Sales_SumByItem = new HashSet<Sales_SumByItem>();
             this.ItemLocaleChangeQueue = new HashSet<MammothItemLocaleChangeQueue>();
             this.StoreSubTeam = new HashSet<StoreSubTeam>();
-            this.TlogReprocessRequest = new HashSet<TlogReprocessRequest>();
             this.Users1 = new HashSet<Users>();
             this.Users2 = new HashSet<Users>();
             this.PriceChangeQueue = new HashSet<MammothPriceChangeQueue>();
+            this.TlogReprocessRequest = new HashSet<TlogReprocessRequest>();
         }
     
         public int Store_No { get; set; }
@@ -63,9 +63,9 @@ namespace Irma.Framework
         public virtual Users Users { get; set; }
         public virtual ICollection<MammothItemLocaleChangeQueue> ItemLocaleChangeQueue { get; set; }
         public virtual ICollection<StoreSubTeam> StoreSubTeam { get; set; }
-        public virtual ICollection<TlogReprocessRequest> TlogReprocessRequest { get; set; }
         public virtual ICollection<Users> Users1 { get; set; }
         public virtual ICollection<Users> Users2 { get; set; }
         public virtual ICollection<MammothPriceChangeQueue> PriceChangeQueue { get; set; }
+        public virtual ICollection<TlogReprocessRequest> TlogReprocessRequest { get; set; }
     }
 }
