@@ -686,15 +686,6 @@
           <Property Name="TaxClassDesc" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ExternalTaxGroupCode" Type="varchar" MaxLength="7" />
         </EntityType>
-        <EntityType Name="TlogReprocessRequest">
-          <Key>
-            <PropertyRef Name="Date_Key" />
-            <PropertyRef Name="Store_No" />
-          </Key>
-          <Property Name="Date_Key" Type="smalldatetime" Nullable="false" />
-          <Property Name="Store_No" Type="int" Nullable="false" />
-          <Property Name="BusinessUnit_ID" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="User_ID" />
@@ -1492,18 +1483,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TlogReprocessRequest_StoreNo">
-          <End Role="Store" Type="Self.Store" Multiplicity="1" />
-          <End Role="TlogReprocessRequest" Type="Self.TlogReprocessRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="Store_No" />
-            </Principal>
-            <Dependent Role="TlogReprocessRequest">
-              <PropertyRef Name="Store_No" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Users_Store1">
           <End Role="Store" Type="Self.Store" Multiplicity="0..1" />
           <End Role="Users" Type="Self.Users" Multiplicity="*" />
@@ -1564,7 +1543,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <EntitySet Name="StoreSubTeam" EntityType="Self.StoreSubTeam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubTeam" EntityType="Self.SubTeam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaxClass" EntityType="Self.TaxClass" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TlogReprocessRequest" EntityType="Self.TlogReprocessRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ValidatedBrand" EntityType="Self.ValidatedBrand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ValidatedNationalClass" EntityType="Self.ValidatedNationalClass" Schema="dbo" store:Type="Tables" />
@@ -1796,10 +1774,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <AssociationSet Name="FK_StoreSubTeam_SubTeam" Association="Self.FK_StoreSubTeam_SubTeam">
             <End Role="SubTeam" EntitySet="SubTeam" />
             <End Role="StoreSubTeam" EntitySet="StoreSubTeam" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TlogReprocessRequest_StoreNo" Association="Self.FK_TlogReprocessRequest_StoreNo">
-            <End Role="Store" EntitySet="Store" />
-            <End Role="TlogReprocessRequest" EntitySet="TlogReprocessRequest" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Store1" Association="Self.FK_Users_Store1">
             <End Role="Store" EntitySet="Store" />
@@ -2416,11 +2390,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <EntitySet Name="NatItemFamily" EntityType="Irma.Framework.Model.NatItemFamily" />
           <EntitySet Name="NatItemClass" EntityType="Irma.Framework.Model.NatItemClass" />
           <EntitySet Name="ChangeQueueHistory" EntityType="Irma.Framework.Model.ChangeQueueHistory" />
-          <EntitySet Name="TlogReprocessRequest" EntityType="Irma.Framework.Model.TlogReprocessRequest" />
-          <AssociationSet Name="FK_TlogReprocessRequest_StoreNo" Association="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo">
-            <End Role="Store" EntitySet="Store" />
-            <End Role="TlogReprocessRequest" EntitySet="TlogReprocessRequest" />
-          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Price">
           <Key>
@@ -3470,7 +3439,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <NavigationProperty Name="Users1" Relationship="Irma.Framework.Model.FK_Users_Store1" FromRole="Store" ToRole="Users" />
           <NavigationProperty Name="Users2" Relationship="Irma.Framework.Model.FK_Users_TelxonStoreLimit" FromRole="Store" ToRole="Users" />
           <NavigationProperty Name="PriceChangeQueue" Relationship="Irma.Framework.Model.FK_PriceChangeQueue_Store" FromRole="Store" ToRole="PriceChangeQueue" />
-          <NavigationProperty Name="TlogReprocessRequest" Relationship="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" FromRole="Store" ToRole="TlogReprocessRequest" />
         </EntityType>
         <Association Name="FK_IConPOSPushPublish_Store_No">
           <End Type="Irma.Framework.Model.Store" Role="Store" Multiplicity="1" />
@@ -3715,28 +3683,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <Property Name="ErrorCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ErrorDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="TlogReprocessRequest">
-          <Key>
-            <PropertyRef Name="Date_Key" />
-            <PropertyRef Name="Store_No" />
-          </Key>
-          <Property Name="Date_Key" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Store_No" Type="Int32" Nullable="false" />
-          <Property Name="BusinessUnit_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Store" Relationship="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" FromRole="TlogReprocessRequest" ToRole="Store" />
-        </EntityType>
-        <Association Name="FK_TlogReprocessRequest_StoreNo">
-          <End Type="Irma.Framework.Model.Store" Role="Store" Multiplicity="1" />
-          <End Type="Irma.Framework.Model.TlogReprocessRequest" Role="TlogReprocessRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Store">
-              <PropertyRef Name="Store_No" />
-            </Principal>
-            <Dependent Role="TlogReprocessRequest">
-              <PropertyRef Name="Store_No" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4597,15 +4543,6 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
                 <ScalarProperty Name="Identifier" ColumnName="Identifier" />
                 <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
                 <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TlogReprocessRequest">
-            <EntityTypeMapping TypeName="Irma.Framework.Model.TlogReprocessRequest">
-              <MappingFragment StoreEntitySet="TlogReprocessRequest">
-                <ScalarProperty Name="BusinessUnit_ID" ColumnName="BusinessUnit_ID" />
-                <ScalarProperty Name="Store_No" ColumnName="Store_No" />
-                <ScalarProperty Name="Date_Key" ColumnName="Date_Key" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

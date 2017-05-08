@@ -197,9 +197,6 @@
     <Compile Include="TaxClass.cs">
       <DependentUpon>IrmaModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="TlogReprocessRequest.cs">
-      <DependentUpon>IrmaModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Users.cs">
       <DependentUpon>IrmaModel.tt</DependentUpon>
     </Compile>

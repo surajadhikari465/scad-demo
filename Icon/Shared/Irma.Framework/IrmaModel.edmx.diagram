@@ -98,8 +98,6 @@
         <EntityTypeShape EntityType="Irma.Framework.Model.NatItemFamily" Width="1.5" PointX="17.375" PointY="0.75" />
         <EntityTypeShape EntityType="Irma.Framework.Model.NatItemClass" Width="1.5" PointX="9.375" PointY="0.75" />
         <EntityTypeShape EntityType="Irma.Framework.Model.ChangeQueueHistory" Width="1.5" PointX="17.375" PointY="3.75" />
-        <EntityTypeShape EntityType="Irma.Framework.Model.TlogReprocessRequest" Width="1.5" PointX="3" PointY="9.125" />
-        <AssociationConnector Association="Irma.Framework.Model.FK_TlogReprocessRequest_StoreNo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
