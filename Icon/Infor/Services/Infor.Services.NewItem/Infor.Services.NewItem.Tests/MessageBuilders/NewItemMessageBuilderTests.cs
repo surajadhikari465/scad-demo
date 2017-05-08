@@ -294,12 +294,13 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
             settings.SendOrganic = true;
 
             List<NewItemModel> newItemModel = BuildNewItemModel(3);
+            newItemModel.ForEach(nim => nim.Organic = true);
 
             this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
                 .Returns(new Dictionary<string, int>
                 {
                     { "test1", 111 },
-                    { "test2", 112},
+                    { "test2", 112 },
                     { "test3", 113 }
                 });
 
@@ -308,6 +309,31 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
 
             // Then
             var expectedXml = File.ReadAllText(@"TestMessages\ThreeNewItemsWithOrganicSet.xml");
+            Assert.AreEqual(expectedXml, actualXml);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenAListOfThreeNewItemsWithOrganicSetToFalse_ShouldReturnItemXmlStringForThreeItemsWithOrganicTraitsSetToZero()
+        {
+            // Given
+            settings.SendOrganic = true;
+
+            List<NewItemModel> newItemModel = BuildNewItemModel(3);
+            newItemModel.ForEach(nim => nim.Organic = false);
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(new Dictionary<string, int>
+                {
+                    { "test1", 111 },
+                    { "test2", 112 },
+                    { "test3", 113 }
+                });
+
+            // When
+            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            // Then
+            var expectedXml = File.ReadAllText(@"TestMessages\ThreeNewItemsWithOrganicSetToFalse.xml");
             Assert.AreEqual(expectedXml, actualXml);
         }
 
