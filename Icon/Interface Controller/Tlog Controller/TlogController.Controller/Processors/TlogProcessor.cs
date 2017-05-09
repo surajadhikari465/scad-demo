@@ -49,8 +49,6 @@ namespace TlogController.Controller.Processors
 
                         logger.Info(String.Format("Start processing the {0} region.", irmaTlog.RegionCode));
 
-                        irmaTlogProcessor.PopulateTlogReprocessRequests();
-
                         irmaTlogProcessor.UpdateSalesSumByitem();
                     }
 
@@ -81,8 +79,7 @@ namespace TlogController.Controller.Processors
             var irmaContext = new IrmaContext(ConnectionBuilder.GetConnection(region));
 
             var bulkUpdateSalesSumByitemCommandHandler = new BulkUpdateSalesSumByitemCommandHandler(new NLogLoggerInstance<BulkUpdateSalesSumByitemCommandHandler>(StartupOptions.Instance.ToString()), irmaContext);
-            var bulkInsertTlogReprocessRequestsCommandHandler = new BulkInsertTlogReprocessRequestsCommandHandler(new NLogLoggerInstance<BulkInsertTlogReprocessRequestsCommandHandler>(StartupOptions.Instance.ToString()), irmaContext);
-            return new IrmaTlogProcessorModule(Logger, irmaContext, bulkUpdateSalesSumByitemCommandHandler, bulkInsertTlogReprocessRequestsCommandHandler, iconTlogProcessorModule);
+            return new IrmaTlogProcessorModule(Logger, irmaContext, bulkUpdateSalesSumByitemCommandHandler, iconTlogProcessorModule);
         }
 
         private IIrmaTlogProcessor BuildIrmaTlogProcessor(IrmaTlog irmaTlog)

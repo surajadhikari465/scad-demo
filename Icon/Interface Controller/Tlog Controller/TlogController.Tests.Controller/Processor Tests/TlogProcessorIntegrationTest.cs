@@ -76,28 +76,6 @@ namespace TlogController.Tests.Controller.Processor_Tests
         }
 
         [TestMethod]
-        public void RunTlogProcessor_PastDateItemMovementDataProcessed_IrmaTlogReprocessRequestCreated()
-        {
-            //Given
-            string region = helper.RegionsToTest[0];
-            string connectionString = ConnectionBuilder.GetConnection(region);
-
-            int businessUnitCount = helper.StageValidItemMovementData(irmaRegion: region, allowDuplicates: false, transactionDate: helper.RightNow.AddDays(-1));
-
-            //When
-            helper.TestTlogProcessor.Run();
-
-            //Then
-            int tlogReprocessRequestCount = 0;
-            string tempSql = $"select count (*) from TlogReprocessRequest where Date_Key = '{helper.RightNow.AddDays(-1).Date}'";
-            using (IrmaContext irmaContext = new IrmaContext(ConnectionBuilder.GetConnection(region)))
-            {
-                 tlogReprocessRequestCount = irmaContext.Database.SqlQuery<int>(tempSql).FirstOrDefault();
-            }
-            Assert.AreEqual(businessUnitCount, tlogReprocessRequestCount);
-        }
-
-        [TestMethod]
         public void RunTlogProcessor_InvalidItemMovementDataProcessed_ItemMovementDataMarkedAsFailedToBeProcessed()
         {
             int invalideItemMovementCount = 3;

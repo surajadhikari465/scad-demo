@@ -25,18 +25,6 @@ namespace TlogController.Controller.Processors
             this.irmaTlog = irmaTlog;
         }
 
-        public void PopulateTlogReprocessRequests()
-        {
-            try
-            {
-                irmaTlogProcessorModule.PushTlogReprocessRequestsInBulkToIrma(irmaTlog);
-            }
-            catch (Exception)
-            {
-                irmaTlogProcessorModule.PushTlogReprocessRequestsOneByOneToIrma(irmaTlog);
-            }
-        }
-
         public void UpdateSalesSumByitem()
         {
             try

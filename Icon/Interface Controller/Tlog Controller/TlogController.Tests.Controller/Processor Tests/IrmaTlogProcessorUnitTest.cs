@@ -40,21 +40,5 @@ namespace TlogController.Tests.Controller.Processor_Tests
             mockIrmaTlogProcessorModule.Verify(mb => mb.PushSalesSumByitemDataInBulkToIrma(It.IsAny<IrmaTlog>()), Times.AtLeastOnce);
             mockIrmaTlogProcessorModule.Verify(mb => mb.PushSalesSumByitemDataTransactionByTransactionToIrma(It.IsAny<IrmaTlog>()), Times.AtLeastOnce);
         }
-
-        [TestMethod]
-        public void UpdateTlogReprocessRequests_ErrorInBulkUpdate_FallbackMethodShouldBeCalled()
-        {
-            // Given.
-            mockIrmaTlogProcessorModule.Setup(mt => mt.PushTlogReprocessRequestsInBulkToIrma(It.IsAny<IrmaTlog>())).Throws(new Exception());
-
-            var irmaTlogProcessor = new IrmaTlogProcessor(mockIconTlogProcessorModule.Object, mockIrmaTlogProcessorModule.Object, new IrmaTlog());
-
-            // When.
-            irmaTlogProcessor.PopulateTlogReprocessRequests();
-
-            // Then.
-            mockIrmaTlogProcessorModule.Verify(mb => mb.PushTlogReprocessRequestsInBulkToIrma(It.IsAny<IrmaTlog>()), Times.AtLeastOnce);
-            mockIrmaTlogProcessorModule.Verify(mb => mb.PushTlogReprocessRequestsOneByOneToIrma(It.IsAny<IrmaTlog>()), Times.AtLeastOnce);
-        }
     }
 }

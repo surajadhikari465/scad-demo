@@ -70,7 +70,6 @@ namespace TlogController.Controller.ProcessorModules
                         IrmaTlog irmaTlog = irmaTlogs.Find(t => t.RegionCode == tlogRegionCode);
 
                         ItemMovementToIrma itemMovementToIrma = CreateItemMovementToIrma(itemMovement);
-                        TlogReprocessRequest request = CreateTlogReprocessRequest(itemMovement);
 
                         if (irmaTlog != null)
                         {
@@ -89,14 +88,10 @@ namespace TlogController.Controller.ProcessorModules
                                     LastItemMovementToIrmaIndex = irmaTlog.ItemMovementToIrmaList.Count - 1
                                 });
                             }
-
-                            if (request != null && !irmaTlog.TlogReprocessRequestList.Any(t => t.BusinessUnit_ID == request.BusinessUnit_ID && t.Date_Key == request.Date_Key))
-                                irmaTlog.TlogReprocessRequestList.Add(request);
                         }
                         else
                         {
                             List<ItemMovementToIrma> itemMovementToIrmaList = new List<ItemMovementToIrma>();
-                            List<TlogReprocessRequest> tlogReprocessRequestList = new List<TlogReprocessRequest>();
                             List<ItemMovementTransaction> itemMovementTransactionList = new List<ItemMovementTransaction>();
 
                             itemMovementToIrmaList.Add(itemMovementToIrma);
@@ -107,15 +102,12 @@ namespace TlogController.Controller.ProcessorModules
                                 FirstItemMovementToIrmaIndex = 0,
                                 LastItemMovementToIrmaIndex = 0
                             });
-                            if (request != null)
-                                tlogReprocessRequestList.Add(request);
 
                             IrmaTlog newIrmaLog = new IrmaTlog
                             {
                                 RegionCode = tlogRegionCode,
                                 ItemMovementToIrmaList = itemMovementToIrmaList,
                                 ItemMovementTransactionList = itemMovementTransactionList,
-                                TlogReprocessRequestList = tlogReprocessRequestList
                             };
                             irmaTlogs.Add(newIrmaLog);
                         }
@@ -223,21 +215,6 @@ namespace TlogController.Controller.ProcessorModules
             };
 
             return itemMovementToIrma;
-        }
-
-        private TlogReprocessRequest CreateTlogReprocessRequest(ItemMovement itemMovement)
-        {
-            if (itemMovement.TransDate < DateTime.Today)
-            {
-                TlogReprocessRequest request = new TlogReprocessRequest
-                {
-                    Date_Key = itemMovement.TransDate,
-                    BusinessUnit_ID = itemMovement.BusinessUnitID
-                };
-                return request;
-            }
-            else
-                return null;
         }
     }
 }

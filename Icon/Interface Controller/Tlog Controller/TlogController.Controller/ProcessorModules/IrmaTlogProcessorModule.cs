@@ -18,21 +18,18 @@ namespace TlogController.Controller.ProcessorModules
         private ILogger<IrmaTlogProcessorModule> logger;
         private IrmaContext irmaContext;
         private IBulkCommandHandler<BulkUpdateSalesSumByitemCommand> bulkUpdateSalesSumByitemCommandHandler;
-        private IBulkCommandHandler<BulkInsertTlogReprocessRequestsCommand> bulkInsertTlogReprocessRequestsCommandHandler;
         private IIconTlogProcessorModule iconTlogProcessorModule;
 
         public IrmaTlogProcessorModule(
             ILogger<IrmaTlogProcessorModule> logger,
             IrmaContext irmaContext,
             IBulkCommandHandler<BulkUpdateSalesSumByitemCommand> bulkUpdateSalesSumByitemCommandHandler,
-            IBulkCommandHandler<BulkInsertTlogReprocessRequestsCommand> bulkInsertTlogReprocessRequestsCommandHandler,
             IIconTlogProcessorModule iconTlogProcessorModule
             )
         {
             this.logger = logger;
             this.irmaContext = irmaContext;
             this.bulkUpdateSalesSumByitemCommandHandler = bulkUpdateSalesSumByitemCommandHandler;
-            this.bulkInsertTlogReprocessRequestsCommandHandler = bulkInsertTlogReprocessRequestsCommandHandler;
             this.iconTlogProcessorModule = iconTlogProcessorModule;
         }
 
@@ -72,31 +69,6 @@ namespace TlogController.Controller.ProcessorModules
             }
         }
 
-        public void PushTlogReprocessRequestsInBulkToIrma(IrmaTlog irmaTlog)
-        {
-            if (irmaTlog.TlogReprocessRequestList != null && irmaTlog.TlogReprocessRequestList.Count > 0)
-            {
-                using (DbContextTransaction transaction = irmaContext.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        BulkInsertTlogReprocessRequestsCommand bulkInsertTlogReprocessRequestsCommand = new BulkInsertTlogReprocessRequestsCommand { TlogReprocessRequests = irmaTlog.TlogReprocessRequestList };
-                        bulkInsertTlogReprocessRequestsCommandHandler.Execute(bulkInsertTlogReprocessRequestsCommand);
-
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        ExceptionHandler<IrmaTlogProcessorModule>.logger = this.logger;
-                        ExceptionHandler<IrmaTlogProcessorModule>.HandleException(String.Format("An unhandled exception occurred in the bulk update for Tlog Reprocess Requests in {0} region. ", irmaTlog.RegionCode), ex, this.GetType(), MethodBase.GetCurrentMethod());
-
-                        transaction.Rollback();
-                        throw new Exception("Unable to successfully complete the bulk update for Tlog Reprocess Requests.");
-                    }
-                }
-            }
-        }
-
         public void PushSalesSumByitemDataTransactionByTransactionToIrma(IrmaTlog irmaTlog)
         {
             if (irmaTlog.ItemMovementTransactionList != null && irmaTlog.ItemMovementTransactionList.Count > 0)
@@ -125,28 +97,6 @@ namespace TlogController.Controller.ProcessorModules
                             transaction.Rollback();
                             continue;
                         }
-                    }
-                }
-            }
-        }
-
-        public void PushTlogReprocessRequestsOneByOneToIrma(IrmaTlog irmaTlog)
-        {
-            if (irmaTlog.TlogReprocessRequestList != null && irmaTlog.TlogReprocessRequestList.Count > 0)
-            {
-                foreach (TlogReprocessRequest tlogReprocessRequest in irmaTlog.TlogReprocessRequestList)
-                {
-                    try
-                    {
-                        BulkInsertTlogReprocessRequestsCommand bulkInsertTlogReprocessRequestsCommand = new BulkInsertTlogReprocessRequestsCommand { TlogReprocessRequests = new List<TlogReprocessRequest> { tlogReprocessRequest } };
-                        bulkInsertTlogReprocessRequestsCommandHandler.Execute(bulkInsertTlogReprocessRequestsCommand);
-                    }
-                    catch (Exception ex)
-                    {
-                        ExceptionHandler<IrmaTlogProcessorModule>.logger = this.logger;
-                        ExceptionHandler<IrmaTlogProcessorModule>.HandleException(String.Format("An unhandled exception occurred in the one-by-one insert for TlogReprocessRequest. Date_Key: {0}, BusinessUnitID: {1} in {2} region. ", tlogReprocessRequest.Date_Key, tlogReprocessRequest.BusinessUnit_ID, irmaTlog.RegionCode), ex, this.GetType(), MethodBase.GetCurrentMethod());
-
-                        continue;
                     }
                 }
             }

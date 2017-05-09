@@ -21,7 +21,6 @@ namespace TlogController.Tests.Controller.ProcessorModules_Tests
     {
         private Mock<ILogger<IrmaTlogProcessorModule>> mockLogger;
         private Mock<IBulkCommandHandler<BulkUpdateSalesSumByitemCommand>> mockBulkUpdateSalesSumByitemCommandHandler;
-        private Mock<IBulkCommandHandler<BulkInsertTlogReprocessRequestsCommand>> mockBulkInsertTlogReprocessRequestsCommandHandler;
         private Mock<IIconTlogProcessorModule> mockIconTlogProcessorModule;
         private IrmaContext irmaContext;
         private string regionCode = "FL";
@@ -34,11 +33,10 @@ namespace TlogController.Tests.Controller.ProcessorModules_Tests
         {
             this.mockLogger = new Mock<ILogger<IrmaTlogProcessorModule>>();
             this.mockBulkUpdateSalesSumByitemCommandHandler = new Mock<IBulkCommandHandler<BulkUpdateSalesSumByitemCommand>>();
-            this.mockBulkInsertTlogReprocessRequestsCommandHandler = new Mock<IBulkCommandHandler<BulkInsertTlogReprocessRequestsCommand>>();
             this.mockIconTlogProcessorModule = new Mock<IIconTlogProcessorModule>();
             irmaContext = new IrmaContext(ConnectionBuilder.GetConnection(regionCode.ToString()));
 
-            this.module = new IrmaTlogProcessorModule(this.mockLogger.Object, irmaContext, this.mockBulkUpdateSalesSumByitemCommandHandler.Object, this.mockBulkInsertTlogReprocessRequestsCommandHandler.Object, mockIconTlogProcessorModule.Object);
+            this.module = new IrmaTlogProcessorModule(this.mockLogger.Object, irmaContext, this.mockBulkUpdateSalesSumByitemCommandHandler.Object, mockIconTlogProcessorModule.Object);
         }
 
         [TestMethod]
@@ -124,7 +122,6 @@ namespace TlogController.Tests.Controller.ProcessorModules_Tests
             {
                 RegionCode = regionCode,
                 ItemMovementToIrmaList = testItemMovementToIrma,
-                TlogReprocessRequestList = null,
                 ItemMovementTransactionList = testItemMovementTransaction
             };
 

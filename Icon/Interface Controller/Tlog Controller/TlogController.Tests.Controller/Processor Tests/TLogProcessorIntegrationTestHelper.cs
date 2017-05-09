@@ -91,10 +91,6 @@ namespace TlogController.Tests.Controller.Processor_Tests
                 string tempSql = @"delete sales_sumbyitem
                                    where Date_Key >= '" + RightNow.AddDays(-1).Date + "'";
                 int returnCode = db.Database.ExecuteSqlCommand(tempSql);
-
-                tempSql = @"delete TlogReprocessRequest
-                                   where Date_Key = '" + RightNow.AddDays(-1).Date + "'";
-                returnCode = db.Database.ExecuteSqlCommand(tempSql);
             }
         }
 
