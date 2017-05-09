@@ -3182,6 +3182,7 @@
     <Build Include="schema\mammoth\Tables\ItemLocaleChangeQueue.sql" />
     <Build Include="schema\mammoth\Tables\PriceChangeQueue.sql" />
     <PostDeploy Include="Scripts\PostDeploy.Main.sql" />
+    <None Include="Schema\infor\Stored Procedures\PriceExtractQuery.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
