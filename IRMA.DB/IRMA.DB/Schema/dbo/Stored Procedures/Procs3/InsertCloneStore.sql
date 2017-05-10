@@ -135,7 +135,7 @@ DECLARE
         ,@LogExceptionMsg varchar(2000)
 		,@now datetime
 
-		select
+		SELECT
 			@LogSystemName = 'IRMA CLIENT'
 			,@LogAppName = 'InsertCloneStore'
 			,@LogLevel = 'INFO'
@@ -143,17 +143,17 @@ DECLARE
 			,@LogExceptionMsg = ''
 
 		-- Determine DB environment (from version table) so we can get appropriate app ID from app-config.  (Env short names from AppConfigEnv: 'TST', 'QA', 'PRD'.)
-		select @DBEnv = case
-			when Environment like '%q%' then 'QA'
-			when Environment like '%pr%' then 'PRD'
-			else 'TST'
-			end
-		from version
+		SELECT @DBEnv = CASE
+			WHEN Environment like '%q%' THEN 'QA'
+			WHEN Environment like '%pr%' THEN 'PRD'
+			ELSE 'TST'
+			END
+		FROM version
 		-- Get IRMA Client app GUID for logging calls (AppLogInsertEntry).
-		select @LogAppID = a.ApplicationID
-		from AppConfigApp a
-		join AppConfigEnv e on a.EnvironmentID = e.EnvironmentID
-		where e.ShortName = @DBEnv and a.Name = @LogSystemName
+		SELECT @LogAppID = a.ApplicationID
+		FROM AppConfigApp a
+		JOIN AppConfigEnv e on a.EnvironmentID = e.EnvironmentID
+		WHERE e.ShortName = @DBEnv and a.Name = @LogSystemName
 
 		--DEBUG: select DBEnv = @DBEnv, LogAppID = @LogAppID
 
@@ -166,12 +166,12 @@ DECLARE
         -- add a new store to the specified zone
         ----------------------------------------------------------------------
         SELECT @CodeLocation = 'INSERT INTO [Store]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
         IF EXISTS (SELECT * FROM [Store] (NOLOCK) WHERE [Store_No] = @NewStoreNo)
         BEGIN
-			select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: 0 (data already exists)';
-			exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: 0 (data already exists)';
+			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
             PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 		END
         ELSE
@@ -189,8 +189,8 @@ DECLARE
 					FROM dbo.Store 
 					where Store_No = @OldStoreNo
 
-				select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-				exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+				SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+				EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
                 PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 				END
 			ELSE
@@ -200,8 +200,8 @@ DECLARE
 					SELECT @NewStoreNo,@NewStoreName, @BusinessUnit_ID,@ZoneID,1,@StoreAbbr,@Plum_Store_No,@PSI_Store_No,
 							@TaxJurisdiction, @StoreJurisdiction, @GeoCode
 
-					select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-					exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+					SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+					EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 					PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 			END
           END
@@ -210,12 +210,12 @@ DECLARE
         -- add a store region mapping
         ----------------------------------------------------------------------
         SELECT @CodeLocation = 'INSERT INTO [StoreRegionMapping]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
         IF EXISTS (SELECT * FROM [StoreRegionMapping] (NOLOCK) WHERE [Store_No] = @NewStoreNo)
         BEGIN
-			select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: 0 (data already exists)';
-			exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: 0 (data already exists)';
+			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
             PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 		END
         ELSE
@@ -228,8 +228,8 @@ DECLARE
 						INSERT INTO [dbo].[StoreRegionMapping] ([Store_No], [Region_Code])
 						VALUES (@NewStoreNo, @RegionCode)
 
-					select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-					exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+					SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+					EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 					PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 				END
 			ELSE
@@ -239,8 +239,8 @@ DECLARE
 					INSERT INTO [dbo].[StoreRegionMapping] ([Store_No], [Region_Code])
 					VALUES (@NewStoreNo, @RegionCode)
 
-				select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-				exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+				SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+				EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 				PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 			END
           END
@@ -257,7 +257,7 @@ DECLARE
 		WHERE [Vendor_Key] = @NewVendorKey
 
         SELECT @CodeLocation = 'INSERT INTO [Vendor]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
         IF @CopyVendorKey IS NOT NULL
           BEGIN
@@ -275,7 +275,7 @@ DECLARE
                 WHERE [Vendor_Key] = @CopyVendorKey
 
                 -- get the db ID for the new vendor
-				select @VendorID = SCOPE_IDENTITY(), @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+				SELECT @VendorID = SCOPE_IDENTITY(), @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
 				exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 				PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
           END
@@ -289,7 +289,7 @@ DECLARE
                         @VendorAddress, @VendorCity, @VendorState, @VendorZipCode, @VendorCountry
 
                 -- get the db ID for the new vendor
-				select @VendorID = SCOPE_IDENTITY(), @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+				SELECT @VendorID = SCOPE_IDENTITY(), @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
 				exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 				PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
           END
@@ -298,7 +298,7 @@ DECLARE
          -- copy subteam relationships for the new store
          ----------------------------------------------------------------------
         SELECT @CodeLocation = 'INSERT INTO [StoreSubTeam]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 			IF @OldStoreNo > 0
 				BEGIN
@@ -332,15 +332,15 @@ DECLARE
 														AND [SubTeam_No] = SST.[SubTeam_No])
 				END
 				
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
          ----------------------------------------------------------------------
          -- copy Price information for the new store from main source store
          ----------------------------------------------------------------------
         SELECT @CodeLocation = 'INSERT INTO [Price]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 			IF @OldStoreNo > 0
 				BEGIN
@@ -374,8 +374,8 @@ DECLARE
 											WHERE Item_Key = P.Item_Key
 													AND Store_No = @NewStoreNo)
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 				SELECT @CodeLocation = 'INSERT INTO [Price] alt store-subteams...'
@@ -414,15 +414,15 @@ DECLARE
 												AND Store_No = @NewStoreNo)
 		END
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
         ----------------------------------------------------------------------
          -- copy SignQueue info
         ----------------------------------------------------------------------
         SELECT @CodeLocation = 'INSERT INTO [SignQueue]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 			IF @OldStoreNo > 0
 				BEGIN
@@ -467,23 +467,23 @@ DECLARE
 						  SQ.LocalItem, SQ.ItemSurcharge
 					FROM [SignQueue] SQ (NOLOCK)
 						JOIN dbo.Item I (NOLOCK) on i.Item_Key = SQ.Item_Key
-						JOIN (select Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
-								as substores ON substores.Key_Value1 = SQ.Store_No and substores.Key_Value2 = I.Subteam_No
+						JOIN (SELECT Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
+								AS substores ON substores.Key_Value1 = SQ.Store_No and substores.Key_Value2 = I.Subteam_No
 					WHERE NOT EXISTS (SELECT *
 										  FROM [SignQueue] (NOLOCK)
 										  WHERE [Store_No] = @NewStoreNo
 												  AND [Item_Key] = SQ.[Item_Key])
 
 		END
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
         ----------------------------------------------------------------------
         -- copy StoreItemVendor for the new store
         ----------------------------------------------------------------------
         SELECT @CodeLocation = 'INSERT INTO [StoreItemVendor]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 			IF @OldStoreNo > 0
 				BEGIN
@@ -493,18 +493,18 @@ DECLARE
 							@NewStoreNo, SIV.[Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation]
 					FROM [StoreItemVendor] SIV (NOLOCK)
 							INNER JOIN [Price] P (NOLOCK) ON P.Item_Key = SIV.Item_Key AND P.Store_No = @NewStoreNo
-							JOIN dbo.Item I (NOLOCK) on i.Item_Key = P.Item_Key
+							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = P.Item_Key
 					WHERE SIV.DeleteDate IS NULL
 							AND SIV.Store_No = @OldStoreNo
-							AND i.subteam_no not in (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
+							AND i.subteam_no not in (SELECT Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
 							AND NOT EXISTS (SELECT *
 											FROM [StoreItemVendor] (NOLOCK)
 											WHERE Item_Key = P.Item_Key
 													AND Store_No = @NewStoreNo)
 					ORDER BY SIV.StoreItemVendorID
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
                 
         SELECT @CodeLocation = 'INSERT INTO [StoreItemVendor]... alt store-subteams'
@@ -515,9 +515,9 @@ DECLARE
 							@NewStoreNo, SIV.[Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation]
 					FROM [StoreItemVendor] SIV (NOLOCK)
 							INNER JOIN [Price] P (NOLOCK) ON P.Item_Key = SIV.Item_Key AND P.Store_No = @NewStoreNo
-							JOIN dbo.Item I (NOLOCK) on i.Item_Key = P.Item_Key
-							JOIN (select Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
-									as substores ON substores.Key_Value1 = SIV.Store_No and substores.Key_Value2 = I.Subteam_No
+							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = P.Item_Key
+							JOIN (SELECT Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
+									AS substores ON substores.Key_Value1 = SIV.Store_No and substores.Key_Value2 = I.Subteam_No
 					WHERE SIV.DeleteDate IS NULL
 							AND NOT EXISTS (SELECT *
 											FROM [StoreItemVendor] (NOLOCK)
@@ -526,8 +526,8 @@ DECLARE
 					ORDER BY SIV.StoreItemVendorID
 			END
 			
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
         ----------------------------------------------------------------------
@@ -542,7 +542,7 @@ DECLARE
 			Added subteam exclude in WHERE clause of first query based on store-subteam list specified by user.
         */
         SELECT @CodeLocation = 'INSERT INTO [StoreItem]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 		INSERT INTO [dbo].[StoreItem](
 			[Store_No],
@@ -557,7 +557,7 @@ DECLARE
 			/*
 			Added this WHERE-filtering so we do not process/check millions of unnecessary entries due to all stores being included in result set.
 			*/
-			i.item_key in ( select item_key from price group by item_key )
+			i.item_key IN ( SELECT item_key FROM price GROUP BY item_key )
 			AND
 			NOT EXISTS (SELECT *
 				FROM [StoreItem] (NOLOCK)
@@ -565,12 +565,12 @@ DECLARE
 				and Item_Key = i.Item_Key)
 			-- Restrict to subteams not being pulled from another store by excluding the store-subteam list.
 			AND i.subteam_no not in (
-				select Key_Value2
+				SELECT Key_Value2
 				FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL
 				GROUP BY Key_Value2
 			)
 
-		union
+		UNION
 		
 		SELECT
 			@NewStoreNo,
@@ -581,13 +581,13 @@ DECLARE
 			dbo.Item I (NOLOCK) on i.Item_Key = P.Item_Key
 		-- Pull alternate store-subteam data using the store-subteam list.	
 		JOIN (
-			select
+			SELECT
 				Key_Value1, 
 				Key_Value2
 			FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL
 			GROUP BY Key_Value1, Key_Value2
 		) as substores
-			ON substores.Key_Value1 = P.Store_No and substores.Key_Value2 = I.Subteam_No
+			ON substores.Key_Value1 = P.Store_No AND substores.Key_Value2 = I.Subteam_No
 		WHERE
 			NOT EXISTS (
 				SELECT *
@@ -598,8 +598,8 @@ DECLARE
 
 		ORDER BY Item_Key
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
         
 
@@ -607,14 +607,14 @@ DECLARE
         -- copy VendorCostHistory for the new store
         ----------------------------------------------------------------------
         SELECT @CodeLocation = 'INSERT INTO [VendorCostHistory]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 			IF @OldStoreNo > 0
 				BEGIN
 			        SELECT @CodeLocation = 'INSERT INTO [VendorCostHistory]... (build VCH List)'
-					declare @vchList table ( vchid int primary key );
-					declare @vchDate datetime = getdate();
-					declare @vchTomorrowDate datetime = dateadd(day, 1, @vchDate);
+					DECLARE @vchList table ( vchid int primary key );
+					DECLARE @vchDate datetime = getdate();
+					DECLARE @vchTomorrowDate datetime = dateadd(day, 1, @vchDate);
 					-- Build list of VCH entries to be copied to new store.
 					INSERT INTO @vchList
 						SELECT VendorCostHistoryID = MAX(VendorCostHistoryID)
@@ -628,7 +628,7 @@ DECLARE
 								ON siv.item_key = i.item_key
 						WHERE
 							SIV.Store_No = @OldStoreNo
-							AND i.SubTeam_No NOT IN (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
+							AND i.SubTeam_No NOT IN (SELECT Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
 							AND (
 								(@vchDate >= StartDate AND @vchDate <= EndDate) -- Current VCH entries.
 								OR
@@ -636,9 +636,10 @@ DECLARE
 							)
 							AND @vchDate < ISNULL(DeleteDate, @vchTomorrowDate)
 						GROUP BY vch.StoreItemVendorID
-					
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+						OPTION (RECOMPILE)
+
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 			        SELECT @CodeLocation = 'INSERT INTO [VendorCostHistory]... (build VCH List alt store-subteams)'
@@ -664,13 +665,14 @@ DECLARE
 							)
 							AND @vchDate < ISNULL(DeleteDate, @vchTomorrowDate)
 						GROUP BY vch.StoreItemVendorID
+						OPTION (RECOMPILE)
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 					SELECT @CodeLocation = 'INSERT INTO [VendorCostHistory]...'
-					select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+					SELECT @now = getdate(); EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 					
 					INSERT INTO [dbo].[VendorCostHistory]
 							([StoreItemVendorID], [Promotional], [UnitCost], [UnitFreight], [Package_Desc1], [StartDate], [EndDate], [FromVendor],
@@ -680,16 +682,17 @@ DECLARE
 							VCH.[EndDate], VCH.[FromVendor], VCH.[MSRP], 'NEW STORE SCRIPT',
 							VCH.[CostUnit_ID], VCH.[FreightUnit_ID]
 					FROM [VendorCostHistory] VCH (NOLOCK)
-							JOIN @vchList vchl on VCH.VendorCostHistoryID = vchl.vchid
+							JOIN @vchList vchl ON VCH.VendorCostHistoryID = vchl.vchid
 							JOIN [StoreItemVendor] SIV (NOLOCK) ON SIV.StoreItemVendorID = VCH.StoreItemVendorID
 							JOIN [StoreItemVendor] NewSIV (NOLOCK) ON NewSIV.Item_Key = SIV.Item_Key AND NewSIV.Vendor_ID = SIV.Vendor_ID
-							JOIN dbo.Item I (NOLOCK) on i.Item_Key = SIV.Item_Key
+							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = SIV.Item_Key
 					WHERE SIV.Store_No = @OldStoreNo
 							AND NewSIV.Store_No = @NewStoreNo
-							AND i.subteam_no not in (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
+							AND i.subteam_no not in (SELECT Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
+							OPTION (RECOMPILE)
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 					SELECT @CodeLocation = 'INSERT INTO [VendorCostHistory]... alt store-subteams'
@@ -702,17 +705,17 @@ DECLARE
 							VCH.[EndDate], VCH.[FromVendor], VCH.[MSRP], 'NEW STORE SCRIPT',
 							VCH.[CostUnit_ID], VCH.[FreightUnit_ID]
 					FROM [VendorCostHistory] VCH (NOLOCK)
-							JOIN @vchList vchl on VCH.VendorCostHistoryID = vchl.vchid
+							JOIN @vchList vchl ON VCH.VendorCostHistoryID = vchl.vchid
 							JOIN [StoreItemVendor] SIV (NOLOCK) ON SIV.StoreItemVendorID = VCH.StoreItemVendorID
 							JOIN [StoreItemVendor] NewSIV (NOLOCK) ON NewSIV.Item_Key = SIV.Item_Key AND NewSIV.Vendor_ID = SIV.Vendor_ID
-							JOIN dbo.Item I (NOLOCK) on i.Item_Key = SIV.Item_Key
-							JOIN (select Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
+							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = SIV.Item_Key
+							JOIN (SELECT Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
 									as substores ON substores.Key_Value1 = SIV.Store_No and substores.Key_Value2 = I.Subteam_No
 					WHERE NewSIV.Store_No = @NewStoreNo
-
+					OPTION (RECOMPILE)
 			END
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 
@@ -720,7 +723,7 @@ DECLARE
 		-- copy VendorDealHistory for the new store
 		----------------------------------------------------------------------
 		SELECT @CodeLocation = 'INSERT INTO [VendorDealHistory]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 			IF @OldStoreNo > 0
 				BEGIN
@@ -734,7 +737,7 @@ DECLARE
 				FROM [VendorDealHistory] VDH (NOLOCK)
 					INNER JOIN [StoreItemVendor] SIV (NOLOCK) ON SIV.StoreItemVendorID = VDH.StoreItemVendorID
 					INNER JOIN [StoreItemVendor] NewSIV (NOLOCK) ON NewSIV.Item_Key = SIV.Item_Key AND NewSIV.Vendor_ID = SIV.Vendor_ID
-					JOIN dbo.Item I (NOLOCK) on i.Item_Key = SIV.Item_Key
+					JOIN dbo.Item I (NOLOCK) ON i.Item_Key = SIV.Item_Key
 				WHERE SIV.Store_No = @OldStoreNo
 					AND NewSIV.Store_No = @NewStoreNo
 					AND i.subteam_no not in (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
@@ -752,9 +755,10 @@ DECLARE
 					VDH.[VendorDealTypeID],	VDH.[FromVendor], VDH.[CostPromoCodeTypeID], VDH.[NotStackable], VDH.[InsertDate]
 				ORDER BY 
 					VDH.StartDate
+					OPTION (RECOMPILE)
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 		SELECT @CodeLocation = 'INSERT INTO [VendorDealHistory]... alt store-subteams'
@@ -787,10 +791,11 @@ DECLARE
 					VDH.[VendorDealTypeID],	VDH.[FromVendor], VDH.[CostPromoCodeTypeID], VDH.[NotStackable], VDH.[InsertDate]
 				ORDER BY 
 					VDH.StartDate
+				OPTION (RECOMPILE)
 		END
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 
@@ -798,7 +803,7 @@ DECLARE
 		-- Update Store Auths
 		----------------------------------------------------------------------
 		SELECT @CodeLocation = 'UPDATE [StoreItem]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 			IF @OldStoreNo > 0
 				BEGIN
@@ -806,14 +811,14 @@ DECLARE
 					SET Authorized = SI2.Authorized
 					FROM dbo.StoreItem (NOLOCK)
 						JOIN dbo.StoreItem SI2 (NOLOCK) ON StoreItem.Item_Key = SI2.Item_Key
-						JOIN dbo.Item I (NOLOCK) on i.Item_Key = SI2.Item_Key
+						JOIN dbo.Item I (NOLOCK) ON i.Item_Key = SI2.Item_Key
 					WHERE StoreItem.Store_No = @NewStoreNo
 						AND SI2.Store_No = @OldStoreNo
 						AND i.subteam_no not in (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
 						AND StoreItem.Authorized <> SI2.Authorized
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 		SELECT @CodeLocation = 'UPDATE [StoreItem]... alt store-subteams'
@@ -822,7 +827,7 @@ DECLARE
 					SET Authorized = SI2.Authorized
 					FROM dbo.StoreItem (NOLOCK)
 						JOIN dbo.StoreItem SI2 (NOLOCK) ON StoreItem.Item_Key = SI2.Item_Key
-						JOIN dbo.Item I (NOLOCK) on i.Item_Key = SI2.Item_Key
+						JOIN dbo.Item I (NOLOCK) ON i.Item_Key = SI2.Item_Key
 						JOIN (select Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
 								as substores ON substores.Key_Value1 = SI2.Store_No and substores.Key_Value2 = I.Subteam_No
 					WHERE StoreItem.Store_No = @NewStoreNo
@@ -834,8 +839,8 @@ DECLARE
 						AND StoreItem.Authorized <> SI2.Authorized
 			END
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 
@@ -843,13 +848,13 @@ DECLARE
 		-- Delete all the triggered dbo.pricebatchdetail records
 		----------------------------------------------------------------------
 		SELECT @CodeLocation = 'DELETE [PriceBatchDetail]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 			DELETE [dbo].[PriceBatchDetail]
 			WHERE store_no = @NewStoreNo
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 
@@ -858,12 +863,12 @@ DECLARE
 		----------------------------------------------
 
 		SELECT @CodeLocation = 'INSERT INTO [PriceBatchdetail]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 		IF @OldStoreNo > 0
 			BEGIN
 				DECLARE @REG_PCT INT
-				SELECT @REG_PCT= PriceChgTypeID from dbo.PriceChgType (NOLOCK) where On_Sale = 0
+				SELECT @REG_PCT= PriceChgTypeID FROM dbo.PriceChgType (NOLOCK) WHERE On_Sale = 0
 
 				/*
 					Notes:
@@ -956,7 +961,7 @@ DECLARE
 						The new logic handles this option correctly.
 						The -1 is used if we want to include them (@IncSlim=1) because 'PB.PriceChgTypeID <> -1' should then always be TRUE.
 					*/
-					AND PB.PriceChgTypeID <> case when @IncSlim = 0 then @ISSPriceChgTypeID else -1 end
+					AND PB.PriceChgTypeID <> CASE WHEN @IncSlim = 0 then @ISSPriceChgTypeID ELSE -1 END
 					AND PB.InsertApplication <> CASE WHEN @IncPromoPlanner = 1 THEN 'PROMO PLANNER' ELSE 'NOT PROMO PLANNER' END
 			UNION
 				-- TFS 11641, Tom Lux, 2/18/10, Added explicit table reference for all fields due to new item-table join.  See other comments herein for full details.
@@ -975,7 +980,7 @@ DECLARE
 				join [item] i (nolock)
 					on pb.item_key = i.item_key
 				inner join 
-					(select Key_Value1 as Store_No, Key_Value2 as Subteam_No 
+					(SELECT Key_Value1 AS Store_No, Key_Value2 AS Subteam_No 
 					FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2)
 					) SUB on SUB.Subteam_No = isnull(PB.subteam_no, i.subteam_no) and SUB.Store_No = PB.Store_No
 
@@ -998,13 +1003,14 @@ DECLARE
 											  AND ISNULL([ItemChgTypeID],0) = ISNULL(PB.[ItemChgTypeID],0)
 											  AND startdate > dateadd(day, 1 , getdate()))
 					-- @IncSlim fix.  See comment in top query of the above UNION.
-					AND PB.PriceChgTypeID <> case when @IncSlim = 0 then @ISSPriceChgTypeID else -1 end
+					AND PB.PriceChgTypeID <> CASE WHEN @IncSlim = 0 THEN @ISSPriceChgTypeID ELSE -1 END
 					AND PB.InsertApplication <> CASE WHEN @IncPromoPlanner = 1 THEN 'PROMO PLANNER' ELSE 'NOT PROMO PLANNER' END
 				ORDER BY PB.Item_Key, PB.SubTeam_No
+				OPTION (RECOMPILE)
 		END
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 
@@ -1012,7 +1018,7 @@ DECLARE
         -- add a default SLIM e-mail entries
         ----------------------------------------------------------------------
         SELECT @CodeLocation = 'INSERT INTO [SlimEmail]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 		IF @OldStoreNo > 0
 			BEGIN
@@ -1027,8 +1033,8 @@ DECLARE
 											AND Team_No = SE.Team_No)
 			END
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 
@@ -1036,27 +1042,27 @@ DECLARE
         -- Copy ItemUomOverride entries from the current store to the new store
         --------------------------------------------------------------------------
 		SELECT @CodeLocation = 'INSERT [ItemUomOverride]...'
-		select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
 			IF @OldStoreNo > 0
 				BEGIN
-					insert into
+					INSERT INTO
 						dbo.ItemUomOverride
-					select
+					SELECT
 						iuo.Item_Key,
 						@NewStoreNo,
 						iuo.Scale_ScaleUomUnit_ID,
 						iuo.Scale_FixedWeight,
 						iuo.Scale_ByCount,
 						iuo.Retail_Unit_ID
-					from
+					FROM
 						dbo.ItemUomOverride iuo
-					where
+					WHERE
 						iuo.Store_No = @OldStoreNo
 				END
 
-		select @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
 
