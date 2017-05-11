@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WholeFoods.IRMA", "WholeFoods.IRMA", "{DF951614-2504-489F-832B-52226CBDE7B0}"
 	ProjectSection(FolderStartupServices) = postProject
@@ -22,8 +22,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WholeFoods.IRMA", "IRMA\Who
 		{6F732051-5D10-4E07-9388-6AAC3E63A52A} = {6F732051-5D10-4E07-9388-6AAC3E63A52A}
 		{E9A653FE-5C38-435C-B6D2-137915ED8E85} = {E9A653FE-5C38-435C-B6D2-137915ED8E85}
 	EndProjectSection
-EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ItemCatalogDB", "..\..\Item Catalog DB\ItemCatalogDB Solution\ItemCatalogDB\ItemCatalogDB.sqlproj", "{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WFM.UserAuthentication", "..\..\..\Utility\WholeFoods.Utility Solution\WFM.UserAuthentication\WFM.UserAuthentication.vbproj", "{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}"
 EndProject
@@ -67,10 +65,6 @@ Global
 		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}.Release|x86.ActiveCfg = Release|Any CPU
-		{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DCC3B19-3DD4-47AB-A174-83C693C4BD8B}.Release|x86.ActiveCfg = Release|Any CPU
 		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1}.Debug|x86.ActiveCfg = Debug|x86
@@ -140,46 +134,6 @@ Global
 		{BCE1BC17-2FEA-46C3-84AE-DC02935597B1} = {99FE227F-EF06-40DA-B83C-453D67675F3E}
 		{83E129BF-0B0A-4816-8573-639F794299FA} = {99FE227F-EF06-40DA-B83C-453D67675F3E}
 		{BE9E41C4-6289-4789-B02B-2C4AF481A560} = {DF951614-2504-489F-832B-52226CBDE7B0}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfsprd:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WFM.UserAuthentication\\WFM.UserAuthentication.vbproj
-		SccProjectTopLevelParentUniqueName1 = WholeFoods.IRMA\u0020Solution.sln
-		SccProjectName1 = ../../../Utility/WholeFoods.Utility\u0020Solution/WFM.UserAuthentication
-		SccLocalPath1 = ..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WFM.UserAuthentication
-		SccProjectUniqueName2 = ..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WholeFoods.Utility\\WholeFoods.Utility.vbproj
-		SccProjectTopLevelParentUniqueName2 = WholeFoods.IRMA\u0020Solution.sln
-		SccProjectName2 = ../../../Utility/WholeFoods.Utility\u0020Solution/WholeFoods.Utility
-		SccLocalPath2 = ..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WholeFoods.Utility
-		SccProjectUniqueName3 = ..\\..\\Replenishment\\WholeFoods.IRMA.Replenishment\\WholeFoods.IRMA.Replenishment.vbproj
-		SccProjectName3 = ../../Replenishment/WholeFoods.IRMA.Replenishment
-		SccLocalPath3 = ..\\..\\Replenishment\\WholeFoods.IRMA.Replenishment
-		SccProjectUniqueName4 = ..\\..\\..\\WFM\\DataAccess\\WFM.DataAccess.vbproj
-		SccProjectName4 = ../../../WFM/DataAccess
-		SccLocalPath4 = ..\\..\\..\\WFM\\DataAccess
-		SccProjectUniqueName5 = IRMA\\WholeFoods.IRMA.vbproj
-		SccProjectTopLevelParentUniqueName5 = WholeFoods.IRMA\u0020Solution.sln
-		SccProjectName5 = IRMA
-		SccLocalPath5 = IRMA
-		SccProjectUniqueName6 = ..\\..\\ItemCatalogLib\\ItemCatalogLib.vbproj
-		SccProjectName6 = ../../ItemCatalogLib
-		SccLocalPath6 = ..\\..\\ItemCatalogLib
-		SccProjectUniqueName7 = ..\\..\\..\\Libraries\\Wholefoods.IRMA.FaxLog\\Wholefoods.IRMA.FaxLog\\WholeFoods.IRMA.FaxLog.vbproj
-		SccProjectName7 = ../../../Libraries/Wholefoods.IRMA.FaxLog/Wholefoods.IRMA.FaxLog
-		SccLocalPath7 = ..\\..\\..\\Libraries\\Wholefoods.IRMA.FaxLog\\Wholefoods.IRMA.FaxLog
-		SccProjectUniqueName8 = ..\\..\\Item\u0020Catalog\u0020DB\\ItemCatalogDB\u0020Solution\\ItemCatalogDB\\ItemCatalogDB.sqlproj
-		SccProjectName8 = ../../Item\u0020Catalog\u0020DB/ItemCatalogDB\u0020Solution/ItemCatalogDB
-		SccLocalPath8 = ..\\..\\Item\u0020Catalog\u0020DB\\ItemCatalogDB\u0020Solution\\ItemCatalogDB
-		SccProjectUniqueName9 = IRMAUnitTests\\IRMAUnitTests.csproj
-		SccProjectTopLevelParentUniqueName9 = WholeFoods.IRMA\u0020Solution.sln
-		SccProjectName9 = IRMAUnitTests
-		SccLocalPath9 = IRMAUnitTests
-		SccProjectUniqueName10 = ..\\..\\PagerDutyLib\\PagerDutyLib\\PagerDutyLib.csproj
-		SccProjectName10 = ../../PagerDutyLib/PagerDutyLib
-		SccLocalPath10 = ..\\..\\PagerDutyLib\\PagerDutyLib
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
