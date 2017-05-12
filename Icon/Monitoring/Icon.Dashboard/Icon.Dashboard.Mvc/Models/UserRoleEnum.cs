@@ -13,7 +13,7 @@ namespace Icon.Dashboard.Mvc.Models
     public enum UserRoleEnum
     {
         Unauthorized = 0x0,
-        IrmaApplications = 0x1,
-        IrmaDeveloper = IrmaApplications | 0x2
+        ReadOnly = 0x1,
+        EditingPrivileges = ReadOnly | 0x2
     }
 }

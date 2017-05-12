@@ -48,7 +48,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         #region GET
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Index()
         {
             //enable filter to use the logging service for building menus
@@ -62,7 +62,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Details(string name)
         {
             //enable filter to use the logging service for building menus
@@ -79,7 +79,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Edit(string name)
         {
             //enable filter to use the logging service for building menus
@@ -106,7 +106,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Create()
         {
             //enable filter to use the logging service for building menus
@@ -118,7 +118,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult GetCurrentEsbEnvironment()
         {
             var currentEnvironment = DashboardDataFileService.GetCurrentEsbEnvironment(ServerUtility, XmlDataFile);
@@ -126,7 +126,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult AddApplicationRow()
         {
             // pass all appplications to it
@@ -149,7 +149,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         #region POST
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Edit(EsbEnvironmentViewModel model)
         {
             if (ModelState.IsValid)
@@ -162,7 +162,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Create(EsbEnvironmentViewModel model)
         {
             if (ModelState.IsValid)
@@ -175,7 +175,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Delete(string name)
         {
             var esbEnvironment = DashboardDataFileService.GetEsbEnvironment(ServerUtility, XmlDataFile, name);
@@ -187,7 +187,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult SetEsbEnvironment(string name)
         {
             var esbEnvironment = DashboardDataFileService.GetEsbEnvironment(ServerUtility, XmlDataFile, name);

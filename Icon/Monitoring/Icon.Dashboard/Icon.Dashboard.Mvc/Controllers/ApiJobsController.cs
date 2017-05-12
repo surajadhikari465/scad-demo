@@ -37,7 +37,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         #region GET
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Index(string id = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
             //enable filter to use the data service
@@ -48,7 +48,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Pending()
         {
             var pendingMessages = IconDatabaseDataAccess.GetPendingMessages();
@@ -56,7 +56,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult RedrawPaging(string routeParameter = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
             var pagingData = GetPaginationViewModel(routeParameter, page, pageSize);
@@ -64,7 +64,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Summarize(ApiMessageJobTimedReportViewModel viewModel)
         {
             if (!viewModel.StartTime.HasValue)
@@ -98,7 +98,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult TableRefresh(string routeParameter = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize, string errorLevel = "Any")
         {
             var jobSummaries = GetJobSummariesAndSetRelatedViewData(routeParameter, page, pageSize);

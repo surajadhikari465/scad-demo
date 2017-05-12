@@ -63,7 +63,7 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
         {
             // Given
             List<NewItemModel> newItemModel = BuildNewItemModel(3);
-            
+
             this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
                 .Returns(new Dictionary<string, int>
                 {
@@ -71,7 +71,7 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                     { "test2", 112},
                     { "test3", 113 }
                 });
-                  
+
             // When
             var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
 

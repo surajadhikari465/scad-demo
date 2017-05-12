@@ -70,7 +70,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.FilterTests
         }
 
         protected UserRoleEnum Role_Unauthorized => UserRoleEnum.Unauthorized;
-        protected UserRoleEnum Role_Applications => UserRoleEnum.IrmaApplications;
-        protected UserRoleEnum Role_Developer => UserRoleEnum.IrmaDeveloper;
+        protected UserRoleEnum Role_Applications => UserRoleEnum.ReadOnly;
+        protected UserRoleEnum Role_Developer => UserRoleEnum.EditingPrivileges;
     }
 }

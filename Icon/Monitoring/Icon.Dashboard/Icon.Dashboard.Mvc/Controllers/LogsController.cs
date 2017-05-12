@@ -36,7 +36,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         #region GET
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Index(string id = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize,
             string errorLevel = "Any")
         {
@@ -48,7 +48,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult RecentErrors(int appID, int hours = 24)
         {
             var recentLogEntryReportForApp = IconDatabaseDataAccess.GetRecentLogEntriesReportForApp(
@@ -57,7 +57,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult RedrawPaging(string routeParameter = null, int page = 1,
             int pageSize = PagingConstants.DefaultPageSize)
         {
@@ -66,7 +66,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult TableRefresh(string routeParameter = null, int page = 1,
             int pageSize = PagingConstants.DefaultPageSize, string errorLevel = "Any")
         {

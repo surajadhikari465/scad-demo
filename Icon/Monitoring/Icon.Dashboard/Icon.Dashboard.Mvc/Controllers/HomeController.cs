@@ -48,7 +48,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         #region GET
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Index()
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -57,7 +57,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Details(string application, string server)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -66,7 +66,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Edit(string application, string server)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -75,7 +75,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Configure(string application, string server)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -84,7 +84,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Create()
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -94,7 +94,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         [HttpGet]
         [ChildActionOnly]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult IconApiServicePartial(string application, string server)
         {
             var task = DashboardDataFileService.GetServiceViewModel(ServerUtility, XmlDataFile, application, server);
@@ -103,7 +103,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         [HttpGet]
         [ChildActionOnly]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaApplications)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult TaskPartial(string application, string server)
         {
             var task = DashboardDataFileService.GetTaskViewModel(ServerUtility, XmlDataFile, application, server);
@@ -113,7 +113,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         #region POST
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Index(string application, string server, string command)
         {
             DashboardDataFileService.ExecuteCommand(ServerUtility, XmlDataFile, application, server, command);
@@ -121,7 +121,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Details(string application, string server, string command)
         {
             DashboardDataFileService.ExecuteCommand(ServerUtility, XmlDataFile, application, server, command);
@@ -129,7 +129,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Edit(IconApplicationViewModel appViewModel)
         {
             DashboardDataFileService.UpdateApplication(ServerUtility, appViewModel, XmlDataFile);
@@ -137,7 +137,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Configure(IconApplicationViewModel appViewModel)
         {
             ViewBag.EnvironmentOptions = new EnvironmentSwitcher().GetServersForEnvironments();
@@ -146,7 +146,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Create(IconApplicationViewModel appViewModel)
         {
             DashboardDataFileService.AddApplication(ServerUtility, appViewModel, XmlDataFile);
@@ -154,7 +154,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.IrmaDeveloper)]
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Delete(string application, string server)
         {
             var app = DashboardDataFileService.GetApplication(ServerUtility, XmlDataFile, application, server);
