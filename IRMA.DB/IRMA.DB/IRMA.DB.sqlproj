@@ -3184,10 +3184,13 @@
     <Build Include="schema\mammoth\Tables\PriceChangeQueue.sql" />
     <PostDeploy Include="Scripts\PostDeploy.Main.sql" />
     <None Include="Schema\infor\Stored Procedures\PriceExtractQuery.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20862 - PostDeploy Schema PopData - Add Icon Linked Server - 1.sql" />
     <None Include="Scripts\19916-Populate-HealthYEatingRatingIrma\UpdateUDF-IconUpdateItemType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20862 - PostDeploy Schema PopData - Add Infor ItemID to IRMA - 2.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20862 - PostDeploy Schema PopData - Add Infor ItemID to IRMA.rollback.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

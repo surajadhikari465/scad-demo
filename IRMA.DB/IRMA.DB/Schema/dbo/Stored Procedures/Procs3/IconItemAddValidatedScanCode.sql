@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE dbo.IconItemAddValidatedScanCode
+﻿CREATE PROCEDURE dbo.IconItemAddValidatedScanCode
 	@ValidatedItemList dbo.IconUpdateItemType READONLY
 AS
 BEGIN
@@ -12,19 +11,22 @@ BEGIN
 	SET @now = (SELECT GETDATE());
 
 	-- =====================================================
-	-- Add Brand and Validated Brand if they don't exist yet
+	-- Add Validated Scan Code if they don't exist yet
 	-- =====================================================
+	SELECT * INTO #ValidatedItems FROM @ValidatedItemList;
+	CREATE NONCLUSTERED INDEX IX_ScanCode_#ValidatedItems ON #ValidatedItems (ScanCode);
+
 	BEGIN TRY
-		INSERT INTO ValidatedScanCode
+
+		INSERT INTO ValidatedScanCode (ScanCode, InsertDate, InforItemId)
 		SELECT
-			sc.ScanCode as ScanCode,
-			@now		as InsertDate
+			vi.ScanCode as ScanCode,
+			@now		as InsertDate,
+			vi.ItemID	as InforItemId
 		FROM
-			(SELECT vi.ScanCode
-			FROM @ValidatedItemList vi
-			EXCEPT
-			SELECT vsc.ScanCode
-			FROM ValidatedScanCode vsc) sc
+			#ValidatedItems vi
+		WHERE NOT EXISTS (SELECT 1 FROM ValidatedScanCode vsc WHERE vsc.ScanCode = vi.ScanCode)
+
 	END TRY
 	BEGIN CATCH
 		DECLARE @err_no int, @err_sev int, @err_msg varchar(MAX)
@@ -32,9 +34,8 @@ BEGIN
 		RAISERROR ('IconItemAddValidatedScanCode failed with error no: %d and message: %s', @err_sev, 1, @err_no, @err_msg)
 	END CATCH
 END
-
 GO
+
 GRANT EXECUTE
     ON OBJECT::[dbo].[IconItemAddValidatedScanCode] TO [IConInterface]
     AS [dbo];
-
