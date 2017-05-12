@@ -24,6 +24,7 @@
     [EcoScaleRating]        NVARCHAR (30)  NULL,
     [GlutenFree]            BIT            NULL,
     [Kosher]                BIT            NULL,
+	[HealthyEatingRating]	NVARCHAR (10)  NULL,
     [NonGmo]                BIT            NULL,
     [Organic]               BIT            NULL,
     [PremiumBodyCare]       BIT            NULL,
@@ -48,4 +49,3 @@
 GO
 GRANT EXECUTE
     ON TYPE::[dbo].[IconUpdateItemType] TO [IConInterface];
-

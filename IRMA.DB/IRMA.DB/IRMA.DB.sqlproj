@@ -126,6 +126,7 @@
     <Folder Include="Scripts\PopulateData" />
     <Folder Include="Scripts\PopulateData\PostDeploy.Scripts" />
     <Folder Include="Scripts\PopulateData\PreDeploy.Scripts" />
+    <Folder Include="Scripts\19916-Populate-HealthYEatingRatingIrma" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3183,6 +3184,7 @@
     <Build Include="schema\mammoth\Tables\PriceChangeQueue.sql" />
     <PostDeploy Include="Scripts\PostDeploy.Main.sql" />
     <None Include="Schema\infor\Stored Procedures\PriceExtractQuery.sql" />
+    <None Include="Scripts\19916-Populate-HealthYEatingRatingIrma\UpdateUDF-IconUpdateItemType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
