@@ -44,7 +44,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 
                 context.Item.Add(testItem1);
                 context.Item.Add(testItem2);
-                
+
                 context.SaveChanges();
 
                 badIdentifier = "4560008";
@@ -75,6 +75,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 .WithHasItemSignAttributes(true)
                 .WithAirChilled(true)
                 .WithAnimalWelfareRating("Test AWR")
+                .WithHealthyEatingRating("Good")
                 .WithBiodynamic(true)
                 .WithCheeseMilkType("Test MT")
                 .WithCheeseRaw(true)
@@ -131,6 +132,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 .WithHasItemSignAttributes(true)
                 .WithAirChilled(true)
                 .WithAnimalWelfareRating("Test AWR")
+                .WithHealthyEatingRating("Good")
                 .WithBiodynamic(true)
                 .WithCheeseMilkType("Test MT")
                 .WithCheeseRaw(true)
@@ -188,6 +190,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 .WithHasItemSignAttributes(true)
                 .WithAirChilled(true)
                 .WithAnimalWelfareRating("Test AWR")
+                .WithHealthyEatingRating("Good")
                 .WithBiodynamic(true)
                 .WithCheeseMilkType("Test MT")
                 .WithCheeseRaw(true)
@@ -219,6 +222,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 .ItemSignAttribute.Single();
             Assert.IsNull(itemSignAttributes.AirChilled);
             Assert.IsNull(itemSignAttributes.AnimalWelfareRating);
+            Assert.IsNull(itemSignAttributes.HealthyEatingRating);
             Assert.IsNull(itemSignAttributes.Biodynamic);
             Assert.IsNull(itemSignAttributes.CheeseMilkType);
             Assert.IsNull(itemSignAttributes.CheeseRaw);
@@ -256,6 +260,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 .WithHasItemSignAttributes(true)
                 .WithAirChilled(true)
                 .WithAnimalWelfareRating("Test AWR")
+                .WithHealthyEatingRating("Good")
                 .WithBiodynamic(true)
                 .WithCheeseMilkType("Test MT")
                 .WithCheeseRaw(true)
@@ -287,6 +292,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 .ItemSignAttribute.Single();
             Assert.IsNull(itemSignAttributes.AirChilled);
             Assert.IsNull(itemSignAttributes.AnimalWelfareRating);
+            Assert.IsNull(itemSignAttributes.HealthyEatingRating);
             Assert.IsNull(itemSignAttributes.Biodynamic);
             Assert.IsNull(itemSignAttributes.CheeseMilkType);
             Assert.IsNull(itemSignAttributes.CheeseRaw);
@@ -327,6 +333,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 .WithHasItemSignAttributes(true)
                 .WithAirChilled(true)
                 .WithAnimalWelfareRating("Test AWR")
+                .WithHealthyEatingRating("Good")
                 .WithBiodynamic(true)
                 .WithCheeseMilkType("Test MT")
                 .WithCheeseRaw(true)
@@ -358,6 +365,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 .ItemSignAttribute.Single();
             Assert.IsNull(itemSignAttributes.AirChilled);
             Assert.IsNull(itemSignAttributes.AnimalWelfareRating);
+            Assert.IsNull(itemSignAttributes.HealthyEatingRating);
             Assert.IsNull(itemSignAttributes.Biodynamic);
             Assert.IsNull(itemSignAttributes.CheeseMilkType);
             Assert.IsNull(itemSignAttributes.CheeseRaw);

@@ -152,6 +152,7 @@ BEGIN
 					WHEN isa.KosherAgencyId IS NULL THEN NULL
 					ELSE CAST(1 AS BIT)
 			  END								as Kosher,
+			  her.Description as HealthyEatingRating,
 			  isa.Msc							as Msc,
 			  CASE 
 					WHEN isa.OrganicAgencyId IS NULL THEN NULL
@@ -209,6 +210,7 @@ BEGIN
               LEFT JOIN FinSubTeam_CTE  fin		on  sc.itemID = fin.itemID
 			  LEFT JOIN ItemSignAttribute isa	on	sc.itemID = isa.ItemID
 			  LEFT JOIN AnimalWelfareRating awr on	isa.AnimalWelfareRatingId = awr.AnimalWelfareRatingId
+			  LEFT JOIN HealthyEatingRating her on	isa.HealthyEatingRatingId = her.HealthyEatingRatingId
 			  LEFT JOIN MilkType	mt			on	isa.CheeseMilkTypeId = mt.MilkTypeId
 			  LEFT JOIN EcoScaleRating esr		on	isa.EcoScaleRatingId = esr.EcoScaleRatingId
 			  LEFT JOIN SeafoodFreshOrFrozen sff	on	isa.SeafoodFreshOrFrozenId = sff.SeafoodFreshOrFrozenId
