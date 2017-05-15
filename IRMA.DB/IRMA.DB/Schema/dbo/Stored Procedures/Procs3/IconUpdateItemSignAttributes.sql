@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[IconUpdateItemSignAttributes]
+﻿CREATE PROCEDURE [dbo].[IconUpdateItemSignAttributes]
 	@Items dbo.IconUpdateItemType READONLY
 AS
 BEGIN
@@ -18,6 +17,7 @@ BEGIN
 		ON (isa.Item_Key = i.Item_Key)
 	WHEN MATCHED THEN
 		UPDATE SET isa.AnimalWelfareRating = i.AnimalWelfareRating,
+				   isa.HealthyEatingRating = i.HealthyEatingRating,
 				   isa.Biodynamic = i.Biodynamic,
 				   isa.CheeseMilkType = i.CheeseMilkType,
 				   isa.CheeseRaw = i.CheeseRaw,
@@ -42,6 +42,7 @@ BEGIN
 	WHEN NOT MATCHED THEN
 		INSERT (Item_Key, 
 				AnimalWelfareRating, 
+				HealthyEatingRating,
 				Biodynamic, 
 				CheeseMilkType, 
 				CheeseRaw, 
@@ -65,6 +66,7 @@ BEGIN
 				MadeInHouse)
 		VALUES (i.Item_Key,
 				i.AnimalWelfareRating, 
+				i.HealthyEatingRating,
 				i.Biodynamic, 
 				i.CheeseMilkType, 
 				i.CheeseRaw, 
@@ -107,4 +109,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[IconUpdateItemSignAttributes] TO [IConInterface]
     AS [dbo];
-
