@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="WFMUHS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="Update">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DevicePath" type="xs:string" />
+              <xs:element name="Location" type="xs:string" />
+              <xs:element name="File" type="xs:string" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="enabled" type="xs:unsignedByte" use="required" />
+            <xs:attribute name="version" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="AppSettings">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="add">
+                <xs:complexType>
+                  <xs:attribute name="key" type="xs:string" use="required" />
+                  <xs:attribute name="value" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Region">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SecurityGroup" />
+              <xs:element name="AppSettings">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="add">
+                      <xs:complexType>
+                        <xs:attribute name="key" type="xs:string" use="required" />
+                        <xs:attribute name="value" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element maxOccurs="unbounded" name="Application">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" name="SecurityGroup" />
+                    <xs:element name="Description" type="xs:string" />
+                    <xs:element minOccurs="0" name="ExePath">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="version" type="xs:string" use="required" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="Service">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="version" type="xs:string" use="required" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="Assembly">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="file" type="xs:string" use="required" />
+                        <xs:attribute name="version" type="xs:string" use="required" />
+                        <xs:attribute name="entryPoint" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="AppSettings" />
+                    <xs:element name="Update">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Location" type="xs:string" />
+                          <xs:element name="File" type="xs:string" />
+                        </xs:sequence>
+                        <xs:attribute name="enabled" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="version" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="isAuthorized" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="hasService" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="type" type="xs:string" use="required" />
+                  <xs:attribute name="authenticateUser" type="xs:unsignedByte" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:decimal" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
