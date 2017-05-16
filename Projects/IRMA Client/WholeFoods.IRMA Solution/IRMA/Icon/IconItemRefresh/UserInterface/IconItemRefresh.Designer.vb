@@ -80,7 +80,7 @@ Partial Class IconItemRefresh
         Me.Controls.Add(Me.RefreshItemsBtn)
         Me.MinimumSize = New System.Drawing.Size(410, 491)
         Me.Name = "IconItemRefresh"
-        Me.Text = "Icon Item Refresh"
+        Me.Text = "Infor Item Refresh"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

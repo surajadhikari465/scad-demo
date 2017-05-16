@@ -45,7 +45,7 @@ Partial Class IconItemRefreshErrors
         Me.ClientSize = New System.Drawing.Size(739, 310)
         Me.Controls.Add(Me.ErrorsDataGridView)
         Me.Name = "IconItemRefreshErrors"
-        Me.Text = "Icon Item Refresh Errors"
+        Me.Text = "Infor Item Refresh Errors"
         CType(Me.ErrorsDataGridView, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
