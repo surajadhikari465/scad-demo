@@ -171,6 +171,44 @@ namespace Infor.Services.NewItem.Tests.Queries
             AssertResultsAreEqualToTestEvents(results);
         }
 
+        [TestMethod]
+        public void GetNewItemsQuery_ScanCodeIsAssociatedToDeletedItem_ShouldOnlyGetEventForActiveItem()
+        {
+            //Given
+            SetupTestEvents(1, testItemIdentifiers, testItems, testEvents);
+
+            var deletedIdentifier = new TestItemIdentifierBuilder()
+                .WithIdentifier(testItemIdentifiers.First().Identifier)
+                .WithDefault_Identifier(1)
+                .WithDeleted_Identifier(1)
+                .Build();
+            var deletedIten = new TestIrmaDbItemBuilder()
+                .WithItemIdentifier(deletedIdentifier)
+                .WithRetail_Sale(true)
+                .WithSubTeam(testSubTeam)
+                .WithItemUnit3(testItemUnit)
+                .WithItemUnit4(testItemUnit)
+                .WithBrand_ID(testBrand.Brand_ID)
+                .WithClassID(testNatItemClass.ClassID)
+                .WithTaxClassID(testTaxClass.TaxClassID)
+                .WithItem_Description("Deleted Item Description")
+                .WithPOS_Description("Deleted POS Description")
+                .WithPackage_Desc1(3)
+                .WithPackage_Desc2(2.1m)
+                .WithFood_Stamps(true)
+                .WithDeleted_Item(true)
+                .Build();
+            context.Item.Add(deletedIten);
+            context.SaveChanges();
+
+            //When
+            var results = queryHandler.Search(query).ToList();
+
+            //Then            
+            Assert.AreEqual(1, results.Count);
+            AssertResultsAreEqualToTestEvents(results);
+        }
+
         private void SetupTestEvents(int numberOfEvents, List<ItemIdentifier> itemIdentifiers, List<Item> items, List<IconItemChangeQueue> events, int? instanceId = null, DateTime? processFailedDate = null, bool organic = false)
         {
             for (int i = 0; i < numberOfEvents; i++)

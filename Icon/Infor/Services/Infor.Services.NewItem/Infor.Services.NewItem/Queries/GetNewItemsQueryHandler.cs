@@ -23,12 +23,10 @@ namespace Infor.Services.NewItem.Queries
 
 
                                     UPDATE TOP(@numberOfItems) dbo.IconItemChangeQueue
-                                   SET InProcessBy = @instanceIdChar
-                                       OUTPUT inserted.QID INTO @ids
-                                   WHERE(InProcessBy = @instanceIdChar OR InProcessBy IS NULL)
-
+                                    SET InProcessBy = @instanceIdChar
+                                        OUTPUT inserted.QID INTO @ids
+                                    WHERE(InProcessBy = @instanceIdChar OR InProcessBy IS NULL)
                                         AND ProcessFailedDate IS NULL
-
 
                                     SELECT
                                         @regionCode AS Region,
@@ -70,7 +68,11 @@ namespace Infor.Services.NewItem.Queries
                                         AND q.QID in 
 			                                (
                                                 SELECT Id FROM @ids
-                                            )";
+                                            )
+                                        AND ii.Deleted_Identifier = 0
+                                        AND ii.Remove_Identifier = 0
+                                        AND i.Deleted_Item = 0
+                                        AND i.Remove_Item = 0";
 
         private IRenewableContext<IrmaContext> context;
         private ILogger<GetNewItemsQueryHandler> logger;
