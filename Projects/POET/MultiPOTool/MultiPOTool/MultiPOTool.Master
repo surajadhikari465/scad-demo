@@ -1,0 +1,139 @@
+<%@ Master Language="VB"  AutoEventWireup="false" CodeBehind="MultiPOTool.master.vb" Inherits="MultiPOTool.MultiPOTool" %>
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+
+<head runat="server">
+    <link href="~/StyleSheet.css" rel="Stylesheet" type="text/css" />
+    <title>POET</title>
+       <link href="App_Themes/Theme1/Site.css" rel="stylesheet" type="text/css" />
+    <link href="App_Themes/Theme1/wfmTheme01.css" rel="stylesheet" type="text/css" />
+    <link href="App_Themes/Theme1/menu.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+    
+     
+    <div style="text-align: center" class="wrapper" id="headerBg">
+        <table>
+            <tr>
+            <td>
+                <table>
+                <tr>
+              
+                     <td>
+                    <asp:HyperLink ID="lnkDefaultPage" runat="server" CssClass="logo" ToolTip="Whole Foods POET"
+                        NavigateUrl="~/Login.aspx">Whole Foods POET</asp:HyperLink> <asp:Label ID="lblMainTitle" runat="server" CssClass="POET"></asp:Label>
+                </td>
+                <td align="left" style="padding-right:120px;">
+                   <asp:LinkButton ID="lnkLogout" runat="server" Text="Logout" ForeColor="#2b4520" Font-Italic="true"></asp:LinkButton>
+                </td>
+                  </tr>
+                </table>
+            </td>
+               
+            </tr>
+            <tr>
+        <td style="padding-left:150px;padding-right:200px;padding-bottom:5px;" align="center">
+            <asp:Menu ID="mnuHeader" Orientation="Horizontal" ItemWrap="false" MaximumDynamicDisplayLevels="2"
+                StaticDisplayLevels="2" runat="server" StaticSubMenuIndent="0px" StaticMenuItemStyle-ForeColor="#2b4520"
+                StaticMenuItemStyle-VerticalPadding="1px" StaticMenuItemStyle-Font-Bold="true" StaticMenuItemStyle-Font-Size="smaller"
+                StaticHoverStyle-Font-Underline="true" StaticBottomSeparatorImageUrl="App_Themes/Theme1/images/topnav-line.jpg"
+                StaticMenuItemStyle-ItemSpacing="0px" StaticMenuItemStyle-HorizontalPadding="20px"
+                 StaticSelectedStyle-HorizontalPadding="5px" StaticSelectedStyle-Font-Size="Small"
+                StaticSelectedStyle-VerticalPadding="2px" 
+                DataSourceID="SiteMapDataSource1">
+            </asp:Menu>
+             
+              <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />  
+          
+                         
+                 </td>
+                 </tr>
+        </table>
+
+        </div>
+ 
+
+
+    <div class="section1">
+    
+    </div>
+    
+   
+      
+   
+       <div class="announcementsFrame">
+        <div class="main-announcements">
+        <table style="width: 100%; position: static;">
+           <tr>
+                <td colspan="2" >
+                   <span style="font-size: 16pt; color: white;">
+                        <asp:Label ID="lblTitle" runat="server"></asp:Label></span>
+                         
+                </td>
+            </tr>
+            <tr>
+              
+                <td style="width: 90%;padding-bottom:20px;" align="right">
+                    &nbsp;<asp:Label ID="lblUserName" runat="server"></asp:Label>
+                    &nbsp;&nbsp; &nbsp; &nbsp;<asp:Label ID="lblRegion" runat="server"></asp:Label>
+                    &nbsp;&nbsp; &nbsp; &nbsp;<asp:Label ID="lblToday" runat="server"></asp:Label>
+                </td>
+                <td style="width: 0%">
+                </td>
+            </tr>
+           <tr>
+               
+               <td style="width: 100%; height: 231px; text-align: left; vertical-align: top" align="center">
+                    <table>
+                        <tr>
+                            <td>
+                                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                                </asp:ContentPlaceHolder>
+                            </td>
+                           </tr>
+                    </table>
+                    </td>
+            </tr>
+        </table>
+          
+     </div>
+     <table>
+            <tr>
+                <td>
+                    <div class="section3">
+                        <div class="wrapper">
+                            <div class="footer">
+                                <ul>
+                                    <li>
+                                        <asp:Label ID="lbl_Copyright" runat="server" 
+                                            Text="Copyright 2012. Whole Foods Market IP, L.P."></asp:Label>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+                                    <li>
+                                        <asp:Label ID="Labelasd1" runat="server" 
+                                            Text="To report an issue with POET, please create a support ticket in "></asp:Label><asp:HyperLink
+                                            ID="hpl_Email" runat="server" NavigateUrl="http://orchard" Target="_blank">Orchard</asp:HyperLink>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+                                    <li>
+                                        <asp:Label ID="lblReleaseNo" runat="server" Text="POET Version "></asp:Label>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+                                    <li>
+                                        <asp:Label ID="lblServer" runat="server" Text="Server "></asp:Label><asp:Label
+                                            ID="Label1" runat="server"></asp:Label></li>
+                                    <li>
+                                        <asp:Label ID="lblRole" runat="server"></asp:Label></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+      </div>
+       
+    </form>
+</body>
+</html>
+

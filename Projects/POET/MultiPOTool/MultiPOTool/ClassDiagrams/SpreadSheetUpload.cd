@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="MultiPOTool.BOSpreadsheetImport" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\BOSpreadsheetImport.vb</FileName>
+      <NewMemberFileName>ExcelImport\BusinessObjects\SpreadsheetImport.vb</NewMemberFileName>
+      <HashCode>AAAAAAAAAAAAAAQAAAIAAAAAAAAAAAEAAAAAAABAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MultiPOTool.DALSpreadsheetImport" Collapsed="true">
+    <Position X="6.5" Y="3" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\DataAccess\DALSpreadsheetImport.vb</FileName>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAIBAAAAAAAAAAIAAAACAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MultiPOTool.BOSpreadsheetValidation">
+    <Position X="0.5" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\BOSpreadsheetValidation.vb</FileName>
+      <HashCode>AQAAAAEkAAgAAQUAEAAAEIgEQBAQAAIAAAUAARBAGgA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MultiPOTool.BOSpreadsheetUpload" Collapsed="true">
+    <Position X="7" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\BOSpreadsheetUpload.vb</FileName>
+      <HashCode>AIAAAAEAAAgAAFQQAIBAABmAEAAgAAAAACJAQIhQQAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="MultiPOTool.DALSpreadSheetUpload" Collapsed="true">
+    <Position X="7.75" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\DataAccess\DALSpreadSheetUpload.vb</FileName>
+      <HashCode>AAAAAAAABAAAAAAAAABAAABIAAAAAAAAABAIIAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MultiPOTool.DALSpreadsheetValidation" Collapsed="true">
+    <Position X="6" Y="6.75" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\DataAccess\DALSpreadsheetValidation.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAACAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="MultiPOTool.IUploadSpreadSheet">
+    <Position X="7.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\IUploadSpreadSheet.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAIAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Interface>
+  <Interface Name="MultiPOTool.IValidateSpreadSheet">
+    <Position X="7.5" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\IValidateSpreadSheet.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MultiPOTool.IExceptions">
+    <Position X="5.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\IExceptions.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="MultiPOTool.FileType">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\FileType.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAACAAAEAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MultiPOTool.ProcessFlow">
+    <Position X="8" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\BOSpreadsheetValidation.vb</FileName>
+      <HashCode>AIAAAAAAAAAAgAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MultiPOTool.VendorRowColumns">
+    <Position X="3.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\BOSpreadsheetValidation.vb</FileName>
+      <HashCode>AAAAAIAAAAQAAQAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MultiPOTool.ItemRowColumns">
+    <Position X="4.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\BOSpreadsheetValidation.vb</FileName>
+      <HashCode>AAAAAAAAAAQAAAAAAIAAAAAAAAACAAAAAAAAwAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>
