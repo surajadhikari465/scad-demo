@@ -109,6 +109,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 SetupValidatedItemInDb("123498763", true),
                 SetupValidatedItemInDb("123498764", true),
                 SetupValidatedItemInDb("123498765", true)
+
             };
 
             query.Events = expectedItems
@@ -127,6 +128,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 Assert.AreEqual(expectedItems[i].itemID, actualItems[i].ItemId);
                 Assert.AreEqual(expectedItems[i].scanCode, actualItems[i].ScanCode);
                 Assert.AreEqual(AnimalWelfareRatings.Descriptions.Step1, actualItems[i].AnimalWelfareRating);
+                Assert.AreEqual(HealthyEatingRatings.Descriptions.Good, actualItems[i].HealthyEatingRating);
                 Assert.IsTrue(actualItems[i].Biodynamic.Value);
                 Assert.AreEqual(MilkTypes.Descriptions.CowGoatSheepMilk, actualItems[i].CheeseMilkType);
                 Assert.IsTrue(actualItems[i].CheeseRaw.Value);
@@ -332,6 +334,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 ItemSignAttribute signAttributes = new ItemSignAttribute
                 {
                     AnimalWelfareRatingId = AnimalWelfareRatings.Step1,
+                    HealthyEatingRatingId = HealthyEatingRatings.Good,
                     Biodynamic = true,
                     CheeseMilkTypeId = MilkTypes.CowGoatSheepMilk,
                     CheeseRaw = true,
@@ -367,6 +370,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             return new ItemSignAttribute
             {
                 AnimalWelfareRatingId = null,
+                HealthyEatingRatingId = null,
                 Biodynamic = false,
                 CheeseMilkTypeId = null,
                 CheeseRaw = false,

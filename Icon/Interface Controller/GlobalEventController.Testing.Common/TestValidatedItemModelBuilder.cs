@@ -26,6 +26,7 @@ namespace GlobalEventController.Testing.Common
         private string nationalClassCode;
         private int eventTypeId;
         private string animalWelfareRating;
+        public string healthyEatingRating;
         private bool? biodynamic;
         private string cheeseMilkType;
         private bool? cheeseRaw;
@@ -165,6 +166,12 @@ namespace GlobalEventController.Testing.Common
         public TestValidatedItemModelBuilder WithAnimalWelfareRating(string animalWelfareRating)
         {
             this.animalWelfareRating = animalWelfareRating;
+            return this;
+        }
+
+        public TestValidatedItemModelBuilder WithHealthyEatingRating(string healthyEatingRating)
+        {
+            this.healthyEatingRating = healthyEatingRating;
             return this;
         }
 
@@ -334,6 +341,7 @@ namespace GlobalEventController.Testing.Common
                 HasItemSignAttributes = this.hasItemSignAttributes,
                 AirChilled = this.airChilled,
                 AnimalWelfareRating = this.animalWelfareRating,
+                HealthyEatingRating = this.healthyEatingRating,
                 Biodynamic = this.biodynamic,
                 CheeseMilkType = this.cheeseMilkType,
                 CheeseRaw = this.cheeseRaw,

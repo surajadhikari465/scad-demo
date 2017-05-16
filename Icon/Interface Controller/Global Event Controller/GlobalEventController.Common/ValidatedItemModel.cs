@@ -34,6 +34,7 @@ namespace GlobalEventController.Common
         public string EcoScaleRating { get; set; }
         public bool? GlutenFree { get; set; }
         public bool? Kosher { get; set; }
+        public string HealthyEatingRating { get; set; }
         public bool? NonGmo { get; set; }
         public bool? Organic { get; set; }
         public bool? PremiumBodyCare { get; set; }
@@ -148,6 +149,7 @@ namespace GlobalEventController.Common
             {
                 HasItemSignAttributes = true;
                 AnimalWelfareRating = itemSignAttributes.AnimalWelfareRatingId.HasValue ? AnimalWelfareRatings.AsDictionary[itemSignAttributes.AnimalWelfareRatingId.Value] : null;
+                HealthyEatingRating = itemSignAttributes.HealthyEatingRatingId.HasValue ? HealthyEatingRatings.AsDictionary[itemSignAttributes.HealthyEatingRatingId.Value] : null;
                 Biodynamic = itemSignAttributes.Biodynamic;
                 CheeseMilkType = itemSignAttributes.CheeseMilkTypeId.HasValue ? MilkTypes.AsDictionary[itemSignAttributes.CheeseMilkTypeId.Value] : null;
                 CheeseRaw = itemSignAttributes.CheeseRaw;
