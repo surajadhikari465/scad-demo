@@ -28,10 +28,10 @@ Public Class IconItemRefresh
                 Dim response As ItemIdentifierRefreshResponse = iconItemRefreshService.RefreshIconItems(request)
 
                 If response.ItemRefreshResults.Any(Function(r) r.RefreshFailed) Then
-                    Dim errorsWindow As IconItemRefreshErrors = New IconItemRefreshErrors(response.ItemRefreshResults.Where(Function(m) m.RefreshFailed).ToList())
+                    Dim errorsWindow As IconItemRefreshErrors = New IconItemRefreshErrors(response.ItemRefreshResults.Where(Function(m) m.RefreshFailed).ToList(), "Infor")
                     errorsWindow.ShowDialog()
                 Else
-                    MessageBox.Show("Refreshed all items successfully.", "Icon Item Refresh")
+                    MessageBox.Show("Refreshed all items successfully.", "Infor Item Refresh")
                 End If
             Catch ex As Exception
                 MessageBox.Show("Unexpected error occurred while refreshing items. Error Details:" + ex.ToString())

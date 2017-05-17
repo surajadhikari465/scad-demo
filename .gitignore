@@ -252,4 +252,6 @@ paket-files/
 .idea/
 *.sln.iml
 *.transformed
+
+# SSDT 
 *.jfm

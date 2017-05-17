@@ -37,6 +37,7 @@ AS
 --								validation statuses.
 -- 2015/10/16	DN		17446	Added an extra condition in the WHERE clause to prevent non-validated retail items that were
 --								previously deleted non-retail items from batching
+-- 2017/05/08	EM		21759	Prevent non-retail, non-validated items in the 46/48 ranges from batching
 -- ****************************************************************************************************************
 
 BEGIN
@@ -79,8 +80,7 @@ BEGIN
 		PriceChgType (NOLOCK)
 	WHERE 
 		PriceChgTypeId = @PriceChgTypeId
-
-
+		
 	-----------------------------------
 	-- Create list of stores to be included
 	-----------------------------------
@@ -88,18 +88,18 @@ BEGIN
 							(
 								Store_No int PRIMARY KEY CLUSTERED, 
 								Store_Name varchar(50),
-								StoreJurisdictionID int
+								StoreJurisdictionID int,
+								Allow4648ItemBatching bit
 							)
 	
-	INSERT INTO @tblStoreList (Store_No, Store_Name, StoreJurisdictionID)
+	INSERT INTO @tblStoreList (Store_No, Store_Name, StoreJurisdictionID, Allow4648ItemBatching)
 	SELECT DISTINCT 
-		S.Store_No, RTRIM(S.Store_Name), S.StoreJurisdictionID
+		S.Store_No, RTRIM(S.Store_Name), S.StoreJurisdictionID, dbo.fn_InstanceDataValue('AllowBatchingOfNonvalidated46And48Items', S.Store_No)
 	FROM 
 		Store S (NOLOCK)
 		INNER JOIN dbo.fn_Parse_List(@StoreList, @StoreListSeparator) LIST ON LIST.Key_Value = S.Store_No
 	ORDER BY 
 		S.Store_No
-	
 
 	IF OBJECT_ID('tempdb..#ValidatedScanCode') IS NOT NULL
 	BEGIN
@@ -209,8 +209,10 @@ BEGIN
 			[ItemChgTypeID] = 0, 
 			[ItemChgTypeDesc] = 'PRC',
 			CASE
-				WHEN VSC.Id IS NOT NULL THEN VSC.Id
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 THEN 1
+				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
+					AND (CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 46000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 46999999999
+					  OR CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 48000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 48999999999)
+					THEN NULL 
 				ELSE VSC.Id
 			END AS Id
 		FROM 
@@ -290,10 +292,12 @@ BEGIN
 			[ItemChgTypeID] = 0, 
 			[ItemChgTypeDesc] = 'PRC',
 			CASE
-				WHEN VSC.Id IS NOT NULL THEN VSC.Id 
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 THEN 1
+				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
+					AND (CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 46000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 46999999999
+					  OR CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 48000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 48999999999)
+					THEN NULL 
 				ELSE VSC.Id
-			END AS Id        
+			END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -370,7 +374,13 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 1, 
 			[ItemChgTypeDesc] = 'NEW',
-			VSC.Id        
+			CASE
+				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
+					AND (CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 46000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 46999999999
+					  OR CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 48000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 48999999999)
+					THEN NULL 
+				ELSE VSC.Id
+			END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -430,7 +440,7 @@ UNION
 					) PBD ON S.Store_No = PBD.Store_No
 
 			INNER JOIN (SELECT 
-							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID
+							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID, I2.Retail_Sale
 						FROM 
 							Item I2 (NOLOCK)
 							INNER JOIN ItemIdentifier II (NOLOCK) ON II.Item_Key = I2.Item_Key AND II.Default_Identifier = 1 AND I2.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I2.Retail_Sale END)
@@ -474,7 +484,13 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 2, 
 			[ItemChgTypeDesc] = 'ITM',
-			VSC.Id
+			CASE
+				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
+					AND (CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 46000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 46999999999
+					  OR CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 48000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 48999999999)
+					THEN NULL 
+				ELSE VSC.Id
+			END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -507,7 +523,7 @@ UNION
 					) PBD ON S.Store_No = PBD.Store_No
 			
 			INNER JOIN (SELECT 
-							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID
+							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID, I2.Retail_Sale
 						FROM 
 							Item I2 (NOLOCK)
 							INNER JOIN ItemIdentifier II (NOLOCK) ON II.Item_Key = I2.Item_Key AND II.Default_Identifier = 1 AND I2.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I2.Retail_Sale END)
@@ -555,8 +571,13 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 3, 
 			[ItemChgTypeDesc] = 'DEL',
-			VSC.Id
-        
+			CASE
+				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
+					AND ((CONVERT(FLOAT, details.Identifier) >= 46000000000 AND CONVERT(FLOAT, details.Identifier) <= 46999999999) 
+					  OR (CONVERT(FLOAT, details.Identifier) >= 48000000000 AND CONVERT(FLOAT, details.Identifier) <= 48999999999))
+					THEN NULL 
+				ELSE VSC.Id
+			END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -571,7 +592,7 @@ UNION
 					) PBD ON S.Store_No = PBD.Store_No
 
 			INNER JOIN (SELECT 
-							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID
+							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID, I2.Retail_Sale
 						FROM 
 							Item I2 (NOLOCK)
 							INNER JOIN ItemIdentifier II (NOLOCK) ON II.Item_Key = I2.Item_Key AND II.Default_Identifier = 1 AND I2.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I2.Retail_Sale END)
@@ -614,11 +635,16 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 4, 
 			[ItemChgTypeDesc] = 'OFR',
-			VSC.Id
-		
+			CASE
+				WHEN details.PriceChgTypeID IS NOT NULL AND details.Retail_Sale = 0 AND details.Allow4648ItemBatching = 0 
+					AND ((CONVERT(FLOAT, details.Identifier) >= 46000000000 AND CONVERT(FLOAT, details.Identifier) <= 46999999999) 
+					  OR (CONVERT(FLOAT, details.Identifier) >= 48000000000 AND CONVERT(FLOAT, details.Identifier) <= 48999999999))
+					THEN NULL 
+				ELSE VSC.Id
+			END AS Id
 		FROM 
 			(SELECT 
-				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID
+				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID, S.Allow4648ItemBatching, I.Retail_Sale
 			FROM 
 				@tblStoreList S
 				INNER JOIN PriceBatchDetail PBD (NOLOCK) ON PBD.Store_No = S.Store_No
@@ -661,8 +687,13 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 1, 
 			[ItemChgTypeDesc] = 'NEW',
-			VSC.Id
-        
+			CASE
+				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
+					AND ((CONVERT(FLOAT, I.Identifier) >= 46000000000 AND CONVERT(FLOAT, I.Identifier) <= 46999999999) 
+					  OR (CONVERT(FLOAT, I.Identifier) >= 48000000000 AND CONVERT(FLOAT, I.Identifier) <= 48999999999))
+					THEN NULL 
+				ELSE VSC.Id
+			END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -722,7 +753,7 @@ UNION
 					) PBD ON S.Store_No = PBD.Store_No
 			
 			INNER JOIN (SELECT 
-							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID
+							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID, I2.Retail_Sale
 						FROM 
 							Item I2 (NOLOCK)
 							INNER JOIN ItemIdentifier II (NOLOCK) ON II.Item_Key = I2.Item_Key AND II.Default_Identifier = 1 AND I2.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I2.Retail_Sale END)
@@ -768,9 +799,14 @@ UNION
 			PBD.PriceChgTypeID, 
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 2, 
-			[ItemChgTypeDesc] = 'ITM',
-			VSC.Id
-        
+			[ItemChgTypeDesc] = 'ITM',	
+			CASE
+				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
+					AND ((CONVERT(FLOAT, I.Identifier) >= 46000000000 AND CONVERT(FLOAT, I.Identifier) <= 46999999999) 
+					  OR (CONVERT(FLOAT, I.Identifier) >= 48000000000 AND CONVERT(FLOAT, I.Identifier) <= 48999999999))
+					THEN NULL 
+				ELSE VSC.Id
+			END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -803,7 +839,7 @@ UNION
 					) PBD ON S.Store_No = PBD.Store_No
 
 			INNER JOIN (SELECT 
-							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID
+							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID, I2.Retail_Sale
 						FROM 
 							Item I2 (NOLOCK)
 							INNER JOIN ItemIdentifier II (NOLOCK) ON II.Item_Key = I2.Item_Key AND II.Default_Identifier = 1 AND I2.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I2.Retail_Sale END)
@@ -852,8 +888,13 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 3, 
 			[ItemChgTypeDesc] = 'DEL',
-			VSC.Id
-        
+			CASE
+				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
+					AND ((CONVERT(FLOAT, I.Identifier) >= 46000000000 AND CONVERT(FLOAT, I.Identifier) <= 46999999999) 
+					  OR (CONVERT(FLOAT, I.Identifier) >= 48000000000 AND CONVERT(FLOAT, I.Identifier) <= 48999999999))
+					THEN NULL 
+				ELSE VSC.Id
+			END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -868,7 +909,7 @@ UNION
 					) PBD ON S.Store_No = PBD.Store_No
 
 			INNER JOIN (SELECT 
-							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID
+							II.Item_Key, II.Identifier, I2.Item_Description, I2.Brand_ID, I2.Retail_Sale
 						FROM 
 							Item I2 (NOLOCK)
 							INNER JOIN ItemIdentifier II (NOLOCK) ON II.Item_Key = I2.Item_Key AND II.Default_Identifier = 1 AND I2.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I2.Retail_Sale END)
@@ -917,11 +958,16 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 4, 
 			[ItemChgTypeDesc] = 'OFR',
-			VSC.Id
-		
+			CASE
+				WHEN details.PriceChgTypeID IS NOT NULL AND details.Retail_Sale = 0 AND details.Allow4648ItemBatching = 0 
+					AND ((CONVERT(FLOAT, details.Identifier) >= 46000000000 AND CONVERT(FLOAT, details.Identifier) <= 46999999999) 
+					  OR (CONVERT(FLOAT, details.Identifier) >= 48000000000 AND CONVERT(FLOAT, details.Identifier) <= 48999999999))
+					THEN NULL 
+				ELSE VSC.Id
+			END AS Id
 		FROM 
 			(SELECT 
-				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID
+				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID, S.Allow4648ItemBatching, I.Retail_Sale
 			FROM 
 				@tblStoreList S
 				INNER JOIN PriceBatchDetail PBD (NOLOCK) ON PBD.Store_No = S.Store_No
