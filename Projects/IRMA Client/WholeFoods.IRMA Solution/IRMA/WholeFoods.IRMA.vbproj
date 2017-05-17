@@ -815,6 +815,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ItemHosting\BusinessLogic\ItemIdentifierBO.vb" />
+    <Compile Include="ItemHosting\BusinessLogic\StorageDataBO.vb" />
+    <Compile Include="ItemHosting\DataAccess\ScaleStorageDataDAO.vb" />
     <Compile Include="ItemHosting\UserInterface\Form_ItemScaleDetails365.Designer.vb">
       <DependentUpon>Form_ItemScaleDetails365.vb</DependentUpon>
     </Compile>

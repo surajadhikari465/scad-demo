@@ -16,20 +16,24 @@ Imports log4net
     Private hasNutrifactsChanges As Boolean
     Private hasIngredientsChanges As Boolean
     Private hasAllergensChanges As Boolean
+    Private hasStorageDataChanges As Boolean
     Private isLoading As Boolean
     Private nutrifactsAreReadyOnly As Boolean
     Private allergensAndIngredientsAreReadyOnly As Boolean?
     Private _nutrifactsID As Integer
     Private _scaleIngredientsID As Integer
     Private _scaleAllergensID As Integer
+    Private _scaleStorageDataID As Integer
     Private addNutrifacts As Boolean
     Private addIngredients As Boolean
     Private addAllergens As Boolean
+    Private addStorageData As Boolean
 
     ' Define the log4net logger for this class.
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
 
     Dim WithEvents itemScaleOverride As Form_ItemScaleDetailsOverride
+    Private this As Object
 
 #Region "Constructor"
 
@@ -129,6 +133,15 @@ Imports log4net
         End Set
     End Property
 
+    Public Property ScaleStorageDataID() As Integer
+        Get
+            Return _scaleStorageDataID
+        End Get
+        Set(value As Integer)
+            _scaleStorageDataID = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Methods"
@@ -155,6 +168,8 @@ Imports log4net
             Else
                 Button_Jurisdiction.Enabled = False
             End If
+
+
         End If
 
         SetPermissions()
@@ -229,6 +244,12 @@ Imports log4net
 
         If allergensAndIngredientsAreReadyOnly Then
             LockIngredientsAndAllergens()
+        End If
+
+        If InstanceDataDAO.IsFlagActive("EnableStorageData") Then
+            Me.Storage_GroupBox.Enabled = IsEditable
+        Else
+            ScaleItemTabs.TabPages.Remove(StorageDataTab)
         End If
 
     End Sub
@@ -604,6 +625,9 @@ Imports log4net
             Case "Allergens"
                 Me.LoadAllergens(glItemID)
                 SetAllergensDataChanges(False)
+            Case "Storage Data"
+                Me.LoadStorageData(glItemID)
+                SetStorageDataChanges(False)
         End Select
 
     End Sub
@@ -858,6 +882,12 @@ Imports log4net
                     MsgBox("All allergens changes have been saved.", MsgBoxStyle.Information, Me.Text)
                     SetAllergensDataChanges(False)
                 End If
+            Case "Storage Data"
+                'Save Storage Data
+                If Me.ApplyStorageDataChanges() Then
+                    MsgBox("All storage data changes have been saved.", MsgBoxStyle.Information, Me.Text)
+                    SetStorageDataChanges(False)
+                End If
         End Select
     End Sub
 
@@ -889,6 +919,13 @@ Imports log4net
             ButtonSaveScaleInformation.Enabled = dataChangesExist
         End If
 
+    End Sub
+
+    Private Sub SetStorageDataChanges(ByVal dataChangesExist As Boolean)
+        If (gbItemAdministrator And frmItem.pbUserSubTeam) Or gbSuperUser Then
+            hasStorageDataChanges = dataChangesExist
+            ButtonSaveScaleInformation.Enabled = dataChangesExist
+        End If
     End Sub
 
     Private Sub LockIngredientsAndAllergens()
@@ -995,6 +1032,22 @@ Imports log4net
             addAllergens = True
         Else
             addAllergens = False
+        End If
+
+    End Sub
+
+    Private Sub LoadStorageData(ByVal ItemID As Integer)
+
+        Dim storageDataBO = ScaleStorageDataDAO.GetStorageDataByItem(glItemID)
+
+        Me.ScaleStorageDataID = storageDataBO.ID
+        Me.StorageDataTxt.Text = Trim(storageDataBO.StorageData)
+        Me.txtDescription.Text = storageDataBO.Description
+        Me.txtDescription.Enabled = False
+        If storageDataBO.ID = 0 Then
+            addStorageData = True
+        Else
+            addStorageData = False
         End If
 
     End Sub
@@ -1620,7 +1673,36 @@ Imports log4net
 
         Return isSuccessful
     End Function
+    Private Function ApplyStorageDataChanges() As Boolean
+        Dim StorageDataBO As New StorageDataBO()
+        Dim isSuccessful As Boolean = False
 
+        If ScaleDetailsBO.ItemScaleID < 1 Then
+            MessageBox.Show("Scale record has not been created yet.  Please save data into the General tab first.", "Scale Details", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+            Return isSuccessful
+        End If
+
+        If IsStorageDataInputValid() Then
+            StorageDataBO.ID = Me.ScaleStorageDataID
+            StorageDataBO.StorageData = StorageDataTxt.Text.Trim()
+            StorageDataBO.Description = txtDescription.Text
+
+            If addStorageData = True Then
+                ScaleStorageDataDAO.AddStorageDataToItem(ItemKey, StorageDataBO)
+                StorageDataBO = ScaleStorageDataDAO.GetStorageDataByItem(glItemID)
+                Me.ScaleStorageDataID = StorageDataBO.ID
+                addStorageData = False
+            Else
+                ScaleStorageDataDAO.UpdateStorageData(StorageDataBO)
+            End If
+
+            isSuccessful = True
+        Else
+            MessageBox.Show("Storage Data cannot be empty.")
+        End If
+
+        Return isSuccessful
+    End Function
     Private Sub PopulateNutrifactBO(ByRef scaleNutriFact As ScaleNutrifactBO)
 
         If NutrifactCombo.SelectedIndex > -1 Then scaleNutriFact.ID = CInt(NutrifactCombo.SelectedValue.ToString())
@@ -1712,6 +1794,10 @@ Imports log4net
         Return Not String.IsNullOrWhiteSpace(AllergensTxt.Text)
     End Function
 
+    Private Function IsStorageDataInputValid() As Boolean
+        Return Not String.IsNullOrWhiteSpace(StorageDataTxt.Text)
+    End Function
+
     Private Sub AllergensDescriptionTxt_TextChanged(sender As Object, e As EventArgs)
         SetAllergensDataChanges(True)
     End Sub
@@ -1722,6 +1808,10 @@ Imports log4net
 
     Private Sub AllergensTxt_TextChanged(sender As Object, e As EventArgs) Handles AllergensTxt.TextChanged
         SetAllergensDataChanges(True)
+    End Sub
+
+    Private Sub StorageDataTxt_TextChanged(sender As Object, e As EventArgs) Handles StorageDataTxt.TextChanged
+        SetStorageDataChanges(True)
     End Sub
 
     Private Sub ScaleDesc1TextBox_TextChanged(sender As Object, e As EventArgs) Handles ScaleDesc1TextBox.TextChanged
