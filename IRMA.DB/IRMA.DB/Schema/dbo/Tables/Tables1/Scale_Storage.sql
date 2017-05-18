@@ -8,7 +8,17 @@
 )
 );
 GO
+GRANT SELECT
+   ON OBJECT::[dbo].[Scale_StorageData] TO [IRMAClientRole]
+   AS [dbo];
 
+GO
+GRANT UPDATE
+   ON OBJECT::[dbo].[Scale_StorageData] TO [IRMAClientRole]
+   AS [dbo];
+
+
+GO
 CREATE Trigger [dbo].[Scale_StorageData_Insert]
 ON [dbo].[Scale_Storagedata]
 FOR INSERT
