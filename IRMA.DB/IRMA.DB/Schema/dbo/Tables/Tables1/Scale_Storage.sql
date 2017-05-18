@@ -8,9 +8,6 @@
 )
 );
 GO
-ALTER TABLE [dbo].[Scale_StorageData] ENABLE CHANGE_TRACKING WITH (TRACK_COLUMNS_UPDATED = OFF);
-
-GO
 
 CREATE Trigger [dbo].[Scale_StorageData_Insert]
 ON [dbo].[Scale_Storagedata]
