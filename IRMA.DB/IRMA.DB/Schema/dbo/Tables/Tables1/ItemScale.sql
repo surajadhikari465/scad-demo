@@ -26,7 +26,7 @@
     [ShelfLife_Length]          SMALLINT     NULL,
     [Scale_Ingredient_ID]       INT          NULL,
     [Scale_Allergen_ID]         INT          NULL,
-	[Scale_StorageData_ID]	    INT          NULL,
+    [Scale_StorageData_ID]	    INT          NULL,
     CONSTRAINT [PK_ItemScale] PRIMARY KEY CLUSTERED ([ItemScale_ID] ASC),
     CONSTRAINT [FK_ItemScale_ExtraText1] FOREIGN KEY ([Scale_ExtraText_ID]) REFERENCES [dbo].[Scale_ExtraText] ([Scale_ExtraText_ID]),
     CONSTRAINT [FK_ItemScale_Item] FOREIGN KEY ([Item_Key]) REFERENCES [dbo].[Item] ([Item_Key]),
@@ -337,4 +337,3 @@ GO
 GRANT VIEW CHANGE TRACKING
     ON OBJECT::[dbo].[ItemScale] TO [iCONReportingRole]
     AS [dbo];
-

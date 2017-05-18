@@ -22,4 +22,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[Scale_GetStorageDataByItem] TO [IRSUser]
     AS [dbo];
-

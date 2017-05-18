@@ -19,4 +19,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[Scale_UpdateStorageData] TO [IRSUser]
     AS [dbo];
-

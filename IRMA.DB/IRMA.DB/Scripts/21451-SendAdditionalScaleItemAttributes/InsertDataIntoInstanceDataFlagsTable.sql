@@ -11,7 +11,3 @@ BEGIN
 			   0)
 END
 GO
-
-
-
-
