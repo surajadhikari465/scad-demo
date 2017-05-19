@@ -1,0 +1,115 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Client", "Client\Client.vbproj", "{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WholeFoods.Mobile.Client.Services", "WholeFoods.Mobile.Client.Services\WholeFoods.Mobile.Client.Services.csproj", "{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}"
+EndProject
+Project("{B900F1C2-3D47-4FEC-85B3-04AAF18C3634}") = "Client Deployment", "Client Deployment\Client Deployment.vddproj", "{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Mobile AutoUpdate", "Mobile AutoUpdate\Mobile AutoUpdate.vbproj", "{2E631E9D-2963-42E7-943D-3088079FAF03}"
+EndProject
+Project("{B900F1C2-3D47-4FEC-85B3-04AAF18C3634}") = "Mobile AutoUpdate Deployment", "Mobile AutoUpdate Deployment\Mobile AutoUpdate Deployment.vddproj", "{FC803578-D711-4357-8C6E-91201D77526D}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://cewp1605:8080/tfs
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Client\\Client.vbproj
+		SccProjectName1 = Client
+		SccLocalPath1 = Client
+		SccProjectUniqueName2 = Client\u0020Deployment\\Client\u0020Deployment.vddproj
+		SccProjectName2 = Client\u0020Deployment
+		SccLocalPath2 = Client\u0020Deployment
+		SccProjectUniqueName3 = WholeFoods.Mobile.Client.Services\\WholeFoods.Mobile.Client.Services.csproj
+		SccProjectName3 = WholeFoods.Mobile.Client.Services
+		SccLocalPath3 = WholeFoods.Mobile.Client.Services
+		SccProjectUniqueName4 = Mobile\u0020AutoUpdate\\Mobile\u0020AutoUpdate.vbproj
+		SccProjectName4 = Mobile\u0020AutoUpdate
+		SccLocalPath4 = Mobile\u0020AutoUpdate
+		SccProjectUniqueName5 = Mobile\u0020AutoUpdate\u0020Deployment\\Mobile\u0020AutoUpdate\u0020Deployment.vddproj
+		SccProjectName5 = Mobile\u0020AutoUpdate\u0020Deployment
+		SccLocalPath5 = Mobile\u0020AutoUpdate\u0020Deployment
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Pocket PC 2003 Release|Any CPU = Pocket PC 2003 Release|Any CPU
+		PRD|Any CPU = PRD|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+		TST|Any CPU = TST|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.Pocket PC 2003 Release|Any CPU.ActiveCfg = Pocket PC 2003 Release|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.Pocket PC 2003 Release|Any CPU.Build.0 = Pocket PC 2003 Release|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.Pocket PC 2003 Release|Any CPU.Deploy.0 = Pocket PC 2003 Release|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.PRD|Any CPU.ActiveCfg = PRD|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.PRD|Any CPU.Build.0 = PRD|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.PRD|Any CPU.Deploy.0 = PRD|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.QA|Any CPU.Build.0 = QA|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.QA|Any CPU.Deploy.0 = QA|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.TST|Any CPU.ActiveCfg = TST|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.TST|Any CPU.Build.0 = TST|Any CPU
+		{DF183E91-2F02-48DB-ABD4-CEB95DC3A8CC}.TST|Any CPU.Deploy.0 = TST|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.Pocket PC 2003 Release|Any CPU.ActiveCfg = Pocket PC 2003 Release|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.Pocket PC 2003 Release|Any CPU.Build.0 = Pocket PC 2003 Release|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.PRD|Any CPU.ActiveCfg = PRD|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.PRD|Any CPU.Build.0 = PRD|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.QA|Any CPU.Build.0 = QA|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.TST|Any CPU.ActiveCfg = TST|Any CPU
+		{BE3356CC-59F9-4641-BB78-7EFCA62CE6F1}.TST|Any CPU.Build.0 = TST|Any CPU
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.Debug|Any CPU.ActiveCfg = Debug
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.Debug|Any CPU.Build.0 = Debug
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.Pocket PC 2003 Release|Any CPU.ActiveCfg = Pocket PC 2003 Release
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.Pocket PC 2003 Release|Any CPU.Build.0 = Pocket PC 2003 Release
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.PRD|Any CPU.ActiveCfg = PRD
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.PRD|Any CPU.Build.0 = PRD
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.QA|Any CPU.ActiveCfg = QA
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.QA|Any CPU.Build.0 = QA
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.Release|Any CPU.ActiveCfg = Release
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.Release|Any CPU.Build.0 = Release
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.TST|Any CPU.ActiveCfg = TST
+		{16147D52-2AB1-44B0-A5CB-8D5F49A61C59}.TST|Any CPU.Build.0 = TST
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.Pocket PC 2003 Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.Pocket PC 2003 Release|Any CPU.Build.0 = Release|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.Pocket PC 2003 Release|Any CPU.Deploy.0 = Release|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.PRD|Any CPU.ActiveCfg = PRD|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.PRD|Any CPU.Build.0 = PRD|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.PRD|Any CPU.Deploy.0 = PRD|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.QA|Any CPU.Build.0 = QA|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.QA|Any CPU.Deploy.0 = QA|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.TST|Any CPU.ActiveCfg = TST|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.TST|Any CPU.Build.0 = TST|Any CPU
+		{2E631E9D-2963-42E7-943D-3088079FAF03}.TST|Any CPU.Deploy.0 = TST|Any CPU
+		{FC803578-D711-4357-8C6E-91201D77526D}.Debug|Any CPU.ActiveCfg = Debug
+		{FC803578-D711-4357-8C6E-91201D77526D}.Pocket PC 2003 Release|Any CPU.ActiveCfg = Release
+		{FC803578-D711-4357-8C6E-91201D77526D}.PRD|Any CPU.ActiveCfg = PRD
+		{FC803578-D711-4357-8C6E-91201D77526D}.QA|Any CPU.ActiveCfg = QA
+		{FC803578-D711-4357-8C6E-91201D77526D}.Release|Any CPU.ActiveCfg = Release
+		{FC803578-D711-4357-8C6E-91201D77526D}.TST|Any CPU.ActiveCfg = TST
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
