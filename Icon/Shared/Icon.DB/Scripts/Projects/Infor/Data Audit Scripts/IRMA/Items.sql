@@ -9,13 +9,14 @@ SELECT
 	ni.ClassID [National-Association],	
 	st.SubTeam_Name [Subteam],		
 	i.Package_Desc2 [Retail Size],		
-	iu.Unit_Abbreviation [UOM]
+	iu.Unit_Abbreviation [UOM],
+	CASE 
+		WHEN vsc.ScanCode is not null THEN '"FALSE"'
+		ELSE '"TRUE"'
+	END AS Validated
 FROM
 	Item i
 	JOIN ItemIdentifier			ii	ON i.Item_Key = ii.Item_Key
-											AND ii.Deleted_Identifier = 0
-											AND ii.Default_Identifier = 1
-	JOIN ValidatedScanCode		vsc ON ii.Identifier = vsc.ScanCode
 	JOIN ItemBrand				ib	ON i.Brand_ID = ib.Brand_ID
 	JOIN ValidatedBrand			vb	ON ib.Brand_ID = vb.IrmaBrandId
 	JOIN TaxClass				tc	ON i.TaxClassID = tc.TaxClassID
@@ -23,3 +24,9 @@ FROM
 	JOIN SubTeam				st	ON i.SubTeam_No = st.SubTeam_No
 	JOIN ItemUnit 				iu	ON i.Package_Unit_ID  = iu.Unit_ID
 	JOIN ItemUnit				ru	ON i.Retail_Unit_ID = ru.Unit_ID
+	LEFT JOIN ValidatedScanCode	vsc ON ii.Identifier = vsc.ScanCode
+WHERE i.Deleted_Item = 0
+	AND i.Remove_Item = 0
+	AND ii.Remove_Identifier = 0
+	AND ii.Deleted_Identifier = 0
+	AND ii.Default_Identifier = 1

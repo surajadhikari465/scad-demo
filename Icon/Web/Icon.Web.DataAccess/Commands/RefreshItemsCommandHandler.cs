@@ -57,7 +57,7 @@ namespace Icon.Web.DataAccess.Commands
                 Value = itemIds
             };
 
-            string sql = "EXEC app.GenerateItemUpdateMessages @updatedItemIDs";
+            string sql = "EXEC infor.GenerateItemUpdateMessages @updatedItemIDs";
             context.Database.ExecuteSqlCommand(sql, inputType);
         }
     }
