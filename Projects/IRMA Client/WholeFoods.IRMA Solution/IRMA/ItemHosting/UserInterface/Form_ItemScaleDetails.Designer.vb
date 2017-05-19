@@ -220,6 +220,12 @@ Partial Class Form_ItemScaleDetails
         Me.AllergensTab = New System.Windows.Forms.TabPage()
         Me.Allergens_GroupBox = New System.Windows.Forms.GroupBox()
         Me.AllergensTxt = New System.Windows.Forms.TextBox()
+        Me.StorageDataTab = New System.Windows.Forms.TabPage()
+        Me.Storage_GroupBox = New System.Windows.Forms.GroupBox()
+        Me.txtDescription = New System.Windows.Forms.TextBox()
+        Me.lblDescription = New System.Windows.Forms.Label()
+        Me.StorageDataTxt = New System.Windows.Forms.TextBox()
+        Me.lblStorageData = New System.Windows.Forms.Label()
         Me.UOM_GroupBox.SuspendLayout()
         CType(Me.ByCountNumericEditor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -297,6 +303,8 @@ Partial Class Form_ItemScaleDetails
         Me.Ingredients_GroupBox.SuspendLayout()
         Me.AllergensTab.SuspendLayout()
         Me.Allergens_GroupBox.SuspendLayout()
+        Me.StorageDataTab.SuspendLayout()
+        Me.Storage_GroupBox.SuspendLayout()
         Me.SuspendLayout()
         '
         'UOM_GroupBox
@@ -728,6 +736,7 @@ Partial Class Form_ItemScaleDetails
         Me.ScaleItemTabs.Controls.Add(Me.NutrifactsTab)
         Me.ScaleItemTabs.Controls.Add(Me.IngredientsTab)
         Me.ScaleItemTabs.Controls.Add(Me.AllergensTab)
+        Me.ScaleItemTabs.Controls.Add(Me.StorageDataTab)
         Me.ScaleItemTabs.Location = New System.Drawing.Point(9, 6)
         Me.ScaleItemTabs.Name = "ScaleItemTabs"
         Me.ScaleItemTabs.SelectedIndex = 0
@@ -3275,6 +3284,88 @@ Partial Class Form_ItemScaleDetails
         Me.AllergensTxt.Size = New System.Drawing.Size(663, 366)
         Me.AllergensTxt.TabIndex = 0
         '
+        'StorageDataTab
+        '
+        Me.StorageDataTab.BackColor = System.Drawing.SystemColors.Control
+        Me.StorageDataTab.Controls.Add(Me.Storage_GroupBox)
+        Me.StorageDataTab.Location = New System.Drawing.Point(4, 22)
+        Me.StorageDataTab.Name = "StorageDataTab"
+        Me.StorageDataTab.Padding = New System.Windows.Forms.Padding(3)
+        Me.StorageDataTab.Size = New System.Drawing.Size(907, 711)
+        Me.StorageDataTab.TabIndex = 4
+        Me.StorageDataTab.Text = "Storage Data"
+        '
+        'Storage_GroupBox
+        '
+        Me.Storage_GroupBox.BackColor = System.Drawing.SystemColors.Control
+        Me.Storage_GroupBox.Controls.Add(Me.txtDescription)
+        Me.Storage_GroupBox.Controls.Add(Me.lblDescription)
+        Me.Storage_GroupBox.Controls.Add(Me.StorageDataTxt)
+        Me.Storage_GroupBox.Controls.Add(Me.lblStorageData)
+        Me.Storage_GroupBox.Location = New System.Drawing.Point(4, 4)
+        Me.Storage_GroupBox.Margin = New System.Windows.Forms.Padding(4)
+        Me.Storage_GroupBox.Name = "Storage_GroupBox"
+        Me.Storage_GroupBox.Padding = New System.Windows.Forms.Padding(4)
+        Me.Storage_GroupBox.Size = New System.Drawing.Size(875, 450)
+        Me.Storage_GroupBox.TabIndex = 172
+        Me.Storage_GroupBox.TabStop = False
+        Me.Storage_GroupBox.Text = "Storage Data Record Details"
+        '
+        'txtDescription
+        '
+        Me.txtDescription.BackColor = System.Drawing.SystemColors.Window
+        Me.txtDescription.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.txtDescription.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.txtDescription.Location = New System.Drawing.Point(113, 26)
+        Me.txtDescription.MaxLength = 50
+        Me.txtDescription.Name = "txtDescription"
+        Me.txtDescription.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.txtDescription.Size = New System.Drawing.Size(310, 20)
+        Me.txtDescription.TabIndex = 168
+        Me.txtDescription.Tag = "String"
+        '
+        'lblDescription
+        '
+        Me.lblDescription.BackColor = System.Drawing.Color.Transparent
+        Me.lblDescription.Cursor = System.Windows.Forms.Cursors.Default
+        Me.lblDescription.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDescription.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblDescription.Location = New System.Drawing.Point(6, 29)
+        Me.lblDescription.Name = "lblDescription"
+        Me.lblDescription.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lblDescription.Size = New System.Drawing.Size(80, 17)
+        Me.lblDescription.TabIndex = 169
+        Me.lblDescription.Text = "Description :"
+        Me.lblDescription.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'StorageDataTxt
+        '
+        Me.StorageDataTxt.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.StorageDataTxt.Location = New System.Drawing.Point(113, 75)
+        Me.StorageDataTxt.Margin = New System.Windows.Forms.Padding(4)
+        Me.StorageDataTxt.MaxLength = 4200
+        Me.StorageDataTxt.Multiline = True
+        Me.StorageDataTxt.Name = "StorageDataTxt"
+        Me.StorageDataTxt.Size = New System.Drawing.Size(656, 333)
+        Me.StorageDataTxt.TabIndex = 167
+        '
+        'lblStorageData
+        '
+        Me.lblStorageData.BackColor = System.Drawing.Color.Transparent
+        Me.lblStorageData.Cursor = System.Windows.Forms.Cursors.Default
+        Me.lblStorageData.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblStorageData.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblStorageData.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblStorageData.Location = New System.Drawing.Point(6, 74)
+        Me.lblStorageData.Name = "lblStorageData"
+        Me.lblStorageData.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lblStorageData.Size = New System.Drawing.Size(90, 18)
+        Me.lblStorageData.TabIndex = 166
+        Me.lblStorageData.Text = "Storage Data :"
+        Me.lblStorageData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'Form_ItemScaleDetails
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
@@ -3378,6 +3469,9 @@ Partial Class Form_ItemScaleDetails
         Me.AllergensTab.ResumeLayout(False)
         Me.Allergens_GroupBox.ResumeLayout(False)
         Me.Allergens_GroupBox.PerformLayout()
+        Me.StorageDataTab.ResumeLayout(False)
+        Me.Storage_GroupBox.ResumeLayout(False)
+        Me.Storage_GroupBox.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3581,4 +3675,10 @@ Partial Class Form_ItemScaleDetails
     Public WithEvents Label1 As System.Windows.Forms.Label
     Public WithEvents ExtraTextSearchButton As System.Windows.Forms.Button
     Friend WithEvents ButtonNutrifactRemove As Button
+    Friend WithEvents StorageDataTab As TabPage
+    Friend WithEvents Storage_GroupBox As GroupBox
+    Friend WithEvents StorageDataTxt As TextBox
+    Public WithEvents lblStorageData As Label
+    Public WithEvents txtDescription As TextBox
+    Public WithEvents lblDescription As Label
 End Class

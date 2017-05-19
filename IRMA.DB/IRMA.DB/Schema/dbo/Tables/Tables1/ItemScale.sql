@@ -26,6 +26,7 @@
     [ShelfLife_Length]          SMALLINT     NULL,
     [Scale_Ingredient_ID]       INT          NULL,
     [Scale_Allergen_ID]         INT          NULL,
+    [Scale_StorageData_ID]	    INT          NULL,
     CONSTRAINT [PK_ItemScale] PRIMARY KEY CLUSTERED ([ItemScale_ID] ASC),
     CONSTRAINT [FK_ItemScale_ExtraText1] FOREIGN KEY ([Scale_ExtraText_ID]) REFERENCES [dbo].[Scale_ExtraText] ([Scale_ExtraText_ID]),
     CONSTRAINT [FK_ItemScale_Item] FOREIGN KEY ([Item_Key]) REFERENCES [dbo].[Item] ([Item_Key]),
@@ -38,7 +39,8 @@
     CONSTRAINT [FK_ItemScale_Scale_Tare2] FOREIGN KEY ([Scale_Tare_ID]) REFERENCES [dbo].[Scale_Tare] ([Scale_Tare_ID]),
     CONSTRAINT [FK_ItemScale_Scale_Tare3] FOREIGN KEY ([Scale_Alternate_Tare_ID]) REFERENCES [dbo].[Scale_Tare] ([Scale_Tare_ID]),
     CONSTRAINT [FK_ItemScale_ScaleAllergen] FOREIGN KEY ([Scale_Allergen_ID]) REFERENCES [dbo].[Scale_Allergen] ([Scale_Allergen_ID]),
-    CONSTRAINT [FK_ItemScale_ScaleIngredient] FOREIGN KEY ([Scale_Ingredient_ID]) REFERENCES [dbo].[Scale_Ingredient] ([Scale_Ingredient_ID])
+    CONSTRAINT [FK_ItemScale_ScaleIngredient] FOREIGN KEY ([Scale_Ingredient_ID]) REFERENCES [dbo].[Scale_Ingredient] ([Scale_Ingredient_ID]),
+	CONSTRAINT [FK_ItemScale_StorageData] FOREIGN KEY ([Scale_StorageData_ID]) REFERENCES [dbo].[Scale_StorageData] ([Scale_StorageData_ID])
 );
 
 
@@ -335,4 +337,3 @@ GO
 GRANT VIEW CHANGE TRACKING
     ON OBJECT::[dbo].[ItemScale] TO [iCONReportingRole]
     AS [dbo];
-
