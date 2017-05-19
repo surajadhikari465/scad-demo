@@ -33,7 +33,7 @@ BEGIN
 		INSERT INTO 
 		        PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
             SELECT 
-		        isc.Item_Key, 'A', s.Store_No
+		        isc.Item_Key, 'C', s.Store_No
             FROM 
 		        Inserted
 			INNER JOIN ItemScale isc ON isc.Scale_StorageData_ID = Inserted.Scale_StorageData_ID
@@ -47,26 +47,7 @@ BEGIN
 				AND NOT EXISTS (SELECT pq.item_key FROM PlumCorpChgQueue pq (NOLOCK) WHERE pq.Item_Key = isc.Item_Key AND pq.store_no = si.store_no AND pq.ActionCode like '[AC]') 
 				AND NOT EXISTS (SELECT pqt.item_key FROM PlumCorpChgQueueTmp pqt (NOLOCK) WHERE pqt.Item_Key = isc.Item_Key AND pqt.store_no = si.store_no AND pqt.ActionCode like '[AC]')
 				AND NOT EXISTS (SELECT icfs.Item_Key from ItemCustomerFacingScale icfs (NOLOCK) WHERE icfs.Item_Key = si.Item_Key)
-			UNION
-			-- for 365 stores --keeping it for future
-			SELECT 
-		        isc.Item_Key, 'C', s.Store_No
-            FROM 
-		        Inserted
-            INNER JOIN 
-				Deleted ON Deleted.Scale_StorageData_ID = Inserted.Scale_StorageData_ID
-			INNER JOIN ItemScale isc ON isc.Scale_StorageData_ID = Inserted.Scale_StorageData_ID
-            CROSS JOIN 
-				Store s
-            INNER JOIN 
-				StoreItem si ON si.Item_Key = isc.Item_Key AND si.Store_No = s.Store_No
-			INNER JOIN
-				ItemCustomerFacingScale icfs on icfs.Item_Key = si.Item_Key and icfs.SendToScale = 1
-			WHERE
-				s.Mega_Store = 1
-				AND si.Authorized = 1 
-				AND NOT EXISTS (SELECT pq.item_key FROM PlumCorpChgQueue pq (NOLOCK) WHERE pq.Item_Key = isc.Item_Key AND pq.store_no = si.store_no AND pq.ActionCode like '[AC]') 
-				AND NOT EXISTS (SELECT pqt.item_key FROM PlumCorpChgQueueTmp pqt (NOLOCK) WHERE pqt.Item_Key = isc.Item_Key AND pqt.store_no = si.store_no AND pqt.ActionCode like '[AC]')
+			
 			SELECT @Error_No = @@ERROR
 	END
 
@@ -90,6 +71,7 @@ BEGIN
     SELECT @Error_No = 0
 
 	-- Queue for PlumCorpChgQueue
+ IF UPDATE(StorageData)
 	BEGIN
 		INSERT INTO 
 		        PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
@@ -109,26 +91,7 @@ BEGIN
 				AND NOT EXISTS (SELECT pq.item_key FROM PlumCorpChgQueue pq (NOLOCK) WHERE pq.Item_Key = isc.Item_Key AND pq.store_no = si.store_no AND pq.ActionCode like '[AC]') 
 				AND NOT EXISTS (SELECT pqt.item_key FROM PlumCorpChgQueueTmp pqt (NOLOCK) WHERE pqt.Item_Key = isc.Item_Key AND pqt.store_no = si.store_no AND pqt.ActionCode like '[AC]')
 				AND NOT EXISTS (SELECT icfs.Item_Key from ItemCustomerFacingScale icfs (NOLOCK) WHERE icfs.Item_Key = si.Item_Key)
-			UNION
-			-- for 365 stores --keeping it for future
-			SELECT 
-		        isc.Item_Key, 'C', s.Store_No
-            FROM 
-		        Inserted
-            INNER JOIN 
-				Deleted ON Deleted.Scale_StorageData_ID = Inserted.Scale_StorageData_ID
-			INNER JOIN ItemScale isc ON isc.Scale_StorageData_ID = Inserted.Scale_StorageData_ID
-            CROSS JOIN 
-				Store s
-            INNER JOIN 
-				StoreItem si ON si.Item_Key = isc.Item_Key AND si.Store_No = s.Store_No
-			INNER JOIN
-				ItemCustomerFacingScale icfs on icfs.Item_Key = si.Item_Key and icfs.SendToScale = 1
-			WHERE
-				s.Mega_Store = 1
-				AND si.Authorized = 1 
-				AND NOT EXISTS (SELECT pq.item_key FROM PlumCorpChgQueue pq (NOLOCK) WHERE pq.Item_Key = isc.Item_Key AND pq.store_no = si.store_no AND pq.ActionCode like '[AC]') 
-				AND NOT EXISTS (SELECT pqt.item_key FROM PlumCorpChgQueueTmp pqt (NOLOCK) WHERE pqt.Item_Key = isc.Item_Key AND pqt.store_no = si.store_no AND pqt.ActionCode like '[AC]')
+			
 			SELECT @Error_No = @@ERROR
 	END
 
