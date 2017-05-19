@@ -3193,11 +3193,13 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_AddStorageDataToItem.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_UpdateStorageData.sql" />
     <None Include="Scripts\21451-SendAdditionalScaleItemAttributes\InsertDataIntoInstanceDataFlagsTable.RollBack.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21732 - PostDeploy Schema PopData - Add Storage Number and Storage Text POSDataElement.rollback.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20862 - PostDeploy Schema PopData - Add Infor ItemID to IRMA - 2.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20862 - PostDeploy Schema PopData - Add Infor ItemID to IRMA.rollback.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21732 - PostDeploy Schema PopData - Add Storage Number and Storage Text POSDataElement.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

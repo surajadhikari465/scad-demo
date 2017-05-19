@@ -578,7 +578,8 @@ BEGIN
 				NF.Molybdenum,
 				NF.Selenium,
 				NF.TransFatWeight,
-				Item.Retail_Sale
+				Item.Retail_Sale,
+				ssd.StorageData AS StorageText
 			FROM PLUMCorpChgQueueTmp QT (nolock)
 				INNER JOIN #Identifiers II
 					ON II.Item_Key = QT.Item_Key  
@@ -615,7 +616,9 @@ BEGIN
 				LEFT JOIN ItemUnit PU (nolock)
 					ON PU.Unit_ID = Item.Package_Unit_ID
 				LEFT JOIN ItemUnit ScaleUOM (nolock)
-					ON ScaleUOM.Unit_ID = ItemScale.Scale_ScaleUOMUnit_ID	
+					ON ScaleUOM.Unit_ID = ItemScale.Scale_ScaleUOMUnit_ID
+				LEFT JOIN Scale_StorageData ssd (nolock)
+					ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
 			WHERE 
 				(@ActionCode <> 'A' AND ActionCode = @ActionCode) OR
 				(@ActionCode  = 'A' AND (ActionCode = 'A' OR ActionCode = 'S')) -- add records include authorizations
@@ -705,7 +708,8 @@ BEGIN
 				ItemScale.Scale_ByCount,
 				Scale_Grade.Zone1 AS Grade,
 				CAST(Scale_LabelStyle.Description AS VARCHAR(5)) + ',' + CAST(Scale_LabelStyle.Description AS VARCHAR(5)) + ','+ CAST(Scale_LabelStyle.Description AS VARCHAR(5)) AS [Digi_LNU],
-				Item.Retail_Sale
+				Item.Retail_Sale,
+				ssd.StorageData AS StorageText
 			FROM PLUMCorpChgQueueTmp QT (nolock)
 				INNER JOIN #Identifiers II
 					ON II.Item_Key = QT.Item_Key 					
@@ -738,6 +742,8 @@ BEGIN
 				LEFT JOIN StoreItem SI (nolock)
 					ON SI.Item_Key = Item.Item_Key AND
 					   SI.Store_No = Store.Store_No
+				LEFT JOIN Scale_StorageData ssd (nolock)
+					ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
 			WHERE ((@ActionCode <> 'A' AND ActionCode = @ActionCode) OR
 				   (@ActionCode  = 'A' AND (ActionCode = 'A' OR ActionCode = 'S')))  -- add records include authorizations
 				AND ((@ActionCode <> 'F') OR
@@ -991,7 +997,8 @@ BEGIN
 					NF.Molybdenum,
 					NF.Selenium,
 					NF.TransFatWeight,
-					Item.Retail_Sale
+					Item.Retail_Sale,
+					ssd.StorageData AS StorageText
 				FROM 
 					PLUMCorpChgQueueTmp QT (nolock)
 					INNER JOIN #Identifiers II
@@ -1074,6 +1081,8 @@ BEGIN
 						ON PU.Unit_ID = Item.Package_Unit_ID
 					LEFT JOIN ItemUnit PU_Override (nolock)
 						ON PU_Override.Unit_ID = ItemOverride.Package_Unit_ID
+					LEFT JOIN Scale_StorageData ssd (nolock)
+						ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
 				WHERE 
 					(ActionCode = 'A' OR ActionCode = 'S') -- adds include authorizations
 					AND QT.Store_No = NIB.Store_No
@@ -1320,7 +1329,8 @@ BEGIN
 					NF.Molybdenum,
 					NF.Selenium,
 					NF.TransFatWeight,
-					Item.Retail_Sale
+					Item.Retail_Sale,
+					ssd.StorageData AS StorageText
 				FROM PLUMCorpChgQueueTmp QT (nolock)
 					INNER JOIN #Identifiers II
 						ON II.Item_Key = QT.Item_Key  
@@ -1403,6 +1413,8 @@ BEGIN
 						ON PU.Unit_ID = Item.Package_Unit_ID
 					LEFT JOIN ItemUnit PU_Override (nolock)
 						ON PU_Override.Unit_ID = ItemOverride.Package_Unit_ID
+					LEFT JOIN Scale_StorageData ssd (nolock)
+						ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
 				WHERE 
 					((@ActionCode <> 'A' AND ActionCode = @ActionCode) OR
 					(@ActionCode  = 'A' AND (ActionCode = 'A' OR ActionCode = 'S'))) -- adds include authorizations

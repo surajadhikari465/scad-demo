@@ -209,7 +209,8 @@
     [Scale_LabelType_ID]                                                    VARCHAR (50)   NULL,
     [NewRegPrice]                                                           MONEY          NULL,
     [RegPriceChanging]                                                      BIT            CONSTRAINT [DF_RegPriceChanging] DEFAULT ((0)) NOT NULL,
-    [PriceBatchDetailID]                                                    INT            NULL
+    [PriceBatchDetailID]                                                    INT            NULL,
+    [StorageText]                                                           VARCHAR (1024) NULL
 );
 
 

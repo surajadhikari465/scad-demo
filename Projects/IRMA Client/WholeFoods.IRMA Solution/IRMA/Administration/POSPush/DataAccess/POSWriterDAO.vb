@@ -154,6 +154,7 @@ Namespace WholeFoods.IRMA.Administration.POSPush.DataAccess
         Public Shared Function GetWriterFileConfigurationsByRowAndCol(ByRef currentWriter As POSWriterBO, ByRef currentChangeType As POSChangeTypeBO, ByVal selectedRowNum As Integer, Optional ByVal selectedColumnNum As Integer = 0) As DataSet
             Return GetWriterFileConfigurationsByRowAndCol(currentWriter.POSFileWriterKey, currentChangeType.POSChangeTypeKey, selectedRowNum, selectedColumnNum)
         End Function
+
         ''' <summary>
         ''' Read the POS Writer configuration data from the POSWriterFileConfig table for the
         ''' given writer, change type, and row combination.

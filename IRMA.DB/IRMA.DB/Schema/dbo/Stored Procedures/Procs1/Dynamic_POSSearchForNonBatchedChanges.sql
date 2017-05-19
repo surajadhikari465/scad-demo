@@ -823,7 +823,8 @@ select @SQL = @SQL + '
 			ELSE ItemScale.Nutrifact_ID END AS Nutrifact_ID,
 		I.GiftCard,
 		NULL AS CancelAllSales,
-		0 AS PriceBatchDetailID
+		0 AS PriceBatchDetailID,
+		ssd.StorageData AS StorageText
 FROM dbo.Price P 
 INNER JOIN
 	dbo.Item I 
@@ -1102,7 +1103,9 @@ INNER JOIN
 	ON PCT.PriceChgTypeID = ISNULL(PBD.PriceChgTypeID, P.PriceChgTypeID)
 LEFT JOIN
 	PricingMethod PM 
-	ON PBD.PricingMethod_ID = PM.PricingMethod_ID	
+	ON PBD.PricingMethod_ID = PM.PricingMethod_ID
+LEFT JOIN Scale_StorageData ssd (nolock)
+	ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
 WHERE 
     (Mega_Store = 1 OR WFM_Store = 1) 
     AND (

@@ -586,7 +586,8 @@ INSERT INTO PosPushStagingPriceBatchDetail
 	[Scale_LabelType_ID],
 	[Scale_LabelStyle_Desc],
 	[NewRegPrice],
-	[RegPriceChanging]
+	[RegPriceChanging],
+	[StorageText]
 )
 
 --------------------------------------------------------------------------------------------------------------
@@ -1018,7 +1019,8 @@ SELECT
 	PBD.Scale_LabelType_ID,
 	PBD.Scale_LabelStyle_Desc,
 	CASE WHEN (dbo.fn_OnSale(ISNULL(PBH.PriceChgTypeID, PBD.PriceChgTypeID)) = 1 AND PBD.NewRegPrice IS NOT NULL) THEN PBD.NewRegPrice ELSE NULL END AS NewRegPrice,
-	CASE WHEN PBD.NewRegPrice IS NULL THEN 0 ELSE 1 END AS RegPriceChanging
+	CASE WHEN PBD.NewRegPrice IS NULL THEN 0 ELSE 1 END AS RegPriceChanging,
+	PBD.StorageText
 FROM (
 		--THIS QUERY RETURNS DATA FROM PRICE BATCH DETAIL;  THESE RECORDS ARE THE REGULAR BATCHED UP ITEM RECORDS W/ NO 
 		--SPECIAL FILTER ON THE RESULT SET
@@ -1156,7 +1158,8 @@ FROM (
 			Scale_LabelStyle.[Description] AS Scale_LabelStyle_Desc,
 			CASE WHEN (D.Price <> Price.Price) THEN D.Price ELSE NULL END AS NewRegPrice,
 			icfs.CustomerFacingScaleDepartment,
-			icfs.SendToScale
+			icfs.SendToScale,
+			ssd.StorageData AS StorageText
 		FROM 
 			PriceBatchDetail D 
 			INNER JOIN Price ON D.Item_Key = Price.Item_Key AND D.Store_No = Price.Store_No
@@ -1182,6 +1185,7 @@ FROM (
 				PriceChgType PCT_Change ON PCT_Change.PriceChgTypeID = D.PriceChgTypeID
 			LEFT JOIN -- If the PriceChgTypeID for the PBD record is NULL, the value in the Price table is used to determine the PriceChgType data
 				PriceChgType PCT_Current ON PCT_Current.PriceChgTypeID = Price.PriceChgTypeID
+			LEFT JOIN Scale_StorageData ssd (nolock) ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
 		WHERE 
 			D.Expired = 0
 	) PBD	  
