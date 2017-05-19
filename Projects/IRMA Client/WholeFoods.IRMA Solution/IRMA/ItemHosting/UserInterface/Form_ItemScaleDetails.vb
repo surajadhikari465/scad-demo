@@ -1,3 +1,5 @@
+
+
 Option Strict Off
 
 Imports System.Text
@@ -1681,24 +1683,20 @@ Imports log4net
             Return isSuccessful
         End If
 
-        If IsStorageDataInputValid() Then
-            StorageDataBO.ID = Me.ScaleStorageDataID
-            StorageDataBO.StorageData = StorageDataTxt.Text.Trim()
-            StorageDataBO.Description = txtDescription.Text
+        StorageDataBO.ID = Me.ScaleStorageDataID
+        StorageDataBO.StorageData = StorageDataTxt.Text.Trim()
+        StorageDataBO.Description = txtDescription.Text
 
-            If addStorageData = True Then
-                ScaleStorageDataDAO.AddStorageDataToItem(ItemKey, StorageDataBO)
-                StorageDataBO = ScaleStorageDataDAO.GetStorageDataByItem(glItemID)
-                Me.ScaleStorageDataID = StorageDataBO.ID
-                addStorageData = False
-            Else
-                ScaleStorageDataDAO.UpdateStorageData(StorageDataBO)
-            End If
-
-            isSuccessful = True
+        If addStorageData = True And Not (String.IsNullOrEmpty(StorageDataBO.StorageData)) Then
+            ScaleStorageDataDAO.AddStorageDataToItem(ItemKey, StorageDataBO)
+            StorageDataBO = ScaleStorageDataDAO.GetStorageDataByItem(glItemID)
+            Me.ScaleStorageDataID = StorageDataBO.ID
+            addStorageData = False
         Else
-            MessageBox.Show("Storage Data cannot be empty.")
+            ScaleStorageDataDAO.UpdateStorageData(StorageDataBO)
         End If
+
+        isSuccessful = True
 
         Return isSuccessful
     End Function
@@ -1791,10 +1789,6 @@ Imports log4net
 
     Private Function IsAllergensInputValid() As Boolean
         Return Not String.IsNullOrWhiteSpace(AllergensTxt.Text)
-    End Function
-
-    Private Function IsStorageDataInputValid() As Boolean
-        Return Not String.IsNullOrWhiteSpace(StorageDataTxt.Text)
     End Function
 
     Private Sub AllergensDescriptionTxt_TextChanged(sender As Object, e As EventArgs)
