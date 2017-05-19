@@ -3192,6 +3192,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_GetStorageDataByItem.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_AddStorageDataToItem.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_UpdateStorageData.sql" />
+    <None Include="Scripts\21451-SendAdditionalScaleItemAttributes\InsertDataIntoInstanceDataFlagsTable.RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

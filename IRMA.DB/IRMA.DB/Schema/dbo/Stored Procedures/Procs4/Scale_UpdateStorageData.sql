@@ -15,7 +15,3 @@ GRANT EXECUTE
     ON OBJECT::[dbo].[Scale_UpdateStorageData] TO [IRMAClientRole]
     AS [dbo];
 GO
-
-GRANT EXECUTE
-    ON OBJECT::[dbo].[Scale_UpdateStorageData] TO [IRSUser]
-    AS [dbo];

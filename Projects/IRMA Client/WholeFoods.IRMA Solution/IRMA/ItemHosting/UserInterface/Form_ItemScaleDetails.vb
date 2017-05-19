@@ -33,7 +33,6 @@ Imports log4net
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
 
     Dim WithEvents itemScaleOverride As Form_ItemScaleDetailsOverride
-    Private this As Object
 
 #Region "Constructor"
 
