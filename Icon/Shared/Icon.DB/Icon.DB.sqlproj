@@ -225,7 +225,6 @@
     <Build Include="app\Tables\IRMAPush.sql" />
     <Build Include="app\Tables\MessageQueueProduct.sql" />
     <Build Include="app\Tables\MessageQueueHierarchy.sql" />
-    <Build Include="app\Stored Procedures\GenerateItemUpdateMessages.sql" />
     <Build Include="app\Tables\MessageAction.sql" />
     <Build Include="app\Stored Procedures\BulkItemAdd.sql" />
     <Build Include="app\Tables\MessageQueueLocale.sql" />
