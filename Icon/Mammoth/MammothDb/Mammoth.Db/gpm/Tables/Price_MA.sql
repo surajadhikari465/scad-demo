@@ -9,11 +9,12 @@
        [Price] [smallmoney] NOT NULL,
        [PriceType] [nvarchar](3) NOT NULL,
        [PriceTypeAttribute] [nvarchar](10) NOT NULL,
-       [PriceUOM] [nvarchar](3) NOT NULL,
-       [CurrencyID] [int] NOT NULL,
+       [SellableUOM] [nvarchar](3) NOT NULL,
+       [CurrencyCode] [nvarchar](3) NOT NULL,
        [Multiple] [tinyint] NOT NULL,
        [NewTagExpiration] [datetime2](7) NULL,
-       [AddedDate] [datetime2](7) NOT NULL DEFAULT (getdate())
+       [InsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME()),
+	   [ModifiedDateUtc] [datetime2](7) NULL
 	   CONSTRAINT [PK_GpmPrice_MA] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC, [BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC) WITH (FILLFACTOR = 100) ON [FG_MA]
 ) ON [FG_MA]
 GO
@@ -23,7 +24,47 @@ CREATE CLUSTERED INDEX [CIX_GpmPrice_MA]
     ON [FG_MA];
 GO
 
-CREATE NONCLUSTERED INDEX [IX_GpmPrice_GpmIdGuid_MA]
-	ON [gpm].[Price_MA] (GpmID ASC) WITH (FILLFACTOR = 100)
-	ON [FG_MA];
-GO
+CREATE TRIGGER [gpm].[Trigger_Price_MA]
+    ON [gpm].[Price_MA]
+    FOR DELETE, UPDATE
+    AS
+    BEGIN
+
+		INSERT INTO [gpm].[PriceHistory]
+		(
+			Region,
+			PriceID,
+			GpmID,
+			ItemID,
+			BusinessUnitID,
+			StartDate,
+			EndDate,
+			Price,
+			PriceType,
+			PriceTypeAttribute,
+			SellableUOM,
+			CurrencyCode,
+			Multiple,
+			NewTagExpiration,
+			InsertDateUtc
+		)
+		SELECT
+			Region,
+			PriceID,
+			GpmID,
+			ItemID,
+			BusinessUnitID,
+			StartDate,
+			EndDate,
+			Price,
+			PriceType,
+			PriceTypeAttribute,
+			SellableUOM,
+			CurrencyCode,
+			Multiple,
+			NewTagExpiration,
+			InsertDateUtc
+		FROM deleted
+
+        SET NoCount ON
+    END

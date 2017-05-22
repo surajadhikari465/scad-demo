@@ -14,4 +14,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="InsertDate" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="cde869e0-10f6-4493-8508-9e80b3401779" ChangeDateTime="05/18/2017 15:41:15">
+    <Property Name="ElementName" Value="[gpm].[Price_FL].[CurrencyID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[Price_FL]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CurrencyCode" />
+  </Operation>
 </Operations>

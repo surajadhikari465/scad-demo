@@ -643,9 +643,11 @@
       <AnsiNulls>On</AnsiNulls>
     </Build>
     <Build Include="dbo\Views\Locale.sql" />
-    <Build Include="gpm\Tables\DeletedPrices.sql" />
-    <Build Include="gpm\Tables\MessageArchivePrice.sql" />
+    <Build Include="gpm\Tables\PriceHistory.sql" />
+    <Build Include="gpm\Tables\MessageDetailArchivePrice.sql" />
     <Build Include="app\Tables\DbStatus.sql" />
+    <Build Include="gpm\Tables\MessageSequence.sql" />
+    <Build Include="gpm\Tables\MessageSequenceHistory.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
