@@ -128,6 +128,7 @@
     <Folder Include="Scripts\PopulateData\PreDeploy.Scripts" />
     <Folder Include="Scripts\19916-Populate-HealthYEatingRatingIrma" />
     <Folder Include="Scripts\21451-SendAdditionalScaleItemAttributes" />
+    <Folder Include="Scripts\16278-NationalHierarchyScripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3194,6 +3195,12 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_UpdateStorageData.sql" />
     <None Include="Scripts\21451-SendAdditionalScaleItemAttributes\InsertDataIntoInstanceDataFlagsTable.RollBack.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21732 - PostDeploy Schema PopData - Add Storage Number and Storage Text POSDataElement.rollback.sql" />
+    <None Include="Scripts\16278-NationalHierarchyScripts\AddIdentityColumnToNationalClassTables_5.sql" />
+    <None Include="Scripts\16278-NationalHierarchyScripts\BackUp_NationalClassTables_ForRollBack_1.sql" />
+    <None Include="Scripts\16278-NationalHierarchyScripts\Cleanup National Classes Script_2.sql" />
+    <None Include="Scripts\16278-NationalHierarchyScripts\CreateTable-ValidatedNationalClass_3.sql" />
+    <None Include="Scripts\16278-NationalHierarchyScripts\NationalClassUpdates_RollBack_6.sql" />
+    <None Include="Scripts\16278-NationalHierarchyScripts\Update National Classes in IRMA _4.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
