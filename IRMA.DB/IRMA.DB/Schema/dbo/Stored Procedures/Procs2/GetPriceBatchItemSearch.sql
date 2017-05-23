@@ -89,12 +89,19 @@ BEGIN
 								Store_No int PRIMARY KEY CLUSTERED, 
 								Store_Name varchar(50),
 								StoreJurisdictionID int,
-								Allow4648ItemBatching bit
+								BatchUnvalidatedIngredients bit
 							)
 	
-	INSERT INTO @tblStoreList (Store_No, Store_Name, StoreJurisdictionID, Allow4648ItemBatching)
-	SELECT DISTINCT 
-		S.Store_No, RTRIM(S.Store_Name), S.StoreJurisdictionID, dbo.fn_InstanceDataValue('AllowBatchingOfNonvalidated46And48Items', S.Store_No)
+	INSERT INTO @tblStoreList (
+		Store_No,
+		Store_Name,
+		StoreJurisdictionID,
+		BatchUnvalidatedIngredients)
+	SELECT DISTINCT
+		S.Store_No,
+		RTRIM(S.Store_Name),
+		S.StoreJurisdictionID,
+		ISNULL(dbo.fn_InstanceDataValue('BatchNonValidatedIngredients', S.Store_No), 0)
 	FROM 
 		Store S (NOLOCK)
 		INNER JOIN dbo.fn_Parse_List(@StoreList, @StoreListSeparator) LIST ON LIST.Key_Value = S.Store_No
@@ -110,7 +117,8 @@ BEGIN
 	(
 	Id			INT,
 	ScanCode	VARCHAR(13),
-	InsertDate	DATETIME
+	InsertDate	DATETIME,
+	Validated	BIT
 	)
 
 	-- Check the app config value of ReceiveUPCPLUFromIcon
@@ -118,75 +126,77 @@ BEGIN
 	SET @Status = dbo.fn_ReceiveUPCPLUUpdateFromIcon()
 	
 	IF @Status = 0 -- Validated UPC & PLU flags have not been turned on for the region.
-		BEGIN
-			INSERT INTO #ValidatedScanCode
-			SELECT II.Item_Key AS Id, II.Identifier AS ScanCode, GETDATE() AS InsertDate 
-			FROM ItemIdentifier II (NOLOCK) INNER JOIN Item I (NOLOCK)
-			ON I.Item_Key = II.Item_Key 
-			WHERE I.Retail_Sale = CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END
-			
-		END
+	BEGIN
+		INSERT INTO #ValidatedScanCode
+		SELECT II.Item_Key AS Id, II.Identifier AS ScanCode, GETDATE() AS InsertDate, 1 AS Validated 
+		FROM ItemIdentifier II (NOLOCK) 
+			INNER JOIN Item I (NOLOCK) ON I.Item_Key = II.Item_Key 
+		WHERE  I.SubTeam_No = ISNULL(@SubTeam_No, I.SubTeam_No)
+				AND I.Deleted_Item=0 AND II.Deleted_Identifier=0 AND
+				I.Retail_Sale = CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END
+	END
 	ELSE
-		IF @Status = 1 -- Only validated UPCs are passing from Icon to IRMA
-			BEGIN
-				INSERT INTO #ValidatedScanCode			
-				SELECT VSC.Id, VSC.ScanCode, VSC.InsertDate
-				FROM ItemIdentifier II (NOLOCK) INNER JOIN ValidatedScanCode VSC (NOLOCK)
-				ON II.Identifier = VSC.ScanCode
-				INNER JOIN Item I (NOLOCK)
-				ON I.Item_Key = II.Item_Key
-				WHERE I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END)
-				UNION
-				SELECT II.Item_Key AS Id, II.Identifier AS ScanCode, GETDATE() AS InsertDate
-				FROM ItemIdentifier II (NOLOCK) INNER JOIN Item I (NOLOCK)
-				ON I.Item_Key = II.Item_Key
-				WHERE I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END) AND (LEN(Identifier) < 7 OR Identifier LIKE '2%00000')
-				UNION
-				SELECT II.Item_Key AS Id, II.Identifier AS ScanCode, GETDATE() AS InsertDate
-				FROM Item I (NOLOCK) INNER JOIN ItemIdentifier II (NOLOCK)
-				ON I.Item_Key = II.Item_Key
-				WHERE (I.Remove_Item = 1 OR II.Remove_Identifier = 1) AND I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END)
-				
-			END
-		ELSE
-			IF @Status = 2 -- Only validated PLUs are passing from Icon to IRMA
-				BEGIN
-					INSERT INTO #ValidatedScanCode			
-					SELECT VSC.Id, VSC.ScanCode, VSC.InsertDate
-					FROM ItemIdentifier II (NOLOCK) INNER JOIN ValidatedScanCode VSC (NOLOCK)
-					ON II.Identifier = VSC.ScanCode
-					INNER JOIN Item I (NOLOCK) 
-					ON I.Item_Key = II.Item_Key 
-					WHERE I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END) AND (LEN(Identifier) < 7 OR Identifier LIKE '2%00000')
-					UNION
-					SELECT II.Item_Key AS Id, II.Identifier AS ScanCode, GETDATE() AS InsertDate
-					FROM ItemIdentifier II (NOLOCK) INNER JOIN Item I (NOLOCK)
-					ON I.Item_Key = II.Item_Key 
-					WHERE I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END) AND (NOT (LEN(Identifier) < 7 OR Identifier LIKE '2%00000'))
-					UNION
-					SELECT II.Item_Key AS Id, II.Identifier AS ScanCode, GETDATE() AS InsertDate
-					FROM Item I (NOLOCK) INNER JOIN ItemIdentifier II (NOLOCK)
-					ON I.Item_Key = II.Item_Key
-					WHERE (I.Remove_Item = 1 OR II.Remove_Identifier = 1) AND I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END)
-				
-				END
-			ELSE 
-				IF @Status = 3 -- Both Validated UPC & PLU are passing from Icon to IRMA
-					BEGIN				
-						INSERT INTO #ValidatedScanCode					
-						SELECT VSC.Id, VSC.ScanCode, VSC.InsertDate
-						FROM ValidatedScanCode VSC (NOLOCK)
-						UNION
-						SELECT II.Item_Key AS Id, II.Identifier AS ScanCode, GETDATE() AS InsertDate
-						FROM Item I (NOLOCK) INNER JOIN ItemIdentifier II (NOLOCK)
-						ON I.Item_Key = II.Item_Key
-						WHERE (I.Remove_Item = 1 OR II.Remove_Identifier = 1) AND I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END)
-						UNION -- Include all the non-retail items
-						SELECT II.Item_Key AS Id, II.Identifier AS ScanCode, GETDATE() AS InsertDate
-						FROM Item I (NOLOCK) INNER JOIN ItemIdentifier II (NOLOCK)
-						ON I.Item_Key = II.Item_Key
-						WHERE (I.Remove_Item = 0 AND I.Deleted_Item = 0 AND II.Remove_Identifier = 0) AND I.Retail_Sale = 0
-					END	
+	IF @Status = 1 -- Only validated UPCs are passing from Icon to IRMA
+	BEGIN
+		INSERT INTO #ValidatedScanCode
+		SELECT
+			CASE WHEN VSC.Id IS NULL THEN II.Item_Key ELSE VSC.Id END AS Id,
+			CASE WHEN VSC.ScanCode IS NULL THEN II.Identifier ELSE VSC.ScanCode END AS ScanCode,
+			CASE WHEN VSC.InsertDate IS NULL THEN GETDATE() ELSE VSC.InsertDate END AS InsertDate,
+			CASE WHEN VSC.ScanCode IS NULL THEN 0 ELSE 1 END AS Validated
+		FROM ItemIdentifier II (NOLOCK) 
+			LEFT OUTER JOIN ValidatedScanCode VSC (NOLOCK) ON VSC.ScanCode=II.Identifier
+			INNER JOIN Item I (NOLOCK) ON I.Item_Key = II.Item_Key
+		WHERE I.SubTeam_No = ISNULL(@SubTeam_No, I.SubTeam_No) AND (
+			(VSC.Id IS NOT NULL AND I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END))
+			OR (VSC.Id IS NULL AND I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END) 
+				AND (LEN(Identifier) < 7 OR Identifier LIKE '2%00000'))
+			OR ( VSC.Id IS NULL AND I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END) 
+				AND (I.Remove_Item = 1 OR II.Remove_Identifier = 1)))
+	END
+	ELSE
+	IF @Status = 2 -- Only validated PLUs are passing from Icon to IRMA
+	BEGIN
+		INSERT INTO #ValidatedScanCode
+		SELECT
+			CASE WHEN VSC.Id IS NULL THEN II.Item_Key ELSE VSC.Id END AS Id,
+			CASE WHEN VSC.ScanCode IS NULL THEN II.Identifier ELSE VSC.ScanCode END AS ScanCode,
+			CASE WHEN VSC.InsertDate IS NULL THEN GETDATE() ELSE VSC.InsertDate END AS InsertDate,
+			CASE WHEN VSC.ScanCode IS NULL THEN 0 ELSE 1 END AS Validated
+		FROM ItemIdentifier II (NOLOCK) 
+			LEFT OUTER JOIN ValidatedScanCode VSC (NOLOCK) ON VSC.ScanCode=II.Identifier
+			INNER JOIN Item I (NOLOCK) ON I.Item_Key = II.Item_Key
+		WHERE (I.SubTeam_No = ISNULL(@SubTeam_No, I.SubTeam_No)
+				AND I.Deleted_Item=0 AND II.Deleted_Identifier=0) AND ( 	
+				( I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END) 
+					AND (LEN(Identifier) < 7 OR Identifier LIKE '2%00000') AND VSC.Id IS NOT NULL)
+				OR ( I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END) 
+					AND (NOT (LEN(Identifier) < 7 OR Identifier LIKE '2%00000')))
+				OR ( I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END) 
+					AND (I.Remove_Item = 1 OR II.Remove_Identifier = 1 )))
+	END
+	ELSE 
+	IF @Status = 3 -- Both Validated UPC & PLU are passing from Icon to IRMA
+	BEGIN				
+		INSERT INTO #ValidatedScanCode
+		SELECT
+			CASE WHEN VSC.Id IS NULL THEN II.Item_Key ELSE VSC.Id END AS Id,
+			CASE WHEN VSC.ScanCode IS NULL THEN II.Identifier ELSE VSC.ScanCode END AS ScanCode,
+			CASE WHEN VSC.InsertDate IS NULL THEN GETDATE() ELSE VSC.InsertDate END AS InsertDate,
+			CASE WHEN VSC.ScanCode IS NULL THEN 0 ELSE 1 END AS Validated
+		FROM ItemIdentifier II  (NOLOCK)
+			LEFT OUTER JOIN ValidatedScanCode VSC (NOLOCK) ON VSC.ScanCode=II.Identifier
+			LEFT OUTER JOIN Item I (NOLOCK) ON I.Item_Key = II.Item_Key
+		WHERE ( I.SubTeam_No = ISNULL(@SubTeam_No, I.SubTeam_No)
+				AND I.Deleted_Item=0 AND II.Deleted_Identifier=0)
+			OR ( I.SubTeam_No = ISNULL(@SubTeam_No, I.SubTeam_No) 
+				AND (I.Remove_Item = 1 OR II.Remove_Identifier = 1)
+				AND I.Retail_Sale = (CASE WHEN @IncNonRetailItems = 0 THEN 1 ELSE I.Retail_Sale END)
+				AND I.Deleted_Item=0 AND II.Deleted_Identifier=0) 
+			OR ( I.SubTeam_No = ISNULL(@SubTeam_No, I.SubTeam_No)
+				AND II.Remove_Identifier = 0 AND II.Deleted_Identifier=0
+				AND I.Remove_Item = 0 AND I.Deleted_Item = 0 AND I.Retail_Sale = 0)
+	END	
 	
 	-----------------------------------
 	-- Return the search data
@@ -208,13 +218,10 @@ BEGIN
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 0, 
 			[ItemChgTypeDesc] = 'PRC',
-			CASE
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
-					AND (CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 46000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 46999999999
-					  OR CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 48000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 48999999999)
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -275,9 +282,10 @@ BEGIN
 		
 		ORDER BY 
 			VSC.Id, CONVERT(bigint, ISNULL(PBD.Identifier, I.Identifier)), S.Store_Name 
-
-	ELSE IF @ItemChgTypeID = 5 -- Price Changes (include item changes)
-        SELECT TOP(@MaxRows) 
+	
+	ELSE IF @ItemChgTypeID = 5 -- Price Changes (include item changes
+	---------------------------------------------------------------------------------------------------)
+		SELECT TOP(@MaxRows) 
 			S.Store_No,
 			S.Store_Name, 
 			[Identifier] = ISNULL(PBD.Identifier, I.Identifier),
@@ -291,13 +299,10 @@ BEGIN
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 0, 
 			[ItemChgTypeDesc] = 'PRC',
-			CASE
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
-					AND (CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 46000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 46999999999
-					  OR CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 48000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 48999999999)
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -374,13 +379,10 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 1, 
 			[ItemChgTypeDesc] = 'NEW',
-			CASE
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
-					AND (CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 46000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 46999999999
-					  OR CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 48000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 48999999999)
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -484,13 +486,10 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 2, 
 			[ItemChgTypeDesc] = 'ITM',
-			CASE
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
-					AND (CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 46000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 46999999999
-					  OR CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) >= 48000000000 AND CONVERT(FLOAT, ISNULL(PBD.Identifier, I.Identifier)) <= 48999999999)
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -571,13 +570,10 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 3, 
 			[ItemChgTypeDesc] = 'DEL',
-			CASE
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
-					AND ((CONVERT(FLOAT, details.Identifier) >= 46000000000 AND CONVERT(FLOAT, details.Identifier) <= 46999999999) 
-					  OR (CONVERT(FLOAT, details.Identifier) >= 48000000000 AND CONVERT(FLOAT, details.Identifier) <= 48999999999))
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -635,16 +631,13 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 4, 
 			[ItemChgTypeDesc] = 'OFR',
-			CASE
-				WHEN details.PriceChgTypeID IS NOT NULL AND details.Retail_Sale = 0 AND details.Allow4648ItemBatching = 0 
-					AND ((CONVERT(FLOAT, details.Identifier) >= 46000000000 AND CONVERT(FLOAT, details.Identifier) <= 46999999999) 
-					  OR (CONVERT(FLOAT, details.Identifier) >= 48000000000 AND CONVERT(FLOAT, details.Identifier) <= 48999999999))
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND details.BatchUnvalidatedIngredients = 0 AND details.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, details.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, details.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			(SELECT 
-				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID, S.Allow4648ItemBatching, I.Retail_Sale
+				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID, S.BatchUnvalidatedIngredients, I.Retail_Sale
 			FROM 
 				@tblStoreList S
 				INNER JOIN PriceBatchDetail PBD (NOLOCK) ON PBD.Store_No = S.Store_No
@@ -669,8 +662,9 @@ UNION
 			LEFT JOIN PriceChgType PCT1 (NOLOCK) ON PCT1.PriceChgTypeID = details.PriceChgTypeId
 			LEFT JOIN #ValidatedScanCode VSC ON details.Identifier = VSC.ScanCode 
 		GROUP BY 
-			Store_No, Store_Name, Identifier, Item_Description, StartDate, Sale_End_Date, Offer_Id, Brand_Name, PCT1.PriceChgTypeID, PCT1.PriceChgTypeDesc, VSC.Id
-
+			Store_No, Store_Name, Identifier, Item_Description, StartDate, Sale_End_Date, Offer_Id, Brand_Name, PCT1.PriceChgTypeID,
+					PCT1.PriceChgTypeDesc, VSC.Id, details.PriceChgTypeID, details.BatchUnvalidatedIngredients, details.Retail_Sale, VSC.Validated
+	
 	ELSE IF @ItemChgTypeID = 1 -- New or Re-Auth Items
 	----------------------------------------------------------------------------------------------------
         SELECT TOP(@MaxRows) 
@@ -687,13 +681,10 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 1, 
 			[ItemChgTypeDesc] = 'NEW',
-			CASE
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
-					AND ((CONVERT(FLOAT, I.Identifier) >= 46000000000 AND CONVERT(FLOAT, I.Identifier) <= 46999999999) 
-					  OR (CONVERT(FLOAT, I.Identifier) >= 48000000000 AND CONVERT(FLOAT, I.Identifier) <= 48999999999))
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -786,7 +777,7 @@ UNION
 
 	ELSE IF @ItemChgTypeID = 2 -- Item Changes only
 	----------------------------------------------------------------------------------------------------
-        SELECT TOP(@MaxRows) 
+	SELECT TOP(@MaxRows) 
 			S.Store_No,
 			S.Store_Name, 
 			[Identifier] = ISNULL(PBD.Identifier, I.Identifier),
@@ -800,13 +791,10 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 2, 
 			[ItemChgTypeDesc] = 'ITM',	
-			CASE
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
-					AND ((CONVERT(FLOAT, I.Identifier) >= 46000000000 AND CONVERT(FLOAT, I.Identifier) <= 46999999999) 
-					  OR (CONVERT(FLOAT, I.Identifier) >= 48000000000 AND CONVERT(FLOAT, I.Identifier) <= 48999999999))
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -869,12 +857,12 @@ UNION
 		
 		ORDER BY 
 			VSC.Id, CONVERT(bigint, ISNULL(PBD.Identifier, I.Identifier)), S.Store_Name
-
+	
 	ELSE IF @ItemChgTypeID = 3 -- Item deletes
 	----------------------------------------------------------------------------------------------------
 	-- 04/05/2010 - AZ TFS 12406 - Changed to pull ALL item deletes regardless of vendor authorizations 
 	----------------------------------------------------------------------------------------------------
-        SELECT TOP(@MaxRows) 
+	SELECT TOP(@MaxRows) 
 			S.Store_No,
 			S.Store_Name, 
 			[Identifier] = ISNULL(PBD.Identifier, I.Identifier),
@@ -888,13 +876,10 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 3, 
 			[ItemChgTypeDesc] = 'DEL',
-			CASE
-				WHEN PBD.PriceChgTypeID IS NOT NULL AND I.Retail_Sale = 0 AND S.Allow4648ItemBatching = 0 
-					AND ((CONVERT(FLOAT, I.Identifier) >= 46000000000 AND CONVERT(FLOAT, I.Identifier) <= 46999999999) 
-					  OR (CONVERT(FLOAT, I.Identifier) >= 48000000000 AND CONVERT(FLOAT, I.Identifier) <= 48999999999))
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -937,14 +922,13 @@ UNION
 		
 		ORDER BY 
 			VSC.Id, CONVERT(bigint, ISNULL(PBD.Identifier, I.Identifier)), S.Store_Name
-			
+	
 	ELSE IF @ItemChgTypeID = 4 -- Promotional Offers
 	----------------------------------------------------------------------------------------------------
 		--only displaying 1 PriceBatchDetail record for a Store_No/Offer_ID combo; user will be batching
 		--an entire offer, rather than individual items contained within the offer.
 		--when detail is added to a batch, all details w/ the same Store_No/Offer_ID will have the PriceBatchHeaderID updated
-
-        SELECT TOP(@MaxRows) 
+    SELECT TOP(@MaxRows) 
 			Store_No,
 			Store_Name, 
 			Identifier,
@@ -958,16 +942,13 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 4, 
 			[ItemChgTypeDesc] = 'OFR',
-			CASE
-				WHEN details.PriceChgTypeID IS NOT NULL AND details.Retail_Sale = 0 AND details.Allow4648ItemBatching = 0 
-					AND ((CONVERT(FLOAT, details.Identifier) >= 46000000000 AND CONVERT(FLOAT, details.Identifier) <= 46999999999) 
-					  OR (CONVERT(FLOAT, details.Identifier) >= 48000000000 AND CONVERT(FLOAT, details.Identifier) <= 48999999999))
-					THEN NULL 
-				ELSE VSC.Id
-			END AS Id
+			CASE WHEN VSC.Validated = 0 AND details.BatchUnvalidatedIngredients = 0 AND details.Retail_Sale = 0
+					AND ((CONVERT(FLOAT, details.Identifier) BETWEEN 46000000000 AND 46999999999)
+					  OR (CONVERT(FLOAT, details.Identifier) BETWEEN 48000000000 AND 48999999999))
+			THEN NULL ELSE VSC.Id END AS Id
 		FROM 
 			(SELECT 
-				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID, S.Allow4648ItemBatching, I.Retail_Sale
+				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID, S.BatchUnvalidatedIngredients, I.Retail_Sale
 			FROM 
 				@tblStoreList S
 				INNER JOIN PriceBatchDetail PBD (NOLOCK) ON PBD.Store_No = S.Store_No
@@ -992,17 +973,17 @@ UNION
 			LEFT JOIN PriceChgType PCT1 (NOLOCK) ON PCT1.PriceChgTypeID = details.PriceChgTypeId
 			LEFT JOIN #ValidatedScanCode VSC ON details.Identifier = VSC.ScanCode 
 		GROUP BY 
-			Store_No, Store_Name, Identifier, Item_Description, StartDate, Sale_End_Date, Offer_Id, Brand_Name, PCT1.PriceChgTypeID, PCT1.PriceChgTypeDesc, VSC.Id
-		
+			Store_No, Store_Name, Identifier, Item_Description, StartDate, Sale_End_Date, Offer_Id, Brand_Name, PCT1.PriceChgTypeID,
+					PCT1.PriceChgTypeDesc, VSC.Id, details.PriceChgTypeID, details.BatchUnvalidatedIngredients, details.Retail_Sale, VSC.Validated
 		ORDER BY 
 			VSC.Id, CONVERT(bigint, Identifier), Store_Name
 
     OPTION (RECOMPILE)
 
 	IF OBJECT_ID('tempdb..#ValidatedScanCode') IS NOT NULL
-		BEGIN
-			DROP TABLE #ValidatedScanCode
-		END 
+	BEGIN
+		DROP TABLE #ValidatedScanCode
+	END 
 
     SET NOCOUNT OFF
 END

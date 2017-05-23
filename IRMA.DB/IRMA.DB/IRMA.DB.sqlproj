@@ -3195,7 +3195,9 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_UpdateStorageData.sql" />
     <None Include="Scripts\21451-SendAdditionalScaleItemAttributes\InsertDataIntoInstanceDataFlagsTable.RollBack.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21732 - PostDeploy Schema PopData - Add Storage Number and Storage Text POSDataElement.rollback.sql" />
-    <None Include="Scripts\16278-NationalHierarchyScripts\AddIdentityColumnToNationalClassTables_5.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20484 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for Batching Ingredients.rollback.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20484 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for Batching Ingredients.sql" />
+	<None Include="Scripts\16278-NationalHierarchyScripts\AddIdentityColumnToNationalClassTables_5.sql" />
     <None Include="Scripts\16278-NationalHierarchyScripts\BackUp_NationalClassTables_ForRollBack_1.sql" />
     <None Include="Scripts\16278-NationalHierarchyScripts\Cleanup National Classes Script_2.sql" />
     <None Include="Scripts\16278-NationalHierarchyScripts\CreateTable-ValidatedNationalClass_3.sql" />
