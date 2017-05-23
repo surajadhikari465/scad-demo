@@ -38,8 +38,8 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                     scaleNutrifact.TotalFatPercentage = GetIntegerValue(results.GetValue(results.GetOrdinal("TotalFatPercentage")))
                     scaleNutrifact.SaturatedFatWeight = GetDecimalValue(results.GetValue(results.GetOrdinal("SaturatedFatWeight")))
                     scaleNutrifact.SaturatedFatPercent = GetIntegerValue(results.GetValue(results.GetOrdinal("SaturatedFatPercent")))
-                    scaleNutrifact.PolyunsaturatedFat = GetIntegerValue(results.GetValue(results.GetOrdinal("PolyunsaturatedFat")))
-                    scaleNutrifact.MonounsaturatedFat = GetIntegerValue(results.GetValue(results.GetOrdinal("MonounsaturatedFat")))
+                    scaleNutrifact.PolyunsaturatedFat = GetDecimalValue(results.GetValue(results.GetOrdinal("PolyunsaturatedFat")))
+                    scaleNutrifact.MonounsaturatedFat = GetDecimalValue(results.GetValue(results.GetOrdinal("MonounsaturatedFat")))
                     scaleNutrifact.CholesterolWeight = GetDecimalValue(results.GetValue(results.GetOrdinal("CholesterolWeight")))
                     scaleNutrifact.CholesterolPercent = GetIntegerValue(results.GetValue(results.GetOrdinal("CholesterolPercent")))
                     scaleNutrifact.SodiumWeight = GetDecimalValue(results.GetValue(results.GetOrdinal("SodiumWeight")))
@@ -316,13 +316,13 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                     currentParam = New DBParam
                     currentParam.Name = "PolyunsaturatedFat"
                     currentParam.Value = scaleNutrifact.PolyunsaturatedFat
-                    currentParam.Type = DBParamType.Int
+                    currentParam.Type = DBParamType.Decimal
                     paramList.Add(currentParam)
 
                     currentParam = New DBParam
                     currentParam.Name = "MonounsaturatedFat"
                     currentParam.Value = scaleNutrifact.MonounsaturatedFat
-                    currentParam.Type = DBParamType.Int
+                    currentParam.Type = DBParamType.Decimal
                     paramList.Add(currentParam)
 
                     currentParam = New DBParam

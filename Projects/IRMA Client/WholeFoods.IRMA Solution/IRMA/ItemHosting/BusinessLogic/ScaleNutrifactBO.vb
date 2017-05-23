@@ -16,8 +16,8 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
         Private _TotalFatPercentage As Integer
         Private _SaturatedFatWeight As Decimal
         Private _SaturatedFatPercent As Integer
-        Private _PolyunsaturatedFat As Integer
-        Private _MonounsaturatedFat As Integer
+        Private _PolyunsaturatedFat As Decimal
+        Private _MonounsaturatedFat As Decimal
         Private _CholesterolWeight As Decimal
         Private _CholesterolPercent As Integer
         Private _SodiumWeight As Decimal
@@ -186,19 +186,19 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
                 _SaturatedFatPercent = value
             End Set
         End Property
-        Public Property PolyunsaturatedFat() As Integer
+        Public Property PolyunsaturatedFat() As Decimal
             Get
                 Return _PolyunsaturatedFat
             End Get
-            Set(ByVal value As Integer)
+            Set(ByVal value As Decimal)
                 _PolyunsaturatedFat = value
             End Set
         End Property
-        Public Property MonounsaturatedFat() As Integer
+        Public Property MonounsaturatedFat() As Decimal
             Get
                 Return _MonounsaturatedFat
             End Get
-            Set(ByVal value As Integer)
+            Set(ByVal value As Decimal)
                 _MonounsaturatedFat = value
             End Set
         End Property

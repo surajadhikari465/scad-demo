@@ -290,10 +290,10 @@ Public Class Form_Nutrifact
         scaleNutriFact.Copper = CInt(CopperNumericEditor.Value.ToString())
         If DescriptionCombo.SelectedIndex > -1 Then scaleNutriFact.ID = CInt(DescriptionCombo.SelectedValue.ToString())
         scaleNutriFact.Description = DescriptionTextbox.Text
-        scaleNutriFact.MonounsaturatedFat = CInt(FatMonoNumericEditor.Value.ToString())
+        scaleNutriFact.MonounsaturatedFat = CDec(FatMonoNumericEditor.Value.ToString())
         scaleNutriFact.Om3Fatty = FatOmega3NumericEditor.Value.ToString()
         scaleNutriFact.Om6Fatty = FatOmega6NumericEditor.Value.ToString()
-        scaleNutriFact.PolyunsaturatedFat = CInt(FatPolyNumericEditor.Value.ToString())
+        scaleNutriFact.PolyunsaturatedFat = CDec(FatPolyNumericEditor.Value.ToString())
         scaleNutriFact.SaturatedFatWeight = FatSatNumericEditor.Value.ToString()
         scaleNutriFact.SaturatedFatPercent = CInt(FatSatPercentNumericEditor.Value.ToString())
         scaleNutriFact.TotalFatWeight = FatTotalNumericEditor.Value.ToString()

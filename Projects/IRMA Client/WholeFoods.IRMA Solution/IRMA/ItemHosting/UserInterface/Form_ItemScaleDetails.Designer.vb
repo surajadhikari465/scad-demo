@@ -1520,9 +1520,11 @@ Partial Class Form_ItemScaleDetails
         Me.FatPolyNumericEditor.AlwaysInEditMode = True
         Me.FatPolyNumericEditor.Location = New System.Drawing.Point(529, 132)
         Me.FatPolyNumericEditor.Margin = New System.Windows.Forms.Padding(4)
+        Me.FatPolyNumericEditor.MaskInput = "nnnn.n"
         Me.FatPolyNumericEditor.MaxValue = 9999
         Me.FatPolyNumericEditor.MinValue = 0
         Me.FatPolyNumericEditor.Name = "FatPolyNumericEditor"
+        Me.FatPolyNumericEditor.NumericType = Infragistics.Win.UltraWinEditors.NumericType.[Decimal]
         Me.FatPolyNumericEditor.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
         Me.FatPolyNumericEditor.Size = New System.Drawing.Size(89, 21)
         Me.FatPolyNumericEditor.TabIndex = 93
@@ -1532,9 +1534,11 @@ Partial Class Form_ItemScaleDetails
         Me.FatMonoNumericEditor.AlwaysInEditMode = True
         Me.FatMonoNumericEditor.Location = New System.Drawing.Point(529, 103)
         Me.FatMonoNumericEditor.Margin = New System.Windows.Forms.Padding(4)
+        Me.FatMonoNumericEditor.MaskInput = "nnnn.n"
         Me.FatMonoNumericEditor.MaxValue = 9999
         Me.FatMonoNumericEditor.MinValue = 0
         Me.FatMonoNumericEditor.Name = "FatMonoNumericEditor"
+        Me.FatMonoNumericEditor.NumericType = Infragistics.Win.UltraWinEditors.NumericType.[Decimal]
         Me.FatMonoNumericEditor.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
         Me.FatMonoNumericEditor.Size = New System.Drawing.Size(89, 21)
         Me.FatMonoNumericEditor.TabIndex = 92
@@ -1677,7 +1681,7 @@ Partial Class Form_ItemScaleDetails
         Me.Label15.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Label15.Size = New System.Drawing.Size(175, 25)
         Me.Label15.TabIndex = 24
-        Me.Label15.Text = "Monounsaturated (%) :"
+        Me.Label15.Text = "Monounsaturated (grams) :"
         Me.Label15.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label16
@@ -1693,7 +1697,7 @@ Partial Class Form_ItemScaleDetails
         Me.Label16.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Label16.Size = New System.Drawing.Size(152, 25)
         Me.Label16.TabIndex = 22
-        Me.Label16.Text = "Polyunsaturated (%) :"
+        Me.Label16.Text = "Polyunsaturated (grams) :"
         Me.Label16.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label17

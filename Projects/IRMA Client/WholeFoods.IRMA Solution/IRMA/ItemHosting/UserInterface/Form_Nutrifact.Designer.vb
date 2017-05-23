@@ -1891,9 +1891,11 @@ Partial Class Form_Nutrifact
         '
         Me.FatPolyNumericEditor.AlwaysInEditMode = True
         Me.FatPolyNumericEditor.Location = New System.Drawing.Point(397, 107)
+        Me.FatPolyNumericEditor.MaskInput = "nnnn.n"
         Me.FatPolyNumericEditor.MaxValue = 9999
         Me.FatPolyNumericEditor.MinValue = 0
         Me.FatPolyNumericEditor.Name = "FatPolyNumericEditor"
+        Me.FatPolyNumericEditor.NumericType = Infragistics.Win.UltraWinEditors.NumericType.[Decimal]
         Me.FatPolyNumericEditor.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
         Me.FatPolyNumericEditor.Size = New System.Drawing.Size(67, 21)
         Me.FatPolyNumericEditor.TabIndex = 93
@@ -1902,9 +1904,11 @@ Partial Class Form_Nutrifact
         '
         Me.FatMonoNumericEditor.AlwaysInEditMode = True
         Me.FatMonoNumericEditor.Location = New System.Drawing.Point(397, 84)
+        Me.FatMonoNumericEditor.MaskInput = "nnnn.n"
         Me.FatMonoNumericEditor.MaxValue = 9999
         Me.FatMonoNumericEditor.MinValue = 0
         Me.FatMonoNumericEditor.Name = "FatMonoNumericEditor"
+        Me.FatMonoNumericEditor.NumericType = Infragistics.Win.UltraWinEditors.NumericType.[Decimal]
         Me.FatMonoNumericEditor.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
         Me.FatMonoNumericEditor.Size = New System.Drawing.Size(67, 21)
         Me.FatMonoNumericEditor.TabIndex = 92
@@ -2021,12 +2025,12 @@ Partial Class Form_Nutrifact
         Me.Label12.Font = New System.Drawing.Font("Arial", 8.0!)
         Me.Label12.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label12.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label12.Location = New System.Drawing.Point(260, 85)
+        Me.Label12.Location = New System.Drawing.Point(245, 85)
         Me.Label12.Name = "Label12"
         Me.Label12.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label12.Size = New System.Drawing.Size(131, 20)
+        Me.Label12.Size = New System.Drawing.Size(146, 20)
         Me.Label12.TabIndex = 24
-        Me.Label12.Text = "Monounsaturated (%) :"
+        Me.Label12.Text = "Monounsaturated (grams) :"
         Me.Label12.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label13
@@ -2036,12 +2040,12 @@ Partial Class Form_Nutrifact
         Me.Label13.Font = New System.Drawing.Font("Arial", 8.0!)
         Me.Label13.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label13.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label13.Location = New System.Drawing.Point(277, 111)
+        Me.Label13.Location = New System.Drawing.Point(257, 111)
         Me.Label13.Name = "Label13"
         Me.Label13.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label13.Size = New System.Drawing.Size(114, 20)
+        Me.Label13.Size = New System.Drawing.Size(134, 20)
         Me.Label13.TabIndex = 22
-        Me.Label13.Text = "Polyunsaturated (%) :"
+        Me.Label13.Text = "Polyunsaturated (grams) :"
         Me.Label13.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label10
