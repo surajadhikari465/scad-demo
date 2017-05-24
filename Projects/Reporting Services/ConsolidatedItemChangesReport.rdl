@@ -78,6 +78,9 @@
             <TablixColumn>
               <Width>1in</Width>
             </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
@@ -629,6 +632,45 @@
                     </Textbox>
                   </CellContents>
                 </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox6">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Organic</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox6</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
               </TablixCells>
             </TablixRow>
             <TablixRow>
@@ -732,14 +774,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="new_SubTeam_Name">
+                    <Textbox Name="SubTeam_Name">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!new_SubTeam_No.Value &amp; " - " &amp; Fields!new_SubTeam_Name.Value</Value>
+                              <Value>=Fields!SubTeam_No.Value &amp; " - " &amp; Fields!SubTeam_Name.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -748,13 +790,12 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>new_SubTeam_Name</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!old_SubTeam_Name.Value,Fields!new_SubTeam_Name.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>=IIf(Fields!SubTeamWasChanged.Value, "Salmon", "White")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -765,14 +806,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="New_Item_Description">
+                    <Textbox Name="Item_Description">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!New_Item_Description.Value</Value>
+                              <Value>=Fields!Item_Description.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -781,13 +822,13 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>New_Item_Description</rd:DefaultName>
+                      <rd:DefaultName>Item_Description</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_Item_Description.Value,Fields!New_Item_Description.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>=IIF(Fields!ProductDescriptionWasChanged.Value, "Salmon", "White")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -798,14 +839,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="New_POS_Description">
+                    <Textbox Name="POS_Description">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!New_POS_Description.Value</Value>
+                              <Value>=Fields!POS_Description.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -814,13 +855,13 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>New_POS_Description</rd:DefaultName>
+                      <rd:DefaultName>POS_Description</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_POS_Description.Value,Fields!New_POS_Description.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>=IIF(Fields!PosDescriptionWasChanged.Value = true, "Salmon", "White")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -831,14 +872,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="New_Brand_Name">
+                    <Textbox Name="Brand_Name">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!New_Brand_Name.Value</Value>
+                              <Value>=Fields!Brand_Name.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -847,13 +888,13 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>New_Brand_Name</rd:DefaultName>
+                      <rd:DefaultName>Brand_Name</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_Brand_Name.Value,Fields!New_Brand_Name.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>=IIF(Fields!BrandWasChanged.Value, "Salmon", "White")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -864,14 +905,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="New_TaxClassName">
+                    <Textbox Name="TaxClassDesc">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!New_TaxClassName.Value</Value>
+                              <Value>=Fields!TaxClassDesc.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>9pt</FontSize>
@@ -881,13 +922,13 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>New_TaxClassName</rd:DefaultName>
+                      <rd:DefaultName>TaxClassDesc</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_TaxClassName.Value,Fields!New_TaxClassName.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>=IIF(Fields!TaxWasChanged.Value, "Salmon", "White")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -898,14 +939,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="New_Package_Desc1">
+                    <Textbox Name="Package_Desc1">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!New_Package_Desc1.Value</Value>
+                              <Value>=Fields!Package_Desc1.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -914,13 +955,13 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>New_Package_Desc1</rd:DefaultName>
+                      <rd:DefaultName>Package_Desc1</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_Package_Desc1.Value,Fields!New_Package_Desc1.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>=IIF(Fields!PackageDesc1WasChanged.Value, "Salmon", "White")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -931,14 +972,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="New_Food_Stamps">
+                    <Textbox Name="Food_Stamps">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!New_Food_Stamps.Value = True, "Y", "N")</Value>
+                              <Value>=IIF(Fields!Food_Stamps.Value = True, "Y", "N")</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -947,13 +988,12 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>New_Food_Stamps</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_Food_Stamps.Value,Fields!New_Food_Stamps.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>=IIF(Fields!FoodStampWasChanged.Value, "Salmon", "White")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -964,14 +1004,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="New_ScaleTare">
+                    <Textbox Name="ScaleTare">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!New_ScaleTare.Value</Value>
+                              <Value>=Fields!ScaleTare.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -980,13 +1020,13 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>New_ScaleTare</rd:DefaultName>
+                      <rd:DefaultName>ScaleTare</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_ScaleTare.Value,Fields!New_ScaleTare.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -997,14 +1037,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="NutriFacts_Changed">
+                    <Textbox Name="AreNutrifactsChanged">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!NutriFacts_Changed.Value</Value>
+                              <Value>=Fields!AreNutrifactsChanged.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -1013,13 +1053,13 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>NutriFacts_Changed</rd:DefaultName>
+                      <rd:DefaultName>AreNutrifactsChanged</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_ScaleTare.Value,Fields!New_ScaleTare.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1030,14 +1070,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="New_Retail_Size">
+                    <Textbox Name="Package_Desc2">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!New_Retail_Size.Value</Value>
+                              <Value>=Fields!Package_Desc2.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -1046,13 +1086,13 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>New_Retail_Size</rd:DefaultName>
+                      <rd:DefaultName>Package_Desc2</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_Retail_Size.Value,Fields!New_Retail_Size.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>=IIF(Fields!PackageDesc2WasChanged.Value, "Salmon", "White")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1063,14 +1103,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="New_Retail_UOM">
+                    <Textbox Name="RetailUOMAbbreviation">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!New_Retail_UOM.Value</Value>
+                              <Value>=Fields!RetailUOMAbbreviation.Value</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -1079,13 +1119,46 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>New_Retail_UOM</rd:DefaultName>
+                      <rd:DefaultName>RetailUOMAbbreviation</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>=IIF(Code.ValueChanged(Fields!Old_Retail_UOM.Value,Fields!New_Retail_UOM.Value), "Salmon", "White")</BackgroundColor>
+                        <BackgroundColor>=IIF(Fields!PackageUnitIdWasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Organic">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=IIF(Fields!Organic.Value, "Y", "N")</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Organic</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!OrganicWasChanged.Value, "Salmon", "White")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1100,6 +1173,7 @@
         </TablixBody>
         <TablixColumnHierarchy>
           <TablixMembers>
+            <TablixMember />
             <TablixMember />
             <TablixMember />
             <TablixMember />
@@ -1129,7 +1203,7 @@
         <DataSetName>Main</DataSetName>
         <Top>0.36in</Top>
         <Height>1.01666in</Height>
-        <Width>14.39583in</Width>
+        <Width>15.39583in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -1141,7 +1215,7 @@
     <Height>1.50875in</Height>
     <Style />
   </Body>
-   <Width>15.63542in</Width>
+  <Width>15.63542in</Width>
   <Page>
     <LeftMargin>1in</LeftMargin>
     <RightMargin>1in</RightMargin>
@@ -1168,91 +1242,418 @@
           <QueryParameter Name="@ToDate">
             <Value>=Parameters!ToDate.Value</Value>
           </QueryParameter>
-          <QueryParameter Name="@Subteam_No">
+          <QueryParameter Name="@SubTeam_No">
             <Value>=Parameters!Subteam_No.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+        <CommandText>
+          SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+          DECLARE @DateFrom DATETIME = DATEADD(day, 0, DATEDIFF(day, 0, @FromDate));
+          DECLARE @DateTo DATETIME = DATEADD(ms, -3, DATEADD(dd, DATEDIFF(dd, 0, @ToDate + 1), 0));
 
-SELECT DISTINCT
-i.Item_Key as 'Irma ItemKey',
-iilc.InsertDate as 'IconChangeDate',
-ich.Insert_Date as 'PreviousChangeDate',
-	iilc.Identifier,
-   CASE WHEN ii.Default_Identifier = 1 THEN 'Y' ELSE 'N' END AS [Default_Identifer],
-	[New Item_Description] = iilc.Item_Description,
-	[Old Item_Description] = ich.Item_Description,
-	[New POS_Description] = iilc.POS_Description,
-	[Old POS_Description] = ich.POS_Description,
-	[new SubTeam_No] = st.SubTeam_No,
-	[new SubTeam_Name] = st.SubTeam_Name,
-	[old SubTeam_No] = Ich.SubTeam_No,
-	[old SubTeam_Name] = stIch.SubTeam_Name,
-	[new Brand_ID] = iilc.Brand_ID,
-	[New Brand Name] = ib.Brand_Name,
-	[old Brand_ID] = ich.Brand_ID,
-	[Old Brand_Name] = ibIch.Brand_Name,
-	[New TaxClassID] = iilc.TaxClassID,
-	[New TaxClassName] = tc.TaxClassDesc,
-	[Old TaxClassID] = ich.TaxClassID,
-	[Old TaxClassName] = tcIch.TaxClassDesc,
-	[New Food_Stamps] = iilc.Food_Stamps,
-	[Old Food_Stamps] = ich.Food_Stamps,
-	[New Package_Desc1] = iilc.Package_Desc1,
-	[Old Package_Desc1] = ich.Package_Desc1,
-	[New ScaleTare] = iilc.ScaleTare,
-	[Old ScaleTare] = 'Change History Not Availble',
-	[NutriFacts Changed] = iilc.AreNutriFactsChanged,
-	[New Retail UOM] = iu.Unit_Abbreviation,
-	[Old Retail UOM] = iuch.Unit_Abbreviation,
-	[New Retail Size] = iilc.Package_Desc2,
-	[Old Retail Size] = ich.Package_Desc2
-FROM
-	IconItemLastChange iilc
-	INNER JOIN ItemIdentifier ii
-		on iilc.identifier = ii.identifier
-	INNER JOIN Item i
-		on ii.item_key = i.item_key
-	INNER JOIN Subteam st
-		on i.subteam_no = st.subteam_no
-	INNER JOIN (SELECT ich2.Item_Key, max(ich2.insert_date) AS 'ichInsertDate'
-				FROM 	IconItemLastChange iilc2
-					INNER JOIN ItemIdentifier ii2
-						ON iilc2.identifier = ii2.identifier
-					INNER JOIN Item i2
-						ON ii2.item_key = i2.item_key
-					INNER JOIN ItemChangeHistory ich2
-						ON i2.item_Key = ich2.item_Key
-				AND ich2.insert_date &lt; iilc2.insertdate
-				GROUP BY ich2.item_key ) ichMax
-				ON ichMax.item_key = i.item_Key
-	INNER JOIN itemchangehistory ich
-		ON ichMax.item_key = ich.item_Key
-		AND ichMax.ichInsertDate = ich.Insert_Date
-	INNER JOIN Subteam stIch
-		ON ich.subteam_no = stIch.subteam_no
-	LEFT JOIN ItemBrand ib
-		ON iilc.brand_id = ib.brand_id
-	LEFT JOIN ItemBrand ibIch
-		ON ich.brand_id = ibIch.brand_id
-	LEFT JOIN TaxClass tc
-		ON iilc.taxclassid = tc.taxclassid
-	LEFT JOIN TaxClass tcIch
-		ON ich.taxclassid = tcIch.taxclassid
-	LEFT JOIN ItemUnit iu
-		ON iilc.Package_Unit_ID = iu.Unit_ID
-	LEFT JOIN ItemUnit iuch
-		ON ich.Package_Unit_ID = iuch.Unit_ID
-WHERE ii.remove_identifier = 0
-AND ii.deleted_identifier = 0
-AND st.SubTeam_No IN (@Subteam_No) 
-AND CONVERT(DATE, iilc.InsertDate) BETWEEN @FromDate AND @ToDate
-ORDER BY iilc.Identifier</CommandText>
+          CREATE TABLE #changes (
+          Item_Key INT
+          ,Identifier NVARCHAR(13)
+          ,ProductDescriptionWasChanged BIT NOT NULL
+          ,PosDescriptionWasChanged BIT NOT NULL
+          ,SubTeamWasChanged BIT NOT NULL
+          ,BrandWasChanged BIT NOT NULL
+          ,TaxWasChanged BIT NOT NULL
+          ,FoodStampWasChanged BIT NOT NULL
+          ,PackageDesc1WasChanged BIT NOT NULL
+          ,PackageDesc2WasChanged BIT NOT NULL
+          ,PackageUnitIdWasChanged BIT NOT NULL
+          ,OrganicWasChanged BIT NOT NULL
+          )
+
+          INSERT INTO #changes (
+          Item_Key
+          ,Identifier
+          ,ProductDescriptionWasChanged
+          ,PosDescriptionWasChanged
+          ,SubTeamWasChanged
+          ,BrandWasChanged
+          ,TaxWasChanged
+          ,FoodStampWasChanged
+          ,PackageDesc1WasChanged
+          ,PackageDesc2WasChanged
+          ,PackageUnitIdWasChanged
+          ,OrganicWasChanged
+          )
+          SELECT ii.Item_Key AS Item_Key
+          ,lc.Identifier AS Identifier
+          ,0 AS ProductDescriptionWasChanged
+          ,0 AS PosDescriptionWasChanged
+          ,0 AS SubTeamWasChanged
+          ,0 AS BrandWasChanged
+          ,0 AS TaxWasChanged
+          ,0 AS FoodStampWasChanged
+          ,0 AS PackageDesc1WasChanged
+          ,0 AS PackageDesc2WasChanged
+          ,0 AS PackageUnitIdWasChanged
+          ,0 AS OrganicWasChanged
+          FROM IconItemLastChange lc
+          INNER JOIN ItemIdentifier ii ON lc.Identifier = ii.Identifier
+          WHERE lc.InsertDate BETWEEN @DateFrom
+          AND @DateTo
+          AND ii.Deleted_Identifier = 0
+          AND ii.Remove_Identifier = 0
+          GROUP BY ii.Item_Key
+          ,lc.Identifier
+
+          SELECT
+          MAX(Insert_Date) as Insert_Date,
+          c.Item_Key
+          INTO #maxDateBeforeTimePeriod
+          FROM #changes c
+          LEFT JOIN ItemChangeHistory h on c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date &lt; @DateFrom
+          GROUP BY c.Item_Key
+
+          -- ========================================================
+          -- Check each column to see if it changed during time frame
+          -- First Update:	Compare values within date range to value before date range
+          -- Second Update:	Check if values changed during date range
+          --					This is necessary if there is no record prior to date range (i.e. new item created)
+          -- ========================================================
+          -- Item_Description
+          UPDATE c
+          SET ProductDescriptionWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Item_Description &lt;&gt; h2.Item_Description
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET ProductDescriptionWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Item_Description &lt;&gt; h2.Item_Description
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- POS Description
+          UPDATE c
+          SET PosDescriptionWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.POS_Description &lt;&gt; h2.POS_Description
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET PosDescriptionWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.POS_Description &lt;&gt; h2.POS_Description
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- SubTeam_No
+          UPDATE c
+          SET SubTeamWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.SubTeam_No &lt;&gt; h2.SubTeam_No
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET SubTeamWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.SubTeam_No &lt;&gt; h2.SubTeam_No
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- Brand
+          UPDATE c
+          SET BrandWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Brand_ID &lt;&gt; h2.Brand_ID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET BrandWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Brand_ID &lt;&gt; h2.Brand_ID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- Tax
+          UPDATE c
+          SET TaxWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.TaxClassID &lt;&gt; h2.TaxClassID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET TaxWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.TaxClassID &lt;&gt; h2.TaxClassID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- FoodStamp
+          UPDATE c
+          SET FoodStampWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Food_Stamps &lt;&gt; h2.Food_Stamps
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET FoodStampWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Food_Stamps &lt;&gt; h2.Food_Stamps
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- PackageDesc1 (Package Unit)
+          UPDATE c
+          SET PackageDesc1WasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Desc1 &lt;&gt; h2.Package_Desc1
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET PackageDesc1WasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Desc1 &lt;&gt; h2.Package_Desc1
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- PackageDesc2 (Retail Size)
+          UPDATE c
+          SET PackageDesc2WasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Desc2 &lt;&gt; h2.Package_Desc2
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET PackageDesc2WasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Desc2 &lt;&gt; h2.Package_Desc2
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- PackageUnitId (Retail UOM)
+          UPDATE c
+          SET PackageUnitIdWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Unit_ID &lt;&gt; h2.Package_Unit_ID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET PackageUnitIdWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Unit_ID &lt;&gt; h2.Package_Unit_ID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- Organic
+          -- PackageUnitId (Retail UOM)
+          UPDATE c
+          SET OrganicWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Organic &lt;&gt; h2.Organic
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET OrganicWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Organic &lt;&gt; h2.Organic
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- ========================================================
+          -- Run Main Query
+          -- ========================================================
+          SELECT i.Item_Key AS ItemKey
+          ,lc.InsertDate AS IconChangeDate
+          ,ii.Identifier AS Identifier
+          ,CASE
+          WHEN ii.Default_Identifier = 1
+          THEN 'Y'
+          ELSE 'N'
+          END AS Default_Identifer
+          ,i.Item_Description AS Item_Description
+          ,i.POS_Description AS POS_Description
+          ,st.SubTeam_No AS SubTeam_No
+          ,st.SubTeam_Name AS SubTeam_Name
+          ,i.Brand_ID AS Brand_ID
+          ,ib.Brand_Name AS Brand_Name
+          ,i.TaxClassID AS TaxClassID
+          ,tc.TaxClassDesc AS TaxClassDesc
+          ,i.Food_Stamps AS Food_Stamps
+          ,i.Package_Desc1 AS Package_Desc1
+          ,i.Package_Desc2 AS Package_Desc2
+          ,iu.Unit_Abbreviation AS RetailUOMAbbreviation
+          ,lc.ScaleTare AS ScaleTare
+          ,lc.AreNutriFactsChanged AS AreNutrifactsChanged
+          ,i.Organic AS Organic
+          ,c.BrandWasChanged AS BrandWasChanged
+          ,c.FoodStampWasChanged AS FoodStampWasChanged
+          ,c.OrganicWasChanged AS OrganicWasChanged
+          ,c.PackageDesc1WasChanged AS PackageDesc1WasChanged
+          ,c.PackageDesc2WasChanged AS PackageDesc2WasChanged
+          ,c.PackageUnitIdWasChanged AS PackageUnitIdWasChanged
+          ,c.PosDescriptionWasChanged AS PosDescriptionWasChanged
+          ,c.ProductDescriptionWasChanged AS ProductDescriptionWasChanged
+          ,c.SubTeamWasChanged AS SubTeamWasChanged
+          ,c.TaxWasChanged AS TaxWasChanged
+          FROM #changes c
+          INNER JOIN IconItemLastChange lc ON c.Identifier = lc.Identifier
+          INNER JOIN Item i ON c.Item_Key = i.Item_Key
+          INNER JOIN ItemIdentifier ii ON lc.Identifier = ii.Identifier
+          INNER JOIN ItemBrand ib ON i.Brand_ID = ib.Brand_ID
+          INNER JOIN TaxClass tc ON i.TaxClassID = tc.TaxClassID
+          INNER JOIN SubTeam st ON i.SubTeam_No = st.SubTeam_No
+          INNER JOIN ItemUnit iu ON i.Package_Unit_ID = iu.Unit_ID
+          WHERE st.SubTeam_No IN (@SubTeam_No)
+
+          IF OBJECT_ID('tempdb..#changes') IS NOT NULL
+          DROP TABLE #changes
+
+          IF OBJECT_ID('tempdb..#maxDateBeforeTimePeriod') IS NOT NULL
+          DROP TABLE #maxDateBeforeTimePeriod
+        </CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
-        <Field Name="Irma_ItemKey">
-          <DataField>Irma ItemKey</DataField>
+        <Field Name="ItemKey">
+          <DataField>ItemKey</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="Identifier">
@@ -1263,134 +1664,124 @@ ORDER BY iilc.Identifier</CommandText>
           <DataField>IconChangeDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
-        <Field Name="PreviousChangeDate">
-          <DataField>PreviousChangeDate</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
         <Field Name="Default_Identifer">
           <DataField>Default_Identifer</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="New_Item_Description">
-          <DataField>New Item_Description</DataField>
+        <Field Name="Item_Description">
+          <DataField>Item_Description</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Old_Item_Description">
-          <DataField>Old Item_Description</DataField>
+        <Field Name="POS_Description">
+          <DataField>POS_Description</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="New_POS_Description">
-          <DataField>New POS_Description</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Old_POS_Description">
-          <DataField>Old POS_Description</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="new_SubTeam_No">
-          <DataField>new SubTeam_No</DataField>
+        <Field Name="SubTeam_No">
+          <DataField>SubTeam_No</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="new_SubTeam_Name">
-          <DataField>new SubTeam_Name</DataField>
+        <Field Name="SubTeam_Name">
+          <DataField>SubTeam_Name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="old_SubTeam_No">
-          <DataField>old SubTeam_No</DataField>
+        <Field Name="Brand_ID">
+          <DataField>Brand_ID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="old_SubTeam_Name">
-          <DataField>old SubTeam_Name</DataField>
+        <Field Name="Brand_Name">
+          <DataField>Brand_Name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="new_Brand_ID">
-          <DataField>new Brand_ID</DataField>
+        <Field Name="TaxClassID">
+          <DataField>TaxClassID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="New_Brand_Name">
-          <DataField>New Brand Name</DataField>
+        <Field Name="TaxClassDesc">
+          <DataField>TaxClassDesc</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="old_Brand_ID">
-          <DataField>old Brand_ID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="Old_Brand_Name">
-          <DataField>Old Brand_Name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="New_TaxClassID">
-          <DataField>New TaxClassID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="New_TaxClassName">
-          <DataField>New TaxClassName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Old_TaxClassID">
-          <DataField>Old TaxClassID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="Old_TaxClassName">
-          <DataField>Old TaxClassName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="New_Food_Stamps">
-          <DataField>New Food_Stamps</DataField>
+        <Field Name="Food_Stamps">
+          <DataField>Food_Stamps</DataField>
           <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
-        <Field Name="Old_Food_Stamps">
-          <DataField>Old Food_Stamps</DataField>
+        <Field Name="Package_Desc1">
+          <DataField>Package_Desc1</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Package_Desc2">
+          <DataField>Package_Desc2</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="RetailUOMAbbreviation">
+          <DataField>RetailUOMAbbreviation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ScaleTare">
+          <DataField>ScaleTare</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="AreNutrifactsChanged">
+          <DataField>AreNutrifactsChanged</DataField>
           <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
-        <Field Name="New_Package_Desc1">
-          <DataField>New Package_Desc1</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="Old_Package_Desc1">
-          <DataField>Old Package_Desc1</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="New_ScaleTare">
-          <DataField>New ScaleTare</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="Old_ScaleTare">
-          <DataField>Old ScaleTare</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="NutriFacts_Changed">
-          <DataField>NutriFacts Changed</DataField>
+        <Field Name="Organic">
+          <DataField>Organic</DataField>
           <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
-        <Field Name="New_Retail_UOM">
-          <DataField>New Retail UOM</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="BrandWasChanged">
+          <DataField>BrandWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
-        <Field Name="Old_Retail_UOM">
-          <DataField>Old Retail UOM</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="FoodStampWasChanged">
+          <DataField>FoodStampWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
-		<Field Name="New_Retail_Size">
-          <DataField>New Retail Size</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="OrganicWasChanged">
+          <DataField>OrganicWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
-        <Field Name="Old_Retail_Size">
-          <DataField>Old Retail Size</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="PackageDesc1WasChanged">
+          <DataField>PackageDesc1WasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="PackageDesc2WasChanged">
+          <DataField>PackageDesc2WasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="PackageUnitIdWasChanged">
+          <DataField>PackageUnitIdWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="PosDescriptionWasChanged">
+          <DataField>PosDescriptionWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="ProductDescriptionWasChanged">
+          <DataField>ProductDescriptionWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="SubTeamWasChanged">
+          <DataField>SubTeamWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="TaxWasChanged">
+          <DataField>TaxWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
     <DataSet Name="Subteam">
       <Query>
         <DataSourceName>ItemCatalog</DataSourceName>
-        <CommandText>SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+        <CommandText>
+          SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-SELECT 
-Subteam_No,
-Subteam_Name
-FROM Subteam (NOLOCK)
-ORDER BY Subteam_Name</CommandText>
+          SELECT
+          Subteam_No,
+          Subteam_Name
+          FROM Subteam (NOLOCK)
+          ORDER BY Subteam_Name
+        </CommandText>
       </Query>
       <Fields>
         <Field Name="Subteam_No">
@@ -1406,7 +1797,7 @@ ORDER BY Subteam_Name</CommandText>
     <DataSet Name="DefaultFromAndToDates">
       <Query>
         <DataSourceName>ItemCatalog</DataSourceName>
-        <CommandText>SELECT        CAST(GETDATE() - 30 AS date) AS FromDate, CAST(GETDATE() + 1 AS date) AS ToDate</CommandText>
+        <CommandText>SELECT        CAST(GETDATE() - 1 AS date) AS FromDate, CAST(GETDATE() AS date) AS ToDate</CommandText>
       </Query>
       <Fields>
         <Field Name="FromDate">
@@ -1454,13 +1845,15 @@ ORDER BY Subteam_Name</CommandText>
       <MultiValue>true</MultiValue>
     </ReportParameter>
   </ReportParameters>
-  <Code>Public Function ValueChanged (OldValue As String, NewValue AS String) As Boolean
-	If Trim(OldValue) &lt;&gt; Trim(NewValue) Then
-		Return True
-	Else
-		Return False
-	End If
-End Function</Code>
+  <Code>
+    Public Function ValueChanged (OldValue As String, NewValue AS String) As Boolean
+    If Trim(OldValue) &lt;&gt; Trim(NewValue) Then
+    Return True
+    Else
+    Return False
+    End If
+    End Function
+  </Code>
   <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
