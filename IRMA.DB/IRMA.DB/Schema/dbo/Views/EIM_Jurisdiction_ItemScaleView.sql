@@ -10,6 +10,7 @@ CREATE VIEW [dbo].[EIM_Jurisdiction_ItemScaleView] As
 		,itms.Item_Key
 		,itms.Nutrifact_ID
 		,itmso.Scale_ExtraText_ID
+		,itms.Scale_StorageData_ID
 		,itmso.Scale_Tare_ID
 		,itms.Scale_Alternate_Tare_ID
 		,itmso.Scale_LabelStyle_ID
@@ -43,6 +44,7 @@ CREATE VIEW [dbo].[EIM_Jurisdiction_ItemScaleView] As
 		,itms.Item_Key
 		,itms.Nutrifact_ID
 		,itms.Scale_ExtraText_ID
+		,itms.Scale_StorageData_ID
 		,itms.Scale_Tare_ID
 		,itms.Scale_Alternate_Tare_ID
 		,itms.Scale_LabelStyle_ID

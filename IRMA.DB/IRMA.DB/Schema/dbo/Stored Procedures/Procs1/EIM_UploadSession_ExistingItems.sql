@@ -142,6 +142,8 @@ MU/MZ   2016-03-22  TFS18729
 		@Nutrifact_ID int,
 		@Scale_ExtraText_ID int,
 		@New_Scale_ExtraText_ID int,
+		@Scale_StorageData_ID int,
+		@New_Scale_StorageData_ID int,
 		@Scale_Tare_ID int,
 		@Scale_Alternate_Tare_ID int,
 		@Scale_LabelStyle_ID int,
@@ -164,6 +166,10 @@ MU/MZ   2016-03-22  TFS18729
 		@Scale_LabelType_ID int,
 		@ExtraTextDescription varchar(50),
 		@ExtraText varchar(4200),
+
+		-- Storage data
+		@StorageDescription varchar(50),
+		@StorageData varchar(1024),
 
 		-- pos data
 		@Food_Stamps bit,
@@ -440,6 +446,7 @@ MU/MZ   2016-03-22  TFS18729
 				@Existing_ItemScale_ID = ItemScale_ID,
 				@Nutrifact_ID = Nutrifact_ID,
 				@Scale_ExtraText_ID = Scale_ExtraText_ID,
+				@Scale_StorageData_ID = Scale_StorageData_ID,
 				@Scale_Tare_ID = Scale_Tare_ID,
 				@Scale_Alternate_Tare_ID = Scale_Alternate_Tare_ID,
 				@Scale_LabelStyle_ID = Scale_LabelStyle_ID,
@@ -473,6 +480,14 @@ MU/MZ   2016-03-22  TFS18729
 				SELECT @ExtraTextDescription = Description
 				FROM dbo.Scale_ExtraText (NOLOCK)
 				WHERE Scale_ExtraText_ID = @Scale_ExtraText_ID	
+			END
+
+			IF @Scale_StorageData_ID IS NOT NULL
+			BEGIN
+				
+				SELECT @StorageDescription = Description
+				FROM dbo.Scale_StorageData (NOLOCK)
+				WHERE Scale_StorageData_ID = @Scale_StorageData_ID	
 			END
 		END
 		
@@ -877,6 +892,8 @@ MU/MZ   2016-03-22  TFS18729
 					SELECT  @Nutrifact_ID = CAST(@ColumnValue AS int)
 				ELSE IF @ColumnName = LOWER('Scale_ExtraText_ID')
 					SELECT  @Scale_ExtraText_ID = CAST(@ColumnValue AS int)
+				ELSE IF @ColumnName = LOWER('Scale_StorageData_ID')
+					SELECT  @Scale_StorageData_ID = CAST(@ColumnValue AS int)
 				ELSE IF @ColumnName = LOWER('Scale_Tare_ID')
 					SELECT  @Scale_Tare_ID = CAST(@ColumnValue AS int)
 				ELSE IF @ColumnName = LOWER('Scale_Alternate_Tare_ID')
@@ -930,6 +947,15 @@ MU/MZ   2016-03-22  TFS18729
 					SELECT  @Scale_LabelType_ID = CAST(@ColumnValue AS int)
 				ELSE IF @ColumnName = LOWER('ExtraText')
 					SELECT  @ExtraText = CAST(@ColumnValue AS varchar(4200))
+
+			END
+			ELSE
+			IF @TableName = 'scale_storagedata'
+			BEGIN
+
+				-- *new* item scale storage data
+				IF @ColumnName = LOWER('StorageData')
+					SELECT  @StorageData = CAST(@ColumnValue AS varchar(1024))
 
 			END
 			ELSE
@@ -1056,18 +1082,58 @@ MU/MZ   2016-03-22  TFS18729
 							@ExtraText,
 							@New_Scale_ExtraText_ID OUTPUT
 						
-						EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1 Update Existing Item - [Scale_InsertUpdateExtraText]'
+						EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1.1 Update Existing Item - [Scale_InsertUpdateExtraText]'
 						
 					END TRY
 					BEGIN CATCH
 
-							EXEC dbo.EIM_LogAndRethrowException @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1 Update Existing Item - [Scale_InsertUpdateExtraText]'
+							EXEC dbo.EIM_LogAndRethrowException @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1.1 Update Existing Item - [Scale_InsertUpdateExtraText]'
 					END CATCH
 
 					-- move the newly inserted id into the orig id var
 					-- to be used below when inserting/updating the scale data
 					If @Scale_ExtraText_ID = 0
 						SET @Scale_ExtraText_ID = @New_Scale_ExtraText_ID
+			END
+
+			-- create new storage data
+			-- only if there isn't any
+			IF @StorageData IS NOT NULL
+			BEGIN
+			
+				IF @StorageDescription IS NULL
+				BEGIN
+					-- default new storagedata descriptions
+					-- to the item's default identifier
+					SELECT @StorageDescription = Identifier
+					FROM ItemIdentifier (NOLOCK)
+					WHERE Item_Key = @Item_Key
+						AND Default_Identifier = 1
+						AND Deleted_Identifier = 0
+				END
+				
+					SET @Scale_StorageData_ID = IsNull(@Scale_StorageData_ID, 0)
+
+					BEGIN TRY
+
+						EXEC dbo.Scale_InsertUpdateStorageData
+							@Scale_StorageData_ID,
+							@StorageDescription,
+							@StorageData,
+							@New_Scale_StorageData_ID OUTPUT
+						
+						EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1.2 Update Existing Item - [Scale_InsertUpdateStorageData]'
+						
+					END TRY
+					BEGIN CATCH
+
+							EXEC dbo.EIM_LogAndRethrowException @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1.2 Update Existing Item - [Scale_InsertUpdateStorageData]'
+					END CATCH
+
+					-- move the newly inserted id into the orig id var
+					-- to be used below when inserting/updating the scale data
+					If @Scale_StorageData_ID = 0
+						SET @Scale_StorageData_ID = @New_Scale_StorageData_ID
 			END
 		END
 				
@@ -1346,7 +1412,8 @@ MU/MZ   2016-03-22  TFS18729
 						@ScaleDesc4,
 						@ShelfLife_Length,
 						@User_ID,
-						@User_ID_Date
+						@User_ID_Date,
+						@Scale_StorageData_ID = @Scale_StorageData_ID
 					
 
 					EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.7 Update Existing Item - [Scale_InsertUpdateItemScaleDetails]'
@@ -1519,4 +1586,3 @@ MU/MZ   2016-03-22  TFS18729
 		END --  @UseStoreJurisdictions = 1 AND @IsDefaultJurisdiction = 0
 		
 		EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.9.2 Update Existing Item - [End]'
-

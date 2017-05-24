@@ -260,6 +260,9 @@ BEGIN
 					LEFT JOIN
 						Scale_ExtraText_TableName  (nolock)
 						ON ItemScale_TableName.Scale_ExtraText_ID = Scale_ExtraText_TableName.Scale_ExtraText_ID
+					LEFT JOIN 
+						Scale_StorageData_TableName (nolock)
+						ON ItemScale_TableName.Scale_StorageData_ID = Scale_StorageData_TableName.Scale_StorageData_ID
 					INNER JOIN
 						ItemIdentifier_TableName  (nolock)
 						ON Item_TableName.Item_Key = ItemIdentifier_TableName.Item_Key
@@ -451,6 +454,7 @@ BEGIN
 		SELECT @SQL = REPLACE(@SQL, 'ItemIdentifier_TableName', 'ItemIdentifier')
 		SELECT @SQL = REPLACE(@SQL, 'ItemAttribute_TableName', 'ItemAttribute')
 		SELECT @SQL = REPLACE(@SQL, 'Scale_ExtraText_TableName', 'Scale_ExtraText')
+		SELECT @SQL = REPLACE(@SQL, 'Scale_StorageData_TableName', 'Scale_StorageData')
 		SELECT @SQL = REPLACE(@SQL, 'Price_TableName', 'Price')
 		SELECT @SQL = REPLACE(@SQL, 'VendorCostHistory_TableName', 'VendorCostHistory')
 		SELECT @SQL = REPLACE(@SQL, 'StoreItemVendor_TableName', 'StoreItemVendor')

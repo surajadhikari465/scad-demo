@@ -1268,6 +1268,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                             GridUtilities.EnableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEMSCALE_PRINTBLANKWEIGHT_ATTR_KEY)
                             GridUtilities.EnableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEMSCALE_PRINTBLANKTOTALPRICE_ATTR_KEY)
                             GridUtilities.EnableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_EXTRATEXT_EXTRATEXT)
+                            GridUtilities.EnableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_STORAGEDATA_STORAGEDATA)
                         Else
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_SCALEDESC1_ATTR_KEY)
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_SCALEDESC2_ATTR_KEY)
@@ -1294,6 +1295,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEMSCALE_PRINTBLANKWEIGHT_ATTR_KEY)
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEMSCALE_PRINTBLANKTOTALPRICE_ATTR_KEY)
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_EXTRATEXT_EXTRATEXT)
+                            GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_STORAGEDATA_STORAGEDATA)
                         End If
 
                         Dim enforceCanonicalFieldLocking As Boolean = ItemIdentifierDAO.Instance.IsValidatedItemInIcon(theUploadRow.ItemKey)

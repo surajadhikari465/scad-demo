@@ -28,7 +28,8 @@ CREATE PROCEDURE [dbo].[Scale_InsertUpdateItemScaleDetails]
 	@User_ID int,
 	@User_ID_Date varchar(255),
 	@CustomerFacingScaleDepartment bit = null,
-	@SendToScale bit = null
+	@SendToScale bit = null,
+	@Scale_StorageData_ID int = null
 AS
 
 BEGIN
@@ -58,6 +59,7 @@ BEGIN
 			SET 
 				Nutrifact_ID = @Nutrifact_ID,
 				Scale_ExtraText_ID = @Scale_ExtraText_ID,
+				Scale_StorageData_ID = @Scale_StorageData_ID,
 				Scale_Tare_ID = @Scale_Tare_ID,
 				Scale_Alternate_Tare_ID = @Scale_Alternate_Tare_ID,
 				Scale_LabelStyle_ID = @Scale_LabelStyle_ID,
@@ -86,7 +88,7 @@ BEGIN
 		BEGIN
 			INSERT INTO  
 				ItemScale
-				(Item_Key, Nutrifact_ID, Scale_ExtraText_ID, Scale_Tare_ID, Scale_Alternate_Tare_ID, 
+				(Item_Key, Nutrifact_ID, Scale_ExtraText_ID, Scale_StorageData_ID, Scale_Tare_ID, Scale_Alternate_Tare_ID, 
 				Scale_LabelStyle_ID, Scale_EatBy_ID, Scale_Grade_ID, 
 				Scale_RandomWeightType_ID, Scale_ScaleUOMUnit_ID,
 				Scale_FixedWeight, Scale_ByCount, ForceTare, PrintBlankShelfLife,
@@ -97,6 +99,7 @@ BEGIN
 				(@Item_Key,
 				@Nutrifact_ID,
 				@Scale_ExtraText_ID,
+				@Scale_StorageData_ID,
 				@Scale_Tare_ID,
 				@Scale_Alternate_Tare_ID,
 				@Scale_LabelStyle_ID,

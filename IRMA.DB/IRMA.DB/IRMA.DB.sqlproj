@@ -128,6 +128,7 @@
     <Folder Include="Scripts\PopulateData\PreDeploy.Scripts" />
     <Folder Include="Scripts\19916-Populate-HealthYEatingRatingIrma" />
     <Folder Include="Scripts\21451-SendAdditionalScaleItemAttributes" />
+    <Folder Include="Scripts\21731 - AddStorageDataToEIM" />
     <Folder Include="Scripts\16278-NationalHierarchyScripts" />
   </ItemGroup>
   <ItemGroup>
@@ -3195,6 +3196,9 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_UpdateStorageData.sql" />
     <None Include="Scripts\21451-SendAdditionalScaleItemAttributes\InsertDataIntoInstanceDataFlagsTable.RollBack.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21732 - PostDeploy Schema PopData - Add Storage Number and Storage Text POSDataElement.rollback.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_InsertUpdateStorageData.sql" />
+    <None Include="Scripts\21731 - AddStorageDataToEIM\AddStorageDataToEIM.RollBack.sql" />
+    <None Include="Scripts\21731 - AddStorageDataToEIM\AddStorageDataToEIM.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20484 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for Batching Ingredients.rollback.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20484 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for Batching Ingredients.sql" />
 	<None Include="Scripts\16278-NationalHierarchyScripts\AddIdentityColumnToNationalClassTables_5.sql" />
