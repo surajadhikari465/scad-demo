@@ -226,6 +226,12 @@ Partial Class Form_ItemScaleDetails
         Me.lblDescription = New System.Windows.Forms.Label()
         Me.StorageDataTxt = New System.Windows.Forms.TextBox()
         Me.lblStorageData = New System.Windows.Forms.Label()
+        Me.ProductClaimsTab = New System.Windows.Forms.TabPage()
+        Me.ProductDetails_GroupBox = New System.Windows.Forms.GroupBox()
+        Me.DescriptionTxt = New System.Windows.Forms.TextBox()
+        Me.lblProductClaimsDescription = New System.Windows.Forms.Label()
+        Me.ProductClaimsTxt = New System.Windows.Forms.TextBox()
+        Me.lblProductClaims = New System.Windows.Forms.Label()
         Me.UOM_GroupBox.SuspendLayout()
         CType(Me.ByCountNumericEditor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -305,6 +311,8 @@ Partial Class Form_ItemScaleDetails
         Me.Allergens_GroupBox.SuspendLayout()
         Me.StorageDataTab.SuspendLayout()
         Me.Storage_GroupBox.SuspendLayout()
+        Me.ProductClaimsTab.SuspendLayout()
+        Me.ProductDetails_GroupBox.SuspendLayout()
         Me.SuspendLayout()
         '
         'UOM_GroupBox
@@ -737,6 +745,7 @@ Partial Class Form_ItemScaleDetails
         Me.ScaleItemTabs.Controls.Add(Me.IngredientsTab)
         Me.ScaleItemTabs.Controls.Add(Me.AllergensTab)
         Me.ScaleItemTabs.Controls.Add(Me.StorageDataTab)
+        Me.ScaleItemTabs.Controls.Add(Me.ProductClaimsTab)
         Me.ScaleItemTabs.Location = New System.Drawing.Point(9, 6)
         Me.ScaleItemTabs.Name = "ScaleItemTabs"
         Me.ScaleItemTabs.SelectedIndex = 0
@@ -3370,6 +3379,91 @@ Partial Class Form_ItemScaleDetails
         Me.lblStorageData.Text = "Storage Data :"
         Me.lblStorageData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'ProductClaimsTab
+        '
+        Me.ProductClaimsTab.BackColor = System.Drawing.SystemColors.Control
+        Me.ProductClaimsTab.Controls.Add(Me.ProductDetails_GroupBox)
+        Me.ProductClaimsTab.Location = New System.Drawing.Point(4, 22)
+        Me.ProductClaimsTab.Name = "ProductClaimsTab"
+        Me.ProductClaimsTab.Padding = New System.Windows.Forms.Padding(3)
+        Me.ProductClaimsTab.Size = New System.Drawing.Size(907, 711)
+        Me.ProductClaimsTab.TabIndex = 5
+        Me.ProductClaimsTab.Text = "Product Claims"
+        '
+        'ProductDetails_GroupBox
+        '
+        Me.ProductDetails_GroupBox.BackColor = System.Drawing.SystemColors.Control
+        Me.ProductDetails_GroupBox.Controls.Add(Me.DescriptionTxt)
+        Me.ProductDetails_GroupBox.Controls.Add(Me.lblProductClaimsDescription)
+        Me.ProductDetails_GroupBox.Controls.Add(Me.ProductClaimsTxt)
+        Me.ProductDetails_GroupBox.Controls.Add(Me.lblProductClaims)
+        Me.ProductDetails_GroupBox.Location = New System.Drawing.Point(0, 0)
+        Me.ProductDetails_GroupBox.Margin = New System.Windows.Forms.Padding(4)
+        Me.ProductDetails_GroupBox.Name = "ProductDetails_GroupBox"
+        Me.ProductDetails_GroupBox.Padding = New System.Windows.Forms.Padding(4)
+        Me.ProductDetails_GroupBox.Size = New System.Drawing.Size(875, 450)
+        Me.ProductDetails_GroupBox.TabIndex = 173
+        Me.ProductDetails_GroupBox.TabStop = False
+        Me.ProductDetails_GroupBox.Text = "Product Claims Record Details"
+        '
+        'DescriptionTxt
+        '
+        Me.DescriptionTxt.BackColor = System.Drawing.SystemColors.Control
+        Me.DescriptionTxt.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.DescriptionTxt.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.DescriptionTxt.Location = New System.Drawing.Point(113, 26)
+        Me.DescriptionTxt.MaxLength = 50
+        Me.DescriptionTxt.Name = "DescriptionTxt"
+        Me.DescriptionTxt.ReadOnly = True
+        Me.DescriptionTxt.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.DescriptionTxt.Size = New System.Drawing.Size(310, 20)
+        Me.DescriptionTxt.TabIndex = 168
+        Me.DescriptionTxt.Tag = "String"
+        '
+        'lblProductClaimsDescription
+        '
+        Me.lblProductClaimsDescription.BackColor = System.Drawing.Color.Transparent
+        Me.lblProductClaimsDescription.Cursor = System.Windows.Forms.Cursors.Default
+        Me.lblProductClaimsDescription.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblProductClaimsDescription.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblProductClaimsDescription.Location = New System.Drawing.Point(6, 29)
+        Me.lblProductClaimsDescription.Name = "lblProductClaimsDescription"
+        Me.lblProductClaimsDescription.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lblProductClaimsDescription.Size = New System.Drawing.Size(80, 17)
+        Me.lblProductClaimsDescription.TabIndex = 169
+        Me.lblProductClaimsDescription.Text = "Description :"
+        Me.lblProductClaimsDescription.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'ProductClaimsTxt
+        '
+        Me.ProductClaimsTxt.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProductClaimsTxt.BackColor = System.Drawing.SystemColors.Control
+        Me.ProductClaimsTxt.Location = New System.Drawing.Point(113, 75)
+        Me.ProductClaimsTxt.Margin = New System.Windows.Forms.Padding(4)
+        Me.ProductClaimsTxt.MaxLength = 4200
+        Me.ProductClaimsTxt.Multiline = True
+        Me.ProductClaimsTxt.Name = "ProductClaimsTxt"
+        Me.ProductClaimsTxt.ReadOnly = True
+        Me.ProductClaimsTxt.Size = New System.Drawing.Size(656, 333)
+        Me.ProductClaimsTxt.TabIndex = 167
+        '
+        'lblProductClaims
+        '
+        Me.lblProductClaims.BackColor = System.Drawing.Color.Transparent
+        Me.lblProductClaims.Cursor = System.Windows.Forms.Cursors.Default
+        Me.lblProductClaims.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblProductClaims.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblProductClaims.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblProductClaims.Location = New System.Drawing.Point(6, 74)
+        Me.lblProductClaims.Name = "lblProductClaims"
+        Me.lblProductClaims.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lblProductClaims.Size = New System.Drawing.Size(90, 18)
+        Me.lblProductClaims.TabIndex = 166
+        Me.lblProductClaims.Text = "Product Claims :"
+        Me.lblProductClaims.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'Form_ItemScaleDetails
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
@@ -3476,6 +3570,9 @@ Partial Class Form_ItemScaleDetails
         Me.StorageDataTab.ResumeLayout(False)
         Me.Storage_GroupBox.ResumeLayout(False)
         Me.Storage_GroupBox.PerformLayout()
+        Me.ProductClaimsTab.ResumeLayout(False)
+        Me.ProductDetails_GroupBox.ResumeLayout(False)
+        Me.ProductDetails_GroupBox.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3685,4 +3782,10 @@ Partial Class Form_ItemScaleDetails
     Public WithEvents lblStorageData As Label
     Public WithEvents txtDescription As TextBox
     Public WithEvents lblDescription As Label
+    Friend WithEvents ProductClaimsTab As TabPage
+    Friend WithEvents ProductDetails_GroupBox As GroupBox
+    Public WithEvents DescriptionTxt As TextBox
+    Public WithEvents lblProductClaimsDescription As Label
+    Friend WithEvents ProductClaimsTxt As TextBox
+    Public WithEvents lblProductClaims As Label
 End Class

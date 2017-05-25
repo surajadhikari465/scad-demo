@@ -3196,6 +3196,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_UpdateStorageData.sql" />
     <None Include="Scripts\21451-SendAdditionalScaleItemAttributes\InsertDataIntoInstanceDataFlagsTable.RollBack.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21732 - PostDeploy Schema PopData - Add Storage Number and Storage Text POSDataElement.rollback.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Scale_ProductClaims.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_InsertUpdateStorageData.sql" />
     <None Include="Scripts\21731 - AddStorageDataToEIM\AddStorageDataToEIM.RollBack.sql" />
     <None Include="Scripts\21731 - AddStorageDataToEIM\AddStorageDataToEIM.sql" />

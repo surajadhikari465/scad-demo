@@ -186,6 +186,7 @@ Imports log4net
 
     Private Sub SetPermissions()
         Dim IsEditable As Boolean = False
+        Dim scaleIdentifier As Boolean = False
 
         IsEditable = (gbItemAdministrator And frmItem.pbUserSubTeam) Or gbSuperUser
 
@@ -252,6 +253,12 @@ Imports log4net
         Else
             ScaleItemTabs.TabPages.Remove(StorageDataTab)
         End If
+
+        scaleIdentifier = ScaleDetailsDAO.IsScaleIdentifier(Me.ScaleDetailsBO.ItemIdentifier)
+        If scaleIdentifier <> True Then
+            ScaleItemTabs.TabPages.Remove(ProductClaimsTab)
+        End If
+
 
     End Sub
 
@@ -411,7 +418,6 @@ Imports log4net
         logger.Debug("LoadDetails Entry")
 
         ScaleDetailsDAO.GetScaleDetails(Me.ScaleDetailsBO)
-
         'If Me.ScaleDetailsBO.Nutrifact = 0 Then 'new scale item - let the DAO set the nutrifactid to null 
         '    Me.ScaleDetailsBO.Nutrifact = -1
         'End If
