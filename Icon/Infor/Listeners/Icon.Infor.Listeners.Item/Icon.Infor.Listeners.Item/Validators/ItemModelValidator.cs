@@ -417,12 +417,27 @@ namespace Icon.Infor.Listeners.Item.Validators
                     joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentTax;
                     joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentTax, joinedItem.Item.TaxHierarchyClassId);
                 }
-                else if (!string.IsNullOrWhiteSpace(joinedItem.ValidationProperties.ModifiedDate) && DateTime.Parse(joinedItem.Item.ModifiedDate) < DateTime.Parse(joinedItem.ValidationProperties.ModifiedDate))
+                else if (!string.IsNullOrWhiteSpace(joinedItem.ValidationProperties.ModifiedDate) && IsMessageModifiedDateLessThanCurrentModifiedDate(joinedItem.Item.ModifiedDate, joinedItem.ValidationProperties.ModifiedDate))
                 {
                     joinedItem.Item.ErrorCode = ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode;
                     joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.OutOfSyncItemUpdateErrorCode, joinedItem.Item.ModifiedDate, joinedItem.ValidationProperties.ModifiedDate);
                 }
             }
+        }
+
+        private bool IsMessageModifiedDateLessThanCurrentModifiedDate(string messageModifiedDate, string currentModifiedDate)
+        {
+            var parsedMessageModifiedDate = DateTime.Parse(messageModifiedDate);
+            var parsedMessageModifiedDateNanoseconds = parsedMessageModifiedDate.Ticks % TimeSpan.TicksPerMillisecond;
+
+            var parsedCurrentModifiedDate = DateTime.Parse(currentModifiedDate);
+            var parsedCurrentModifiedDateNanoseconds = parsedCurrentModifiedDate.Ticks % TimeSpan.TicksPerMillisecond;
+
+            //Removing the nanoseconds from modified date because we only want to compare up to the number of milliseconds
+            parsedMessageModifiedDate = parsedMessageModifiedDate.AddTicks(-parsedMessageModifiedDateNanoseconds);
+            parsedCurrentModifiedDate = parsedCurrentModifiedDate.AddTicks(-parsedCurrentModifiedDateNanoseconds);
+
+            return parsedMessageModifiedDate < parsedCurrentModifiedDate;
         }
     }
 }

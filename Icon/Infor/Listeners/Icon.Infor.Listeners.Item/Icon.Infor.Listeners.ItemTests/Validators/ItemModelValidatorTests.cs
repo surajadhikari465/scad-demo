@@ -2247,10 +2247,10 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateCollection_OutOfSyncItemupdate_OutOfSyncItemUpdateError()
+        public void ValidateCollection_OutOfSyncItemUpdate_OutOfSyncItemUpdateError()
         {
             //Given
-            testItemValidationPropertiesResultModel.ModifiedDate = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+            testItemValidationPropertiesResultModel.ModifiedDate = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
             //Then
             PerformValidateCollectionWhenAndThenStepsWithStringFormat(
@@ -2258,6 +2258,18 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
                 ValidationErrors.Messages.OutOfSyncItemUpdateErrorCode,
                 testItem.ModifiedDate,
                 testItemValidationPropertiesResultModel.ModifiedDate.ToString());
+        }
+
+        [TestMethod]
+        public void ValidateCollection_ModifiedDateHasSameNumberOfMilliseconds_NoOutOfSyncItemUpdateError()
+        {
+            //Given
+            var testModifiedDate = DateTime.Now;
+            testItem.ModifiedDate = testModifiedDate.AddTicks(-testModifiedDate.Ticks % TimeSpan.TicksPerMillisecond).ToString();
+            testItemValidationPropertiesResultModel.ModifiedDate = testModifiedDate.ToString();
+
+            //Then
+            PerformValidateCollectionWhenAndThenSteps(null, null);
         }
 
         private void PerformValidateCollectionWhenAndThenSteps(string expectedErrorCode, string expectedErrorDetails)
