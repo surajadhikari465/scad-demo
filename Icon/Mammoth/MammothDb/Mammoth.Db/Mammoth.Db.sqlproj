@@ -161,6 +161,7 @@
     <Folder Include="Scripts\Templates" />
     <Folder Include="gpm" />
     <Folder Include="gpm\Tables" />
+    <Folder Include="stage\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -646,6 +647,8 @@
     <Build Include="gpm\Tables\PriceHistory.sql" />
     <Build Include="gpm\Tables\MessageDetailArchivePrice.sql" />
     <Build Include="app\Tables\DbStatus.sql" />
+    <Build Include="stage\Tables\GpmDataConversion.sql" />
+    <Build Include="stage\Stored Procedures\GpmInsertPriceDataConversion.sql" />
     <Build Include="gpm\Tables\MessageSequence.sql" />
     <Build Include="gpm\Tables\MessageSequenceHistory.sql" />
   </ItemGroup>
