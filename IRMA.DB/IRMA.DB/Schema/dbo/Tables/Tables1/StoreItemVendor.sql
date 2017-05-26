@@ -127,8 +127,11 @@ BEGIN
                Deleted.Store_No = Inserted.Store_No AND
                Deleted.Vendor_ID = Inserted.Vendor_ID		
         WHERE Inserted.PrimaryVendor = 1	-- create records when the primary vendor changes
-			AND Inserted.Store_No IN (SELECT Store_NO FROM InstanceDataFlagsStoreOverride   
-									  WHERE FlagKey = 'BatchVendorChanges' AND FlagValue = 1 )
+			AND Inserted.Store_No IN (SELECT Store_NO 
+									  FROM InstanceDataFlagsStoreOverride   
+									  WHERE FlagKey = 'BatchVendorChanges' 
+									  AND FlagValue = 1 
+									  )
 			AND (Inserted.PrimaryVendor <> Deleted.PrimaryVendor)
 			AND (Inserted.DeleteDate IS NULL OR Inserted.DeleteDate > GetDate())
             AND dbo.fn_HasPendingItemChangePriceBatchDetailRecord(Inserted.Item_Key,Inserted.Store_No) = 0

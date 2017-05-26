@@ -123,10 +123,10 @@ BEGIN
 	       SELECT idfs.Store_NO 
 		   FROM InstanceDataFlagsStoreOverride idfs
 		   INNER JOIN 
-					StoreItemVendor stv 
-					ON stv.Store_NO = idfs.Store_NO 
-					AND PrimaryVendor = 1 
-					AND stv.item_key IN (SELECT item_key FROM Inserted )
+				StoreItemVendor stv 
+				ON stv.Store_NO = idfs.Store_NO 
+				AND PrimaryVendor = 1 
+				AND stv.item_key IN (SELECT item_key FROM Inserted )
 	       WHERE FlagKey = 'BatchVendorChanges'  AND FlagValue = 1 
 
 	       SET @RowCount = (SELECT Count(*) FROM #tempStoreNumbers)
@@ -134,7 +134,9 @@ BEGIN
 	ELSE
 		BEGIN
 		   INSERT INTO #tempStoreNumbers (Store_No)
-	        SELECT Store_No FROM Store (nolock) WHERE WFM_Store = 1 OR Mega_Store = 1
+	       SELECT Store_No 
+		   FROM Store (nolock) 
+		   WHERE WFM_Store = 1 OR Mega_Store = 1
 	        -- we really do not need the actual count. Setting to 1 so that Item Maintenance  is created
 	        SET @RowCount =  1
 		END	
