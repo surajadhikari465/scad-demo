@@ -218,10 +218,11 @@ BEGIN
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 0, 
 			[ItemChgTypeDesc] = 'PRC',
-			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND I.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -299,10 +300,11 @@ BEGIN
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 0, 
 			[ItemChgTypeDesc] = 'PRC',
-			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND I.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -379,10 +381,11 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 1, 
 			[ItemChgTypeDesc] = 'NEW',
-			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND I.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -486,10 +489,11 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 2, 
 			[ItemChgTypeDesc] = 'ITM',
-			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND I.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -570,10 +574,11 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 3, 
 			[ItemChgTypeDesc] = 'DEL',
-			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND I.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -631,10 +636,11 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 4, 
 			[ItemChgTypeDesc] = 'OFR',
-			CASE WHEN VSC.Validated = 0 AND details.BatchUnvalidatedIngredients = 0 AND details.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, details.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, details.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND details.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, details.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, details.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND details.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			(SELECT 
 				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID, S.BatchUnvalidatedIngredients, I.Retail_Sale
@@ -681,10 +687,11 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 1, 
 			[ItemChgTypeDesc] = 'NEW',
-			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND I.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -791,10 +798,11 @@ UNION
 			PBD.PriceChgTypeDesc,
 			[ItemChgTypeID] = 2, 
 			[ItemChgTypeDesc] = 'ITM',	
-			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND I.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -876,10 +884,11 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 3, 
 			[ItemChgTypeDesc] = 'DEL',
-			CASE WHEN VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND I.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND S.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, I.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, I.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND I.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			@tblStoreList S
 			INNER JOIN (SELECT 
@@ -942,10 +951,11 @@ UNION
 			PCT1.PriceChgTypeDesc,
 			[ItemChgTypeID] = 4, 
 			[ItemChgTypeDesc] = 'OFR',
-			CASE WHEN VSC.Validated = 0 AND details.BatchUnvalidatedIngredients = 0 AND details.Retail_Sale = 0
-					AND ((CONVERT(FLOAT, details.Identifier) BETWEEN 46000000000 AND 46999999999)
-					  OR (CONVERT(FLOAT, details.Identifier) BETWEEN 48000000000 AND 48999999999))
-			THEN NULL ELSE VSC.Id END AS Id
+			CASE WHEN ( VSC.Validated = 0 AND details.BatchUnvalidatedIngredients = 0 AND
+					(  CONVERT(FLOAT, details.Identifier) BETWEEN 46000000000 AND 46999999999 
+					OR CONVERT(FLOAT, details.Identifier) BETWEEN 48000000000 AND 48999999999)
+				) OR (VSC.Validated = 0 AND details.Retail_Sale=1) THEN NULL 
+			ELSE VSC.Id END AS Id
 		FROM 
 			(SELECT 
 				PBD.PriceBatchDetailID, S.Store_No, S.Store_Name, [Identifier] = PO.ReferenceCode, [Item_Description] = PO.Description, PO.StartDate, [Sale_End_Date] = PO.EndDate, PO.Offer_Id, IB.Brand_Name, PBD.PriceChgTypeID, S.BatchUnvalidatedIngredients, I.Retail_Sale
