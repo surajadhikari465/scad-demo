@@ -49,6 +49,8 @@ AS
 -- 2016-02-04	KM				13984	Updates for 365 - includes joins to ItemCustomerFacingScale and related WHERE condition; also includes clustered
 --										index on the identifiers temp table.
 -- 2016-08-22   MZ              20586 (17474)  Added Default_Identifier to the result set.
+-- 2017-04-13   MZ              23765 (20859)   Move Allergens before Ingredients in the concatenation. Correct the order of the Ingredients field
+--												Allergens + Ingredients + ExtraText
 -- **************************************************************************
 
 BEGIN  
@@ -339,7 +341,7 @@ BEGIN
 				ISNULL(ItemScale.Scale_Description2, '') As ScaleDesc2,
 				ISNULL(ItemScale.Scale_Description3, '') As ScaleDesc3,
 				ISNULL(ItemScale.Scale_Description4, '') As ScaleDesc4,
-				SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients) As Ingredients, 
+				SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients) As Ingredients, 
 				ItemScale.Scale_ExtraText_ID,
 				Scale_LabelType.Description AS Scale_LabelType_ID, 
 				ItemScale.Nutrifact_ID,
@@ -775,7 +777,7 @@ BEGIN
 					ISNULL(ISNULL(ISO.Scale_Description2, ItemScale.Scale_Description2), '') AS ScaleDesc2,
 					ISNULL(ISNULL(ISO.Scale_Description3, ItemScale.Scale_Description3), '') AS ScaleDesc3,
 					ISNULL(ISNULL(ISO.Scale_Description4, ItemScale.Scale_Description4), '') AS ScaleDesc4,
-					ISNULL(ISNULL(Scale_ExtraText_Override.ExtraText, SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients)), '') AS Ingredients, 
+					ISNULL(ISNULL(Scale_ExtraText_Override.ExtraText, SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients)), '') AS Ingredients, 
 					ISNULL(ISO.Scale_ExtraText_ID, ItemScale.Scale_ExtraText_ID) AS Scale_ExtraText_ID,
 					ISNULL(Scale_LabelType_Override.Description, Scale_LabelType.Description) AS Scale_LabelType_ID,
 					CASE WHEN ISO.Item_Key IS NOT NULL
@@ -1105,7 +1107,7 @@ BEGIN
 					ISNULL(ISNULL(ISO.Scale_Description2, ItemScale.Scale_Description2), '') AS ScaleDesc2,
 					ISNULL(ISNULL(ISO.Scale_Description3, ItemScale.Scale_Description3), '') AS ScaleDesc3,
 					ISNULL(ISNULL(ISO.Scale_Description4, ItemScale.Scale_Description4), '') AS ScaleDesc4,
-					ISNULL(ISNULL(Scale_ExtraText_Override.ExtraText, SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients)), '') AS Ingredients, 
+					ISNULL(ISNULL(Scale_ExtraText_Override.ExtraText, SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients)), '') AS Ingredients, 
 					ISNULL(ISO.Scale_ExtraText_ID, ItemScale.Scale_ExtraText_ID) AS Scale_ExtraText_ID,
 					ISNULL(Scale_LabelType_Override.Description, Scale_LabelType.Description) AS Scale_LabelType_ID,
 					CASE 

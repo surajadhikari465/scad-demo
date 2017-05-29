@@ -77,6 +77,8 @@ KM		2016-02-04	13984	Updates for 365 - includes join to ItemCustomerFacingScale 
 DN		2016-04-21	19165	Add PriceBatchDetailID column in the returning result.
 Jamali	2016-08-03	17576	Removed the invalid join from the ItemNonBatchChanges table, removed the nolock hint
 Jamali  2016-09-28  18460	Added the @LegacyStoresOnly parameter
+MZ      2017-04-13  23765(20859) Move Allergens before Ingredients in the concatenation. Correct the order of the Ingredients field
+								 Allergens + Ingredients + ExtraText
 ***********************************************************************************************/
 
 BEGIN
@@ -466,8 +468,8 @@ SELECT I.Item_Key,
    ISNULL(ISNULL(ISO.Scale_Description2, ItemScale.Scale_Description2), '''') AS ScaleDesc2,
    ISNULL(ISNULL(ISO.Scale_Description3, ItemScale.Scale_Description3), '''') AS ScaleDesc3,
    ISNULL(ISNULL(ISO.Scale_Description4, ItemScale.Scale_Description4), '''') AS ScaleDesc4,
-   ISNULL(ISNULL(Scale_ExtraText_Override.ExtraText, SUBSTRING(SING.Ingredients+'' ''+ISNULL(SA.Allergens, '''')+ISNULL(Scale_ExtraText.ExtraText, ''''),1,4200)), '''') As Ingredients,
-   CASE WHEN ISNULL(ISNULL(Scale_ExtraText_Override.ExtraText, SUBSTRING(SING.Ingredients+'' ''+ISNULL(SA.Allergens, '''')+ISNULL(Scale_ExtraText.ExtraText, ''''),1,4200)), '''') <> '''' -- Scale Ingredients is not ''''
+   ISNULL(ISNULL(Scale_ExtraText_Override.ExtraText, SUBSTRING(SA.Allergens+'' ''+ISNULL(SING.Ingredients, '''')+ISNULL(Scale_ExtraText.ExtraText, ''''),1,4200)), '''') As Ingredients,
+   CASE WHEN ISNULL(ISNULL(Scale_ExtraText_Override.ExtraText, SUBSTRING(SA.Allergens+'' ''+ISNULL(SING.Ingredients, '''')+ISNULL(Scale_ExtraText.ExtraText, ''''),1,4200)), '''') <> '''' -- Scale Ingredients is not ''''
 		THEN SUBSTRING(II.Identifier, 2, 5) 
 		ELSE 0 
 	END As IngredientNumber,		   

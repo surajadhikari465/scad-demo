@@ -115,12 +115,11 @@ BEGIN
 	       FROM @Temp T
 
 	     UPDATE T
-            SET ItemLastSoldDate = (SELECT TOP 1 IH.DateStamp FROM ItemHistory IH (nolock) 
-                                            WHERE IH.Item_Key = T.Item_Key 
-                                                AND IH.Store_No = T.Store_No 
-                                                AND IH.SubTeam_No = T.SubTeam_No 
-                                                AND IH.Adjustment_ID = 3 --For sales
-                                                ORDER BY IH.ItemHistoryID DESC)
+            SET ItemLastSoldDate = (SELECT TOP 1 SSBI.Date_Key FROM Sales_SumByItem SSBI (nolock) 
+                                            WHERE SSBI.Item_Key = T.Item_Key 
+                                                AND SSBI.Store_No = T.Store_No 
+                                                AND SSBI.SubTeam_No = T.SubTeam_No 
+                                                ORDER BY SSBI.Date_Key DESC)
 	       FROM @Temp T
 
     --SELECT DISTINCT
