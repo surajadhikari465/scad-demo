@@ -120,11 +120,11 @@ BEGIN
 		BEGIN
 	       -- get stores from InstanceDataFlagsStoreOverride
 	       INSERT INTO #tempStoreNumbers (Store_No)
-	       SELECT stv.Store_NO 
-		   FROM   StoreItemVendor stv 
+	       SELECT SIV.Store_NO 
+		   FROM   StoreItemVendor SIV 
 		WHERE PrimaryVendor = 1 
-			  AND stv.item_key IN (SELECT item_key FROM Inserted )
-	          AND dbo.fn_InstanceDataValue ('BatchVendorChanges', stv.Store_No) = 1 
+			  AND SIV.item_key IN (SELECT item_key FROM Inserted )
+	          AND dbo.fn_InstanceDataValue ('BatchVendorChanges', SIV.Store_No) = 1 
 
 	       SET @RowCount = (SELECT Count(*) FROM #tempStoreNumbers)
 		END	
