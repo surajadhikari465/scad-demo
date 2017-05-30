@@ -653,7 +653,8 @@
             this.AddPriceToDatabase(existingPrice);
 
             ValidatedScanCode newValidScanCode = new TestValidatedScanCodeBuilder()
-                .WithScanCode(expectedIdentifier);
+                .WithScanCode(expectedIdentifier)
+                .WithInforItemId(1);
 
             this.AddValidatedScanCode(newValidScanCode);
 
@@ -1467,7 +1468,7 @@
 
         private void AddValidatedScanCode(ValidatedScanCode newValidatedScanCode)
         {
-            var sql = @"INSERT INTO ValidatedScanCode (ScanCode, InsertDate) VALUES (@ScanCode, @InsertDate)";
+            var sql = @"INSERT INTO ValidatedScanCode (ScanCode, InforItemId, InsertDate) VALUES (@ScanCode, @InforItemId, @InsertDate)";
             this.dbProvider.Connection.Execute(sql, newValidatedScanCode, dbProvider.Transaction);
         }
 

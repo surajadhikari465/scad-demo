@@ -14,6 +14,7 @@ namespace Mammoth.ItemLocale.Controller
         public string ControllerName { get; set; }
         public string UriBaseAddress { get; set; }
         public int ApiRowLimit { get; set; }
+        public List<string> NonAlertErrors { get; set; }
 
         public static ItemLocaleControllerApplicationSettings CreateFromConfig()
         {
@@ -21,10 +22,11 @@ namespace Mammoth.ItemLocale.Controller
             {
                 ControllerName = "ItemLocale",
                 Instance = AppSettingsAccessor.GetIntSetting("InstanceID"),
-                MaxNumberOfRowsToMark = AppSettingsAccessor.GetIntSetting("MaxNumberOfRowsToMark"),
+                MaxNumberOfRowsToMark = AppSettingsAccessor.GetIntSetting(nameof(MaxNumberOfRowsToMark)),
                 Regions = AppSettingsAccessor.GetStringSetting("RegionsToProcess").Split(',').ToList(),
                 UriBaseAddress = AppSettingsAccessor.GetStringSetting("BaseAddress"),
-                ApiRowLimit = AppSettingsAccessor.GetIntSetting("ApiRowLimit")
+                ApiRowLimit = AppSettingsAccessor.GetIntSetting(nameof(ApiRowLimit)),
+                NonAlertErrors = AppSettingsAccessor.GetStringSetting(nameof(NonAlertErrors)).Split(',').ToList()
             };
         }
     }

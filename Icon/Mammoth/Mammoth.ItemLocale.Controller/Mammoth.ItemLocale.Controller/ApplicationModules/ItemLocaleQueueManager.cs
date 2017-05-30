@@ -157,7 +157,8 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules
         private void SendAlert(ChangeQueueEvents<ItemLocaleEventModel> queueRecords)
         {
             var failedEvents = queueRecords.EventModels
-                .Where(q => !String.IsNullOrEmpty(q.ErrorMessage))
+                .Where(q => !String.IsNullOrEmpty(q.ErrorMessage) 
+                    && !settings.NonAlertErrors.Contains(q.ErrorMessage))
                 .Select(em => new
                 {
                     Resolution = "Perform Mammoth ItemLocale Refresh",

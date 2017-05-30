@@ -8,6 +8,7 @@ namespace Irma.Testing.Builders
         private int id;
         private string scanCode;
         private System.DateTime insertDate;
+        private int inforItemId;
 
         public TestValidatedScanCodeBuilder()
         {
@@ -34,6 +35,12 @@ namespace Irma.Testing.Builders
             return this;
         }
 
+        public TestValidatedScanCodeBuilder WithInforItemId(int inforItemId)
+        {
+            this.inforItemId = inforItemId;
+            return this;
+        }
+
         public ValidatedScanCode Build()
         {
             ValidatedScanCode validatedScanCode = new ValidatedScanCode();
@@ -41,6 +48,7 @@ namespace Irma.Testing.Builders
             validatedScanCode.Id = this.id;
             validatedScanCode.ScanCode = this.scanCode;
             validatedScanCode.InsertDate = this.insertDate;
+            validatedScanCode.InforItemId = this.inforItemId;
 
             return validatedScanCode;
         }

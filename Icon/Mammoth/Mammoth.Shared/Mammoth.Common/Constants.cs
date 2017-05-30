@@ -2,6 +2,8 @@
 {
     public class Constants
     {
+        public const int TimeoutErrorNumber = -2;
+
         public static class EventTypes
         {
             public const int ItemLocaleAddOrUpdate = 1;

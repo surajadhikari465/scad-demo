@@ -49,7 +49,8 @@ namespace Mammoth.Price.Controller.Tests
                 ControllerName = "Price",
                 CurrentRegion = "FL",
                 MaxNumberOfRowsToMark = 100,
-                Regions = new List<string> { "FL" }
+                Regions = new List<string> { "FL" },
+                NonAlertErrors = new List<string>()
             };
 
             this.queueManager = new PriceQueueManager(
@@ -346,6 +347,45 @@ namespace Mammoth.Price.Controller.Tests
                     && c.Events.All(y => y.ErrorDetails == priceEventModel.ErrorDetails))
                     && c.Events.All(x => x.QueueID == eventQueueModel.QueueId))), Times.Once);
             this.mockEmailClient.Verify(c => c.Send(It.IsAny<string>(), "Mammoth Price Error - ACTION REQUIRED"), Times.Once);
+        }
+
+        [TestMethod]
+        public void Finalize_GivenQueueEventsWithPriceDataWhichHasInvalidDataErrors_DoesNotSendEmailAlert()
+        {
+            // Given
+            settings.NonAlertErrors.Add(ApplicationErrors.InvalidDataErrorCode);
+
+            ChangeQueueEvents<PriceEventModel> changeQueueEvents = new ChangeQueueEvents<PriceEventModel>();
+            var eventQueueModel = new EventQueueModel
+            {
+                QueueId = 1,
+            };
+
+            var priceEventModel = new PriceEventModel
+            {
+                QueueId = 1,
+                BusinessUnitId = 1,
+                ScanCode = "1",
+                EventTypeId = Constants.EventTypes.Price,
+                ErrorMessage = ApplicationErrors.InvalidDataErrorCode,
+                ErrorDetails = "Error Details Adding Price"
+            };
+
+            changeQueueEvents.QueuedEvents.Add(eventQueueModel);
+            changeQueueEvents.EventModels.Add(priceEventModel);
+
+            // When
+            this.queueManager.Finalize(changeQueueEvents);
+
+            // Then
+            this.mockDeleteEventQueueCommandHandler
+                .Verify(d => d.Execute(It.Is<DeleteEventQueueCommand>(c => c.QueueIds.Count() == 1)), Times.Once);
+            this.mockArchiveEventsCommandHandler
+                .Verify(a => a.Execute(It.Is<ArchiveEventsCommand>(c =>
+                    c.Events.All(e => e.ErrorCode == priceEventModel.ErrorMessage
+                    && c.Events.All(y => y.ErrorDetails == priceEventModel.ErrorDetails))
+                    && c.Events.All(x => x.QueueID == eventQueueModel.QueueId))), Times.Once);
+            this.mockEmailClient.Verify(c => c.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         private List<EventQueueModel> BuildEventQueueModels(int numberOfItems)

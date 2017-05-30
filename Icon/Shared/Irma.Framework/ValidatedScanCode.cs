@@ -17,6 +17,6 @@ namespace Irma.Framework
         public int Id { get; set; }
         public string ScanCode { get; set; }
         public System.DateTime InsertDate { get; set; }
-        public Nullable<int> InforItemId { get; set; }
+        public int InforItemId { get; set; }
     }
 }

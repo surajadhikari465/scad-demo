@@ -162,7 +162,7 @@ namespace Mammoth.Price.Controller.ApplicationModules
         private void SendAlert(ChangeQueueEvents<PriceEventModel> queueRecords)
         {
             var failedEvents = queueRecords.EventModels
-                .Where(q => !String.IsNullOrEmpty(q.ErrorMessage))
+                .Where(q => !String.IsNullOrEmpty(q.ErrorMessage) && !settings.NonAlertErrors.Contains(q.ErrorMessage))
                 .Select(em => new
                 {
                     Resolution = em.EventTypeId == Constants.EventTypes.Price ? "Perform Mammoth Price Refresh" : "Further Research Required",

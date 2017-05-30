@@ -347,6 +347,7 @@
           <Property Name="ShelfLife_Length" Type="smallint" />
           <Property Name="Scale_Ingredient_ID" Type="int" />
           <Property Name="Scale_Allergen_ID" Type="int" />
+          <Property Name="Scale_StorageData_ID" Type="int" />
         </EntityType>
         <EntityType Name="ItemSignAttribute">
           <Key>
@@ -416,10 +417,10 @@
           <Key>
             <PropertyRef Name="NatCatID" />
           </Key>
+          <Property Name="NatCatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NatCatName" Type="varchar" MaxLength="65" />
           <Property Name="NatFamilyID" Type="int" Nullable="false" />
           <Property Name="LastUpdateTimestamp" Type="datetime" />
-          <Property Name="NatCatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="NatItemClass">
           <Key>
@@ -434,11 +435,11 @@
           <Key>
             <PropertyRef Name="NatFamilyID" />
           </Key>
+          <Property Name="NatFamilyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NatFamilyName" Type="varchar" MaxLength="65" />
           <Property Name="NatSubTeam_No" Type="int" />
           <Property Name="SubTeam_No" Type="int" />
           <Property Name="LastUpdateTimestamp" Type="datetime" />
-          <Property Name="NatFamilyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="NutriFacts">
           <Key>
@@ -762,7 +763,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScanCode" Type="varchar" MaxLength="13" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
-          <Property Name="InforItemId" Type="int" />
+          <Property Name="InforItemId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2046,7 +2047,7 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="InforItemId" Type="Int32" />
+          <Property Name="InforItemId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK__Item__Brand_ID__15368D9F">
           <End Role="ItemBrand" Type="Self.ItemBrand" Multiplicity="0..1" />
@@ -3182,6 +3183,7 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <NavigationProperty Name="Item" Relationship="Irma.Framework.Model.FK_ItemScale_Item" FromRole="ItemScale" ToRole="Item" />
           <NavigationProperty Name="ItemUnit" Relationship="Irma.Framework.Model.FK_ItemScale_ItemUnit" FromRole="ItemScale" ToRole="ItemUnit" />
           <NavigationProperty Name="NutriFacts" Relationship="Irma.Framework.Model.FK_ItemScale_NutriFacts1" FromRole="ItemScale" ToRole="NutriFacts" />
+          <Property Name="Scale_StorageData_ID" Type="Int32" />
         </EntityType>
         <Association Name="FK_ItemScale_Item">
           <End Type="Irma.Framework.Model.Item" Role="Item" Multiplicity="1" />
@@ -4256,6 +4258,7 @@ warning 6002: The table/view 'ItemCatalog_Test.dbo.Version' does not have a prim
           <EntitySetMapping Name="ItemScale">
             <EntityTypeMapping TypeName="Irma.Framework.Model.ItemScale">
               <MappingFragment StoreEntitySet="ItemScale">
+                <ScalarProperty Name="Scale_StorageData_ID" ColumnName="Scale_StorageData_ID" />
                 <ScalarProperty Name="Scale_Allergen_ID" ColumnName="Scale_Allergen_ID" />
                 <ScalarProperty Name="Scale_Ingredient_ID" ColumnName="Scale_Ingredient_ID" />
                 <ScalarProperty Name="ShelfLife_Length" ColumnName="ShelfLife_Length" />

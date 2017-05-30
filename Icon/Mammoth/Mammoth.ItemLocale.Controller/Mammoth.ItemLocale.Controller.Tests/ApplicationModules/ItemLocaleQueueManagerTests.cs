@@ -33,7 +33,13 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
         [TestInitialize]
         public void InitializeTests()
         {
-            this.settings = new ItemLocaleControllerApplicationSettings { CurrentRegion = "FL", MaxNumberOfRowsToMark = 100, Instance = 1111 };
+            this.settings = new ItemLocaleControllerApplicationSettings
+                {
+                    CurrentRegion = "FL",
+                    MaxNumberOfRowsToMark = 100,
+                    Instance = 1111,
+                    NonAlertErrors = new List<string>()
+                };
             this.mockGetItemLocaleQuery = new Mock<IQueryHandler<GetItemLocaleDataParameters, List<ItemLocaleEventModel>>>();
             this.mockDeleteEventQueueCommandHandler = new Mock<ICommandHandler<DeleteEventQueueCommand>>();
             this.mockUpdateAndGetEventQueueInProcessQueryHandler = new Mock<IQueryHandler<UpdateAndGetEventQueueInProcessQuery, List<EventQueueModel>>>();
@@ -244,6 +250,44 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
                     c.Events.All(e => e.ErrorCode == itemLocaleEventModel.ErrorMessage)
                     && c.Events.All(x => x.QueueID == eventQueueModel.QueueId))), Times.Once);
             this.mockEmailClient.Verify(ec => ec.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void Finalize_GivenQueueEventsWithItemLocaleDataWhichHasInvalidDataErrors_DoesNotSendEmailAlert()
+        {
+            // Given
+            settings.NonAlertErrors.Add(ApplicationErrors.InvalidDataErrorCode);
+
+            ChangeQueueEvents<ItemLocaleEventModel> changeQueueEvents = new ChangeQueueEvents<ItemLocaleEventModel>();
+            var eventQueueModel = new EventQueueModel
+            {
+                QueueId = 1,
+            };
+
+            var itemLocaleEventModel = new ItemLocaleEventModel
+            {
+                QueueId = 1,
+                BusinessUnitId = 1,
+                ScanCode = "1",
+                EventTypeId = Constants.EventTypes.Price,
+                ErrorMessage = ApplicationErrors.InvalidDataErrorCode,
+                ErrorDetails = "Error Details Adding ItemLocale"
+            };
+
+            changeQueueEvents.QueuedEvents.Add(eventQueueModel);
+            changeQueueEvents.EventModels.Add(itemLocaleEventModel);
+
+            // When
+            this.queueManager.Finalize(changeQueueEvents);
+
+            // Then
+            this.mockDeleteEventQueueCommandHandler
+                .Verify(d => d.Execute(It.Is<DeleteEventQueueCommand>(c => c.QueueIds.Count() == 1)), Times.Once);
+            this.mockArchiveEventsCommandHandler
+                .Verify(a => a.Execute(It.Is<ArchiveEventsCommand>(c =>
+                    c.Events.All(e => e.ErrorCode == itemLocaleEventModel.ErrorMessage)
+                    && c.Events.All(x => x.QueueID == eventQueueModel.QueueId))), Times.Once);
+            this.mockEmailClient.Verify(c => c.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         private List<EventQueueModel> BuildEventQueueModels(int numberOfItems)

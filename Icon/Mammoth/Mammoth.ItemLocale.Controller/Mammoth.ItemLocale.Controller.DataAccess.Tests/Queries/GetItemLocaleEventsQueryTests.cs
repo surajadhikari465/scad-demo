@@ -1890,12 +1890,14 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
                 IrmaTestObjectFactory.BuildValidatedScanCode()
                     .With(x => x.ScanCode, expectedIdentifier)
+                    .With(x => x.InforItemId, 1)
                     .ToObject(),
                 x => x.Id));
 
             this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
                 IrmaTestObjectFactory.BuildValidatedScanCode()
                     .With(x => x.ScanCode, expectedIdentifier + "2")
+                    .With(x => x.InforItemId, 2)
                     .ToObject(),
                 x => x.Id));
 

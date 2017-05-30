@@ -194,7 +194,6 @@ namespace Mammoth.ItemLocale.Controller.Tests.Specs
                                 try
                                 {
                                     then();
-                                    
                                 }
                                 catch (Exception e)
                                 {

@@ -7,6 +7,7 @@ using Mammoth.Logging;
 using Mammoth.Price.Controller.DataAccess.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,12 +62,21 @@ namespace Mammoth.Price.Controller
             catch (Exception ex)
             {
                 logger.Error("An exception occurred.", ex);
-                emailClient.Send("An unexpected error occurred while processing Mammoth events. Error : " + ex.ToString(), "Mammoth " + settings.ControllerName + " Controller");
+                if (!IsSqlTimeoutException(ex))
+                {
+                    emailClient.Send("An unexpected error occurred while processing Mammoth events. Error : " + ex.ToString(), "Mammoth " + settings.ControllerName + " Controller");
+                }
             }
             finally
             {
                 this.runTimer.Start();
             }
+        }
+
+        private bool IsSqlTimeoutException(Exception ex)
+        {
+            return ex.GetType() == typeof(SqlException)
+                && ((SqlException)ex).Number == Constants.TimeoutErrorNumber;
         }
     }
 }

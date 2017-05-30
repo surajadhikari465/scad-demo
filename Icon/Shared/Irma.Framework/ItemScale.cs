@@ -41,6 +41,7 @@ namespace Irma.Framework
         public Nullable<short> ShelfLife_Length { get; set; }
         public Nullable<int> Scale_Ingredient_ID { get; set; }
         public Nullable<int> Scale_Allergen_ID { get; set; }
+        public Nullable<int> Scale_StorageData_ID { get; set; }
     
         public virtual Item Item { get; set; }
         public virtual ItemUnit ItemUnit { get; set; }

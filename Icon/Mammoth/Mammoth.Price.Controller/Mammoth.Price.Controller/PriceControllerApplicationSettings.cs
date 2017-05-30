@@ -12,6 +12,7 @@ namespace Mammoth.Price.Controller
         public List<string> Regions { get; set; }
         public string CurrentRegion { get; set; }
         public string ControllerName { get; set; }
+        public List<string> NonAlertErrors { get; set; }
         public static PriceControllerApplicationSettings CreateFromConfig()
         {
             return new PriceControllerApplicationSettings
@@ -19,7 +20,8 @@ namespace Mammoth.Price.Controller
                 ControllerName = "Price",
                 Instance = AppSettingsAccessor.GetIntSetting("InstanceID"),
                 MaxNumberOfRowsToMark = AppSettingsAccessor.GetIntSetting("MaxNumberOfRowsToMark"),
-                Regions = AppSettingsAccessor.GetStringSetting("RegionsToProcess").Split(',').ToList()
+                Regions = AppSettingsAccessor.GetStringSetting("RegionsToProcess").Split(',').ToList(),
+                NonAlertErrors = AppSettingsAccessor.GetStringSetting(nameof(NonAlertErrors)).Split(',').ToList()
             };
         }
     }
