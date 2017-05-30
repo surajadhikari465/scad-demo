@@ -288,17 +288,7 @@ BEGIN
                 ((Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) <> (Deleted.ReceivedItemCost + Deleted.ReceivedItemFreight))
                 OR Inserted.UnitsReceived <> Deleted.UnitsReceived
                 )
-            
-        -- clear Suspended Average Costs if the received cost has changed
-        DELETE SuspendedAvgCost
-        FROM SuspendedAvgCost SAC
-        INNER JOIN Inserted ON Inserted.OrderItem_ID = SAC.OrderItem_ID
-        INNER JOIN Deleted ON Inserted.OrderItem_ID = Deleted.OrderItem_ID
-        WHERE (
-            ((Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) <> (Deleted.ReceivedItemCost + Deleted.ReceivedItemFreight))
-            OR Inserted.UnitsReceived <> Deleted.UnitsReceived
-            )
-            
+                        
         -- For updates, keep receiving ItemHistory in synch
         -- Use a table variable and a while loop instead of a cursor
         DECLARE @ReceivedList TABLE (OrderItem_ID int PRIMARY KEY)
@@ -318,80 +308,7 @@ BEGIN
             
             DELETE @ReceivedList WHERE OrderItem_ID = @OrderItem_ID
         END
-            
-        IF EXISTS (SELECT *
-                        FROM Inserted
-                        INNER JOIN Deleted ON Inserted.OrderItem_ID = Deleted.OrderItem_ID
-                        INNER JOIN ItemHistory IH (nolock) ON IH.OrderItem_ID = Inserted.OrderItem_ID
-                        INNER JOIN Item (nolock) ON Item.Item_Key = Inserted.Item_Key
-                        INNER JOIN Store (nolock) ON Store.Store_No = IH.Store_No
-                        -- ingredient items (except for a Distribution Center)
-                        WHERE (((Ingredient = 1 OR ISNULL(UseLastReceivedCost, 0) = 1) OR (Item.Subteam_No <> IH.Subteam_No)) AND Store.Distribution_Center = 0)
-                            AND IH.Adjustment_ID = 5
-                            AND (((Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) <> (Deleted.ReceivedItemCost + Deleted.ReceivedItemFreight))
-                                    OR (Inserted.UnitsReceived <> Deleted.UnitsReceived))
-                       )
-        BEGIN
-            --
-            -- The call to SP InsertReceivingItemHistory above must be done first
-            --
-            UPDATE AvgCostHistory
-            SET AvgCost = ((Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) / Inserted.UnitsReceived)
-            FROM Inserted
-            INNER JOIN 
-                Deleted ON Inserted.OrderItem_ID = Deleted.OrderItem_ID
-            INNER JOIN 
-                ItemHistory IH (nolock) ON IH.OrderItem_ID = Inserted.OrderItem_ID
-            INNER JOIN
-                Item (nolock) ON Item.Item_Key = Inserted.Item_Key
-            INNER JOIN
-                AvgCostHistory A ON A.Item_Key = IH.Item_Key AND A.Store_No = IH.Store_No AND A.SubTeam_No = IH.SubTeam_No AND A.Effective_Date = IH.DateStamp
-            INNER JOIN Store (nolock) ON Store.Store_No = IH.Store_No 
-            -- ingredient items (except for a Distribution Center)
-            WHERE (((Ingredient = 1 OR ISNULL(UseLastReceivedCost, 0) = 1) OR (Item.Subteam_No <> IH.Subteam_No)) AND Store.Distribution_Center = 0)
-                AND IH.Adjustment_ID = 5
-                AND (Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) > 0 
-                AND (((Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) <> (Deleted.ReceivedItemCost + Deleted.ReceivedItemFreight))
-                                    OR (Inserted.UnitsReceived <> Deleted.UnitsReceived))
-               
-            DELETE AvgCostHistory
-            FROM Inserted
-            INNER JOIN 
-                Deleted ON Inserted.OrderItem_ID = Deleted.OrderItem_ID
-            INNER JOIN 
-                ItemHistory IH (nolock) ON IH.OrderItem_ID = Inserted.OrderItem_ID
-            INNER JOIN
-                Item (nolock) ON Item.Item_Key = Inserted.Item_Key
-            INNER JOIN
-                AvgCostHistory A ON A.Item_Key = IH.Item_Key AND A.Store_No = IH.Store_No AND A.SubTeam_No = IH.SubTeam_No AND A.Effective_Date = IH.DateStamp
-            INNER JOIN Store (nolock) ON Store.Store_No = IH.Store_No   
-            -- ingredient items (except for a Distribution Center)
-            WHERE (((Ingredient = 1 OR ISNULL(UseLastReceivedCost, 0) = 1) OR (Item.Subteam_No <> IH.Subteam_No)) AND Store.Distribution_Center = 0)
-                AND IH.Adjustment_ID = 5
-                AND (Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) = 0
-               
-            
-            INSERT INTO AvgCostHistory (Item_Key, Store_No, SubTeam_No, Effective_Date, AvgCost)
-            SELECT  IH.Item_Key, IH.Store_No, IH.SubTeam_No, IH.DateStamp, ((Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) / Inserted.UnitsReceived)
-            FROM Inserted
-            INNER JOIN 
-                Deleted ON Inserted.OrderItem_ID = Deleted.OrderItem_ID
-            INNER JOIN 
-                ItemHistory IH (nolock) ON IH.OrderItem_ID = Inserted.OrderItem_ID
-            INNER JOIN
-                Item (nolock) ON Item.Item_Key = Inserted.Item_Key
-            INNER JOIN Store (nolock) ON Store.Store_No = IH.Store_No    
-            LEFT JOIN
-                AvgCostHistory A ON A.Item_Key = IH.Item_Key AND A.Store_No = IH.Store_No AND A.SubTeam_No = IH.SubTeam_No AND A.Effective_Date = IH.DateStamp 
-            -- ingredient items (except for a Distribution Center)
-            WHERE A.Item_Key IS NULL
-                AND (((Ingredient = 1 OR ISNULL(UseLastReceivedCost, 0) = 1) OR (Item.Subteam_No <> IH.Subteam_No)) AND Store.Distribution_Center = 0)
-                AND IH.Adjustment_ID = 5
-                AND (Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) > 0 
-                AND (((Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) <> (Deleted.ReceivedItemCost + Deleted.ReceivedItemFreight))
-                                    OR (Inserted.UnitsReceived <> Deleted.UnitsReceived))
-       END       
-                                    
+                                           
     END TRY
     BEGIN CATCH
         DECLARE @err_no int, @err_sev int, @err_msg nvarchar(4000)
