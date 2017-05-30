@@ -17,7 +17,7 @@ BEGIN
 		[DaysToKeep] [int] NULL
 	)
 
-	INSERT @tempRetentionPolicy ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (@currentServerName, N'Icon', N'app', N'EventQueueArchive', 5)
+	INSERT @tempRetentionPolicy ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (@currentServerName, N'Icon', N'app', N'EventQueueArchive', 90)
 
 	merge app.RetentionPolicy rp
 	using @tempRetentionPolicy as trp

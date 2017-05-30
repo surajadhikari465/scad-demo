@@ -40,3 +40,12 @@ Post-Deployment Script Template
 
 -- Lux, 4/11/17: PBI 21235: Add MaintFlag Row to DbStatus Table
 :r .\Scripts\PopulateData\Release\AddMaintFlagRowToDbStatusTable.sql
+:r .\Scripts\PopulateData\Release\RetentionPolicyEventQueueArchiveTable.sql
+:r .\Scripts\PopulateData\Release\AddNationalClassUpdateAndDeleteEventType.sql
+:r .\Scripts\PopulateData\Release\AddVimArchiveTablesToRetentionPolicy.sql
+:r .\Scripts\PopulateData\Release\IconTimezonesForPos.sql
+:r .\Scripts\PopulateData\Release\InsertInforOutOfSyncItemUpdateError.sql
+:r .\Scripts\PopulateData\Release\PBI17488_RetentionPolicyIRMAAppLog.sql
+:r .\Scripts\PopulateData\Release\RemoveInvalidPLUandNon-RetailItemNotification.sql
+:r .\Scripts\PopulateData\Release\RetentionPolicyInforArchiveTables.sql
+:r .\Scripts\PopulateData\Release\RetentionPolicyMessageArchiveProductOutOfSync.sql
