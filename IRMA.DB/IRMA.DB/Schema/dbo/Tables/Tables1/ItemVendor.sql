@@ -120,14 +120,11 @@ BEGIN
 		BEGIN
 	       -- get stores from InstanceDataFlagsStoreOverride
 	       INSERT INTO #tempStoreNumbers (Store_No)
-	       SELECT idfs.Store_NO 
-		   FROM InstanceDataFlagsStoreOverride idfs
-		   INNER JOIN 
-				StoreItemVendor stv 
-				ON stv.Store_NO = idfs.Store_NO 
-				AND PrimaryVendor = 1 
-				AND stv.item_key IN (SELECT item_key FROM Inserted )
-	       WHERE FlagKey = 'BatchVendorChanges'  AND FlagValue = 1 
+	       SELECT stv.Store_NO 
+		   FROM   StoreItemVendor stv 
+		WHERE PrimaryVendor = 1 
+			  AND stv.item_key IN (SELECT item_key FROM Inserted )
+	          AND dbo.fn_InstanceDataValue ('BatchVendorChanges', stv.Store_No) = 1 
 
 	       SET @RowCount = (SELECT Count(*) FROM #tempStoreNumbers)
 		END	

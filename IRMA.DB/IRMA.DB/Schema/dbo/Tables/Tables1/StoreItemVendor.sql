@@ -93,13 +93,8 @@ BEGIN
 
 	    SELECT @Error_No = @@ERROR
 	END
-
-    -- DETERMINE IF CURRENT REGION BATCHES VENDOR CHANGES --
-    DECLARE @BatchVendorChanges bit
-    SELECT @BatchVendorChanges = FlagValue FROM InstanceDataFlags WHERE FlagKey = 'BatchVendorChanges'
-    
-    -- CREATE ITEM CHANGE TYPE PRICEBATCHDETAIL RECORD IF THIS REGION BATCHES VENDOR CHANGES
-    IF @Error_No = 0 AND @BatchVendorChanges = 1
+	   
+    IF @Error_No = 0 
     BEGIN
         INSERT INTO PriceBatchDetail (Store_No, Item_Key, ItemChgTypeID, InsertApplication)
         SELECT Inserted.Store_No, Inserted.Item_Key, 2, 'StoreItemVendorUpdate Trigger'
@@ -113,31 +108,9 @@ BEGIN
 			AND (Inserted.PrimaryVendor <> Deleted.PrimaryVendor)
 			AND (Inserted.DeleteDate IS NULL OR Inserted.DeleteDate > GetDate())
             AND dbo.fn_HasPendingItemChangePriceBatchDetailRecord(Inserted.Item_Key,Inserted.Store_No) = 0
+			AND dbo.fn_InstanceDataValue ('BatchVendorChanges', Inserted.Store_No) = 1
             
         SELECT @Error_No = @@ERROR
-    END
-    ELSE IF @Error_No = 0 AND @BatchVendorChanges = 0
-    BEGIN
-		INSERT INTO PriceBatchDetail (Store_No, Item_Key, ItemChgTypeID, InsertApplication)
-        SELECT Inserted.Store_No, Inserted.Item_Key, 2, 'StoreItemVendorUpdate Trigger'
-        FROM Inserted
-        INNER JOIN
-            Deleted
-            ON Deleted.Item_Key = Inserted.Item_Key	AND
-               Deleted.Store_No = Inserted.Store_No AND
-               Deleted.Vendor_ID = Inserted.Vendor_ID		
-        WHERE Inserted.PrimaryVendor = 1	-- create records when the primary vendor changes
-			AND Inserted.Store_No IN (SELECT Store_NO 
-									  FROM InstanceDataFlagsStoreOverride   
-									  WHERE FlagKey = 'BatchVendorChanges' 
-									  AND FlagValue = 1 
-									  )
-			AND (Inserted.PrimaryVendor <> Deleted.PrimaryVendor)
-			AND (Inserted.DeleteDate IS NULL OR Inserted.DeleteDate > GetDate())
-            AND dbo.fn_HasPendingItemChangePriceBatchDetailRecord(Inserted.Item_Key,Inserted.Store_No) = 0
-            
-        SELECT @Error_No = @@ERROR
-    
     END
     
     	DECLARE @NewPrimaryVendor bit
