@@ -427,10 +427,10 @@ namespace Icon.Infor.Listeners.Item.Validators
 
         private bool IsMessageModifiedDateLessThanCurrentModifiedDate(string messageModifiedDate, string currentModifiedDate)
         {
-            var parsedMessageModifiedDate = DateTime.Parse(messageModifiedDate);
+            var parsedMessageModifiedDate = DateTime.Parse(messageModifiedDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
             var parsedMessageModifiedDateNanoseconds = parsedMessageModifiedDate.Ticks % TimeSpan.TicksPerMillisecond;
 
-            var parsedCurrentModifiedDate = DateTime.Parse(currentModifiedDate);
+            var parsedCurrentModifiedDate = DateTime.Parse(currentModifiedDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
             var parsedCurrentModifiedDateNanoseconds = parsedCurrentModifiedDate.Ticks % TimeSpan.TicksPerMillisecond;
 
             //Removing the nanoseconds from modified date because we only want to compare up to the number of milliseconds

@@ -2272,6 +2272,17 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             PerformValidateCollectionWhenAndThenSteps(null, null);
         }
 
+        [TestMethod]
+        public void ValidateCollection_ModifiedDateWithProdDataFromFailedMessage_NoOutOfSyncItemUpdateError()
+        {
+            //Given
+            testItem.ModifiedDate = "2015-04-14T10:05:06.661Z";
+            testItemValidationPropertiesResultModel.ModifiedDate = "2015-04-14 10:05:06.6613621";
+
+            //Then
+            PerformValidateCollectionWhenAndThenSteps(null, null);
+        }
+
         private void PerformValidateCollectionWhenAndThenSteps(string expectedErrorCode, string expectedErrorDetails)
         {
             //When
