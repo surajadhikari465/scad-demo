@@ -28,7 +28,7 @@ AS
 	-- MU/MZ	
 	--		2016-03-24		TFS18686	
 	--						PBI13711	Adding Sold By WFM and Sold By 365 to accommodate setting via EIM
-
+	-- MZ   2017-05-30      PBI21648    Added logging for the InsertItem call
 	-- ***********************************************************************************************************************
 	
 	set nocount on
@@ -240,9 +240,42 @@ AS
 			(@UseStoreJurisdictions = 1 AND @IsDefaultJurisdiction = 1)
 	BEGIN
 
+declare @InsertItemCall as varchar(max)
+
+select @InsertItemCall = 'Call InsertItem - ' + 'EXEC @Item_Key = dbo.InsertItem ' +
+			'@POS_Description=' + IsNull(@POS_Description, 'NULL') + ', ' + 
+			'@item_Description=' + IsNull(@item_Description, 'NULL') + ', ' + 
+			'@SubTeam_no=' + case when (@SubTeam_no is null) then 'NULL' else  convert(varchar(5), @SubTeam_no) end + ', ' +	
+			'@Category_ID=' + case when (@Category_ID is null) then 'NULL' else  convert(varchar(5), @Category_ID) end + ', ' +
+			'@Retail_Unit_ID=' + case when (@Retail_Unit_ID is null) then 'NULL' else  convert(varchar(5), @Retail_Unit_ID) end + ', ' +
+			'@Package_Unit_ID=' + case when (@Package_Unit_ID is null) then 'NULL' else  convert(varchar(5), @Package_Unit_ID) end + ', ' +
+			'@Package_Desc1=' + case when (@Package_Desc1 is null) then 'NULL' else  convert(varchar(25),  @Package_Desc1) end + ', ' +
+			'@Package_Desc2=' + case when (@Package_Desc2 is null) then 'NULL' else  convert(varchar(25),  @Package_Desc2) end + ', ' +
+			'@IdentifierType=' + case when (@IdentifierType is null) then 'NULL' else  convert(varchar(5), @IdentifierType) end + ', ' +
+			'@Identifier=' + IsNull(@Identifier, 'NULL') + ', ' + '@CheckDigit=' + isnull(@CheckDigit, 'NULL') + ', ' +
+			'@Retail_sale=' + case when (@Retail_sale is null) then 'NULL' else  convert(varchar(5), @Retail_sale) end + ', ' +
+			'@ClassID=' + case when (@ClassID is null) then 'NULL' else  convert(varchar(255), @ClassID) end + ', '
+			 +
+			'@CostedByWeight=' + case when (@CostedByWeight is null) then 'NULL' else  convert(varchar(5), @CostedByWeight) end + ', ' +
+			'@Vendor_Unit_ID=' + case when (@Vendor_Unit_ID is null) then 'NULL' else  convert(varchar(55), @Vendor_Unit_ID) end + ', ' +
+			'@Distribution_Unit_ID=' + case when (@Distribution_Unit_ID is null) then 'NULL' else  convert(varchar(55), @Distribution_Unit_ID) end + ', ' +
+			'@TaxClassID=' + case when (@TaxClassID is null) then 'NULL' else  convert(varchar(55), @TaxClassID) end + ', ' +
+			'@LabelType_ID=' + case when (@LabelType_ID is null) then 'NULL' else  convert(varchar(55), @LabelType_ID) end + ', ' +
+			'@Brand_ID=' + case when (@Brand_ID is null) then 'NULL' else  convert(varchar(55), @Brand_ID) end + ', ' +
+			'@National_Identifier=' + case when (@National_Identifier is null) then 'NULL' else  convert(varchar(55), @National_Identifier) end + ', ' +
+			'@NumPluDigitsSentToScale=' + case when (@NumPluDigitsSentToScale is null) then 'NULL' else  convert(varchar(55), @NumPluDigitsSentToScale) end + ', ' +
+			'@Scale_Identifier=' + case when (@Scale_Identifier is null) then 'NULL' else  convert(varchar(55), @Scale_Identifier) end + ', ' +
+			'@StoreJurisdictionID=' + case when (@StoreJurisdictionID is null) then 'NULL' else  convert(varchar(55), @StoreJurisdictionID) end + ', ' 
+			+
+			'@ProdHierarchyLevel4_ID=' + case when (@ProdHierarchyLevel4_ID is null) then 'NULL' else  convert(varchar(55), @ProdHierarchyLevel4_ID) end
+
+
 	  BEGIN TRY
 		  SET @WFM_Item = (ISNULL(@WFM_Item,1))
 		  SET @HFM_Item = (ISNULL(@HFM_Item,0))
+
+		  EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, @InsertItemCall
+
 		  -- create the new item
 		  EXEC @Item_Key = dbo.InsertItem
 			  @POS_Description,
@@ -275,9 +308,11 @@ AS
 			  0, --Organic
 			  NULL, --Manager_ID
 			  @WFM_Item,
-			  @HFM_Item
-		
-		  EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '2.1 New Item Creation - [InsertItem]'
+			  @HFM_Item,
+			  @UploadSession_ID,
+			  @UploadRow_ID  
+
+		      EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '2.1 New Item Creation - [InsertItem]'
   
 	  END TRY
 	  BEGIN CATCH
@@ -293,6 +328,7 @@ AS
 		-- from the Item table
 		-- note that this requires that default jurisdiction item upload rows
 		-- must be processed first in a session upload
+
 		SELECT @Item_Key = Item.Item_Key
 		FROM dbo.Item (NOLOCK)
 			JOIN dbo.ItemIdentifier(NOLOCK) ON ItemIdentifier.Item_Key = Item.Item_Key

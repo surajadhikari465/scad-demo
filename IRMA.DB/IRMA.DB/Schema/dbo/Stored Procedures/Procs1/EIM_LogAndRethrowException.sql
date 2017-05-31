@@ -1,4 +1,4 @@
-﻿CREATE Procedure dbo.EIM_LogAndRethrowException
+﻿CREATE Procedure [dbo].[EIM_LogAndRethrowException]
 	(
 		@UploadSession_ID int,
 		@UploadRow_ID int,
@@ -17,11 +17,28 @@ AS
 
 	SELECT @ErrorNumber = ERROR_NUMBER()
 
+	declare @str as varchar(max), @errorNum as varchar(100), @errorProc as varchar(100), @errorLineNo as varchar(100), @errorMsg as varchar(max)
+	select @errorNum = case when ERROR_NUMBER() is Null then 'NULL'
+	            else CAST(ERROR_NUMBER() AS VARCHAR(100))
+			End
+
+	select @errorProc = case when ERROR_PROCEDURE() is Null then 'NULL'
+	            else CAST(ERROR_PROCEDURE() AS VARCHAR(100))
+			End
+
+	select @errorLineNo = case when ERROR_LINE() is Null then 'NULL'
+	            else CAST(ERROR_LINE() AS VARCHAR(100))
+			End
+
+	select @errorMsg = case when ERROR_MESSAGE() is Null then 'NULL'
+	            else ERROR_MESSAGE()
+			End
+
 	SELECT @ErrorMessage =
-		@LogText + '| Error Number: ' + CAST(ERROR_NUMBER() AS VARCHAR(100)) + ' | ' +
-		'Proc: ' + CAST(ERROR_PROCEDURE() AS VARCHAR(100)) + ' | ' +
-		'Line No: ' + CAST(ERROR_LINE() AS VARCHAR(100)) + ' | ' +
-		ERROR_MESSAGE()
+		@LogText + '| Error Number: ' + @errorNum + ' | ' +
+		'Proc: ' + @errorProc + ' | ' +
+		'Line No: ' + @errorLineNo + ' | ' +
+		@errorMsg
 
 	-- log the error
 	EXEC dbo.EIM_Log

@@ -33,7 +33,9 @@ CREATE PROCEDURE [dbo].[InsertItem]
 	@Organic                    bit = 0,
     @Manager_ID					tinyint = NULL,
 	@WFM_Item					bit = 1,
-	@HFM_Item					tinyint = 0
+	@HFM_Item					tinyint = 0,
+	@UploadSession_ID           int = NULL,
+	@UploadRow_ID               int = NULL
 AS
 
 -- ****************************************************************************************************************
@@ -60,6 +62,7 @@ AS
 --								include the value of @Organic.  
 -- 2016-03-18	MU/MZ	TFS18686	
 --						PBI13711	Adding Sold By WFM and Sold By 365 to accommodate setting via EIM
+-- 2017-05-30   MZ      PBI21648    Added logging for the SetItemDefaultValues call
 -- ****************************************************************************************************************
 
 BEGIN
@@ -396,6 +399,16 @@ BEGIN
 
     IF @Error_No = 0
     BEGIN
+		IF @InsertApplication = 'EIM'
+		BEGIN
+			declare @SetItemDefaultValuesCall as varchar(max)
+
+			select @SetItemDefaultValuesCall = 'Call SetItemDefaultValues - ' + 'EXEC @Error_No = SetItemDefaultValues' +
+				' @LastItem=' + STR(IsNull(@LastItem, 'NULL')) + ', ' +
+				' @InsertApplication=' + IsNull(@InsertApplication, 'NULL')
+
+			EXEC dbo.EIM_Log 'TRACE', 'TRACE', @UploadSession_ID, @UploadRow_ID, 0, @LastItem, NULL, @SetItemDefaultValuesCall
+		END
 
 		-- set up values for any configured default attributes
 		EXEC @Error_No = SetItemDefaultValues
