@@ -223,31 +223,6 @@ BEGIN
 
         SELECT @Error_No = @@ERROR
     END
-    
-    -- DETERMINE IF CURRENT REGION BATCHES VENDOR CHANGES --
-    DECLARE @BatchVendorChanges bit
-    SELECT @BatchVendorChanges = FlagValue FROM InstanceDataFlags WHERE FlagKey = 'BatchVendorChanges'
-    
-    -- CREATE ITEM CHANGE TYPE PRICEBATCHDETAIL RECORD IF THIS REGION BATCHES VENDOR CHANGES
-    -- CREATE A BATCH RECORD FOR EVERY ITEM THAT THIS VENDOR IS THE PRIMARY FOR
-    IF @Error_No = 0 AND @BatchVendorChanges = 1
-    BEGIN
-        INSERT INTO PriceBatchDetail (Store_No, Item_Key, ItemChgTypeID, InsertApplication)
-        SELECT SIV.Store_No, SIV.Item_Key, 2, 'VendorUpdate Trigger'
-		FROM Inserted
-		INNER JOIN
-			Deleted
-			ON Deleted.Vendor_ID = Inserted.Vendor_ID 
-		INNER JOIN
-			StoreItemVendor SIV
-			ON SIV.Vendor_ID = Inserted.Vendor_ID      
-		WHERE Inserted.CompanyName <> Deleted.CompanyName
-			AND SIV.PrimaryVendor = 1
-			AND (DeleteDate IS NULL OR DeleteDate > GetDate())
-			AND dbo.fn_HasPendingItemChangePriceBatchDetailRecord(SIV.Item_Key,SIV.Store_No) = 0
-            
-        SELECT @Error_No = @@ERROR
-    END
 
     IF @Error_No <> 0
     BEGIN

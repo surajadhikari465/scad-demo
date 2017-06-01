@@ -78,7 +78,6 @@ BEGIN
     DECLARE @Error_No int
     SELECT @Error_No = 0
 
-
     UPDATE ItemVendor
     SET DeleteWorkStation = CASE WHEN Inserted.DeleteDate IS NOT NULL THEN HOST_NAME() ELSE NULL END
     FROM ItemVendor
@@ -105,9 +104,42 @@ BEGIN
     END
     
     SELECT @Error_No = @@ERROR
+    
+ -- DETERMINE IF CURRENT REGION BATCHES VENDOR CHANGES --
+    DECLARE @BatchVendorChanges bit
+    DECLARE @RowCount bit
 
+    SELECT @BatchVendorChanges = FlagValue FROM InstanceDataFlags WHERE FlagKey = 'BatchVendorChanges'
+
+    CREATE TABLE #tempStoreNumbers
+    (
+		Store_No INT
+    )
+    
+    IF(@BatchVendorChanges = 0)
+		BEGIN
+	       -- get stores from InstanceDataFlagsStoreOverride
+	       INSERT INTO #tempStoreNumbers (Store_No)
+	       SELECT SIV.Store_NO 
+		   FROM   StoreItemVendor SIV 
+		WHERE PrimaryVendor = 1 
+			  AND SIV.item_key IN (SELECT item_key FROM Inserted )
+	          AND dbo.fn_InstanceDataValue ('BatchVendorChanges', SIV.Store_No) = 1 
+
+	       SET @RowCount = (SELECT Count(*) FROM #tempStoreNumbers)
+		END	
+	ELSE
+		BEGIN
+		   INSERT INTO #tempStoreNumbers (Store_No)
+	       SELECT Store_No 
+		   FROM Store (nolock) 
+		   WHERE WFM_Store = 1 OR Mega_Store = 1
+	        -- we really do not need the actual count. Setting to 1 so that Item Maintenance  is created
+	        SET @RowCount =  1
+		END	
+	
     -- Trigger an Item change record to be sent from IRMA to the POS if the Item Vendor ID changes
-    IF @Error_No = 0
+    IF @Error_No = 0 AND @RowCount > 0
     BEGIN
 		INSERT INTO PriceBatchDetail (Store_No, Item_Key, ItemChgTypeID, InsertApplication)
 			SELECT Store_No, Inserted.Item_Key, 2, 'ItemVendorUpdate Trigger'
@@ -116,10 +148,12 @@ BEGIN
 				Deleted 
 				ON Deleted.Item_Key = Inserted.Item_Key AND Deleted.Vendor_ID = Inserted.Vendor_ID
 			CROSS JOIN
-				(SELECT Store_No FROM Store (nolock) WHERE WFM_Store = 1 OR Mega_Store = 1) Store
+				#tempStoreNumbers Store
 			WHERE (Inserted.Item_ID <> Deleted.Item_ID)
 				AND dbo.fn_HasPendingItemChangePriceBatchDetailRecord(Inserted.Item_Key,Store.Store_No) = 0
     END
+
+	DROP TABLE #tempStoreNumbers
 
     SELECT @Error_No = @@ERROR
 
@@ -132,6 +166,7 @@ BEGIN
     END
 
 END
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[ItemVendor] TO [IRMAAdminRole]
