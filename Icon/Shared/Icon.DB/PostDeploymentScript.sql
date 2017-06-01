@@ -49,3 +49,6 @@ Post-Deployment Script Template
 :r .\Scripts\PopulateData\Release\RemoveInvalidPLUandNon-RetailItemNotification.sql
 :r .\Scripts\PopulateData\Release\RetentionPolicyInforArchiveTables.sql
 :r .\Scripts\PopulateData\Release\RetentionPolicyMessageArchiveProductOutOfSync.sql
+
+-- ED, Jun-1-17: PBI 21913 Update Icon db to allow 0 - None to be added to HSH ref table
+:r .\Scripts\PopulateData\Release\PBI21913_Add_HealthyEatingRating_of_None.sql
