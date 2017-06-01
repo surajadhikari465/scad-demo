@@ -216,7 +216,7 @@ Namespace WholeFoods.IRMA.Replenishment.ScalePush.Writers
             Dim returnStr As String = dataContent
             ' For the ingredients text in the 2nd row of data, VB constants are replaced.
             ' For storage text replace end of line with char(14)
-            If (currentColumn.RowOrder = 2 AndAlso currentColumn.DataElement = "Ingredients") Or currentColumn.DataElement = "StorageText" Then
+            If (currentColumn.RowOrder = 2 AndAlso currentColumn.DataElement = "Ingredients") OrElse currentColumn.DataElement = "StorageText" Then
                 returnStr = Replace(dataContent, vbCrLf, Chr(14))
             End If
             Return returnStr
