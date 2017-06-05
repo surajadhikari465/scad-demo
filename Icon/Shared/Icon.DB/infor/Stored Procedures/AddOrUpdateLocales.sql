@@ -31,7 +31,7 @@ DECLARE @OwnerOrgPartyID INT = (
 			,localeTypeID = lt.localeTypeID
 			,ParentLocaleID = locale.ParentLocaleID
 		FROM dbo.Locale l
-		JOIN #tmp locale ON l.localeID = locale.LocaleID 
+		JOIN #tmp locale ON l.localeID = locale.LocaleID  AND locale.LocaleTypeCode ='CH'
 		JOIN dbo.LocaleType lt ON locale.LocaleTypeCode = lt.localeTypeCode
 
 		SET IDENTITY_INSERT Locale ON
@@ -51,12 +51,79 @@ DECLARE @OwnerOrgPartyID INT = (
 			,@OwnerOrgPartyID
 		FROM #tmp l
 		JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
-		WHERE l.LocaleID NOT IN 
+		WHERE l.LocaleTypeCode = 'CH'
+		AND   l.LocaleID NOT IN 
 				(
 				SELECT localeID
 				FROM Locale
 				)
 
 		 SET IDENTITY_INSERT Locale OFF
+
+	    UPDATE l
+		SET LocaleName = locale.LocaleName
+			,localeTypeID = lt.localeTypeID
+			,ParentLocaleID = locale.ParentLocaleID
+		FROM dbo.Locale l
+		JOIN #tmp locale ON l.localeID = locale.LocaleID  AND locale.LocaleTypeCode ='RG'
+		JOIN dbo.LocaleType lt ON locale.LocaleTypeCode = lt.localeTypeCode
+
+		SET IDENTITY_INSERT Locale ON
+
+		INSERT INTO Locale
+		   (
+			LocaleID
+			,LocaleName
+			,localeTypeID
+			,ParentLocaleID
+			,ownerOrgPartyID
+			)
+		SELECT LocaleID
+			,LocaleName
+			,lt.localeTypeID
+			,ParentLocaleID
+			,@OwnerOrgPartyID
+		FROM #tmp l
+		JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
+		WHERE l.LocaleTypeCode = 'RG'
+		AND   l.LocaleID NOT IN 
+				(
+				SELECT localeID
+				FROM Locale
+				)
+
+	   SET IDENTITY_INSERT Locale OFF
+
+		UPDATE l
+		SET LocaleName = locale.LocaleName
+			,localeTypeID = lt.localeTypeID
+			,ParentLocaleID = locale.ParentLocaleID
+		FROM dbo.Locale l
+		JOIN #tmp locale ON l.localeID = locale.LocaleID  AND locale.LocaleTypeCode ='MT'
+		JOIN dbo.LocaleType lt ON locale.LocaleTypeCode = lt.localeTypeCode
+
+		SET IDENTITY_INSERT Locale ON
+
+		INSERT INTO Locale
+		   (
+			LocaleID
+			,LocaleName
+			,localeTypeID
+			,ParentLocaleID
+			,ownerOrgPartyID
+			)
+		SELECT LocaleID
+			,LocaleName
+			,lt.localeTypeID
+			,ParentLocaleID
+			,@OwnerOrgPartyID
+		FROM #tmp l
+		JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
+		WHERE l.LocaleTypeCode = 'MT'
+		AND   l.LocaleID NOT IN 
+				(
+				SELECT localeID
+				FROM Locale
+				)
 	END
 END
