@@ -64,17 +64,18 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
         {
             var chainsTableType = GetLocaleTableType(chains.Where(c => c.Action == ActionEnum.AddOrUpdate), "infor.LocaleAddOrUpdateType", false);
             var regionsTableType = GetLocaleTableType(regions.Where(c => c.Action == ActionEnum.AddOrUpdate), "infor.LocaleAddOrUpdateType", false);
-            var metrosTableType = GetLocaleTableType(metros.Where(c => c.Action == ActionEnum.AddOrUpdate), "infor.LocaleAddOrUpdateType", false);      
-           
-            sql = @"infor.AddOrUpdateLocales @localeChains, @localeRegions, @localeMetros";
+            var metrosTableType = GetLocaleTableType(metros.Where(c => c.Action == ActionEnum.AddOrUpdate), "infor.LocaleAddOrUpdateType", false);
+
+            chainsTableType.Merge(regionsTableType);
+            chainsTableType.Merge(metrosTableType);
+
+            sql = @"infor.AddOrUpdateLocales @locale";
             dbProvider.Connection.Execute
                 (
                     sql,
                     new
                     {
-                        localeChains = chainsTableType,
-                        localeRegions = regionsTableType,
-                        localeMetros = metrosTableType
+                        locale = chainsTableType
                     },
                     transaction: dbProvider.Transaction
                 );

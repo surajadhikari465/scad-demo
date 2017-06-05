@@ -1,7 +1,5 @@
 ﻿CREATE PROCEDURE infor.AddOrUpdateLocales 
-	 @localeChains infor.LocaleAddOrUpdateType READONLY
-	,@localeRegions infor.LocaleAddOrUpdateType READONLY
-	,@localeMetros infor.LocaleAddOrUpdateType READONLY
+	 @locale infor.LocaleAddOrUpdateType READONLY
 AS
 BEGIN
 			
@@ -13,16 +11,28 @@ DECLARE @OwnerOrgPartyID INT = (
 	/* Add or update Chains */
 	IF EXISTS (
 			SELECT TOP 1 1
-			FROM @localeChains
+			FROM @locale
 			)
 	BEGIN
+
+	SELECT LocaleID,
+			   LocaleName,
+			   LocaleOpenDate,
+			   LocaleCloseDate,
+			   LocaleTypeCode,
+			   ParentLocaleID,
+			   BusinessUnitId,
+			   EwicAgency
+	   INTO #tmp
+	   FROM @locale
+
 		UPDATE l
-		SET LocaleName = chains.LocaleName
+		SET LocaleName = locale.LocaleName
 			,localeTypeID = lt.localeTypeID
-			,ParentLocaleID = chains.ParentLocaleID
+			,ParentLocaleID = locale.ParentLocaleID
 		FROM dbo.Locale l
-		JOIN @localeChains chains ON l.localeID = chains.LocaleID
-		JOIN dbo.LocaleType lt ON chains.LocaleTypeCode = lt.localeTypeCode
+		JOIN #tmp locale ON l.localeID = locale.LocaleID 
+		JOIN dbo.LocaleType lt ON locale.LocaleTypeCode = lt.localeTypeCode
 
 		SET IDENTITY_INSERT Locale ON
 
@@ -39,7 +49,7 @@ DECLARE @OwnerOrgPartyID INT = (
 			,lt.localeTypeID
 			,ParentLocaleID
 			,@OwnerOrgPartyID
-		FROM @localeChains l
+		FROM #tmp l
 		JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
 		WHERE l.LocaleID NOT IN 
 				(
@@ -48,85 +58,5 @@ DECLARE @OwnerOrgPartyID INT = (
 				)
 
 		 SET IDENTITY_INSERT Locale OFF
-	END
-
-	/* Add or update Regions */
-	IF EXISTS (
-			   SELECT TOP 1 1
-			   FROM @localeRegions	
-			  )
-	BEGIN
-		UPDATE l
-		SET LocaleName = regions.LocaleName
-			,localeTypeID = lt.localeTypeID
-			,ParentLocaleID = regions.ParentLocaleID
-		FROM dbo.Locale l
-		JOIN @localeRegions regions ON l.localeID = regions.LocaleID
-		JOIN dbo.LocaleType lt ON regions.LocaleTypeCode = lt.localeTypeCode
-
-		SET IDENTITY_INSERT Locale ON
-
-		INSERT INTO Locale 
-		   (
-			LocaleID
-			,LocaleName
-			,localeTypeID
-			,ParentLocaleID
-			,ownerOrgPartyID
-			)
-		SELECT LocaleID
-			,LocaleName
-			,lt.localeTypeID
-			,ParentLocaleID
-			,@OwnerOrgPartyID
-		FROM @localeRegions l
-		JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
-		WHERE l.LocaleID NOT IN 
-				(
-				SELECT localeID
-				FROM Locale
-				)
-
-		SET IDENTITY_INSERT Locale OFF
-	END
-
-	/* Add or update Metros */
-	IF EXISTS (
-			   SELECT TOP 1 1
-			   FROM @localeMetros
-			   )
-	BEGIN
-		UPDATE l
-		SET LocaleName = metros.LocaleName
-			,localeTypeID = lt.localeTypeID
-			,ParentLocaleID = metros.ParentLocaleID
-		FROM dbo.Locale l
-		JOIN @localeMetros metros ON l.localeID = metros.LocaleID
-		JOIN dbo.LocaleType lt ON metros.LocaleTypeCode = lt.localeTypeCode
-
-		SET IDENTITY_INSERT Locale ON
-
-		INSERT INTO Locale 
-		   (
-			LocaleID
-			,LocaleName
-			,localeTypeID
-			,ParentLocaleID
-			,ownerOrgPartyID
-			)
-		SELECT LocaleID
-			,LocaleName
-			,lt.localeTypeID
-			,ParentLocaleID
-			,@OwnerOrgPartyID
-		FROM @localeMetros l
-		JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
-		WHERE l.LocaleID NOT IN 
-			    (
-				 SELECT localeID
-				 FROM Locale
-				)
-
-		SET IDENTITY_INSERT Locale OFF
 	END
 END

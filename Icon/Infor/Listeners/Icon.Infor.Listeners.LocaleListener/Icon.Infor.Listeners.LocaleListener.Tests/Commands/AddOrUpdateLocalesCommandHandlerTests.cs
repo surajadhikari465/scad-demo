@@ -29,10 +29,11 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
         public void Initialize()
         {
             dbProvider = new SqlDbProvider();
-            transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted });
+          
             dbProvider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
             dbProvider.Connection.Open();
             addOrUpdateLocalesCommandHandler = new AddOrUpdateLocalesCommandHandler(dbProvider);
+            transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted });
         }
 
         [TestCleanup]
