@@ -1,0 +1,99 @@
+﻿<lcl:locale xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ltp="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ett="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:eat="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2" xmlns:cry="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2" xmlns:adr="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2" xmlns:phs="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1" xmlns:lrf="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" xmlns:eau="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2" xmlns:eac="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" xmlns:p13="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" p13:Action="Inherit">
+  <lcl:id>0</lcl:id>
+  <lcl:name>Global</lcl:name>
+  <lcl:type>
+    <ltp:code>CMP</ltp:code>
+    <ltp:description>Company</ltp:description>
+  </lcl:type>
+  <lcl:locales>
+    <lrf:locale p13:Action="Inherit">
+      <lcl:id>1</lcl:id>
+      <lcl:name>Whole Foods</lcl:name>
+      <lcl:type>
+        <ltp:code>CHN</ltp:code>
+        <ltp:description>Chain</ltp:description>
+      </lcl:type>
+      <lcl:locales>
+        <lrf:locale p13:Action="Inherit">
+          <lcl:id>2</lcl:id>
+          <lcl:name>Florida</lcl:name>
+          <lcl:type>
+            <ltp:code>REG</ltp:code>
+            <ltp:description>Region</ltp:description>
+          </lcl:type>
+          <lcl:locales>
+            <lrf:locale p13:Action="Inherit">
+              <lcl:id>14</lcl:id>
+              <lcl:name>MET_FL</lcl:name>
+              <lcl:type>
+                <ltp:code>MTR</ltp:code>
+                <ltp:description>Metro</ltp:description>
+              </lcl:type>
+              <lcl:locales>
+                <lrf:locale p13:Action="AddOrUpdate">
+                  <lcl:id>10516</lcl:id>
+                  <lcl:name>Altamonte Springs</lcl:name>
+                  <lcl:addresses>
+                    <lrf:address>
+                      <adr:id>445</adr:id>
+                      <adr:usage>
+                        <eau:code>SHP</eau:code>
+                        <eau:description>street</eau:description>
+                      </adr:usage>
+                      <adr:type>
+                        <eat:code>PHY</eat:code>
+                        <eat:description>physical</eat:description>
+                        <eat:physical>
+                          <phs:addressLine1>305 E Altamonte Drive, Suite 1000</phs:addressLine1>
+                          <phs:cityType>
+                            <eac:name>Altamonte Springs</eac:name>
+                          </phs:cityType>
+                          <phs:territoryType>
+                            <eac:code>FL</eac:code>
+                            <eac:name>Florida</eac:name>
+                          </phs:territoryType>
+                          <phs:postalCode>32701</phs:postalCode>
+                          <phs:country>
+                            <cry:code>USA</cry:code>
+                            <cry:name>United States</cry:name>
+                          </phs:country>
+                          <phs:timezone>
+                            <ett:code>Eastern Standard Time</ett:code>
+                          </phs:timezone>
+                        </eat:physical>
+                      </adr:type>
+                    </lrf:address>
+                  </lcl:addresses>
+                  <lcl:traits>
+                    <p13:trait>
+                      <tra:code>SAB</tra:code>
+                      <tra:type>
+                        <trt:description>Store Abbreviation</trt:description>
+                        <trt:value>
+                          <trv:value>APS</trv:value>
+                        </trt:value>
+                      </tra:type>
+                    </p13:trait>
+                    <p13:trait>
+                      <tra:code>PHN</tra:code>
+                      <tra:type>
+                        <trt:description>Phone Number</trt:description>
+                        <trt:value>
+                          <trv:value>407-767-2100</trv:value>
+                        </trt:value>
+                      </tra:type>
+                    </p13:trait>
+                  </lcl:traits>
+                  <lcl:type>
+                    <ltp:code>STR</ltp:code>
+                    <ltp:description>Store</ltp:description>
+                  </lcl:type>
+                </lrf:locale>
+              </lcl:locales>
+            </lrf:locale>
+          </lcl:locales>
+        </lrf:locale>
+      </lcl:locales>
+    </lrf:locale>
+  </lcl:locales>
+</lcl:locale>
