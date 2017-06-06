@@ -130,6 +130,7 @@
     <Folder Include="Scripts\21451-SendAdditionalScaleItemAttributes" />
     <Folder Include="Scripts\21731 - AddStorageDataToEIM" />
     <Folder Include="Scripts\16278-NationalHierarchyScripts" />
+    <Folder Include="Schema\infor\Tables" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3208,6 +3209,8 @@
     <None Include="Scripts\16278-NationalHierarchyScripts\CreateTable-ValidatedNationalClass_3.sql" />
     <None Include="Scripts\16278-NationalHierarchyScripts\NationalClassUpdates_RollBack_6.sql" />
     <None Include="Scripts\16278-NationalHierarchyScripts\Update National Classes in IRMA _4.sql" />
+    <Build Include="Schema\infor\Tables\tmpGpmLatestPbd.sql" />
+    <Build Include="Schema\infor\Tables\tmpGpmFuturePbd.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
