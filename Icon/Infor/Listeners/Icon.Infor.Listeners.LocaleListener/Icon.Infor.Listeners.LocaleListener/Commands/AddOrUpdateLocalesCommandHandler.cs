@@ -23,6 +23,7 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
         {
             this.dbProvider = dbProvider;
         }
+
         public void Execute(AddOrUpdateLocalesCommand data)
         {
             var organization = data.Locale;
@@ -45,7 +46,8 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
                 dbProvider.Transaction.Rollback();
             }
         }
-        public void AddOrUpdateStores(IEnumerable<LocaleModel> stores)
+
+        private void AddOrUpdateStores(IEnumerable<LocaleModel> stores)
         {
             var storesTableType = GetLocaleTableType(stores.Where(c => c.Action == ActionEnum.AddOrUpdate), "infor.LocaleAddOrUpdateType", true);
             sql = @"infor.AddOrUpdateStores  @localeStores";
@@ -59,7 +61,8 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
                     transaction: dbProvider.Transaction
                 );
         }
-        public void AddOrUpdateLocales(IEnumerable<LocaleModel> chains, IEnumerable<LocaleModel> regions,
+
+        private void AddOrUpdateLocales(IEnumerable<LocaleModel> chains, IEnumerable<LocaleModel> regions,
                                        IEnumerable<LocaleModel> metros)
         {
             var chainsTableType = GetLocaleTableType(chains.Where(c => c.Action == ActionEnum.AddOrUpdate), "infor.LocaleAddOrUpdateType", false);
@@ -81,7 +84,7 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
                 );
         }
 
-        public void AddOrUpdateLocaleTraits(IEnumerable<LocaleModel> stores)
+        private void AddOrUpdateLocaleTraits(IEnumerable<LocaleModel> stores)
         {
             var traits = stores.SelectMany(s => s.LocaleTraits).ToDataTable();
             traits.SetTypeName("infor.LocaleTraitAddOrUpdateType");
@@ -98,7 +101,7 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
                 );
         }
 
-        public void AddOrUpdateLocaleAddress(IEnumerable<LocaleModel> stores)
+        private void AddOrUpdateLocaleAddress(IEnumerable<LocaleModel> stores)
         {
             var address = stores.Select(s => s.Address).ToDataTable();
             address.SetTypeName("infor.LocaleAddressAddOrUpdateType");
@@ -115,7 +118,7 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
                 );
         }
 
-        public DataTable GetLocaleTableType(IEnumerable<LocaleModel> models, string parameterTypeName, bool isStore)
+        private DataTable GetLocaleTableType(IEnumerable<LocaleModel> models, string parameterTypeName, bool isStore)
         {
             var dataTable = models.Select(or => new
             {
