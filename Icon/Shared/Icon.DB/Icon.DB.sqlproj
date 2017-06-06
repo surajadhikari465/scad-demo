@@ -630,6 +630,13 @@
     <Build Include="app\Tables\DbStatus.sql" />
     <Build Include="infor\Tables\MessageArchiveProductOutOfSync.sql" />
     <None Include="Scripts\PopulateData\Release\PBI21913_Add_HealthyEatingRating_of_None.rollback.sql" />
+    <Build Include="infor\Stored Procedures\AddOrUpdateLocaleAddress.sql" />
+    <Build Include="infor\Stored Procedures\AddOrUpdateLocales.sql" />
+    <Build Include="infor\Stored Procedures\AddOrUpdateLocaleTraits.sql" />
+    <Build Include="infor\Stored Procedures\AddOrUpdateStores.sql" />
+    <Build Include="infor\User Defined Types\LocaleAddOrUpdateType.sql" />
+    <Build Include="infor\User Defined Types\LocaleAddressAddOrUpdateType.sql" />
+    <Build Include="infor\User Defined Types\LocaleTraitAddOrUpdateType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

@@ -1,0 +1,1 @@
+﻿CREATE type infor.GenerateLocaleMessageType AS TABLE (LocaleId INT NOT NULL)

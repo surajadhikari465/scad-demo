@@ -1,0 +1,1 @@
+﻿CREATE type infor.GenerateStoreMessageType AS TABLE (BusinessUnitId INT NOT NULL)
