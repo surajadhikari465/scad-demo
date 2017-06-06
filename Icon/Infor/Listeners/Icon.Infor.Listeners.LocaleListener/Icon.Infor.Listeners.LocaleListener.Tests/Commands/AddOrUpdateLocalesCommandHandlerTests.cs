@@ -39,6 +39,8 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
         public void Cleanup()
         {
             transaction.Dispose();
+            this.dbProvider.Connection.Close();
+            this.dbProvider.Connection.Dispose();
         }
 
         [TestMethod]

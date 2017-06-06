@@ -35,28 +35,28 @@ BEGIN
 			   ParentLocaleID,
 			   BusinessUnitId,
 			   EwicAgency
-	   INTO #tmp
+	   INTO #tmpStores
 	   FROM @localeStores
 
 		UPDATE l
-		SET LocaleName = stores.LocaleName
-			,LocaleOpenDate = stores.LocaleOpenDate
-			,LocaleCloseDate = stores.LocaleCloseDate
+		SET LocaleName = tmpStores.LocaleName
+			,LocaleOpenDate = tmpStores.LocaleOpenDate
+			,LocaleCloseDate = tmpStores.LocaleCloseDate
 			,localeTypeID = ltp.localeTypeID
-			,ParentLocaleID = stores.ParentLocaleID
+			,ParentLocaleID = tmpStores.ParentLocaleID
 		FROM dbo.Locale l
 		JOIN dbo.LocaleTrait lt ON l.localeID = lt.localeID
 			AND lt.traitID = @businessUnitIdTraitId
-		JOIN #tmp stores ON lt.traitValue = stores.BusinessUnitId
-		JOIN dbo.LocaleType ltp ON stores.LocaleTypeCode = ltp.localeTypeCode
+		JOIN #tmpStores tmpStores ON lt.traitValue = tmpStores.BusinessUnitId
+		JOIN dbo.LocaleType ltp ON tmpStores.LocaleTypeCode = ltp.localeTypeCode
 		
 		DELETE ewic.AgencyLocale
 		WHERE LocaleID IN (
 				SELECT bu.LocaleID
-				FROM #tmp TEMP
-				JOIN LocaleTrait bu ON TEMP.BusinessUnitId = bu.traitValue
+				FROM #tmpStores tempStores
+				JOIN LocaleTrait bu ON tempStores.BusinessUnitId = bu.traitValue
 					AND bu.traitID = @businessUnitIdTraitId
-				WHERE LTRIM(RTRIM(ISNULL(TEMP.EwicAgency, ''))) = ''
+				WHERE LTRIM(RTRIM(ISNULL(tempStores.EwicAgency, ''))) = ''
 				)
 
 		INSERT INTO ewic.AgencyLocale (
@@ -65,15 +65,15 @@ BEGIN
 			)
 		SELECT a.AgencyId
 			,bu.localeID
-		FROM #tmp TEMP
-		JOIN LocaleTrait bu ON TEMP.BusinessUnitId = bu.traitValue
+		FROM #tmpStores tempStores
+		JOIN LocaleTrait bu ON tempStores.BusinessUnitId = bu.traitValue
 			AND bu.traitID = @businessUnitIdTraitId
-		JOIN ewic.Agency a ON TEMP.EwicAgency = a.AgencyId
+		JOIN ewic.Agency a ON tempStores.EwicAgency = a.AgencyId
 
 		-- Add Store using cursor because Locale ID is not provided
 		IF EXISTS (
 				SELECT TOP 1 1
-				FROM #tmp
+				FROM #tmpStores
 				WHERE BusinessUnitId NOT IN 
 						(
 						SELECT traitValue
@@ -94,7 +94,7 @@ BEGIN
 				ParentLocaleID,
 	     		EwicAgency
 			
-			FROM #tmp
+			FROM #tmpStores
 			WHERE BusinessUnitId NOT IN (
 					SELECT traitValue
 					FROM LocaleTrait lt
@@ -130,7 +130,7 @@ BEGIN
 					,lt.localeTypeID
 					,ParentLocaleID
 					,@OwnerOrgPartyID
-				FROM #tmp l
+				FROM #tmpStores l
 				JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
 
 				SET @LocaleId = SCOPE_IDENTITY()

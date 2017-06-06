@@ -47,6 +47,8 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
         public void Cleanup()
         {
             transaction.Dispose();
+            this.connection.Close();
+            this.connection.Dispose();
         }
 
         [TestMethod]

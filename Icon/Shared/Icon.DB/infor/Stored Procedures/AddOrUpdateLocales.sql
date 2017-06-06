@@ -23,16 +23,16 @@ DECLARE @OwnerOrgPartyID INT = (
 			   ParentLocaleID,
 			   BusinessUnitId,
 			   EwicAgency
-	   INTO #tmp
+	   INTO #tmpLocale
 	   FROM @locale
 
 		UPDATE l
-		SET LocaleName = locale.LocaleName
+		SET LocaleName = tmpLocale.LocaleName
 			,localeTypeID = lt.localeTypeID
-			,ParentLocaleID = locale.ParentLocaleID
+			,ParentLocaleID = tmpLocale.ParentLocaleID
 		FROM dbo.Locale l
-		JOIN #tmp locale ON l.localeID = locale.LocaleID  AND locale.LocaleTypeCode ='CH'
-		JOIN dbo.LocaleType lt ON locale.LocaleTypeCode = lt.localeTypeCode
+		JOIN #tmpLocale tmpLocale ON l.localeID = tmpLocale.LocaleID  AND tmpLocale.LocaleTypeCode ='CH'
+		JOIN dbo.LocaleType lt ON tmpLocale.LocaleTypeCode = lt.localeTypeCode
 
 		SET IDENTITY_INSERT Locale ON
 
@@ -49,7 +49,7 @@ DECLARE @OwnerOrgPartyID INT = (
 			,lt.localeTypeID
 			,ParentLocaleID
 			,@OwnerOrgPartyID
-		FROM #tmp l
+		FROM #tmpLocale l
 		JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
 		WHERE l.LocaleTypeCode = 'CH'
 		AND   l.LocaleID NOT IN 
@@ -61,12 +61,12 @@ DECLARE @OwnerOrgPartyID INT = (
 		 SET IDENTITY_INSERT Locale OFF
 
 	    UPDATE l
-		SET LocaleName = locale.LocaleName
+		SET LocaleName = tmpLocale.LocaleName
 			,localeTypeID = lt.localeTypeID
-			,ParentLocaleID = locale.ParentLocaleID
+			,ParentLocaleID = tmpLocale.ParentLocaleID
 		FROM dbo.Locale l
-		JOIN #tmp locale ON l.localeID = locale.LocaleID  AND locale.LocaleTypeCode ='RG'
-		JOIN dbo.LocaleType lt ON locale.LocaleTypeCode = lt.localeTypeCode
+		JOIN #tmpLocale tmpLocale ON l.localeID = tmpLocale.LocaleID  AND tmpLocale.LocaleTypeCode ='RG'
+		JOIN dbo.LocaleType lt ON tmpLocale.LocaleTypeCode = lt.localeTypeCode
 
 		SET IDENTITY_INSERT Locale ON
 
@@ -83,7 +83,7 @@ DECLARE @OwnerOrgPartyID INT = (
 			,lt.localeTypeID
 			,ParentLocaleID
 			,@OwnerOrgPartyID
-		FROM #tmp l
+		FROM #tmpLocale l
 		JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
 		WHERE l.LocaleTypeCode = 'RG'
 		AND   l.LocaleID NOT IN 
@@ -95,12 +95,12 @@ DECLARE @OwnerOrgPartyID INT = (
 	   SET IDENTITY_INSERT Locale OFF
 
 		UPDATE l
-		SET LocaleName = locale.LocaleName
+		SET LocaleName = tmpLocale.LocaleName
 			,localeTypeID = lt.localeTypeID
-			,ParentLocaleID = locale.ParentLocaleID
+			,ParentLocaleID = tmpLocale.ParentLocaleID
 		FROM dbo.Locale l
-		JOIN #tmp locale ON l.localeID = locale.LocaleID  AND locale.LocaleTypeCode ='MT'
-		JOIN dbo.LocaleType lt ON locale.LocaleTypeCode = lt.localeTypeCode
+		JOIN #tmpLocale tmpLocale ON l.localeID = tmpLocale.LocaleID  AND tmpLocale.LocaleTypeCode ='MT'
+		JOIN dbo.LocaleType lt ON tmpLocale.LocaleTypeCode = lt.localeTypeCode
 
 		SET IDENTITY_INSERT Locale ON
 
@@ -117,7 +117,7 @@ DECLARE @OwnerOrgPartyID INT = (
 			,lt.localeTypeID
 			,ParentLocaleID
 			,@OwnerOrgPartyID
-		FROM #tmp l
+		FROM #tmpLocale l
 		JOIN dbo.LocaleType lt ON l.LocaleTypeCode = lt.localeTypeCode
 		WHERE l.LocaleTypeCode = 'MT'
 		AND   l.LocaleID NOT IN 

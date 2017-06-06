@@ -18,16 +18,16 @@ BEGIN
 			   tr.UomId,
 			   BusinessUnitId,
 			   lt.localeID
-		INTO #tmp
+		INTO #tmpTrait
 		FROM @traits tr
 		INNER JOIN LocaleTrait lt
 		ON lt.traitValue = businessunitid AND lt.traitID = @businessUnitIdTraitId 
 
 		UPDATE lt
-		SET traitValue = tmp.TraitValue
-		FROM #tmp tmp
-		JOIN LocaleTrait lt ON lt.localeID = tmp.localeID
-		AND lt.traitID = tmp.TraitId
+		SET traitValue = tmpTrait.TraitValue
+		FROM #tmpTrait tmpTrait
+		JOIN LocaleTrait lt ON lt.localeID = tmpTrait.localeID
+		AND lt.traitID = tmpTrait.TraitId
 				
 		INSERT INTO LocaleTrait 
 				(
@@ -40,13 +40,13 @@ BEGIN
 			   ,TraitId
 			   ,TraitValue
 			    ,NULL
-		FROM  #tmp
+		FROM  #tmpTrait tmpTrait
 		WHERE TraitId != @businessUnitIdTraitId
 		AND NOT EXISTS 
 		   ( SELECT la.localeID, la.traitID, la.traitValue, NULL
 		     FROM LocaleTrait la
-		     WHERE la.LocaleId = #tmp.LocaleId
-		     AND la.TraitId = #tmp.TraitId
+		     WHERE la.LocaleId = tmpTrait.LocaleId
+		     AND la.TraitId = tmpTrait.TraitId
 		   )
 	END
 END

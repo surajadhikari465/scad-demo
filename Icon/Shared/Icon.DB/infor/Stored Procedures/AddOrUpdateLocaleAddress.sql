@@ -34,7 +34,7 @@ AS
 				 Longitude,
 		         [BusinessUnitId],
 				 lt.localeID
-		   INTO #tmp
+		   INTO #tmpAddress
 		   FROM @address
 		   INNER JOIN LocaleTrait lt
 		   ON lt.traitValue = businessunitid AND lt.traitID = @businessUnitIdTraitId 
@@ -46,15 +46,15 @@ AS
 				countyid 
 			  ) 
 		  SELECT c.countryid, 
-				 tmp.PostalCode, 
+				 tmpAddress.PostalCode, 
 				 NULL 
-		  FROM #tmp tmp 
+		  FROM #tmpAddress tmpAddress 
 		  JOIN country c 
-		  ON tmp.CountryCode = c.countrycode 
+		  ON tmpAddress.CountryCode = c.countrycode 
 		  WHERE  NOT EXISTS 
 				 ( SELECT 1 
 				   FROM postalcode p 
-				   WHERE p.postalCode = tmp.PostalCode 
+				   WHERE p.postalCode = tmpAddress.PostalCode 
 				   AND c.countryID = p.countryID ) 
 
 		  INSERT INTO dbo.city 
@@ -64,44 +64,44 @@ AS
 				 countyid 
 			   ) 
 		  SELECT t.territoryID , 
-				 tmp.CityName , 
+				 tmpAddress.CityName , 
 				 NULL 
-		  FROM #tmp tmp 
+		  FROM #tmpAddress tmpAddress 
 		  JOIN Territory t 
-		  ON tmp.TerritoryCode = t.territoryCode 
+		  ON tmpAddress.TerritoryCode = t.territoryCode 
 		  WHERE NOT EXISTS 
 				   (SELECT 1 
 					FROM City c 
-					WHERE c.cityname = tmp.CityName 
+					WHERE c.cityname = tmpAddress.CityName 
 					AND c.territoryID = t.territoryID )
 				 
 		  UPDATE pa 
-		  SET    addressLine1 = tmp.addressline1 , 
-				 addressLine2 = tmp.addressline2 , 
-				 addressLine3 = tmp.addressline3 , 
+		  SET    addressLine1 = tmpAddress.addressline1 , 
+				 addressLine2 = tmpAddress.addressline2 , 
+				 addressLine3 = tmpAddress.addressline3 , 
 				 cityID = ci.cityid , 
 				 countryID = c.countryid , 
-				 latitude = Cast(tmp.latitude AS   DECIMAL(9,6)) , 
-				 longitude = Cast(tmp.longitude AS DECIMAL(9,6)) , 
+				 latitude = Cast(tmpAddress.latitude AS   DECIMAL(9,6)) , 
+				 longitude = Cast(tmpAddress.longitude AS DECIMAL(9,6)) , 
 				 postalCodeID = p.postalcodeid , 
 				 territoryID = t.territoryid , 
 				 timezoneID = tz.timezoneid 
 		  FROM physicaladdress pa 
-		  INNER JOIN   #tmp tmp 
-		  ON pa.addressID = tmp.addressID 
+		  INNER JOIN   #tmpAddress tmpAddress 
+		  ON pa.addressID = tmpAddress.addressID 
 		  INNER JOIN country c 
-		  ON tmp.countryCode = c.countryCode 
+		  ON tmpAddress.countryCode = c.countryCode 
 		  INNER JOIN territory t 
-		  ON tmp.territoryCode = t.territoryCode 
+		  ON tmpAddress.territoryCode = t.territoryCode 
 		  AND t.countryid = c.countryid 
 		  INNER JOIN postalcode p 
-		  ON tmp.postalCode = p.postalCode 
+		  ON tmpAddress.postalCode = p.postalCode 
 		  AND p.countryid = c.countryid 
 		  INNER JOIN city ci 
-		  ON tmp.cityName = ci.cityName 
+		  ON tmpAddress.cityName = ci.cityName 
 		  AND ci.territoryID = t.territoryID 
 		  INNER JOIN timezone tz 
-		  ON tmp.timeZoneName = tz.posTimeZoneName 
+		  ON tmpAddress.timeZoneName = tz.posTimeZoneName 
 
 		  SET IDENTITY_INSERT address ON 
 
@@ -112,7 +112,7 @@ AS
 				) 
 		  SELECT addressID , 
 				 @physicalAddressTypeId 
-		  FROM #tmp 
+		  FROM #tmpAddress 
 		  WHERE addressID NOT IN 
 				 ( SELECT addressID 
 				   FROM address 
@@ -129,15 +129,14 @@ AS
 		  SELECT addressID , 
 				 @shippingAddressTypeId , 
 				 lt.localeID 
-		  FROM   #tmp 
+		  FROM   #tmpAddress tmpAddress
 		  INNER JOIN LocaleTrait lt
 		  ON lt.traitValue = businessUnitID AND lt.traitID = @businessUnitIdTraitId 
 		  WHERE NOT EXISTS 
 		   ( SELECT la.addressID, la.addressUsageID, la.localeID
 		     FROM LocaleAddress la
-		     INNER JOIN #tmp tmp
-		     ON la.addressID = tmp.addressID
-		     AND la.localeID = tmp.localeID
+		     WHERE la.addressID = tmpAddress.addressID
+		     AND la.localeID = tmpAddress.localeID
 		     AND la.addressUsageID = @shippingAddressTypeId
 		   )
 
@@ -155,7 +154,7 @@ AS
 					territoryID , 
 					timezoneID 
 				   ) 
-		  SELECT    tmp.addressID , 
+		  SELECT    tmpAddress.addressID , 
 					addressLine1 , 
 					addressLine2 , 
 					addressLine3 , 
@@ -166,17 +165,17 @@ AS
 					postalCodeID , 
 					territory.territoryID , 
 					timezoneID 
-		  FROM #tmp tmp 
+		  FROM #tmpAddress tmpAddress 
 		  INNER JOIN country 
-		  ON country.countryCode = tmp.countryCode 
+		  ON country.countryCode = tmpAddress.countryCode 
 		  INNER JOIN territory 
-		  ON territory.territoryCode = tmp.territoryCode 
+		  ON territory.territoryCode = tmpAddress.territoryCode 
 		  INNER JOIN postalcode 
-		  ON postalcode.postalCode = tmp.postalCode 
+		  ON postalcode.postalCode = tmpAddress.postalCode 
 		  INNER JOIN timezone 
-		  ON timezone.posTimeZoneName = tmp.TimeZoneName 
+		  ON timezone.posTimeZoneName = tmpAddress.TimeZoneName 
 		  INNER JOIN city 
-		  ON city.cityName = tmp.cityName 
+		  ON city.cityName = tmpAddress.cityName 
 		  WHERE addressID NOT IN 
 				 ( SELECT addressID 
 				   FROM   physicaladdress 
