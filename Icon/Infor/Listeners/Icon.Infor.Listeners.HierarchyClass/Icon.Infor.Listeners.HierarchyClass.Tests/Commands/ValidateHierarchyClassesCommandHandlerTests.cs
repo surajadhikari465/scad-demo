@@ -14,33 +14,16 @@ using System.Threading.Tasks;
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
     [TestClass]
-    public class ValidateHierarchyClassesCommandHandlerTests
+    public class ValidateHierarchyClassesCommandHandlerTests : BaseHierarchyClassesCommandTest
     {
         private ValidateHierarchyClassesCommandHandler commandHandler;
         private ValidateHierarchyClassesCommand command;
-        private Mock<IRenewableContext<IconContext>> mockGlobalContext;
-        private IconContext context;
-        private DbContextTransaction transaction;
 
         [TestInitialize]
         public void Initialize()
         {
-            context = new IconContext();
-            transaction = context.Database.BeginTransaction();
-
-            mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
-            mockGlobalContext.SetupGet(m => m.Context).Returns(context);
-
-            commandHandler = new ValidateHierarchyClassesCommandHandler(mockGlobalContext.Object);
+            commandHandler = new ValidateHierarchyClassesCommandHandler(mockRenewableContext.Object);
             command = new ValidateHierarchyClassesCommand { HierarchyClasses = new List<InforHierarchyClassModel>() };
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            transaction.Rollback();
-            transaction.Dispose();
-            context.Dispose();
         }
 
         [TestMethod]

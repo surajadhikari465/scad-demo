@@ -8,27 +8,33 @@ using Icon.Infor.Listeners.HierarchyClass.Models;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using System.Collections.Generic;
 using System.Linq;
+using Icon.Framework;
+using Icon.Common.Context;
+using Icon.Infor.Listeners.HierarchyClass.Constants;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
 {
     [TestClass]
-    public class DeleteHierarchyClassesServiceTests
+    public class DeleteHierarchyClassesServiceTests : BaseHierarchyClassesServiceTest
     {
-        private DeleteHierarchyClassesService service;
-        private Mock<ICommandHandler<DeleteHierarchyClassesCommand>> mockCommandHandler;
+        private Mock<ICommandHandler<DeleteHierarchyClassesCommand>> mockDeleteCommandHandler;
 
         [TestInitialize]
         public void Initialize()
         {
-            mockCommandHandler = new Mock<ICommandHandler<DeleteHierarchyClassesCommand>>();
-            service = new DeleteHierarchyClassesService(mockCommandHandler.Object);
+            mockDeleteCommandHandler = new Mock<ICommandHandler<DeleteHierarchyClassesCommand>>();
+            mockHierarchyClassListenerSettings.Setup(s => s.EnableNationalClassEventGeneration).Returns(true);
+            service = new DeleteHierarchyClassesService(
+                mockHierarchyClassListenerSettings.Object,
+                mockDeleteCommandHandler.Object,
+                mockGenerateEventsCommandHandler.Object);
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_DifferentTypesOfActions_ShouldOnlyProcessAddOrUpdateHierarchyClass()
+        public void ProcessHierarchyClassMessages_DifferentTypesOfActions_ShouldOnlyProcessDeletes()
         {
             //Given
-            List<InforHierarchyClassModel> hierarchyClasses = new List<InforHierarchyClassModel>
+            var hierarchyClasses = new List<InforHierarchyClassModel>
             {
                 new InforHierarchyClassModel { Action = ActionEnum.AddOrUpdate },
                 new InforHierarchyClassModel { Action = ActionEnum.Delete },
@@ -40,7 +46,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
                 new InforHierarchyClassModel { Action = ActionEnum.Delete },
                 new InforHierarchyClassModel { Action = ActionEnum.AddOrUpdate },
                 new InforHierarchyClassModel { Action = ActionEnum.Delete },
-                new InforHierarchyClassModel { Action = ActionEnum.AddOrUpdate },
                 new InforHierarchyClassModel { Action = ActionEnum.Delete }
             };
 
@@ -48,11 +53,154 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             service.ProcessHierarchyClassMessages(hierarchyClasses);
 
             //Then
-            mockCommandHandler.Verify(
+            mockDeleteCommandHandler.Verify(
                 m => m.Execute(It.Is<DeleteHierarchyClassesCommand>(
                     c => c.HierarchyClasses.All(hc => hc.Action == ActionEnum.Delete)
                         && c.HierarchyClasses.Count() == 6)),
                 Times.Once);
         }
+
+        #region Brand Class Delete
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_BrandDelete_WhenNoData_DoesNothing()
+        {
+            //Given
+            var hierarchyClasses = new List<InforHierarchyClassModel>();
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            mockDeleteCommandHandler.Verify(m => m
+                .Execute(It.IsAny<DeleteHierarchyClassesCommand>()), Times.Never);
+            mockGenerateEventsCommandHandler.Verify(m => m
+                .Execute(It.IsAny<GenerateHierarchyClassEventsCommand>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_BrandDelete_WhenExistsDeletesBrandClass()
+        {
+            //Given
+            var hierarchyName = HierarchyNames.Brands;
+            var hierarchyClasses = CreateInforHierarchyClassesForDelete(
+                hierarchyClassIdForUpdate, hierarchyName);
+            //mockDeleteCommandHandler.Setup(x=>x.)
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockDeleteCall(mockDeleteCommandHandler, hierarchyName, Times.Once(), hierarchyClassIdForUpdate);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_BrandDelete_WhenExists_GeneratesEvent()
+        {
+            //Given
+            var hierarchyName = HierarchyNames.Brands;
+            var hierarchyClasses = CreateInforHierarchyClassesForDelete(
+                hierarchyClassIdForUpdate, hierarchyName);
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+                hierarchyName, ActionEnum.Delete, Times.Once(), hierarchyClassIdForUpdate);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_BrandDelete_WhenExists_DeletesBrandClass()
+        {
+            //Given
+            var hierarchyName = HierarchyNames.Brands;
+            var hierarchyClasses = CreateInforHierarchyClassesForDelete(
+                hierarchyClassIdForUpdate, hierarchyName);
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //When
+            VerifyMockDeleteCall(mockDeleteCommandHandler, hierarchyName, Times.Once(), hierarchyClassIdForUpdate);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_BrandDelete_WhenNotExists_DoesNotGenerateEvent()
+        {
+            //Given
+            var hierarchyName = HierarchyNames.Brands;
+            var hierarchyClasses = CreateInforHierarchyClassesForDelete(
+                hierarchyClassIdForUpdate, hierarchyName);
+            //set an error on the command data, to simulate an error when attempting to delete
+            foreach( var hc in hierarchyClasses)
+            {
+
+                hc.ErrorCode = ApplicationErrors.Codes.UnableToFindMatchingHierarchyClass;
+                hc.ErrorDetails = ApplicationErrors.Descriptions.UnableToFindMatchingHierarchyClassToDeleteMessage;
+            }
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+                hierarchyName, ActionEnum.Delete, Times.Never(), hierarchyClassIdForUpdate);
+        }
+
+        #endregion
+
+        #region National Class Delete
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_NationalDelete_WhenNoData_DoesNothing()
+        {
+            //Given
+            var hierarchyClasses = new List<InforHierarchyClassModel>();
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Thenn
+            mockDeleteCommandHandler.Verify(m => m
+                .Execute(It.IsAny<DeleteHierarchyClassesCommand>()), Times.Never);
+            mockGenerateEventsCommandHandler.Verify(m => m
+                .Execute(It.IsAny<GenerateHierarchyClassEventsCommand>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_NationalDelete_WhenExists_DeletesNationalClass()
+        {
+            //Given
+            var hierarchyName = HierarchyNames.National;
+            var hierarchyClasses = CreateInforHierarchyClassesForDelete(
+                hierarchyClassIdForUpdate, hierarchyName);
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockDeleteCall(mockDeleteCommandHandler,
+                hierarchyName, Times.Once(), hierarchyClassIdForUpdate);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_NationalDelete_WhenExists_GeneratesEvent()
+        {
+            var hierarchyName = HierarchyNames.National;
+            var hierarchyClasses = CreateInforHierarchyClassesForDelete(
+                hierarchyClassIdForUpdate, hierarchyName);
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+                hierarchyName, ActionEnum.Delete, Times.Once(), hierarchyClassIdForUpdate);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_NationalDelete_WhenNotExists_DoesNotGenerateEvent()
+        {
+            var hierarchyName = HierarchyNames.National;
+            var hierarchyClasses = CreateInforHierarchyClassesForDelete(
+                hierarchyClassIdForUpdate, hierarchyName);
+            //set an error on the command data, to simulate an error when attempting to delete
+            foreach (var hc in hierarchyClasses)
+            {
+
+                hc.ErrorCode = ApplicationErrors.Codes.UnableToFindMatchingHierarchyClass;
+                hc.ErrorDetails = ApplicationErrors.Descriptions.UnableToFindMatchingHierarchyClassToDeleteMessage;
+            }
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+                hierarchyName, ActionEnum.Delete, Times.Never(), hierarchyClassIdForUpdate);
+        }
+
+        #endregion
     }
 }

@@ -13,72 +13,32 @@ using Icon.Infor.Listeners.HierarchyClass.Constants;
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
     [TestClass]
-    public class DeleteHierarchyClassesCommandHandlerTests
+    public class DeleteHierarchyClassesCommandHandlerTests : BaseHierarchyClassesCommandTest
     {
         private DeleteHierarchyClassesCommandHandler commandHandler;
         private DeleteHierarchyClassesCommand command;
-        private IconContext context;
-        private DbContextTransaction transaction;
 
         [TestInitialize]
         public void Initialize()
         {
-            context = new IconContext();
-            transaction = context.Database.BeginTransaction();
-
-            Mock<IRenewableContext<IconContext>> mockContext = new Mock<IRenewableContext<IconContext>>();
-            mockContext.SetupGet(m => m.Context).Returns(context);
-
-            commandHandler = new DeleteHierarchyClassesCommandHandler(mockContext.Object);
+            commandHandler = new DeleteHierarchyClassesCommandHandler(mockRenewableContext.Object);
             command = new DeleteHierarchyClassesCommand();
         }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            transaction.Rollback();
-            transaction.Dispose();
-            context.Dispose();
-        }
-
         [TestMethod]
-        public void DeleteHierarchyClasses_HierarchyClassesExist_ShouldDeleteHierarchyClasses()
+        public void DeleteHierarchyClassesCommand_Brand_WhenExists_DeletesBrandClass()
         {
             //Given
-            List<Framework.HierarchyClass> hierarchyClasses = new List<Framework.HierarchyClass>()
-            {
-                new Framework.HierarchyClass
-                {
-                    hierarchyID = Hierarchies.Brands,
-                    hierarchyClassName = "Test Brand 1",
-                    hierarchyLevel = 1, HierarchyClassTrait = new List<HierarchyClassTrait> { new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = "Test" } }
-                },
-                new Framework.HierarchyClass
-                {
-                    hierarchyID = Hierarchies.Brands,
-                    hierarchyClassName = "Test Brand 2",
-                    hierarchyLevel = 1, HierarchyClassTrait = new List<HierarchyClassTrait> { new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = "Test" } }
-                },
-                new Framework.HierarchyClass
-                {
-                    hierarchyID = Hierarchies.Brands,
-                    hierarchyClassName = "Test Brand 3",
-                    hierarchyLevel = 1, HierarchyClassTrait = new List<HierarchyClassTrait> { new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = "Test" } }
-                }
-            };
-            context.HierarchyClass.AddRange(hierarchyClasses);
-            context.SaveChanges();
-
-            command.HierarchyClasses = hierarchyClasses.Select(hc => new InforHierarchyClassModel
-            {
-                HierarchyClassId = hc.hierarchyClassID,
-                HierarchyName = Hierarchies.Names.Brands
-            });
-
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.Brands, 3);
+            SaveTestHierarchyClasses(context, hierarchyClasses);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.Brands);
+            var countBefore = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
             //When
             commandHandler.Execute(command);
-
             //Then
+            var countAfter = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
+            Assert.AreEqual(countAfter, countBefore- hierarchyClasses.Count,
+                $"Should have found {hierarchyClasses.Count} fewer hierarchy classes after delete");
             var hierarchyClassIds = hierarchyClasses.Select(hc => hc.hierarchyClassID).ToList();
             Assert.IsFalse(
                 context.HierarchyClass
@@ -87,22 +47,114 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         }
 
         [TestMethod]
-        public void DeleteHierarchyClasses_HierarchyClassesDoNotExist_ShouldNotThrowException()
+        public void DeleteHierarchyClassesCommand_Brand_WhenNotFound_DoesNotDeleteBrandClass()
         {
             //Given
-            var maxId = context.HierarchyClass.Max(hc => hc.hierarchyClassID);
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                new InforHierarchyClassModel { HierarchyClassId = (maxId + 1) },
-                new InforHierarchyClassModel { HierarchyClassId = (maxId + 2) },
-                new InforHierarchyClassModel { HierarchyClassId = (maxId + 3) }
-            };
-
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.Brands, 3);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.Brands);
+            var countBefore = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
             //When
             commandHandler.Execute(command);
+            //Then
+            var countAfter = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
+            Assert.AreEqual(countAfter, countBefore,
+                "Attempted delete of non-existent hierarchy classes should not have affected count");
+        }
 
+        [TestMethod]
+        public void DeleteHierarchyClassesCommand_Brand_WhenNotFound_ShouldNotThrowException()
+        {
+            //Given
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.Brands, 3);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.Brands);
+            //When
+            try
+            {
+                commandHandler.Execute(command);
+            }
+            //Then
+            catch (Exception ex)
+            {
+                Assert.Fail("Unexpected exception occurred: " + ex.Message);
+            };
+        }
+
+        [TestMethod]
+        public void DeleteHierarchyClassesCommand_Brand_WhenNotFound_ShouldSetError()
+        {
+            //Given
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.Brands, 3);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.Brands);
+            //When
+            commandHandler.Execute(command);
+            //Then
+            foreach( var undeleteableHierarchyClass in command.HierarchyClasses)
+            {
+                Assert.AreEqual(ApplicationErrors.Codes.UnableToFindMatchingHierarchyClass,
+                    undeleteableHierarchyClass.ErrorCode);
+                Assert.AreEqual(ApplicationErrors.Descriptions.UnableToFindMatchingHierarchyClassToDeleteMessage,
+                    undeleteableHierarchyClass.ErrorDetails);
+            }
+        }
+
+        [TestMethod]
+        public void DeleteHierarchyClassesCommand_Brand_WhenAssocWithItem_ShouldNotDeleteAssociatedHierarchies()
+        {
+            //Given
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.Brands, 2, true);
+            SaveTestHierarchyClasses(context, hierarchyClasses);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.Brands);
+            var expectedRemainingHierarchyClassID = hierarchyClasses
+                .Single(hc => hc.hierarchyClassName == "Test Brand 1").hierarchyClassID;
+            //When
+            commandHandler.Execute(command);
             //Then
             var hierarchyClassIds = command.HierarchyClasses.Select(hc => hc.HierarchyClassId).ToList();
+            Assert.AreEqual(1, context.HierarchyClass.AsNoTracking()
+                .Count(hc => hierarchyClassIds.Any(id => id == hc.hierarchyClassID)));
+            Assert.AreEqual(expectedRemainingHierarchyClassID, context.HierarchyClass
+                .Where(hc => hc.hierarchyClassName == "Test Brand 1").Single().hierarchyClassID);
+            Assert.IsFalse(context.HierarchyClass.Any(hc => hc.hierarchyClassName == "Test Brand 2"));
+        }
+
+        [TestMethod]
+        public void DeleteHierarchyClassesCommand_Brand_WhenAssocWithItem_ShouldSetError()
+        {
+            //Given
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.Brands, 2, true);
+            SaveTestHierarchyClasses(context, hierarchyClasses);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.Brands);
+            var expectedRemainingHierarchyClassID = hierarchyClasses
+                .Single(hc => hc.hierarchyClassName == "Test Brand 1").hierarchyClassID;
+            //When
+            commandHandler.Execute(command);
+            //Then
+            var hierarchyClassStillAssociatedWithItem = command.HierarchyClasses
+                .Single(hc => hc.HierarchyClassId == expectedRemainingHierarchyClassID);
+            Assert.AreEqual(ApplicationErrors.Codes.HierarchyClassAssociatedToItemsOnDelete,
+                hierarchyClassStillAssociatedWithItem.ErrorCode);
+            Assert.AreEqual(ApplicationErrors.Descriptions.HierarchyClassAssociatedToItemsOnDelete,
+                hierarchyClassStillAssociatedWithItem.ErrorDetails);
+        } 
+
+        [TestMethod]
+        public void DeleteHierarchyClassesCommand_National_WhenExists_DeletesNationalClass()
+        {
+            //Given
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.National, 3);
+            SaveTestHierarchyClasses(context, hierarchyClasses);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.National);
+            var countBefore = context.HierarchyClass
+                .Count(hc => hc.hierarchyID == Hierarchies.National);
+            //When
+            commandHandler.Execute(command);
+            //Then
+            var countAfter = context.HierarchyClass
+                .Count(hc => hc.hierarchyID == Hierarchies.National);
+            Assert.AreEqual(countAfter, countBefore - hierarchyClasses.Count,
+                $"Should have found {hierarchyClasses.Count} fewer hierarchy classes after delete");
+            var hierarchyClassIds = hierarchyClasses
+                .Select(hc => hc.hierarchyClassID).ToList();
             Assert.IsFalse(
                 context.HierarchyClass
                 .AsNoTracking()
@@ -110,46 +162,98 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         }
 
         [TestMethod]
-        public void DeleteHierarchyClasses_ItemHierarchyClassesExist_ShouldSetItemAssociatedErrorAndNotDeleteAssociatedBrands()
+        public void DeleteHierarchyClassesCommand_National_WhenNotFound_DoesNotDeleteNationalClass()
         {
             //Given
-            List<Framework.HierarchyClass> hierarchyClasses = new List<Framework.HierarchyClass>()
-            {
-                new Framework.HierarchyClass
-                {
-                    hierarchyID = Hierarchies.Brands,
-                    hierarchyClassName = "Test Brand 1",
-                    hierarchyLevel = 1, ItemHierarchyClass = new List<ItemHierarchyClass> {
-                        new ItemHierarchyClass { Item =
-                            new Item { itemTypeID = ItemTypes.RetailSale } } }
-                },
-                 new Framework.HierarchyClass
-                {
-                    hierarchyID = Hierarchies.Brands,
-                    hierarchyClassName = "Test Brand 2",
-                    hierarchyLevel = 1,
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.National, 3);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.National); ;
+            var countBefore = context.HierarchyClass
+                .Count(hc => hc.hierarchyID == Hierarchies.National);
+            //When
+            commandHandler.Execute(command);
+            //Then
+            var countAfter = context.HierarchyClass
+                .Count(hc => hc.hierarchyID == Hierarchies.National);
+            Assert.AreEqual(countAfter, countBefore,
+                "Attempted delete of non-existent hierarchy classes should not have affected count");
+        }
 
-                }
-            };
-            context.HierarchyClass.AddRange(hierarchyClasses);
-            context.SaveChanges();
-
-            command.HierarchyClasses = hierarchyClasses.Select(hc => new InforHierarchyClassModel
+        [TestMethod]
+        public void DeleteHierarchyClassesCommand_National_WhenNotFound_ShouldNotThrowException()
+        {
+            //Given
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.National, 3);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.National);
+            //When
+            try
             {
-                HierarchyClassId = hc.hierarchyClassID,
-                HierarchyName = Hierarchies.Names.Brands
-            }).ToList();
-            var expectedHierarchyClassRemains = hierarchyClasses.Single(hc => hc.hierarchyClassName == "Test Brand 1").hierarchyClassID;
+                commandHandler.Execute(command);
+            }
+            //Then
+            catch (Exception ex)
+            {
+                Assert.Fail("Unexpected exception occurred: " + ex.Message);
+            }
+        }
+
+        [TestMethod]
+        public void DeleteHierarchyClassesCommand_National_WhenNotFound_ShouldSetError()
+        {
+            //Given
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.National, 3);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.National);
+            //When
+            commandHandler.Execute(command);
+            //Then
+            foreach (var undeleteableHierarchyClass in command.HierarchyClasses)
+            {
+                Assert.AreEqual(ApplicationErrors.Codes.UnableToFindMatchingHierarchyClass,
+                    undeleteableHierarchyClass.ErrorCode);
+                Assert.AreEqual(ApplicationErrors.Descriptions.UnableToFindMatchingHierarchyClassToDeleteMessage,
+                    undeleteableHierarchyClass.ErrorDetails);
+            }
+        }
+
+        [TestMethod]
+        public void DeleteHierarchyClassesCommand_National_WhenAssocWithItem_ShouldNotDeleteAssociatedHierarchies()
+        {
+            //Given
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.National, 2, true);
+            SaveTestHierarchyClasses(context, hierarchyClasses);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.National);
+            var expectedRemainingHierarchyClassID = hierarchyClasses
+                .Single(hc => hc.hierarchyClassName == "Test National 1").hierarchyClassID;
+            //When
+            commandHandler.Execute(command);
+            //Then
+            var hierarchyClassIds = command.HierarchyClasses.Select(hc => hc.HierarchyClassId).ToList();
+            Assert.AreEqual(1, context.HierarchyClass.AsNoTracking()
+                .Count(hc => hierarchyClassIds.Any(id => id == hc.hierarchyClassID)));
+            Assert.AreEqual(expectedRemainingHierarchyClassID, context.HierarchyClass
+                .Where(hc => hc.hierarchyClassName == "Test National 1").Single().hierarchyClassID);
+            Assert.IsFalse(context.HierarchyClass.Any(hc => hc.hierarchyClassName == "Test National 2"));
+        }
+
+        [TestMethod]
+        public void DeleteHierarchyClassesCommand_National_WhenAssocWithItem_ShouldSetError()
+        {
+            //Given
+            var hierarchyClasses = CreateTestHierarchyClassesForDelete(Hierarchies.National, 2, true);
+            SaveTestHierarchyClasses(context, hierarchyClasses);
+            AddDataToDeleteCommand(command, hierarchyClasses, Hierarchies.Names.National);
+            var expectedRemainingHierarchyClassID = hierarchyClasses
+                .Single(hc => hc.hierarchyClassName == "Test National 1").hierarchyClassID;
 
             //When
             commandHandler.Execute(command);
 
             //Then
-            Assert.AreEqual(ApplicationErrors.Codes.HierarchyClassAssociatedToItemsOnDelete, command.HierarchyClasses.Single(hc => hc.HierarchyClassId == expectedHierarchyClassRemains).ErrorCode);
-            Assert.AreEqual(ApplicationErrors.Descriptions.HierarchyClassAssociatedToItemsOnDelete, command.HierarchyClasses.Single(hc => hc.HierarchyClassId == expectedHierarchyClassRemains).ErrorDetails);
-
-            Assert.AreEqual(expectedHierarchyClassRemains, context.HierarchyClass.Where(hc => hc.hierarchyClassName == "Test Brand 1").Single().hierarchyClassID);
-            Assert.IsFalse(context.HierarchyClass.Any(hc => hc.hierarchyClassName == "Test Brand 2"));
+            var hierarchyClassStillAssociatedWithItem = command.HierarchyClasses
+                .Single(hc => hc.HierarchyClassId == expectedRemainingHierarchyClassID);
+            Assert.AreEqual(ApplicationErrors.Codes.HierarchyClassAssociatedToItemsOnDelete,
+                hierarchyClassStillAssociatedWithItem.ErrorCode);
+            Assert.AreEqual(ApplicationErrors.Descriptions.HierarchyClassAssociatedToItemsOnDelete,
+                hierarchyClassStillAssociatedWithItem.ErrorDetails);
         }
-    }
+    } 
 }

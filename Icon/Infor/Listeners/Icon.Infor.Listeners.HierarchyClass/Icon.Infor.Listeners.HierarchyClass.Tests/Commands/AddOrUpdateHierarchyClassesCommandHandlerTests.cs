@@ -9,157 +9,173 @@ using System.Linq;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using System.Collections.Generic;
 using Icon.Infor.Listeners.HierarchyClass.Extensions;
+using System.Data.SqlClient;
+using Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
     [TestClass]
-    public class AddOrUpdateHierarchyClassesCommandHandlerTests
+    public class AddOrUpdateHierarchyClassesCommandHandlerTests : BaseHierarchyClassesCommandTest
     {
         private AddOrUpdateHierarchyClassesCommandHandler commandHandler;
         private AddOrUpdateHierarchyClassesCommand command;
-        private Mock<IRenewableContext<IconContext>> mockRenewableContext;
-        private List<string> regions;
-        private IconContext context;
-        private DbContextTransaction transaction;
 
         [TestInitialize]
         public void Initialize()
         {
-            context = new IconContext();
-            transaction = context.Database.BeginTransaction();
-
-            mockRenewableContext = new Mock<IRenewableContext<IconContext>>();
-            mockRenewableContext.SetupGet(m => m.Context).Returns(context);
-
-            regions = new List<string> { "FL", "MA", "MW" };
-
             commandHandler = new AddOrUpdateHierarchyClassesCommandHandler(
-                mockRenewableContext.Object, 
+                mockRenewableContext.Object,
                 regions);
 
             command = new AddOrUpdateHierarchyClassesCommand();
         }
 
-        [TestCleanup]
-        public void Cleanup()
+        [TestMethod]
+        public void AddOrUpdateHierarchyClassesCommand_WhenBrandDoesNotExist_ShouldAddBrandClass()
         {
-            if(transaction.UnderlyingTransaction.Connection != null)
-                transaction.Rollback();
-            transaction.Dispose();
-            context.Dispose();
+            //Given
+            var testModel = base.CreateInforHierarchyClassModel(HierarchyNames.Brands,
+                HierarchyLevelNames.Brand, ActionEnum.AddOrUpdate, new Dictionary<string, string>
+                {
+                    { Traits.Codes.BrandAbbreviation, "Test HierarchyClass" }
+                });
+            AddHierarchyClassModelToCommandData(command, testModel);
+            var countBefore = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
+            //var testModel = this.GetAndPrepModelForAddTest(command, base.GetBrandHierarchyClassModel());
+            //When
+            commandHandler.Execute(command);
+            //Then
+            var countAfter = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
+            Assert.AreEqual(countAfter, countBefore + 1, $"Should have found 1 more hierarchy class after Add");
+            this.AssertNewHierarchyClassWasAdded(
+                testModel: testModel,
+                hierarchyLevel: HierarchyLevels.Brand,
+                expectedNumberOfEvents: this.regions.Count,
+                expectedNumberOfMessages: 1);
         }
 
         [TestMethod]
-        public void AddOrUpdateHierarchyClasses_BrandDoesNotExist_ShouldAddBrands()
+        public void AddOrUpdateHierarchyClassesCommand_WhenBrandExists_ShouldUpdateBrandClass()
         {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesNotExist_ShouldAddHierarchyClasses(
-                AddBrandHierarhyClassModel(),
-                HierarchyLevels.Brand,
-                this.regions.Count,
-                1);
+            //Given
+            var testModel = base.CreateInforHierarchyClassModel(HierarchyNames.Brands,
+                HierarchyLevelNames.Brand, ActionEnum.AddOrUpdate, new Dictionary<string, string>
+                {
+                    { Traits.Codes.BrandAbbreviation, "Test HierarchyClass" }
+                });
+            this.PrepModelForUpdateTest(command, testModel);
+            var countBefore = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
+            //When
+            commandHandler.Execute(command);
+            //Then
+            var countAfter = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
+            Assert.AreEqual(countAfter, countBefore, $"Should have found same count of hierarchy classes after Update");
+            this.AssertExistingHierarchyClassWasUpdated(
+                testModel: testModel,
+                hierarchyLevel: HierarchyLevels.Brand,
+                traitCode: Traits.Codes.BrandAbbreviation,
+                expectedNumberOfTraits: 1,
+                expectedNumberOfEvents: regions.Count * 2,
+                expectedNumberOfMessages: 2);
         }
 
         [TestMethod]
-        public void AddOrUpdateHierarchyClasses_BrandDoesExist_ShouldUpdateBrand()
+        public void AddOrUpdateHierarchyClassesCommand_WhenNationalDoesNotExist_ShouldAddNationalClass()
         {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesExist_ShouldUpdateHierarchyClass(
-                this.AddBrandHierarhyClassModel(),
-                HierarchyLevels.Brand,
-                Traits.Codes.BrandAbbreviation,
-                1,
-                regions.Count * 2,
-                2);
+            //Given
+            var testModel = base.CreateInforHierarchyClassModel(HierarchyNames.National,
+                HierarchyLevelNames.NationalFamily, ActionEnum.AddOrUpdate, new Dictionary<string, string>
+                {
+                     { Traits.Codes.NationalClassCode, "Test National HierarchyClass" }
+                });
+            AddHierarchyClassModelToCommandData(command, testModel);
+            var countBefore = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.National);
+            //When
+            commandHandler.Execute(command);
+            //Then
+            var countAfter = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.National);
+            Assert.AreEqual(countAfter, countBefore + 1, $"Should have found 1 more hierarchy class after Add");
+            this.AssertNewHierarchyClassWasAdded(
+                testModel: testModel,
+                hierarchyLevel: HierarchyLevels.NationalFamily,
+                expectedNumberOfEvents: 0,
+                expectedNumberOfMessages: 0);
         }
 
         [TestMethod]
-        public void AddOrUpdateHierarchyClasses_TaxDoesNotExist_ShouldAddTaxClasses()
+        public void AddOrUpdateHierarchyClassesCommand_WhenNationalExists_ShouldUpdateNationalClass()
         {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesNotExist_ShouldAddHierarchyClasses(
-                AddTaxHierarhyClassModel(),
-                HierarchyLevels.Tax,
-                0,
-                0);
+            //Given
+            var testModel = base.CreateInforHierarchyClassModel(HierarchyNames.National,
+                HierarchyLevelNames.NationalFamily, ActionEnum.AddOrUpdate, new Dictionary<string, string>
+                {
+                     { Traits.Codes.NationalClassCode, "Test National HierarchyClass" }
+                });
+            this.PrepModelForUpdateTest(command, testModel);
+            var countBefore = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.National);
+            //When
+            commandHandler.Execute(command);
+            //Then
+            var countAfter = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.National);
+            Assert.AreEqual(countAfter, countBefore, $"Should have found same count of hierarchy classes after Update");
+            this.AssertExistingHierarchyClassWasUpdated(
+                testModel: testModel,
+                hierarchyLevel: HierarchyLevels.NationalFamily,
+                traitCode: Traits.Codes.NationalClassCode,
+                expectedNumberOfTraits: 1,
+                expectedNumberOfEvents: 0,
+                expectedNumberOfMessages: 0);
         }
 
-        [TestMethod]
-        public void AddOrUpdateHierarchyClasses_TaxDoesExist_ShouldUpdateTax()
+        protected InforHierarchyClassModel PrepModelForUpdateTest(
+            AddOrUpdateHierarchyClassesCommand testCommand,
+            InforHierarchyClassModel testModel,
+            string traitCode = null)
         {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesExist_ShouldUpdateHierarchyClass(
-                this.AddTaxHierarhyClassModel(),
-                HierarchyLevels.Tax,
-                Traits.Codes.TaxAbbreviation,
-                1,
-                0,
-                0);
+            if (testModel.HierarchyName == Hierarchies.Names.Financial)
+            {
+                testModel.HierarchyClassName = string.Concat("Changed HierarchyClass ", "(", testModel.HierarchyClassName.Split('(')[1].TrimEnd(')'), ")");
+            }
+            else
+            {
+                testModel.HierarchyClassName = "Changed HierarchyClass";
+            }
+
+            if (!string.IsNullOrWhiteSpace(traitCode))
+            {
+                testModel.HierarchyClassTraits[traitCode] = "Changed HierarchyClass";
+            }
+
+            SaveModelToDb(context, testCommand, testModel);
+
+            AddHierarchyClassModelToCommandData(testCommand, testModel);
+
+            return testModel;
         }
 
-        [TestMethod]
-        public void AddOrUpdateHierarchyClasses_MerchDoesNotExist_ShouldAddMerchs()
+        protected void SaveModelToDb(IconContext iconContext,
+            AddOrUpdateHierarchyClassesCommand testCommand,
+            InforHierarchyClassModel model)
         {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesNotExist_ShouldAddHierarchyClasses(
-                AddMerchHierarhyClassModel(),
-                HierarchyLevels.Segment,
-                0,
-                1);
+            testCommand.HierarchyClasses = new List<InforHierarchyClassModel>
+            {
+                model
+            };
+
+            commandHandler.Execute(command);
         }
 
-        [TestMethod]
-        public void AddOrUpdateHierarchyClasses_MerchDoesExist_ShouldUpdateMerch()
+        protected void AddHierarchyClassModelToCommandData(
+            AddOrUpdateHierarchyClassesCommand addOrUpdateHierarchyClassesCommand,
+            InforHierarchyClassModel hierarchyClassModel)
         {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesExist_ShouldUpdateHierarchyClass(
-                this.AddMerchHierarhyClassModel(),
-                HierarchyLevels.Segment,
-                null,
-                0,
-                0,
-                2);
+            addOrUpdateHierarchyClassesCommand.HierarchyClasses = new List<InforHierarchyClassModel>
+            {
+                hierarchyClassModel
+            };
         }
 
-        [TestMethod]
-        public void AddOrUpdateHierarchyClasses_FinancialDoesNotExist_ShouldAddFinancialClasses()
-        {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesNotExist_ShouldAddHierarchyClasses(
-                AddFinancialHierarhyClassModel(),
-                HierarchyLevels.Financial,
-                0,
-                1);
-        }
-
-        [TestMethod]
-        public void AddOrUpdateHierarchyClasses_FinancialDoesExist_ShouldUpdateFinancial()
-        {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesExist_ShouldUpdateHierarchyClass(
-                this.AddFinancialHierarhyClassModel(),
-                HierarchyLevels.Financial,
-                null,
-                0,
-                0,
-                2);
-        }
-
-        [TestMethod]
-        public void AddOrUpdateHierarchyClasses_NationalDoesNotExist_ShouldAddNationalClasses()
-        {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesNotExist_ShouldAddHierarchyClasses(
-                AddNationalHierarhyClassModel(),
-                HierarchyLevels.NationalFamily,
-                0,
-                0);
-        }
-
-        [TestMethod]
-        public void AddOrUpdateHierarchyClasses_NationalDoesExist_ShouldUpdateNational()
-        {
-            this.AddOrUpdateHierarchyClasses_HierarchyClassDoesExist_ShouldUpdateHierarchyClass(
-                this.AddNationalHierarhyClassModel(),
-                HierarchyLevels.NationalFamily,
-                Traits.Codes.NationalClassCode,
-                1,
-                0,
-                0);
-        }
-
-        private void AddOrUpdateHierarchyClasses_HierarchyClassDoesNotExist_ShouldAddHierarchyClasses(
+        protected void AssertNewHierarchyClassWasAdded(
             InforHierarchyClassModel testModel,
             int hierarchyLevel,
             int expectedNumberOfEvents,
@@ -189,8 +205,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             };
 
             //Assert Events are generated
-            var events = context.EventQueue.Where(e => e.EventMessage == testModel.HierarchyClassName);
-            Assert.AreEqual(expectedNumberOfEvents, events.Count());
+            var queuedEvents = GetQueuedEvents(context, testModel.HierarchyClassName);
+            Assert.AreEqual(expectedNumberOfEvents, queuedEvents.Count());
 
             //Assert Messages are generated
             string expectedMessageHierarchyClassId = testModel.HierarchyName == Hierarchies.Names.Financial
@@ -209,7 +225,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             });
         }
 
-        private void AddOrUpdateHierarchyClasses_HierarchyClassDoesExist_ShouldUpdateHierarchyClass(
+        protected void AssertExistingHierarchyClassWasUpdated(
             InforHierarchyClassModel testModel,
             int hierarchyLevel,
             string traitCode,
@@ -217,24 +233,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             int expectedNumberOfEvents,
             int expectedNumberOfMessages)
         {
-            //Given
-            if (testModel.HierarchyName == Hierarchies.Names.Financial)
-            {
-                testModel.HierarchyClassName = string.Concat("Changed HierarchyClass ", "(", testModel.HierarchyClassName.Split('(')[1].TrimEnd(')'), ")");
-            }
-            else
-            {
-                testModel.HierarchyClassName = "Changed HierarchyClass";
-            }
-
-            if (!string.IsNullOrWhiteSpace(traitCode))
-            {
-                testModel.HierarchyClassTraits[traitCode] = "Changed HierarchyClass";
-            }
-
-            //When
-            commandHandler.Execute(command);
-
             //Then
             foreach (var model in command.HierarchyClasses)
             {
@@ -259,20 +257,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 Assert.AreEqual(testModelTrait, hierarchyClassTrait.traitValue);
             };
 
-            //Assert Events are generated
-            var events = context.EventQueue.Where(e => e.EventReferenceId == hierarchyClassId);
-            Assert.AreEqual(expectedNumberOfEvents, events.Count());
-
-            //Assert Messages are generated
-            string expectedMessageHierarchyClassId = testModel.HierarchyName == Hierarchies.Names.Financial
-                ? testModel.HierarchyClassName.Split('(')[1].TrimEnd(')')
-                : testModel.HierarchyClassId.ToString();
-            var messages = context.MessageQueueHierarchy.Where(m => m.HierarchyClassId == expectedMessageHierarchyClassId).ToList();
-            Assert.AreEqual(expectedNumberOfMessages, messages.Count());
+            AssertExpectedEventsAndMessagesWereGenerated(testModel, expectedNumberOfEvents, expectedNumberOfMessages);
 
             if (expectedNumberOfMessages > 0)
             {
-                var message = messages.Last();
+                string expectedMessageHierarchyClassId = GetExpectedMessageHierarchyClassId(testModel);
+                var message = context.MessageQueueHierarchy
+                    .Where(m => m.HierarchyClassId == expectedMessageHierarchyClassId)
+                    .OrderByDescending(m=>m.MessageQueueId).FirstOrDefault();
                 Assert.AreEqual(testModel.HierarchyClassName, message.HierarchyClassName);
                 Assert.AreEqual(Hierarchies.Ids[testModel.HierarchyName], message.HierarchyId);
                 Assert.AreEqual(testModel.ParentHierarchyClassId.ToHierarchyParentClassId(), message.HierarchyParentClassId);
@@ -281,118 +273,26 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             }
         }
 
-        private InforHierarchyClassModel AddBrandHierarhyClassModel()
+        protected static string GetExpectedMessageHierarchyClassId(InforHierarchyClassModel testModel)
         {
-            var newHierarchyClassModel = new InforHierarchyClassModel
-            {
-                HierarchyClassId = 87654321,
-                HierarchyClassName = "Test HierarchyClass",
-                HierarchyName = Hierarchies.Names.Brands,
-                ParentHierarchyClassId = 0,
-                HierarchyLevelName = HierarchyLevelNames.Brand,
-                HierarchyClassTraits = new Dictionary<string, string>
-                {
-                    { Traits.Codes.BrandAbbreviation, "Test HierarchyClass" }
-                }
-            };
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                newHierarchyClassModel
-            };
-
-            commandHandler.Execute(command);
-
-            return newHierarchyClassModel;
+            string expectedMessageHierarchyClassId = testModel.HierarchyName == Hierarchies.Names.Financial
+                ? testModel.HierarchyClassName.Split('(')[1].TrimEnd(')')
+                : testModel.HierarchyClassId.ToString();
+            return expectedMessageHierarchyClassId;
         }
 
-        private InforHierarchyClassModel AddTaxHierarhyClassModel()
+        protected void AssertExpectedEventsAndMessagesWereGenerated( InforHierarchyClassModel testModel,
+            int expectedNumberOfEvents, int expectedNumberOfMessages)
         {
-            var newHierarchyClassModel = new InforHierarchyClassModel
-            {
-                HierarchyClassId = 8765432,
-                HierarchyClassName = "Test HierarchyClass",
-                HierarchyName = Hierarchies.Names.Tax,
-                ParentHierarchyClassId = 0,
-                HierarchyLevelName = HierarchyLevelNames.Tax,
-                HierarchyClassTraits = new Dictionary<string, string>
-                {
-                    { Traits.Codes.TaxAbbreviation, "Test HierarchyClass" }
-                }
-            };
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                newHierarchyClassModel
-            };
+            //Assert Events are generated
+            var queuedEvents = GetQueuedEvents(context, testModel.HierarchyClassId);
+            Assert.AreEqual(expectedNumberOfEvents, queuedEvents.Count());
 
-            commandHandler.Execute(command);
-
-            return newHierarchyClassModel;
-        }
-
-        private InforHierarchyClassModel AddMerchHierarhyClassModel()
-        {
-            var newHierarchyClassModel = new InforHierarchyClassModel
-            {
-                HierarchyClassId = 87654322,
-                HierarchyClassName = "Test HierarchyClass",
-                HierarchyName = Hierarchies.Names.Merchandise,
-                ParentHierarchyClassId = 0,
-                HierarchyLevelName = HierarchyLevelNames.Segment,
-                HierarchyClassTraits = new Dictionary<string, string>()
-            };
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                newHierarchyClassModel
-            };
-
-            commandHandler.Execute(command);
-
-            return newHierarchyClassModel;
-        }
-
-        private InforHierarchyClassModel AddFinancialHierarhyClassModel()
-        {
-            var newHierarchyClassModel = new InforHierarchyClassModel
-            {
-                HierarchyClassId = 87654323,
-                HierarchyClassName = "Test Financial HierarchyClass (1234)",
-                HierarchyName = Hierarchies.Names.Financial,
-                ParentHierarchyClassId = 0,
-                HierarchyLevelName = HierarchyLevelNames.Financial,
-                HierarchyClassTraits = new Dictionary<string, string>()
-            };
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                newHierarchyClassModel
-            };
-
-            commandHandler.Execute(command);
-
-            return newHierarchyClassModel;
-        }
-
-        private InforHierarchyClassModel AddNationalHierarhyClassModel()
-        {
-            var newHierarchyClassModel = new InforHierarchyClassModel
-            {
-                HierarchyClassId = 87654323,
-                HierarchyClassName = "Test National HierarchyClass",
-                HierarchyName = Hierarchies.Names.National,
-                ParentHierarchyClassId = 0,
-                HierarchyLevelName = HierarchyLevelNames.NationalFamily,
-                HierarchyClassTraits = new Dictionary<string, string>
-                {
-                    { Traits.Codes.NationalClassCode, "Test National HierarchyClass" }
-                }
-            };
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                newHierarchyClassModel
-            };
-
-            commandHandler.Execute(command);
-
-            return newHierarchyClassModel;
+            //Assert Messages are generated
+            string expectedMessageHierarchyClassId = GetExpectedMessageHierarchyClassId(testModel);
+            var messageCount = context.MessageQueueHierarchy
+                .Where(m => m.HierarchyClassId == expectedMessageHierarchyClassId).Count();
+            Assert.AreEqual(expectedNumberOfMessages, messageCount);
         }
     }
 }

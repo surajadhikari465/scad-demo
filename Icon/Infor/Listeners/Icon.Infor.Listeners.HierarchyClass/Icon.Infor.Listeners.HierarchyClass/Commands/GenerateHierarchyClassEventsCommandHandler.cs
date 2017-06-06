@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
-    public class GenerateNationalClassEventsCommandHandler : ICommandHandler<GenerateNationalClassEventsCommand>
+    public class GenerateHierarchyClassEventsCommandHandler : ICommandHandler<GenerateHierarchyClassEventsCommand>
     {
         private IRenewableContext<IconContext> context;
         private List<string> regions;
 
-        public GenerateNationalClassEventsCommandHandler(
+        public GenerateHierarchyClassEventsCommandHandler(
             IRenewableContext<IconContext> context,
             List<string> regions)
         {
@@ -26,35 +26,43 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
             this.regions = regions;
         }
 
-        public void Execute(GenerateNationalClassEventsCommand data)
+        public void Execute(GenerateHierarchyClassEventsCommand data)
         {
             if (data.HierarchyClasses.Any())
             {
                 var dataAccessModels = data.HierarchyClasses.ToDataAccessModels();
 
-                SqlParameter hierarchyClasses = dataAccessModels.Select(hc => new
-                {
-                    hc.HierarchyClassId,
-                    hc.HierarchyClassName,
-                    hc.HierarchyId,
-                    hc.HierarchyLevelName,
-                    hc.ParentHierarchyClassId,
-                    hc.ActionId
-                }).ToTvp("@hierarchyClasses", "infor.HierarchyClassType");
-                SqlParameter hierarchyClassTraits = dataAccessModels.ToTraitDataAccessModels().ToTvp("@hierarchyClassTraits", "infor.HierarchyClassTraitType");
-                SqlParameter regionParameters = regions.Select(r => new { RegionCode = r }).ToTvp("@regions", "infor.RegionCodeList");
+                SqlParameter hierarchyClasses = dataAccessModels
+                    .Select(hc => new
+                    {
+                        hc.HierarchyClassId,
+                        hc.HierarchyClassName,
+                        hc.HierarchyId,
+                        hc.HierarchyLevelName,
+                        hc.ParentHierarchyClassId,
+                        hc.ActionId
+                    })
+                    .ToTvp("@hierarchyClasses", "infor.HierarchyClassType");
 
+                SqlParameter hierarchyClassTraits = dataAccessModels.ToTraitDataAccessModels()
+                    .ToTvp("@hierarchyClassTraits", "infor.HierarchyClassTraitType");
+
+                SqlParameter regionParameters = regions.Select(r => new { RegionCode = r })
+                    .ToTvp("@regions", "infor.RegionCodeList");
+
+                string sqlCommand = "EXEC infor.HierarchyClassGenerateEvents @hierarchyClasses, @hierarchyClassTraits, @regions";
                 try
                 {
                     context.Context.Database.ExecuteSqlCommand(
-                        "EXEC infor.HierarchyClassGenerateEvents @hierarchyClasses, @hierarchyClassTraits, @regions",
+                        sqlCommand,
                         hierarchyClasses,
                         hierarchyClassTraits,
                         regionParameters);
                 }
                 catch (Exception ex)
                 {
-                    string errorDetails = ApplicationErrors.Descriptions.AddOrUpdateHierarchyClassError + " Exception: " + ex.ToString();
+                    string errorDetails = ApplicationErrors.Descriptions
+                        .AddOrUpdateHierarchyClassError + " Exception: " + ex.ToString();
                     foreach (var hierarchyClass in data.HierarchyClasses)
                     {
                         hierarchyClass.ErrorCode = ApplicationErrors.Codes.AddOrUpdateHierarchyClassError;

@@ -15,26 +15,17 @@ using System.Threading.Tasks;
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
     [TestClass]
-    public class ArchiveMessageCommandHandlerTests
+    public class ArchiveMessageCommandHandlerTests : BaseHierarchyClassesCommandTest
     {
         private ArchiveMessageCommandHandler commandHandler;
         private ArchiveMessageCommand command;
-        private Mock<IRenewableContext<IconContext>> mockGlobalContext;
-        private IconContext context;
-        private DbContextTransaction transaction;
         private Mock<IEsbMessage> mockEsbMessage;
         private Guid messageId;
 
         [TestInitialize]
         public void Initialize()
         {
-            context = new IconContext();
-            transaction = context.Database.BeginTransaction();
-
-            mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
-            mockGlobalContext.SetupGet(m => m.Context).Returns(context);
-
-            commandHandler = new ArchiveMessageCommandHandler(mockGlobalContext.Object);
+            commandHandler = new ArchiveMessageCommandHandler(mockRenewableContext.Object);
             command = new ArchiveMessageCommand();
 
             messageId = Guid.NewGuid();

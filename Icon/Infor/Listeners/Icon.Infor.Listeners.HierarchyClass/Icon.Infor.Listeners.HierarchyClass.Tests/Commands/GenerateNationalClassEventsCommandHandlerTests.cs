@@ -9,160 +9,214 @@ using Moq;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using System.Linq;
+using Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
     [TestClass]
-    public class GenerateNationalClassEventsCommandHandlerTests
+    public class GenerateNationalClassEventsCommandHandlerTests : BaseHierarchyClassesCommandTest
     {
-        private GenerateNationalClassEventsCommandHandler commandHandler;
-        private GenerateNationalClassEventsCommand command;
-        private Mock<IRenewableContext<IconContext>> mockRenewableContext;
-        private List<string> regions;
-        private IconContext context;
-        private DbContextTransaction transaction;
+        private GenerateHierarchyClassEventsCommandHandler commandHandler;
+        private GenerateHierarchyClassEventsCommand command;
 
         [TestInitialize]
         public void Initialize()
         {
-            context = new IconContext();
-            transaction = context.Database.BeginTransaction();
-
-            mockRenewableContext = new Mock<IRenewableContext<IconContext>>();
-            mockRenewableContext.SetupGet(m => m.Context).Returns(context);
-
-            regions = new List<string> { "FL", "MA", "MW" };
-
-            commandHandler = new GenerateNationalClassEventsCommandHandler(
+            commandHandler = new GenerateHierarchyClassEventsCommandHandler(
                 mockRenewableContext.Object,
                 regions);
 
-            command = new GenerateNationalClassEventsCommand();
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            if (transaction.UnderlyingTransaction.Connection != null)
-                transaction.Rollback();
-            transaction.Dispose();
-            context.Dispose();
+            command = new GenerateHierarchyClassEventsCommand();
         }
 
         [TestMethod]
-        public void GenerateNationalClassEvents_BrandAddOrUpdate_GeneratesBrandNameUpdateEvent()
+        public void GenerateHierarchyClassEventsCommand_WhenNoData_DoesNothing()
         {
             //Given
-            InforHierarchyClassModel testModel = new InforHierarchyClassModel
-            {
-                HierarchyClassId = 1234,
-                HierarchyClassName = "Test Brand 1",
-                HierarchyName = HierarchyNames.Brands,
-                HierarchyLevelName = HierarchyLevelNames.Brand,
-                Action = Contracts.ActionEnum.AddOrUpdate,
-                HierarchyClassTraits = new Dictionary<string, string>(),
-            };
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                testModel
-            };
+            SetCommandHierarchyClasses(command, new InforHierarchyClassModel[0]);
+            var testTime = DateTime.Now;
+            var countBefore = GetQueuedEventCount(context, regions, testTime);
 
             //When
             commandHandler.Execute(command);
 
             //Then
-            var queuedEvents = context.EventQueue.Where(e => e.EventReferenceId == 1234);
-            AssertEventsAreEquelToTestModel(testModel, queuedEvents, regions.Count, EventTypes.BrandNameUpdate);
+            var countAfter = GetQueuedEventCount(context, regions, testTime);
+            Assert.AreEqual(countAfter, countBefore);
         }
 
         [TestMethod]
-        public void GenerateNationalClassEvents_BrandDelete_GeneratesBrandDeleteEvent()
+        public void GenerateHierarchyClassEventsCommand_BrandAddOrUpdate_GeneratesEvent()
         {
             //Given
-            InforHierarchyClassModel testModel = new InforHierarchyClassModel
-            {
-                HierarchyClassId = 1234,
-                HierarchyClassName = "Test Brand 1",
-                HierarchyName = HierarchyNames.Brands,
-                HierarchyLevelName = HierarchyLevelNames.Brand,
-                Action = Contracts.ActionEnum.Delete,
-                HierarchyClassTraits = new Dictionary<string, string>(),
-            };
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                testModel
-            };
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test Brand 1",
+                HierarchyNames.Brands, HierarchyLevelNames.Brand, ActionEnum.AddOrUpdate);
+            SetCommandHierarchyClasses(command, testModel);
 
             //When
             commandHandler.Execute(command);
 
             //Then
-            var queuedEvents = context.EventQueue.Where(e => e.EventReferenceId == 1234);
-            AssertEventsAreEquelToTestModel(testModel, queuedEvents, regions.Count, EventTypes.BrandDelete);
+            var queuedEvents = GetQueuedEvents(context, id1234);
+            AssertEventsAreEqualToTestModel(testModel, queuedEvents, regions.Count, EventTypes.BrandNameUpdate);
         }
 
         [TestMethod]
-        public void GenerateNationalClassEvents_NationalAddOrUpdate_GeneratesNationalUpdateEvent()
+        public void GenerateHierarchyClassEventsCommand_BrandDelete_GeneratesEvent()
         {
             //Given
-            InforHierarchyClassModel testModel = new InforHierarchyClassModel
-            {
-                HierarchyClassId = 1234,
-                HierarchyClassName = "Test National 1",
-                HierarchyName = HierarchyNames.National,
-                HierarchyLevelName = HierarchyLevelNames.NationalFamily,
-                Action = Contracts.ActionEnum.AddOrUpdate,
-                HierarchyClassTraits = new Dictionary<string, string>(),
-            };
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                testModel
-            };
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test Brand 1",
+                HierarchyNames.Brands, HierarchyLevelNames.Brand, ActionEnum.Delete);
+            SetCommandHierarchyClasses(command, testModel);
 
             //When
             commandHandler.Execute(command);
 
             //Then
-            var queuedEvents = context.EventQueue.Where(e => e.EventReferenceId == 1234);
-            AssertEventsAreEquelToTestModel(testModel, queuedEvents, regions.Count, EventTypes.NationalClassUpdate);
+            var queuedEvents = GetQueuedEvents(context, id1234);
+            AssertEventsAreEqualToTestModel(testModel, queuedEvents, regions.Count, EventTypes.BrandDelete);
         }
 
         [TestMethod]
-        public void GenerateNationalClassEvents_NationalDelete_GeneratesNationalDeleteEvent()
+        public void GenerateHierarchyClassEventsCommand_NationalAddOrUpdate_GeneratesEvent()
         {
             //Given
-            InforHierarchyClassModel testModel = new InforHierarchyClassModel
-            {
-                HierarchyClassId = 1234,
-                HierarchyClassName = "Test National 1",
-                HierarchyName = HierarchyNames.National,
-                HierarchyLevelName = HierarchyLevelNames.NationalFamily,
-                Action = Contracts.ActionEnum.Delete,
-                HierarchyClassTraits = new Dictionary<string, string>(),
-            };
-            command.HierarchyClasses = new List<InforHierarchyClassModel>
-            {
-                testModel
-            };
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test National 1",
+                HierarchyNames.National, HierarchyLevelNames.NationalFamily, ActionEnum.AddOrUpdate);
+            SetCommandHierarchyClasses(command, testModel);
 
             //When
             commandHandler.Execute(command);
 
             //Then
-            var queuedEvents = context.EventQueue.Where(e => e.EventReferenceId == 1234);
-            AssertEventsAreEquelToTestModel(testModel, queuedEvents, regions.Count, EventTypes.NationalClassDelete);
+            var queuedEvents = GetQueuedEvents(context, id1234);
+            AssertEventsAreEqualToTestModel(testModel, queuedEvents, regions.Count, EventTypes.NationalClassUpdate);
         }
 
-        private void AssertEventsAreEquelToTestModel(InforHierarchyClassModel testModel, IQueryable<EventQueue> queuedEvents, int numberOfEvents, int eventTypeId)
+        [TestMethod]
+        public void GenerateHierarchyClassEventsCommand_NationalDelete_GeneratesEvent()
         {
-            Assert.AreEqual(numberOfEvents, queuedEvents.Count());
-            foreach (var queuedEvent in queuedEvents)
-            {
-                Assert.AreEqual(testModel.HierarchyClassName, queuedEvent.EventMessage);
-                Assert.AreEqual(eventTypeId, queuedEvent.EventId);
-                Assert.IsTrue(regions.Contains(queuedEvent.RegionCode));
-            }
-            Assert.IsTrue(regions.OrderBy(r => r).SequenceEqual(queuedEvents.Select(q => q.RegionCode).OrderBy(r => r)));
+            //Given
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test National 1",
+                HierarchyNames.National, HierarchyLevelNames.NationalFamily, ActionEnum.Delete);
+            SetCommandHierarchyClasses(command, testModel);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var queuedEvents = GetQueuedEvents(context, id1234);
+            AssertEventsAreEqualToTestModel(testModel,
+                queuedEvents, regions.Count, EventTypes.NationalClassDelete);
+        }
+
+        [TestMethod]
+        public void GenerateHierarchyClassEventsCommand_TaxDelete_DoesNothing()
+        {
+            //Given
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test Tax 1",
+                HierarchyNames.Tax, HierarchyLevelNames.Tax, ActionEnum.Delete);
+            SetCommandHierarchyClasses(command, testModel);
+            var testTime = DateTime.Now;
+            var countBefore = GetQueuedEventCount(context, regions, testTime);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var countAfter = GetQueuedEventCount(context, regions, testTime);
+            Assert.AreEqual(countAfter, countBefore);
+        }
+
+        [TestMethod]
+        public void GenerateHierarchyClassEventsCommand_TaxAddOrUpdate_DoesNothing()
+        {
+            //Given
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test Tax 1",
+                HierarchyNames.Tax, HierarchyLevelNames.Tax, ActionEnum.AddOrUpdate);
+            SetCommandHierarchyClasses(command, testModel);
+            var testTime = DateTime.Now;
+            var countBefore = GetQueuedEventCount(context, regions, testTime);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var countAfter = GetQueuedEventCount(context, regions, testTime);
+            Assert.AreEqual(countAfter, countBefore);
+        }
+
+        [TestMethod]
+        public void GenerateHierarchyClassEventsCommand_MerchDelete_DoesNothing()
+        {
+            //Given
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test Merch 1",
+                HierarchyNames.Merchandise, HierarchyLevelNames.Segment, ActionEnum.Delete);
+            SetCommandHierarchyClasses(command, testModel);
+            var testTime = DateTime.Now;
+            var countBefore = GetQueuedEventCount(context, regions, testTime);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var countAfter = GetQueuedEventCount(context, regions, testTime);
+            Assert.AreEqual(countAfter, countBefore);
+        }
+
+        [TestMethod]
+        public void GenerateHierarchyClassEventsCommand_MerchAddOrUpdate_DoesNothing()
+        {
+            //Given
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test Merch 1",
+                HierarchyNames.Merchandise, HierarchyLevelNames.Segment, ActionEnum.AddOrUpdate);
+            SetCommandHierarchyClasses(command, testModel);
+            var testTime = DateTime.Now;
+            var countBefore = GetQueuedEventCount(context, regions, testTime);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var countAfter = GetQueuedEventCount(context, regions, testTime);
+            Assert.AreEqual(countAfter, countBefore);
+        }
+
+        [TestMethod]
+        public void GenerateHierarchyClassEventsCommand_FinancialDelete_DoesNothing()
+        {
+            //Given
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test Fin 1",
+                HierarchyNames.Financial, HierarchyLevelNames.Financial, ActionEnum.Delete);
+            SetCommandHierarchyClasses(command, testModel);
+            var testTime = DateTime.Now;
+            var countBefore = GetQueuedEventCount(context, regions, testTime);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var countAfter = GetQueuedEventCount(context, regions, testTime);
+            Assert.AreEqual(countAfter, countBefore);
+        }
+
+        [TestMethod]
+        public void GenerateHierarchyClassEventsCommand_FinancialAddOrUpdate_DoesNothing()
+        {
+            //Given
+            var testModel = CreateInforHierarchyClassModel(id1234, "Test Fin 1",
+                HierarchyNames.Financial, HierarchyLevelNames.Financial, ActionEnum.AddOrUpdate);
+            SetCommandHierarchyClasses(command, testModel);
+            var testTime = DateTime.Now;
+            var countBefore = GetQueuedEventCount(context, regions, testTime);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var queuedEvents = GetQueuedEvents(context, id1234);
+            var countAfter = GetQueuedEventCount(context, regions, testTime);
+            Assert.AreEqual(countAfter, countBefore);
         }
     }
 }

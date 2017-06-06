@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
-    public class GenerateNationalClassEventsCommand
+    public class GenerateHierarchyClassEventsCommand
     {
         public IEnumerable<InforHierarchyClassModel> HierarchyClasses { get; set; }
     }

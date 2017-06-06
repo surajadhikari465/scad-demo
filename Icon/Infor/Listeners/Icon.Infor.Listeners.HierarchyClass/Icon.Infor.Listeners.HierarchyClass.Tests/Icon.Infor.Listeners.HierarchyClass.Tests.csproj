@@ -150,6 +150,7 @@
     <Compile Include="Commands\ArchiveVimMessageCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesCommandHandlerTests.cs" />
     <Compile Include="Commands\GenerateNationalClassEventsCommandHandlerTests.cs" />
+    <Compile Include="Commands\BaseHierarchyClassesCommandTest.cs" />
     <Compile Include="Commands\ValidateHierarchyClassesCommandHandlerTests.cs" />
     <Compile Include="HierarchyClassListenerTests.cs" />
     <Compile Include="Integration\HierarchyClassListenerTests.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Queries\GetTaxIdFromTaxCodeQueryHandlerTests.cs" />
     <Compile Include="Services\AddOrUpdateHierarchyClassesServiceTests.cs" />
     <Compile Include="Services\DeleteHierarchyClassesServiceTests.cs" />
+    <Compile Include="Services\BaseHierarchyClassesServiceTest.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="Validators\HierarchyClassValidatorTests.cs" />
     <Content Include="TestMessages\ArchiveMessageTestMessage.xml">
@@ -170,7 +172,9 @@
     <Content Include="TestMessages\DeleteBrandTestMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestMessages\DeleteFinancialTestMessage.xml" />
+    <Content Include="TestMessages\DeleteFinancialTestMessage.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestMessages\FailedInforHierarchyMessage.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -192,7 +196,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestMessages\FinancialTestMessage.xml" />
+    <Content Include="TestMessages\FinancialTestMessage.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestMessages\InforMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -136,8 +136,8 @@
     <Compile Include="Commands\ArchiveVimMessageCommandHandler.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesCommand.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesCommandHandler.cs" />
-    <Compile Include="Commands\GenerateNationalClassEventsCommand.cs" />
-    <Compile Include="Commands\GenerateNationalClassEventsCommandHandler.cs" />
+    <Compile Include="Commands\GenerateHierarchyClassEventsCommand.cs" />
+    <Compile Include="Commands\GenerateHierarchyClassEventsCommandHandler.cs" />
     <Compile Include="Commands\ValidateHierarchyClassesCommandHandler.cs" />
     <Compile Include="Commands\ValidateHierarchyClassesCommand.cs" />
     <Compile Include="Constants\ApplicationErrors.cs" />
@@ -149,6 +149,8 @@
     <Compile Include="EsbService\VimEsbProducer.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="HierarchyClassListener.cs" />
+    <Compile Include="HierarchyClassListenerSettings.cs" />
+    <Compile Include="IHierarchyClassListenerSettings.cs" />
     <Compile Include="MessageBuilders\HierarchyClassMessageBuilder.cs" />
     <Compile Include="MessageParsers\HierarchyClassMessageParser.cs" />
     <Compile Include="Models\HierarchyClassDataAccessModel.cs" />
@@ -169,7 +171,6 @@
     <Compile Include="Services\AddOrUpdateHierarchyClassesService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\GenerateNationalClassEventsService.cs" />
     <Compile Include="Services\IHierarchyClassService.cs" />
     <Compile Include="Services\SendHierarchyClassesToVimService.cs" />
     <Compile Include="Services\SendTaxToMammothService.cs" />

@@ -72,6 +72,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             container.Register<IEsbService<HierarchyClassEsbServiceRequest>, HierarchyClassEsbService>();
             container.Register<IMessageBuilder<HierarchyClassEsbServiceRequest>, HierarchyClassMessageBuilder>();
             container.Register<ISerializer<Contracts.HierarchyType>, Serializer<Contracts.HierarchyType>>();
+            container.Register<IHierarchyClassListenerSettings, HierarchyClassListenerSettings>();
 
             container.Register<VimEsbConnectionSettings>();
             container.Register(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Infor"), Lifestyle.Singleton);

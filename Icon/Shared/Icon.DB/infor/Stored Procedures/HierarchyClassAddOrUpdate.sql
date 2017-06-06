@@ -51,16 +51,6 @@ BEGIN
 			EXEC infor.FinancialHierarchyClassAddOrUpdate @hierarchyClasses,@hierarchyClassTraits
 	END
 
-	INSERT INTO app.EventQueue(EventId, EventMessage, EventReferenceId, RegionCode)
-	SELECT 
-		@brandEventTypeId,
-		HierarchyClassName,
-		HierarchyClassId,
-		RegionCode
-	FROM @hierarchyClasses
-	CROSS JOIN @regions
-	WHERE HierarchyId = @brandHierarchyId
-
 	DECLARE @hierarchyMessageTypeId int = (select MessageTypeId from app.MessageType where MessageTypeName = 'Hierarchy'), 
 			@readyStatusId int = (select MessageStatusId from app.MessageStatus where MessageStatusName = 'Ready'), 
 			@messageActionId int = (select MessageActionId from app.MessageAction where MessageActionName = 'AddOrUpdate')
