@@ -344,9 +344,11 @@ Namespace WholeFoods.IRMA.Replenishment.ScalePush.Writers
         Protected Overrides Function ApplyWriterFormatting(ByVal dataContent As String, ByRef currentColumn As POSDataElementBO) As String
             Dim returnStr As String = dataContent
             ' For the ingredients text in the 2nd row of data, VB constants are replaced.
-            If currentColumn.RowOrder = 2 AndAlso currentColumn.DataElement = "Ingredients" Then
+            ' For storage text replace end of line with char(14)
+            If (currentColumn.RowOrder = 2 AndAlso currentColumn.DataElement = "Ingredients") OrElse currentColumn.DataElement = "StorageText" Then
                 returnStr = Replace(dataContent, vbCrLf, Chr(14))
             End If
+
             Return returnStr
         End Function
 
