@@ -745,7 +745,7 @@
     <None Include="Scripts\PopulateData\Release\DeleteBrandPurgeJob.sql" />
     <None Include="Scripts\PopulateData\Release\AddMaintFlagRowToDbStatusTable.sql" />
     <None Include="Scripts\PopulateData\Release\InsertInforOutOfSyncItemUpdateError.sql" />
-    <None Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
+    <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\PopulateData\Release\RetentionPolicyMessageArchiveProductOutOfSync.sql" />
     <None Include="Scripts\PopulateData\Release\PBI21913_Add_HealthyEatingRating_of_None.sql" />
   </ItemGroup>
