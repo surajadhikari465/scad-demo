@@ -259,6 +259,7 @@ AS
 -- 2015-07-07	DN				16250	Define logic for concatenation of Ingredient, Allergen & Extra Text fields
 -- 2015-08-17	KM				VSO 11118	Order the tare columns correctly in the main select statement.
 -- 2015-10-23   MZ              16583 (12203)	Don't send nutrifacts to CAD stores if the alternate jurisdiction nutrifacts don't exist.
+-- 2017-04-13   MZ              23765 (20859)   Move Allergens before Ingredients in the concatenation.
 -- **************************************************************************
 
 BEGIN
@@ -1283,7 +1284,7 @@ BEGIN
 				ISNULL(ISO.ShelfLife_Length, ItemScale.ShelfLife_Length) AS ShelfLife_Length,
 				ISNULL(ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight) AS Scale_FixedWeight,
 				ISNULL(ISO.Scale_ByCount, ItemScale.Scale_ByCount) AS Scale_ByCount,
-				SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients) As Ingredients,
+				SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients) As Ingredients,
 				ScaleUOM.Unit_Abbreviation AS ScaleUnitOfMeasure,
 				ScaleUOM.PlumUnitAbbr,
 				Scale_Grade.Zone1 AS Grade,
@@ -1433,5 +1434,4 @@ BEGIN
 			II.Identifier
 
     RETURN
-
 END

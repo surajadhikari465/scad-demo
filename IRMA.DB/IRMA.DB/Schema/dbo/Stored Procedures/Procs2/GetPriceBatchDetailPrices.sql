@@ -19,6 +19,8 @@
 --									join to ItemUomOverride to grab store-specific overrides for 365 stores.
 -- 2016-04-15	DN		19165		Add PriceBatchDetailID to table PosPushStagingPriceBatchDetail and in the SELECT statement
 -- 2016-10-24	Jamali	PBI18686	Added the @LegacyStoresOnly parameter, to have the ability to get the data for the legacy stores only
+-- 2017-04-13   MZ      23765(20859)Move Allergens before Ingredients in the concatenation. Correct the order of the Ingredients field
+--									Allergens + Ingredients + ExtraText
 --****************************************************************************************************************************************************************************
 
 CREATE PROCEDURE [dbo].[GetPriceBatchDetailPrices]
@@ -1141,7 +1143,7 @@ FROM (
 			ISNULL(ISO.ShelfLife_Length, ItemScale.ShelfLife_Length) AS ShelfLife_Length,
 			COALESCE(IUO.Scale_FixedWeight, ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight) AS Scale_FixedWeight,
 			COALESCE(IUO.Scale_ByCount, ISO.Scale_ByCount, ItemScale.Scale_ByCount) AS Scale_ByCount,
-			SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients) As Ingredients, 				
+			SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients) As Ingredients, 				
 			ScaleUOM.Unit_Abbreviation AS ScaleUnitOfMeasure,
 			ScaleUOM.PlumUnitAbbr,
 			Scale_Grade.Zone1 AS Grade,

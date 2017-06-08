@@ -26,11 +26,22 @@ AS
 -- 07/05/2015	DN				16250	Concatenation of Ingredient, Allergen & Extra Text fields
 -- 07/07/2015	DN				16250	Reorder fields: Ingredients + Allergen + Extra Text
 -- 09/17/2015	KM				11637	Add Item.Retail_Sale to the output;
+-- 2017-04-13   MZ        23765(20859)	Move Allergens before Ingredients in the concatenation. Correct the order of the Ingredients field
+--										Allergens + Ingredients + ExtraText
 -- **************************************************************************
 
 BEGIN  --Begin stored procedure
 
 	SET NOCOUNT ON
+
+	DECLARE @ExtraTextChangeType INT = (SELECT TOP 1 POSChangeTypeKey FROM dbo.POSChangeType WHERE ChangeTypeDesc = 'ExtraText Data')
+
+	IF EXISTS( 
+				SELECT 1 FROM dbo.POSWriterFileConfig 
+				WHERE POSFileWriterkey IN (SELECT POSFileWriterKey FROM  POSWriter WHERE posFileWriterClass = 'EPlum_Writer')
+			    AND POSChangeTypekey = @ExtraTextChangeType
+			 )
+	BEGIN
 
 	DECLARE @error_no int
 	DECLARE @Severity smallint
@@ -143,7 +154,7 @@ BEGIN  --Begin stored procedure
 					THEN SUBSTRING(II.Identifier, 2, 5) 
 					ELSE '0' 
 				END As 'IngredientNumber',
-				ISNULL(ISNULL(SETO.ExtraText, SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(ET.ExtraText, ''))), 1, @MaxWidthForIngredients)),'') as 'Ingredients',
+				ISNULL(ISNULL(SETO.ExtraText, SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(ET.ExtraText, ''))), 1, @MaxWidthForIngredients)),'') as 'Ingredients',
 				II.Identifier as 'ScaleIdentifier',
 				[dbo].[fn_GetScalePLU](II.Identifier, II.NumPluDigitsSentToScale, @PluDigitsSentToScale, 0) as 'ScalePLU',
 				'S' As SmartX_Sequence,
@@ -204,6 +215,7 @@ BEGIN  --Begin stored procedure
 	END
 
 	DROP TABLE #Identifiers
+	END
 END  --End stored procedure
 
 GO
