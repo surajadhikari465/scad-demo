@@ -8,5 +8,7 @@ namespace GlobalEventController.Controller.EventOperations
         void ProcessBrandNameUpdateEvents();
         void ProcessTaxEvents();
         void ProcessBrandDeleteEvents();
+        void ProcessNationalClassAddOrUpdateEvents();
+        void ProcessNationalClassDeleteEvents();
     }
 }

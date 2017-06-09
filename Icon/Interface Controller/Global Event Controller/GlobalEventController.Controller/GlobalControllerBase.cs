@@ -51,6 +51,8 @@ namespace GlobalEventController.Controller
                 this.processor.ProcessBrandNameUpdateEvents();
                 this.processor.ProcessBrandDeleteEvents();
                 this.processor.ProcessTaxEvents();
+                this.processor.ProcessNationalClassAddOrUpdateEvents();
+                this.processor.ProcessNationalClassDeleteEvents();
                 this.bulkNutriFactsProcessor.BulkProcessEvents();
                 this.finalizer.HandleFailedEvents();
                 this.finalizer.DeleteEvents();

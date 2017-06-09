@@ -14,7 +14,6 @@ namespace GlobalEventController.DataAccess.Infrastructure
             { EventConstants.IconToIrmaNewTaxClass, Enums.EventNames.IconToIrmaNewTaxClass.ToString() },
             { EventConstants.IconItemUpdatedEventName, Enums.EventNames.IconToIrmaItemUpdates.ToString() },
             { EventConstants.IconItemValidatedEventName, Enums.EventNames.IconToIrmaItemValidation.ToString() },
-            { EventConstants.IconAlreadyValidatedNewItemRequestEventName, Enums.EventNames.IconToIrmaValidatedNewItems.ToString() },
             { EventConstants.SubTeamUpdate, Enums.EventNames.IconToIrmaSubTeamUpdate.ToString() },
             { EventConstants.ItemSubTeamUpdate, Enums.EventNames.IconToIrmaItemSubTeamUpdates.ToString() },
             { EventConstants.ItemNutritionUpdate, Enums.EventNames.IconToIrmaNutritionUpdate.ToString() },
@@ -31,7 +30,6 @@ namespace GlobalEventController.DataAccess.Infrastructure
             { Enums.EventNames.IconToIrmaNewTaxClass.ToString(), EventConstants.IconToIrmaNewTaxClass },
             { Enums.EventNames.IconToIrmaItemUpdates.ToString(), EventConstants.IconItemUpdatedEventName },
             { Enums.EventNames.IconToIrmaItemValidation.ToString(), EventConstants.IconItemValidatedEventName },
-            { Enums.EventNames.IconToIrmaValidatedNewItems.ToString(), EventConstants.IconAlreadyValidatedNewItemRequestEventName },
             { Enums.EventNames.IconToIrmaSubTeamUpdate.ToString(), EventConstants.SubTeamUpdate },
             { Enums.EventNames.IconToIrmaItemSubTeamUpdates.ToString(), EventConstants.ItemSubTeamUpdate },
             { Enums.EventNames.IconToIrmaNutritionUpdate.ToString(), EventConstants.ItemNutritionUpdate },
@@ -39,7 +37,6 @@ namespace GlobalEventController.DataAccess.Infrastructure
             { Enums.EventNames.IconToIrmaBrandDelete.ToString(), EventConstants.IconToIrmaBrandDelete },
             { Enums.EventNames.IconToIrmaNationalHierarchyUpdate.ToString(), EventConstants.IcontoIrmaNationalHierarchyUpdate },
             { Enums.EventNames.IconToIrmaNationalHierarchyDelete.ToString(), EventConstants.IconToIrmaNationalHierarchyDelete }
-
         };
 
         public static string MapToRegisteredEvent(this string eventName)

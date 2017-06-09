@@ -82,6 +82,38 @@ namespace GlobalEventController.Controller.EventOperations
             EnumerateAndProcessEventRows(brandDeleteQueuedEvents);
         }
 
+        public void ProcessNationalClassAddOrUpdateEvents()
+        {
+            // Filter QueuedEvent list to National Class Events
+            List<EventQueue> nationalClassEvents = this.queues.QueuedEvents
+                .Where(q => q.EventId == EventTypes.NationalClassUpdate)
+                .ToList();
+
+            if (nationalClassEvents.Count == 0)
+            {
+                logger.Info("There are no National Class Update events to process.");
+                return;
+            }
+
+            EnumerateAndProcessEventRows(nationalClassEvents);
+        }
+
+        public void ProcessNationalClassDeleteEvents()
+        {
+            // Filter QueuedEvent list to National Class Events
+            List<EventQueue> nationalClassEvents = this.queues.QueuedEvents
+                .Where(q => q.EventId == EventTypes.NationalClassDelete)
+                .ToList();
+
+            if (nationalClassEvents.Count == 0)
+            {
+                logger.Info("There are no National Class Delete events to process.");
+                return;
+            }
+
+            EnumerateAndProcessEventRows(nationalClassEvents);
+        }
+
         /// <summary>
         /// This is used for processing tax and brand type events which does processing one by one.
         /// This will also process item events if there are any bulk failure for any region.
@@ -157,5 +189,5 @@ namespace GlobalEventController.Controller.EventOperations
 				}
 			}
 		}
-	}
+    }
 }

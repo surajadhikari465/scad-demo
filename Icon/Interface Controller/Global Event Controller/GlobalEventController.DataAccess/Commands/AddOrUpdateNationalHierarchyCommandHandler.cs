@@ -16,25 +16,26 @@ namespace GlobalEventController.DataAccess.Commands
     {
         private readonly IrmaContext irmacontext;
         private ILogger<AddOrUpdateNationalHierarchyCommandHandler> logger;
-        private Boolean isAdding = false;
+        private bool isAdding = false;
 
-        public AddOrUpdateNationalHierarchyCommandHandler(IrmaContext irmacontext,
-                                                          ILogger<AddOrUpdateNationalHierarchyCommandHandler> logger
-                                                         )
+        public AddOrUpdateNationalHierarchyCommandHandler(
+            IrmaContext irmacontext,
+            ILogger<AddOrUpdateNationalHierarchyCommandHandler> logger)
         {
             this.irmacontext = irmacontext;
             this.logger = logger;
         }
 
-        private ValidatedNationalClass getValidatedNationalClassByHierarchyClassId(int iconId)
+        private ValidatedNationalClass GetValidatedNationalClassByHierarchyClassId(int iconId)
         {
             return irmacontext.ValidatedNationalClass.Where(hc => hc.IconId == iconId).FirstOrDefault();
         }
+
         public void Handle(AddOrUpdateNationalHierarchyCommand command)
         {
-            HierarchyClass hierarchyClass = command.hierarchyClass;
-            ValidatedNationalClass validatedNationalClass = getValidatedNationalClassByHierarchyClassId(command.IconId);
-            command.level = hierarchyClass.hierarchyLevel;
+            HierarchyClass hierarchyClass = command.HierarchyClass;
+            ValidatedNationalClass validatedNationalClass = GetValidatedNationalClassByHierarchyClassId(command.IconId);
+            command.Level = hierarchyClass.hierarchyLevel;
             command.ParentId = hierarchyClass.hierarchyParentClassID;
 
             if (validatedNationalClass != null)
@@ -55,6 +56,7 @@ namespace GlobalEventController.DataAccess.Commands
                 AddOrUpdateNatItemClass(command);
             }
         }
+
         private void AddOrUpdateNatItemfamily(AddOrUpdateNationalHierarchyCommand command)
         {
             NatItemFamily natItemFamily;
@@ -75,7 +77,7 @@ namespace GlobalEventController.DataAccess.Commands
                     else
                     {
                         natItemFamily = irmacontext.NatItemFamily.SingleOrDefault(nic => nic.NatFamilyID == command.IrmaId);
-                        natItemFamily.NatFamilyName = getUpdatedNetFamilyName(natItemFamily.NatFamilyName, command.Name, (int)command.level);
+                        natItemFamily.NatFamilyName = GetUpdatedNetFamilyName(natItemFamily.NatFamilyName, command.Name, (int)command.Level);
                         natItemFamily.LastUpdateTimestamp = DateTime.Now;
                     }
 
@@ -95,7 +97,8 @@ namespace GlobalEventController.DataAccess.Commands
                 }
             }
         }
-        private string getUpdatedNetFamilyName(string natFamilyNameFromDb, string newNatFamilyName, int level)
+
+        private string GetUpdatedNetFamilyName(string natFamilyNameFromDb, string newNatFamilyName, int level)
         {
             string updatedNatFamilyName = string.Empty;
             string[] natFamilyNameArray = natFamilyNameFromDb.Split(new char[] { '-' }, 2);
@@ -113,10 +116,11 @@ namespace GlobalEventController.DataAccess.Commands
             }
             return updatedNatFamilyName;
         }
+
         private void AddOrUpdateNatItemCat(AddOrUpdateNationalHierarchyCommand command)
         {
             NatItemCat natItemCat;
-            ValidatedNationalClass validatedNationalClass = getValidatedNationalClassByHierarchyClassId((int)command.ParentId);
+            ValidatedNationalClass validatedNationalClass = GetValidatedNationalClassByHierarchyClassId((int)command.ParentId);
             int parentId;
 
             string errorMessage = String.Format("The parent for National Hierarchy not found in  table {0}:  HierarchyClassId = {1}", "Validated National Class", command.ParentId);
@@ -167,12 +171,13 @@ namespace GlobalEventController.DataAccess.Commands
                 }
             }
         }
+
         private void AddOrUpdateNatItemClass(AddOrUpdateNationalHierarchyCommand command)
         {
             NatItemClass natItemClass;
             int parentId;
 
-            ValidatedNationalClass validatedNationalClass = getValidatedNationalClassByHierarchyClassId((int)command.ParentId);
+            ValidatedNationalClass validatedNationalClass = GetValidatedNationalClassByHierarchyClassId((int)command.ParentId);
             string errorMessage = String.Format("The parent for National Hierarchy not found in  table {0}:  HierarchyClassId = {1}", "Validated National Class", command.ParentId);
 
             if (validatedNationalClass == null || validatedNationalClass.IrmaId == null)
@@ -190,9 +195,9 @@ namespace GlobalEventController.DataAccess.Commands
                     int classId;
                     if (command.IrmaId == null)
                     {
-                        if (command.hierarchyClass.HierarchyClassTrait != null && command.hierarchyClass.HierarchyClassTrait.Count >0)
+                        if (command.HierarchyClass.HierarchyClassTrait != null && command.HierarchyClass.HierarchyClassTrait.Count > 0)
                         {
-                            classId = Convert.ToInt32(command.hierarchyClass.HierarchyClassTrait.ToList().Single(hct => hct.traitID == Traits.NationalClassCode).traitValue);
+                            classId = Convert.ToInt32(command.HierarchyClass.HierarchyClassTrait.ToList().Single(hct => hct.traitID == Traits.NationalClassCode).traitValue);
                         }
                         else
                         {
@@ -232,13 +237,15 @@ namespace GlobalEventController.DataAccess.Commands
                 }
             }
         }
+
         private void AddValidatedNationalClass(AddOrUpdateNationalHierarchyCommand command)
         {
             ValidatedNationalClass validatedNationalClass = new ValidatedNationalClass()
             {
                 IrmaId = command.IrmaId,
                 IconId = command.IconId,
-                InsertDate = System.DateTime.Now
+                Level = command.Level,
+                InsertDate = DateTime.Now
             };
 
             irmacontext.ValidatedNationalClass.Add(validatedNationalClass);

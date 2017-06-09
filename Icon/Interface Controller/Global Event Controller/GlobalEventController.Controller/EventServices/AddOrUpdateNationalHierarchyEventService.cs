@@ -44,9 +44,9 @@ namespace GlobalEventController.Controller.EventServices
             HierarchyClass hierarchyClass = getHierarchyClassQueryHandler.Handle(getHierarchyClass);
 
             AddOrUpdateNationalHierarchyCommand addOrUpdateNationalHierarchy = new AddOrUpdateNationalHierarchyCommand();
-            addOrUpdateNationalHierarchy.hierarchyClass = hierarchyClass;
+            addOrUpdateNationalHierarchy.HierarchyClass = hierarchyClass;
             addOrUpdateNationalHierarchy.IconId = (int)ReferenceId;
-            addOrUpdateNationalHierarchy.Name =Message;
+            addOrUpdateNationalHierarchy.Name = Message;
             addOrUpdateNationalHierarchyHandler.Handle(addOrUpdateNationalHierarchy);
         }
     }

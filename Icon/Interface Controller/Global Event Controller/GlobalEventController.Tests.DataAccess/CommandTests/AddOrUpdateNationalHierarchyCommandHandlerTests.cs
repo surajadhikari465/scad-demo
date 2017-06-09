@@ -24,6 +24,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         private AddOrUpdateNationalHierarchyCommandHandler handler;
         private Mock<ILogger<AddOrUpdateNationalHierarchyCommandHandler>> mockLogger;
         private Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>> mockGetHierarchyClassQuery;
+
         [TestInitialize]
         public void InitializeData()
         {
@@ -52,7 +53,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             mockGetHierarchyClassQuery.Setup(mgs => mgs.Handle(It.IsAny<GetHierarchyClassQuery>())).Returns(hierarchyClass);
             this.command.IconId = hierarchyClass.hierarchyClassID;
             this.command.Name = hierarchyClass.hierarchyClassName;
-            this.command.hierarchyClass = hierarchyClass;
+            this.command.HierarchyClass = hierarchyClass;
 
             // When
             using (TransactionScope scope = new TransactionScope())
@@ -87,7 +88,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             mockGetHierarchyClassQuery.Setup(mgs => mgs.Handle(It.IsAny<GetHierarchyClassQuery>())).Returns(hierarchyClass);
             this.command.IconId = hierarchyClass.hierarchyClassID;
             this.command.Name = hierarchyClass.hierarchyClassName;
-            this.command.hierarchyClass = hierarchyClass;
+            this.command.HierarchyClass = hierarchyClass;
 
             // When
             using (TransactionScope scope = new TransactionScope())
@@ -109,7 +110,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             var hierarchyClass = iconContext.HierarchyClass.Where(x => x.hierarchyID == 6 && x.hierarchyLevel == HierarchyLevels.NationalClass).FirstOrDefault();
             this.command.Name = "test Hierarchy1";
             this.command.IconId = hierarchyClass.hierarchyClassID;
-            this.command.hierarchyClass = hierarchyClass;
+            this.command.HierarchyClass = hierarchyClass;
             mockGetHierarchyClassQuery.Setup(mgs => mgs.Handle(It.IsAny<GetHierarchyClassQuery>())).Returns(hierarchyClass);
             using (TransactionScope scope = new TransactionScope())
             {
@@ -131,7 +132,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             var hierarchyClass = iconContext.HierarchyClass.Where(x => x.hierarchyID == 6 && x.hierarchyLevel == HierarchyLevels.NationalCategory).FirstOrDefault();
             this.command.Name = "test Hierarchy1";
             this.command.IconId = hierarchyClass.hierarchyClassID;
-            this.command.hierarchyClass = hierarchyClass;
+            this.command.HierarchyClass = hierarchyClass;
             mockGetHierarchyClassQuery.Setup(mgs => mgs.Handle(It.IsAny<GetHierarchyClassQuery>())).Returns(hierarchyClass);
             using (TransactionScope scope = new TransactionScope())
             {

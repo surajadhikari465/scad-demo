@@ -11,9 +11,9 @@ namespace GlobalEventController.DataAccess.Commands
     {
         public int IconId { get; set; }
         public string Name { get; set; }
-        public int? level { get; set; }
+        public int? Level { get; set; }
         public int? ParentId { get; set; }
         public int? IrmaId { get; set; }
-        public HierarchyClass hierarchyClass { get; set; }
+        public HierarchyClass HierarchyClass { get; set; }
     }
 }

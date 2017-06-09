@@ -11,15 +11,13 @@ namespace InterfaceController.Common
             IconToIrmaBrandNameUpdate = 4,
             IconToIrmaTaxClassUpdate = 5,
             IconToIrmaNewTaxClass = 6,
-            IrmaToIconPush = 7,
-            IconToIrmaValidatedNewItems = 8,
-            IconToIrmaSubTeamUpdate = 9,
-            IconToIrmaItemSubTeamUpdates = 10,
-            IconToIrmaNutritionUpdate = 11,
-            IconToIrmaNutritionAdd = 12,
-            IconToIrmaBrandDelete = 13,
-            IconToIrmaNationalHierarchyUpdate = 14,
-            IconToIrmaNationalHierarchyDelete = 15,
+            IconToIrmaSubTeamUpdate = 7,
+            IconToIrmaItemSubTeamUpdates = 8,
+            IconToIrmaNutritionUpdate = 9,
+            IconToIrmaNutritionAdd = 10,
+            IconToIrmaBrandDelete = 11,
+            IconToIrmaNationalHierarchyUpdate = 12,
+            IconToIrmaNationalHierarchyDelete = 13,
         }
 
         public enum IrmaRegion
