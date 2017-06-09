@@ -42,7 +42,7 @@ create table #irmaView
 )
 
 bulk insert #iconNationalClasses
-from '\\irmadevfile\Data\Icon\iconnationalclasses_5.txt'
+from '\\irmadevfile\Data\Icon\iconnationalclasses.txt'
 with 
 (
 	FIRSTROW = 2,

@@ -3218,6 +3218,8 @@
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI20862 - PostDeploy Schema PopData - Add Infor ItemID to IRMA.rollback.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21732 - PostDeploy Schema PopData - Add Storage Number and Storage Text POSDataElement.sql" />
     <None Include="IRMA.DB.publish.xml" />
+    <None Include="Scripts\16278-NationalHierarchyScripts\GetNationalClassesFromIconForBulkImport.sql" />
+    <None Include="Scripts\16278-NationalHierarchyScripts\DeleteTempTables_7.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

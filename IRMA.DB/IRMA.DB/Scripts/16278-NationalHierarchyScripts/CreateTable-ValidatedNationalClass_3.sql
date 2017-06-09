@@ -13,5 +13,4 @@ CREATE TABLE ValidatedNationalClass
 ALTER TABLE [dbo].[ValidatedNationalClass] ADD CONSTRAINT [ValidatedNationalClass_PK] PRIMARY KEY CLUSTERED ([ValidatedNationalClassId]) WITH (FILLFACTOR = 80)
 
 -- add security script..icon user and irma user.
-
 grant SELECT, DELETE, UPDATE, INSERT on dbo.ValidatedNationalClass to IRMAClientRole, IConInterface

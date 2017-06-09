@@ -22,8 +22,6 @@ CREATE TABLE [dbo].[NatItemCatBackUp](
 
 GO
 
-
-
 CREATE TABLE [dbo].[NatItemClassBackUp](
 	[ClassID] [int] NOT NULL,
 	[ClassName] [varchar](65) NULL,

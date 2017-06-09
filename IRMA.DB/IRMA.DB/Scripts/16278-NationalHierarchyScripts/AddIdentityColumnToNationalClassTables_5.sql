@@ -7,7 +7,6 @@ SELECT * INTO #tmpNatITemClass FROM NatItemClass
 --SELECT * INTO NatItemfamilyBackUp FROM NatItemfamily
 --SELECT * INTO NatItemClassBackUp FROM NatItemClass
 
-
 -- disable all constraints
 ALTER TABLE NatItemCat NOCHECK CONSTRAINT ALL
 ALTER TABLE NatItemfamily NOCHECK CONSTRAINT ALL
@@ -84,7 +83,6 @@ DROP COLUMN LastUpdateTimestamp
 ALTER TABLE NatItemfamily
 ADD LastUpdateTimestamp datetime NULL
 
-
 Set Identity_insert NatItemCat ON
 INSERT INTO [dbo].[NatItemCat]
            (NatCatID,
@@ -128,13 +126,11 @@ ALTER TABLE [dbo].[NatItemFamily] ADD  CONSTRAINT [PK_NatItemFamily] PRIMARY KEY
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
 
-
 ALTER TABLE [dbo].[NatItemFamily] Enable Change_tracking;
 ALTER TABLE [dbo].[NatItemClass] Enable Change_tracking;
 ALTER TABLE [dbo].[NatItemCat] Enable Change_tracking;
 
 --Update Item
-
 
 DROP TABLE #tmpNatITemCat
 DROP TABLE #tmpNatITemFamily
