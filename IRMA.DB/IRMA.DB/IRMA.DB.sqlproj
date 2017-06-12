@@ -3215,6 +3215,8 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorCostHistory.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorDealHistory.sql" />
     <None Include="SQL Agent Job\ItemCatalog - VendorCostDealHistory Purge.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21974 - PostDeploy Schema PopData - AddInstanceDataFlag - TagUom - ChiBaby.rollback.sql" />
+    <Build Include="Schema\dbo\Functions\fn_GetInstanceDataFlagStoreValues.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
@@ -3224,6 +3226,7 @@
     <None Include="IRMA.DB.publish.xml" />
     <None Include="Scripts\16278-NationalHierarchyScripts\GetNationalClassesFromIconForBulkImport.sql" />
     <None Include="Scripts\16278-NationalHierarchyScripts\DeleteTempTables_7.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21974 - PostDeploy Schema PopData - AddInstanceDataFlag - TagUom - ChiBaby.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

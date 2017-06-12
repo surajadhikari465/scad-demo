@@ -43,6 +43,7 @@ CREATE TRIGGER [dbo].[ItemSignAttributeUpdate]
 	ON [dbo].[ItemSignAttribute] FOR UPDATE
 AS
 BEGIN
+
 	INSERT INTO PriceBatchDetail
 	(
 		Store_No,
@@ -51,30 +52,38 @@ BEGIN
 		InsertApplication
 	)
 	SELECT 
-		s.Store_No,
-		INSERTED.Item_Key,
+		si.Store_No,
+		inserted.Item_Key,
 		2,
 		'ItemSignAttributeUpdate'
 	FROM   
-		INSERTED
-		INNER JOIN DELETED ON DELETED.Item_Key = INSERTED.Item_Key
-		INNER JOIN Item (NOLOCK) i ON INSERTED.Item_Key = i.Item_Key
-		CROSS JOIN (SELECT Store_No FROM Store (NOLOCK) WHERE WFM_Store = 1 OR Mega_Store = 1) s
+		inserted
+		INNER JOIN deleted ON deleted.Item_Key = inserted.Item_Key
+		INNER JOIN Item (NOLOCK) i ON inserted.Item_Key = i.Item_Key
+		INNER JOIN StoreItem (NOLOCK) si ON i.Item_Key = si.Item_Key
+		LEFT JOIN fn_GetInstanceDataFlagStoreValues ('BatchTagUomChanges') tag on si.Store_No = tag.Store_No
+		LEFT JOIN fn_GetInstanceDataFlagStoreValues ('BatchChicagoBabyChanges') chi on si.Store_No = chi.Store_No
 	WHERE  
-		(i.Remove_Item = 0 AND i.Deleted_Item = 0)
-
+		(i.Remove_Item = 0 AND i.deleted_Item = 0)
+		AND (si.Authorized = 1)
 		AND (
-				((INSERTED.CheeseRaw = 1 AND DELETED.CheeseRaw = 0) OR (INSERTED.CheeseRaw = 0 AND DELETED.CheeseRaw = 1) OR (INSERTED.CheeseRaw = 1 AND DELETED.CheeseRaw IS NULL) OR (INSERTED.GlutenFree IS NULL AND DELETED.GlutenFree = 1))
-				OR ((INSERTED.GlutenFree = 1 AND DELETED.GlutenFree = 0) OR (INSERTED.GlutenFree = 0 AND DELETED.GlutenFree = 1) OR (INSERTED.GlutenFree = 1 AND DELETED.GlutenFree IS NULL) OR (INSERTED.GlutenFree IS NULL AND DELETED.GlutenFree = 1))
-				OR INSERTED.UomRegulationChicagoBaby <> DELETED.UomRegulationChicagoBaby
-				OR INSERTED.UomRegulationTagUom <> DELETED.UomRegulationTagUom
+				((inserted.GlutenFree = 1 AND deleted.GlutenFree = 0)
+					OR (inserted.GlutenFree = 0 AND deleted.GlutenFree = 1)
+					OR (inserted.GlutenFree = 1 AND deleted.GlutenFree IS NULL)
+					OR (inserted.GlutenFree IS NULL AND deleted.GlutenFree = 1))
+				OR (((inserted.UomRegulationChicagoBaby <> deleted.UomRegulationChicagoBaby)
+					OR (inserted.UomRegulationChicagoBaby IS NOT NULL AND deleted.UomRegulationChicagoBaby IS NULL)
+					OR (inserted.UomRegulationChicagoBaby IS NULL AND deleted.UomRegulationChicagoBaby IS NOT NULL))
+					AND chi.FlagValue = 1)
+				OR (((inserted.UomRegulationTagUom <> deleted.UomRegulationTagUom)
+					OR (inserted.UomRegulationTagUom IS NOT NULL AND deleted.UomRegulationTagUom IS NULL)
+					OR (inserted.UomRegulationTagUom IS NULL AND deleted.UomRegulationTagUom IS NOT NULL))
+					AND tag.FlagValue = 1)
 			)
-
 		AND (
-				dbo.fn_HasPendingItemChangePriceBatchDetailRecord(INSERTED.Item_Key, s.Store_No) = 0
+				dbo.fn_HasPendingItemChangePriceBatchDetailRecord(inserted.Item_Key, si.Store_No) = 0
 			)
 END
-
 GO
 
 CREATE TRIGGER [dbo].[ItemSignAttributeInsert]
@@ -89,26 +98,26 @@ BEGIN
 		InsertApplication
 	)
 	SELECT 
-		s.Store_No,
-		INSERTED.Item_Key,
+		si.Store_No,
+		inserted.Item_Key,
 		2,
 		'ItemSignAttributeInsert'
 	FROM   
-		INSERTED
-		INNER JOIN Item (NOLOCK) i ON INSERTED.Item_Key = i.Item_Key
-		CROSS JOIN (SELECT Store_No FROM Store (NOLOCK) WHERE WFM_Store = 1 OR Mega_Store = 1) s
+		inserted
+		INNER JOIN Item (NOLOCK) i ON inserted.Item_Key = i.Item_Key
+		INNER JOIN StoreItem (NOLOCK) si ON i.Item_Key = si.Item_Key
+		LEFT JOIN fn_GetInstanceDataFlagStoreValues ('BatchTagUomChanges') tag on si.Store_No = tag.Store_No
+		LEFT JOIN fn_GetInstanceDataFlagStoreValues ('BatchChicagoBabyChanges') chi on si.Store_No = chi.Store_No
 	WHERE  
-		(i.Remove_Item = 0 AND i.Deleted_Item = 0)
-
+		(i.Remove_Item = 0 AND i.deleted_Item = 0)
+		AND (si.Authorized = 1)
 		AND (
-				INSERTED.CheeseRaw = 1
-				OR INSERTED.GlutenFree = 1
-				OR INSERTED.UomRegulationChicagoBaby IS NOT NULL
-				OR INSERTED.UomRegulationTagUom IS NOT NULL
+				inserted.GlutenFree = 1
+				OR (inserted.UomRegulationChicagoBaby IS NOT NULL AND chi.FlagValue = 1)
+				OR (inserted.UomRegulationTagUom IS NOT NULL AND tag.FlagValue = 1)
 			)
-
 		AND (
-				dbo.fn_HasPendingItemChangePriceBatchDetailRecord(INSERTED.Item_Key, s.Store_No) = 0
+				dbo.fn_HasPendingItemChangePriceBatchDetailRecord(inserted.Item_Key, si.Store_No) = 0
 			)
 END
 
