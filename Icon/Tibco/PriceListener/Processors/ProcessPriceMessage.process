@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
+    <pd:name>Processors/ProcessPriceMessage.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="message" type="xsd:string"/>
+                    <xsd:element name="SequenceFamilyID" type="xsd:string"/>
+                    <xsd:element name="SequenceNumber" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>59</pd:startX>
+    <pd:startY>157</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1137</pd:endX>
+    <pd:endY>168</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1495053255704</pd:targetNamespace>
+    <pd:activity name="GetRegion">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>193</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <processName>/Processors/GetRegionQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:items/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML Price Message">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>140</pd:x>
+        <pd:y>283</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="ns:items"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Start/root/message"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="MessageTran">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>282</pd:x>
+        <pd:y>16</pd:y>
+        <pd:width>674</pd:width>
+        <pd:height>509</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>IteratePrices</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>IteratePrices</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="IteratePrices">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>356</pd:x>
+            <pd:y>75</pd:y>
+            <pd:width>515</pd:width>
+            <pd:height>385</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$Parse-XML-Price-Message/ns:items/ns:item/ns:locale/pfx2:storeItemAttributes/pfx:prices/pfx4:price</pd:over>
+                <pd:iterationElementSlot>price</pd:iterationElementSlot>
+                <pd:indexSlot>priceIndex</pd:indexSlot>
+                <pd:activityOutputName/>
+                <pd:accumulateOutput>false</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>AddPrice</pd:to>
+                <pd:xpathDescription>Add Action</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$price/pfx4:price/@pfx3:Action = "Add"</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>AddPrice</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="AddPrice">
+                <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+                <pd:x>615</pd:x>
+                <pd:y>197</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+                    <ProcedureName>AddPrice;1</ProcedureName>
+                    <parameterTypes>
+                        <parameter>
+                            <colName>@RETURN_VALUE</colName>
+                            <colType>5</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@Region</colName>
+                            <colType>1</colType>
+                            <dataType>-9</dataType>
+                            <typeName>nvarchar</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@GpmID</colName>
+                            <colType>1</colType>
+                            <dataType>1</dataType>
+                            <typeName>uniqueidentifier</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@ItemID</colName>
+                            <colType>1</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@BusinessUnitID</colName>
+                            <colType>1</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@Price</colName>
+                            <colType>1</colType>
+                            <dataType>3</dataType>
+                            <typeName>decimal</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@StartDate</colName>
+                            <colType>1</colType>
+                            <dataType>93</dataType>
+                            <typeName>datetime2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@EndDate</colName>
+                            <colType>1</colType>
+                            <dataType>93</dataType>
+                            <typeName>datetime2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@PriceType</colName>
+                            <colType>1</colType>
+                            <dataType>-9</dataType>
+                            <typeName>nvarchar</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@PriceTypeAttribute</colName>
+                            <colType>1</colType>
+                            <dataType>-9</dataType>
+                            <typeName>nvarchar</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@SellableUOM</colName>
+                            <colType>1</colType>
+                            <dataType>-9</dataType>
+                            <typeName>nvarchar</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@CurrencyCode</colName>
+                            <colType>1</colType>
+                            <dataType>-9</dataType>
+                            <typeName>nvarchar</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@Multiple</colName>
+                            <colType>1</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                    </parameterTypes>
+                </config>
+                <pd:inputBindings>
+                    <inputs>
+                        <inputSet>
+                            <Region>
+                                <xsl:value-of select="$GetRegion/Locale/Region"/>
+                            </Region>
+                            <GpmID>
+                                <xsl:choose>
+                                    <xsl:when test="exists($price/pfx4:price/pfx4:gpmId)">
+                                        <xsl:value-of select="$price/pfx4:price/pfx4:gpmId"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </GpmID>
+                            <ItemID>
+                                <xsl:value-of select="$Parse-XML-Price-Message/ns:items/ns:item[1]/ns:id"/>
+                            </ItemID>
+                            <BusinessUnitID>
+                                <xsl:value-of select="$GetRegion/Locale/BusinessUnitId"/>
+                            </BusinessUnitID>
+                            <Price>
+                                <xsl:choose>
+                                    <xsl:when test="exists($price/pfx4:price/pfx4:priceAmount/ns1:amount)">
+                                        <xsl:value-of select="$price/pfx4:price/pfx4:priceAmount/ns1:amount"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </Price>
+                            <StartDate>
+                                <xsl:choose>
+                                    <xsl:when test="exists($price/pfx4:price/pfx4:priceStartDate)">
+                                        <xsl:value-of select="$price/pfx4:price/pfx4:priceStartDate"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </StartDate>
+                            <EndDate>
+                                <xsl:choose>
+                                    <xsl:when test="exists($price/pfx4:price/pfx4:priceEndDate)">
+                                        <xsl:value-of select="$price/pfx4:price/pfx4:priceEndDate"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </EndDate>
+                            <PriceType>
+                                <xsl:choose>
+                                    <xsl:when test="exists($price/pfx4:price/pfx4:type/ns2:id)">
+                                        <xsl:value-of select="$price/pfx4:price/pfx4:type/ns2:id"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </PriceType>
+                            <PriceTypeAttribute>
+                                <xsl:choose>
+                                    <xsl:when test="exists($price/pfx4:price/pfx4:type/ns2:type/ns2:id)">
+                                        <xsl:value-of select="$price/pfx4:price/pfx4:type/ns2:type/ns2:id"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </PriceTypeAttribute>
+                            <SellableUOM>
+                                <xsl:choose>
+                                    <xsl:when test="exists($price/pfx4:price/pfx4:uom/ns3:code)">
+                                        <xsl:value-of select="$price/pfx4:price/pfx4:uom/ns3:code"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </SellableUOM>
+                            <CurrencyCode>
+                                <xsl:value-of select="$price/pfx4:price/pfx4:currencyTypeCode"/>
+                            </CurrencyCode>
+                            <Multiple>
+                                <xsl:value-of select="$price/pfx4:price/pfx4:priceMultiple"/>
+                            </Multiple>
+                        </inputSet>
+                    </inputs>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse XML Price Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML Price Message</pd:from>
+        <pd:to>GetRegion</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetRegion</pd:from>
+        <pd:to>MessageTran</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MessageTran</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

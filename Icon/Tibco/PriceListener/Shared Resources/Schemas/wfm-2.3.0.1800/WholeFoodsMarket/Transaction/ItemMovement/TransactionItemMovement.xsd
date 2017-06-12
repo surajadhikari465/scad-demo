@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Satya (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://services.wfm.com/Enterprise/TransactionMgmt/ItemMovement/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:imf="http://schemas.wfm.com/Enterprise/TransactionMgmt/ItemMovement/CommonRefTypes/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pty="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://services.wfm.com/Enterprise/TransactionMgmt/ItemMovement/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/ItemMovement/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" schemaLocation="../../Locale/Locale.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../../Party/Party.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="itemMovementTransaction" type="ItemMovementTransactionType"/>
+	<xs:complexType name="ItemMovementTransactionType">
+		<xs:sequence>
+			<xs:element name="transactionNumber" type="crf:WfmStrType"/>
+			<xs:element name="sequenceNumber" type="crf:SequenceNumberType" />
+			<xs:element name="retailTransaction" type="imf:RetailTransactionType"/>
+			<xs:element name="locale" type="lcl:LocaleType"/>
+			<xs:element name="party" type="pty:PartyType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

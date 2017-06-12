@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/DemographicMgmt/Demographic/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:drf="http://schemas.wfm.com/Enterprise/DemographicMgmt/CommonRefTypes/V1" xmlns:dgr="http://schemas.wfm.com/Enterprise/DemographicMgmt/DemographicGroup/V1" xmlns:drt="http://schemas.wfm.com/Enterprise/DemographicMgmt/DemographicType/V1" targetNamespace="http://schemas.wfm.com/Enterprise/DemographicMgmt/Demographic/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/DemographicMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/DemographicMgmt/DemographicGroup/V1" schemaLocation="DemographicGroup.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/DemographicMgmt/DemographicType/V1" schemaLocation="DemographicType.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="demographic" type="DemographicType"/>
+	<xs:element name="demographics" type="DemographicsType"/>
+	<xs:complexType name="DemographicType">
+		<xs:sequence>
+			<xs:element name="id" type="crf:DemographicIdType" minOccurs="0"/>
+			<xs:element name="code" type="drf:DemographicCodeType"/>
+			<xs:element name="group" type="dgr:DemographicGroupType" minOccurs="0"/>
+			<xs:element name="type" type="drt:DemographicTypeType"/>
+		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
+	</xs:complexType>
+	<xs:complexType name="DemographicsType">
+		<xs:sequence>
+			<xs:element name="demographic" type="DemographicType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

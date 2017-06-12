@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (x64) (http://www.altova.com) by Arun Purushothaman (WFM) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/OrganizationMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/OrganizationMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="OrgDescType">
+		<xs:annotation>
+			<xs:documentation>
+				</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="ParentOrgPartyIDType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="OrgTypeDesc">
+		<xs:annotation>
+			<xs:documentation>retailer, suppliers, manufacturer, families, non-profit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="OrgNameType">
+		<xs:annotation>
+			<xs:documentation>WFM, Whole Planet Foundation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="OrgNameDescType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="NameTypeDescType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="TraitValueType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!--  Complex Types              -->
+	<!-- ================== -->
+	<xs:complexType name="ParentOrgPartyType">
+		<xs:simpleContent>
+			<xs:extension base="ParentOrgPartyIDType">
+				<xs:attribute ref="crf:Action"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:schema>

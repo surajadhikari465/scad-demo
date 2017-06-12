@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceDescriptionType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:imf="http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1" xmlns:ilk="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceLink/V1" xmlns:ttx="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TransactionTax/V1" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" targetNamespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceDescriptionType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceLink/V1" schemaLocation="InvoiceLink.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../Party/Party.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TransactionTax/V1" schemaLocation="../Tax/TransactionTax.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="invoiceDescription" type="InvoiceDescriptionType"/>
+	<xs:complexType name="InvoiceDescriptionType">
+		<xs:sequence>
+			<xs:element name="invoiceDescription" type="crf:DescriptionType"/>
+			<xs:element name="freightTermTypeCode" type="imf:FreightTermTypeCodeType"/>
+			<xs:element name="party" type="prf:PartyType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="poNumber" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="workOrderNumber" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="imagePath" type="crf:WfmStrType" minOccurs="1"/>
+			<xs:element name="dateOfService" type="crf:WfmDateType" minOccurs="1"/>
+			<xs:element name="remiDefaultGL" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="paymentTermTypeCode" type="imf:PaymentTermTypeCodeType" minOccurs="0"/>
+			<xs:element name="invoiceRelationship" type="ilk:InvoiceLinkType" minOccurs="0"/>
+			<xs:element name="tax" type="ttx:TransactionTaxType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

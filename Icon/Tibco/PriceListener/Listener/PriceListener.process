@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
+    <pd:name>Listener/PriceListener.process</pd:name>
+    <pd:startName>PriceMessageReceiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="PriceMessageReceiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>98</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%ESBConnectionSettings/EsbPriceQueueName%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Connections/ESB Price Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Shared Resources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>796</pd:endX>
+    <pd:endY>78</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1495053049862</pd:targetNamespace>
+    <pd:activity name="ProcessPriceMessage">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>543</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <processName>/Processors/ProcessPriceMessage.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <message>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/Body"/>
+                </message>
+                <SequenceFamilyID>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceFamilyID"/>
+                </SequenceFamilyID>
+                <SequenceNumber>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceNumber"/>
+                </SequenceNumber>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Sequence Validation">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>307</pd:x>
+        <pd:y>85</pd:y>
+        <config>
+            <processName>/Processors/ValidateMessageSequence.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CurrentSequenceNumber>
+                    <xsl:value-of select="string($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceNumber)"/>
+                </CurrentSequenceNumber>
+                <SequenceFamilyId>
+                    <xsl:value-of select="string($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceFamilyID)"/>
+                </SequenceFamilyId>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>PriceMessageReceiver</pd:from>
+        <pd:to>Call Sequence Validation</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ProcessPriceMessage</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Sequence Validation</pd:from>
+        <pd:to>ProcessPriceMessage</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
