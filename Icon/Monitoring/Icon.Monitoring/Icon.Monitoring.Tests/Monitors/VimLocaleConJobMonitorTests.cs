@@ -67,7 +67,7 @@ namespace Icon.Monitoring.Tests.Monitors
         }
 
         [TestMethod]
-        public void TimedCheckStatusAndNotify_VimLocaleConServiceNotRunning()
+        public void TimedCheckStatusAndNotify_VimLocaleConServiceNotRunning_ShouldSendPagerDutyAlert()
         {
             //Given -- set last log date to be 2 hours before the current time
             SetUpSettingsValue(true, 10, -2);
