@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[Replenishment_POSPush_PopulateIconPOSPushPublish]
+﻿CREATE PROCEDURE [dbo].[Replenishment_POSPush_PopulateIconPOSPushPublish]
 	@ApplyChanges INT = 0
 AS
 BEGIN
@@ -354,50 +353,53 @@ BEGIN TRY
 	--END CODE FOR ItemLocaleAttributeChange
 	
 	--BEGIN CODE FOR ScanCodeDelete
-	--This section of the code deletes the data from the item identifier table
-	--the data that is deleted from the item identifiers table comes from the non-batch data
-	--and is for identifiers where the Default_Identifier is false
-	if EXISTS (
-				select ii.Identifier
-				FROM ItemIdentifier  ii  
-				INNER JOIN IconPOSPushStaging stg on ii.Identifier = stg.Identifier
-				WHERE Remove_Identifier = 1 AND Default_Identifier = 0
-					AND stg.ChangeType = @ScanCodeDelete
-					AND stg.PriceBatchHeaderId = 0
-		)
+	IF EXISTS (SELECT 1 FROM #StagingChangeTypes WHERE ChangeType = @ScanCodeDelete)
 	BEGIN
-		DELETE 
-		FROM ValidatedScanCode
-		WHERE ScanCode = @ScanCodeDelete
+
+		--BEGIN CODE FOR ScanCodeDelete (non-batchable)
+		--This section of the code deletes the data from the item identifier table
+		--the data that is deleted from the item identifiers table comes from the non-batch data
+		--and is for identifiers where the Default_Identifier is false
+		SELECT
+			ii.Identifier AS Identifier,
+			ii.Identifier_ID AS Identifier_ID
+		INTO #NonBatchableIdentifierDeletes
+		FROM IconPOSPushStaging s
+		INNER JOIN ItemIdentifier ii on s.Identifier = ii.Identifier
+		WHERE ii.Remove_Identifier = 1
+			AND ii.Default_Identifier = 0
+			AND s.PriceBatchHeaderId = 0
+		
+		DELETE vsc
+		FROM ValidatedScanCode vsc
+		INNER JOIN #NonBatchableIdentifierDeletes d on vsc.ScanCode = d.Identifier
 
 		DELETE ii 
 		FROM ItemIdentifier  ii  
-		INNER JOIN IconPOSPushStaging stg on ii.Identifier = stg.Identifier
-		WHERE Remove_Identifier = 1 AND Default_Identifier = 0
-			AND stg.ChangeType = @ScanCodeDelete
-			AND stg.PriceBatchHeaderId = 0	
-	END
-	--END CODE FOR SCAN CODE DELETE
-
-	--BEGIN CODE FOR ScanCodeDelete
-	--this section of the code deals with the items that have been deleted
-	--The item delete can happen only for the batchable data	
-	DECLARE @ScanCodeDeleteTable BatchIdsType 
+		INNER JOIN #NonBatchableIdentifierDeletes d on ii.Identifier_ID = d.Identifier_ID
 	
-	INSERT INTO @ScanCodeDeleteTable
-	SELECT DISTINCT PriceBatchHeaderID, 0 AS BatchId
-	FROM IconPOSPushStaging s
-	INNER JOIN Item  i  ON s.Item_Key = i.Item_Key
-	INNER JOIN ItemIdentifier  ii  ON ii.Item_Key = s.Item_Key
-	WHERE  s.ChangeType = @ScanCodeDelete
-		AND  i.Remove_Item = 1
-		AND s.PriceBatchHeaderId > 0
+		--END CODE FOR SCAN CODE DELETE (non-batchable)
 
-	IF EXISTS (SELECT 1 FROM @ScanCodeDeleteTable)
-	BEGIN
-		EXEC dbo.Replenishment_POSPush_UpdatePriceBatchProcessedDel @PriceBatchHeaderIds = @ScanCodeDeleteTable
-	END
+		--BEGIN CODE FOR ScanCodeDelete (batchable)
+		--this section of the code deals with the items that have been deleted
+		--The item delete can happen only for the batchable data	
+		DECLARE @ScanCodeDeleteTable BatchIdsType 
 	
+		INSERT INTO @ScanCodeDeleteTable
+		SELECT DISTINCT PriceBatchHeaderID, 0 AS BatchId
+		FROM IconPOSPushStaging s
+		INNER JOIN Item  i  ON s.Item_Key = i.Item_Key
+		INNER JOIN ItemIdentifier  ii  ON ii.Item_Key = s.Item_Key
+		WHERE  s.ChangeType = @ScanCodeDelete
+			AND  i.Remove_Item = 1
+			AND s.PriceBatchHeaderId > 0
+
+		IF EXISTS (SELECT 1 FROM @ScanCodeDeleteTable)
+		BEGIN
+			EXEC dbo.Replenishment_POSPush_UpdatePriceBatchProcessedDel @PriceBatchHeaderIds = @ScanCodeDeleteTable
+		END
+		--END CODE FOR ScanCodeDelete (batchable)
+	END
 	--END CODE FOR ScanCodedelete
 
 	--BEGIN CODE FOR processing RegularPriceChange, NonRegularPriceChange, CancelAllSales change types.					
