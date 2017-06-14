@@ -16,7 +16,7 @@ BEGIN TRANSACTION;
 	DROP TABLE ValidatedNationalClass
 
 	EXEC sp_rename 'NatItemCatBackUp', 'NatItemCat'
-	EXEC sp_rename 'NatItemfamilyBackUp', 'NatItemfamily'
+	EXEC sp_rename 'NatItemFamilyBackUp', 'NatItemFamily'
 	EXEC sp_rename 'NatItemClassBackUp', 'NatItemClass'
 
 	EXEC sp_rename 'PK_NatItemCatBackUp', 'PK_NatItemCat'

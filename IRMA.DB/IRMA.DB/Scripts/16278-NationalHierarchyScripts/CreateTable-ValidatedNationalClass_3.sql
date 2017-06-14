@@ -14,3 +14,6 @@ ALTER TABLE [dbo].[ValidatedNationalClass] ADD CONSTRAINT [ValidatedNationalClas
 
 -- add security script..icon user and irma user.
 grant SELECT, DELETE, UPDATE, INSERT on dbo.ValidatedNationalClass to IRMAClientRole, IConInterface
+grant SELECT, DELETE, UPDATE, INSERT on dbo.NatItemFamily to IRMAClientRole, IConInterface
+grant SELECT, DELETE, UPDATE, INSERT on dbo.NatItemClass to IRMAClientRole, IConInterface
+grant SELECT, DELETE, UPDATE, INSERT on dbo.NatItemCat to IRMAClientRole, IConInterface
