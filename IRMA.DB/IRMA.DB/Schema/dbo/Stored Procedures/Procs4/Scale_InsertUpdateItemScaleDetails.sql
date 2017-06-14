@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[Scale_InsertUpdateItemScaleDetails]
+﻿CREATE PROCEDURE [dbo].[Scale_InsertUpdateItemScaleDetails]
 	@ItemScale_ID int,
 	@Item_Key int,
 	@Nutrifact_ID int,
@@ -59,7 +58,7 @@ BEGIN
 			SET 
 				Nutrifact_ID = @Nutrifact_ID,
 				Scale_ExtraText_ID = @Scale_ExtraText_ID,
-				Scale_StorageData_ID = @Scale_StorageData_ID,
+				Scale_StorageData_ID = ISNULL(@Scale_StorageData_ID, Scale_StorageData_ID),
 				Scale_Tare_ID = @Scale_Tare_ID,
 				Scale_Alternate_Tare_ID = @Scale_Alternate_Tare_ID,
 				Scale_LabelStyle_ID = @Scale_LabelStyle_ID,
