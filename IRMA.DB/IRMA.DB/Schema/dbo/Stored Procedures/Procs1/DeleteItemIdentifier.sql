@@ -1,6 +1,5 @@
-﻿
-CREATE PROCEDURE [dbo].[DeleteItemIdentifier]
-@Identifier_ID int
+﻿CREATE PROCEDURE [dbo].[DeleteItemIdentifier]
+	@Identifier_ID int
 AS 
 
 BEGIN
@@ -8,15 +7,32 @@ BEGIN
     SELECT @Error_No = 0
 	DECLARE @Item_Key int
 	DECLARE @Identifier varchar(50)
-	SELECT @Item_Key = Item_Key,  @Identifier = Identifier from ItemIdentifier where Identifier_ID = @Identifier_ID
+	
+	SELECT 
+		@Item_Key = Item_Key,  
+		@Identifier = Identifier 
+	FROM ItemIdentifier 
+	WHERE Identifier_ID = @Identifier_ID
 
     BEGIN TRAN
-    
-    DELETE 
-    FROM ItemIdentifier
-    WHERE Identifier_ID = @Identifier_ID AND Add_Identifier = 1
 
-    SELECT @Error_No = @@ERROR
+	--Send Mammoth Events first because if the Add_Identifier = 1 then the Identifier will be 
+	--deleted and the no event will be generated
+    IF @Error_No = 0
+    BEGIN
+		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemDelete', @Identifier
+
+		SELECT @Error_No = @@ERROR
+    END
+    
+	IF @Error_No = 0
+	BEGIN
+		DELETE 
+		FROM ItemIdentifier
+		WHERE Identifier_ID = @Identifier_ID AND Add_Identifier = 1
+
+		SELECT @Error_No = @@ERROR
+	END
 
     IF @Error_No = 0
     BEGIN
@@ -26,11 +42,6 @@ BEGIN
 
         SELECT @Error_No = @@ERROR
     END
-
-	IF @Error_No = 0
-	BEGIN
-		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemDelete', @Identifier
-	END
 
     IF @Error_No = 0
         COMMIT TRAN

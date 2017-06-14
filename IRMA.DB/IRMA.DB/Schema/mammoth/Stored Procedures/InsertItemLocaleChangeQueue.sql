@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [mammoth].[InsertItemLocaleChangeQueue]
+﻿CREATE PROCEDURE [mammoth].[InsertItemLocaleChangeQueue]
 	@Item_Key int,
 	@Store_No int = NULL,
 	@EventType varchar(50),
@@ -86,7 +85,6 @@ SET NOCOUNT ON
 		WHERE
 			vsc.ScanCode = @Identifier
 			AND ii.Deleted_Identifier = 0 
-			AND ii.Remove_Identifier = 0
 			AND i.Deleted_Item = 0
 			AND NOT EXISTS (SELECT 1 
 							FROM mammoth.ItemLocaleChangeQueue q (nolock)
@@ -122,7 +120,6 @@ SET NOCOUNT ON
 		WHERE
 			ii.Item_Key = @Item_Key
 			AND ii.Deleted_Identifier = 0
-			AND ii.Remove_Identifier = 0
 			AND i.Deleted_Item = 0
 			AND NOT EXISTS (SELECT 1
 							FROM mammoth.ItemLocaleChangeQueue q (nolock)

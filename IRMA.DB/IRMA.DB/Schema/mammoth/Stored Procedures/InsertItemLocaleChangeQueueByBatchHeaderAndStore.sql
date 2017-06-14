@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [mammoth].[InsertItemLocaleChangeQueueByBatchHeaderAndStore]
+﻿CREATE PROCEDURE [mammoth].[InsertItemLocaleChangeQueueByBatchHeaderAndStore]
 	@PriceBatchHeaderID int,
 	@Store_No int
 AS
