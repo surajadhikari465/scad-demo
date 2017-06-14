@@ -135,6 +135,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MonitorServiceTest.cs" />
     <Compile Include="Monitors\ApiControllerMonitorTests.cs" />
     <Compile Include="Monitors\DvoBulkImportJobMonitorTests.cs" />
     <Compile Include="Monitors\MammothApiControllerMonitorTests.cs" />

@@ -72,7 +72,7 @@
                                 { "Number of unprocessed Message Queue Price Rows: ", numberOfUnprocessedMessageQueuePriceRows.ToString() }
                              });
             }
-           //check item locale
+            //check item locale
             int numberOfUnprocessedMessageQueueItemLocaleRows = CheckMessageQueueItemLocaleForUnprocessedRows(region);
             if (numberOfUnprocessedMessageQueueItemLocaleRows > 0)
             {
@@ -86,18 +86,7 @@
         }
         private bool ShouldCheckDataInMessageQueuePriceAndItemTable(string regionCode)
         {
-            DayOfWeek blackOutDay;
             LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.Now).TimeOfDay;
-            if (!Enum.TryParse(settings.ApiControllerMonitorBlackoutDay, out blackOutDay))
-            {
-                blackOutDay = DayOfWeek.Sunday;
-            }
-
-            if ((currentTime.LocalDateTime.TimeOfDay > settings.ApiControllerMonitorBlackoutStart && currentTime.LocalDateTime.TimeOfDay < settings.ApiControllerMonitorBlackoutEnd) && DateTime.Now.DayOfWeek == blackOutDay)
-            {
-                return false;
-            }
-
             TimeSpan configuredInterval = TimeSpan.FromMilliseconds(0);
 
             LocalTime openTime = GetConfiguredOpenTimeByRegion(regionCode);

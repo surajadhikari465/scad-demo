@@ -9,7 +9,7 @@ namespace Icon.Monitoring.Common.Settings
         Dictionary<string, TimeSpan> MonitorTimers { get; set; }
         string IntegrationKey { get; set; }
 
-        List<string>  ApiControllerMonitorRegions { get; set; }
+        List<string> ApiControllerMonitorRegions { get; set; }
         bool SendPagerDutyNotifications { get; set; }
         string PagerDutyUri { get; set; }
         string Environment { get; set; }
@@ -40,9 +40,8 @@ namespace Icon.Monitoring.Common.Settings
         LocalTime StoreOpenCentralTime_SW { get; set; }
         LocalTime StoreOpenCentralTime_UK { get; set; }
         int NumberOfMinutesBeforeStoreOpens { get; set; }
-        LocalTime ApiControllerMonitorBlackoutStart { get; set; }
-        LocalTime ApiControllerMonitorBlackoutEnd { get; set; }
-        string ApiControllerMonitorBlackoutDay { get; set; }
-
+        LocalTime MaintenanceStartTime { get; set; }
+        LocalTime MaintenanceEndTime { get; set; }
+        string MaintenanceDay { get; set; }
     }
 }

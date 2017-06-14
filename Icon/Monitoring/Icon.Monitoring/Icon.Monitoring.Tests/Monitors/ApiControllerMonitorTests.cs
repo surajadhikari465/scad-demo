@@ -26,10 +26,11 @@ namespace Icon.Monitoring.Tests.Monitors
         private Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageQueueIdParameters, int>> mockMessageQueueQuery;
         private Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageUnprocessedRowCountParameters, int>> mockMessageUnprocessedRowCountQuery;
 
+        private SqlDbProvider db;
         private List<string> testRegions;
         private Mock<IMonitorSettings> mockSettings;
         private ApiControllerMonitor apiControllerMonitor;
- 
+
         private IClock fakeClock;
         private IDateTimeZoneProvider dateTimeZoneProvider;
         [TestInitialize]
@@ -41,7 +42,7 @@ namespace Icon.Monitoring.Tests.Monitors
             this.fakeClock = new FakeClock(Instant.FromDateTimeUtc(DateTime.UtcNow));
             this.dateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
             this.mockSettings = new Mock<IMonitorSettings>();
-           
+
             this.apiControllerMonitor = new ApiControllerMonitor(
                 this.mockSettings.Object,
                 this.mockMessageQueueQuery.Object,
@@ -58,13 +59,13 @@ namespace Icon.Monitoring.Tests.Monitors
 
 
         private void SetUpApiControllerMonitorSettings()
-        {          
+        {
             mockSettings.SetupGet(m => m.ApiControllerMonitorRegions).Returns(testRegions);
             mockSettings.SetupGet(m => m.NumberOfMinutesBeforeStoreOpens).Returns(120);
-            mockSettings.SetupGet(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(16,0,0));
+            mockSettings.SetupGet(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(16, 0, 0));
 
             Dictionary<string, TimeSpan> MonitorTimers = new Dictionary<string, TimeSpan>();
-            MonitorTimers.Add("ApiControllerMonitorTimer", TimeSpan.FromMilliseconds( 900000));
+            MonitorTimers.Add("ApiControllerMonitorTimer", TimeSpan.FromMilliseconds(900000));
             mockSettings.SetupGet(m => m.MonitorTimers).Returns(MonitorTimers);
         }
 
@@ -359,19 +360,14 @@ namespace Icon.Monitoring.Tests.Monitors
             today = today.Add(duration);
             mockSettings.Setup(m => m.NumberOfMinutesBeforeStoreOpens).Returns(120);
             mockSettings.Setup(m => m.StoreOpenCentralTime_FL).Returns(new LocalTime(today.Hour, today.Minute));
-
-            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutStart).Returns(new LocalTime(0, 0, 0));
-            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutEnd).Returns(new LocalTime(4, 0, 0));
-
-            mockSettings.SetupGet(m => m.ApiControllerMonitorBlackoutDay).Returns("Wednesday");
         }
-      
+
         [TestMethod]
         public void NumberOfUnprocessedPriceQueueRowsGreaterThanZero_ShouldSendPagerDutyAlert()
         {
             //Given   
             SetUpSettingsValue();
-             mockMessageUnprocessedRowCountQuery.Setup(m => m.Search(It.IsAny<GetApiMessageUnprocessedRowCountParameters>())).Returns(1);
+            mockMessageUnprocessedRowCountQuery.Setup(m => m.Search(It.IsAny<GetApiMessageUnprocessedRowCountParameters>())).Returns(1);
             //When
             apiControllerMonitor.CheckStatusAndNotify();
 
@@ -395,7 +391,7 @@ namespace Icon.Monitoring.Tests.Monitors
 
         #endregion MessageQueueIdAndCacheIdAreDifferent
     }
-   
+
 
 
 }
