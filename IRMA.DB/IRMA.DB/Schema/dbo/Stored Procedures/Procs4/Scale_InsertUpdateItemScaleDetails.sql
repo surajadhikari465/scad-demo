@@ -58,7 +58,7 @@ BEGIN
 			SET 
 				Nutrifact_ID = @Nutrifact_ID,
 				Scale_ExtraText_ID = @Scale_ExtraText_ID,
-				Scale_StorageData_ID = IsNull(@Scale_StorageData_ID, Scale_StorageData_ID),
+				Scale_StorageData_ID = ISNULL(@Scale_StorageData_ID, Scale_StorageData_ID),
 				Scale_Tare_ID = @Scale_Tare_ID,
 				Scale_Alternate_Tare_ID = @Scale_Alternate_Tare_ID,
 				Scale_LabelStyle_ID = @Scale_LabelStyle_ID,
