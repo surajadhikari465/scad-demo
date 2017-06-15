@@ -1,13 +1,13 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Irma.Framework;
-using Irma.Testing.Builders;
-using GlobalEventController.DataAccess.Commands;
-using Moq;
+﻿using GlobalEventController.DataAccess.Commands;
+using GlobalEventController.Testing.Common;
 using Icon.Logging;
-using System.Linq;
-using System.Data.Entity;
+using Irma.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using static GlobalEventController.DataAccess.Commands.BrandDeleteCommand;
 
 namespace GlobalEventController.Tests.DataAccess.CommandTests
@@ -17,94 +17,196 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
     {
         private IrmaContext context;
         private BrandDeleteCommand command;
-        private BrandDeleteCommandHandler handler;
+        private BrandDeleteCommandHandler brandDeleteCommandHandler;
         private Mock<ILogger<BrandDeleteCommandHandler>> mockLogger;
         private DbContextTransaction transaction;
+        private const string region = "FL";
+        private TestIrmaDataHelper helper = new TestIrmaDataHelper();
 
         [TestInitialize]
         public void InitializeData()
         {
-            this.context = new IrmaContext();
-            this.command = new BrandDeleteCommand();
-            this.mockLogger = new Mock<ILogger<BrandDeleteCommandHandler>>();
-            this.handler = new BrandDeleteCommandHandler(this.context, mockLogger.Object);
-
-            this.transaction = this.context.Database.BeginTransaction();
+            context = new IrmaContext();
+            command = new BrandDeleteCommand();
+            mockLogger = new Mock<ILogger<BrandDeleteCommandHandler>>();
+            brandDeleteCommandHandler = new BrandDeleteCommandHandler(context);
+            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (this.transaction != null)
+            if (transaction != null)
             {
-                this.transaction.Rollback();
-                this.transaction.Dispose();
+                transaction.Rollback();
+                transaction.Dispose();
             }
         }
 
         [TestMethod]
-        public void BrandDelete_BrandNotFoundInIrma_LoggerErrorCalled()
+        public void BrandDeleteCommandHandlerHandle_WhenBrandNotFoundInIrma_NothingIsDeleted()
         {
             // Given
-            this.command.IconBrandId = -1;
-            this.command.Region = "FL";
+            command.IconBrandId = TestingConstants.IconBrandId_Negative;
+            command.Region = region;
+            int validatedBrandsBefore = context.ValidatedBrand.Count();
+            int itemBrandsBefore = context.ItemBrand.Count();
+
+            // When
+            brandDeleteCommandHandler.Handle(command);
+
+            // Then
+            int validatedBrandsAfter = context.ValidatedBrand.Count();
+            int itemBrandsAfter = context.ItemBrand.Count();
+            Assert.AreEqual(validatedBrandsBefore, validatedBrandsAfter);
+            Assert.AreEqual(itemBrandsBefore, itemBrandsAfter);
+        }
+
+        [TestMethod]
+        public void BrandDeleteCommandHandlerHandle_WhenBrandNotFoundInIrma_ResultMatchesExpected()
+        {
+            // Given
+            command.IconBrandId = TestingConstants.IconBrandId_Negative;
+            command.Region = region;
             var expectedResult = BrandDeleteResult.NothingDeleted;
 
             // When
-            this.handler.Handle(this.command);
+            brandDeleteCommandHandler.Handle(command);
 
             // Then
-            this.mockLogger.Verify(log => log.Error(It.IsAny<string>()), Times.Once, "Logging Error was not called one time.");
             Assert.AreEqual(expectedResult, command.Result);
         }
 
         [TestMethod]
-        public void BrandDelete_BrandAssociatedToItem_ValidatedBrandDeleted()
+        public void BrandDeleteCommandHandlerHandle_WhenBrandNotAssociatedToItem_ValidatedAndItemBrandsBothDeleted()
         {
             // Given
-            var testItem = context.Item.First(i => i.Brand_ID != null);
+            ItemBrand testBrand = helper.CreateAndSaveItemBrandForTest(context);
+            ValidatedBrand testValidatedBrand = helper.CreateAndSaveValidatedBrandForTest(context,
+                testBrand.Brand_ID, TestingConstants.IconBrandId_Negative);
 
-            ValidatedBrand testValidatedBrand = new ValidatedBrand { IrmaBrandId = testItem.Brand_ID ?? 0, IconBrandId = -1 };
-            context.ValidatedBrand.Add(testValidatedBrand);
-            context.SaveChanges();
+            int validatedBrandsBefore = context.ValidatedBrand.Count();
+            int itemBrandsBefore = context.ItemBrand.Count();
 
-            this.command.IconBrandId = -1;
-            this.command.Region = "FL";
-            var expectedResult = BrandDeleteResult.ValidatedBrandDeleted;
+            command.IconBrandId = TestingConstants.IconBrandId_Negative;
+            command.Region = region;
 
             // When
-            this.handler.Handle(this.command);
+            brandDeleteCommandHandler.Handle(command);
             context.SaveChanges();
+
             // Then
-            Assert.AreEqual(expectedResult, command.Result);
-            Assert.AreEqual(testItem.ItemBrand, context.ItemBrand.Where(i=>i.Brand_Name==testItem.ItemBrand.Brand_Name).FirstOrDefault());
-            Assert.AreEqual(false, context.ValidatedBrand.Where(vb=>vb.Id==testValidatedBrand.Id).Any());
+            Assert.IsFalse(context.ValidatedBrand.Any(vb => vb.IconBrandId == TestingConstants.IconBrandId_Negative));
+            Assert.IsFalse(context.ItemBrand.Any(ib => ib.Brand_Name == testBrand.Brand_Name));
+            int validatedBrandsAfter = context.ValidatedBrand.Count();
+            int itemBrandsAfter = context.ItemBrand.Count();
+            Assert.AreEqual(validatedBrandsBefore, validatedBrandsAfter + 1);
+            Assert.AreEqual(itemBrandsBefore, itemBrandsAfter + 1);
         }
 
         [TestMethod]
-        public void BrandDelete_BrandNotAssociatedToItem_ValidatedAndItemBrandsDeleted()
+        public void BrandDeleteCommandHandlerHandle_WhenBrandNotAssociatedToItem_ResultMatchesExpected()
         {
             // Given
-            ItemBrand testItemBrand = new ItemBrand { Brand_Name = "test itemBrand" };
-            context.ItemBrand.Add(testItemBrand);
+            ItemBrand testBrand = helper
+                .CreateAndSaveItemBrandForTest(context);
+            ValidatedBrand testValidatedBrand = helper.CreateAndSaveValidatedBrandForTest(context,
+                testBrand.Brand_ID, TestingConstants.IconBrandId_Negative);
 
-            ValidatedBrand testValidatedBrand = new ValidatedBrand { IrmaBrandId = testItemBrand.Brand_ID, IconBrandId = -1 };
-            context.ValidatedBrand.Add(testValidatedBrand);
-            context.SaveChanges();
-
-            this.command.IconBrandId = -1;
-            this.command.Region = "FL";
-            var expectedResult = BrandDeleteResult.ItemBrandAndValidatedBrandDeleted;
+            command.IconBrandId = TestingConstants.IconBrandId_Negative;
+            command.Region = region;
+            var expectedResult = BrandDeleteResult.ValidatedAndItemBrandsDeleted;
 
             // When
-            this.handler.Handle(this.command);
+            brandDeleteCommandHandler.Handle(command);
             context.SaveChanges();
+
             // Then
-            bool isValidatedBrandExist = context.ValidatedBrand.Any(vb => vb.IconBrandId == -1);
-            bool isItemBrandExist = context.ItemBrand.Any(ib => ib.Brand_Name == "test itemBrand");
             Assert.AreEqual(expectedResult, command.Result);
-            Assert.AreEqual(false, isValidatedBrandExist);
-            Assert.AreEqual(false, isItemBrandExist);
+            //confirm that combined bitwise result values work as expectedd
+            Assert.IsTrue((command.Result & BrandDeleteResult.ValidatedBrandDeleted) 
+                == BrandDeleteResult.ValidatedBrandDeleted);
+            Assert.IsTrue((command.Result & BrandDeleteResult.ItemBrandDeleted) 
+                == BrandDeleteResult.ItemBrandDeleted);
+        }
+
+        [TestMethod]
+        public void BrandDeleteCommandHandlerHandle_WhenBrandAssociatedToItem_ItemBrandIsNotDeleted()
+        {
+            // Given
+            ItemBrand testBrand = helper
+                .CreateAndSaveItemBrandForTest(context);
+            Item testItem = helper
+                .CreateAndSaveItemAndSubteamForTest(context, testBrand.Brand_ID);
+            ValidatedBrand testValidatedBrand = helper
+                .CreateAndSaveValidatedBrandForTest(context, testItem.Brand_ID);
+
+            int itemBrandsBefore = context.ItemBrand.Count();
+            command.IconBrandId = testValidatedBrand.IconBrandId;
+            command.Region = region;
+
+            // When
+            brandDeleteCommandHandler.Handle(command);
+            context.SaveChanges();
+
+            // Then
+            int itemBrandsAfter = context.ItemBrand.Count();
+            Assert.AreEqual(itemBrandsBefore, itemBrandsAfter);
+            Assert.IsTrue(context.ItemBrand.Any(ib => ib.Brand_Name == testBrand.Brand_Name));
+        }
+
+        [TestMethod]
+        public void BrandDeleteCommandHandlerHandle_WhenBrandAssociatedToItem_ValidatedBrandIsDeleted()
+        {
+            // Given
+            ItemBrand testBrand = helper
+                .CreateAndSaveItemBrandForTest(context);
+            Item testItem = helper
+                .CreateAndSaveItemAndSubteamForTest(context, testBrand.Brand_ID);
+            ValidatedBrand testValidatedBrand = helper
+                .CreateAndSaveValidatedBrandForTest(context, testItem.Brand_ID);
+
+            int validatedBrandsBefore = context.ValidatedBrand.Count();
+            command.IconBrandId = testValidatedBrand.IconBrandId;
+            command.Region = region;
+
+            // When
+            brandDeleteCommandHandler.Handle(command);
+            context.SaveChanges();
+
+            // Then
+            Assert.IsFalse(context.ValidatedBrand.Any(vb => vb.IconBrandId == TestingConstants.IconBrandId_Negative));
+            int validatedBrandsAfter = context.ValidatedBrand.Count();
+            Assert.AreEqual(validatedBrandsBefore, validatedBrandsAfter + 1);
+        }
+
+
+        [TestMethod]
+        public void BrandDeleteCommandHandlerHandle_WhenBrandAssociatedToItem_ResultMatchesExpected()
+        {
+            // Given
+            ItemBrand testBrand = helper
+                .CreateAndSaveItemBrandForTest(context);
+            Item testItem = helper
+                .CreateAndSaveItemAndSubteamForTest(context, testBrand.Brand_ID);
+            ValidatedBrand testValidatedBrand = helper
+                .CreateAndSaveValidatedBrandForTest(context, testItem.Brand_ID);
+
+            command.IconBrandId = testValidatedBrand.IconBrandId;
+            command.Region = region;
+            var expectedResult = BrandDeleteResult.ValidatedBrandDeletedButItemBrandAssociatedWithItems;
+
+            // When
+            brandDeleteCommandHandler.Handle(command);
+            context.SaveChanges();
+
+            // Then
+            Assert.AreEqual(expectedResult, command.Result);
+            //confirm that combined bitwise result values work as expected
+            Assert.IsTrue((command.Result & BrandDeleteResult.ValidatedBrandDeleted)
+                == BrandDeleteResult.ValidatedBrandDeleted);
+            Assert.IsTrue((command.Result & BrandDeleteResult.ItemBrandAssociatedWithItems)
+                == BrandDeleteResult.ItemBrandAssociatedWithItems);
         }
     }
 }

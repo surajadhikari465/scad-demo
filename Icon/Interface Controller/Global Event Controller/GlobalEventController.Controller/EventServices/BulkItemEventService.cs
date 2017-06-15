@@ -9,9 +9,8 @@ using System.Linq;
 
 namespace GlobalEventController.Controller.EventServices
 {
-    public class BulkItemEventService : IBulkEventService
+    public class BulkItemEventService : EventServiceBase, IBulkEventService
     {
-        private readonly IrmaContext context;
         private ILogger<BulkItemEventService> logger;
         private ICommandHandler<BulkAddBrandCommand> bulkAddBrandCommandHandler;
         private ICommandHandler<BulkAddUpdateLastChangeCommand> bulkAddUpdateLastChangeCommandHandler;
@@ -23,13 +22,9 @@ namespace GlobalEventController.Controller.EventServices
         private IQueryHandler<BulkGetItemsWithNoNatlClassQuery, List<ValidatedItemModel>> bulkGetValidatedItemsWithNoNatlClassQueryHandler;
         private IQueryHandler<BulkGetItemsWithNoRetailUomQuery, List<ValidatedItemModel>> bulkGetValidatedItemsWithNoRetailUomQueryHandler;
 
-        public int? ReferenceId { get; set; }
-        public string Message { get; set; }
-        public string Region { get; set; }
         public List<ValidatedItemModel> ValidatedItemList { get; set; }
         public List<string> ScanCodesWithNoTaxList { get; set; }
         public List<NutriFactsModel> ItemNutriFacts { get; set; }
-        public List<RegionalItemMessageModel> RegionalItemMessage { get; set; }
 
         public BulkItemEventService(IrmaContext context,
             ILogger<BulkItemEventService> logger,
@@ -42,8 +37,8 @@ namespace GlobalEventController.Controller.EventServices
             ICommandHandler<BulkUpdateItemSignAttributesCommand> bulkUpdateItemSignAttributesCommandHandler,
             IQueryHandler<BulkGetItemsWithNoNatlClassQuery, List<ValidatedItemModel>> bulkGetValidatedItemsWithNoNatlClassQueryHandler,
             IQueryHandler<BulkGetItemsWithNoRetailUomQuery, List<ValidatedItemModel>> bulkGetValidatedItemsWithNoRetailUomQueryHandler)
+            : base (context)
         {
-            this.context = context;
             this.logger = logger;
             this.bulkAddBrandCommandHandler = bulkBrandHandler;
             this.bulkAddUpdateLastChangeCommandHandler = bulkLastChangeHandler;
@@ -56,7 +51,7 @@ namespace GlobalEventController.Controller.EventServices
             this.bulkGetValidatedItemsWithNoRetailUomQueryHandler = bulkGetValidatedItemsWithNoRetailUomQueryHandler;
         }
 
-        public void Run()
+        public override void Run()
         {
             RegionalItemMessage = new List<RegionalItemMessageModel>();
             this.ValidatedItemList = this.ValidatedItemList.DistinctBy(v => v.ScanCode).ToList();

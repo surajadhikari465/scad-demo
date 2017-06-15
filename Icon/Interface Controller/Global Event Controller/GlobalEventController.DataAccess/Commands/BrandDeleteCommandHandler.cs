@@ -1,45 +1,49 @@
-﻿using System;
-using System.Linq;
-using GlobalEventController.DataAccess.Infrastructure;
+﻿using GlobalEventController.DataAccess.Infrastructure;
 using Irma.Framework;
-using Icon.Logging;
-
+using System;
+using System.Linq;
 
 namespace GlobalEventController.DataAccess.Commands
 {
     public class BrandDeleteCommandHandler : ICommandHandler<BrandDeleteCommand>
     {
         private readonly IrmaContext context;
-        private ILogger<BrandDeleteCommandHandler> logger;
 
-        public BrandDeleteCommandHandler(IrmaContext context, ILogger<BrandDeleteCommandHandler> logger)
+        public BrandDeleteCommandHandler(IrmaContext context)
         {
             this.context = context;
-            this.logger = logger;
         }
 
         public void Handle(BrandDeleteCommand command)
         {
-            var validatedBrandToDelete = context.ValidatedBrand.Where(vb => vb.IconBrandId == command.IconBrandId).SingleOrDefault();
+            // find the ValidatedBrand in the database
+            var validatedBrandToDelete = context.ValidatedBrand
+                .SingleOrDefault(vb => vb.IconBrandId == command.IconBrandId);
+
+            // validate that it was found
             if (validatedBrandToDelete == null)
             {
-                logger.Error(String.Format("The following brand was not found in the IRMA ValidatedBrand table, so no update will be performed:  IconBrandId = {0}, Region = {1}",
-                    command.IconBrandId, command.Region));
+                // brand not found, nothing deleted
                 command.Result = BrandDeleteCommand.BrandDeleteResult.NothingDeleted;
-                return;
             }
-
-            //remove from ValidatedBrand
-            context.ValidatedBrand.Remove(validatedBrandToDelete);
-            var irmaBrandIdToDelete = validatedBrandToDelete.IrmaBrandId;
-            command.Result = BrandDeleteCommand.BrandDeleteResult.ValidatedBrandDeleted;
-
-            //is brand associated with any items?
-            if (!context.Item.Any(i => i.Brand_ID == irmaBrandIdToDelete))
+            else
             {
-                //remove from ItemBrand
-                context.ItemBrand.Remove(context.ItemBrand.Single(ib => ib.Brand_ID == irmaBrandIdToDelete));
-                command.Result = BrandDeleteCommand.BrandDeleteResult.ItemBrandAndValidatedBrandDeleted;
+                //remove the ValidatedBrand
+                context.ValidatedBrand.Remove(validatedBrandToDelete);
+                command.Result |= BrandDeleteCommand.BrandDeleteResult.ValidatedBrandDeleted;
+
+                //is brand associated with any items?
+                if (context.Item.Any(i => i.Brand_ID == validatedBrandToDelete.IrmaBrandId))
+                {
+                    // can't delete because item(s) still using Brand_ID
+                    command.Result |= BrandDeleteCommand.BrandDeleteResult.ItemBrandAssociatedWithItems;
+                }
+                else
+                {
+                    //remove the ItemBrand
+                    context.ItemBrand.Remove(context.ItemBrand.Single(ib => ib.Brand_ID == validatedBrandToDelete.IrmaBrandId));
+                    command.Result |= BrandDeleteCommand.BrandDeleteResult.ItemBrandDeleted;
+                }
             }
         }
     }

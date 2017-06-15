@@ -19,6 +19,7 @@ namespace GlobalEventController.Controller.EventServices
     {
         private ContextManager contextManager;
         private int commandTimeout;
+        private static EmailClient emailClient = new EmailClient(EmailClientSettings.CreateFromConfig());
 
         public EventServiceProvider(ContextManager contextManager)
         {
@@ -46,7 +47,8 @@ namespace GlobalEventController.Controller.EventServices
                 new AddUpdateLastChangeByIdentifiersCommandHandler(irmaContext),
                 new GetItemIdentifiersQueryHandler(irmaContext));
         }
-        public IEventService GetBrandDeleteEventService(Enums.EventNames eventName, string region)
+
+        public IEventService GetBrandDeleteEventService(Enums.EventNames eventName, string region, IEmailClient emailClient)
         {
             if (String.IsNullOrEmpty(region))
             {
@@ -64,8 +66,13 @@ namespace GlobalEventController.Controller.EventServices
 
             return new BrandDeleteEventService(
                 irmaContext,
-                new BrandDeleteCommandHandler(irmaContext, new NLogLoggerInstance<BrandDeleteCommandHandler>(StartupOptions.Instance.ToString())));
+                new BrandDeleteCommandHandler(irmaContext),
+                new GetIrmaBrandQueryHandler(irmaContext),
+                new NLogLoggerInstance<BrandDeleteEventService>(StartupOptions.Instance.ToString()),
+                emailClient,
+                GlobalControllerSettings.CreateFromConfig());
         }
+
         public IEventService GetTaxEventService(Enums.EventNames eventName, string region)
         {
             if (String.IsNullOrEmpty(region))
@@ -89,12 +96,12 @@ namespace GlobalEventController.Controller.EventServices
                     return new UpdateTaxClassEventService(
                        irmaContext,
                        new UpdateTaxClassCommandHandler(irmaContext),
-                       new GetHierarchyClassQueryHandler(iconContext));
+                       new GetTaxAbbreviationQueryHandler(iconContext));
                 case Enums.EventNames.IconToIrmaNewTaxClass:
                     return new AddTaxClassEventService(
                         irmaContext,
                         new AddTaxClassCommandHandler(irmaContext),
-                        new GetHierarchyClassQueryHandler(iconContext));
+                        new GetTaxAbbreviationQueryHandler(iconContext));
                 default:
                     return null;
             }
@@ -126,6 +133,7 @@ namespace GlobalEventController.Controller.EventServices
                         new BulkGetItemsWithNoNatlClassQueryHandler(irmaContext),
                         new BulkGetItemsWithNoRetailUomQueryHandler(irmaContext)));
         }
+
         public IBulkEventService GetBulkItemNutriFactsEventService(string region)
         {
             if (String.IsNullOrEmpty(region))
@@ -162,6 +170,7 @@ namespace GlobalEventController.Controller.EventServices
                 irmaContext,
                 new DeleteNationalHierarchyCommandHandler(irmaContext, new NLogLoggerInstance<DeleteNationalHierarchyCommandHandler>(StartupOptions.Instance.ToString())));
         }
+
         public IEventService GetAddOrUpdateNationalHierarchyEventService(Enums.EventNames eventName, string region)
         {
             if (String.IsNullOrEmpty(region))
@@ -178,11 +187,13 @@ namespace GlobalEventController.Controller.EventServices
             var irmaContext = contextManager.IrmaContexts[region];
             SetIrmaDbContextConnectionTimeout(irmaContext);
 
-            return new AddOrUpdateNationalHierarchyEventService(
-                irmaContext, iconContext,
+            return new AddOrUpdateNationalHierarchyEventService(irmaContext,
+                iconContext,
                 new AddOrUpdateNationalHierarchyCommandHandler(irmaContext,
-                                                                new NLogLoggerInstance<AddOrUpdateNationalHierarchyCommandHandler>(StartupOptions.Instance.ToString())));
+                new NLogLoggerInstance<AddOrUpdateNationalHierarchyCommandHandler>(StartupOptions.Instance.ToString())),
+                new GetHierarchyClassQueryHandler(iconContext));
         }
+
         public IEventService GetEventService(Enums.EventNames eventName, string region)
         {
             switch (eventName)
@@ -195,7 +206,7 @@ namespace GlobalEventController.Controller.EventServices
                     return GetTaxEventService(eventName, region);
                 case Enums.EventNames.IconToIrmaNutritionAdd:
                 case Enums.EventNames.IconToIrmaBrandDelete:
-                    return GetBrandDeleteEventService(eventName, region);
+                    return GetBrandDeleteEventService(eventName, region, emailClient);
                 case Enums.EventNames.IconToIrmaNationalHierarchyUpdate:
                     return GetAddOrUpdateNationalHierarchyEventService(eventName, region);
                 case Enums.EventNames.IconToIrmaNationalHierarchyDelete:
@@ -204,6 +215,7 @@ namespace GlobalEventController.Controller.EventServices
                     return null;
             }
         }
+
         public IBulkItemSubTeamEventService GetBulkItemSubTeamEventService(string region)
         {
             throw new NotImplementedException();

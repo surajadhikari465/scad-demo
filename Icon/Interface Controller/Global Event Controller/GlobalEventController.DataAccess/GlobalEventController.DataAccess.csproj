@@ -43,34 +43,27 @@
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Framework.2017.4.19.1\lib\net45\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Irma.Framework.2017.6.6.2\lib\net45\Irma.Framework.dll</HintPath>
@@ -174,6 +167,8 @@
     <Compile Include="Queries\GetEventsQueryHandler.cs" />
     <Compile Include="Queries\GetHierarchyClassQuery.cs" />
     <Compile Include="Queries\GetHierarchyClassQueryHandler.cs" />
+    <Compile Include="Queries\GetIrmaBrandQuery.cs" />
+    <Compile Include="Queries\GetIrmaBrandQueryHandler.cs" />
     <Compile Include="Queries\GetItemNutriFactsQuery.cs" />
     <Compile Include="Queries\GetItemsByScanCodeQuery.cs" />
     <Compile Include="Queries\GetItemsByScanCodeQueryHandler.cs" />
@@ -192,6 +187,8 @@
     <Compile Include="Queries\GetScanCodeQueryHandler.cs" />
     <Compile Include="Queries\GetSubTeamHierarchyQuery.cs" />
     <Compile Include="Queries\GetSubTeamHierarchyQueryHandlercs.cs" />
+    <Compile Include="Queries\GetTaxAbbreviationQuery.cs" />
+    <Compile Include="Queries\GetTaxAbbreviationQueryHandler.cs" />
     <Compile Include="Queries\GetUserQuery.cs" />
     <Compile Include="Queries\GetUserQueryHandler.cs" />
   </ItemGroup>

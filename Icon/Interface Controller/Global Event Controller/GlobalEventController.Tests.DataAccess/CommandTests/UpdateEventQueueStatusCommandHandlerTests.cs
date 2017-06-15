@@ -2,12 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.Entity.Infrastructure;
 using Icon.Framework;
-using Icon.Logging;
 using GlobalEventController.DataAccess.Commands;
 using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
-using Moq;
 using Icon.Testing.Builders;
 using Icon.Common;
 

@@ -1,31 +1,48 @@
 ﻿using GlobalEventController.DataAccess.Commands;
 using GlobalEventController.DataAccess.Infrastructure;
 using GlobalEventController.DataAccess.Queries;
-using Icon.Framework;
 using Irma.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace GlobalEventController.Controller.EventServices
 {
-    public class UpdateTaxClassEventService : TaxClassEventServiceBase
+    public class UpdateTaxClassEventService : EventServiceBase, IEventService
     {
-        private readonly IrmaContext irmaContext;
         private ICommandHandler<UpdateTaxClassCommand> updateTaxClassHandler;
+        private IQueryHandler<GetTaxAbbreviationQuery, string> getTaxAbbreviationQueryHandler;
 
         public UpdateTaxClassEventService(IrmaContext irmaContext,
             ICommandHandler<UpdateTaxClassCommand> updateTaxClassHandler,
-            IQueryHandler<GetHierarchyClassQuery, HierarchyClass> getHierarchyClassHandler) 
-            : base(getHierarchyClassHandler)
+            IQueryHandler<GetTaxAbbreviationQuery, string> getTaxAbbreviationQueryHandler)
+        : base(irmaContext)
         {
-            this.irmaContext = irmaContext;
             this.updateTaxClassHandler = updateTaxClassHandler;
+            this.getTaxAbbreviationQueryHandler = getTaxAbbreviationQueryHandler;
         }
 
         public override void Run()
         {
-            base.VerifyEventInformation();
-            string taxAbbreviation = base.GetTaxAbbreviation(ReferenceId.Value);
-            UpdateTaxClassCommand updateTaxClass = new UpdateTaxClassCommand { TaxClassDescription = taxAbbreviation, TaxCode = Message };
-            updateTaxClassHandler.Handle(updateTaxClass);
+            base.VerifyEventParameters(nameof(UpdateTaxClassEventService), ReferenceId, Message, Region);
+
+            var taxAbbreviationQuery = new GetTaxAbbreviationQuery()
+            {
+                HierarchyClassId = ReferenceId.Value
+            };
+            string taxAbbreviationTraitValue = getTaxAbbreviationQueryHandler.Handle(taxAbbreviationQuery);
+            if (String.IsNullOrWhiteSpace(taxAbbreviationTraitValue))
+            {
+                throw new InvalidOperationException($"The tax class doesn't have an abbreviation. (HierarchyClassId {ReferenceId.Value})");
+            }
+
+            UpdateTaxClassCommand updateTaxClassCommand = new UpdateTaxClassCommand
+            {
+                TaxClassDescription = taxAbbreviationTraitValue,
+                TaxCode = Message
+            };
+            updateTaxClassHandler.Handle(updateTaxClassCommand);
 
             this.irmaContext.SaveChanges();
         }

@@ -29,7 +29,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             this.lastChangeList = new List<IconItemLastChange>();
             this.itemIdentifierList = new List<ItemIdentifier>();
 
-            
+
             this.existingTaxClass = this.context.TaxClass.First(tc => !tc.TaxClassDesc.ToLower().Contains("do not use"));
             this.existingBrand = this.context.ItemBrand.First(ib => ib.ValidatedBrand.Any());
 

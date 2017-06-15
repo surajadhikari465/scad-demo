@@ -14,5 +14,7 @@ namespace GlobalEventController.Common
         int MaxQueueEntriesToProcess { get; set; }
         string EmailSubjectEnvironment { get; set; }
         bool EnableInforUpdates { get; set; }
+        string BrandDeleteEmailSubject { get; set; }
+        bool BrandDeleteEmailAlertsEnabled { get; set; }
     }
 }

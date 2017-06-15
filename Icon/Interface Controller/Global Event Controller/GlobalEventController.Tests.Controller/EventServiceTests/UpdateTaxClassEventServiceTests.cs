@@ -22,19 +22,19 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
     public class UpdateTaxClassEventServiceTests
     {
         private IrmaContext irmaContext;
-        private Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>> getHierarchyClassHandler;
-
         private IEventService eventService;
-        private Mock< ICommandHandler<UpdateTaxClassCommand>> updateTaxClassHandler;
-
+        private Mock<ICommandHandler<UpdateTaxClassCommand>> mockUpdateTaxClassHandler;
+        private Mock<IQueryHandler<GetTaxAbbreviationQuery, string>> mockGetTaxAbbreviationQueryHandler;
 
         [TestInitialize]
         public void InitializeData()
         {
             irmaContext = new IrmaContext();
-            updateTaxClassHandler = new Mock<ICommandHandler<UpdateTaxClassCommand>>();
-            getHierarchyClassHandler = new Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>>();
-            eventService = new UpdateTaxClassEventService(this.irmaContext, this.updateTaxClassHandler.Object, this.getHierarchyClassHandler.Object);
+            mockUpdateTaxClassHandler = new Mock<ICommandHandler<UpdateTaxClassCommand>>();
+            mockGetTaxAbbreviationQueryHandler = new Mock<IQueryHandler<GetTaxAbbreviationQuery, string>>();
+            eventService = new UpdateTaxClassEventService(this.irmaContext,
+                this.mockUpdateTaxClassHandler.Object,
+                this.mockGetTaxAbbreviationQueryHandler.Object);
         }
 
         [TestCleanup]
@@ -45,7 +45,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void UpdateTaxClassEventService_EventReferenceIdIsNull_ArgumentExceptionThrown()
+        public void UpdateTaxClassEventServiceRun_EventReferenceIdIsNull_ArgumentExceptionThrown()
         {
             //Given
             eventService.ReferenceId = null;
@@ -59,7 +59,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void UpdateTaxClassEventService_EventReferenceIdIsLessThanZero_ArgumentExceptionThrown()
+        public void UpdateTaxClassEventServiceRun_EventReferenceIdIsLessThanZero_ArgumentExceptionThrown()
         {
             //Given
             eventService.ReferenceId = -1;
@@ -73,7 +73,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void UpdateTaxClassEventService_EventMessageIsNullOrEmpty_ArgumentExceptionThrown()
+        public void UpdateTaxClassEventServiceRun_EventMessageIsNullOrEmpty_ArgumentExceptionThrown()
         {
             //Given
             eventService.ReferenceId = 1;
@@ -88,7 +88,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void UpdateTaxClassEventService_EventRegionIsNullOrEmpty_ArgumentExceptionThrown()
+        public void UpdateTaxClassEventServiceRun_EventRegionIsNullOrEmpty_ArgumentExceptionThrown()
         {
             //Given
             eventService.ReferenceId = 1;
@@ -103,39 +103,16 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
         }
 
         [TestMethod]
-        public void UpdateTaxClassEventService_TaxCodeAsReferenceIdValue_GetHierarchyClassQueryCalledOneTime()
-        {
-            //Given
-            TestHierarchyClassBuilder testHierArchyClassBuilder = new TestHierarchyClassBuilder().WithHierarchyClassId(1).WithTaxAbbreviationTrait("TestTax");
-            HierarchyClass testHierArchyClass = testHierArchyClassBuilder;
-            testHierArchyClass.HierarchyClassTrait.FirstOrDefault().Trait = new Trait() { traitCode = TraitCodes.TaxAbbreviation };
-
-            eventService.ReferenceId = 1;
-            eventService.Message = "TestMessage";
-            eventService.Region = "SE";
-            getHierarchyClassHandler.Setup(q => q.Handle(It.IsAny<GetHierarchyClassQuery>()))
-                .Returns(testHierArchyClass);                
-
-            //When
-            eventService.Run();
-
-            //Then           
-            getHierarchyClassHandler.Verify(command => command.Handle(It.IsAny<GetHierarchyClassQuery>()), Times.Once);
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void UpdateTaxClassEventService_HierarchyClassTaxAbbreviationTraitIsNull_InvalidOperationExceptionThrown()
+        public void UpdateTaxClassEventServiceRun_HierarchyClassTaxAbbreviationTraitIsNull_InvalidOperationExceptionThrown()
         {
             //Given
             eventService.ReferenceId = 1;
             eventService.Message = "TestMessage";
             eventService.Region = "SE";
 
-            TestHierarchyClassBuilder testHierArchyClass = new TestHierarchyClassBuilder().WithHierarchyClassId(1);
-
-            getHierarchyClassHandler.Setup(q => q.Handle(It.IsAny<GetHierarchyClassQuery>()))
-                .Returns(testHierArchyClass);
+            mockGetTaxAbbreviationQueryHandler.Setup(q => q.Handle(It.IsAny<GetTaxAbbreviationQuery>()))
+                .Returns((string)null);
 
             //When
             eventService.Run();
@@ -145,24 +122,81 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
         }
 
         [TestMethod]
-        public void UpdateTaxClassEventService_TaxAbbreviationFound_UpdateTaxClassCommandCalledOneTime()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void UpdateTaxClassEventServiceRun_HierarchyClassTaxAbbreviationTraitIsEmpty_InvalidOperationExceptionThrown()
         {
             //Given
-            TestHierarchyClassBuilder testHierArchyClassBuilder = new TestHierarchyClassBuilder().WithHierarchyClassId(1).WithTaxAbbreviationTrait("TestTax");
-            HierarchyClass testHierArchyClass = testHierArchyClassBuilder;
-            //Can this go into Builder class
-            testHierArchyClass.HierarchyClassTrait.FirstOrDefault().Trait = new Trait() { traitCode = TraitCodes.TaxAbbreviation };
             eventService.ReferenceId = 1;
             eventService.Message = "TestMessage";
             eventService.Region = "SE";
-            getHierarchyClassHandler.Setup(q => q.Handle(It.IsAny<GetHierarchyClassQuery>()))
-                .Returns(testHierArchyClass);
+
+            mockGetTaxAbbreviationQueryHandler.Setup(q => q.Handle(It.IsAny<GetTaxAbbreviationQuery>()))
+                .Returns(String.Empty);
 
             //When
             eventService.Run();
 
             //Then
-            updateTaxClassHandler.Verify(command => command.Handle(It.IsAny<UpdateTaxClassCommand>()), Times.Once);        
+            //Should get InvalidOperationException
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void UpdateTaxClassEventServiceRun_HierarchyClassTaxAbbreviationTraitIsWhitespaceInvalidOperationExceptionThrown()
+        {
+            //Given
+            eventService.ReferenceId = 1;
+            eventService.Message = "TestMessage";
+            eventService.Region = "SE";
+
+            mockGetTaxAbbreviationQueryHandler.Setup(q => q.Handle(It.IsAny<GetTaxAbbreviationQuery>()))
+                .Returns("  ");
+
+            //When
+            eventService.Run();
+
+            //Then
+            //Should get InvalidOperationException
+        }
+
+        [TestMethod]
+        public void UpdateTaxClassEventServiceRun_TaxCodeAsReferenceIdValue_GetTaxAbbreviationQueryQueryCalledOneTime()
+        {
+            //Given
+            eventService.ReferenceId = 999;
+            eventService.Message = "TestMessage";
+            eventService.Region = "SE";
+            mockGetTaxAbbreviationQueryHandler.Setup(h => h.Handle(It.Is<GetTaxAbbreviationQuery>(
+                (qry) => qry.HierarchyClassId == eventService.ReferenceId && qry.TaxTraitCode == TraitCodes.TaxAbbreviation)))
+                .Returns("7654321 STUFF - THINGS");
+
+            //When
+            eventService.Run();
+
+            //Then           
+            mockGetTaxAbbreviationQueryHandler.Verify(h => h.Handle(It.Is<GetTaxAbbreviationQuery>(
+                    (qry) => qry.HierarchyClassId == 999 && qry.TaxTraitCode == "ABR")),
+                    Times.Once);
+        }
+
+        [TestMethod]
+        public void UpdateTaxClassEventServiceRun_HierarchyClassTaxAbbreviationFound_UpdateTaxClassCommandCalledOneTime()
+        {
+            //Given
+            eventService.ReferenceId = 1;
+            eventService.Message = "TestMessage";
+            eventService.Region = "SE";
+            mockGetTaxAbbreviationQueryHandler.Setup(h => h.Handle(It.Is<GetTaxAbbreviationQuery>(
+                (qry) => qry.HierarchyClassId==1 && qry.TaxTraitCode=="ABR")))
+                .Returns("7654321 STUFF - THINGS");
+
+            //When
+            eventService.Run();
+
+            //Then
+            mockUpdateTaxClassHandler.Verify(h => h.Handle(It.Is<UpdateTaxClassCommand>(
+                (cmd) => cmd.TaxCode == "TestMessage" && cmd.TaxClassDescription == "7654321 STUFF - THINGS")),
+                Times.Once);
         }
     }
 }

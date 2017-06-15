@@ -15,6 +15,8 @@ namespace GlobalEventController.Common
         public int MaxQueueEntriesToProcess { get; set; }
         public string EmailSubjectEnvironment { get; set; }
         public bool EnableInforUpdates { get; set; }
+        public string BrandDeleteEmailSubject { get; set; }
+        public bool BrandDeleteEmailAlertsEnabled { get; set; }
 
         public static GlobalControllerSettings CreateFromConfig()
         {
@@ -24,6 +26,9 @@ namespace GlobalEventController.Common
             settings.DbContextConnectionTimeout = AppSettingsAccessor.GetIntSetting("DbContextConnectionTimeout");
             settings.EmailSubjectEnvironment = AppSettingsAccessor.GetStringSetting("EmailSubjectEnvironment");
             settings.EnableInforUpdates = AppSettingsAccessor.GetBoolSetting("EnableInforUpdates", false);
+            settings.BrandDeleteEmailSubject = AppSettingsAccessor.GetStringSetting("BrandDeleteEmailSubject", required: true);
+            settings.BrandDeleteEmailAlertsEnabled = AppSettingsAccessor.GetBoolSetting("SendBrandDeleteEmails", required: false);
+
             return settings;
         }
 

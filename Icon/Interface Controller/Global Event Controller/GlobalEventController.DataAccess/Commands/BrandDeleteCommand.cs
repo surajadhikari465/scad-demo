@@ -8,12 +8,17 @@ namespace GlobalEventController.DataAccess.Commands
 {
     public class BrandDeleteCommand
     {
+        [Flags]
         public enum BrandDeleteResult
         {
-            ItemBrandAndValidatedBrandDeleted = 1,
-            ValidatedBrandDeleted = 2,
-            NothingDeleted = 3
+            NothingDeleted = 0,
+            ValidatedBrandDeleted = 1,
+            ItemBrandDeleted = 2,
+            ValidatedAndItemBrandsDeleted = ValidatedBrandDeleted | ItemBrandDeleted,
+            ItemBrandAssociatedWithItems = 4,
+            ValidatedBrandDeletedButItemBrandAssociatedWithItems = ValidatedBrandDeleted | ItemBrandAssociatedWithItems,
         }
+
         public int? IconBrandId { get; set; }
         public string Region { get; set; }
         public BrandDeleteResult Result { get; set; }

@@ -38,7 +38,10 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         [TestCleanup]
         public void Cleanup()
         {
-            context.Database.ExecuteSqlCommand("delete from app.EventQueueArchive where EventMessage like '%ArchiveEventsCommandHandlerTests'");
+            var sql = "delete from app.EventQueueArchive" +
+                " where EventQueueArchiveId > (select max(EventQueueArchiveId) - 2000 from app.EventQueueArchive)" +
+                " and EventMessage like '%ArchiveEventsCommandHandlerTests'";
+            context.Database.ExecuteSqlCommand(sql);
             context.Dispose();
         }
 
@@ -53,8 +56,13 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var eventQueueArchive = context.Database.SqlQuery<EventQueueArchive>("select * from app.EventQueueArchive where EventMessage like '%ArchiveEventsCommandHandlerTests'").ToList();
-            Assert.AreEqual(numberOfEvents, eventQueueArchive.Count);
+            //only look at recent records, then count
+            var sql = "select * from (" +
+                "    select * from app.EventQueueArchive" +
+                "    where EventQueueArchiveId > (select max(EventQueueArchiveId) - 2000 from app.EventQueueArchive)" +
+                ") as a where a.EventMessage like '%ArchiveEventsCommandHandlerTests'";
+            var eventQueueArchiveCount = context.Database.SqlQuery<EventQueueArchive>(sql).Count();
+            Assert.AreEqual(numberOfEvents, eventQueueArchiveCount);
         }
 
         private List<EventQueueArchive> BuildTestEvents(int numberOfEvents)

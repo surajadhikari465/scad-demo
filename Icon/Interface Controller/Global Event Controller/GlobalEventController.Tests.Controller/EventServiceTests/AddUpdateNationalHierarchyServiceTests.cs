@@ -24,6 +24,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
         private IconContext iconContext;
         private IEventService eventService;
         private Mock<ICommandHandler<AddOrUpdateNationalHierarchyCommand>> addOrUpdateNationalHierarchyHandler;
+        private Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>> getHierarchyClassQueryHandler;
 
         [TestInitialize]
         public void InitializeData()
@@ -31,7 +32,9 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
             irmaContext = new IrmaContext();
             iconContext = new IconContext();
             addOrUpdateNationalHierarchyHandler = new Mock<ICommandHandler<AddOrUpdateNationalHierarchyCommand>>();
-            eventService = new AddOrUpdateNationalHierarchyEventService(irmaContext, iconContext, addOrUpdateNationalHierarchyHandler.Object);
+            getHierarchyClassQueryHandler = new Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>>();
+            eventService = new AddOrUpdateNationalHierarchyEventService(irmaContext, iconContext,
+                addOrUpdateNationalHierarchyHandler.Object, getHierarchyClassQueryHandler.Object);
         }
 
         [TestCleanup]

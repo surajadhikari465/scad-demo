@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PushController", "PushController", "{20BB0BD4-9397-45FC-976E-5D79AC894C06}"
 EndProject
@@ -55,7 +55,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegionalEventController.Com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.Tests.Common", "Global Event Controller\GlobalEventController.Tests.Common\GlobalEventController.Tests.Common.csproj", "{7942B5C3-AEB4-4384-B7E3-CAE750379522}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.Testing.Common", "GlobalEventController.Testing.Common\GlobalEventController.Testing.Common.csproj", "{821BE8FC-1DA7-46D0-9869-063E2DDC7592}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalEventController.Testing.Common", "Global Event Controller\GlobalEventController.Testing.Common\GlobalEventController.Testing.Common.csproj", "{821BE8FC-1DA7-46D0-9869-063E2DDC7592}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -276,102 +276,5 @@ Global
 		{9A07AE95-4E4A-4D5E-8AA9-F2AAC77DEEF4} = {D00EA41D-4566-4E78-B33E-145C7BEDD58E}
 		{7942B5C3-AEB4-4384-B7E3-CAE750379522} = {C863154F-4577-494F-8421-52E099F328DE}
 		{821BE8FC-1DA7-46D0-9869-063E2DDC7592} = {C863154F-4577-494F-8421-52E099F328DE}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 24
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = POS\u0020Push\u0020Controller\\PushController.Common\\PushController.Common.csproj
-		SccProjectTopLevelParentUniqueName1 = Interface\u0020Controller.sln
-		SccProjectName1 = POS\u0020Push\u0020Controller/PushController.Common
-		SccLocalPath1 = POS\u0020Push\u0020Controller\\PushController.Common
-		SccProjectUniqueName2 = Common\\InterfaceController.Common.csproj
-		SccProjectName2 = Common
-		SccLocalPath2 = Common
-		SccProjectUniqueName3 = POS\u0020Push\u0020Controller\\PushController.DataAccess\\PushController.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName3 = Interface\u0020Controller.sln
-		SccProjectName3 = POS\u0020Push\u0020Controller/PushController.DataAccess
-		SccLocalPath3 = POS\u0020Push\u0020Controller\\PushController.DataAccess
-		SccProjectUniqueName4 = POS\u0020Push\u0020Controller\\PushController.Controller\\PushController.Controller.csproj
-		SccProjectTopLevelParentUniqueName4 = Interface\u0020Controller.sln
-		SccProjectName4 = POS\u0020Push\u0020Controller/PushController.Controller
-		SccLocalPath4 = POS\u0020Push\u0020Controller\\PushController.Controller
-		SccProjectUniqueName5 = POS\u0020Push\u0020Controller\\PushController.Tests.Controller\\PushController.Tests.Controller.csproj
-		SccProjectTopLevelParentUniqueName5 = Interface\u0020Controller.sln
-		SccProjectName5 = POS\u0020Push\u0020Controller/PushController.Tests.Controller
-		SccLocalPath5 = POS\u0020Push\u0020Controller\\PushController.Tests.Controller
-		SccProjectUniqueName6 = POS\u0020Push\u0020Controller\\PushController.Tests.DataAccess\\PushController.Tests.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName6 = Interface\u0020Controller.sln
-		SccProjectName6 = POS\u0020Push\u0020Controller/PushController.Tests.DataAccess
-		SccLocalPath6 = POS\u0020Push\u0020Controller\\PushController.Tests.DataAccess
-		SccProjectUniqueName7 = Global\u0020Event\u0020Controller\\GlobalEventController.Common\\GlobalEventController.Common.csproj
-		SccProjectTopLevelParentUniqueName7 = Interface\u0020Controller.sln
-		SccProjectName7 = Global\u0020Event\u0020Controller/GlobalEventController.Common
-		SccLocalPath7 = Global\u0020Event\u0020Controller\\GlobalEventController.Common
-		SccProjectUniqueName8 = Global\u0020Event\u0020Controller\\GlobalEventController.DataAccess\\GlobalEventController.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName8 = Interface\u0020Controller.sln
-		SccProjectName8 = Global\u0020Event\u0020Controller/GlobalEventController.DataAccess
-		SccLocalPath8 = Global\u0020Event\u0020Controller\\GlobalEventController.DataAccess
-		SccProjectUniqueName9 = Global\u0020Event\u0020Controller\\GlobalEventController.Controller\\GlobalEventController.Controller.csproj
-		SccProjectTopLevelParentUniqueName9 = Interface\u0020Controller.sln
-		SccProjectName9 = Global\u0020Event\u0020Controller/GlobalEventController.Controller
-		SccLocalPath9 = Global\u0020Event\u0020Controller\\GlobalEventController.Controller
-		SccProjectUniqueName10 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.DataAccess\\GlobalEventController.Tests.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName10 = Interface\u0020Controller.sln
-		SccProjectName10 = Global\u0020Event\u0020Controller/GlobalEventController.Tests.DataAccess
-		SccLocalPath10 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.DataAccess
-		SccProjectUniqueName11 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.Controller\\GlobalEventController.Tests.Controller.csproj
-		SccProjectTopLevelParentUniqueName11 = Interface\u0020Controller.sln
-		SccProjectName11 = Global\u0020Event\u0020Controller/GlobalEventController.Tests.Controller
-		SccLocalPath11 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.Controller
-		SccProjectUniqueName12 = Regional\u0020Event\u0020Controller\\RegionalEventController.Common\\RegionalEventController.Common.csproj
-		SccProjectTopLevelParentUniqueName12 = Interface\u0020Controller.sln
-		SccProjectName12 = Regional\u0020Event\u0020Controller/RegionalEventController.Common
-		SccLocalPath12 = Regional\u0020Event\u0020Controller\\RegionalEventController.Common
-		SccProjectUniqueName13 = Regional\u0020Event\u0020Controller\\RegionalEventController.DataAccess\\RegionalEventController.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName13 = Interface\u0020Controller.sln
-		SccProjectName13 = Regional\u0020Event\u0020Controller/RegionalEventController.DataAccess
-		SccLocalPath13 = Regional\u0020Event\u0020Controller\\RegionalEventController.DataAccess
-		SccProjectUniqueName14 = Regional\u0020Event\u0020Controller\\RegionalEventController.Controller\\RegionalEventController.Controller.csproj
-		SccProjectTopLevelParentUniqueName14 = Interface\u0020Controller.sln
-		SccProjectName14 = Regional\u0020Event\u0020Controller/RegionalEventController.Controller
-		SccLocalPath14 = Regional\u0020Event\u0020Controller\\RegionalEventController.Controller
-		SccProjectUniqueName15 = Regional\u0020Event\u0020Controller\\RegionalEventController.Tests.Controller\\RegionalEventController.Tests.Controller.csproj
-		SccProjectTopLevelParentUniqueName15 = Interface\u0020Controller.sln
-		SccProjectName15 = Regional\u0020Event\u0020Controller/RegionalEventController.Tests.Controller
-		SccLocalPath15 = Regional\u0020Event\u0020Controller\\RegionalEventController.Tests.Controller
-		SccProjectUniqueName16 = Regional\u0020Event\u0020Controller\\RegionalEventController.Tests.DataAccess\\RegionalEventController.Tests.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName16 = Interface\u0020Controller.sln
-		SccProjectName16 = Regional\u0020Event\u0020Controller/RegionalEventController.Tests.DataAccess
-		SccLocalPath16 = Regional\u0020Event\u0020Controller\\RegionalEventController.Tests.DataAccess
-		SccProjectUniqueName17 = Tlog\u0020Controller\\TlogController.Common\\TlogController.Common.csproj
-		SccProjectTopLevelParentUniqueName17 = Interface\u0020Controller.sln
-		SccProjectName17 = Tlog\u0020Controller/TlogController.Common
-		SccLocalPath17 = Tlog\u0020Controller\\TlogController.Common
-		SccProjectUniqueName18 = Tlog\u0020Controller\\TlogController.DataAccess\\TlogController.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName18 = Interface\u0020Controller.sln
-		SccProjectName18 = Tlog\u0020Controller/TlogController.DataAccess
-		SccLocalPath18 = Tlog\u0020Controller\\TlogController.DataAccess
-		SccProjectUniqueName19 = Tlog\u0020Controller\\TlogController.Controller\\TlogController.Controller.csproj
-		SccProjectTopLevelParentUniqueName19 = Interface\u0020Controller.sln
-		SccProjectName19 = Tlog\u0020Controller/TlogController.Controller
-		SccLocalPath19 = Tlog\u0020Controller\\TlogController.Controller
-		SccProjectUniqueName20 = Tlog\u0020Controller\\TlogController.Tests.Controller\\TlogController.Tests.Controller.csproj
-		SccProjectTopLevelParentUniqueName20 = Interface\u0020Controller.sln
-		SccProjectName20 = Tlog\u0020Controller/TlogController.Tests.Controller
-		SccLocalPath20 = Tlog\u0020Controller\\TlogController.Tests.Controller
-		SccProjectUniqueName21 = Tlog\u0020Controller\\TlogController.Tests.DataAccess\\TlogController.Tests.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName21 = Interface\u0020Controller.sln
-		SccProjectName21 = Tlog\u0020Controller/TlogController.Tests.DataAccess
-		SccLocalPath21 = Tlog\u0020Controller\\TlogController.Tests.DataAccess
-		SccProjectUniqueName22 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.Common\\GlobalEventController.Tests.Common.csproj
-		SccProjectTopLevelParentUniqueName22 = Interface\u0020Controller.sln
-		SccProjectName22 = Global\u0020Event\u0020Controller/GlobalEventController.Tests.Common
-		SccLocalPath22 = Global\u0020Event\u0020Controller\\GlobalEventController.Tests.Common
-		SccProjectUniqueName23 = GlobalEventController.Testing.Common\\GlobalEventController.Testing.Common.csproj
-		SccProjectTopLevelParentUniqueName23 = Interface\u0020Controller.sln
-		SccProjectName23 = GlobalEventController.Testing.Common
-		SccLocalPath23 = GlobalEventController.Testing.Common
 	EndGlobalSection
 EndGlobal

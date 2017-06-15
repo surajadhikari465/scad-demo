@@ -51,30 +51,24 @@
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Framework.2017.4.19.1\lib\net45\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Testing.2016.10.27.2\lib\net45\Icon.Testing.dll</HintPath>
@@ -147,6 +141,8 @@
     <Compile Include="DataServicesTests\AddHierarchyDataServiceHandlerTests.cs" />
     <Compile Include="DataServicesTests\EmailUomChangeServiceTests.cs" />
     <Compile Include="QueryTests\GetEventsQueryHandlerTests.cs" />
+    <Compile Include="QueryTests\GetIrmaBrandQueryHandlerTests.cs" />
+    <Compile Include="QueryTests\GetTaxAbbreviationQueryHandlerTests.cs" />
     <Compile Include="QueryTests\GetUserQueryHandlerTests.cs" />
     <Compile Include="QueryTests\GetScanCodeQueryHandlerTests.cs" />
     <Compile Include="QueryTests\GetItemIdentifiersQueryHandlerTests.cs" />
@@ -168,10 +164,6 @@
       <Project>{7c794291-1d50-44e9-bc9d-4fb95b2ec889}</Project>
       <Name>InterfaceController.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GlobalEventController.Testing.Common\GlobalEventController.Testing.Common.csproj">
-      <Project>{821be8fc-1da7-46d0-9869-063e2ddc7592}</Project>
-      <Name>GlobalEventController.Testing.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GlobalEventController.Common\GlobalEventController.Common.csproj">
       <Project>{3eeedfc4-da9b-4d46-b7cf-e96e83077d1d}</Project>
       <Name>GlobalEventController.Common</Name>
@@ -183,6 +175,10 @@
     <ProjectReference Include="..\GlobalEventController.DataAccess\GlobalEventController.DataAccess.csproj">
       <Project>{d83dd846-a441-473e-bb4e-749c98be0492}</Project>
       <Name>GlobalEventController.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GlobalEventController.Testing.Common\GlobalEventController.Testing.Common.csproj">
+      <Project>{821be8fc-1da7-46d0-9869-063e2ddc7592}</Project>
+      <Name>GlobalEventController.Testing.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

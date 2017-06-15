@@ -1,17 +1,13 @@
 ﻿using Icon.Framework;
 using Icon.Logging;
 using Icon.Testing.Builders;
-using Icon.Testing.CustomModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RegionalEventController.Controller.ProcessorModules;
 using RegionalEventController.Controller.UpdateServices;
 using RegionalEventController.DataAccess.Commands;
-using RegionalEventController.DataAccess.Interfaces;
-using RegionalEventController.DataAccess.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 
