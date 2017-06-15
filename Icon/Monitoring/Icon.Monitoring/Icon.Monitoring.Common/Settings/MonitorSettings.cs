@@ -17,7 +17,6 @@
         public List<string> ApiControllerMonitorRegions { get; set; }
         public string Environment { get; set; }
         public double MonitorServiceTimer { get; set; }
-
         public LocalTime PosPushStartTime_FL { get; set; }
         public LocalTime PosPushStartTime_MA { get; set; }
         public LocalTime PosPushStartTime_MW { get; set; }
@@ -30,7 +29,6 @@
         public LocalTime PosPushStartTime_SP { get; set; }
         public LocalTime PosPushStartTime_SW { get; set; }
         public LocalTime PosPushStartTime_UK { get; set; }
-
         public LocalTime StoreOpenCentralTime_FL { get; set; }
         public LocalTime StoreOpenCentralTime_MA { get; set; }
         public LocalTime StoreOpenCentralTime_MW { get; set; }
@@ -44,10 +42,9 @@
         public LocalTime StoreOpenCentralTime_SW { get; set; }
         public LocalTime StoreOpenCentralTime_UK { get; set; }
         public int NumberOfMinutesBeforeStoreOpens { get; set; }
-        public LocalTime ApiControllerMonitorBlackoutStart { get; set; }
-        public LocalTime ApiControllerMonitorBlackoutEnd { get; set; }
-        public string ApiControllerMonitorBlackoutDay { get; set; }
-
+        public LocalTime MaintenanceStartTime { get; set; }
+        public LocalTime MaintenanceEndTime { get; set; }
+        public string MaintenanceDay { get; set; }
         public Dictionary<string, TimeSpan> MonitorTimers { get; set; }
 
         public static MonitorSettings CreateFromConfig()
@@ -66,11 +63,11 @@
                     .Select(k => new { Key = k, Value = ConfigurationManager.AppSettings[k] })
                     .ToDictionary(x => x.Key, x => TimeSpan.FromMilliseconds(int.Parse(x.Value)));
 
-            settings.ApiControllerMonitorBlackoutEnd = pattern.Parse(AppSettingsAccessor.GetStringSetting(nameof(ApiControllerMonitorBlackoutEnd))).Value;
-            settings.ApiControllerMonitorBlackoutStart = pattern.Parse(AppSettingsAccessor.GetStringSetting(nameof(ApiControllerMonitorBlackoutStart))).Value; 
-            settings.ApiControllerMonitorBlackoutDay = AppSettingsAccessor.GetStringSetting("ApiControllerMonitorBlackoutDay");
+            settings.MaintenanceStartTime = pattern.Parse(AppSettingsAccessor.GetStringSetting(nameof(MaintenanceStartTime))).Value;
+            settings.MaintenanceEndTime = pattern.Parse(AppSettingsAccessor.GetStringSetting(nameof(MaintenanceEndTime))).Value;
+            settings.MaintenanceDay = AppSettingsAccessor.GetStringSetting("MaintenanceDay");
 
-            
+
             string config = String.Empty;
             string storeOpenTimeConfigSetting = String.Empty;
             foreach (IrmaRegions region in Enum.GetValues(typeof(IrmaRegions)))
@@ -86,13 +83,8 @@
                 LocalTime openTime = pattern.Parse(configOpenTime).Value;
                 PropertyInfo openTimePropertyInfo = settings.GetType().GetProperty(storeOpenTimeConfigSetting);
                 openTimePropertyInfo.SetValue(settings, openTime);
-
-
             }
-
             return settings;
         }
-
-
     }
 }
