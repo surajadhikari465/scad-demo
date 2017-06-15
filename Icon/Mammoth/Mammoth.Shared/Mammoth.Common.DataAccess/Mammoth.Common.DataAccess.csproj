@@ -74,6 +74,8 @@
     <Compile Include="ConnectionBuilders\IConnectionBuilder.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\ChangeQueueHistoryModel.cs" />
+    <Compile Include="Models\HierarchyClass.cs" />
+    <Compile Include="Models\Item.cs" />
     <Compile Include="T4Templates\CurrencyCodes.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
