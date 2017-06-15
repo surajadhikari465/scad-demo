@@ -80,10 +80,12 @@ BEGIN
 					OR (inserted.UomRegulationTagUom IS NULL AND deleted.UomRegulationTagUom IS NOT NULL))
 					AND tag.FlagValue = 1)
 			)
+
 		AND (
 				dbo.fn_HasPendingItemChangePriceBatchDetailRecord(inserted.Item_Key, si.Store_No) = 0
 			)
 END
+
 GO
 
 CREATE TRIGGER [dbo].[ItemSignAttributeInsert]
@@ -116,6 +118,7 @@ BEGIN
 				OR (inserted.UomRegulationChicagoBaby IS NOT NULL AND chi.FlagValue = 1)
 				OR (inserted.UomRegulationTagUom IS NOT NULL AND tag.FlagValue = 1)
 			)
+
 		AND (
 				dbo.fn_HasPendingItemChangePriceBatchDetailRecord(inserted.Item_Key, si.Store_No) = 0
 			)

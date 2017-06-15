@@ -3217,6 +3217,8 @@
     <None Include="SQL Agent Job\ItemCatalog - VendorCostDealHistory Purge.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21974 - PostDeploy Schema PopData - AddInstanceDataFlag - TagUom - ChiBaby.rollback.sql" />
     <Build Include="Schema\dbo\Functions\fn_GetInstanceDataFlagStoreValues.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI22003 - PostDeploy Schema PopData - AddInstanceDataFlag - BatchOrganicChanges.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI22003 - PostDeploy Schema PopData - AddInstanceDataFlag - BatchOrganicChanges.rollback.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

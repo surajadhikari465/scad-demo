@@ -665,6 +665,7 @@ BEGIN
 		END
 	
 	-- SEND DOWN PRICE BATCH DETAIL RECORDS TO ALLOW ITEM CHANGES TO BE BATCHED
+	DECLARE @BatchOrganicChanges BIT = (SELECT dbo.fn_InstanceDataValue('BatchOrganicChanges', NULL)); -- Organic changes are controlled by 'BatchOrganicChanges' IDF
 	IF @error_no = 0
 		BEGIN
 			INSERT INTO PriceBatchDetail
@@ -705,7 +706,8 @@ BEGIN
 						OR INSERTED.Food_Stamps <> DELETED.Food_Stamps
 						OR INSERTED.Price_Required <> DELETED.Price_Required
 						OR INSERTED.Quantity_Required <> DELETED.Quantity_Required
-						OR INSERTED.Organic <> DELETED.Organic
+						OR (INSERTED.Organic <> DELETED.Organic
+							AND @BatchOrganicChanges = 1)
 						OR INSERTED.Retail_Sale <> DELETED.Retail_Sale
 						OR INSERTED.ItemType_ID <> DELETED.ItemType_ID
 						OR ISNULL(INSERTED.Retail_Unit_ID, 0) <> ISNULL(DELETED.Retail_Unit_ID, 0)
