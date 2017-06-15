@@ -6,14 +6,16 @@ Imports WholeFoods.IRMA.ItemHosting.BusinessLogic
 Imports WholeFoods.IRMA.ItemHosting.DataAccess
 
 Imports log4net
+Imports WholeFoods.IRMA.Mammoth.DataAccess
+Imports WholeFoods.IRMA.Mammoth.BusinessLogic
 
 Friend Class frmItemVendorStore
-	Inherits System.Windows.Forms.Form
+    Inherits System.Windows.Forms.Form
 
     Private IsInitializing As Boolean
 
-	Private m_colGrdItms As New Collection
-	Private mbNoClick As Boolean
+    Private m_colGrdItms As New Collection
+    Private mbNoClick As Boolean
     Private mbFilling As Boolean
 
     Private mdt As DataTable
@@ -22,17 +24,17 @@ Friend Class frmItemVendorStore
     ' Define the log4net logger for this class.
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
 
-	Private Enum geStoreCol
-		StoreNo = 0
-		StoreName = 1
-		ZoneID = 2
-		State = 3
-		WFMStore = 4
-		MegaStore = 5
-		CustomerType = 6
-	End Enum
-	
-	Private Sub frmItemVendorStore_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    Private Enum geStoreCol
+        StoreNo = 0
+        StoreName = 1
+        ZoneID = 2
+        State = 3
+        WFMStore = 4
+        MegaStore = 5
+        CustomerType = 6
+    End Enum
+
+    Private Sub frmItemVendorStore_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
 
         logger.Debug("frmItemVendorStore_Load Entry")
 
@@ -48,7 +50,7 @@ Friend Class frmItemVendorStore
         End If
 
         logger.Debug("frmItemVendorStore_Load Exit")
-		
+
     End Sub
 
     Private Sub cmbStates_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmbStates.SelectedIndexChanged
@@ -60,15 +62,15 @@ Friend Class frmItemVendorStore
         logger.Debug("cmbStates_SelectedIndexChanged Exit")
     End Sub
 
-	Private Sub cmbZones_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmbZones.SelectedIndexChanged
+    Private Sub cmbZones_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmbZones.SelectedIndexChanged
         logger.Debug("cmbZones_SelectedIndexChanged Entry")
         If mbFilling Or IsInitializing Then Exit Sub
         optSelection(geStoreCol.ZoneID).Checked = True
         OptSelection_CheckedChanged(optSelection.Item(2), New System.EventArgs())
         logger.Debug("cmbZones_SelectedIndexChanged Exit")
     End Sub
-	
-	Private Sub cmdApply_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdApply.Click
+
+    Private Sub cmdApply_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdApply.Click
         logger.Debug("cmdApply_Click Entry")
 
         Dim iTotSelRows As Short
@@ -143,6 +145,11 @@ Friend Class frmItemVendorStore
                         itemStore.Authorized = True
                         itemStore.RefreshPOSInfo = False
                         ItemDAO.UpdateItemStoreAuthorization(itemStore)
+
+                        Dim mammothEventBo As New MammothEventBO
+                        mammothEventBo.ItemKey = glItemID
+                        mammothEventBo.StoreNo = ugrdStoreList.Selected.Rows(iCnt).Cells("Store_no").Value
+                        MammothEventDAO.CreateItemLocaleAddOrUpdateEvent(mammothEventBo)
                     End If
 
                     ugrdStoreList.Selected.Rows(iCnt).Delete(False)
@@ -153,7 +160,7 @@ Friend Class frmItemVendorStore
         Me.Close()
         logger.Debug("cmdApply_Click Exit")
     End Sub
-	
+
     Private Sub LoadStates()
         logger.Debug("LoadStates Entry")
         Dim iLoop As Integer
@@ -166,26 +173,26 @@ Friend Class frmItemVendorStore
         Next iLoop
         logger.Debug("LoadStates Exit")
     End Sub
-	
-	Private Function StateInList(ByRef strState As String) As Boolean
+
+    Private Function StateInList(ByRef strState As String) As Boolean
         logger.Debug("StateInList Entry")
-		Dim i As Short
-		
-		StateInList = False
-		
-		For i = 0 To cmbStates.Items.Count - 1
-			If VB6.GetItemString(cmbStates, i) = strState Then
-				StateInList = True
-				Exit For
-			End If
+        Dim i As Short
+
+        StateInList = False
+
+        For i = 0 To cmbStates.Items.Count - 1
+            If VB6.GetItemString(cmbStates, i) = strState Then
+                StateInList = True
+                Exit For
+            End If
         Next i
         logger.Debug("StateInList Exit")
     End Function
-	
-	Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
-		Me.Close()
-	End Sub
-	
+
+    Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
+        Me.Close()
+    End Sub
+
     Private Sub OptSelection_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles optSelection.CheckedChanged
 
         logger.Debug("OptSelection_CheckedChanged Entry")
@@ -242,7 +249,7 @@ Friend Class frmItemVendorStore
 
         logger.Debug("OptSelection_CheckedChanged Exit")
     End Sub
-	
+
     Private Sub SetCombos()
 
         logger.Debug("SetCombos Entry")

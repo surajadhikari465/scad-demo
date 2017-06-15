@@ -4,7 +4,8 @@ Option Explicit On
 Imports System.Text
 Imports VB = Microsoft.VisualBasic
 Imports log4net
-
+Imports WholeFoods.IRMA.Mammoth.DataAccess
+Imports WholeFoods.IRMA.Mammoth.BusinessLogic
 
 Friend Class frmItemVendorID
     Inherits System.Windows.Forms.Form
@@ -185,14 +186,18 @@ Friend Class frmItemVendorID
             If fSelectDate.ReturnDate <> "" Then
                 For iCnt = ugrdSIV.Selected.Rows.Count - 1 To 0 Step -1
                     Try
-                        rsChkPrimVend = SQLOpenRecordSet("EXEC CheckIfPrimVendCanSwap " & glVendorID & ", " & glItemID & ", " & ugrdSIV.Selected.Rows(iCnt).Cells("Store_no").Value, DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbForwardOnly + DAO.RecordsetOptionEnum.dbSQLPassThrough)
+                        Dim storeNo As Integer = CInt(ugrdSIV.Selected.Rows(iCnt).Cells("Store_no").Value)
+                        rsChkPrimVend = SQLOpenRecordSet("EXEC CheckIfPrimVendCanSwap " & glVendorID & ", " & glItemID & ", " & storeNo, DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbForwardOnly + DAO.RecordsetOptionEnum.dbSQLPassThrough)
                         If rsChkPrimVend.Fields("IsPrimVend").Value = 1 Then
-                            fPrimVendSelect = New frmNewPrimVend(CStr(Me.txtVendor.Text), glVendorID, glItemID, CInt(ugrdSIV.Selected.Rows(iCnt).Cells("Store_no").Value))
+                            fPrimVendSelect = New frmNewPrimVend(CStr(Me.txtVendor.Text), glVendorID, glItemID, storeNo)
 
                             fPrimVendSelect.ShowDialog()
                             If fPrimVendSelect.UnassignedItems = 0 Then
                                 '-- Delete StoreItemVendor
-                                SQLExecute("EXEC DeleteStoreItemVendor " & glVendorID & ", " & ugrdSIV.Selected.Rows(iCnt).Cells("Store_no").Value & ", " & glItemID & ", '" & VB6.Format(fSelectDate.ReturnDate, "YYYY-MM-DD") & "'", DAO.RecordsetOptionEnum.dbSQLPassThrough)
+                                SQLExecute("EXEC DeleteStoreItemVendor " & glVendorID & ", " & storeNo & ", " & glItemID & ", '" & VB6.Format(fSelectDate.ReturnDate, "YYYY-MM-DD") & "'", DAO.RecordsetOptionEnum.dbSQLPassThrough)
+
+                                MammothEventDAO.CreateItemDeleteEvent(New MammothEventBO With {.ItemKey = glItemID, .StoreNo = storeNo})
+
                                 If sReturnDate = VB6.Format(SystemDateTime(True), ResourcesIRMA.GetString("DateStringFormat")) Then ugrdSIV.Selected.Rows(iCnt).Delete(False)
                             Else
                                 Call MsgBox(ResourcesItemHosting.GetString("SelectPrimaryVendor"), MsgBoxStyle.Critical, Me.Text)
@@ -204,7 +209,9 @@ Friend Class frmItemVendorID
                             rsChkPrimVend.Close()
                             rsChkPrimVend = Nothing
                             '-- Delete StoreItemVendor
-                            SQLExecute("EXEC DeleteStoreItemVendor " & glVendorID & ", " & ugrdSIV.Selected.Rows(iCnt).Cells("Store_no").Value & ", " & glItemID & ", '" & VB6.Format(fSelectDate.ReturnDate, "YYYY-MM-DD") & "'", DAO.RecordsetOptionEnum.dbSQLPassThrough)
+                            SQLExecute("EXEC DeleteStoreItemVendor " & glVendorID & ", " & storeNo & ", " & glItemID & ", '" & VB6.Format(fSelectDate.ReturnDate, "YYYY-MM-DD") & "'", DAO.RecordsetOptionEnum.dbSQLPassThrough)
+
+                            MammothEventDAO.CreateItemDeleteEvent(New MammothEventBO With {.ItemKey = glItemID, .StoreNo = storeNo})
 
                             'track this store-name as a store that is being de-authorized
                             row = dt.NewRow
@@ -216,8 +223,6 @@ Friend Class frmItemVendorID
 
                             row("Store_Name") = STR.ToString
                             dt.Rows.Add(row)
-
-
 
                             If sReturnDate = VB6.Format(SystemDateTime(True), ResourcesIRMA.GetString("DateStringFormat")) Then ugrdSIV.Selected.Rows(iCnt).Delete(False)
                         End If

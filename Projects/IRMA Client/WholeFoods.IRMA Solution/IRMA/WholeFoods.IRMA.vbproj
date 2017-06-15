@@ -915,6 +915,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ItemHosting\BusinessLogic\ItemSignAttributeBO.vb" />
+    <Compile Include="Mammoth\BusinessLogic\MammothEventBO.vb" />
+    <Compile Include="Mammoth\DataAccess\MammothEventDAO.vb" />
     <Compile Include="ModelLayer\BusinessObjectBase.vb">
       <SubType>Code</SubType>
     </Compile>
