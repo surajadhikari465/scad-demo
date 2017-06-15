@@ -420,8 +420,8 @@ SELECT
 	LTRIM(RTRIM(pkg.traitValue)) AS [Item Pack],
 	CASE 
 		WHEN ISNULL(fse.traitValue, 0) = 0
-			THEN '"FALSE"'
-		ELSE '"TRUE"'
+			THEN '"false"'
+		ELSE '"true"'
 	END AS [Food Stamp Eligible],
 	LTRIM(RTRIM(sct.traitValue)) AS [POS Scale Tare],
 	CASE WHEN LTRIM(RTRIM(rsz.traitvalue)) IS NULL THEN 'NULL' ELSE rsz.traitValue END AS [Retail Size],
@@ -497,7 +497,7 @@ SELECT
 		ELSE '"Yes"'
 	END AS [Made In House],	   
 	CASE WHEN ISNULL(ds.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ds.traitvalue)) + '"' END AS [Delivery System],
-	CASE WHEN ISNULL(prh.traitValue, '0') = '0' THEN 'FALSE' ELSE 'TRUE' END AS [Prohibit Discount],
+	CASE WHEN ISNULL(prh.traitValue, '0') = '0' THEN 'false' ELSE 'true' END AS [Prohibit Discount],
 	CASE WHEN ISNULL(NTS.traitValue, '') = '' THEN 'NULL' ELSE '"' + LTRIM(RTRIM(NTS.traitvalue)) + '"' END AS [Notes],
 	CASE 
 		WHEN ISNULL(val.traitValue, '') = ''
@@ -508,14 +508,13 @@ SELECT
 	END AS [Item Status],
 	CASE 
 		WHEN ISNULL(val.traitValue, '') = ''
-			THEN '"FALSE"'
-		ELSE '"TRUE"'
+			THEN '"false"'
+		ELSE '"true"'
 	END AS [Validated],
 	'ICON' AS [Created By],
 	CASE WHEN ISNULL(ins.traitValue, '') = '' THEN 'NULL' ELSE '"' + ins.traitValue + '"' END AS [Created On],
 	CASE 
 		WHEN ISNULL(usr.traitValue, '') = '' THEN 'NULL' 
-		WHEN usr.traitValue like '%[0-9]%' THEN 'NULL' --Some of the Modified By values have dates instead of user names because of an old bug. So setting those to NULL if so.
 		ELSE '"' + LTRIM(RTRIM(usr.traitValue)) + '"' 
 	END AS [Modified By],
 	CASE WHEN ISNULL([mod].traitValue, '') = '' THEN 'NULL' ELSE '"' + [mod].traitValue + '"' END AS [Modified On],
