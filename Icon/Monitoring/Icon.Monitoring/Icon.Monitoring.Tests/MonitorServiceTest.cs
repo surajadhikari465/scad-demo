@@ -24,8 +24,6 @@ namespace Icon.Monitoring.Tests.Monitors
     [TestClass]
     public class MonitorServiceTest
     {
-
-        private SqlDbProvider db;
         private Mock<IMonitorSettings> mockSettings;
         private MonitorService monitorService;
         private Mock<IEmailClient> mockEmailClient;

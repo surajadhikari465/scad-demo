@@ -25,12 +25,9 @@ namespace Icon.Monitoring.Tests.Monitors
         private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
         private Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageQueueIdParameters, int>> mockMessageQueueQuery;
         private Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageUnprocessedRowCountParameters, int>> mockMessageUnprocessedRowCountQuery;
-
-        private SqlDbProvider db;
         private List<string> testRegions;
         private Mock<IMonitorSettings> mockSettings;
         private ApiControllerMonitor apiControllerMonitor;
-
         private IClock fakeClock;
         private IDateTimeZoneProvider dateTimeZoneProvider;
         [TestInitialize]
