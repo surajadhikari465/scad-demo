@@ -13,55 +13,63 @@ namespace GlobalEventController.DataAccess.Commands
 {
     public class DeleteNationalHierarchyCommandHandler : ICommandHandler<DeleteNationalHierarchyCommand>
     {
-        private readonly IrmaContext irmacontext;
         private const string natItemCatTableName = "NatItemCat";
         private const string natItemClassTableName = "NatItemClass";
-        private const string natItemfamilyTableName = "NatItemfamily";
+        private const string natItemfamilyTableName = "NatItemFamily";
+
+        private IrmaContext irmacontext;
         private ILogger<DeleteNationalHierarchyCommandHandler> logger;
+
         public DeleteNationalHierarchyCommandHandler(IrmaContext irmacontext, ILogger<DeleteNationalHierarchyCommandHandler> logger)
         {
             this.irmacontext = irmacontext;
             this.logger = logger;
         }
+
         public void Handle(DeleteNationalHierarchyCommand command)
         {
-            ValidatedNationalClass validatedNationalClass = getValidatedNationalClassByHierarchyClassId(command.iconId);
+            List<ValidatedNationalClass> validatedNationalClasses = getValidatedNationalClassByHierarchyClassId(command.IconId);
 
-            if (validatedNationalClass == null)
+            if (!validatedNationalClasses.Any())
             {
-                logger.Error(String.Format("No record found in ValidatedNationalClass table for IconId: ", command.iconId));
+                logger.Error(String.Format("No record found in ValidatedNationalClass table for IconId: ", command.IconId));
             }
             else
             {
-                command.level = validatedNationalClass.Level;
-                command.irmaId = validatedNationalClass.IrmaId;
+                foreach (var validatedNationalClass in validatedNationalClasses)
+                {
+                    command.Level = validatedNationalClass.Level;
+                    command.IrmaId = validatedNationalClass.IrmaId;
 
-                if (command.level == HierarchyLevels.NationalFamily || command.level == HierarchyLevels.NationalCategory)
-                {
-                    DeleteNatItemFamily(command);
-                }
-                else if (command.level == HierarchyLevels.NationalSubCategory)
-                {
-                    DeleteNatItemCat(command);
-                }
-                else
-                {
-                    DeleteNatItemClass(command);
+                    if (command.Level == HierarchyLevels.NationalFamily || command.Level == HierarchyLevels.NationalCategory)
+                    {
+                        DeleteNatItemFamily(command);
+                    }
+                    else if (command.Level == HierarchyLevels.NationalSubCategory)
+                    {
+                        DeleteNatItemCat(command);
+                    }
+                    else
+                    {
+                        DeleteNatItemClass(command);
+                    }
                 }
             }
         }
-        private ValidatedNationalClass getValidatedNationalClassByHierarchyClassId(int iconId)
+
+        private List<ValidatedNationalClass> getValidatedNationalClassByHierarchyClassId(int iconId)
         {
-            return irmacontext.ValidatedNationalClass.Where(hc => hc.IconId == iconId).FirstOrDefault();
+            return irmacontext.ValidatedNationalClass.Where(hc => hc.IconId == iconId).ToList();
         }
+
         private void DeleteNatItemCat(DeleteNationalHierarchyCommand command)
         {
-            var validatedNationalHierarchyToDelete = irmacontext.NatItemCat.Where(nic => nic.NatCatID == command.irmaId).SingleOrDefault();
-            bool hasPassedValidation = ValidatedNationalHierarchyToDelete<NatItemCat>(validatedNationalHierarchyToDelete, natItemCatTableName, (int)command.irmaId);
+            var validatedNationalHierarchyToDelete = irmacontext.NatItemCat.Where(nic => nic.NatCatID == command.IrmaId).SingleOrDefault();
+            bool hasPassedValidation = ValidatedNationalHierarchyToDelete(validatedNationalHierarchyToDelete, natItemCatTableName, (int)command.IrmaId);
 
             if (hasPassedValidation)
             {
-                var nationalClassToDelete = irmacontext.ValidatedNationalClass.Where(vnc => vnc.IconId == command.iconId).SingleOrDefault();
+                var nationalClassToDelete = irmacontext.ValidatedNationalClass.Where(vnc => vnc.IconId == command.IconId).SingleOrDefault();
                 using (DbContextTransaction transaction = irmacontext.Database.BeginTransaction())
                 {
                     try
@@ -80,14 +88,15 @@ namespace GlobalEventController.DataAccess.Commands
                 }
             }
         }
+
         private void DeleteNatItemClass(DeleteNationalHierarchyCommand command)
         {
-            var validatedNationalHierarchyToDelete = irmacontext.NatItemClass.Where(nic => nic.ClassID == command.irmaId).SingleOrDefault();
-            bool hasPassedValidation = ValidatedNationalHierarchyToDelete<NatItemClass>(validatedNationalHierarchyToDelete, natItemClassTableName, (int)command.irmaId);
+            var validatedNationalHierarchyToDelete = irmacontext.NatItemClass.Where(nic => nic.ClassID == command.IrmaId).SingleOrDefault();
+            bool hasPassedValidation = ValidatedNationalHierarchyToDelete(validatedNationalHierarchyToDelete, natItemClassTableName, (int)command.IrmaId);
 
             if (hasPassedValidation)
             {
-                var nationalClassToDelete = irmacontext.ValidatedNationalClass.Where(vnc => vnc.IconId == command.iconId).SingleOrDefault();
+                var nationalClassToDelete = irmacontext.ValidatedNationalClass.Where(vnc => vnc.IconId == command.IconId).SingleOrDefault();
                 using (DbContextTransaction transaction = irmacontext.Database.BeginTransaction())
                 {
                     try
@@ -106,21 +115,25 @@ namespace GlobalEventController.DataAccess.Commands
                 }
             }
         }
+
         private void DeleteNatItemFamily(DeleteNationalHierarchyCommand command)
         {
-            var validatedNationalHierarchyToDelete = irmacontext.NatItemFamily.Where(nif => nif.NatFamilyID == command.irmaId).SingleOrDefault();
+            var validatedNationalHierarchyToDelete = irmacontext.NatItemFamily.SingleOrDefault(nif => nif.NatFamilyID == command.IrmaId);
 
-            bool hasPassedValidation = ValidatedNationalHierarchyToDelete<NatItemFamily>(validatedNationalHierarchyToDelete, natItemfamilyTableName, (int)command.irmaId);
+            bool hasPassedValidation = ValidatedNationalHierarchyToDelete(validatedNationalHierarchyToDelete, natItemfamilyTableName, (int)command.IrmaId);
 
             if (hasPassedValidation)
             {
-                var nationalClassToDelete = irmacontext.ValidatedNationalClass.Where(vnc => vnc.IconId == command.iconId).SingleOrDefault();
+                var nationalClassToDelete = irmacontext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == command.IconId);
                 using (DbContextTransaction transaction = irmacontext.Database.BeginTransaction())
                 {
                     try
                     {
-                        irmacontext.NatItemFamily.Remove(validatedNationalHierarchyToDelete);
-                        irmacontext.SaveChanges();
+                        if (validatedNationalHierarchyToDelete != null)
+                        {
+                            irmacontext.NatItemFamily.Remove(validatedNationalHierarchyToDelete);
+                            irmacontext.SaveChanges();
+                        }
                         irmacontext.ValidatedNationalClass.Remove(nationalClassToDelete);
                         irmacontext.SaveChanges();
                         transaction.Commit();
@@ -133,13 +146,14 @@ namespace GlobalEventController.DataAccess.Commands
                 }
             }
         }
+
         private Boolean ValidatedNationalHierarchyToDelete<T>(T nationalHierarchyClass, string tableName, int Id)
         {
             bool hasChild = false;
             bool hasAssociatedItem = false;
             string errorMessage = string.Empty;
 
-            if (EqualityComparer<T>.Default.Equals(nationalHierarchyClass, default(T)))
+            if (tableName != natItemfamilyTableName && EqualityComparer<T>.Default.Equals(nationalHierarchyClass, default(T)))
             {
                 errorMessage = String.Format("The following National Hierarchy was not found in the IRMA table {0}, so no update will be performed:  HierarchyClassId = {1}", tableName, Id);
                 logger.Error(errorMessage);
@@ -149,17 +163,17 @@ namespace GlobalEventController.DataAccess.Commands
             // child exist
             if (tableName == natItemfamilyTableName)
             {
-                hasChild = irmacontext.NatItemCat.Where(nic => nic != null && nic.NatFamilyID == Id).Any();
+                hasChild = irmacontext.NatItemCat.Any(nic => nic.NatFamilyID == Id);
             }
             // child exist
             else if (tableName == natItemClassTableName)
             {
-                hasChild = irmacontext.NatItemClass.Where(nic => nic != null && nic.NatCatID == Id).Any();
+                hasChild = irmacontext.NatItemClass.Any(nic => nic.NatCatID == Id);
             }
             //item exist
             else if (tableName == natItemClassTableName)
             {
-                hasAssociatedItem = irmacontext.Item.Where(it => it != null && it.ClassID == Id).Any();
+                hasAssociatedItem = irmacontext.Item.Any(it => it.ClassID == Id);
             }
 
             if (hasChild)

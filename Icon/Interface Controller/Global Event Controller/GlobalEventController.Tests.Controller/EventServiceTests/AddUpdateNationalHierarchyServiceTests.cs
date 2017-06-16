@@ -23,18 +23,17 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
         private IrmaContext irmaContext;
         private IconContext iconContext;
         private IEventService eventService;
-        private Mock<ICommandHandler<AddOrUpdateNationalHierarchyCommand>> addOrUpdateNationalHierarchyHandler;
-        private Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>> getHierarchyClassQueryHandler;
+        private Mock<ICommandHandler<AddOrUpdateNationalHierarchyCommand>> mockAddOrUpdateNationalHierarchyHandler;
+        private Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>> mockGetHierarchyClassQueryHandler;
 
         [TestInitialize]
         public void InitializeData()
         {
             irmaContext = new IrmaContext();
             iconContext = new IconContext();
-            addOrUpdateNationalHierarchyHandler = new Mock<ICommandHandler<AddOrUpdateNationalHierarchyCommand>>();
-            getHierarchyClassQueryHandler = new Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>>();
-            eventService = new AddOrUpdateNationalHierarchyEventService(irmaContext, iconContext,
-                addOrUpdateNationalHierarchyHandler.Object, getHierarchyClassQueryHandler.Object);
+            mockAddOrUpdateNationalHierarchyHandler = new Mock<ICommandHandler<AddOrUpdateNationalHierarchyCommand>>();
+            mockGetHierarchyClassQueryHandler = new Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>>();
+            eventService = new AddOrUpdateNationalHierarchyEventService(irmaContext, iconContext, mockAddOrUpdateNationalHierarchyHandler.Object, mockGetHierarchyClassQueryHandler.Object);
         }
 
         [TestCleanup]
@@ -106,7 +105,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
         public void AddOrUpdateNationalHierarchyEventService_HeirarchyEventMessage_AddOrUpdateNationalHierarchyCommandHandlerCalledOneTime()
         {
             //Given
-            addOrUpdateNationalHierarchyHandler.Setup(q => q.Handle(It.IsAny<AddOrUpdateNationalHierarchyCommand>()));
+            mockAddOrUpdateNationalHierarchyHandler.Setup(q => q.Handle(It.IsAny<AddOrUpdateNationalHierarchyCommand>()));
             eventService.ReferenceId = 1;
             eventService.Message = "TestHierarchyName";
             eventService.Region = "TestRegion";
@@ -115,7 +114,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
             eventService.Run();
 
             //Then         
-            addOrUpdateNationalHierarchyHandler.Verify(command => command.Handle(It.IsAny<AddOrUpdateNationalHierarchyCommand>()), Times.Once);
+            mockAddOrUpdateNationalHierarchyHandler.Verify(command => command.Handle(It.IsAny<AddOrUpdateNationalHierarchyCommand>()), Times.Once);
         }
     }
 }

@@ -187,10 +187,12 @@ namespace GlobalEventController.Controller.EventServices
             var irmaContext = contextManager.IrmaContexts[region];
             SetIrmaDbContextConnectionTimeout(irmaContext);
 
-            return new AddOrUpdateNationalHierarchyEventService(irmaContext,
+            return new AddOrUpdateNationalHierarchyEventService(
+                irmaContext, 
                 iconContext,
-                new AddOrUpdateNationalHierarchyCommandHandler(irmaContext,
-                new NLogLoggerInstance<AddOrUpdateNationalHierarchyCommandHandler>(StartupOptions.Instance.ToString())),
+                new AddOrUpdateNationalHierarchyCommandHandler(
+                    irmaContext,
+                    new NLogLoggerInstance<AddOrUpdateNationalHierarchyCommandHandler>(StartupOptions.Instance.ToString())),
                 new GetHierarchyClassQueryHandler(iconContext));
         }
 

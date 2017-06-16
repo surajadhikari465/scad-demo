@@ -25,7 +25,7 @@ namespace GlobalEventController.Controller.EventServices
             base.VerifyEventParameters(nameof(DeleteNationalHierarchyEventService), ReferenceId, Message, Region);
 
             DeleteNationalHierarchyCommand deleteNationalHierarchy = new DeleteNationalHierarchyCommand();
-            deleteNationalHierarchy.iconId = (int) ReferenceId;
+            deleteNationalHierarchy.IconId = (int) ReferenceId;
             deleteNationalHierarchyHandler.Handle(deleteNationalHierarchy);
             irmaContext.SaveChanges();
         }

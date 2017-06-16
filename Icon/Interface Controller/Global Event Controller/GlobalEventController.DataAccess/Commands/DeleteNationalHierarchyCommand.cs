@@ -4,8 +4,8 @@ namespace GlobalEventController.DataAccess.Commands
 {
    public class DeleteNationalHierarchyCommand
     {
-        public int iconId { get; set; }
-        public int? level { get; set; }
-        public int? irmaId { get; set; }
+        public int IconId { get; set; }
+        public int? Level { get; set; }
+        public int? IrmaId { get; set; }
     }
 }

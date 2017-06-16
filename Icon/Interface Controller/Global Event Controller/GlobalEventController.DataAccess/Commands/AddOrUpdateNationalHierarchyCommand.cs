@@ -9,11 +9,8 @@ namespace GlobalEventController.DataAccess.Commands
 {
     public class AddOrUpdateNationalHierarchyCommand
     {
-        public int IconId { get; set; }
-        public string Name { get; set; }
-        public int? Level { get; set; }
-        public int? ParentId { get; set; }
-        public int? IrmaId { get; set; }
         public HierarchyClass HierarchyClass { get; set; }
+        public HierarchyClass ParentHierarchyClass { get; set; }
+        public int? IrmaId { get; set; }
     }
 }

@@ -30,15 +30,18 @@ namespace GlobalEventController.Controller.EventServices
         {
             base.VerifyEventParameters(nameof(AddOrUpdateNationalHierarchyEventService), ReferenceId, Message, Region);
 
-            GetHierarchyClassQuery getHierarchyClass = new GetHierarchyClassQuery();
-            getHierarchyClass.HierarchyClassId = ReferenceId.Value;
-            HierarchyClass hierarchyClass = getHierarchyClassQueryHandler.Handle(getHierarchyClass);
+            HierarchyClass hierarchyClass = getHierarchyClassQueryHandler.Handle(new GetHierarchyClassQuery { HierarchyClassId = (int)ReferenceId });
+            HierarchyClass parentHierarchyClass = null;
+            if(hierarchyClass.hierarchyParentClassID.HasValue)
+            {
+                parentHierarchyClass = getHierarchyClassQueryHandler.Handle(new GetHierarchyClassQuery { HierarchyClassId = hierarchyClass.hierarchyParentClassID.Value });
+            }
 
-            AddOrUpdateNationalHierarchyCommand addOrUpdateNationalHierarchy = new AddOrUpdateNationalHierarchyCommand();
-            addOrUpdateNationalHierarchy.HierarchyClass = hierarchyClass;
-            addOrUpdateNationalHierarchy.IconId = ReferenceId.Value;
-            addOrUpdateNationalHierarchy.Name =Message;
-            addOrUpdateNationalHierarchyHandler.Handle(addOrUpdateNationalHierarchy);
+            addOrUpdateNationalHierarchyHandler.Handle(new AddOrUpdateNationalHierarchyCommand
+            {
+                HierarchyClass = hierarchyClass,
+                ParentHierarchyClass = parentHierarchyClass
+            });
         }
     }
 }

@@ -16,81 +16,146 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
     [TestClass]
     public class DeleteNationalHierarchyCommandHandlerTests
     {
-        private IrmaContext irmaContext;
-        private IconContext iconContext;
+        private DeleteNationalHierarchyCommandHandler commandHandler;
         private DeleteNationalHierarchyCommand command;
-        private DeleteNationalHierarchyCommandHandler handler;
         private Mock<ILogger<DeleteNationalHierarchyCommandHandler>> mockLogger;
+        private IrmaContext irmaContext;
+        private TransactionScope transaction;
 
         [TestInitialize]
-        public void InitializeData()
+        public void Initialize()
         {
+            transaction = new TransactionScope();
             this.irmaContext = new IrmaContext();
-            this.iconContext = new IconContext();
             this.command = new DeleteNationalHierarchyCommand();
             this.mockLogger = new Mock<ILogger<DeleteNationalHierarchyCommandHandler>>();
-            this.handler = new DeleteNationalHierarchyCommandHandler(this.irmaContext, mockLogger.Object);
+            this.commandHandler = new DeleteNationalHierarchyCommandHandler(this.irmaContext, mockLogger.Object);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            transaction.Dispose();
         }
 
         [TestMethod]
-        public void NationalHierarchyDelete_NationalHierarchyNotFoundInIrma_LoggerErrorCalled()
+        public void DeleteNationalHierarchy_NationalHierarchyNotFoundInIrma_LoggerErrorCalled()
         {
             // Given
-            this.command.iconId = irmaContext.NatItemClass.Select(nc => nc.NatCatID).FirstOrDefault();
+            this.command.IconId = irmaContext.NatItemClass.Select(nc => nc.NatCatID).FirstOrDefault();
+
             // When
-            this.handler.Handle(this.command);
+            this.commandHandler.Handle(this.command);
 
             // Then
             this.mockLogger.Verify(log => log.Error(It.IsAny<string>()), Times.Once, "Logging Error was not called one time.");
         }
 
         [TestMethod]
-        public void NationalHierarchyDelete_NationalHierarchyHasChildRecords_LoggerErrorCalled()
+        public void DeleteNationalHierarchy_NationalHierarchyHasChildRecords_LoggerErrorCalled()
         {
             // Given
-            this.command.iconId = -1;
+            this.command.IconId = -1;
 
             // When
-            this.handler.Handle(this.command);
+            this.commandHandler.Handle(this.command);
 
             // Then
             this.mockLogger.Verify(log => log.Error(It.IsAny<string>()), Times.Once, "Logging Error was not called one time.");
         }
 
         [TestMethod]
-        public void NationalHierarchyDelete_NationalHierarchyNoChildRecords_ShouldDelete()
+        public void DeleteNationalHierarchy_NationalHierarchyNoChildRecords_ShouldDelete()
         {
             // Given
-            using (TransactionScope scope = new TransactionScope())
+            irmaContext.NatItemFamily.Add(new NatItemFamily()
             {
-                irmaContext.NatItemFamily.Add(new NatItemFamily()
-                {
-                    NatFamilyName = "testHierarchy",
-                    NatSubTeam_No = null,
-                    LastUpdateTimestamp = System.DateTime.Now,
-                    SubTeam_No = null
-                });
-                irmaContext.SaveChanges();
-                var hierarchyClass = irmaContext.NatItemFamily.Where(nif => nif.NatFamilyName == "testHierarchy").First();
-                irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass()
-                {
-                    IrmaId = hierarchyClass.NatFamilyID,
-                    IconId = 999999,
-                    InsertDate = System.DateTime.Now,
-                    Level = 1
-                });
-                irmaContext.SaveChanges();
-                this.command.iconId = 999999;
+                NatFamilyName = "testHierarchy",
+                NatSubTeam_No = null,
+                LastUpdateTimestamp = System.DateTime.Now,
+                SubTeam_No = null
+            });
+            irmaContext.SaveChanges();
+            var hierarchyClass = irmaContext.NatItemFamily.Where(nif => nif.NatFamilyName == "testHierarchy").First();
+            irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass()
+            {
+                IrmaId = hierarchyClass.NatFamilyID,
+                IconId = 999999,
+                InsertDate = System.DateTime.Now,
+                Level = 1
+            });
+            irmaContext.SaveChanges();
+            this.command.IconId = 999999;
 
-                // When
-                this.handler.Handle(this.command);
+            // When
+            this.commandHandler.Handle(this.command);
 
-                // Then
-                Boolean doesNatItemFamilyRecordExist = irmaContext.NatItemFamily.Where(nif => nif != null && nif.NatFamilyID == hierarchyClass.NatFamilyID).Any();
-                Assert.AreEqual(false, doesNatItemFamilyRecordExist);
-                scope.Dispose();
-            }
+            // Then
+            Boolean doesNatItemFamilyRecordExist = irmaContext.NatItemFamily.Where(nif => nif != null && nif.NatFamilyID == hierarchyClass.NatFamilyID).Any();
+            Assert.AreEqual(false, doesNatItemFamilyRecordExist);
+        }
 
+        [TestMethod]
+        public void DeleteNationalHierarchy_DeleteEntireHierarchy_ShouldDeleteAllRecordsFromIrma()
+        {
+            //Given
+            var testNatItemFamily = irmaContext.NatItemFamily.Add(new NatItemFamily
+            {
+                NatFamilyName = "Test Family - Test Category"
+            });
+            irmaContext.SaveChanges();
+            var testNatItemCat = irmaContext.NatItemCat.Add(new NatItemCat
+            {
+                NatCatName = "Test Sub Category",
+                NatFamilyID = testNatItemFamily.NatFamilyID
+            });
+            irmaContext.SaveChanges();
+            var testNatItemClass = irmaContext.NatItemClass.Add(new NatItemClass
+            {
+                ClassID = 3000000,
+                ClassName = "Test Class",
+                NatCatID = testNatItemCat.NatCatID
+            });
+            irmaContext.SaveChanges();
+
+            var validatedFamily = irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass
+            {
+                IconId = 1000000,
+                IrmaId = testNatItemFamily.NatFamilyID,
+                Level = HierarchyLevels.NationalFamily
+            });
+            var validatedCategory = irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass
+            {
+                IconId = 1000001,
+                IrmaId = testNatItemFamily.NatFamilyID,
+                Level = HierarchyLevels.NationalCategory
+            });
+            var validatedSubCategory = irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass
+            {
+                IconId = 1000002,
+                IrmaId = testNatItemCat.NatCatID,
+                Level = HierarchyLevels.NationalSubCategory
+            });
+            var validatedClass = irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass
+            {
+                IconId = 1000003,
+                IrmaId = testNatItemClass.ClassID,
+                Level = HierarchyLevels.NationalClass
+            });
+            irmaContext.SaveChanges();
+
+            //When
+            command.IconId = validatedClass.IconId.Value;
+            commandHandler.Handle(command);
+            command.IconId = validatedSubCategory.IconId.Value;
+            commandHandler.Handle(command);
+            command.IconId = validatedCategory.IconId.Value;
+            commandHandler.Handle(command);
+            command.IconId = validatedFamily.IconId.Value;
+            commandHandler.Handle(command);
+
+            //Then
+            Assert.IsFalse(irmaContext.ValidatedNationalClass.Any(vnc => vnc.IconId >= 1000000 && vnc.IconId <= 1000003));
         }
     }
 }
