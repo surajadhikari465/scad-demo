@@ -50,6 +50,7 @@
             container.RegisterSingleton<IFileInfoAccessor, FileInfoAccessor>();
 
             container.RegisterSingleton<ITLogConJobMonitorSettings, TLogConJobMonitorSettings>();
+            container.RegisterSingleton<IVimLocaleConJobMonitorSettings, VimLocaleConJobMonitorSettings>();
 
             container.Verify();
             return container;
