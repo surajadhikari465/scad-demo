@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace Mammoth.Esb.HierarchyClassListener.Services
 {
-    public class HierarchyClassService : IHierarchyClassService
+    public class AddOrUpdateHierarchyClassService : IHierarchyClassService<AddOrUpdateHierarchyClassRequest>
     {
         private ICommandHandler<AddOrUpdateHierarchyClassesCommand> addOrUpdateHierarchyClassesCommandHandler;
         private ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand> addOrUpdateFinancialHierarchyClassesCommandHandler;
         private ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand> addOrUpdateMerchandiseHierarchyLineageCommandHandler;
 
-        public HierarchyClassService(ICommandHandler<AddOrUpdateHierarchyClassesCommand> addOrUpdateHierarchyClassesCommandHandler,
+        public AddOrUpdateHierarchyClassService(ICommandHandler<AddOrUpdateHierarchyClassesCommand> addOrUpdateHierarchyClassesCommandHandler,
             ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand> addOrUpdateMerchandiseHierarchyLineageCommandHandler,
             ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand> addOrUpdateFinancialHierarchyClassesCommandHandler)
         {
@@ -20,16 +20,19 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
             this.addOrUpdateFinancialHierarchyClassesCommandHandler = addOrUpdateFinancialHierarchyClassesCommandHandler;
         }
 
-        public void AddOrUpdateHierarchyClasses(AddOrUpdateHierarchyClassesCommand command)
+        public void ProcessHierarchyClasses(AddOrUpdateHierarchyClassRequest request)
         {
-            var financialHierarchyClasses = command.HierarchyClasses.Where(hc => hc.HierarchyId == Hierarchies.Financial).ToList();
-            var hierarchyClassesWithoutFinancial = command.HierarchyClasses.Except(financialHierarchyClasses).ToList();
+            var financialHierarchyClasses = request.HierarchyClasses.Where(hc => hc.HierarchyId == Hierarchies.Financial).ToList();
+            var hierarchyClassesWithoutFinancial = request.HierarchyClasses.Except(financialHierarchyClasses).ToList();
 
             if (hierarchyClassesWithoutFinancial.Any())
             {
-                addOrUpdateHierarchyClassesCommandHandler.Execute(command);
+                addOrUpdateHierarchyClassesCommandHandler.Execute(new AddOrUpdateHierarchyClassesCommand
+                {
+                    HierarchyClasses = hierarchyClassesWithoutFinancial
+                });
 
-                var merchandiseHierarchyClasses = command.HierarchyClasses.Where(hc => hc.HierarchyId == Hierarchies.Merchandise);
+                var merchandiseHierarchyClasses = request.HierarchyClasses.Where(hc => hc.HierarchyId == Hierarchies.Merchandise);
                 if (merchandiseHierarchyClasses.Any())
                 {
                     addOrUpdateMerchandiseHierarchyLineageCommandHandler.Execute(new AddOrUpdateMerchandiseHierarchyLineageCommand

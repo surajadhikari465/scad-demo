@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Mammoth.Esb.HierarchyClassListener.Models
 {
@@ -14,5 +15,6 @@ namespace Mammoth.Esb.HierarchyClassListener.Models
         public int HierarchyClassParentId { get; set; }
         public DateTime Timestamp { get; set; }
         public string HierarchyLevelName { get; set; }
+        public Contracts.ActionEnum Action { get; set; }
     }
 }

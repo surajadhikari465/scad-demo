@@ -27,7 +27,8 @@ namespace Mammoth.Esb.HierarchyClassListener.MessageParsers
                     HierarchyClassParentId = hierarchyClass.parentId.Value,
                     HierarchyClassName = hierarchyClass.name,
                     HierarchyId = Hierarchies.ByName[contract.name],
-                    HierarchyLevelName = contract.prototype.hierarchyLevelName
+                    HierarchyLevelName = contract.prototype.hierarchyLevelName,
+                    Action = hierarchyClass.Action
                 });
             }
 

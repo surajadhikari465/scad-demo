@@ -10,9 +10,9 @@ using System.Collections.Generic;
 namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
 {
     [TestClass]
-    public class HierarchyClassServiceTests
+    public class AddOrUpdateHierarchyClassServiceTests
     {
-        private HierarchyClassService service;
+        private AddOrUpdateHierarchyClassService service;
         private Mock<ICommandHandler<AddOrUpdateHierarchyClassesCommand>> mockAddOrUpdateHierarchyClassesCommandHandler;
         private Mock<ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand>> mockAddOrUpdateMerchandiseHierarchyLineageCommandHandler;
         private Mock<ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand>> mockAddOrUpdateFinancialHierarchyClassCommandHandler;
@@ -24,7 +24,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
             mockAddOrUpdateMerchandiseHierarchyLineageCommandHandler = new Mock<ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand>>();
             mockAddOrUpdateFinancialHierarchyClassCommandHandler = new Mock<ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand>>();
 
-            service = new HierarchyClassService(
+            service = new AddOrUpdateHierarchyClassService(
                 mockAddOrUpdateHierarchyClassesCommandHandler.Object,
                 mockAddOrUpdateMerchandiseHierarchyLineageCommandHandler.Object,
                 mockAddOrUpdateFinancialHierarchyClassCommandHandler.Object);
@@ -34,7 +34,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
         public void AddOrUpdateHierarchyClasses_NoMerchandiseHierarchyClasses_ShouldNotCallMerchandiseHierarchyLineageCommandHandler()
         {
             //Given
-            var command = new AddOrUpdateHierarchyClassesCommand
+            var request = new AddOrUpdateHierarchyClassRequest
             {
                 HierarchyClasses = new List<HierarchyClassModel>
                 {
@@ -45,7 +45,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
             };
 
             //When
-            service.AddOrUpdateHierarchyClasses(command);
+            service.ProcessHierarchyClasses(request);
 
             //Then
             mockAddOrUpdateHierarchyClassesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateHierarchyClassesCommand>()), Times.Once);
@@ -56,7 +56,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
         public void AddOrUpdateHierarchyClasses_MerchandiseHierarchyClassesExist_ShouldNotCallMerchandiseHierarchyLineageCommandHandler()
         {
             //Given
-            var command = new AddOrUpdateHierarchyClassesCommand
+            var request = new AddOrUpdateHierarchyClassRequest
             {
                 HierarchyClasses = new List<HierarchyClassModel>
                 {
@@ -67,7 +67,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
             };
 
             //When
-            service.AddOrUpdateHierarchyClasses(command);
+            service.ProcessHierarchyClasses(request);
 
             //Then
             mockAddOrUpdateHierarchyClassesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateHierarchyClassesCommand>()), Times.Once);
@@ -78,7 +78,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
         public void AddOrUpdateHierarchyClasses_FinancialHierarchyClassesExist_ShouldAddOrUpdateFinancialHierarchyClasses()
         {
             //Given
-            var command = new AddOrUpdateHierarchyClassesCommand
+            var request = new AddOrUpdateHierarchyClassRequest
             {
                 HierarchyClasses = new List<HierarchyClassModel>
                 {
@@ -89,7 +89,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
             };
 
             //When
-            service.AddOrUpdateHierarchyClasses(command);
+            service.ProcessHierarchyClasses(request);
 
             //Then
             mockAddOrUpdateHierarchyClassesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateHierarchyClassesCommand>()), Times.Never);
@@ -101,7 +101,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
         public void AddOrUpdateHierarchyClasses_NoFinancialHierarchyClassesExist_ShouldNotAddOrUpdateFinancialHierarchyClasses()
         {
             //Given
-            var command = new AddOrUpdateHierarchyClassesCommand
+            var request = new AddOrUpdateHierarchyClassRequest
             {
                 HierarchyClasses = new List<HierarchyClassModel>
                 {
@@ -112,7 +112,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
             };
 
             //When
-            service.AddOrUpdateHierarchyClasses(command);
+            service.ProcessHierarchyClasses(request);
 
             //Then
             mockAddOrUpdateHierarchyClassesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateHierarchyClassesCommand>()), Times.Once);
@@ -124,7 +124,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
         public void AddOrUpdateHierarchyClasses_DifferentHierarchyClassesExist_ShouldAddOrUpdateAllHierarchyClasses()
         {
             //Given
-            var command = new AddOrUpdateHierarchyClassesCommand
+            var request = new AddOrUpdateHierarchyClassRequest
             {
                 HierarchyClasses = new List<HierarchyClassModel>
                 {
@@ -135,7 +135,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
             };
 
             //When
-            service.AddOrUpdateHierarchyClasses(command);
+            service.ProcessHierarchyClasses(request);
 
             //Then
             mockAddOrUpdateHierarchyClassesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateHierarchyClassesCommand>()), Times.Once);

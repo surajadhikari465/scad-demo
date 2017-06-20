@@ -2,8 +2,8 @@
 
 namespace Mammoth.Esb.HierarchyClassListener.Services
 {
-    public interface IHierarchyClassService
+    public interface IHierarchyClassService<T> where T : class
     {
-        void AddOrUpdateHierarchyClasses(AddOrUpdateHierarchyClassesCommand command);
+        void ProcessHierarchyClasses(T request);
     }
 }

@@ -1,25 +1,22 @@
-﻿using Icon.Esb.ListenerApplication;
+﻿using Icon.Common.Email;
+using Icon.Esb;
+using Icon.Esb.ListenerApplication;
+using Icon.Esb.MessageParsers;
+using Icon.Esb.Subscriber;
+using Icon.Logging;
+using Mammoth.Esb.HierarchyClassListener.Models;
+using Mammoth.Esb.HierarchyClassListener.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Esb.Subscriber;
-using Icon.Esb;
-using Icon.Logging;
-using Icon.Common.Email;
-using Icon.Esb.MessageParsers;
-using Mammoth.Esb.HierarchyClassListener.Models;
-using Icon.Common.DataAccess;
-using Mammoth.Esb.HierarchyClassListener.Commands;
-using Mammoth.Esb.HierarchyClassListener.Services;
 
 namespace Mammoth.Esb.HierarchyClassListener
 {
     public class MammothHierarchyClassListener : ListenerApplication<MammothHierarchyClassListener, ListenerApplicationSettings>
     {
         private IMessageParser<List<HierarchyClassModel>> messageParser;
-        private IHierarchyClassService hierarchyClassService;
+        private IHierarchyClassService<AddOrUpdateHierarchyClassRequest> hierarchyClassService;
+        private IHierarchyClassService<DeleteBrandRequest> deleteBrandsService;
 
         public MammothHierarchyClassListener(ListenerApplicationSettings listenerApplicationSettings,
             EsbConnectionSettings esbConnectionSettings,
@@ -27,7 +24,8 @@ namespace Mammoth.Esb.HierarchyClassListener
             IEmailClient emailClient,
             ILogger<MammothHierarchyClassListener> logger,
             IMessageParser<List<HierarchyClassModel>> messageParser,
-            IHierarchyClassService hierarchyClassService)
+            IHierarchyClassService<AddOrUpdateHierarchyClassRequest> hierarchyClassService,
+            IHierarchyClassService<DeleteBrandRequest> deleteBrandsService)
             : base(listenerApplicationSettings,
                   esbConnectionSettings,
                   subscriber,
@@ -36,6 +34,7 @@ namespace Mammoth.Esb.HierarchyClassListener
         {
             this.messageParser = messageParser;
             this.hierarchyClassService = hierarchyClassService;
+            this.deleteBrandsService = deleteBrandsService;
         }
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
@@ -54,7 +53,18 @@ namespace Mammoth.Esb.HierarchyClassListener
             {
                 try
                 {
-                    hierarchyClassService.AddOrUpdateHierarchyClasses(new AddOrUpdateHierarchyClassesCommand { HierarchyClasses = hierarchyClasses });
+                    switch (hierarchyClasses.First().Action)
+                    {
+                        case Icon.Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate:
+                            hierarchyClassService.ProcessHierarchyClasses(new AddOrUpdateHierarchyClassRequest { HierarchyClasses = hierarchyClasses });
+                            break;
+                        case Icon.Esb.Schemas.Wfm.Contracts.ActionEnum.Delete:
+                            deleteBrandsService.ProcessHierarchyClasses(new DeleteBrandRequest { HierarchyClasses = hierarchyClasses });
+                            break;
+                        default:
+                            throw new ArgumentException($"No handler specified for Action {hierarchyClasses.First().Action}");
+                    }
+
                 }
                 catch (Exception e)
                 {

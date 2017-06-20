@@ -1,19 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Esb.HierarchyClassListener", "Mammoth.Esb.HierarchyClassListener\Mammoth.Esb.HierarchyClassListener.csproj", "{419658C2-5F33-4708-99E2-0F56CCB0109D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{1B98E297-79D3-4458-85F5-4E530CB9F22D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Esb.HierarchyClassListener.Tests", "Mammoth.Esb.HierarchyClassListener.Tests\Mammoth.Esb.HierarchyClassListener.Tests.csproj", "{BC35CE6D-544D-4D39-8CB4-0B055D1D212C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Esb.HierarchyClassListener.Service", "Mammoth.Esb.HierarchyClassListener.Service\Mammoth.Esb.HierarchyClassListener.Service.csproj", "{0EF559FD-63AE-4F7E-86E9-2841284B68FB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common.DataAccess", "..\..\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj", "{82505A9B-2264-4428-9806-D5EF838109B3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Framework", "..\..\Mammoth.Shared\Mammoth.Framework\Mammoth.Framework.csproj", "{799950FA-6F28-43CA-A60C-769BBE9DE6A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Esb.HierarchyClassListener.Tests.Specs", "Mammoth.Esb.HierarchyClassListener.Test.Specs\Mammoth.Esb.HierarchyClassListener.Tests.Specs.csproj", "{81CD1E33-3A64-4DFA-B00B-8D23A380A98A}"
 EndProject
@@ -49,22 +43,6 @@ Global
 		{0EF559FD-63AE-4F7E-86E9-2841284B68FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0EF559FD-63AE-4F7E-86E9-2841284B68FB}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{0EF559FD-63AE-4F7E-86E9-2841284B68FB}.Test|Any CPU.Build.0 = Test|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.ActiveCfg = QA|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.Build.0 = QA|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.Build.0 = Test|Any CPU
-		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.QA|Any CPU.ActiveCfg = Release|Any CPU
-		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.QA|Any CPU.Build.0 = Release|Any CPU
-		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Test|Any CPU.Build.0 = Release|Any CPU
 		{81CD1E33-3A64-4DFA-B00B-8D23A380A98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{81CD1E33-3A64-4DFA-B00B-8D23A380A98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81CD1E33-3A64-4DFA-B00B-8D23A380A98A}.QA|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,35 +54,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{82505A9B-2264-4428-9806-D5EF838109B3} = {1B98E297-79D3-4458-85F5-4E530CB9F22D}
-		{799950FA-6F28-43CA-A60C-769BBE9DE6A9} = {1B98E297-79D3-4458-85F5-4E530CB9F22D}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Mammoth.Esb.HierarchyClassListener\\Mammoth.Esb.HierarchyClassListener.csproj
-		SccProjectName1 = Mammoth.Esb.HierarchyClassListener
-		SccLocalPath1 = Mammoth.Esb.HierarchyClassListener
-		SccProjectUniqueName2 = Mammoth.Esb.HierarchyClassListener.Tests\\Mammoth.Esb.HierarchyClassListener.Tests.csproj
-		SccProjectName2 = Mammoth.Esb.HierarchyClassListener.Tests
-		SccLocalPath2 = Mammoth.Esb.HierarchyClassListener.Tests
-		SccProjectUniqueName3 = Mammoth.Esb.HierarchyClassListener.Service\\Mammoth.Esb.HierarchyClassListener.Service.csproj
-		SccProjectName3 = Mammoth.Esb.HierarchyClassListener.Service
-		SccLocalPath3 = Mammoth.Esb.HierarchyClassListener.Service
-		SccProjectUniqueName4 = ..\\..\\Mammoth.Shared\\Mammoth.Common.DataAccess\\Mammoth.Common.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName4 = Mammoth.Esb.HierarchyClassListener.sln
-		SccProjectName4 = ../../Mammoth.Shared/Mammoth.Common.DataAccess
-		SccLocalPath4 = ..\\..\\Mammoth.Shared\\Mammoth.Common.DataAccess
-		SccProjectUniqueName5 = ..\\..\\Mammoth.Shared\\Mammoth.Framework\\Mammoth.Framework.csproj
-		SccProjectTopLevelParentUniqueName5 = Mammoth.Esb.HierarchyClassListener.sln
-		SccProjectName5 = ../../Mammoth.Shared/Mammoth.Framework
-		SccLocalPath5 = ..\\..\\Mammoth.Shared\\Mammoth.Framework
-		SccProjectUniqueName6 = Mammoth.Esb.HierarchyClassListener.Test.Specs\\Mammoth.Esb.HierarchyClassListener.Tests.Specs.csproj
-		SccProjectName6 = Mammoth.Esb.HierarchyClassListener.Test.Specs
-		SccLocalPath6 = Mammoth.Esb.HierarchyClassListener.Test.Specs
 	EndGlobalSection
 EndGlobal
