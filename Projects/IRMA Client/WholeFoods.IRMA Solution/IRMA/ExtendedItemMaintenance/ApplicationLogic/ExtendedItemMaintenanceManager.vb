@@ -2,6 +2,7 @@
 Option Strict Off
 
 Imports System.IO
+Imports System.Text
 Imports Infragistics.Win.UltraWinGrid
 Imports Infragistics.Win
 Imports WholeFoods.Utility
@@ -552,7 +553,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
         ''' <param name="gridCollection"></param>
         ''' <param name="uploadTypeCollection"></param>
         ''' <remarks></remarks>
-        Public Sub SpreadsheetExport(ByRef gridCollection As SortableHashlist, ByRef uploadTypeCollection As BusinessObjectCollection)
+        Public Sub SpreadsheetExport(ByRef gridCollection As SortableHashlist, ByRef uploadTypeCollection As BusinessObjectCollection, ByRef validationErrors As SortableHashlist)
 
             Dim tempSelectedFile As String = Me.CurrentFileName
             Dim excelBook As Infragistics.Excel.Workbook = Nothing
@@ -586,6 +587,8 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     ' sort the values by upload type code - Item, Price, Cost
                     uploadTypeCollection.SortByPropertyValue("SortKey")
 
+                    theCompactSpreadsheetPositionMap.Add("Validation Error", 0)
+
                     'only for the provided UploadTypes
                     For Each theUploadType As UploadType In uploadTypeCollection
 
@@ -594,7 +597,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                         For Each theUploadAttribute As UploadAttribute In theUploadAttributes
                             If Not theCompactSpreadsheetPositionMap.ContainsKey(theUploadAttribute.Key) Then
-                                theCompactSpreadsheetPositionMap.Add(theUploadAttribute.Key, theCompactSpreadsheetPosition)
+                                theCompactSpreadsheetPositionMap.Add(theUploadAttribute.Key, theCompactSpreadsheetPosition + 1)
                                 theCompactSpreadsheetPosition = theCompactSpreadsheetPosition + 1
                             End If
                         Next
@@ -617,6 +620,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     rowIndex = rowIndex + 1
 
                     ' create the column label row
+                    excelWorksheet.Rows(rowIndex).Cells(0).Value = "Validation Error"
                     Dim allUploadAttributes As BusinessObjectCollection = UploadAttributeDAO.Instance.GetAllUploadAttributes()
 
                     For Each theUploadAttribute As UploadAttribute In allUploadAttributes
@@ -635,6 +639,16 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     Dim theValueListItem As KeyedListItem
 
                     For Each theUploadRow As UploadRow In Me.CurrentUploadSession.UploadRowCollection
+                        Dim theUploadRowHolder As UploadRowHolder = validationErrors.ItemByKey(theUploadRow.UploadRowID)
+                        Dim errors As New StringBuilder
+
+                        If theUploadRowHolder.ValidationErrors.Count > 0 Then
+                            For Each entry As DictionaryEntry In theUploadRowHolder.ValidationErrors
+                                errors.Append(entry.Value).AppendLine()
+                                errors.Append("; ").AppendLine()
+                            Next
+                        End If
+                        excelWorksheet.Rows(rowIndex).Cells(0).Value = errors.ToString()
 
                         For Each theUploadType As UploadType In uploadTypeCollection
                             ' add the data rows with values only
@@ -643,7 +657,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                                 theUploadRow.UploadValueCollection.SortByPropertyValue("SpreadsheetPosition")
                                 For Each theUploadValue As UploadValue In theUploadRow.UploadValueCollection
                                     'only for the provided UploadTypes
-                                    If Not theUploadValue.IsMarkedForDelete And theUploadValue.IsForUpdateType(theUploadType.UploadTypeCode) Then
+                                    If Not theUploadValue.IsMarkedForDelete And theUploadValue.IsForUpdateType(theUploadType.UploadTypeCode) And Not theUploadValue.Key = EIM_Constants.UPLOAD_EXCLUSION_COLUMN Then
                                         theCompactSpreadsheetPosition =
                                                 CType(theCompactSpreadsheetPositionMap.Item(theUploadValue.Key), Integer)
 
@@ -679,6 +693,17 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                                         ' set the cell value
                                         excelWorksheet.Rows(rowIndex).Cells(theCompactSpreadsheetPosition).Value = theCellValue
+
+                                        'If theUploadValue.Key Then
+                                        If theUploadRowHolder.ValidationErrors.Count > 0 Then
+                                            For Each entry As DictionaryEntry In theUploadRowHolder.ValidationErrors
+                                                If theUploadValue.Key = entry.Key.ToString() Then
+                                                    excelWorksheet.Rows(rowIndex).Cells(theCompactSpreadsheetPosition).CellFormat.FillPatternBackgroundColor = Color.Red
+                                                    Exit For
+                                                End If
+                                            Next
+                                        End If
+
                                     End If
                                 Next
                             End If

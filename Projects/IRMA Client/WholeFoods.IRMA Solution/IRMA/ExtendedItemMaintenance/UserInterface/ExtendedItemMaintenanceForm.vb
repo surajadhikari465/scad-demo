@@ -1144,7 +1144,7 @@ Public Class ExtendedItemMaintenanceForm
 
         Try
             Dim gridsByUploadTypeCollection As SortableHashlist = GetGridsByUploadTypeCollection()
-            Me.EIMManager.SpreadsheetExport(gridsByUploadTypeCollection, Me.EIMManager.CurrentUploadSession.UploadTypeCollection)
+            Me.EIMManager.SpreadsheetExport(gridsByUploadTypeCollection, Me.EIMManager.CurrentUploadSession.UploadTypeCollection, Me.EIMManager.CurrentUploadRowHolderCollecton.UploadRowHolderList)
         Catch ex As IOException
 
             MessageBox.Show("The spreadsheet you are overwriting is currently open in another program. " + _
