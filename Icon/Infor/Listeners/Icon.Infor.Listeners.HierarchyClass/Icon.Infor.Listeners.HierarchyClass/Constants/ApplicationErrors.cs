@@ -19,7 +19,10 @@ namespace Icon.Infor.Listeners.HierarchyClass.Constants
             public const string UnableToSendHierarchyClassesToVim = "UnableToSendHierarchyClassesToVim";
             public const string UnableToGenerateNationalClassEvents = "UnableToGenerateNationalClassEvents";
             public const string UnableToFindMatchingHierarchyClass = "UnableToFindMatchingHierarchyClass";
+            public const string GenerateHierarchyClassEventsError = "GenerateHierarchyClassEventsError";
+            public const string GenerateHierarchyClassMessagesError = "GenerateHierarchyClassMessagesError";
         }
+
         public static class Descriptions
         {
             public const string UnableToArchiveMessage = "An unexpected exception occurred which caused a failure to archive message from Infor.";
@@ -31,6 +34,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Constants
             public const string UnableToSendHierarchyClassesToVim = "Error occurred while trying to send hierarchy classes from Infor to VIM.";
             public const string UnableToGenerateNationalClassEvents = "Error occurred while trying to generate events for National Classes.";
             public const string UnableToFindMatchingHierarchyClassToDeleteMessage = "Unable to delete the requested Hierarchy Class because a matching record could not be found. The record may have already been deleted.";
+            public const string GenerateHierarchyClassEventsError = "An unexpected error occurred which caused events to not be generated to IRMA.";
+            public const string GenerateHierarchyClassMessagesError = "An unexpected error occurred which caused messages to not be sent to the ESB and downstream systems.";
         }
     }
 }

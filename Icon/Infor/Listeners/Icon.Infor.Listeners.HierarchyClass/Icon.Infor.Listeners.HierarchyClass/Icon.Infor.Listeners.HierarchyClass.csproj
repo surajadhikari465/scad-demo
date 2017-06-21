@@ -138,6 +138,8 @@
     <Compile Include="Commands\DeleteHierarchyClassesCommandHandler.cs" />
     <Compile Include="Commands\GenerateHierarchyClassEventsCommand.cs" />
     <Compile Include="Commands\GenerateHierarchyClassEventsCommandHandler.cs" />
+    <Compile Include="Commands\GenerateHierarchyClassMessagesCommand.cs" />
+    <Compile Include="Commands\GenerateHierarchyClassMessagesCommandHandler.cs" />
     <Compile Include="Commands\ValidateHierarchyClassesCommandHandler.cs" />
     <Compile Include="Commands\ValidateHierarchyClassesCommand.cs" />
     <Compile Include="Constants\ApplicationErrors.cs" />

@@ -14,7 +14,7 @@ using Icon.Esb.Schemas.Wfm.Contracts;
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
     [TestClass]
-    public class GenerateNationalClassEventsCommandHandlerTests : BaseHierarchyClassesCommandTest
+    public class GenerateHierarchyClassEventsCommandHandlerTests : BaseHierarchyClassesCommandTest
     {
         private GenerateHierarchyClassEventsCommandHandler commandHandler;
         private GenerateHierarchyClassEventsCommand command;

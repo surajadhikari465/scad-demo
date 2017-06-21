@@ -17,6 +17,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
         private IHierarchyClassListenerSettings settings;
         private ICommandHandler<DeleteHierarchyClassesCommand> deleteHierarchyClassesCommandHandler;
         private ICommandHandler<GenerateHierarchyClassEventsCommand> generateHierarchyClassEventsCommandHandler;
+        private ICommandHandler<GenerateHierarchyClassMessagesCommand> generateHierarchyClassMessagesCommandHandler;
 
         public DeleteHierarchyClassesService(
             IHierarchyClassListenerSettings settings,
@@ -37,17 +38,26 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
                 deleteHierarchyClassesCommandHandler.Execute(
                     new DeleteHierarchyClassesCommand { HierarchyClasses = deleteMessages });
 
-
                 //only generate events if allowed by hierarchy class type and settings,
                 // and for messages which were successfully found & deleted
-                if (ShouldGenerateEvents(deleteMessages.First().HierarchyName) 
-                    && deleteMessages.Any(hc=>hc.ErrorCode==null))
+                if (ShouldGenerateEvents(deleteMessages.First().HierarchyName)
+                    && deleteMessages.Any(hc => hc.ErrorCode == null))
                 {
                     // generate events for the global controller to send to IRMA
                     generateHierarchyClassEventsCommandHandler.Execute(
                         new GenerateHierarchyClassEventsCommand
                         {
-                            HierarchyClasses = deleteMessages.Where(hc=>hc.ErrorCode==null)
+                            HierarchyClasses = deleteMessages.Where(hc => hc.ErrorCode == null)
+                        });
+                }
+
+                if (ShouldGenerateMessages(deleteMessages.First().HierarchyName)
+                    && deleteMessages.Any(hc => hc.ErrorCode == null))
+                {
+                    generateHierarchyClassMessagesCommandHandler.Execute(
+                        new GenerateHierarchyClassMessagesCommand
+                        {
+                            HierarchyClasses = deleteMessages.Where(hc => hc.ErrorCode == null)
                         });
                 }
             }
@@ -58,12 +68,25 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
             return hierarchyClasses.Where(h => h.Action == ActionEnum.Delete);
         }
 
-        internal bool ShouldGenerateEvents(string hierarchyName)
+        private bool ShouldGenerateEvents(string hierarchyName)
         {
             switch (hierarchyName)
             {
                 //always generate events for a National or Brand class delete
                 case HierarchyNames.National:
+                case HierarchyNames.Brands:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private bool ShouldGenerateMessages(string hierarchyName)
+        {
+            switch (hierarchyName)
+            {
+                //always generate messages for a Merchandise or Brand class delete
+                case HierarchyNames.Merchandise:
                 case HierarchyNames.Brands:
                     return true;
                 default:

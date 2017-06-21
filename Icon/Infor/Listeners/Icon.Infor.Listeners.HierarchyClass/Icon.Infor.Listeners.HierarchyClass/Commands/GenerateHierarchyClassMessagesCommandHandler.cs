@@ -13,20 +13,16 @@ using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
-    public class GenerateHierarchyClassEventsCommandHandler : ICommandHandler<GenerateHierarchyClassEventsCommand>
+    public class GenerateHierarchyClassMessagesCommandHandler : ICommandHandler<GenerateHierarchyClassMessagesCommand>
     {
         private IRenewableContext<IconContext> context;
-        private List<string> regions;
 
-        public GenerateHierarchyClassEventsCommandHandler(
-            IRenewableContext<IconContext> context,
-            List<string> regions)
+        public GenerateHierarchyClassMessagesCommandHandler(IRenewableContext<IconContext> context)
         {
             this.context = context;
-            this.regions = regions;
         }
 
-        public void Execute(GenerateHierarchyClassEventsCommand data)
+        public void Execute(GenerateHierarchyClassMessagesCommand data)
         {
             if (data.HierarchyClasses.Any())
             {
@@ -44,20 +40,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
                     })
                     .ToTvp("@hierarchyClasses", "infor.HierarchyClassType");
 
-                SqlParameter hierarchyClassTraits = dataAccessModels.ToTraitDataAccessModels()
-                    .ToTvp("@hierarchyClassTraits", "infor.HierarchyClassTraitType");
-
-                SqlParameter regionParameters = regions.Select(r => new { RegionCode = r })
-                    .ToTvp("@regions", "infor.RegionCodeList");
-
-                string sqlCommand = "EXEC infor.HierarchyClassGenerateEvents @hierarchyClasses, @hierarchyClassTraits, @regions";
+                string sqlCommand = "EXEC infor.HierarchyClassGenerateMessages @hierarchyClasses";
                 try
                 {
                     context.Context.Database.ExecuteSqlCommand(
                         sqlCommand,
-                        hierarchyClasses,
-                        hierarchyClassTraits,
-                        regionParameters);
+                        hierarchyClasses);
                 }
                 catch (Exception ex)
                 {
@@ -65,7 +53,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
                         .AddOrUpdateHierarchyClassError + " Exception: " + ex.ToString();
                     foreach (var hierarchyClass in data.HierarchyClasses)
                     {
-                        hierarchyClass.ErrorCode = ApplicationErrors.Codes.GenerateHierarchyClassEventsError;
+                        hierarchyClass.ErrorCode = ApplicationErrors.Codes.GenerateHierarchyClassMessagesError;
                         hierarchyClass.ErrorDetails = errorDetails;
                     }
                 }

@@ -45,10 +45,17 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             transaction.Dispose();
             context.Dispose();
         }
+
         protected void SetCommandHierarchyClasses(GenerateHierarchyClassEventsCommand generateHierarchyClassEventsCommand,
             params InforHierarchyClassModel[] inforHierarchyClassModels)
         {
             generateHierarchyClassEventsCommand.HierarchyClasses = inforHierarchyClassModels?.ToList();
+        }
+
+        protected void SetCommandHierarchyClasses(GenerateHierarchyClassMessagesCommand command,
+            params InforHierarchyClassModel[] inforHierarchyClassModels)
+        {
+            command.HierarchyClasses = inforHierarchyClassModels?.ToList();
         }
 
         protected void AssertEventsAreEqualToTestModel(InforHierarchyClassModel testModel,
@@ -63,6 +70,22 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             }
             Assert.IsTrue(regions.OrderBy(r => r)
                 .SequenceEqual(queuedEvents.Select(q => q.RegionCode).OrderBy(r => r)));
+        }
+
+        protected void AssertMessagesAreEqualToTestModel(InforHierarchyClassModel testModel, IQueryable<MessageQueueHierarchy> queuedMessages)
+        {
+            Assert.AreEqual(1, queuedMessages.Count());
+            var queuedMessage = queuedMessages.Single();
+            Assert.AreEqual(testModel.HierarchyClassId.ToString(), queuedMessage.HierarchyClassId);
+            Assert.AreEqual(testModel.HierarchyClassName, queuedMessage.HierarchyClassName);
+            Assert.AreEqual(testModel.HierarchyName, queuedMessage.HierarchyName);
+            Assert.AreEqual(testModel.HierarchyLevelName, queuedMessage.HierarchyLevelName);
+
+            int? expectedHierarchyParentClassId = testModel.ParentHierarchyClassId == 0 ? (int?)null : testModel.ParentHierarchyClassId;
+            Assert.AreEqual(expectedHierarchyParentClassId, queuedMessage.HierarchyParentClassId);
+
+            var expectedAction = testModel.Action == ActionEnum.AddOrUpdate ? MessageActionTypes.AddOrUpdate : MessageActionTypes.Delete;
+            Assert.AreEqual(expectedAction, queuedMessage.MessageActionId);
         }
 
         protected InforHierarchyClassModel CreateInforHierarchyClassModel(int hierarchyClassId,
@@ -176,18 +199,27 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         {
             return iconContext.EventQueue
                 .Count(e => regions.Contains(e.RegionCode) && e.InsertDate >= since);
-
         }
 
         protected IQueryable<EventQueue> GetQueuedEvents(IconContext iconContext, int eventReferenceId)
         {
             return iconContext.EventQueue.Where(e => e.EventReferenceId == eventReferenceId);
-
         }
+
         protected IQueryable<EventQueue> GetQueuedEvents(IconContext iconContext, string eventMessage)
         {
             return iconContext.EventQueue.Where(e => e.EventMessage == eventMessage);
+        }
 
+        protected int GetQueuedMessageCount(IconContext iconContext, DateTime since)
+        {
+            return iconContext.MessageQueueHierarchy
+                .Count(q => q.InsertDate >= since);
+        }
+
+        protected IQueryable<MessageQueueHierarchy> GetQueuedMessages(IconContext iconContext, int hierarchyClassId)
+        {
+            return iconContext.MessageQueueHierarchy.Where(e => e.HierarchyClassId == hierarchyClassId.ToString());
         }
     }
 }

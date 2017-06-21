@@ -149,8 +149,9 @@
     <Compile Include="Commands\ArchiveVimHierarchyClassesCommandHandlerTests.cs" />
     <Compile Include="Commands\ArchiveVimMessageCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesCommandHandlerTests.cs" />
-    <Compile Include="Commands\GenerateNationalClassEventsCommandHandlerTests.cs" />
+    <Compile Include="Commands\GenerateHierarchyClassEventsCommandHandlerTests.cs" />
     <Compile Include="Commands\BaseHierarchyClassesCommandTest.cs" />
+    <Compile Include="Commands\GenerateHierarchyClassMessagesCommandHandlerTests.cs" />
     <Compile Include="Commands\ValidateHierarchyClassesCommandHandlerTests.cs" />
     <Compile Include="HierarchyClassListenerTests.cs" />
     <Compile Include="Integration\HierarchyClassListenerTests.cs" />
