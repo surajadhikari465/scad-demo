@@ -9,10 +9,6 @@ FROM NatItemClass (nolock)
     INNER JOIN
         NatItemFamily (nolock)
         ON NatItemFamily.NatFamilyID = NatItemCat.NatFamilyID
-    INNER JOIN
-        SubTeam
-        ON NatItemFamily.SubTeam_No = SubTeam.SubTeam_No
-WHERE NatItemFamily.SubTeam_No is not null
 ORDER BY NatItemClass.ClassName
 GO
 GRANT EXECUTE
