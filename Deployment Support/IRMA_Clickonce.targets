@@ -10,7 +10,7 @@
 		<ClickOnceUrl>$(DeploymentUrl)</ClickOnceUrl>
 		<ClickOnceApplicationUrl>$(DeploymentUrl)$(AppName).application</ClickOnceApplicationUrl>	
 		<ClickOnceAppTitle>$(Region) $(AppName) $(Environment)</ClickOnceAppTitle>
-		<Install>false</Install>
+		<Install>$(DoInstall)</Install>
 		<ClickOnceVersion>$(Version)</ClickOnceVersion>
 	</PropertyGroup>
 	<ItemGroup>
