@@ -2,6 +2,7 @@
     [Id]         INT          IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [ScanCode]   VARCHAR (13) NOT NULL,
     [InsertDate] DATETIME     NOT NULL,
+	[InforItemId] INT		  NOT NULL,
     CONSTRAINT [PK_ValidatedScanCode] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (FILLFACTOR = 80),
     CONSTRAINT [ScanCodeExistsConstraint] CHECK ([dbo].[fn_DoesScanCodeExist]([ScanCode])<>(0)),
     CONSTRAINT [UniqueScanCodeConstraint] UNIQUE NONCLUSTERED ([ScanCode] ASC) WITH (FILLFACTOR = 80)
