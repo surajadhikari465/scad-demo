@@ -75,6 +75,14 @@ namespace Icon.Infor.Listeners.HierarchyClass
             catch (Exception ex)
             {
                 this.LogAndNotifyErrorWithMessage(ex, args);
+                if(hierarchyClasses != null)
+                {
+                    foreach (var hierarchyClass in hierarchyClasses.Where(hc => hc.ErrorCode == null))
+                    {
+                        hierarchyClass.ErrorCode = ApplicationErrors.Codes.UnexpectedError;
+                        hierarchyClass.ErrorDetails = $"{ApplicationErrors.Descriptions.UnexpectedError} Error Details: {ex}";
+                    }
+                }
             }
             finally
             {

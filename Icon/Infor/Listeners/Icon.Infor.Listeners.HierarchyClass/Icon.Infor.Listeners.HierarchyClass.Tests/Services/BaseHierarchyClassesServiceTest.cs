@@ -20,7 +20,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         protected IHierarchyClassService service;
 
         private Mock<IHierarchyClassListenerSettings> _mockHierarchyClassListenerSettings;
-        protected Mock<IHierarchyClassListenerSettings> mockHierarchyClassListenerSettings
+        protected Mock<IHierarchyClassListenerSettings> MockHierarchyClassListenerSettings
         {
             get
             {
@@ -33,7 +33,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         private Mock<ICommandHandler<GenerateHierarchyClassEventsCommand>> _mockGenerateEventsCommandHandler;
-        protected Mock<ICommandHandler<GenerateHierarchyClassEventsCommand>> mockGenerateEventsCommandHandler
+        protected Mock<ICommandHandler<GenerateHierarchyClassEventsCommand>> MockGenerateEventsCommandHandler
         {
             get
             {
@@ -42,6 +42,19 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
                     _mockGenerateEventsCommandHandler = new Mock<ICommandHandler<GenerateHierarchyClassEventsCommand>>();
                 }
                 return _mockGenerateEventsCommandHandler;
+            }
+        }
+
+        private Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>> _mockGenerateMessagesCommandHandler;
+        protected Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>> MockGenerateMessagesCommandHandler
+        {
+            get
+            {
+                if(_mockGenerateMessagesCommandHandler == null)
+                {
+                    _mockGenerateMessagesCommandHandler = new Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>>();
+                }
+                return _mockGenerateMessagesCommandHandler;
             }
         }
 

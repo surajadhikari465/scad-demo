@@ -21,6 +21,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Constants
             public const string UnableToFindMatchingHierarchyClass = "UnableToFindMatchingHierarchyClass";
             public const string GenerateHierarchyClassEventsError = "GenerateHierarchyClassEventsError";
             public const string GenerateHierarchyClassMessagesError = "GenerateHierarchyClassMessagesError";
+            public const string UnexpectedError = "UnexpectedError";
         }
 
         public static class Descriptions
@@ -36,6 +37,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Constants
             public const string UnableToFindMatchingHierarchyClassToDeleteMessage = "Unable to delete the requested Hierarchy Class because a matching record could not be found. The record may have already been deleted.";
             public const string GenerateHierarchyClassEventsError = "An unexpected error occurred which caused events to not be generated to IRMA.";
             public const string GenerateHierarchyClassMessagesError = "An unexpected error occurred which caused messages to not be sent to the ESB and downstream systems.";
+            public const string UnexpectedError = "An unexpected error occurred when consuming the message from Infor.";
         }
     }
 }

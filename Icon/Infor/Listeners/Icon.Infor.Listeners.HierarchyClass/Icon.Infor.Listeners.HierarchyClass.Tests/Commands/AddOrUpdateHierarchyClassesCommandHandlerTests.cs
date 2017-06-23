@@ -41,9 +41,10 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 });
             AddHierarchyClassModelToCommandData(command, testModel);
             var countBefore = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
-            //var testModel = this.GetAndPrepModelForAddTest(command, base.GetBrandHierarchyClassModel());
+
             //When
             commandHandler.Execute(command);
+
             //Then
             var countAfter = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
             Assert.AreEqual(countAfter, countBefore + 1, $"Should have found 1 more hierarchy class after Add");
@@ -65,8 +66,10 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 });
             this.PrepModelForUpdateTest(command, testModel);
             var countBefore = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
+
             //When
             commandHandler.Execute(command);
+
             //Then
             var countAfter = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
             Assert.AreEqual(countAfter, countBefore, $"Should have found same count of hierarchy classes after Update");
@@ -204,10 +207,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 Assert.AreEqual(testModelTrait, hierarchyClassTrait.traitValue);
             };
 
-            //Assert Events are generated
-            var queuedEvents = GetQueuedEvents(context, testModel.HierarchyClassName);
-            Assert.AreEqual(expectedNumberOfEvents, queuedEvents.Count());
-
             //Assert Messages are generated
             string expectedMessageHierarchyClassId = testModel.HierarchyName == Hierarchies.Names.Financial
                 ? testModel.HierarchyClassName.Split('(')[1].TrimEnd(')')
@@ -257,7 +256,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 Assert.AreEqual(testModelTrait, hierarchyClassTrait.traitValue);
             };
 
-            AssertExpectedEventsAndMessagesWereGenerated(testModel, expectedNumberOfEvents, expectedNumberOfMessages);
+            AssertExpectedMessagesWereGenerated(testModel, expectedNumberOfEvents, expectedNumberOfMessages);
 
             if (expectedNumberOfMessages > 0)
             {
@@ -281,13 +280,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             return expectedMessageHierarchyClassId;
         }
 
-        protected void AssertExpectedEventsAndMessagesWereGenerated( InforHierarchyClassModel testModel,
+        protected void AssertExpectedMessagesWereGenerated( InforHierarchyClassModel testModel,
             int expectedNumberOfEvents, int expectedNumberOfMessages)
         {
-            //Assert Events are generated
-            var queuedEvents = GetQueuedEvents(context, testModel.HierarchyClassId);
-            Assert.AreEqual(expectedNumberOfEvents, queuedEvents.Count());
-
             //Assert Messages are generated
             string expectedMessageHierarchyClassId = GetExpectedMessageHierarchyClassId(testModel);
             var messageCount = context.MessageQueueHierarchy

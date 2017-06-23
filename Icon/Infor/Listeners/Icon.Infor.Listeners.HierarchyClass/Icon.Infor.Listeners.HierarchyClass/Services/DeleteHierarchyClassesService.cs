@@ -22,11 +22,13 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
         public DeleteHierarchyClassesService(
             IHierarchyClassListenerSettings settings,
             ICommandHandler<DeleteHierarchyClassesCommand> deleteHierarchyClassesCommandHandler,
-            ICommandHandler<GenerateHierarchyClassEventsCommand> generateHierarchyClassEventsCommandHandler)
+            ICommandHandler<GenerateHierarchyClassEventsCommand> generateHierarchyClassEventsCommandHandler,
+            ICommandHandler<GenerateHierarchyClassMessagesCommand> generateHierarchyClassMessagesCommandHandler)
         {
             this.settings = settings;
             this.deleteHierarchyClassesCommandHandler = deleteHierarchyClassesCommandHandler;
             this.generateHierarchyClassEventsCommandHandler = generateHierarchyClassEventsCommandHandler;
+            this.generateHierarchyClassMessagesCommandHandler = generateHierarchyClassMessagesCommandHandler;
         }
 
         public void ProcessHierarchyClassMessages(IEnumerable<InforHierarchyClassModel> hierarchyClasses)

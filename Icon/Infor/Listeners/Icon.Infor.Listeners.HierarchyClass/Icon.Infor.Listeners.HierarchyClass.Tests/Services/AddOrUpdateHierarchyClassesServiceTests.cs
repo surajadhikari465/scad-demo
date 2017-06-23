@@ -24,12 +24,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             mockAddOrUpdateCommandHandler = new Mock<ICommandHandler<AddOrUpdateHierarchyClassesCommand>>();
 
-            mockHierarchyClassListenerSettings.Setup(s => s.EnableNationalClassEventGeneration).Returns(true);
+            MockHierarchyClassListenerSettings.Setup(s => s.EnableNationalClassEventGeneration).Returns(true);
 
             service = new AddOrUpdateHierarchyClassesService(
-                mockHierarchyClassListenerSettings.Object,
+                MockHierarchyClassListenerSettings.Object,
                 mockAddOrUpdateCommandHandler.Object,
-                mockGenerateEventsCommandHandler.Object);
+                MockGenerateEventsCommandHandler.Object);
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //Then
             mockAddOrUpdateCommandHandler.Verify(m => m
                 .Execute(It.IsAny<AddOrUpdateHierarchyClassesCommand>()), Times.Never);
-            mockGenerateEventsCommandHandler.Verify(m => m
+            MockGenerateEventsCommandHandler.Verify(m => m
                 .Execute(It.IsAny<GenerateHierarchyClassEventsCommand>()), Times.Never);
         }
 
@@ -98,7 +98,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.AddOrUpdate, Times.Once());
         }
 
@@ -126,7 +126,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.AddOrUpdate, Times.Once(), hierarchyClassIdForUpdate);
         }
 
@@ -147,7 +147,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.AddOrUpdate, Times.Never(), hierarchyClassIdForUpdate);
         }
         #endregion
@@ -158,7 +158,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             //Given
             var hierarchyName = HierarchyNames.National;
-            mockHierarchyClassListenerSettings
+            MockHierarchyClassListenerSettings
                 .Setup(m => m.EnableNationalClassEventGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForAdd(hierarchyName);
@@ -174,14 +174,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             //Given
             var hierarchyName = HierarchyNames.National;
-            mockHierarchyClassListenerSettings
+            MockHierarchyClassListenerSettings
                 .Setup(m => m.EnableNationalClassEventGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForAdd(hierarchyName);
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.AddOrUpdate, Times.Once());
         }
 
@@ -190,14 +190,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             //Given
             var hierarchyName = HierarchyNames.National;
-            mockHierarchyClassListenerSettings
+            MockHierarchyClassListenerSettings
                 .Setup(m => m.EnableNationalClassEventGeneration)
                 .Returns(false);
             var hierarchyClasses = CreateInforHierarchyClassesForAdd(hierarchyName);
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.AddOrUpdate, Times.Never());
         }
 
@@ -206,7 +206,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             //Given
             var hierarchyName = HierarchyNames.National;
-            mockHierarchyClassListenerSettings
+            MockHierarchyClassListenerSettings
                 .Setup(m => m.EnableNationalClassEventGeneration)
                 .Returns(false);
             var hierarchyClasses = CreateInforHierarchyClassesForAdd(hierarchyName);
@@ -222,7 +222,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             //Given
             var hierarchyName = HierarchyNames.National;
-            mockHierarchyClassListenerSettings
+            MockHierarchyClassListenerSettings
                 .Setup(m => m.EnableNationalClassEventGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
@@ -239,7 +239,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             //Given
             var hierarchyName = HierarchyNames.National;
-            mockHierarchyClassListenerSettings
+            MockHierarchyClassListenerSettings
                 .Setup(m => m.EnableNationalClassEventGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
@@ -247,7 +247,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.AddOrUpdate, Times.Once(), hierarchyClassIdForUpdate);
         }
 
@@ -256,7 +256,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             //Given
             var hierarchyName = HierarchyNames.National;
-            mockHierarchyClassListenerSettings
+            MockHierarchyClassListenerSettings
                 .Setup(m => m.EnableNationalClassEventGeneration)
                 .Returns(false);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
@@ -264,7 +264,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.AddOrUpdate, Times.Never(), hierarchyClassIdForUpdate);
         }
 
@@ -273,7 +273,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             //Given
             var hierarchyName = HierarchyNames.National;
-            mockHierarchyClassListenerSettings
+            MockHierarchyClassListenerSettings
                 .Setup(m => m.EnableNationalClassEventGeneration)
                 .Returns(false);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
@@ -290,7 +290,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             //Given
             var hierarchyName = HierarchyNames.National;
-            mockHierarchyClassListenerSettings
+            MockHierarchyClassListenerSettings
                 .Setup(m => m.EnableNationalClassEventGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
@@ -305,7 +305,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.AddOrUpdate, Times.Never(), hierarchyClassIdForUpdate);
         }
         #endregion

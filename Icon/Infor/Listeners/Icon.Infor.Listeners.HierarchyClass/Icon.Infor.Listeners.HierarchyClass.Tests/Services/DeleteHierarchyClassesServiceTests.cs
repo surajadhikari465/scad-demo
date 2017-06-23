@@ -23,11 +23,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         public void Initialize()
         {
             mockDeleteCommandHandler = new Mock<ICommandHandler<DeleteHierarchyClassesCommand>>();
-            mockHierarchyClassListenerSettings.Setup(s => s.EnableNationalClassEventGeneration).Returns(true);
+            MockHierarchyClassListenerSettings.Setup(s => s.EnableNationalClassEventGeneration).Returns(true);
             service = new DeleteHierarchyClassesService(
-                mockHierarchyClassListenerSettings.Object,
+                MockHierarchyClassListenerSettings.Object,
                 mockDeleteCommandHandler.Object,
-                mockGenerateEventsCommandHandler.Object);
+                MockGenerateEventsCommandHandler.Object,
+                MockGenerateMessagesCommandHandler.Object);
         }
 
         [TestMethod]
@@ -71,7 +72,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //Then
             mockDeleteCommandHandler.Verify(m => m
                 .Execute(It.IsAny<DeleteHierarchyClassesCommand>()), Times.Never);
-            mockGenerateEventsCommandHandler.Verify(m => m
+            MockGenerateEventsCommandHandler.Verify(m => m
                 .Execute(It.IsAny<GenerateHierarchyClassEventsCommand>()), Times.Never);
         }
 
@@ -99,7 +100,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.Delete, Times.Once(), hierarchyClassIdForUpdate);
         }
 
@@ -133,7 +134,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.Delete, Times.Never(), hierarchyClassIdForUpdate);
         }
 
@@ -150,7 +151,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //Thenn
             mockDeleteCommandHandler.Verify(m => m
                 .Execute(It.IsAny<DeleteHierarchyClassesCommand>()), Times.Never);
-            mockGenerateEventsCommandHandler.Verify(m => m
+            MockGenerateEventsCommandHandler.Verify(m => m
                 .Execute(It.IsAny<GenerateHierarchyClassEventsCommand>()), Times.Never);
         }
 
@@ -177,7 +178,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.Delete, Times.Once(), hierarchyClassIdForUpdate);
         }
 
@@ -197,7 +198,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(mockGenerateEventsCommandHandler,
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.Delete, Times.Never(), hierarchyClassIdForUpdate);
         }
 
