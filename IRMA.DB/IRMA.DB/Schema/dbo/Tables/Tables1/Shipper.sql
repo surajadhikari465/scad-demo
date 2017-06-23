@@ -7,7 +7,7 @@
     CONSTRAINT [FK_Shipper_Item3] FOREIGN KEY ([Item_Key]) REFERENCES [dbo].[Item] ([Item_Key])
 );
 
-
+/*
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [idxShipperID]
     ON [dbo].[Shipper]([Shipper_Key] ASC, [Item_Key] ASC) WITH (FILLFACTOR = 80);
@@ -16,7 +16,7 @@ CREATE UNIQUE NONCLUSTERED INDEX [idxShipperID]
 GO
 ALTER INDEX [idxShipperID]
     ON [dbo].[Shipper] DISABLE;
-
+*/
 
 GO
 GRANT SELECT

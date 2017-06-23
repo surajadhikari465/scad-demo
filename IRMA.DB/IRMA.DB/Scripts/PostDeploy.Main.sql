@@ -9,4 +9,3 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
-:r ".\PostDeploy.Scripts.PBI20484 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for Batching Ingredients.sql"

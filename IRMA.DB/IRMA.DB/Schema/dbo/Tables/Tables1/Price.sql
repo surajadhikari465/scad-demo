@@ -66,7 +66,7 @@ CREATE NONCLUSTERED INDEX [IX_Price_ItemKey_INC_POSLinkCode]
     ON [dbo].[Price]([Item_Key] ASC)
     INCLUDE([POSLinkCode]) WITH (FILLFACTOR = 80);
 
-
+/*
 GO
 CREATE NONCLUSTERED INDEX [IX_PriceStoreNo]
     ON [dbo].[Price]([Store_No] ASC);
@@ -75,7 +75,7 @@ CREATE NONCLUSTERED INDEX [IX_PriceStoreNo]
 GO
 ALTER INDEX [IX_PriceStoreNo]
     ON [dbo].[Price] DISABLE;
-
+*/
 
 GO
 CREATE NONCLUSTERED INDEX [idxStoreNoItemKey]

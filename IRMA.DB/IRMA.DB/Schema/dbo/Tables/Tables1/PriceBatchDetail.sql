@@ -159,7 +159,7 @@ GO
 CREATE NONCLUSTERED INDEX [idxPriceBatchDetail_ItemKeyStoreNo]
     ON [dbo].[PriceBatchDetail]([Item_Key] ASC, [Store_No] ASC, [PriceChgTypeID] ASC, [ItemChgTypeID] ASC) WITH (FILLFACTOR = 80);
 
-
+/*
 GO
 CREATE NONCLUSTERED INDEX [_dta_index_PriceBatchDetail_7_2037582297__K3_K5_K2_K1_K7_K4_K75_6_15_24_56]
     ON [dbo].[PriceBatchDetail]([Store_No] ASC, [ItemChgTypeID] ASC, [Item_Key] ASC, [PriceBatchDetailID] ASC, [StartDate] ASC, [PriceBatchHeaderID] ASC, [Expired] ASC)
@@ -191,7 +191,7 @@ CREATE NONCLUSTERED INDEX [_dta_index_PriceBatchDetail_7_2037582297__K75_K2_K3_K
 GO
 ALTER INDEX [_dta_index_PriceBatchDetail_7_2037582297__K75_K2_K3_K6_K1_K7_K4_K5_K15_24_56]
     ON [dbo].[PriceBatchDetail] DISABLE;
-
+*/
 
 GO
 CREATE NONCLUSTERED INDEX [_dta_index_PriceBatchDetail_StoreNo]

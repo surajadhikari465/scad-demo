@@ -932,9 +932,7 @@
     <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_UploadSession_ExistingItems.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_UploadSession_NewItems.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_UploadSessionCost.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_UploadSessionCosts.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_UploadSessionPrice.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_UploadSessionPrices.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_ValidateCostedByWeightUnit.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_ValidateDeleteVendor.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_ValidateForPriceUploadCollision.sql" />
