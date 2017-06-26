@@ -14,7 +14,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Inventory Replenishment Merchandizing Application")> 
 <Assembly: AssemblyCompany("Whole Foods Market")> 
 <Assembly: AssemblyProduct("WFM IRMA Client")> 
-<Assembly: AssemblyCopyright("© Whole Foods Market, Inc. 2006-2013")> 
+<Assembly: AssemblyCopyright("Â© Whole Foods Market, Inc. 2006-2013")> 
 <Assembly: AssemblyTrademark("")>
 <Assembly: AssemblyCulture("")>
 
@@ -28,10 +28,10 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("8.8.0.0")>
+<Assembly: AssemblyVersion("9.0.0.0")>
 
 
-<Assembly: AssemblyFileVersionAttribute("8.8.0.0")>
+<Assembly: AssemblyFileVersionAttribute("9.0.0.0")>
 
 ' Specify that the logger is configured using the app.config file 
 <Assembly: log4net.Config.XmlConfigurator()> 
