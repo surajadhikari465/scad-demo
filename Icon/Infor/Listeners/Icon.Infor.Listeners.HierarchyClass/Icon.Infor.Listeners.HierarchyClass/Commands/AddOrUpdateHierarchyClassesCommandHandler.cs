@@ -1,6 +1,7 @@
 ﻿using Icon.Common;
 using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Constants;
 using Icon.Infor.Listeners.HierarchyClass.Extensions;
@@ -15,14 +16,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
     public class AddOrUpdateHierarchyClassesCommandHandler : ICommandHandler<AddOrUpdateHierarchyClassesCommand>
     {
-        private IRenewableContext<IconContext> context;
+        private IDbContextFactory<IconContext> contextFactory;
         private List<string> regions;
 
         public AddOrUpdateHierarchyClassesCommandHandler(
-            IRenewableContext<IconContext> context,
+            IDbContextFactory<IconContext> contextFactory,
             List<string> regions)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
             this.regions = regions;
         }
 
@@ -46,13 +47,16 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
 
             try
             {
-                context.Context.Database.ExecuteSqlCommand(
-                    "EXEC infor.HierarchyClassAddOrUpdate @hierarchyClasses, @hierarchyClassTraits, @regions",
-                    hierarchyClasses,
-                    hierarchyClassTraits,
-                    regionParameters);
+                using (var context = contextFactory.CreateContext())
+                {
+                    context.Database.ExecuteSqlCommand(
+                        "EXEC infor.HierarchyClassAddOrUpdate @hierarchyClasses, @hierarchyClassTraits, @regions",
+                        hierarchyClasses,
+                        hierarchyClassTraits,
+                        regionParameters);
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 string errorDetails = ApplicationErrors.Descriptions.AddOrUpdateHierarchyClassError + " Exception: " + ex.ToString();
                 foreach (var hierarchyClass in data.HierarchyClasses)

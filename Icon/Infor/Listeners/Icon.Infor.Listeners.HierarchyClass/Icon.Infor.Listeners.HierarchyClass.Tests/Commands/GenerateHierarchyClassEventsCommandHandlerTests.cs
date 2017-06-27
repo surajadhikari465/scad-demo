@@ -23,7 +23,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void Initialize()
         {
             commandHandler = new GenerateHierarchyClassEventsCommandHandler(
-                mockRenewableContext.Object,
+                contextFactory,
                 regions);
 
             command = new GenerateHierarchyClassEventsCommand();

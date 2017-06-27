@@ -18,17 +18,19 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
     public class DeleteHierarchyClassesServiceTests : BaseHierarchyClassesServiceTest
     {
         private Mock<ICommandHandler<DeleteHierarchyClassesCommand>> mockDeleteCommandHandler;
+        private Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>> mockGenerateHierarchyClassEventsCommandHandler;
 
         [TestInitialize]
         public void Initialize()
         {
             mockDeleteCommandHandler = new Mock<ICommandHandler<DeleteHierarchyClassesCommand>>();
+            mockGenerateHierarchyClassEventsCommandHandler = new Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>>();
             MockHierarchyClassListenerSettings.Setup(s => s.EnableNationalClassEventGeneration).Returns(true);
             service = new DeleteHierarchyClassesService(
                 MockHierarchyClassListenerSettings.Object,
                 mockDeleteCommandHandler.Object,
                 MockGenerateEventsCommandHandler.Object,
-                MockGenerateMessagesCommandHandler.Object);
+                mockGenerateHierarchyClassEventsCommandHandler.Object);
         }
 
         [TestMethod]

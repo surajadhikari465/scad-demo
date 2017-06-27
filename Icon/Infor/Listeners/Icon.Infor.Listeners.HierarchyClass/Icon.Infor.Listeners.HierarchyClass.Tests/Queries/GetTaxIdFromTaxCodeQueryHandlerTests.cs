@@ -1,11 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Queries;
-using Icon.Framework;
-using System.Data.Entity;
-using Icon.Common.Context;
-using Moq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Queries
 {
@@ -14,28 +11,25 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Queries
     {
         private GetTaxIdFromTaxCodeQueryHandler queryHandler;
         private GetTaxIdFromTaxCodeParameters query;
+        private IconDbContextFactory contextFactory;
         private IconContext context;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
             context = new IconContext();
-            transaction = context.Database.BeginTransaction();
 
-            Mock<IRenewableContext<IconContext>> mockRenewableContext = new Mock<IRenewableContext<IconContext>>();
-            mockRenewableContext.SetupGet(m => m.Context).Returns(context);
-
-            queryHandler = new GetTaxIdFromTaxCodeQueryHandler(mockRenewableContext.Object);
+            contextFactory = new IconDbContextFactory();
+            queryHandler = new GetTaxIdFromTaxCodeQueryHandler(contextFactory);
             query = new GetTaxIdFromTaxCodeParameters();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
             transaction.Dispose();
-            context.Dispose();
         }
 
         [TestMethod]

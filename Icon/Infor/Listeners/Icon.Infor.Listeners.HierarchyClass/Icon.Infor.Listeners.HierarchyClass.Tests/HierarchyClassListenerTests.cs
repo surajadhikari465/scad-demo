@@ -34,7 +34,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
         private Mock<ICollectionValidator<InforHierarchyClassModel>> mockValidator;
         private Mock<ICommandHandler<ArchiveHierarchyClassesCommand>> mockArchiveHierarchyClassesCommandHandler;
         private Mock<ICommandHandler<ArchiveMessageCommand>> mockArchiveMessageCommandHandler;
-        private Mock<IRenewableContext<IconContext>> mockGlobalContext;
 
         private EsbMessageEventArgs args;
         private Mock<IEsbMessage> mockMessage;
@@ -53,13 +52,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
             mockValidator = new Mock<ICollectionValidator<InforHierarchyClassModel>>();
             mockArchiveHierarchyClassesCommandHandler = new Mock<ICommandHandler<ArchiveHierarchyClassesCommand>>();
             mockArchiveMessageCommandHandler = new Mock<ICommandHandler<ArchiveMessageCommand>>();
-            mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
 
             listener = new HierarchyClassListener(
                 mockMessageParser.Object,
                 mockValidator.Object,
                 new[] { mockService.Object },
-                mockGlobalContext.Object,
                 mockArchiveHierarchyClassesCommandHandler.Object,
                 mockArchiveMessageCommandHandler.Object,
                 listenerApplicationSettings,

@@ -1,6 +1,7 @@
 ﻿using Icon.Common;
 using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Constants;
 using Icon.Infor.Listeners.HierarchyClass.Extensions;
@@ -15,11 +16,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
     public class GenerateHierarchyClassMessagesCommandHandler : ICommandHandler<GenerateHierarchyClassMessagesCommand>
     {
-        private IRenewableContext<IconContext> context;
+        private IDbContextFactory<IconContext> contextFactory;
 
-        public GenerateHierarchyClassMessagesCommandHandler(IRenewableContext<IconContext> context)
+        public GenerateHierarchyClassMessagesCommandHandler(IDbContextFactory<IconContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public void Execute(GenerateHierarchyClassMessagesCommand data)
@@ -43,9 +44,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
                 string sqlCommand = "EXEC infor.HierarchyClassGenerateMessages @hierarchyClasses";
                 try
                 {
-                    context.Context.Database.ExecuteSqlCommand(
-                        sqlCommand,
-                        hierarchyClasses);
+                    using (var context = contextFactory.CreateContext())
+                    {
+                        context.Database.ExecuteSqlCommand(
+                            sqlCommand,
+                            hierarchyClasses);
+                    }
                 }
                 catch (Exception ex)
                 {

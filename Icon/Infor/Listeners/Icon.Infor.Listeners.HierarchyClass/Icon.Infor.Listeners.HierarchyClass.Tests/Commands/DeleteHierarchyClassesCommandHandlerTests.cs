@@ -21,7 +21,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         [TestInitialize]
         public void Initialize()
         {
-            commandHandler = new DeleteHierarchyClassesCommandHandler(mockRenewableContext.Object);
+            commandHandler = new DeleteHierarchyClassesCommandHandler(contextFactory);
             command = new DeleteHierarchyClassesCommand();
         }
 

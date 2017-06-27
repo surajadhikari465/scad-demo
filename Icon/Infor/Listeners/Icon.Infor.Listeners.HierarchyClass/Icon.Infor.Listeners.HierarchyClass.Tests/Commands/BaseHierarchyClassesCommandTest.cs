@@ -11,39 +11,35 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
     [TestClass]
     public class BaseHierarchyClassesCommandTest
     {
-        protected List<string> regions;
-        protected Mock<IRenewableContext<IconContext>> mockRenewableContext;
-        protected IconContext context;
-        protected DbContextTransaction transaction;
-
         public const int id87654321 = 87654321;
         public const int id1234 = 1234;
+
+        protected List<string> regions;
+        protected IconDbContextFactory contextFactory;
+        protected IconContext context;
+        protected TransactionScope transaction;
 
         [TestInitialize]
         public void BaseInitialize()
         {
             regions = new List<string> { "FL", "MA", "MW" };
 
+            transaction = new TransactionScope();
+            contextFactory = new IconDbContextFactory();
             context = new IconContext();
-            mockRenewableContext = new Mock<IRenewableContext<IconContext>>();
-            mockRenewableContext.SetupGet(m => m.Context).Returns(context);
-
-            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void BaseCleanup()
         {
-            if (transaction.UnderlyingTransaction.Connection != null)
-                transaction.Rollback();
             transaction.Dispose();
-            context.Dispose();
         }
 
         protected void SetCommandHierarchyClasses(GenerateHierarchyClassEventsCommand generateHierarchyClassEventsCommand,

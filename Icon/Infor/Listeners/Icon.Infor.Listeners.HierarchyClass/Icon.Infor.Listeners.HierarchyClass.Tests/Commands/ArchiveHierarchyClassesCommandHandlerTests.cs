@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
@@ -16,11 +17,15 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         private ArchiveHierarchyClassesCommand command;
         private List<InforHierarchyClassModel> testHierarchyClasses;
         private Guid messageId;
+        private IconDbContextFactory contextFactory;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
-            commandHandler = new ArchiveHierarchyClassesCommandHandler();
+            transaction = new TransactionScope();
+            contextFactory = new IconDbContextFactory();
+            commandHandler = new ArchiveHierarchyClassesCommandHandler(contextFactory);
             testHierarchyClasses = new List<InforHierarchyClassModel>();
 
             messageId = Guid.NewGuid();
@@ -30,12 +35,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         [TestCleanup]
         public void Cleanup()
         {
-            using (IconContext context = new IconContext())
-            {
-                context.MessageArchiveHierarchy.RemoveRange(
-                    context.MessageArchiveHierarchy.Where(hc => hc.InforMessageId == messageId));
-                context.SaveChanges();
-            }
+            transaction.Dispose();
         }
 
         [TestMethod]

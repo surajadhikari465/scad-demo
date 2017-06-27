@@ -2,9 +2,9 @@
 using Esb.Core.MessageBuilders;
 using Esb.Core.Serializer;
 using Icon.Common;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
+using Icon.DbContextFactory;
 using Icon.Esb;
 using Icon.Esb.Factory;
 using Icon.Esb.ListenerApplication;
@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using TIBCO.EMS;
 using Topshelf;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
@@ -55,9 +54,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
         public static Container CreateHierarchyClassListener()
         {
             var container = new Container();
-
-            container.RegisterSingleton<IconContext>();
-            container.RegisterSingleton<IRenewableContext<IconContext>>(() => new GlobalContext<IconContext>());
+            
             container.Register<IListenerApplication, HierarchyClassListener>();
             container.Register<IMessageParser<IEnumerable<InforHierarchyClassModel>>, HierarchyClassMessageParser>();
             container.Register(() => ListenerApplicationSettings.CreateDefaultSettings(ApplicationName));
@@ -73,6 +70,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             container.Register<IMessageBuilder<HierarchyClassEsbServiceRequest>, HierarchyClassMessageBuilder>();
             container.Register<ISerializer<Contracts.HierarchyType>, Serializer<Contracts.HierarchyType>>();
             container.Register<IHierarchyClassListenerSettings>(() => HierarchyClassListenerSettings.CreateFromConfig(), Lifestyle.Singleton);
+            container.Register<IDbContextFactory<IconContext>, IconDbContextFactory>();
 
             container.Register<VimEsbConnectionSettings>();
             container.Register(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Infor"), Lifestyle.Singleton);

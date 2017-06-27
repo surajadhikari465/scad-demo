@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
 {
@@ -207,9 +208,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
         private void RunHandleMessageTestForAddOrUpdates(string messageText, int expectedHierarchyClassId, string expectedHierarchyClassName, Dictionary<int, string> expectedTraits, Boolean isfinancialHierarchy = false, Boolean commitData = false)
         {
             //Given
-            using (IconContext context = new IconContext())
+            using (TransactionScope transaction = new TransactionScope())
             {
-                using (var transaction = context.Database.BeginTransaction())
+                using (IconContext context = new IconContext())
                 {
                     var container = Program.CreateHierarchyClassListener();
                     container.Options.AllowOverridingRegistrations = true;
@@ -219,10 +220,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                     mockMessage.SetupGet(m => m.MessageText)
                         .Returns(messageText);
                     mockMessage.Setup(m => m.GetProperty("IconMessageID")).Returns(Guid.NewGuid().ToString());
-
-                    Mock<IRenewableContext<IconContext>> mockContext = new Mock<IRenewableContext<IconContext>>();
-                    mockContext.SetupGet(m => m.Context).Returns(context);
-                    container.Register<IRenewableContext<IconContext>>(() => mockContext.Object);
 
                     //When
                     var listener = container.GetInstance<IListenerApplication>() as HierarchyClassListener;
@@ -252,16 +249,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                         var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == expectedHierarchyClassId);
                         Assert.IsNotNull(messageHierarchyArchive);
                     }
-
-                    // just for testing.by default this flag will be false so that transaction will be rolled back.
-                    if (commitData)
-                    {
-                        transaction.Commit();
-                    }
-                    else
-                    {
-                        transaction.Rollback();
-                    }
                 }
             }
         }
@@ -270,9 +257,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
         {
             //Given
             int passedHierarchyClassId = hierarchyClassId;
-            using (IconContext context = new IconContext())
+            using (TransactionScope transaction = new TransactionScope())
             {
-                using (var transaction = context.Database.BeginTransaction())
+                using (IconContext context = new IconContext())
                 {
                     if ((!isfinancialHierarchy && !context.HierarchyClass.Any(hc => hc.hierarchyClassID == hierarchyClassId)) || (isfinancialHierarchy && !context.HierarchyClass.Any(hc => hc.hierarchyClassName == hierarchyClassName && hc.hierarchyID == Hierarchies.Financial)))
                     {
@@ -343,15 +330,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                     {
                         var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == passedHierarchyClassId);
                         Assert.IsNotNull(messageHierarchyArchive);
-                    }
-                  
-                    if (commitData)
-                    {
-                        transaction.Commit();
-                    }
-                    else
-                    {
-                        transaction.Rollback();
                     }
                 }
             }

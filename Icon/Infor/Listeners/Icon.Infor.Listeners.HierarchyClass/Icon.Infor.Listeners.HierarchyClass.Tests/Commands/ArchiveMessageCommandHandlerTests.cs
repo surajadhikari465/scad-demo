@@ -25,12 +25,13 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         [TestInitialize]
         public void Initialize()
         {
-            commandHandler = new ArchiveMessageCommandHandler(mockRenewableContext.Object);
+            commandHandler = new ArchiveMessageCommandHandler(contextFactory);
             command = new ArchiveMessageCommand();
 
             messageId = Guid.NewGuid();
             mockEsbMessage = new Mock<IEsbMessage>();
-            mockEsbMessage.Setup(m => m.GetProperty("IconMessageID")).Returns(messageId.ToString());
+            mockEsbMessage.Setup(m => m.GetProperty("IconMessageID"))
+                .Returns(messageId.ToString());
 
             command.Message = mockEsbMessage.Object;
         }

@@ -24,7 +24,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void Initialize()
         {
             commandHandler = new AddOrUpdateHierarchyClassesCommandHandler(
-                mockRenewableContext.Object,
+                contextFactory,
                 regions);
 
             command = new AddOrUpdateHierarchyClassesCommand();
@@ -156,7 +156,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             return testModel;
         }
 
-        protected void SaveModelToDb(IconContext iconContext,
+        protected void SaveModelToDb(
+            IconContext iconContext,
             AddOrUpdateHierarchyClassesCommand testCommand,
             InforHierarchyClassModel model)
         {

@@ -20,8 +20,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         [TestInitialize]
         public void Initialize()
         {
-            commandHandler = new GenerateHierarchyClassMessagesCommandHandler(
-                mockRenewableContext.Object);
+            commandHandler = new GenerateHierarchyClassMessagesCommandHandler(contextFactory);
 
             command = new GenerateHierarchyClassMessagesCommand();
         }

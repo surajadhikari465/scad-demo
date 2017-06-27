@@ -1,6 +1,7 @@
 ﻿using Icon.Common;
 using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using System;
@@ -13,11 +14,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
     public class ValidateHierarchyClassesCommandHandler : ICommandHandler<ValidateHierarchyClassesCommand>
     {
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> contextFactory;
 
-        public ValidateHierarchyClassesCommandHandler(IRenewableContext<IconContext> globalContext)
+        public ValidateHierarchyClassesCommandHandler(IDbContextFactory<IconContext> contextFactory)
         {
-            this.globalContext = globalContext;
+            this.contextFactory = contextFactory;
         }
 
         public void Execute(ValidateHierarchyClassesCommand data)
@@ -27,7 +28,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
                 .Select(i => new ValidateHierarchyClassModel(i))
                 .ToTvp("hierarchyClasses", "infor.ValidateHierarchyClassType");
 
-            var validateResult = globalContext.Context.Database.SqlQuery<ValidateHierarchyClassesResultModel>("exec infor.ValidateHierarchyClasses @hierarchyClasses", hierarchyClasses).ToList();
+            List<ValidateHierarchyClassesResultModel> validateResult = null;
+            using (var context = contextFactory.CreateContext())
+            {
+                validateResult = context.Database.SqlQuery<ValidateHierarchyClassesResultModel>("exec infor.ValidateHierarchyClasses @hierarchyClasses", hierarchyClasses).ToList();
+            }
 
             var errorHierarchyClasses = data.HierarchyClasses.Join(
                 validateResult,

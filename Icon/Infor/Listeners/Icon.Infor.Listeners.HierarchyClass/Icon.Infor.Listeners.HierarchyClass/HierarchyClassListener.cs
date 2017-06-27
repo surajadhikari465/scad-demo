@@ -28,7 +28,6 @@ namespace Icon.Infor.Listeners.HierarchyClass
         private IEnumerable<IHierarchyClassService> services;
         private ICollectionValidator<InforHierarchyClassModel> validator;
         private IHierarchyClassListenerNotifier notifier;
-        private IRenewableContext<IconContext> globalContext;
         private ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler;
         private ICommandHandler<ArchiveMessageCommand> archiveMessageCommandHandler;
 
@@ -36,7 +35,6 @@ namespace Icon.Infor.Listeners.HierarchyClass
             IMessageParser<IEnumerable<InforHierarchyClassModel>> messageParser,
             ICollectionValidator<InforHierarchyClassModel> validator,
             IEnumerable<IHierarchyClassService> services,
-            IRenewableContext<IconContext> globalContext,
             ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler,
             ICommandHandler<ArchiveMessageCommand> archiveMessageCommandHandler,
             ListenerApplicationSettings listenerApplicationSettings,
@@ -50,7 +48,6 @@ namespace Icon.Infor.Listeners.HierarchyClass
             this.messageParser = messageParser;
             this.services = services;
             this.validator = validator;
-            this.globalContext = globalContext;
             this.archiveHierarchyClassesCommandHandler = archiveHierarchyClassesCommandHandler;
             this.archiveMessageCommandHandler = archiveMessageCommandHandler;
             this.notifier = notifier;
@@ -58,7 +55,6 @@ namespace Icon.Infor.Listeners.HierarchyClass
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
         {
-            this.globalContext.Refresh();
             IEnumerable<InforHierarchyClassModel> hierarchyClasses = new List<InforHierarchyClassModel>();
             try
             {
@@ -107,7 +103,6 @@ namespace Icon.Infor.Listeners.HierarchyClass
                         }.ToJson());
                 }
                 this.AcknowledgeMessage(args);
-                this.globalContext.Refresh();
             }
         }
     }

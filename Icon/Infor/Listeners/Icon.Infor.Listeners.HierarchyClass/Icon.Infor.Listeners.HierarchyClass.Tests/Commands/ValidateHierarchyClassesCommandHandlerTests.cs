@@ -22,7 +22,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         [TestInitialize]
         public void Initialize()
         {
-            commandHandler = new ValidateHierarchyClassesCommandHandler(mockRenewableContext.Object);
+            commandHandler = new ValidateHierarchyClassesCommandHandler(contextFactory);
             command = new ValidateHierarchyClassesCommand { HierarchyClasses = new List<InforHierarchyClassModel>() };
         }
 
