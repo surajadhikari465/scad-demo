@@ -1,6 +1,7 @@
 ﻿using Icon.Common;
 using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using Icon.Infor.Listeners.Item.Constants;
 using Icon.Infor.Listeners.Item.Extensions;
@@ -15,11 +16,11 @@ namespace Icon.Infor.Listeners.Item.Commands
 {
     public class ItemAddOrUpdateCommandHandler : ICommandHandler<ItemAddOrUpdateCommand>
     {
-        public IRenewableContext<IconContext> context;
+        private IDbContextFactory<IconContext> contextFactory;
 
-        public ItemAddOrUpdateCommandHandler(IRenewableContext<IconContext> context)
+        public ItemAddOrUpdateCommandHandler(IDbContextFactory<IconContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public void Execute(ItemAddOrUpdateCommand data)
@@ -27,23 +28,26 @@ namespace Icon.Infor.Listeners.Item.Commands
             var itemsWithoutErrors = data.Items.Where(i => i.ErrorCode == null);
             try
             {
-                AddOrUpdateItems(itemsWithoutErrors);
-                AddOrUpdateItemTraits(itemsWithoutErrors);
-                AddOrUpdateItemHierarchyClasses(itemsWithoutErrors);
-                AddOrUpdateItemSignAttributes(itemsWithoutErrors);
+                using (var context = contextFactory.CreateContext())
+                {
+                    AddOrUpdateItems(context, itemsWithoutErrors);
+                    AddOrUpdateItemTraits(context, itemsWithoutErrors);
+                    AddOrUpdateItemHierarchyClasses(context, itemsWithoutErrors);
+                    AddOrUpdateItemSignAttributes(context, itemsWithoutErrors);
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 string errorDetails = ApplicationErrors.Messages.ItemAddOrUpdateError + " Exception: " + ex.ToString();
                 foreach (var item in itemsWithoutErrors)
                 {
                     item.ErrorCode = ApplicationErrors.Codes.ItemAddOrUpdateError;
-                    item.ErrorDetails =  errorDetails;
+                    item.ErrorDetails = errorDetails;
                 }
             }
         }
 
-        private void AddOrUpdateItems(IEnumerable<ItemModel> data)
+        private void AddOrUpdateItems(IconContext context, IEnumerable<ItemModel> data)
         {
             var items = data
                             .Select(i => new
@@ -54,10 +58,10 @@ namespace Icon.Infor.Listeners.Item.Commands
                                 ScanCodeTypeId = ScanCodeTypes.Ids[i.ScanCodeType]
                             }).ToTvp("items", "infor.ItemAddOrUpdateType");
 
-            context.Context.Database.ExecuteSqlCommand("exec infor.ItemAddOrUpdate @items", items);
+            context.Database.ExecuteSqlCommand("exec infor.ItemAddOrUpdate @items", items);
         }
 
-        private void AddOrUpdateItemTraits(IEnumerable<ItemModel> data)
+        private void AddOrUpdateItemTraits(IconContext context, IEnumerable<ItemModel> data)
         {
             var itemTraits = data
                             .SelectMany(i => new[] {
@@ -89,10 +93,10 @@ namespace Icon.Infor.Listeners.Item.Commands
                                 new ItemTraitModel(i.ItemId, Traits.DeliverySystem, i.DeliverySystem, Locales.WholeFoods)
                             }).ToTvp("itemTraits", "infor.ItemTraitAddOrUpdateType");
 
-            context.Context.Database.ExecuteSqlCommand("exec infor.ItemTraitAddOrUpdate @itemTraits", itemTraits);
+            context.Database.ExecuteSqlCommand("exec infor.ItemTraitAddOrUpdate @itemTraits", itemTraits);
         }
 
-        private void AddOrUpdateItemHierarchyClasses(IEnumerable<ItemModel> data)
+        private void AddOrUpdateItemHierarchyClasses(IconContext context, IEnumerable<ItemModel> data)
         {
             var itemHierarchies = data
                          .SelectMany(i => new[] {
@@ -103,10 +107,10 @@ namespace Icon.Infor.Listeners.Item.Commands
                                 new ItemHierarchyClassModel(i.ItemId, Hierarchies.National, i.NationalHierarchyClassId)
                          }).ToTvp("itemHierarchyClasses", "infor.ItemHierarchyClassAddOrUpdateType");
 
-            context.Context.Database.ExecuteSqlCommand("exec infor.ItemHierarchyClassAddOrUpdate @itemHierarchyClasses", itemHierarchies);
+            context.Database.ExecuteSqlCommand("exec infor.ItemHierarchyClassAddOrUpdate @itemHierarchyClasses", itemHierarchies);
         }
 
-        private void AddOrUpdateItemSignAttributes(IEnumerable<ItemModel> data)
+        private void AddOrUpdateItemSignAttributes(IconContext context, IEnumerable<ItemModel> data)
         {
             var itemSignAttributes = data
                      .Select(i => new ItemSignAttributeModel
@@ -136,7 +140,7 @@ namespace Icon.Infor.Listeners.Item.Commands
                          i.MadeInHouse.ToBool()
                      )).ToTvp("itemSignAttributes", "infor.ItemSignAttributeAddOrUpdateType");
 
-            context.Context.Database.ExecuteSqlCommand("exec infor.ItemSignAttributeAddOrUpdate @itemSignAttributes", itemSignAttributes);
+            context.Database.ExecuteSqlCommand("exec infor.ItemSignAttributeAddOrUpdate @itemSignAttributes", itemSignAttributes);
         }
     }
 }

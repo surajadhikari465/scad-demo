@@ -29,7 +29,6 @@ namespace Icon.Infor.Listeners.Item.Tests
         private ItemListener itemListener;
         private Mock<IMessageParser<IEnumerable<ItemModel>>> mockMessageParser;
         private Mock<ICollectionValidator<ItemModel>> mockItemModelValidator;
-        private Mock<IRenewableContext<IconContext>> mockContext;
         private Mock<IItemService> mockService;
         private ListenerApplicationSettings listenerApplicationSettings;
         private EsbConnectionSettings esbConnectionSettings;
@@ -53,12 +52,10 @@ namespace Icon.Infor.Listeners.Item.Tests
             mockLogger = new Mock<ILogger<ItemListener>>();
             mockNotifier = new Mock<IItemListenerNotifier>();
             mockItemModelValidator = new Mock<ICollectionValidator<ItemModel>>();
-            mockContext = new Mock<IRenewableContext<IconContext>>();
 
             itemListener = new ItemListener(
                 this.mockMessageParser.Object,
                 this.mockItemModelValidator.Object,
-                this.mockContext.Object,
                 this.mockService.Object,
                 this.listenerApplicationSettings,
                 this.esbConnectionSettings,

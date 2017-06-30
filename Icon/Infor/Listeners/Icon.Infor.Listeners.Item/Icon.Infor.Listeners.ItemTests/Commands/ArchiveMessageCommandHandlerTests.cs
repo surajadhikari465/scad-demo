@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.Item.Tests.Commands
 {
@@ -19,32 +20,28 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
     {
         private ArchiveMessageCommandHandler commandHandler;
         private ArchiveMessageCommand command;
-        private Mock<IRenewableContext<IconContext>> mockGlobalContext;
         private IconContext context;
-        private DbContextTransaction transaction;
         private Mock<IEsbMessage> mockEsbMessage;
+        private IconDbContextFactory contextFactory;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+            contextFactory = new IconDbContextFactory();
             context = new IconContext();
-            transaction = context.Database.BeginTransaction();
-
-            mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
-            mockGlobalContext.SetupGet(m => m.Context).Returns(context);
 
             mockEsbMessage = new Mock<IEsbMessage>();
 
-            commandHandler = new ArchiveMessageCommandHandler(mockGlobalContext.Object);
+            commandHandler = new ArchiveMessageCommandHandler(contextFactory);
             command = new ArchiveMessageCommand { Message = mockEsbMessage.Object };
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
             transaction.Dispose();
-            context.Dispose();
         }
 
         [TestMethod]

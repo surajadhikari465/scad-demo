@@ -1,5 +1,6 @@
 ﻿using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using System;
 using System.Collections.Generic;
@@ -12,25 +13,28 @@ namespace Icon.Infor.Listeners.Item.Commands
 {
     public class ArchiveMessageCommandHandler : ICommandHandler<ArchiveMessageCommand>
     {
-        private IRenewableContext<IconContext> context;
+        private IDbContextFactory<IconContext> contextFactory;
 
-        public ArchiveMessageCommandHandler(IRenewableContext<IconContext> context)
+        public ArchiveMessageCommandHandler(IDbContextFactory<IconContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public void Execute(ArchiveMessageCommand data)
         {
-            context.Context.InforMessageHistory.Add(new InforMessageHistory
+            using (var context = contextFactory.CreateContext())
             {
-                InforMessageId = Guid.Parse(data.Message.GetProperty("IconMessageID")),
-                Message = RemoveUtf8Encoding(data.Message.MessageText),
-                MessageStatusId = MessageStatusTypes.Consumed,
-                MessageTypeId = MessageTypes.InforProduct,
-                InsertDate = DateTime.Now
-            });
+                context.InforMessageHistory.Add(new InforMessageHistory
+                {
+                    InforMessageId = Guid.Parse(data.Message.GetProperty("IconMessageID")),
+                    Message = RemoveUtf8Encoding(data.Message.MessageText),
+                    MessageStatusId = MessageStatusTypes.Consumed,
+                    MessageTypeId = MessageTypes.InforProduct,
+                    InsertDate = DateTime.Now
+                });
 
-            context.Context.SaveChanges();
+                context.SaveChanges();
+            }
         }
 
         private string RemoveUtf8Encoding(string messageText)

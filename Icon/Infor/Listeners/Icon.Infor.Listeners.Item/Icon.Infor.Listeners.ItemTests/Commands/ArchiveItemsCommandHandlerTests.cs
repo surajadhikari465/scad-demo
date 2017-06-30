@@ -5,6 +5,7 @@ using Icon.Infor.Listeners.Item.Models;
 using System.Collections.Generic;
 using Icon.Framework;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.Item.Tests.Commands
 {
@@ -12,23 +13,25 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
     public class ArchiveItemsCommandHandlerTests
     {
         private ArchiveItemsCommandHandler commandHandler;
+        private IconDbContextFactory contextFactory;
         private IconContext context;
         private IEnumerable<ItemModel> testModels;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+            contextFactory = new IconDbContextFactory();
             context = new IconContext();
-            commandHandler = new ArchiveItemsCommandHandler();
+            commandHandler = new ArchiveItemsCommandHandler(contextFactory);
             testModels = new List<ItemModel>();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            var archivedProducts = context.MessageArchiveProduct.Where(p => p.ScanCode.StartsWith("test")).ToList();
-            context.MessageArchiveProduct.RemoveRange(archivedProducts);
-            context.SaveChanges();
+            transaction.Dispose();
         }
 
         [TestMethod]

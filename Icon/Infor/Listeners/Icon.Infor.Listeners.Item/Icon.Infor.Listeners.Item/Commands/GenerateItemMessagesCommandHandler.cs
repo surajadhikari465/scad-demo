@@ -8,6 +8,7 @@
     using Icon.Framework;
     using System;
     using Constants;
+    using Icon.DbContextFactory;
 
     public class GenerateItemMessagesCommandHandler : ICommandHandler<GenerateItemMessagesCommand>
     {
@@ -16,11 +17,11 @@
         private const string Exec_GenerateItemUpdateEvents_SP = "exec app.GenerateItemUpdateEvents @updatedItemIDs";
         private const string Exec_GenerateItemUpdateMessages_SP = "exec infor.GenerateItemUpdateMessages @updatedItemIDs";
 
-        private IRenewableContext<IconContext> context;
+        private IDbContextFactory<IconContext> contextFactory;
 
-        public GenerateItemMessagesCommandHandler(IRenewableContext<IconContext> context)
+        public GenerateItemMessagesCommandHandler(IDbContextFactory<IconContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public void Execute(GenerateItemMessagesCommand data)
@@ -28,8 +29,11 @@
             var itemsWithoutErrors = data.Items.Where(i => i.ErrorCode == null);
             try
             {
-                this.GenerateItemMessagesForEventQueue(data);
-                this.GenerateItemMessagesForMessageQueueProduct(data);
+                using (var context = contextFactory.CreateContext())
+                {
+                    this.GenerateItemMessagesForEventQueue(context, data);
+                    this.GenerateItemMessagesForMessageQueueProduct(context, data);
+                }
             }
             catch(Exception ex)
             {
@@ -42,22 +46,22 @@
             }
         }
 
-        private void GenerateItemMessagesForEventQueue(GenerateItemMessagesCommand data)
+        private void GenerateItemMessagesForEventQueue(IconContext context, GenerateItemMessagesCommand data)
         {
             // See app.UpdatedItemIDsType
             var itemIds = data.Items.Select(i => new { itemID = i.ItemId })
                 .ToTvp(UpdatedItemIDs, UpdatedItemIDsType);
 
-            this.context.Context.Database.ExecuteSqlCommand(Exec_GenerateItemUpdateEvents_SP, itemIds);
+            context.Database.ExecuteSqlCommand(Exec_GenerateItemUpdateEvents_SP, itemIds);
         }
 
-        private void GenerateItemMessagesForMessageQueueProduct(GenerateItemMessagesCommand data)
+        private void GenerateItemMessagesForMessageQueueProduct(IconContext context, GenerateItemMessagesCommand data)
         {
             // See app.UpdatedItemIDsType
             var itemIds = data.Items.Select(i => new { itemID = i.ItemId })
                 .ToTvp(UpdatedItemIDs, UpdatedItemIDsType);
 
-            this.context.Context.Database.ExecuteSqlCommand(Exec_GenerateItemUpdateMessages_SP, itemIds);
+            context.Database.ExecuteSqlCommand(Exec_GenerateItemUpdateMessages_SP, itemIds);
         }
     }
 }

@@ -17,23 +17,25 @@ using Icon.Infor.Listeners.Item.Validators;
 using Icon.Infor.Listeners.Item.Notifiers;
 using System.Xml.Linq;
 using Icon.Infor.Listeners.Item.Queries;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.Item.Tests.Integration
 {
     [TestClass]
     public class ItemListenerTests
     {
-        protected ItemListener CreateItemListenerForTest(Mock<IRenewableContext<IconContext>> mockGlobalContext)
+        protected ItemListener CreateItemListenerForTest()
         {
+            IconDbContextFactory contextFactory = new IconDbContextFactory();
+
             ItemListener il = new ItemListener(
                               new ItemMessageParser(new NLogLogger<ItemMessageParser>()),
-                              new ItemModelValidator(new GetItemValidationPropertiesQuery(mockGlobalContext.Object)),
-                              mockGlobalContext.Object,
+                              new ItemModelValidator(new GetItemValidationPropertiesQuery(contextFactory)),
                               new ItemService(
-                                      new ItemAddOrUpdateCommandHandler(mockGlobalContext.Object),
-                                      new GenerateItemMessagesCommandHandler(mockGlobalContext.Object),
-                                      new ArchiveItemsCommandHandler(),
-                                      new ArchiveMessageCommandHandler(mockGlobalContext.Object)
+                                      new ItemAddOrUpdateCommandHandler(contextFactory),
+                                      new GenerateItemMessagesCommandHandler(contextFactory),
+                                      new ArchiveItemsCommandHandler(contextFactory),
+                                      new ArchiveMessageCommandHandler(contextFactory)
                                   ),
                                   ListenerApplicationSettings.CreateDefaultSettings("Infor Item Listener"),
                                   EsbConnectionSettings.CreateSettingsFromConfig(),
@@ -48,13 +50,9 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
         public void HandleMessage_GivenAProductMessageFromInforWithASingleItem_ShouldSaveItemToDatabase()
         {
             //Given
-            IconContext context = new IconContext();
-            Mock<IRenewableContext<IconContext>> mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
-            mockGlobalContext.SetupGet(m => m.Context).Returns(context);
-
-            using (var transaction = context.Database.BeginTransaction())
+            using (var transaction = new TransactionScope())
             {
-                ItemListener il = CreateItemListenerForTest(mockGlobalContext);
+                ItemListener il = CreateItemListenerForTest();
 
                 Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
                 mockMessage.SetupGet(m => m.MessageText)
@@ -66,16 +64,19 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
                 il.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
 
                 //Then
-                var item = context.ScanCode.AsNoTracking()
-                    .FirstOrDefault(sc => sc.scanCode == "888888888" && sc.itemID == 999999999)
-                    .Item;
+                using (var context = new IconContext())
+                {
+                    var item = context.ScanCode.AsNoTracking()
+                        .FirstOrDefault(sc => sc.scanCode == "888888888" && sc.itemID == 999999999)
+                        .Item;
 
-                Assert.IsNotNull(item, "Item was not successfully saved to the database.");
+                    Assert.IsNotNull(item, "Item was not successfully saved to the database.");
 
-                var messageArchiveProduct = context.MessageArchiveProduct.FirstOrDefault(p => p.ItemId == 999999999);
+                    var messageArchiveProduct = context.MessageArchiveProduct.FirstOrDefault(p => p.ItemId == 999999999);
 
-                Assert.IsNotNull(messageArchiveProduct, "Item update was not successfully archived to the database.");
-                Assert.IsNull(messageArchiveProduct.ErrorCode, "Item update was not successfully archived to the database.");
+                    Assert.IsNotNull(messageArchiveProduct, "Item update was not successfully archived to the database.");
+                    Assert.IsNull(messageArchiveProduct.ErrorCode, "Item update was not successfully archived to the database.");
+                }
             }
         }
 
@@ -84,13 +85,9 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
         public void HandleMessage_ProductMessageFromInforWithItemThatHasOrganicTrait_SavesItemSignAttributeAsOrganic()
         {
             //Given
-            IconContext context = new IconContext();
-            Mock<IRenewableContext<IconContext>> mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
-            mockGlobalContext.SetupGet(m => m.Context).Returns(context);
-
-            using (var transaction = context.Database.BeginTransaction())
+            using (var transaction = new TransactionScope())
             {
-                ItemListener il = CreateItemListenerForTest(mockGlobalContext);
+                ItemListener il = CreateItemListenerForTest();
 
                 Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
 
@@ -110,14 +107,17 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
                 il.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
 
                 //Then
-                var itemSignAttribute = context.ScanCode.AsNoTracking()
-                    .FirstOrDefault(sc => sc.scanCode == "888888888" && sc.itemID == 999999999)
-                    .Item
-                    .ItemSignAttribute
-                    .FirstOrDefault();
+                using (var context = new IconContext())
+                {
+                    var itemSignAttribute = context.ScanCode.AsNoTracking()
+                        .FirstOrDefault(sc => sc.scanCode == "888888888" && sc.itemID == 999999999)
+                        .Item
+                        .ItemSignAttribute
+                        .FirstOrDefault();
 
-                Assert.IsNotNull(itemSignAttribute, "Item was not successfully saved to the database.");
-                Assert.AreEqual(organicAgencyName, itemSignAttribute.OrganicAgencyName);
+                    Assert.IsNotNull(itemSignAttribute, "Item was not successfully saved to the database.");
+                    Assert.AreEqual(organicAgencyName, itemSignAttribute.OrganicAgencyName);
+                }
             }
         }
     }

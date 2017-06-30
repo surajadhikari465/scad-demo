@@ -25,14 +25,12 @@ namespace Icon.Infor.Listeners.Item
         private IMessageParser<IEnumerable<ItemModel>> messageParser;
         private ICollectionValidator<ItemModel> itemValidator;
         private IItemService service;
-        private IRenewableContext<IconContext> context;
         private IItemListenerNotifier notifier;
         private List<ItemModel> models;
 
         public ItemListener(
             IMessageParser<IEnumerable<ItemModel>> messageParser,
             ICollectionValidator<ItemModel> itemValidator,
-            IRenewableContext<IconContext> context,
             IItemService service,
             ListenerApplicationSettings listenerApplicationSettings,
             EsbConnectionSettings esbConnectionSettings,
@@ -43,7 +41,6 @@ namespace Icon.Infor.Listeners.Item
         {
             this.messageParser = messageParser;
             this.itemValidator = itemValidator;
-            this.context = context;
             this.service = service;
             this.notifier = notifier;
             this.models = new List<ItemModel>();
@@ -53,7 +50,6 @@ namespace Icon.Infor.Listeners.Item
         {
             try
             {
-                context.Refresh();
 
                 models = messageParser.ParseMessage(args.Message).ToList();
                 if (models.Any())
@@ -74,7 +70,6 @@ namespace Icon.Infor.Listeners.Item
                 NotifyItemErrors(args.Message, models);
 
                 AcknowledgeMessage(args);
-                context.Refresh();
                 models.Clear();
             }
         }

@@ -9,6 +9,7 @@ using Icon.Infor.Listeners.Item.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Icon.Infor.Listeners.Item.Extensions;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.Item.Tests.Commands
 {
@@ -17,24 +18,23 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
     {
         private ItemAddOrUpdateCommandHandler commandHandler;
         private IconContext context;
-        private DbContextTransaction transaction;
         private ItemAddOrUpdateCommand command;
         private HierarchyClass testMerchandiseHierarchyClass;
         private HierarchyClass testBrandHierarchyClass;
         private HierarchyClass testFinancialHierarchyClass;
         private HierarchyClass testNationalHierarchyClass;
         private HierarchyClass testTaxHierarchyClass;
+        private IconDbContextFactory contextFactory;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+            contextFactory = new IconDbContextFactory();
             context = new IconContext();
-            transaction = context.Database.BeginTransaction();
-            Mock<IRenewableContext<IconContext>> mockContext = new Mock<IRenewableContext<IconContext>>();
-            mockContext.SetupGet(m => m.Context)
-                .Returns(context);
 
-            commandHandler = new ItemAddOrUpdateCommandHandler(mockContext.Object);
+            commandHandler = new ItemAddOrUpdateCommandHandler(contextFactory);
             command = new ItemAddOrUpdateCommand();
 
             testMerchandiseHierarchyClass = context.HierarchyClass.Add(new HierarchyClass { hierarchyID = Hierarchies.Merchandise, hierarchyClassName = "Test Merchandise", hierarchyLevel = HierarchyLevels.SubBrick });
@@ -48,9 +48,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
             transaction.Dispose();
-            context.Dispose();
         }
 
         [TestMethod]

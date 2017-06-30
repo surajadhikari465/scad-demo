@@ -20,7 +20,7 @@ namespace Icon.Infor.Listeners.Item
     {
         static void Main(string[] args)
         {
-            GlobalContext<IconContext> globalContext = new GlobalContext<IconContext>();
+            IconDbContextFactory factory = new IconDbContextFactory();
 
             HostFactory.Run(r =>
             {
@@ -28,13 +28,12 @@ namespace Icon.Infor.Listeners.Item
                 {
                     s.ConstructUsing(c => new ItemListener(
                         new ItemMessageParser(new NLogLogger<ItemMessageParser>()),
-                        new ItemModelValidator(new GetItemValidationPropertiesQuery(globalContext)),
-                        globalContext,
+                        new ItemModelValidator(new GetItemValidationPropertiesQuery(factory)),
                         new ItemService(
-                                new ItemAddOrUpdateCommandHandler(globalContext),
-                                new GenerateItemMessagesCommandHandler(globalContext),
-                                new ArchiveItemsCommandHandler(),
-                                new ArchiveMessageCommandHandler(globalContext)
+                                new ItemAddOrUpdateCommandHandler(factory),
+                                new GenerateItemMessagesCommandHandler(factory),
+                                new ArchiveItemsCommandHandler(factory),
+                                new ArchiveMessageCommandHandler(factory)
                             ),
                             ListenerApplicationSettings.CreateDefaultSettings("Infor Item Listener"),
                             EsbConnectionSettings.CreateSettingsFromConfig(),

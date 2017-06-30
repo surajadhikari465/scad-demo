@@ -1,6 +1,7 @@
 ﻿using Icon.Common;
 using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using Icon.Infor.Listeners.Item.Models;
 using System;
@@ -13,11 +14,11 @@ namespace Icon.Infor.Listeners.Item.Queries
 {
     public class GetItemValidationPropertiesQuery : IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>>
     {
-        private IRenewableContext<IconContext> globalContext;
+        private IDbContextFactory<IconContext> contextFactory;
 
-        public GetItemValidationPropertiesQuery(IRenewableContext<IconContext> globalContext)
+        public GetItemValidationPropertiesQuery(IDbContextFactory<IconContext> contextFactory)
         {
-            this.globalContext = globalContext;
+            this.contextFactory = contextFactory;
         }
 
         public List<GetItemValidationPropertiesResultModel> Search(GetItemValidationPropertiesParameters parameters)
@@ -27,9 +28,11 @@ namespace Icon.Infor.Listeners.Item.Queries
                 .Select(i => new ValidateItemModel(i))
                 .ToTvp("items", "infor.ValidateItemType");
 
-            var itemValidationPropertyResults = globalContext.Context.Database.SqlQuery<GetItemValidationPropertiesResultModel>("exec infor.GetItemValidationProperties @items", items).ToList();
-
-            return itemValidationPropertyResults;
+            using (var context = contextFactory.CreateContext())
+            {
+                var itemValidationPropertyResults = context.Database.SqlQuery<GetItemValidationPropertiesResultModel>("exec infor.GetItemValidationProperties @items", items).ToList();
+                return itemValidationPropertyResults;
+            }
         }
     }
 }

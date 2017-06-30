@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-
-using Icon.Common.Context;
+﻿using Icon.Common.Context;
 using Icon.Framework;
 using Icon.Infor.Listeners.Item.Commands;
 using Icon.Infor.Listeners.Item.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.Item.Tests.Commands
 {
@@ -17,27 +15,23 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
     {
         private GenerateItemMessagesCommandHandler commandHandler;
         private IconContext context;
-        private DbContextTransaction transaction;
+        private IconDbContextFactory contextFactory;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
-            this.context = new IconContext();
-            this.transaction = context.Database.BeginTransaction();
+            transaction = new TransactionScope();
+            contextFactory = new IconDbContextFactory();
+            context = new IconContext();
 
-            Mock<IRenewableContext<IconContext>> mockContext = new Mock<IRenewableContext<IconContext>>();
-            mockContext.SetupGet(m => m.Context)
-                .Returns(context);
-
-            this.commandHandler = new GenerateItemMessagesCommandHandler(mockContext.Object);
+            commandHandler = new GenerateItemMessagesCommandHandler(contextFactory);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
             transaction.Dispose();
-            context.Dispose();
         }
 
         [TestMethod]
@@ -57,7 +51,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             };
 
             //When
-            this.commandHandler.Execute(new GenerateItemMessagesCommand
+            commandHandler.Execute(new GenerateItemMessagesCommand
                 {
                     Items = new List<ItemModel>{ expectedItem }
                 });

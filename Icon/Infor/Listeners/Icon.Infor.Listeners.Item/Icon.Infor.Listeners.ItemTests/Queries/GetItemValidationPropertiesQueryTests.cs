@@ -1,16 +1,11 @@
-﻿using Icon.Common.Context;
-using Icon.Framework;
-using Icon.Infor.Listeners.Item.Commands;
+﻿using Icon.Framework;
 using Icon.Infor.Listeners.Item.Models;
 using Icon.Infor.Listeners.Item.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Icon.Infor.Listeners.Item.Tests.Commands
 {
@@ -19,27 +14,24 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
     {
         private GetItemValidationPropertiesQuery queryHandler;
         private GetItemValidationPropertiesParameters parameters;
-        private Mock<IRenewableContext<IconContext>> mockGlobalContext;
         private IconContext context;
-        private DbContextTransaction transaction;
         private ItemModel testItem;
         private HierarchyClass testBrand;
         private HierarchyClass testSubTeam;
         private HierarchyClass testSubBrick;
         private HierarchyClass testNationalClass;
         private HierarchyClass testTax;
-        private DateTime testDatabaseModifiedDate;
+        private IconDbContextFactory contextFactory;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
+            contextFactory = new IconDbContextFactory();
             context = new IconContext();
-            transaction = context.Database.BeginTransaction();
 
-            mockGlobalContext = new Mock<IRenewableContext<IconContext>>();
-            mockGlobalContext.SetupGet(m => m.Context).Returns(context);
-
-            queryHandler = new GetItemValidationPropertiesQuery(mockGlobalContext.Object);
+            queryHandler = new GetItemValidationPropertiesQuery(contextFactory);
             parameters = new GetItemValidationPropertiesParameters();
 
             testItem = new ItemModel { ItemId = 999999999 };
@@ -66,9 +58,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
             transaction.Dispose();
-            context.Dispose();
         }
 
         [TestMethod]
