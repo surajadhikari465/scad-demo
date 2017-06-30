@@ -21,26 +21,18 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
     [TestClass]
     public class UpdateTaxClassEventServiceTests
     {
-        private IrmaContext irmaContext;
-        private IEventService eventService;
+        private UpdateTaxClassEventService eventService;
         private Mock<ICommandHandler<UpdateTaxClassCommand>> mockUpdateTaxClassHandler;
         private Mock<IQueryHandler<GetTaxAbbreviationQuery, string>> mockGetTaxAbbreviationQueryHandler;
 
         [TestInitialize]
         public void InitializeData()
         {
-            irmaContext = new IrmaContext();
             mockUpdateTaxClassHandler = new Mock<ICommandHandler<UpdateTaxClassCommand>>();
             mockGetTaxAbbreviationQueryHandler = new Mock<IQueryHandler<GetTaxAbbreviationQuery, string>>();
-            eventService = new UpdateTaxClassEventService(this.irmaContext,
+            eventService = new UpdateTaxClassEventService(
                 this.mockUpdateTaxClassHandler.Object,
                 this.mockGetTaxAbbreviationQueryHandler.Object);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            irmaContext.Dispose();
         }
 
         [TestMethod]

@@ -1,20 +1,22 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using GlobalEventController.DataAccess.Commands;
 using Irma.Framework;
-using GlobalEventController.DataAccess.Commands;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.CommandTests
 {
     [TestClass]
     public class AddUpdateLastChangeByIdentifiersCommandHandlerTests
     {
-        private IrmaContext context;
-        private AddUpdateLastChangeByIdentifiersCommand command;
         private AddUpdateLastChangeByIdentifiersCommandHandler handler;
-        private DbContextTransaction transaction;
+        private AddUpdateLastChangeByIdentifiersCommand command;
+        private IrmaDbContextFactory contextFactory;
+        private IrmaContext context;
+        private TransactionScope transaction;
         private List<IconItemLastChange> lastChangeList;
         private List<ItemIdentifier> itemIdentifierList;
         private TaxClass existingTaxClass;
@@ -23,26 +25,22 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         [TestInitialize]
         public void InitializeData()
         {
-            this.context = new IrmaContext(); // no constructor uses the FL region: idd-fl\fld
+            this.transaction = new TransactionScope();
+            this.context = new IrmaContext();
+            this.contextFactory = new IrmaDbContextFactory();
             this.command = new AddUpdateLastChangeByIdentifiersCommand();
-            this.handler = new AddUpdateLastChangeByIdentifiersCommandHandler(this.context);
+            this.handler = new AddUpdateLastChangeByIdentifiersCommandHandler(contextFactory);
             this.lastChangeList = new List<IconItemLastChange>();
             this.itemIdentifierList = new List<ItemIdentifier>();
-
             
             this.existingTaxClass = this.context.TaxClass.First(tc => !tc.TaxClassDesc.ToLower().Contains("do not use"));
             this.existingBrand = this.context.ItemBrand.First(ib => ib.ValidatedBrand.Any());
-
-            this.transaction = this.context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (this.transaction != null)
-            {
-                this.transaction.Rollback();
-            }
+            this.transaction.Dispose();
         }
 
         [TestMethod]
@@ -66,7 +64,6 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
             // When
             this.handler.Handle(this.command);
-            this.context.SaveChanges();
 
             // Then
             for (int i = 0; i < this.command.Identifiers.Count; i++)
@@ -113,14 +110,13 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
             // When
             this.handler.Handle(this.command);
-            this.context.SaveChanges();
 
             // Then
             // Nothing should be updated except the insert date.
             for (int i = 0; i < this.command.Identifiers.Count; i++)
             {
                 IconItemLastChange expected = this.lastChangeList[i];
-                IconItemLastChange actual = this.context.IconItemLastChange.First(lc => lc.Identifier == expected.Identifier);
+                IconItemLastChange actual = this.context.IconItemLastChange.AsNoTracking().First(lc => lc.Identifier == expected.Identifier);
                 Assert.IsNotNull(actual.IconItemLastChangeId);
                 Assert.AreEqual(this.lastChangeList[i].Identifier, actual.Identifier, "The identifier of the existing Last Change row updated unexpectedly.");
                 Assert.AreEqual(this.lastChangeList[i].Item_Description, actual.Item_Description, "The Item_Description of the existing Last Change row updated unexpectedly.");

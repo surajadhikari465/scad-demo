@@ -91,8 +91,6 @@ namespace GlobalEventController.Controller.EventOperations
                     });
                     this.queues.FailedEvents.AddRange(failedEvents);
                     eventArchiver.Events.AddRange(failedEvents.ToEventArchiveList(Constants.ApplicationErrors.Codes.UnexpectedError, ex.ToString()));
-
-                    eventServiceProvider.RefreshContexts();
                 }
             }
         }

@@ -9,6 +9,7 @@ namespace GlobalEventController.DataAccess.Infrastructure
     {
         private static IDictionary<string, string> eventMap = new Dictionary<string, string>
         {
+            { EventConstants.IconAlreadyValidatedNewItemRequestEventName, Enums.EventNames.IrmaToIconNewItem.ToString() },
             { EventConstants.IconToIrmaBrandNameUpdate, Enums.EventNames.IconToIrmaBrandNameUpdate.ToString() },
             { EventConstants.IconToIrmaTaxClassUpdate, Enums.EventNames.IconToIrmaTaxClassUpdate.ToString() },
             { EventConstants.IconToIrmaNewTaxClass, Enums.EventNames.IconToIrmaNewTaxClass.ToString() },
@@ -25,6 +26,7 @@ namespace GlobalEventController.DataAccess.Infrastructure
 
         private static IDictionary<string, string> reversedEventMap = new Dictionary<string, string>
         {
+            { Enums.EventNames.IrmaToIconNewItem.ToString(), EventConstants.IconAlreadyValidatedNewItemRequestEventName },
             { Enums.EventNames.IconToIrmaBrandNameUpdate.ToString(), EventConstants.IconToIrmaBrandNameUpdate },
             { Enums.EventNames.IconToIrmaTaxClassUpdate.ToString(), EventConstants.IconToIrmaTaxClassUpdate },
             { Enums.EventNames.IconToIrmaNewTaxClass.ToString(), EventConstants.IconToIrmaNewTaxClass },

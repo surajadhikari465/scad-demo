@@ -2,10 +2,7 @@
 using GlobalEventController.Controller.EventOperations;
 using Icon.Common.Email;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GlobalEventController.Controller.Decorators.EventFinalizer
 {

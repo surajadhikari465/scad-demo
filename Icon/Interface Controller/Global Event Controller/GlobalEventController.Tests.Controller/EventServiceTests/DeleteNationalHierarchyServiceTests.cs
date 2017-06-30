@@ -13,24 +13,14 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
     [TestClass]
     public class DeleteNationalHierarchyServiceTests
     {
-        private IrmaContext irmaContext;
-        private IconContext iconContext;
-        private IEventService eventService;
+        private DeleteNationalHierarchyEventService eventService;
         private Mock<ICommandHandler<DeleteNationalHierarchyCommand>> deleteNationalHierarchyHandler;
 
         [TestInitialize]
         public void InitializeData()
         {
-            irmaContext = new IrmaContext();
-            iconContext = new IconContext();
             deleteNationalHierarchyHandler = new Mock<ICommandHandler<DeleteNationalHierarchyCommand>>();
-            eventService = new DeleteNationalHierarchyEventService(irmaContext, deleteNationalHierarchyHandler.Object);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            irmaContext.Dispose();
+            eventService = new DeleteNationalHierarchyEventService(deleteNationalHierarchyHandler.Object);
         }
 
         [TestMethod]

@@ -1,48 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Irma.Framework;
-using GlobalEventController.DataAccess.Infrastructure;
+﻿using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using Icon.Logging;
-using GlobalEventController.DataAccess.Queries;
-using System.Data.Entity;
+using Irma.Framework;
+using System;
+using System.Linq;
 
 namespace GlobalEventController.DataAccess.Commands
 {
     public class AddOrUpdateNationalHierarchyCommandHandler : ICommandHandler<AddOrUpdateNationalHierarchyCommand>
     {
-        private readonly IrmaContext irmaContext;
+        private IDbContextFactory<IrmaContext> contextFactory;
         private ILogger<AddOrUpdateNationalHierarchyCommandHandler> logger;
 
         public AddOrUpdateNationalHierarchyCommandHandler(
-            IrmaContext irmaContext,
+            IDbContextFactory<IrmaContext> contextFactory,
             ILogger<AddOrUpdateNationalHierarchyCommandHandler> logger)
         {
-            this.irmaContext = irmaContext;
+            this.contextFactory = contextFactory;
             this.logger = logger;
         }
 
         public void Handle(AddOrUpdateNationalHierarchyCommand command)
         {
-            var validatedNationalClassExists = irmaContext.ValidatedNationalClass
-                .Any(vnc => vnc.IconId == command.HierarchyClass.hierarchyClassID);
-
-            if (validatedNationalClassExists)
+            using (var context = contextFactory.CreateContext())
             {
-                UpdateNationalClass(command);
-            }
-            else
-            {
-                AddNationalClass(command);
-            }
+                var validatedNationalClassExists = context.ValidatedNationalClass
+                    .Any(vnc => vnc.IconId == command.HierarchyClass.hierarchyClassID);
 
-            irmaContext.SaveChanges();
+                if (validatedNationalClassExists)
+                {
+                    UpdateNationalClass(context, command);
+                }
+                else
+                {
+                    AddNationalClass(context, command);
+                }
+
+                context.SaveChanges();
+            }
         }
 
-        private void AddNationalClass(AddOrUpdateNationalHierarchyCommand command)
+        private void AddNationalClass(IrmaContext context, AddOrUpdateNationalHierarchyCommand command)
         {
             switch (command.HierarchyClass.hierarchyLevel)
             {
@@ -51,48 +50,48 @@ namespace GlobalEventController.DataAccess.Commands
                     // since IRMA combines Family and Category records into a single NatItemFamily record
                     break;
                 case HierarchyLevels.NationalCategory:
-                    var natItemFamily = irmaContext.NatItemFamily.Add(new NatItemFamily
+                    var natItemFamily = context.NatItemFamily.Add(new NatItemFamily
                         {
                             NatFamilyName = $"{command.ParentHierarchyClass.hierarchyClassName} - {command.HierarchyClass.hierarchyClassName}",
                             NatSubTeam_No = null,
                             SubTeam_No = null,
                             LastUpdateTimestamp = DateTime.Now
                         });
-                    irmaContext.SaveChanges();
-                    AddValidatedNationalClass(command.ParentHierarchyClass, natItemFamily.NatFamilyID);
-                    AddValidatedNationalClass(command.HierarchyClass, natItemFamily.NatFamilyID);
+                    context.SaveChanges();
+                    AddValidatedNationalClass(context, command.ParentHierarchyClass, natItemFamily.NatFamilyID);
+                    AddValidatedNationalClass(context, command.HierarchyClass, natItemFamily.NatFamilyID);
                     break;
                 case HierarchyLevels.NationalSubCategory:
-                    var natFamilyId = irmaContext.ValidatedNationalClass
+                    var natFamilyId = context.ValidatedNationalClass
                         .First(vnc => vnc.IconId == command.HierarchyClass.hierarchyParentClassID.Value).IrmaId.Value;
-                    var natItemCat = irmaContext.NatItemCat.Add(new NatItemCat
+                    var natItemCat = context.NatItemCat.Add(new NatItemCat
                         {
                             NatCatName = command.HierarchyClass.hierarchyClassName,
                             NatFamilyID = natFamilyId,
                             LastUpdateTimestamp = DateTime.Now
                         });
-                    irmaContext.SaveChanges();
-                    AddValidatedNationalClass(command.HierarchyClass, natItemCat.NatCatID);
+                    context.SaveChanges();
+                    AddValidatedNationalClass(context, command.HierarchyClass, natItemCat.NatCatID);
                     break;
                 case HierarchyLevels.NationalClass:
-                    var natCatId = irmaContext.ValidatedNationalClass
+                    var natCatId = context.ValidatedNationalClass
                         .First(vnc => vnc.IconId == command.HierarchyClass.hierarchyParentClassID.Value).IrmaId.Value;
-                    var natItemClass = irmaContext.NatItemClass.Add(new NatItemClass
+                    var natItemClass = context.NatItemClass.Add(new NatItemClass
                         {
                             ClassID = int.Parse(command.HierarchyClass.HierarchyClassTrait.First(hct => hct.traitID == Traits.NationalClassCode).traitValue),
                             ClassName = command.HierarchyClass.hierarchyClassName,
                             NatCatID = natCatId,
                             LastUpdateTimestamp = DateTime.Now
                         });
-                    irmaContext.SaveChanges();
-                    AddValidatedNationalClass(command.HierarchyClass, natItemClass.ClassID);
+                    context.SaveChanges();
+                    AddValidatedNationalClass(context, command.HierarchyClass, natItemClass.ClassID);
                     break;
                 default:
                     throw new ArgumentException($"Unable to add National Class. No National Hierarchy Level registered for given level of '{command.HierarchyClass.hierarchyLevel}'.", nameof(command.HierarchyClass.hierarchyLevel));
             }
         }
 
-        private void UpdateNationalClass(AddOrUpdateNationalHierarchyCommand command)
+        private void UpdateNationalClass(IrmaContext context, AddOrUpdateNationalHierarchyCommand command)
         {
             ValidatedNationalClass validatedNationalClass = null;
             NatItemFamily natItemFamily = null;
@@ -100,35 +99,35 @@ namespace GlobalEventController.DataAccess.Commands
             switch (command.HierarchyClass.hierarchyLevel)
             {
                 case HierarchyLevels.NationalFamily:
-                    var validatedNationalClasses = irmaContext.ValidatedNationalClass
+                    var validatedNationalClasses = context.ValidatedNationalClass
                         .Where(vnc => vnc.IconId == command.HierarchyClass.hierarchyClassID);
                     foreach (var vnc in validatedNationalClasses)
                     {
-                        natItemFamily = irmaContext.NatItemFamily.First(nif => nif.NatFamilyID == vnc.IrmaId);
+                        natItemFamily = context.NatItemFamily.First(nif => nif.NatFamilyID == vnc.IrmaId);
                         var categoryName = GetCategoryName(natItemFamily);
                         natItemFamily.NatFamilyName = $"{command.HierarchyClass.hierarchyClassName} - {categoryName}";
                         natItemFamily.LastUpdateTimestamp = DateTime.Now;
                     }
                     break;
                 case HierarchyLevels.NationalCategory:
-                    validatedNationalClass = irmaContext.ValidatedNationalClass
+                    validatedNationalClass = context.ValidatedNationalClass
                         .First(vnc => vnc.IconId == command.HierarchyClass.hierarchyClassID);
-                    natItemFamily = irmaContext.NatItemFamily.First(nif => nif.NatFamilyID == validatedNationalClass.IrmaId);
+                    natItemFamily = context.NatItemFamily.First(nif => nif.NatFamilyID == validatedNationalClass.IrmaId);
                     var familyName = GetFamilyName(natItemFamily);
                     natItemFamily.NatFamilyName = $"{familyName} - {command.HierarchyClass.hierarchyClassName}";
                     natItemFamily.LastUpdateTimestamp = DateTime.Now;
                     break;
                 case HierarchyLevels.NationalSubCategory:
-                    validatedNationalClass = irmaContext.ValidatedNationalClass
+                    validatedNationalClass = context.ValidatedNationalClass
                         .First(vnc => vnc.IconId == command.HierarchyClass.hierarchyClassID);
-                    var natItemCat = irmaContext.NatItemCat.First(nic => nic.NatCatID == validatedNationalClass.IrmaId);
+                    var natItemCat = context.NatItemCat.First(nic => nic.NatCatID == validatedNationalClass.IrmaId);
                     natItemCat.NatCatName = command.HierarchyClass.hierarchyClassName;
                     natItemCat.LastUpdateTimestamp = DateTime.Now;
                     break;
                 case HierarchyLevels.NationalClass:
-                    validatedNationalClass = irmaContext.ValidatedNationalClass
+                    validatedNationalClass = context.ValidatedNationalClass
                         .First(vnc => vnc.IconId == command.HierarchyClass.hierarchyClassID);
-                    var natItemClass = irmaContext.NatItemClass.First(nicl => nicl.ClassID == validatedNationalClass.IrmaId);
+                    var natItemClass = context.NatItemClass.First(nicl => nicl.ClassID == validatedNationalClass.IrmaId);
                     natItemClass.ClassName = command.HierarchyClass.hierarchyClassName;
                     natItemClass.LastUpdateTimestamp = DateTime.Now;
                     break;
@@ -147,9 +146,9 @@ namespace GlobalEventController.DataAccess.Commands
             return natItemFamily.NatFamilyName.Split(new[] { '-' }, 2)[1].Trim();
         }
 
-        private void AddValidatedNationalClass(HierarchyClass hierarchyClass, int irmaId)
+        private void AddValidatedNationalClass(IrmaContext context, HierarchyClass hierarchyClass, int irmaId)
         {
-            irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass()
+            context.ValidatedNationalClass.Add(new ValidatedNationalClass()
                 {
                     IrmaId = irmaId,
                     IconId = hierarchyClass.hierarchyClassID,

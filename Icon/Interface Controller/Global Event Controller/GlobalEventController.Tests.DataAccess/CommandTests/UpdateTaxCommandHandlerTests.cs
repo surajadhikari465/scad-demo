@@ -1,10 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using GlobalEventController.DataAccess.Commands;
 using Irma.Framework;
-using GlobalEventController.DataAccess.Commands;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using System.Collections;
-using System.Data.Entity;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.CommandTests
 {
@@ -12,32 +10,26 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
     [Ignore] //Ignoring these tests since this functionality has been turned off for 2 years
     public class UpdateTaxCommandHandlerTests
     {
-        private IrmaContext context;
-        private UpdateTaxClassCommand command;
         private UpdateTaxClassCommandHandler handler;
-        private DbContextTransaction transaction;
+        private UpdateTaxClassCommand command;
+        private IrmaContext context;
+        private IrmaDbContextFactory contextFactory;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeData()
         {
+            this.transaction = new TransactionScope();
             this.context = new IrmaContext();
+            this.contextFactory = new IrmaDbContextFactory();
             this.command = new UpdateTaxClassCommand();
-            this.handler = new UpdateTaxClassCommandHandler(this.context);
-            this.transaction = this.context.Database.BeginTransaction();
+            this.handler = new UpdateTaxClassCommandHandler(contextFactory);
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (this.transaction != null)
-            {
-                this.transaction.Rollback();
-            }
-
-            if (this.context != null)
-            {
-                this.context.Dispose();
-            }
+            transaction.Dispose();
         }
 
         [TestMethod]

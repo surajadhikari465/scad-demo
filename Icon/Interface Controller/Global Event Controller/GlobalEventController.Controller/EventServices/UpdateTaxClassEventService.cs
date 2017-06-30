@@ -1,11 +1,7 @@
 ﻿using GlobalEventController.DataAccess.Commands;
 using GlobalEventController.DataAccess.Infrastructure;
 using GlobalEventController.DataAccess.Queries;
-using Irma.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace GlobalEventController.Controller.EventServices
 {
@@ -14,10 +10,9 @@ namespace GlobalEventController.Controller.EventServices
         private ICommandHandler<UpdateTaxClassCommand> updateTaxClassHandler;
         private IQueryHandler<GetTaxAbbreviationQuery, string> getTaxAbbreviationQueryHandler;
 
-        public UpdateTaxClassEventService(IrmaContext irmaContext,
+        public UpdateTaxClassEventService(
             ICommandHandler<UpdateTaxClassCommand> updateTaxClassHandler,
             IQueryHandler<GetTaxAbbreviationQuery, string> getTaxAbbreviationQueryHandler)
-        : base(irmaContext)
         {
             this.updateTaxClassHandler = updateTaxClassHandler;
             this.getTaxAbbreviationQueryHandler = getTaxAbbreviationQueryHandler;
@@ -43,8 +38,6 @@ namespace GlobalEventController.Controller.EventServices
                 TaxCode = Message
             };
             updateTaxClassHandler.Handle(updateTaxClassCommand);
-
-            this.irmaContext.SaveChanges();
         }
     }
 }

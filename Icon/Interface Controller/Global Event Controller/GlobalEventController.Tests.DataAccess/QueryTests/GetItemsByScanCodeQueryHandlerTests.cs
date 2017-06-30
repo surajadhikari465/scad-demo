@@ -1,36 +1,34 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Irma.Framework;
+﻿using GlobalEventController.Common;
 using GlobalEventController.DataAccess.Queries;
+using Irma.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
-using GlobalEventController.Common;
+using System.Linq;
 
 namespace GlobalEventController.Tests.DataAccess.QueryTests
 {
     [TestClass]
     public class GetItemsByScanCodeQueryHandlerTests
     {
-        private IrmaContext context;
-        private GetItemsByScanCodeQuery queryParameters;
         private GetItemsByScanCodeQueryHandler queryHandler;
+        private GetItemsByScanCodeQuery queryParameters;
+        private IrmaContext context;
+        private IrmaDbContextFactory contextFactory;
 
         [TestInitialize]
         public void Initialize()
         {
+            this.contextFactory = new IrmaDbContextFactory();
             this.context = new IrmaContext();
             this.queryParameters = new GetItemsByScanCodeQuery();
-            this.queryHandler = new GetItemsByScanCodeQueryHandler(this.context);
+            this.queryHandler = new GetItemsByScanCodeQueryHandler(contextFactory);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            if (this.context != null)
-            {
-                this.context.Dispose();
-            }
+            this.context.Dispose();
         }
 
         [TestMethod]

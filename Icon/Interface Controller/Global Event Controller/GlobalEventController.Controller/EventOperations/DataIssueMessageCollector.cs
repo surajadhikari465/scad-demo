@@ -26,8 +26,6 @@ namespace GlobalEventController.Controller.EventOperations
                 var messageToSent = EmailHelper.BuildRegionalItemMessageTable(Message);
                 emailClient.Send(String.Format(Resources.ErrorDataIssues, messageToSent), Resources.EmailSubjectItemUpdateDataIssue);
             }
-
         }
-
     }
 }

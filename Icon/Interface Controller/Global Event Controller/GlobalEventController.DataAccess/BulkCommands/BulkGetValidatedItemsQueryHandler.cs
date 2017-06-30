@@ -1,26 +1,21 @@
 ﻿using GlobalEventController.Common;
 using GlobalEventController.DataAccess.Infrastructure;
-using Icon.Common;
 using Icon.Framework;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GlobalEventController.DataAccess.BulkCommands
 {
     public class BulkGetValidatedItemsQueryHandler : IQueryHandler<BulkGetValidatedItemsQuery, List<ValidatedItemModel>>
     {
-        private readonly ContextManager contextManager;
+        private Icon.DbContextFactory.IDbContextFactory<IconContext> contextFactory;
         private GlobalControllerSettings settings;
 
-        public BulkGetValidatedItemsQueryHandler(ContextManager contextManager, GlobalControllerSettings settings)
+        public BulkGetValidatedItemsQueryHandler(Icon.DbContextFactory.IDbContextFactory<IconContext> contextFactory, GlobalControllerSettings settings)
         {
-            this.contextManager = contextManager;
+            this.contextFactory = contextFactory;
             this.settings = settings;
         }
 
@@ -41,16 +36,18 @@ namespace GlobalEventController.DataAccess.BulkCommands
 
             string sql = GetSql(this.settings.EnableInforUpdates);
 
-            var sqlQuery = this.contextManager.IconContext.Database.SqlQuery<ValidatedItemModel>(sql, scanCodes);
-            List<ValidatedItemModel> validatedItems = sqlQuery.ToList();
-
-            // Set EventTypeId
-            foreach (var item in validatedItems)
+            using (var context = contextFactory.CreateContext())
             {
-                item.EventTypeId = parameters.Events.First(e => e.EventMessage == item.ScanCode).EventId;
-            }
+                var validatedItems = context.Database.SqlQuery<ValidatedItemModel>(sql, scanCodes).ToList();
 
-            return validatedItems;
+                // Set EventTypeId
+                foreach (var item in validatedItems)
+                {
+                    item.EventTypeId = parameters.Events.First(e => e.EventMessage == item.ScanCode).EventId;
+                }
+
+                return validatedItems;
+            }
         }
 
         private string GetSql(bool enableInforUpdates)

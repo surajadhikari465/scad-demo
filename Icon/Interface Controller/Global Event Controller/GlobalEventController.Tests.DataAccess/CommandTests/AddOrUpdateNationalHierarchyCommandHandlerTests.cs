@@ -1,15 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Irma.Framework;
-using GlobalEventController.DataAccess.Commands;
-using Moq;
-using Icon.Logging;
-using System.Linq;
-using System.Data.Entity;
-using System.Collections.Generic;
+﻿using GlobalEventController.DataAccess.Commands;
 using Icon.Framework;
-using GlobalEventController.DataAccess.Infrastructure;
-using GlobalEventController.DataAccess.Queries;
+using Icon.Logging;
+using Irma.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.CommandTests
@@ -19,18 +15,20 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
     {
         private AddOrUpdateNationalHierarchyCommandHandler commandHandler;
         private AddOrUpdateNationalHierarchyCommand command;
-        private IrmaContext irmaContext;
+        private IrmaDbContextFactory contextFactory;
+        private IrmaContext context;
         private Mock<ILogger<AddOrUpdateNationalHierarchyCommandHandler>> mockLogger;
         private TransactionScope transaction;
 
         [TestInitialize]
         public void Initialize()
         {
-            this.irmaContext = new IrmaContext();
+            this.transaction = new TransactionScope();
+            this.context = new IrmaContext();
             this.command = new AddOrUpdateNationalHierarchyCommand();
+            this.contextFactory = new IrmaDbContextFactory();
             this.mockLogger = new Mock<ILogger<AddOrUpdateNationalHierarchyCommandHandler>>();
-            this.commandHandler = new AddOrUpdateNationalHierarchyCommandHandler(irmaContext, mockLogger.Object);
-            transaction = new TransactionScope();
+            this.commandHandler = new AddOrUpdateNationalHierarchyCommandHandler(contextFactory, mockLogger.Object);
         }
 
         [TestCleanup]
@@ -57,8 +55,8 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var validatedNationalClass = irmaContext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == hierarchyClass.hierarchyClassID);
-            var family = irmaContext.NatItemFamily.SingleOrDefault(nif => nif.NatFamilyName == hierarchyClass.hierarchyClassName);
+            var validatedNationalClass = context.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == hierarchyClass.hierarchyClassID);
+            var family = context.NatItemFamily.SingleOrDefault(nif => nif.NatFamilyName == hierarchyClass.hierarchyClassName);
 
             Assert.IsNull(validatedNationalClass);
             Assert.IsNull(family);
@@ -68,8 +66,8 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         public void AddOrUpdateNationalHierarchy_AddNewNationalCategory_ShouldAddNewNationalCategoryAndItsParentNationalFamily()
         {
             //Given
-            NatItemFamily testNatItemFamily = irmaContext.NatItemFamily.Add(new NatItemFamily { NatFamilyName = "Test Family" });
-            irmaContext.SaveChanges();
+            NatItemFamily testNatItemFamily = context.NatItemFamily.Add(new NatItemFamily { NatFamilyName = "Test Family" });
+            context.SaveChanges();
             HierarchyClass testParentHierarchyClass = new HierarchyClass()
             {
                 hierarchyClassID = 100000,
@@ -93,9 +91,9 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var familyValidatedNationalClass = irmaContext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testParentHierarchyClass.hierarchyClassID);
-            var categoryValidatedNationalClass = irmaContext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
-            var natItemFamily = irmaContext.NatItemFamily.Single(nif => nif.NatFamilyID == categoryValidatedNationalClass.IrmaId);
+            var familyValidatedNationalClass = context.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testParentHierarchyClass.hierarchyClassID);
+            var categoryValidatedNationalClass = context.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
+            var natItemFamily = context.NatItemFamily.Single(nif => nif.NatFamilyID == categoryValidatedNationalClass.IrmaId);
 
             Assert.IsNotNull(familyValidatedNationalClass);
             Assert.IsNotNull(categoryValidatedNationalClass);
@@ -111,13 +109,13 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         public void AddOrUpdateNationalHierarchy_AddNewNationalSubCategory_ShouldAddNewNationalSubCategory()
         {
             //Given
-            var testNatItemFamily = irmaContext.NatItemFamily.Add(new NatItemFamily
+            var testNatItemFamily = context.NatItemFamily.Add(new NatItemFamily
             {
                 NatFamilyName = "Test Family - Test Category",
             });
-            irmaContext.SaveChanges();
-            irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass { IconId = 100000, IrmaId = testNatItemFamily.NatFamilyID, Level = HierarchyLevels.NationalCategory });
-            irmaContext.SaveChanges();
+            context.SaveChanges();
+            context.ValidatedNationalClass.Add(new ValidatedNationalClass { IconId = 100000, IrmaId = testNatItemFamily.NatFamilyID, Level = HierarchyLevels.NationalCategory });
+            context.SaveChanges();
             var testHierarchyClass = new HierarchyClass
             {
                 hierarchyClassID = 100001,
@@ -132,8 +130,8 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var validatedNationalClass = irmaContext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
-            var natItemCat = irmaContext.NatItemCat.SingleOrDefault(nic => nic.NatCatID == validatedNationalClass.IrmaId);
+            var validatedNationalClass = context.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
+            var natItemCat = context.NatItemCat.SingleOrDefault(nic => nic.NatCatID == validatedNationalClass.IrmaId);
 
             Assert.IsNotNull(validatedNationalClass);
             Assert.IsNotNull(natItemCat);
@@ -146,18 +144,18 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         {
             //Given
             var expectedClassId = 8888888;
-            var testNatItemCat = irmaContext.NatItemCat.Add(new NatItemCat
+            var testNatItemCat = context.NatItemCat.Add(new NatItemCat
             {
                 NatCatName = "Test Sub Category",
             });
-            irmaContext.SaveChanges();
-            irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass
+            context.SaveChanges();
+            context.ValidatedNationalClass.Add(new ValidatedNationalClass
                 {
                     IconId = 100000,
                     IrmaId = testNatItemCat.NatCatID,
                     Level = HierarchyLevels.NationalSubCategory
                 });
-            irmaContext.SaveChanges();
+            context.SaveChanges();
 
             var testHierarchyClass = new HierarchyClass
             {
@@ -177,8 +175,8 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var validatedNationalClass = irmaContext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
-            var natItemClass = irmaContext.NatItemClass.SingleOrDefault(nic => nic.ClassID == validatedNationalClass.IrmaId);
+            var validatedNationalClass = context.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
+            var natItemClass = context.NatItemClass.SingleOrDefault(nic => nic.ClassID == validatedNationalClass.IrmaId);
 
             Assert.IsNotNull(validatedNationalClass);
             Assert.IsNotNull(natItemClass);
@@ -192,18 +190,18 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         {
             //Given
             var testCategoryName = "Test Category";
-            var testNatItemFamily = irmaContext.NatItemFamily.Add(new NatItemFamily
+            var testNatItemFamily = context.NatItemFamily.Add(new NatItemFamily
             {
                 NatFamilyName = $"Test Family - {testCategoryName}"
             });
-            irmaContext.SaveChanges();
-            irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass
+            context.SaveChanges();
+            context.ValidatedNationalClass.Add(new ValidatedNationalClass
             {
                 IconId = 100000,
                 IrmaId = testNatItemFamily.NatFamilyID,
                 Level = HierarchyLevels.NationalFamily
             });
-            irmaContext.SaveChanges();
+            context.SaveChanges();
             var testHierarchyClass = new HierarchyClass
             {
                 hierarchyClassID = 100000,
@@ -218,8 +216,8 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var validatedNationalClass = irmaContext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
-            var natItemFamily = irmaContext.NatItemFamily.SingleOrDefault(nif => nif.NatFamilyID == validatedNationalClass.IrmaId);
+            var validatedNationalClass = context.ValidatedNationalClass.AsNoTracking().SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
+            var natItemFamily = context.NatItemFamily.AsNoTracking().SingleOrDefault(nif => nif.NatFamilyID == validatedNationalClass.IrmaId);
 
             Assert.IsNotNull(validatedNationalClass);
             Assert.IsNotNull(natItemFamily);
@@ -231,18 +229,18 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         {
             //Given
             var testFamilyName = "Test Family";
-            var testNatItemFamily = irmaContext.NatItemFamily.Add(new NatItemFamily
+            var testNatItemFamily = context.NatItemFamily.Add(new NatItemFamily
             {
                 NatFamilyName = $"{testFamilyName} - Test Category"
             });
-            irmaContext.SaveChanges();
-            irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass
+            context.SaveChanges();
+            context.ValidatedNationalClass.Add(new ValidatedNationalClass
             {
                 IconId = 100000,
                 IrmaId = testNatItemFamily.NatFamilyID,
                 Level = HierarchyLevels.NationalCategory
             });
-            irmaContext.SaveChanges();
+            context.SaveChanges();
             var testHierarchyClass = new HierarchyClass
             {
                 hierarchyClassID = 100000,
@@ -257,8 +255,8 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var validatedNationalClass = irmaContext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
-            var natItemFamily = irmaContext.NatItemFamily.SingleOrDefault(nif => nif.NatFamilyID == validatedNationalClass.IrmaId);
+            var validatedNationalClass = context.ValidatedNationalClass.AsNoTracking().SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
+            var natItemFamily = context.NatItemFamily.AsNoTracking().SingleOrDefault(nif => nif.NatFamilyID == validatedNationalClass.IrmaId);
 
             Assert.IsNotNull(validatedNationalClass);
             Assert.IsNotNull(natItemFamily);
@@ -269,18 +267,18 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         public void AddOrUpdateNationalHierarchy_UpdateExistingNationalSubCategory_ShouldChangeTheNameOfTheNationalSubCategory()
         {
             //Given
-            var testNatItemCat = irmaContext.NatItemCat.Add(new NatItemCat
+            var testNatItemCat = context.NatItemCat.Add(new NatItemCat
             {
                 NatCatName = "Test Sub Category"
             });
-            irmaContext.SaveChanges();
-            irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass
+            context.SaveChanges();
+            context.ValidatedNationalClass.Add(new ValidatedNationalClass
             {
                 IconId = 100000,
                 IrmaId = testNatItemCat.NatCatID,
                 Level = HierarchyLevels.NationalSubCategory
             });
-            irmaContext.SaveChanges();
+            context.SaveChanges();
             var testHierarchyClass = new HierarchyClass
             {
                 hierarchyClassID = 100000,
@@ -295,8 +293,8 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var validatedNationalClass = irmaContext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
-            var natItemCat = irmaContext.NatItemCat.SingleOrDefault(nic => nic.NatCatID == validatedNationalClass.IrmaId);
+            var validatedNationalClass = context.ValidatedNationalClass.AsNoTracking().SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
+            var natItemCat = context.NatItemCat.AsNoTracking().SingleOrDefault(nic => nic.NatCatID == validatedNationalClass.IrmaId);
 
             Assert.IsNotNull(validatedNationalClass);
             Assert.IsNotNull(natItemCat);
@@ -307,18 +305,18 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         public void AddOrUpdateNationalHierarchy_UpdateExistingNationalClass_ShouldChangeTheNameOfTheNationalClass()
         {
             //Given
-            var testNatItemClass = irmaContext.NatItemClass.Add(new NatItemClass
+            var testNatItemClass = context.NatItemClass.Add(new NatItemClass
             {
                 ClassName = "Test Class"
             });
-            irmaContext.SaveChanges();
-            irmaContext.ValidatedNationalClass.Add(new ValidatedNationalClass
+            context.SaveChanges();
+            context.ValidatedNationalClass.Add(new ValidatedNationalClass
             {
                 IconId = 100000,
                 IrmaId = testNatItemClass.ClassID,
                 Level = HierarchyLevels.NationalClass
             });
-            irmaContext.SaveChanges();
+            context.SaveChanges();
             var testHierarchyClass = new HierarchyClass
             {
                 hierarchyClassID = 100000,
@@ -333,8 +331,8 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var validatedNationalClass = irmaContext.ValidatedNationalClass.SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
-            var natItemClass = irmaContext.NatItemClass.SingleOrDefault(nicl => nicl.ClassID == validatedNationalClass.IrmaId);
+            var validatedNationalClass = context.ValidatedNationalClass.AsNoTracking().SingleOrDefault(vnc => vnc.IconId == testHierarchyClass.hierarchyClassID);
+            var natItemClass = context.NatItemClass.AsNoTracking().SingleOrDefault(nicl => nicl.ClassID == validatedNationalClass.IrmaId);
 
             Assert.IsNotNull(validatedNationalClass);
             Assert.IsNotNull(natItemClass);
@@ -384,7 +382,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
             //Then
             var expectedNumberOfNationalFamilies = expectedNumberOfNationalCategories;
-            var validatedNationalClasses = irmaContext.ValidatedNationalClass
+            var validatedNationalClasses = context.ValidatedNationalClass
                 .Where(vnc => vnc.IconId >= initialIconId && vnc.IconId <= initialIconId + expectedNumberOfNationalCategories)
                 .ToList();
             Assert.AreEqual(expectedNumberOfNationalFamilies + expectedNumberOfNationalCategories, validatedNationalClasses.Count);
@@ -407,7 +405,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
                 .ToList();
             Assert.IsTrue(familyIrmaIds.SequenceEqual(categoryIrmaIds));
 
-            var natItemFamilies = irmaContext.NatItemFamily
+            var natItemFamilies = context.NatItemFamily
                 .Where(nif => categoryIrmaIds.Contains(nif.NatFamilyID))
                 .OrderBy(nif => nif.NatFamilyID)
                 .ToList();
@@ -494,28 +492,28 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
 
             //Then
-            var familyValidatedNationalClass = irmaContext.ValidatedNationalClass.Single(vnc => vnc.IconId == testFamily.hierarchyClassID);
-            var familyNatItemFamily = irmaContext.NatItemFamily.Single(nif => nif.NatFamilyID == familyValidatedNationalClass.IrmaId);
+            var familyValidatedNationalClass = context.ValidatedNationalClass.Single(vnc => vnc.IconId == testFamily.hierarchyClassID);
+            var familyNatItemFamily = context.NatItemFamily.Single(nif => nif.NatFamilyID == familyValidatedNationalClass.IrmaId);
             Assert.AreEqual($"{testFamily.hierarchyClassName} - {testCategory.hierarchyClassName}", familyNatItemFamily.NatFamilyName);
 
-            var categoryValidatedNationalClass = irmaContext.ValidatedNationalClass.Single(vnc => vnc.IconId == testFamily.hierarchyClassID);
-            var categoryNatItemFamily = irmaContext.NatItemFamily.Single(nif => nif.NatFamilyID == categoryValidatedNationalClass.IrmaId);
+            var categoryValidatedNationalClass = context.ValidatedNationalClass.Single(vnc => vnc.IconId == testFamily.hierarchyClassID);
+            var categoryNatItemFamily = context.NatItemFamily.Single(nif => nif.NatFamilyID == categoryValidatedNationalClass.IrmaId);
             Assert.AreEqual($"{testFamily.hierarchyClassName} - {testCategory.hierarchyClassName}", categoryNatItemFamily.NatFamilyName);
             Assert.AreEqual(familyNatItemFamily.NatFamilyID, categoryNatItemFamily.NatFamilyID);
 
-            var subCategoryValidatedNationalClass = irmaContext.ValidatedNationalClass.Single(vnc => vnc.IconId == testSubCategory.hierarchyClassID);
-            var natItemCat = irmaContext.NatItemCat.Single(nic => nic.NatCatID == subCategoryValidatedNationalClass.IrmaId);
+            var subCategoryValidatedNationalClass = context.ValidatedNationalClass.Single(vnc => vnc.IconId == testSubCategory.hierarchyClassID);
+            var natItemCat = context.NatItemCat.Single(nic => nic.NatCatID == subCategoryValidatedNationalClass.IrmaId);
             Assert.AreEqual(testSubCategory.hierarchyClassName, natItemCat.NatCatName);
             Assert.AreEqual(categoryNatItemFamily.NatFamilyID, natItemCat.NatFamilyID);
 
-            var classValidatedNationalClass1 = irmaContext.ValidatedNationalClass.Single(vnc => vnc.IconId == testClass1.hierarchyClassID);
-            var natItemClass1 = irmaContext.NatItemClass.Single(nicl => nicl.ClassID == classValidatedNationalClass1.IrmaId);
+            var classValidatedNationalClass1 = context.ValidatedNationalClass.Single(vnc => vnc.IconId == testClass1.hierarchyClassID);
+            var natItemClass1 = context.NatItemClass.Single(nicl => nicl.ClassID == classValidatedNationalClass1.IrmaId);
             Assert.AreEqual(testClass1.hierarchyClassName, natItemClass1.ClassName);
             Assert.AreEqual(natItemCat.NatCatID, natItemClass1.NatCatID);
             Assert.AreEqual(testNationalClassCode1, natItemClass1.ClassID);
 
-            var classValidatedNationalClass2 = irmaContext.ValidatedNationalClass.Single(vnc => vnc.IconId == testClass2.hierarchyClassID);
-            var natItemClass2 = irmaContext.NatItemClass.Single(nicl => nicl.ClassID == classValidatedNationalClass2.IrmaId);
+            var classValidatedNationalClass2 = context.ValidatedNationalClass.Single(vnc => vnc.IconId == testClass2.hierarchyClassID);
+            var natItemClass2 = context.NatItemClass.Single(nicl => nicl.ClassID == classValidatedNationalClass2.IrmaId);
             Assert.AreEqual(testClass2.hierarchyClassName, natItemClass2.ClassName);
             Assert.AreEqual(natItemCat.NatCatID, natItemClass2.NatCatID);
             Assert.AreEqual(testNationalClassCode2, natItemClass2.ClassID);
@@ -550,12 +548,12 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             commandHandler.Handle(command);
 
             //Then
-            var familyValidatedNationalClass = irmaContext.ValidatedNationalClass.Single(vnc => vnc.IconId == testFamily.hierarchyClassID);
-            var familyNatItemFamily = irmaContext.NatItemFamily.Single(nif => nif.NatFamilyID == familyValidatedNationalClass.IrmaId);
+            var familyValidatedNationalClass = context.ValidatedNationalClass.Single(vnc => vnc.IconId == testFamily.hierarchyClassID);
+            var familyNatItemFamily = context.NatItemFamily.Single(nif => nif.NatFamilyID == familyValidatedNationalClass.IrmaId);
             Assert.AreEqual($"{testFamily.hierarchyClassName} - {testCategory.hierarchyClassName}", familyNatItemFamily.NatFamilyName);
 
-            var categoryValidatedNationalClass = irmaContext.ValidatedNationalClass.Single(vnc => vnc.IconId == testFamily.hierarchyClassID);
-            var categoryNatItemFamily = irmaContext.NatItemFamily.Single(nif => nif.NatFamilyID == categoryValidatedNationalClass.IrmaId);
+            var categoryValidatedNationalClass = context.ValidatedNationalClass.Single(vnc => vnc.IconId == testFamily.hierarchyClassID);
+            var categoryNatItemFamily = context.NatItemFamily.Single(nif => nif.NatFamilyID == categoryValidatedNationalClass.IrmaId);
             Assert.AreEqual($"{testFamily.hierarchyClassName} - {testCategory.hierarchyClassName}", categoryNatItemFamily.NatFamilyName);
             Assert.AreEqual(familyNatItemFamily.NatFamilyID, categoryNatItemFamily.NatFamilyID);
         }

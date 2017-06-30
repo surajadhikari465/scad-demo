@@ -1,20 +1,18 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GlobalEventController.DataAccess.Queries
 {
     public class GetTaxAbbreviationQueryHandler : IQueryHandler<GetTaxAbbreviationQuery, string>
     {
-        private readonly IconContext context;
+        private IDbContextFactory<IconContext> contextFactory;
 
-        public GetTaxAbbreviationQueryHandler(IconContext context)
+        public GetTaxAbbreviationQueryHandler(IDbContextFactory<IconContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public string Handle(GetTaxAbbreviationQuery parameters)
@@ -27,27 +25,20 @@ namespace GlobalEventController.DataAccess.Queries
                     "The value of HierarchyClassId must be greater than 0.");
             }
 
-            // this query joins the HierarchyClassTrait & Trait tables to find the tax
-            //  abbreviation trait value for the HierarchyClass indicated by the id
-            var taxAbbrTrait = (
-                    from hct in context.HierarchyClassTrait
-                    join t in context.Trait on hct.traitID equals t.traitID
-                    where hct.hierarchyClassID == parameters.HierarchyClassId
-                        && t.traitCode == parameters.TaxTraitCode
-                    select new { hct.hierarchyClassID, t.traitCode, hct.traitValue }
-                ).SingleOrDefault();
+            using (var context = contextFactory.CreateContext())
+            {
+                // this query joins the HierarchyClassTrait & Trait tables to find the tax
+                //  abbreviation trait value for the HierarchyClass indicated by the id
+                var taxAbbrTrait = (
+                        from hct in context.HierarchyClassTrait
+                        join t in context.Trait on hct.traitID equals t.traitID
+                        where hct.hierarchyClassID == parameters.HierarchyClassId
+                            && t.traitCode == parameters.TaxTraitCode
+                        select new { hct.hierarchyClassID, t.traitCode, hct.traitValue }
+                    ).SingleOrDefault();
 
-            //// equivalent query written with lambda syntax:
-            //var taxAbbrTrait = context.HierarchyClassTrait
-            //    .Join(context.Trait,
-            //        hct => hct.traitID,
-            //        trait => trait.traitID,
-            //        (hct, trait) => new { hct.hierarchyClassID, trait.traitCode, hct.traitValue })
-            //    .SingleOrDefault(anonObj => 
-            //        anonObj.hierarchyClassID == parameters.HierarchyClassId 
-            //            && anonObj.traitCode == parameters.TaxTraitCode);
-
-            return taxAbbrTrait?.traitValue;
+                return taxAbbrTrait?.traitValue;
+            }
         }
     }
 }

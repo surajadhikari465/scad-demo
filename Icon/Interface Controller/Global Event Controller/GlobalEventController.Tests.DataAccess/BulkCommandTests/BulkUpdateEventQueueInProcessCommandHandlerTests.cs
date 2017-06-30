@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.BulkTests
 {
@@ -22,10 +23,11 @@ namespace GlobalEventController.Tests.DataAccess.BulkTests
 
         #region Fields
 
-        private DbContextTransaction transaction;
-        private IconContext context;
-        private BulkUpdateEventQueueInProcessCommand command;
         private BulkUpdateEventQueueInProcessCommandHandler handler;
+        private BulkUpdateEventQueueInProcessCommand command;
+        private IconDbContextFactory contextFactory;
+        private TransactionScope transaction;
+        private IconContext context;
         private List<EventQueue> itemEvents;
         private List<EventQueue> taxEvents;
         private List<EventQueue> brandEvents;
@@ -34,14 +36,17 @@ namespace GlobalEventController.Tests.DataAccess.BulkTests
 
         #endregion
 
-
         [TestInitialize]
         public void Initialize()
         {
+            this.transaction = new TransactionScope(TransactionScopeOption.RequiresNew, new TransactionOptions
+            {
+                IsolationLevel = IsolationLevel.ReadCommitted
+            });
             this.context = new IconContext();
-            this.transaction = this.context.Database.BeginTransaction();
             this.previouslyExistingEvents = this.context.EventQueue.Count();
-            this.handler = new BulkUpdateEventQueueInProcessCommandHandler(new ContextManager { IconContext = this.context });
+            this.contextFactory = new IconDbContextFactory();
+            this.handler = new BulkUpdateEventQueueInProcessCommandHandler(contextFactory);
 
             this.command = new BulkUpdateEventQueueInProcessCommand();
             this.command.RegisteredEventNames = new List<string>();
@@ -50,12 +55,6 @@ namespace GlobalEventController.Tests.DataAccess.BulkTests
             this.testEventsAdded = new List<EventQueue>();
 
             this.itemEvents = new List<EventQueue>();
-
-            //this.itemEvents = this.context.EventQueue.Where(e => 
-            //        ItemEventTypes.Contains(e.EventId)
-            //        && e.InProcessBy == null 
-            //        && e.ProcessFailedDate == null)
-            //    .ToList();
 
             if (this.itemEvents.Count == 0)
             {
@@ -81,8 +80,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkTests
         [TestCleanup]
         public void Cleanup()
         {
-            this.transaction.Rollback();
-            this.context.Dispose();
+            this.transaction.Dispose();
         }
 
         [TestMethod]
@@ -125,7 +123,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkTests
         public void BulkUpdateEventQueueInProcessCommand_OnlyItemEventsRegistered_ReturnOnlyItemTypeEvents()
         {
             // Given
-            this.command.RegisteredEventNames.Add("IconToIrmaValidatedNewItems");
+            this.command.RegisteredEventNames.Add("IrmaToIconNewItem");
             this.command.RegisteredEventNames.Add("IconToIrmaItemValidation");
             this.command.RegisteredEventNames.Add("IconToIrmaItemUpdates");
 
@@ -151,7 +149,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkTests
             this.command.RegisteredEventNames.Add("IconToIrmaBrandNameUpdate");
             this.command.RegisteredEventNames.Add("IconToIrmaTaxClassUpdate");
             this.command.RegisteredEventNames.Add("IconToIrmaNewTaxClass");
-            this.command.RegisteredEventNames.Add("IconToIrmaValidatedNewItems");
+            this.command.RegisteredEventNames.Add("IrmaToIconNewItem");
             this.command.RegisteredEventNames.Add("IconToIrmaItemValidation");
             this.command.RegisteredEventNames.Add("IconToIrmaItemUpdates");
 

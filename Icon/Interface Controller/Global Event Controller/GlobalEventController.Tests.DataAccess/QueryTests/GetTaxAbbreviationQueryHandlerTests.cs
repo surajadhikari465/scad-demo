@@ -3,30 +3,31 @@ using Icon.Framework;
 using Icon.Testing.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Data.Entity;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.QueryTests
 {
     [TestClass]
     public class GetTaxAbbreviationQueryHandlerTests
     {
-        private IconContext context;
-        private DbContextTransaction transaction;
         private GetTaxAbbreviationQueryHandler queryHandler;
+        private IconContext context;
+        private IconDbContextFactory contextFactory;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeData()
         {
+            transaction = new TransactionScope();
             this.context = new IconContext();
-            this.queryHandler = new GetTaxAbbreviationQueryHandler(this.context);
-            this.transaction = this.context.Database.BeginTransaction();
+            this.contextFactory = new IconDbContextFactory();
+            this.queryHandler = new GetTaxAbbreviationQueryHandler(contextFactory);
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            this.transaction.Rollback();
-            this.context.Dispose();
+            transaction.Dispose();
         }
 
         protected int SaveHierarchyClassWithTaxAbbreviationTraitForTest(string taxAbbreviationTrait)

@@ -1,10 +1,7 @@
-﻿using GlobalEventController.Common;
-using GlobalEventController.DataAccess.Commands;
+﻿using GlobalEventController.DataAccess.Commands;
 using GlobalEventController.DataAccess.Infrastructure;
 using GlobalEventController.DataAccess.Queries;
-using Icon.Framework;
 using Irma.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,11 +13,10 @@ namespace GlobalEventController.Controller.EventServices
         private ICommandHandler<AddUpdateLastChangeByIdentifiersCommand> updateLastChangeHandler;
         private IQueryHandler<GetItemIdentifiersQuery, List<ItemIdentifier>> getItemIdentifiersHandler;
 
-        public UpdateBrandEventService(IrmaContext irmaContext,
+        public UpdateBrandEventService(
             ICommandHandler<AddOrUpdateBrandCommand> updateBrandHandler,
             ICommandHandler<AddUpdateLastChangeByIdentifiersCommand> updateLastChangeHandler,
             IQueryHandler<GetItemIdentifiersQuery, List<ItemIdentifier>> getItemIdentifiersHandler) 
-            : base(irmaContext)
         {
             this.updateBrandHandler = updateBrandHandler;
             this.updateLastChangeHandler = updateLastChangeHandler;
@@ -47,8 +43,6 @@ namespace GlobalEventController.Controller.EventServices
                 .Where(ai => ai.Deleted_Identifier == 0 && ai.Default_Identifier == 1 && ai.Remove_Identifier == 0)
                 .ToList();
             updateLastChangeHandler.Handle(updateIconItem);
-
-            irmaContext.SaveChanges();
         }
     }
 }

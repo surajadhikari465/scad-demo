@@ -1,45 +1,27 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GlobalEventController.Controller.EventOperations;
-using Icon.Logging;
-using Moq;
-using GlobalEventController.Controller.EventServices;
+﻿using GlobalEventController.Controller.EventServices;
+using GlobalEventController.DataAccess.Commands;
 using GlobalEventController.DataAccess.Infrastructure;
 using GlobalEventController.DataAccess.Queries;
 using Icon.Framework;
-using System.Collections.Generic;
-using System.Linq;
-using Icon.Testing.Builders;
-using System.Data.Entity;
-using GlobalEventController.Common;
-using GlobalEventController.DataAccess.BulkCommands;
-using Irma.Framework;
-using GlobalEventController.DataAccess.Commands;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+
 namespace GlobalEventController.Tests.Controller.EventServiceTests
 {
     [TestClass]
     public class AddUpdateNationalHierarchyServiceTests
     {
-        private IrmaContext irmaContext;
-        private IconContext iconContext;
-        private IEventService eventService;
+        private AddOrUpdateNationalHierarchyEventService eventService;
         private Mock<ICommandHandler<AddOrUpdateNationalHierarchyCommand>> mockAddOrUpdateNationalHierarchyHandler;
         private Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>> mockGetHierarchyClassQueryHandler;
 
         [TestInitialize]
         public void InitializeData()
         {
-            irmaContext = new IrmaContext();
-            iconContext = new IconContext();
             mockAddOrUpdateNationalHierarchyHandler = new Mock<ICommandHandler<AddOrUpdateNationalHierarchyCommand>>();
             mockGetHierarchyClassQueryHandler = new Mock<IQueryHandler<GetHierarchyClassQuery, HierarchyClass>>();
-            eventService = new AddOrUpdateNationalHierarchyEventService(irmaContext, iconContext, mockAddOrUpdateNationalHierarchyHandler.Object, mockGetHierarchyClassQueryHandler.Object);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            irmaContext.Dispose();
+            eventService = new AddOrUpdateNationalHierarchyEventService(mockAddOrUpdateNationalHierarchyHandler.Object, mockGetHierarchyClassQueryHandler.Object);
         }
 
         [TestMethod]
@@ -106,6 +88,8 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
         {
             //Given
             mockAddOrUpdateNationalHierarchyHandler.Setup(q => q.Handle(It.IsAny<AddOrUpdateNationalHierarchyCommand>()));
+            mockGetHierarchyClassQueryHandler.Setup(q => q.Handle(It.IsAny<GetHierarchyClassQuery>()))
+                .Returns(new HierarchyClass());
             eventService.ReferenceId = 1;
             eventService.Message = "TestHierarchyName";
             eventService.Region = "TestRegion";

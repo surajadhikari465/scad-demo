@@ -1,23 +1,20 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Icon.Framework;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InterfaceController.Common;
 
 namespace GlobalEventController.DataAccess.BulkCommands
 {
     public class BulkDeleteEventQueueCommandHandler : ICommandHandler<BulkDeleteEventQueueCommand>
     {
-        private readonly ContextManager contextManager;
+        private IDbContextFactory<IconContext> contextFactory;
 
-        public BulkDeleteEventQueueCommandHandler(ContextManager contextManager)
+        public BulkDeleteEventQueueCommandHandler(IDbContextFactory<IconContext> contextFactory)
         {
-            this.contextManager = contextManager;
+            this.contextFactory = contextFactory;
         }
 
         public void Handle(BulkDeleteEventQueueCommand command)
@@ -37,13 +34,9 @@ namespace GlobalEventController.DataAccess.BulkCommands
 
             string sql = @"EXEC app.DeleteEventQueue @EventsToDelete";
 
-            try
+            using (var context = contextFactory.CreateContext())
             {
-                this.contextManager.IconContext.Database.ExecuteSqlCommand(sql, eventsToDelete);
-            }
-            catch (Exception)
-            {
-                throw;
+                context.Database.ExecuteSqlCommand(sql, eventsToDelete);
             }
         }
     }

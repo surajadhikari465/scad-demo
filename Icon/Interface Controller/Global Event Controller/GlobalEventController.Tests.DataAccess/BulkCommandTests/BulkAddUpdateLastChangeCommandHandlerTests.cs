@@ -4,40 +4,38 @@ using Irma.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 {
     [TestClass]
     public class BulkAddUpdateLastChangeCommandHandlerTests
     {
-        private IrmaContext context;
-        private BulkAddUpdateLastChangeCommand command;
         private BulkAddUpdateLastChangeCommandHandler handler;
+        private BulkAddUpdateLastChangeCommand command;
+        private IrmaDbContextFactory contextFactory;
+        private IrmaContext context;
         private List<IconItemLastChangeModel> lastChangedItems;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeData()
         {
-            this.context = new IrmaContext(); // this is the FL ItemCatalog_Test database
+            this.transaction = new TransactionScope();
+            this.context = new IrmaContext();
             this.command = new BulkAddUpdateLastChangeCommand();
-            this.handler = new BulkAddUpdateLastChangeCommandHandler(this.context);
+            this.contextFactory = new IrmaDbContextFactory();
+            this.handler = new BulkAddUpdateLastChangeCommandHandler(this.contextFactory);
             this.lastChangedItems = new List<IconItemLastChangeModel>();
-
-            this.transaction = this.context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (transaction != null)
-            {
-                this.transaction.Rollback();
-            }
+            this.transaction.Dispose();
         }
 
         [TestMethod]
@@ -61,7 +59,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 
             IconItemLastChangeModel expectedItem = new TestIconItemLastChangeModelBuilder()
                 .WithScanCode(identifier).WithTaxClass(tax.TaxClassDesc).WithBrandId(brand.IconBrandId).WithBrandName(brand.ItemBrand.Brand_Name).WithAreNutriFactChanged(true).Build();
-            
+
             this.lastChangedItems.Add(expectedItem);
             this.command.IconLastChangedItems = this.lastChangedItems;
 
@@ -281,7 +279,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             Assert.AreEqual(actualLastChange.TaxClassID, entry.Property(e => e.TaxClassID).CurrentValue, "TaxClass_ID value should not have changed.");
         }
 
-          [TestMethod]
+        [TestMethod]
         public void BulkAddUpdateLastChange_ValidatedItemIsDefaultIdentifierWithDifferentTaxClassDescription_NewRowAddedToIconItemLastChange()
         {
             // Given

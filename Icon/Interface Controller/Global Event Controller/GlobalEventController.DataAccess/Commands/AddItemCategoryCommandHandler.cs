@@ -1,11 +1,6 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
 using Irma.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
 
 namespace GlobalEventController.DataAccess.Commands
 {
@@ -13,6 +8,7 @@ namespace GlobalEventController.DataAccess.Commands
     {
         private readonly IrmaContext context;
         private readonly string SubTeamAlignedcategoryName = "SubTeam Aligned";
+
         public AddItemCategoryCommandHandler(IrmaContext context)
         {
             this.context = context;

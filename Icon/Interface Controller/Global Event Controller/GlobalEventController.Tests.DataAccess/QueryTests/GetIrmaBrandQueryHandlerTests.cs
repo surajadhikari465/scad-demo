@@ -1,43 +1,35 @@
 ﻿using GlobalEventController.DataAccess.Queries;
 using GlobalEventController.Testing.Common;
-using Icon.Framework;
 using Irma.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.QueryTests
 {
     [TestClass]
     public class GetIrmaBrandQueryHandlerTests
     {
-        private IconContext iconContext;
-        private IrmaContext irmaContext;
-        private DbContextTransaction iconTransaction;
-        private DbContextTransaction irmaTransaction;
         private GetIrmaBrandQueryHandler queryHandler;
+        private IrmaContext irmaContext;
+        private IrmaDbContextFactory contextFactory;
+        private TransactionScope transaction;
         private TestIrmaDataHelper helper = new TestIrmaDataHelper();
 
         [TestInitialize]
         public void InitializeData()
         {
-            this.iconContext = new IconContext();
+            this.transaction = new TransactionScope();
+
             this.irmaContext = new IrmaContext();
+            this.contextFactory = new IrmaDbContextFactory();
 
-            this.queryHandler = new GetIrmaBrandQueryHandler(this.irmaContext);
-
-            this.iconTransaction = this.iconContext.Database.BeginTransaction();
-            this.irmaTransaction = this.irmaContext.Database.BeginTransaction();
+            this.queryHandler = new GetIrmaBrandQueryHandler(contextFactory);
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            this.irmaTransaction.Rollback();
-            this.iconTransaction.Rollback();
-            this.irmaContext.Dispose();
-            this.iconContext.Dispose();
+            transaction.Dispose();
         }
 
         [TestMethod]
@@ -46,7 +38,6 @@ namespace GlobalEventController.Tests.DataAccess.QueryTests
             // Given
             string testBrandName = "test_brand_555";
             int fakeIconBrandId = -555;
-            //var savedHierarchyClass = SaveHierarchyClassForTest(this.iconContext, brandAbbreviation);
             var savedItemBrand = helper.CreateAndSaveItemBrandForTest(this.irmaContext, testBrandName);
             var savedValidatedBrand = helper.CreateAndSaveValidatedBrandForTest(this.irmaContext, savedItemBrand, fakeIconBrandId);
             var query = new GetIrmaBrandQuery
@@ -90,7 +81,6 @@ namespace GlobalEventController.Tests.DataAccess.QueryTests
             string testBrandName = "test_brand_555";
             int fakeIconBrandId = -555;
             int badIconBrandId = -666;
-            //var savedHierarchyClass = SaveHierarchyClassForTest(this.iconContext, brandAbbreviation);
             var savedItemBrand = helper.CreateAndSaveItemBrandForTest(this.irmaContext, testBrandName);
             var savedValidatedBrand = helper.CreateAndSaveValidatedBrandForTest(this.irmaContext, savedItemBrand, fakeIconBrandId);
             var query = new GetIrmaBrandQuery

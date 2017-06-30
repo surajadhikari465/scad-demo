@@ -1,4 +1,5 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Irma.Framework;
 using System;
 using System.Collections.Generic;
@@ -12,47 +13,50 @@ namespace GlobalEventController.DataAccess.Commands
     /// </summary>
     public class AddUpdateLastChangeByIdentifiersCommandHandler : ICommandHandler<AddUpdateLastChangeByIdentifiersCommand>
     {
-        private IrmaContext context;
+        private IDbContextFactory<IrmaContext> contextFactory;
 
-        public AddUpdateLastChangeByIdentifiersCommandHandler(IrmaContext context)
+        public AddUpdateLastChangeByIdentifiersCommandHandler(IDbContextFactory<IrmaContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public void Handle(AddUpdateLastChangeByIdentifiersCommand command)
         {
-            List<IconItemLastChange> addLastChanges = new List<IconItemLastChange>();
-            IconItemLastChange lastChange = null;
-            foreach (ItemIdentifier identifier in command.Identifiers)
+            using (var context = contextFactory.CreateContext())
             {
-                lastChange = this.context.IconItemLastChange.SingleOrDefault(c => c.Identifier == identifier.Identifier);
-
-                // If the Last Change record doesn't exist, add it.  If it does exits, just update the InsertDate.
-                if (lastChange == null)
+                List<IconItemLastChange> addLastChanges = new List<IconItemLastChange>();
+                foreach (ItemIdentifier identifier in command.Identifiers)
                 {
-                    lastChange = new IconItemLastChange();
-                    lastChange.Identifier = identifier.Identifier;
-                    lastChange.Item_Description = identifier.Item.Item_Description;
-                    lastChange.POS_Description = identifier.Item.POS_Description.ToUpper();
-                    lastChange.Package_Desc1 = identifier.Item.Package_Desc1;
-                    lastChange.Food_Stamps = identifier.Item.Food_Stamps;
-                    lastChange.ScaleTare = identifier.Item.ScaleTare;
-                    lastChange.Subteam_No = null;
-                    lastChange.TaxClassID = identifier.Item.TaxClassID;
-                    lastChange.Brand_ID = identifier.Item.Brand_ID;
-                    lastChange.Subteam_No = identifier.Item.SubTeam_No;
-                    lastChange.InsertDate = DateTime.Now;
+                    IconItemLastChange lastChange = context.IconItemLastChange
+                        .SingleOrDefault(c => c.Identifier == identifier.Identifier);
 
-                    addLastChanges.Add(lastChange);
-                }
-                else
-                {
-                    lastChange.InsertDate = DateTime.Now;
+                    // If the Last Change record doesn't exist, add it.  If it does exits, just update the InsertDate.
+                    if (lastChange == null)
+                    {
+                        lastChange = new IconItemLastChange();
+                        lastChange.Identifier = identifier.Identifier;
+                        lastChange.Item_Description = identifier.Item.Item_Description;
+                        lastChange.POS_Description = identifier.Item.POS_Description.ToUpper();
+                        lastChange.Package_Desc1 = identifier.Item.Package_Desc1;
+                        lastChange.Food_Stamps = identifier.Item.Food_Stamps;
+                        lastChange.ScaleTare = identifier.Item.ScaleTare;
+                        lastChange.Subteam_No = null;
+                        lastChange.TaxClassID = identifier.Item.TaxClassID;
+                        lastChange.Brand_ID = identifier.Item.Brand_ID;
+                        lastChange.Subteam_No = identifier.Item.SubTeam_No;
+                        lastChange.InsertDate = DateTime.Now;
+
+                        addLastChanges.Add(lastChange);
+                    }
+                    else
+                    {
+                        lastChange.InsertDate = DateTime.Now;
+                    }
                 }
 
+                context.IconItemLastChange.AddRange(addLastChanges);
+                context.SaveChanges();
             }
-
-            this.context.IconItemLastChange.AddRange(addLastChanges);
         }
     }
 }

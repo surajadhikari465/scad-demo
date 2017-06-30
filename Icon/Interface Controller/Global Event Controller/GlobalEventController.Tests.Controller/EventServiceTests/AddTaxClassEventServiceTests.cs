@@ -3,41 +3,29 @@ using GlobalEventController.DataAccess.Commands;
 using GlobalEventController.DataAccess.Infrastructure;
 using GlobalEventController.DataAccess.Queries;
 using Icon.Framework;
-using Icon.Testing.Builders;
 using Irma.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-
 
 namespace GlobalEventController.Tests.Controller.EventServiceTests
 {
     [TestClass]
     public class AddTaxClassEventServiceTests
     {
-        private IrmaContext irmaContext;
-        private IEventService eventService;
+        private AddTaxClassEventService eventService;
         private Mock<ICommandHandler<AddTaxClassCommand>> mockAddTaxClassHandler;
         private Mock<IQueryHandler<GetTaxAbbreviationQuery, string>> mockGetTaxAbbreviationQueryHandler;
 
         [TestInitialize]
         public void InitializeData()
         {
-            irmaContext = new IrmaContext();
             mockAddTaxClassHandler = new Mock<ICommandHandler<AddTaxClassCommand>>();
             mockGetTaxAbbreviationQueryHandler = new Mock<IQueryHandler<GetTaxAbbreviationQuery, string>>();
 
-            eventService = new AddTaxClassEventService(this.irmaContext,
+            eventService = new AddTaxClassEventService(
                 this.mockAddTaxClassHandler.Object,
                 this.mockGetTaxAbbreviationQueryHandler.Object);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            irmaContext.Dispose();
         }
 
         [TestMethod]

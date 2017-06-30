@@ -1,13 +1,9 @@
-﻿using System;
+﻿using GlobalEventController.Common;
+using GlobalEventController.DataAccess.Commands;
+using GlobalEventController.DataAccess.Infrastructure;
+using Icon.Logging;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GlobalEventController.Common;
-using Icon.Logging;
-using GlobalEventController.DataAccess.Infrastructure;
-using GlobalEventController.DataAccess.Commands;
-using Icon.Framework;
 
 namespace GlobalEventController.Controller.EventOperations
 {

@@ -6,36 +6,35 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 {
     [TestClass]
     public class BulkAddBrandCommandHandlerTests
     {
-        private IrmaContext context;
-        private BulkAddBrandCommand command;
         private BulkAddBrandCommandHandler handler;
+        private BulkAddBrandCommand command;
+        private IrmaDbContextFactory contextFactory;
+        private IrmaContext context;
         private List<ValidatedItemModel> validatedItems;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeData()
         {
-            this.context = new IrmaContext(); // this is the FL ItemCatalog_Test database
+            this.transaction = new TransactionScope();
+            this.context = new IrmaContext();
             this.command = new BulkAddBrandCommand();
-            this.handler = new BulkAddBrandCommandHandler(this.context);
+            this.contextFactory = new IrmaDbContextFactory();
+            this.handler = new BulkAddBrandCommandHandler(this.contextFactory);
             this.validatedItems = new List<ValidatedItemModel>();
-
-            this.transaction = this.context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (transaction != null)
-            {
-                this.transaction.Rollback();
-            }
+            this.transaction.Dispose();
         }
 
         [TestMethod]
@@ -128,9 +127,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             this.command.ValidatedItems = this.validatedItems;
 
             if (this.context.ValidatedBrand.Any(vb => vb.IrmaBrandId == brandNotValidated.Brand_ID))
-	        {
-		        Assert.Fail("The brand used for this test already exists in the Validated Brand table.");
-	        }
+            {
+                Assert.Fail("The brand used for this test already exists in the Validated Brand table.");
+            }
 
             int expectedIconBrandId = this.validatedItems.First().BrandId;
 

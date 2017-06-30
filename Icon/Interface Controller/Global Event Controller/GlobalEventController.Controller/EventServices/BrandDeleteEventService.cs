@@ -5,9 +5,6 @@ using GlobalEventController.DataAccess.Queries;
 using Icon.Common.Email;
 using Icon.Logging;
 using Irma.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using static GlobalEventController.DataAccess.Commands.BrandDeleteCommand;
 
@@ -21,13 +18,12 @@ namespace GlobalEventController.Controller.EventServices
         private IGlobalControllerSettings gloconSettings;
         private IQueryHandler<GetIrmaBrandQuery, ItemBrand> getIrmaBrandQuery;
 
-        public BrandDeleteEventService(IrmaContext irmaContext,
+        public BrandDeleteEventService(
             ICommandHandler<BrandDeleteCommand> brandDeleteHandler,
             IQueryHandler<GetIrmaBrandQuery, ItemBrand> getIrmaBrandQuery,
             ILogger<BrandDeleteEventService> logger,
             IEmailClient emailClient,
             IGlobalControllerSettings brandDeleteAlertConfiguration)
-                : base(irmaContext)
         {
             this.brandDeleteCommandHandler = brandDeleteHandler;
             this.getIrmaBrandQuery = getIrmaBrandQuery;
@@ -49,7 +45,6 @@ namespace GlobalEventController.Controller.EventServices
 
             //execute the command
             brandDeleteCommandHandler.Handle(deleteBrandCommand);
-            irmaContext.SaveChanges();
 
             // examine the command result
             if (deleteBrandCommand.Result == BrandDeleteResult.NothingDeleted)

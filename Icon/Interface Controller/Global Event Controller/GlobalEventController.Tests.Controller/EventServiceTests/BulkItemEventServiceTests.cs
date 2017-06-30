@@ -20,7 +20,6 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
     public class BulkItemEventServiceTests
     {
         private BulkItemEventService bulkService;
-        private IrmaContext context;
         private Mock<ILogger<BulkItemEventService>> mockLogger;
         private Mock<ICommandHandler<BulkAddBrandCommand>> mockBulkAddBrandCommandHandler;
         private Mock<ICommandHandler<BulkAddUpdateLastChangeCommand>> mockBulkAddUpdateLastChangeCommandHandler;
@@ -37,7 +36,6 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
         [TestInitialize]
         public void InitializeData()
         {
-            this.context = new IrmaContext();
             this.mockLogger = new Mock<ILogger<BulkItemEventService>>();
             this.mockBulkAddBrandCommandHandler = new Mock<ICommandHandler<BulkAddBrandCommand>>();
             this.mockBulkAddUpdateLastChangeCommandHandler = new Mock<ICommandHandler<BulkAddUpdateLastChangeCommand>>();
@@ -50,7 +48,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
             this.mockBulkGetValidatedItemsWithNoNatlClassQueryHandler = new Mock<IQueryHandler<BulkGetItemsWithNoNatlClassQuery, List<ValidatedItemModel>>>();
             this.mockBulkGetValidatedItemsWithNoRetailUomQueryHandler = new Mock<IQueryHandler<BulkGetItemsWithNoRetailUomQuery, List<ValidatedItemModel>>>();
 
-            this.bulkService = new BulkItemEventService(this.context,
+            this.bulkService = new BulkItemEventService(
                 this.mockLogger.Object,
                 this.mockBulkAddBrandCommandHandler.Object,
                 this.mockBulkAddUpdateLastChangeCommandHandler.Object,

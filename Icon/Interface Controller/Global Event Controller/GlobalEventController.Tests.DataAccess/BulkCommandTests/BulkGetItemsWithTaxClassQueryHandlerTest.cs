@@ -4,38 +4,36 @@ using GlobalEventController.Testing.Common;
 using Irma.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 {
     [TestClass]
     public class BulkGetItemsWithTaxClassQueryHandlerTest
     {
-        private IrmaContext context;
-        private BulkGetItemsWithTaxClassQuery command;
         private BulkGetItemsWithTaxClassQueryHandler handler;
+        private BulkGetItemsWithTaxClassQuery command;
+        private IrmaDbContextFactory contextFactory;
+        private IrmaContext context;
         private List<ValidatedItemModel> validatedItems;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeData()
         {
-            this.context = new IrmaContext(); // this is the FL ItemCatalog_Test database
+            this.transaction = new TransactionScope();
+            this.context = new IrmaContext();
             this.command = new BulkGetItemsWithTaxClassQuery();
-            this.handler = new BulkGetItemsWithTaxClassQueryHandler(this.context);
+            this.contextFactory = new IrmaDbContextFactory();
+            this.handler = new BulkGetItemsWithTaxClassQueryHandler(contextFactory);
             this.validatedItems = new List<ValidatedItemModel>();
-
-            this.transaction = this.context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (transaction != null)
-            {
-                this.transaction.Rollback();
-            }
+            this.transaction.Dispose();
         }
 
         [TestMethod]

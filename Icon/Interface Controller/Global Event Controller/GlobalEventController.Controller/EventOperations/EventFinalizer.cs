@@ -4,11 +4,8 @@ using GlobalEventController.DataAccess.Infrastructure;
 using Icon.Logging;
 using InterfaceController.Common;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GlobalEventController.Controller.EventOperations
 {

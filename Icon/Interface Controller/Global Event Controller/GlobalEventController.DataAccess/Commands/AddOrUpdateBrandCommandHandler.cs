@@ -1,56 +1,55 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
-using InterfaceController.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Irma.Framework;
+using Icon.DbContextFactory;
 using Icon.Logging;
-using GlobalEventController.Common;
+using Irma.Framework;
+using System;
+using System.Linq;
 
 namespace GlobalEventController.DataAccess.Commands
 {
     public class AddOrUpdateBrandCommandHandler : ICommandHandler<AddOrUpdateBrandCommand>
     {
-        private readonly IrmaContext context;
+        private IDbContextFactory<IrmaContext> contextFactory;
         private ILogger<AddOrUpdateBrandCommandHandler> logger;
 
-        public AddOrUpdateBrandCommandHandler(IrmaContext context, ILogger<AddOrUpdateBrandCommandHandler> logger)
+        public AddOrUpdateBrandCommandHandler(IDbContextFactory<IrmaContext> contextFactory, ILogger<AddOrUpdateBrandCommandHandler> logger)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
             this.logger = logger;
         }
 
         public void Handle(AddOrUpdateBrandCommand command)
         {
-            var validatedBrand = context.ValidatedBrand.SingleOrDefault(vb => vb.IconBrandId == command.IconBrandId);
-
-            if (validatedBrand == null)
+            using (var context = contextFactory.CreateContext())
             {
-                var irmaBrand = context.ItemBrand.SingleOrDefault(ib => ib.Brand_Name == command.BrandName);
-                if (irmaBrand == null)
+                var validatedBrand = context.ValidatedBrand.SingleOrDefault(vb => vb.IconBrandId == command.IconBrandId);
+
+                if (validatedBrand == null)
                 {
-                    validatedBrand = AddValidatedBrandAndIrmaBrand(command);
+                    var irmaBrand = context.ItemBrand.SingleOrDefault(ib => ib.Brand_Name == command.BrandName);
+                    if (irmaBrand == null)
+                    {
+                        validatedBrand = AddValidatedBrandAndIrmaBrand(context, command);
+                    }
+                    else
+                    {
+                        validatedBrand = ValidateExistingIrmaBrand(context, command, irmaBrand);
+                    }
                 }
                 else
                 {
-                    validatedBrand = ValidateExistingIrmaBrand(command, irmaBrand);
+                    validatedBrand.ItemBrand.Brand_Name = command.BrandName;
                 }
+
+                validatedBrand.ItemBrand.LastUpdateTimestamp = DateTime.Now;
+
+                context.SaveChanges();
+
+                command.BrandId = validatedBrand.ItemBrand.Brand_ID;
             }
-            else
-            {
-                validatedBrand.ItemBrand.Brand_Name = command.BrandName;
-            }
-
-            validatedBrand.ItemBrand.LastUpdateTimestamp = DateTime.Now;
-
-            context.SaveChanges();
-
-            command.BrandId = validatedBrand.ItemBrand.Brand_ID;
         }
 
-        private ValidatedBrand AddValidatedBrandAndIrmaBrand(AddOrUpdateBrandCommand command)
+        private ValidatedBrand AddValidatedBrandAndIrmaBrand(IrmaContext context, AddOrUpdateBrandCommand command)
         {
             ValidatedBrand validatedBrand = new ValidatedBrand
             {
@@ -64,7 +63,7 @@ namespace GlobalEventController.DataAccess.Commands
             return validatedBrand;
         }
 
-        private ValidatedBrand ValidateExistingIrmaBrand(AddOrUpdateBrandCommand command, ItemBrand irmaBrand)
+        private ValidatedBrand ValidateExistingIrmaBrand(IrmaContext context, AddOrUpdateBrandCommand command, ItemBrand irmaBrand)
         {
             ValidatedBrand validatedBrand;
             var currentValidatedBrands = irmaBrand.ValidatedBrand.ToList();

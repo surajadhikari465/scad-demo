@@ -14,7 +14,6 @@ namespace GlobalEventController.Controller
         private IEventProcessor processor;
         private IEventFinalizer finalizer;
         private IEventBulkProcessor bulkNutriFactsProcessor;
-        private IContextManager contextManager;
         private IDataIssueMessageCollector dataIssueMessageCollector;
         private IEventArchiver eventArchiver;
 
@@ -24,7 +23,6 @@ namespace GlobalEventController.Controller
             IEventBulkProcessor bulkNutriFactsProcessor,
             IEventProcessor processor,
             IEventFinalizer finalizer,
-            IContextManager contextManager,
             IDataIssueMessageCollector dataIssueMessageCollector,
             IEventArchiver eventArchiver)
         {
@@ -34,7 +32,6 @@ namespace GlobalEventController.Controller
             this.bulkNutriFactsProcessor = bulkNutriFactsProcessor;
             this.processor = processor;
             this.finalizer = finalizer;
-            this.contextManager = contextManager;
             this.dataIssueMessageCollector = dataIssueMessageCollector;
             this.eventArchiver = eventArchiver;
         }
@@ -64,7 +61,6 @@ namespace GlobalEventController.Controller
                 this.eventQueues.RegionToEventQueueDictionary.Clear();
                 this.eventArchiver.ClearArchiveEvents();
                 
-                contextManager.RefreshContexts();
                 this.collector.GetEvents();
             }
 

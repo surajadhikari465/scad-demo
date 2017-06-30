@@ -11,20 +11,23 @@ namespace GlobalEventController.DataAccess.Queries
 {
     public class GetIconItemNutritionQueryHandler : IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>>
     {
-        private readonly ContextManager contextManager;
+        private Icon.DbContextFactory.IDbContextFactory<IconContext> contextFactory;
 
-        public GetIconItemNutritionQueryHandler(ContextManager contextManager)
+        public GetIconItemNutritionQueryHandler(Icon.DbContextFactory.IDbContextFactory<IconContext> contextFactory)
         {
-            this.contextManager = contextManager;
+            this.contextFactory = contextFactory;
         }
 
         public List<ItemNutrition> Handle(GetIconItemNutritionQuery parameters)
         {
-            List<ItemNutrition> nutritionItems = contextManager.IconContext.ItemNutrition                
-                .Where(nt => parameters.ScanCodes.Contains(nt.Plu))
-                .ToList();
-           
+            using (var context = contextFactory.CreateContext())
+            {
+                List<ItemNutrition> nutritionItems = context.ItemNutrition
+                    .Where(nt => parameters.ScanCodes.Contains(nt.Plu))
+                    .ToList();
+
                 return nutritionItems;
+            }
         }
     }
 }

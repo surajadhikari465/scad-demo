@@ -5,39 +5,37 @@ using Irma.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 {
     [TestClass]
     public class BulkAddValidatedScanCodeCommandHandlerTests
     {
-        private IrmaContext context;
-        private BulkAddValidatedScanCodeCommand command;
         private BulkAddValidatedScanCodeCommandHandler handler;
+        private BulkAddValidatedScanCodeCommand command;
+        private IrmaDbContextFactory contextFactory;
+        private IrmaContext context;
         private List<ValidatedItemModel> validatedItems;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeData()
         {
+            this.transaction = new TransactionScope();
             this.context = new IrmaContext(); // this is the FL ItemCatalog_Test database
             this.command = new BulkAddValidatedScanCodeCommand();
-            this.handler = new BulkAddValidatedScanCodeCommandHandler(this.context);
+            this.contextFactory = new IrmaDbContextFactory();
+            this.handler = new BulkAddValidatedScanCodeCommandHandler(this.contextFactory);
             this.validatedItems = new List<ValidatedItemModel>();
-
-            this.transaction = this.context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (transaction != null)
-            {
-                this.transaction.Rollback();
-            }
+            this.transaction.Dispose();
         }
 
         [TestMethod]
@@ -68,7 +66,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             string scanCode = (from ii in this.context.ItemIdentifier
                                join vs in this.context.ValidatedScanCode on ii.Identifier equals vs.ScanCode into temp
                                from vs in temp.DefaultIfEmpty()
-                               where 
+                               where
                                     vs.ScanCode == null
                                     && ii.Default_Identifier == 1
                                     && ii.Deleted_Identifier == 0

@@ -1,13 +1,9 @@
 ﻿using GlobalEventController.DataAccess.Commands;
 using GlobalEventController.Testing.Common;
-using Icon.Logging;
 using Irma.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 using static GlobalEventController.DataAccess.Commands.BrandDeleteCommand;
 
 namespace GlobalEventController.Tests.DataAccess.CommandTests
@@ -15,32 +11,29 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
     [TestClass]
     public class BrandDeleteCommandHandlerTests
     {
-        private IrmaContext context;
-        private BrandDeleteCommand command;
         private BrandDeleteCommandHandler brandDeleteCommandHandler;
-        private Mock<ILogger<BrandDeleteCommandHandler>> mockLogger;
-        private DbContextTransaction transaction;
+        private BrandDeleteCommand command;
+        private TransactionScope transaction;
+        private IrmaContext context;
+        private IrmaDbContextFactory contextFactory;
         private const string region = "FL";
         private TestIrmaDataHelper helper = new TestIrmaDataHelper();
 
         [TestInitialize]
         public void InitializeData()
         {
+            transaction = new TransactionScope();
             context = new IrmaContext();
             command = new BrandDeleteCommand();
-            mockLogger = new Mock<ILogger<BrandDeleteCommandHandler>>();
-            brandDeleteCommandHandler = new BrandDeleteCommandHandler(context);
-            transaction = context.Database.BeginTransaction();
+
+            contextFactory = new IrmaDbContextFactory();
+            brandDeleteCommandHandler = new BrandDeleteCommandHandler(contextFactory);
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (transaction != null)
-            {
-                transaction.Rollback();
-                transaction.Dispose();
-            }
+            transaction.Dispose();
         }
 
         [TestMethod]
@@ -93,13 +86,12 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
             // When
             brandDeleteCommandHandler.Handle(command);
-            context.SaveChanges();
 
             // Then
-            Assert.IsFalse(context.ValidatedBrand.Any(vb => vb.IconBrandId == TestingConstants.IconBrandId_Negative));
-            Assert.IsFalse(context.ItemBrand.Any(ib => ib.Brand_Name == testBrand.Brand_Name));
-            int validatedBrandsAfter = context.ValidatedBrand.Count();
-            int itemBrandsAfter = context.ItemBrand.Count();
+            Assert.IsFalse(context.ValidatedBrand.AsNoTracking().Any(vb => vb.IconBrandId == TestingConstants.IconBrandId_Negative));
+            Assert.IsFalse(context.ItemBrand.AsNoTracking().Any(ib => ib.Brand_Name == testBrand.Brand_Name));
+            int validatedBrandsAfter = context.ValidatedBrand.AsNoTracking().Count();
+            int itemBrandsAfter = context.ItemBrand.AsNoTracking().Count();
             Assert.AreEqual(validatedBrandsBefore, validatedBrandsAfter + 1);
             Assert.AreEqual(itemBrandsBefore, itemBrandsAfter + 1);
         }
@@ -124,9 +116,9 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             // Then
             Assert.AreEqual(expectedResult, command.Result);
             //confirm that combined bitwise result values work as expectedd
-            Assert.IsTrue((command.Result & BrandDeleteResult.ValidatedBrandDeleted) 
+            Assert.IsTrue((command.Result & BrandDeleteResult.ValidatedBrandDeleted)
                 == BrandDeleteResult.ValidatedBrandDeleted);
-            Assert.IsTrue((command.Result & BrandDeleteResult.ItemBrandDeleted) 
+            Assert.IsTrue((command.Result & BrandDeleteResult.ItemBrandDeleted)
                 == BrandDeleteResult.ItemBrandDeleted);
         }
 
@@ -172,10 +164,9 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
             // When
             brandDeleteCommandHandler.Handle(command);
-            context.SaveChanges();
 
             // Then
-            Assert.IsFalse(context.ValidatedBrand.Any(vb => vb.IconBrandId == TestingConstants.IconBrandId_Negative));
+            Assert.IsFalse(context.ValidatedBrand.AsNoTracking().Any(vb => vb.IconBrandId == TestingConstants.IconBrandId_Negative));
             int validatedBrandsAfter = context.ValidatedBrand.Count();
             Assert.AreEqual(validatedBrandsBefore, validatedBrandsAfter + 1);
         }

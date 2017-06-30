@@ -20,7 +20,6 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
     [TestClass]
     public class BrandDeleteEventServiceTests
     {
-        private IrmaContext irmaContext;
         private IEventService brandDeleteEventService;
         private Mock<ICommandHandler<BrandDeleteCommand>> mockDeleteCommandHandler;
         private Mock<IQueryHandler<GetIrmaBrandQuery, ItemBrand>> mockGetBrandQueryHandler;
@@ -37,8 +36,6 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
         [TestInitialize]
         public void InitializeData()
         {
-            irmaContext = new IrmaContext();
-
             mockDeleteCommandHandler = new Mock<ICommandHandler<BrandDeleteCommand>>();
             mockGetBrandQueryHandler = new Mock<IQueryHandler<GetIrmaBrandQuery, ItemBrand>>();
             mockLogger = new Mock<ILogger<BrandDeleteEventService>>();
@@ -46,18 +43,11 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
             mockGloconConfiguration = new Mock<IGlobalControllerSettings>();
 
             brandDeleteEventService = new BrandDeleteEventService(
-                irmaContext,
                 mockDeleteCommandHandler.Object,
                 mockGetBrandQueryHandler.Object,
                 mockLogger.Object,
                 mockEmailClient.Object,
                 mockGloconConfiguration.Object);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            irmaContext.Dispose();
         }
 
         #region class-specific helper methods

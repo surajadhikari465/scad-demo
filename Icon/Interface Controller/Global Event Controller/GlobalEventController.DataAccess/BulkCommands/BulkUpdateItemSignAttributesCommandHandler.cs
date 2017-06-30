@@ -1,21 +1,20 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Irma.Framework;
-using System;
-using System.Collections.Generic;
+using MoreLinq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using MoreLinq;
 
 namespace GlobalEventController.DataAccess.BulkCommands
 {
     public class BulkUpdateItemSignAttributesCommandHandler : ICommandHandler<BulkUpdateItemSignAttributesCommand>
     {
-        private IrmaContext context;
+        private IDbContextFactory<IrmaContext> contextFactory;
 
-        public BulkUpdateItemSignAttributesCommandHandler(IrmaContext context)
+        public BulkUpdateItemSignAttributesCommandHandler(IDbContextFactory<IrmaContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public void Handle(BulkUpdateItemSignAttributesCommand command)
@@ -24,8 +23,11 @@ namespace GlobalEventController.DataAccess.BulkCommands
             itemList.TypeName = "dbo.IconUpdateItemType";
             itemList.Value = command.ValidatedItems.ToList().ToDataTable();
 
-            string sql = "EXEC dbo.IconUpdateItemSignAttributes @Items";
-            this.context.Database.ExecuteSqlCommand(sql, itemList);
+            using (var context = contextFactory.CreateContext())
+            {
+                string sql = "EXEC dbo.IconUpdateItemSignAttributes @Items";
+                context.Database.ExecuteSqlCommand(sql, itemList);
+            }
         }
     }
 }

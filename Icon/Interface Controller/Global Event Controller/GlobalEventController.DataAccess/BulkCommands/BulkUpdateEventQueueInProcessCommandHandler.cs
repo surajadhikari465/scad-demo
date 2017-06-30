@@ -1,25 +1,19 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
-using Icon.Common;
 using Icon.Framework;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InterfaceController.Common;
 
 namespace GlobalEventController.DataAccess.BulkCommands
 {
     public class BulkUpdateEventQueueInProcessCommandHandler : IQueryHandler<BulkUpdateEventQueueInProcessCommand, List<EventQueueCustom>>
     {
-        private readonly ContextManager contextManager;
+        private Icon.DbContextFactory.IDbContextFactory<IconContext> contextFactory;
 
-        public BulkUpdateEventQueueInProcessCommandHandler(ContextManager contextManager)
+        public BulkUpdateEventQueueInProcessCommandHandler(Icon.DbContextFactory.IDbContextFactory<IconContext> contextFactory)
         {
-            this.contextManager = contextManager;
+            this.contextFactory = contextFactory;
         }
         
         public List<EventQueueCustom> Handle(BulkUpdateEventQueueInProcessCommand parameters)
@@ -43,9 +37,11 @@ namespace GlobalEventController.DataAccess.BulkCommands
 
             string sql = @"EXEC app.UpdateEventQueueInProcess @RegisteredEventNames, @MaxRows, @Instance";
 
-            DbRawSqlQuery<EventQueueCustom> custom = this.contextManager.IconContext.Database.SqlQuery<EventQueueCustom>(sql, eventNames, maxRows, instance);
-            List<EventQueueCustom> queuedEvents = new List<EventQueueCustom>(custom);
-            return queuedEvents;
+            using (var context = contextFactory.CreateContext())
+            {
+                List<EventQueueCustom> queuedEvents = context.Database.SqlQuery<EventQueueCustom>(sql, eventNames, maxRows, instance).ToList();
+                return queuedEvents;
+            }
         }
     }
 }

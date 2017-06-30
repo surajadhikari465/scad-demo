@@ -1,16 +1,16 @@
 ﻿using GlobalEventController.Common;
-using GlobalEventController.Controller.EventServices;
+using GlobalEventController.Controller.Decorators.EventFinalizer;
 using GlobalEventController.Controller.EventOperations;
+using GlobalEventController.Controller.EventServices;
+using GlobalEventController.DataAccess.BulkCommands;
 using GlobalEventController.DataAccess.Commands;
+using GlobalEventController.DataAccess.Infrastructure;
 using GlobalEventController.DataAccess.Queries;
+using Icon.Common.Email;
 using Icon.Framework;
 using Icon.Logging;
-using GlobalEventController.DataAccess.BulkCommands;
-using GlobalEventController.Controller.Decorators.EventFinalizer;
-using Icon.Common.Email;
 using System.Collections.Generic;
 using System.Linq;
-using GlobalEventController.DataAccess.Infrastructure;
 
 namespace GlobalEventController.Controller
 {
@@ -40,9 +40,10 @@ namespace GlobalEventController.Controller
             var finalizerLogger = new NLogLoggerInstance<EventFinalizer>(StartupOptions.Instance.ToString());
             EventQueues queues = new EventQueues();
 
-            var contextManager = new ContextManager();
+            var iconContextFactory = new IconDbContextFactory();
+            var irmaContextFactory = new RegionalIrmaDbContextFactory();
             var dataIssueMessageCollector = new DataIssueMessageCollector(EmailClient.CreateFromConfig());
-            var eventArchiver = new EventArchiver(new ArchiveEventsCommandHandler(contextManager),
+            var eventArchiver = new EventArchiver(new ArchiveEventsCommandHandler(iconContextFactory),
                 new NLogLoggerInstance<EventArchiver>(StartupOptions.Instance.ToString()));
 
             return new GlobalControllerBase(
@@ -50,37 +51,36 @@ namespace GlobalEventController.Controller
                 new EventCollector(
                     queues,
                     collectorLogger,
-                    new BulkUpdateEventQueueInProcessCommandHandler(contextManager)),
+                    new BulkUpdateEventQueueInProcessCommandHandler(iconContextFactory)),
                 new ItemEventBulkProcessor(
                     queues,
                     bulkProcessorLogger,
-                    new EventServiceProvider(contextManager),
-                    new BulkGetValidatedItemsQueryHandler(contextManager, GlobalControllerSettings.CreateFromConfig()),
-                    new GetIconItemNutritionQueryHandler(contextManager),
+                    new EventServiceProvider(iconContextFactory, irmaContextFactory),
+                    new BulkGetValidatedItemsQueryHandler(iconContextFactory, GlobalControllerSettings.CreateFromConfig()),
+                    new GetIconItemNutritionQueryHandler(iconContextFactory),
                     dataIssueMessageCollector,
                     eventArchiver),
                 new NutriFactsEventBulkProcessor(
                     queues,
                     bulkProcessorLogger,
-                    new EventServiceProvider(contextManager),
-                    new BulkGetValidatedItemsQueryHandler(contextManager, GlobalControllerSettings.CreateFromConfig()),
-                    new GetIconItemNutritionQueryHandler(contextManager),
+                    new EventServiceProvider(iconContextFactory, irmaContextFactory),
+                    new BulkGetValidatedItemsQueryHandler(iconContextFactory, GlobalControllerSettings.CreateFromConfig()),
+                    new GetIconItemNutritionQueryHandler(iconContextFactory),
                     eventArchiver),
                 new EventProcessor(
                     queues,
                     processorLogger,
-                    new EventServiceProvider(contextManager),
+                    new EventServiceProvider(iconContextFactory, irmaContextFactory),
                     dataIssueMessageCollector,
                     eventArchiver),
                 new EventFinalizerEmailDecorator(
                     new EventFinalizer(
                         queues,
                         finalizerLogger,
-                        new UpdateEventQueueFailuresCommandHandler(contextManager),
-                        new BulkDeleteEventQueueCommandHandler(contextManager)),
+                        new UpdateEventQueueFailuresCommandHandler(iconContextFactory),
+                        new BulkDeleteEventQueueCommandHandler(iconContextFactory)),
                     queues,
                     EmailClient.CreateFromConfig()),
-                contextManager,
                 dataIssueMessageCollector,
                 eventArchiver);
         }

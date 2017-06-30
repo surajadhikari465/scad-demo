@@ -1,6 +1,4 @@
-﻿
-
-namespace GlobalEventController.Controller.Service
+﻿namespace GlobalEventController.Controller.Service
 {
     using Icon.Common;
     using Icon.Logging;
@@ -10,6 +8,7 @@ namespace GlobalEventController.Controller.Service
     using System.Timers;
     using Icon.Common.Email;
     using System.Diagnostics;
+
     public class GlobalEventControllerService : IGlobalEventControllerService
     {
         private static ILogger<Program> logger = new NLogLogger<Program>();

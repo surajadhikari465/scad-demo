@@ -1,42 +1,38 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using GlobalEventController.DataAccess.Commands;
 using Icon.Framework;
-using GlobalEventController.DataAccess.Commands;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.Entity;
 using Icon.Testing.Builders;
-using GlobalEventController.DataAccess.Infrastructure;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.CommandTests
 {
     [TestClass]
     public class UpdateEventQueueFailuresCommandHandlerTests
     {
-        private IconContext context;
-        private UpdateEventQueueFailuresCommand command;
         private UpdateEventQueueFailuresCommandHandler handler;
-        private DbContextTransaction transaction;
+        private UpdateEventQueueFailuresCommand command;
+        private IconContext context;
+        private IconDbContextFactory contextFactory;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeData()
         {
+            this.transaction = new TransactionScope();
+            this.contextFactory = new IconDbContextFactory();
             this.context = new IconContext();
             this.command = new UpdateEventQueueFailuresCommand();
-            this.handler = new UpdateEventQueueFailuresCommandHandler(new ContextManager { IconContext = this.context });
-
-            this.transaction = this.context.Database.BeginTransaction();
+            this.handler = new UpdateEventQueueFailuresCommandHandler(contextFactory);
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (this.transaction != null)
-            {
-                transaction.Rollback();
-            }
-
-            this.context.Dispose();
+            transaction.Dispose();
         }
 
         [TestMethod]
@@ -53,12 +49,11 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             // Then
             foreach (var eventQueue in eventsToUpdate)
             {
-                EventQueue actual = this.context.EventQueue.First(q => q.QueueId == eventQueue.QueueId);
+                EventQueue actual = this.context.EventQueue.AsNoTracking().First(q => q.QueueId == eventQueue.QueueId);
                 var entry = this.context.Entry(actual);
 
                 Assert.IsNotNull(actual.ProcessFailedDate, "The ProcessFailedDate is null.");
                 Assert.IsTrue(actual.ProcessFailedDate >= preTestDate, "The ProcessFaileDate is not greater than or equal to the date just before test was run.");
-                Assert.IsTrue(entry.State == EntityState.Unchanged);
             }
         }
 

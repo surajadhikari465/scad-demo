@@ -2,7 +2,6 @@
 using GlobalEventController.DataAccess.BulkCommands;
 using GlobalEventController.DataAccess.Infrastructure;
 using Icon.Logging;
-using Irma.Framework;
 using MoreLinq;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,7 @@ namespace GlobalEventController.Controller.EventServices
         public List<string> ScanCodesWithNoTaxList { get; set; }
         public List<NutriFactsModel> ItemNutriFacts { get; set; }
 
-        public BulkItemEventService(IrmaContext context,
+        public BulkItemEventService(
             ILogger<BulkItemEventService> logger,
             ICommandHandler<BulkAddBrandCommand> bulkBrandHandler,
             ICommandHandler<BulkAddUpdateLastChangeCommand> bulkLastChangeHandler,
@@ -37,7 +36,6 @@ namespace GlobalEventController.Controller.EventServices
             ICommandHandler<BulkUpdateItemSignAttributesCommand> bulkUpdateItemSignAttributesCommandHandler,
             IQueryHandler<BulkGetItemsWithNoNatlClassQuery, List<ValidatedItemModel>> bulkGetValidatedItemsWithNoNatlClassQueryHandler,
             IQueryHandler<BulkGetItemsWithNoRetailUomQuery, List<ValidatedItemModel>> bulkGetValidatedItemsWithNoRetailUomQueryHandler)
-            : base (context)
         {
             this.logger = logger;
             this.bulkAddBrandCommandHandler = bulkBrandHandler;

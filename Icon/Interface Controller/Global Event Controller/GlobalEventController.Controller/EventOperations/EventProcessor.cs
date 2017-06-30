@@ -179,8 +179,6 @@ namespace GlobalEventController.Controller.EventOperations
                             ErrorDetails = ex.ToString()
                         }.ToEventArchive());
 
-                    eventServiceProvider.RefreshContexts();
-
                     logger.Error(String.Format("Execution failed for event handler: {0}.  Processing will continue to the next event in the queue.",
                         eventService != null ? eventService.GetType().ToString() : String.Empty));
 					exceptionHandler.HandleException(ex, this.GetType(), MethodBase.GetCurrentMethod(), 

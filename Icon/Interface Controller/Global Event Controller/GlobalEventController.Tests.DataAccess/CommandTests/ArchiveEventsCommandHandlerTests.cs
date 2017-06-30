@@ -1,16 +1,12 @@
 ﻿using GlobalEventController.Common;
 using GlobalEventController.DataAccess.Commands;
-using GlobalEventController.DataAccess.Infrastructure;
 using Icon.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.CommandTests
 {
@@ -19,18 +15,19 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
     {
         private ArchiveEventsCommandHandler commandHandler;
         private ArchiveEventsCommand command;
-        private Mock<IContextManager> mockContextManager;
         private IconContext context;
+        private TransactionScope transaction;
+        private IconDbContextFactory contextFactory;
         private List<ArchiveEventModelWrapper<FailedEvent>> testFailedEvents;
 
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
             context = new IconContext();
 
-            mockContextManager = new Mock<IContextManager>();
-            mockContextManager.SetupGet(m => m.IconContext).Returns(context);
-            commandHandler = new ArchiveEventsCommandHandler(mockContextManager.Object);
+            contextFactory = new IconDbContextFactory();
+            commandHandler = new ArchiveEventsCommandHandler(contextFactory);
             command = new ArchiveEventsCommand();
             testFailedEvents = new List<ArchiveEventModelWrapper<FailedEvent>>();
         }
@@ -38,11 +35,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         [TestCleanup]
         public void Cleanup()
         {
-            var sql = "delete from app.EventQueueArchive" +
-                " where EventQueueArchiveId > (select max(EventQueueArchiveId) - 2000 from app.EventQueueArchive)" +
-                " and EventMessage like '%ArchiveEventsCommandHandlerTests'";
-            context.Database.ExecuteSqlCommand(sql);
-            context.Dispose();
+            transaction.Dispose();
         }
 
         [TestMethod]

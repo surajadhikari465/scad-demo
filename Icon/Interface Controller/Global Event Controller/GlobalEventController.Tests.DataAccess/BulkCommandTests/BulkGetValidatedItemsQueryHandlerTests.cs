@@ -1,40 +1,40 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Framework;
+﻿using GlobalEventController.Common;
 using GlobalEventController.DataAccess.BulkCommands;
+using Icon.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
-using GlobalEventController.Common;
-using GlobalEventController.DataAccess.Infrastructure;
+using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 {
     [TestClass]
     public class BulkGetValidatedItemsQueryHandlerTests
     {
-        private BulkGetValidatedItemsQuery query;
         private BulkGetValidatedItemsQueryHandler handler;
+        private BulkGetValidatedItemsQuery query;
+        private IconDbContextFactory contextFactory;
         private IconContext context;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private GlobalControllerSettings settings;
 
         [TestInitialize]
         public void InitializeData()
         {
+            this.transaction = new TransactionScope();
             this.context = new IconContext();
-            this.transaction = context.Database.BeginTransaction();
             this.query = new BulkGetValidatedItemsQuery();
             this.settings = new GlobalControllerSettings { EnableInforUpdates = false };
-            this.handler = new BulkGetValidatedItemsQueryHandler(new ContextManager { IconContext = this.context }, settings);
+            this.contextFactory = new IconDbContextFactory();
+            this.handler = new BulkGetValidatedItemsQueryHandler(contextFactory, settings);
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            transaction.Rollback();
             transaction.Dispose();
-            context.Dispose();
         }
 
         [TestMethod]

@@ -1,42 +1,43 @@
 ﻿using FastMember;
 using GlobalEventController.Common;
 using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Icon.Framework;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace GlobalEventController.DataAccess.Commands
 {
     public class ArchiveEventsCommandHandler : ICommandHandler<ArchiveEventsCommand>
     {
-        private IContextManager contextManager;
+        private IDbContextFactory<IconContext> contextFactory;
 
-        public ArchiveEventsCommandHandler(IContextManager contextManager)
+        public ArchiveEventsCommandHandler(IDbContextFactory<IconContext> contextFactory)
         {
-            this.contextManager = contextManager;
+            this.contextFactory = contextFactory;
         }
 
         public void Handle(ArchiveEventsCommand command)
         {
-            using (var bulkInsert = new SqlBulkCopy(contextManager.IconContext.Database.Connection.ConnectionString))
+            using (var context = contextFactory.CreateContext())
             {
-                bulkInsert.DestinationTableName = "app.EventQueueArchive";
-                using (var reader = ObjectReader.Create(
-                    command.Events,
-                    nameof(EventQueueArchive.EventQueueArchiveId),
-                    nameof(EventQueueArchive.QueueId),
-                    nameof(EventQueueArchive.EventId),
-                    nameof(EventQueueArchive.EventMessage),
-                    nameof(EventQueueArchive.EventReferenceId),
-                    nameof(EventQueueArchive.RegionCode),
-                    nameof(EventQueueArchive.EventQueueInsertDate),
-                    nameof(EventQueueArchive.Context),
-                    nameof(EventQueueArchive.ErrorCode),
-                    nameof(EventQueueArchive.ErrorDetails)))
+                using (var sqlBulkCopy = new SqlBulkCopy(context.Database.Connection.ConnectionString))
                 {
-                    bulkInsert.WriteToServer(reader);
+                    sqlBulkCopy.DestinationTableName = "app.EventQueueArchive";
+                    using (var reader = ObjectReader.Create(
+                        command.Events,
+                        nameof(EventQueueArchive.EventQueueArchiveId),
+                        nameof(EventQueueArchive.QueueId),
+                        nameof(EventQueueArchive.EventId),
+                        nameof(EventQueueArchive.EventMessage),
+                        nameof(EventQueueArchive.EventReferenceId),
+                        nameof(EventQueueArchive.RegionCode),
+                        nameof(EventQueueArchive.EventQueueInsertDate),
+                        nameof(EventQueueArchive.Context),
+                        nameof(EventQueueArchive.ErrorCode),
+                        nameof(EventQueueArchive.ErrorDetails)))
+                    {
+                        sqlBulkCopy.WriteToServer(reader);
+                    }
                 }
             }
         }

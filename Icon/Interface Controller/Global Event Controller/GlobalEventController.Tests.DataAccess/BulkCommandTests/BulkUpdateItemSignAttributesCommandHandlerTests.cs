@@ -1,16 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using GlobalEventController.Common;
 using GlobalEventController.DataAccess.BulkCommands;
-using Irma.Framework;
-using System.Data.Entity;
-using Icon.Testing.Builders;
-using System.Linq;
-using Irma.Testing.Builders;
-using GlobalEventController.Common;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Data.Entity.Validation;
 using GlobalEventController.Testing.Common;
+using Irma.Framework;
+using Irma.Testing.Builders;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
+using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 {
@@ -19,8 +17,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
     {
         private BulkUpdateItemSignAttributesCommandHandler commandHandler;
         private BulkUpdateItemSignAttributesCommand command;
+        private IrmaDbContextFactory contextFactory;
         private IrmaContext context;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
         private Item testItem1;
         private Item testItem2;
         private string badIdentifier;
@@ -30,9 +29,10 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
         {
             try
             {
+                transaction = new TransactionScope();
                 context = new IrmaContext();
-                transaction = context.Database.BeginTransaction();
-                commandHandler = new BulkUpdateItemSignAttributesCommandHandler(context);
+                contextFactory = new IrmaDbContextFactory();
+                commandHandler = new BulkUpdateItemSignAttributesCommandHandler(contextFactory);
                 command = new BulkUpdateItemSignAttributesCommand { ValidatedItems = new List<ValidatedItemModel>() };
 
                 testItem1 = new TestIrmaDbItemBuilder(context)
@@ -54,15 +54,14 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 Debug.WriteLine(string.Join("\n",
                     dbe.EntityValidationErrors.SelectMany(ev => ev.ValidationErrors)
                                           .Select(v => v.ErrorMessage)));
+                throw;
             }
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
             transaction.Dispose();
-            context.Dispose();
         }
 
         [TestMethod]

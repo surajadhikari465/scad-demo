@@ -1,26 +1,28 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using GlobalEventController.DataAccess.Queries;
 using Icon.Framework;
-using System.Data.Entity;
 using Icon.Testing.Builders;
-using GlobalEventController.DataAccess.Queries;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.QueryTests
 {
     [TestClass]
     public class GetHierarchyClassQueryHandlerTests
     {
-        private IconContext context;
-        private DbContextTransaction transaction;
-        private HierarchyClass hierarchyClass;
         private GetHierarchyClassQueryHandler queryHandler;
+        private IconContext context;
+        private TransactionScope transaction;
+        private HierarchyClass hierarchyClass;
+        private IconDbContextFactory contextFactory;
 
         [TestInitialize]
         public void InitializeData()
         {
+            transaction = new TransactionScope();
             this.context = new IconContext();
-            this.queryHandler = new GetHierarchyClassQueryHandler(this.context);
-            this.transaction = this.context.Database.BeginTransaction();
+            this.contextFactory = new IconDbContextFactory();
+            this.queryHandler = new GetHierarchyClassQueryHandler(contextFactory);
             this.hierarchyClass = new TestHierarchyClassBuilder();
             this.context.HierarchyClass.Add(this.hierarchyClass);
             this.context.SaveChanges();
@@ -29,8 +31,7 @@ namespace GlobalEventController.Tests.DataAccess.QueryTests
         [TestCleanup]
         public void CleanupData()
         {
-            this.transaction.Rollback();
-            this.context.Dispose();
+            transaction.Dispose();
         }
 
         [TestMethod]
@@ -45,7 +46,9 @@ namespace GlobalEventController.Tests.DataAccess.QueryTests
 
             // Then
             Assert.IsNotNull(actual);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.hierarchyClassID, actual.hierarchyClassID);
+            Assert.AreEqual(expected.hierarchyClassName, actual.hierarchyClassName);
+            Assert.AreEqual(expected.hierarchyParentClassID, actual.hierarchyParentClassID);
         }
 
         [TestMethod]

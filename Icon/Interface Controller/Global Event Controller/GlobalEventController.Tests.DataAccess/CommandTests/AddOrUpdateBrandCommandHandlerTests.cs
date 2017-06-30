@@ -1,44 +1,39 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Irma.Framework;
-using GlobalEventController.DataAccess.Commands;
-using Moq;
+﻿using GlobalEventController.DataAccess.Commands;
 using Icon.Logging;
-using System.Linq;
-using System.Data.Entity;
+using Irma.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.CommandTests
 {
     [TestClass]
     public class AddOrUpdateBrandCommandHandlerTests
     {
-        private IrmaContext context;
-        private AddOrUpdateBrandCommand command;
         private AddOrUpdateBrandCommandHandler handler;
+        private AddOrUpdateBrandCommand command;
+        private IrmaDbContextFactory contextFactory;
+        private IrmaContext context;
         private Mock<ILogger<AddOrUpdateBrandCommandHandler>> mockLogger;
-        private DbContextTransaction transaction;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeData()
         {
+            this.transaction = new TransactionScope();
             this.context = new IrmaContext();
             this.command = new AddOrUpdateBrandCommand();
+            this.contextFactory = new IrmaDbContextFactory();
             this.mockLogger = new Mock<ILogger<AddOrUpdateBrandCommandHandler>>();
-            this.handler = new AddOrUpdateBrandCommandHandler(this.context, mockLogger.Object);
-
-            this.transaction = this.context.Database.BeginTransaction();
+            this.handler = new AddOrUpdateBrandCommandHandler(contextFactory, mockLogger.Object);
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            if (this.transaction != null)
-            {
-                this.transaction.Rollback();
-                this.transaction.Dispose();
-            }
-            context.Dispose();
+            this.transaction.Dispose();
         }
 
         [TestMethod]

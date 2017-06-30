@@ -1,9 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Data.Entity;
-using Icon.Testing.Builders;
-using GlobalEventController.DataAccess.Queries;
+﻿using GlobalEventController.DataAccess.Queries;
 using Irma.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace GlobalEventController.Tests.DataAccess.QueryTests
@@ -11,14 +8,16 @@ namespace GlobalEventController.Tests.DataAccess.QueryTests
     [TestClass]
     public class GetItemIdentifiersQueryHandlerTests
     {
-        private IrmaContext context;
         private GetItemIdentifiersQueryHandler queryHandler;
+        private IrmaDbContextFactory contextFactory;
+        private IrmaContext context;
 
         [TestInitialize]
         public void InitializeData()
         {
             this.context = new IrmaContext();
-            this.queryHandler = new GetItemIdentifiersQueryHandler(this.context);
+            this.contextFactory = new IrmaDbContextFactory();
+            this.queryHandler = new GetItemIdentifiersQueryHandler(contextFactory);
         }
 
         [TestCleanup]

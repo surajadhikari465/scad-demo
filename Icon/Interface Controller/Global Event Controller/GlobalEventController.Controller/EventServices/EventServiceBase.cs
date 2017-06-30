@@ -1,31 +1,18 @@
 ﻿using GlobalEventController.Common;
-using GlobalEventController.DataAccess.Infrastructure;
-using GlobalEventController.DataAccess.Queries;
 using Icon.Framework;
-using Irma.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GlobalEventController.Controller.EventServices
 {
     public abstract class EventServiceBase : IEventService
     {
-        protected readonly IrmaContext irmaContext;
-
         public int? ReferenceId { get; set; }
         public string Message { get; set; }
         public string Region { get; set; }
         public int EventTypeId { get; set; }
         public List<ScanCode> ScanCodes { get; set; }
         public List<RegionalItemMessageModel> RegionalItemMessage { get; set; }
-
-        public EventServiceBase(IrmaContext irmaContext)
-        {
-            this.irmaContext = irmaContext;
-        }
 
         public abstract void Run();
 
@@ -45,8 +32,11 @@ namespace GlobalEventController.Controller.EventServices
         ///     (cannot be null or empty)</param>
         /// <param name="region">The region from the event being validated
         ///     (cannot be null or empty)</param>
-        protected void VerifyEventParameters(string eventServiceName,
-            int? referenceId, string eventMessage, string region)
+        protected void VerifyEventParameters(
+            string eventServiceName,
+            int? referenceId, 
+            string eventMessage, 
+            string region)
         {
             if (referenceId.GetValueOrDefault(0) < 1 || String.IsNullOrEmpty(eventMessage) || String.IsNullOrEmpty(region))
             {

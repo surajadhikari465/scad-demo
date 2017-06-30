@@ -1,25 +1,22 @@
 ﻿using GlobalEventController.Common;
 using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Irma.Framework;
-using System;
+using MoreLinq;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MoreLinq;
 
 namespace GlobalEventController.DataAccess.BulkCommands
 {
     public class BulkGetItemsWithNoNatlClassQueryHandler : IQueryHandler<BulkGetItemsWithNoNatlClassQuery, List<ValidatedItemModel>>
     {
-        private readonly IrmaContext context;
+        private IDbContextFactory<IrmaContext> contextFactory;
 
-        public BulkGetItemsWithNoNatlClassQueryHandler(IrmaContext context)
+        public BulkGetItemsWithNoNatlClassQueryHandler(IDbContextFactory<IrmaContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public List<ValidatedItemModel> Handle(BulkGetItemsWithNoNatlClassQuery parameters)
@@ -30,12 +27,13 @@ namespace GlobalEventController.DataAccess.BulkCommands
             itemList.TypeName = "dbo.IconUpdateItemType";
             itemList.Value = parameters.ValidatedItems.ToDataTable();
 
-            string sql = @"EXEC dbo.GetIconItemsWithNoNatlClass @ValidatedItemList";
+            using (var context = contextFactory.CreateContext())
+            {
+                string sql = @"EXEC dbo.GetIconItemsWithNoNatlClass @ValidatedItemList";
+                List<ValidatedItemModel> validatedItems = context.Database.SqlQuery<ValidatedItemModel>(sql, itemList).ToList();
 
-            DbRawSqlQuery<ValidatedItemModel> sqlQuery = this.context.Database.SqlQuery<ValidatedItemModel>(sql, itemList);
-            List<ValidatedItemModel> validatedItems = new List<ValidatedItemModel>(sqlQuery);
-
-            return validatedItems;
+                return validatedItems;
+            }
         }
     }
 }

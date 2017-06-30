@@ -1,25 +1,22 @@
 ﻿using GlobalEventController.Common;
 using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Irma.Framework;
-using System;
+using MoreLinq;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MoreLinq;
 
 namespace GlobalEventController.DataAccess.BulkCommands
 {
     public class BulkGetItemsWithTaxClassQueryHandler : IQueryHandler<BulkGetItemsWithTaxClassQuery, List<ValidatedItemModel>>
     {
-        private readonly IrmaContext context;
+        private IDbContextFactory<IrmaContext> contextFactory;
 
-        public BulkGetItemsWithTaxClassQueryHandler(IrmaContext context)
+        public BulkGetItemsWithTaxClassQueryHandler(IDbContextFactory<IrmaContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public List<ValidatedItemModel> Handle(BulkGetItemsWithTaxClassQuery parameters)
@@ -32,10 +29,12 @@ namespace GlobalEventController.DataAccess.BulkCommands
            
             string sql = @"EXEC dbo.GetIconItemWithTax @ValidatedItemList";
 
-            DbRawSqlQuery<ValidatedItemModel> sqlQuery = this.context.Database.SqlQuery<ValidatedItemModel>(sql, itemList);
-            List<ValidatedItemModel> validatedItems = new List<ValidatedItemModel>(sqlQuery);
+            using (var context = contextFactory.CreateContext())
+            {
+                List<ValidatedItemModel> validatedItems = context.Database.SqlQuery<ValidatedItemModel>(sql, itemList).ToList();
 
-            return validatedItems;
+                return validatedItems;
+            }
         }
     }
 }

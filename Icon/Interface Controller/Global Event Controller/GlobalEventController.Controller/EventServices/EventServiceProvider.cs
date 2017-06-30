@@ -6,10 +6,10 @@ using GlobalEventController.DataAccess.DataServices;
 using GlobalEventController.DataAccess.Infrastructure;
 using GlobalEventController.DataAccess.Queries;
 using Icon.Common.Email;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using Icon.Logging;
 using InterfaceController.Common;
-using Irma.Framework;
 using System;
 using System.Configuration;
 
@@ -17,14 +17,18 @@ namespace GlobalEventController.Controller.EventServices
 {
     public class EventServiceProvider : IEventServiceProvider
     {
-        private ContextManager contextManager;
-        private int commandTimeout;
         private static EmailClient emailClient = new EmailClient(EmailClientSettings.CreateFromConfig());
 
-        public EventServiceProvider(ContextManager contextManager)
+        private int commandTimeout;
+        private IDbContextFactory<IconContext> iconContextFactory;
+        private IRegionalIrmaDbContextFactory irmaContextFactory;
+
+        public EventServiceProvider(IDbContextFactory<IconContext> iconContextFactory, IRegionalIrmaDbContextFactory irmaContextFactory)
         {
-            this.contextManager = contextManager;
+            this.iconContextFactory = iconContextFactory;
+            this.irmaContextFactory = irmaContextFactory;
         }
+
         public IEventService GetBrandNameUpdateEventService(Enums.EventNames eventName, string region)
         {
             if (String.IsNullOrEmpty(region))
@@ -37,15 +41,12 @@ namespace GlobalEventController.Controller.EventServices
                 return null;
             }
 
-            var iconContext = contextManager.IconContext;
-            var irmaContext = contextManager.IrmaContexts[region];
-            SetIrmaDbContextConnectionTimeout(irmaContext);
+            SetIrmaDbContextFactorySettings(region);
 
             return new UpdateBrandEventService(
-                irmaContext,
-                new AddOrUpdateBrandCommandHandler(irmaContext, new NLogLoggerInstance<AddOrUpdateBrandCommandHandler>(StartupOptions.Instance.ToString())),
-                new AddUpdateLastChangeByIdentifiersCommandHandler(irmaContext),
-                new GetItemIdentifiersQueryHandler(irmaContext));
+                new AddOrUpdateBrandCommandHandler(irmaContextFactory, new NLogLoggerInstance<AddOrUpdateBrandCommandHandler>(StartupOptions.Instance.ToString())),
+                new AddUpdateLastChangeByIdentifiersCommandHandler(irmaContextFactory),
+                new GetItemIdentifiersQueryHandler(irmaContextFactory));
         }
 
         public IEventService GetBrandDeleteEventService(Enums.EventNames eventName, string region, IEmailClient emailClient)
@@ -60,14 +61,11 @@ namespace GlobalEventController.Controller.EventServices
                 return null;
             }
 
-            var iconContext = contextManager.IconContext;
-            var irmaContext = contextManager.IrmaContexts[region];
-            SetIrmaDbContextConnectionTimeout(irmaContext);
+            SetIrmaDbContextFactorySettings(region);
 
             return new BrandDeleteEventService(
-                irmaContext,
-                new BrandDeleteCommandHandler(irmaContext),
-                new GetIrmaBrandQueryHandler(irmaContext),
+                new BrandDeleteCommandHandler(irmaContextFactory),
+                new GetIrmaBrandQueryHandler(irmaContextFactory),
                 new NLogLoggerInstance<BrandDeleteEventService>(StartupOptions.Instance.ToString()),
                 emailClient,
                 GlobalControllerSettings.CreateFromConfig());
@@ -86,22 +84,18 @@ namespace GlobalEventController.Controller.EventServices
                 throw new ArgumentException("There is no connection string found for the region associated to the event.");
             }
 
-            var iconContext = contextManager.IconContext;
-            var irmaContext = contextManager.IrmaContexts[region];
-            SetIrmaDbContextConnectionTimeout(irmaContext);
+            SetIrmaDbContextFactorySettings(region);
 
             switch (eventName)
             {
                 case Enums.EventNames.IconToIrmaTaxClassUpdate:
                     return new UpdateTaxClassEventService(
-                       irmaContext,
-                       new UpdateTaxClassCommandHandler(irmaContext),
-                       new GetTaxAbbreviationQueryHandler(iconContext));
+                       new UpdateTaxClassCommandHandler(irmaContextFactory),
+                       new GetTaxAbbreviationQueryHandler(iconContextFactory));
                 case Enums.EventNames.IconToIrmaNewTaxClass:
                     return new AddTaxClassEventService(
-                        irmaContext,
-                        new AddTaxClassCommandHandler(irmaContext),
-                        new GetTaxAbbreviationQueryHandler(iconContext));
+                        new AddTaxClassCommandHandler(irmaContextFactory),
+                        new GetTaxAbbreviationQueryHandler(iconContextFactory));
                 default:
                     return null;
             }
@@ -113,25 +107,23 @@ namespace GlobalEventController.Controller.EventServices
                 throw new ArgumentException("No region name specified to build database connection.");
             }
 
-            var iconContext = contextManager.IconContext;
-            var irmaContext = contextManager.IrmaContexts[region];
-            SetIrmaDbContextConnectionTimeout(irmaContext);
+            SetIrmaDbContextFactorySettings(region);
 
             return new BulkItemEventServiceUomChangeEmailDecorator(
                 new EmailUomChangeService(EmailClient.CreateFromConfigForRegion(region)),
-                new GetItemsByScanCodeQueryHandler(irmaContext),
+                new GetItemsByScanCodeQueryHandler(irmaContextFactory),
                 GlobalControllerSettings.CreateFromConfig(region),
-                    new BulkItemEventService(irmaContext,
+                    new BulkItemEventService(
                         new NLogLoggerInstance<BulkItemEventService>(StartupOptions.Instance.ToString()),
-                        new BulkAddBrandCommandHandler(irmaContext),
-                        new BulkAddUpdateLastChangeCommandHandler(irmaContext),
-                        new BulkUpdateItemCommandHandler(irmaContext),
-                        new BulkAddValidatedScanCodeCommandHandler(irmaContext),
-                        new BulkGetItemsWithTaxClassQueryHandler(irmaContext),
-                        new BulkUpdateNutrifactsCommandHandler(irmaContext),
-                        new BulkUpdateItemSignAttributesCommandHandler(irmaContext),
-                        new BulkGetItemsWithNoNatlClassQueryHandler(irmaContext),
-                        new BulkGetItemsWithNoRetailUomQueryHandler(irmaContext)));
+                        new BulkAddBrandCommandHandler(irmaContextFactory),
+                        new BulkAddUpdateLastChangeCommandHandler(irmaContextFactory),
+                        new BulkUpdateItemCommandHandler(irmaContextFactory),
+                        new BulkAddValidatedScanCodeCommandHandler(irmaContextFactory),
+                        new BulkGetItemsWithTaxClassQueryHandler(irmaContextFactory),
+                        new BulkUpdateNutrifactsCommandHandler(irmaContextFactory),
+                        new BulkUpdateItemSignAttributesCommandHandler(irmaContextFactory),
+                        new BulkGetItemsWithNoNatlClassQueryHandler(irmaContextFactory),
+                        new BulkGetItemsWithNoRetailUomQueryHandler(irmaContextFactory)));
         }
 
         public IBulkEventService GetBulkItemNutriFactsEventService(string region)
@@ -141,15 +133,14 @@ namespace GlobalEventController.Controller.EventServices
                 throw new ArgumentException("No region name specified to build database connection.");
             }
 
-            var iconContext = contextManager.IconContext;
-            var irmaContext = contextManager.IrmaContexts[region];
-            SetIrmaDbContextConnectionTimeout(irmaContext);
+            SetIrmaDbContextFactorySettings(region);
 
-            return new BulkItemNutriFactsService(irmaContext,
-                new BulkUpdateNutrifactsCommandHandler(irmaContext),
-                new BulkAddUpdateLastChangeCommandHandler(irmaContext),
-                new BulkGetItemsWithTaxClassQueryHandler(irmaContext));
+            return new BulkItemNutriFactsService(
+                new BulkUpdateNutrifactsCommandHandler(irmaContextFactory),
+                new BulkAddUpdateLastChangeCommandHandler(irmaContextFactory),
+                new BulkGetItemsWithTaxClassQueryHandler(irmaContextFactory));
         }
+
         public IEventService GetDeleteNationalHierarchyEventService(Enums.EventNames eventName, string region)
         {
             if (String.IsNullOrEmpty(region))
@@ -162,13 +153,12 @@ namespace GlobalEventController.Controller.EventServices
                 return null;
             }
 
-            var iconContext = contextManager.IconContext;
-            var irmaContext = contextManager.IrmaContexts[region];
-            SetIrmaDbContextConnectionTimeout(irmaContext);
+            SetIrmaDbContextFactorySettings(region);
 
             return new DeleteNationalHierarchyEventService(
-                irmaContext,
-                new DeleteNationalHierarchyCommandHandler(irmaContext, new NLogLoggerInstance<DeleteNationalHierarchyCommandHandler>(StartupOptions.Instance.ToString())));
+                new DeleteNationalHierarchyCommandHandler(
+                    irmaContextFactory, 
+                    new NLogLoggerInstance<DeleteNationalHierarchyCommandHandler>(StartupOptions.Instance.ToString())));
         }
 
         public IEventService GetAddOrUpdateNationalHierarchyEventService(Enums.EventNames eventName, string region)
@@ -183,17 +173,13 @@ namespace GlobalEventController.Controller.EventServices
                 return null;
             }
 
-            var iconContext = contextManager.IconContext;
-            var irmaContext = contextManager.IrmaContexts[region];
-            SetIrmaDbContextConnectionTimeout(irmaContext);
+            SetIrmaDbContextFactorySettings(region);
 
             return new AddOrUpdateNationalHierarchyEventService(
-                irmaContext, 
-                iconContext,
                 new AddOrUpdateNationalHierarchyCommandHandler(
-                    irmaContext,
+                    irmaContextFactory,
                     new NLogLoggerInstance<AddOrUpdateNationalHierarchyCommandHandler>(StartupOptions.Instance.ToString())),
-                new GetHierarchyClassQueryHandler(iconContext));
+                new GetHierarchyClassQueryHandler(iconContextFactory));
         }
 
         public IEventService GetEventService(Enums.EventNames eventName, string region)
@@ -222,25 +208,25 @@ namespace GlobalEventController.Controller.EventServices
         {
             throw new NotImplementedException();
         }
+
         public IEventService GetSubTeamEventService(Enums.EventNames eventNamestring, string region)
         {
             throw new NotImplementedException();
         }
+
         public IEventService GetItemSubTeamEventService(Enums.EventNames eventName, string region)
         {
             throw new NotImplementedException();
         }
-        public void RefreshContexts()
+
+        private void SetIrmaDbContextFactorySettings(string region)
         {
-            contextManager.RefreshContexts();
-        }
-        private void SetIrmaDbContextConnectionTimeout(IrmaContext irmaContext)
-        {
+            irmaContextFactory.Region = region;
             string timeoutConfiguration = ConfigurationManager.AppSettings["DbContextConnectionTimeout"];
 
             if (int.TryParse(timeoutConfiguration, out commandTimeout))
             {
-                irmaContext.Database.CommandTimeout = commandTimeout;
+                irmaContextFactory.CommandTimeout = commandTimeout;
             }
         }
     }

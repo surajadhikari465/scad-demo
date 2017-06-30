@@ -60,7 +60,6 @@ namespace GlobalEventController.Controller.EventOperations
             {
                 ProcessEvents(entry.Key, entry.Value);
             }
-
         }
 
         private void ProcessEvents(string region, IEnumerable<EventQueue> eventsToProcess)
@@ -89,8 +88,6 @@ namespace GlobalEventController.Controller.EventOperations
                     });
                     this.queues.FailedEvents.AddRange(failedEvents);
                     eventArchiver.Events.AddRange(failedEvents.ToEventArchiveList(Constants.ApplicationErrors.Codes.UnexpectedError, ex.ToString()));
-
-                    eventServiceProvider.RefreshContexts();
                 }
             }
         }
@@ -126,7 +123,6 @@ namespace GlobalEventController.Controller.EventOperations
 
             // Remove from QueuedEvents List so that they do not get processed again with single item process
             this.queues.QueuedEvents.RemoveAll(qe => queuedEvents.Contains(qe));
-
         }
 
         private IEnumerable<EventQueue> FilterEventQueueByEventTypes(List<int> eventTypes)

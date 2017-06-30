@@ -1,35 +1,36 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using GlobalEventController.DataAccess.Commands;
 using Irma.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Data.Entity;
 using System.Linq;
-using GlobalEventController.DataAccess.Commands;
+using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.CommandTests
 {
     [TestClass]
     public class AddTaxClassCommandHandlerTests
     {
-        private IrmaContext context;
-        private DbContextTransaction transaction;
-        private AddTaxClassCommand command;
         private AddTaxClassCommandHandler handler;
+        private AddTaxClassCommand command;
+        private IrmaDbContextFactory contextFactory;
+        private IrmaContext context;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeData()
         {
+            this.transaction = new TransactionScope();
             this.context = new IrmaContext();
             this.command = new AddTaxClassCommand();
-            this.handler = new AddTaxClassCommandHandler(this.context);
-
-            this.transaction = this.context.Database.BeginTransaction();
+            this.contextFactory = new IrmaDbContextFactory();
+            this.handler = new AddTaxClassCommandHandler(contextFactory);
         }
 
         [TestCleanup]
         public void CleanupData()
         {
-            this.transaction.Rollback();
-            this.context.Dispose();
+            this.transaction.Dispose();
         }
 
         [TestMethod]
@@ -41,19 +42,18 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
             // When
             this.handler.Handle(this.command);
-            this.context.SaveChanges();
 
             // Then
-            TaxClass actual = this.context.TaxClass.FirstOrDefault(tc => tc.TaxClassDesc == this.command.TaxClassDescription);
+            TaxClass actual = this.context.TaxClass.AsNoTracking().FirstOrDefault(tc => tc.TaxClassDesc == this.command.TaxClassDescription);
             if (actual == null)
             {
                 Assert.Fail(String.Format("The Tax Class [{0}] was not added as expected.", this.command.TaxClassDescription));
             }
 
             var entry = this.context.Entry(actual);
-            Assert.IsTrue(entry.State == EntityState.Unchanged);
             Assert.AreEqual(this.command.TaxClassDescription, actual.TaxClassDesc);
             Assert.AreEqual(this.command.TaxCode, actual.ExternalTaxGroupCode);
+            Assert.AreEqual(actual.TaxClassID, this.command.TaxClassId);
         }
 
         [TestMethod]
@@ -69,7 +69,6 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
             // When
             this.handler.Handle(this.command);
-            this.context.SaveChanges();
 
             // Then
             Assert.AreEqual(existingTaxClass.TaxClassID, this.command.TaxClassId, "The TaxClassId was not populated for the existing tax class.");

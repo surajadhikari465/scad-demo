@@ -1,33 +1,33 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Irma.Framework;
-using System;
-using System.Collections.Generic;
+using MoreLinq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MoreLinq;
 
 namespace GlobalEventController.DataAccess.BulkCommands
 {
     public class BulkAddValidatedScanCodeCommandHandler : ICommandHandler<BulkAddValidatedScanCodeCommand>
     {
-        private readonly IrmaContext context;
+        private IDbContextFactory<IrmaContext> contextFactory;
 
-        public BulkAddValidatedScanCodeCommandHandler(IrmaContext context)
+        public BulkAddValidatedScanCodeCommandHandler(IDbContextFactory<IrmaContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public void Handle(BulkAddValidatedScanCodeCommand command)
         {
-            SqlParameter itemList = new SqlParameter("ValidatedItemList", SqlDbType.Structured);
-            itemList.TypeName = "dbo.IconUpdateItemType";
-            itemList.Value = command.ValidatedItems.DistinctBy(vi => new { vi.ScanCode }).ToList().ToDataTable();
+            using (var context = contextFactory.CreateContext())
+            {
+                SqlParameter itemList = new SqlParameter("ValidatedItemList", SqlDbType.Structured);
+                itemList.TypeName = "dbo.IconUpdateItemType";
+                itemList.Value = command.ValidatedItems.DistinctBy(vi => new { vi.ScanCode }).ToList().ToDataTable();
 
-            string sql = "EXEC dbo.IconItemAddValidatedScanCode @ValidatedItemList";
-            this.context.Database.ExecuteSqlCommand(sql, itemList);
+                string sql = "EXEC dbo.IconItemAddValidatedScanCode @ValidatedItemList";
+                context.Database.ExecuteSqlCommand(sql, itemList);
+            }
         }
     }
 }

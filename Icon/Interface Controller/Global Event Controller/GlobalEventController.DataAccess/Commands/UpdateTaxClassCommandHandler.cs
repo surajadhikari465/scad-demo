@@ -1,39 +1,39 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
+using Icon.DbContextFactory;
 using Irma.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GlobalEventController.DataAccess.Commands
 {
     public class UpdateTaxClassCommandHandler : ICommandHandler<UpdateTaxClassCommand>
     {
-        private readonly IrmaContext context;
+        private IDbContextFactory<IrmaContext> contextFactory;
 
-        public UpdateTaxClassCommandHandler(IrmaContext context)
+        public UpdateTaxClassCommandHandler(IDbContextFactory<IrmaContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
         }
 
         public void Handle(UpdateTaxClassCommand command)
         {
-            TaxClass taxClassToUpdate = context.TaxClass
-                .SingleOrDefault(tc => tc.ExternalTaxGroupCode != null && (tc.ExternalTaxGroupCode == command.TaxCode || tc.TaxClassDesc.Contains(command.TaxCode)));
-
-            if (taxClassToUpdate == null)
+            using (var context = contextFactory.CreateContext())
             {
-                command.TaxClassId = 0;
-                return;
-            }
+                TaxClass taxClassToUpdate = context.TaxClass
+                    .SingleOrDefault(tc => tc.ExternalTaxGroupCode != null && (tc.ExternalTaxGroupCode == command.TaxCode || tc.TaxClassDesc.Contains(command.TaxCode)));
 
-            command.TaxClassId = taxClassToUpdate.TaxClassID;
+                if (taxClassToUpdate == null)
+                {
+                    command.TaxClassId = 0;
+                    return;
+                }
 
-            if (taxClassToUpdate.TaxClassDesc != command.TaxClassDescription || taxClassToUpdate.ExternalTaxGroupCode != command.TaxCode)
-            {
-                taxClassToUpdate.TaxClassDesc = command.TaxClassDescription;
-                taxClassToUpdate.ExternalTaxGroupCode = command.TaxCode;
+                command.TaxClassId = taxClassToUpdate.TaxClassID;
+
+                if (taxClassToUpdate.TaxClassDesc != command.TaxClassDescription || taxClassToUpdate.ExternalTaxGroupCode != command.TaxCode)
+                {
+                    taxClassToUpdate.TaxClassDesc = command.TaxClassDescription;
+                    taxClassToUpdate.ExternalTaxGroupCode = command.TaxCode;
+                }
             }
         }
     }

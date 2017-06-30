@@ -1,16 +1,12 @@
 ﻿using GlobalEventController.Common;
 using GlobalEventController.DataAccess.BulkCommands;
-using GlobalEventController.DataAccess.Commands;
 using GlobalEventController.DataAccess.Infrastructure;
-using GlobalEventController.DataAccess.Queries;
-using Icon.Common;
 using Icon.Framework;
 using Icon.Logging;
 using InterfaceController.Common;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
 

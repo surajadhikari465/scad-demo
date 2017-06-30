@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InterfaceController.Common;
+﻿using InterfaceController.Common;
 
 namespace GlobalEventController.Controller.EventServices
 {
@@ -17,6 +12,5 @@ namespace GlobalEventController.Controller.EventServices
         IEventService GetSubTeamEventService(Enums.EventNames eventName, string region);
         IEventService GetItemSubTeamEventService(Enums.EventNames eventName, string region);
         IBulkEventService GetBulkItemNutriFactsEventService(string region);
-        void RefreshContexts();
     }
 }

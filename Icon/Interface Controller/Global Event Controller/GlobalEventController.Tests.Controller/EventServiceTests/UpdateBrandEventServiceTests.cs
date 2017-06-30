@@ -21,29 +21,22 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
     [TestClass]
     public class UpdateBrandEventServiceTests
     {
-        private IrmaContext irmaContext;       
-        private IEventService eventService;
+        private UpdateBrandEventService eventService;
         private Mock<ICommandHandler<AddOrUpdateBrandCommand>> updateBrandHandler;       
         private Mock<ICommandHandler<AddUpdateLastChangeByIdentifiersCommand>> updateLastChangeHandler;
         private Mock<IQueryHandler<GetItemIdentifiersQuery, List<ItemIdentifier>>> getItemIdentifiersHandler;
 
-
         [TestInitialize]
         public void InitializeData()
         {
-            irmaContext = new IrmaContext();
             updateBrandHandler = new Mock<ICommandHandler<AddOrUpdateBrandCommand>>();
             updateLastChangeHandler = new Mock<ICommandHandler<AddUpdateLastChangeByIdentifiersCommand>>();
             getItemIdentifiersHandler = new Mock<IQueryHandler<GetItemIdentifiersQuery, List<ItemIdentifier>>>();
-            eventService = new UpdateBrandEventService(irmaContext, updateBrandHandler.Object, updateLastChangeHandler.Object, getItemIdentifiersHandler.Object);
+            eventService = new UpdateBrandEventService(
+                updateBrandHandler.Object, 
+                updateLastChangeHandler.Object, 
+                getItemIdentifiersHandler.Object);
         }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            irmaContext.Dispose();
-        }
-
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]

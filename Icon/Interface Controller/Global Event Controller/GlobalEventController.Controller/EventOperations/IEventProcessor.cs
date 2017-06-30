@@ -1,7 +1,4 @@
-﻿using Icon.Framework;
-using System.Collections.Generic;
-
-namespace GlobalEventController.Controller.EventOperations
+﻿namespace GlobalEventController.Controller.EventOperations
 {
     public interface IEventProcessor
     {

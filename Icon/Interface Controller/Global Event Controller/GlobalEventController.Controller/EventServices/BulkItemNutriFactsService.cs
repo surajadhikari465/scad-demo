@@ -1,7 +1,6 @@
 ﻿using GlobalEventController.Common;
 using GlobalEventController.DataAccess.BulkCommands;
 using GlobalEventController.DataAccess.Infrastructure;
-using Irma.Framework;
 using MoreLinq;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +18,10 @@ namespace GlobalEventController.Controller.EventServices
         public List<string> ScanCodesWithNoTaxList { get; set; }
         public List<NutriFactsModel> ItemNutriFacts { get; set; }
 
-        public BulkItemNutriFactsService(IrmaContext context,
+        public BulkItemNutriFactsService(
             ICommandHandler<BulkUpdateNutriFactsCommand> bulkUpdateNutriFactsHandler,
             ICommandHandler<BulkAddUpdateLastChangeCommand> bulkLastChangeHandler,
             IQueryHandler<BulkGetItemsWithTaxClassQuery, List<ValidatedItemModel>> bulkGetValidatedItemsWithTax)
-            : base (context)
         {
             this.bulkLastChangeHandler = bulkLastChangeHandler;
             this.bulkGetValidatedItemsWithTax = bulkGetValidatedItemsWithTax;
