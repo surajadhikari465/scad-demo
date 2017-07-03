@@ -14,8 +14,6 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class HomeController : Controller
     {
-        private const string defaultDataFile = "DashboardApplications.xml";
-
         private HttpServerUtilityBase _serverUtility;
 
         public HomeController() : this(null, null, null, null)
@@ -27,7 +25,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             IIconDatabaseServiceWrapper loggingServiceWrapper = null,
             HttpServerUtilityBase serverUtility = null)
         {
-            XmlDataFile = dataFile ?? defaultDataFile;
+            XmlDataFile = dataFile ?? Utils.DataFileName;
             DashboardDataFileService = dataServiceWrapper ?? new DataFileServiceWrapper();
             IconDatabaseService = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
 

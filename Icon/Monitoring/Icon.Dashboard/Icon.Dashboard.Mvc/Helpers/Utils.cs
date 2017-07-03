@@ -96,5 +96,16 @@ namespace Icon.Dashboard.Mvc.Helpers
                 return ConfigurationManager.AppSettings["activeEnvironment"] ?? "localhost";
             }
         }
+
+        public static string DataFileName
+        {
+            get
+            {
+
+                return ConfigurationManager.AppSettings["dataFile"] ?? defaultDataFile;
+            }
+        }
+
+        private const string defaultDataFile = "SampleDataFile.xml";
     }
 }

@@ -40,6 +40,18 @@ namespace Icon.Dashboard.Mvc.Services
             return viewModels;
         }
 
+        public IEnumerable<IconApplicationViewModel> ToViewModels(IEnumerable<IApplication> applications,
+            HttpServerUtilityBase serverUtility, string dataFileName)
+        {
+            var viewModels = new List<IconApplicationViewModel>(applications.Count());
+
+            foreach (var app in applications)
+            {
+                viewModels.Add(CreateViewModel(serverUtility, dataFileName, app));
+            }
+            return viewModels;
+        }
+
         public IApplication GetApplication(HttpServerUtilityBase serverUtility, string dataFileName, string application, string server)
         {
             var configFile = this.GetPathForDataFile(serverUtility, dataFileName);

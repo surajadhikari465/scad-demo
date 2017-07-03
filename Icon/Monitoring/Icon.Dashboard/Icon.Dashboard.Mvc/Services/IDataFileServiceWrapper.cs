@@ -12,6 +12,9 @@ namespace Icon.Dashboard.Mvc.Services
     {
         IIconDashboardDataService IconMonitoringService { get; }
         IEnumerable<IconApplicationViewModel> GetApplicationListViewModels(HttpServerUtilityBase serverUtility, string configFile);
+        IEnumerable<IconApplicationViewModel> ToViewModels(IEnumerable<IApplication> applications,
+            HttpServerUtilityBase serverUtility, string dataFileName);
+
         IApplication GetApplication(HttpServerUtilityBase serverUtility, string configFile, string application, string server);
         IconApplicationViewModel GetApplicationViewModel(HttpServerUtilityBase serverUtility, string configFile, string application, string server);
         TaskViewModel GetTaskViewModel(HttpServerUtilityBase serverUtility, string configFile, string application, string server);

@@ -120,16 +120,17 @@
                     {
                         throw new InvalidOperationException($"Unable to generate app factory named {factoryName}");
                     }
-                }
-                return (IApplication)null;
+                };
             }
             catch (Exception ex)
             {
                 //for debugging
                 string msg = ex.Message;
-                return (IApplication)null;
+                //return (IApplication)null;
             }
-        }
+
+            return (IApplication)null;
+        }       
 
         public IApplication GetApplication(string pathToXmlDataFile, string appName, string server)
         {
@@ -196,7 +197,7 @@
                 configAppSettingsElement.ReplaceNodes(updatedElements);
                 appConfig.Save(application.ConfigFilePath);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -289,7 +290,6 @@
                 var manufactured = ManufactureApplication(ac);
                 if (manufactured != null) applications.Add(manufactured);
             });
-
             return applications;
         }
 

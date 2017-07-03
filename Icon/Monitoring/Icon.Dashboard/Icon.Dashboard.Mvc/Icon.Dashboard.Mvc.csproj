@@ -160,7 +160,7 @@
     <Compile Include="ViewModels\IconApplicationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\DashboardApplications.xml">
+    <Content Include="App_Data\SampleDataFile.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="CodeAssassin.ConfigTransform.Readme.txt" />

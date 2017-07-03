@@ -15,7 +15,6 @@
 
         public void FindAndCreateInstance()
         {
-            //this.TypeOfApplication = ApplicationTypeEnum.ScheduledTask;
             try
             {
                 using (var taskService = new TaskService(this.Server))
@@ -82,10 +81,6 @@
             {
                 if (this.Instance == null)
                 {
-                    FindAndCreateInstance();
-                }
-                if (this.Instance == null)
-                {
                     return "Unknown";
                 }
 
@@ -96,7 +91,7 @@
                 //Running = 4
                 return this.Instance.State.ToString();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //TODO how to handle?
                 return "Unknown";
