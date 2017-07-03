@@ -3219,6 +3219,8 @@
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI22003 - PostDeploy Schema PopData - AddInstanceDataFlag - BatchOrganicChanges.rollback.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeEIM.sql" />
     <None Include="SQL Agent Job\ItemCatalog - EIM Purge.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\PDX_FutureCostFullFile.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\PDX_FutureCostDeltaFile.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
