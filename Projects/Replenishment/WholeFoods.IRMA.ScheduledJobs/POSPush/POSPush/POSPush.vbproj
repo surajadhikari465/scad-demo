@@ -140,6 +140,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="app.debug.config" />
+    <None Include="app.dev.config" />
+    <None Include="app.qa.config" />
+    <None Include="app.release.config" />
+    <None Include="app.test.config" />
     <None Include="IRMA Private Key">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
