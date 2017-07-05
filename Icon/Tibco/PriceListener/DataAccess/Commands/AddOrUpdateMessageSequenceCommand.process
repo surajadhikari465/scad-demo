@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>DataAccess/Commands/AddOrUpdateMessageSequenceCommand.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MessageId" type="xsd:string"/>
+                    <xsd:element name="PatchFamilyId" type="xsd:string"/>
+                    <xsd:element name="PatchNumber" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>78</pd:startX>
+    <pd:startY>241</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>862</pd:endX>
+    <pd:endY>240</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1498835459517</pd:targetNamespace>
+    <pd:group name="RepeatOnError">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>220</pd:x>
+        <pd:y>22</pd:y>
+        <pd:width>459</pd:width>
+        <pd:height>428</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>retryCountIndex</pd:indexSlot>
+            <pd:errorCondition>$_globalVariables/ns:GlobalVariables/MammothDb/CommandRetryCount &lt;= $retryCountIndex</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>UpdateMessageSequence</pd:to>
+            <pd:xpathDescription>PatchNumber &gt; 1</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-13382656</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Start/root/PatchNumber !=1</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>InsertMessageSequence</pd:to>
+            <pd:xpathDescription>PatchNumber = 1</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16750849</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Start/root/PatchNumber = 1</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>InsertMessageSequence</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>UpdateMessageSequence</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="UpdateMessageSequence">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>430</pd:x>
+            <pd:y>119</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <statement>UPDATE [gpm].[MessageSequence]
+SET 
+	PatchNumber = ?,
+	GpmMessageID = ?,
+	ModifiedDateUtc = SYSUTCDATETIME()
+WHERE PatchFamilyID = ?</statement>
+                <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>PatchNumber</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>GpmMessageId</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PatchFamilyId</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <PatchNumber>
+                        <xsl:value-of select="$Start/root/PatchNumber"/>
+                    </PatchNumber>
+                    <GpmMessageId>
+                        <xsl:value-of select="$Start/root/MessageId"/>
+                    </GpmMessageId>
+                    <PatchFamilyId>
+                        <xsl:value-of select="$Start/root/PatchFamilyId"/>
+                    </PatchFamilyId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="InsertMessageSequence">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>442</pd:x>
+            <pd:y>334</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <statement>INSERT INTO [gpm].[MessageSequence] (PatchFamilyID, PatchNumber, GpmMessageId)
+VALUES (?, ?, ?)</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>PatchFamilyId</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PatchNumber</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>GpmMessageId</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <PatchFamilyId>
+                        <xsl:value-of select="$Start/root/PatchFamilyId"/>
+                    </PatchFamilyId>
+                    <PatchNumber>
+                        <xsl:value-of select="$Start/root/PatchNumber"/>
+                    </PatchNumber>
+                    <GpmMessageId>
+                        <xsl:value-of select="$Start/root/MessageId"/>
+                    </GpmMessageId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>RepeatOnError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RepeatOnError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

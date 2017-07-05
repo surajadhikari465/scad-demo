@@ -1,7 +1,17 @@
 ﻿CREATE TABLE [gpm].[MessageSequenceHistory]
 (
-    [SequenceFamilyId] BIGINT NOT NULL, 
-    [SequenceNumber] INT NOT NULL, 
-    [InsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME()),
-	CONSTRAINT [PK_MessageSequenceHistory] PRIMARY KEY CLUSTERED ([SequenceFamilyId] ASC) WITH (FILLFACTOR = 100)
+	[MessageSequenceID] INT NOT NULL,
+    [PatchFamilyID] NVARCHAR(50) NOT NULL, 
+    [PatchNumber] INT NOT NULL,
+	[GpmMessageId] UNIQUEIDENTIFIER NOT NULL,
+    [InsertDateUtc] DATETIME2(7) NOT NULL,
+	[ModifiedDateUtc] DATETIME2(7) NULL,
+	[HistoryInsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME())
 )
+GO
+
+CREATE NONCLUSTERED INDEX [IX_MessageSequenceHistory_MessageSequenceID] ON [gpm].[MessageSequenceHistory] ([MessageSequenceID])
+GO
+
+CREATE NONCLUSTERED INDEX [IX_MessageSequenceHistory_PatchFamilyID] ON [gpm].[MessageSequenceHistory] ([PatchFamilyID])
+GO

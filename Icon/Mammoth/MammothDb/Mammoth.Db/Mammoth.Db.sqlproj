@@ -162,6 +162,7 @@
     <Folder Include="gpm" />
     <Folder Include="gpm\Tables" />
     <Folder Include="stage\Stored Procedures" />
+    <Folder Include="gpm\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -651,6 +652,11 @@
     <Build Include="stage\Stored Procedures\GpmInsertPriceDataConversion.sql" />
     <Build Include="gpm\Tables\MessageSequence.sql" />
     <Build Include="gpm\Tables\MessageSequenceHistory.sql" />
+    <Build Include="gpm\Stored Procedures\AddPrice.sql" />
+    <Build Include="gpm\Stored Procedures\UpdatePrice.sql" />
+    <Build Include="gpm\Stored Procedures\DeletePrice.sql" />
+    <Build Include="gpm\Tables\PriceErrorLog.sql" />
+    <Build Include="gpm\Stored Procedures\LogPriceError.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

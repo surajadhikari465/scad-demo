@@ -35,12 +35,12 @@
                 <Cardinality>optional</Cardinality>
             </row>
             <row>
-                <PropertyName>SequenceFamilyID</PropertyName>
+                <PropertyName>Patch_Family_ID</PropertyName>
                 <Type>string</Type>
                 <Cardinality>optional</Cardinality>
             </row>
             <row>
-                <PropertyName>SequenceNumber</PropertyName>
+                <PropertyName>Patch_Number</PropertyName>
                 <Type>string</Type>
                 <Cardinality>optional</Cardinality>
             </row>

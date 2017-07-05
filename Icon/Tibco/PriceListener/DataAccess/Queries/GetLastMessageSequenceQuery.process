@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
+    <pd:name>DataAccess/Queries/GetLastMessageSequenceQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="GpmMessageId" type="xsd:string"/>
+                    <xsd:element name="PatchFamilyId" type="xsd:string"/>
+                    <xsd:element name="MessagePatchNumber" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>63</pd:startX>
+    <pd:startY>61</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <PatchFamilyId>
+                <xsl:value-of select="$Map-Data/root/PatchFamilyId"/>
+            </PatchFamilyId>
+            <MessagePatchNumber>
+                <xsl:value-of select="$Map-Data/root/MessagePatchNumber"/>
+            </MessagePatchNumber>
+            <LastProcessedPatchNumber>
+                <xsl:value-of select="$Map-Data/root/LastProcessedPatchNumber"/>
+            </LastProcessedPatchNumber>
+            <IsInSequence>
+                <xsl:value-of select="$Map-Data/root/IsInSequence"/>
+            </IsInSequence>
+            <IsAlreadyProcessed>
+                <xsl:value-of select="$Map-Data/root/IsAlreadyProcessed"/>
+            </IsAlreadyProcessed>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="PatchFamilyId" type="xsd:string"/>
+                    <xsd:element name="MessagePatchNumber" type="xsd:int"/>
+                    <xsd:element name="LastProcessedPatchNumber" type="xsd:int"/>
+                    <xsd:element name="IsInSequence" type="xsd:boolean"/>
+                    <xsd:element name="IsAlreadyProcessed" type="xsd:boolean"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>614</pd:endX>
+    <pd:endY>66</pd:endY>
+    <pd:errorSchemas>
+        <ErrorSchemas ref="pfx3:ExceptionRequest"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1495058550155</pd:targetNamespace>
+    <pd:activity name="GetLastSequenceQuery">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>222</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT MessageSequenceID, PatchFamilyID, PatchNumber AS LastProcessedPatchNumber, InsertDateUtc FROM [gpm].[MessageSequence] WHERE PatchFamilyID = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>PatchFamilyId</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>MessageSequenceID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PatchFamilyID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LastProcessedPatchNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>InsertDateUtc</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <PatchFamilyId>
+                    <xsl:value-of select="$Start/root/PatchFamilyId"/>
+                </PatchFamilyId>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>413</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="PatchFamilyId" type="xsd:string"/>
+                            <xsd:element name="MessagePatchNumber" type="xsd:int"/>
+                            <xsd:element name="LastProcessedPatchNumber" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="IsInSequence" type="xsd:boolean"/>
+                            <xsd:element name="IsAlreadyProcessed" type="xsd:boolean"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <PatchFamilyId>
+                    <xsl:value-of select="$Start/root/PatchFamilyId"/>
+                </PatchFamilyId>
+                <MessagePatchNumber>
+                    <xsl:value-of select="$Start/root/MessagePatchNumber"/>
+                </MessagePatchNumber>
+                <LastProcessedPatchNumber>
+                    <xsl:value-of select="if (empty($GetLastSequenceQuery/resultSet/Record)) then 0 else $GetLastSequenceQuery/resultSet/Record[1]/LastProcessedPatchNumber"/>
+                </LastProcessedPatchNumber>
+                <IsInSequence>
+                    <xsl:value-of select="($Start/root/MessagePatchNumber = ($GetLastSequenceQuery/resultSet/Record[1]/LastProcessedPatchNumber + 1))&#xA;or ($Start/root/MessagePatchNumber = 1 and count($GetLastSequenceQuery/resultSet/Record) = 0)"/>
+                </IsInSequence>
+                <IsAlreadyProcessed>
+                    <xsl:value-of select="$Start/root/MessagePatchNumber &lt;= $GetLastSequenceQuery/resultSet/Record[1]/LastProcessedPatchNumber"/>
+                </IsAlreadyProcessed>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>415</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <faultName>ErrorSchemas</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetLastSequenceQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetLastSequenceQuery</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>InSequence</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Map-Data/root/IsInSequence = "true" or $Map-Data/root/IsAlreadyProcessed = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>OutOfSequence</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3355648</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Map-Data/root/IsInSequence = "false" and $Map-Data/root/IsAlreadyProcessed = "false"</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

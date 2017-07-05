@@ -6,7 +6,7 @@
        [BusinessUnitID] [int] NOT NULL,
        [StartDate] [datetime2](7) NOT NULL,
        [EndDate] [datetime2](7) NULL,
-       [Price] [smallmoney] NOT NULL,
+       [Price] DECIMAL(19,4) NOT NULL,
        [PriceType] [nvarchar](3) NOT NULL,
        [PriceTypeAttribute] [nvarchar](10) NOT NULL,
        [SellableUOM] [nvarchar](3) NOT NULL,
@@ -46,7 +46,8 @@ CREATE TRIGGER [gpm].[Trigger_Price_NE]
 			CurrencyCode,
 			Multiple,
 			NewTagExpiration,
-			InsertDateUtc
+			InsertDateUtc,
+			ModifiedDateUtc
 		)
 		SELECT
 			Region,
@@ -63,7 +64,8 @@ CREATE TRIGGER [gpm].[Trigger_Price_NE]
 			CurrencyCode,
 			Multiple,
 			NewTagExpiration,
-			InsertDateUtc
+			InsertDateUtc,
+			ModifiedDateUtc
 		FROM deleted
 
 		SET NoCount ON
