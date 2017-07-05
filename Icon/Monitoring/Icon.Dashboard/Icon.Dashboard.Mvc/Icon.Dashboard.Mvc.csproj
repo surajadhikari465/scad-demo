@@ -155,7 +155,6 @@
     <Compile Include="ViewModels\PaginationPageSetViewModel.cs" />
     <Compile Include="ViewModels\PaginationPageViewModel.cs" />
     <Compile Include="ViewModels\PendingMessagesViewModel.cs" />
-    <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="ViewModels\ServiceViewModel.cs" />
     <Compile Include="ViewModels\IconApplicationViewModel.cs" />
   </ItemGroup>
@@ -237,7 +236,6 @@
     <Content Include="Views\Shared\DisplayTemplates\IconApplicationDetailsViewModel.cshtml" />
     <Content Include="Views\Home\_CommandsPartial.cshtml" />
     <Content Include="Views\Shared\_BackToListPartial.cshtml" />
-    <Content Include="Views\Home\_TaskViewModelPartial.cshtml" />
     <Content Include="Views\Shared\_EnvironmentSelectorPartial.cshtml" />
     <Content Include="Views\Logs\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconAppLogViewModel.cshtml" />

@@ -43,18 +43,6 @@
                Server="test-server-1"
                TypeOfApplication="WindowsService"
                DataFlowFrom="None"/>
-  <Application Name="TLogController.Controller"
-               ConfigFilePath="\\test-server-1\e$\Icon\Tlog Controller\Test\TLogController.Controller.exe.config"
-               DisplayName="ICON TLog Controller"
-               Server="test-server-1"
-               TypeOfApplication="ScheduledTask"
-               DataFlowFrom="None"/>
-  <Application Name="TLogController.Controller"
-               ConfigFilePath="\\vm-icon-test2\e$\Icon\Tlog Controller\Test\TLogController.Controller.exe.config"
-               DisplayName="ICON TLog Controller"
-               Server="vm-icon-test2"
-               TypeOfApplication="ScheduledTask"
-               DataFlowFrom="None"/>
 
 
 </Applications>

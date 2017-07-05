@@ -72,16 +72,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         protected ServiceViewModel FakeServiceViewModelA = null;
         protected ServiceViewModel FakeServiceViewModelB = null;
 
-        protected ScheduledTask fakeTaskA = null;
-        protected ScheduledTask fakeTaskB = null;
-        protected TaskViewModel FakeTaskViewModelA = null;
-        protected TaskViewModel FakeTaskViewModelB = null;
-
         protected List<IApplication> AllFakeApps
         {
             get
             {
-                return new List<IApplication>() { fakeServiceA, fakeServiceB, fakeTaskA, fakeTaskB };
+                return new List<IApplication>() { fakeServiceA, fakeServiceB };
             }
         }
 
@@ -89,7 +84,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         {
             get
             {
-                var list = new List<IconApplicationViewModel>() { FakeServiceViewModelA, FakeServiceViewModelB, FakeTaskViewModelA, FakeTaskViewModelB };
+                var list = new List<IconApplicationViewModel>() { FakeServiceViewModelA, FakeServiceViewModelB };
                 return list;
             }
         }
@@ -132,43 +127,40 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             FakeServiceViewModelB.Server = "test-Server1";
             Mock.Get(FakeServiceViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
-            fakeTaskA = Mock.Of<ScheduledTask>();
-            fakeTaskA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            fakeTaskA.DataFlowFrom = "None";
-            fakeTaskA.DataFlowTo = "Other";
-            fakeTaskA.DisplayName = "AAAAAA Task";
-            fakeTaskA.Environment = EnvironmentEnum.Dev;
-            fakeTaskA.Name = "Fake.Name.AAAAAA";
-            fakeTaskA.Server = "test-Server1";
-            Mock.Get(fakeTaskA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);
-
-            FakeTaskViewModelA = Mock.Of<TaskViewModel>();
-            FakeTaskViewModelA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            FakeTaskViewModelA.DataFlowFrom = "None";
-            FakeTaskViewModelA.DataFlowTo = "Unknown";
-            FakeTaskViewModelA.DisplayName = "AAAAAA Service";
-            FakeTaskViewModelA.Name = "Fake.Name.AAAAAA";
-            FakeTaskViewModelA.Server = "test-Server1";
-            Mock.Get(FakeTaskViewModelA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
-
-            fakeTaskB = Mock.Of<ScheduledTask>();
-            fakeTaskB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            fakeTaskB.DataFlowFrom = "None";
-            fakeTaskB.DataFlowTo = "FTP";
-            fakeTaskB.DisplayName = "BBBB Task";
-            fakeTaskB.Environment = EnvironmentEnum.Dev;
-            fakeTaskB.Name = "Fake.Name.BBBBB";
-            fakeTaskB.Server = "test-Server1";
-            Mock.Get(fakeTaskB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);
-
-            FakeTaskViewModelB = Mock.Of<TaskViewModel>();
-            FakeTaskViewModelB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            FakeTaskViewModelB.DataFlowFrom = "None";
-            FakeTaskViewModelB.DataFlowTo = "None";
-            FakeTaskViewModelB.DisplayName = "BBBB Task";
-            FakeTaskViewModelB.Name = "Fake.Name.BBBBB";
-            FakeTaskViewModelB.Server = "test-Server1";
-            Mock.Get(FakeTaskViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);
+            //fakeTaskA = Mock.Of<ScheduledTask>();
+            //fakeTaskA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
+            //fakeTaskA.DataFlowFrom = "None";
+            //fakeTaskA.DataFlowTo = "Other";
+            //fakeTaskA.DisplayName = "AAAAAA Task";
+            //fakeTaskA.Environment = EnvironmentEnum.Dev;
+            //fakeTaskA.Name = "Fake.Name.AAAAAA";
+            //fakeTaskA.Server = "test-Server1";
+            //Mock.Get(fakeTaskA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);
+            //FakeTaskViewModelA = Mock.Of<TaskViewModel>();
+            //FakeTaskViewModelA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
+            //FakeTaskViewModelA.DataFlowFrom = "None";
+            //FakeTaskViewModelA.DataFlowTo = "Unknown";
+            //FakeTaskViewModelA.DisplayName = "AAAAAA Service";
+            //FakeTaskViewModelA.Name = "Fake.Name.AAAAAA";
+            //FakeTaskViewModelA.Server = "test-Server1";
+            //Mock.Get(FakeTaskViewModelA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
+            //fakeTaskB = Mock.Of<ScheduledTask>();
+            //fakeTaskB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
+            //fakeTaskB.DataFlowFrom = "None";
+            //fakeTaskB.DataFlowTo = "FTP";
+            //fakeTaskB.DisplayName = "BBBB Task";
+            //fakeTaskB.Environment = EnvironmentEnum.Dev;
+            //fakeTaskB.Name = "Fake.Name.BBBBB";
+            //fakeTaskB.Server = "test-Server1";
+            //Mock.Get(fakeTaskB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);
+            //FakeTaskViewModelB = Mock.Of<TaskViewModel>();
+            //FakeTaskViewModelB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
+            //FakeTaskViewModelB.DataFlowFrom = "None";
+            //FakeTaskViewModelB.DataFlowTo = "None";
+            //FakeTaskViewModelB.DisplayName = "BBBB Task";
+            //FakeTaskViewModelB.Name = "Fake.Name.BBBBB";
+            //FakeTaskViewModelB.Server = "test-Server1";
+            //Mock.Get(FakeTaskViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);
         }
 
         protected IApp GetFakeApiControllerApp(int id = 99, string name = "ICON Test ApiController App")

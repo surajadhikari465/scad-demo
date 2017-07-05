@@ -1,5 +1,6 @@
 ﻿using Icon.Dashboard.DataFileAccess.Models;
 using Icon.Dashboard.DataFileAccess.Services;
+using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -67,14 +68,6 @@ namespace Icon.Dashboard.Mvc.Services
             return viewModel;
         }
 
-        public TaskViewModel GetTaskViewModel(HttpServerUtilityBase serverUtility, string dataFileName, string application, string server)
-        {
-            var configFile = this.GetPathForDataFile(serverUtility, dataFileName);
-            var app = IconMonitoringService.GetApplication(configFile, application, server) as ScheduledTask;
-            var taskViewModel = CreateViewModel(serverUtility, dataFileName, app) as TaskViewModel;
-            return taskViewModel;
-        }
-
         public ServiceViewModel GetServiceViewModel(HttpServerUtilityBase serverUtility, string dataFileName, string application, string server)
         {
             var configFile = this.GetPathForDataFile(serverUtility, dataFileName);
@@ -110,6 +103,11 @@ namespace Icon.Dashboard.Mvc.Services
             if (serverUtility == null) throw new ArgumentNullException(nameof(serverUtility));
             if (String.IsNullOrWhiteSpace(dataFileName)) throw new ArgumentNullException(nameof(dataFileName));
             var dataFilePath = serverUtility.MapPath($"~/App_Data/{dataFileName}");
+
+            if (!File.Exists(dataFilePath))
+            {
+                throw new FileNotFoundException($"Unable to find or read application data file for dashboard ('{dataFilePath}')", dataFilePath);
+            }
 
             if (validateXml)
             {
@@ -156,9 +154,6 @@ namespace Icon.Dashboard.Mvc.Services
                     PopulatePropertiesFromViewModel(app, viewModel);
                     break;
                 case ApplicationTypeEnum.ScheduledTask:
-                    app = new ScheduledTask();
-                    PopulatePropertiesFromViewModel(app, viewModel);
-                    break;
                 //case ApplicationTypeEnum.SqlAgentJob:
                 case ApplicationTypeEnum.Unknown:
                 default:
@@ -191,15 +186,6 @@ namespace Icon.Dashboard.Mvc.Services
             return viewModel;
         }
 
-        private TaskViewModel CreateViewModel(
-           HttpServerUtilityBase serverUtility, string dataFileName, ScheduledTask app)
-        {
-            if (app == null) return null;
-            var viewModel = new TaskViewModel(app);
-            SetCurrentEsbEnvironment(viewModel, serverUtility, dataFileName, app);
-            return viewModel;
-        }
-
         private void SetCurrentEsbEnvironment(IconApplicationViewModel viewModel,
             HttpServerUtilityBase serverUtility, string dataFileName, IApplication app)
         {
@@ -219,8 +205,6 @@ namespace Icon.Dashboard.Mvc.Services
                     viewModel = new ServiceViewModel(app as WindowsService);
                     break;
                 case ApplicationTypeEnum.ScheduledTask:
-                    viewModel = new TaskViewModel(app as ScheduledTask);
-                    break;
                 case ApplicationTypeEnum.Unknown:
                 default:
                     viewModel = new IconApplicationViewModel(app);

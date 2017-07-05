@@ -98,15 +98,6 @@ namespace Icon.Dashboard.Mvc.Controllers
             var task = DashboardDataFileService.GetServiceViewModel(ServerUtility, XmlDataFile, application, server);
             return PartialView("_IconApiServicePartial", task);
         }
-
-        [HttpGet]
-        [ChildActionOnly]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
-        public ActionResult TaskPartial(string application, string server)
-        {
-            var task = DashboardDataFileService.GetTaskViewModel(ServerUtility, XmlDataFile, application, server);
-            return PartialView("_TaskViewModelPartial", task);
-        }
         #endregion
 
         #region POST

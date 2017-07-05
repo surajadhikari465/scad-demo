@@ -76,11 +76,6 @@
     </div>
     }
 
-    @if (Model.TypeOfApplication == Icon.Dashboard.DataFileAccess.Models.ApplicationTypeEnum.ScheduledTask)
-    {
-        Html.RenderAction("TaskPartial", "Home", new { application = Model.Name, server = Model.Server });
-    }
-
     <div class="form-group col-xs-12 col-sm-6 col-lg-4">
         @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-xs-2" })
         <div class="col-xs-5">
@@ -91,12 +86,6 @@
             @{Html.RenderPartial("_CommandsPartial", Model);}
         </div>
     </div>
-
-    @if (Model.TypeOfApplication == Icon.Dashboard.DataFileAccess.Models.ApplicationTypeEnum.WindowsService
-        && Model.Name == "API Controller")
-    {
-        Html.RenderAction("TaskPartial", "Home", new { application = Model.Name, server = Model.Server });
-    }
 
     <div class="col-xs-offset-2 col-xs-8">
         @Html.ActionLink("Edit " + Model.DisplayName, "Edit", "Home", new { application = Model.Name, server = Model.Server }, new { @class = "btn btn-primary btn-block margin-top-10" })

@@ -93,7 +93,6 @@
     <Compile Include="DataServiceEsbEnvironmentTests.cs" />
     <Compile Include="DataServiceApplicationTests.cs" />
     <Compile Include="EsbEnvironmentFactoryTests.cs" />
-    <Compile Include="Models\ScheduledTaskModelTests.cs" />
     <Compile Include="Models\WindowsServiceModelTests.cs" />
     <Compile Include="Models\EsbEnvironmentModelTests.cs" />
     <Compile Include="Models\IconApplicationIdentifierTests.cs" />

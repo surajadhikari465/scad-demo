@@ -23,8 +23,6 @@
     <Application Name="Mammoth.Esb.LocaleListener.Service" ConfigFilePath="\\vm-icon-dev1\E$\Mammoth\Locale Listener\Mammoth.Esb.LocaleListener.Service.exe.config" DisplayName="Mammoth Locale Listener" TypeOfApplication="WindowsService" Server="vm-icon-dev1" LoggingName="ESB Subscriber" DataFlowFrom="ESB" DataFlowTo="Mammoth" Environment="Dev" />
     <Application Name="Mammoth.Price.Controller" ConfigFilePath="\\vm-icon-dev1\E$\Mammoth\Price Controller\Mammoth.Price.Controller.exe.config" DisplayName="Mammoth Price Controller" TypeOfApplication="WindowsService" Server="vm-icon-dev1" LoggingName="Price Controller" DataFlowFrom="Irma" DataFlowTo="Mammoth" Environment="Dev" />
     <Application Name="Mammoth.Esb.ProductListener.Service" ConfigFilePath="\\vm-icon-dev1\E$\Mammoth\Product Listener\Mammoth.Esb.ProductListener.Service.exe.config" DisplayName="Mammoth Product Listener" TypeOfApplication="WindowsService" Server="vm-icon-dev1" LoggingName="ESB Subscriber" DataFlowFrom="Irma" DataFlowTo="Mammoth" Environment="Dev" />
-    <Application Name="Tlog Controller - Instance ID=1" ConfigFilePath="\\vm-icon-dev1\E$\Icon\Tlog Controller\TlogController.Controller.exe.config" DisplayName="Job for Tlog Controller - Instance ID=1" TypeOfApplication="ScheduledTask" Server="vm-icon-dev1" LoggingName="TLog Controller" DataFlowFrom="Icon" DataFlowTo="Irma" Environment="Dev" />
-    <Application Name="Vim Locale Controller" ConfigFilePath="\\vm-icon-dev1\E$\Icon\VIM Controller\Vim.Locale.Controller.exe.config" DisplayName="Job for Vim Locale Controller" TypeOfApplication="ScheduledTask" Server="vm-icon-dev1" LoggingName="Vim Locale Controller" DataFlowFrom="Icon" Environment="Dev" />
   </Applications>
 
   <EsbEnvironments>

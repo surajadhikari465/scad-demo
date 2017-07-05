@@ -298,7 +298,9 @@
         private XDocument LoadDataFile(string pathToXmlDataFile)
         {
             if (!System.IO.File.Exists(pathToXmlDataFile))
+            {
                 throw new IOException($"Unable to load xml data file '{pathToXmlDataFile}'");
+            }
 
             var xmlDoc = new XmlDocument();
             xmlDoc.PreserveWhitespace = true;

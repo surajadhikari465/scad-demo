@@ -17,7 +17,6 @@ namespace Icon.Dashboard.Mvc.Services
 
         IApplication GetApplication(HttpServerUtilityBase serverUtility, string configFile, string application, string server);
         IconApplicationViewModel GetApplicationViewModel(HttpServerUtilityBase serverUtility, string configFile, string application, string server);
-        TaskViewModel GetTaskViewModel(HttpServerUtilityBase serverUtility, string configFile, string application, string server);
         ServiceViewModel GetServiceViewModel(HttpServerUtilityBase serverUtility, string configFile, string application, string server);
         void ExecuteCommand(HttpServerUtilityBase serverUtility, string dataFileName, string application, string server, string command);
         void UpdateApplication(HttpServerUtilityBase serverUtility, IconApplicationViewModel application, string pathToXmlDataFile);

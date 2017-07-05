@@ -94,8 +94,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             var testService = base.fakeServiceA;
             var postModel = base.FakeServiceViewModelA;
             var controller = ConstructController();
-            //mockDataServiceWrapper.Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-            //    .Returns(testService);
 
             //When
             ActionResult result = controller.Edit(postModel);
@@ -107,99 +105,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             Assert.AreEqual(routeResult.RouteValues["action"], "Details");
             Assert.AreEqual(routeResult.RouteValues["application"], testService.Name);
             Assert.AreEqual(routeResult.RouteValues["server"], testService.Server);
-        }
-
-        [TestMethod]
-        public void MvcHomeController_Edit_Get_Task_Should_ReturnViewResult()
-        {
-            //Given
-            var testTask = base.fakeTaskA;
-            mockDataServiceWrapper.Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(testTask);
-            var controller = ConstructController();
-
-            //When
-            ActionResult result = controller.Edit(testTask.Name, testTask.Server);
-
-            //Then
-            Assert.IsInstanceOfType(result, typeof(ViewResult));
-        }
-
-        [TestMethod]
-        public void MvcHomeController_Edit_Get_Task_Should_CallGetApplicationViewModel()
-        {
-            //Given
-            var testTask = base.FakeTaskViewModelA;
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplicationViewModel(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(testTask);
-            var controller = ConstructController();
-
-            //When
-            ActionResult result = controller.Edit(testTask.Name, testTask.Server);
-
-            //Then
-            mockDataServiceWrapper.Verify(s => s.GetApplicationViewModel(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void MvcHomeController_Edit_Post_Task_Should_CallUpdateApplication()
-        {
-            //Given
-            var testTask = base.fakeTaskA;
-            TaskViewModel postModel = base.FakeTaskViewModelA as TaskViewModel;
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(testTask);
-            var controller = ConstructController();
-
-            //When
-            ActionResult result = controller.Edit(postModel);
-
-            //Then
-            mockDataServiceWrapper.Verify(s => s.UpdateApplication(It.IsAny<HttpServerUtilityBase>(), postModel, It.IsAny<string>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void MvcHomeController_Edit_Post_Task_Should_RedirectToGetAfterExecutingCommand()
-        {
-            //Given
-            var testTask = base.fakeTaskA;
-            TaskViewModel postModel = base.FakeTaskViewModelA;
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(testTask);
-            var controller = ConstructController();
-
-            //When
-            ActionResult result = controller.Edit(postModel);
-
-            //Then
-            Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
-            RedirectToRouteResult routeResult = result as RedirectToRouteResult;
-        }
-
-        [TestMethod]
-        public void MvcHomeController_Edit_Post_Task_Should_RedirectToGetWithExpectedRouteValues()
-        {
-            //Given
-            var testTask = base.fakeTaskA;
-            TaskViewModel postModel = base.FakeTaskViewModelA;
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(testTask);
-            var controller = ConstructController();
-
-            //When
-            ActionResult result = controller.Edit(postModel);
-
-            //Then
-            Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
-            RedirectToRouteResult routeResult = result as RedirectToRouteResult;
-            Assert.AreEqual(routeResult.RouteValues["controller"], "Home");
-            Assert.AreEqual(routeResult.RouteValues["action"], "Details");
-            Assert.AreEqual(routeResult.RouteValues["application"], testTask.Name);
-            Assert.AreEqual(routeResult.RouteValues["server"], testTask.Server);
         }
     }
 }

@@ -101,11 +101,10 @@ namespace Icon.Dashboard.Mvc.Helpers
         {
             get
             {
-
-                return ConfigurationManager.AppSettings["dataFile"] ?? defaultDataFile;
+                return ConfigurationManager.AppSettings["dataFile"] ?? DefaultDataFileName;
             }
         }
 
-        private const string defaultDataFile = "SampleDataFile.xml";
+        private const string DefaultDataFileName = "SampleDataFile.xml";
     }
 }

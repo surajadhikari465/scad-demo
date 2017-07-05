@@ -61,9 +61,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.5.27.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
-      <HintPath>..\packages\TaskScheduler.2.5.27\lib\net40\Microsoft.Win32.TaskScheduler.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -82,7 +79,6 @@
     <Compile Include="Models\IconApplicationIdentifier.cs" />
     <Compile Include="Models\IEsbEnvironment.cs" />
     <Compile Include="Models\EsbEnvironment.cs" />
-    <Compile Include="Models\ScheduledTask.cs" />
     <Compile Include="Models\WindowsService.cs" />
     <Compile Include="Services\EsbEnvironmentFactoryBase.cs" />
     <Compile Include="Services\ApplicationFactory.cs" />
@@ -91,11 +87,9 @@
     <Compile Include="Services\IconDashboardDataService.cs" />
     <Compile Include="Services\IIconDashboardDataService.cs" />
     <Compile Include="Services\EsbEnvironmentFactory.cs" />
-    <Compile Include="Services\ScheduledTaskFactory.cs" />
     <Compile Include="Services\WindowsServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Schema\Applications.xsd">
       <SubType>Designer</SubType>
     </None>
