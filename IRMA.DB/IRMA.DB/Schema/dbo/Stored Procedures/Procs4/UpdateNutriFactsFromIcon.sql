@@ -1,6 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[UpdateNutriFactsFromIcon]
-	
+﻿CREATE PROCEDURE [dbo].[UpdateNutriFactsFromIcon]
 	@IconNutrifacts dbo.[IconItemNutriFactsType] READONLY,
 	@UserName varchar(25)
 AS
@@ -531,167 +529,181 @@ BEGIN
 				case when dl.HshRating > 0 then 1 else 0 end			
 			);
 
-	
+	-- SCALE INGREDIENTS------
 
--- SCALE INGREDIENTS------
-
--- Update ingredients if ingeredients key present in item scale table
-update si
-set si.Description = dl.Plu,
-	si.Ingredients = dl.Ingredients
-from Scale_Ingredient si
-join ItemScale its on si.Scale_Ingredient_ID = its.Scale_Ingredient_ID
-join ItemIdentifier		ii on	ii.Deleted_Identifier = 0
-											AND ii.Default_Identifier = 1
-									 		AND ii.Item_Key = its.Item_Key
-JOIN  #distinctList dl on ii.Identifier = dl.Plu and  (dl.IsScaleItem = 1 OR dl.IsCfsItem = 1)
+	-- Update ingredients if ingeredients key present in item scale table
+	update si
+	set si.Description = dl.Plu,
+		si.Ingredients = dl.Ingredients
+	from Scale_Ingredient si
+	join ItemScale its on si.Scale_Ingredient_ID = its.Scale_Ingredient_ID
+	join ItemIdentifier		ii on	ii.Deleted_Identifier = 0
+												AND ii.Default_Identifier = 1
+									 			AND ii.Item_Key = its.Item_Key
+	JOIN  #distinctList dl on ii.Identifier = dl.Plu and  (dl.IsScaleItem = 1 OR dl.IsCfsItem = 1)
 
 
 
--- Insert Scale ingredients
-DECLARE @NewScaleIngredients table(plu varchar(50), Ingredient_ID int);
+	-- Insert Scale ingredients
+	DECLARE @NewScaleIngredients table(plu varchar(50), Ingredient_ID int);
 
-insert into Scale_Ingredient(Scale_LabelType_ID, Description, Ingredients)
-output inserted.Description, inserted.Scale_Ingredient_ID into @NewScaleIngredients
-select se.Scale_LabelType_ID, dl.plu, dl.Ingredients
-from #distinctList dl
-JOIN ItemIdentifier		ii on	ii.Deleted_Identifier = 0
-											AND ii.Default_Identifier = 1
-									 		AND ii.Identifier = dl.Plu
-											AND (dl.IsScaleItem = 1 AND dl.IsCfsItem = 0)
-JOIN ItemScale its on its.Item_Key = ii.Item_Key and its.Scale_Ingredient_ID is null
-left join Scale_ExtraText se on its.Scale_ExtraText_ID = se.Scale_ExtraText_ID
+	insert into Scale_Ingredient(Scale_LabelType_ID, Description, Ingredients)
+	output inserted.Description, inserted.Scale_Ingredient_ID into @NewScaleIngredients
+	select se.Scale_LabelType_ID, dl.plu, dl.Ingredients
+	from #distinctList dl
+	JOIN ItemIdentifier		ii on	ii.Deleted_Identifier = 0
+												AND ii.Default_Identifier = 1
+									 			AND ii.Identifier = dl.Plu
+												AND (dl.IsScaleItem = 1 AND dl.IsCfsItem = 0)
+	JOIN ItemScale its on its.Item_Key = ii.Item_Key and its.Scale_Ingredient_ID is null
+	left join Scale_ExtraText se on its.Scale_ExtraText_ID = se.Scale_ExtraText_ID
 
--- update item scale with new scale ingredients id 
-update its
-set  its.Scale_Ingredient_ID = nsi.Ingredient_ID
-from ItemScale its
-join ItemIdentifier		ii on	ii.Item_Key = its.Item_Key
-JOIN  @NewScaleIngredients nsi on ii.Identifier = nsi.Plu
-
-
--- SCALE Allergens------
-
--- Update Allergens if ingeredients key present in item scale table
-update sa
-set sa.Description = dl.Plu,
-	sa.Allergens = dl.Allergens
-from Scale_Allergen sa
-join ItemScale its on sa.Scale_Allergen_ID = its.Scale_Allergen_ID
-join ItemIdentifier		ii on	ii.Deleted_Identifier = 0
-											AND ii.Default_Identifier = 1											
-									 		AND ii.Item_Key = its.Item_Key
-JOIN  #distinctList dl on ii.Identifier = dl.Plu AND (dl.IsScaleItem = 1 OR dl.IsCfsItem = 1)
+	-- update item scale with new scale ingredients id 
+	update its
+	set  its.Scale_Ingredient_ID = nsi.Ingredient_ID
+	from ItemScale its
+	join ItemIdentifier		ii on	ii.Item_Key = its.Item_Key
+	JOIN  @NewScaleIngredients nsi on ii.Identifier = nsi.Plu
 
 
--- Insert Scale Allergens
-DECLARE @NewScaleAllergens table(plu varchar(50), Allergen_ID int);
+	-- SCALE Allergens------
 
-insert into Scale_Allergen (Scale_LabelType_ID, Description, Allergens)
-output inserted.Description, inserted.Scale_Allergen_ID into @NewScaleAllergens
-select se.Scale_LabelType_ID, dl.plu, dl.Allergens
-from #distinctList dl
-JOIN ItemIdentifier		ii on	ii.Deleted_Identifier = 0
-											AND ii.Default_Identifier = 1											
-									 		AND ii.Identifier = dl.Plu
-											AND (dl.IsScaleItem = 1 AND dl.IsCfsItem = 0)
-JOIN ItemScale its on its.Item_Key = ii.Item_Key and its.Scale_Allergen_ID is null
-left join Scale_ExtraText se on its.Scale_ExtraText_ID = se.Scale_ExtraText_ID
-
--- update item scale with new scale Allergens id 
-update its
-set  its.Scale_Allergen_ID = nsa.Allergen_ID
-from ItemScale its
-join ItemIdentifier		ii on	ii.Item_Key = its.Item_Key
-JOIN  @NewScaleAllergens nsa on ii.Identifier = nsa.Plu
+	-- Update Allergens if ingeredients key present in item scale table
+	update sa
+	set sa.Description = dl.Plu,
+		sa.Allergens = dl.Allergens
+	from Scale_Allergen sa
+	join ItemScale its on sa.Scale_Allergen_ID = its.Scale_Allergen_ID
+	join ItemIdentifier		ii on	ii.Deleted_Identifier = 0
+												AND ii.Default_Identifier = 1											
+									 			AND ii.Item_Key = its.Item_Key
+	JOIN  #distinctList dl on ii.Identifier = dl.Plu AND (dl.IsScaleItem = 1 OR dl.IsCfsItem = 1)
 
 
+	-- Insert Scale Allergens
+	DECLARE @NewScaleAllergens table(plu varchar(50), Allergen_ID int);
 
--- NON_SCALE INGREDIENTS------
+	insert into Scale_Allergen (Scale_LabelType_ID, Description, Allergens)
+	output inserted.Description, inserted.Scale_Allergen_ID into @NewScaleAllergens
+	select se.Scale_LabelType_ID, dl.plu, dl.Allergens
+	from #distinctList dl
+	JOIN ItemIdentifier		ii on	ii.Deleted_Identifier = 0
+												AND ii.Default_Identifier = 1											
+									 			AND ii.Identifier = dl.Plu
+												AND (dl.IsScaleItem = 1 AND dl.IsCfsItem = 0)
+	JOIN ItemScale its on its.Item_Key = ii.Item_Key and its.Scale_Allergen_ID is null
+	left join Scale_ExtraText se on its.Scale_ExtraText_ID = se.Scale_ExtraText_ID
 
--- Update ingredients if ingeredients key present in item nutrifacts table
-update si
-set si.Description = dl.Plu,
-	si.Ingredients = dl.Ingredients
-from Scale_Ingredient si
-join ItemNutrition itn on si.Scale_Ingredient_ID = itn.Scale_Ingredient_ID
-join ItemIdentifier		ii on	ii.Deleted_Identifier = 0
-											AND ii.Default_Identifier = 1
-									 		AND ii.Item_Key = itn.ItemKey
-JOIN  #distinctList dl on ii.Identifier = dl.Plu AND (dl.IsScaleItem = 0 OR dl.IsCfsItem = 1)
-
-
--- Insert non-Scale ingredients
-
-delete from @NewScaleIngredients
-
-insert into Scale_Ingredient(Scale_LabelType_ID, Description, Ingredients)
-output inserted.Description, inserted.Scale_Ingredient_ID into @NewScaleIngredients
-select 0, dl.plu, dl.Ingredients
-from #distinctList dl
-JOIN ItemIdentifier		ii on	ii.Deleted_Identifier = 0
-											AND ii.Default_Identifier = 1
-									 		AND ii.Identifier = dl.Plu
-											AND (dl.IsScaleItem = 0 OR dl.IsCfsItem = 1)
-JOIN ItemNutrition itn on itn.ItemKey = ii.Item_Key and itn.Scale_Ingredient_ID is null
-
--- update item nutrifact with new scale ingredients id 
-update itn
-set  itn.Scale_Ingredient_ID = nsi.Ingredient_ID
-from ItemNutrition itn
-join ItemIdentifier		ii on	ii.Item_Key = itn.ItemKey
-JOIN  @NewScaleIngredients nsi on ii.Identifier = nsi.Plu
+	-- update item scale with new scale Allergens id 
+	update its
+	set  its.Scale_Allergen_ID = nsa.Allergen_ID
+	from ItemScale its
+	join ItemIdentifier		ii on	ii.Item_Key = its.Item_Key
+	JOIN  @NewScaleAllergens nsa on ii.Identifier = nsa.Plu
 
 
--- SCALE Allergens------
 
--- Update Allergens if ingeredients key present in item nutrifacts table
-update sa
-set sa.Description = dl.Plu,
-	sa.Allergens = dl.Allergens
-from Scale_Allergen sa
-join ItemNutrition itn on sa.Scale_Allergen_ID = itn.Scale_Allergen_ID
-join ItemIdentifier		ii on	ii.Deleted_Identifier = 0
-											AND ii.Default_Identifier = 1
-									 		AND ii.Item_Key = itn.ItemKey
-JOIN  #distinctList dl on ii.Identifier = dl.Plu AND (dl.IsScaleItem = 0 OR dl.IsCfsItem = 1)
+	-- NON_SCALE INGREDIENTS------
+
+	-- Update ingredients if ingeredients key present in item nutrifacts table
+	update si
+	set si.Description = dl.Plu,
+		si.Ingredients = dl.Ingredients
+	from Scale_Ingredient si
+	join ItemNutrition itn on si.Scale_Ingredient_ID = itn.Scale_Ingredient_ID
+	join ItemIdentifier		ii on	ii.Deleted_Identifier = 0
+												AND ii.Default_Identifier = 1
+									 			AND ii.Item_Key = itn.ItemKey
+	JOIN  #distinctList dl on ii.Identifier = dl.Plu AND (dl.IsScaleItem = 0 OR dl.IsCfsItem = 1)
 
 
--- Insert Scale Allergens
-delete from @NewScaleAllergens
+	-- Insert non-Scale ingredients
 
-insert into Scale_Allergen (Scale_LabelType_ID, Description, Allergens)
-output inserted.Description, inserted.Scale_Allergen_ID into @NewScaleAllergens
-select 0, dl.plu, dl.Allergens
-from #distinctList dl
-JOIN ItemIdentifier		ii on	ii.Deleted_Identifier = 0
-											AND ii.Default_Identifier = 1
-									 		AND ii.Identifier = dl.Plu
-											AND (dl.IsScaleItem = 0 OR dl.IsCfsItem = 1)
-JOIN ItemNutrition itn on itn.ItemKey = ii.Item_Key and itn.Scale_Allergen_ID is null
+	delete from @NewScaleIngredients
 
--- update item scale with new scale Allergens id 
-update itn
-set  itn.Scale_Allergen_ID = nsa.Allergen_ID
-from ItemNutrition itn
-join ItemIdentifier		ii on	ii.Item_Key = itn.ItemKey
-JOIN  @NewScaleAllergens nsa on ii.Identifier = nsa.Plu
+	insert into Scale_Ingredient(Scale_LabelType_ID, Description, Ingredients)
+	output inserted.Description, inserted.Scale_Ingredient_ID into @NewScaleIngredients
+	select 0, dl.plu, dl.Ingredients
+	from #distinctList dl
+	JOIN ItemIdentifier		ii on	ii.Deleted_Identifier = 0
+												AND ii.Default_Identifier = 1
+									 			AND ii.Identifier = dl.Plu
+												AND (dl.IsScaleItem = 0 OR dl.IsCfsItem = 1)
+	JOIN ItemNutrition itn on itn.ItemKey = ii.Item_Key and itn.Scale_Ingredient_ID is null
 
---Update ItemScale when a non-scale, non-CFS item with infredients data is converted to a CFS item and 
-update itsl
-set itsl.Scale_Ingredient_ID = inf.Scale_Ingredient_ID
-from ItemScale itsl
-JOIN ItemNutrition inf on itsl.Item_Key = inf.ItemKey
-where itsl.Scale_Ingredient_ID is null
-  and inf.Scale_Ingredient_ID is not null
+	-- update item nutrifact with new scale ingredients id 
+	update itn
+	set  itn.Scale_Ingredient_ID = nsi.Ingredient_ID
+	from ItemNutrition itn
+	join ItemIdentifier		ii on	ii.Item_Key = itn.ItemKey
+	JOIN  @NewScaleIngredients nsi on ii.Identifier = nsi.Plu
 
---Update ItemScale when a non-scale, non-CFS item with allergens data is converted to a CFS item
-update itsl
-set itsl.Scale_Allergen_ID = inf.Scale_Allergen_ID
-from ItemScale itsl
-JOIN ItemNutrition inf on itsl.Item_Key = inf.ItemKey
-where itsl.Scale_Allergen_ID is null
-  and inf.Scale_Allergen_ID is not null
+
+	-- SCALE Allergens------
+
+	-- Update Allergens if ingeredients key present in item nutrifacts table
+	update sa
+	set sa.Description = dl.Plu,
+		sa.Allergens = dl.Allergens
+	from Scale_Allergen sa
+	join ItemNutrition itn on sa.Scale_Allergen_ID = itn.Scale_Allergen_ID
+	join ItemIdentifier		ii on	ii.Deleted_Identifier = 0
+												AND ii.Default_Identifier = 1
+									 			AND ii.Item_Key = itn.ItemKey
+	JOIN  #distinctList dl on ii.Identifier = dl.Plu AND (dl.IsScaleItem = 0 OR dl.IsCfsItem = 1)
+
+
+	-- Insert Scale Allergens
+	delete from @NewScaleAllergens
+
+	insert into Scale_Allergen (Scale_LabelType_ID, Description, Allergens)
+	output inserted.Description, inserted.Scale_Allergen_ID into @NewScaleAllergens
+	select 0, dl.plu, dl.Allergens
+	from #distinctList dl
+	JOIN ItemIdentifier		ii on	ii.Deleted_Identifier = 0
+												AND ii.Default_Identifier = 1
+									 			AND ii.Identifier = dl.Plu
+												AND (dl.IsScaleItem = 0 OR dl.IsCfsItem = 1)
+	JOIN ItemNutrition itn on itn.ItemKey = ii.Item_Key and itn.Scale_Allergen_ID is null
+
+	-- update item scale with new scale Allergens id 
+	update itn
+	set  itn.Scale_Allergen_ID = nsa.Allergen_ID
+	from ItemNutrition itn
+	join ItemIdentifier		ii on	ii.Item_Key = itn.ItemKey
+	JOIN  @NewScaleAllergens nsa on ii.Identifier = nsa.Plu
+
+	--Update ItemScale when a non-scale, non-CFS item with infredients data is converted to a CFS item and 
+	update itsl
+	set itsl.Scale_Ingredient_ID = inf.Scale_Ingredient_ID
+	from ItemScale itsl
+	JOIN ItemNutrition inf on itsl.Item_Key = inf.ItemKey
+	where itsl.Scale_Ingredient_ID is null
+	  and inf.Scale_Ingredient_ID is not null
+
+	--Update ItemScale when a non-scale, non-CFS item with allergens data is converted to a CFS item
+	update itsl
+	set itsl.Scale_Allergen_ID = inf.Scale_Allergen_ID
+	from ItemScale itsl
+	JOIN ItemNutrition inf on itsl.Item_Key = inf.ItemKey
+	where itsl.Scale_Allergen_ID is null
+	  and inf.Scale_Allergen_ID is not null
+
+	--Update HealthyEatingRating on ItemSignAttribute table
+	UPDATE isa
+	SET HealthyEatingRating =	CASE
+									WHEN dl.HshRating IS NULL THEN NULL
+									WHEN dl.HshRating = 1 THEN 'Good'
+									WHEN dl.HshRating = 2 THEN 'Better'
+									WHEN dl.HshRating = 3 THEN 'Best'
+									ELSE 'None'
+								END
+	FROM dbo.ItemSignAttribute isa
+	JOIN ItemIdentifier ii on isa.Item_Key = ii.Item_Key
+	JOIN #distinctList dl ON ii.Identifier = dl.Plu
+	WHERE ii.Default_Identifier = 1 
+		AND ii.Deleted_Identifier = 0
+		AND ii.Remove_Identifier = 0
 
 	END TRY
 	BEGIN CATCH
