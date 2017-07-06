@@ -177,7 +177,7 @@ Friend Class frmPricingPrintSigns
                     If applyNoTagLogic Then
                         Cursor = Cursors.WaitCursor
 
-                        Dim distinctSubteams As List(Of Integer) = selectedItems.Select(Function(i) CInt(i.SubteamNumber)).Distinct().ToList()
+                        Dim distinctSubteams As List(Of Integer) = validSelectedItems.Select(Function(i) CInt(i.SubteamNumber)).Distinct().ToList()
 
                         For Each subteamNumber As Integer In distinctSubteams
                             Dim selectedItemsBySubteam As List(Of Object) = validSelectedItems.Where(Function(i) i.SubteamNumber = subteamNumber).ToList()
