@@ -1,6 +1,5 @@
 ﻿CREATE TABLE [esb].[MessageHistory] (
     [MessageHistoryId] INT				IDENTITY (1, 1) NOT NULL,
-	[EsbMessageId]     UNIQUEIDENTIFIER	NULL,
     [MessageTypeId]    INT				NOT NULL,
     [MessageStatusId]  INT				NOT NULL,
     [Message]          XML				NOT NULL,
