@@ -1,4 +1,4 @@
-﻿namespace Icon.Dashboard.DataFileAccess.Models
+namespace Icon.Dashboard.DataFileAccess.Models
 {
     using System;
     using System.Collections.Generic;

@@ -32,15 +32,16 @@ namespace Icon.Dashboard.Mvc
             bundles.Add(new ScriptBundle("~/bundles/datetimepicker").Include(
                     "~/Scripts/moment*",
                     "~/Scripts/bootstrap-datetimepicker*"));
-            // this css bundle is for data table sorting and filtering
-            bundles.Add(new StyleBundle("~/Content/Tablecss").Include(
-                            "~/Content/dataTables.bootstrap.min.css"));
+
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/bootstrap-datetimepicker.css",
                  "~/Content/site.css"));
-           
+
+            // this css bundle is for data table sorting and filtering
+            bundles.Add(new StyleBundle("~/Content/Tablecss").Include(
+                            "~/Content/dataTables.bootstrap.min.css"));
 
         }
     }
