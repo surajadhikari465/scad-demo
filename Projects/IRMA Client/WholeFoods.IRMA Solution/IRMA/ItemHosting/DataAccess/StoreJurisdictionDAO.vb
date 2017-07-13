@@ -489,6 +489,26 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             currentParam.Type = DBParamType.Int
             paramList.Add(currentParam)
 
+            currentParam = New DBParam
+            currentParam.Name = NameOf(overrideItemData.SignRomanceTextLong)
+            If overrideItemData.SignRomanceTextLong = Nothing Then
+                currentParam.Value = DBNull.Value
+            Else
+                currentParam.Value = overrideItemData.SignRomanceTextLong
+            End If
+            currentParam.Type = DBParamType.String
+            paramList.Add(currentParam)
+
+            currentParam = New DBParam
+            currentParam.Name = NameOf(overrideItemData.SignRomanceTextShort)
+            If overrideItemData.SignRomanceTextShort = Nothing Then
+                currentParam.Value = DBNull.Value
+            Else
+                currentParam.Value = overrideItemData.SignRomanceTextShort
+            End If
+            currentParam.Type = DBParamType.String
+            paramList.Add(currentParam)
+
             ' Execute Stored Procedure to update the data
             factory.ExecuteStoredProcedure("InsertUpdateItemOverride", paramList)
 

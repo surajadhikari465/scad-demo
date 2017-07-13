@@ -132,6 +132,7 @@
     <Folder Include="Scripts\16278-NationalHierarchyScripts" />
     <Folder Include="Schema\infor\Tables" />
     <Folder Include="SQL Agent Job" />
+    <Folder Include="Scripts\12153-AddAlternateJurisdictionFieldsToItemOverride" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3221,6 +3222,8 @@
     <None Include="SQL Agent Job\ItemCatalog - EIM Purge.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PDX_FutureCostFullFile.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PDX_FutureCostDeltaFile.sql" />
+    <None Include="Scripts\12153-AddAlternateJurisdictionFieldsToItemOverride\AddAlternateJurisdictionFieldsToItemOverride.RollBack.sql" />
+    <None Include="Scripts\12153-AddAlternateJurisdictionFieldsToItemOverride\AddAlternateJurisdictionFieldsToItemOverride.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

@@ -45,6 +45,8 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
         Private _itemDescription As String
         Private _posDescription As String
         Private _signCaption As String
+        Private _signRomanceTextLong As String
+        Private _signRomanceTextShort As String
         Private _packageDesc1 As Decimal
         Private _packageDesc2 As Decimal
         Private _packageUnitID As String
@@ -377,6 +379,23 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
             End Set
         End Property
 
+        Public Property SignRomanceTextLong() As String
+            Get
+                Return _signRomanceTextLong
+            End Get
+            Set(ByVal value As String)
+                _signRomanceTextLong = value
+            End Set
+        End Property
+
+        Public Property SignRomanceTextShort() As String
+            Get
+                Return _signRomanceTextShort
+            End Get
+            Set(ByVal value As String)
+                _signRomanceTextShort = value
+            End Set
+        End Property
 
         Public Property PackageDesc1() As Decimal
             Get
@@ -662,7 +681,6 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
                 _hasIngredientIdentifier = value
             End Set
         End Property
-
 #End Region
 
 #Region "Business Rules"

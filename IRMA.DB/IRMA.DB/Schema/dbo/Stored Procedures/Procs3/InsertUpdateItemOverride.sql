@@ -22,8 +22,6 @@ CREATE PROCEDURE [dbo].[InsertUpdateItemOverride]
     @Misc_Transaction_Sale			SMALLINT ,
     @Misc_Transaction_Refund		SMALLINT ,
     @Ice_Tare						INT ,
-    
-	-- new for 4.8
 	@Brand_ID						INT ,
     @Origin_Id						INT ,
     @CountryProc_Id					INT ,
@@ -39,7 +37,9 @@ CREATE PROCEDURE [dbo].[InsertUpdateItemOverride]
     @Not_AvailableNote				VARCHAR(255) ,
     @FSA_Eligible					BIT ,
     @Product_Code					VARCHAR(15) ,
-    @Unit_Price_Category			INT
+    @Unit_Price_Category			INT,
+    @SignRomanceTextLong            NVARCHAR(300),
+    @SignRomanceTextShort           NVARCHAR(140)
 
 AS 
 
@@ -56,6 +56,7 @@ AS
 -- Date       	Init  	TFS   	Comment
 -- 2013-01-02	KM		9251	Robin added all of the new override columns so that EIM would work.  I put this template here.
 -- 2015-10-05   MZ     16646    Stage IRMA Item Locale Events for Alt Jurisdiction Changes 
+-- 2017-07-11   EM     12153    ED added SignRomanceTextLong and SignRomanceTextShort for Canadian alt jurisdiction
 -- ****************************************************************************************************************
 
 DECLARE @OriginalCountryProc_Id int, 
@@ -63,7 +64,9 @@ DECLARE @OriginalCountryProc_Id int,
 		@OriginalRetailSize decimal(9,4), --[Package_Desc2]
 		@OriginalRetailUnit int,          --[Package_Unit_ID]
 		@OriginalRetailUOM int,           --[Retail_Unit_ID]
-		@OriginalSignDescription varchar(60)
+		@OriginalSignDescription varchar(60),
+        @OriginalSignRomanceTextLong nvarchar(300),
+        @OriginalSignRomanceTextShort nvarchar(140)
 
 DECLARE @Error_No int
 
@@ -96,9 +99,7 @@ BEGIN
             Misc_Transaction_Sale ,
             Misc_Transaction_Refund ,
             Ice_Tare ,
-                  
-			-- new for 4.8
-			Brand_Id ,
+            Brand_Id ,
             Origin_Id ,
             CountryProc_Id ,
             SustainabilityRankingRequired ,
@@ -113,7 +114,9 @@ BEGIN
             Not_AvailableNote ,
             FSA_Eligible ,
             Product_Code ,
-            Unit_Price_Category                           
+            Unit_Price_Category,
+            SignRomanceTextLong,
+            SignRomanceTextShort
 		)
         VALUES  
 		( 
@@ -139,9 +142,7 @@ BEGIN
             @Misc_Transaction_Sale ,
             @Misc_Transaction_Refund ,
             @Ice_Tare ,
-            
-			-- new for 4.8
-			@Brand_Id ,
+            @Brand_Id ,
             @Origin_Id ,
             @CountryProc_Id ,
             @SustainabilityRankingRequired ,
@@ -156,14 +157,17 @@ BEGIN
             @Not_AvailableNote ,
             @FSA_Eligible ,
             @Product_Code ,
-            @Unit_Price_Category                           
+            @Unit_Price_Category ,
+            @SignRomanceTextLong,
+            @SignRomanceTextShort
 		)
 
 		SELECT @Error_No = @@ERROR
 
 		IF @Error_No = 0
 			If (@CountryProc_Id is not null or @Origin_Id is not null or @Package_Desc2 is not null or @Package_Unit_ID is not null
-			    or @Retail_Unit_ID is not null or @Sign_Description is not null)
+			    or @Retail_Unit_ID is not null or @Sign_Description is not null
+                or @SignRomanceTextLong is not null or @SignRomanceTextShort is not null)
 				EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemLocaleAddOrUpdate', NULL, @StoreJurisdictionID
 	END
 
@@ -176,7 +180,9 @@ BEGIN
 				@OriginalRetailSize = ior.Package_Desc2,
 				@OriginalRetailUnit = ior.Package_Unit_ID,
 				@OriginalRetailUOM = ior.Retail_Unit_ID,
-				@OriginalSignDescription = ior.Sign_Description
+				@OriginalSignDescription = ior.Sign_Description,
+				@OriginalSignRomanceTextLong = ior.SignRomanceTextLong,
+				@OriginalSignRomanceTextShort = ior.SignRomanceTextShort
 			  FROM
 				ItemOverride ior
 			 WHERE   
@@ -220,7 +226,9 @@ BEGIN
                 Not_AvailableNote				= @Not_AvailableNote ,
                 FSA_Eligible					= @FSA_Eligible ,
                 Product_Code					= @Product_Code ,
-                Unit_Price_Category				= @Unit_Price_Category
+                Unit_Price_Category				= @Unit_Price_Category ,
+                SignRomanceTextLong             = @SignRomanceTextLong ,
+                SignRomanceTextShort            = @SignRomanceTextShort
 			WHERE   
 				Item_Key = @Item_Key
 				AND StoreJurisdictionID = @StoreJurisdictionID
@@ -241,7 +249,9 @@ BEGIN
 					 OR (@OriginalRetailUOM is not NULL AND @OriginalRetailUOM <> @Retail_Unit_ID)
 					 OR (@OriginalRetailUOM is NULL AND @Retail_Unit_ID is not NULL)
 					 OR (@OriginalSignDescription is not NULL AND @OriginalSignDescription <> @Sign_Description)
-					 OR (@OriginalSignDescription is NULL AND @Sign_Description is not NULL))	
+					 OR (@OriginalSignDescription is NULL AND @Sign_Description is not NULL)
+					 OR (IsNull(@OriginalSignRomanceTextLong,'') <> IsNull(@SignRomanceTextLong, ''))
+					 OR (IsNull(@OriginalSignRomanceTextShort,'') <> IsNull(@SignRomanceTextShort, '')))
 						EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemLocaleAddOrUpdate', NULL, @StoreJurisdictionID
 				END
 		END

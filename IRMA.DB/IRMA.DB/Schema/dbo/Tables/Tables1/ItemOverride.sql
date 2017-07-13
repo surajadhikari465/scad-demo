@@ -38,6 +38,8 @@
     [Product_Code]                  VARCHAR (15)   NULL,
     [Unit_Price_Category]           INT            NULL,
     [LastModifiedUser_ID]           INT            NULL,
+    [SignRomanceTextLong]           NVARCHAR(300)  NULL,
+    [SignRomanceTextShort]          NVARCHAR(140)  NULL
     CONSTRAINT [PK_ItemOverride] PRIMARY KEY CLUSTERED ([Item_Key] ASC, [StoreJurisdictionID] ASC),
     CONSTRAINT [FK_ItemOverride_Distribution_Unit_ID] FOREIGN KEY ([Distribution_Unit_ID]) REFERENCES [dbo].[ItemUnit] ([Unit_ID]),
     CONSTRAINT [FK_ItemOverride_Item_Key] FOREIGN KEY ([Item_Key]) REFERENCES [dbo].[Item] ([Item_Key]),

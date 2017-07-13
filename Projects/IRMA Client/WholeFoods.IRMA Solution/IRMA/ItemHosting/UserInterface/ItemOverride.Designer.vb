@@ -89,6 +89,10 @@
         Me.Label_AlternateJurisdiction = New System.Windows.Forms.Label()
         Me.TabControl = New System.Windows.Forms.TabControl()
         Me.TabPage_ItemInfo = New System.Windows.Forms.TabPage()
+        Me.TextBox_SignRomanceShort = New System.Windows.Forms.TextBox()
+        Me.TextBox_SignRomanceLong = New System.Windows.Forms.TextBox()
+        Me.Label_SignRomanceShort = New System.Windows.Forms.Label()
+        Me.Label_SignRomanceLong = New System.Windows.Forms.Label()
         Me.GroupBoxAttributes = New System.Windows.Forms.GroupBox()
         Me.LabelSustainabilityRanking = New System.Windows.Forms.Label()
         Me.CheckBoxSustainabilityRanking = New System.Windows.Forms.CheckBox()
@@ -486,6 +490,10 @@
         'TabPage_ItemInfo
         '
         Me.TabPage_ItemInfo.BackColor = System.Drawing.Color.Transparent
+        Me.TabPage_ItemInfo.Controls.Add(Me.TextBox_SignRomanceShort)
+        Me.TabPage_ItemInfo.Controls.Add(Me.TextBox_SignRomanceLong)
+        Me.TabPage_ItemInfo.Controls.Add(Me.Label_SignRomanceShort)
+        Me.TabPage_ItemInfo.Controls.Add(Me.Label_SignRomanceLong)
         Me.TabPage_ItemInfo.Controls.Add(Me.GroupBoxAttributes)
         Me.TabPage_ItemInfo.Controls.Add(Me.ButtonSaveItemInformation)
         Me.TabPage_ItemInfo.Controls.Add(Me.CheckBoxNotAvailable)
@@ -503,6 +511,42 @@
         resources.ApplyResources(Me.TabPage_ItemInfo, "TabPage_ItemInfo")
         Me.TabPage_ItemInfo.Name = "TabPage_ItemInfo"
         Me.TabPage_ItemInfo.UseVisualStyleBackColor = True
+        '
+        'TextBox_SignRomanceShort
+        '
+        Me.TextBox_SignRomanceShort.AcceptsReturn = True
+        Me.TextBox_SignRomanceShort.BackColor = System.Drawing.SystemColors.Window
+        Me.TextBox_SignRomanceShort.Cursor = System.Windows.Forms.Cursors.IBeam
+        resources.ApplyResources(Me.TextBox_SignRomanceShort, "TextBox_SignRomanceShort")
+        Me.TextBox_SignRomanceShort.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.TextBox_SignRomanceShort.Name = "TextBox_SignRomanceShort"
+        Me.TextBox_SignRomanceShort.Tag = "String"
+        '
+        'TextBox_SignRomanceLong
+        '
+        Me.TextBox_SignRomanceLong.AcceptsReturn = True
+        Me.TextBox_SignRomanceLong.BackColor = System.Drawing.SystemColors.Window
+        Me.TextBox_SignRomanceLong.Cursor = System.Windows.Forms.Cursors.IBeam
+        resources.ApplyResources(Me.TextBox_SignRomanceLong, "TextBox_SignRomanceLong")
+        Me.TextBox_SignRomanceLong.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.TextBox_SignRomanceLong.Name = "TextBox_SignRomanceLong"
+        Me.TextBox_SignRomanceLong.Tag = "String"
+        '
+        'Label_SignRomanceShort
+        '
+        Me.Label_SignRomanceShort.BackColor = System.Drawing.Color.Transparent
+        Me.Label_SignRomanceShort.Cursor = System.Windows.Forms.Cursors.Default
+        resources.ApplyResources(Me.Label_SignRomanceShort, "Label_SignRomanceShort")
+        Me.Label_SignRomanceShort.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Label_SignRomanceShort.Name = "Label_SignRomanceShort"
+        '
+        'Label_SignRomanceLong
+        '
+        Me.Label_SignRomanceLong.BackColor = System.Drawing.Color.Transparent
+        Me.Label_SignRomanceLong.Cursor = System.Windows.Forms.Cursors.Default
+        resources.ApplyResources(Me.Label_SignRomanceLong, "Label_SignRomanceLong")
+        Me.Label_SignRomanceLong.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Label_SignRomanceLong.Name = "Label_SignRomanceLong"
         '
         'GroupBoxAttributes
         '
@@ -881,6 +925,10 @@
     Friend WithEvents TextBoxProductCode As System.Windows.Forms.TextBox
     Friend WithEvents TextBoxUnitPriceCategory As System.Windows.Forms.TextBox
     Public WithEvents ButtonSavePOSSettings As System.Windows.Forms.Button
+    Public WithEvents TextBox_SignRomanceShort As TextBox
+    Public WithEvents TextBox_SignRomanceLong As TextBox
+    Public WithEvents Label_SignRomanceShort As Label
+    Public WithEvents Label_SignRomanceLong As Label
 
 #End Region
 End Class

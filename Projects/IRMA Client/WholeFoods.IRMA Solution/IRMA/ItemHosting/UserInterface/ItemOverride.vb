@@ -348,6 +348,12 @@ Friend Class ItemOverride
                 If (Not results.IsDBNull(results.GetOrdinal("IsValidated"))) Then
                     _overrideItemData.IsValidated = results.GetBoolean(results.GetOrdinal("IsValidated")).ToString()
                 End If
+                If (Not results.IsDBNull(results.GetOrdinal(NameOf(_overrideItemData.SignRomanceTextLong)))) Then
+                    _overrideItemData.SignRomanceTextLong = results.GetString(results.GetOrdinal("SignRomanceTextLong")).ToString()
+                End If
+                If (Not results.IsDBNull(results.GetOrdinal(NameOf(_overrideItemData.SignRomanceTextShort)))) Then
+                    _overrideItemData.SignRomanceTextShort = results.GetString(results.GetOrdinal("SignRomanceTextShort")).ToString()
+                End If
             End While
         Else
             _overrideItemData.ItemDescription = _defaultItemData.ItemDescription
@@ -380,6 +386,8 @@ Friend Class ItemOverride
         TextBox_POSDesc.Text = itemData.POSDescription
         TextBox_Description.Text = itemData.ItemDescription
         TextBox_SignCaption.Text = itemData.SignCaption
+        TextBox_SignRomanceLong.Text = itemData.SignRomanceTextLong
+        TextBox_SignRomanceShort.Text = itemData.SignRomanceTextShort
         TextBox_Pack.Text = Format(itemData.PackageDesc1, ResourcesIRMA.GetString("NumberFormatBigInteger"))
         TextBox_Size.Text = Format(itemData.PackageDesc2, ResourcesIRMA.GetString("NumberFormatDecimal3"))
         If itemData.NotAvailable Then
@@ -692,8 +700,10 @@ Friend Class ItemOverride
         _overrideItemData.POSDescription = Trim(TextBox_POSDesc.Text)
         _overrideItemData.ItemDescription = Trim(TextBox_Description.Text)
         _overrideItemData.SignCaption = Trim(TextBox_SignCaption.Text)
-        _overrideItemData.PackageDesc1 = TextBox_Pack.Text
-        _overrideItemData.PackageDesc2 = TextBox_Size.Text
+        _overrideItemData.NotAvailableNote = Trim(TextBoxNotAvailableNote.Text)
+        _overrideItemData.NotAvailableNote = Trim(TextBoxNotAvailableNote.Text)
+        _overrideItemData.SignRomanceTextLong = Trim(TextBox_SignRomanceLong.Text)
+        _overrideItemData.SignRomanceTextShort = Trim(TextBox_SignRomanceShort.Text)
         _overrideItemData.NotAvailableNote = Trim(TextBoxNotAvailableNote.Text)
 
         ' ComboBoxes.
@@ -771,6 +781,7 @@ Friend Class ItemOverride
         _overridePOSData.FSAEligible = CheckBoxFSAEligible.Checked
         _overridePOSData.UnitPriceCategory = TextBoxUnitPriceCategory.Text
         _overridePOSData.ProductCode = TextBoxProductCode.Text
+
 
         ' Validate the data on the Item Information tab
         statusList = _overrideItemData.ValidateData()

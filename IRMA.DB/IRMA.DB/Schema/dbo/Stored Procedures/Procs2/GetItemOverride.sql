@@ -16,6 +16,7 @@ AS
 -- Date       	Init  	TFS   	Comment
 -- 2012/12/27	KM		9251	Add update history template; Select new 4.8 ItemOverride columns;
 -- 2015/06/25   MZ     16200    Added IsValidated.
+-- 2017/07/11   EM     12153    Added SignRomanceLong, SignRomanceShort
 -- ****************************************************************************************************************
 
 BEGIN
@@ -56,7 +57,9 @@ BEGIN
 		FSA_Eligible,
 		Product_Code,
 		Unit_Price_Category,
-		IsValidated = (SELECT dbo.fn_ValidatedScanCodeExists(@Item_Key))
+		IsValidated = (SELECT dbo.fn_ValidatedScanCodeExists(@Item_Key)),
+		SignRomanceTextLong,
+		SignRomanceTextShort
 	
 	FROM 
 		ItemOverride
