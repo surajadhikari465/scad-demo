@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx3="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx3="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/BaseItem.xsd"/>
-    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
     <pd:name>Listener/Test.process</pd:name>
     <pd:startName>JMS Queue Receiver</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
-    <pd:returnBindings/>
+    <pd:returnBindings>
+        <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:items"/>
+    </pd:returnBindings>
     <pd:starter name="JMS Queue Receiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
@@ -33,7 +35,7 @@
     </pd:starter>
     <pd:endName>End</pd:endName>
     <pd:endType ref="pfx:items"/>
-    <pd:endX>450</pd:endX>
+    <pd:endX>451</pd:endX>
     <pd:endY>64</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>

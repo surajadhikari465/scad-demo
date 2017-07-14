@@ -142,18 +142,6 @@
             </root>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Generate Error">
-        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
-        <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>415</pd:x>
-        <pd:y>218</pd:y>
-        <config>
-            <faultName>ErrorSchemas</faultName>
-        </config>
-        <pd:inputBindings>
-            <pfx2:ActivityInput/>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>GetLastSequenceQuery</pd:to>
@@ -172,19 +160,8 @@
     <pd:transition>
         <pd:from>Map Data</pd:from>
         <pd:to>End</pd:to>
-        <pd:xpathDescription>InSequence</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Map-Data/root/IsInSequence = "true" or $Map-Data/root/IsAlreadyProcessed = "true"</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Map Data</pd:from>
-        <pd:to>Generate Error</pd:to>
-        <pd:xpathDescription>OutOfSequence</pd:xpathDescription>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-3355648</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Map-Data/root/IsInSequence = "false" and $Map-Data/root/IsAlreadyProcessed = "false"</pd:xpath>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns02="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/Shared Resources/Schemas/Application/MammothDbPrice.xsd"/>
     <pd:name>DataAccess/Commands/AddPriceCommand.process</pd:name>
@@ -17,10 +17,10 @@
     <pd:group name="RepeatOnDbError">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>243</pd:x>
-        <pd:y>23</pd:y>
-        <pd:width>590</pd:width>
-        <pd:height>403</pd:height>
+        <pd:x>160</pd:x>
+        <pd:y>19</pd:y>
+        <pd:width>539</pd:width>
+        <pd:height>317</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -55,9 +55,7 @@
             <pd:xpathDescription>Db Errors</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-52429</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)
-or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
+            <pd:conditionType>error</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>WaitBeforeRetry (Sleep)</pd:from>
@@ -69,8 +67,8 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
         <pd:activity name="AddPrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>498</pd:x>
-            <pd:y>174</pd:y>
+            <pd:x>369</pd:x>
+            <pd:y>83</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -229,11 +227,11 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
         <pd:activity name="WaitBeforeRetry (Sleep)">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>362</pd:x>
-            <pd:y>316</pd:y>
+            <pd:x>334</pd:x>
+            <pd:y>230</pd:y>
             <config/>
             <pd:inputBindings>
-                <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                <ns0:SleepInputSchema>
                     <IntervalInMillisec>
                         <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/MammothDb/RetrySleepInMilliseconds"/>
                     </IntervalInMillisec>
@@ -243,13 +241,13 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
         <pd:activity name="Throw Db Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>597</pd:x>
-            <pd:y>312</pd:y>
+            <pd:x>468</pd:x>
+            <pd:y>221</pd:y>
             <config>
                 <faultName/>
             </config>
             <pd:inputBindings>
-                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <ns02:ActivityInput>
                     <message>
                         <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
                     </message>
@@ -258,7 +256,7 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
                             <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
                         </messageCode>
                     </xsl:if>
-                </ns0:ActivityInput>
+                </ns02:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>

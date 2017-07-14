@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType">
     <pd:name>DataAccess/Commands/AddOrUpdateMessageSequenceCommand.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -37,7 +37,7 @@
             <pd:groupType>errorLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
             <pd:indexSlot>retryCountIndex</pd:indexSlot>
-            <pd:errorCondition>$_globalVariables/ns:GlobalVariables/MammothDb/CommandRetryCount &lt;= $retryCountIndex</pd:errorCondition>
+            <pd:errorCondition>$_globalVariables/pfx:GlobalVariables/MammothDb/CommandRetryCount &lt; $retryCountIndex</pd:errorCondition>
             <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
         </config>
         <pd:inputBindings/>

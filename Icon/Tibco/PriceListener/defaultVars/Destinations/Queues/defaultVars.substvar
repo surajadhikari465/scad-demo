@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>BOD</name>
+			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1499972861950</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ESBForSpliceSlaw</name>
+			<value>WFMESB.Commerce.Retail.PriceMgmt.Price.RealTime.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1499972861788</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Price</name>
+			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1499972863518</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>
