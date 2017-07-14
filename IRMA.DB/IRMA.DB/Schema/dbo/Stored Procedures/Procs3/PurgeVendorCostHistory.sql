@@ -2,7 +2,6 @@ CREATE PROCEDURE [dbo].[PurgeVendorCostHistory]
     @batchVolume	 INT
 AS 
 BEGIN
-	
 	DECLARE @RunTime INT
 	       ,@Count   INT 
 		   ,@DailyPurgeStartTime INT

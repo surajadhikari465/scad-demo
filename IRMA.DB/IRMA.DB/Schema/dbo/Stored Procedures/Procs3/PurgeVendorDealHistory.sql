@@ -2,7 +2,7 @@ CREATE PROCEDURE [dbo].[PurgeVendorDealHistory]
     @batchVolume	 INT
 AS 
 BEGIN
-
+	
 	DECLARE @RunTime INT
 	       ,@Count   INT 
 		   ,@DailyPurgeStartTime INT
@@ -278,12 +278,12 @@ BEGIN
 				SELECT @LogMsg = 'Deleted VendorDealHistory records outside of retention period. VendorDealHistory records deleted: ' + CAST(@VendorDealHistoryPurgeCount AS VARCHAR)
 				SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 			END
-		
-			UPDATE RetentionPolicy
-			   SET LastPurgedDateTime = GETDATE()
-			 WHERE [Table] = 'VendorDealHistory'
 		END
 		
+		UPDATE RetentionPolicy
+		   SET LastPurgedDateTime = GETDATE()
+	     WHERE [Table] = 'VendorDealHistory'
+
 		SELECT @LogMsg = 'VendorDealHistory Purge job ended ... '
 		SELECT @now = getdate(); 
 		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;	
