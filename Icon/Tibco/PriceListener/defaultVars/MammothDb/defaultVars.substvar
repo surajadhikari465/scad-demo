@@ -7,7 +7,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1498484364904</modTime>
+			<modTime>1499972862582</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MammothConnectionString</name>
@@ -15,7 +15,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495332819271</modTime>
+			<modTime>1499972862833</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MaxRetryDelayInSeconds</name>
@@ -23,7 +23,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1498585518341</modTime>
+			<modTime>1499972863072</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>QueryRetryCount</name>
@@ -31,7 +31,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1498076984049</modTime>
+			<modTime>1499972862700</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RetrySleepInMilliseconds</name>
@@ -39,7 +39,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1498144446488</modTime>
+			<modTime>1499972862601</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>StoredProcedureTimeout</name>
@@ -47,7 +47,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1498076984029</modTime>
+			<modTime>1499972861734</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

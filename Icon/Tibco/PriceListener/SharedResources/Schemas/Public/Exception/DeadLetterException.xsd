@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://services.wfm.com/Enterprise/DeadLetterException/V1"
+	 targetNamespace="http://services.wfm.com/Enterprise/DeadLetterException/V1"
+	 version="1"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="deadLetterException" type="DeadLetterExceptionType"/>
+	<xs:complexType name="RequestType">
+		<xs:sequence>
+			<xs:element name="applicationID" type="xs:string"/>
+			<xs:element name="transactionID" type="xs:string"/>
+			<xs:element name="correlationID" type="xs:string"/>
+			<xs:element name="failedSystemName" type="xs:string"/>
+			<xs:element name="timeInterval" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Time interval in minutes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errorCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="errorMessage" type="xs:string"/>
+			<xs:element name="stackTrace" type="xs:string" minOccurs="0"/>
+			<xs:element name="currentTimestamp" type="xs:string"/>
+			<xs:element name="exception" type="ExceptionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResponseType">
+		<xs:sequence>
+			<xs:element name="transactionID" type="xs:string"/>
+			<xs:element name="payload" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DataErrorType">
+		<xs:sequence>
+			<xs:element ref="toRecipient"/>
+			<xs:element ref="ccRecipient" minOccurs="0"/>
+			<xs:element name="subApplicationID" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="request" type="RequestType"/>
+	<xs:element name="response" type="ResponseType"/>
+	<xs:complexType name="DeadLetterExceptionType">
+		<xs:sequence>
+			<xs:element ref="request" minOccurs="0"/>
+			<xs:element ref="response" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SystemErrorType">
+		<xs:sequence>
+			<xs:element name="payload" type="xs:string"/>
+			<xs:element name="destinationQueue" type="xs:string"/>
+			<xs:element name="isEncrypted" type="xs:string"/>
+			<xs:element ref="toRecipient"/>
+			<xs:element ref="ccRecipient" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExceptionType">
+		<xs:choice>
+			<xs:element name="system" type="SystemErrorType"/>
+			<xs:element name="data" type="DataErrorType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="toRecipient" type="xs:string"/>
+	<xs:element name="ccRecipient" type="xs:string"/>
+</xs:schema>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource xmlns:pfx2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pfx="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd">
+    <import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" schemaLocation="/SharedResources/Schemas/Public/Common/RequestHeader.xsd"/>
+    <import namespace="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" schemaLocation="/SharedResources/Schemas/CLE/ClientInterface.xsd"/>
+    <name>Header</name>
+    <resourceType>ae.shared.sharedVariable</resourceType>
+    <config xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <persistent>false</persistent>
+        <multi-engine>false</multi-engine>
+        <initialValue>none</initialValue>
+        <xsdString ref="pfx2:Header"/>
+    </config>
+</BWSharedResource>

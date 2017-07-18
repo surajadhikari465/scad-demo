@@ -7,7 +7,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657065</modTime>
+			<modTime>1499972862906</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>CertificateStoreLocation</name>
@@ -15,7 +15,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657041</modTime>
+			<modTime>1499972862757</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>CertificateStoreName</name>
@@ -23,7 +23,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657102</modTime>
+			<modTime>1499972863602</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>CertificationName</name>
@@ -31,7 +31,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495055913080</modTime>
+			<modTime>1499972862776</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ConnectionFactoryName</name>
@@ -39,7 +39,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657028</modTime>
+			<modTime>1499972862738</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbPriceQueueName</name>
@@ -47,7 +47,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657054</modTime>
+			<modTime>1499972862208</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPassword</name>
@@ -55,7 +55,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057656990</modTime>
+			<modTime>1499972862130</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsername</name>
@@ -63,7 +63,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657076</modTime>
+			<modTime>1499972863568</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiConextUrl</name>
@@ -71,7 +71,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057702692</modTime>
+			<modTime>1499972861817</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
@@ -79,7 +79,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657114</modTime>
+			<modTime>1499972863686</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiUsername</name>
@@ -87,7 +87,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657090</modTime>
+			<modTime>1499972863054</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SslPassword</name>
@@ -95,7 +95,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657017</modTime>
+			<modTime>1499972863351</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TargetHostName</name>
@@ -103,7 +103,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057657004</modTime>
+			<modTime>1499972861683</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TopicConnectionFactoryName</name>
@@ -111,7 +111,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1495057886209</modTime>
+			<modTime>1499972863705</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
