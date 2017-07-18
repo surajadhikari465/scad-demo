@@ -9,7 +9,7 @@
 		<ClickOnceVirtualRootDir>$(DropFolder)</ClickOnceVirtualRootDir>
 		<ClickOnceUrl>$(DeploymentUrl)</ClickOnceUrl>
 		<ClickOnceApplicationUrl>$(DeploymentUrl)$(AppName).application</ClickOnceApplicationUrl>	
-		<ClickOnceAppTitle>$(Region) $(AppName)</ClickOnceAppTitle>
+		<ClickOnceAppTitle>$(Region) $(AppName)$(AssemblyIdentityNameEnvRef)</ClickOnceAppTitle>
 		<Install>$(DoInstall)</Install>
 		<ClickOnceVersion>$(Version)</ClickOnceVersion>
 	</PropertyGroup>
