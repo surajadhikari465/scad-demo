@@ -41,3 +41,8 @@ BEGIN
 	  AND s.Store_No NOT IN (SELECT Key_Value FROM dbo.fn_Parse_List(@ExcludedStoreNo, '|')) 
 	ORDER BY ii.identifier, s.BusinessUnit_ID
 END
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[PDX_FutureCostFullFile] TO [IRMAPDXExtractRole]
+    AS [dbo];
