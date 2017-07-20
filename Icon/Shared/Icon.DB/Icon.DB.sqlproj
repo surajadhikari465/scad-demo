@@ -638,6 +638,9 @@
     <Build Include="infor\User Defined Types\LocaleAddressAddOrUpdateType.sql" />
     <Build Include="infor\User Defined Types\LocaleTraitAddOrUpdateType.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateMessages.sql" />
+    <Build Include="infor\Tables\ItemSequence.sql" />
+    <Build Include="infor\Tables\HierarchyClassSequence.sql" />
+    <Build Include="infor\Tables\LocaleSequence.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
