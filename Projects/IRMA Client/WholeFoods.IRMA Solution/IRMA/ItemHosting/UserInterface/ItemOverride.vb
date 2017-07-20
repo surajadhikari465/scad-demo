@@ -700,8 +700,8 @@ Friend Class ItemOverride
         _overrideItemData.POSDescription = Trim(TextBox_POSDesc.Text)
         _overrideItemData.ItemDescription = Trim(TextBox_Description.Text)
         _overrideItemData.SignCaption = Trim(TextBox_SignCaption.Text)
-        _overrideItemData.NotAvailableNote = Trim(TextBoxNotAvailableNote.Text)
-        _overrideItemData.NotAvailableNote = Trim(TextBoxNotAvailableNote.Text)
+        _overrideItemData.PackageDesc1 = TextBox_Pack.Text
+        _overrideItemData.PackageDesc2 = TextBox_Size.Text
         _overrideItemData.SignRomanceTextLong = Trim(TextBox_SignRomanceLong.Text)
         _overrideItemData.SignRomanceTextShort = Trim(TextBox_SignRomanceShort.Text)
         _overrideItemData.NotAvailableNote = Trim(TextBoxNotAvailableNote.Text)
