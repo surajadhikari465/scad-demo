@@ -106,6 +106,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Constants
             public static readonly string InvalidNationalClassName = "The National Class name has an invalid value '{PropertyValue}'. It must be less than or equal to 255 characters.";
             public static readonly string InvalidNationalClassCode = "NationalClassCode trait has an invalid value '{PropertyValue}'. It must be only numbers.  Following the trait pattern:  '" + TraitPatterns.NationalClassCode + "'.";
             public static readonly string RequiredNationalClassCode = "NationalClassCode trait is required.";
+            public static readonly string InvalidNationalClassCodeLength = "NationalClassCode trait has an invalid value '{PropertyValue}'. It must be 5 characters only.";
 
             // Financial
             public static readonly string InvalidFinancialName = "Financial class name has an invalid value '{PropertyValue}'. It must be less than or equal to 255 characters.";

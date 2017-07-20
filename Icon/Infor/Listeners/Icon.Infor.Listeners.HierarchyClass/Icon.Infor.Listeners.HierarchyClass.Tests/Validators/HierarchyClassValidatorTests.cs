@@ -569,6 +569,40 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
         }
 
         [TestMethod]
+        public void HierarchyClassModelValidator_NationalClassCodeHasInvalidLength_InvalidNationalClassCodeMessage()
+        {
+            // Given
+            this.testHierarchyClass.HierarchyName = Hierarchies.Names.National;
+            this.testHierarchyClass.HierarchyLevelName = HierarchyLevelNames.NationalClass;
+            this.testHierarchyClass.HierarchyClassName = "Valid National Class";
+            this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
+            {
+                { TraitCodes.NationalClassCode, "8888" }
+            };
+
+            PerformValidateCollectionWhenAndThenSteps(
+                ValidationErrors.Codes.InvalidNationalClassCode,
+                ValidationErrors.Descriptions.InvalidNationalClassCodeLength.GetFormattedValidationMessage(
+                    Traits.Codes.NationalClassCode,
+                    this.testHierarchyClass.HierarchyClassTraits[Traits.Codes.NationalClassCode]));
+        }
+
+        [TestMethod]
+        public void HierarchyClassModelValidator_NationalClassCodeHasValidLength_NoError()
+        {
+            // Given
+            this.testHierarchyClass.HierarchyName = Hierarchies.Names.National;
+            this.testHierarchyClass.HierarchyLevelName = HierarchyLevelNames.NationalClass;
+            this.testHierarchyClass.HierarchyClassName = "Valid National Class";
+            this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
+            {
+                { TraitCodes.NationalClassCode, "98777" }
+            };
+
+            PerformValidateCollectionWhenAndThenSteps(null, null);
+        }
+
+        [TestMethod]
         public void HierarchyClassModelValidator_NationalClassIsCategoryAndNoNationalClassCodeExists_NoError()
         {
             // Given
