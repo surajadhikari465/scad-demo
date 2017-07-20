@@ -187,8 +187,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Validators
                 When(hc => hc.HierarchyName == Hierarchies.Names.National, () =>
                 {
                     When(n => n.HierarchyLevelName == HierarchyLevelNames.NationalClass, () =>
-                    {
-                        //  National Class Code Field Length
+                    {                       
+                        // Required National Class Code
+                        RuleFor(n => n.HierarchyClassTraits)
+                            .Must(nt => nt.ContainsKey(Traits.Codes.NationalClassCode))
+                            .WithErrorCode(ValidationErrors.Codes.RequiredNationalClassCode)
+                            .WithMessage(ValidationErrors.Descriptions.RequiredNationalClassCode);
+
+                        // Invalid National Class Code Field Length
                         When(hc => hc.HierarchyClassTraits.ContainsKey(Traits.Codes.NationalClassCode), () =>
                         {
                             RuleFor(hct => hct.HierarchyClassTraits[Traits.Codes.NationalClassCode])
@@ -196,11 +202,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Validators
                                 .WithErrorCode(ValidationErrors.Codes.InvalidNationalClassCode)
                                 .WithMessage(ValidationErrors.Descriptions.InvalidNationalClassCodeLength);
                         });
-                        // Required National Class Code
-                        RuleFor(n => n.HierarchyClassTraits)
-                            .Must(nt => nt.ContainsKey(Traits.Codes.NationalClassCode))
-                            .WithErrorCode(ValidationErrors.Codes.RequiredNationalClassCode)
-                            .WithMessage(ValidationErrors.Descriptions.RequiredNationalClassCode);
+
                         // Invalid National Class Code
                         When(hc => hc.HierarchyClassTraits.ContainsKey(Traits.Codes.NationalClassCode), () =>
                         {
