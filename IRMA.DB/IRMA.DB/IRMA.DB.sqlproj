@@ -3224,6 +3224,8 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PDX_FutureCostDeltaFile.sql" />
     <None Include="Scripts\12153-AddAlternateJurisdictionFieldsToItemOverride\AddAlternateJurisdictionFieldsToItemOverride.RollBack.sql" />
     <None Include="Scripts\12153-AddAlternateJurisdictionFieldsToItemOverride\AddAlternateJurisdictionFieldsToItemOverride.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.rollback.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
