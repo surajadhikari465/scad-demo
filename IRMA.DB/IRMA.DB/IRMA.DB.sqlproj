@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -132,7 +132,6 @@
     <Folder Include="Scripts\16278-NationalHierarchyScripts" />
     <Folder Include="Schema\infor\Tables" />
     <Folder Include="SQL Agent Job" />
-    <Folder Include="Scripts\12153-AddAlternateJurisdictionFieldsToItemOverride" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3222,8 +3221,6 @@
     <None Include="SQL Agent Job\ItemCatalog - EIM Purge.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PDX_FutureCostFullFile.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PDX_FutureCostDeltaFile.sql" />
-    <None Include="Scripts\12153-AddAlternateJurisdictionFieldsToItemOverride\AddAlternateJurisdictionFieldsToItemOverride.RollBack.sql" />
-    <None Include="Scripts\12153-AddAlternateJurisdictionFieldsToItemOverride\AddAlternateJurisdictionFieldsToItemOverride.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.rollback.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.sql" />
   </ItemGroup>

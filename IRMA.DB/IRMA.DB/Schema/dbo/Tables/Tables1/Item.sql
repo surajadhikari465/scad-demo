@@ -1044,6 +1044,10 @@ BEGIN
 			)
 		END
 END
+
+
+print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Finish: [ItemUpdate.sql]'
+
 GO
 CREATE Trigger ItemAdd 
 ON [dbo].[Item]
