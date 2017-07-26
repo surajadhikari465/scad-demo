@@ -38,8 +38,8 @@ CREATE PROCEDURE [dbo].[InsertUpdateItemOverride]
     @FSA_Eligible					BIT ,
     @Product_Code					VARCHAR(15) ,
     @Unit_Price_Category			INT,
-    @SignRomanceTextLong            NVARCHAR(300),
-    @SignRomanceTextShort           NVARCHAR(140)
+    @SignRomanceTextLong            NVARCHAR(300) = NULL,
+    @SignRomanceTextShort           NVARCHAR(140) = NULL
 
 AS 
 
