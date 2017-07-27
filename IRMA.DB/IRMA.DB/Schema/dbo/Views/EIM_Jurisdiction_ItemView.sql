@@ -8,6 +8,8 @@ DBS		20110125	1241	Merge Up FSA Changes
 DN		2013.01.03	8755	Updated Disco Ordering Logic
 KM		2013-01-008	9251	Select the new 4.8 ItemOverride columns in the ItemOverride 
 							portion of the UNION;
+MZ      2017-07-21  22360   Added two alternate jurisdiction fields Sign Romance Short and Sign Romance Long 
+                            to EIM
 ***********************************************************************************************/
 
 SELECT
@@ -100,6 +102,8 @@ SELECT
 				,itmo.SustainabilityRankingID
 				,itmo.FSA_Eligible
 				,itm.UseLastReceivedCost
+				,itmo.SignRomanceTextLong
+				,itmo.SignRomanceTextShort
         
 		FROM 
 			dbo.Item itm (NOLOCK)
@@ -197,9 +201,12 @@ SELECT
 				,itm.SustainabilityRankingID
 				,itm.FSA_Eligible
 				,itm.UseLastReceivedCost
+				,isa.SignRomanceTextLong
+				,isa.SignRomanceTextShort
         
 		FROM 
 			dbo.Item itm (NOLOCK)
+			LEFT JOIN itemsignattribute isa (NOLOCK) on itm.Item_Key = isa.Item_Key
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[EIM_Jurisdiction_ItemView] TO [IRMAClientRole]

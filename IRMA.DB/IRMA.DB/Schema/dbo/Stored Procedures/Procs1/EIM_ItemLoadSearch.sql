@@ -45,6 +45,8 @@ AS
 --										where there is no store associated with that vendor.
 -- 2013-05-05	KM				11670	Remove hardcoded references to EIM_Jurisdiction_ItemView;
 -- 2015-09-15	KM				11338	Allow the search to work with the new ItemSignAttribute table;
+-- 2017-07-21   MZ              22360   Added two alternate jurisdiction fields Sign Romance Short and Sign Romance Long 
+--                                      to EIM
 -- **************************************************************************
 
 BEGIN
@@ -466,11 +468,15 @@ BEGIN
 			-- use the jurisdiction views instead of the Item and ItemScale tables
 			SELECT @SQL = REPLACE(@SQL, 'ItemScale_TableName', 'EIM_Jurisdiction_ItemScaleView')
 			SELECT @SQL = REPLACE(@SQL, 'Item_TableName', 'EIM_Jurisdiction_ItemView')
+			SELECT @SQL = REPLACE(@SQL, 'itemsignattribute_TableName.signromancetextlong', 'EIM_Jurisdiction_ItemView.signromancetextlong')
+			SELECT @SQL = REPLACE(@SQL, 'itemsignattribute_TableName.signromancetextshort', 'EIM_Jurisdiction_ItemView.signromancetextshort')
 		END
 		ELSE
 		BEGIN
 			SELECT @SQL = REPLACE(@SQL, 'ItemScale_TableName', 'ItemScale')
 			SELECT @SQL = REPLACE(@SQL, 'Item_TableName', 'Item')
+			SELECT @SQL = REPLACE(@SQL, 'itemsignattribute_TableName.signromancetextlong', 'ItemSignAttribute.signromancetextlong')
+			SELECT @SQL = REPLACE(@SQL, 'itemsignattribute_TableName.signromancetextshort', 'ItemSignAttribute.signromancetextshort')
 		END
 	END
 				

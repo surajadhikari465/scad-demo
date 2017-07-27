@@ -45,6 +45,8 @@ MU/MZ	2016-03-18	TFS18686
 						PBI13711	Adding Sold By WFM and Sold By 365 to accommodate setting via EIM
 MU/MZ   2016-03-22  TFS18729
 						PBI14651    Disallow Organic field to be updated for validated items
+MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign Romance Short and Sign Romance Long 
+                                    to EIM
 ***********************************************************************************************/
 	
 	SET NOCOUNT ON
@@ -192,6 +194,8 @@ MU/MZ   2016-03-22  TFS18729
 		@Locality varchar(50),
 		@ShortSignRomance varchar(140),
 		@LongSignRomance varchar(300),
+		@ShortSignRomanceAlt varchar(140),
+		@LongSignRomanceAlt varchar(300),
 		@ChicagoBaby varchar(50),
 		@TagUom int,
 		@Exclusive date,
@@ -286,7 +290,9 @@ MU/MZ   2016-03-22  TFS18729
 				@Not_AvailableNote = Not_AvailableNote,                            
 				@FSA_Eligible = FSA_Eligible,                                  
 				@Product_Code = Product_Code,                                  
-				@Unit_Price_Category = Unit_Price_Category
+				@Unit_Price_Category = Unit_Price_Category,
+				@ShortSignRomanceAlt = SignRomanceTextShort,
+			    @LongSignRomanceAlt = SignRomanceTextLong
 
 			FROM 
 				ItemOverride (NOLOCK)
@@ -858,9 +864,19 @@ MU/MZ   2016-03-22  TFS18729
 						IF @ColumnName = LOWER('Locality') 
 							SELECT  @Locality = CAST(@ColumnValue AS varchar(50))
 						ELSE IF @ColumnName = LOWER('SignRomanceTextShort')
-							SELECT  @ShortSignRomance = CAST(@ColumnValue AS varchar(140))	
+						    BEGIN
+								IF @UseStoreJurisdictions = 1 AND @IsDefaultJurisdiction = 0
+									SELECT  @ShortSignRomanceAlt = CAST(@ColumnValue AS varchar(140))
+								ELSE
+									SELECT  @ShortSignRomance = CAST(@ColumnValue AS varchar(140))	
+							END
 						ELSE IF @ColumnName = LOWER('SignRomanceTextLong')
-							SELECT  @LongSignRomance = CAST(@ColumnValue AS varchar(300))
+							BEGIN
+								IF @UseStoreJurisdictions = 1 AND @IsDefaultJurisdiction = 0
+									SELECT  @LongSignRomanceAlt = CAST(@ColumnValue AS varchar(300))
+								ELSE
+									SELECT  @LongSignRomance = CAST(@ColumnValue AS varchar(300))
+							END
 						ELSE IF @ColumnName = LOWER('UomRegulationChicagoBaby')
 							SELECT  @ChicagoBaby = CAST(@ColumnValue AS varchar(50))	
 						ELSE IF @ColumnName = LOWER('UomRegulationTagUom')
@@ -1184,7 +1200,9 @@ MU/MZ   2016-03-22  TFS18729
 					@Not_AvailableNote,                            
 					@FSA_Eligible,                                  
 					@Product_Code,                                  
-					@Unit_Price_Category                          
+					@Unit_Price_Category,
+					@LongSignRomanceAlt,
+					@ShortSignRomanceAlt                          
 			
 				EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.2 Update Existing Item - [InsertUpdateItemOverride]'
 				
