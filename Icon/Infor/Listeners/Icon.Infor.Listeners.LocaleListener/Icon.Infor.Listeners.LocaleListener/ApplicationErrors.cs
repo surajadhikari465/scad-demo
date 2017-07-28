@@ -6,6 +6,8 @@
         {
             public const string AddOrUpdateLocaleError = "AddOrUpdateLocaleError";
             public const string GenerateLocaleMessageError = "GenerateLocaleMessageError";
+            public const string SequenceIdError = "SequenceIdError";
+
         }
     }
 }

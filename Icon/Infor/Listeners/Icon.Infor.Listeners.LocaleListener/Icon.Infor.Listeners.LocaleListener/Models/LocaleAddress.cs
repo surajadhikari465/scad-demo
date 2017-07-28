@@ -25,7 +25,10 @@ namespace Icon.Infor.Listeners.LocaleListener.Models
             this.Longitude = longitude;
             this.BusinessUnitId = businessUnitId;
         }
+        public LocaleAddress()
+        {
 
+        }
         public int AddressId { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }

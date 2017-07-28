@@ -26,11 +26,10 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
 
         public void Execute(AddOrUpdateLocalesCommand data)
         {
-            var organization = data.Locale;
-            var chains = organization.Locales;
-            var regions = chains.SelectMany(p => p.Locales);
-            var metros = regions.SelectMany(t => t.Locales);
-            var stores = metros.SelectMany(s => s.Locales);
+            var chains = data.chains;
+            var regions = data.regions;
+            var metros = data.metros;
+            var stores = data.stores;
             dbProvider.Transaction = dbProvider.Connection.BeginTransaction();
             try
             {
@@ -129,7 +128,7 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
                 or.TypeCode,
                 or.ParentLocaleId,
                 or.BusinessUnitId,
-                or.EwicAgency,
+                or.EwicAgency
             }).ToDataTable();
 
             dataTable.SetTypeName(parameterTypeName);

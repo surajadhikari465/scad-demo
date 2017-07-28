@@ -143,6 +143,10 @@
     <Compile Include="Models\LocaleTraitModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetSequenceIdsFromBusinessUnitIdParameters.cs" />
+    <Compile Include="Queries\GetSequenceIdsFromBusinessUnitIdQueryHandler.cs" />
+    <Compile Include="Queries\GetSequenceIdsFromLocaleIdParameters.cs" />
+    <Compile Include="Queries\GetSequenceIdsFromLocaleIdQueryHandler.cs" />
     <Compile Include="StructureMapInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
