@@ -642,13 +642,15 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                         Dim theUploadRowHolder As UploadRowHolder = validationErrors.ItemByKey(theUploadRow.UploadRowID)
                         Dim errors As New StringBuilder
 
-                        If theUploadRowHolder.ValidationErrors.Count > 0 Then
-                            For Each entry As DictionaryEntry In theUploadRowHolder.ValidationErrors
-                                errors.Append(entry.Value).AppendLine()
-                                errors.Append("; ").AppendLine()
-                            Next
+                        If Not theUploadRowHolder Is Nothing Then
+                            If theUploadRowHolder.ValidationErrors.Count > 0 Then
+                                For Each entry As DictionaryEntry In theUploadRowHolder.ValidationErrors
+                                    errors.Append(entry.Value).AppendLine()
+                                    errors.Append("; ").AppendLine()
+                                Next
+                            End If
+                            excelWorksheet.Rows(rowIndex).Cells(0).Value = errors.ToString()
                         End If
-                        excelWorksheet.Rows(rowIndex).Cells(0).Value = errors.ToString()
 
                         For Each theUploadType As UploadType In uploadTypeCollection
                             ' add the data rows with values only
