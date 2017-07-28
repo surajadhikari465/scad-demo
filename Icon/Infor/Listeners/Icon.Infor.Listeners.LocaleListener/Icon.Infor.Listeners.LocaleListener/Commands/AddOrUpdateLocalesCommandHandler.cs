@@ -34,7 +34,6 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
             try
             {
                 AddOrUpdateLocales(chains, regions, metros);
-
                 AddOrUpdateStores(stores);
                 AddOrUpdateLocaleTraits(stores);
                 AddOrUpdateLocaleAddress(stores);

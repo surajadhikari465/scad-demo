@@ -29,7 +29,6 @@ namespace Icon.Infor.Listeners.LocaleListener.MessageParsers
             model.TypeCode = localeMessage.type.code.ToString();
             model.Locales = localeMessage.locales.Select(l => BuildChain(l, int.Parse(localeMessage.id), model.SequenceId));
             model.Action = localeMessage.Action;
-
             return model;
         }
 
