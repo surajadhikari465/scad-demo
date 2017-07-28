@@ -22,7 +22,6 @@ namespace Icon.Infor.Listeners.LocaleListener
         private ICommandHandler<AddOrUpdateLocalesCommand> addOrUpdateLocalesCommandHandler;
         private IQueryHandler<GetSequenceIdFromLocaleIdParameters, int> getSequenceIdFromLocaleIdQueryHandler;
         private IQueryHandler<GetSequenceIdFromBusinessUnitIdParameters, int> getSequenceIdFromBusinessUnitIdQueryHandler;
-
         private ICommandHandler<ArchiveLocaleMessageCommand> archiveLocaleMessageCommandHandler;
         private ICommandHandler<GenerateLocaleMessagesCommand> generateLocaleMessagesCommandHandler;
 
