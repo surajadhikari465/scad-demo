@@ -1,10 +1,13 @@
 ﻿using Icon.Common;
+using Icon.Common.DataAccess;
 using Icon.Common.Email;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
 using Icon.Esb.Subscriber;
+using Icon.Framework;
 using Icon.Infor.Listeners.LocaleListener.Commands;
 using Icon.Infor.Listeners.LocaleListener.MessageParsers;
+using Icon.Infor.Listeners.LocaleListener.Queries;
 using Icon.Logging;
 using Mammoth.Common.DataAccess.DbProviders;
 using System;
@@ -23,7 +26,7 @@ namespace Icon.Infor.Listeners.LocaleListener
         static void Main(string[] args)
         {
             HostFactory.Run(r =>
-            {
+            {               
                 r.Service<IListenerApplication>(s =>
                 {
                     s.ConstructUsing(c => new InforLocaleListener(
@@ -35,8 +38,10 @@ namespace Icon.Infor.Listeners.LocaleListener
                         EsbConnectionSettings.CreateSettingsFromConfig(),
                         new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromConfig()),
                         EmailClient.CreateFromConfig(),
-                        new NLogLogger<InforLocaleListener>())
-                        );
+                        new NLogLogger<InforLocaleListener>(),
+                        new GetSequenceIdFromLocaleIdQueryHandler(new SqlDbProvider() { Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString) }),
+                        new GetSequenceIdFromBusinessUnitIdQueryHandler(new SqlDbProvider() { Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString) })
+                        ));
                     s.WhenStarted(cm => cm.Run());
                     s.WhenStopped(cm => cm.Close());
                 });

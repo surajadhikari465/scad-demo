@@ -135,6 +135,8 @@
     <Compile Include="Commands\AddOrUpdateLocalesCommandHandlerTests.cs" />
     <Compile Include="Commands\ArchiveLocaleMessageCommandHandlerTests.cs" />
     <Compile Include="Commands\GenerateLocaleMessagesCommandHandlerTests.cs" />
+    <Compile Include="Commands\GetSequenceIdFromBusinessUnitIdQueryHandlerTest.cs" />
+    <Compile Include="Commands\GetSequenceIdFromLocaleIdQueryHandlerTest.cs" />
     <Compile Include="InforLocaleListenerTests.cs" />
     <Compile Include="MessageParsers\LocaleMessageParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,6 +9,9 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
 {
     public class AddOrUpdateLocalesCommand
     {
-        public LocaleModel Locale { get; set; }
+        public IEnumerable<LocaleModel> chains { get; set; }
+        public IEnumerable<LocaleModel> regions { get; set; }
+        public IEnumerable<LocaleModel> metros { get; set; }
+        public IEnumerable<LocaleModel> stores { get; set; }
     }
 }

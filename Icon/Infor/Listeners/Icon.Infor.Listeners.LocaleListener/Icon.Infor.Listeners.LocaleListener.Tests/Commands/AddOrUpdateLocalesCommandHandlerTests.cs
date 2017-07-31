@@ -73,13 +73,18 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
                     LocaleTraits
                 );
 
-            LocaleModel metroModel = createLocaleModel(2002, "TestMetro", 2001, "MT", ActionEnum.AddOrUpdate, new List<LocaleModel> { storeModel });
-            LocaleModel regionModel = createLocaleModel(2001, "TestRegion", 2000, "RG", ActionEnum.AddOrUpdate, new List<LocaleModel> { metroModel });
-            LocaleModel chainModel = createLocaleModel(2000, "Testchain", null, "Ch", ActionEnum.AddOrUpdate, new List<LocaleModel>() { regionModel });
-            LocaleModel organizationModel = createLocaleModel(0, "TestCompany", null, "CMP", ActionEnum.AddOrUpdate, new List<LocaleModel>() { chainModel });
+            LocaleModel metroModel = CreateLocaleModel(2002, "TestMetro", 2001, "MT", ActionEnum.AddOrUpdate);
+            LocaleModel regionModel = CreateLocaleModel(2001, "TestRegion", 2000, "RG", ActionEnum.AddOrUpdate);
+            LocaleModel chainModel = CreateLocaleModel(2000, "Testchain", null, "Ch", ActionEnum.AddOrUpdate);
+            LocaleModel organizationModel = CreateLocaleModel(0, "TestCompany", null, "CMP", ActionEnum.AddOrUpdate);
 
             AddOrUpdateLocalesCommand addOrUpdateLocalesCommand = new AddOrUpdateLocalesCommand();
-            addOrUpdateLocalesCommand.Locale = organizationModel;
+            addOrUpdateLocalesCommand.chains = new List<LocaleModel> { chainModel };
+            addOrUpdateLocalesCommand.regions = new List<LocaleModel> { regionModel };
+            addOrUpdateLocalesCommand.metros = new List<LocaleModel> { metroModel };
+          
+            addOrUpdateLocalesCommand.stores = new List<LocaleModel> { storeModel };
+
             addOrUpdateLocalesCommandHandler.Execute(addOrUpdateLocalesCommand);
 
             var storeDb = this.dbProvider.Connection.Query<dynamic>(@"
@@ -176,7 +181,7 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
 
         }
 
-        private LocaleModel createStoreLocaleModel(int localeId, int? parentLocaleId, int businessUnitId, string name, string typeCode, DateTime openDate,
+        private LocaleModel CreateStoreLocaleModel(int localeId, int? parentLocaleId, int businessUnitId, string name, string typeCode, DateTime openDate,
                                                DateTime closeDate,  string ewicAgency, string posType, ActionEnum action,
                                                Models.LocaleAddress address,IEnumerable<LocaleTraitModel> localeTraitModelCollection)
         {
@@ -185,10 +190,9 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
             return localeModel;
         }
 
-        private LocaleModel createLocaleModel(int localeId, string name, int? parentLocaleId, string typeCode, ActionEnum action, List<LocaleModel> childLocale)
+        private LocaleModel CreateLocaleModel(int localeId, string name, int? parentLocaleId, string typeCode, ActionEnum action)
         {
             LocaleModel localeModel = new LocaleModel(localeId, name, parentLocaleId, typeCode, action);
-            localeModel.Locales = childLocale;
             return localeModel;
         }
     }
