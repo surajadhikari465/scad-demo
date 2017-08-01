@@ -150,8 +150,10 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.MessageParsers
             Assert.AreEqual(1, regions.Count());
             Assert.AreEqual(1, metros.Count());
             Assert.AreEqual(1, stores.Count());
+            Assert.AreEqual(1, stores.First().SequenceId);
+            Assert.AreEqual("0E984725-C51C-4BF4-9960-E1C80E27ABA0", stores.First().InforMessageId, true);
 
-            AssertMessageIsEqualToLocale(message, company, chains);
+           AssertMessageIsEqualToLocale(message, company, chains);
         }
 
         private void AssertMessageIsEqualToLocale(XDocument message, LocaleModel company, IEnumerable<LocaleModel> chains)
