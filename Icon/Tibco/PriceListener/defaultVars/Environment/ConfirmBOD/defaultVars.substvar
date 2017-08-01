@@ -2,36 +2,36 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>BOD</name>
-			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<name>CountSeperator</name>
+			<value>##</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861950</modTime>
+			<modTime>1500660552893</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ConfirmBODQueue</name>
-			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<name>DeliveryMode</name>
+			<value>Persistent</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1501525882391</modTime>
+			<modTime>1500660552840</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ESBForSpliceSlaw</name>
-			<value>WFMESB.Commerce.Retail.PriceMgmt.Price.RealTime.Queue.V2</value>
+			<name>JMSExpiration</name>
+			<value>0</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861788</modTime>
+			<modTime>1500660552788</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Price</name>
-			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
+			<name>JMSPriority</name>
+			<value>4</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863518</modTime>
+			<modTime>1500660552947</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

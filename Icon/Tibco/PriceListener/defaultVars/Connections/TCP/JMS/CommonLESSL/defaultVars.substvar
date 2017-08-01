@@ -19,7 +19,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIPassword</name>
-			<value>#!NTLcwFNAwNX6WFD1nSVq5sxV7W8kCaY6m4BO9KMJMPY=</value>
+			<value>#!ksWiCseQw/pY3x65n9C1TIwC2URiI332/rl/+m1tGYE=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -35,7 +35,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_Password</name>
-			<value>#!okPjB3S67GXfgKLtXUcig4wVcWTj/KJpIxPEvVMh7UY=</value>
+			<value>#!H9gM/YYs/39kw7VPdlsIWUA0rsqdcqPTUwUhbJRjaB0=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -51,7 +51,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_SSLConnectionFactoryPwd</name>
-			<value>#!UDVvOt9Kqta5riq1mXrsuA==</value>
+			<value>#!qlMz1b5LhuTXg2x5tU5YFA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

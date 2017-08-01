@@ -11,7 +11,8 @@
 	@SellableUOM nvarchar(3),
 	@CurrencyCode nvarchar(3),
 	@Multiple int,
-	@NewTagExpiration datetime2 = NULL
+	@NewTagExpiration datetime2 = NULL,
+	@NumberOfRowsUpdated INT OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -68,5 +69,7 @@ BEGIN
 		@CurrencyCode = @CurrencyCode,
 		@Multiple = @Multiple,
 		@NewTagExpiration = @NewTagExpiration;
+
+		SELECT @NumberOfRowsUpdated = @@ROWCOUNT
 END
 GO

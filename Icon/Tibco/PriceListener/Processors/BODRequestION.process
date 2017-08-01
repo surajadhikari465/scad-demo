@@ -9,18 +9,17 @@
         <xsd:element name="Input">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element name="SequenceId" type="xsd:string"/>
+                    <xsd:element name="GpmSequenceId" type="xsd:string"/>
                     <xsd:element name="Body" type="xsd:string"/>
-                    <xsd:element name="Patch_Number" type="xsd:string"/>
-                    <xsd:element name="Patch_Family_ID" type="xsd:string"/>
+                    <xsd:element name="PatchFamilyID" type="xsd:string"/>
                     <xsd:element name="MessageId" type="xsd:string"/>
                     <xsd:element ref="pfx2:Error"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>41</pd:startX>
-    <pd:startY>146</pd:startY>
+    <pd:startX>62</pd:startX>
+    <pd:startY>151</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>657</pd:endX>
@@ -50,13 +49,13 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>Send to BOD queue</pd:to>
+            <pd:to>Send to BOD Queue</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send to BOD queue</pd:from>
+            <pd:from>Send to BOD Queue</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -70,7 +69,7 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send to BOD queue</pd:from>
+            <pd:from>Send to BOD Queue</pd:from>
             <pd:to>Sleep</pd:to>
             <pd:xpathDescription>Error</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
@@ -81,7 +80,7 @@
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
             <pd:x>460</pd:x>
-            <pd:y>202</pd:y>
+            <pd:y>201</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -112,10 +111,10 @@
                 </ns1:SleepInputSchema>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Send to BOD queue">
+        <pd:activity name="Send to BOD Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>320</pd:x>
+            <pd:x>319</pd:x>
             <pd:y>86</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
@@ -139,8 +138,8 @@
                                 <xsd:element name="MessageID" type="xsd:string"/>
                                 <xsd:element ref="pfx2:Error"/>
                                 <xsd:element name="Body" type="xsd:string"/>
-                                <xsd:element name="Patch_Number" type="xsd:string"/>
-                                <xsd:element name="Patch_Family_ID" type="xsd:string"/>
+                                <xsd:element name="GpmSequenceID" type="xsd:string"/>
+                                <xsd:element name="PatchFamilyID" type="xsd:string"/>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
@@ -156,14 +155,11 @@
                     </JMSDeliveryMode>
                     <OtherProperties>
                         <SequenceID>
-                            <xsl:value-of select="$Start/Input/SequenceId"/>
+                            <xsl:value-of select="$Start/Input/GpmSequenceId"/>
                         </SequenceID>
-                        <Patch_Family_ID>
-                            <xsl:value-of select="$Start/Input/Patch_Family_ID"/>
-                        </Patch_Family_ID>
-                        <Patch_Number>
-                            <xsl:value-of select="$Start/Input/Patch_Number"/>
-                        </Patch_Number>
+                        <PatchFamilyID>
+                            <xsl:value-of select="$Start/Input/PatchFamilyID"/>
+                        </PatchFamilyID>
                     </OtherProperties>
                     <Body>
                         <Input>
@@ -174,12 +170,12 @@
                             <Body>
                                 <xsl:value-of select="$Start/Input/Body"/>
                             </Body>
-                            <Patch_Number>
-                                <xsl:value-of select="$Start/Input/Patch_Number"/>
-                            </Patch_Number>
-                            <Patch_Family_ID>
-                                <xsl:value-of select="$Start/Input/Patch_Family_ID"/>
-                            </Patch_Family_ID>
+                            <GpmSequenceID>
+                                <xsl:value-of select="$Start/Input/GpmSequenceId"/>
+                            </GpmSequenceID>
+                            <PatchFamilyID>
+                                <xsl:value-of select="$Start/Input/PatchFamilyID"/>
+                            </PatchFamilyID>
                         </Input>
                     </Body>
                 </ns0:ActivityInput>
@@ -189,8 +185,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>340</pd:x>
-        <pd:y>345</pd:y>
+        <pd:x>389</pd:x>
+        <pd:y>350</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -208,7 +204,7 @@
         <pd:inputBindings>
             <pfx:ActivityInput>
                 <message>
-                    <xsl:value-of select="concat( &quot;Error trying to send BOD Request to JMS Queue: &#xD;&#xA; &quot; &#xA;,tib:render-xml($_error_Send-to-BOD-queue/ActivityErrors, false() , true()) )"/>
+                    <xsl:value-of select="concat( &quot;Error trying to send BOD Request to JMS Queue: &#xD;&#xA; &quot; &#xA;,tib:render-xml($_error_Send-to-BOD-Queue/ActivityErrors, false() , true()) )"/>
                 </message>
                 <msgCode>
                     <xsl:value-of select="&quot;BOD-EXCEPTION-QSEND-ERROR&quot;"/>

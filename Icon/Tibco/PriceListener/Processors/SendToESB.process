@@ -7,7 +7,7 @@
     <pd:name>Processors/SendToESB.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx3:ActivityOutput"/>
-    <pd:startX>108</pd:startX>
+    <pd:startX>110</pd:startX>
     <pd:startY>153</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
@@ -185,15 +185,10 @@
                                     <xsl:value-of select="pfx3:Source"/>
                                 </Source>
                             </xsl:if>
-                            <xsl:if test="pfx3:Patch_Family_ID">
-                                <Patch_Family_ID>
-                                    <xsl:value-of select="pfx3:Patch_Family_ID"/>
-                                </Patch_Family_ID>
-                            </xsl:if>
-                            <xsl:if test="pfx3:Patch_Number">
-                                <Patch_Number>
-                                    <xsl:value-of select="pfx3:Patch_Number"/>
-                                </Patch_Number>
+                            <xsl:if test="pfx3:PatchFamilyID">
+                                <PatchFamilyID>
+                                    <xsl:value-of select="pfx3:PatchFamilyID"/>
+                                </PatchFamilyID>
                             </xsl:if>
                         </OtherProperties>
                     </xsl:for-each>

@@ -21,9 +21,8 @@
 				<xs:element ref="SequenceID" minOccurs="0"/>
 				<xs:element ref="nonReceivingSysName" minOccurs="0"/>
 				<xs:element ref="Source" minOccurs="0"/>
-				<xs:element ref="Patch_Family_ID" minOccurs="0"/>
-				<xs:element ref="Patch_Number" minOccurs="0"/>
-				<xs:element ref="JMSCorrelationIDOther"/>
+				<xs:element ref="PatchFamilyID" minOccurs="0"/>
+				<xs:element ref="JMSCorrelationID" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -32,8 +31,7 @@
 	<xs:element name="SequenceID" type="xs:string"/>
 	<xs:element name="nonReceivingSysName" type="xs:string"/>
 	<xs:element name="Source" type="xs:string"/>
-	<xs:element name="Patch_Family_ID" type="xs:string"/>
-	<xs:element name="Patch_Number" type="xs:string"/>
+	<xs:element name="PatchFamilyID" type="xs:string"/>
 	<xs:element name="Body" type="xs:string"/>
-	<xs:element name="JMSCorrelationIDOther" type="xs:string"/>
+	<xs:element name="JMSCorrelationID" type="xs:string"/>
 </xs:schema>

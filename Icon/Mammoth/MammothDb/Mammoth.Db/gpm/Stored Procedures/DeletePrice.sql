@@ -3,7 +3,8 @@
 	@ItemID int,
 	@BusinessUnitID int,
 	@StartDate datetime2,
-	@PriceType nvarchar(3)
+	@PriceType nvarchar(3),
+	@NumberOfRowsDeleted INT OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -34,5 +35,7 @@ DECLARE @params NVARCHAR(500);
 		@BusinessUnitID = @BusinessUnitID,
 		@StartDate = @StartDate,
 		@PriceType = @PriceType;
+
+		SELECT @NumberOfRowsDeleted = @@ROWCOUNT
 END
 go

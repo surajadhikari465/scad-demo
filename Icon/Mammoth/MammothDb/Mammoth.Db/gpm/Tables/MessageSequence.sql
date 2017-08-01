@@ -2,7 +2,7 @@
 (
 	[MessageSequenceID] INT IDENTITY(1,1) NOT NULL,
     [PatchFamilyID] NVARCHAR(50) NOT NULL, 
-    [PatchNumber] INT NOT NULL,
+    [GpmSequenceID] INT NOT NULL,
 	[GpmMessageId] UNIQUEIDENTIFIER NOT NULL,
     [InsertDateUtc] DATETIME2(7) NOT NULL DEFAULT (SYSUTCDATETIME()),
 	[ModifiedDateUtc] DATETIME2(7) NULL,
@@ -22,7 +22,7 @@ CREATE TRIGGER [gpm].[Trigger_MessageSequence]
 		(
 			MessageSequenceID,
 			PatchFamilyID,
-			PatchNumber,
+			GpmSequenceID,
 			GpmMessageId,
 			InsertDateUtc,
 			ModifiedDateUtc,
@@ -31,7 +31,7 @@ CREATE TRIGGER [gpm].[Trigger_MessageSequence]
 		SELECT
 			deleted.MessageSequenceID,
 			deleted.PatchFamilyID,
-			deleted.PatchNumber,
+			deleted.[GpmSequenceID],
 			deleted.GpmMessageId,
 			deleted.InsertDateUtc,
 			deleted.ModifiedDateUtc,

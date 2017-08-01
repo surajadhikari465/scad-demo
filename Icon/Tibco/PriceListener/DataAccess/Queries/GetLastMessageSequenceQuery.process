@@ -10,7 +10,7 @@
                 <xsd:sequence>
                     <xsd:element name="GpmMessageId" type="xsd:string"/>
                     <xsd:element name="PatchFamilyId" type="xsd:string"/>
-                    <xsd:element name="MessagePatchNumber" type="xsd:int"/>
+                    <xsd:element name="SequenceID" type="xsd:int"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -22,12 +22,12 @@
             <PatchFamilyId>
                 <xsl:value-of select="$Map-Data/root/PatchFamilyId"/>
             </PatchFamilyId>
-            <MessagePatchNumber>
-                <xsl:value-of select="$Map-Data/root/MessagePatchNumber"/>
-            </MessagePatchNumber>
-            <LastProcessedPatchNumber>
-                <xsl:value-of select="$Map-Data/root/LastProcessedPatchNumber"/>
-            </LastProcessedPatchNumber>
+            <MessageGpmSequenceID>
+                <xsl:value-of select="$Map-Data/root/SequenceID"/>
+            </MessageGpmSequenceID>
+            <LastProcessedGpmSequenceID>
+                <xsl:value-of select="$Map-Data/root/LastProcessedGpmSequenceID"/>
+            </LastProcessedGpmSequenceID>
             <IsInSequence>
                 <xsl:value-of select="$Map-Data/root/IsInSequence"/>
             </IsInSequence>
@@ -42,8 +42,8 @@
             <xsd:complexType>
                 <xsd:sequence>
                     <xsd:element name="PatchFamilyId" type="xsd:string"/>
-                    <xsd:element name="MessagePatchNumber" type="xsd:int"/>
-                    <xsd:element name="LastProcessedPatchNumber" type="xsd:int"/>
+                    <xsd:element name="MessageGpmSequenceID" type="xsd:int"/>
+                    <xsd:element name="LastProcessedGpmSequenceID" type="xsd:int"/>
                     <xsd:element name="IsInSequence" type="xsd:boolean"/>
                     <xsd:element name="IsAlreadyProcessed" type="xsd:boolean"/>
                 </xsd:sequence>
@@ -68,7 +68,7 @@
             <maxRows>100</maxRows>
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
-            <statement>SELECT MessageSequenceID, PatchFamilyID, PatchNumber AS LastProcessedPatchNumber, InsertDateUtc FROM [gpm].[MessageSequence] WHERE PatchFamilyID = ?</statement>
+            <statement>SELECT MessageSequenceID, PatchFamilyID, GpmSequenceID AS LastProcessedGpmSequenceID, InsertDateUtc FROM [gpm].[MessageSequence] WHERE PatchFamilyID = ?</statement>
             <Prepared_Param_DataType>
                 <parameter>
                     <parameterName>PatchFamilyId</parameterName>
@@ -85,7 +85,7 @@
             <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>LastProcessedPatchNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaColumns>LastProcessedGpmSequenceID</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
@@ -113,8 +113,8 @@
                     <xsd:complexType>
                         <xsd:sequence>
                             <xsd:element name="PatchFamilyId" type="xsd:string"/>
-                            <xsd:element name="MessagePatchNumber" type="xsd:int"/>
-                            <xsd:element name="LastProcessedPatchNumber" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="SequenceID" type="xsd:int"/>
+                            <xsd:element name="LastProcessedGpmSequenceID" type="xsd:int" minOccurs="0"/>
                             <xsd:element name="IsInSequence" type="xsd:boolean"/>
                             <xsd:element name="IsAlreadyProcessed" type="xsd:boolean"/>
                         </xsd:sequence>
@@ -127,17 +127,17 @@
                 <PatchFamilyId>
                     <xsl:value-of select="$Start/root/PatchFamilyId"/>
                 </PatchFamilyId>
-                <MessagePatchNumber>
-                    <xsl:value-of select="$Start/root/MessagePatchNumber"/>
-                </MessagePatchNumber>
-                <LastProcessedPatchNumber>
-                    <xsl:value-of select="if (empty($GetLastSequenceQuery/resultSet/Record)) then 0 else $GetLastSequenceQuery/resultSet/Record[1]/LastProcessedPatchNumber"/>
-                </LastProcessedPatchNumber>
+                <SequenceID>
+                    <xsl:value-of select="$Start/root/SequenceID"/>
+                </SequenceID>
+                <LastProcessedGpmSequenceID>
+                    <xsl:value-of select="if (empty($GetLastSequenceQuery/resultSet/Record)) then 0 else $GetLastSequenceQuery/resultSet/Record[1]/LastProcessedGpmSequenceID"/>
+                </LastProcessedGpmSequenceID>
                 <IsInSequence>
-                    <xsl:value-of select="($Start/root/MessagePatchNumber = ($GetLastSequenceQuery/resultSet/Record[1]/LastProcessedPatchNumber + 1))&#xA;or ($Start/root/MessagePatchNumber = 1 and count($GetLastSequenceQuery/resultSet/Record) = 0)"/>
+                    <xsl:value-of select="($Start/root/SequenceID = ($GetLastSequenceQuery/resultSet/Record[1]/LastProcessedGpmSequenceID + 1))&#xA;or ($Start/root/SequenceID = 1 and count($GetLastSequenceQuery/resultSet/Record) = 0)"/>
                 </IsInSequence>
                 <IsAlreadyProcessed>
-                    <xsl:value-of select="$Start/root/MessagePatchNumber &lt;= $GetLastSequenceQuery/resultSet/Record[1]/LastProcessedPatchNumber"/>
+                    <xsl:value-of select="$Start/root/SequenceID&lt;= $GetLastSequenceQuery/resultSet/Record[1]/LastProcessedGpmSequenceID"/>
                 </IsAlreadyProcessed>
             </root>
         </pd:inputBindings>

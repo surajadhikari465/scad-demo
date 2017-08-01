@@ -2,7 +2,7 @@
 (
 	[MessageSequenceID] INT NOT NULL,
     [PatchFamilyID] NVARCHAR(50) NOT NULL, 
-    [PatchNumber] INT NOT NULL,
+    [GpmSequenceID] INT NOT NULL,
 	[GpmMessageId] UNIQUEIDENTIFIER NOT NULL,
     [InsertDateUtc] DATETIME2(7) NOT NULL,
 	[ModifiedDateUtc] DATETIME2(7) NULL,
