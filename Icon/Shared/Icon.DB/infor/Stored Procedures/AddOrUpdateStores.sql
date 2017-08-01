@@ -34,7 +34,9 @@ BEGIN
 			   LocaleTypeCode,
 			   ParentLocaleID,
 			   BusinessUnitId,
-			   EwicAgency
+			   EwicAgency,
+			   SequenceId,
+		       InforMessageId
 	   INTO #tmpStores
 	   FROM @localeStores
 
@@ -173,4 +175,29 @@ BEGIN
 			DEALLOCATE locale_cursor
 		END
 	END
+
+	
+    INSERT INTO infor.LocaleSequence(LocaleId, InforMessageId, SequenceID)
+	SELECT 
+		bu.LocaleID,
+		tmp.InforMessageId,
+		tmp.SequenceId
+	FROM #tmpStores tmp
+	JOIN LocaleTrait bu ON tmp.BusinessUnitId = bu.traitValue
+			AND bu.traitID = @businessUnitIdTraitId
+	WHERE tmp.SequenceId IS NOT NULL
+		AND bu.LocaleID NOT IN
+		(
+			SELECT LocaleID FROM infor.LocaleSequence
+		)
+
+	UPDATE ls
+	SET SequenceID = tmp.SequenceId,
+		ModifiedDateUtc = SYSUTCDATETIME(),
+		InforMessageId = tmp.InforMessageId
+	FROM #tmpStores tmp
+	JOIN LocaleTrait bu ON tmp.BusinessUnitId = bu.traitValue
+			AND bu.traitID = @businessUnitIdTraitId
+	JOIN infor.LocaleSequence ls ON tmp.LocaleID = bu.LocaleID
+	WHERE tmp.SequenceId IS NOT NULL
 END

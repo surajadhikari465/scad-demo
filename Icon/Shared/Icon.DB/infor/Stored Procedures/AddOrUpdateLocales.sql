@@ -22,7 +22,9 @@ DECLARE @OwnerOrgPartyID INT = (
 			   LocaleTypeCode,
 			   ParentLocaleID,
 			   BusinessUnitId,
-			   EwicAgency
+			   EwicAgency,
+			   SequenceId,
+		       InforMessageId
 	   INTO #tmpLocale
 	   FROM @locale
 
@@ -125,5 +127,26 @@ DECLARE @OwnerOrgPartyID INT = (
 				SELECT localeID
 				FROM Locale
 				)
+
+    INSERT INTO infor.LocaleSequence(LocaleId, InforMessageId, SequenceID)
+	SELECT 
+		tmp.LocaleID,
+		tmp.InforMessageId,
+		tmp.SequenceId
+	FROM #tmpLocale tmp
+	WHERE tmp.SequenceId IS NOT NULL
+		AND tmp.LocaleID NOT IN
+		(
+			SELECT LocaleID FROM infor.LocaleSequence
+		)
+
+	UPDATE ls
+	SET SequenceID = tmp.SequenceId,
+		ModifiedDateUtc = SYSUTCDATETIME(),
+		InforMessageId = tmp.InforMessageId
+	FROM #tmpLocale tmp
+	JOIN infor.LocaleSequence ls ON tmp.LocaleID = ls.LocaleID
+	WHERE tmp.SequenceId IS NOT NULL
+
 	END
 END

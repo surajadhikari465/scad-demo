@@ -67,6 +67,7 @@ namespace Icon.Infor.Listeners.LocaleListener.Models
         public LocaleAddress Address { get; set; }
         public IEnumerable<LocaleTraitModel> LocaleTraits { get; set; }
         public int SequenceId { get; set; }
+        public string InforMessageId { get; set; }
 
     }
 }
