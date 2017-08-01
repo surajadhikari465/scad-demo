@@ -198,6 +198,6 @@ BEGIN
 	FROM #tmpStores tmp
 	JOIN LocaleTrait bu ON tmp.BusinessUnitId = bu.traitValue
 			AND bu.traitID = @businessUnitIdTraitId
-	JOIN infor.LocaleSequence ls ON tmp.LocaleID = bu.LocaleID
+	JOIN infor.LocaleSequence ls ON ls.LocaleID = bu.LocaleID
 	WHERE tmp.SequenceId IS NOT NULL
 END
