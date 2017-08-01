@@ -1,16 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Infor.Listeners.HierarchyClass.Services;
-using Icon.Infor.Listeners.HierarchyClass.Commands;
-using Icon.Common.DataAccess;
-using Moq;
-using Icon.Infor.Listeners.HierarchyClass.Models;
+﻿using Icon.Common.DataAccess;
 using Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.Framework;
+using Icon.Infor.Listeners.HierarchyClass.Commands;
+using Icon.Infor.Listeners.HierarchyClass.Constants;
+using Icon.Infor.Listeners.HierarchyClass.Models;
+using Icon.Infor.Listeners.HierarchyClass.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Collections.Generic;
 using System.Linq;
-using Icon.Framework;
-using Icon.Common.Context;
-using Icon.Infor.Listeners.HierarchyClass.Constants;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
 {
@@ -19,15 +17,17 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
     {
         private Mock<ICommandHandler<DeleteHierarchyClassesCommand>> mockDeleteCommandHandler;
         private Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>> mockGenerateHierarchyClassEventsCommandHandler;
+        private HierarchyClassListenerSettings settings;
 
         [TestInitialize]
         public void Initialize()
         {
             mockDeleteCommandHandler = new Mock<ICommandHandler<DeleteHierarchyClassesCommand>>();
             mockGenerateHierarchyClassEventsCommandHandler = new Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>>();
-            MockHierarchyClassListenerSettings.Setup(s => s.EnableNationalClassEventGeneration).Returns(true);
+            settings = new HierarchyClassListenerSettings { EnableNationalClassEventGeneration = true };
+
             service = new DeleteHierarchyClassesService(
-                MockHierarchyClassListenerSettings.Object,
+                settings,
                 mockDeleteCommandHandler.Object,
                 MockGenerateEventsCommandHandler.Object,
                 mockGenerateHierarchyClassEventsCommandHandler.Object);
@@ -193,10 +193,23 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //set an error on the command data, to simulate an error when attempting to delete
             foreach (var hc in hierarchyClasses)
             {
-
                 hc.ErrorCode = ApplicationErrors.Codes.UnableToFindMatchingHierarchyClass;
                 hc.ErrorDetails = ApplicationErrors.Descriptions.UnableToFindMatchingHierarchyClassToDeleteMessage;
             }
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
+                hierarchyName, ActionEnum.Delete, Times.Never(), hierarchyClassIdForUpdate);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_NationalDelete_WhenExists_SettingIsTurnedOff_DoesNotGeneratesEvent()
+        {
+            settings.EnableNationalClassEventGeneration = false;
+            var hierarchyName = HierarchyNames.National;
+            var hierarchyClasses = CreateInforHierarchyClassesForDelete(
+                hierarchyClassIdForUpdate, hierarchyName);
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
