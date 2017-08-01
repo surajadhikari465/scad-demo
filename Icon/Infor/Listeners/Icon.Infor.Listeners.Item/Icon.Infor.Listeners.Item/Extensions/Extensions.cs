@@ -13,7 +13,11 @@ namespace Icon.Infor.Listeners.Item.Extensions
 {
     public static class Extensions
     {
-        public static ItemModel ToItemModel(this Esb.Schemas.Wfm.Contracts.ItemType item, string inforMessageId, DateTime messageParseTime)
+        public static ItemModel ToItemModel(
+            this Esb.Schemas.Wfm.Contracts.ItemType item, 
+            string inforMessageId, 
+            DateTime messageParseTime,
+            decimal? sequenceId)
         {
             var enterpriseAttributes = item.locale.First().Item as EnterpriseItemAttributesType;
             return new ItemModel
@@ -78,7 +82,8 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 InforMessageId = Guid.Parse(inforMessageId),
                 ContainesDuplicateMerchandiseClass = ContainsDuplicateHierarchyClass(enterpriseAttributes, HierarchyNames.Merchandise),
                 ContainesDuplicateNationalClass = ContainsDuplicateHierarchyClass(enterpriseAttributes, HierarchyNames.National),
-                MessageParseTime = messageParseTime
+                MessageParseTime = messageParseTime,
+                SequenceId = sequenceId
             };
         }
 

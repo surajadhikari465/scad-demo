@@ -21,14 +21,15 @@ namespace Icon.Infor.Listeners.Item
         static void Main(string[] args)
         {
             IconDbContextFactory factory = new IconDbContextFactory();
+            ItemListenerSettings settings = ItemListenerSettings.CreateFromConfig();
 
             HostFactory.Run(r =>
             {
                 r.Service<IListenerApplication>(s =>
                 {
                     s.ConstructUsing(c => new ItemListener(
-                        new ItemMessageParser(new NLogLogger<ItemMessageParser>()),
-                        new ItemModelValidator(new GetItemValidationPropertiesQuery(factory)),
+                        new ItemMessageParser(settings, new NLogLogger<ItemMessageParser>()),
+                        new ItemModelValidator(settings, new GetItemValidationPropertiesQuery(factory)),
                         new ItemService(
                                 new ItemAddOrUpdateCommandHandler(factory),
                                 new GenerateItemMessagesCommandHandler(factory),

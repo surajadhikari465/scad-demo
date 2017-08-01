@@ -117,7 +117,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                 FreeRange = "0",
                 DryAged = "0",
                 AirChilled = "1",
-                MadeInHouse = "1"
+                MadeInHouse = "1",
+                SequenceId = 10
             };
 
             command.Items = new List<ItemModel>
@@ -202,6 +203,9 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(expectedItem.DryAged.ToBool(), signAttributes.DryAged);
             Assert.AreEqual(expectedItem.AirChilled.ToBool(), signAttributes.AirChilled);
             Assert.AreEqual(expectedItem.MadeInHouse.ToBool(), signAttributes.MadeInHouse);
+            //Sequence ID
+            var sequenceId = context.Database.SqlQuery<decimal?>($"SELECT SequenceID FROM infor.ItemSequence WHERE ItemID = {item.itemID}").First();
+            Assert.AreEqual(expectedItem.SequenceId, sequenceId);
         }
 
         [TestMethod]
@@ -276,6 +280,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                 DeliverySystem = "Test Delivery System",
                 Notes = "Test Notes",
                 HiddenItem = "Test Hidden Item",
+                SequenceId = 10
             };
 
             command.Items = new List<ItemModel>
@@ -285,7 +290,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             commandHandler.Execute(command);
 
             expectedInsertTime = DateTime.Parse(context.ItemTrait.Single(it => it.traitID == Traits.ValidationDate && it.itemID == initialItem.ItemId).traitValue);
-            ItemModel expectedItem = UpdateItem(initialItem,
+            ItemModel expectedItem = UpdateItem(
+                initialItem,
                 expectedMerchandiseHierarchyClass,
                 expectedBrandHierarchyClass,
                 expectedNationalHierarchyClass);
@@ -375,6 +381,167 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(expectedItem.DryAged.ToBool(), signAttributes.DryAged);
             Assert.AreEqual(expectedItem.AirChilled.ToBool(), signAttributes.AirChilled);
             Assert.AreEqual(expectedItem.MadeInHouse.ToBool(), signAttributes.MadeInHouse);
+
+            //Sequence ID
+            var sequenceId = context.Database.SqlQuery<decimal?>($"SELECT SequenceID FROM infor.ItemSequence WHERE ItemID = {item.itemID}").First();
+            Assert.AreEqual(expectedItem.SequenceId, sequenceId);
+        }
+
+        [TestMethod]
+        public void ItemAddOrUpdate_SequenceIdIsNull_ShouldNotAddSequenceId()
+        {
+            //Given
+            var expectedInsertTime = DateTime.Today;
+            var expectedItem = new ItemModel
+            {
+                ItemId = context.Item.Max(i => i.itemID) + 1,
+                ItemTypeCode = ItemTypes.Codes.NonRetail,
+                ScanCode = "3334445552",
+                ScanCodeType = ScanCodeTypes.Descriptions.ScalePlu,
+                //Hierarchy
+                MerchandiseHierarchyClassId = testMerchandiseHierarchyClass.hierarchyClassID.ToString(),
+                BrandsHierarchyClassId = testBrandHierarchyClass.hierarchyClassID.ToString(),
+                NationalHierarchyClassId = testNationalHierarchyClass.hierarchyClassID.ToString(),
+                TaxHierarchyClassId = "1234567",
+                FinancialHierarchyClassId = "1234",
+                //Trait
+                ProductDescription = "Test ProductDescription",
+                PosDescription = "Test PosDescription",
+                FoodStampEligible = "Test FoodStampEligible",
+                PosScaleTare = "Test PosScaleTare",
+                ProhibitDiscount = "Test ProhibitDiscount",
+                PackageUnit = "Test PackageUnit",
+                RetailSize = "Test RetailSize",
+                RetailUom = "Test RetailUom",
+                AlcoholByVolume = "Test AlcoholByVolume",
+                CaseinFree = "Test CaseinFree",
+                DrainedWeight = "Test DrainedWeight",
+                DrainedWeightUom = "Test DrainedWeightUom",
+                FairTradeCertified = "Test FairTradeCertified",
+                Hemp = "Test Hemp",
+                LocalLoanProducer = "Test LocalLoanProducer",
+                MainProductName = "Test MainProductName",
+                NutritionRequired = "Test NutritionRequired",
+                OrganicPersonalCare = "Test OrganicPersonalCare",
+                Paleo = "Test Paleo",
+                ProductFlavorType = "Test ProductFlavorType",
+                InsertDate = DateTime.Now.ToString(),
+                ModifiedDate = DateTime.Now.ToString(),
+                ModifiedUser = String.Empty,
+                DeliverySystem = null,
+                Notes = "Test Notes",
+                HiddenItem = "Test Hidden Item",
+                //ItemSignAttribute
+                AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step2,
+                Biodynamic = "1",
+                CheeseMilkType = MilkTypes.Descriptions.BuffaloMilk,
+                CheeseRaw = "0",
+                EcoScaleRating = EcoScaleRatings.Descriptions.UltraPremiumGreen,
+                GlutenFree = "Test GlutenFree",
+                Kosher = "Test Kosher",
+                Msc = "1",
+                NonGmo = "Test NonGmo",
+                Organic = "Test Organic",
+                PremiumBodyCare = "0",
+                FreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.Frozen,
+                SeafoodCatchType = SeafoodCatchTypes.Descriptions.FarmRaised,
+                Vegan = "Test Vegan",
+                Vegetarian = "1",
+                WholeTrade = "1",
+                GrassFed = "1",
+                PastureRaised = "1",
+                FreeRange = "0",
+                DryAged = "0",
+                AirChilled = "1",
+                MadeInHouse = "1",
+                SequenceId = null
+            };
+
+            command.Items = new List<ItemModel>
+            {
+                expectedItem
+            };
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var item = context
+                .Item
+                .AsNoTracking()
+                .Include(i => i.ScanCode)
+                .Include(i => i.ItemTrait)
+                .Include(i => i.ItemHierarchyClass)
+                .Include(i => i.ItemSignAttribute)
+                .Single(i => i.itemID == expectedItem.ItemId);
+            var traits = item.ItemTrait;
+            var itemHierarchyClasses = item.ItemHierarchyClass;
+            var signAttributes = item.ItemSignAttribute.Single();
+
+            Assert.AreEqual(expectedItem.ItemId, item.itemID);
+            Assert.AreEqual(ItemTypes.Ids[expectedItem.ItemTypeCode], item.itemTypeID);
+            Assert.AreEqual(expectedItem.ScanCode, item.ScanCode.First().scanCode);
+            Assert.AreEqual(ScanCodeTypes.Ids[expectedItem.ScanCodeType], item.ScanCode.First().scanCodeTypeID);
+            //hierarchy
+            Assert.AreEqual(testMerchandiseHierarchyClass.hierarchyClassID, itemHierarchyClasses.Single(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.Merchandise).hierarchyClassID);
+            Assert.AreEqual(testBrandHierarchyClass.hierarchyClassID, itemHierarchyClasses.Single(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.Brands).hierarchyClassID);
+            Assert.AreEqual(testTaxHierarchyClass.hierarchyClassID, itemHierarchyClasses.Single(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.Tax).hierarchyClassID);
+            Assert.AreEqual(testFinancialHierarchyClass.hierarchyClassID, itemHierarchyClasses.Single(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.Financial).hierarchyClassID);
+            Assert.AreEqual(testNationalHierarchyClass.hierarchyClassID, itemHierarchyClasses.Single(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.National).hierarchyClassID);
+            //traits
+            Assert.AreEqual(expectedItem.ProductDescription, traits.Single(it => it.traitID == Traits.ProductDescription).traitValue);
+            Assert.AreEqual(expectedItem.PosDescription, traits.Single(it => it.traitID == Traits.PosDescription).traitValue);
+            Assert.AreEqual(expectedItem.FoodStampEligible, traits.Single(it => it.traitID == Traits.FoodStampEligible).traitValue);
+            Assert.AreEqual(expectedItem.PosScaleTare, traits.Single(it => it.traitID == Traits.PosScaleTare).traitValue);
+            Assert.AreEqual(expectedItem.ProhibitDiscount, traits.Single(it => it.traitID == Traits.ProhibitDiscount).traitValue);
+            Assert.AreEqual(expectedItem.PackageUnit, traits.Single(it => it.traitID == Traits.PackageUnit).traitValue);
+            Assert.AreEqual(expectedItem.RetailSize, traits.Single(it => it.traitID == Traits.RetailSize).traitValue);
+            Assert.AreEqual(expectedItem.RetailUom, traits.Single(it => it.traitID == Traits.RetailUom).traitValue);
+            Assert.IsTrue(expectedInsertTime <= DateTime.Parse(traits.Single(it => it.traitID == Traits.ValidationDate).traitValue));
+            Assert.AreEqual(expectedItem.AlcoholByVolume, traits.Single(it => it.traitID == Traits.AlcoholByVolume).traitValue);
+            Assert.AreEqual(expectedItem.CaseinFree, traits.Single(it => it.traitID == Traits.CaseinFree).traitValue);
+            Assert.AreEqual(expectedItem.DrainedWeight, traits.Single(it => it.traitID == Traits.DrainedWeight).traitValue);
+            Assert.AreEqual(expectedItem.DrainedWeightUom, traits.Single(it => it.traitID == Traits.DrainedWeightUom).traitValue);
+            Assert.AreEqual(expectedItem.FairTradeCertified, traits.Single(it => it.traitID == Traits.FairTradeCertified).traitValue);
+            Assert.AreEqual(expectedItem.Hemp, traits.Single(it => it.traitID == Traits.Hemp).traitValue);
+            Assert.AreEqual(expectedItem.LocalLoanProducer, traits.Single(it => it.traitID == Traits.LocalLoanProducer).traitValue);
+            Assert.AreEqual(expectedItem.MainProductName, traits.Single(it => it.traitID == Traits.MainProductName).traitValue);
+            Assert.AreEqual(expectedItem.NutritionRequired, traits.Single(it => it.traitID == Traits.NutritionRequired).traitValue);
+            Assert.AreEqual(expectedItem.OrganicPersonalCare, traits.Single(it => it.traitID == Traits.OrganicPersonalCare).traitValue);
+            Assert.AreEqual(expectedItem.Paleo, traits.Single(it => it.traitID == Traits.Paleo).traitValue);
+            Assert.AreEqual(expectedItem.ProductFlavorType, traits.Single(it => it.traitID == Traits.ProductFlavorType).traitValue);
+            Assert.AreEqual(expectedItem.InsertDate, traits.Single(it => it.traitID == Traits.InsertDate).traitValue);
+            Assert.AreEqual(expectedItem.ModifiedDate, traits.Single(it => it.traitID == Traits.ModifiedDate).traitValue);
+            Assert.IsNull(traits.SingleOrDefault(it => it.traitID == Traits.ModifiedUser));
+            Assert.IsNull(traits.SingleOrDefault(it => it.traitID == Traits.DeliverySystem));
+            Assert.AreEqual(expectedItem.Notes, traits.Single(it => it.traitID == Traits.Notes).traitValue);
+            Assert.AreEqual(expectedItem.HiddenItem, traits.Single(it => it.traitID == Traits.HiddenItem).traitValue);
+            //hierarchy classes
+            Assert.AreEqual(AnimalWelfareRatings.Ids[expectedItem.AnimalWelfareRating], signAttributes.AnimalWelfareRatingId);
+            Assert.AreEqual(expectedItem.Biodynamic.ToBool(), signAttributes.Biodynamic);
+            Assert.AreEqual(MilkTypes.Ids[expectedItem.CheeseMilkType], signAttributes.CheeseMilkTypeId);
+            Assert.AreEqual(expectedItem.CheeseRaw.ToBool(), signAttributes.CheeseRaw);
+            Assert.AreEqual(EcoScaleRatings.Ids[expectedItem.EcoScaleRating], signAttributes.EcoScaleRatingId);
+            Assert.AreEqual("Test GlutenFree", signAttributes.GlutenFreeAgencyName);
+            Assert.AreEqual("Test Kosher", signAttributes.KosherAgencyName);
+            Assert.AreEqual(expectedItem.Msc.ToBool(), signAttributes.Msc);
+            Assert.AreEqual("Test NonGmo", signAttributes.NonGmoAgencyName);
+            Assert.AreEqual("Test Organic", signAttributes.OrganicAgencyName);
+            Assert.AreEqual(expectedItem.PremiumBodyCare.ToBool(), signAttributes.PremiumBodyCare);
+            Assert.AreEqual(SeafoodFreshOrFrozenTypes.Ids[expectedItem.FreshOrFrozen], signAttributes.SeafoodFreshOrFrozenId);
+            Assert.AreEqual(SeafoodCatchTypes.Ids[expectedItem.SeafoodCatchType], signAttributes.SeafoodCatchTypeId);
+            Assert.AreEqual("Test Vegan", signAttributes.VeganAgencyName);
+            Assert.AreEqual(expectedItem.Vegetarian.ToBool(), signAttributes.Vegetarian);
+            Assert.AreEqual(expectedItem.WholeTrade.ToBool(), signAttributes.WholeTrade);
+            Assert.AreEqual(expectedItem.GrassFed.ToBool(), signAttributes.GrassFed);
+            Assert.AreEqual(expectedItem.PastureRaised.ToBool(), signAttributes.PastureRaised);
+            Assert.AreEqual(expectedItem.FreeRange.ToBool(), signAttributes.FreeRange);
+            Assert.AreEqual(expectedItem.DryAged.ToBool(), signAttributes.DryAged);
+            Assert.AreEqual(expectedItem.AirChilled.ToBool(), signAttributes.AirChilled);
+            Assert.AreEqual(expectedItem.MadeInHouse.ToBool(), signAttributes.MadeInHouse);
+            //Sequence ID
+            var sequenceId = context.Database.SqlQuery<decimal?>($"SELECT SequenceID FROM infor.ItemSequence WHERE ItemID = {item.itemID}").FirstOrDefault();
+            Assert.IsNull(sequenceId);
         }
 
         private ItemModel UpdateItem(ItemModel item,
@@ -442,6 +609,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             item.DryAged = "1";
             item.AirChilled = "0";
             item.MadeInHouse = "0";
+            item.SequenceId = 11;
 
             return item;
         }

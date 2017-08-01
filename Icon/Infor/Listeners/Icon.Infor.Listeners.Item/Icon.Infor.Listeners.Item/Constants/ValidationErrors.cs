@@ -136,7 +136,8 @@ namespace Icon.Infor.Listeners.Item.Constants
             public const string NonExistentSubBrick = "No Sub Brick exists in Icon with a hierarchy class ID '{0}'.";
             public const string NonExistentNationalClass = "No National Class exists in Icon with a hierarchy class ID '{0}'.";
             public const string NonExistentTax = "No Tax Class exists in Icon with a tax code '{0}'.";
-            public const string OutOfSyncItemUpdateErrorCode = "Item update rejected: time stamp on update was ''{0}'' but the item was updated more recently at ''{1}''.";
+            public const string OutOfSyncItemUpdateErrorCode = "Item update rejected: time stamp on update was '{0}' but the item was updated more recently at '{1}'.";
+            public const string OutOfSyncItemUpdateSequenceIdErrorCode = "Item update rejected: message Sequence ID was '{0}' but the item has a larger Sequence ID of '{1}'.";
 
             private static string BuildInvalidPropertyMessageForCollection(IEnumerable<string> collection, bool isRequired = false)
             {

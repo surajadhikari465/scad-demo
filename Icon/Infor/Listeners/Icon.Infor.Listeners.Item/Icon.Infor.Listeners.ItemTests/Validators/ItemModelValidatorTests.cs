@@ -1,6 +1,5 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Infor.Listeners.Item.Commands;
 using Icon.Infor.Listeners.Item.Constants;
 using Icon.Infor.Listeners.Item.Models;
 using Icon.Infor.Listeners.Item.Queries;
@@ -9,7 +8,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace Icon.Infor.Listeners.Item.Tests.Validators
 {
@@ -17,6 +15,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
     public class ItemModelValidatorTests
     {
         private ItemModelValidator validator;
+        private ItemListenerSettings settings;
         private Mock<IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>>> mockValidateItemsCommandHandler;
         private List<ItemModel> testItems;
         private ItemModel testItem;
@@ -85,6 +84,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
                 ScanCode = "1234567890",
                 ScanCodeType = ScanCodeTypes.Descriptions.Upc,
                 SeafoodCatchType = string.Empty,
+                SequenceId = 10,
                 TaxHierarchyClassId = "0123456",
                 Vegan = string.Empty,
                 Vegetarian = string.Empty,
@@ -103,8 +103,10 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
                 NationalClassId = 1,
                 SubBrickId = 1,
                 SubTeamId = 1,
-                TaxClassId = 1
+                TaxClassId = 1,
+                SequenceId = 10
             };
+            settings = new ItemListenerSettings { ValidateSequenceId = true };
             mockValidateItemsCommandHandler = new Mock<IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>>>();
             mockValidateItemsCommandHandler.Setup(m => m.Search(It.IsAny<GetItemValidationPropertiesParameters>()))
                 .Returns(new List<GetItemValidationPropertiesResultModel>
@@ -112,7 +114,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
                     testItemValidationPropertiesResultModel
                 });
 
-            validator = new ItemModelValidator(mockValidateItemsCommandHandler.Object);
+            validator = new ItemModelValidator(settings, mockValidateItemsCommandHandler.Object);
         }
 
         [TestMethod]
@@ -2031,6 +2033,41 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         {
             //Given
             testItem.SeafoodCatchType = string.Empty;
+
+            PerformValidateCollectionWhenAndThenSteps(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_SequenceIdIsValid_NoError()
+        {
+            //Given
+            testItem.SequenceId = 10;
+            testItems.Add(CopyTestItem(i => i.SequenceId = 11));
+            testItems.Add(CopyTestItem(i => i.SequenceId = 12));
+            testItems.Add(CopyTestItem(i => i.SequenceId = 100));
+
+            PerformValidateCollectionWhenAndThenSteps(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_SequenceIdIsInvalid_OutOfSyncItemUpdateError()
+        {
+            //Given
+            testItem.SequenceId = 9;
+
+            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+                ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode,
+                ValidationErrors.Messages.OutOfSyncItemUpdateSequenceIdErrorCode,
+                testItem.SequenceId.ToString(),
+                testItemValidationPropertiesResultModel.SequenceId.Value.ToString());
+        }
+
+        [TestMethod]
+        public void ValidateCollection_SequenceIdIsInvalidButValidateSequenceIdIsTurnedOff_NoError()
+        {
+            //Given
+            settings.ValidateSequenceId = false;
+            testItem.SequenceId = 9;
 
             PerformValidateCollectionWhenAndThenSteps(null, null);
         }

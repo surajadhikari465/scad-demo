@@ -74,7 +74,8 @@ BEGIN
 		merchandise.hierarchyClassID AS SubBrickId,
 		nat.hierarchyClassID AS NationalClassId,
 		tax.hierarchyClassID AS TaxClassId,
-		modifiedDate.traitValue AS ModifiedDate
+		modifiedDate.traitValue AS ModifiedDate,
+		seq.SequenceID AS SequenceId
 	FROM #tempItems i
 	LEFT JOIN HierarchyClass brands ON i.BrandHierarchyClassId = brands.hierarchyClassID
 		AND brands.HIERARCHYID = @brandHierarchyId
@@ -90,4 +91,5 @@ BEGIN
 		AND tax.HIERARCHYID = @taxHierarchyId
 	LEFT JOIN ItemTrait modifiedDate ON i.ItemId = modifiedDate.itemID
 		AND modifiedDate.traitID = @modifiedDateTraitId
+	LEFT JOIN infor.ItemSequence seq ON i.ItemId = seq.ItemID
 END

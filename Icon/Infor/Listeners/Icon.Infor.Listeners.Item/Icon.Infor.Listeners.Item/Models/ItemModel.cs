@@ -70,6 +70,7 @@ namespace Icon.Infor.Listeners.Item.Models
         public string ErrorDetails { get; set; }
         public bool ContainesDuplicateMerchandiseClass { get; set; }
         public bool ContainesDuplicateNationalClass { get; set; }
-        public DateTime MessageParseTime { get; internal set; }
+        public DateTime MessageParseTime { get; set; }
+        public decimal? SequenceId { get; set; }
     }
 }

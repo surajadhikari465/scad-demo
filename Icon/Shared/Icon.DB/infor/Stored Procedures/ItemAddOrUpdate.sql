@@ -35,5 +35,24 @@ BEGIN
 		INSERT (traitID, itemID, uomID, traitValue, localeID) 
 		VALUES (@validationDateTraitId, Source.ItemId, null, convert(nvarchar(255), sysdatetime(), 121), @localeID);
 
+	UPDATE seq
+	SET SequenceID = i.SequenceID,
+		InforMessageId = i.InforMessageId,
+		ModifiedDateUtc = SYSUTCDATETIME()
+	FROM infor.ItemSequence seq
+	JOIN @sourceTable i ON seq.ItemID = i.ItemId
+	WHERE i.SequenceId IS NOT NULL
+
+	INSERT INTO infor.ItemSequence(ItemID, InforMessageId, SequenceID)
+	SELECT 
+		i.ItemId,
+		i.InforMessageId,
+		i.SequenceId
+	FROM @sourceTable i
+	WHERE i.SequenceId IS NOT NULL
+		AND i.ItemId NOT IN
+		(
+			SELECT ItemId FROM infor.ItemSequence
+		)
 END
 GO

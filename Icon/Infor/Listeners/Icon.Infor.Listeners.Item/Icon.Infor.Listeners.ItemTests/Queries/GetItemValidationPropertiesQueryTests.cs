@@ -23,6 +23,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
         private HierarchyClass testTax;
         private IconDbContextFactory contextFactory;
         private TransactionScope transaction;
+        private int testItemId = 999999999;
+        private decimal testSequenceId = 10;
 
         [TestInitialize]
         public void Initialize()
@@ -34,7 +36,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             queryHandler = new GetItemValidationPropertiesQuery(contextFactory);
             parameters = new GetItemValidationPropertiesParameters();
 
-            testItem = new ItemModel { ItemId = 999999999 };
+            testItem = new ItemModel { ItemId = testItemId };
             parameters.Items = new List<ItemModel> { testItem };
             SetupTestItems();
         }
@@ -47,6 +49,17 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             testNationalClass = context.HierarchyClass.Add(new HierarchyClass { hierarchyClassName = "Test National Class", hierarchyID = Hierarchies.National, hierarchyLevel = HierarchyLevels.NationalClass });
             testTax = context.HierarchyClass.Add(new HierarchyClass { hierarchyClassName = "0123456 Test Tax", hierarchyID = Hierarchies.Tax, hierarchyLevel = HierarchyLevels.Tax });
             context.SaveChanges();
+
+            context.Database.ExecuteSqlCommand(
+                $@"SET IDENTITY_INSERT dbo.Item ON 
+
+                INSERT INTO dbo.Item(itemID, itemTypeID)
+                VALUES ({testItemId}, {ItemTypes.RetailSale})
+            
+                SET IDENTITY_INSERT dbo.Item OFF
+
+                INSERT INTO infor.ItemSequence(ItemID, SequenceID, InforMessageId)
+                VALUES({testItemId}, {testSequenceId}, NEWID())");
 
             testItem.BrandsHierarchyClassId = testBrand.hierarchyClassID.ToString();
             testItem.FinancialHierarchyClassId = "1234";
@@ -62,7 +75,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
         }
 
         [TestMethod]
-        public void GetItemValidationProperties_AllHierarchyClassesExist_AllPropertiesReturned()
+        public void GetItemValidationProperties_AllPropertiesExist_AllPropertiesReturned()
         {
             //When
             var result = queryHandler.Search(parameters).Single();
@@ -75,10 +88,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNotNull(result.SubBrickId);
             Assert.IsNotNull(result.SubTeamId);
             Assert.IsNotNull(result.TaxClassId);
+            Assert.AreEqual(testSequenceId, result.SequenceId.Value);
         }
 
         [TestMethod]
-        public void GetItemValidationProperties_BrandDoesNotExist_BrandError()
+        public void GetItemValidationProperties_BrandDoesNotExist_BrandIdIsNull()
         {
             //Given
             context.HierarchyClass.Remove(testBrand);
@@ -95,6 +109,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNotNull(result.SubBrickId);
             Assert.IsNotNull(result.SubTeamId);
             Assert.IsNotNull(result.TaxClassId);
+            Assert.AreEqual(testSequenceId, result.SequenceId.Value);
         }
 
         [TestMethod]
@@ -115,6 +130,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNotNull(result.SubBrickId);
             Assert.IsNull(result.SubTeamId);
             Assert.IsNotNull(result.TaxClassId);
+            Assert.AreEqual(testSequenceId, result.SequenceId.Value);
         }
 
         [TestMethod]
@@ -135,6 +151,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNull(result.SubBrickId);
             Assert.IsNotNull(result.SubTeamId);
             Assert.IsNotNull(result.TaxClassId);
+            Assert.AreEqual(testSequenceId, result.SequenceId.Value);
         }
 
         [TestMethod]
@@ -155,6 +172,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNotNull(result.SubBrickId);
             Assert.IsNotNull(result.SubTeamId);
             Assert.IsNull(result.TaxClassId);
+            Assert.AreEqual(testSequenceId, result.SequenceId.Value);
         }
 
         [TestMethod]
@@ -175,20 +193,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNotNull(result.SubBrickId);
             Assert.IsNotNull(result.SubTeamId);
             Assert.IsNotNull(result.TaxClassId);
+            Assert.AreEqual(testSequenceId, result.SequenceId.Value);
         }
 
         [TestMethod]
         public void GetItemValidationProperties_ModifiedDateDoesNotExistForItem_ModifiedDateIsNull()
         {
-            //Given
-            context.Database.ExecuteSqlCommand($@"
-                SET IDENTITY_INSERT dbo.Item ON
-
-                INSERT INTO Item (itemID, itemTypeID)
-                VALUES ({testItem.ItemId}, {ItemTypes.RetailSale})
-
-                SET IDENTITY_INSERT dbo.Item OFF");
-
             //When
             var result = queryHandler.Search(parameters).Single();
 
@@ -200,6 +210,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNotNull(result.SubBrickId);
             Assert.IsNotNull(result.SubTeamId);
             Assert.IsNotNull(result.TaxClassId);
+            Assert.AreEqual(testSequenceId, result.SequenceId.Value);
         }
 
         [TestMethod]
@@ -210,13 +221,6 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             string datetimeFormat = "yyyy-MM-dd HH:mm:ss.fffffff";
 
             context.Database.ExecuteSqlCommand($@"
-                SET IDENTITY_INSERT dbo.Item ON
-
-                INSERT INTO Item (itemID, itemTypeID)
-                VALUES ({testItem.ItemId}, {ItemTypes.RetailSale})
-
-                SET IDENTITY_INSERT dbo.Item OFF
-
                 INSERT INTO ItemTrait (itemID, localeID, traitID, traitValue, uomID)
                 VALUES ({testItem.ItemId}, {Locales.WholeFoods}, {Traits.ModifiedDate}, '{modifiedDate.ToString(datetimeFormat)}', NULL)");
 
@@ -231,6 +235,27 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNotNull(result.SubBrickId);
             Assert.IsNotNull(result.SubTeamId);
             Assert.IsNotNull(result.TaxClassId);
+            Assert.AreEqual(testSequenceId, result.SequenceId.Value);
+        }
+
+        [TestMethod]
+        public void GetItemValidationProperties_SequenceIdDoesNotExist_SequenceIdIsNull()
+        {
+            //Given
+            context.Database.ExecuteSqlCommand($"DELETE infor.ItemSequence WHERE ItemID = {testItemId}");
+
+            //When
+            var result = queryHandler.Search(parameters).Single();
+
+            //Then
+            Assert.AreEqual(testItem.ItemId, result.ItemId);
+            Assert.IsNotNull(result.BrandId);
+            Assert.IsNull(result.ModifiedDate);
+            Assert.IsNotNull(result.NationalClassId);
+            Assert.IsNotNull(result.SubBrickId);
+            Assert.IsNotNull(result.SubTeamId);
+            Assert.IsNotNull(result.TaxClassId);
+            Assert.IsFalse(result.SequenceId.HasValue);
         }
     }
 }

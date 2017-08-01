@@ -16,10 +16,12 @@ namespace Icon.Infor.Listeners.Item.MessageParsers
 {
     public class ItemMessageParser : MessageParserBase<items, IEnumerable<ItemModel>>
     {
+        private ItemListenerSettings settings;
         private ILogger<ItemMessageParser> logger;
 
-        public ItemMessageParser(ILogger<ItemMessageParser> logger)
+        public ItemMessageParser(ItemListenerSettings settings, ILogger<ItemMessageParser> logger)
         {
+            this.settings = settings;
             this.logger = logger;
         }
 
@@ -29,6 +31,7 @@ namespace Icon.Infor.Listeners.Item.MessageParsers
             {
                 var items = DeserializeMessage(message);
                 var messageId = message.GetProperty("IconMessageID");
+                var sequenceId = GetSequenceId(message);
                 var messageParseTime = DateTime.Now;
 
                 List<ItemModel> models = new List<ItemModel>();
@@ -36,7 +39,7 @@ namespace Icon.Infor.Listeners.Item.MessageParsers
                 {
                     try
                     {
-                        models.Add(item.ToItemModel(messageId, messageParseTime));
+                        models.Add(item.ToItemModel(messageId, messageParseTime, sequenceId));
                     }
                     catch (Exception ex)
                     {
@@ -45,7 +48,7 @@ namespace Icon.Infor.Listeners.Item.MessageParsers
                             {
                                 ErrorCode = ApplicationErrors.Codes.UnableToParseItem,
                                 ErrorDetails = ApplicationErrors.Messages.UnableToParseItem,
-                                InforMessageId = message.GetProperty("IconMessageID"),
+                                InforMessageId = messageId,
                                 Item = item,
                                 Exception = ex
                             }));
@@ -57,6 +60,18 @@ namespace Icon.Infor.Listeners.Item.MessageParsers
             catch(Exception e)
             {
                 throw new Exception(ApplicationErrors.Messages.UnableToParseMessage, e);
+            }
+        }
+
+        private decimal? GetSequenceId(IEsbMessage message)
+        {
+            if(settings.ValidateSequenceId)
+            {
+                return decimal.Parse(message.GetProperty("SequenceID"));
+            }
+            else
+            {
+                return null;
             }
         }
     }

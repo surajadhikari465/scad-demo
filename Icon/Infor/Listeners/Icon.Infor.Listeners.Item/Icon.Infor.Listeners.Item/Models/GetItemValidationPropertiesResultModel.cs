@@ -15,5 +15,6 @@ namespace Icon.Infor.Listeners.Item.Models
         public int? NationalClassId { get; set; }
         public int? TaxClassId { get; set; }
         public string ModifiedDate { get; set; }
+        public decimal? SequenceId { get; set; }
     }
 }

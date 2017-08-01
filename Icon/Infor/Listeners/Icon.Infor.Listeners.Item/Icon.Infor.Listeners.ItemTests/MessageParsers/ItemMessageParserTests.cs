@@ -16,6 +16,7 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
     public class ItemMessageParserTests
     {
         private ItemMessageParser itemMessageParser;
+        private ItemListenerSettings settings;
         private Mock<ILogger<ItemMessageParser>> mockLogger;
 
         private Mock<IEsbMessage> mockEsbMessage;
@@ -24,9 +25,10 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
         [TestInitialize]
         public void Initialize()
         {
+            settings = new ItemListenerSettings();
             mockLogger = new Mock<ILogger<ItemMessageParser>>();
 
-            itemMessageParser = new ItemMessageParser(mockLogger.Object);
+            itemMessageParser = new ItemMessageParser(settings, mockLogger.Object);
             mockEsbMessage = new Mock<IEsbMessage>();
             mockEsbMessage.Setup(m => m.GetProperty("IconMessageID")).Returns(Guid.NewGuid().ToString());
         }
@@ -87,7 +89,27 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
             Assert.IsTrue(expectedException.Message == "Failed to parse Infor Item message.");
         }
 
-        private void AssertItemsAreEqualToXml(IEnumerable<ItemModel> items)
+        [TestMethod]
+        public void ParseMessage_ValidateSequenceIdIsTurnedOn_ShouldParseSequenceId()
+        {
+            //Given
+            settings.ValidateSequenceId = true;
+            message = File.ReadAllText(@"TestMessages\ProductMessageWith3Items.xml");
+
+            mockEsbMessage.SetupGet(m => m.MessageText)
+                .Returns(message);
+            mockEsbMessage.Setup(m => m.GetProperty("SequenceID"))
+                .Returns("1234");
+
+            //When
+            var items = itemMessageParser.ParseMessage(mockEsbMessage.Object);
+
+            //Then
+            Assert.AreEqual(3, items.Count());
+            AssertItemsAreEqualToXml(items, 1234);
+        }
+
+        private void AssertItemsAreEqualToXml(IEnumerable<ItemModel> items, decimal? sequenceId = null)
         {
             //Copied these values directly from ProductMessageWith3Items.xml. Updating that test message will require updating
             //this code.
@@ -311,6 +333,7 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
                 Assert.AreEqual(messageItems[i].OrganicPersonalCare, listItems[i].OrganicPersonalCare);
                 Assert.AreEqual(messageItems[i].Paleo, listItems[i].Paleo);
                 Assert.AreEqual(messageItems[i].ProductFlavorType, listItems[i].ProductFlavorType);
+                Assert.AreEqual(sequenceId, listItems[i].SequenceId);
             }
         }
 

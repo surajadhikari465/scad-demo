@@ -127,6 +127,7 @@
     <Compile Include="Constants\CustomRegexPatterns.cs" />
     <Compile Include="Constants\ValidationErrors.cs" />
     <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="ItemListenerSettings.cs" />
     <Compile Include="MessageParsers\ItemMessageParser.cs" />
     <Compile Include="ItemListener.cs" />
     <Compile Include="Models\GetItemValidationPropertiesResultModel.cs" />

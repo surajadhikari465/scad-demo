@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
+using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Infor.Listeners.Item.Constants;
 using Icon.Infor.Listeners.Item.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using System.Globalization;
-using Icon.Common.DataAccess;
-using Icon.Infor.Listeners.Item.Commands;
 using Icon.Infor.Listeners.Item.Queries;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Icon.Infor.Listeners.Item.Validators
 {
@@ -16,9 +15,13 @@ namespace Icon.Infor.Listeners.Item.Validators
     {
         private const string DateTimeFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
         private string[] animalWelfareRatingDescriptions = AnimalWelfareRatings.Descriptions.AsArray;
-        private IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>> validateItemsCommandHandler;
 
-        public ItemModelValidator(IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>> validateItemsCommandHandler)
+        private ItemListenerSettings settings;
+        private IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>> getItemValidationPropertiesQueryHandler;
+
+        public ItemModelValidator(
+            ItemListenerSettings settings,
+            IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>> getItemValidationPropertiesQueryHandler)
         {
             CascadeMode = CascadeMode.StopOnFirstFailure;
 
@@ -317,7 +320,8 @@ namespace Icon.Infor.Listeners.Item.Validators
                 .WithErrorCode(ValidationErrors.Codes.InvalidWholeTrade)
                 .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
 
-            this.validateItemsCommandHandler = validateItemsCommandHandler;
+            this.settings = settings;
+            this.getItemValidationPropertiesQueryHandler = getItemValidationPropertiesQueryHandler;
         }
 
         private bool IsValidRetailSize(string retailSize)
@@ -381,7 +385,7 @@ namespace Icon.Infor.Listeners.Item.Validators
 
         private void ValidateCollectionAgainstDatabase(IEnumerable<ItemModel> collection)
         {
-            var itemValidationPropertiesResults = validateItemsCommandHandler.Search(new GetItemValidationPropertiesParameters { Items = collection });
+            var itemValidationPropertiesResults = getItemValidationPropertiesQueryHandler.Search(new GetItemValidationPropertiesParameters { Items = collection });
 
             var joinedItems = collection
                 .Where(i => i.ErrorCode == null)
@@ -422,6 +426,11 @@ namespace Icon.Infor.Listeners.Item.Validators
                     joinedItem.Item.ErrorCode = ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode;
                     joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.OutOfSyncItemUpdateErrorCode, joinedItem.Item.ModifiedDate, joinedItem.ValidationProperties.ModifiedDate);
                 }
+                else if(!IsSequenceIdValid(joinedItem.Item.SequenceId, joinedItem.ValidationProperties.SequenceId))
+                {
+                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.OutOfSyncItemUpdateSequenceIdErrorCode, joinedItem.Item.SequenceId, joinedItem.ValidationProperties.SequenceId);
+                }
             }
         }
 
@@ -438,6 +447,18 @@ namespace Icon.Infor.Listeners.Item.Validators
             parsedCurrentModifiedDate = parsedCurrentModifiedDate.AddTicks(-parsedCurrentModifiedDateNanoseconds);
 
             return parsedMessageModifiedDate < parsedCurrentModifiedDate;
+        }
+
+        private bool IsSequenceIdValid(decimal? newSequenceId, decimal? currentSequenceId)
+        {
+            if(settings.ValidateSequenceId)
+            {
+                return !currentSequenceId.HasValue || (newSequenceId.Value >= currentSequenceId.Value);
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

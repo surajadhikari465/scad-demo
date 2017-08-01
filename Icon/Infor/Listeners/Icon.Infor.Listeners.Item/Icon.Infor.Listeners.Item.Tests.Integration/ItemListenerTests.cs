@@ -27,10 +27,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
         protected ItemListener CreateItemListenerForTest()
         {
             IconDbContextFactory contextFactory = new IconDbContextFactory();
+            ItemListenerSettings settings = ItemListenerSettings.CreateFromConfig();
 
             ItemListener il = new ItemListener(
-                              new ItemMessageParser(new NLogLogger<ItemMessageParser>()),
-                              new ItemModelValidator(new GetItemValidationPropertiesQuery(contextFactory)),
+                              new ItemMessageParser(settings, new NLogLogger<ItemMessageParser>()),
+                              new ItemModelValidator(settings, new GetItemValidationPropertiesQuery(contextFactory)),
                               new ItemService(
                                       new ItemAddOrUpdateCommandHandler(contextFactory),
                                       new GenerateItemMessagesCommandHandler(contextFactory),

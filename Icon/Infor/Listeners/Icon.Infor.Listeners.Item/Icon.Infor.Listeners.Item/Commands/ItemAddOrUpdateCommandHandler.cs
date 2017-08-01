@@ -1,5 +1,4 @@
 ﻿using Icon.Common;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
 using Icon.DbContextFactory;
 using Icon.Framework;
@@ -9,8 +8,6 @@ using Icon.Infor.Listeners.Item.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.Item.Commands
 {
@@ -55,7 +52,9 @@ namespace Icon.Infor.Listeners.Item.Commands
                                 ItemId = i.ItemId,
                                 ItemTypeId = ItemTypes.Ids[i.ItemTypeCode],
                                 ScanCode = i.ScanCode,
-                                ScanCodeTypeId = ScanCodeTypes.Ids[i.ScanCodeType]
+                                ScanCodeTypeId = ScanCodeTypes.Ids[i.ScanCodeType],
+                                InforMessageId = i.InforMessageId,
+                                SequenceId = i.SequenceId
                             }).ToTvp("items", "infor.ItemAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemAddOrUpdate @items", items);
