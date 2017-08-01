@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -3223,6 +3223,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PDX_FutureCostDeltaFile.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.rollback.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.sql" />
+    <Build Include="SQL Agent Job\VIM - Infor Data Feeds - Future Cost %28NC).sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
