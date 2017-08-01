@@ -46,6 +46,9 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
         [TestMethod]
         public void AddOrUpdateLocales_InsertLocale_ShouldAddLocaleToDatabase()
         {
+            int sequenceId = 1;
+            string inforMessageId = "0E984725-C51C-4BF4-9960-E1C80E27ABA0";
+
             Models.LocaleAddress localeAddress = new Models.LocaleAddress(4457, "Altamonte Springs Test", "", "", "Tampa", "30216",
                                                                           "USA", "FL", "Eastern Standard Time", "26.365658", "-80.114501", 7865);
             List< LocaleTraitModel > LocaleTraits = new List<LocaleTraitModel>()
@@ -74,20 +77,12 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
                 );
 
          
-            LocaleModel metroModel = CreateLocaleModel(2002, "TestMetro", 2001, "MT", ActionEnum.AddOrUpdate);
-            LocaleModel regionModel = CreateLocaleModel(2001, "TestRegion", 2000, "RG", ActionEnum.AddOrUpdate);
-            LocaleModel chainModel = CreateLocaleModel(2000, "Testchain", null, "Ch", ActionEnum.AddOrUpdate);
-            LocaleModel organizationModel = CreateLocaleModel(0, "TestCompany", null, "CMP", ActionEnum.AddOrUpdate);
-
-            storeModel.SequenceId = 1;
-            metroModel.SequenceId = 1;
-            chainModel.SequenceId = 1;
-            regionModel.SequenceId = 1;
-
-            storeModel.InforMessageId = "0E984725-C51C-4BF4-9960-E1C80E27ABA0";
-            metroModel.InforMessageId = "0E984725-C51C-4BF4-9960-E1C80E27ABA0";
-            chainModel.InforMessageId = "0E984725-C51C-4BF4-9960-E1C80E27ABA0";
-            regionModel.InforMessageId = "0E984725-C51C-4BF4-9960-E1C80E27ABA0";
+            LocaleModel metroModel = CreateLocaleModel(2002, "TestMetro", 2001, "MT", ActionEnum.AddOrUpdate, sequenceId, inforMessageId);
+            LocaleModel regionModel = CreateLocaleModel(2001, "TestRegion", 2000, "RG", ActionEnum.AddOrUpdate, sequenceId, inforMessageId);
+            LocaleModel chainModel = CreateLocaleModel(2000, "Testchain", null, "Ch", ActionEnum.AddOrUpdate, sequenceId, inforMessageId);
+            LocaleModel organizationModel = CreateLocaleModel(0, "TestCompany", null, "CMP", ActionEnum.AddOrUpdate, sequenceId, inforMessageId);
+            storeModel.SequenceId = sequenceId;
+            storeModel.InforMessageId = inforMessageId;
 
             AddOrUpdateLocalesCommand addOrUpdateLocalesCommand = new AddOrUpdateLocalesCommand();
             addOrUpdateLocalesCommand.chains = new List<LocaleModel> { chainModel };
@@ -201,9 +196,11 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
             return localeModel;
         }
 
-        private LocaleModel CreateLocaleModel(int localeId, string name, int? parentLocaleId, string typeCode, ActionEnum action)
+        private LocaleModel CreateLocaleModel(int localeId, string name, int? parentLocaleId, string typeCode, ActionEnum action, int sequenceId, string inforMessageId)
         {
             LocaleModel localeModel = new LocaleModel(localeId, name, parentLocaleId, typeCode, action);
+            localeModel.SequenceId = sequenceId;
+            localeModel.InforMessageId = inforMessageId;
             return localeModel;
         }
     }
