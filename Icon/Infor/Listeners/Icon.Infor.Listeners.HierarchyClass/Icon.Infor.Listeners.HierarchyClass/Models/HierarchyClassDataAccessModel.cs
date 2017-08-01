@@ -18,6 +18,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
         public int? ParentHierarchyClassId { get; set; }
         public Dictionary<int, string> HierarchyClassTraits { get; set; }
         public int ActionId { get; set; }
+        public decimal? SequenceId { get; set; }
+        public Guid InforMessageId { get; set; }
 
         public HierarchyClassDataAccessModel() { }
 
@@ -34,6 +36,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
                 ActionId = MessageActionTypes.AddOrUpdate;
             else if (model.Action == ActionEnum.Delete)
                 ActionId = MessageActionTypes.Delete;
+            SequenceId = model.SequenceId;
+            InforMessageId = Guid.Parse(model.InforMessageId);
         }
     }
 }

@@ -40,7 +40,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
                 hc.HierarchyId,
                 hc.HierarchyLevelName,
                 hc.ParentHierarchyClassId,
-                hc.ActionId
+                hc.ActionId,
+                hc.SequenceId,
+                hc.InforMessageId
             }).ToTvp("@hierarchyClasses", "infor.HierarchyClassType");
             SqlParameter hierarchyClassTraits = dataAccessModels.ToTraitDataAccessModels().ToTvp("@hierarchyClassTraits", "infor.HierarchyClassTraitType");
             SqlParameter regionParameters = regions.Select(r => new { RegionCode = r }).ToTvp("@regions", "infor.RegionCodeList");

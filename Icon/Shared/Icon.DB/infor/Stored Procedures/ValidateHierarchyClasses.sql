@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE infor.ValidateHierarchyClasses
-	@hierarchyClasses infor.ValidateHierarchyClassType READONLY
+	@hierarchyClasses infor.ValidateHierarchyClassType READONLY,
+	@validateSequenceId bit = 0
 AS
 BEGIN
 	DECLARE @inforHierarchyClassListenerAppId INT = (SELECT AppID FROM app.App WHERE AppName = 'Infor Hierarchy Class Listener'),
@@ -8,7 +9,8 @@ BEGIN
 			@hierarchyMismatchErrorCode NVARCHAR(50) = 'HierarchyMismatch',
 			@duplicateHierarchyClassErrorCode NVARCHAR(50) = 'DuplicateHierarchyClass',
 			@duplicateSubBrickCodeErrorCode NVARCHAR(50) = 'DuplicateSubBrickCode',
-			@duplicateTaxCode NVARCHAR(50) = 'DuplicateTaxCode'
+			@duplicateTaxCode NVARCHAR(50) = 'DuplicateTaxCode',
+			@invalidSequenceIdErrorCode NVARCHAR(50) = 'InvalidSequenceIDCode'
 	DECLARE @errorHierarchyClasses TABLE (HierarchyClassId INT, ErrorCode NVARCHAR(100), ErrorDetails NVARCHAR(255))
 
 	INSERT INTO @errorHierarchyClasses
@@ -84,6 +86,25 @@ BEGIN
 					subBrickCode.traitID = @subBrickCodeTraitId
 					AND subBrickCode.HierarchyClassID <> hc.HierarchyClassId
 					AND subBrickCode.traitValue = hc.SubBrickCode
+			)
+	END
+
+	IF @validateSequenceId = 1
+	BEGIN
+		INSERT INTO @errorHierarchyClasses
+		SELECT
+			hc.HierarchyClassId,
+			@invalidSequenceIdErrorCode AS ErrorCode,
+			infor.GetValidationError(@invalidSequenceIdErrorCode, @inforHierarchyClassListenerAppId, hc.SequenceID)
+		FROM @hierarchyClasses hc
+		LEFT JOIN infor.HierarchyClassSequence hcs ON hc.HierarchyClassId = hcs.HierarchyClassID
+		WHERE hc.SequenceId IS NOT NULL
+			AND hcs.SequenceID IS NOT NULL 
+			AND hcs.SequenceID > hc.SequenceId
+			AND hc.HierarchyClassId NOT IN 
+			(
+				SELECT HierarchyClassId 
+				FROM @errorHierarchyClasses
 			)
 	END
 

@@ -11,7 +11,9 @@ BEGIN
 		   hc.HierarchyId as [HierarchyId], 
 		   ParentHierarchyClassId, 
 		   HierarchyClassName,
-		   hct.hierarchyClassId AS HierarchyClassId
+		   hct.hierarchyClassId AS HierarchyClassId,
+		   hc.SequenceId,
+		   hc.InforMessageId
 	INTO #tmpFinancialClass
 	FROM @hierarchyClasses hc
 	JOIN dbo.HierarchyPrototype hp ON hc.HierarchyLevelName = hp.HierarchyLevelName
@@ -46,8 +48,9 @@ BEGIN
 		   TraitValue, 
 		   hc.hierarchyClassID AS InsertedHierarchyClassID
 	INTO #tmpTrait 
-	FROM @hierarchyClassTraits hct  INNER JOIN dbo.HierarchyClass hc
-	ON  hct.HierarchyClassId = [dbo].[fn_ExtractPsSubTeamNumberFromSubTeamName](hc.HierarchyClassName)
+	FROM @hierarchyClassTraits hct  
+	INNER JOIN dbo.HierarchyClass hc
+		ON hct.HierarchyClassId = [dbo].[fn_ExtractPsSubTeamNumberFromSubTeamName](hc.HierarchyClassName)
 	WHERE hc.HierarchyId = @financialHierarchyId
 
 	UPDATE hct
@@ -86,6 +89,30 @@ BEGIN
 			PassedHierarchyClassID 
 	FROM #tmpTrait
 	WHERE InsertedHierarchyClassID NOT IN (SELECT HierarchyClassID FROM dbo.HierarchyClassTrait WHERE traitid = @FinTraitId)
+
+	INSERT INTO infor.HierarchyClassSequence(HierarchyClassID, InforMessageId, SequenceID)
+	SELECT 
+		hct.HierarchyClassId,
+		tmp.InforMessageId,
+		tmp.SequenceId
+	FROM #tmpFinancialClass tmp
+	JOIN HierarchyClassTrait hct on tmp.HierarchyClassId = hct.traitValue
+		AND hct.traitID = @FinTraitId
+	WHERE tmp.SequenceId IS NOT NULL
+		AND hct.HierarchyClassID NOT IN
+		(
+			SELECT HierarchyClassId FROM infor.HierarchyClassSequence
+		)
+
+	UPDATE hcs
+	SET SequenceID = tmp.SequenceId,
+		ModifiedDateUtc = SYSUTCDATETIME(),
+		InforMessageId = tmp.InforMessageId
+	FROM #tmpFinancialClass tmp
+	JOIN HierarchyClassTrait hct on tmp.HierarchyClassId = hct.traitValue
+		AND hct.traitID = @FinTraitId
+	JOIN infor.HierarchyClassSequence hcs ON hct.HierarchyClassId = hcs.HierarchyClassID
+	WHERE tmp.SequenceId IS NOT NULL
 	
 	DROP TABLE #tmpTrait
 	DROP TABLE #tmpFinancialClass

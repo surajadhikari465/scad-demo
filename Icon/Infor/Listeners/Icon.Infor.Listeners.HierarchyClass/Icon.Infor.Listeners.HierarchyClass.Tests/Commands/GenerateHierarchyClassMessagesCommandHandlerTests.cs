@@ -45,8 +45,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void GenerateHierarchyClassMessages_BrandAddOrUpdate_GeneratesMessage()
         {
             //Given
-            var testModel = CreateInforHierarchyClassModel(id1234, "Test Brand 1",
-                HierarchyNames.Brands, HierarchyLevelNames.Brand, ActionEnum.AddOrUpdate);
+            var testModel = CreateInforHierarchyClassModel(
+                id1234, 
+                "Test Brand 1",
+                HierarchyNames.Brands, 
+                HierarchyLevelNames.Brand, 
+                ActionEnum.AddOrUpdate);
             SetCommandHierarchyClasses(command, testModel);
 
             //When

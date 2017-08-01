@@ -10,13 +10,16 @@ namespace Icon.Infor.Listeners.HierarchyClass
     public class HierarchyClassListenerSettings : IHierarchyClassListenerSettings
     {
         public bool EnableNationalClassEventGeneration { get; set; }
+        public bool ValidateSequenceId { get; set; }
 
         public static HierarchyClassListenerSettings CreateFromConfig()
         {
             return new HierarchyClassListenerSettings
             {
                 EnableNationalClassEventGeneration = AppSettingsAccessor
-                    .GetBoolSetting(nameof(EnableNationalClassEventGeneration))
+                    .GetBoolSetting(nameof(EnableNationalClassEventGeneration)),
+                ValidateSequenceId = AppSettingsAccessor
+                    .GetBoolSetting(nameof(ValidateSequenceId))
             };
         }
     }

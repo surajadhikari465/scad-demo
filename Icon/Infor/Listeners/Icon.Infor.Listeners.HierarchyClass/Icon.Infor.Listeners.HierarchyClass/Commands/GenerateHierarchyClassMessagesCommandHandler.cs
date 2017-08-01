@@ -37,7 +37,9 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
                         hc.HierarchyId,
                         hc.HierarchyLevelName,
                         hc.ParentHierarchyClassId,
-                        hc.ActionId
+                        hc.ActionId,
+                        hc.SequenceId,
+                        hc.InforMessageId
                     })
                     .ToTvp("@hierarchyClasses", "infor.HierarchyClassType");
 

@@ -44,11 +44,31 @@ BEGIN
 	WHEN NOT MATCHED THEN
 		INSERT (hierarchyClassID, traitID, uomID, traitValue)
 		VALUES (Source.HierarchyClassID, Source.TraitId, null, Source.TraitValue);
+
+	INSERT INTO infor.HierarchyClassSequence(HierarchyClassID, InforMessageId, SequenceID)
+	SELECT 
+		hc.HierarchyClassId,
+		hc.InforMessageId,
+		hc.SequenceId
+	FROM @hierarchyClasses hc
+	WHERE hc.SequenceId IS NOT NULL
+		AND hc.HierarchyClassId NOT IN
+		(
+			SELECT HierarchyClassId FROM infor.HierarchyClassSequence
+		)
+
+	UPDATE hcs
+	SET SequenceID = hc.SequenceId,
+		ModifiedDateUtc = SYSUTCDATETIME(),
+		InforMessageId = hc.InforMessageId
+	FROM @hierarchyClasses hc
+	JOIN infor.HierarchyClassSequence hcs ON hc.HierarchyClassId = hcs.HierarchyClassID
+	WHERE hc.SequenceId IS NOT NULL
     
 	-- if there are records for financial then call the stored procedure.
 	IF EXISTS(SELECT 1 FROM @hierarchyClasses WHERE [HierarchyId] = @financialHierarchyId)
 	BEGIN
-			EXEC infor.FinancialHierarchyClassAddOrUpdate @hierarchyClasses,@hierarchyClassTraits
+		EXEC infor.FinancialHierarchyClassAddOrUpdate @hierarchyClasses,@hierarchyClassTraits
 	END
 
 	DECLARE @hierarchyMessageTypeId int = (select MessageTypeId from app.MessageType where MessageTypeName = 'Hierarchy'), 

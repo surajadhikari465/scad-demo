@@ -17,10 +17,12 @@ namespace Icon.Infor.Listeners.HierarchyClass
 {
     public class HierarchyClassMessageParser : MessageParserBase<HierarchyType, IEnumerable<InforHierarchyClassModel>>
     {
+        private HierarchyClassListenerSettings settings;
         private ILogger<HierarchyClassMessageParser> logger;
 
-        public HierarchyClassMessageParser(ILogger<HierarchyClassMessageParser> logger)
+        public HierarchyClassMessageParser(HierarchyClassListenerSettings settings, ILogger<HierarchyClassMessageParser> logger)
         {
+            this.settings = settings;
             this.logger = logger;
         }
 
@@ -29,15 +31,13 @@ namespace Icon.Infor.Listeners.HierarchyClass
             try
             {
                 var hierarchy = base.DeserializeMessage(message);
-
                 var inforMessageId = message.GetProperty("IconMessageID");
-                var messageParseTime = DateTime.Now;
-
+                var sequenceId = GetSequenceId(message);
                 var hierarchyName = hierarchy.name;
                 var hierarchyLevelName = hierarchy.prototype.hierarchyLevelName;
+                var messageParseTime = DateTime.Now;
 
                 List<InforHierarchyClassModel> hierarchyClasses = new List<InforHierarchyClassModel>();
-
                 foreach (var hierarchyClass in hierarchy.@class)
                 {
                     try
@@ -56,7 +56,8 @@ namespace Icon.Infor.Listeners.HierarchyClass
                                     hct => hct.code,
                                     hct => hct.type.value.First().value),
                             InforMessageId = inforMessageId,
-                            MessageParseTime = messageParseTime
+                            MessageParseTime = messageParseTime,
+                            SequenceId = sequenceId
                         });
                     }
                     catch (Exception ex)
@@ -78,6 +79,18 @@ namespace Icon.Infor.Listeners.HierarchyClass
             catch (Exception ex)
             {
                 throw new ArgumentException("Failed to parse Infor HierarchyClass message.", ex);
+            }
+        }
+
+        private int? GetSequenceId(IEsbMessage message)
+        {
+            if(settings.ValidateSequenceId)
+            {
+                return int.Parse(message.GetProperty("SequenceID"));
+            }
+            else
+            {
+                return null;
             }
         }
     }

@@ -9,6 +9,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
     public class ValidateHierarchyClassesResultModel
     {
         public int HierarchyClassId { get; set; }
+        public int SequenceId { get; set; }
         public string ErrorCode { get; set; }
         public string ErrorDetails { get; set; }
     }

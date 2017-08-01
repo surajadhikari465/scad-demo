@@ -84,9 +84,36 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             Assert.AreEqual(expectedAction, queuedMessage.MessageActionId);
         }
 
-        protected InforHierarchyClassModel CreateInforHierarchyClassModel(int hierarchyClassId,
-            string hierarchyClassName, string hierarchyName, string hierarchyLevelName,
-            ActionEnum action, Dictionary<string, string> hierarchyClassTraits = null)
+        protected InforHierarchyClassModel CreateInforHierarchyClassModel(
+            string hierarchyName,
+            string hierarchyLevelName, 
+            ActionEnum action, 
+            Dictionary<string, string> hierarchyClassTraits = null,
+            int? sequenceId = null)
+        {
+            var defaultClassId = id87654321;
+            var defaultHierarchyClassName = hierarchyName == "Financial"
+                ? "Test Financial HierarchyClass(1234)"
+                : $"Test {hierarchyName} 1";
+
+            return CreateInforHierarchyClassModel(
+                defaultClassId,
+                defaultHierarchyClassName, 
+                hierarchyName, 
+                hierarchyLevelName,
+                action, 
+                hierarchyClassTraits,
+                sequenceId);
+        }
+
+        protected InforHierarchyClassModel CreateInforHierarchyClassModel(
+            int hierarchyClassId,
+            string hierarchyClassName,
+            string hierarchyName,
+            string hierarchyLevelName,
+            ActionEnum action,
+            Dictionary<string, string> hierarchyClassTraits = null,
+            int? sequenceId = null)
         {
             InforHierarchyClassModel testModel = new InforHierarchyClassModel
             {
@@ -96,21 +123,10 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 HierarchyLevelName = hierarchyLevelName,
                 Action = action,
                 HierarchyClassTraits = hierarchyClassTraits ?? new Dictionary<string, string>(),
+                SequenceId = sequenceId,
+                InforMessageId = Guid.NewGuid().ToString()
             };
             return testModel;
-        }
-
-        protected InforHierarchyClassModel CreateInforHierarchyClassModel(string hierarchyName,
-            string hierarchyLevelName, ActionEnum action, Dictionary<string, string> hierarchyClassTraits = null)
-        {
-            var defaultClassId = id87654321;
-            var defaultHierarchyClassName = hierarchyName == "Financial"
-                ? "Test Financial HierarchyClass(1234)"
-                : $"Test {hierarchyName} 1";
-
-            return CreateInforHierarchyClassModel(defaultClassId,
-                defaultHierarchyClassName, hierarchyName, hierarchyLevelName,
-                action, hierarchyClassTraits);
         }
 
         protected List<Framework.HierarchyClass> CreateTestHierarchyClassesForDelete(

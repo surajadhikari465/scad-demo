@@ -5,5 +5,6 @@
 	HierarchyLevelName NVARCHAR(100) NOT NULL,
 	HierarchyName NVARCHAR(100) NOT NULL,
 	HierarchyParentClassId INT NULL,
-	SubBrickCode NVARCHAR(255) NULL
+	SubBrickCode NVARCHAR(255) NULL,
+	SequenceId NUMERIC(22, 0) NULL
 )

@@ -6,6 +6,8 @@ using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,23 +17,33 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
     public class ValidateHierarchyClassesCommandHandler : ICommandHandler<ValidateHierarchyClassesCommand>
     {
         private IDbContextFactory<IconContext> contextFactory;
+        private HierarchyClassListenerSettings settings;
 
-        public ValidateHierarchyClassesCommandHandler(IDbContextFactory<IconContext> contextFactory)
+        public ValidateHierarchyClassesCommandHandler(IDbContextFactory<IconContext> contextFactory, HierarchyClassListenerSettings settings)
         {
             this.contextFactory = contextFactory;
+            this.settings = settings;
         }
 
         public void Execute(ValidateHierarchyClassesCommand data)
         {
             var hierarchyClasses = data.HierarchyClasses
-                .Where(i => i.ErrorCode == null)
-                .Select(i => new ValidateHierarchyClassModel(i))
+                .Where(hc => hc.ErrorCode == null)
+                .Select(hc => new ValidateHierarchyClassModel(hc))
                 .ToTvp("hierarchyClasses", "infor.ValidateHierarchyClassType");
+            var validateSequenceId = new SqlParameter("validateSequenceId", settings.ValidateSequenceId)
+                {
+                    DbType = DbType.Boolean
+                };
 
             List<ValidateHierarchyClassesResultModel> validateResult = null;
             using (var context = contextFactory.CreateContext())
             {
-                validateResult = context.Database.SqlQuery<ValidateHierarchyClassesResultModel>("exec infor.ValidateHierarchyClasses @hierarchyClasses", hierarchyClasses).ToList();
+                validateResult = context.Database.SqlQuery<ValidateHierarchyClassesResultModel>(
+                    "exec infor.ValidateHierarchyClasses @hierarchyClasses, @validateSequenceId", 
+                    hierarchyClasses,
+                    validateSequenceId)
+                    .ToList();
             }
 
             var errorHierarchyClasses = data.HierarchyClasses.Join(

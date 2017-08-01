@@ -17,5 +17,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
         public string ErrorDetails { get; set; }
         public string InforMessageId { get; set; }
         public DateTime MessageParseTime { get; set; }
+        public decimal? SequenceId { get; set; }
     }
 }

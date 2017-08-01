@@ -1,16 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Infor.Listeners.HierarchyClass.Commands;
+﻿using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Framework;
-using Icon.Common.Context;
-using Moq;
+using Icon.Infor.Listeners.HierarchyClass.Commands;
+using Icon.Infor.Listeners.HierarchyClass.Extensions;
+using Icon.Infor.Listeners.HierarchyClass.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Icon.Infor.Listeners.HierarchyClass.Models;
-using System.Collections.Generic;
-using Icon.Infor.Listeners.HierarchyClass.Extensions;
-using System.Data.SqlClient;
-using Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
@@ -34,8 +30,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void AddOrUpdateHierarchyClassesCommand_WhenBrandDoesNotExist_ShouldAddBrandClass()
         {
             //Given
-            var testModel = base.CreateInforHierarchyClassModel(HierarchyNames.Brands,
-                HierarchyLevelNames.Brand, ActionEnum.AddOrUpdate, new Dictionary<string, string>
+            var testModel = base.CreateInforHierarchyClassModel(
+                HierarchyNames.Brands,
+                HierarchyLevelNames.Brand,
+                ActionEnum.AddOrUpdate,
+                new Dictionary<string, string>
                 {
                     { Traits.Codes.BrandAbbreviation, "Test HierarchyClass" }
                 });
@@ -59,8 +58,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void AddOrUpdateHierarchyClassesCommand_WhenBrandExists_ShouldUpdateBrandClass()
         {
             //Given
-            var testModel = base.CreateInforHierarchyClassModel(HierarchyNames.Brands,
-                HierarchyLevelNames.Brand, ActionEnum.AddOrUpdate, new Dictionary<string, string>
+            var testModel = base.CreateInforHierarchyClassModel(
+                HierarchyNames.Brands,
+                HierarchyLevelNames.Brand,
+                ActionEnum.AddOrUpdate,
+                new Dictionary<string, string>
                 {
                     { Traits.Codes.BrandAbbreviation, "Test HierarchyClass" }
                 });
@@ -86,8 +88,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void AddOrUpdateHierarchyClassesCommand_WhenNationalDoesNotExist_ShouldAddNationalClass()
         {
             //Given
-            var testModel = base.CreateInforHierarchyClassModel(HierarchyNames.National,
-                HierarchyLevelNames.NationalFamily, ActionEnum.AddOrUpdate, new Dictionary<string, string>
+            var testModel = base.CreateInforHierarchyClassModel(
+                HierarchyNames.National,
+                HierarchyLevelNames.NationalFamily,
+                ActionEnum.AddOrUpdate,
+                new Dictionary<string, string>
                 {
                      { Traits.Codes.NationalClassCode, "Test National HierarchyClass" }
                 });
@@ -109,8 +114,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void AddOrUpdateHierarchyClassesCommand_WhenNationalExists_ShouldUpdateNationalClass()
         {
             //Given
-            var testModel = base.CreateInforHierarchyClassModel(HierarchyNames.National,
-                HierarchyLevelNames.NationalFamily, ActionEnum.AddOrUpdate, new Dictionary<string, string>
+            var testModel = base.CreateInforHierarchyClassModel(
+                HierarchyNames.National,
+                HierarchyLevelNames.NationalFamily,
+                ActionEnum.AddOrUpdate,
+                new Dictionary<string, string>
                 {
                      { Traits.Codes.NationalClassCode, "Test National HierarchyClass" }
                 });
@@ -128,6 +136,37 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 expectedNumberOfTraits: 1,
                 expectedNumberOfEvents: 0,
                 expectedNumberOfMessages: 0);
+        }
+
+        [TestMethod]
+        public void AddOrUpdateHierarchyClassesCommand_WhenSequenceIdExists_ShouldSaveSequenceId()
+        {
+            //Given
+            var testModel = base.CreateInforHierarchyClassModel(
+                HierarchyNames.Brands,
+                HierarchyLevelNames.Brand,
+                ActionEnum.AddOrUpdate,
+                new Dictionary<string, string>
+                {
+                    { Traits.Codes.BrandAbbreviation, "Test HierarchyClass" }
+                },
+                10);
+            this.PrepModelForUpdateTest(command, testModel);
+            var countBefore = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var countAfter = context.HierarchyClass.Count(hc => hc.hierarchyID == Hierarchies.Brands);
+            Assert.AreEqual(countAfter, countBefore, $"Should have found same count of hierarchy classes after Update");
+            this.AssertExistingHierarchyClassWasUpdated(
+                testModel: testModel,
+                hierarchyLevel: HierarchyLevels.Brand,
+                traitCode: Traits.Codes.BrandAbbreviation,
+                expectedNumberOfTraits: 1,
+                expectedNumberOfEvents: regions.Count * 2,
+                expectedNumberOfMessages: 2);
         }
 
         protected InforHierarchyClassModel PrepModelForUpdateTest(
@@ -208,6 +247,16 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 Assert.AreEqual(testModelTrait, hierarchyClassTrait.traitValue);
             };
 
+            if (testModel.SequenceId.HasValue)
+            {
+                var sequenceId = context.Database.SqlQuery<int>(
+                    $@"SELECT SequenceID 
+                    FROM infor.HierarchyClassSequence 
+                    WHERE HierarchyClassID = {testModel.HierarchyClassId}")
+                    .First();
+                Assert.AreEqual(sequenceId, testModel.SequenceId.Value);
+            }
+
             //Assert Messages are generated
             string expectedMessageHierarchyClassId = testModel.HierarchyName == Hierarchies.Names.Financial
                 ? testModel.HierarchyClassName.Split('(')[1].TrimEnd(')')
@@ -257,6 +306,16 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 Assert.AreEqual(testModelTrait, hierarchyClassTrait.traitValue);
             };
 
+            if (testModel.SequenceId.HasValue)
+            {
+                var sequenceId = context.Database.SqlQuery<decimal>(
+                    $@"SELECT SequenceID 
+                    FROM infor.HierarchyClassSequence 
+                    WHERE HierarchyClassID = {testModel.HierarchyClassId}")
+                    .First();
+                Assert.AreEqual(sequenceId, testModel.SequenceId.Value);
+            }
+
             AssertExpectedMessagesWereGenerated(testModel, expectedNumberOfEvents, expectedNumberOfMessages);
 
             if (expectedNumberOfMessages > 0)
@@ -264,7 +323,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 string expectedMessageHierarchyClassId = GetExpectedMessageHierarchyClassId(testModel);
                 var message = context.MessageQueueHierarchy
                     .Where(m => m.HierarchyClassId == expectedMessageHierarchyClassId)
-                    .OrderByDescending(m=>m.MessageQueueId).FirstOrDefault();
+                    .OrderByDescending(m => m.MessageQueueId).FirstOrDefault();
                 Assert.AreEqual(testModel.HierarchyClassName, message.HierarchyClassName);
                 Assert.AreEqual(Hierarchies.Ids[testModel.HierarchyName], message.HierarchyId);
                 Assert.AreEqual(testModel.ParentHierarchyClassId.ToHierarchyParentClassId(), message.HierarchyParentClassId);
@@ -281,7 +340,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             return expectedMessageHierarchyClassId;
         }
 
-        protected void AssertExpectedMessagesWereGenerated( InforHierarchyClassModel testModel,
+        protected void AssertExpectedMessagesWereGenerated(InforHierarchyClassModel testModel,
             int expectedNumberOfEvents, int expectedNumberOfMessages)
         {
             //Assert Messages are generated

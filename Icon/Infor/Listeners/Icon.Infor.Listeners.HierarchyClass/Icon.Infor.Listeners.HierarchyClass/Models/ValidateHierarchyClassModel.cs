@@ -21,6 +21,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
             {
                 SubBrickCode = hierarchyClass.HierarchyClassTraits[TraitCodes.SubBrickCode];
             }
+
+            SequenceId = hierarchyClass.SequenceId;
         }
 
         public int HierarchyClassId { get; set; }
@@ -29,5 +31,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
         public string HierarchyName { get; set; }
         public int? HierarchyParentClassId { get; set; }
         public string SubBrickCode { get; private set; }
+        public decimal? SequenceId { get; set; }
     }
 }

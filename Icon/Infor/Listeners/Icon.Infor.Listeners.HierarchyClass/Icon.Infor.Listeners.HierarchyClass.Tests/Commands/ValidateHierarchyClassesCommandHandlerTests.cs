@@ -1,15 +1,9 @@
-﻿using Icon.Common.Context;
-using Icon.Framework;
+﻿using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Commands;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
@@ -18,11 +12,13 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
     {
         private ValidateHierarchyClassesCommandHandler commandHandler;
         private ValidateHierarchyClassesCommand command;
+        private HierarchyClassListenerSettings settings;
 
         [TestInitialize]
         public void Initialize()
         {
-            commandHandler = new ValidateHierarchyClassesCommandHandler(contextFactory);
+            settings = new HierarchyClassListenerSettings();
+            commandHandler = new ValidateHierarchyClassesCommandHandler(contextFactory, settings);
             command = new ValidateHierarchyClassesCommand { HierarchyClasses = new List<InforHierarchyClassModel>() };
         }
 
@@ -243,6 +239,82 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             //Then
             string expectedErrorCode = "DuplicateSubBrickCode";
             string expectedErrorDetails = "Sub-Brick Code '123456789' already exists. Sub-Brick Codes must be unique.";
+            AssertValidationTest(expectedErrorCode, expectedErrorDetails);
+        }
+
+        [TestMethod]
+        public void ValidateHierarchyClasses_InvalidSequenceId_SequenceIdErrorCode()
+        {
+            //Given
+            settings.ValidateSequenceId = true;
+            var hierarchyClass = new InforHierarchyClassModel
+            {
+                HierarchyClassName = "Invalid Sequence ID Test",
+                HierarchyName = Hierarchies.Names.Brands,
+                HierarchyLevelName = HierarchyLevelNames.Brand,
+                SequenceId = 9
+            };
+            var hierarchyClassId = context.Database.SqlQuery<int>(
+                $@"INSERT INTO dbo.HierarchyClass(hierarchyLevel, hierarchyID, hierarchyClassName)
+                  VALUES({HierarchyLevels.Brand}, {Hierarchies.Brands}, '{hierarchyClass.HierarchyClassName}')
+
+                  DECLARE @hierarchyClassId int = SCOPE_IDENTITY()
+                    
+                  INSERT INTO infor.HierarchyClassSequence(HierarchyClassID, InforMessageId, SequenceID)
+	              VALUES(@hierarchyClassId, NEWID(), 10)
+                    
+                  SELECT @hierarchyClassId")
+                  .First();
+            hierarchyClass.HierarchyClassId = hierarchyClassId;
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
+            {
+                hierarchyClass
+            };
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            string expectedErrorCode = "InvalidSequenceIDCode";
+            string expectedErrorDetails = $"The Sequence ID '{command.HierarchyClasses.First().SequenceId}' is less than the stored Sequence ID.";
+            AssertValidationTest(expectedErrorCode, expectedErrorDetails);
+        }
+
+        [TestMethod]
+        public void ValidateHierarchyClasses_InvalidSequenceIdButValidateSequenceIdIsOff_NoErrorCode()
+        {
+            //Given
+            settings.ValidateSequenceId = false;
+            var hierarchyClass = new InforHierarchyClassModel
+            {
+                HierarchyClassName = "Invalid Sequence ID Test",
+                HierarchyName = Hierarchies.Names.Brands,
+                HierarchyLevelName = HierarchyLevelNames.Brand,
+                SequenceId = 9
+            };
+            var hierarchyClassId = context.Database.SqlQuery<int>(
+                $@"INSERT INTO dbo.HierarchyClass(hierarchyLevel, hierarchyID, hierarchyClassName)
+                  VALUES({HierarchyLevels.Brand}, {Hierarchies.Brands}, '{hierarchyClass.HierarchyClassName}')
+
+                  DECLARE @hierarchyClassId int = SCOPE_IDENTITY()
+                    
+                  INSERT INTO infor.HierarchyClassSequence(HierarchyClassID, InforMessageId, SequenceID)
+	              VALUES(@hierarchyClassId, NEWID(), 10)
+                    
+                  SELECT @hierarchyClassId")
+                  .First();
+            hierarchyClass.HierarchyClassId = hierarchyClassId;
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
+            {
+                hierarchyClass
+            };
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            string expectedErrorCode = null;
+            string expectedErrorDetails = null;
             AssertValidationTest(expectedErrorCode, expectedErrorDetails);
         }
 
