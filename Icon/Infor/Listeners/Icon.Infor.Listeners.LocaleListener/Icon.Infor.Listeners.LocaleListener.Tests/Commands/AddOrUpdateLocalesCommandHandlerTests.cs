@@ -130,7 +130,9 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
                     ctp.traitValue as ContactPerson,
                     agl.AgencyId as EwicAgency,
                     isn.TraitValue as IrmaStoreNumber,
-                    pst.TraitValue as PosType
+                    pst.TraitValue as PosType,
+                    ls.sequenceId as SequenceId,
+                    ls.inforMessageId as InforMessageId
                 FROM 
                     Locale l
                     join LocaleType ltp on l.localeTypeID = ltp.localeTypeID
@@ -153,6 +155,7 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
 		            left join City ci on pa.cityID = ci.cityID
 		            left join PostalCode pc on pa.postalCodeID = pc.postalCodeID
 		            left join Timezone tz on pa.timezoneID = tz.timezoneID
+                    left join  infor.LocaleSequence ls on ls.LocaleId =l.LocaleId
                 WHERE lt.traitValue = @BusinessUnitId",
                 new
                 {
@@ -184,7 +187,8 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
             Assert.AreEqual(storeModel.EwicAgency, storeDb.EwicAgency);
             Assert.AreEqual(storeModel.LocaleTraits.Where(lt => lt.TraitId == Traits.IrmaStoreId).FirstOrDefault().TraitValue, storeDb.IrmaStoreNumber);
             Assert.AreEqual(storeModel.LocaleTraits.Where(lt=>lt.TraitId == Traits.StorePosType).FirstOrDefault().TraitValue, storeDb.PosType);
-
+            Assert.AreEqual(storeModel.SequenceId, storeDb.SequenceId);
+            Assert.AreEqual(storeModel.InforMessageId.ToString(), storeDb.InforMessageId.ToString(),true);       
         }
 
         private LocaleModel CreateStoreLocaleModel(int localeId, int? parentLocaleId, int businessUnitId, string name, string typeCode, DateTime openDate,

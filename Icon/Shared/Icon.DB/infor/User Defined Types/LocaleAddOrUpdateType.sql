@@ -7,6 +7,6 @@
 	[ParentLocaleID] INT NULL,
 	[BusinessUnitId] INT NULL,
 	[EwicAgency] NVARCHAR(255) NULL,
-	SequenceId NUMERIC(22, 0) NULL,
-	InforMessageId UNIQUEIDENTIFIER NOT NULL
+	[SequenceId] NUMERIC(22, 0) NULL,
+	[InforMessageId] UNIQUEIDENTIFIER NOT NULL
 )
