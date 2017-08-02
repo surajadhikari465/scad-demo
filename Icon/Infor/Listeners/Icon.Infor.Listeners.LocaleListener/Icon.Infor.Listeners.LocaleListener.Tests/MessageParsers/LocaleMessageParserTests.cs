@@ -72,9 +72,11 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.MessageParsers
             //Given
             XDocument message = XDocument.Load(@"TestMessages/OneStoreWithMissingTraits.xml");
             mockEsbMessage.SetupGet(m => m.MessageText)
-                .Returns(message.ToString());
-
-            //When
+                 .Returns(message.ToString());
+            mockEsbMessage.Setup(m => m.GetProperty("SequenceId"))
+                .Returns("1");
+            mockEsbMessage.Setup(m => m.GetProperty("IconMessageID"))
+                .Returns("0E984725-C51C-4BF4-9960-E1C80E27ABA0");
             var result = parser.ParseMessage(mockEsbMessage.Object);
 
             //Then
@@ -99,6 +101,10 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.MessageParsers
             XDocument message = XDocument.Load(@"TestMessages/EntireRegion.xml");
             mockEsbMessage.SetupGet(m => m.MessageText)
                 .Returns(message.ToString());
+            mockEsbMessage.Setup(m => m.GetProperty("SequenceId"))
+                .Returns("1");
+            mockEsbMessage.Setup(m => m.GetProperty("IconMessageID"))
+                .Returns("0E984725-C51C-4BF4-9960-E1C80E27ABA0");
 
             //When
             var result = parser.ParseMessage(mockEsbMessage.Object);
@@ -125,6 +131,10 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.MessageParsers
             XDocument message = XDocument.Load(@"TestMessages/OneStoreWithAllTraits.xml");
             mockEsbMessage.SetupGet(m => m.MessageText)
                 .Returns(message.ToString());
+            mockEsbMessage.Setup(m => m.GetProperty("SequenceId"))
+                .Returns("1");
+            mockEsbMessage.Setup(m => m.GetProperty("IconMessageID"))
+                .Returns("0E984725-C51C-4BF4-9960-E1C80E27ABA0");
 
             //When
             var result = parser.ParseMessage(mockEsbMessage.Object);
@@ -140,8 +150,10 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.MessageParsers
             Assert.AreEqual(1, regions.Count());
             Assert.AreEqual(1, metros.Count());
             Assert.AreEqual(1, stores.Count());
+            Assert.AreEqual(1, stores.First().SequenceId);
+            Assert.AreEqual("0E984725-C51C-4BF4-9960-E1C80E27ABA0", stores.First().InforMessageId, true);
 
-            AssertMessageIsEqualToLocale(message, company, chains);
+           AssertMessageIsEqualToLocale(message, company, chains);
         }
 
         private void AssertMessageIsEqualToLocale(XDocument message, LocaleModel company, IEnumerable<LocaleModel> chains)

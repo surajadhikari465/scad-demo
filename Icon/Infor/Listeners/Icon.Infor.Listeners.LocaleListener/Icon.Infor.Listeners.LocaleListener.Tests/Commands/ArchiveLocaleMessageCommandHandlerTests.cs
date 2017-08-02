@@ -74,6 +74,10 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.Commands
                 .Returns("<test>Test</test>");
             mockMessage.Setup(m => m.GetProperty("MessageID"))
                 .Returns(testMessageId.ToString());
+            mockMessage.Setup(m => m.GetProperty("SequenceId"))
+                .Returns("1");
+            mockMessage.Setup(m => m.GetProperty("IconMessageID"))
+                .Returns("0E984725-C51C-4BF4-9960-E1C80E27ABA0");
 
             //When
             commandHandler.Execute(command);

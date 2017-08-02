@@ -127,7 +127,9 @@ namespace Icon.Infor.Listeners.LocaleListener.Commands
                 or.TypeCode,
                 or.ParentLocaleId,
                 or.BusinessUnitId,
-                or.EwicAgency
+                or.EwicAgency,
+                or.SequenceId,
+                or.InforMessageId
             }).ToDataTable();
 
             dataTable.SetTypeName(parameterTypeName);

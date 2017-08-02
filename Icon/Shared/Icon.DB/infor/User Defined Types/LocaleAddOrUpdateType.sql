@@ -6,5 +6,7 @@
 	[LocaleTypeCode] NVARCHAR(3) NOT NULL,
 	[ParentLocaleID] INT NULL,
 	[BusinessUnitId] INT NULL,
-	[EwicAgency] NVARCHAR(255) NULL
+	[EwicAgency] NVARCHAR(255) NULL,
+	[SequenceId] NUMERIC(22, 0) NULL,
+	[InforMessageId] UNIQUEIDENTIFIER NOT NULL
 )

@@ -25,52 +25,56 @@ namespace Icon.Infor.Listeners.LocaleListener.MessageParsers
 
             LocaleModel model = new LocaleModel();
             model.SequenceId =Convert.ToInt32( message.GetProperty(sequenceIdPropertyName));
+            model.InforMessageId = message.GetProperty("IconMessageID").ToString();
             model.Name = localeMessage.name;
             model.TypeCode = localeMessage.type.code.ToString();
-            model.Locales = localeMessage.locales.Select(l => BuildChain(l, int.Parse(localeMessage.id), model.SequenceId));
+            model.Locales = localeMessage.locales.Select(l => BuildChain(l, int.Parse(localeMessage.id), model.SequenceId, model.InforMessageId));
             model.Action = localeMessage.Action;
             return model;
         }
 
-        private LocaleModel BuildChain(Contracts.LocaleType localeMessage, int parentLocaleId, int sequenceId)
+        private LocaleModel BuildChain(Contracts.LocaleType localeMessage, int parentLocaleId, int sequenceId, string inforMessageId)
         {
             LocaleModel model = new LocaleModel();
             model.Name = localeMessage.name;
             model.TypeCode = localeMessage.type.code.ToString();
             model.LocaleId = int.Parse(localeMessage.id);
-            model.Locales = localeMessage.locales.Select(l => BuildRegion(l, int.Parse(localeMessage.id), sequenceId));
+            model.Locales = localeMessage.locales.Select(l => BuildRegion(l, int.Parse(localeMessage.id), sequenceId, inforMessageId));
             model.Action = localeMessage.Action;
             model.SequenceId = sequenceId;
+            model.InforMessageId = inforMessageId;
             return model;
         }
 
-        private LocaleModel BuildRegion(Contracts.LocaleType localeMessage, int parentLocaleId, int sequenceId)
-        {
-            LocaleModel model = new LocaleModel();
-            model.Name = localeMessage.name;
-            model.TypeCode = localeMessage.type.code.ToString();
-            model.LocaleId = int.Parse(localeMessage.id);
-            model.ParentLocaleId = parentLocaleId;
-            model.Locales = localeMessage.locales.Select(l => BuildMetro(l, int.Parse(localeMessage.id), sequenceId));
-            model.Action = localeMessage.Action;
-            model.SequenceId = sequenceId;
-            return model;
-        }
-
-        private LocaleModel BuildMetro(Contracts.LocaleType localeMessage, int parentLocaleId, int sequenceId)
+        private LocaleModel BuildRegion(Contracts.LocaleType localeMessage, int parentLocaleId, int sequenceId, string inforMessageId)
         {
             LocaleModel model = new LocaleModel();
             model.Name = localeMessage.name;
             model.TypeCode = localeMessage.type.code.ToString();
             model.LocaleId = int.Parse(localeMessage.id);
             model.ParentLocaleId = parentLocaleId;
-            model.Locales = localeMessage.locales.Select(l => BuildStore(l, int.Parse(localeMessage.id), sequenceId));
+            model.Locales = localeMessage.locales.Select(l => BuildMetro(l, int.Parse(localeMessage.id), sequenceId, inforMessageId));
             model.Action = localeMessage.Action;
             model.SequenceId = sequenceId;
+            model.InforMessageId = inforMessageId;
             return model;
         }
 
-        private LocaleModel BuildStore(Contracts.LocaleType localeMessage, int parentLocaleId, int sequenceId)
+        private LocaleModel BuildMetro(Contracts.LocaleType localeMessage, int parentLocaleId, int sequenceId, string inforMessageId)
+        {
+            LocaleModel model = new LocaleModel();
+            model.Name = localeMessage.name;
+            model.TypeCode = localeMessage.type.code.ToString();
+            model.LocaleId = int.Parse(localeMessage.id);
+            model.ParentLocaleId = parentLocaleId;
+            model.Locales = localeMessage.locales.Select(l => BuildStore(l, int.Parse(localeMessage.id), sequenceId, inforMessageId));
+            model.Action = localeMessage.Action;
+            model.SequenceId = sequenceId;
+            model.InforMessageId = inforMessageId;
+            return model;
+        }
+
+        private LocaleModel BuildStore(Contracts.LocaleType localeMessage, int parentLocaleId, int sequenceId, string inforMessageId)
         {
             LocaleModel model = new LocaleModel();
             var address = localeMessage.addresses[0].type.Item as Contracts.PhysicalAddressType;
@@ -97,6 +101,7 @@ namespace Icon.Infor.Listeners.LocaleListener.MessageParsers
             model.EwicAgency = GetTraitValue(localeMessage.traits, Traits.Codes.EwicAgency);
             model.Action = localeMessage.Action;
             model.SequenceId = sequenceId;
+            model.InforMessageId = inforMessageId;
 
             model.LocaleTraits = localeMessage.traits.SelectMany(lm => new[] {
                 new LocaleTraitModel(Traits.PhoneNumber,GetTraitValue(localeMessage.traits, Traits.Codes.PhoneNumber), null, model.BusinessUnitId),
