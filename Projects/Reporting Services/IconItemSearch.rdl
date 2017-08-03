@@ -3543,28 +3543,28 @@ IF NOT isnull(@GlutenFree, '') = ''
 
 IF NOT isnull(@Kosher, '') = ''
 	AND @Kosher &lt;&gt; 'Both'
-	IF @GlutenFree = 'Yes' 		
+	IF @Kosher = 'Yes' 		
 		SET @whereSql = @whereSql + ' and ISNULL(isa.KosherAgencyName, '''') &lt;&gt; '''''
 	ELSE
 		SET @whereSql = @whereSql + ' and ISNULL(isa.KosherAgencyName, '''') = '''''
 
 IF NOT isnull(@NonGmo, '') = ''
 	AND @NonGmo &lt;&gt; 'Both'
-	IF @GlutenFree = 'Yes' 		
+	IF @NonGmo = 'Yes' 		
 		SET @whereSql = @whereSql + ' and ISNULL(isa.NonGmoAgencyName, '''') &lt;&gt; '''''
 	ELSE
 		SET @whereSql = @whereSql + ' and ISNULL(isa.NonGmoAgencyName, '''') = '''''
 
 IF NOT isnull(@Organic, '') = ''
 	AND @Organic &lt;&gt; 'Both'
-	IF @GlutenFree = 'Yes' 		
+	IF @Organic = 'Yes' 		
 		SET @whereSql = @whereSql + ' and ISNULL(isa.OrganicAgencyName, '''') &lt;&gt; '''''
 	ELSE
 		SET @whereSql = @whereSql + ' and ISNULL(isa.OrganicAgencyName, '''') = '''''
 
 IF NOT isnull(@Vegan, '') = ''
 	AND @Vegan &lt;&gt; 'Both'
-	IF @GlutenFree = 'Yes' 		
+	IF @Vegan = 'Yes' 		
 		SET @whereSql = @whereSql + ' and ISNULL(isa.VeganAgencyName, '''') &lt;&gt; '''''
 	ELSE
 		SET @whereSql = @whereSql + ' and ISNULL(isa.VeganAgencyName, '''') = '''''
