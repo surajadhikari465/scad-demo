@@ -3024,243 +3024,244 @@
             <Value>=join(Parameters!SubteamParm.Value, ",")</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
-          SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+        <CommandText>SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-          DECLARE @ItemDescriptionParm AS VARCHAR(50)
-          DECLARE @POSDescriptionParm AS VARCHAR(50);
-          DECLARE @BrandNameParm AS VARCHAR(50);
-          DECLARE @IdentifierParm AS VARCHAR(13);
-          DECLARE @NationalClassParm AS VARCHAR(255);
-          DECLARE @NationalClassCodeParm AS VARCHAR(50);
+DECLARE @ItemDescriptionParm AS VARCHAR(50)
+DECLARE @POSDescriptionParm AS VARCHAR(50);
+DECLARE @BrandNameParm AS VARCHAR(50);
+DECLARE @IdentifierParm AS VARCHAR(13);
+DECLARE @NationalClassParm AS VARCHAR(255);
+DECLARE @NationalClassCodeParm AS VARCHAR(50);
 
-          -- ====================================================
-          -- Search parameters with options
-          -- ====================================================
-          IF isnull(@Identifier, '') = ''
-          SET @IdentifierParm = '%';
-          ELSE
-          SET @IdentifierParm = (
-          CASE
-          WHEN @IdentifierOption = 1
-          THEN @Identifier + '%'
-          WHEN @IdentifierOption = 2
-          THEN '%' + @Identifier + '%'
-          WHEN @IdentifierOption = 3
-          THEN @Identifier
-          ELSE @Identifier
-          END
-          );
+-- ====================================================
+-- Search parameters with options
+-- ====================================================
+		  
+IF isnull(@Identifier, '') = ''
+	SET @IdentifierParm = '%';
+ELSE
+	SET @IdentifierParm = (
+			CASE 
+				WHEN @IdentifierOption = 1
+					THEN @Identifier + '%'
+				WHEN @IdentifierOption = 2
+					THEN '%' + @Identifier + '%'
+				WHEN @IdentifierOption = 3
+					THEN @Identifier
+				ELSE @Identifier
+				END
+			);
 
-          IF isnull(@ItemDescription, '') = ''
-          SET @ItemDescriptionParm = '';
-          ELSE
-          SET @ItemDescriptionParm = (
-          CASE
-          WHEN @ItemDescriptionOption = 1
-          THEN @ItemDescription + '%'
-          WHEN @ItemDescriptionOption = 2
-          THEN '%' + @ItemDescription + '%'
-          WHEN @ItemDescriptionOption = 3
-          THEN @ItemDescription
-          ELSE @ItemDescription
-          END
-          );
+IF isnull(@ItemDescription, '') = ''
+	SET @ItemDescriptionParm = '';
+ELSE
+	SET @ItemDescriptionParm = (
+			CASE 
+				WHEN @ItemDescriptionOption = 1
+					THEN @ItemDescription + '%'
+				WHEN @ItemDescriptionOption = 2
+					THEN '%' + @ItemDescription + '%'
+				WHEN @ItemDescriptionOption = 3
+					THEN @ItemDescription
+				ELSE @ItemDescription
+				END
+			);
 
-          IF isnull(@POSDescriptionParm, '') = ''
-          SET @POSDescriptionParm = '';
-          ELSE
-          SET @POSDescriptionParm = (
-          CASE
-          WHEN @POSDescriptionOption = 1
-          THEN @POSDescription + '%'
-          WHEN @POSDescriptionOption = 2
-          THEN '%' + @POSDescription + '%'
-          WHEN @POSDescriptionOption = 3
-          THEN @POSDescription
-          ELSE @POSDescription
-          END
-          );
+IF isnull(@POSDescriptionParm, '') = ''
+	SET @POSDescriptionParm = '';
+ELSE
+	SET @POSDescriptionParm = (
+			CASE 
+				WHEN @POSDescriptionOption = 1
+					THEN @POSDescription + '%'
+				WHEN @POSDescriptionOption = 2
+					THEN '%' + @POSDescription + '%'
+				WHEN @POSDescriptionOption = 3
+					THEN @POSDescription
+				ELSE @POSDescription
+				END
+			);
 
-          IF isnull(@BrandName, '') = ''
-          SET @BrandNameParm = '';
-          ELSE
-          SET @BrandNameParm = (
-          CASE
-          WHEN @BrandNameOption = 1
-          THEN @BrandName + '%'
-          WHEN @BrandNameOption = 2
-          THEN '%' + @BrandName + '%'
-          WHEN @BrandNameOption = 3
-          THEN @BrandName
-          ELSE @BrandName
-          END
-          );
+IF isnull(@BrandName, '') = ''
+	SET @BrandNameParm = '';
+ELSE
+	SET @BrandNameParm = (
+			CASE 
+				WHEN @BrandNameOption = 1
+					THEN @BrandName + '%'
+				WHEN @BrandNameOption = 2
+					THEN '%' + @BrandName + '%'
+				WHEN @BrandNameOption = 3
+					THEN @BrandName
+				ELSE @BrandName
+				END
+			);
 
-          IF isnull(@NationalClass, '') = ''
-          SET @NationalClassParm = '';
-          ELSE
-          SET @NationalClassParm = (
-          CASE
-          WHEN @NationalClassNameSearchOption = 1
-          THEN @NationalClass + '%'
-          WHEN @NationalClassNameSearchOption = 2
-          THEN '%' + @NationalClass + '%'
-          WHEN @NationalClassNameSearchOption = 3
-          THEN @NationalClass
-          ELSE @NationalClass
-          END
-          );
+IF isnull(@NationalClass, '') = ''
+	SET @NationalClassParm = '';
+ELSE
+	SET @NationalClassParm = (
+			CASE 
+				WHEN @NationalClassNameSearchOption = 1
+					THEN @NationalClass + '%'
+				WHEN @NationalClassNameSearchOption = 2
+					THEN '%' + @NationalClass + '%'
+				WHEN @NationalClassNameSearchOption = 3
+					THEN @NationalClass
+				ELSE @NationalClass
+				END
+			);
 
-          IF isnull(@NationalClassCode, '') = ''
-          SET @NationalClassCodeParm = '';
-          ELSE
-          SET @NationalClassCodeParm = (
-          CASE
-          WHEN @NationalClassCodeSearchOption = 1
-          THEN @NationalClassCode + '%'
-          WHEN @NationalClassCodeSearchOption = 2
-          THEN '%' + @NationalClassCode + '%'
-          WHEN @NationalClassCodeSearchOption = 3
-          THEN @NationalClassCode
-          ELSE @NationalClassCode
-          END
-          );
+IF isnull(@NationalClassCode, '') = ''
+	SET @NationalClassCodeParm = '';
+ELSE
+	SET @NationalClassCodeParm = (
+			CASE 
+				WHEN @NationalClassCodeSearchOption = 1
+					THEN @NationalClassCode + '%'
+				WHEN @NationalClassCodeSearchOption = 2
+					THEN '%' + @NationalClassCode + '%'
+				WHEN @NationalClassCodeSearchOption = 3
+					THEN @NationalClassCode
+				ELSE @NationalClassCode
+				END
+			);
 
-          -- ====================================================
-          -- Declare Internal Variables
-          -- ====================================================
-          DECLARE @validationStatus INT;
-          DECLARE @productDescriptionTraitID INT;
-          DECLARE @posTraitID INT;
-          DECLARE @packageUnitTraitID INT;
-          DECLARE @foodStampEligibleTraitID INT;
-          DECLARE @brandHierarchyID INT;
-          DECLARE @scaleTareID INT;
-          DECLARE @taxClassID INT;
-          DECLARE @validationDateTraitID INT;
-          DECLARE @financialHierarchyID INT;
-          DECLARE @retailSizeID INT;
-          DECLARE @retailUomID INT;
-          DECLARE @wholeFoodsLocale INT;
-          DECLARE @nationalHierarchyID INT;
-          DECLARE @nationalClassCodeTraitID INT;
-          DECLARE @modifiedDateTraitID INT;
-          DECLARE @taxAbbreviationTraitID INT;
+-- ====================================================
+-- Declare Internal Variables
+-- ====================================================
+DECLARE @validationStatus INT;
+DECLARE @productDescriptionTraitID INT;
+DECLARE @posTraitID INT;
+DECLARE @packageUnitTraitID INT;
+DECLARE @foodStampEligibleTraitID INT;
+DECLARE @brandHierarchyID INT;
+DECLARE @scaleTareID INT;
+DECLARE @taxClassID INT;
+DECLARE @validationDateTraitID INT;
+DECLARE @financialHierarchyID INT;
+DECLARE @retailSizeID INT;
+DECLARE @retailUomID INT;
+DECLARE @wholeFoodsLocale INT;
+DECLARE @nationalHierarchyID INT;
+DECLARE @nationalClassCodeTraitID INT;
+DECLARE @modifiedDateTraitID INT;
+DECLARE @taxAbbreviationTraitID INT;
 
-          SET @wholeFoodsLocale = (
-          SELECT l.localeID
-          FROM Locale l
-          WHERE l.localeName = 'Whole Foods'
-          );
-          SET @productDescriptionTraitID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'PRD'
-          );
-          SET @posTraitID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'POS'
-          );
-          SET @packageUnitTraitID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'PKG'
-          );
-          SET @foodStampEligibleTraitID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'FSE'
-          );
-          SET @validationDateTraitID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'VAL'
-          );
-          SET @retailSizeID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'RSZ'
-          );
-          SET @retailUomID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'RUM'
-          );
-          SET @scaleTareID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'SCT'
-          );
-          SET @modifiedDateTraitID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'MOD'
-          );
-          SET @financialHierarchyID = (
-          SELECT h.HIERARCHYID
-          FROM Hierarchy h
-          WHERE h.hierarchyName = 'Financial'
-          );
-          SET @taxAbbreviationTraitID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'ABR'
-          );
-          SET @brandHierarchyID = (
-          SELECT h.HIERARCHYID
-          FROM Hierarchy h
-          WHERE h.hierarchyName = 'Brands'
-          )
-          SET @taxClassID = (
-          SELECT h.HIERARCHYID
-          FROM Hierarchy h
-          WHERE h.hierarchyName = 'Tax'
-          )
-          SET @nationalHierarchyID = (
-          SELECT h.HIERARCHYID
-          FROM Hierarchy h
-          WHERE h.hierarchyName = 'National'
-          )
-          SET @nationalClassCodeTraitID = (
-          SELECT t.traitID
-          FROM Trait t
-          WHERE t.traitCode = 'NCC'
-          );
+SET @wholeFoodsLocale = (
+		SELECT l.localeID
+		FROM Locale l
+		WHERE l.localeName = 'Whole Foods'
+		);
+SET @productDescriptionTraitID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'PRD'
+		);
+SET @posTraitID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'POS'
+		);
+SET @packageUnitTraitID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'PKG'
+		);
+SET @foodStampEligibleTraitID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'FSE'
+		);
+SET @validationDateTraitID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'VAL'
+		);
+SET @retailSizeID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'RSZ'
+		);
+SET @retailUomID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'RUM'
+		);
+SET @scaleTareID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'SCT'
+		);
+SET @modifiedDateTraitID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'MOD'
+		);
+SET @financialHierarchyID = (
+		SELECT h.HIERARCHYID
+		FROM Hierarchy h
+		WHERE h.hierarchyName = 'Financial'
+		);
+SET @taxAbbreviationTraitID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'ABR'
+		);
+SET @brandHierarchyID = (
+		SELECT h.HIERARCHYID
+		FROM Hierarchy h
+		WHERE h.hierarchyName = 'Brands'
+		)
+SET @taxClassID = (
+		SELECT h.HIERARCHYID
+		FROM Hierarchy h
+		WHERE h.hierarchyName = 'Tax'
+		)
+SET @nationalHierarchyID = (
+		SELECT h.HIERARCHYID
+		FROM Hierarchy h
+		WHERE h.hierarchyName = 'National'
+		)
+SET @nationalClassCodeTraitID = (
+		SELECT t.traitID
+		FROM Trait t
+		WHERE t.traitCode = 'NCC'
+		);
 
-          DECLARE @cteSql NVARCHAR(max) = '',
-          @selectItemsSql NVARCHAR(max) = '',
-          @fromSql NVARCHAR(max) = '',
-          @whereSql NVARCHAR(max) = ''
+DECLARE @cteSql NVARCHAR(max) = ''
+	,@selectItemsSql NVARCHAR(max) = ''
+	,@fromSql NVARCHAR(max) = ''
+	,@whereSql NVARCHAR(max) = '' 
 
-          -- ================================================
-          -- Set CTE statement
-          -- ================================================
-          CREATE TABLE #subteamsTable (NAME NVARCHAR(255));
+-- ================================================
+-- Set CTE statement
+-- ================================================
 
-          WITH Subteams_CTE
-          AS (
-          SELECT 1 AS start,
-          charindex(',', @SubteamParm) AS stop
+CREATE TABLE #subteamsTable (NAME NVARCHAR(255));
 
-          UNION ALL
+WITH Subteams_CTE
+AS (
+	SELECT 1 AS start
+		,charindex(',', @SubteamParm) AS stop
+	
+	UNION ALL
+	
+	SELECT stop + 1
+		,charindex(',', @SubteamParm, stop + 1)
+	FROM Subteams_CTE
+	WHERE stop &gt; 0
+	)
+INSERT INTO #subteamsTable
+SELECT substring(@SubteamParm, start, CASE 
+			WHEN stop &gt; 0
+				THEN stop - start
+			ELSE len(@SubteamParm)
+			END)
+FROM Subteams_CTE;
 
-          SELECT stop + 1,
-          charindex(',', @SubteamParm, stop + 1)
-          FROM Subteams_CTE
-          WHERE stop &gt; 0
-          )
-          INSERT INTO #subteamsTable
-          SELECT substring(@SubteamParm, start, CASE
-          WHEN stop &gt; 0
-          THEN stop - start
-          ELSE len(@SubteamParm)
-          END)
-          FROM Subteams_CTE;
-
-          SET @cteSql =
-          N'
+SET @cteSql = 
+	N'
           with
           ItemTrait_CTE (traitID, traitCode, traitValue, itemID)
           as
@@ -3301,54 +3302,54 @@
           )
           '
 
-          -- ================================================
-          -- Set SELECT statement
-          -- ================================================
-          CREATE TABLE #outputTable (
-          ItemId INT,
-          Scancode NVARCHAR(255),
-          ScanecodeType NVARCHAR(255),
-          POSDescription NVARCHAR(255),
-          ProductionDescription NVARCHAR(255),
-          PackageUnit NVARCHAR(255),
-          RetailUnit NVARCHAR(255),
-          RetailUOM NVARCHAR(255),
-          FoodStampEligible NVARCHAR(255),
-          POSScaleTare NVARCHAR(255),
-          BrandName NVARCHAR(255),
-          Subteam NVARCHAR(255),
-          TaxAbbreviation NVARCHAR(255),
-          TaxClass NVARCHAR(255),
-          ValidationStatus NVARCHAR(255),
-          NationalHierarchyClassName NVARCHAR(255),
-          NationalHierarchyClassCode NVARCHAR(255),
-          AirChilled BIT,
-          Biodynamic BIT,
-          CheeseRaw BIT,
-          DryAged BIT,
-          FreeRange BIT,
-          GlutenFree INT,
-          GrassFed BIT,
-          Kosher INT,
-          MadeInHouse BIT,
-          MSC BIT,
-          NonGMO INT,
-          Organic INT,
-          PastureRaised BIT,
-          PremiumBodyCare BIT,
-          Vegan INT,
-          Vegetarian BIT,
-          WholeTrade BIT,
-          AnimalWelfareRating NVARCHAR(255),
-          CheeseMilkType NVARCHAR(255),
-          EcoScaleRating NVARCHAR(255),
-          FreshOrFrozen NVARCHAR(255),
-          SeafoodCatchType NVARCHAR(255),
-          LastModified NVARCHAR(255)
-          )
+-- ================================================
+-- Set SELECT statement
+-- ================================================
+CREATE TABLE #outputTable (
+	ItemId INT
+	,Scancode NVARCHAR(255)
+	,ScanecodeType NVARCHAR(255)
+	,POSDescription NVARCHAR(255)
+	,ProductionDescription NVARCHAR(255)
+	,PackageUnit NVARCHAR(255)
+	,RetailUnit NVARCHAR(255)
+	,RetailUOM NVARCHAR(255)
+	,FoodStampEligible NVARCHAR(255)
+	,POSScaleTare NVARCHAR(255)
+	,BrandName NVARCHAR(255)
+	,Subteam NVARCHAR(255)
+	,TaxAbbreviation NVARCHAR(255)
+	,TaxClass NVARCHAR(255)
+	,ValidationStatus NVARCHAR(255)
+	,NationalHierarchyClassName NVARCHAR(255)
+	,NationalHierarchyClassCode NVARCHAR(255)
+	,AirChilled BIT
+	,Biodynamic BIT
+	,CheeseRaw BIT
+	,DryAged BIT
+	,FreeRange BIT
+	,GlutenFree INT
+	,GrassFed BIT
+	,Kosher INT
+	,MadeInHouse BIT
+	,MSC BIT
+	,NonGMO INT
+	,Organic INT
+	,PastureRaised BIT
+	,PremiumBodyCare BIT
+	,Vegan INT
+	,Vegetarian BIT
+	,WholeTrade BIT
+	,AnimalWelfareRating NVARCHAR(255)
+	,CheeseMilkType NVARCHAR(255)
+	,EcoScaleRating NVARCHAR(255)
+	,FreshOrFrozen NVARCHAR(255)
+	,SeafoodCatchType NVARCHAR(255)
+	,LastModified NVARCHAR(255)
+	)
 
-          SET @selectItemsSql =
-          N'
+SET @selectItemsSql = 
+	N'
           insert into #outputTable(
           ItemId
           ,Scancode
@@ -3432,11 +3433,11 @@
           ,sff.Description as [FreshOrFrozen]
           ,sfct.Description as [SeafoodCatchType]
           ,lmd.traitvalue as [LastModified]'
-          -- ================================================
-          -- Set FROM statement
-          -- ================================================
-          SET @fromSql =
-          N'
+-- ================================================
+-- Set FROM statement
+-- ================================================
+SET @fromSql = 
+	N'
           from item i
           join scancode sc on i.itemid=sc.itemid
           left join scancodetype sct on sc.scancodetypeid=sct.scancodetypeid
@@ -3460,144 +3461,159 @@
           left join ecoscalerating esr on isa.EcoScaleRatingId=esr.EcoScaleRatingId
           left join seafoodfreshorfrozen sff on isa.SeafoodFreshOrFrozenId=sff.SeafoodFreshOrFrozenId
           left join SeafoodCatchType sfct on isa.SeafoodCatchTypeId=sfct.SeafoodCatchTypeId'
-          -- ====================================================
-          -- Set WHERE statement
-          -- ====================================================
-          SET @whereSql = N'
+-- ====================================================
+-- Set WHERE statement
+-- ====================================================
+SET @whereSql = N'
           where';
-          SET @whereSql = @whereSql + ' sc.scancode like @identifierparm';
+SET @whereSql = @whereSql + ' sc.scancode like @identifierparm';
 
-          IF NOT isnull(@ItemDescriptionParm, '') = ''
-          SET @whereSql = @whereSql + ' and prd.traitvalue like @itemdescriptionparm';
+IF NOT isnull(@ItemDescriptionParm, '') = ''
+	SET @whereSql = @whereSql + ' and prd.traitvalue like @itemdescriptionparm';
 
-          IF NOT isnull(@POSDescriptionParm, '') = ''
-          SET @whereSql = @whereSql + ' and pos.traitvalue like @posdescriptionparm';
+IF NOT isnull(@POSDescriptionParm, '') = ''
+	SET @whereSql = @whereSql + ' and pos.traitvalue like @posdescriptionparm';
 
-          IF NOT isnull(@BrandNameParm, '') = ''
-          SET @whereSql = @whereSql + ' and brd.hierarchyclassname like @brandnameparm';
+IF NOT isnull(@BrandNameParm, '') = ''
+	SET @whereSql = @whereSql + ' and brd.hierarchyclassname like @brandnameparm';
 
-          IF NOT isnull(@NationalClassParm, '') = ''
-          SET @whereSql = @whereSql + ' and nat.hierarchyclassname like @nationalclassparm';
+IF NOT isnull(@NationalClassParm, '') = ''
+	SET @whereSql = @whereSql + ' and nat.hierarchyclassname like @nationalclassparm';
 
-          IF NOT isnull(@NationalClassCodeParm, '') = ''
-          SET @whereSql = @whereSql + ' and nat.hierarchyclassid like @NationalClassCodeParm';
+IF NOT isnull(@NationalClassCodeParm, '') = ''
+	SET @whereSql = @whereSql + ' and nat.hierarchyclassid like @NationalClassCodeParm';
 
-          IF @LastModifiedDate IS NOT NULL
-          SET @whereSql = @whereSql + ' and lmd.traitvalue like convert(varchar(10), @lastmodifieddate, 120) + ''%''';
+IF @LastModifiedDate IS NOT NULL
+	SET @whereSql = @whereSql + ' and lmd.traitvalue like convert(varchar(10), @lastmodifieddate, 120) + ''%''';
 
-          IF NOT isnull(@AirChilled, '') = ''
-          AND @AirChilled &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.AirChilled = iif(@AirChilled = ''Yes'', 1, 0)';
+IF NOT isnull(@AirChilled, '') = ''
+	AND @AirChilled &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.AirChilled = ' + CASE WHEN @AirChilled = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@Biodynamic, '') = ''
-          AND @Biodynamic &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.Biodynamic = iif(@Biodynamic = ''Yes'', 1, 0)';
+IF NOT isnull(@Biodynamic, '') = ''
+	AND @Biodynamic &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.Biodynamic = ' + CASE WHEN @Biodynamic = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@CheeseRaw, '') = ''
-          AND @CheeseRaw &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.CheeseRaw = iif(@CheeseRaw = ''Yes'', 1, 0)';
+IF NOT isnull(@CheeseRaw, '') = ''
+	AND @CheeseRaw &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.CheeseRaw = ' + CASE WHEN @CheeseRaw = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@DryAged, '') = ''
-          AND @DryAged &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.DryAged = iif(@DryAged = ''Yes'', 1, 0)';
+IF NOT isnull(@DryAged, '') = ''
+	AND @DryAged &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.DryAged = ' + CASE WHEN @DryAged = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@FreeRange, '') = ''
-          AND @FreeRange &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.FreeRange = iif(@FreeRange = ''Yes'', 1, 0)';
+IF NOT isnull(@FreeRange, '') = ''
+	AND @FreeRange &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.FreeRange = ' + CASE WHEN @FreeRange = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@GrassFed, '') = ''
-          AND @GrassFed &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.GrassFed = iif(@GrassFed = ''Yes'', 1, 0)';
+IF NOT isnull(@GrassFed, '') = ''
+	AND @GrassFed &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.GrassFed = ' + CASE WHEN @GrassFed = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@MadeInHouse, '') = ''
-          AND @MadeInHouse &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.MadeinHouse = iif(@MadeInHouse = ''Yes'', 1, 0)';
+IF NOT isnull(@MadeInHouse, '') = ''
+	AND @MadeInHouse &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.MadeinHouse = ' + CASE WHEN @MadeInHouse = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@MSC, '') = ''
-          AND @MSC &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.Msc = iif(@MSC = ''Yes'', 1, 0)';
+IF NOT isnull(@MSC, '') = ''
+	AND @MSC &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.Msc = ' + CASE WHEN @MSC = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@PastureRaised, '') = ''
-          AND @PastureRaised &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.PastureRaised = iif(@PastureRaised = ''Yes'', 1, 0)';
+IF NOT isnull(@PastureRaised, '') = ''
+	AND @PastureRaised &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.PastureRaised = ' + CASE WHEN @PastureRaised = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@PremiumBodyCare, '') = ''
-          AND @PremiumBodyCare &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.PremiumBodyCare = iif(@PremiumBodyCare = ''Yes'', 1, 0)';
+IF NOT isnull(@PremiumBodyCare, '') = ''
+	AND @PremiumBodyCare &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.PremiumBodyCare = ' + CASE WHEN @PremiumBodyCare = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@Vegetarian, '') = ''
-          AND @Vegetarian &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.Vegetarian = iif(@Vegetarian = ''Yes'', 1, 0)';
+IF NOT isnull(@Vegetarian, '') = ''
+	AND @Vegetarian &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.Vegetarian = ' + CASE WHEN @Vegetarian = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@WholeTrade, '') = ''
-          AND @WholeTrade &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.WholeTrade = iif(@WholeTrade = ''Yes'', 1, 0)';
+IF NOT isnull(@WholeTrade, '') = ''
+	AND @WholeTrade &lt;&gt; 'Both'
+	SET @whereSql = @whereSql + ' and isa.WholeTrade = ' + CASE WHEN @WholeTrade = 'Yes' THEN '1' ELSE '0' END;
 
-          IF NOT isnull(@GlutenFree, '') = ''
-          AND @GlutenFree &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.GlutenFreeAgencyName  iif(@GlutenFree = ''Yes'', 1, 0)';
+IF NOT isnull(@GlutenFree, '') = ''
+	AND @GlutenFree &lt;&gt; 'Both'
+	IF @GlutenFree = 'Yes' 		
+		SET @whereSql = @whereSql + ' and ISNULL(isa.GlutenFreeAgencyName, '''') &lt;&gt; '''''
+	ELSE
+		SET @whereSql = @whereSql + ' and ISNULL(isa.GlutenFreeAgencyName, '''') = '''''
 
-          IF NOT isnull(@Kosher, '') = ''
-          AND @Kosher &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.KosherAgencyName iif(@Kosher = ''Yes'', 1, 0)';
+IF NOT isnull(@Kosher, '') = ''
+	AND @Kosher &lt;&gt; 'Both'
+	IF @GlutenFree = 'Yes' 		
+		SET @whereSql = @whereSql + ' and ISNULL(isa.KosherAgencyName, '''') &lt;&gt; '''''
+	ELSE
+		SET @whereSql = @whereSql + ' and ISNULL(isa.KosherAgencyName, '''') = '''''
 
-          IF NOT isnull(@NonGmo, '') = ''
-          AND @NonGmo &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.NonGmoAgencyName iif(@NonGmo = ''Yes'', 1, 0)';
+IF NOT isnull(@NonGmo, '') = ''
+	AND @NonGmo &lt;&gt; 'Both'
+	IF @GlutenFree = 'Yes' 		
+		SET @whereSql = @whereSql + ' and ISNULL(isa.NonGmoAgencyName, '''') &lt;&gt; '''''
+	ELSE
+		SET @whereSql = @whereSql + ' and ISNULL(isa.NonGmoAgencyName, '''') = '''''
 
-          IF NOT isnull(@Organic, '') = ''
-          AND @Organic &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.OrganicAgencyName iif(@Organic = ''Yes'', 1, 0)';
+IF NOT isnull(@Organic, '') = ''
+	AND @Organic &lt;&gt; 'Both'
+	IF @GlutenFree = 'Yes' 		
+		SET @whereSql = @whereSql + ' and ISNULL(isa.OrganicAgencyName, '''') &lt;&gt; '''''
+	ELSE
+		SET @whereSql = @whereSql + ' and ISNULL(isa.OrganicAgencyName, '''') = '''''
 
-          IF NOT isnull(@Vegan, '') = ''
-          AND @Vegan &lt;&gt; 'Both'
-          SET @whereSql = @whereSql + ' and isa.VeganAgencyName iif(@Vegan = ''Yes'', 1, 0)';
+IF NOT isnull(@Vegan, '') = ''
+	AND @Vegan &lt;&gt; 'Both'
+	IF @GlutenFree = 'Yes' 		
+		SET @whereSql = @whereSql + ' and ISNULL(isa.VeganAgencyName, '''') &lt;&gt; '''''
+	ELSE
+		SET @whereSql = @whereSql + ' and ISNULL(isa.VeganAgencyName, '''') = '''''
 
-          IF NOT isnull(@AnimalWelfareRating, '') = ''
-          AND @AnimalWelfareRating &lt;&gt; - 1
-          SET @whereSql = @whereSql + ' and awr.animalwelfareratingid = @animalwelfarerating';
+IF NOT isnull(@AnimalWelfareRating, '') = ''
+	AND @AnimalWelfareRating &lt;&gt; - 1
+	SET @whereSql = @whereSql + ' and awr.animalwelfareratingid = @animalwelfarerating';
 
-          IF NOT isnull(@MilkType, '') = ''
-          AND @MilkType &lt;&gt; - 1
-          SET @whereSql = @whereSql + ' and mt.milktypeid = @MilkType';
+IF NOT isnull(@MilkType, '') = ''
+	AND @MilkType &lt;&gt; - 1
+	SET @whereSql = @whereSql + ' and mt.milktypeid = @MilkType';
 
-          IF NOT isnull(@EcoScaleRating, '') = ''
-          AND @EcoScaleRating &lt;&gt; - 1
-          SET @whereSql = @whereSql + ' and esr.ecoscaleratingid = @EcoScaleRating';
+IF NOT isnull(@EcoScaleRating, '') = ''
+	AND @EcoScaleRating &lt;&gt; - 1
+	SET @whereSql = @whereSql + ' and esr.ecoscaleratingid = @EcoScaleRating';
 
-          IF NOT isnull(@SeafoodFreshFrozen, '') = ''
-          AND @SeafoodFreshFrozen &lt;&gt; - 1
-          SET @whereSql = @whereSql + ' and sff.seafoodfreshorfrozenid = @SeafoodFreshFrozen';
+IF NOT isnull(@SeafoodFreshFrozen, '') = ''
+	AND @SeafoodFreshFrozen &lt;&gt; - 1
+	SET @whereSql = @whereSql + ' and sff.seafoodfreshorfrozenid = @SeafoodFreshFrozen';
 
-          IF NOT isnull(@SeafoodCatchType, '') = ''
-          AND @SeafoodCatchType &lt;&gt; - 1
-          SET @whereSql = @whereSql + ' and sfct.seafoodcatchtypeid = @SeafoodCatchType';
+IF NOT isnull(@SeafoodCatchType, '') = ''
+	AND @SeafoodCatchType &lt;&gt; - 1
+	SET @whereSql = @whereSql + ' and sfct.seafoodcatchtypeid = @SeafoodCatchType';
 
-          IF EXISTS (
-          SELECT TOP 1 NAME
-          FROM #subteamsTable
-          WHERE NAME IS NOT NULL
-          AND NAME &lt;&gt; '&lt;Any&gt;'
-          )
-          SET @whereSql = @whereSql + ' and fin.hierarchyClassName in (select name from #subteamsTable)';
+IF EXISTS (
+		SELECT TOP 1 NAME
+		FROM #subteamsTable
+		WHERE NAME IS NOT NULL
+			AND NAME &lt;&gt; '&lt;Any&gt;'
+		)
+	SET @whereSql = @whereSql + ' and fin.hierarchyClassName in (select name from #subteamsTable)';
 
-          -- ====================================================
-          -- Create complete SQL statement and parameter definitions
-          -- ====================================================
-          DECLARE @sql NVARCHAR(max) = CONCAT (
-          @cteSql,
-          @selectItemsSql,
-          @fromSql,
-          @whereSql
-          );
+-- ====================================================
+-- Create complete SQL statement and parameter definitions
+-- ====================================================
+DECLARE @sql NVARCHAR(max) = CONCAT (
+		@cteSql
+		,@selectItemsSql
+		,@fromSql
+		,@whereSql
+		);
 
-          PRINT @cteSql;
-          PRINT @selectItemsSql;
-          PRINT @fromSql;
-          PRINT @whereSql;
+PRINT @cteSql;
+PRINT @selectItemsSql;
+PRINT @fromSql;
+PRINT @whereSql;
 
-          DECLARE @paramDef NVARCHAR(max) =
-          N'
+DECLARE @paramDef NVARCHAR(max) = 
+	N'
           @ItemDescriptionParm AS VARCHAR(50)
           ,@POSDescriptionParm AS VARCHAR(50)
           ,@BrandNameParm AS VARCHAR(50)
@@ -3646,105 +3662,104 @@
           ,@modifiedDateTraitID int
           ,@taxAbbreviationTraitID int'
 
-          -- ====================================================
-          -- Execute SQL for Items
-          -- ====================================================
-          EXECUTE sp_executesql @sql,
-          @paramDef,
-          @ItemDescriptionParm,
-          @POSDescriptionParm,
-          @BrandNameParm,
-          @IdentifierParm,
-          @NationalClassParm,
-          @NationalClassCodeParm,
-          @SubteamParm,
-          @LastModifiedDate,
-          @AirChilled,
-          @AnimalWelfareRating,
-          @Biodynamic,
-          @MilkType,
-          @CheeseRaw,
-          @DryAged,
-          @EcoScaleRating,
-          @FreeRange,
-          @SeafoodFreshFrozen,
-          @GlutenFree,
-          @GrassFed,
-          @Kosher,
-          @MadeInHouse,
-          @MSC,
-          @NonGmo,
-          @Organic,
-          @PastureRaised,
-          @PremiumBodyCare,
-          @SeafoodCatchType,
-          @Vegan,
-          @Vegetarian,
-          @WholeTrade,
-          @validationStatus,
-          @productDescriptionTraitID,
-          @posTraitID,
-          @packageUnitTraitID,
-          @foodStampEligibleTraitID,
-          @brandHierarchyID,
-          @scaleTareID,
-          @taxClassID,
-          @validationDateTraitID,
-          @financialHierarchyID,
-          @retailSizeID,
-          @retailUomID,
-          @wholeFoodsLocale,
-          @nationalHierarchyID,
-          @nationalClassCodeTraitID,
-          @modifiedDateTraitID,
-          @taxAbbreviationTraitID
+-- ====================================================
+-- Execute SQL for Items
+-- ====================================================
+EXECUTE sp_executesql @sql
+	,@paramDef
+	,@ItemDescriptionParm
+	,@POSDescriptionParm
+	,@BrandNameParm
+	,@IdentifierParm
+	,@NationalClassParm
+	,@NationalClassCodeParm
+	,@SubteamParm
+	,@LastModifiedDate
+	,@AirChilled
+	,@AnimalWelfareRating
+	,@Biodynamic
+	,@MilkType
+	,@CheeseRaw
+	,@DryAged
+	,@EcoScaleRating
+	,@FreeRange
+	,@SeafoodFreshFrozen
+	,@GlutenFree
+	,@GrassFed
+	,@Kosher
+	,@MadeInHouse
+	,@MSC
+	,@NonGmo
+	,@Organic
+	,@PastureRaised
+	,@PremiumBodyCare
+	,@SeafoodCatchType
+	,@Vegan
+	,@Vegetarian
+	,@WholeTrade
+	,@validationStatus
+	,@productDescriptionTraitID
+	,@posTraitID
+	,@packageUnitTraitID
+	,@foodStampEligibleTraitID
+	,@brandHierarchyID
+	,@scaleTareID
+	,@taxClassID
+	,@validationDateTraitID
+	,@financialHierarchyID
+	,@retailSizeID
+	,@retailUomID
+	,@wholeFoodsLocale
+	,@nationalHierarchyID
+	,@nationalClassCodeTraitID
+	,@modifiedDateTraitID
+	,@taxAbbreviationTraitID
 
-          SELECT ItemId,
-          Scancode,
-          ScanecodeType,
-          POSDescription,
-          ProductionDescription,
-          PackageUnit,
-          RetailUnit,
-          RetailUOM,
-          FoodStampEligible,
-          POSScaleTare,
-          BrandName,
-          Subteam,
-          TaxAbbreviation,
-          TaxClass,
-          ValidationStatus,
-          NationalHierarchyClassName,
-          NationalHierarchyClassCode,
-          AirChilled,
-          Biodynamic,
-          CheeseRaw,
-          DryAged,
-          FreeRange,
-          GlutenFree,
-          GrassFed,
-          Kosher,
-          MadeInHouse,
-          MSC,
-          NonGMO,
-          Organic,
-          PastureRaised,
-          PremiumBodyCare,
-          Vegan,
-          Vegetarian,
-          WholeTrade,
-          AnimalWelfareRating,
-          CheeseMilkType,
-          EcoScaleRating,
-          FreshOrFrozen,
-          SeafoodCatchType,
-          LastModified
-          FROM #outputtable;
+SELECT ItemId
+	,Scancode
+	,ScanecodeType
+	,POSDescription
+	,ProductionDescription
+	,PackageUnit
+	,RetailUnit
+	,RetailUOM
+	,FoodStampEligible
+	,POSScaleTare
+	,BrandName
+	,Subteam
+	,TaxAbbreviation
+	,TaxClass
+	,ValidationStatus
+	,NationalHierarchyClassName
+	,NationalHierarchyClassCode
+	,AirChilled
+	,Biodynamic
+	,CheeseRaw
+	,DryAged
+	,FreeRange
+	,GlutenFree
+	,GrassFed
+	,Kosher
+	,MadeInHouse
+	,MSC
+	,NonGMO
+	,Organic
+	,PastureRaised
+	,PremiumBodyCare
+	,Vegan
+	,Vegetarian
+	,WholeTrade
+	,AnimalWelfareRating
+	,CheeseMilkType
+	,EcoScaleRating
+	,FreshOrFrozen
+	,SeafoodCatchType
+	,LastModified
+FROM #outputtable;
 
-          DROP TABLE #subteamsTable;
+DROP TABLE #subteamsTable;
 
-          DROP TABLE #outputTable;
-        </CommandText>
+DROP TABLE #outputTable;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
