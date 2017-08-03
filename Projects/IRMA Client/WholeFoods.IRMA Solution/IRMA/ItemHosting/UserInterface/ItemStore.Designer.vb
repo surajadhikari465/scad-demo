@@ -75,7 +75,9 @@
         Me.cmdExit = New System.Windows.Forms.Button()
         Me.CheckBox_AuthorizedItem = New System.Windows.Forms.CheckBox()
         Me.GroupBox_CommonPOS = New System.Windows.Forms.GroupBox()
+        Me.Label_ItemStatusCode = New System.Windows.Forms.Label()
         Me.ComboBox_AgeCode = New System.Windows.Forms.ComboBox()
+        Me.cmbItemStatusCode = New System.Windows.Forms.ComboBox()
         Me.CheckBox_ElectronicShelfTag = New System.Windows.Forms.CheckBox()
         Me.TextBox_ItemSurcharge = New System.Windows.Forms.TextBox()
         Me.Label_ItemSurcharge = New System.Windows.Forms.Label()
@@ -251,7 +253,9 @@
         'GroupBox_CommonPOS
         '
         Me.GroupBox_CommonPOS.BackColor = System.Drawing.SystemColors.Control
+        Me.GroupBox_CommonPOS.Controls.Add(Me.Label_ItemStatusCode)
         Me.GroupBox_CommonPOS.Controls.Add(Me.ComboBox_AgeCode)
+        Me.GroupBox_CommonPOS.Controls.Add(Me.cmbItemStatusCode)
         Me.GroupBox_CommonPOS.Controls.Add(Me.CheckBox_ElectronicShelfTag)
         Me.GroupBox_CommonPOS.Controls.Add(Me.TextBox_ItemSurcharge)
         Me.GroupBox_CommonPOS.Controls.Add(Me.Label_ItemSurcharge)
@@ -282,11 +286,25 @@
         Me.GroupBox_CommonPOS.TabStop = False
         Me.ToolTip1.SetToolTip(Me.GroupBox_CommonPOS, resources.GetString("GroupBox_CommonPOS.ToolTip"))
         '
+        'Label_ItemStatusCode
+        '
+        resources.ApplyResources(Me.Label_ItemStatusCode, "Label_ItemStatusCode")
+        Me.Label_ItemStatusCode.ForeColor = System.Drawing.Color.Black
+        Me.Label_ItemStatusCode.Name = "Label_ItemStatusCode"
+        '
         'ComboBox_AgeCode
         '
         Me.ComboBox_AgeCode.FormattingEnabled = True
         resources.ApplyResources(Me.ComboBox_AgeCode, "ComboBox_AgeCode")
         Me.ComboBox_AgeCode.Name = "ComboBox_AgeCode"
+        '
+        'cmbItemStatusCode
+        '
+        Me.cmbItemStatusCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbItemStatusCode.FormattingEnabled = True
+        Me.cmbItemStatusCode.Items.AddRange(New Object() {resources.GetString("cmbItemStatusCode.Items"), resources.GetString("cmbItemStatusCode.Items1"), resources.GetString("cmbItemStatusCode.Items2"), resources.GetString("cmbItemStatusCode.Items3"), resources.GetString("cmbItemStatusCode.Items4"), resources.GetString("cmbItemStatusCode.Items5"), resources.GetString("cmbItemStatusCode.Items6"), resources.GetString("cmbItemStatusCode.Items7"), resources.GetString("cmbItemStatusCode.Items8"), resources.GetString("cmbItemStatusCode.Items9"), resources.GetString("cmbItemStatusCode.Items10"), resources.GetString("cmbItemStatusCode.Items11"), resources.GetString("cmbItemStatusCode.Items12"), resources.GetString("cmbItemStatusCode.Items13"), resources.GetString("cmbItemStatusCode.Items14"), resources.GetString("cmbItemStatusCode.Items15"), resources.GetString("cmbItemStatusCode.Items16"), resources.GetString("cmbItemStatusCode.Items17"), resources.GetString("cmbItemStatusCode.Items18"), resources.GetString("cmbItemStatusCode.Items19"), resources.GetString("cmbItemStatusCode.Items20"), resources.GetString("cmbItemStatusCode.Items21"), resources.GetString("cmbItemStatusCode.Items22"), resources.GetString("cmbItemStatusCode.Items23"), resources.GetString("cmbItemStatusCode.Items24"), resources.GetString("cmbItemStatusCode.Items25"), resources.GetString("cmbItemStatusCode.Items26"), resources.GetString("cmbItemStatusCode.Items27"), resources.GetString("cmbItemStatusCode.Items28"), resources.GetString("cmbItemStatusCode.Items29"), resources.GetString("cmbItemStatusCode.Items30"), resources.GetString("cmbItemStatusCode.Items31"), resources.GetString("cmbItemStatusCode.Items32"), resources.GetString("cmbItemStatusCode.Items33"), resources.GetString("cmbItemStatusCode.Items34"), resources.GetString("cmbItemStatusCode.Items35"), resources.GetString("cmbItemStatusCode.Items36"), resources.GetString("cmbItemStatusCode.Items37"), resources.GetString("cmbItemStatusCode.Items38"), resources.GetString("cmbItemStatusCode.Items39"), resources.GetString("cmbItemStatusCode.Items40"), resources.GetString("cmbItemStatusCode.Items41"), resources.GetString("cmbItemStatusCode.Items42"), resources.GetString("cmbItemStatusCode.Items43"), resources.GetString("cmbItemStatusCode.Items44"), resources.GetString("cmbItemStatusCode.Items45"), resources.GetString("cmbItemStatusCode.Items46"), resources.GetString("cmbItemStatusCode.Items47"), resources.GetString("cmbItemStatusCode.Items48"), resources.GetString("cmbItemStatusCode.Items49"), resources.GetString("cmbItemStatusCode.Items50")})
+        resources.ApplyResources(Me.cmbItemStatusCode, "cmbItemStatusCode")
+        Me.cmbItemStatusCode.Name = "cmbItemStatusCode"
         '
         'CheckBox_ElectronicShelfTag
         '
@@ -952,6 +970,8 @@
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents ByCountNumericEditor As Infragistics.Win.UltraWinEditors.UltraNumericEditor
     Friend WithEvents cmbRetailUom As System.Windows.Forms.ComboBox
+    Friend WithEvents cmbItemStatusCode As ComboBox
+    Friend WithEvents Label_ItemStatusCode As Label
 
-#End Region 
+#End Region
 End Class

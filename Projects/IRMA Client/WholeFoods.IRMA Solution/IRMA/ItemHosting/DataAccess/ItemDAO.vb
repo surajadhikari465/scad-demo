@@ -246,6 +246,9 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                     If (Not results.IsDBNull(results.GetOrdinal("Scale_ByCount"))) Then
                         itemStore.ByCount = results.GetInt32(results.GetOrdinal("Scale_ByCount"))
                     End If
+                    If (Not results.IsDBNull(results.GetOrdinal("ItemStatusCode"))) Then
+                        itemStore.ItemStatusCode = results.GetInt32(results.GetOrdinal("ItemStatusCode"))
+                    End If
                 End While
             Finally
                 If results IsNot Nothing Then
@@ -732,6 +735,16 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             currentParam.Name = "ECommerce"
             currentParam.Value = itemStore.ECommerce
             currentParam.Type = DBParamType.Bit
+            paramList.Add(currentParam)
+
+            currentParam = New DBParam
+            currentParam.Name = "ItemStatusCode"
+            If itemStore.ItemStatusCode Is Nothing Then
+                currentParam.Value = DBNull.Value
+            Else
+                currentParam.Value = itemStore.ItemStatusCode
+            End If
+            currentParam.Type = DBParamType.Int
             paramList.Add(currentParam)
 
             ' Execute Stored Procedure to update the data

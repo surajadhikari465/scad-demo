@@ -350,6 +350,12 @@ Friend Class frmItemStore
         Else
             ByCountNumericEditor.Value = _itemStore.ByCount
         End If
+
+        If _itemStore.ItemStatusCode Is Nothing Then
+            cmbItemStatusCode.SelectedIndex = -1
+        Else
+            cmbItemStatusCode.SelectedItem = _itemStore.ItemStatusCode.ToString()
+        End If
     End Sub
 
     Private Sub SetAllowRefresh()
@@ -463,6 +469,11 @@ Friend Class frmItemStore
         _itemStore.Discountable = CheckBox_EmployeeDiscount.Checked
         _itemStore.RefreshPOSInfo = CheckBox_RefreshPOSInfo.Checked
         _itemStore.LocalItem = CheckBox_LocalItem.Checked
+        If String.IsNullOrWhiteSpace(cmbItemStatusCode.SelectedItem) Then
+            _itemStore.ItemStatusCode = Nothing
+        Else
+            _itemStore.ItemStatusCode = Integer.Parse(cmbItemStatusCode.SelectedItem)
+        End If
 
         If Not ComboBox_SubTeam.SelectedItem Is Nothing Then
             ' Compare the selected exception subteam to the item subteam.  If they are the same value,
@@ -479,15 +490,12 @@ Friend Class frmItemStore
             '_itemStore.StoreSubTeam = -1
         End If
 
-
         If ComboBox_AgeCode.SelectedIndex = -1 Or _
             ComboBox_AgeCode.SelectedValue = 0 Then
             _itemStore.AgeCode = Nothing
         Else
             _itemStore.AgeCode = ComboBox_AgeCode.SelectedIndex
         End If
-
-
 
         'ensure that POS Tare is a valid numeric value
         If ScaleBO.ValidateNumericValue(TextBox_POSTare.Text) Then

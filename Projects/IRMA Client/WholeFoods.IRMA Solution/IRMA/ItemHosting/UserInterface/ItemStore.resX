@@ -425,6 +425,36 @@
   <data name="&gt;&gt;CheckBox_AuthorizedItem.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="Label_ItemStatusCode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label_ItemStatusCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8.25pt, style=Bold</value>
+  </data>
+  <data name="Label_ItemStatusCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>185, 134</value>
+  </data>
+  <data name="Label_ItemStatusCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 14</value>
+  </data>
+  <data name="Label_ItemStatusCode.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="Label_ItemStatusCode.Text" xml:space="preserve">
+    <value>Item Status Code</value>
+  </data>
+  <data name="&gt;&gt;Label_ItemStatusCode.Name" xml:space="preserve">
+    <value>Label_ItemStatusCode</value>
+  </data>
+  <data name="&gt;&gt;Label_ItemStatusCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label_ItemStatusCode.Parent" xml:space="preserve">
+    <value>GroupBox_CommonPOS</value>
+  </data>
+  <data name="&gt;&gt;Label_ItemStatusCode.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="ComboBox_AgeCode.Location" type="System.Drawing.Point, System.Drawing">
     <value>290, 14</value>
   </data>
@@ -444,7 +474,181 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;ComboBox_AgeCode.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <data name="cmbItemStatusCode.Items" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmbItemStatusCode.Items1" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="cmbItemStatusCode.Items2" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="cmbItemStatusCode.Items3" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="cmbItemStatusCode.Items4" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="cmbItemStatusCode.Items5" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="cmbItemStatusCode.Items6" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="cmbItemStatusCode.Items7" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="cmbItemStatusCode.Items8" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="cmbItemStatusCode.Items9" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="cmbItemStatusCode.Items10" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="cmbItemStatusCode.Items11" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="cmbItemStatusCode.Items12" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="cmbItemStatusCode.Items13" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="cmbItemStatusCode.Items14" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="cmbItemStatusCode.Items15" xml:space="preserve">
+    <value>24</value>
+  </data>
+  <data name="cmbItemStatusCode.Items16" xml:space="preserve">
+    <value>25</value>
+  </data>
+  <data name="cmbItemStatusCode.Items17" xml:space="preserve">
+    <value>26</value>
+  </data>
+  <data name="cmbItemStatusCode.Items18" xml:space="preserve">
+    <value>27</value>
+  </data>
+  <data name="cmbItemStatusCode.Items19" xml:space="preserve">
+    <value>28</value>
+  </data>
+  <data name="cmbItemStatusCode.Items20" xml:space="preserve">
+    <value>29</value>
+  </data>
+  <data name="cmbItemStatusCode.Items21" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="cmbItemStatusCode.Items22" xml:space="preserve">
+    <value>31</value>
+  </data>
+  <data name="cmbItemStatusCode.Items23" xml:space="preserve">
+    <value>32</value>
+  </data>
+  <data name="cmbItemStatusCode.Items24" xml:space="preserve">
+    <value>33</value>
+  </data>
+  <data name="cmbItemStatusCode.Items25" xml:space="preserve">
+    <value>34</value>
+  </data>
+  <data name="cmbItemStatusCode.Items26" xml:space="preserve">
+    <value>35</value>
+  </data>
+  <data name="cmbItemStatusCode.Items27" xml:space="preserve">
+    <value>36</value>
+  </data>
+  <data name="cmbItemStatusCode.Items28" xml:space="preserve">
+    <value>37</value>
+  </data>
+  <data name="cmbItemStatusCode.Items29" xml:space="preserve">
+    <value>38</value>
+  </data>
+  <data name="cmbItemStatusCode.Items30" xml:space="preserve">
+    <value>39</value>
+  </data>
+  <data name="cmbItemStatusCode.Items31" xml:space="preserve">
+    <value>40</value>
+  </data>
+  <data name="cmbItemStatusCode.Items32" xml:space="preserve">
+    <value>41</value>
+  </data>
+  <data name="cmbItemStatusCode.Items33" xml:space="preserve">
+    <value>42</value>
+  </data>
+  <data name="cmbItemStatusCode.Items34" xml:space="preserve">
+    <value>43</value>
+  </data>
+  <data name="cmbItemStatusCode.Items35" xml:space="preserve">
+    <value>44</value>
+  </data>
+  <data name="cmbItemStatusCode.Items36" xml:space="preserve">
+    <value>45</value>
+  </data>
+  <data name="cmbItemStatusCode.Items37" xml:space="preserve">
+    <value>46</value>
+  </data>
+  <data name="cmbItemStatusCode.Items38" xml:space="preserve">
+    <value>47</value>
+  </data>
+  <data name="cmbItemStatusCode.Items39" xml:space="preserve">
+    <value>48</value>
+  </data>
+  <data name="cmbItemStatusCode.Items40" xml:space="preserve">
+    <value>49</value>
+  </data>
+  <data name="cmbItemStatusCode.Items41" xml:space="preserve">
+    <value>50</value>
+  </data>
+  <data name="cmbItemStatusCode.Items42" xml:space="preserve">
+    <value>51</value>
+  </data>
+  <data name="cmbItemStatusCode.Items43" xml:space="preserve">
+    <value>52</value>
+  </data>
+  <data name="cmbItemStatusCode.Items44" xml:space="preserve">
+    <value>53</value>
+  </data>
+  <data name="cmbItemStatusCode.Items45" xml:space="preserve">
+    <value>54</value>
+  </data>
+  <data name="cmbItemStatusCode.Items46" xml:space="preserve">
+    <value>55</value>
+  </data>
+  <data name="cmbItemStatusCode.Items47" xml:space="preserve">
+    <value>56</value>
+  </data>
+  <data name="cmbItemStatusCode.Items48" xml:space="preserve">
+    <value>57</value>
+  </data>
+  <data name="cmbItemStatusCode.Items49" xml:space="preserve">
+    <value>58</value>
+  </data>
+  <data name="cmbItemStatusCode.Items50" xml:space="preserve">
+    <value>59</value>
+  </data>
+  <data name="cmbItemStatusCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>290, 131</value>
+  </data>
+  <data name="cmbItemStatusCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 22</value>
+  </data>
+  <data name="cmbItemStatusCode.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;cmbItemStatusCode.Name" xml:space="preserve">
+    <value>cmbItemStatusCode</value>
+  </data>
+  <data name="&gt;&gt;cmbItemStatusCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbItemStatusCode.Parent" xml:space="preserve">
+    <value>GroupBox_CommonPOS</value>
+  </data>
+  <data name="&gt;&gt;cmbItemStatusCode.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="CheckBox_ElectronicShelfTag.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -480,7 +684,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_ElectronicShelfTag.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="TextBox_ItemSurcharge.Location" type="System.Drawing.Point, System.Drawing">
     <value>290, 108</value>
@@ -504,7 +708,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;TextBox_ItemSurcharge.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="Label_ItemSurcharge.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -534,7 +738,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;Label_ItemSurcharge.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="CheckBox_LocalItem.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -564,7 +768,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_LocalItem.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="CheckBox_RefreshPOSInfo.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
@@ -600,7 +804,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_RefreshPOSInfo.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="CheckBox_EmployeeDiscount.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -627,7 +831,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_EmployeeDiscount.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="TextBox_MixMatch.Location" type="System.Drawing.Point, System.Drawing">
     <value>290, 85</value>
@@ -651,7 +855,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;TextBox_MixMatch.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="Label_MixMatch.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -681,7 +885,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;Label_MixMatch.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="CheckBox_AgeRestrict.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -711,7 +915,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_AgeRestrict.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="ComboBox_KitchenRouteID.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 19</value>
@@ -888,7 +1092,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;FreedomSystemGroupBox.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="TextBox_LinkValue.Location" type="System.Drawing.Point, System.Drawing">
     <value>290, 62</value>
@@ -912,7 +1116,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;TextBox_LinkValue.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="Label_LinkValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -939,7 +1143,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;Label_LinkValue.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="Button_DeleteLink.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1041,7 +1245,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;GroupBox_LinkCode.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="TextBox_POSTare.Location" type="System.Drawing.Point, System.Drawing">
     <value>290, 39</value>
@@ -1065,7 +1269,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;TextBox_POSTare.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="CheckBox_CompetitiveItem.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1098,10 +1302,10 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_CompetitiveItem.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="TextBox_AgeCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>291, 134</value>
+    <value>290, 154</value>
   </data>
   <data name="TextBox_AgeCode.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1125,7 +1329,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;TextBox_AgeCode.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>18</value>
   </data>
   <data name="CheckBox_RestrictedHours.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
@@ -1158,7 +1362,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_RestrictedHours.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>19</value>
   </data>
   <data name="CheckBox_LineDiscount.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
@@ -1188,7 +1392,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_LineDiscount.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>20</value>
   </data>
   <data name="Label_AgeCode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1215,7 +1419,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;Label_AgeCode.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>21</value>
   </data>
   <data name="CheckBox_LockedForSale.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1248,7 +1452,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_LockedForSale.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>22</value>
   </data>
   <data name="CheckBox_GrillPrint.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
@@ -1281,7 +1485,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_GrillPrint.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>23</value>
   </data>
   <data name="Label_PosTare.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1308,7 +1512,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;Label_PosTare.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>24</value>
   </data>
   <data name="CheckBox_SeniorCitizen.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
@@ -1341,7 +1545,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_SeniorCitizen.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>25</value>
   </data>
   <data name="CheckBox_VisualVerify.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1374,7 +1578,7 @@
     <value>GroupBox_CommonPOS</value>
   </data>
   <data name="&gt;&gt;CheckBox_VisualVerify.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>26</value>
   </data>
   <data name="GroupBox_CommonPOS.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>

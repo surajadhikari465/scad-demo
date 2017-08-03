@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE dbo.PostStoreItemChangeECom
+﻿CREATE PROCEDURE dbo.PostStoreItemChangeECom
 	@Item_Key int, 
     @Store_No int, 
     @Restricted_Hours bit,
@@ -25,7 +24,8 @@ CREATE PROCEDURE dbo.PostStoreItemChangeECom
 	@Refresh bit,
 	@LocalItem bit,
 	@ItemSurcharge int,
-	@ECommerce bit = 0
+	@ECommerce bit = 0,
+	@ItemStatusCode int
 AS 
 
 
@@ -70,6 +70,15 @@ BEGIN
 		LocalItem = @LocalItem,
 		ItemSurcharge = @ItemSurcharge
     WHERE Item_Key = @Item_Key AND Store_No = @Store_No
+
+	IF NOT EXISTS (SELECT 1 FROM StoreItemExtended WHERE Store_No = @Store_No AND Item_Key = @Item_Key)
+		INSERT INTO StoreItemExtended (Store_No, Item_Key, ItemStatusCode)
+		VALUES (@Store_No, @Item_Key, @ItemStatusCode)
+	ELSE
+		UPDATE StoreItemExtended
+		SET ItemStatusCode = @ItemStatusCode
+		WHERE Store_No = @Store_No	
+			AND Item_Key = @Item_Key
     
     -- Update the values on the StoreItem table that maintains Store-Item relationship data
     EXEC dbo.UpdateStoreItemECom @Item_Key, @Store_No, @AuthorizedItem, @Refresh, @ECommerce

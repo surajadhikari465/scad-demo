@@ -3224,6 +3224,7 @@
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.rollback.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.sql" />
     <Build Include="SQL Agent Job\VIM - Infor Data Feeds - Future Cost %28NC).sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\StoreItemExtended.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

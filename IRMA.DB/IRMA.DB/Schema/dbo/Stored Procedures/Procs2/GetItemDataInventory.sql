@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE dbo.GetItemDataInventory
+﻿CREATE PROCEDURE dbo.GetItemDataInventory
     @Item_Key int, 
     @Store_No int
 AS 
@@ -65,19 +64,19 @@ BEGIN
 		iuo.Retail_Unit_ID,
 		iuo.Scale_ScaleUomUnit_ID,
 		iuo.Scale_FixedWeight,
-		iuo.Scale_ByCount
-
+		iuo.Scale_ByCount,
+		sie.ItemStatusCode
 	FROM 
 		Price				(nolock) p
-		INNER JOIN Item		(nolock) i			 ON	p.Item_Key		= i.Item_Key
-		LEFT JOIN StoreItem (nolock) si			 ON	p.Item_Key		= si.Item_Key
-													AND p.Store_No	= si.Store_No
-		LEFT JOIN Users		(nolock) UsersDTS	 ON	p.LastScannedUserId_DTS		= UsersDTS.User_Id
-		LEFT JOIN Users		(nolock) UsersNonDTS ON	p.LastScannedUserId_NonDTS	= UsersNonDTS.User_Id
-
-		LEFT JOIN ItemUomOverride (nolock) iuo   ON i.Item_Key      = iuo.Item_key
-												AND si.Store_No     = iuo.Store_No 
-
+		INNER JOIN Item		(nolock) i				ON	p.Item_Key		= i.Item_Key
+		LEFT JOIN StoreItem (nolock) si				ON	p.Item_Key		= si.Item_Key
+														AND p.Store_No	= si.Store_No
+		LEFT JOIN Users		(nolock) UsersDTS		ON	p.LastScannedUserId_DTS		= UsersDTS.User_Id
+		LEFT JOIN Users		(nolock) UsersNonDTS	ON	p.LastScannedUserId_NonDTS	= UsersNonDTS.User_Id
+		LEFT JOIN ItemUomOverride (nolock) iuo		ON i.Item_Key      = iuo.Item_key
+														AND si.Store_No     = iuo.Store_No 
+		LEFT JOIN StoreItemExtended (nolock) sie	ON p.Item_Key		= sie.Item_Key
+														AND p.Store_No	= sie.Store_No
 	WHERE
 		p.Item_Key		= @Item_Key 
 		AND p.Store_No	= @Store_No

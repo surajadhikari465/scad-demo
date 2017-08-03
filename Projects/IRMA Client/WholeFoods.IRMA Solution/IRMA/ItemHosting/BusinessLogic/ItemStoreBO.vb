@@ -49,6 +49,7 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
         Private _scaleUomId As Integer
         Private _fixedWeight As String
         Private _byCount As Integer
+        Private _itemStatusCode As Integer?
 
 #Region "Property Access Methods"
         Public Property ItemKey() As Integer
@@ -471,12 +472,21 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
             End Set
         End Property
 
-        Public Property FixedWeight () As String
+        Public Property FixedWeight() As String
             Get
                 Return _fixedWeight
             End Get
             Set(ByVal value As String)
                 _fixedWeight = value
+            End Set
+        End Property
+
+        Public Property ItemStatusCode() As Integer?
+            Get
+                Return _itemStatusCode
+            End Get
+            Set(ByVal value As Integer?)
+                _itemStatusCode = value
             End Set
         End Property
 #End Region
