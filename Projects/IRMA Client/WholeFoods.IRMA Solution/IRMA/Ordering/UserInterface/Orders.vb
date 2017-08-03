@@ -2436,7 +2436,7 @@ me_exit:
                     SetActive(cmdDeleteOrder, (Not m_bOrderClosed) And (Not lblReadOnly.Visible) And m_bAllowPOEdit And Not m_bOrderUploaded And (((giUserID = m_lCreatedBy) And (Not m_bItemsReceived)) Or gbPOAccountant) And blnIsMyStore)
                 End If
 
-                SetActive(cmdSendOrder, (Not lblReadOnly.Visible) And m_bAllowPOEdit And (gbBuyer Or gbSuperUser Or gbPOAccountant) And (Not m_bOrderClosed) And (Not m_rsOrder.Fields("WarehouseSent").Value) And blnIsMyStore And (Not m_IsDSDOrder))
+                SetActive(cmdSendOrder, (Not m_bSent) And (Not lblReadOnly.Visible) And m_bAllowPOEdit And (gbBuyer Or gbSuperUser Or gbPOAccountant) And (Not m_bOrderClosed) And (Not m_rsOrder.Fields("WarehouseSent").Value) And blnIsMyStore And (Not m_IsDSDOrder))
 
                 SetActive(cmdWarehouseSend, (Not lblReadOnly.Visible) And m_bAllowPOEdit And gbWarehouse And (txtField(iOrderHeaderSentDate).Text <> "") And (Not m_bItemsReceived) And EXEOrder)
                 SetActive(cmdUndoWarehouseSend, lblReadOnly.Visible And (gbDCAdmin Or gbSuperUser) And (txtField(iOrderHeaderSentDate).Text <> "") And (Not m_bOrderClosed) And EXEOrder)
