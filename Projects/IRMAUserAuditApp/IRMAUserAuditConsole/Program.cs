@@ -139,51 +139,72 @@ namespace IRMAUserAuditConsole
                 }
                 else
                     p.ShowUsage();
-                
+
             }
 
         }
 
-        
-
-        #region Main Methods
-
-        private string CheckConfig()
+        private Boolean anyActionRequired(string dates, char[] delimiter)
         {
-            string action = "__none__";
-            string dateTmp = "";
+            List<string> datesList = dates.Split(delimiter).ToList();
+            return datesList.Select(dt => DateTime.Parse(dt).Date == DateTime.Now.Date).Any();
+        }
 
-            if((configRepo.ConfigurationGetValue("NextRunDate", ref dateTmp)) == false)
+        private string Action(Boolean isExport, Boolean isImport)
+        {
+            string action  = "__none__";
+
+            if (isExport)
             {
-                logger.Error("Unable to load NextRunDate from config!");
-                return action;
+                action = "export";
             }
 
-            DateTime nextRunDate = DateTime.Parse(dateTmp);
-            if (nextRunDate.Date == currentDateTime.Date)
+            if (isImport)
             {
-                if (configRepo.ConfigurationGetValue("NextRunAction", ref action) == false)
-                {
-                    logger.Error("Unable to load NextRunAction from config!");
-                    return "__none__";
-                }
-            }
-            else
-            {
-                return "__none__";
+                action = "import";
             }
 
             return action;
         }
+          
+#region Main Methods
+
+        private string CheckConfig()
+        {
+            string action = "__none__";
+            string exportDates = "";
+            string importDates = "";
+            string delimiter = ";";
+            Boolean isExportRequired = false;
+            Boolean isImportRequired = false;
+
+            if ((configRepo.ConfigurationGetValue("ExportDates", ref exportDates)) == false && (configRepo.ConfigurationGetValue("ImportDates", ref importDates)) == false)
+            {
+                logger.Error("Unable to load Next Export or Import Run Date from config!");
+                return action;
+            }
+            configRepo.ConfigurationGetValue("delimiter", ref delimiter);
+
+            if (!string.IsNullOrEmpty(exportDates))
+            {
+                isExportRequired = anyActionRequired(exportDates, delimiter.ToCharArray());
+            }
+            if (!string.IsNullOrEmpty(importDates))
+            {
+                isImportRequired = anyActionRequired(importDates, delimiter.ToCharArray());
+            }
+
+            return Action(isExportRequired, isImportRequired);
+         }
 
         private bool LoadConfig()
         {
             configRepo = new ConfigRepository(opts.ConnectionString);
-            try 
+            try
             {
                 SetupConfig(opts.Environment);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error("Unable to load config! " + ex.Message);
                 return false;
@@ -298,18 +319,18 @@ namespace IRMAUserAuditConsole
             logger.Info("connecting to " + opts.Region + " " + opts.Environment.ToString() + " environment...");
             RegionRestoreManager rrm = new RegionRestoreManager(opts.Region, opts.ConnectionString, opts.Environment);
             logger.Info("Connected.");
-            
+
             int result = rrm.RestoreUsers();
             if (result != 0)
                 logger.Error("Restore returned with errors!  Check log for details!");
             else
                 logger.Info("Users restored.");
-             
+
         }
 
         private void bwImport_RunWorkerCompleted()
         {
-            if(backupSuccessful)
+            if (backupSuccessful)
                 SetNextRunDateAction("import");
         }
 
@@ -325,7 +346,7 @@ namespace IRMAUserAuditConsole
 
         private void RunImport()
         {
-            
+
             int result = RunBackup();
             if (result != 0)
             {
@@ -336,7 +357,7 @@ namespace IRMAUserAuditConsole
             {
                 DoImport();
             }
-            
+
             backupSuccessful = true;
         }
 
@@ -361,7 +382,7 @@ namespace IRMAUserAuditConsole
             {
                 logger.Error("Export returned non-zero result!  Check log for possible errors.");
             }
-            
+
         }
 
         private int RunBackup()
