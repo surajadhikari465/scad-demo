@@ -13,8 +13,8 @@ namespace IRMAUserAuditConsole
         #region Properties
         public ILog logger { get; set; }
         public AuditOptions Options { get; set; }
-        public ConfigRepository Config { get; set; }
-        public DateRepository Dates { get; set; }
+        public IConfigRepository Config { get; set; }
+        public IDateRepository Dates { get; set; }
 
         public Guid AppId { get; set; }
         public Guid EnvId { get; set; }
@@ -24,18 +24,13 @@ namespace IRMAUserAuditConsole
         #endregion
 
         #region constructors
-        //public UserAudit(DateTime auditRunTime, ILog logger, AuditOptions options)
-        //{
-        //    this.AuditRunTime = auditRunTime;
-        //    this.logger = logger;
-        //    this.Options = options;
-        //}
+        public UserAudit(){}
 
         public UserAudit(AuditOptions options,
             ILog logger,
             DateTime? auditRunTime = null, 
-            ConfigRepository configRepo = null,
-            DateRepository dateRepo =  null)
+            IConfigRepository configRepo = null,
+            IDateRepository dateRepo =  null) : this()
         {
             this.Options = options;
             this.logger = logger;
@@ -80,9 +75,9 @@ namespace IRMAUserAuditConsole
             RunAudit(Options, Config);
         }
 
-        public void RunAudit(AuditOptions options, ConfigRepository configRepo)
+        public void RunAudit(AuditOptions options, IConfigRepository configRepo)
         {
-            if (LoadConfig(options))
+            if (LoadConfig(options, configRepo))
             {
                 var action = DetermineAuditAction(configRepo);
                 if (action != UserAuditFunctionEnum.None)
@@ -96,11 +91,45 @@ namespace IRMAUserAuditConsole
             }
         }
 
-        public bool LoadConfig(AuditOptions options)
+        public bool LoadConfig()
+        {
+            return LoadConfig(this.Options, this.Config);
+        }
+
+        public bool LoadConfig(AuditOptions options, IConfigRepository configRepo)
         {
             try
             {
-                GetAppAndEnvironmentIds(options.Environment, Config);
+                var environments = configRepo.GetEnvironmentList();
+                EnvId = environments
+                    .SingleOrDefault(e => e.Name.ToLower().Trim() == options.Environment.ToString().ToLower())
+                    .EnvironmentID;
+                if (EnvId != null)
+                {
+                    // we have found an Env.  Now look for the app:
+                    AppId = configRepo.GetApplicationList(EnvId)
+                        .SingleOrDefault(app => app.Name.ToLower() == "user audit")
+                        .ApplicationID;
+                    if (AppId != null)
+                    {
+                        // we have the app!  
+                        bool configOk = configRepo.LoadConfig(AppId, EnvId);
+                        if (!configOk)
+                        {
+                            throw new Exception("Unable to load config!");
+                        }
+                    }
+                    else
+                    {
+                        logger.Error("Unable to find application in environment!");
+                        throw new Exception("could not find config application for environment!");
+                    }
+                }
+                else
+                {
+                    logger.Error("Unable to find Environment!");
+                    throw new Exception("Could not find config environment!");
+                }
             }
             catch (Exception ex)
             {
@@ -115,46 +144,41 @@ namespace IRMAUserAuditConsole
             return DetermineAuditAction(this.Config);
         }
 
-        public UserAuditFunctionEnum DetermineAuditAction(ConfigRepository configRepo)
+        public UserAuditFunctionEnum DetermineAuditAction(IConfigRepository configRepo)
         {
             string action = "__none__";
-            string exportDates = "";
-            string importDates = "";
-            string delimiter = ";";
-            Boolean isExportRequired = false;
-            Boolean isImportRequired = false;
 
-            if ((configRepo.ConfigurationGetValue("ExportDates", ref exportDates)) == false &&
-                (configRepo.ConfigurationGetValue("ImportDates", ref importDates)) == false)
+            string exportDates = configRepo.ConfigurationGetValue("ExportDates");
+            string importDates = configRepo.ConfigurationGetValue("ImportDates");
+            string delimiter = configRepo.ConfigurationGetValue("delimiter") ?? ";";
+
+            if (String.IsNullOrWhiteSpace(exportDates) && String.IsNullOrWhiteSpace(importDates))
             {
                 logger.Error("Unable to load Next Export or Import Run Date from config!");
                 action = "error";
             }
-            configRepo.ConfigurationGetValue("delimiter", ref delimiter);
 
-            if (!string.IsNullOrEmpty(exportDates))
+            if (!string.IsNullOrWhiteSpace(exportDates))
             {
-                isExportRequired = IsActionRequired(exportDates, delimiter.ToCharArray());
-            }
-            if (!string.IsNullOrEmpty(importDates))
+                var exportDatesList = exportDates.Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+                if (exportDatesList.Any(dt => DateTime.Parse(dt).Date == AuditRunTime.Date))
+                {
+                    action = "export";
+                }
+                }
+            if (!string.IsNullOrWhiteSpace(importDates))
             {
-                isImportRequired = IsActionRequired(importDates, delimiter.ToCharArray());
-            }
-
-            if (isExportRequired)
-            {
-                action = "export";
-            }
-
-            if (isImportRequired)
-            {
-                action = "import";
+                var importDatesList = importDates.Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+                if (importDatesList.Any(dt => DateTime.Parse(dt).Date == AuditRunTime.Date))
+                {
+                    action = "import";
+                }
             }
 
             return AuditOptions.ConvertStringToFunction(action);
         }
 
-        public void GetAppAndEnvironmentIds(IRMAEnvironmentEnum _env, ConfigRepository configRepo)
+        public void GetAppAndEnvironmentIds(IRMAEnvironmentEnum _env, IConfigRepository configRepo)
         {
             var environments = configRepo.GetEnvironmentList();
             EnvId = environments.SingleOrDefault(env => env.Name.ToLower().Replace(" ", "") == _env.ToString().ToLower()).EnvironmentID;
@@ -320,13 +344,7 @@ namespace IRMAUserAuditConsole
                 logger.Error("Unable to set next run date!");
             }
         }
-
-
-        public bool IsActionRequired(string dates, char[] delimiter)
-        {
-            List<string> datesList = dates.Split(delimiter).ToList();
-            return datesList.Select(dt => DateTime.Parse(dt).Date == DateTime.Now.Date).Any();
-        }
+        
         #endregion
 
         #region private methods

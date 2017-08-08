@@ -12,7 +12,7 @@ using log4net;
 
 namespace WholeFoods.Common.IRMALib.Dates
 {
-    public class DateRepository
+    public class DateRepository : IDateRepository
     {
         IRMALibDataClassesDataContext db;
 

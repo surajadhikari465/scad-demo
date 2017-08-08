@@ -92,7 +92,7 @@ namespace IRMAUserAuditConsole
 
         public static UserAuditFunctionEnum ConvertStringToFunction(string _funcIn)
         {
-            switch (_funcIn.ToLower())
+            switch ((_funcIn ?? String.Empty).ToLower())
             {
                 case "backup":
                     return UserAuditFunctionEnum.Backup;
@@ -109,9 +109,10 @@ namespace IRMAUserAuditConsole
 
         public static IRMAEnvironmentEnum ConvertStringToEnvironment(string _envIn)
         {
-            switch (_envIn.ToUpper())
+            switch ((_envIn??String.Empty).ToUpper())
             {
                 case "QA":
+                case "QUALITYASSURANCE":
                     return IRMAEnvironmentEnum.QualityAssurance;
                 case "DEV":
                     return IRMAEnvironmentEnum.Dev;

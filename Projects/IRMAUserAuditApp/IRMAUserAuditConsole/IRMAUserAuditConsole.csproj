@@ -117,8 +117,6 @@
     <Compile Include="RegionImportManager.cs" />
     <Compile Include="RegionRestoreManager.cs" />
     <Compile Include="UserRepository.cs" />
-    <Compile Include="ResultsLog.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="SpreadsheetManager.cs" />
     <Compile Include="UserAudit.cs" />
     <Compile Include="UserAuditFunctionEnum.cs" />
