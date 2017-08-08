@@ -5,25 +5,41 @@ using System.Text;
 
 namespace IRMAUserAuditConsole
 {
-    public enum IRMAEnvironment : int { Test, Dev, QualityAssurance, Production }
-    public enum UserAuditFunction : int { Backup, Restore, Import, Export, None }
+    //public enum IRMAEnvironment : int { Test, Dev, QualityAssurance, Production }
+    //public enum UserAuditFunction : int { Backup, Restore, Import, Export, None }
 
-    class OptionsManager
+    public class AuditOptions
     {
 
         #region Members / Properties
 
         private string connectionString;
         private string region;
-        private UserAuditFunction function;
-        private IRMAEnvironment environment;
+        private UserAuditFunctionEnum function;
+        private IRMAEnvironmentEnum environment;
+        public bool IsError
+        {
+            get
+            {
+                return !String.IsNullOrWhiteSpace(ErrorMessage);
+            }
+        }
+        public bool IsWarning
+        {
+            get
+            {
+                return !String.IsNullOrWhiteSpace(WarningMessage);
+            }
+        }
+        public string ErrorMessage { get; set; }
+        public string WarningMessage { get; set; }
 
-        public IRMAEnvironment Environment
+        public IRMAEnvironmentEnum Environment
         {
             get { return environment; }
         }
 
-        public UserAuditFunction Function
+        public UserAuditFunctionEnum Function
         {
             get { return function; }
             set { function = value; }
@@ -59,59 +75,66 @@ namespace IRMAUserAuditConsole
         //}
         #endregion
 
-        public OptionsManager(string _region, string _env,string _conString)
+        public AuditOptions() { }
+
+        public AuditOptions(string _region, string _env, string _conString) : this()
         {
-            region = _region;
-            //function = ConvertStringToFunction(_function);
-            environment = ConvertStringToEnvironment(_env);
-            connectionString = _conString; // DefaultConnectionString(ConvertStringToEnvironment(_env)).Replace("XX", region);
+            SetOptions(_region, _env, _conString);
         }
 
-        public UserAuditFunction ConvertStringToFunction(string _funcIn)
+        public void SetOptions(string _region, string _env, string _conString)
+        {
+            this.region = _region;
+            //function = ConvertStringToFunction(_function);
+            this.environment = ConvertStringToEnvironment(_env);
+            this.connectionString = _conString; // DefaultConnectionString(ConvertStringToEnvironment(_env)).Replace("XX", region);
+        }
+
+        public static UserAuditFunctionEnum ConvertStringToFunction(string _funcIn)
         {
             switch (_funcIn.ToLower())
             {
                 case "backup":
-                    return UserAuditFunction.Backup;
+                    return UserAuditFunctionEnum.Backup;
                 case "restore":
-                    return UserAuditFunction.Restore;
+                    return UserAuditFunctionEnum.Restore;
                 case "import":
-                    return UserAuditFunction.Import;
+                    return UserAuditFunctionEnum.Import;
                 case "export":
-                    return UserAuditFunction.Export;
+                    return UserAuditFunctionEnum.Export;
                 default:
-                    return UserAuditFunction.None;
+                    return UserAuditFunctionEnum.None;
             }
         }
 
-        public static IRMAEnvironment ConvertStringToEnvironment(string _envIn)
+        public static IRMAEnvironmentEnum ConvertStringToEnvironment(string _envIn)
         {
             switch (_envIn.ToUpper())
             {
                 case "QA":
-                    return IRMAEnvironment.QualityAssurance;
+                    return IRMAEnvironmentEnum.QualityAssurance;
                 case "DEV":
-                    return IRMAEnvironment.Dev;
+                    return IRMAEnvironmentEnum.Dev;
                 case "TEST":
-                    return IRMAEnvironment.Test;
+                    return IRMAEnvironmentEnum.Test;
                 case "PROD":
                 default:
-                    return IRMAEnvironment.Production;
+                    return IRMAEnvironmentEnum.Production;
             }
         }
 
         // These convert the enum to the ShortName values in AppConfigEnv
-        public static string ConvertIRMAEnvironmentToString(IRMAEnvironment _envIn)
+        public static string ConvertIRMAEnvironmentToString(IRMAEnvironmentEnum _envIn)
         {
             switch (_envIn)
             {
-                case IRMAEnvironment.Dev:
+                case IRMAEnvironmentEnum.Dev:
                     return "DEV";
-                case IRMAEnvironment.QualityAssurance:
+                case IRMAEnvironmentEnum.QualityAssurance:
                     return "QA";
-                case IRMAEnvironment.Test:
+                case IRMAEnvironmentEnum.Test:
                     return "TEST";
-                case IRMAEnvironment.Production:
+                case IRMAEnvironmentEnum.Production:
                 default:
                     return "PROD";
             }

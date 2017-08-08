@@ -11,7 +11,7 @@ namespace IRMAUserAuditConsole
     public enum UserUpdateError : int { None = 0, StoreNotFound, TitleNotFound, Other }
     public enum UserRestoreError : int { None = 0, UserNotFound, Other }
 
-    class Repository
+    public class UserRepository
     {
         IRMAUserAuditConsoleDataClassesDataContext db;// = new IRMAUserAuditDataClassesDataContext();
         List<User> userCache = new List<User>();
@@ -26,7 +26,7 @@ namespace IRMAUserAuditConsole
 
         private Dictionary<int, TitleDefaultPermission> titlePermissionCache = new Dictionary<int, TitleDefaultPermission>();
 
-        public Repository(string connectionString)
+        public UserRepository(string connectionString)
         {
             db = new IRMAUserAuditConsoleDataClassesDataContext(connectionString);
             try
@@ -44,7 +44,7 @@ namespace IRMAUserAuditConsole
             }
         }
 
-        public Repository(string connectionString, bool allUsers)
+        public UserRepository(string connectionString, bool allUsers)
         {
             db = new IRMAUserAuditConsoleDataClassesDataContext(connectionString);
             try
@@ -671,9 +671,9 @@ namespace IRMAUserAuditConsole
             return db.AppConfigApps.FirstOrDefault(app => app.Name.ToLower() == appName.ToLower() && app.Deleted == false && app.EnvironmentID == environmentId).ApplicationID;
         }
 
-        public Guid GetEnvId(IRMAEnvironment environment)
+        public Guid GetEnvId(IRMAEnvironmentEnum environment)
         {
-            return db.AppConfigEnvs.SingleOrDefault(env => env.Name.ToUpper() == OptionsManager.ConvertIRMAEnvironmentToString(environment).ToUpper() && env.Deleted == false).EnvironmentID;
+            return db.AppConfigEnvs.SingleOrDefault(env => env.Name.ToUpper() == AuditOptions.ConvertIRMAEnvironmentToString(environment).ToUpper() && env.Deleted == false).EnvironmentID;
         }
 
         #endregion

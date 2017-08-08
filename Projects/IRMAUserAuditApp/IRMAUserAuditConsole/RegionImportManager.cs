@@ -29,9 +29,9 @@ namespace IRMAUserAuditConsole
         private string region = "";
         private string resultsFileName = "";
         private string rootPath = "";
-        private Repository repo;
+        private UserRepository repo;
         private ConfigRepository configRepo;
-        private IRMAEnvironment environment;
+        private IRMAEnvironmentEnum environment;
         private Guid appId;
         private Guid envId;
         private string fiscalYearString = "";
@@ -40,10 +40,10 @@ namespace IRMAUserAuditConsole
         #endregion
 
         #region ctors
-        public RegionImportManager(string _region, string _connString, IRMAEnvironment _env)
+        public RegionImportManager(string _region, string _connString, IRMAEnvironmentEnum _env)
         {
             this.region = _region;
-            this.repo = new Repository(_connString);
+            this.repo = new UserRepository(_connString);
             this.configRepo = new ConfigRepository(_connString);
             region = _region;
             environment = _env;
@@ -327,7 +327,7 @@ namespace IRMAUserAuditConsole
 
         
 
-        private void SetupConfig(IRMAEnvironment _env)
+        private void SetupConfig(IRMAEnvironmentEnum _env)
         {
             var environments = configRepo.GetEnvironmentList();
             envId = environments.SingleOrDefault(env => env.Name.ToLower().Replace(" ", "") == _env.ToString().ToLower()).EnvironmentID;

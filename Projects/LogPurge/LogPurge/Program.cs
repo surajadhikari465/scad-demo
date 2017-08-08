@@ -9,13 +9,13 @@ using System.Data;
 using System.Data.Common;
 using System.Configuration;
 using System.Reflection;
-using WholeFoods.Common.IRMALib;
+//using WholeFoods.Common.IRMALib;
 using System.Xml.Linq;
 namespace LogPurge
 {
     class LogPurge
     {
-        private static ConfigRepository cr = new ConfigRepository(Utility.GetConnectionString());
+        //private static ConfigRepository cr = new ConfigRepository(Utility.GetConnectionString());
         private static LogLevels LL = new LogLevels();
         private static Database mydb = null; 
       /// <summary>

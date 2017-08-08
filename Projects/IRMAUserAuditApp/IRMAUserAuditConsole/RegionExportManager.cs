@@ -18,7 +18,7 @@ namespace IRMAUserAuditConsole
         private string region = "";
         private string backupPath;
         private Log log;
-        private Repository repo;
+        private UserRepository repo;
         private ConfigRepository configRepo;
         private bool configOk = false;
         private Guid envId;
@@ -36,10 +36,10 @@ namespace IRMAUserAuditConsole
 
         #region Constructor
 
-        public RegionExportManager(string _region, string _connectionString, IRMAEnvironment _environment)
+        public RegionExportManager(string _region, string _connectionString, IRMAEnvironmentEnum _environment)
         {
             this.region = _region;
-            this.repo = new Repository(_connectionString);
+            this.repo = new UserRepository(_connectionString);
             this.configRepo = new ConfigRepository(_connectionString);
             this.fiscalYearString = Common.CreateFiscalYearString();
             SetupLog();
@@ -182,7 +182,7 @@ namespace IRMAUserAuditConsole
             
         }
 
-        private void SetupConfig(IRMAEnvironment _env)
+        private void SetupConfig(IRMAEnvironmentEnum _env)
         {
             var environments = configRepo.GetEnvironmentList();
             envId = environments.SingleOrDefault(env => env.Name.ToLower().Replace(" ", "") == _env.ToString().ToLower()).EnvironmentID;

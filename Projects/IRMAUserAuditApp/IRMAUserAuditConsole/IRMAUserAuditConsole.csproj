@@ -95,10 +95,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common.cs" />
+    <Compile Include="IRMAEnvironmentEnum.cs" />
     <Compile Include="FiscalYear.cs" />
-    <Compile Include="OptionsManager.cs" />
+    <Compile Include="AuditOptions.cs" />
     <Compile Include="ExcelHelper.cs" />
-    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IRMAUserAuditConsoleDataClasses.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -116,10 +116,12 @@
     <Compile Include="RegionExportManager.cs" />
     <Compile Include="RegionImportManager.cs" />
     <Compile Include="RegionRestoreManager.cs" />
-    <Compile Include="Repository.cs" />
+    <Compile Include="UserRepository.cs" />
     <Compile Include="ResultsLog.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SpreadsheetManager.cs" />
+    <Compile Include="UserAudit.cs" />
+    <Compile Include="UserAuditFunctionEnum.cs" />
     <Compile Include="UserInfo.cs" />
   </ItemGroup>
   <ItemGroup>

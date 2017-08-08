@@ -19,7 +19,7 @@ namespace IRMAUserAuditConsole
         private List<string> files = null;
         private string region = "";
         private Log log = null;
-        private Repository repo;
+        private UserRepository repo;
         private ConfigRepository configRepo;
         private bool configOk = false;
         private Guid envId;
@@ -33,10 +33,10 @@ namespace IRMAUserAuditConsole
 
         #region ctors
 
-        public RegionBackupManager(string _region, string _connectionString, IRMAEnvironment _env)
+        public RegionBackupManager(string _region, string _connectionString, IRMAEnvironmentEnum _env)
         {
             this.region = _region;
-            this.repo = new Repository(_connectionString);
+            this.repo = new UserRepository(_connectionString);
             this.configRepo = new ConfigRepository(_connectionString);
             region = _region;
              try
@@ -260,7 +260,7 @@ namespace IRMAUserAuditConsole
             return ssm;
         }
 
-        private void SetupConfig(IRMAEnvironment _env)
+        private void SetupConfig(IRMAEnvironmentEnum _env)
         {
             var environments = configRepo.GetEnvironmentList();
             envId = environments.SingleOrDefault(env => env.Name.ToLower().Replace(" ", "") == _env.ToString().ToLower()).EnvironmentID;

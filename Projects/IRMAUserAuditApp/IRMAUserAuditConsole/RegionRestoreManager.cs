@@ -19,7 +19,7 @@ namespace IRMAUserAuditConsole
         private string restorePath = "";
         private string basePath = "";
         private SpreadsheetManager inputSheet = null;
-        private Repository repo = null;
+        private UserRepository repo = null;
         private ConfigRepository configRepo;
         private Guid appId;
         private Guid envId;
@@ -27,10 +27,10 @@ namespace IRMAUserAuditConsole
 
         #endregion
 
-        public RegionRestoreManager(string _region, string _connectionString, IRMAEnvironment _env)
+        public RegionRestoreManager(string _region, string _connectionString, IRMAEnvironmentEnum _env)
         {
             this.region = _region;
-            this.repo = new Repository(_connectionString);
+            this.repo = new UserRepository(_connectionString);
             this.configRepo = new ConfigRepository(_connectionString);
             region = _region;
             //restoreRoot = Properties.Settings.Default.RestorePath;
@@ -201,7 +201,7 @@ namespace IRMAUserAuditConsole
             return result;
         }
 
-        private void SetupConfig(IRMAEnvironment _env)
+        private void SetupConfig(IRMAEnvironmentEnum _env)
         {
             var environments = configRepo.GetEnvironmentList();
             envId = environments.SingleOrDefault(env => env.Name.ToLower().Replace(" ", "") == _env.ToString().ToLower()).EnvironmentID;
