@@ -107,7 +107,7 @@ namespace IRMAUserAuditConsole
 
         public List<User> GetUsersTableByStore(bool enabled, int storeLimit)
         {
-            if(storeLimit == -1)
+            if (storeLimit == -1)
                 return db.Users.Where(u => u.AccountEnabled == enabled && u.Telxon_Store_Limit == null).ToList();
 
 
@@ -150,7 +150,7 @@ namespace IRMAUserAuditConsole
             }
 
             return null;
-            
+
         }
 
         public int? GetTitleIdFromName(string titleName)
@@ -277,7 +277,7 @@ namespace IRMAUserAuditConsole
                     sa.ItemRequest = newUserInfo.ItemRequestEnabled.ToLower() == "yes" ? true : false;
                 }
             }
-            
+
 
             log.Message("calling UpdateUser!!");
             // Do it.  DO IT!!!
@@ -364,10 +364,10 @@ namespace IRMAUserAuditConsole
             }
 
             SlimAccess sa = null;
-            if(newUserInfo.HasSlimAccess)
+            if (newUserInfo.HasSlimAccess)
             {
                 sa = GetUserSlimAccess(newUserInfo.User_ID);
-                if(sa != null)
+                if (sa != null)
                 {
                     if (updateSlim)
                     {
@@ -449,20 +449,60 @@ namespace IRMAUserAuditConsole
         {
             // this join ensures we do not get stores which have no users assigned
             return db.Stores.Where(s => s.Users.Any(u => u.AccountEnabled == true)).Distinct().OrderBy(s => s.Store_Name).ToList();
-         
-        }
 
+        }
+         
+       private List<User> getUsersBasedOnRoles(List<User> cache, Dictionary<string, Boolean> userRolesDictionary)
+        {
+            Boolean test;
+            return   userCache.Where(u => u.TaxAdministrator = userRolesDictionary.TryGetValue("Tax Administrator", out test) ? true : u.TaxAdministrator
+                                     || (u.DeletePO = userRolesDictionary.TryGetValue("Delete PO", out test)) ? true : u.DeletePO
+                                     || (u.POEditor = userRolesDictionary.TryGetValue("PO Editor", out test)) ? true : u.POEditor
+                                     || (u.ShrinkAdmin = userRolesDictionary.TryGetValue("Shrink Administrator", out test)) ? true : u.ShrinkAdmin
+                                     || (u.Shrink = userRolesDictionary.TryGetValue("Shrink", out test)) ? true : u.Shrink
+                                     || (u.UserMaintenance = userRolesDictionary.TryGetValue("User Maintenance", out test)) ? true : u.UserMaintenance
+                                     || (u.SystemConfigurationAdministrator = userRolesDictionary.TryGetValue("System Configuration Admin", out test)) ? true : u.SystemConfigurationAdministrator
+                                     || (u.StoreAdministrator = userRolesDictionary.TryGetValue("Store Administrator", out test)) ? true : u.StoreAdministrator
+                                     || (u.SecurityAdministrator = userRolesDictionary.TryGetValue("Security Administrator", out test)) ? true : u.SecurityAdministrator
+                                     || (u.POSInterfaceAdministrator = userRolesDictionary.TryGetValue("POS Interface Administrator", out test)) ? true : u.POSInterfaceAdministrator
+                                     || (u.JobAdministrator = userRolesDictionary.TryGetValue("Job Administrator", out test)) ? true : u.JobAdministrator
+                                     || (u.DataAdministrator = userRolesDictionary.TryGetValue("Data Administrator", out test)) ? true : u.DataAdministrator
+                                     || (u.ApplicationConfigAdmin = userRolesDictionary.TryGetValue("Application Config Admin", out test)) ? true : u.ApplicationConfigAdmin
+                                     || (u.VendorCostDiscrepancyAdmin = userRolesDictionary.TryGetValue("Vendor Cost Discrepancy Admin", out test)) ? true : u.VendorCostDiscrepancyAdmin
+                                     || (u.EInvoicing_Administrator = userRolesDictionary.TryGetValue("EInvoicing Administrator", out test)) ? true : u.EInvoicing_Administrator
+                                     || (u.POApprovalAdmin = userRolesDictionary.TryGetValue("PO Approval Administrator", out test)) ? true : u.POApprovalAdmin
+                                     || (u.CostAdmin = userRolesDictionary.TryGetValue("Cost Administrator", out test)) ? true : u.CostAdmin
+                                     || (u.BatchBuildOnly = userRolesDictionary.TryGetValue("Batch Build Only", out test)) ? true : u.BatchBuildOnly
+                                     || (u.Inventory_Administrator = userRolesDictionary.TryGetValue("Inventory Administrator", out test)) ? true : u.Inventory_Administrator
+                                     || (u.PriceBatchProcessor = userRolesDictionary.TryGetValue("Price Batch Processor", out test)) ? true : u.PriceBatchProcessor
+                                     || (u.Lock_Administrator = userRolesDictionary.TryGetValue("Lock Administrator", out test)) ? true : u.Lock_Administrator
+                                     || (u.Vendor_Administrator = userRolesDictionary.TryGetValue("Vendor Administrator", out test)) ? true : u.Vendor_Administrator
+                                     || (u.Item_Administrator = userRolesDictionary.TryGetValue("Item Administrator", out test)) ? true : u.Item_Administrator
+                                     || (u.Coordinator = userRolesDictionary.TryGetValue("Coordinator", out test)) ? true : u.Coordinator
+                                     || (u.Buyer = userRolesDictionary.TryGetValue("Buyer", out test)) ? true : u.Buyer
+                                     || (u.FacilityCreditProcessor = userRolesDictionary.TryGetValue("Facility Credit Processor", out test)) ? true : u.FacilityCreditProcessor
+                                     || (u.Distributor = userRolesDictionary.TryGetValue("Distributor", out test)) ? true : u.Distributor
+                                     || (u.Accountant = userRolesDictionary.TryGetValue("Accountant", out test)) ? true : u.TaxAdministrator
+                                     || (u.PO_Accountant = userRolesDictionary.TryGetValue("PO Accountant", out test)) ? true : u.PO_Accountant
+                                     || (u.SuperUser = userRolesDictionary.TryGetValue("Super User", out test)) ? true : u.SuperUser
+                                     || (u.Distributor = userRolesDictionary.TryGetValue("Receiver", out test)) ? true : u.Distributor
+                                     || (u.DCAdmin.HasValue ? u.DCAdmin == userRolesDictionary.TryGetValue("DC Admin", out test) : false)
+                                               ).ToList();
+
+        }
         public List<string> GetStoreNames()
         {
             return (from store in db.Stores
                     select store.Store_Name).ToList();
         }
-
-        public List<UserInfo> GetUsers()
+        public List<UserInfo> GetUsers(Dictionary<string, Boolean> userRolesDictionary)
         {
             List<UserInfo> userinfos = new List<UserInfo>();
+  
+            // we have all the roles list that we need in dictionary. we will check against that.
+            List<User> users = getUsersBasedOnRoles(userCache, userRolesDictionary);
 
-            foreach (User u in userCache)
+            foreach (User u in users)
             {
                 UserInfo ui = new UserInfo();
                 ui.FullName = u.FullName;
@@ -517,15 +557,14 @@ namespace IRMAUserAuditConsole
             return userinfos;
         }
 
-        public List<UserInfo> GetUsersByStore(int? StoreId)
+        public List<UserInfo> GetUsersByStore(int? StoreId, Dictionary<string, Boolean> userRolesDictionary)
         {
             if (StoreId.Value == -1)
                 StoreId = null;
 
             List<UserInfo> userinfos = new List<UserInfo>();
-
-            var storeUsers = userCache.Where(user => user.Telxon_Store_Limit == StoreId);
-
+            var storeUsers = getUsersBasedOnRoles(userCache, userRolesDictionary).Where(u => u.Telxon_Store_Limit == StoreId);
+            
             foreach (User u in storeUsers)
             {
                 UserInfo ui = new UserInfo();
@@ -562,8 +601,8 @@ namespace IRMAUserAuditConsole
                 {
                     ui.TeamName = "( None Assigned )";
                 }
-               
-                
+
+
                 // SLIM fields
                 ui.RDE = u.Item_Administrator ? "Yes" : "No";
                 SlimAccess slimAccess = slimCache.Where(sa => sa.User_ID == u.User_ID).Take(1).SingleOrDefault();
@@ -574,10 +613,10 @@ namespace IRMAUserAuditConsole
                     ui.ISSEnabled = (slimAccess.StoreSpecials.HasValue && slimAccess.StoreSpecials.Value) ? "Yes" : "No";
                     ui.ItemRequestEnabled = (slimAccess.ItemRequest.HasValue && slimAccess.ItemRequest.Value) ? "Yes" : "No";
                 }
-                
+
 
                 userinfos.Add(ui);
-                
+
             }
             return userinfos;
         }
@@ -589,7 +628,7 @@ namespace IRMAUserAuditConsole
         /// <param name="allow">if true, return allowed overrides, deny overrides otherwise</param>
         /// <returns>a string of overrides</returns>
         public string GetUserOverrides(int userId, bool allow)
-        {                     
+        {
             var overrides = tpoCache.Where(tpo => tpo.UserId == userId && tpo.PermissionValue == allow);
             StringBuilder orList = new StringBuilder();
             foreach (TitlePermissionOverride tpo in overrides)
@@ -618,9 +657,9 @@ namespace IRMAUserAuditConsole
             List<string> titles = new List<string>();
             titles.Add("( None Assigned )");
             titles.AddRange((from title in db.Titles
-                             where title.Title_Desc.ToLower() != "superuser" && title.Title_Desc.ToLower() != "Store Systems Admin" 
-                    orderby title.Title_Desc ascending
-                    select title.Title_Desc).ToList());
+                             where title.Title_Desc.ToLower() != "superuser" && title.Title_Desc.ToLower() != "Store Systems Admin"
+                             orderby title.Title_Desc ascending
+                             select title.Title_Desc).ToList());
             return titles;
         }
 
@@ -653,7 +692,7 @@ namespace IRMAUserAuditConsole
                 return db.Stores.SingleOrDefault(s => s.Store_No == storeLimit.Value);
 
             return null;
-                             
+
         }
 
         public Store GetStoreFromName(string name)

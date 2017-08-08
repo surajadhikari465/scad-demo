@@ -47,7 +47,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WholeFoods.Utility">
-      <HintPath>..\..\..\..\..\..\..\Development\IRMA\DEV\Utility\WholeFoods.Utility Solution\WholeFoods.Utility\bin\WholeFoods.Utility.dll</HintPath>
+      <HintPath>..\..\..\Utility\WholeFoods.Utility Solution\WholeFoods.Utility\bin\WholeFoods.Utility.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

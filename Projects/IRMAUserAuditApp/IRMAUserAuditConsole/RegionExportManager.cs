@@ -7,6 +7,7 @@ using System.Text;
 using log4net;
 using WholeFoods.Common.IRMALib;
 using WFM.Helpers;
+using System.Configuration;
 
 namespace IRMAUserAuditConsole
 {
@@ -123,7 +124,20 @@ namespace IRMAUserAuditConsole
 
             return 0;
         }
-
+        private Dictionary<string, Boolean> getRolesListForExport()
+        {
+            string userRoles = ConfigurationManager.AppSettings["UserRolesForExport"];
+            List<string> userRolesList = userRoles.Split(new char[] { ';' }).ToList();
+            Dictionary<string, Boolean> userRolesDictionary = new Dictionary<string, Boolean>();
+            foreach (string userRole in userRolesList)
+            {
+                if (!userRolesDictionary.ContainsKey(userRole))
+                {
+                    userRolesDictionary.Add(userRole, true);
+                }
+            }
+            return userRolesDictionary;
+        }
 
         private void ExportUsersByRegion(string regionPath)
         {
@@ -136,7 +150,8 @@ namespace IRMAUserAuditConsole
             ssm.JumpToRow("Users", 3);
             ssm.JumpToRow("SLIM", 3);
 
-            List<UserInfo> users = repo.GetUsers();
+            Dictionary<string, Boolean> userRolesDictionary = getRolesListForExport();
+            List<UserInfo> users = repo.GetUsers(userRolesDictionary);
             foreach (UserInfo ui in users.OrderBy(u => u.StoreLimit))
             {
                 log.Message("Adding " + ui.FullName + "...");
@@ -152,23 +167,23 @@ namespace IRMAUserAuditConsole
 
         private void ExportUsersByStore(string regionPath, Store store)
         {
-            
+
             // setup spreadsheet
             log.Message("setting up " + store.Store_Name);
             string fileName = Path.Combine(regionPath, Common.CreateStoreFilename(store));
             fiscalYearString = Common.CreateFiscalYearString();
 
-           // Common.CreateFolder(fiscalYearString + "\\" + region.ToUpper());
+            // Common.CreateFolder(fiscalYearString + "\\" + region.ToUpper());
             SpreadsheetManager ssm = Common.SetupStoreSpreadsheet(fileName, repo.GetStoreNames(), repo.GetTitles());
 
             // jump to row 3 (header is row 1, then 2 is blank)
             ssm.JumpToRow("Users", 3);
             ssm.JumpToRow("SLIM", 3);
-
-            List<UserInfo> storeUsers = repo.GetUsersByStore(store.Store_No);
+            Dictionary<string, Boolean> userRolesDictionary = getRolesListForExport();
+            List<UserInfo> storeUsers = repo.GetUsersByStore(store.Store_No, userRolesDictionary);
 
             //Console.WriteLine(store.Store_Name + ": " + storeUsers.Count);
-            
+
             foreach (UserInfo ui in storeUsers)
             {
                 log.Message("Adding " + ui.FullName + "...");
@@ -179,7 +194,7 @@ namespace IRMAUserAuditConsole
             ssm.AutosizeColumns("SLIM");
             log.Message("saving " + fileName);
             ssm.Close(fileName);
-            
+
         }
 
         private void SetupConfig(IRMAEnvironmentEnum _env)
