@@ -47,6 +47,7 @@ AS
 -- 2015-09-15	KM				11338	Allow the search to work with the new ItemSignAttribute table;
 -- 2017-07-21   MZ              22360   Added two alternate jurisdiction fields Sign Romance Short and Sign Romance Long 
 --                                      to EIM
+-- 2017-08-04   MZ              22494   Added ItemStatusCode store/item attribute to EIM Price upload.
 -- **************************************************************************
 
 BEGIN
@@ -291,7 +292,11 @@ BEGIN
 					LEFT JOIN
 						StoreItem_TableName (nolock)
 						ON StoreItem_TableName.Store_No = Store_TableName.Store_No
-						AND StoreItem_TableName.Item_Key = Item_TableName.Item_Key				
+						AND StoreItem_TableName.Item_Key = Item_TableName.Item_Key	
+					LEFT JOIN 
+						StoreItemExtended (nolock)
+						ON  StoreItemExtended.Store_No = StoreItem_TableName.Store_No
+						AND StoreItemExtended.Item_Key = StoreItem_TableName.item_key 			
 					INNER JOIN
 						StoreItemVendor_TableName (nolock)
 						ON StoreItemVendor_TableName.Item_Key = Item_TableName.Item_Key
@@ -483,6 +488,7 @@ BEGIN
 	SELECT @SQL = REPLACE(@SQL, 'Store_TableName', 'Store')
 	SELECT @SQL = REPLACE(@SQL, 'Vendor_TableName', 'Vendor')
 	SELECT @SQL = REPLACE(@SQL, 'ItemSignAttribute_TableName', 'ItemSignAttribute')
+	SELECT @SQL = REPLACE(@SQL, 'StoreItemExtended_TableName', 'StoreItemExtended')
 	
 	execute(@SQL)
 	--select @SQL

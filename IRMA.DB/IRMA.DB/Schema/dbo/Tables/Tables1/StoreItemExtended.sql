@@ -15,3 +15,29 @@ ALTER TABLE dbo.StoreItemExtended ENABLE CHANGE_TRACKING WITH (TRACK_COLUMNS_UPD
 GO
 CREATE NONCLUSTERED INDEX [IX_StoreItemExtended_ItemKeyStoreNo]
     ON dbo.StoreItemExtended(Store_No ASC, Item_Key ASC);
+
+GO
+
+GRANT SELECT
+    ON OBJECT::[dbo].[StoreItemExtended] TO [IRMAClientRole]
+    AS [dbo];
+
+GO
+
+GRANT INSERT
+    ON OBJECT::[dbo].[StoreItemExtended] TO [IRMAClientRole]
+    AS [dbo];
+
+GO
+
+GRANT UPDATE
+    ON OBJECT::[dbo].[StoreItemExtended] TO [IRMAClientRole]
+    AS [dbo];
+
+GO
+
+GRANT DELETE
+    ON OBJECT::[dbo].[StoreItemExtended] TO [IRMAClientRole]
+    AS [dbo];
+
+GO
