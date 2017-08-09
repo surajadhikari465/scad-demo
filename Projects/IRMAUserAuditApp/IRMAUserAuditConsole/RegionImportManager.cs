@@ -130,8 +130,7 @@ namespace IRMAUserAuditConsole
                         {
                             if (userRow.Length > 8)
                             {
-                                int number;
-                                if (Int32.TryParse(userRow[0].ToString(), out number))
+                                if (Int32.TryParse(userRow[0].ToString(), out int number))
                                 {
                                     bool deleteUser = ((string)userRow[8]).ToLower() == "yes" ? true : false;
                                     bool updateUser = ((string)userRow[7]).ToLower() == "yes" ? true : false;
@@ -151,7 +150,7 @@ namespace IRMAUserAuditConsole
                                     bool updateSlim = false;
                                     // find the user on the SLIM tab
                                     object[] slimInfo = (from row in slimRows
-                                                         //    where Int32.Parse(row[0].ToString()) == userId
+                                                             //    where Int32.Parse(row[0].ToString()) == userId
                                                          where row.Length > 0 && row[0].ToString() == userId.ToString()
                                                          select row).SingleOrDefault();
                                     // get the SLIM fields.
@@ -205,7 +204,7 @@ namespace IRMAUserAuditConsole
                                         //update fields
                                         ui.StoreLimit = userRow[4] as string;
                                         ui.Title = userRow[3] as string;
-                                                        
+
                                         // get the SLIM fields.
                                         if (slimInfo != null && slimInfo.Count() > 8)
                                         {

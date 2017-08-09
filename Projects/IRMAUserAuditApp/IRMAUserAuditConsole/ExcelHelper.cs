@@ -23,7 +23,7 @@ namespace IRMAUserAuditConsole
 
         public void CreateHeader(ExcelPackage package, string worksheetName, string[] columns, int? row)
         {
-            int headerRow = row.HasValue ? row.Value : 1;
+            int headerRow = row ?? 1;
             ExcelWorksheet ws = package.Workbook.Worksheets[worksheetName];
             for (int i = 0; i < columns.Length; i++)
             {

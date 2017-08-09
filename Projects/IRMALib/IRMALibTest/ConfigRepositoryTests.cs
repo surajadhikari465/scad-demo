@@ -15,7 +15,7 @@ namespace IRMALibTest
         [TestInitialize]
         public void TestInit()
         {
-            configRepo = new ConfigRepository(base.connectionString_FLD);
+            configRepo = new ConfigRepository(base.ConnectionString_FLD);
         }
 
         [TestMethod]

@@ -15,7 +15,7 @@ namespace IRMALibTest
         [TestInitialize]
         public void TestInit()
         {
-            dateRepo = new DateRepository(base.connectionString_FLD);
+            dateRepo = new DateRepository(base.ConnectionString_FLD);
         }
 
         [TestMethod]

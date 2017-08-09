@@ -11,7 +11,7 @@ namespace IRMAUserAuditConsole
     public class UserAudit
     {
         #region Properties
-        public ILog logger { get; set; }
+        public ILog Logger { get; set; }
         public AuditOptions Options { get; set; }
         public IConfigRepository Config { get; set; }
         public IDateRepository Dates { get; set; }
@@ -33,10 +33,10 @@ namespace IRMAUserAuditConsole
             IDateRepository dateRepo =  null) : this()
         {
             this.Options = options;
-            this.logger = logger;
-            this.AuditRunTime = auditRunTime.HasValue ? auditRunTime.Value : DateTime.Now;
+            this.Logger = logger;
+            this.AuditRunTime = auditRunTime ?? DateTime.Now;
             this.Config = configRepo ?? new ConfigRepository(Options.ConnectionString);
-            this.Dates = dateRepo ?? new DateRepository(Options.ConnectionString); ;
+            this.Dates = dateRepo ?? new DateRepository(Options.ConnectionString);
         }
         #endregion
 
@@ -87,7 +87,7 @@ namespace IRMAUserAuditConsole
             }
             else
             {
-                logger.Error("Unable to load config!  Halting.  Make sure USER AUDIT exists in AppConfigApp.");
+                Logger.Error("Unable to load config!  Halting.  Make sure USER AUDIT exists in AppConfigApp.");
             }
         }
 
@@ -121,19 +121,19 @@ namespace IRMAUserAuditConsole
                     }
                     else
                     {
-                        logger.Error("Unable to find application in environment!");
+                        Logger.Error("Unable to find application in environment!");
                         throw new Exception("could not find config application for environment!");
                     }
                 }
                 else
                 {
-                    logger.Error("Unable to find Environment!");
+                    Logger.Error("Unable to find Environment!");
                     throw new Exception("Could not find config environment!");
                 }
             }
             catch (Exception ex)
             {
-                logger.Error("Unable to load config! " + ex.Message);
+                Logger.Error("Unable to load config! " + ex.Message);
                 return false;
             }
             return true;
@@ -154,7 +154,7 @@ namespace IRMAUserAuditConsole
 
             if (String.IsNullOrWhiteSpace(exportDates) && String.IsNullOrWhiteSpace(importDates))
             {
-                logger.Error("Unable to load Next Export or Import Run Date from config!");
+                Logger.Error("Unable to load Next Export or Import Run Date from config!");
                 action = "error";
             }
 
@@ -195,13 +195,13 @@ namespace IRMAUserAuditConsole
                 }
                 else
                 {
-                    logger.Error("Unable to find application in environment!");
+                    Logger.Error("Unable to find application in environment!");
                     throw new Exception("could not find config application for environment!");
                 }
             }
             else
             {
-                logger.Error("Unable to find Environment!");
+                Logger.Error("Unable to find Environment!");
                 throw new Exception("Could not find config environment!");
             }
         }
@@ -224,33 +224,33 @@ namespace IRMAUserAuditConsole
                     bwRestore_RunWorkerCompleted(AuditRunTime);
                     break;
                 case UserAuditFunctionEnum.None:
-                    logger.Info("No action scheduled today.  Exiting.");
+                    Logger.Info("No action scheduled today.  Exiting.");
                     break;
                 default:
-                    logger.Warn($"Unexpected action '{action}'.  Exiting.");
+                    Logger.Warn($"Unexpected action '{action}'.  Exiting.");
                     break;
             }
         }
 
         public void Export(AuditOptions opts)
         {
-            logger.Info("connecting to " + opts.Region + " " + opts.Environment.ToString() + " environment...");
+            Logger.Info("connecting to " + opts.Region + " " + opts.Environment.ToString() + " environment...");
             RegionExportManager rem = new RegionExportManager(opts.Region, opts.ConnectionString, opts.Environment);
-            logger.Info("Connected.");
+            Logger.Info("Connected.");
             if (!rem.ConfigOk)
             {
-                logger.Error("Unable to load config!  Exiting...");
+                Logger.Error("Unable to load config!  Exiting...");
                 return;
             }
 
             string fiscalYear = "FY" + FiscalYear.Year().ToString() + "_" + FiscalYear.Quarter().ToString();
 
-            logger.Info("exporting...");
+            Logger.Info("exporting...");
             int result = rem.Export();
 
             if (result != 0)
             {
-                logger.Error("Export returned non-zero result!  Check log for possible errors.");
+                Logger.Error("Export returned non-zero result!  Check log for possible errors.");
             }
         }   
 
@@ -259,15 +259,15 @@ namespace IRMAUserAuditConsole
             int result = Backup(opts);
             if (result != 0)
             {
-                logger.Error("Backup returned nonzero result!  Stopping since unsafe to import without current backup.");
-                logger.Error("Check backup log for more info.");
+                Logger.Error("Backup returned nonzero result!  Stopping since unsafe to import without current backup.");
+                Logger.Error("Check backup log for more info.");
             }
             else
             {
                 RegionImportManager rim = new RegionImportManager(opts.Region, opts.ConnectionString, opts.Environment);
                 result = rim.Import();
                 if (result != 0)
-                    logger.Error("Import return non-zero result!  Check log for possible errors!!");
+                    Logger.Error("Import return non-zero result!  Check log for possible errors!!");
             }
 
             backupSuccessful = true;
@@ -275,24 +275,24 @@ namespace IRMAUserAuditConsole
 
         public int Backup(AuditOptions opts)
         {
-            logger.Info("connecting to " + opts.Region + "...");
+            Logger.Info("connecting to " + opts.Region + "...");
             RegionBackupManager rbm = new RegionBackupManager(opts.Region, opts.ConnectionString, opts.Environment);
-            logger.Info("Backing up...");
+            Logger.Info("Backing up...");
             int result = rbm.BackupUsers();
             return result;
         }
 
         public void Restore(AuditOptions opts)
         {
-            logger.Info("connecting to " + opts.Region + " " + opts.Environment.ToString() + " environment...");
+            Logger.Info("connecting to " + opts.Region + " " + opts.Environment.ToString() + " environment...");
             RegionRestoreManager rrm = new RegionRestoreManager(opts.Region, opts.ConnectionString, opts.Environment);
-            logger.Info("Connected.");
+            Logger.Info("Connected.");
 
             int result = rrm.RestoreUsers();
             if (result != 0)
-                logger.Error("Restore returned with errors!  Check log for details!");
+                Logger.Error("Restore returned with errors!  Check log for details!");
             else
-                logger.Info("Users restored.");
+                Logger.Info("Users restored.");
         }
 
         public void SetNextRunDateAction(DateTime dateOfCurrentRun, string completedAction)
@@ -320,7 +320,7 @@ namespace IRMAUserAuditConsole
                     }
                     else
                     {
-                        logger.Error("Unable to set next run date!  Is it October 2015 already?");
+                        Logger.Error("Unable to set next run date!  Is it October 2015 already?");
                         return;
                     }
                     break;
@@ -336,12 +336,12 @@ namespace IRMAUserAuditConsole
                 // only set run action if settig the date was successful
                 if (!Config.UpdateKeyValue(AppId, EnvId, "NextRunAction", nextRunAction, 0))
                 {
-                    logger.Error("Unable to set next run action!");
+                    Logger.Error("Unable to set next run action!");
                 }
             }
             else
             {
-                logger.Error("Unable to set next run date!");
+                Logger.Error("Unable to set next run date!");
             }
         }
         
@@ -363,7 +363,7 @@ namespace IRMAUserAuditConsole
 
         private void bwRestore_RunWorkerCompleted(DateTime completionDateTime)
         {
-            logger.Warn("Restore complete! You MUST set next run date/action MANUALLY or imports/exports will NOT function!");
+            Logger.Warn("Restore complete! You MUST set next run date/action MANUALLY or imports/exports will NOT function!");
         }
         #endregion
     }

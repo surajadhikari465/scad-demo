@@ -124,10 +124,11 @@ namespace IRMAUserAuditConsole
 
             return 0;
         }
-        private Dictionary<string, Boolean> getRolesListForExport()
+
+        private Dictionary<string, Boolean> GetRolesDictionaryForExport(char delimiter = ';')
         {
             string userRoles = ConfigurationManager.AppSettings["UserRolesForExport"];
-            List<string> userRolesList = userRoles.Split(new char[] { ';' }).ToList();
+            List<string> userRolesList = userRoles.Split(new char[] { delimiter }).ToList();
             Dictionary<string, Boolean> userRolesDictionary = new Dictionary<string, Boolean>();
             foreach (string userRole in userRolesList)
             {
@@ -137,6 +138,17 @@ namespace IRMAUserAuditConsole
                 }
             }
             return userRolesDictionary;
+        }
+
+        private List<string> GetRolesListForExport(string delimiter = ";")
+        {
+            var appSettingsData = ConfigurationManager.AppSettings["UserRolesForExport"];
+            var rolesList = appSettingsData
+                .Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(each => each.Trim().ToUpper())
+                .Distinct()
+                .ToList();
+            return rolesList;
         }
 
         private void ExportUsersByRegion(string regionPath)
@@ -150,7 +162,7 @@ namespace IRMAUserAuditConsole
             ssm.JumpToRow("Users", 3);
             ssm.JumpToRow("SLIM", 3);
 
-            Dictionary<string, Boolean> userRolesDictionary = getRolesListForExport();
+            var userRolesDictionary = GetRolesListForExport();
             List<UserInfo> users = repo.GetUsers(userRolesDictionary);
             foreach (UserInfo ui in users.OrderBy(u => u.StoreLimit))
             {
@@ -179,7 +191,7 @@ namespace IRMAUserAuditConsole
             // jump to row 3 (header is row 1, then 2 is blank)
             ssm.JumpToRow("Users", 3);
             ssm.JumpToRow("SLIM", 3);
-            Dictionary<string, Boolean> userRolesDictionary = getRolesListForExport();
+            var userRolesDictionary = GetRolesDictionaryForExport();
             List<UserInfo> storeUsers = repo.GetUsersByStore(store.Store_No, userRolesDictionary);
 
             //Console.WriteLine(store.Store_Name + ": " + storeUsers.Count);

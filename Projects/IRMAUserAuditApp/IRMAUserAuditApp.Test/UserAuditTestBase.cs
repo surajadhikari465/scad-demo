@@ -15,8 +15,7 @@ namespace IRMAUserAuditApp.Test
         protected const string environmentGuid_TST = "20C5DDAC-659C-4B81-84F6-5F79CC390D10";
         protected const string connectionStringName_FL = "IRMA_Test_FL";
 
-
-        protected string connectionString_FLD
+        protected string ConnectionString_FLD
         {
             get
             {

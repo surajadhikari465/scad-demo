@@ -134,23 +134,9 @@ namespace IRMAUserAuditConsole
         public UserInfo GetUserInfo(int id)
         {
             User u = userCache.SingleOrDefault(user => user.User_ID == id);
-            UserInfo ui = new UserInfo();
-            if (u != null)
-            {
-                ui.User_ID = u.User_ID;
-                ui.UserName = u.UserName;
-                ui.TitleId = u.Title;
-                ui.Title = u.Title.HasValue ? u.Title1.Title_Desc : "( None Assigned )";
-                ui.StoreLimit = u.Telxon_Store_Limit.HasValue ? u.Store1.Store_Name : "All Stores";
-                ui.StoreId = u.Telxon_Store_Limit;
-                ui.FullName = u.FullName;
-
-                SlimAccess sa = slimCache.Where(slim => slim.User_ID == u.User_ID).Take(1).SingleOrDefault();
-                return ui;
-            }
+            UserInfo ui = UserInfoFromUser(u);
 
             return null;
-
         }
 
         public int? GetTitleIdFromName(string titleName)
@@ -190,37 +176,37 @@ namespace IRMAUserAuditConsole
         {
             if (defaults == null)
                 defaults = new TitleDefaultPermission();
-            user.Accountant = defaults.Accountant.HasValue ? defaults.Accountant.Value : false;
-            user.ApplicationConfigAdmin = defaults.ApplicationConfigAdmin.HasValue ? defaults.ApplicationConfigAdmin.Value : false;
-            user.BatchBuildOnly = defaults.BatchBuildOnly.HasValue ? defaults.BatchBuildOnly.Value : false;
-            user.Buyer = defaults.Buyer.HasValue ? defaults.Buyer.Value : false;
-            user.Coordinator = defaults.Coordinator.HasValue ? defaults.Coordinator.Value : false;
-            user.CostAdmin = defaults.CostAdministrator.HasValue ? defaults.CostAdministrator.Value : false;
-            user.FacilityCreditProcessor = defaults.FacilityCreditProcessor.HasValue ? defaults.FacilityCreditProcessor.Value : false;
-            user.DCAdmin = defaults.DCAdmin.HasValue ? defaults.DCAdmin.Value : false;
-            user.Distributor = defaults.Distributor.HasValue ? defaults.Distributor.Value : false;
+            user.Accountant = defaults.Accountant ?? false;
+            user.ApplicationConfigAdmin = defaults.ApplicationConfigAdmin ?? false;
+            user.BatchBuildOnly = defaults.BatchBuildOnly ?? false;
+            user.Buyer = defaults.Buyer ?? false;
+            user.Coordinator = defaults.Coordinator ?? false;
+            user.CostAdmin = defaults.CostAdministrator ?? false;
+            user.FacilityCreditProcessor = defaults.FacilityCreditProcessor ?? false;
+            user.DCAdmin = defaults.DCAdmin ?? false;
+            user.Distributor = defaults.Distributor ?? false;
             user.DeletePO = defaults.DeletePO;
-            user.EInvoicing_Administrator = defaults.EInvoicing.HasValue ? defaults.EInvoicing.Value : false;
-            user.Inventory_Administrator = defaults.InventoryAdministrator.HasValue ? defaults.InventoryAdministrator.Value : false;
-            user.Item_Administrator = defaults.ItemAdministrator.HasValue ? defaults.ItemAdministrator.Value : false;
-            user.JobAdministrator = defaults.JobAdministrator.HasValue ? defaults.JobAdministrator.Value : false;
-            user.Lock_Administrator = defaults.LockAdministrator.HasValue ? defaults.LockAdministrator.Value : false;
-            user.SuperUser = defaults.SuperUser.HasValue ? defaults.SuperUser.Value : false;
-            user.PO_Accountant = defaults.POAccountant.HasValue ? defaults.POAccountant.Value : false;
-            user.POApprovalAdmin = defaults.POApprovalAdministrator.HasValue ? defaults.POApprovalAdministrator.Value : false;
-            user.POEditor = defaults.POEditor ? defaults.POEditor : false;
-            user.POSInterfaceAdministrator = defaults.POSInterfaceAdministrator.HasValue ? defaults.POSInterfaceAdministrator.Value : false;
-            user.PriceBatchProcessor = defaults.PriceBatchProcessor.HasValue ? defaults.PriceBatchProcessor.Value : false;
-            user.SecurityAdministrator = defaults.SecurityAdministrator.HasValue ? defaults.SecurityAdministrator.Value : false;
+            user.EInvoicing_Administrator = defaults.EInvoicing ?? false;
+            user.Inventory_Administrator = defaults.InventoryAdministrator ?? false;
+            user.Item_Administrator = defaults.ItemAdministrator ?? false;
+            user.JobAdministrator = defaults.JobAdministrator ?? false;
+            user.Lock_Administrator = defaults.LockAdministrator ?? false;
+            user.SuperUser = defaults.SuperUser ?? false;
+            user.PO_Accountant = defaults.POAccountant ?? false;
+            user.POApprovalAdmin = defaults.POApprovalAdministrator ?? false;
+            user.POEditor = defaults.POEditor;
+            user.POSInterfaceAdministrator = defaults.POSInterfaceAdministrator ?? false;
+            user.PriceBatchProcessor = defaults.PriceBatchProcessor ?? false;
+            user.SecurityAdministrator = defaults.SecurityAdministrator ?? false;
             user.Shrink = defaults.Shrink;
             user.ShrinkAdmin = defaults.ShrinkAdmin;
-            user.StoreAdministrator = defaults.StoreAdministrator.HasValue ? defaults.StoreAdministrator.Value : false;
-            user.SystemConfigurationAdministrator = defaults.SystemConfigurationAdministrator.HasValue ? defaults.SystemConfigurationAdministrator.Value : false;
+            user.StoreAdministrator = defaults.StoreAdministrator ?? false;
+            user.SystemConfigurationAdministrator = defaults.SystemConfigurationAdministrator ?? false;
             user.TaxAdministrator = defaults.TaxAdministrator;
-            user.UserMaintenance = defaults.UserMaintenance.HasValue ? defaults.UserMaintenance.Value : false;
-            user.Vendor_Administrator = defaults.VendorAdministrator.HasValue ? defaults.VendorAdministrator.Value : false;
-            user.VendorCostDiscrepancyAdmin = defaults.VendorCostDiscrepancyAdmin.HasValue ? defaults.VendorCostDiscrepancyAdmin.Value : false;
-            user.Warehouse = defaults.Warehouse.HasValue ? defaults.Warehouse.Value : false;
+            user.UserMaintenance = defaults.UserMaintenance ?? false;
+            user.Vendor_Administrator = defaults.VendorAdministrator ?? false;
+            user.VendorCostDiscrepancyAdmin = defaults.VendorCostDiscrepancyAdmin ?? false;
+            user.Warehouse = defaults.Warehouse ?? false;
         }
 
         public SlimAccess GetUserSlimAccess(int userId)
@@ -277,7 +263,6 @@ namespace IRMAUserAuditConsole
                     sa.ItemRequest = newUserInfo.ItemRequestEnabled.ToLower() == "yes" ? true : false;
                 }
             }
-
 
             log.Message("calling UpdateUser!!");
             // Do it.  DO IT!!!
@@ -381,17 +366,19 @@ namespace IRMAUserAuditConsole
             else
             {
                 log.Message("assigning SLIM defaults...");
-                sa = new SlimAccess();
-                sa.User_ID = newUserInfo.User_ID;
-                sa.Authorizations = false;
-                sa.IRMAPush = false;
-                sa.ItemRequest = false;
-                sa.RetailCost = false;
-                sa.ScaleInfo = false;
-                sa.StoreSpecials = false;
-                sa.UserAdmin = false;
-                sa.VendorRequest = false;
-                sa.WebQuery = false;
+                sa = new SlimAccess
+                {
+                    User_ID = newUserInfo.User_ID,
+                    Authorizations = false,
+                    IRMAPush = false,
+                    ItemRequest = false,
+                    RetailCost = false,
+                    ScaleInfo = false,
+                    StoreSpecials = false,
+                    UserAdmin = false,
+                    VendorRequest = false,
+                    WebQuery = false,
+                };
             }
 
             log.Message("calling UpdateUser!!");
@@ -449,12 +436,54 @@ namespace IRMAUserAuditConsole
         {
             // this join ensures we do not get stores which have no users assigned
             return db.Stores.Where(s => s.Users.Any(u => u.AccountEnabled == true)).Distinct().OrderBy(s => s.Store_Name).ToList();
-
         }
-         
-       private List<User> getUsersBasedOnRoles(List<User> cache, Dictionary<string, Boolean> userRolesDictionary)
+
+        Dictionary<string, string> RoleNameMapping = new Dictionary<string, string>()
         {
-            Boolean test;
+            {nameof(User.TaxAdministrator), "Tax Administrator" },
+            {nameof(User.DeletePO), "Delete PO" },
+            {nameof(User.POEditor), "PO Editor" },
+            {nameof(User.ShrinkAdmin), "Shrink Administrator" },
+            {nameof(User.Shrink), "Shrink" },
+            {nameof(User.UserMaintenance), "User Maintenance" },
+            {nameof(User.SystemConfigurationAdministrator), "System Configuration Admin" },
+            {nameof(User.StoreAdministrator), "Store Administrator" },
+            {nameof(User.SecurityAdministrator), "Security Administrator" },
+            {nameof(User.POSInterfaceAdministrator), "POS Interface Administrator" },
+            {nameof(User.JobAdministrator), "Job Administrator" },
+            {nameof(User.DataAdministrator), "Data Administrator" },
+            {nameof(User.ApplicationConfigAdmin), "Application Config Admin" },
+            {nameof(User.VendorCostDiscrepancyAdmin), "Vendor Cost Discrepancy Admin" },
+            {nameof(User.EInvoicing_Administrator), "EInvoicing Administrator" },
+            {nameof(User.POApprovalAdmin), "PO Approval Administrator" },
+            {nameof(User.CostAdmin), "Cost Administrator" },
+            {nameof(User.BatchBuildOnly), "Batch Build Only" },
+            {nameof(User.Inventory_Administrator), "Inventory Administrator" },
+            {nameof(User.PriceBatchProcessor), "Price Batch Processor" },
+            {nameof(User.Lock_Administrator), "Lock Administrator" },
+            {nameof(User.Vendor_Administrator), "Vendor Administrator" },
+            {nameof(User.Item_Administrator), "Item Administrator" },
+            {nameof(User.Coordinator), "Coordinator" },
+            {nameof(User.Buyer), "Buyer" },
+            {nameof(User.FacilityCreditProcessor), "Facility Credit Processor" },
+            {nameof(User.Distributor), "Distributor" },
+            {nameof(User.Accountant), "Accountant" },
+            {nameof(User.PO_Accountant), "PO Accountant" },
+            {nameof(User.SuperUser), "Super User" },
+            {nameof(User.Distributor), "Receiver" },
+            {nameof(User.DCAdmin), "DC Admin" }
+        };    
+
+        private List<User> GetUsersBasedOnRoles(IEnumerable<User> usersCache, IEnumerable<string> userRolesList)
+        {
+            var users = userCache.Where(u => userRolesList.Contains(RoleNameMapping[nameof(u.TaxAdministrator)]) && u.TaxAdministrator)
+                .ToList();
+            return users;
+        }
+
+        private List<User> GetUsersBasedOnRoles(List<User> cache, Dictionary<string, bool> userRolesDictionary)
+        {
+            bool test;
             return   userCache.Where(u => u.TaxAdministrator = userRolesDictionary.TryGetValue("Tax Administrator", out test) ? true : u.TaxAdministrator
                                      || (u.DeletePO = userRolesDictionary.TryGetValue("Delete PO", out test)) ? true : u.DeletePO
                                      || (u.POEditor = userRolesDictionary.TryGetValue("PO Editor", out test)) ? true : u.POEditor
@@ -495,130 +524,79 @@ namespace IRMAUserAuditConsole
             return (from store in db.Stores
                     select store.Store_Name).ToList();
         }
-        public List<UserInfo> GetUsers(Dictionary<string, Boolean> userRolesDictionary)
+
+        public List<UserInfo> GetUsers(Dictionary<string, bool> userRolesDictionary)
         {
-            List<UserInfo> userinfos = new List<UserInfo>();
-  
             // we have all the roles list that we need in dictionary. we will check against that.
-            List<User> users = getUsersBasedOnRoles(userCache, userRolesDictionary);
+            var userInfos = GetUsersBasedOnRoles(userCache, userRolesDictionary)
+                .Select(u => UserInfoFromUser(u, usttCache, slimCache))
+                .ToList();
 
-            foreach (User u in users)
-            {
-                UserInfo ui = new UserInfo();
-                ui.FullName = u.FullName;
-                ui.StoreId = u.Telxon_Store_Limit;
-                if (u.Telxon_Store_Limit.HasValue)
-                    ui.StoreLimit = u.Store1.Store_Name;
-                else
-                    ui.StoreLimit = "All Stores";
-
-                ui.TitleId = u.Title;
-
-                if (u.Title.HasValue)
-                    ui.Title = u.Title1.Title_Desc;
-                else
-                    ui.Title = "( None Assigned )";
-
-                ui.User_ID = u.User_ID;
-                ui.UserName = u.UserName;
-                ui.OverrideAllow = GetUserOverrides(u.User_ID, true);
-                ui.OverrideDeny = GetUserOverrides(u.User_ID, false);
-
-                // forgive the hoop jumping here, but apparently it's possible to
-                // be assigned to a team which is NOT found in the Team table
-                // :(  Sad Panda
-
-                UserStoreTeamTitle ustt = (usttCache.Where(team => team.User_ID == u.User_ID)).Take(1).SingleOrDefault();
-                if (ustt != null)
-                {
-                    if (ustt.Team != null)
-                        ui.TeamName = ustt.Team.Team_Name;
-                }
-                else
-                {
-                    ui.TeamName = "( None Assigned )";
-                }
-
-
-                // SLIM fields
-                ui.RDE = u.Item_Administrator ? "Yes" : "No";
-                SlimAccess slimAccess = slimCache.Where(sa => sa.User_ID == u.User_ID).Take(1).SingleOrDefault();
-                if (slimAccess != null)
-                {
-                    ui.HasSlimAccess = true;
-                    ui.WebQueryEnabled = (slimAccess.WebQuery.HasValue && slimAccess.WebQuery.Value) ? "Yes" : "No";
-                    ui.ISSEnabled = (slimAccess.StoreSpecials.HasValue && slimAccess.StoreSpecials.Value) ? "Yes" : "No";
-                    ui.ItemRequestEnabled = (slimAccess.ItemRequest.HasValue && slimAccess.ItemRequest.Value) ? "Yes" : "No";
-                }
-
-                userinfos.Add(ui);
-
-            }
-            return userinfos;
+            return userInfos;
         }
 
-        public List<UserInfo> GetUsersByStore(int? StoreId, Dictionary<string, Boolean> userRolesDictionary)
+        public List<UserInfo> GetUsers(IEnumerable<string> userRolesList)
+        {
+            // we have all the roles list that we need in dictionary. we will check against that.
+            var userInfos = GetUsersBasedOnRoles(userCache, userRolesList)
+                .Select(u => UserInfoFromUser(u, usttCache, slimCache))
+                .ToList();
+
+            return userInfos;
+        }
+
+        private UserInfo UserInfoFromUser(User user,
+            IEnumerable<UserStoreTeamTitle> teamTitles = null,
+            IEnumerable<SlimAccess> slimAccesses = null)
+        {
+            if (user == null) return new UserInfo();
+
+            UserInfo ui = new UserInfo
+            {
+                FullName = user.FullName,
+                StoreId = user.Telxon_Store_Limit,
+                StoreLimit = user.Telxon_Store_Limit.HasValue ? user.Store1.Store_Name : "All Stores",
+                TitleId = user.Title,
+                Title = user.Title.HasValue ? user.Title1.Title_Desc : "( None Assigned )",
+                User_ID = user.User_ID,
+                UserName = user.UserName,
+                OverrideAllow = GetUserOverrides(user.User_ID, true),
+                OverrideDeny = GetUserOverrides(user.User_ID, false),
+                RDE = user.Item_Administrator ? "Yes" : "No"
+            };
+
+            // forgive the hoop jumping here, but apparently it's possible to
+            // be assigned to a team which is NOT found in the Team table
+            // :(  Sad Panda   
+            UserStoreTeamTitle ustt = usttCache?.SingleOrDefault(team => team.User_ID == user.User_ID);
+            ui.TeamName = ustt?.Team?.Team_Name ?? "( None Assigned )";
+
+            // SLIM fields
+            SlimAccess slimAccess = slimCache?.SingleOrDefault(sa => sa.User_ID == user.User_ID);
+            if (slimAccess != null)
+            {
+                ui.HasSlimAccess = true;
+                ui.WebQueryEnabled = (slimAccess.WebQuery.HasValue && slimAccess.WebQuery.Value) ? "Yes" : "No";
+                ui.ISSEnabled = (slimAccess.StoreSpecials.HasValue && slimAccess.StoreSpecials.Value) ? "Yes" : "No";
+                ui.ItemRequestEnabled = (slimAccess.ItemRequest.HasValue && slimAccess.ItemRequest.Value) ? "Yes" : "No";
+            }
+
+            return ui;
+        }
+
+        public List<UserInfo> GetUsersByStore(int? StoreId, Dictionary<string, bool> userRolesDictionary)
         {
             if (StoreId.Value == -1)
-                StoreId = null;
-
-            List<UserInfo> userinfos = new List<UserInfo>();
-            var storeUsers = getUsersBasedOnRoles(userCache, userRolesDictionary).Where(u => u.Telxon_Store_Limit == StoreId);
-            
-            foreach (User u in storeUsers)
             {
-                UserInfo ui = new UserInfo();
-                ui.FullName = u.FullName;
-                ui.StoreId = u.Telxon_Store_Limit;
-                if (u.Telxon_Store_Limit.HasValue)
-                    ui.StoreLimit = u.Store1.Store_Name;
-                else
-                    ui.StoreLimit = "All Stores";
-
-                ui.TitleId = u.Title;
-
-                if (u.Title.HasValue)
-                    ui.Title = u.Title1.Title_Desc;
-                else
-                    ui.Title = "( None Assigned )";
-
-                ui.User_ID = u.User_ID;
-                ui.UserName = u.UserName;
-                ui.OverrideAllow = GetUserOverrides(u.User_ID, true);
-                ui.OverrideDeny = GetUserOverrides(u.User_ID, false);
-
-                // forgive the hoop jumping here, but apparently it's possible to
-                // be assigned to a team which is NOT found in the Team table
-                // :(  Sad Panda
-
-                UserStoreTeamTitle ustt = (usttCache.Where(team => team.User_ID == u.User_ID)).Take(1).SingleOrDefault();
-                if (ustt != null)
-                {
-                    if (ustt.Team != null)
-                        ui.TeamName = ustt.Team.Team_Name;
-                }
-                else
-                {
-                    ui.TeamName = "( None Assigned )";
-                }
-
-
-                // SLIM fields
-                ui.RDE = u.Item_Administrator ? "Yes" : "No";
-                SlimAccess slimAccess = slimCache.Where(sa => sa.User_ID == u.User_ID).Take(1).SingleOrDefault();
-                if (slimAccess != null)
-                {
-                    ui.HasSlimAccess = true;
-                    ui.WebQueryEnabled = (slimAccess.WebQuery.HasValue && slimAccess.WebQuery.Value) ? "Yes" : "No";
-                    ui.ISSEnabled = (slimAccess.StoreSpecials.HasValue && slimAccess.StoreSpecials.Value) ? "Yes" : "No";
-                    ui.ItemRequestEnabled = (slimAccess.ItemRequest.HasValue && slimAccess.ItemRequest.Value) ? "Yes" : "No";
-                }
-
-
-                userinfos.Add(ui);
-
+                StoreId = null;
             }
-            return userinfos;
+
+            var storeUserInfos = GetUsersBasedOnRoles(userCache, userRolesDictionary)
+                .Where(u => u.Telxon_Store_Limit == StoreId)
+                .Select(u => UserInfoFromUser(u, usttCache, slimCache))
+                .ToList();
+
+            return storeUserInfos;
         }
 
         /// <summary>
