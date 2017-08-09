@@ -51,7 +51,7 @@ namespace IRMAUserAuditConsole
         {
             SpreadsheetManager ssm = new SpreadsheetManager(fileName);
             ssm.CreateWorksheet("Users");
-            ssm.CreateHeader("Users", (new string[] { "User_ID", "UserName", "FullName", "Title", "StoreLimit", "Override Allow", "Override Deny", "User Edited?", "Delete User?" }).ToList());
+            ssm.CreateHeader("Users", (new string[] { "User_ID", "UserName", "FullName", "Title", "Location", "User_Disabled","User Edited?"}).ToList());
             ssm.AddDropdown("Users", "TitlesDropdown", "X", 1, TitleList.ToArray());
             ssm.AddDropdown("Users", "StoresDropdown", "Y", 1, StoreList.ToArray());
             ssm.AddDropdown("Users", "YesNoDropdown", "Z", 1, YesNoList.ToArray());
@@ -60,14 +60,6 @@ namespace IRMAUserAuditConsole
             //ssm.HideColumn("Users", 24);
             //ssm.HideColumn("Users", 25);
             //ssm.HideColumn("Users", 26);
-
-            // SLIM sheet
-            ssm.CreateWorksheet("SLIM");
-            ssm.CreateHeader("SLIM", (new string[] { "User_ID", "UserName", "FullName", "WebQuery", "ItemRequest", "ISS", "Store", "Team", "User Edited?" }).ToList());
-            ssm.AddDropdown("SLIM", "YesNoDropdown", "Z", 1, YesNoList.ToArray());
-
-            // no need to hide columns now that formulas are on a separate sheet
-            //ssm.HideColumn("SLIM", 26);
 
             return ssm;
         }
@@ -81,7 +73,6 @@ namespace IRMAUserAuditConsole
             items.Add(ui.Title);
             items.Add(ui.Location);
             items.Add(ui.User_Disabled);
-            items.Add("No");
             items.Add("No");
             int row = ssm.GetCurrentRow("Users");
             ssm.AssignFormulaToCell("Users", "TitlesDropdown", "D" + row.ToString());

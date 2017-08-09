@@ -118,12 +118,7 @@ namespace IRMAUserAuditConsole
                     log.Message("opening " + file);
                     OpenFile(file);
                     List<object[]> userRows = ParseWorksheet("Users", "A", "I");
-                    List<object[]> slimRows;
-                    if (WorksheetExists("SLIM"))
-                        slimRows = ParseWorksheet("SLIM", "A", "I");
-                    else
-                        slimRows = new List<object[]>();
-
+                    
                     foreach (object[] userRow in userRows)
                     {
                         try
@@ -133,8 +128,8 @@ namespace IRMAUserAuditConsole
                                 int number;
                                 if (Int32.TryParse(userRow[0].ToString(), out number))
                                 {
-                                    bool deleteUser = ((string)userRow[8]).ToLower() == "yes" ? true : false;
-                                    bool updateUser = ((string)userRow[7]).ToLower() == "yes" ? true : false;
+                                    //bool deleteUser = ((string)userRow[8]).ToLower() == "yes" ? true : false;
+                                    bool updateUser = ((string)userRow[6]).ToLower() == "yes" ? true : false;
                                     int userId = Int32.Parse(userRow[0].ToString());
                                     UserInfo ui = repo.GetUserInfo(userId);
                                     if (ui == null)
@@ -167,20 +162,20 @@ namespace IRMAUserAuditConsole
                                         continue;
                                     }
 
-                                    if (deleteUser)
-                                    {
-                                        try
-                                        {
-                                            repo.DeleteUser(userId, ref log);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            log.Error("Delete user " + ui.FullName + ": " + ex.Message);
-                                        }
-                                        AddResultRow(ImportResultType.Deleted, userRow);
-                                        log.Message("user " + ui.FullName + " deleted.");
-                                    }
-                                    else if (updateUser)
+                                    //if (deleteUser)
+                                    //{
+                                    //    try
+                                    //    {
+                                    //        repo.DeleteUser(userId, ref log);
+                                    //    }
+                                    //    catch (Exception ex)
+                                    //    {
+                                    //        log.Error("Delete user " + ui.FullName + ": " + ex.Message);
+                                    //    }
+                                    //    AddResultRow(ImportResultType.Deleted, userRow);
+                                    //    log.Message("user " + ui.FullName + " deleted.");
+                                    //}
+                                    if (updateUser)
                                     {
                                         //update fields
                                         ui.Location = userRow[4] as string;
@@ -347,7 +342,7 @@ namespace IRMAUserAuditConsole
             resultSheet.CreateWorksheet("Deleted");
             resultSheet.CreateWorksheet("Unchanged");
             resultSheet.CreateWorksheet("Errored");
-            List<string> columns = new List<string> { "User_ID", "UserName", "FullName", "Title", "StoreLimit", "Override Allow", "Override Deny", "User Edited?", "Delete User?" };
+            List<string> columns = new List<string> { "User_ID", "UserName", "FullName", "Title", "Location", "User_Disabled", "User Edited?" };
             resultSheet.CreateHeader("Updated", columns);
             resultSheet.CreateHeader("Deleted", columns);
             resultSheet.CreateHeader("Unchanged", columns);

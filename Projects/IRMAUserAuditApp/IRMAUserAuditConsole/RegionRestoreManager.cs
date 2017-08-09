@@ -85,12 +85,7 @@ namespace IRMAUserAuditConsole
                     log.Message("opening " + file);
                     OpenFile(file);
                     List<object[]> userRows = ParseWorksheet("Users", "A", "AT");
-                    List<object[]> slimRows;
-                    if (WorksheetExists("SLIM"))
-                        slimRows = ParseWorksheet("SLIM", "A", "J");
-                    else
-                        slimRows = new List<object[]>();
-
+              
                     foreach (object[] userRow in userRows)
                     {
                         if (userRow.Length > 45)
@@ -149,41 +144,9 @@ namespace IRMAUserAuditConsole
                             u.UserMaintenance = userRow[42] != null ? (bool.TryParse(userRow[42].ToString(), out btmp) ? btmp : false) : false;
                             u.Vendor_Administrator = userRow[43] != null ? (bool.TryParse(userRow[43].ToString(), out btmp) ? btmp : false) : false;
                             u.VendorCostDiscrepancyAdmin = userRow[44] != null ? (bool.TryParse(userRow[44].ToString(), out btmp) ? btmp : false) : false;
-                            u.Warehouse = userRow[45] != null ? (bool.TryParse(userRow[45].ToString(), out btmp) ? btmp : false) : false;
+                            u.Warehouse = userRow[45] != null ? (bool.TryParse(userRow[45].ToString(), out btmp) ? btmp : false) : false;              
 
-
-                            // find the user on the SLIM tab
-                            object[] slimInfo = (from row in slimRows
-                                                 where Int32.Parse(row[0].ToString()) == userId
-                                                 select row).SingleOrDefault();
-                            SlimAccess sa = new SlimAccess();
-                            sa.User_ID = userId;
-                            if (slimInfo != null)
-                            {
-                                sa.Authorizations = bool.TryParse(slimInfo[1].ToString(), out btmp) ? btmp : false;
-                                sa.IRMAPush = bool.TryParse(slimInfo[2].ToString(), out btmp) ? btmp : false;
-                                sa.ItemRequest = bool.TryParse(slimInfo[3].ToString(), out btmp) ? btmp : false;
-                                sa.RetailCost = bool.TryParse(slimInfo[4].ToString(), out btmp) ? btmp : false;
-                                sa.ScaleInfo = bool.TryParse(slimInfo[5].ToString(), out btmp) ? btmp : false;
-                                sa.StoreSpecials = bool.TryParse(slimInfo[6].ToString(), out btmp) ? btmp : false;
-                                sa.UserAdmin = bool.TryParse(slimInfo[7].ToString(), out btmp) ? btmp : false;
-                                sa.VendorRequest = bool.TryParse(slimInfo[8].ToString(), out btmp) ? btmp : false; ;
-                                sa.WebQuery = bool.TryParse(slimInfo[9].ToString(), out btmp) ? btmp : false;
-                            }
-                            else
-                            {
-                                sa.Authorizations = false;
-                                sa.IRMAPush = false;
-                                sa.ItemRequest = false;
-                                sa.RetailCost = false;
-                                sa.ScaleInfo = false;
-                                sa.StoreSpecials = false;
-                                sa.UserAdmin = false;
-                                sa.VendorRequest = false;
-                                sa.WebQuery = false;
-                            }
-
-                            UserRestoreError ure = repo.RestoreUser(u, sa);
+                            UserRestoreError ure = repo.RestoreUser(u);
                             if (ure != UserRestoreError.None)
                             {
                                 log.Error("user restore returned nonzero!  Possible error for user: " + u.FullName);

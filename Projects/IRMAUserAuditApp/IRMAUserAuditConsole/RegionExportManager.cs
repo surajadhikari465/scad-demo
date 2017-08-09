@@ -125,21 +125,6 @@ namespace IRMAUserAuditConsole
             return 0;
         }
 
-        //private Dictionary<string, Boolean> GetRolesDictionaryForExport(char delimiter = ';')
-        //{
-        //    string userRoles = ConfigurationManager.AppSettings["UserRolesForExport"];
-        //    List<string> userRolesList = userRoles.Split(new char[] { delimiter }).ToList();
-        //    Dictionary<string, Boolean> userRolesDictionary = new Dictionary<string, Boolean>();
-        //    foreach (string userRole in userRolesList)
-        //    {
-        //        if (!userRolesDictionary.ContainsKey(userRole))
-        //        {
-        //            userRolesDictionary.Add(userRole, true);
-        //        }
-        //    }
-        //    return userRolesDictionary;
-        //}
-
         private List<string> GetRolesListForExport(string delimiter = ";")
         {
             var appSettingsData = ConfigurationManager.AppSettings["UserRolesForExport"];
@@ -160,7 +145,6 @@ namespace IRMAUserAuditConsole
             SpreadsheetManager ssm = Common.SetupStoreSpreadsheet(fileName, repo.GetStoreNames(), repo.GetTitles());
             // header is row 1, then skip row 2:
             ssm.JumpToRow("Users", 3);
-            ssm.JumpToRow("SLIM", 3);
 
             var userRolesDictionary = GetRolesListForExport();
             List<UserInfo> users = repo.GetUsers(userRolesDictionary);
@@ -171,7 +155,6 @@ namespace IRMAUserAuditConsole
             }
 
             ssm.AutosizeColumns("Users");
-            ssm.AutosizeColumns("SLIM");
             log.Message("saving " + fileName);
             ssm.Close(fileName);
 
@@ -190,7 +173,6 @@ namespace IRMAUserAuditConsole
 
             // jump to row 3 (header is row 1, then 2 is blank)
             ssm.JumpToRow("Users", 3);
-            ssm.JumpToRow("SLIM", 3);
             var userRolesDictionary = GetRolesListForExport();
             List<UserInfo> storeUsers = repo.GetUsersByStore(store.Store_No, userRolesDictionary);
 
@@ -203,7 +185,6 @@ namespace IRMAUserAuditConsole
             }
 
             ssm.AutosizeColumns("Users");
-            ssm.AutosizeColumns("SLIM");
             log.Message("saving " + fileName);
             ssm.Close(fileName);
 

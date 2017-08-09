@@ -208,12 +208,7 @@ namespace IRMAUserAuditConsole
             user.Warehouse = defaults.Warehouse ?? false;
         }
 
-        public SlimAccess GetUserSlimAccess(int userId)
-        {
-            return slimCache.Where(sc => sc.User_ID == userId).Take(1).SingleOrDefault();
-        }
-
-        public UserRestoreError RestoreUser(User user, SlimAccess sa)
+        public UserRestoreError RestoreUser(User user)
         {
             try
             {
@@ -434,15 +429,15 @@ namespace IRMAUserAuditConsole
         {
             // use the list of roles (from the config) to determine which users to retrieve
             var userInfos = GetUsersBasedOnRoles(userCache, userRolesList)
-                .Select(u => UserInfoFromUser(u, usttCache, slimCache))
+                .Select(u => UserInfoFromUser(u, usttCache))
                 .ToList();
 
             return userInfos;
         }
 
         private UserInfo UserInfoFromUser(User user,
-            IEnumerable<UserStoreTeamTitle> teamTitles = null,
-            IEnumerable<SlimAccess> slimAccesses = null)
+            IEnumerable<UserStoreTeamTitle> teamTitles = null
+          )
         {
             if (user == null) return new UserInfo();
 
@@ -453,7 +448,8 @@ namespace IRMAUserAuditConsole
                 Location = user.Telxon_Store_Limit.HasValue ? user.Store1.Store_Name : "All Stores",
                 Title = user.Title.HasValue ? user.Title1.Title_Desc : "( None Assigned )",
                 User_ID = user.User_ID,
-                UserName = user.UserName
+                UserName = user.UserName,
+                User_Disabled = !user.AccountEnabled
             };
 
             // forgive the hoop jumping here, but apparently it's possible to
@@ -473,7 +469,7 @@ namespace IRMAUserAuditConsole
 
             var storeUserInfos = GetUsersBasedOnRoles(userCache, userRolesList)
                 .Where(u => u.Telxon_Store_Limit == StoreId)
-                .Select(u => UserInfoFromUser(u, usttCache, slimCache))
+                .Select(u => UserInfoFromUser(u, usttCache))
                 .ToList();
 
             return storeUserInfos;
