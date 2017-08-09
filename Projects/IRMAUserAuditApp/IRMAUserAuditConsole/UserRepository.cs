@@ -233,10 +233,8 @@ namespace IRMAUserAuditConsole
                     user.PriceBatchProcessor, user.PromoAccessLevel, user.SecurityAdministrator,
                     user.Shrink, user.ShrinkAdmin, user.StoreAdministrator, user.SystemConfigurationAdministrator,
                     user.TaxAdministrator, user.UserMaintenance, user.Vendor_Administrator,
-                    user.VendorCostDiscrepancyAdmin, user.Warehouse,
-                    sa.Authorizations, sa.IRMAPush, sa.ItemRequest, sa.RetailCost,
-                    sa.ScaleInfo, sa.StoreSpecials, sa.UserAdmin, sa.VendorRequest,
-                    sa.WebQuery);
+                    user.VendorCostDiscrepancyAdmin, user.Warehouse
+                  );
 
                 //log.Message("UpdateUser result: " + result.ToString());
             }
@@ -248,57 +246,7 @@ namespace IRMAUserAuditConsole
             return UserRestoreError.None;
         }
 
-        public UserUpdateError UpdateSlim(UserInfo newUserInfo, ref Log log)
-        {
-            User user = GetUser(newUserInfo.User_ID);
-            SlimAccess sa = null;
-            if (newUserInfo.HasSlimAccess)
-            {
-                sa = GetUserSlimAccess(newUserInfo.User_ID);
-                if (sa != null)
-                {
-                    log.Message("updating SLIM fields...");
-                    sa.WebQuery = newUserInfo.WebQueryEnabled.ToLower() == "yes" ? true : false;
-                    sa.StoreSpecials = newUserInfo.ISSEnabled.ToLower() == "yes" ? true : false;
-                    sa.ItemRequest = newUserInfo.ItemRequestEnabled.ToLower() == "yes" ? true : false;
-                }
-            }
-
-            log.Message("calling UpdateUser!!");
-            // Do it.  DO IT!!!
-            try
-            {
-                int result = db.Administration_UserAdmin_UpdateUser(
-                    user.AccountEnabled, user.CoverPage, user.EMail,
-                    user.Fax_Number, user.FullName, user.Pager_Email,
-                    user.Phone_Number, user.Printer, user.RecvLog_Store_Limit,
-                    user.Telxon_Store_Limit, user.Title, user.User_ID,
-                    user.UserName, user.Accountant, user.ApplicationConfigAdmin,
-                    user.BatchBuildOnly, user.Buyer, user.Coordinator, user.CostAdmin,
-                    user.FacilityCreditProcessor, user.DataAdministrator, user.DCAdmin,
-                    user.Distributor, user.DeletePO, user.EInvoicing_Administrator,
-                    user.Inventory_Administrator, user.Item_Administrator, user.JobAdministrator,
-                    user.Lock_Administrator, user.SuperUser, user.PO_Accountant,
-                    user.POApprovalAdmin, user.POEditor, user.POSInterfaceAdministrator,
-                    user.PriceBatchProcessor, user.PromoAccessLevel, user.SecurityAdministrator,
-                    user.Shrink, user.ShrinkAdmin, user.StoreAdministrator, user.SystemConfigurationAdministrator,
-                    user.TaxAdministrator, user.UserMaintenance, user.Vendor_Administrator,
-                    user.VendorCostDiscrepancyAdmin, user.Warehouse,
-                    sa.Authorizations, sa.IRMAPush, sa.ItemRequest, sa.RetailCost,
-                    sa.ScaleInfo, sa.StoreSpecials, sa.UserAdmin, sa.VendorRequest,
-                    sa.WebQuery);
-
-                log.Message("UpdateSLIM result: " + result.ToString());
-            }
-            catch (Exception ex)
-            {
-                log.Error("UpdateSLIM: " + ex.Message);
-                return UserUpdateError.Other;
-            }
-            return UserUpdateError.None;
-        }
-
-        public UserUpdateError UpdateUser(UserInfo newUserInfo, bool updateSlim, ref Log log)
+        public UserUpdateError UpdateUser(UserInfo newUserInfo, ref Log log)
         {
             //log.Message("updating " + newUserInfo.FullName);
             User user = GetUser(newUserInfo.User_ID);
@@ -325,7 +273,7 @@ namespace IRMAUserAuditConsole
                 user.Title1 = db.Titles.SingleOrDefault(t => t.Title_ID == titleId);
             }
 
-            int? storeId = GetStoreIdFromName(newUserInfo.StoreLimit);
+            int? storeId = GetStoreIdFromName(newUserInfo.Location);
             if (storeId.HasValue)
             {
                 if (storeId == -1)
@@ -348,39 +296,6 @@ namespace IRMAUserAuditConsole
                 user.Store1 = db.Stores.SingleOrDefault(s => s.Store_No == storeId);
             }
 
-            SlimAccess sa = null;
-            if (newUserInfo.HasSlimAccess)
-            {
-                sa = GetUserSlimAccess(newUserInfo.User_ID);
-                if (sa != null)
-                {
-                    if (updateSlim)
-                    {
-                        log.Message("updating SLIM fields...");
-                        sa.WebQuery = newUserInfo.WebQueryEnabled.ToLower() == "yes" ? true : false;
-                        sa.StoreSpecials = newUserInfo.ISSEnabled.ToLower() == "yes" ? true : false;
-                        sa.ItemRequest = newUserInfo.ItemRequestEnabled.ToLower() == "yes" ? true : false;
-                    }
-                }
-            }
-            else
-            {
-                log.Message("assigning SLIM defaults...");
-                sa = new SlimAccess
-                {
-                    User_ID = newUserInfo.User_ID,
-                    Authorizations = false,
-                    IRMAPush = false,
-                    ItemRequest = false,
-                    RetailCost = false,
-                    ScaleInfo = false,
-                    StoreSpecials = false,
-                    UserAdmin = false,
-                    VendorRequest = false,
-                    WebQuery = false,
-                };
-            }
-
             log.Message("calling UpdateUser!!");
             // Do it.  DO IT!!!
             try
@@ -400,10 +315,7 @@ namespace IRMAUserAuditConsole
                     user.PriceBatchProcessor, user.PromoAccessLevel, user.SecurityAdministrator,
                     user.Shrink, user.ShrinkAdmin, user.StoreAdministrator, user.SystemConfigurationAdministrator,
                     user.TaxAdministrator, user.UserMaintenance, user.Vendor_Administrator,
-                    user.VendorCostDiscrepancyAdmin, user.Warehouse,
-                    sa.Authorizations, sa.IRMAPush, sa.ItemRequest, sa.RetailCost,
-                    sa.ScaleInfo, sa.StoreSpecials, sa.UserAdmin, sa.VendorRequest,
-                    sa.WebQuery);
+                    user.VendorCostDiscrepancyAdmin, user.Warehouse);
 
                 log.Message("UpdateUser result: " + result.ToString());
             }
@@ -555,31 +467,16 @@ namespace IRMAUserAuditConsole
             {
                 FullName = user.FullName,
                 StoreId = user.Telxon_Store_Limit,
-                StoreLimit = user.Telxon_Store_Limit.HasValue ? user.Store1.Store_Name : "All Stores",
-                TitleId = user.Title,
+                Location = user.Telxon_Store_Limit.HasValue ? user.Store1.Store_Name : "All Stores",
                 Title = user.Title.HasValue ? user.Title1.Title_Desc : "( None Assigned )",
                 User_ID = user.User_ID,
-                UserName = user.UserName,
-                OverrideAllow = GetUserOverrides(user.User_ID, true),
-                OverrideDeny = GetUserOverrides(user.User_ID, false),
-                RDE = user.Item_Administrator ? "Yes" : "No"
+                UserName = user.UserName
             };
 
             // forgive the hoop jumping here, but apparently it's possible to
             // be assigned to a team which is NOT found in the Team table
             // :(  Sad Panda   
             UserStoreTeamTitle ustt = usttCache?.SingleOrDefault(team => team.User_ID == user.User_ID);
-            ui.TeamName = ustt?.Team?.Team_Name ?? "( None Assigned )";
-
-            // SLIM fields
-            SlimAccess slimAccess = slimCache?.SingleOrDefault(sa => sa.User_ID == user.User_ID);
-            if (slimAccess != null)
-            {
-                ui.HasSlimAccess = true;
-                ui.WebQueryEnabled = (slimAccess.WebQuery.HasValue && slimAccess.WebQuery.Value) ? "Yes" : "No";
-                ui.ISSEnabled = (slimAccess.StoreSpecials.HasValue && slimAccess.StoreSpecials.Value) ? "Yes" : "No";
-                ui.ItemRequestEnabled = (slimAccess.ItemRequest.HasValue && slimAccess.ItemRequest.Value) ? "Yes" : "No";
-            }
 
             return ui;
         }

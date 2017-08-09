@@ -164,7 +164,7 @@ namespace IRMAUserAuditConsole
 
             var userRolesDictionary = GetRolesListForExport();
             List<UserInfo> users = repo.GetUsers(userRolesDictionary);
-            foreach (UserInfo ui in users.OrderBy(u => u.StoreLimit))
+            foreach (UserInfo ui in users.OrderBy(u => u.Location))
             {
                 log.Message("Adding " + ui.FullName + "...");
                 Common.AddUserToSpreadsheet(ref ssm, ui);

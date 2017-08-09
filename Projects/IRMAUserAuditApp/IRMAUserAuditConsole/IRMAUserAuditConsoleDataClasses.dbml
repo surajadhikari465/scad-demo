@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ItemCatalog_Test" Class="IRMAUserAuditConsoleDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=idt-mw\mwt;Initial Catalog=ItemCatalog_Test;Integrated Security=True" SettingsObjectName="IRMAUserAuditConsole.Properties.Settings" SettingsPropertyName="ItemCatalog_TestConnectionString1" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=idd-fl\fld;Initial Catalog=ItemCatalog_Test;Integrated Security=True" SettingsObjectName="IRMAUserAuditConsole.Properties.Settings" SettingsPropertyName="ItemCatalog_TestConnectionString2" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Store" Member="Stores">
     <Type Name="Store">
       <Column Name="Store_No" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -254,6 +254,27 @@
     <Parameter Name="User_Id" Parameter="user_Id" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.GetStoreList" Method="GetStoreList">
+    <ElementType Name="GetStoreListResult">
+      <Column Name="Store_No" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Store_Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetConfigurationData" Method="GetConfigurationData">
+    <ElementType Name="GetConfigurationDataResult">
+      <Column Name="ConfigKey" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ConfigValue" Type="System.Object" DbType="Variant" CanBeNull="true" />
+      <Column Name="BaseType" Type="System.Object" DbType="Variant" CanBeNull="true" />
+      <Column Name="Precision" Type="System.Object" DbType="Variant" CanBeNull="true" />
+      <Column Name="Scale" Type="System.Object" DbType="Variant" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetConfigurationValue" Method="GetConfigurationValue">
+    <Parameter Name="iConfigKey" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="GetConfigurationValueResult">
+      <Column Name="" Member="Column1" Type="System.Object" DbType="Variant" CanBeNull="true" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.Administration_UserAdmin_UpdateUser" Method="Administration_UserAdmin_UpdateUser">
     <Parameter Name="AccountEnabled" Parameter="accountEnabled" Type="System.Boolean" DbType="Bit" />
     <Parameter Name="CoverPage" Parameter="coverPage" Type="System.String" DbType="VarChar(30)" />
@@ -301,36 +322,6 @@
     <Parameter Name="Vendor_Administrator" Parameter="vendor_Administrator" Type="System.Boolean" DbType="Bit" />
     <Parameter Name="VendorCostDiscrepancyAdmin" Parameter="vendorCostDiscrepancyAdmin" Type="System.Boolean" DbType="Bit" />
     <Parameter Name="Warehouse" Parameter="warehouse" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="Authorizations" Parameter="authorizations" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="IRMAPush" Parameter="iRMAPush" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="ItemRequest" Parameter="itemRequest" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="RetailCost" Parameter="retailCost" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="ScaleInfo" Parameter="scaleInfo" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="StoreSpecials" Parameter="storeSpecials" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="UserAdmin" Parameter="userAdmin" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="VendorRequest" Parameter="vendorRequest" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="WebQuery" Parameter="webQuery" Type="System.Boolean" DbType="Bit" />
     <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.GetStoreList" Method="GetStoreList">
-    <ElementType Name="GetStoreListResult">
-      <Column Name="Store_No" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Store_Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.GetConfigurationData" Method="GetConfigurationData">
-    <ElementType Name="GetConfigurationDataResult">
-      <Column Name="ConfigKey" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="ConfigValue" Type="System.Object" DbType="Variant" CanBeNull="true" />
-      <Column Name="BaseType" Type="System.Object" DbType="Variant" CanBeNull="true" />
-      <Column Name="Precision" Type="System.Object" DbType="Variant" CanBeNull="true" />
-      <Column Name="Scale" Type="System.Object" DbType="Variant" CanBeNull="true" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.GetConfigurationValue" Method="GetConfigurationValue">
-    <Parameter Name="iConfigKey" Type="System.String" DbType="VarChar(50)" />
-    <ElementType Name="GetConfigurationValueResult">
-      <Column Name="" Member="Column1" Type="System.Object" DbType="Variant" CanBeNull="true" />
-    </ElementType>
   </Function>
 </Database>

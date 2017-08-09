@@ -130,7 +130,8 @@ namespace IRMAUserAuditConsole
                         {
                             if (userRow.Length > 8)
                             {
-                                if (Int32.TryParse(userRow[0].ToString(), out int number))
+                                int number;
+                                if (Int32.TryParse(userRow[0].ToString(), out number))
                                 {
                                     bool deleteUser = ((string)userRow[8]).ToLower() == "yes" ? true : false;
                                     bool updateUser = ((string)userRow[7]).ToLower() == "yes" ? true : false;
@@ -144,26 +145,6 @@ namespace IRMAUserAuditConsole
                                         row.Add("User Not Found. (May already be Inactive)");
                                         AddResultRow(ImportResultType.Errored, row.ToArray());
                                         continue;
-                                    }
-
-                                    //check for slimUpdate
-                                    bool updateSlim = false;
-                                    // find the user on the SLIM tab
-                                    object[] slimInfo = (from row in slimRows
-                                                             //    where Int32.Parse(row[0].ToString()) == userId
-                                                         where row.Length > 0 && row[0].ToString() == userId.ToString()
-                                                         select row).SingleOrDefault();
-                                    // get the SLIM fields.
-                                    if (slimInfo != null && slimInfo.Count() > 8)
-                                    {
-                                        updateSlim = ((string)slimInfo[8]).ToLower() == "yes" ? true : false;
-                                        ui.HasSlimAccess = true;
-                                        if (updateSlim)
-                                        {
-                                            ui.WebQueryEnabled = slimInfo[3] as string;
-                                            ui.ItemRequestEnabled = slimInfo[4] as string;
-                                            ui.ISSEnabled = slimInfo[5] as string;
-                                        }
                                     }
 
                                     // get previous store from history.
@@ -202,24 +183,11 @@ namespace IRMAUserAuditConsole
                                     else if (updateUser)
                                     {
                                         //update fields
-                                        ui.StoreLimit = userRow[4] as string;
+                                        ui.Location = userRow[4] as string;
                                         ui.Title = userRow[3] as string;
 
-                                        // get the SLIM fields.
-                                        if (slimInfo != null && slimInfo.Count() > 8)
-                                        {
-                                            updateSlim = ((string)slimInfo[8]).ToLower() == "yes" ? true : false;
-                                            ui.HasSlimAccess = true;
-                                            if (updateSlim)
-                                            {
-                                                ui.WebQueryEnabled = slimInfo[3] as string;
-                                                ui.ItemRequestEnabled = slimInfo[4] as string;
-                                                ui.ISSEnabled = slimInfo[5] as string;
-                                            }
-                                        }
-
                                         // ready to go!
-                                        UserUpdateError uue = repo.UpdateUser(ui, updateSlim, ref log);
+                                        UserUpdateError uue = repo.UpdateUser(ui, ref log);
                                         if (uue != UserUpdateError.None)
                                         {
                                             // add error message to Errors tab
@@ -250,55 +218,8 @@ namespace IRMAUserAuditConsole
                                         AddResultRow(ImportResultType.Updated, userRow);
                                         log.Message("user " + ui.FullName + " updated.");
 
-                                        // so we don't update twice.
-                                        updateSlim = false;
                                     }
-                                    else if (updateSlim)
-                                    {
-                                        // get the SLIM fields.
-                                        if (slimInfo != null && slimInfo.Count() > 8)
-                                        {
-                                            updateSlim = ((string)slimInfo[8]).ToLower() == "yes" ? true : false;
-                                            ui.HasSlimAccess = true;
-                                            if (updateSlim)
-                                            {
-                                                ui.WebQueryEnabled = slimInfo[3] as string;
-                                                ui.ItemRequestEnabled = slimInfo[4] as string;
-                                                ui.ISSEnabled = slimInfo[5] as string;
-                                            }
-                                        }
-                                        // just update SLIM:
-                                        UserUpdateError uue = repo.UpdateSlim(ui, ref log);
-                                        if (uue != UserUpdateError.None)
-                                        {
-                                            // add error message to Errors tab
-                                            List<object> row = new List<object>(userRow);
-
-                                            if (uue == UserUpdateError.TitleNotFound)
-                                            {
-                                                log.Error("User Title not found!  Must EXACTLY match Title_Desc in Title table!");
-                                                row.Add("User Title not found!  Must EXACTLY match Title_Desc in Title table!");
-                                                Console.WriteLine("!! ERROR !!: User Title not found!  Must EXACTLY match Title_Desc in Title table!");
-                                            }
-                                            else if (uue == UserUpdateError.StoreNotFound)
-                                            {
-                                                log.Error("Store not found!  Must EXACTLY match Store_Name in Stores table!");
-                                                row.Add("Store not found!  Must EXACTLY match Store_Name in Stores table!");
-                                                Console.WriteLine("!! ERROR !!: Store not found!  Must EXACTLY match Store_Name in Stores table!");
-                                            }
-                                            else if (uue == UserUpdateError.Other)
-                                            {
-                                                log.Error("Unknown error updating user!  User not updated!");
-                                                row.Add("Unknown error updating user!  User NOT updated!");
-                                                Console.WriteLine("!! ERROR !!: Unknown error updating user!  User not updated!");
-                                            }
-
-                                            AddResultRow(ImportResultType.Errored, row.ToArray());
-                                        }
-
-                                        AddResultRow(ImportResultType.Updated, userRow);
-                                        log.Message("user " + ui.FullName + " updated SLIM fields.");
-                                    }
+                                
                                     else
                                     {
                                         // no change.

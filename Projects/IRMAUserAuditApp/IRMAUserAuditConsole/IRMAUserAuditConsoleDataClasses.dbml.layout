@@ -64,7 +64,7 @@
         <classShapeMoniker Id="c816b251-8164-4439-903b-06c88b0e1dbc" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 9.0569482421875); (3.5 : 9.0569482421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 9.0569482421875); (3.5 : 9.0569482421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/Team/Team_UserStoreTeamTitle" />
       <nodes>
         <classShapeMoniker Id="4175966f-8532-4e05-9ef2-175bce6218de" />
@@ -85,7 +85,7 @@
         <classShapeMoniker Id="7b7f6b38-346e-4981-a448-24a151df6d6c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.5 : 8.13544840494792); (9.25 : 8.13544840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.5 : 8.13544840494792); (8.66666666666667 : 8.13544840494792 : JumpStart); (8.83333333333333 : 8.13544840494792 : JumpEnd); (9.25 : 8.13544840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/User/User_TitlePermissionOverride" />
       <nodes>
         <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />
@@ -131,7 +131,7 @@
         <elementListCompartment Id="0ea71c46-a73b-4131-88d0-d895df1fc33b" absoluteBounds="9.265, 18.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.9687475 : 16.5302555338542); (6.9687475 : 17.53125); (7.41666666666667 : 17.53125 : JumpStart); (7.58333333333333 : 17.53125 : JumpEnd); (7.94791916666667 : 17.53125 : JumpStart); (8.11458583333333 : 17.53125 : JumpEnd); (12.125 : 17.53125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.9687475 : 16.5302555338542); (6.9687475 : 17.53125); (7.41666666666667 : 17.53125 : JumpStart); (7.58333333333333 : 17.53125 : JumpEnd); (12.125 : 17.53125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/User/User_AppConfigApp" />
       <nodes>
         <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />

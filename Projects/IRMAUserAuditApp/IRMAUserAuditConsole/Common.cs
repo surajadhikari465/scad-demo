@@ -79,9 +79,8 @@ namespace IRMAUserAuditConsole
             items.Add(ui.UserName);
             items.Add(ui.FullName);
             items.Add(ui.Title);
-            items.Add(ui.StoreLimit);
-            items.Add(ui.OverrideAllow);
-            items.Add(ui.OverrideDeny);
+            items.Add(ui.Location);
+            items.Add(ui.User_Disabled);
             items.Add("No");
             items.Add("No");
             int row = ssm.GetCurrentRow("Users");
@@ -91,26 +90,6 @@ namespace IRMAUserAuditConsole
             ssm.AssignFormulaToCell("Users", "YesNoDropdown", "I" + row.ToString());
             ssm.AddRow("Users", items.ToArray());
 
-            // SLIM
-            if (ui.HasSlimAccess)
-            {
-                items = new List<object>();
-                items.Add(ui.User_ID);
-                items.Add(ui.UserName);
-                items.Add(ui.FullName);
-                items.Add(ui.WebQueryEnabled);
-                items.Add(ui.ItemRequestEnabled);
-                items.Add(ui.ISSEnabled);
-                items.Add(ui.StoreLimit);
-                items.Add(ui.TeamName);
-                items.Add("No");
-                row = ssm.GetCurrentRow("SLIM");
-                ssm.AssignFormulaToCell("SLIM", "YesNoDropdown", "D" + row.ToString());
-                ssm.AssignFormulaToCell("SLIM", "YesNoDropdown", "E" + row.ToString());
-                ssm.AssignFormulaToCell("SLIM", "YesNoDropdown", "F" + row.ToString());
-                ssm.AssignFormulaToCell("SLIM", "YesNoDropdown", "I" + row.ToString());
-                ssm.AddRow("SLIM", items.ToArray());
-            }
         }
 
         public static void CreateFolder(string path)

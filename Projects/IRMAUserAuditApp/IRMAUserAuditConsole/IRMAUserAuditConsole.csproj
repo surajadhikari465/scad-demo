@@ -100,6 +100,9 @@
     <Compile Include="FiscalYear.cs" />
     <Compile Include="AuditOptions.cs" />
     <Compile Include="ExcelHelper.cs" />
+    <Compile Include="IRMAUserAuditConsoleDataClasses.cs">
+      <DependentUpon>IRMAUserAuditConsoleDataClasses.dbml</DependentUpon>
+    </Compile>
     <Compile Include="IRMAUserAuditConsoleDataClasses.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
