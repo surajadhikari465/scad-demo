@@ -58,12 +58,20 @@ namespace IRMAUserAuditConsole
         #region Methods
 
 
-        public int Export()
+        public int Export(string folderName)
         {
             string basePath = "";
+            string masterFilePath = "";
+     
             if ((configRepo.ConfigurationGetValue("BasePath", ref basePath)) == false)
             {
                 log.Error("Unable to get base path from config!  Aborting.");
+                // can't find the base path.
+                return -1;
+            }
+            if ((configRepo.ConfigurationGetValue("MasterFilePath", ref masterFilePath)) == false)
+            {
+                log.Error("Unable to get master file path from config!  Aborting.");
                 // can't find the base path.
                 return -1;
             }
@@ -74,7 +82,9 @@ namespace IRMAUserAuditConsole
                 return -2;
             }
 
-            string regionPath = Path.Combine(basePath, region, fiscalYearString);
+            string regionPath = Path.Combine(basePath, region, folderName);
+            string masterFileRegionPath = Path.Combine(masterFilePath, region, folderName);
+
             if (!Directory.Exists(regionPath))
             {
                 try
@@ -83,7 +93,20 @@ namespace IRMAUserAuditConsole
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Unable to create fiscal year path:" + ex.Message);
+                    log.Error("Unable to create region path:" + ex.Message);
+                    return -3;
+                }
+            }
+
+            if (!Directory.Exists(masterFileRegionPath))
+            {
+                try
+                {
+                    Directory.CreateDirectory(masterFileRegionPath);
+                }
+                catch (Exception ex)
+                {
+                    log.Error("Unable to create master File  path:" + ex.Message);
                     return -3;
                 }
             }
@@ -117,7 +140,7 @@ namespace IRMAUserAuditConsole
             }
             else
             {
-                ExportUsersByRegion(regionPath);
+                ExportUsersByRegion(regionPath, masterFileRegionPath);
             }
 
             return 0;
@@ -134,33 +157,71 @@ namespace IRMAUserAuditConsole
             return rolesList;
         }
 
-        private void ExportUsersByRegion(string regionPath)
+        public string createFilename(string fileName)
         {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(fileName.ToUpper());
+           // sb.Append(currentDateTime.ToString("s"));
+            sb.Append(".xlsx");
+            sb.Replace(":", "_");
+            sb.Replace(" ", "_");
+            sb.Replace("/", "-");
+            sb.Replace("\\", "-");
+            return sb.ToString();
+        }
+
+        private void writeTotalRecordsFile(int totalRecords,String query, string path)
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter(path);
+            string lines = "Total Number Of Records:" + totalRecords + "\r\n" + "query:"+ query;
+            file.WriteLine(lines);
+            file.Close();
+        }
+        private void ExportUsersByRegion(string regionPath, string masterFileRegionPath)
+        {
+            string masterFile = "Master";
             log.Message("setting up region spreadsheet for " + region.ToUpper());
-            string fileName = Path.Combine(regionPath, Common.CreateRegionFilename(region));
-            int year = DateTime.Now.Year;
-
-            SpreadsheetManager ssm = Common.SetupStoreSpreadsheet(fileName, repo.GetStoreNames(), repo.GetTitles());
-            // header is row 1, then skip row 2:
-            ssm.JumpToRow("Users", 3);
-
+          
             var userRolesDictionary = GetRolesListForExport();
-            List<UserInfo> users = repo.GetUsers(userRolesDictionary);
+            var users= repo.GetUsers(userRolesDictionary);
+
+            string masterFileName = Path.Combine(masterFileRegionPath, createFilename(masterFile));
+            string totalRecordsFilePAth = Path.Combine(masterFileRegionPath,"TotalRecords.txt");
+
+            writeTotalRecordsFile(users.Count(), "Select 1", totalRecordsFilePAth);
+            SpreadsheetManager master = Common.SetupStoreSpreadsheet(masterFileName, repo.GetStoreNames(), repo.GetTitles());
+            master.JumpToRow("Users", 3);
             foreach (UserInfo ui in users.OrderBy(u => u.Location))
             {
-                log.Message("Adding " + ui.FullName + "...");
-                Common.AddUserToSpreadsheet(ref ssm, ui);
+               // log.Message("Adding " + ui.FullName + "...");
+                Common.AddUserToSpreadsheet(ref master, ui);
             }
+            master.AutosizeColumns("Users");
+            log.Message("saving " + masterFileName);
+            master.Close(masterFileName);
 
-            ssm.AutosizeColumns("Users");
-            log.Message("saving " + fileName);
-            ssm.Close(fileName);
+            var groupByTitle = users.GroupBy(ur => ur.Title).ToList();
 
+            foreach (var group in groupByTitle)
+            {
+                string fileName = Path.Combine(regionPath, createFilename(group.First().Title));
+                SpreadsheetManager ssm = Common.SetupStoreSpreadsheet(fileName, repo.GetStoreNames(), repo.GetTitles());
+                // header is row 1, then skip row 2:
+                ssm.JumpToRow("Users", 3);
+
+                foreach (var userInfo in group)
+                {
+                 //   log.Message("Adding " + userInfo.FullName + "...");
+                    Common.AddUserToSpreadsheet(ref ssm, userInfo);
+                }
+                ssm.AutosizeColumns("Users");
+                log.Message("saving " + fileName);
+                ssm.Close(fileName);
+            }
         }
 
         private void ExportUsersByStore(string regionPath, Store store)
         {
-
             // setup spreadsheet
             log.Message("setting up " + store.Store_Name);
             string fileName = Path.Combine(regionPath, Common.CreateStoreFilename(store));
@@ -173,8 +234,6 @@ namespace IRMAUserAuditConsole
             ssm.JumpToRow("Users", 3);
             var userRolesDictionary = GetRolesListForExport();
             List<UserInfo> storeUsers = repo.GetUsersByStore(store.Store_No, userRolesDictionary);
-
-            //Console.WriteLine(store.Store_Name + ": " + storeUsers.Count);
 
             foreach (UserInfo ui in storeUsers)
             {
@@ -215,7 +274,6 @@ namespace IRMAUserAuditConsole
                 throw new Exception("Could not find config environment!");
             }
         }
-
         private bool SetupFolders(string basePath)
         {
             if (!Directory.Exists(basePath))

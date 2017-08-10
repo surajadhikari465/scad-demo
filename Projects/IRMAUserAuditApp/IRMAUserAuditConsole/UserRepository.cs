@@ -346,79 +346,43 @@ namespace IRMAUserAuditConsole
 
         private List<User> GetUsersBasedOnRoles(IEnumerable<User> usersCache, IEnumerable<string> userRolesList)
         {
-            var users = userCache.Where(u => 
-                userRolesList.Contains(RoleNameMappingDictionary[nameof(u.TaxAdministrator)]) && u.TaxAdministrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.DeletePO)]) && u.DeletePO
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.POEditor)]) && u.POEditor
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.ShrinkAdmin)]) && u.ShrinkAdmin
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Shrink)]) && u.Shrink
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.UserMaintenance)]) && u.UserMaintenance
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.SystemConfigurationAdministrator)]) && u.SystemConfigurationAdministrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.StoreAdministrator)]) && u.StoreAdministrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.POSInterfaceAdministrator)]) && u.POSInterfaceAdministrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.DataAdministrator)]) && u.DataAdministrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.ApplicationConfigAdmin)]) && u.ApplicationConfigAdmin
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.VendorCostDiscrepancyAdmin)]) && u.VendorCostDiscrepancyAdmin
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.EInvoicing_Administrator)]) && u.EInvoicing_Administrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.POApprovalAdmin)]) && u.POApprovalAdmin
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.CostAdmin)]) && u.CostAdmin
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.BatchBuildOnly)]) && u.BatchBuildOnly
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Inventory_Administrator)]) && u.Inventory_Administrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.PriceBatchProcessor)]) && u.PriceBatchProcessor
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Lock_Administrator)]) && u.Lock_Administrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Vendor_Administrator)]) && u.Vendor_Administrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Item_Administrator)]) && u.Item_Administrator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Coordinator)]) && u.Coordinator
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Buyer)]) && u.Buyer
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.FacilityCreditProcessor)]) && u.FacilityCreditProcessor
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Distributor)]) && u.Distributor
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Accountant)]) && u.Accountant
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.PO_Accountant)]) && u.PO_Accountant
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.SuperUser)]) && u.SuperUser
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.Distributor)]) && u.Distributor
-                && userRolesList.Contains(RoleNameMappingDictionary[nameof(u.DCAdmin)]) && u.DCAdmin.HasValue && u.DCAdmin.Value
+            var users = userCache.Where(u =>
+                 u.TaxAdministrator && userRolesList.Contains("Tax Administrator".ToUpper())
+            //|| userRolesList.Contains("Delete PO".ToUpper()) && u.DeletePO
+            //|| userRolesList.Contains("PO Editor".ToUpper()) && u.POEditor
+            //|| userRolesList.Contains("Shrink Administrator".ToUpper()) && u.ShrinkAdmin
+            //|| userRolesList.Contains("Shrink".ToUpper()) && u.Shrink
+            //|| userRolesList.Contains("User Maintenance".ToUpper()) && u.UserMaintenance
+            //|| userRolesList.Contains("System Configuration Admin".ToUpper()) && u.SystemConfigurationAdministrator
+            //|| userRolesList.Contains("Store Administrator".ToUpper()) && u.StoreAdministrator
+            //|| userRolesList.Contains("Security Administrator".ToUpper()) && u.SecurityAdministrator
+            //|| userRolesList.Contains("POS Interface Administrator".ToUpper()) && u.POSInterfaceAdministrator
+            //|| userRolesList.Contains("Data Administrator".ToUpper()) && u.DataAdministrator
+            //|| userRolesList.Contains("Application Config Admin".ToUpper()) && u.ApplicationConfigAdmin
+            //|| userRolesList.Contains("Vendor Cost Discrepancy Admin".ToUpper()) && u.VendorCostDiscrepancyAdmin
+            //|| userRolesList.Contains("EInvoicing Administrator".ToUpper()) && u.EInvoicing_Administrator
+            //|| userRolesList.Contains("PO Approval Administrator".ToUpper()) && u.POApprovalAdmin
+            //|| userRolesList.Contains("Cost Administrator".ToUpper()) && u.CostAdmin
+            //|| userRolesList.Contains("Batch Build Only".ToUpper()) && u.BatchBuildOnly
+            //|| userRolesList.Contains("Inventory Administrator".ToUpper()) && u.Inventory_Administrator
+            //|| userRolesList.Contains("Price Batch Processor".ToUpper()) && u.PriceBatchProcessor
+            //|| userRolesList.Contains("Lock Administrator".ToUpper()) && u.Lock_Administrator
+            //|| userRolesList.Contains("Vendor Administrator".ToUpper()) && u.Vendor_Administrator
+            //|| userRolesList.Contains("Item Administrator".ToUpper()) && u.Item_Administrator
+            //|| userRolesList.Contains("Coordinator".ToUpper()) && u.Coordinator
+            //|| userRolesList.Contains("Buyer".ToUpper()) && u.Buyer
+            //|| userRolesList.Contains("Facility Credit Processor".ToUpper()) && u.FacilityCreditProcessor
+            //|| userRolesList.Contains("Distributor".ToUpper()) && u.Distributor
+            //|| userRolesList.Contains("Accountant".ToUpper()) && u.Accountant
+            //|| userRolesList.Contains("PO Accountant".ToUpper()) && u.PO_Accountant
+            //|| userRolesList.Contains("Super User".ToUpper()) && u.SuperUser
+            //|| userRolesList.Contains("Receiver".ToUpper()) && u.Distributor
+            //|| userRolesList.Contains("DC Admin".ToUpper()) && u.DCAdmin.HasValue && u.DCAdmin.Value
             ).ToList();
             return users;
         }
 
-        //private List<User> GetUsersBasedOnRoles(List<User> cache, Dictionary<string, bool> userRolesDictionary)
-        //{
-        //    bool test;
-        //    return   userCache.Where(u => u.TaxAdministrator = userRolesDictionary.TryGetValue("Tax Administrator", out test) ? true : u.TaxAdministrator
-        //                             || (u.DeletePO = userRolesDictionary.TryGetValue("Delete PO", out test)) ? true : u.DeletePO
-        //                             || (u.POEditor = userRolesDictionary.TryGetValue("PO Editor", out test)) ? true : u.POEditor
-        //                             || (u.ShrinkAdmin = userRolesDictionary.TryGetValue("Shrink Administrator", out test)) ? true : u.ShrinkAdmin
-        //                             || (u.Shrink = userRolesDictionary.TryGetValue("Shrink", out test)) ? true : u.Shrink
-        //                             || (u.UserMaintenance = userRolesDictionary.TryGetValue("User Maintenance", out test)) ? true : u.UserMaintenance
-        //                             || (u.SystemConfigurationAdministrator = userRolesDictionary.TryGetValue("System Configuration Admin", out test)) ? true : u.SystemConfigurationAdministrator
-        //                             || (u.StoreAdministrator = userRolesDictionary.TryGetValue("Store Administrator", out test)) ? true : u.StoreAdministrator
-        //                             || (u.SecurityAdministrator = userRolesDictionary.TryGetValue("Security Administrator", out test)) ? true : u.SecurityAdministrator
-        //                             || (u.POSInterfaceAdministrator = userRolesDictionary.TryGetValue("POS Interface Administrator", out test)) ? true : u.POSInterfaceAdministrator
-        //                             || (u.JobAdministrator = userRolesDictionary.TryGetValue("Job Administrator", out test)) ? true : u.JobAdministrator
-        //                             || (u.DataAdministrator = userRolesDictionary.TryGetValue("Data Administrator", out test)) ? true : u.DataAdministrator
-        //                             || (u.ApplicationConfigAdmin = userRolesDictionary.TryGetValue("Application Config Admin", out test)) ? true : u.ApplicationConfigAdmin
-        //                             || (u.VendorCostDiscrepancyAdmin = userRolesDictionary.TryGetValue("Vendor Cost Discrepancy Admin", out test)) ? true : u.VendorCostDiscrepancyAdmin
-        //                             || (u.EInvoicing_Administrator = userRolesDictionary.TryGetValue("EInvoicing Administrator", out test)) ? true : u.EInvoicing_Administrator
-        //                             || (u.POApprovalAdmin = userRolesDictionary.TryGetValue("PO Approval Administrator", out test)) ? true : u.POApprovalAdmin
-        //                             || (u.CostAdmin = userRolesDictionary.TryGetValue("Cost Administrator", out test)) ? true : u.CostAdmin
-        //                             || (u.BatchBuildOnly = userRolesDictionary.TryGetValue("Batch Build Only", out test)) ? true : u.BatchBuildOnly
-        //                             || (u.Inventory_Administrator = userRolesDictionary.TryGetValue("Inventory Administrator", out test)) ? true : u.Inventory_Administrator
-        //                             || (u.PriceBatchProcessor = userRolesDictionary.TryGetValue("Price Batch Processor", out test)) ? true : u.PriceBatchProcessor
-        //                             || (u.Lock_Administrator = userRolesDictionary.TryGetValue("Lock Administrator", out test)) ? true : u.Lock_Administrator
-        //                             || (u.Vendor_Administrator = userRolesDictionary.TryGetValue("Vendor Administrator", out test)) ? true : u.Vendor_Administrator
-        //                             || (u.Item_Administrator = userRolesDictionary.TryGetValue("Item Administrator", out test)) ? true : u.Item_Administrator
-        //                             || (u.Coordinator = userRolesDictionary.TryGetValue("Coordinator", out test)) ? true : u.Coordinator
-        //                             || (u.Buyer = userRolesDictionary.TryGetValue("Buyer", out test)) ? true : u.Buyer
-        //                             || (u.FacilityCreditProcessor = userRolesDictionary.TryGetValue("Facility Credit Processor", out test)) ? true : u.FacilityCreditProcessor
-        //                             || (u.Distributor = userRolesDictionary.TryGetValue("Distributor", out test)) ? true : u.Distributor
-        //                             || (u.Accountant = userRolesDictionary.TryGetValue("Accountant", out test)) ? true : u.TaxAdministrator
-        //                             || (u.PO_Accountant = userRolesDictionary.TryGetValue("PO Accountant", out test)) ? true : u.PO_Accountant
-        //                             || (u.SuperUser = userRolesDictionary.TryGetValue("Super User", out test)) ? true : u.SuperUser
-        //                             || (u.Distributor = userRolesDictionary.TryGetValue("Receiver", out test)) ? true : u.Distributor
-        //                             || (u.DCAdmin.HasValue ? u.DCAdmin == userRolesDictionary.TryGetValue("DC Admin", out test) : false)
-        //                                       ).ToList();
-        //}
-
+      
         public List<string> GetStoreNames()
         {
             return (from store in db.Stores
@@ -449,15 +413,10 @@ namespace IRMAUserAuditConsole
                 Title = user.Title.HasValue ? user.Title1.Title_Desc : "( None Assigned )",
                 User_ID = user.User_ID,
                 UserName = user.UserName,
-                User_Disabled = !user.AccountEnabled
+                User_Disabled = user.AccountEnabled==true? "No":"Yes"
             };
 
-            // forgive the hoop jumping here, but apparently it's possible to
-            // be assigned to a team which is NOT found in the Team table
-            // :(  Sad Panda   
-            UserStoreTeamTitle ustt = usttCache?.SingleOrDefault(team => team.User_ID == user.User_ID);
-
-            return ui;
+           return ui;
         }
 
         public List<UserInfo> GetUsersByStore(int? StoreId, IEnumerable<string> userRolesList)
@@ -546,7 +505,6 @@ namespace IRMAUserAuditConsole
                 return db.Stores.SingleOrDefault(s => s.Store_No == storeLimit.Value);
 
             return null;
-
         }
 
         public Store GetStoreFromName(string name)
@@ -606,7 +564,7 @@ namespace IRMAUserAuditConsole
             {nameof(User.Accountant), "Accountant" },
             {nameof(User.PO_Accountant), "PO Accountant" },
             {nameof(User.SuperUser), "Super User" },
-            {nameof(User.Distributor), "Receiver" },
+           // {nameof(User.Distributor), "Receiver" },
             {nameof(User.DCAdmin), "DC Admin" }
         };
     }

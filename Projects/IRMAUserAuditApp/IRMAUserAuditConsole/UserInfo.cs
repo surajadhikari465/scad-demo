@@ -13,7 +13,7 @@ namespace IRMAUserAuditConsole
         public string Title { get; set; }
         public string Location { get; set; }
         public int? StoreId { get; set; }
-        public bool User_Disabled {get; set; }
+        public string User_Disabled {get; set; }
  
         public UserInfo()
         {          

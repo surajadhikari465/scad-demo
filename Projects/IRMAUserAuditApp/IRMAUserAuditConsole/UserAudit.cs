@@ -18,19 +18,19 @@ namespace IRMAUserAuditConsole
 
         public Guid AppId { get; set; }
         public Guid EnvId { get; set; }
-        
+
         private DateTime AuditRunTime { get; set; }
         private bool backupSuccessful = false;
         #endregion
 
         #region constructors
-        public UserAudit(){}
+        public UserAudit() { }
 
         public UserAudit(AuditOptions options,
             ILog logger,
-            DateTime? auditRunTime = null, 
+            DateTime? auditRunTime = null,
             IConfigRepository configRepo = null,
-            IDateRepository dateRepo =  null) : this()
+            IDateRepository dateRepo = null) : this()
         {
             this.Options = options;
             this.Logger = logger;
@@ -65,7 +65,7 @@ namespace IRMAUserAuditConsole
                     options.WarningMessage = $"No environment specified.  Defaulting to {environment}";
                 }
 
-                options.SetOptions(region, environment, conString);                
+                options.SetOptions(region, environment, conString);
             }
             return options;
         }
@@ -79,10 +79,11 @@ namespace IRMAUserAuditConsole
         {
             if (LoadConfig(options, configRepo))
             {
-                var action = DetermineAuditAction(configRepo);
+                string folderName = string.Empty;
+                var action = DetermineAuditAction(configRepo, ref folderName);
                 if (action != UserAuditFunctionEnum.None)
                 {
-                    ExecuteAuditAction(action);
+                    ExecuteAuditAction(action, folderName);
                 }
             }
             else
@@ -138,42 +139,78 @@ namespace IRMAUserAuditConsole
             }
             return true;
         }
-        
-        public UserAuditFunctionEnum DetermineAuditAction()
+
+        public UserAuditFunctionEnum DetermineAuditAction(ref string folderName)
         {
-            return DetermineAuditAction(this.Config);
+            return DetermineAuditAction(this.Config, ref folderName);
         }
 
-        public UserAuditFunctionEnum DetermineAuditAction(IConfigRepository configRepo)
+        public UserAuditFunctionEnum DetermineAuditAction(IConfigRepository configRepo, ref string folderName)
         {
             string action = "__none__";
 
-            string exportDates = configRepo.ConfigurationGetValue("ExportDates");
-            string importDates = configRepo.ConfigurationGetValue("ImportDates");
+
+            string exportDatesWithQuarterList = configRepo.ConfigurationGetValue("ExportDates");
+            string importDateswithQuarterList = configRepo.ConfigurationGetValue("ImportDates");
             string delimiter = configRepo.ConfigurationGetValue("delimiter") ?? ";";
 
-            if (String.IsNullOrWhiteSpace(exportDates) && String.IsNullOrWhiteSpace(importDates))
+            if (String.IsNullOrWhiteSpace(exportDatesWithQuarterList) && String.IsNullOrWhiteSpace(importDateswithQuarterList))
             {
                 Logger.Error("Unable to load Next Export or Import Run Date from config!");
                 action = "error";
             }
 
-            if (!string.IsNullOrWhiteSpace(exportDates))
+            if (!string.IsNullOrWhiteSpace(exportDatesWithQuarterList))
             {
-                var exportDatesList = exportDates.Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
-                if (exportDatesList.Any(dt => DateTime.Parse(dt).Date == AuditRunTime.Date))
+                var exportDatesWithQuarter = exportDatesWithQuarterList.Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string exportDateWithQuarter in exportDatesWithQuarter)
                 {
-                    action = "export";
-                }
-                }
-            if (!string.IsNullOrWhiteSpace(importDates))
-            {
-                var importDatesList = importDates.Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
-                if (importDatesList.Any(dt => DateTime.Parse(dt).Date == AuditRunTime.Date))
-                {
-                    action = "import";
+                    try
+                    {
+                        string date = exportDateWithQuarter.Split(new char[] { ':' })[1];
+                        if (DateTime.Parse(date).Date == AuditRunTime.Date)
+                        {
+                            action = "export";
+                            folderName = exportDateWithQuarter.Split(new char[] { ':' })[0];
+                            return AuditOptions.ConvertStringToFunction(action);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error("Unable to Parse Export dates. Check Format.");
+                        action = "error";
+
+                    }
                 }
             }
+
+
+            if (!string.IsNullOrWhiteSpace(importDateswithQuarterList))
+            {
+                var importDatesWithQuarter = importDateswithQuarterList.Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string importDateWithQuarter in importDatesWithQuarter)
+                {
+                    try
+                    {
+                        string date = importDateWithQuarter.Split(new char[] { ':' })[1];
+                        if (DateTime.Parse(date).Date == AuditRunTime.Date)
+                        {
+                            action = "import";
+                            folderName = importDateWithQuarter.Split(new char[] { ':' })[0];
+                            return AuditOptions.ConvertStringToFunction(action);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error("Unable to Parse Import date. Check Format.");
+                        action = "error";
+
+                    }
+                }
+            }
+
 
             return AuditOptions.ConvertStringToFunction(action);
         }
@@ -205,7 +242,7 @@ namespace IRMAUserAuditConsole
                 throw new Exception("Could not find config environment!");
             }
         }
-        public void ExecuteAuditAction(UserAuditFunctionEnum action)
+        public void ExecuteAuditAction(UserAuditFunctionEnum action, string folderName)
         {
             switch (action)
             {
@@ -214,7 +251,7 @@ namespace IRMAUserAuditConsole
                     bwImport_RunWorkerCompleted(AuditRunTime);
                     break;
                 case UserAuditFunctionEnum.Export:
-                    Export(Options);
+                    Export(Options, folderName);
                     bwExport_RunWorkerCompleted(AuditRunTime);
                     break;
                 case UserAuditFunctionEnum.Backup:
@@ -232,7 +269,7 @@ namespace IRMAUserAuditConsole
             }
         }
 
-        public void Export(AuditOptions opts)
+        public void Export(AuditOptions opts, string folderName)
         {
             Logger.Info("connecting to " + opts.Region + " " + opts.Environment.ToString() + " environment...");
             RegionExportManager rem = new RegionExportManager(opts.Region, opts.ConnectionString, opts.Environment);
@@ -246,13 +283,13 @@ namespace IRMAUserAuditConsole
             string fiscalYear = "FY" + FiscalYear.Year().ToString() + "_" + FiscalYear.Quarter().ToString();
 
             Logger.Info("exporting...");
-            int result = rem.Export();
+            int result = rem.Export(folderName);
 
             if (result != 0)
             {
                 Logger.Error("Export returned non-zero result!  Check log for possible errors.");
             }
-        }   
+        }
 
         public void Import(AuditOptions opts)
         {
@@ -344,7 +381,7 @@ namespace IRMAUserAuditConsole
                 Logger.Error("Unable to set next run date!");
             }
         }
-        
+
         #endregion
 
         #region private methods

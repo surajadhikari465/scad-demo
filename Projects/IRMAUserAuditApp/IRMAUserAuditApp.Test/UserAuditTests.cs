@@ -73,13 +73,14 @@ namespace IRMAUserAuditApp.Test
             //Arrange
             string exportDates = "";
             string importDates = "";
+            string folderName = "";
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s=>s=="ExportDates"), ref exportDates))
                 .Returns(false);
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ImportDates"), ref importDates))
                 .Returns(false);
             var userAudit = new UserAudit(options, testLog, auditRunTime, testConfigRepo, testDateRepo);
             //Act
-            var functionEnum = userAudit.DetermineAuditAction();
+            var functionEnum = userAudit.DetermineAuditAction(ref folderName);
             //Assert
             Assert.AreEqual(UserAuditFunctionEnum.None, functionEnum);
         }
@@ -90,14 +91,16 @@ namespace IRMAUserAuditApp.Test
             //Arrange
             string exportDates = "";
             string importDates = "";
+            string folderName = "";
+
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ExportDates"), ref exportDates))
                 .Returns(false);
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ImportDates"), ref importDates))
                 .Returns(false);
             var userAudit = new UserAudit(options, testLog, auditRunTime, testConfigRepo, testDateRepo);
             //Act
-            var functionEnum = userAudit.DetermineAuditAction();
-            //Assert
+            var functionEnum = userAudit.DetermineAuditAction(ref folderName);
+                //Assert
             mockLogger.Verify(m => m.Error(It.IsAny<object>()), Times.Once);
         }
 
@@ -108,6 +111,7 @@ namespace IRMAUserAuditApp.Test
             this.auditRunTime = new DateTime(2013, 6, 6);
             string exportDates = "";
             string importDates = "2013-6-6";
+            string folderName = "";
             string delimiter = ";";
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ExportDates")))
                 .Returns(exportDates);
@@ -117,7 +121,7 @@ namespace IRMAUserAuditApp.Test
                 .Returns(delimiter);
             var userAudit = new UserAudit(options, testLog, auditRunTime, testConfigRepo, testDateRepo);
             //Act
-            var functionEnum = userAudit.DetermineAuditAction();
+            var functionEnum = userAudit.DetermineAuditAction(ref folderName);
             //Assert
             Assert.AreEqual(UserAuditFunctionEnum.Import, functionEnum);
         }
@@ -128,6 +132,7 @@ namespace IRMAUserAuditApp.Test
             //Arrange
             this.auditRunTime = new DateTime(2013, 6, 6);
             string exportDates = "2013-06-06";
+            string folderName = "";
             string importDates = "";
             string delimiter = "|";
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ExportDates")))
@@ -138,7 +143,7 @@ namespace IRMAUserAuditApp.Test
                 .Returns(delimiter);
             var userAudit = new UserAudit(options, testLog, auditRunTime, testConfigRepo, testDateRepo);
             //Act
-            var functionEnum = userAudit.DetermineAuditAction();
+            var functionEnum = userAudit.DetermineAuditAction(ref folderName);
             //Assert
             Assert.AreEqual(UserAuditFunctionEnum.Export, functionEnum);
         }
@@ -148,6 +153,7 @@ namespace IRMAUserAuditApp.Test
         {
             //Arrange
             this.auditRunTime = new DateTime(2013, 6, 6);
+            string folderName = "";
             string exportDates = "2014-1-1|2001-12-31|2013-06-06";
             string importDates = "";
             string delimiter = "|";
@@ -159,7 +165,7 @@ namespace IRMAUserAuditApp.Test
                 .Returns(delimiter);
             var userAudit = new UserAudit(options, testLog, auditRunTime, testConfigRepo, testDateRepo);
             //Act
-            var functionEnum = userAudit.DetermineAuditAction();
+            var functionEnum = userAudit.DetermineAuditAction(ref folderName);
             //Assert
             Assert.AreEqual(UserAuditFunctionEnum.Export, functionEnum);
         }
@@ -169,6 +175,7 @@ namespace IRMAUserAuditApp.Test
         {
             //Arrange
             this.auditRunTime = new DateTime(2017, 6, 6);
+            string folderName = "";
             string exportDates = "2014-1-1|2001-12-31|2013-06-06";
             string importDates = "";
             string delimiter = "|";
@@ -180,7 +187,7 @@ namespace IRMAUserAuditApp.Test
                 .Returns(delimiter);
             var userAudit = new UserAudit(options, testLog, auditRunTime, testConfigRepo, testDateRepo);
             //Act
-            var functionEnum = userAudit.DetermineAuditAction();
+            var functionEnum = userAudit.DetermineAuditAction(ref folderName);
             //Assert
             Assert.AreEqual(UserAuditFunctionEnum.None, functionEnum);
         }
