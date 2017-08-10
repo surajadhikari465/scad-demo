@@ -15,9 +15,7 @@ namespace IRMAUserAuditConsole
     {
         #region Members
 
-        private List<string> files = null;
         private string region = "";
-        private string backupPath;
         private Log log;
         private UserRepository repo;
         private ConfigRepository configRepo;
