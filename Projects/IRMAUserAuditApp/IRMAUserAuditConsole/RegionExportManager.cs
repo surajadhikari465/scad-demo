@@ -23,7 +23,7 @@ namespace IRMAUserAuditConsole
         private Guid envId;
         private Guid appId;
         private string fiscalYearString = "";
-        private string query = @"SELECT * FROM Users WHERE accountenabled = 1
+        private string query = @"SELECT * FROM USERS WHERE AccountEnabled = 1
                                           AND(Accountant = 1
                                           OR CostAdmin = 1
                                           OR DCAdmin = 1
@@ -77,19 +77,18 @@ namespace IRMAUserAuditConsole
         #endregion
 
         #region Methods
-
-
         public int Export(string folderName)
         {
             string basePath = "";
             string masterFilePath = "";
-     
+
             if ((configRepo.ConfigurationGetValue("BasePath", ref basePath)) == false)
             {
                 log.Error("Unable to get base path from config!  Aborting.");
                 // can't find the base path.
                 return -1;
             }
+
             if ((configRepo.ConfigurationGetValue("MasterFilePath", ref masterFilePath)) == false)
             {
                 log.Error("Unable to get master file path from config!  Aborting.");
@@ -136,34 +135,10 @@ namespace IRMAUserAuditConsole
             if ((configRepo.ConfigurationGetValue("ExportBy", ref exportBy)) == false)
             {
                 log.Warning("Unable to get ExportBy value from config!  Defaulting to \"Store\"");
-                exportBy = "Store";
+                exportBy = "Region";
             }
 
-            if ((exportBy.Trim().ToLower() != "store") && (exportBy.Trim().ToLower() != "region"))
-            {
-                log.Warning("Unexpected value for ExportBy: " + exportBy + ".  Defaulting to \"Store\"");
-                exportBy = "Store";
-            }
-
-            if (exportBy.ToLower() == "store")
-            {
-                List<Store> storeList = repo.GetStores();
-                foreach (Store store in storeList)
-                {
-                    ExportUsersByStore(regionPath, store);
-                }
-                // export users which are not store limited (store_id = null)
-                Store allStores = new Store();
-                allStores.Store_Name = "All Stores";
-                allStores.Store_No = -1;
-                allStores.BusinessUnit_ID = null;
-                ExportUsersByStore(regionPath, allStores);
-            }
-            else
-            {
-                ExportUsersByRegion(regionPath, masterFileRegionPath);
-            }
-
+            ExportUsersByRegion(regionPath, masterFileRegionPath);
             return 0;
         }
 
@@ -178,7 +153,7 @@ namespace IRMAUserAuditConsole
             return rolesList;
         }
 
-        public string createFilename(string fileName)
+        private string CreateFilename(string fileName)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(fileName.ToUpper());
@@ -191,14 +166,14 @@ namespace IRMAUserAuditConsole
             return sb.ToString();
         }
 
-        private void writeTotalRecordsFile(int totalRecords,String query, string path)
+        private void WriteTotalRecordsFile(int totalRecords, String query, string path)
         {
             System.IO.StreamWriter file = new System.IO.StreamWriter(path);
-            string lines = "Total Number Of Records:" + totalRecords + "\r\n" + "query:"+ query;
+            string lines = "Total Number Of Records:" + totalRecords + "\r\n" + "query:" + query;
             file.WriteLine(lines);
             file.Close();
         }
-        private void deleteFiles(string folderName)
+        private void DeleteFiles(string folderName)
         {
             System.IO.DirectoryInfo di = new DirectoryInfo(folderName);
             foreach (FileInfo file in di.GetFiles())
@@ -214,24 +189,25 @@ namespace IRMAUserAuditConsole
         {
             string masterFile = "Master";
             log.Message("setting up region spreadsheet for " + region.ToUpper());
-           
+
             var userRolesDictionary = GetRolesListForExport();
-            var users= repo.GetUsers(userRolesDictionary);
+            var users = repo.GetUsers(userRolesDictionary);
 
-            string masterFileName = Path.Combine(masterFileRegionPath, createFilename(masterFile));
-            string totalRecordsFilePAth = Path.Combine(masterFileRegionPath,"TotalRecords.txt");
-            deleteFiles(regionPath);
-            deleteFiles(masterFileRegionPath);
+            string masterFileName = Path.Combine(masterFileRegionPath, CreateFilename(masterFile));
+            string totalRecordsFilePAth = Path.Combine(masterFileRegionPath, "TotalRecords.txt");
+            DeleteFiles(regionPath);
+            DeleteFiles(masterFileRegionPath);
 
-            writeTotalRecordsFile(users.Count(), query, totalRecordsFilePAth);
-
+            WriteTotalRecordsFile(users.Count(), query, totalRecordsFilePAth);
             SpreadsheetManager master = Common.SetupStoreSpreadsheet(masterFileName, repo.GetStoreNames(), repo.GetTitles());
             master.JumpToRow("Users", 3);
+
             foreach (UserInfo ui in users.OrderBy(u => u.Location))
             {
                 log.Message("Adding " + ui.FullName + "...");
                 Common.AddUserToSpreadsheet(ref master, ui);
             }
+
             master.AutosizeColumns("Users");
             log.Message("saving " + masterFileName);
             master.Close(masterFileName);
@@ -240,7 +216,7 @@ namespace IRMAUserAuditConsole
 
             foreach (var group in groupByTitle)
             {
-                string fileName = Path.Combine(regionPath, createFilename(group.First().Title));
+                string fileName = Path.Combine(regionPath, CreateFilename(group.First().Title));
                 SpreadsheetManager ssm = Common.SetupStoreSpreadsheet(fileName, repo.GetStoreNames(), repo.GetTitles());
                 // header is row 1, then skip row 2:
                 ssm.JumpToRow("Users", 3);
@@ -250,6 +226,7 @@ namespace IRMAUserAuditConsole
                     log.Message("Adding " + userInfo.FullName + "...");
                     Common.AddUserToSpreadsheet(ref ssm, userInfo);
                 }
+
                 ssm.AutosizeColumns("Users");
                 log.Message("saving " + fileName);
                 ssm.Close(fileName);
