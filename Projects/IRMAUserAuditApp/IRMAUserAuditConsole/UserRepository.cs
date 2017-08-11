@@ -346,43 +346,44 @@ namespace IRMAUserAuditConsole
 
         private List<User> GetUsersBasedOnRoles(IEnumerable<User> usersCache, IEnumerable<string> userRolesList)
         {
-            var users = userCache.Where(u =>
-                 u.TaxAdministrator && userRolesList.Contains("Tax Administrator".ToUpper())
-            //|| userRolesList.Contains("Delete PO".ToUpper()) && u.DeletePO
-            //|| userRolesList.Contains("PO Editor".ToUpper()) && u.POEditor
-            //|| userRolesList.Contains("Shrink Administrator".ToUpper()) && u.ShrinkAdmin
-            //|| userRolesList.Contains("Shrink".ToUpper()) && u.Shrink
-            //|| userRolesList.Contains("User Maintenance".ToUpper()) && u.UserMaintenance
-            //|| userRolesList.Contains("System Configuration Admin".ToUpper()) && u.SystemConfigurationAdministrator
-            //|| userRolesList.Contains("Store Administrator".ToUpper()) && u.StoreAdministrator
-            //|| userRolesList.Contains("Security Administrator".ToUpper()) && u.SecurityAdministrator
-            //|| userRolesList.Contains("POS Interface Administrator".ToUpper()) && u.POSInterfaceAdministrator
-            //|| userRolesList.Contains("Data Administrator".ToUpper()) && u.DataAdministrator
-            //|| userRolesList.Contains("Application Config Admin".ToUpper()) && u.ApplicationConfigAdmin
-            //|| userRolesList.Contains("Vendor Cost Discrepancy Admin".ToUpper()) && u.VendorCostDiscrepancyAdmin
-            //|| userRolesList.Contains("EInvoicing Administrator".ToUpper()) && u.EInvoicing_Administrator
-            //|| userRolesList.Contains("PO Approval Administrator".ToUpper()) && u.POApprovalAdmin
-            //|| userRolesList.Contains("Cost Administrator".ToUpper()) && u.CostAdmin
-            //|| userRolesList.Contains("Batch Build Only".ToUpper()) && u.BatchBuildOnly
-            //|| userRolesList.Contains("Inventory Administrator".ToUpper()) && u.Inventory_Administrator
-            //|| userRolesList.Contains("Price Batch Processor".ToUpper()) && u.PriceBatchProcessor
-            //|| userRolesList.Contains("Lock Administrator".ToUpper()) && u.Lock_Administrator
-            //|| userRolesList.Contains("Vendor Administrator".ToUpper()) && u.Vendor_Administrator
-            //|| userRolesList.Contains("Item Administrator".ToUpper()) && u.Item_Administrator
-            //|| userRolesList.Contains("Coordinator".ToUpper()) && u.Coordinator
-            //|| userRolesList.Contains("Buyer".ToUpper()) && u.Buyer
-            //|| userRolesList.Contains("Facility Credit Processor".ToUpper()) && u.FacilityCreditProcessor
-            //|| userRolesList.Contains("Distributor".ToUpper()) && u.Distributor
-            //|| userRolesList.Contains("Accountant".ToUpper()) && u.Accountant
-            //|| userRolesList.Contains("PO Accountant".ToUpper()) && u.PO_Accountant
-            //|| userRolesList.Contains("Super User".ToUpper()) && u.SuperUser
-            //|| userRolesList.Contains("Receiver".ToUpper()) && u.Distributor
-            //|| userRolesList.Contains("DC Admin".ToUpper()) && u.DCAdmin.HasValue && u.DCAdmin.Value
-            ).ToList();
+            var users = userCache
+                        .Where(u =>u.AccountEnabled =true
+                            &&(u.TaxAdministrator && userRolesList.Contains("Tax Administrator".ToUpper())
+                            || userRolesList.Contains("Delete PO".ToUpper()) && u.DeletePO
+                            || userRolesList.Contains("PO Editor".ToUpper()) && u.POEditor
+                            || userRolesList.Contains("Shrink Administrator".ToUpper()) && u.ShrinkAdmin
+                            || userRolesList.Contains("Shrink".ToUpper()) && u.Shrink
+                            || userRolesList.Contains("User Maintenance".ToUpper()) && u.UserMaintenance
+                            || userRolesList.Contains("System Configuration Admin".ToUpper()) && u.SystemConfigurationAdministrator
+                            || userRolesList.Contains("Store Administrator".ToUpper()) && u.StoreAdministrator
+                            || userRolesList.Contains("Security Administrator".ToUpper()) && u.SecurityAdministrator
+                            || userRolesList.Contains("POS Interface Administrator".ToUpper()) && u.POSInterfaceAdministrator
+                            || userRolesList.Contains("Data Administrator".ToUpper()) && u.DataAdministrator
+                            || userRolesList.Contains("Application Config Admin".ToUpper()) && u.ApplicationConfigAdmin
+                            || userRolesList.Contains("Vendor Cost Discrepancy Admin".ToUpper()) && u.VendorCostDiscrepancyAdmin
+                            || userRolesList.Contains("EInvoicing Administrator".ToUpper()) && u.EInvoicing_Administrator
+                            || userRolesList.Contains("PO Approval Administrator".ToUpper()) && u.POApprovalAdmin
+                            || userRolesList.Contains("Cost Administrator".ToUpper()) && u.CostAdmin
+                            || userRolesList.Contains("Batch Build Only".ToUpper()) && u.BatchBuildOnly
+                            || userRolesList.Contains("Inventory Administrator".ToUpper()) && u.Inventory_Administrator
+                            || userRolesList.Contains("Price Batch Processor".ToUpper()) && u.PriceBatchProcessor
+                            || userRolesList.Contains("Lock Administrator".ToUpper()) && u.Lock_Administrator
+                            || userRolesList.Contains("Vendor Administrator".ToUpper()) && u.Vendor_Administrator
+                            || userRolesList.Contains("Item Administrator".ToUpper()) && u.Item_Administrator
+                            || userRolesList.Contains("Coordinator".ToUpper()) && u.Coordinator
+                            || userRolesList.Contains("Buyer".ToUpper()) && u.Buyer
+                            || userRolesList.Contains("Facility Credit Processor".ToUpper()) && u.FacilityCreditProcessor
+                            || userRolesList.Contains("Distributor".ToUpper()) && u.Distributor
+                            || userRolesList.Contains("Accountant".ToUpper()) && u.Accountant
+                            || userRolesList.Contains("PO Accountant".ToUpper()) && u.PO_Accountant
+                            || userRolesList.Contains("Super User".ToUpper()) && u.SuperUser
+                            || userRolesList.Contains("Job Administrator".ToUpper()) && u.JobAdministrator
+                            || userRolesList.Contains("Receiver".ToUpper()) && u.Distributor
+                            || userRolesList.Contains("DC Admin".ToUpper()) && u.DCAdmin.HasValue && u.DCAdmin.Value)
+                           ).ToList();
             return users;
         }
-
-      
+            
         public List<string> GetStoreNames()
         {
             return (from store in db.Stores
