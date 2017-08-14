@@ -132,6 +132,7 @@
     <Folder Include="Scripts\16278-NationalHierarchyScripts" />
     <Folder Include="Schema\infor\Tables" />
     <Folder Include="SQL Agent Job" />
+    <Folder Include="Scripts\22441-DesignUserExport" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3225,6 +3226,9 @@
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.sql" />
     <Build Include="SQL Agent Job\VIM - Infor Data Feeds - Future Cost %28NC).sql" />
     <Build Include="Schema\dbo\Tables\Tables1\StoreItemExtended.sql" />
+    <None Include="Scripts\22441-DesignUserExport\DeleteOldAppConfigKeys.sql" />
+    <None Include="Scripts\22441-DesignUserExport\Insert-NewAppConfigKeys.sql" />
+    <None Include="Scripts\22441-DesignUserExport\UpdateExistingAppConfigKeys.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
