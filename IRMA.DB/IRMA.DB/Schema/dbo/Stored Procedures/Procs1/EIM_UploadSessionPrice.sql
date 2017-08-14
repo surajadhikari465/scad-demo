@@ -22,6 +22,7 @@ AS
 -- 01/01/2013	Ben Sims		8755	Added Discontinue flag to Price Upload for store-level discontinue functionality
 -- 06/11/2015   Min Zhao		16195   When calling stored procedure UpdateStoreItemVendorDiscontinue, pass in variable 
 --                                      @ToUpload_DiscontinueItem rather than @DiscontinueItem
+-- 2017-08-04   Min Zhao        22494   Added ItemStatusCode store/item attribute to EIM Price upload.
 -- **************************************************************************
 	set nocount on
 	
@@ -88,6 +89,7 @@ AS
 		@LocalItem bit,
 		@ItemSurcharge int,
 		@DiscontinueItem bit,
+		@ItemStatusCode int,
 
 		-- These are used to indicate whether specific attribute
 		-- have been uploaded by the user.
@@ -128,6 +130,9 @@ AS
 		@HasValue_LocalItem bit,
 		@HasValue_ItemSurcharge bit,
 		@HasValue_DiscontinueItem bit,
+		@HasValue_ItemStatusCode bit,
+
+		@ValueChanged_ItemStatusCode bit,
 
 		-- These hold the current db values for a given item and store
 		-- and are used when the corresponding attribute is not in the uploaded data.
@@ -165,6 +170,7 @@ AS
 		@FromDB_LocalItem bit,
 		@FromDB_ItemSurcharge int,
 		@FromDB_DiscontinueItem bit,
+		@FromDB_ItemStatusCode int,
 
 		-- These hold the actual value being updated or inserted
 		-- into the database and are either set to the value of the
@@ -238,7 +244,7 @@ AS
 	SET @HasValue_LocalItem = 0
 	SET @HasValue_ItemSurcharge = 0
 	SET @HasValue_DiscontinueItem = 0
-	
+	SET @HasValue_ItemStatusCode = 0
 			
 	EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '5.0 Price Change - [Begin]'
 	
@@ -480,6 +486,14 @@ AS
 				SET @HasValue_DiscontinueItem = 1
 			END
 		END
+		ELSE IF @TableName = 'storeitemextended'
+		BEGIN				
+			if @ColumnName = 'ItemStatusCode'
+			BEGIN
+				select @ItemStatusCode = CAST(@ColumnValue AS INT)
+				SET @HasValue_ItemStatusCode = 1
+			END
+		END
 		ELSE IF @TableName = 'calculated'
 		BEGIN				
 			if @ColumnName = 'reg_price_start_date'
@@ -617,6 +631,14 @@ AS
 		WHERE
 			siv.Item_Key = @Item_Key
 			AND siv.Store_No = @Store_No
+		
+		SELECT
+			@FromDB_ItemStatusCode = sie.ItemStatusCode
+		FROM
+			dbo.StoreItemExtended sie (NOLOCK)
+		WHERE
+			sie.Store_No = @Store_No
+			AND sie.Item_Key = @Item_Key
 
 		-- default to false
 		SELECT @IsAuthorized = IsNull(@IsAuthorized, 0)
@@ -660,6 +682,8 @@ AS
 		SET @ToUpload_ItemSurcharge = CASE WHEN @HasValue_ItemSurcharge = 1 THEN @ItemSurcharge ELSE @FromDB_ItemSurcharge END
 		SET @ToUpload_Refresh = 0 --Dave Stacey - fix to merge
 		SET @ToUpload_DiscontinueItem = CASE WHEN @HasValue_DiscontinueItem = 1 THEN @DiscontinueItem ELSE @FromDB_DiscontinueItem END
+
+		SET @ValueChanged_ItemStatusCode = CASE WHEN @HasValue_ItemStatusCode = 1 and ISNULL(@ItemStatusCode, -1) <> ISNULL(@FromDB_ItemStatusCode, -1) THEN 1 ELSE 0 END
 
 		-- is the price change attribute not part
 		-- of the upload
@@ -895,6 +919,29 @@ AS
 				EXEC dbo.EIM_LogAndRethrowException @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '5.5 Price Change - [UpdateStoreItemVendorDiscontinue]'
 
 			END CATCH
+
+			IF @ValueChanged_ItemStatusCode = 1
+			BEGIN
+				BEGIN TRY
+					-- update non-price Item Status Code value
+					IF NOT EXISTS (SELECT 1 FROM StoreItemExtended WHERE Store_No = @Store_No AND Item_Key = @Item_Key)
+ 						INSERT INTO StoreItemExtended (Store_No, Item_Key, ItemStatusCode)
+ 						VALUES (@Store_No, @Item_Key, @ItemStatusCode)
+ 					ELSE
+ 						UPDATE StoreItemExtended
+ 						SET ItemStatusCode = @ItemStatusCode
+ 						WHERE Store_No = @Store_No	
+ 							AND Item_Key = @Item_Key
+
+					EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '5.6 Price Change - StoreItemExtended'
+
+				END TRY
+				BEGIN CATCH
+				
+					EXEC dbo.EIM_LogAndRethrowException @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '5.6 Price Change - StoreItemExtended'
+
+				END CATCH
+			END
 
 			FETCH NEXT FROM PriceUploadStore_cursor INTO @Store_No
 

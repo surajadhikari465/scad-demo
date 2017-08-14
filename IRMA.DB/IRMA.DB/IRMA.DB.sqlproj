@@ -132,6 +132,7 @@
     <Folder Include="Scripts\16278-NationalHierarchyScripts" />
     <Folder Include="Schema\infor\Tables" />
     <Folder Include="SQL Agent Job" />
+    <Folder Include="Scripts\22494-AddItemStatusCodeToEIM" />
     <Folder Include="Scripts\22441-DesignUserExport" />
   </ItemGroup>
   <ItemGroup>
@@ -3229,6 +3230,8 @@
     <None Include="Scripts\22441-DesignUserExport\DeleteOldAppConfigKeys.sql" />
     <None Include="Scripts\22441-DesignUserExport\Insert-NewAppConfigKeys.sql" />
     <None Include="Scripts\22441-DesignUserExport\UpdateExistingAppConfigKeys.sql" />
+    <None Include="Scripts\22494-AddItemStatusCodeToEIM\AddItemStatusCodeToEIM.sql" />
+    <None Include="Scripts\22494-AddItemStatusCodeToEIM\AddItemStatusCodeToEIM.RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
