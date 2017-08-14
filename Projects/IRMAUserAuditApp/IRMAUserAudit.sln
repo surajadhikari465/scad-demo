@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A2633DD-BF30-44C2-BA9B-E00A31F4D81D}"
 	ProjectSection(SolutionItems) = preProject
 		Performance1.psess = Performance1.psess
@@ -12,18 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRMALib", "..\IRMALib\IRMALib\IRMALib.csproj", "{B9F0506E-DE3A-4CE5-A45D-E79988F01CB6}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://cewp1605:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = IRMAUserAuditConsole\\IRMAUserAuditConsole.csproj
-		SccProjectName1 = IRMAUserAuditConsole
-		SccLocalPath1 = IRMAUserAuditConsole
-		SccProjectUniqueName2 = ..\\IRMALib\\IRMALib\\IRMALib.csproj
-		SccProjectName2 = ../IRMALib/IRMALib
-		SccLocalPath2 = ..\\IRMALib\\IRMALib
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
