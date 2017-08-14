@@ -55,7 +55,7 @@ namespace IRMAUserAuditConsole
             ssm.AddDropdown("Users", "TitlesDropdown", "X", 1, TitleList.ToArray());
             ssm.AddDropdown("Users", "StoresDropdown", "Y", 1, StoreList.ToArray());
             ssm.AddDropdown("Users", "YesNoDropdown", "Z", 1, YesNoList.ToArray());
-
+            ssm.AddDropdown("Users", "YesNoDropdown", "Z", 1, YesNoList.ToArray());
             // no need to hide dropdowns since they are on a separate (hidden) sheet
             //ssm.HideColumn("Users", 24);
             //ssm.HideColumn("Users", 25);
@@ -77,8 +77,8 @@ namespace IRMAUserAuditConsole
             int row = ssm.GetCurrentRow("Users");
             ssm.AssignFormulaToCell("Users", "TitlesDropdown", "D" + row.ToString());
             ssm.AssignFormulaToCell("Users", "StoresDropdown", "E" + row.ToString());
-            ssm.AssignFormulaToCell("Users", "YesNoDropdown", "H" + row.ToString());
-            ssm.AssignFormulaToCell("Users", "YesNoDropdown", "I" + row.ToString());
+            ssm.AssignFormulaToCell("Users", "YesNoDropdown", "F" + row.ToString());
+            ssm.AssignFormulaToCell("Users", "YesNoDropdown", "G" + row.ToString());
             ssm.AddRow("Users", items.ToArray());
 
         }
