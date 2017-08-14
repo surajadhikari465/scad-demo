@@ -51,23 +51,15 @@ namespace IRMAUserAuditConsole
         {
             SpreadsheetManager ssm = new SpreadsheetManager(fileName);
             ssm.CreateWorksheet("Users");
-            ssm.CreateHeader("Users", (new string[] { "User_ID", "UserName", "FullName", "Title", "StoreLimit", "Override Allow", "Override Deny", "User Edited?", "Delete User?" }).ToList());
+            ssm.CreateHeader("Users", (new string[] { "User_ID", "UserName", "FullName", "Title", "Location", "User_Disabled","User Edited?"}).ToList());
             ssm.AddDropdown("Users", "TitlesDropdown", "X", 1, TitleList.ToArray());
             ssm.AddDropdown("Users", "StoresDropdown", "Y", 1, StoreList.ToArray());
             ssm.AddDropdown("Users", "YesNoDropdown", "Z", 1, YesNoList.ToArray());
-
+            ssm.AddDropdown("Users", "YesNoDropdown", "Z", 1, YesNoList.ToArray());
             // no need to hide dropdowns since they are on a separate (hidden) sheet
             //ssm.HideColumn("Users", 24);
             //ssm.HideColumn("Users", 25);
             //ssm.HideColumn("Users", 26);
-
-            // SLIM sheet
-            ssm.CreateWorksheet("SLIM");
-            ssm.CreateHeader("SLIM", (new string[] { "User_ID", "UserName", "FullName", "WebQuery", "ItemRequest", "ISS", "Store", "Team", "User Edited?" }).ToList());
-            ssm.AddDropdown("SLIM", "YesNoDropdown", "Z", 1, YesNoList.ToArray());
-
-            // no need to hide columns now that formulas are on a separate sheet
-            //ssm.HideColumn("SLIM", 26);
 
             return ssm;
         }
@@ -79,38 +71,16 @@ namespace IRMAUserAuditConsole
             items.Add(ui.UserName);
             items.Add(ui.FullName);
             items.Add(ui.Title);
-            items.Add(ui.StoreLimit);
-            items.Add(ui.OverrideAllow);
-            items.Add(ui.OverrideDeny);
-            items.Add("No");
+            items.Add(ui.Location);
+            items.Add(ui.User_Disabled);
             items.Add("No");
             int row = ssm.GetCurrentRow("Users");
             ssm.AssignFormulaToCell("Users", "TitlesDropdown", "D" + row.ToString());
             ssm.AssignFormulaToCell("Users", "StoresDropdown", "E" + row.ToString());
-            ssm.AssignFormulaToCell("Users", "YesNoDropdown", "H" + row.ToString());
-            ssm.AssignFormulaToCell("Users", "YesNoDropdown", "I" + row.ToString());
+            ssm.AssignFormulaToCell("Users", "YesNoDropdown", "F" + row.ToString());
+            ssm.AssignFormulaToCell("Users", "YesNoDropdown", "G" + row.ToString());
             ssm.AddRow("Users", items.ToArray());
 
-            // SLIM
-            if (ui.HasSlimAccess)
-            {
-                items = new List<object>();
-                items.Add(ui.User_ID);
-                items.Add(ui.UserName);
-                items.Add(ui.FullName);
-                items.Add(ui.WebQueryEnabled);
-                items.Add(ui.ItemRequestEnabled);
-                items.Add(ui.ISSEnabled);
-                items.Add(ui.StoreLimit);
-                items.Add(ui.TeamName);
-                items.Add("No");
-                row = ssm.GetCurrentRow("SLIM");
-                ssm.AssignFormulaToCell("SLIM", "YesNoDropdown", "D" + row.ToString());
-                ssm.AssignFormulaToCell("SLIM", "YesNoDropdown", "E" + row.ToString());
-                ssm.AssignFormulaToCell("SLIM", "YesNoDropdown", "F" + row.ToString());
-                ssm.AssignFormulaToCell("SLIM", "YesNoDropdown", "I" + row.ToString());
-                ssm.AddRow("SLIM", items.ToArray());
-            }
         }
 
         public static void CreateFolder(string path)

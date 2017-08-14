@@ -19,7 +19,7 @@ namespace IRMAUserAuditConsole
         private List<string> files = null;
         private string region = "";
         private Log log = null;
-        private Repository repo;
+        private UserRepository repo;
         private ConfigRepository configRepo;
         private bool configOk = false;
         private Guid envId;
@@ -33,10 +33,10 @@ namespace IRMAUserAuditConsole
 
         #region ctors
 
-        public RegionBackupManager(string _region, string _connectionString, IRMAEnvironment _env)
+        public RegionBackupManager(string _region, string _connectionString, IRMAEnvironmentEnum _env)
         {
             this.region = _region;
-            this.repo = new Repository(_connectionString);
+            this.repo = new UserRepository(_connectionString);
             this.configRepo = new ConfigRepository(_connectionString);
             region = _region;
              try
@@ -130,51 +130,17 @@ namespace IRMAUserAuditConsole
 
             // jump to row 3 (header is row 1, then 2 is blank)
             ssm.JumpToRow("Users", 3);
-            ssm.JumpToRow("SLIM", 3);
 
             List<User> storeUsers = repo.GetUsersTableByStore(true, store.Store_No);
 
             //Console.WriteLine(store.Store_Name + ": " + storeUsers.Count);
 
-            foreach (User u in storeUsers)
-            {
-                SlimAccess sa = repo.GetUserSlimAccess(u.User_ID);
-                if (sa == null)
-                {
-                    sa = new SlimAccess();
-                    sa.Authorizations = false;
-                    sa.IRMAPush = false;
-                    sa.ItemRequest = false;
-                    sa.RetailCost = false;
-                    sa.ScaleInfo = false;
-                    sa.StoreSpecials = false;
-                    sa.User_ID = u.User_ID;
-                    sa.UserAdmin = false;
-                    sa.VendorRequest = false;
-                    sa.WebQuery = false;
-                }
-                else
-                {
-                    sa.Authorizations = sa.Authorizations.HasValue ? sa.Authorizations : false;
-                    sa.IRMAPush = sa.IRMAPush.HasValue ? sa.IRMAPush : false;
-                    sa.ItemRequest = sa.ItemRequest.HasValue ? sa.ItemRequest : false;
-                    sa.RetailCost = sa.RetailCost.HasValue ? sa.RetailCost : false;
-                    sa.StoreSpecials = sa.StoreSpecials.HasValue ? sa.StoreSpecials : false;
-                    sa.UserAdmin = sa.UserAdmin.HasValue ? sa.UserAdmin : false;
-                    sa.VendorRequest = sa.VendorRequest.HasValue ? sa.VendorRequest : false;
-                    sa.WebQuery = sa.WebQuery.HasValue ? sa.WebQuery : false;
-                }
-                log.Message("Adding " + u.FullName + "...");
-                AddUserToBackupSpreadsheet(ref ssm, u, sa);
-            }
-
             ssm.AutosizeColumns("Users");
-            ssm.AutosizeColumns("SLIM");
             log.Message("saving " + fileName);
             ssm.Close(fileName);
         }
 
-        private void AddUserToBackupSpreadsheet(ref SpreadsheetManager ssm, User u, SlimAccess sa)
+        private void AddUserToBackupSpreadsheet(ref SpreadsheetManager ssm, User u)
         {
             List<object> items = new List<object>();
             items.Add(u.User_ID);
@@ -225,20 +191,6 @@ namespace IRMAUserAuditConsole
             items.Add(u.Warehouse);
             ssm.AddRow("Users", items.ToArray());
 
-            // SLIM
-            items = new List<object>();
-            items.Add(u.User_ID);
-            items.Add(sa.Authorizations);
-            items.Add(sa.IRMAPush);
-            items.Add(sa.ItemRequest);
-            items.Add(sa.RetailCost);
-            items.Add(sa.ScaleInfo);
-            items.Add(sa.StoreSpecials);
-            items.Add(sa.UserAdmin);
-            items.Add(sa.VendorRequest);
-            items.Add(sa.WebQuery);
-            ssm.AddRow("SLIM", items.ToArray());
-
         }
 
         private SpreadsheetManager SetupBackupSpreadsheet(string fileName)
@@ -252,15 +204,10 @@ namespace IRMAUserAuditConsole
                 "SecurityAdministrator", "Shrink", "ShrinkAdmin", "StoreAdministrator", "SystemConfigurationAdministrator", "TaxAdministrator", "UserMaintenance", "Vendor_Administrator",
                 "VendorCostDiscrepancyAdmin", "Warehouse"}).ToList());
 
-            // SLIM sheet
-            ssm.CreateWorksheet("SLIM");
-            ssm.CreateHeader("SLIM", (new string[] { "User_ID", "Authorizations", "IRMAPush", "ItemRequest", "RetailCost", "ScaleInfo", "StoreSpecials", "UserAdmin", "VendorRequest", "WebQuery" }).ToList());
-
-
             return ssm;
         }
 
-        private void SetupConfig(IRMAEnvironment _env)
+        private void SetupConfig(IRMAEnvironmentEnum _env)
         {
             var environments = configRepo.GetEnvironmentList();
             envId = environments.SingleOrDefault(env => env.Name.ToLower().Replace(" ", "") == _env.ToString().ToLower()).EnvironmentID;

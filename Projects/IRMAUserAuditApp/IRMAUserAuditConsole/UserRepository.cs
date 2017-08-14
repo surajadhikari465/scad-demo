@@ -11,7 +11,7 @@ namespace IRMAUserAuditConsole
     public enum UserUpdateError : int { None = 0, StoreNotFound, TitleNotFound, Other }
     public enum UserRestoreError : int { None = 0, UserNotFound, Other }
 
-    class Repository
+    public class UserRepository
     {
         IRMAUserAuditConsoleDataClassesDataContext db;// = new IRMAUserAuditDataClassesDataContext();
         List<User> userCache = new List<User>();
@@ -21,12 +21,11 @@ namespace IRMAUserAuditConsole
         List<Team> teamCache = new List<Team>();
         List<UserStoreTeamTitle> usttCache = new List<UserStoreTeamTitle>();
 
-
         //Log log = new Log(@"C:\temp\UserAudit\Repository.log", true);
 
         private Dictionary<int, TitleDefaultPermission> titlePermissionCache = new Dictionary<int, TitleDefaultPermission>();
 
-        public Repository(string connectionString)
+        public UserRepository(string connectionString)
         {
             db = new IRMAUserAuditConsoleDataClassesDataContext(connectionString);
             try
@@ -44,7 +43,7 @@ namespace IRMAUserAuditConsole
             }
         }
 
-        public Repository(string connectionString, bool allUsers)
+        public UserRepository(string connectionString, bool allUsers)
         {
             db = new IRMAUserAuditConsoleDataClassesDataContext(connectionString);
             try
@@ -107,7 +106,7 @@ namespace IRMAUserAuditConsole
 
         public List<User> GetUsersTableByStore(bool enabled, int storeLimit)
         {
-            if(storeLimit == -1)
+            if (storeLimit == -1)
                 return db.Users.Where(u => u.AccountEnabled == enabled && u.Telxon_Store_Limit == null).ToList();
 
 
@@ -134,23 +133,9 @@ namespace IRMAUserAuditConsole
         public UserInfo GetUserInfo(int id)
         {
             User u = userCache.SingleOrDefault(user => user.User_ID == id);
-            UserInfo ui = new UserInfo();
-            if (u != null)
-            {
-                ui.User_ID = u.User_ID;
-                ui.UserName = u.UserName;
-                ui.TitleId = u.Title;
-                ui.Title = u.Title.HasValue ? u.Title1.Title_Desc : "( None Assigned )";
-                ui.StoreLimit = u.Telxon_Store_Limit.HasValue ? u.Store1.Store_Name : "All Stores";
-                ui.StoreId = u.Telxon_Store_Limit;
-                ui.FullName = u.FullName;
-
-                SlimAccess sa = slimCache.Where(slim => slim.User_ID == u.User_ID).Take(1).SingleOrDefault();
-                return ui;
-            }
+            UserInfo ui = UserInfoFromUser(u);
 
             return null;
-            
         }
 
         public int? GetTitleIdFromName(string titleName)
@@ -190,45 +175,40 @@ namespace IRMAUserAuditConsole
         {
             if (defaults == null)
                 defaults = new TitleDefaultPermission();
-            user.Accountant = defaults.Accountant.HasValue ? defaults.Accountant.Value : false;
-            user.ApplicationConfigAdmin = defaults.ApplicationConfigAdmin.HasValue ? defaults.ApplicationConfigAdmin.Value : false;
-            user.BatchBuildOnly = defaults.BatchBuildOnly.HasValue ? defaults.BatchBuildOnly.Value : false;
-            user.Buyer = defaults.Buyer.HasValue ? defaults.Buyer.Value : false;
-            user.Coordinator = defaults.Coordinator.HasValue ? defaults.Coordinator.Value : false;
-            user.CostAdmin = defaults.CostAdministrator.HasValue ? defaults.CostAdministrator.Value : false;
-            user.FacilityCreditProcessor = defaults.FacilityCreditProcessor.HasValue ? defaults.FacilityCreditProcessor.Value : false;
-            user.DCAdmin = defaults.DCAdmin.HasValue ? defaults.DCAdmin.Value : false;
-            user.Distributor = defaults.Distributor.HasValue ? defaults.Distributor.Value : false;
+            user.Accountant = defaults.Accountant ?? false;
+            user.ApplicationConfigAdmin = defaults.ApplicationConfigAdmin ?? false;
+            user.BatchBuildOnly = defaults.BatchBuildOnly ?? false;
+            user.Buyer = defaults.Buyer ?? false;
+            user.Coordinator = defaults.Coordinator ?? false;
+            user.CostAdmin = defaults.CostAdministrator ?? false;
+            user.FacilityCreditProcessor = defaults.FacilityCreditProcessor ?? false;
+            user.DCAdmin = defaults.DCAdmin ?? false;
+            user.Distributor = defaults.Distributor ?? false;
             user.DeletePO = defaults.DeletePO;
-            user.EInvoicing_Administrator = defaults.EInvoicing.HasValue ? defaults.EInvoicing.Value : false;
-            user.Inventory_Administrator = defaults.InventoryAdministrator.HasValue ? defaults.InventoryAdministrator.Value : false;
-            user.Item_Administrator = defaults.ItemAdministrator.HasValue ? defaults.ItemAdministrator.Value : false;
-            user.JobAdministrator = defaults.JobAdministrator.HasValue ? defaults.JobAdministrator.Value : false;
-            user.Lock_Administrator = defaults.LockAdministrator.HasValue ? defaults.LockAdministrator.Value : false;
-            user.SuperUser = defaults.SuperUser.HasValue ? defaults.SuperUser.Value : false;
-            user.PO_Accountant = defaults.POAccountant.HasValue ? defaults.POAccountant.Value : false;
-            user.POApprovalAdmin = defaults.POApprovalAdministrator.HasValue ? defaults.POApprovalAdministrator.Value : false;
-            user.POEditor = defaults.POEditor ? defaults.POEditor : false;
-            user.POSInterfaceAdministrator = defaults.POSInterfaceAdministrator.HasValue ? defaults.POSInterfaceAdministrator.Value : false;
-            user.PriceBatchProcessor = defaults.PriceBatchProcessor.HasValue ? defaults.PriceBatchProcessor.Value : false;
-            user.SecurityAdministrator = defaults.SecurityAdministrator.HasValue ? defaults.SecurityAdministrator.Value : false;
+            user.EInvoicing_Administrator = defaults.EInvoicing ?? false;
+            user.Inventory_Administrator = defaults.InventoryAdministrator ?? false;
+            user.Item_Administrator = defaults.ItemAdministrator ?? false;
+            user.JobAdministrator = defaults.JobAdministrator ?? false;
+            user.Lock_Administrator = defaults.LockAdministrator ?? false;
+            user.SuperUser = defaults.SuperUser ?? false;
+            user.PO_Accountant = defaults.POAccountant ?? false;
+            user.POApprovalAdmin = defaults.POApprovalAdministrator ?? false;
+            user.POEditor = defaults.POEditor;
+            user.POSInterfaceAdministrator = defaults.POSInterfaceAdministrator ?? false;
+            user.PriceBatchProcessor = defaults.PriceBatchProcessor ?? false;
+            user.SecurityAdministrator = defaults.SecurityAdministrator ?? false;
             user.Shrink = defaults.Shrink;
             user.ShrinkAdmin = defaults.ShrinkAdmin;
-            user.StoreAdministrator = defaults.StoreAdministrator.HasValue ? defaults.StoreAdministrator.Value : false;
-            user.SystemConfigurationAdministrator = defaults.SystemConfigurationAdministrator.HasValue ? defaults.SystemConfigurationAdministrator.Value : false;
+            user.StoreAdministrator = defaults.StoreAdministrator ?? false;
+            user.SystemConfigurationAdministrator = defaults.SystemConfigurationAdministrator ?? false;
             user.TaxAdministrator = defaults.TaxAdministrator;
-            user.UserMaintenance = defaults.UserMaintenance.HasValue ? defaults.UserMaintenance.Value : false;
-            user.Vendor_Administrator = defaults.VendorAdministrator.HasValue ? defaults.VendorAdministrator.Value : false;
-            user.VendorCostDiscrepancyAdmin = defaults.VendorCostDiscrepancyAdmin.HasValue ? defaults.VendorCostDiscrepancyAdmin.Value : false;
-            user.Warehouse = defaults.Warehouse.HasValue ? defaults.Warehouse.Value : false;
+            user.UserMaintenance = defaults.UserMaintenance ?? false;
+            user.Vendor_Administrator = defaults.VendorAdministrator ?? false;
+            user.VendorCostDiscrepancyAdmin = defaults.VendorCostDiscrepancyAdmin ?? false;
+            user.Warehouse = defaults.Warehouse ?? false;
         }
 
-        public SlimAccess GetUserSlimAccess(int userId)
-        {
-            return slimCache.Where(sc => sc.User_ID == userId).Take(1).SingleOrDefault();
-        }
-
-        public UserRestoreError RestoreUser(User user, SlimAccess sa)
+        public UserRestoreError RestoreUser(User user)
         {
             try
             {
@@ -247,10 +227,8 @@ namespace IRMAUserAuditConsole
                     user.PriceBatchProcessor, user.PromoAccessLevel, user.SecurityAdministrator,
                     user.Shrink, user.ShrinkAdmin, user.StoreAdministrator, user.SystemConfigurationAdministrator,
                     user.TaxAdministrator, user.UserMaintenance, user.Vendor_Administrator,
-                    user.VendorCostDiscrepancyAdmin, user.Warehouse,
-                    sa.Authorizations, sa.IRMAPush, sa.ItemRequest, sa.RetailCost,
-                    sa.ScaleInfo, sa.StoreSpecials, sa.UserAdmin, sa.VendorRequest,
-                    sa.WebQuery);
+                    user.VendorCostDiscrepancyAdmin, user.Warehouse
+                  );
 
                 //log.Message("UpdateUser result: " + result.ToString());
             }
@@ -262,58 +240,7 @@ namespace IRMAUserAuditConsole
             return UserRestoreError.None;
         }
 
-        public UserUpdateError UpdateSlim(UserInfo newUserInfo, ref Log log)
-        {
-            User user = GetUser(newUserInfo.User_ID);
-            SlimAccess sa = null;
-            if (newUserInfo.HasSlimAccess)
-            {
-                sa = GetUserSlimAccess(newUserInfo.User_ID);
-                if (sa != null)
-                {
-                    log.Message("updating SLIM fields...");
-                    sa.WebQuery = newUserInfo.WebQueryEnabled.ToLower() == "yes" ? true : false;
-                    sa.StoreSpecials = newUserInfo.ISSEnabled.ToLower() == "yes" ? true : false;
-                    sa.ItemRequest = newUserInfo.ItemRequestEnabled.ToLower() == "yes" ? true : false;
-                }
-            }
-            
-
-            log.Message("calling UpdateUser!!");
-            // Do it.  DO IT!!!
-            try
-            {
-                int result = db.Administration_UserAdmin_UpdateUser(
-                    user.AccountEnabled, user.CoverPage, user.EMail,
-                    user.Fax_Number, user.FullName, user.Pager_Email,
-                    user.Phone_Number, user.Printer, user.RecvLog_Store_Limit,
-                    user.Telxon_Store_Limit, user.Title, user.User_ID,
-                    user.UserName, user.Accountant, user.ApplicationConfigAdmin,
-                    user.BatchBuildOnly, user.Buyer, user.Coordinator, user.CostAdmin,
-                    user.FacilityCreditProcessor, user.DataAdministrator, user.DCAdmin,
-                    user.Distributor, user.DeletePO, user.EInvoicing_Administrator,
-                    user.Inventory_Administrator, user.Item_Administrator, user.JobAdministrator,
-                    user.Lock_Administrator, user.SuperUser, user.PO_Accountant,
-                    user.POApprovalAdmin, user.POEditor, user.POSInterfaceAdministrator,
-                    user.PriceBatchProcessor, user.PromoAccessLevel, user.SecurityAdministrator,
-                    user.Shrink, user.ShrinkAdmin, user.StoreAdministrator, user.SystemConfigurationAdministrator,
-                    user.TaxAdministrator, user.UserMaintenance, user.Vendor_Administrator,
-                    user.VendorCostDiscrepancyAdmin, user.Warehouse,
-                    sa.Authorizations, sa.IRMAPush, sa.ItemRequest, sa.RetailCost,
-                    sa.ScaleInfo, sa.StoreSpecials, sa.UserAdmin, sa.VendorRequest,
-                    sa.WebQuery);
-
-                log.Message("UpdateSLIM result: " + result.ToString());
-            }
-            catch (Exception ex)
-            {
-                log.Error("UpdateSLIM: " + ex.Message);
-                return UserUpdateError.Other;
-            }
-            return UserUpdateError.None;
-        }
-
-        public UserUpdateError UpdateUser(UserInfo newUserInfo, bool updateSlim, ref Log log)
+        public UserUpdateError UpdateUser(UserInfo newUserInfo, ref Log log)
         {
             //log.Message("updating " + newUserInfo.FullName);
             User user = GetUser(newUserInfo.User_ID);
@@ -340,7 +267,7 @@ namespace IRMAUserAuditConsole
                 user.Title1 = db.Titles.SingleOrDefault(t => t.Title_ID == titleId);
             }
 
-            int? storeId = GetStoreIdFromName(newUserInfo.StoreLimit);
+            int? storeId = GetStoreIdFromName(newUserInfo.Location);
             if (storeId.HasValue)
             {
                 if (storeId == -1)
@@ -363,37 +290,6 @@ namespace IRMAUserAuditConsole
                 user.Store1 = db.Stores.SingleOrDefault(s => s.Store_No == storeId);
             }
 
-            SlimAccess sa = null;
-            if(newUserInfo.HasSlimAccess)
-            {
-                sa = GetUserSlimAccess(newUserInfo.User_ID);
-                if(sa != null)
-                {
-                    if (updateSlim)
-                    {
-                        log.Message("updating SLIM fields...");
-                        sa.WebQuery = newUserInfo.WebQueryEnabled.ToLower() == "yes" ? true : false;
-                        sa.StoreSpecials = newUserInfo.ISSEnabled.ToLower() == "yes" ? true : false;
-                        sa.ItemRequest = newUserInfo.ItemRequestEnabled.ToLower() == "yes" ? true : false;
-                    }
-                }
-            }
-            else
-            {
-                log.Message("assigning SLIM defaults...");
-                sa = new SlimAccess();
-                sa.User_ID = newUserInfo.User_ID;
-                sa.Authorizations = false;
-                sa.IRMAPush = false;
-                sa.ItemRequest = false;
-                sa.RetailCost = false;
-                sa.ScaleInfo = false;
-                sa.StoreSpecials = false;
-                sa.UserAdmin = false;
-                sa.VendorRequest = false;
-                sa.WebQuery = false;
-            }
-
             log.Message("calling UpdateUser!!");
             // Do it.  DO IT!!!
             try
@@ -413,10 +309,7 @@ namespace IRMAUserAuditConsole
                     user.PriceBatchProcessor, user.PromoAccessLevel, user.SecurityAdministrator,
                     user.Shrink, user.ShrinkAdmin, user.StoreAdministrator, user.SystemConfigurationAdministrator,
                     user.TaxAdministrator, user.UserMaintenance, user.Vendor_Administrator,
-                    user.VendorCostDiscrepancyAdmin, user.Warehouse,
-                    sa.Authorizations, sa.IRMAPush, sa.ItemRequest, sa.RetailCost,
-                    sa.ScaleInfo, sa.StoreSpecials, sa.UserAdmin, sa.VendorRequest,
-                    sa.WebQuery);
+                    user.VendorCostDiscrepancyAdmin, user.Warehouse);
 
                 log.Message("UpdateUser result: " + result.ToString());
             }
@@ -449,137 +342,97 @@ namespace IRMAUserAuditConsole
         {
             // this join ensures we do not get stores which have no users assigned
             return db.Stores.Where(s => s.Users.Any(u => u.AccountEnabled == true)).Distinct().OrderBy(s => s.Store_Name).ToList();
-         
         }
 
+        private List<User> GetUsersBasedOnRoles(IEnumerable<User> usersCache, IEnumerable<string> userRolesList)
+        {
+            var users = userCache
+                        .Where(u =>u.AccountEnabled =true
+                            &&(u.TaxAdministrator && userRolesList.Contains("Tax Administrator".ToUpper())
+                            || userRolesList.Contains("Delete PO".ToUpper()) && u.DeletePO
+                            || userRolesList.Contains("PO Editor".ToUpper()) && u.POEditor
+                            || userRolesList.Contains("Shrink Administrator".ToUpper()) && u.ShrinkAdmin
+                            || userRolesList.Contains("Shrink".ToUpper()) && u.Shrink
+                            || userRolesList.Contains("User Maintenance".ToUpper()) && u.UserMaintenance
+                            || userRolesList.Contains("System Configuration Admin".ToUpper()) && u.SystemConfigurationAdministrator
+                            || userRolesList.Contains("Store Administrator".ToUpper()) && u.StoreAdministrator
+                            || userRolesList.Contains("Security Administrator".ToUpper()) && u.SecurityAdministrator
+                            || userRolesList.Contains("POS Interface Administrator".ToUpper()) && u.POSInterfaceAdministrator
+                            || userRolesList.Contains("Data Administrator".ToUpper()) && u.DataAdministrator
+                            || userRolesList.Contains("Application Config Admin".ToUpper()) && u.ApplicationConfigAdmin
+                            || userRolesList.Contains("Vendor Cost Discrepancy Admin".ToUpper()) && u.VendorCostDiscrepancyAdmin
+                            || userRolesList.Contains("EInvoicing Administrator".ToUpper()) && u.EInvoicing_Administrator
+                            || userRolesList.Contains("PO Approval Administrator".ToUpper()) && u.POApprovalAdmin
+                            || userRolesList.Contains("Cost Administrator".ToUpper()) && u.CostAdmin
+                            || userRolesList.Contains("Batch Build Only".ToUpper()) && u.BatchBuildOnly
+                            || userRolesList.Contains("Inventory Administrator".ToUpper()) && u.Inventory_Administrator
+                            || userRolesList.Contains("Price Batch Processor".ToUpper()) && u.PriceBatchProcessor
+                            || userRolesList.Contains("Lock Administrator".ToUpper()) && u.Lock_Administrator
+                            || userRolesList.Contains("Vendor Administrator".ToUpper()) && u.Vendor_Administrator
+                            || userRolesList.Contains("Item Administrator".ToUpper()) && u.Item_Administrator
+                            || userRolesList.Contains("Coordinator".ToUpper()) && u.Coordinator
+                            || userRolesList.Contains("Buyer".ToUpper()) && u.Buyer
+                            || userRolesList.Contains("Facility Credit Processor".ToUpper()) && u.FacilityCreditProcessor
+                            || userRolesList.Contains("Distributor".ToUpper()) && u.Distributor
+                            || userRolesList.Contains("Accountant".ToUpper()) && u.Accountant
+                            || userRolesList.Contains("PO Accountant".ToUpper()) && u.PO_Accountant
+                            || userRolesList.Contains("Super User".ToUpper()) && u.SuperUser
+                            || userRolesList.Contains("Job Administrator".ToUpper()) && u.JobAdministrator
+                            || userRolesList.Contains("Receiver".ToUpper()) && u.Distributor
+                            || userRolesList.Contains("DC Admin".ToUpper()) && u.DCAdmin.HasValue && u.DCAdmin.Value)
+                           ).ToList();
+            return users;
+        }
+            
         public List<string> GetStoreNames()
         {
             return (from store in db.Stores
                     select store.Store_Name).ToList();
         }
 
-        public List<UserInfo> GetUsers()
+        public List<UserInfo> GetUsers(IEnumerable<string> userRolesList)
         {
-            List<UserInfo> userinfos = new List<UserInfo>();
+            // use the list of roles (from the config) to determine which users to retrieve
+            var userInfos = GetUsersBasedOnRoles(userCache, userRolesList)
+                .Select(u => UserInfoFromUser(u, usttCache))
+                .ToList();
 
-            foreach (User u in userCache)
-            {
-                UserInfo ui = new UserInfo();
-                ui.FullName = u.FullName;
-                ui.StoreId = u.Telxon_Store_Limit;
-                if (u.Telxon_Store_Limit.HasValue)
-                    ui.StoreLimit = u.Store1.Store_Name;
-                else
-                    ui.StoreLimit = "All Stores";
-
-                ui.TitleId = u.Title;
-
-                if (u.Title.HasValue)
-                    ui.Title = u.Title1.Title_Desc;
-                else
-                    ui.Title = "( None Assigned )";
-
-                ui.User_ID = u.User_ID;
-                ui.UserName = u.UserName;
-                ui.OverrideAllow = GetUserOverrides(u.User_ID, true);
-                ui.OverrideDeny = GetUserOverrides(u.User_ID, false);
-
-                // forgive the hoop jumping here, but apparently it's possible to
-                // be assigned to a team which is NOT found in the Team table
-                // :(  Sad Panda
-
-                UserStoreTeamTitle ustt = (usttCache.Where(team => team.User_ID == u.User_ID)).Take(1).SingleOrDefault();
-                if (ustt != null)
-                {
-                    if (ustt.Team != null)
-                        ui.TeamName = ustt.Team.Team_Name;
-                }
-                else
-                {
-                    ui.TeamName = "( None Assigned )";
-                }
-
-
-                // SLIM fields
-                ui.RDE = u.Item_Administrator ? "Yes" : "No";
-                SlimAccess slimAccess = slimCache.Where(sa => sa.User_ID == u.User_ID).Take(1).SingleOrDefault();
-                if (slimAccess != null)
-                {
-                    ui.HasSlimAccess = true;
-                    ui.WebQueryEnabled = (slimAccess.WebQuery.HasValue && slimAccess.WebQuery.Value) ? "Yes" : "No";
-                    ui.ISSEnabled = (slimAccess.StoreSpecials.HasValue && slimAccess.StoreSpecials.Value) ? "Yes" : "No";
-                    ui.ItemRequestEnabled = (slimAccess.ItemRequest.HasValue && slimAccess.ItemRequest.Value) ? "Yes" : "No";
-                }
-
-                userinfos.Add(ui);
-
-            }
-            return userinfos;
+            return userInfos;
         }
 
-        public List<UserInfo> GetUsersByStore(int? StoreId)
+        private UserInfo UserInfoFromUser(User user,
+            IEnumerable<UserStoreTeamTitle> teamTitles = null
+          )
+        {
+            if (user == null) return new UserInfo();
+
+            UserInfo ui = new UserInfo
+            {
+                FullName = user.FullName,
+                StoreId = user.Telxon_Store_Limit,
+                Location = user.Telxon_Store_Limit.HasValue ? user.Store1.Store_Name : "All Stores",
+                Title = user.Title.HasValue ? user.Title1.Title_Desc : "( None Assigned )",
+                User_ID = user.User_ID,
+                UserName = user.UserName,
+                User_Disabled = user.AccountEnabled==true? "No":"Yes"
+            };
+
+           return ui;
+        }
+
+        public List<UserInfo> GetUsersByStore(int? StoreId, IEnumerable<string> userRolesList)
         {
             if (StoreId.Value == -1)
-                StoreId = null;
-
-            List<UserInfo> userinfos = new List<UserInfo>();
-
-            var storeUsers = userCache.Where(user => user.Telxon_Store_Limit == StoreId);
-
-            foreach (User u in storeUsers)
             {
-                UserInfo ui = new UserInfo();
-                ui.FullName = u.FullName;
-                ui.StoreId = u.Telxon_Store_Limit;
-                if (u.Telxon_Store_Limit.HasValue)
-                    ui.StoreLimit = u.Store1.Store_Name;
-                else
-                    ui.StoreLimit = "All Stores";
-
-                ui.TitleId = u.Title;
-
-                if (u.Title.HasValue)
-                    ui.Title = u.Title1.Title_Desc;
-                else
-                    ui.Title = "( None Assigned )";
-
-                ui.User_ID = u.User_ID;
-                ui.UserName = u.UserName;
-                ui.OverrideAllow = GetUserOverrides(u.User_ID, true);
-                ui.OverrideDeny = GetUserOverrides(u.User_ID, false);
-
-                // forgive the hoop jumping here, but apparently it's possible to
-                // be assigned to a team which is NOT found in the Team table
-                // :(  Sad Panda
-
-                UserStoreTeamTitle ustt = (usttCache.Where(team => team.User_ID == u.User_ID)).Take(1).SingleOrDefault();
-                if (ustt != null)
-                {
-                    if (ustt.Team != null)
-                        ui.TeamName = ustt.Team.Team_Name;
-                }
-                else
-                {
-                    ui.TeamName = "( None Assigned )";
-                }
-               
-                
-                // SLIM fields
-                ui.RDE = u.Item_Administrator ? "Yes" : "No";
-                SlimAccess slimAccess = slimCache.Where(sa => sa.User_ID == u.User_ID).Take(1).SingleOrDefault();
-                if (slimAccess != null)
-                {
-                    ui.HasSlimAccess = true;
-                    ui.WebQueryEnabled = (slimAccess.WebQuery.HasValue && slimAccess.WebQuery.Value) ? "Yes" : "No";
-                    ui.ISSEnabled = (slimAccess.StoreSpecials.HasValue && slimAccess.StoreSpecials.Value) ? "Yes" : "No";
-                    ui.ItemRequestEnabled = (slimAccess.ItemRequest.HasValue && slimAccess.ItemRequest.Value) ? "Yes" : "No";
-                }
-                
-
-                userinfos.Add(ui);
-                
+                StoreId = null;
             }
-            return userinfos;
+
+            var storeUserInfos = GetUsersBasedOnRoles(userCache, userRolesList)
+                .Where(u => u.Telxon_Store_Limit == StoreId)
+                .Select(u => UserInfoFromUser(u, usttCache))
+                .ToList();
+
+            return storeUserInfos;
         }
 
         /// <summary>
@@ -589,7 +442,7 @@ namespace IRMAUserAuditConsole
         /// <param name="allow">if true, return allowed overrides, deny overrides otherwise</param>
         /// <returns>a string of overrides</returns>
         public string GetUserOverrides(int userId, bool allow)
-        {                     
+        {
             var overrides = tpoCache.Where(tpo => tpo.UserId == userId && tpo.PermissionValue == allow);
             StringBuilder orList = new StringBuilder();
             foreach (TitlePermissionOverride tpo in overrides)
@@ -618,9 +471,9 @@ namespace IRMAUserAuditConsole
             List<string> titles = new List<string>();
             titles.Add("( None Assigned )");
             titles.AddRange((from title in db.Titles
-                             where title.Title_Desc.ToLower() != "superuser" && title.Title_Desc.ToLower() != "Store Systems Admin" 
-                    orderby title.Title_Desc ascending
-                    select title.Title_Desc).ToList());
+                             where title.Title_Desc.ToLower() != "superuser" && title.Title_Desc.ToLower() != "Store Systems Admin"
+                             orderby title.Title_Desc ascending
+                             select title.Title_Desc).ToList());
             return titles;
         }
 
@@ -653,7 +506,6 @@ namespace IRMAUserAuditConsole
                 return db.Stores.SingleOrDefault(s => s.Store_No == storeLimit.Value);
 
             return null;
-                             
         }
 
         public Store GetStoreFromName(string name)
@@ -671,11 +523,50 @@ namespace IRMAUserAuditConsole
             return db.AppConfigApps.FirstOrDefault(app => app.Name.ToLower() == appName.ToLower() && app.Deleted == false && app.EnvironmentID == environmentId).ApplicationID;
         }
 
-        public Guid GetEnvId(IRMAEnvironment environment)
+        public Guid GetEnvId(IRMAEnvironmentEnum environment)
         {
-            return db.AppConfigEnvs.SingleOrDefault(env => env.Name.ToUpper() == OptionsManager.ConvertIRMAEnvironmentToString(environment).ToUpper() && env.Deleted == false).EnvironmentID;
+            return db.AppConfigEnvs.SingleOrDefault(env => env.Name.ToUpper() == AuditOptions.ConvertIRMAEnvironmentToString(environment).ToUpper() && env.Deleted == false).EnvironmentID;
         }
 
         #endregion
+
+        /// <summary>
+        /// Maps database column names (dbo.Users) to user-friendly names for IRMA roles
+        /// </summary>
+        Dictionary<string, string> RoleNameMappingDictionary = new Dictionary<string, string>()
+        {
+            {nameof(User.TaxAdministrator), "Tax Administrator" },
+            {nameof(User.DeletePO), "Delete PO" },
+            {nameof(User.POEditor), "PO Editor" },
+            {nameof(User.ShrinkAdmin), "Shrink Administrator" },
+            {nameof(User.Shrink), "Shrink" },
+            {nameof(User.UserMaintenance), "User Maintenance" },
+            {nameof(User.SystemConfigurationAdministrator), "System Configuration Admin" },
+            {nameof(User.StoreAdministrator), "Store Administrator" },
+            {nameof(User.SecurityAdministrator), "Security Administrator" },
+            {nameof(User.POSInterfaceAdministrator), "POS Interface Administrator" },
+            {nameof(User.JobAdministrator), "Job Administrator" },
+            {nameof(User.DataAdministrator), "Data Administrator" },
+            {nameof(User.ApplicationConfigAdmin), "Application Config Admin" },
+            {nameof(User.VendorCostDiscrepancyAdmin), "Vendor Cost Discrepancy Admin" },
+            {nameof(User.EInvoicing_Administrator), "EInvoicing Administrator" },
+            {nameof(User.POApprovalAdmin), "PO Approval Administrator" },
+            {nameof(User.CostAdmin), "Cost Administrator" },
+            {nameof(User.BatchBuildOnly), "Batch Build Only" },
+            {nameof(User.Inventory_Administrator), "Inventory Administrator" },
+            {nameof(User.PriceBatchProcessor), "Price Batch Processor" },
+            {nameof(User.Lock_Administrator), "Lock Administrator" },
+            {nameof(User.Vendor_Administrator), "Vendor Administrator" },
+            {nameof(User.Item_Administrator), "Item Administrator" },
+            {nameof(User.Coordinator), "Coordinator" },
+            {nameof(User.Buyer), "Buyer" },
+            {nameof(User.FacilityCreditProcessor), "Facility Credit Processor" },
+            {nameof(User.Distributor), "Distributor" },
+            {nameof(User.Accountant), "Accountant" },
+            {nameof(User.PO_Accountant), "PO Accountant" },
+            {nameof(User.SuperUser), "Super User" },
+           // {nameof(User.Distributor), "Receiver" },
+            {nameof(User.DCAdmin), "DC Admin" }
+        };
     }
 }

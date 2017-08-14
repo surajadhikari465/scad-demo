@@ -49,19 +49,7 @@ CREATE PROCEDURE [dbo].[Administration_UserAdmin_UpdateUser]
 	@UserMaintenance bit,
 	@Vendor_Administrator bit,
 	@VendorCostDiscrepancyAdmin bit,
-	@Warehouse bit,
-
-	--SLIM
-	@Authorizations bit,
-	@IRMAPush bit,
-	@ItemRequest bit,
-	@RetailCost bit,
-	@ScaleInfo BIT,
-	@StoreSpecials bit,
-	@UserAdmin bit,
-	@VendorRequest bit,
-	@WebQuery bit,
-	@ECommerce bit
+	@Warehouse bit
 
 AS
 	BEGIN
@@ -119,79 +107,7 @@ AS
 		 	  
 		 WHERE  User_ID = @User_Id
 
-		-- 8.25.08 V3.2 Robert Shurbet
-		-- Added second update statement to support SLIM access flags
-		-- if the account is enabled then update it with the parameters passed in
-		-- otherwise set all SlimAccess attributes to FALSE
 
-		DECLARE @IsSlimUser bit
-
-		SET @IsSlimUser = dbo.fn_IsUserInSLIM(@User_ID)
-
-		IF @AccountEnabled = 1
-		BEGIN
-
-		-- if the user doesn't exist, add them, otherwise update the existing record
-			IF @IsSlimUser = 1
-				BEGIN
-					UPDATE SlimAccess
-						SET 
-							Authorizations = @Authorizations,
-							IRMAPush = @IRMAPush,
-							ItemRequest = @ItemRequest,
-							RetailCost = @RetailCost,
-							ScaleInfo = @ScaleInfo,	
-							StoreSpecials = @StoreSpecials,
-							UserAdmin = @UserAdmin,
-							VendorRequest = @VendorRequest,
-							WebQuery = @WebQuery,
-							ECommerce = @ECommerce
-					WHERE User_ID = @User_ID
-				END
-			ELSE
-				BEGIN
-					INSERT INTO SlimAccess 
-								(Authorizations
-								 ,IRMAPush
-								 ,ItemRequest
-								 ,RetailCost
-								 ,ScaleInfo
-								 ,StoreSpecials
-								 ,UserAdmin
-								 ,User_ID
-								 ,VendorRequest
-								 ,WebQuery
-								 ,ECommerce)
-					VALUES
-							   (@Authorizations,
-								@IRMAPush,
-								@ItemRequest,
-								@RetailCost,
-								@ScaleInfo,
-								@StoreSpecials,												
-								@UserAdmin,
-								@User_ID,
-								@VendorRequest,
-								@WebQuery,
-								@ECommerce
-								)
-				END
-		END
-		ELSE
-			BEGIN
-				UPDATE SlimAccess
-					SET Authorizations = 0,
-						IRMAPush = 0,
-						ItemRequest = 0,
-						RetailCost = 0,
-						ScaleInfo = 0,
-						StoreSpecials = 0,
-						UserAdmin = 0,
-						VendorRequest = 0,
-						WebQuery = 0,
-						ECommerce = 0
-				WHERE User_ID = @User_ID
-			END
 	END
 
 	-- update any UserStoreTeamTitle values with the new title information.

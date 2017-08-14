@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-
 using WholeFoods.Utility.DataAccess;
+
 
 using log4net;
 
 namespace WholeFoods.Common.IRMALib
 {
-    public class ConfigRepository
+    public class ConfigRepository : IConfigRepository
     {
         #region Members (the jokes write themselves)
 
@@ -116,6 +116,19 @@ namespace WholeFoods.Common.IRMALib
                 sb.Append(result.ConfigKey);
             }
             return sb.ToString();
+        }
+
+        public string ConfigurationGetValue(string configKey)
+        {
+            if (config != null)
+            {
+                var elem = from key in config.Root.Descendants().Descendants()
+                           where key.Attribute("key").Value.ToLower() == configKey.ToLower()
+                           select key.Attribute("value").Value;
+
+                return elem.FirstOrDefault();
+            }
+            return null;
         }
 
         public bool ConfigurationGetValue(string configKey, ref string value)

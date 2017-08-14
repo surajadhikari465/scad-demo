@@ -29,9 +29,9 @@ namespace IRMAUserAuditConsole
         private string region = "";
         private string resultsFileName = "";
         private string rootPath = "";
-        private Repository repo;
+        private UserRepository repo;
         private ConfigRepository configRepo;
-        private IRMAEnvironment environment;
+        private IRMAEnvironmentEnum environment;
         private Guid appId;
         private Guid envId;
         private string fiscalYearString = "";
@@ -40,10 +40,10 @@ namespace IRMAUserAuditConsole
         #endregion
 
         #region ctors
-        public RegionImportManager(string _region, string _connString, IRMAEnvironment _env)
+        public RegionImportManager(string _region, string _connString, IRMAEnvironmentEnum _env)
         {
             this.region = _region;
-            this.repo = new Repository(_connString);
+            this.repo = new UserRepository(_connString);
             this.configRepo = new ConfigRepository(_connString);
             region = _region;
             environment = _env;
@@ -118,12 +118,7 @@ namespace IRMAUserAuditConsole
                     log.Message("opening " + file);
                     OpenFile(file);
                     List<object[]> userRows = ParseWorksheet("Users", "A", "I");
-                    List<object[]> slimRows;
-                    if (WorksheetExists("SLIM"))
-                        slimRows = ParseWorksheet("SLIM", "A", "I");
-                    else
-                        slimRows = new List<object[]>();
-
+                    
                     foreach (object[] userRow in userRows)
                     {
                         try
@@ -133,8 +128,8 @@ namespace IRMAUserAuditConsole
                                 int number;
                                 if (Int32.TryParse(userRow[0].ToString(), out number))
                                 {
-                                    bool deleteUser = ((string)userRow[8]).ToLower() == "yes" ? true : false;
-                                    bool updateUser = ((string)userRow[7]).ToLower() == "yes" ? true : false;
+                                    //bool deleteUser = ((string)userRow[8]).ToLower() == "yes" ? true : false;
+                                    bool updateUser = ((string)userRow[6]).ToLower() == "yes" ? true : false;
                                     int userId = Int32.Parse(userRow[0].ToString());
                                     UserInfo ui = repo.GetUserInfo(userId);
                                     if (ui == null)
@@ -145,26 +140,6 @@ namespace IRMAUserAuditConsole
                                         row.Add("User Not Found. (May already be Inactive)");
                                         AddResultRow(ImportResultType.Errored, row.ToArray());
                                         continue;
-                                    }
-
-                                    //check for slimUpdate
-                                    bool updateSlim = false;
-                                    // find the user on the SLIM tab
-                                    object[] slimInfo = (from row in slimRows
-                                                         //    where Int32.Parse(row[0].ToString()) == userId
-                                                         where row.Length > 0 && row[0].ToString() == userId.ToString()
-                                                         select row).SingleOrDefault();
-                                    // get the SLIM fields.
-                                    if (slimInfo != null && slimInfo.Count() > 8)
-                                    {
-                                        updateSlim = ((string)slimInfo[8]).ToLower() == "yes" ? true : false;
-                                        ui.HasSlimAccess = true;
-                                        if (updateSlim)
-                                        {
-                                            ui.WebQueryEnabled = slimInfo[3] as string;
-                                            ui.ItemRequestEnabled = slimInfo[4] as string;
-                                            ui.ISSEnabled = slimInfo[5] as string;
-                                        }
                                     }
 
                                     // get previous store from history.
@@ -187,40 +162,27 @@ namespace IRMAUserAuditConsole
                                         continue;
                                     }
 
-                                    if (deleteUser)
-                                    {
-                                        try
-                                        {
-                                            repo.DeleteUser(userId, ref log);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            log.Error("Delete user " + ui.FullName + ": " + ex.Message);
-                                        }
-                                        AddResultRow(ImportResultType.Deleted, userRow);
-                                        log.Message("user " + ui.FullName + " deleted.");
-                                    }
-                                    else if (updateUser)
+                                    //if (deleteUser)
+                                    //{
+                                    //    try
+                                    //    {
+                                    //        repo.DeleteUser(userId, ref log);
+                                    //    }
+                                    //    catch (Exception ex)
+                                    //    {
+                                    //        log.Error("Delete user " + ui.FullName + ": " + ex.Message);
+                                    //    }
+                                    //    AddResultRow(ImportResultType.Deleted, userRow);
+                                    //    log.Message("user " + ui.FullName + " deleted.");
+                                    //}
+                                    if (updateUser)
                                     {
                                         //update fields
-                                        ui.StoreLimit = userRow[4] as string;
+                                        ui.Location = userRow[4] as string;
                                         ui.Title = userRow[3] as string;
-                                                        
-                                        // get the SLIM fields.
-                                        if (slimInfo != null && slimInfo.Count() > 8)
-                                        {
-                                            updateSlim = ((string)slimInfo[8]).ToLower() == "yes" ? true : false;
-                                            ui.HasSlimAccess = true;
-                                            if (updateSlim)
-                                            {
-                                                ui.WebQueryEnabled = slimInfo[3] as string;
-                                                ui.ItemRequestEnabled = slimInfo[4] as string;
-                                                ui.ISSEnabled = slimInfo[5] as string;
-                                            }
-                                        }
 
                                         // ready to go!
-                                        UserUpdateError uue = repo.UpdateUser(ui, updateSlim, ref log);
+                                        UserUpdateError uue = repo.UpdateUser(ui, ref log);
                                         if (uue != UserUpdateError.None)
                                         {
                                             // add error message to Errors tab
@@ -251,55 +213,8 @@ namespace IRMAUserAuditConsole
                                         AddResultRow(ImportResultType.Updated, userRow);
                                         log.Message("user " + ui.FullName + " updated.");
 
-                                        // so we don't update twice.
-                                        updateSlim = false;
                                     }
-                                    else if (updateSlim)
-                                    {
-                                        // get the SLIM fields.
-                                        if (slimInfo != null && slimInfo.Count() > 8)
-                                        {
-                                            updateSlim = ((string)slimInfo[8]).ToLower() == "yes" ? true : false;
-                                            ui.HasSlimAccess = true;
-                                            if (updateSlim)
-                                            {
-                                                ui.WebQueryEnabled = slimInfo[3] as string;
-                                                ui.ItemRequestEnabled = slimInfo[4] as string;
-                                                ui.ISSEnabled = slimInfo[5] as string;
-                                            }
-                                        }
-                                        // just update SLIM:
-                                        UserUpdateError uue = repo.UpdateSlim(ui, ref log);
-                                        if (uue != UserUpdateError.None)
-                                        {
-                                            // add error message to Errors tab
-                                            List<object> row = new List<object>(userRow);
-
-                                            if (uue == UserUpdateError.TitleNotFound)
-                                            {
-                                                log.Error("User Title not found!  Must EXACTLY match Title_Desc in Title table!");
-                                                row.Add("User Title not found!  Must EXACTLY match Title_Desc in Title table!");
-                                                Console.WriteLine("!! ERROR !!: User Title not found!  Must EXACTLY match Title_Desc in Title table!");
-                                            }
-                                            else if (uue == UserUpdateError.StoreNotFound)
-                                            {
-                                                log.Error("Store not found!  Must EXACTLY match Store_Name in Stores table!");
-                                                row.Add("Store not found!  Must EXACTLY match Store_Name in Stores table!");
-                                                Console.WriteLine("!! ERROR !!: Store not found!  Must EXACTLY match Store_Name in Stores table!");
-                                            }
-                                            else if (uue == UserUpdateError.Other)
-                                            {
-                                                log.Error("Unknown error updating user!  User not updated!");
-                                                row.Add("Unknown error updating user!  User NOT updated!");
-                                                Console.WriteLine("!! ERROR !!: Unknown error updating user!  User not updated!");
-                                            }
-
-                                            AddResultRow(ImportResultType.Errored, row.ToArray());
-                                        }
-
-                                        AddResultRow(ImportResultType.Updated, userRow);
-                                        log.Message("user " + ui.FullName + " updated SLIM fields.");
-                                    }
+                                
                                     else
                                     {
                                         // no change.
@@ -327,7 +242,7 @@ namespace IRMAUserAuditConsole
 
         
 
-        private void SetupConfig(IRMAEnvironment _env)
+        private void SetupConfig(IRMAEnvironmentEnum _env)
         {
             var environments = configRepo.GetEnvironmentList();
             envId = environments.SingleOrDefault(env => env.Name.ToLower().Replace(" ", "") == _env.ToString().ToLower()).EnvironmentID;
@@ -427,7 +342,7 @@ namespace IRMAUserAuditConsole
             resultSheet.CreateWorksheet("Deleted");
             resultSheet.CreateWorksheet("Unchanged");
             resultSheet.CreateWorksheet("Errored");
-            List<string> columns = new List<string> { "User_ID", "UserName", "FullName", "Title", "StoreLimit", "Override Allow", "Override Deny", "User Edited?", "Delete User?" };
+            List<string> columns = new List<string> { "User_ID", "UserName", "FullName", "Title", "Location", "User_Disabled", "User Edited?" };
             resultSheet.CreateHeader("Updated", columns);
             resultSheet.CreateHeader("Deleted", columns);
             resultSheet.CreateHeader("Unchanged", columns);
