@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>ActivePriceSubsetSize</name>
+			<value>10000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1501188982176</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DeleteSentPricesStartTime</name>
+			<value>2017 Jul 13 00:00:00</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1501183784024</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Region</name>
+			<value>FL</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1499773430192</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

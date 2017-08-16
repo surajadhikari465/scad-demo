@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="price">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="PriceId"/>
+				<xs:element ref="Region"/>
+				<xs:element ref="BusinessUnit"/>
+				<xs:element ref="ItemId"/>
+				<xs:element ref="GpmId"/>
+				<xs:element ref="Multiple"/>
+				<xs:element ref="Price"/>
+				<xs:element ref="StartDate"/>
+				<xs:element ref="EndDate" minOccurs="0"/>
+				<xs:element ref="PriceType"/>
+				<xs:element ref="PriceTypeAttribute"/>
+				<xs:element ref="SellableUom"/>
+				<xs:element ref="CurrencyCode"/>
+				<xs:element ref="NewTagExpiration" minOccurs="0"/>
+				<xs:element ref="Action"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Region" type="xs:string"/>
+	<xs:element name="BusinessUnit" type="xs:int"/>
+	<xs:element name="ItemId" type="xs:int"/>
+	<xs:element name="GpmId" type="xs:string"/>
+	<xs:element name="Multiple" type="xs:int"/>
+	<xs:element name="Price" type="xs:decimal"/>
+	<xs:element name="StartDate" type="xs:dateTime"/>
+	<xs:element name="EndDate" type="xs:dateTime" nillable="true"/>
+	<xs:element name="PriceType" type="xs:string"/>
+	<xs:element name="PriceTypeAttribute" type="xs:string"/>
+	<xs:element name="SellableUom" type="xs:string"/>
+	<xs:element name="CurrencyCode" type="xs:string"/>
+	<xs:element name="NewTagExpiration" type="xs:dateTime" nillable="true"/>
+	<xs:element name="Action" type="xs:string"/>
+	<xs:element name="PriceId" type="xs:string"/>
+</xs:schema>

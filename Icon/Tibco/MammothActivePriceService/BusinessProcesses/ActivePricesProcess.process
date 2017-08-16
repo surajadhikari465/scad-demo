@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/MammothPrice.xsd"/>
+    <pd:name>BusinessProcesses/ActivePricesProcess.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>78</pd:startX>
+    <pd:startY>45</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1251</pd:endX>
+    <pd:endY>45</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499373839783</pd:targetNamespace>
+    <pd:group name="ProcessActivePriceSubsets">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>274</pd:x>
+        <pd:y>11</pd:y>
+        <pd:width>768</pd:width>
+        <pd:height>274</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>ActivePriceIndex</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$GetActivePrices/resultSet/lastSubset = "true"</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetActivePrices</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>IteratePrices</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>count($GetActivePrices/resultSet) = 0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ArchiveSentPrices</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetActivePrices</pd:from>
+            <pd:to>IteratePrices</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>IteratePrices</pd:from>
+            <pd:to>ArchiveSentPrices</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($GetActivePrices/resultSet/Record)</pd:xpath>
+        </pd:transition>
+        <pd:activity name="GetActivePrices">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>404</pd:x>
+            <pd:y>157</pd:y>
+            <config>
+                <timeout>120</timeout>
+                <commit>false</commit>
+                <maxRows>10000000</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/JDBC/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <statement>SELECT
+	PriceID, 
+	CAST(Region AS NVARCHAR(2)) AS Region, 
+	CAST(GpmID AS NVARCHAR(255)) AS GpmID, 
+	ItemID, 
+	BusinessUnitID, 
+	StartDate, 
+	EndDate, 
+	Price, 
+	PriceType, 
+	PriceTypeAttribute, 
+	SellableUOM, 
+	CurrencyCode, 
+	Multiple, 
+	NewTagExpiration, 
+	InsertDateUtc, 
+	ModifiedDateUtc
+FROM gpm.Prices p
+WHERE p.Region = ?
+	AND CAST(StartDate as date) = CAST(GETDATE() AS date)
+	AND NOT EXISTS
+	(
+		SELECT 1 
+		FROM gpm.ActivePriceSentArchive a
+		WHERE a.Region = ?
+			AND a.PriceID = p.PriceID
+	)</statement>
+                <wizardData/>
+                <processInSubsets>true</processInSubsets>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>PriceID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Region</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>GpmID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ItemID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>BusinessUnitID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>StartDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>EndDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Price</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PriceType</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PriceTypeAttribute</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SellableUOM</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>CurrencyCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Multiple</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>NewTagExpiration</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>InsertDateUtc</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ModifiedDateUtc</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>Region</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>RegionArchive</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <Region>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/Application/Region"/>
+                    </Region>
+                    <RegionArchive>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/Application/Region"/>
+                    </RegionArchive>
+                    <subsetSize>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/Application/ActivePriceSubsetSize"/>
+                    </subsetSize>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:group name="IteratePrices">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>521</pd:x>
+            <pd:y>82</pd:y>
+            <pd:width>240</pd:width>
+            <pd:height>140</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$GetActivePrices/resultSet/Record</pd:over>
+                <pd:iterationElementSlot>Price</pd:iterationElementSlot>
+                <pd:indexSlot>priceIndex</pd:indexSlot>
+                <pd:activityOutputName/>
+                <pd:accumulateOutput>false</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>SendPriceToEMS</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>SendPriceToEMS</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="SendPriceToEMS">
+                <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+                <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+                <pd:x>634</pd:x>
+                <pd:y>161</pd:y>
+                <config>
+                    <PermittedMessageType>XML Text</PermittedMessageType>
+                    <SessionAttributes>
+                        <transacted>false</transacted>
+                        <acknowledgeMode>1</acknowledgeMode>
+                        <maxSessions>1</maxSessions>
+                        <destination>%%Mammoth/ESB/EsbPriceQueueName%%</destination>
+                    </SessionAttributes>
+                    <ConfigurableHeaders>
+                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                        <JMSExpiration>0</JMSExpiration>
+                        <JMSPriority>4</JMSPriority>
+                    </ConfigurableHeaders>
+                    <ConnectionReference>/SharedResources/Connections/JMS/ESBConnection.sharedjmscon</ConnectionReference>
+                    <InDataxsdString ref="pfx:price"/>
+                </config>
+                <pd:inputBindings>
+                    <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
+                        <destinationQueue>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Mammoth/ESB/EsbPriceQueueName"/>
+                        </destinationQueue>
+                        <Body>
+                            <ns2:price xmlns:ns2="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd">
+                                <ns2:PriceId>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/PriceID"/>
+                                </ns2:PriceId>
+                                <ns2:Region>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/Region"/>
+                                </ns2:Region>
+                                <ns2:BusinessUnit>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/BusinessUnitID"/>
+                                </ns2:BusinessUnit>
+                                <ns2:ItemId>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/ItemID"/>
+                                </ns2:ItemId>
+                                <ns2:GpmId>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/GpmID"/>
+                                </ns2:GpmId>
+                                <ns2:Multiple>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/Multiple"/>
+                                </ns2:Multiple>
+                                <ns2:Price>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/Price"/>
+                                </ns2:Price>
+                                <ns2:StartDate>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/StartDate"/>
+                                </ns2:StartDate>
+                                <xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="exists($Price/Record/EndDate)">
+                                    <ns2:EndDate>
+                                        <xsl:choose>
+                                            <xsl:when test="exists($Price/Record/EndDate)">
+                                                <xsl:value-of select="$Price/Record/EndDate"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </ns2:EndDate>
+                                </xsl:if>
+                                <ns2:PriceType>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/PriceType"/>
+                                </ns2:PriceType>
+                                <ns2:PriceTypeAttribute>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/PriceTypeAttribute"/>
+                                </ns2:PriceTypeAttribute>
+                                <ns2:SellableUom>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/SellableUOM"/>
+                                </ns2:SellableUom>
+                                <ns2:CurrencyCode>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/CurrencyCode"/>
+                                </ns2:CurrencyCode>
+                                <xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="exists($Price/Record/NewTagExpiration)">
+                                    <xsl:if test="$Price/Record/NewTagExpiration">
+                                        <ns2:NewTagExpiration>
+                                            <xsl:value-of select="$Price/Record/NewTagExpiration"/>
+                                        </ns2:NewTagExpiration>
+                                    </xsl:if>
+                                </xsl:if>
+                                <ns2:Action>
+                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;AddOrUpdate&quot;"/>
+                                </ns2:Action>
+                            </ns2:price>
+                        </Body>
+                    </ns1:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+        <pd:activity name="ArchiveSentPrices">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:description>Inserts the prices that were sent to the ESB into a table so that there is a record of what was sent to the ESB. The GetActivePrices query uses that table to filter out any prices that have already been sent.</pd:description>
+            <pd:x>888</pd:x>
+            <pd:y>224</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <statement>INSERT INTO gpm.ActivePriceSentArchive(Region, PriceID)
+VALUES (?, ?)
+</statement>
+                <batchUpdate>true</batchUpdate>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>Region</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceID</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <jdbcSharedConfig>/SharedResources/Connections/JDBC/Mammoth.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <xsl:for-each select="$GetActivePrices/resultSet/Record">
+                        <Record>
+                            <Region>
+                                <xsl:value-of select="Region"/>
+                            </Region>
+                            <PriceID>
+                                <xsl:value-of select="PriceID"/>
+                            </PriceID>
+                        </Record>
+                    </xsl:for-each>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>ProcessActivePriceSubsets</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ProcessActivePriceSubsets</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

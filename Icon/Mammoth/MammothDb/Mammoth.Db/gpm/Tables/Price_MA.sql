@@ -16,6 +16,7 @@
        [InsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME()),
 	   [ModifiedDateUtc] [datetime2](7) NULL
 	   CONSTRAINT [PK_GpmPrice_MA] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC, [BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC) WITH (FILLFACTOR = 100) ON [FG_MA]
+	   CONSTRAINT [CK_Gpm_Price_MA_Region] CHECK (Region = 'MA')
 ) ON [FG_MA]
 GO
 
@@ -70,3 +71,7 @@ CREATE TRIGGER [gpm].[Trigger_Price_MA]
 
         SET NoCount ON
     END
+GO
+
+CREATE INDEX [IX_Price_MA_StartDate] ON [gpm].[Price_MA] ([StartDate])
+	INCLUDE (Region, PriceID, GpmID, ItemID, BusinessUnitID, EndDate, Price, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, NewTagExpiration, InsertDateUtc, ModifiedDateUtc)
