@@ -8,6 +8,8 @@
         <loginTimeout>0</loginTimeout>
         <connectionType>JDBC</connectionType>
         <UseSharedJndiConfig>false</UseSharedJndiConfig>
-        <location>%%MammothConnectionString%%</location>
+        <location>%%Connections/JDBC/SqlServer/ConnectionString%%</location>
+        <user>%%Connections/JDBC/SqlServer/SqlDBUser%%</user>
+        <password>%%Connections/JDBC/SqlServer/SqlDBPwd%%</password>
     </config>
 </BWSharedResource>

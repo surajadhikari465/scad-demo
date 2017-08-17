@@ -2,36 +2,36 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>BOD</name>
-			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<name>ConnectionString</name>
+			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861950</modTime>
+			<modTime>1502389673800</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ConfirmBODQueue</name>
-			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<name>SqlDBDriver</name>
+			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1501525882391</modTime>
+			<modTime>1502389673601</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ESBRealTimePriceQueue</name>
-			<value>WFMESB.Commerce.Retail.PriceMgmt.Price.RealTime.Queue.V2</value>
+			<name>SqlDBPwd</name>
+			<value>#!xu7W7YEgwO0TBErpc9E3/PS7DfFsvZqq4Os7PCmCyBpfHyM5A/nY+w==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1502833727906</modTime>
+			<type>Password</type>
+			<modTime>1502389673668</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Price</name>
-			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
+			<name>SqlDBUser</name>
+			<value>Mammoth.tibco.Dev</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863518</modTime>
+			<modTime>1502389673740</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

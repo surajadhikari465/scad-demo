@@ -27,8 +27,8 @@
             <ns0:debugTrace>true</ns0:debugTrace>
             <ns0:verifyHostName>true</ns0:verifyHostName>
             <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
-            <ns0:expectedHostName>cerd1616.wfm.pvt</ns0:expectedHostName>
-            <ns0:cert isRef="true">/Shared Resources/Certificates/.folder</ns0:cert>
+            <ns0:expectedHostName>%%BW_GLOBAL_HOSTNAME%%</ns0:expectedHostName>
+            <ns0:cert isRef="true">%%BW_GLOBAL_TRUSTED_CA_STORE%%</ns0:cert>
         </ns0:ssl>
     </config>
 </BWSharedResource>

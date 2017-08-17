@@ -2,14 +2,6 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
-			<value>C:\Certs</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862906</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>CertificateStoreLocation</name>
 			<value>LocalMachine</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -51,11 +43,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPassword</name>
-			<value>maMmOthU$er</value>
+			<value>#!92laRgLpv8KXTQJbc3+AfOVfQGeJXJOLz8ufFPXGv7o=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862130</modTime>
+			<type>Password</type>
+			<modTime>1503008075524</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsername</name>
@@ -67,19 +59,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JndiConextUrl</name>
-			<value>ssl://cerd1616.wfm.pvt:7233</value>
+			<value>ssl://cerd1617.wfm.pvt:17293</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861817</modTime>
+			<modTime>1502994603058</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>maMmothU$er</value>
+			<value>#!nmREAjQOpb3hdzLcz+agNjuLAnKnNmDnSoJ39ItVNvU=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972863686</modTime>
+			<type>Password</type>
+			<modTime>1502849979666</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiUsername</name>
@@ -91,19 +83,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SslPassword</name>
-			<value>esb</value>
+			<value>#!LQ7GBIsArmJZfTUaYB6c3Q==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972863351</modTime>
+			<type>Password</type>
+			<modTime>1502850034425</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TargetHostName</name>
-			<value>cerd1616.wfm.pvt</value>
+			<value>cerd1617.wfm.pvt</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861683</modTime>
+			<modTime>1502994899477</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TopicConnectionFactoryName</name>

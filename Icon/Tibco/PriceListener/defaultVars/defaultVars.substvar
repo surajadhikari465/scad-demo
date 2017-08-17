@@ -2,6 +2,22 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>BW_GLOBAL_HOSTNAME</name>
+			<value>cerd1617.wfm.pvt</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1502994431304</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
+			<value>file:///C:/Certs</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1502993878745</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Deployment</name>
 			<value>PriceListener1</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -40,38 +56,6 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1499972862146</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>JmsProviderUrl</name>
-			<value>tcp://localhost:7222</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972861720</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>JmsSslProviderUrl</name>
-			<value>ssl://localhost:7243</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862795</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>MammothConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;IntegratedSecurity=true;</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862625</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>NewItem</name>
-			<value>no value</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862273</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RemoteRvDaemon</name>

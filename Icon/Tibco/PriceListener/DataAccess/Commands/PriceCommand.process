@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns12="http://schema.infor.com/InforOAGIS/2" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib" xmlns:pfx7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://schemas.wfm.com/Mammoth/Error.xsd">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns12="http://schema.infor.com/InforOAGIS/2" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib" xmlns:pfx7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx6="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/Shared Resources/Schemas/Application/MammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
@@ -153,8 +153,8 @@
     <pd:group name="RepeatOnDbError">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>174</pd:x>
-        <pd:y>1</pd:y>
+        <pd:x>172</pd:x>
+        <pd:y>3</pd:y>
         <pd:width>528</pd:width>
         <pd:height>578</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -198,6 +198,13 @@
             <pd:xpath>$Start/Input/pfx5:price/pfx5:Action="Add"</pd:xpath>
         </pd:transition>
         <pd:transition>
+            <pd:from>Update Price</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
             <pd:from>DeletePrice</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
@@ -205,8 +212,9 @@
             <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Update Price</pd:from>
+            <pd:from>AddPrice</pd:from>
             <pd:to>end</pd:to>
+            <pd:xpathDescription>Otherwise</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>otherwise</pd:conditionType>
@@ -293,8 +301,8 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
         <pd:activity name="Update Price">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>419</pd:x>
-            <pd:y>87</pd:y>
+            <pd:x>417</pd:x>
+            <pd:y>89</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -458,8 +466,8 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
         <pd:activity name="WaitBeforeRetry (Sleep)">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>384</pd:x>
-            <pd:y>494</pd:y>
+            <pd:x>382</pd:x>
+            <pd:y>496</pd:y>
             <config/>
             <pd:inputBindings>
                 <ns0:SleepInputSchema>
@@ -472,8 +480,8 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
         <pd:activity name="Throw-Db-Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>516</pd:x>
-            <pd:y>485</pd:y>
+            <pd:x>514</pd:x>
+            <pd:y>487</pd:y>
             <config>
                 <faultName>Error</faultName>
             </config>
@@ -506,8 +514,8 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
         <pd:activity name="Exponential Retry">
             <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
             <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
-            <pd:x>242</pd:x>
-            <pd:y>485</pd:y>
+            <pd:x>240</pd:x>
+            <pd:y>487</pd:y>
             <config>
                 <fullsource>package DataAccess.Commands.PriceCommand;
 import java.util.*;
@@ -574,8 +582,8 @@ result=Math.pow(2,retryCount)*100L;
         <pd:activity name="AddPrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>418</pd:x>
-            <pd:y>295</pd:y>
+            <pd:x>416</pd:x>
+            <pd:y>297</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -740,8 +748,8 @@ result=Math.pow(2,retryCount)*100L;
         <pd:activity name="DeletePrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>425</pd:x>
-            <pd:y>177</pd:y>
+            <pd:x>423</pd:x>
+            <pd:y>179</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -820,16 +828,16 @@ result=Math.pow(2,retryCount)*100L;
         <pd:activity name="Null">
             <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
             <pd:resourceType>ae.activities.null</pd:resourceType>
-            <pd:x>245</pd:x>
-            <pd:y>361</pd:y>
+            <pd:x>243</pd:x>
+            <pd:y>363</pd:y>
             <config/>
             <pd:inputBindings/>
         </pd:activity>
         <pd:activity name="Throw-Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>417</pd:x>
-            <pd:y>359</pd:y>
+            <pd:x>415</pd:x>
+            <pd:y>361</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -847,8 +855,8 @@ result=Math.pow(2,retryCount)*100L;
         <pd:activity name="ConfirmBODION">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>619</pd:x>
-            <pd:y>85</pd:y>
+            <pd:x>617</pd:x>
+            <pd:y>87</pd:y>
             <config>
                 <processName>/Processors/ConfirmBODION.process</processName>
             </config>

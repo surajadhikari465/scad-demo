@@ -142,7 +142,7 @@ VALUES (?, ?, ?)</statement>
                     </parameter>
                     <parameter>
                         <parameterName>GpmMessageId</parameterName>
-                        <dataType>VARCHAR</dataType>
+                        <dataType>CHAR</dataType>
                     </parameter>
                 </Prepared_Param_DataType>
             </config>

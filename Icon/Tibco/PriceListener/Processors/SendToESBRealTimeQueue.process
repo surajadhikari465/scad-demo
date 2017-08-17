@@ -4,15 +4,15 @@
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/Shared Resources/Schemas/Application/ActivityOutput.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
-    <pd:name>Processors/SendToESB.process</pd:name>
+    <pd:name>Processors/SendToESBRealTimeQueue.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx3:ActivityOutput"/>
-    <pd:startX>110</pd:startX>
-    <pd:startY>153</pd:startY>
+    <pd:startX>65</pd:startX>
+    <pd:startY>171</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>589</pd:endX>
-    <pd:endY>150</pd:endY>
+    <pd:endX>586</pd:endX>
+    <pd:endY>172</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1499718410700</pd:targetNamespace>
@@ -30,8 +30,8 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>590</pd:x>
-        <pd:y>308</pd:y>
+        <pd:x>584</pd:x>
+        <pd:y>309</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -49,8 +49,8 @@
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>219</pd:x>
-        <pd:y>1</pd:y>
+        <pd:x>155</pd:x>
+        <pd:y>24</pd:y>
         <pd:width>261</pd:width>
         <pd:height>281</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -97,8 +97,8 @@
         <pd:activity name="Generate Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>417</pd:x>
-            <pd:y>191</pd:y>
+            <pd:x>350</pd:x>
+            <pd:y>230</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -118,8 +118,8 @@
         <pd:activity name="Sleep">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>324</pd:x>
-            <pd:y>195</pd:y>
+            <pd:x>256</pd:x>
+            <pd:y>228</pd:y>
             <config/>
             <pd:inputBindings>
                 <ns12:SleepInputSchema>
@@ -132,15 +132,15 @@
         <pd:activity name="Send to RealTime Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>320</pd:x>
-            <pd:y>85</pd:y>
+            <pd:x>255</pd:x>
+            <pd:y>107</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
                 <SessionAttributes>
                     <transacted>false</transacted>
                     <acknowledgeMode>1</acknowledgeMode>
                     <maxSessions>1</maxSessions>
-                    <destination>%%Destinations/Queues/ESBForSpliceSlaw%%</destination>
+                    <destination>%%Destinations/Queues/ESBRealTimePriceQueue%%</destination>
                 </SessionAttributes>
                 <ConfigurableHeaders>
                     <JMSDeliveryMode>%%Environment/ESBForSpiceSlaw/DeliveryMode%%</JMSDeliveryMode>
@@ -156,7 +156,7 @@
             <pd:inputBindings>
                 <ns0:ActivityInput>
                     <destinationQueue>
-                        <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Destinations/Queues/ESBForSpliceSlaw"/>
+                        <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Destinations/Queues/ESBRealTimePriceQueue"/>
                     </destinationQueue>
                     <xsl:for-each select="$Start/pfx3:ActivityOutput/pfx3:OtherProperties">
                         <OtherProperties>
