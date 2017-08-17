@@ -7,13 +7,13 @@
   DTS:CreatorName="WFM\Ben.Sims"
   DTS:DTSID="{E6A2F4FF-94CA-4763-BF6C-F62C27AAB42B}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="14.0.0500.272"
+  DTS:LastModifiedProductVersion="14.0.0600.250"
   DTS:LocaleID="1033"
   DTS:ObjectName="InforGpmDataConversion"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="143"
-  DTS:VersionGUID="{5196C73A-7936-42DA-9F73-FA1F08B55E72}">
+  DTS:VersionBuild="159"
+  DTS:VersionGUID="{E9EC177F-DE2F-462F-985D-F35F7F0C0FDE}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -26,7 +26,7 @@
         DTS:Name="ConnectionString">@[$Package::IRMADb_ConnectionString]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=IDD-FL\FLD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=IDT-SP\SPT;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -41,93 +41,96 @@
         <DTS:ConnectionManager
           DTS:Format="Delimited"
           DTS:LocaleID="1033"
+          DTS:HeaderRowsToSkip="1"
           DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Temp\RM_Prices_20170526.csv">
+          DTS:ConnectionString="C:\Temp\SP_Prices_20170815.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="3"
               DTS:TextQualified="True"
-              DTS:ObjectName="Item ID"
-              DTS:DTSID="{569C8C0F-10E8-4958-8BE3-451990EA2F9E}"
+              DTS:ObjectName="ITEM_ID"
+              DTS:DTSID="{51AF1542-62F7-4AD0-BB5D-FE7A3FF8B14E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:DataType="6"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:MaximumWidth="13"
+              DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="Price"
-              DTS:DTSID="{6E6A5406-DB6F-4C22-A5FD-FEEE549C06D2}"
+              DTS:ObjectName="SCAN_CODE"
+              DTS:DTSID="{0C8F758B-8096-4EDA-A16F-E59C1B42E493}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="STORE_NUMBER"
+              DTS:DTSID="{07571D4C-7D4C-4AD6-9A96-6EAE26BADDEE}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:MaximumWidth="20"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="Price Type"
-              DTS:DTSID="{03735113-A78F-4EFF-80FE-1DE2C4E5B377}"
+              DTS:ObjectName="PRICE_TYPE"
+              DTS:DTSID="{2C808A85-CF72-4AF3-A25B-17B20A329C98}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:DataType="135"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="17"
               DTS:TextQualified="True"
-              DTS:ObjectName="Start Date"
-              DTS:DTSID="{C897F9B6-12C7-484A-8D43-DD22E211CC8E}"
+              DTS:ObjectName="MULTIPLE"
+              DTS:DTSID="{232929B6-F284-44FF-8393-1FAA31B4B7FF}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:DataType="135"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="6"
               DTS:TextQualified="True"
-              DTS:ObjectName="End Date"
-              DTS:DTSID="{04D12769-29B6-4B02-BA6F-08DDCF6E11EC}"
+              DTS:ObjectName="PRICE"
+              DTS:DTSID="{9545F9BD-5A24-437B-B1B8-8F30479845F6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="Selling UOM"
-              DTS:DTSID="{C83BF2A0-5451-4391-ABF7-2E67E60DC480}"
+              DTS:ObjectName="SELLING_UOM"
+              DTS:DTSID="{1164F35C-ED99-450D-AF81-5292317A6AEB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:DataType="17"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="135"
               DTS:TextQualified="True"
-              DTS:ObjectName="Multiple"
-              DTS:DTSID="{FCECB9E9-3647-44AF-89B2-E9CF7E452E9E}"
+              DTS:ObjectName="START_DATE"
+              DTS:DTSID="{F810A728-14DD-47CF-93BB-7476770C3F38}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:DataType="3"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="135"
               DTS:TextQualified="True"
-              DTS:ObjectName="Location"
-              DTS:DTSID="{F83AA7E8-A263-4688-9576-4D8D14C756CA}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:DataType="72"
-              DTS:TextQualified="True"
-              DTS:ObjectName="gpmID"
-              DTS:DTSID="{F02A6285-AB70-4BE6-983C-B68725661058}"
+              DTS:ObjectName="END_DATE"
+              DTS:DTSID="{4806B8A3-B698-4C62-9165-5656269326CE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x000D__x000A_"
               DTS:DataType="135"
               DTS:TextQualified="True"
-              DTS:ObjectName="Insert Date"
-              DTS:DTSID="{8FB554E3-FB57-42C5-B46A-F4B85F728113}"
+              DTS:ObjectName="INSERT_DATE"
+              DTS:DTSID="{B485C4CC-12C8-46C3-82C7-9F0249B203DC}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -180,7 +183,7 @@
       DTS:Required="True">
       <DTS:Property
         DTS:DataType="8"
-        DTS:Name="ParameterValue">Data Source=IDD-FL\FLD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:Property>
+        DTS:Name="ParameterValue">Data Source=IDT-SP\SPT;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:Property>
     </DTS:PackageParameter>
     <DTS:PackageParameter
       DTS:CreationName=""
@@ -191,7 +194,7 @@
       DTS:Required="True">
       <DTS:Property
         DTS:DataType="8"
-        DTS:Name="ParameterValue">C:\Temp\RM_Prices_20170526.csv</DTS:Property>
+        DTS:Name="ParameterValue">C:\Temp\SP_Prices_20170815.csv</DTS:Property>
     </DTS:PackageParameter>
     <DTS:PackageParameter
       DTS:CreationName=""
@@ -226,7 +229,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="NowDateTimeUtc">
       <DTS:VariableValue
-        DTS:DataType="7">5/26/2017 7:32:11 PM</DTS:VariableValue>
+        DTS:DataType="7">8/15/2017 9:49:39 PM</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -307,26 +310,26 @@
                       cachedName="CurrencyCode"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[CurrencyCode]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[Price Type]"
+                      refId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[PRICE_TYPE]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="20"
-                      cachedName="Price Type"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price Type]" />
+                      cachedName="PRICE_TYPE"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE_TYPE]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[Selling UOM]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="5"
-                      cachedName="Selling UOM"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Selling UOM]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[Region]"
+                      refId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[SELLING_UOM]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="2"
-                      cachedName="Region"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Region]" />
+                      cachedName="SELLING_UOM"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[Region_Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="3"
+                      cachedName="Region_Code"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Region_Code]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -339,20 +342,20 @@
                   synchronousInputId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Price Type]"
+                      refId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted PRICE_TYPE]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      length="3"
-                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Price Type]"
-                      name="Converted Price Type"
+                      length="10"
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted PRICE_TYPE]"
+                      name="Converted PRICE_TYPE"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price Type]}</property>
+                          name="SourceInputColumnLineageID">#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE_TYPE]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -360,20 +363,20 @@
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Selling UOM]"
+                      refId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SELLING_UOM]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       length="3"
-                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Selling UOM]"
-                      name="Converted Selling UOM"
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SELLING_UOM]"
+                      name="Converted SELLING_UOM"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Selling UOM]}</property>
+                          name="SourceInputColumnLineageID">#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -402,20 +405,20 @@
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Region]"
+                      refId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Region_Code]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       length="2"
-                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Region]"
-                      name="Converted Region"
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Region_Code]"
+                      name="Converted Region_Code"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Region]}</property>
+                          name="SourceInputColumnLineageID">#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Region_Code]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -481,116 +484,120 @@
                   name="Flat File Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Item ID]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[ITEM_ID]"
                       cachedDataType="i4"
-                      cachedName="Item ID"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Item ID]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Item ID]" />
+                      cachedName="ITEM_ID"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[ITEM_ID]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[ITEM_ID]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[End Date]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="End Date"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[End Date]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[End Date]" />
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[SCAN_CODE]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="13"
+                      cachedName="SCAN_CODE"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[SCAN_CODE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SCAN_CODE]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Multiple]"
-                      cachedDataType="ui1"
-                      cachedName="Multiple"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Multiple]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Multiple]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Location]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[STORE_NUMBER]"
                       cachedDataType="i4"
-                      cachedName="Location"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Location]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Location]" />
+                      cachedName="STORE_NUMBER"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[STORE_NUMBER]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[STORE_NUMBER]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[gpmID]"
-                      cachedDataType="guid"
-                      cachedName="gpmID"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[gpmID]"
-                      lineageId="Package\Transfer Price\Script Component.Outputs[Output 0].Columns[gpmID]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Price Type]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[PRICE_TYPE]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="20"
-                      cachedName="Price Type"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Price Type]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price Type]" />
+                      cachedName="PRICE_TYPE"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE_TYPE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE_TYPE]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Selling UOM]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[MULTIPLE]"
+                      cachedDataType="ui1"
+                      cachedName="MULTIPLE"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[MULTIPLE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[MULTIPLE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[PRICE]"
+                      cachedDataType="cy"
+                      cachedName="PRICE"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[SELLING_UOM]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="5"
-                      cachedName="Selling UOM"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Selling UOM]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Selling UOM]" />
+                      cachedLength="2"
+                      cachedName="SELLING_UOM"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[SELLING_UOM]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Start Date]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[START_DATE]"
                       cachedDataType="dbTimeStamp"
-                      cachedName="Start Date"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Start Date]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Start Date]" />
+                      cachedName="START_DATE"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[START_DATE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[START_DATE]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Price]"
-                      cachedDataType="cy"
-                      cachedName="Price"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Price]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Insert Date]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[END_DATE]"
                       cachedDataType="dbTimeStamp"
-                      cachedName="Insert Date"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Insert Date]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Insert Date]" />
+                      cachedName="END_DATE"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[END_DATE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[END_DATE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[INSERT_DATE]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="INSERT_DATE"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[INSERT_DATE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[INSERT_DATE]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Item ID]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[ITEM_ID]"
                       dataType="i4"
-                      name="Item ID" />
+                      name="ITEM_ID" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Price]"
-                      dataType="cy"
-                      name="Price" />
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[SCAN_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      name="SCAN_CODE" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Price Type]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[STORE_NUMBER]"
+                      dataType="i4"
+                      name="STORE_NUMBER" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE_TYPE]"
                       codePage="1252"
                       dataType="str"
                       length="20"
-                      name="Price Type" />
+                      name="PRICE_TYPE" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Start Date]"
-                      dataType="dbTimeStamp"
-                      name="Start Date" />
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[MULTIPLE]"
+                      dataType="ui1"
+                      name="MULTIPLE" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[End Date]"
-                      dataType="dbTimeStamp"
-                      name="End Date" />
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE]"
+                      dataType="cy"
+                      name="PRICE" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Selling UOM]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[SELLING_UOM]"
                       codePage="1252"
                       dataType="str"
                       length="5"
-                      name="Selling UOM" />
+                      name="SELLING_UOM" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Multiple]"
-                      dataType="ui1"
-                      name="Multiple" />
-                    <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Location]"
-                      dataType="i4"
-                      name="Location" />
-                    <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[gpmID]"
-                      dataType="guid"
-                      name="gpmID" />
-                    <externalMetadataColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Insert Date]"
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[START_DATE]"
                       dataType="dbTimeStamp"
-                      name="Insert Date" />
+                      name="START_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[END_DATE]"
+                      dataType="dbTimeStamp"
+                      name="END_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[INSERT_DATE]"
+                      dataType="dbTimeStamp"
+                      name="INSERT_DATE" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -657,111 +664,111 @@
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Item ID]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[ITEM_ID]"
                       dataType="i4"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Item ID]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Item ID]"
-                      name="Item ID"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[ITEM_ID]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[ITEM_ID]"
+                      name="ITEM_ID"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price]"
-                      dataType="cy"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Price]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price]"
-                      name="Price"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price Type]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SCAN_CODE]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Price Type]"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[SCAN_CODE]"
+                      length="13"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SCAN_CODE]"
+                      name="SCAN_CODE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[STORE_NUMBER]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[STORE_NUMBER]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[STORE_NUMBER]"
+                      name="STORE_NUMBER"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE_TYPE]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[PRICE_TYPE]"
                       length="20"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price Type]"
-                      name="Price Type"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE_TYPE]"
+                      name="PRICE_TYPE"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Start Date]"
-                      dataType="dbTimeStamp"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Start Date]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Start Date]"
-                      name="Start Date"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[End Date]"
-                      dataType="dbTimeStamp"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[End Date]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[End Date]"
-                      name="End Date"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Selling UOM]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Selling UOM]"
-                      length="5"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Selling UOM]"
-                      name="Selling UOM"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Multiple]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[MULTIPLE]"
                       dataType="ui1"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Multiple]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Multiple]"
-                      name="Multiple"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[MULTIPLE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[MULTIPLE]"
+                      name="MULTIPLE"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Location]"
-                      dataType="i4"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE]"
+                      dataType="cy"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Location]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Location]"
-                      name="Location"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[PRICE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE]"
+                      name="PRICE"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Insert Date]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[SELLING_UOM]"
+                      length="2"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]"
+                      name="SELLING_UOM"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[START_DATE]"
                       dataType="dbTimeStamp"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Insert Date]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Insert Date]"
-                      name="Insert Date"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[START_DATE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[START_DATE]"
+                      name="START_DATE"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Scan Code]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[END_DATE]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[END_DATE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[END_DATE]"
+                      name="END_DATE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[INSERT_DATE]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[INSERT_DATE]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[INSERT_DATE]"
+                      name="INSERT_DATE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Region_Code]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Scan Code]"
-                      length="13"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Scan Code]"
-                      name="Scan Code"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Region]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Region]"
-                      length="2"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Region]"
-                      name="Region"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Region_Code]"
+                      length="3"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Region_Code]"
+                      name="Region_Code"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[CurrencyCode]"
@@ -778,57 +785,57 @@
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Item ID]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[ITEM_ID]"
                       dataType="i4"
-                      name="Item ID" />
+                      name="ITEM_ID" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Scan Code]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[SCAN_CODE]"
                       codePage="1252"
                       dataType="str"
                       length="13"
-                      name="Scan Code" />
+                      name="SCAN_CODE" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Price]"
-                      dataType="cy"
-                      name="Price" />
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[STORE_NUMBER]"
+                      dataType="i4"
+                      name="STORE_NUMBER" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Price Type]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[PRICE_TYPE]"
                       codePage="1252"
                       dataType="str"
                       length="20"
-                      name="Price Type" />
+                      name="PRICE_TYPE" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Start Date]"
-                      dataType="dbTimeStamp"
-                      name="Start Date" />
-                    <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[End Date]"
-                      dataType="dbTimeStamp"
-                      name="End Date" />
-                    <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Insert Date]"
-                      dataType="dbTimeStamp"
-                      name="Insert Date" />
-                    <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Selling UOM]"
-                      codePage="1252"
-                      dataType="str"
-                      length="5"
-                      name="Selling UOM" />
-                    <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Multiple]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[MULTIPLE]"
                       dataType="ui1"
-                      name="Multiple" />
+                      name="MULTIPLE" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Location]"
-                      dataType="i4"
-                      name="Location" />
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[PRICE]"
+                      dataType="cy"
+                      name="PRICE" />
                     <externalMetadataColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Region]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[SELLING_UOM]"
                       codePage="1252"
                       dataType="str"
                       length="2"
-                      name="Region" />
+                      name="SELLING_UOM" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[START_DATE]"
+                      dataType="dbTimeStamp"
+                      name="START_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[END_DATE]"
+                      dataType="dbTimeStamp"
+                      name="END_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[INSERT_DATE]"
+                      dataType="dbTimeStamp"
+                      name="INSERT_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[Region_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="Region_Code" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[CurrencyCode]"
                       codePage="1252"
@@ -843,49 +850,75 @@
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Item ID]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[ITEM_ID]"
                       dataType="i4"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Item ID]"
-                      name="Item ID" />
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[ITEM_ID]"
+                      name="ITEM_ID" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Price]"
-                      dataType="cy"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Price]"
-                      name="Price" />
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[SCAN_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[SCAN_CODE]"
+                      name="SCAN_CODE" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Price Type]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[STORE_NUMBER]"
+                      dataType="i4"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[STORE_NUMBER]"
+                      name="STORE_NUMBER" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[PRICE_TYPE]"
                       codePage="1252"
                       dataType="str"
                       length="20"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Price Type]"
-                      name="Price Type" />
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[PRICE_TYPE]"
+                      name="PRICE_TYPE" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Start Date]"
-                      dataType="dbTimeStamp"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Start Date]"
-                      name="Start Date" />
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[MULTIPLE]"
+                      dataType="ui1"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[MULTIPLE]"
+                      name="MULTIPLE" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[End Date]"
-                      dataType="dbTimeStamp"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[End Date]"
-                      name="End Date" />
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[PRICE]"
+                      dataType="cy"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[PRICE]"
+                      name="PRICE" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Selling UOM]"
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[SELLING_UOM]"
                       codePage="1252"
                       dataType="str"
-                      length="5"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Selling UOM]"
-                      name="Selling UOM" />
+                      length="2"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[SELLING_UOM]"
+                      name="SELLING_UOM" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Multiple]"
-                      dataType="ui1"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Multiple]"
-                      name="Multiple" />
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[START_DATE]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[START_DATE]"
+                      name="START_DATE" />
                     <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Location]"
-                      dataType="i4"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Location]"
-                      name="Location" />
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[END_DATE]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[END_DATE]"
+                      name="END_DATE" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[INSERT_DATE]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[INSERT_DATE]"
+                      name="INSERT_DATE" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Region_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Region_Code]"
+                      name="Region_Code" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[CurrencyCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[CurrencyCode]"
+                      name="CurrencyCode" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -898,32 +931,6 @@
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
-                    <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Region]"
-                      codePage="1252"
-                      dataType="str"
-                      length="2"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Region]"
-                      name="Region" />
-                    <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[CurrencyCode]"
-                      codePage="1252"
-                      dataType="str"
-                      length="3"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[CurrencyCode]"
-                      name="CurrencyCode" />
-                    <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Insert Date]"
-                      dataType="dbTimeStamp"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Insert Date]"
-                      name="Insert Date" />
-                    <outputColumn
-                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Scan Code]"
-                      codePage="1252"
-                      dataType="str"
-                      length="13"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[Scan Code]"
-                      name="Scan Code" />
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -1002,29 +1009,11 @@
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Multiple]"
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[MULTIPLE]"
                       cachedDataType="ui1"
-                      cachedName="Multiple"
+                      cachedName="MULTIPLE"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[Multiple]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Multiple]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Item ID]"
-                      cachedDataType="i4"
-                      cachedName="Item ID"
-                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Item ID]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Location]"
-                      cachedDataType="i4"
-                      cachedName="Location"
-                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitID]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Location]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[End Date]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="End Date"
-                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[EndDate]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[End Date]" />
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[MULTIPLE]" />
                     <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[MainPriceType]"
                       cachedDataType="wstr"
@@ -1033,26 +1022,12 @@
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[PriceType]"
                       lineageId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Outputs[Derived Column Output].Columns[MainPriceType]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted Price Type]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="Converted Price Type"
-                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[PriceTypeAttribute]"
-                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Price Type]" />
-                    <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted CurrencyCode]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="Converted CurrencyCode"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[CurrencyCode]"
                       lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted CurrencyCode]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted Selling UOM]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="Converted Selling UOM"
-                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[SellableUOM]"
-                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Selling UOM]" />
                     <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[InsertDateUtc]"
                       cachedDataType="date"
@@ -1066,24 +1041,56 @@
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[GpmID]"
                       lineageId="Package\Transfer Price\Script Component.Outputs[Output 0].Columns[gpmID]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Start Date]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="Start Date"
-                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[StartDate]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Start Date]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Price]"
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[PRICE]"
                       cachedDataType="cy"
-                      cachedName="Price"
+                      cachedName="PRICE"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[Price]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price]" />
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted Region]"
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[ITEM_ID]"
+                      cachedDataType="i4"
+                      cachedName="ITEM_ID"
+                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[ITEM_ID]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[STORE_NUMBER]"
+                      cachedDataType="i4"
+                      cachedName="STORE_NUMBER"
+                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitID]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[STORE_NUMBER]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[START_DATE]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="START_DATE"
+                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[StartDate]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[START_DATE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[END_DATE]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="END_DATE"
+                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[EndDate]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[END_DATE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted SELLING_UOM]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="Converted SELLING_UOM"
+                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[SellableUOM]"
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SELLING_UOM]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted PRICE_TYPE]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Converted PRICE_TYPE"
+                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[PriceTypeAttribute]"
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted PRICE_TYPE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted Region_Code]"
                       cachedDataType="wstr"
                       cachedLength="2"
-                      cachedName="Converted Region"
+                      cachedName="Converted Region_Code"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
-                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Region]" />
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Region_Code]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1236,12 +1243,12 @@
                   name="Derived Column Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Inputs[Derived Column Input].Columns[Price Type]"
+                      refId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Inputs[Derived Column Input].Columns[PRICE_TYPE]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="20"
-                      cachedName="Price Type"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price Type]" />
+                      cachedName="PRICE_TYPE"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE_TYPE]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1268,13 +1275,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Price Type]} == "REG" ? "REG" : "TPR"</property>
+                          name="Expression">#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE_TYPE]} == "REG" ? "REG" : "TPR"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">[Price Type] == "REG" ? "REG" : "TPR"</property>
+                          name="FriendlyExpression">PRICE_TYPE == "REG" ? "REG" : "TPR"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2440,9 +2447,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
         <NodeLayout
           Size="161,42"
           Id="Package\Transfer Price\Get IRMA Prices"
-          TopLeft="64,34" />
+          TopLeft="65,33" />
         <NodeLayout
-          Size="225,42"
+          Size="219,42"
           Id="Package\Transfer Price\REG, TPR, and InsertDateUtc"
           TopLeft="60,130" />
         <NodeLayout
@@ -2458,7 +2465,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
           Id="Package\Transfer Price\Flat File Destination"
           TopLeft="557,233" />
         <NodeLayout
-          Size="180,42"
+          Size="182,42"
           Id="Package\Transfer Price\Insert Into Mammoth"
           TopLeft="105,364" />
         <NodeLayout
@@ -2471,9 +2478,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-191,49"
+              EndConnector="-194,49"
               Start="0,0"
-              End="-191,41.5">
+              End="-194,41.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -2484,13 +2491,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
                     Point2="0,24.5"
                     Point3="-4,24.5" />
                   <mssgle:LineSegment
-                    End="-187,24.5" />
+                    End="-190,24.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="-187,24.5"
-                    Point2="-191,24.5"
-                    Point3="-191,28.5" />
+                    Point1="-190,24.5"
+                    Point2="-194,24.5"
+                    Point3="-194,28.5" />
                   <mssgle:LineSegment
-                    End="-191,41.5" />
+                    End="-194,41.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2501,18 +2508,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[OLE DB Source Output]"
-          TopLeft="225,57.5">
+          TopLeft="226,57">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="55,0"
+              EndConnector="54,0"
               Start="0,0"
-              End="47.5,0">
+              End="46.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="47.5,0" />
+                    End="46.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2549,9 +2556,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-202.5,91"
+              EndConnector="-201.5,91"
               Start="0,0"
-              End="-202.5,83.5">
+              End="-201.5,83.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -2562,13 +2569,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
                     Point2="0,45.5"
                     Point3="-4,45.5" />
                   <mssgle:LineSegment
-                    End="-198.5,45.5" />
+                    End="-197.5,45.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="-198.5,45.5"
-                    Point2="-202.5,45.5"
-                    Point3="-202.5,49.5" />
+                    Point1="-197.5,45.5"
+                    Point2="-201.5,45.5"
+                    Point3="-201.5,49.5" />
                   <mssgle:LineSegment
-                    End="-202.5,83.5" />
+                    End="-201.5,83.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2579,13 +2586,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[Derived Column Output]"
-          TopLeft="172.5,172">
+          TopLeft="169.5,172">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-25,54"
+              EndConnector="-22,54"
               Start="0,0"
-              End="-25,46.5">
+              End="-22,46.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -2596,13 +2603,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
                     Point2="0,27"
                     Point3="-4,27" />
                   <mssgle:LineSegment
-                    End="-21,27" />
+                    End="-18,27" />
                   <mssgle:CubicBezierSegment
-                    Point1="-21,27"
-                    Point2="-25,27"
-                    Point3="-25,31" />
+                    Point1="-18,27"
+                    Point2="-22,27"
+                    Point3="-22,31" />
                   <mssgle:LineSegment
-                    End="-25,46.5" />
+                    End="-22,46.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
