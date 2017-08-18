@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns03="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns5="http://www.realmed.com/CommonLE/namespace/Public/Common/RequestHeader.xsd" xmlns:ns6="http://www.macys.com/CommonLE/namespace/Public/Common/RequestHeader.xsd" xmlns:ns7="http://www.tibco.com/Customer/CommonLE/namespace/Public/Common/CustomerRequestHeader.xsd" xmlns:pfx="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:ns02="www.tibco.com/plugin/Sleep" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns4="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns3="http://www.nscorp.com/CommonLE/namespace/Public/Common/RequestHeader.xsd" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.realmed.com/CommonLE/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx4="http://www.nscorp.com/CommonLE/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/ExceptionRequestError.xsd" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:pfx7="http://www.tibco.com/Customer/CommonLE/namespace/Public/Exception/CustomerExceptionRequest.xsd" xmlns:pfx6="http://www.macys.com/CommonLE/namespace/Public/Exception/ExceptionRequest.xsd">
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/ExceptionRequestError.xsd" schemaLocation="/SharedResources/SchemaDefinitions/CLE2007/ExceptionRequestError.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/Customer/CommonLE/namespace/Public/Exception/CustomerExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/CLE2007/Exception/CustomerExceptionRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
+    <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
+    <pd:name>Processes/Common/JMS/PublishOntoDeadLetterQ.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="DeadLetterInput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx8:request"/>
+                    <xsd:element name="OtherProperties">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="applicationName" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="CorrelationID" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="BusinessUnitID" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="FileName" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Source" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Target" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="ReportType" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="BatchCount" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="BatchNumber" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="SequenceNumber" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="WorkStationID" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="JMS_TIBCO_COMPRESS" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="SequenceID" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="TLogID" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Timestamp" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>167</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>667</pd:endX>
+    <pd:endY>164</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1232144198015</pd:targetNamespace>
+    <pd:group name="send with retries">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>133</pd:x>
+        <pd:y>2</pd:y>
+        <pd:width>407</pd:width>
+        <pd:height>309</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>error_count</pd:indexSlot>
+            <pd:errorCondition>$error_count &gt;=  $_globalVariables/pfx2:GlobalVariables/Tuning/UtilityServices/LoggingAndExceptions/JmsSendRetryMaxCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Send to DeadLetterQ</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send to DeadLetterQ</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send to DeadLetterQ</pd:from>
+            <pd:to>Log</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Send to DeadLetterQ">
+            <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+            <pd:x>249</pd:x>
+            <pd:y>66</pd:y>
+            <config>
+                <PermittedMessageType>XML Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>1</maxSessions>
+                    <destination/>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>%%Environment/DeadLetter/DeliveryMode%%</JMSDeliveryMode>
+                    <JMSExpiration>%%Environment/DeadLetter/JMSExpiration%%</JMSExpiration>
+                    <JMSPriority>%%Environment/DeadLetter/JMSPriority%%</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/Connections/TCP/JMS/SB1 Active Price Connection.sharedjmscon</ConnectionReference>
+                <ApplicationProperties>/SharedResources/Properties/DeadLetterExceptionProps.sharedjmsapp</ApplicationProperties>
+                <InDataxsdString ref="pfx8:request"/>
+            </config>
+            <pd:inputBindings>
+                <ns03:ActivityInput>
+                    <xsl:variable name="TransID" select="if ((contains($Start/DeadLetterInput/pfx8:request/pfx8:transactionID,$_globalVariables/pfx2:GlobalVariables/Environment/DeadLetter/CountSeperator))&#xA;and&#xA;((string-length(substring-after($Start/DeadLetterInput/pfx8:request/pfx8:transactionID,$_globalVariables/pfx2:GlobalVariables/Environment/DeadLetter/CountSeperator)))>0 )&#xA;&#xA;) then&#xA;&#xA;concat(substring-before($Start/DeadLetterInput/pfx8:request/pfx8:transactionID,$_globalVariables/pfx2:GlobalVariables/Environment/DeadLetter/CountSeperator),&#xA;$_globalVariables/pfx2:GlobalVariables/Environment/DeadLetter/CountSeperator, &#xA;(substring-after($Start/DeadLetterInput/pfx8:request/pfx8:transactionID,$_globalVariables/pfx2:GlobalVariables/Environment/DeadLetter/CountSeperator)+1))&#xA;else&#xA;concat($Start/DeadLetterInput/pfx8:request/pfx8:transactionID,$_globalVariables/pfx2:GlobalVariables/Environment/DeadLetter/CountSeperator,0)"/>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/DeadLetterInput/pfx8:request/pfx8:exception/pfx8:system)">
+                            <destinationQueue>
+                                <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Destinations/Queues/DeadLetter/SystemError"/>
+                            </destinationQueue>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <destinationQueue>
+                                <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Destinations/Queues/DeadLetter/NotifyError"/>
+                            </destinationQueue>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <OtherProperties>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/applicationName">
+                            <applicationName>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/applicationName"/>
+                            </applicationName>
+                        </xsl:if>
+                        <ApplicationID>
+                            <xsl:value-of select="$Start/DeadLetterInput/pfx8:request/pfx8:applicationID"/>
+                        </ApplicationID>
+                        <TransactionID>
+                            <xsl:value-of select="$TransID"/>
+                        </TransactionID>
+                        <CorrelationID>
+                            <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/CorrelationID"/>
+                        </CorrelationID>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/BusinessUnitID">
+                            <BusinessUnitID>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/BusinessUnitID"/>
+                            </BusinessUnitID>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/FileName">
+                            <FileName>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/FileName"/>
+                            </FileName>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/Source">
+                            <Source>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/Source"/>
+                            </Source>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/Target">
+                            <Target>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/Target"/>
+                            </Target>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/ReportType">
+                            <ReportType>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/ReportType"/>
+                            </ReportType>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/BatchCount">
+                            <BatchCount>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/BatchCount"/>
+                            </BatchCount>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/BatchNumber">
+                            <BatchNumber>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/BatchNumber"/>
+                            </BatchNumber>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/JMS_TIBCO_COMPRESS">
+                            <JMS_TIBCO_COMPRESS>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/JMS_TIBCO_COMPRESS"/>
+                            </JMS_TIBCO_COMPRESS>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/SequenceNumber">
+                            <SequenceNumber>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/SequenceNumber"/>
+                            </SequenceNumber>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/WorkStationID">
+                            <WorkstationID>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/WorkStationID"/>
+                            </WorkstationID>
+                        </xsl:if>
+                        <IconMessageID>
+                            <xsl:value-of select="$TransID"/>
+                        </IconMessageID>
+                        <TrackingID>
+                            <xsl:value-of select="$TransID"/>
+                        </TrackingID>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/SequenceID">
+                            <SequenceID>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/SequenceID"/>
+                            </SequenceID>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/TLogID">
+                            <TLogID>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/TLogID"/>
+                            </TLogID>
+                        </xsl:if>
+                        <xsl:if test="$Start/DeadLetterInput/OtherProperties/Timestamp">
+                            <Timestamp>
+                                <xsl:value-of select="$Start/DeadLetterInput/OtherProperties/Timestamp"/>
+                            </Timestamp>
+                        </xsl:if>
+                    </OtherProperties>
+                    <Body>
+                        <pfx8:request>
+                            <pfx8:applicationID>
+                                <xsl:value-of select="$Start/DeadLetterInput/pfx8:request/pfx8:applicationID"/>
+                            </pfx8:applicationID>
+                            <pfx8:transactionID>
+                                <xsl:value-of select="$TransID"/>
+                            </pfx8:transactionID>
+                            <pfx8:correlationID>
+                                <xsl:value-of select="$Start/DeadLetterInput/pfx8:request/pfx8:correlationID"/>
+                            </pfx8:correlationID>
+                            <pfx8:failedSystemName>
+                                <xsl:value-of select="$Start/DeadLetterInput/pfx8:request/pfx8:failedSystemName"/>
+                            </pfx8:failedSystemName>
+                            <pfx8:timeInterval>
+                                <xsl:value-of select="$Start/DeadLetterInput/pfx8:request/pfx8:timeInterval"/>
+                            </pfx8:timeInterval>
+                            <xsl:if test="$Start/DeadLetterInput/pfx8:request/pfx8:errorCode">
+                                <pfx8:errorCode>
+                                    <xsl:value-of select="$Start/DeadLetterInput/pfx8:request/pfx8:errorCode"/>
+                                </pfx8:errorCode>
+                            </xsl:if>
+                            <pfx8:errorMessage>
+                                <xsl:value-of select="$Start/DeadLetterInput/pfx8:request/pfx8:errorMessage"/>
+                            </pfx8:errorMessage>
+                            <xsl:if test="$Start/DeadLetterInput/pfx8:request/pfx8:stackTrace">
+                                <pfx8:stackTrace>
+                                    <xsl:value-of select="$Start/DeadLetterInput/pfx8:request/pfx8:stackTrace"/>
+                                </pfx8:stackTrace>
+                            </xsl:if>
+                            <pfx8:currentTimestamp>
+                                <xsl:value-of select="$Start/DeadLetterInput/pfx8:request/pfx8:currentTimestamp"/>
+                            </pfx8:currentTimestamp>
+                            <xsl:copy-of select="$Start/DeadLetterInput/pfx8:request/pfx8:exception"/>
+                        </pfx8:request>
+                    </Body>
+                </ns03:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>480</pd:x>
+            <pd:y>210</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <ns1:ActivityInput/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Log">
+            <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+            <pd:resourceType>ae.activities.log</pd:resourceType>
+            <pd:x>250</pd:x>
+            <pd:y>208</pd:y>
+            <config>
+                <role>User</role>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput>
+                    <message>
+                        <xsl:value-of select="concat( &quot;Error trying to send ExceptionRequest to CLE JMS Queue: &#xD;&#xA; &quot; , &#xA;&#x9;&#x9;tib:render-xml($_error_Send-to-DeadLetterQ/ActivityErrors, false() , true()) )"/>
+                    </message>
+                    <msgCode>
+                        <xsl:value-of select="&quot;CLE-EXCEPTION-QSEND-ERROR&quot;"/>
+                    </msgCode>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>369</pd:x>
+            <pd:y>209</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns02:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Tuning/UtilityServices/LoggingAndExceptions/JmsSendRetryDelayMillis"/>
+                    </IntervalInMillisec>
+                </ns02:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Handle Failure">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>338</pd:x>
+        <pd:y>419</pd:y>
+        <config>
+            <processName>/Processes/Common/Helper/HandleSendFailure.process</processName>
+        </config>
+        <pd:inputBindings>
+            <LogExceptionRecord>
+                <FilePath>
+                    <xsl:value-of select="concat($_globalVariables/pfx2:GlobalVariables/Environment/CommonLE/MIG_ExceptionDir,  &#xA;$_processContext/ns:ProcessContext/EngineName, tib:timestamp(),  &#xA;$_globalVariables/pfx2:GlobalVariables/Environment/CommonLE/ExceptionFileExtention)"/>
+                </FilePath>
+                <Record>
+                    <xsl:value-of select="tib:render-xml($_error_Send-to-DeadLetterQ/ActivityErrors, false(), false())"/>
+                </Record>
+            </LogExceptionRecord>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>send with retries</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>send with retries</pd:from>
+        <pd:to>Handle Failure</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Handle Failure</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>send with retries</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

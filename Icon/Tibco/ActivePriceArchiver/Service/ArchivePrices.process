@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothDbPrice.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
+    <pd:name>Service/ArchivePrices.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:price"/>
+    <pd:startX>99</pd:startX>
+    <pd:startY>290</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>827</pd:endX>
+    <pd:endY>285</pd:endY>
+    <pd:errorSchemas>
+        <Error ref="pfx3:ExceptionRequest"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1502127828895</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>223</pd:x>
+        <pd:y>34</pd:y>
+        <pd:width>443</pd:width>
+        <pd:height>445</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>retryIndex</pd:indexSlot>
+            <pd:errorCondition>$retryIndex=$_globalVariables/ns:GlobalVariables/MammothDb/CommandRetryCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>JDBC Update</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Update</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Update</pd:from>
+            <pd:to>Java Code</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-52429</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Java Code</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-52429</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="JDBC Update">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>425</pd:x>
+            <pd:y>128</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/Database/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <statement>INSERT INTO gpm.ActivePriceSentArchive (Region, PriceID)
+VALUES (?, ?)</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>Region</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceID</parameterName>
+                        <dataType>BIGINT</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <Region>
+                        <xsl:value-of select="$Start/pfx:price/pfx:Region"/>
+                    </Region>
+                    <PriceID>
+                        <xsl:value-of select="$Start/pfx:price/pfx:PriceID"/>
+                    </PriceID>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>431</pd:x>
+            <pd:y>388</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="round($Java-Code/javaCodeActivityOutput/exponentialDelayInSeconds)"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>574</pd:x>
+            <pd:y>389</pd:y>
+            <config>
+                <faultName>Error</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns2:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </message>
+                    <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                    <data>
+                        <pfx3:ExceptionRequest>
+                            <ns3:Header>
+                                <ns3:ApplicationID>
+                                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationID"/>
+                                </ns3:ApplicationID>
+                                <ns3:Timestamp>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </ns3:Timestamp>
+                            </ns3:Header>
+                            <ExceptionCode>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </ExceptionCode>
+                        </pfx3:ExceptionRequest>
+                    </data>
+                </ns2:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Java Code">
+            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+            <pd:description>Determines how long to sleep based on an exponential backoff formula.</pd:description>
+            <pd:x>429</pd:x>
+            <pd:y>261</pd:y>
+            <config>
+                <fileName>ArchivePricesJavaCode</fileName>
+                <packageName>Processes.Application.ArchivePrices</packageName>
+                <fullsource>package Processes.Application.ArchivePrices;
+import java.util.*;
+import java.io.*;
+public class ArchivePricesJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected int retryCount = 0;
+	protected double maxDelayInSeconds = 0.0d;
+	protected double exponentialDelayInSeconds = 0.0d;
+	public int getretryCount() {
+		return retryCount;
+	}
+	public void setretryCount(int val) {
+		retryCount = val;
+	}
+	public double getmaxDelayInSeconds() {
+		return maxDelayInSeconds;
+	}
+	public void setmaxDelayInSeconds(double val) {
+		maxDelayInSeconds = val;
+	}
+	public double getexponentialDelayInSeconds() {
+		return exponentialDelayInSeconds;
+	}
+	public void setexponentialDelayInSeconds(double val) {
+		exponentialDelayInSeconds = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ArchivePricesJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : int retryCount
+	In  : double maxDelayInSeconds
+	Out : double exponentialDelayInSeconds
+* Available Variables: DO NOT MODIFY *****/
+double delayInSeconds = ((1d / 2d) * (Math.pow(2d, retryCount) - 1d));
+exponentialDelayInSeconds = maxDelayInSeconds &lt; delayInSeconds ? Integer.valueOf((int) Math.round(maxDelayInSeconds)) : Integer.valueOf((int) Math.round(delayInSeconds));
+}
+}
+</fullsource>
+                <inputData>
+                    <row>
+                        <fieldName>retryCount</fieldName>
+                        <fieldType>int</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>maxDelayInSeconds</fieldName>
+                        <fieldType>double</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                </inputData>
+                <outputData>
+                    <row>
+                        <fieldName>exponentialDelayInSeconds</fieldName>
+                        <fieldType>double</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                </outputData>
+                <byteCode>
+                    <class>
+                        <name>ArchivePricesJavaCode</name>
+                        <byteCode>yv66vgAAADMAQAkADQAqCQANACsJAA0ALAoADgAtBj/gAAAAAAAABkAAAAAAAAAACgAuAC8KAC4AMAoAMQAyCgAxADMHADQHADUBAApyZXRyeUNvdW50AQABSQEAEW1heERlbGF5SW5TZWNvbmRzAQABRAEAGWV4cG9uZW50aWFsRGVsYXlJblNlY29uZHMBAA1nZXRyZXRyeUNvdW50AQADKClJAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADXNldHJldHJ5Q291bnQBAAQoSSlWAQAUZ2V0bWF4RGVsYXlJblNlY29uZHMBAAMoKUQBABRzZXRtYXhEZWxheUluU2Vjb25kcwEABChEKVYBABxnZXRleHBvbmVudGlhbERlbGF5SW5TZWNvbmRzAQAcc2V0ZXhwb25lbnRpYWxEZWxheUluU2Vjb25kcwEABjxpbml0PgEAAygpVgEABmludm9rZQEADVN0YWNrTWFwVGFibGUHADQHADYBAApFeGNlcHRpb25zBwA3AQAKU291cmNlRmlsZQEAGkFyY2hpdmVQcmljZXNKYXZhQ29kZS5qYXZhDAAPABAMABEAEgwAEwASDAAgACEHADgMADkAOgwAOwA8BwA2DAA9AD4MAD8AFQEAOVByb2Nlc3Nlcy9BcHBsaWNhdGlvbi9BcmNoaXZlUHJpY2VzL0FyY2hpdmVQcmljZXNKYXZhQ29kZQEAEGphdmEvbGFuZy9PYmplY3QBABFqYXZhL2xhbmcvSW50ZWdlcgEAE2phdmEvbGFuZy9FeGNlcHRpb24BAA5qYXZhL2xhbmcvTWF0aAEAA3BvdwEABShERClEAQAFcm91bmQBAAQoRClKAQAHdmFsdWVPZgEAFihJKUxqYXZhL2xhbmcvSW50ZWdlcjsBAAhpbnRWYWx1ZQAhAA0ADgAAAAMABAAPABAAAAAEABEAEgAAAAQAEwASAAAACAABABQAFQABABYAAAAdAAEAAQAAAAUqtAABrAAAAAEAFwAAAAYAAQAAAAoAAQAYABkAAQAWAAAAIgACAAIAAAAGKhu1AAGxAAAAAQAXAAAACgACAAAADQAFAA4AAQAaABsAAQAWAAAAHQACAAEAAAAFKrQAAq8AAAABABcAAAAGAAEAAAAQAAEAHAAdAAEAFgAAACIAAwADAAAABiontQACsQAAAAEAFwAAAAoAAgAAABMABQAUAAEAHgAbAAEAFgAAAB0AAgABAAAABSq0AAOvAAAAAQAXAAAABgABAAAAFgABAB8AHQABABYAAAAiAAMAAwAAAAYqJ7UAA7EAAAABABcAAAAKAAIAAAAZAAUAGgABACAAIQABABYAAAA8AAMAAQAAABQqtwAEKgO1AAEqDrUAAioOtQADsQAAAAEAFwAAABYABQAAABwABAAGAAkABwAOAAgAEwAdAAEAIgAhAAIAFgAAAIEABgADAAAAOhQABRQAByq0AAGHuAAJD2drSCoqtAACJ5icABEqtAACuAAKiLgAC6cACye4AAqIuAALtgAMh7UAA7EAAAACABcAAAAOAAMAAAAkABIAJQA5ACYAIwAAACEAAv8AKgACBwAkAwABBwAk/wAHAAIHACQDAAIHACQHACUAJgAAAAQAAQAnAAEAKAAAAAIAKQ==</byteCode>
+                    </class>
+                </byteCode>
+            </config>
+            <pd:inputBindings>
+                <javaCodeActivityInput>
+                    <retryCount>
+                        <xsl:value-of select="$retryIndex"/>
+                    </retryCount>
+                    <maxDelayInSeconds>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/MammothDb/MaxRetryDelayInSeconds"/>
+                    </maxDelayInSeconds>
+                </javaCodeActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>CleClient</name>
+			<value>3.1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1502125177358</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Encrypter</name>
+			<value>1.0</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1502125176875</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>R10Schemas</name>
+			<value>5.1.0</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1502125177424</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Utilities</name>
+			<value>1.0</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1502125178562</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>WFMSchemas</name>
+			<value>1.2.5</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1502125177824</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

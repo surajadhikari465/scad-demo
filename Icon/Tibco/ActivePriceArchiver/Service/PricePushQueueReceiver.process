@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothDbPrice.xsd"/>
+    <pd:name>Service/PricePushQueueReceiver.process</pd:name>
+    <pd:startName>Archive Active Price Reciever</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Archive Active Price Reciever">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>135</pd:x>
+        <pd:y>97</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>23</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/Queues/ArchiveActivePriceQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Connections/TCP/JMS/SB1 Active Price Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>884</pd:endX>
+    <pd:endY>97</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1502126172637</pd:targetNamespace>
+    <pd:activity name="ArchivePrices">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>465</pd:x>
+        <pd:y>93</pd:y>
+        <config>
+            <processName>/Service/ArchivePrices.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$ParseActivePriceXML/ns1:price"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>213</pd:x>
+        <pd:y>246</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Call SendException">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>391</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/Processes/Common/CLE/SendException.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:ExceptionRequest>
+                <pfx:Header>
+                    <xsl:if test="$_error/ns2:ErrorReport/Msg">
+                        <pfx:Message>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                        </pfx:Message>
+                    </xsl:if>
+                </pfx:Header>
+                <pfx:ExceptionCode>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                </pfx:ExceptionCode>
+                <xsl:if test="$_error/ns2:ErrorReport/StackTrace">
+                    <pfx:StackTrace>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                    </pfx:StackTrace>
+                </xsl:if>
+            </pfx:ExceptionRequest>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send To Deadletter Queue">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>567</pd:x>
+        <pd:y>255</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/Processes/Common/JMS/PublishOntoDeadLetterQ.process</processName>
+        </config>
+        <pd:inputBindings>
+            <DeadLetterInput>
+                <ns4:request>
+                    <ns4:applicationID>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/ApplicationID"/>
+                    </ns4:applicationID>
+                    <ns4:transactionID>
+                        <xsl:value-of select="$Archive-Active-Price-Reciever/ns:ActivityOutput/JMSHeaders/ns:JMSMessageID"/>
+                    </ns4:transactionID>
+                    <ns4:correlationID>
+                        <xsl:value-of select="$Archive-Active-Price-Reciever/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
+                    </ns4:correlationID>
+                    <ns4:failedSystemName>
+                        <xsl:value-of select="&quot;ESB-DATA-JDBC&quot;"/>
+                    </ns4:failedSystemName>
+                    <ns4:timeInterval>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/DLQ/TimeInterval"/>
+                    </ns4:timeInterval>
+                    <xsl:if test="$_error/ns2:ErrorReport/MsgCode">
+                        <ns4:errorCode>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                        </ns4:errorCode>
+                    </xsl:if>
+                    <ns4:errorMessage>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                    </ns4:errorMessage>
+                    <xsl:if test="$_error/ns2:ErrorReport/StackTrace">
+                        <ns4:stackTrace>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                        </ns4:stackTrace>
+                    </xsl:if>
+                    <ns4:currentTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns4:currentTimestamp>
+                    <ns4:exception>
+                        <ns4:system>
+                            <ns4:payload>
+                                <xsl:value-of select="$Archive-Active-Price-Reciever/ns:ActivityOutput/Body"/>
+                            </ns4:payload>
+                            <ns4:destinationQueue>
+                                <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Destinations/Queues/ArchiveActivePriceQueue"/>
+                            </ns4:destinationQueue>
+                            <ns4:isEncrypted>
+                                <xsl:value-of select="&quot;false&quot;"/>
+                            </ns4:isEncrypted>
+                            <ns4:toRecipient>
+                                <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/Notification/To"/>
+                            </ns4:toRecipient>
+                            <ns4:ccRecipient>
+                                <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/Notification/cC"/>
+                            </ns4:ccRecipient>
+                        </ns4:system>
+                    </ns4:exception>
+                </ns4:request>
+                <OtherProperties/>
+            </DeadLetterInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ConfirmFailure">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>747</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <ConfirmEvent>Archive Active Price Reciever</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ConfirmSuccess">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>761</pd:x>
+        <pd:y>97</pd:y>
+        <config>
+            <ConfirmEvent>Archive Active Price Reciever</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ParseActivePriceXML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>310</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="ns1:price"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Archive-Active-Price-Reciever/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CLE Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>617</pd:x>
+        <pd:y>96</pd:y>
+        <config>
+            <processName>/Processes/Common/CLE/SendLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx:LogRequest>
+                <pfx:Header>
+                    <xsl:if test="$Archive-Active-Price-Reciever/ns:ActivityOutput/OtherProperties/MessageId">
+                        <pfx:TransactionID>
+                            <xsl:value-of select="$Archive-Active-Price-Reciever/ns:ActivityOutput/OtherProperties/MessageId"/>
+                        </pfx:TransactionID>
+                    </xsl:if>
+                    <xsl:if test="$Archive-Active-Price-Reciever/ns:ActivityOutput/OtherProperties/JMSCorrelationID">
+                        <pfx:CorrelationID>
+                            <xsl:value-of select="$Archive-Active-Price-Reciever/ns:ActivityOutput/OtherProperties/JMSCorrelationID"/>
+                        </pfx:CorrelationID>
+                    </xsl:if>
+                    <pfx:Message>
+                        <xsl:value-of select="$Archive-Active-Price-Reciever/ns:ActivityOutput/Body"/>
+                    </pfx:Message>
+                </pfx:Header>
+                <pfx:Audit>
+                    <xsl:value-of select="0"/>
+                </pfx:Audit>
+                <pfx:LogLevel>
+                    <xsl:value-of select="1"/>
+                </pfx:LogLevel>
+            </pfx:LogRequest>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>ArchivePrices</pd:from>
+        <pd:to>CLE Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Call SendException</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call SendException</pd:from>
+        <pd:to>Send To Deadletter Queue</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConfirmSuccess</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send To Deadletter Queue</pd:from>
+        <pd:to>ConfirmFailure</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConfirmFailure</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Archive Active Price Reciever</pd:from>
+        <pd:to>ParseActivePriceXML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseActivePriceXML</pd:from>
+        <pd:to>ArchivePrices</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CLE Log</pd:from>
+        <pd:to>ConfirmSuccess</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

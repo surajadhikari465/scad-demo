@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Mammoth</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>%%Connections/JDBC/SqlServer/SqlDBDriver%%</driver>
+        <maxConnections>10</maxConnections>
+        <loginTimeout>0</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>%%MammothConnectionString%%</location>
+        <user>%%Connections/JDBC/SqlServer/SqlDBUser%%</user>
+        <password>%%Connections/JDBC/SqlServer/SqlDBPwd%%</password>
+    </config>
+</BWSharedResource>
