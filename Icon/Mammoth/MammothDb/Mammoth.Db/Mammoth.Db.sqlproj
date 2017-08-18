@@ -661,6 +661,12 @@
     <Build Include="gpm\Views\Prices.sql" />
     <Build Include="gpm\Tables\ActivePricesStaging.sql" />
     <Build Include="gpm\Tables\ActivePriceSentArchive.sql" />
+    <Build Include="gpm\Stored Procedures\PurgeExpiredRegPrices.sql" />
+    <Build Include="gpm\Stored Procedures\PurgeExpiredTprPrices.sql" />
+    <Build Include="gpm\Stored Procedures\PurgeExpiredRegAndTprPrices.sql" />
+    <None Include="Jobs\MAMMOTH . GPM . Purge Expired REG and TPR Prices.sql" />
+    <Build Include="gpm\Stored Procedures\PurgePriceHistory.sql" />
+    <None Include="Jobs\MAMMOTH . GPM . Purge Price History.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
