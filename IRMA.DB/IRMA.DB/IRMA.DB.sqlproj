@@ -134,6 +134,7 @@
     <Folder Include="SQL Agent Job" />
     <Folder Include="Scripts\22494-AddItemStatusCodeToEIM" />
     <Folder Include="Scripts\22441-DesignUserExport" />
+    <Folder Include="Scripts\20620 - AddAppConfigForOrderingBannerStore" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3225,13 +3226,16 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PDX_FutureCostDeltaFile.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.rollback.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21460 - PostDeploy Schema PopData - Add IRMA Instance Data Flag for GPM.sql" />
-    <Build Include="SQL Agent Job\VIM - Infor Data Feeds - Future Cost %28NC).sql" />
+    <None Include="SQL Agent Job\VIM - Infor Data Feeds - Future Cost %28NC).sql" />
     <Build Include="Schema\dbo\Tables\Tables1\StoreItemExtended.sql" />
     <None Include="Scripts\22441-DesignUserExport\DeleteOldAppConfigKeys.sql" />
     <None Include="Scripts\22441-DesignUserExport\Insert-NewAppConfigKeys.sql" />
     <None Include="Scripts\22441-DesignUserExport\UpdateExistingAppConfigKeys.sql" />
     <None Include="Scripts\22494-AddItemStatusCodeToEIM\AddItemStatusCodeToEIM.sql" />
     <None Include="Scripts\22494-AddItemStatusCodeToEIM\AddItemStatusCodeToEIM.RollBack.sql" />
+    <Build Include="Schema\infor\Tables\OrderExpectedDateChangeQueue.sql" />
+    <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.RollBack.sql" />
+    <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

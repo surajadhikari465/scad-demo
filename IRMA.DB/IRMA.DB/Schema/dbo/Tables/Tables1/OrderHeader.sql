@@ -223,6 +223,9 @@ AS
 -- 11/26/2012	BAS		8133	Added OrderRefreshCostSource_ID for tracking
 --								where UpdateOrderRefreshCost is called on
 --								an order
+-- 08/17/2017   MZ      20620   Register an order for a WFM ordering banner store to
+--                              the [infor].[OrderExpectedDateChangeQueue] table when
+--                              its expected date changes before the order is closed.
 -- **************************************************************************
 
 BEGIN
@@ -315,6 +318,27 @@ BEGIN
 			SELECT @Error_No = @@ERROR
 	END
 
+	--
+	-- Infor Export 
+	--
+	IF @Error_No = 0
+	BEGIN
+		INSERT INTO	infor.OrderExpectedDateChangeQueue (OrderHeader_ID, InsertDate)
+		SELECT		Inserted.OrderHeader_ID, GETDATE()
+		FROM		INSERTED		
+		INNER JOIN	DELETED	ON	Deleted.OrderHeader_ID = Inserted.OrderHeader_ID
+		INNER JOIN  Vendor psl on Inserted.PurchaseLocation_ID = psl.Vendor_ID
+		INNER JOIN  Store s on s.Store_No = psl.Store_no 
+		WHERE       ISNULL(Inserted.Expected_Date, 0) <> ISNULL(Deleted.Expected_Date, 0)
+		AND         Inserted.Sent = 1
+		AND         Inserted.OrderType_ID <> 3
+		AND         Inserted.OriginalCloseDate is null
+		AND         (s.mega_store = 1 
+		 OR			 s.BusinessUnit_ID in (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('WFMBannerStoresForOrdering', 'IRMA CLIENT'), '|')))	
+
+		SELECT @Error_No = @@ERROR
+	END
+
 	IF @Error_No <> 0
 	BEGIN
 		DECLARE @Severity smallint
@@ -322,7 +346,6 @@ BEGIN
 		RAISERROR ('OrderHeaderUpdate trigger failed with @@ERROR: %d', @Severity, 1, @Error_No)
 	END
 END
-
 
 GO
 CREATE TRIGGER OrderHeaderAdd
