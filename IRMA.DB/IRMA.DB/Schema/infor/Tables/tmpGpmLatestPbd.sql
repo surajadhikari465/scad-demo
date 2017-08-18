@@ -2,12 +2,14 @@
 (
 	[Item_Key] [int] NOT NULL,
 	[Store_No] [int] NOT NULL,
-	[BusinessUnit_ID] [int] NOT NULL,
-	[Region] [varchar](2) NOT NULL,
-	[PriceBatchDetailId] [int] NULL,
-	CONSTRAINT [PK_LatestPBD] PRIMARY KEY CLUSTERED 
-	(
-		[Item_Key] ASC,
-		[Store_No] ASC
-	)
+	[PriceBatchDetailId] [int] NOT NULL, 
+    CONSTRAINT [PK_tmpGpmLatestPbd] PRIMARY KEY ([PriceBatchDetailId])
 )
+
+GO
+
+CREATE INDEX [IX_tmpGpmLatestPbd_StoreNoItemKey] ON [infor].[tmpGpmLatestPbd] 
+	(
+		[Store_No] ASC,
+		[Item_Key] ASC
+	)
