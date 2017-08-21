@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyIdentifier/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1" xmlns:pit="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyIdentifierType/V2" targetNamespace="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyIdentifier/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyIdentifierType/V2" schemaLocation="PartyIdentifierType.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="partyIdentifier" type="PartyIdentifierType"/>
+	<xs:element name="partyIdentifiersType" type="PartyIdentifiersType"/>
+	<xs:complexType name="PartyIdentifierType">
+		<xs:annotation>
+			<xs:documentation>Identifier number/string for Party</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+		<xs:element name="type" type="pit:PartyIdentifierTypeType" minOccurs="0"/>
+			<xs:element name="value" type="prf:PartyIdValueType"/>			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartyIdentifiersType">
+		<xs:sequence>	
+			<xs:element name="identifier" type="PartyIdentifierType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
