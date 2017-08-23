@@ -37,3 +37,7 @@ FROM [dbo].Locales_TS
 UNION ALL
 SELECT Region, LocaleID, BusinessUnitID, StoreName, StoreAbbrev, AddedDate, ModifiedDate
 FROM [dbo].Locales_UK
+GO
+
+GRANT SELECT ON [dbo].[Locale] TO TibcoRole
+GO

@@ -56,3 +56,6 @@ BEGIN
 
 END
 GO
+
+GRANT EXEC ON [gpm].[LogPriceError] TO TibcoRole
+GO

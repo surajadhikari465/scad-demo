@@ -73,3 +73,6 @@ BEGIN
 		SELECT @NumberOfRowsUpdated = @@ROWCOUNT
 END
 GO
+
+GRANT EXEC ON [gpm].[UpdatePrice] TO TibcoRole
+GO

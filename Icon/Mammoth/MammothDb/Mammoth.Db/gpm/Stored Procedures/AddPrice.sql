@@ -90,3 +90,6 @@ BEGIN
 
 END
 GO
+
+GRANT EXEC ON [gpm].[AddPrice] TO TibcoRole
+GO

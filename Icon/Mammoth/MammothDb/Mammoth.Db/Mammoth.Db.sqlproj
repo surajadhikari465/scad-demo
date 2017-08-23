@@ -667,6 +667,7 @@
     <None Include="Jobs\MAMMOTH . GPM . Purge Expired REG and TPR Prices.sql" />
     <Build Include="gpm\Stored Procedures\PurgePriceHistory.sql" />
     <None Include="Jobs\MAMMOTH . GPM . Purge Price History.sql" />
+    <Build Include="Security\DatabaseRoles.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

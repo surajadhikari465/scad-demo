@@ -38,4 +38,7 @@ DECLARE @params NVARCHAR(500);
 
 		SELECT @NumberOfRowsDeleted = @@ROWCOUNT
 END
-go
+GO
+
+GRANT EXEC ON [gpm].[DeletePrice] TO TibcoRole
+GO
