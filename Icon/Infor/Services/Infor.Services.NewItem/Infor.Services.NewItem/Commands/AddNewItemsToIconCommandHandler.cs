@@ -4,12 +4,9 @@ using Icon.Common.DataAccess;
 using Icon.Framework;
 using Infor.Services.NewItem.Cache;
 using Infor.Services.NewItem.Constants;
-using Infor.Services.NewItem.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infor.Services.NewItem.Commands
 {

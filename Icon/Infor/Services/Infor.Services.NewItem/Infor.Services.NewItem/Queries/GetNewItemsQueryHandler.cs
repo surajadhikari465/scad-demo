@@ -1,22 +1,21 @@
-﻿using Icon.Common.DataAccess;
-using Infor.Services.NewItem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Irma.Framework;
-using System.Data.SqlClient;
-using System.Data;
-using Icon.Common.Context;
-using Infor.Services.NewItem.Infrastructure;
+﻿using Icon.Common.Context;
+using Icon.Common.DataAccess;
+using Icon.Framework;
 using Icon.Logging;
+using Infor.Services.NewItem.Models;
+using Irma.Framework;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System;
+using Icon.Common;
 
 namespace Infor.Services.NewItem.Queries
 {
     public class GetNewItemsQueryHandler : IQueryHandler<GetNewItemsQuery, IEnumerable<NewItemModel>>
     {
-        private const string sql = @"
+        private const string irmaSql = @"
                                     DECLARE @ids table (Id nvarchar(13))
 
                                     DECLARE @instanceIdChar varchar(max) = CAST(@instanceId as varchar)
@@ -73,17 +72,32 @@ namespace Infor.Services.NewItem.Queries
                                         AND ii.Remove_Identifier = 0
                                         AND i.Deleted_Item = 0
                                         AND i.Remove_Item = 0";
+        private const string iconSql = @"EXEC infor.GetScanCodeToIconItemIds @scanCodes";
 
-        private IRenewableContext<IrmaContext> context;
+        private IRenewableContext<IrmaContext> irmaContext;
+        private IRenewableContext<IconContext> iconContext;
         private ILogger<GetNewItemsQueryHandler> logger;
 
-        public GetNewItemsQueryHandler(IRenewableContext<IrmaContext> context, ILogger<GetNewItemsQueryHandler> logger)
+        public GetNewItemsQueryHandler(
+            IRenewableContext<IrmaContext> irmaContext,
+            IRenewableContext<IconContext> iconContext,
+            ILogger<GetNewItemsQueryHandler> logger)
         {
-            this.context = context;
+            this.irmaContext = irmaContext;
+            this.iconContext = iconContext;
             this.logger = logger;
         }
 
         public IEnumerable<NewItemModel> Search(GetNewItemsQuery parameters)
+        {
+            List<NewItemModel> models = GetNewItemsFromIrma(parameters);
+            AddIconItemIdsToNewItemModels(models);
+            LogResults(models, parameters.Region);
+
+            return models;
+        }
+
+        private List<NewItemModel> GetNewItemsFromIrma(GetNewItemsQuery parameters)
         {
             SqlParameter instanceIdParameter = new SqlParameter("@instanceId", SqlDbType.Int)
             {
@@ -98,21 +112,41 @@ namespace Infor.Services.NewItem.Queries
                 Value = parameters.NumberOfItemsInMessage
             };
 
-            var models = context.Context.Database.SqlQuery<NewItemModel>(
-                sql, 
-                instanceIdParameter, 
-                regionCodeParameter, 
+            var models = irmaContext.Context.Database.SqlQuery<NewItemModel>(
+                irmaSql,
+                instanceIdParameter,
+                regionCodeParameter,
                 numberOfItems)
                 .ToList();
-
-            LogResults(models, parameters.Region);
-
             return models;
+        }
+
+        private void AddIconItemIdsToNewItemModels(List<NewItemModel> models)
+        {
+            var scanCodes = models
+                .Select(m => new { m.ScanCode })
+                .ToTvp("scanCodes", "app.ScanCodeListType");
+
+            var scanCodeToIconItemIds = iconContext.Context.Database.SqlQuery<ScanCodeToIconItemIdModel>(
+                iconSql,
+                scanCodes)
+                .ToList();
+
+            foreach (var scanCodeToIconItemId in scanCodeToIconItemIds) 
+            {
+                foreach (var model in models)
+                {
+                    if (model.ScanCode == scanCodeToIconItemId.ScanCode)
+                    {
+                        model.IconItemId = scanCodeToIconItemId.ItemId;
+                    }
+                }
+            }
         }
 
         private void LogResults(IEnumerable<NewItemModel> models, string region)
         {
-            if(models.Any())
+            if (models.Any())
             {
                 logger.Info(string.Format("GetNewItemsQuery retrieved {0} items. Region: {1}, ScanCodes: {2}", models.Count(), region, string.Join(",", models.Select(m => m.ScanCode))));
             }

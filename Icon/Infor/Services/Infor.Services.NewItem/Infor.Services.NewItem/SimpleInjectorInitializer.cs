@@ -45,6 +45,7 @@ namespace Infor.Services.NewItem
             container.Register<INewItemNotifier, NewItemNotifier>();
             container.Register<NewItemNotifierSettings>(() => NewItemNotifierSettings.CreateFromConfig());
             container.Register<IRegionalEmailClientFactory, RegionalEmailClientFactory>();
+            container.Register<IIconItemService, IconItemService>();
 
             container.Register<IInforNewItemApplication, InforNewItemApplication>();
 

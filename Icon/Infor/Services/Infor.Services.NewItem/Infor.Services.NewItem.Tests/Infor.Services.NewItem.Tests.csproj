@@ -137,6 +137,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Cache\IconCacheTests.cs" />
+    <Compile Include="Commands\AddItemEventsToIconEventQueueCommandHandlerTests.cs" />
     <Compile Include="Commands\AddNewItemsToIconCommandHandlerTests.cs" />
     <Compile Include="Commands\ArchiveNewItemsCommandHandlerTests.cs" />
     <Compile Include="Commands\FinalizeNewItemEventsCommandHandlerTests.cs" />

@@ -124,6 +124,8 @@
   <ItemGroup>
     <Compile Include="Cache\IconCache.cs" />
     <Compile Include="Cache\IIconCache.cs" />
+    <Compile Include="Commands\AddItemEventsToIconEventQueueCommand.cs" />
+    <Compile Include="Commands\AddItemEventsToIconEventQueueCommandHandler.cs" />
     <Compile Include="Commands\AddNewItemsToIconCommand.cs" />
     <Compile Include="Commands\AddNewItemsToIconCommandHandler.cs" />
     <Compile Include="Commands\ArchiveNewItemsCommand.cs" />
@@ -141,9 +143,11 @@
     <Compile Include="MessageBuilders\IMessageBuilder.cs" />
     <Compile Include="MessageBuilders\NewItemMessageBuilder.cs" />
     <Compile Include="Models\BrandModel.cs" />
+    <Compile Include="Models\EventQueueModel.cs" />
     <Compile Include="Models\NationalClassModel.cs" />
     <Compile Include="Models\NewItemArchiveModel.cs" />
     <Compile Include="Models\NewItemModel.cs" />
+    <Compile Include="Models\ScanCodeToIconItemIdModel.cs" />
     <Compile Include="Models\SubTeamModel.cs" />
     <Compile Include="Models\TaxClassModel.cs" />
     <Compile Include="Notifiers\INewItemNotifier.cs" />
@@ -174,6 +178,8 @@
     <Compile Include="Queries\GetTaxClassDictionaryQueryHandler.cs" />
     <Compile Include="Services\AddNewItemsToInforRequest.cs" />
     <Compile Include="Services\AddNewItemsToInforResponse.cs" />
+    <Compile Include="Services\IconItemService.cs" />
+    <Compile Include="Services\IIconItemService.cs" />
     <Compile Include="Services\IInforItemService.cs" />
     <Compile Include="Services\InforItemService.cs" />
     <Compile Include="SimpleInjectorInitializer.cs" />

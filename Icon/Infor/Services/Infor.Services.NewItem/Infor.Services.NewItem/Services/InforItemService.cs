@@ -51,6 +51,10 @@ namespace Infor.Services.NewItem.Services
                         producer.Send(message, new Dictionary<string, string> { { "IconMessageID", messageHistory.MessageHistoryId.ToString() } });
                     }
                     LogMessageSent(messageHistory, request.Region, request.NewItems);
+                    foreach (var newItem in request.NewItems)
+                    {
+                        newItem.MessageSentToInfor = true;
+                    }
                 }
                 catch (Exception ex)
                 {

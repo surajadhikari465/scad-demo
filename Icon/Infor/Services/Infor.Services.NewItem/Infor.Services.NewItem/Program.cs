@@ -23,7 +23,6 @@ namespace Infor.Services.NewItem
     {
         static void Main(string[] args)
         {
-            var a = SimpleInjectorInitializer.InitializeContainer().GetInstance<IInforNewItemApplication>();
             HostFactory.Run(r =>
             {
                 r.Service<IInforNewItemApplication>(s =>

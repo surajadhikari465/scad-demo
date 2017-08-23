@@ -95,6 +95,7 @@ namespace Infor.Services.NewItem.Tests.Services
             Assert.AreEqual("<Test>test</Test>", messageHistory.Message);
             Assert.IsTrue(DateTime.Today < messageHistory.InsertDate);
             Assert.IsTrue(DateTime.Today < messageHistory.ProcessedDate);
+            Assert.IsTrue(request.NewItems.All(i => i.MessageSentToInfor));
         }
 
         [TestMethod]

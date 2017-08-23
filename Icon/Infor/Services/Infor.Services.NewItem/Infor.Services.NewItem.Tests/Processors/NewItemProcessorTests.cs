@@ -29,6 +29,7 @@ namespace Infor.Services.NewItem.Tests.Processors
         private Mock<ICollectionValidator<NewItemModel>> mockNewItemCollectionValidator;
         private Mock<ICommandHandler<AddNewItemsToIconCommand>> mockAddNewItemsToIconCommandHandler;
         private Mock<IInforItemService> mockInforItemService;
+        private Mock<IIconItemService> mockIconItemService;
         private Mock<ICommandHandler<FinalizeNewItemEventsCommand>> mockFinalizeNewItemEventsCommandHandler;
         private Mock<ICommandHandler<ArchiveNewItemsCommand>> mockArchiveNewItemsCommandHandler;
         private Mock<INewItemNotifier> mockNotifier;
@@ -45,6 +46,7 @@ namespace Infor.Services.NewItem.Tests.Processors
             mockNewItemCollectionValidator = new Mock<ICollectionValidator<NewItemModel>>();
             mockAddNewItemsToIconCommandHandler = new Mock<ICommandHandler<AddNewItemsToIconCommand>>();
             mockInforItemService = new Mock<IInforItemService>();
+            mockIconItemService = new Mock<IIconItemService>();
             mockFinalizeNewItemEventsCommandHandler = new Mock<ICommandHandler<FinalizeNewItemEventsCommand>>();
             mockArchiveNewItemsCommandHandler = new Mock<ICommandHandler<ArchiveNewItemsCommand>>();
             mockNotifier = new Mock<INewItemNotifier>();
@@ -58,6 +60,7 @@ namespace Infor.Services.NewItem.Tests.Processors
                 mockNewItemCollectionValidator.Object,
                 mockAddNewItemsToIconCommandHandler.Object,
                 mockInforItemService.Object,
+                mockIconItemService.Object,
                 mockFinalizeNewItemEventsCommandHandler.Object,
                 mockArchiveNewItemsCommandHandler.Object,
                 mockNotifier.Object,
@@ -86,8 +89,9 @@ namespace Infor.Services.NewItem.Tests.Processors
 
             //Then
             mockGetNewItemsQueryHandler.Verify(m => m.Search(It.IsAny<GetNewItemsQuery>()), Times.Exactly(2));
-            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Exactly(1));
+            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Exactly(2));
             mockInforItemService.Verify(m => m.AddNewItemsToInfor(It.IsAny<AddNewItemsToInforRequest>()), Times.Exactly(1));
+            mockIconItemService.Verify(m => m.AddItemEventsToIconEventQueue(It.IsAny<IEnumerable<NewItemModel>>()), Times.Exactly(2));
             mockFinalizeNewItemEventsCommandHandler.Verify(m => m.Execute(It.IsAny<FinalizeNewItemEventsCommand>()), Times.Exactly(2));
             mockNotifier.Verify(m => m.NotifyOfNewItemError(It.IsAny<IEnumerable<NewItemModel>>()), Times.Exactly(2));
             mockArchiveNewItemsCommandHandler.Verify(m => m.Execute(It.IsAny<ArchiveNewItemsCommand>()), Times.Exactly(2));
@@ -151,8 +155,9 @@ namespace Infor.Services.NewItem.Tests.Processors
 
             //Then
             mockGetNewItemsQueryHandler.Verify(m => m.Search(It.IsAny<GetNewItemsQuery>()), Times.Exactly(22));
-            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Exactly(11));
+            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Exactly(22));
             mockInforItemService.Verify(m => m.AddNewItemsToInfor(It.IsAny<AddNewItemsToInforRequest>()), Times.Exactly(11));
+            mockIconItemService.Verify(m => m.AddItemEventsToIconEventQueue(It.IsAny<IEnumerable<NewItemModel>>()), Times.Exactly(22));
             mockFinalizeNewItemEventsCommandHandler.Verify(m => m.Execute(It.IsAny<FinalizeNewItemEventsCommand>()), Times.Exactly(22));
             mockNotifier.Verify(m => m.NotifyOfNewItemError(It.IsAny<IEnumerable<NewItemModel>>()), Times.Exactly(22));
             mockArchiveNewItemsCommandHandler.Verify(m => m.Execute(It.IsAny<ArchiveNewItemsCommand>()), Times.Exactly(22));
@@ -185,8 +190,9 @@ namespace Infor.Services.NewItem.Tests.Processors
 
             //Then
             mockGetNewItemsQueryHandler.Verify(m => m.Search(It.IsAny<GetNewItemsQuery>()), Times.Exactly(6));
-            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Exactly(5));
+            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Exactly(6));
             mockInforItemService.Verify(m => m.AddNewItemsToInfor(It.IsAny<AddNewItemsToInforRequest>()), Times.Exactly(5));
+            mockIconItemService.Verify(m => m.AddItemEventsToIconEventQueue(It.IsAny<IEnumerable<NewItemModel>>()), Times.Exactly(6));
             mockFinalizeNewItemEventsCommandHandler.Verify(m => m.Execute(It.IsAny<FinalizeNewItemEventsCommand>()), Times.Exactly(6));
             mockNotifier.Verify(m => m.NotifyOfNewItemError(It.IsAny<IEnumerable<NewItemModel>>()), Times.Exactly(6));
             mockArchiveNewItemsCommandHandler.Verify(m => m.Execute(It.IsAny<ArchiveNewItemsCommand>()), Times.Exactly(6));
@@ -222,7 +228,7 @@ namespace Infor.Services.NewItem.Tests.Processors
 
             //Then
             mockGetNewItemsQueryHandler.Verify(m => m.Search(It.IsAny<GetNewItemsQuery>()), Times.Once);
-            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Never);
+            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Once);
             mockInforItemService.Verify(m => m.AddNewItemsToInfor(It.IsAny<AddNewItemsToInforRequest>()), Times.Never);
             mockFinalizeNewItemEventsCommandHandler.Verify(m => m.Execute(It.IsAny<FinalizeNewItemEventsCommand>()), Times.Once);
             mockNotifier.Verify(m => m.NotifyOfNewItemError(It.IsAny<IEnumerable<NewItemModel>>()), Times.Once);
@@ -281,8 +287,9 @@ namespace Infor.Services.NewItem.Tests.Processors
 
             //Then
             mockGetNewItemsQueryHandler.Verify(m => m.Search(It.IsAny<GetNewItemsQuery>()), Times.Exactly(19));
-            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Exactly(8));
+            mockAddNewItemsToIconCommandHandler.Verify(m => m.Execute(It.IsAny<AddNewItemsToIconCommand>()), Times.Exactly(19));
             mockInforItemService.Verify(m => m.AddNewItemsToInfor(It.IsAny<AddNewItemsToInforRequest>()), Times.Exactly(8));
+            mockIconItemService.Verify(m => m.AddItemEventsToIconEventQueue(It.IsAny<IEnumerable<NewItemModel>>()), Times.Exactly(19));
             mockFinalizeNewItemEventsCommandHandler.Verify(m => m.Execute(It.IsAny<FinalizeNewItemEventsCommand>()), Times.Exactly(19));
             mockNotifier.Verify(m => m.NotifyOfNewItemError(It.IsAny<IEnumerable<NewItemModel>>()), Times.Exactly(19));
             mockArchiveNewItemsCommandHandler.Verify(m => m.Execute(It.IsAny<ArchiveNewItemsCommand>()), Times.Exactly(19));
