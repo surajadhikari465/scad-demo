@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	 xmlns="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd"
+	 xmlns:tns="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd"
 	 targetNamespace="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd"
 	 elementFormDefault="qualified"
 	 attributeFormDefault="unqualified">
-	<xs:element name="IrmaPrice">
-		<xs:complexType>
-			<xs:sequence>
+
+<xs:element name="IrmaPrice" type="tns:IrmaPriceType"/>
+	<xs:element name="IrmaPrices" type="tns:IrmaPricesType"/>
+	<xs:complexType name="IrmaPricesType">
+		<xs:sequence>
+			<xs:element name="IrmaPrice" type="tns:IrmaPriceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+<xs:complexType name="IrmaPriceType">
+		<xs:sequence>
 				<xs:element name="Item_Key" type="xs:int"/>
 				<xs:element name="Store_No" type="xs:int"/>
 				<xs:element name="Action" type="xs:string"/>
@@ -18,9 +25,7 @@
 				<xs:element name="Sale_Price" type="xs:string" minOccurs="0"/>
 				<xs:element name="Sale_StartDate" type="xs:dateTime" minOccurs="0"/>
 				<xs:element name="Sale_EndDate" type="xs:dateTime" minOccurs="0"/>
-					<xs:element name="Unit_Id" type="xs:int"/>
+				<xs:element name="Unit_Id" type="xs:int"/>
 			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
+	</xs:complexType>
 </xs:schema>

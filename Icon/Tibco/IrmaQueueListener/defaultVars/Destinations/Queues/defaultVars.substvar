@@ -19,19 +19,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>IrmaDestinationQueue</name>
-			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaRM.IrmaPrice.Queue.V1</value>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.IrmaPrice.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503590645966</modTime>
+			<modTime>1503602537169</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>IrmaSourceQueue</name>
-			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaRM.MammothPrice.Queue.V1</value>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.MammothPrice.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503590646076</modTime>
+			<modTime>1503602537202</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Price</name>

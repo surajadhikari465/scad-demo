@@ -13,7 +13,7 @@
             <authorProperty>2096654</authorProperty>
             <processProperty>/Processes/IrmaPriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>5</versionProperty>
+        <versionProperty>7</versionProperty>
         <authorProperty>2096654</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>IrmaQueueListener</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Deployment\RM\IrmaQueueListener-MA.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Deployment\IrmaQueueListener-FL.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

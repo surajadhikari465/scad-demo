@@ -51,11 +51,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>IrmaConnectionString</name>
-			<value>jdbc:sqlserver://idd-rm\rmd;DatabaseName=ItemCatalog_Test;IntegratedSecurity=false;</value>
+			<value>jdbc:sqlserver://idd-fl\fld;DatabaseName=ItemCatalog_Test;IntegratedSecurity=false;</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503590678247</modTime>
+			<modTime>1503602560002</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsProviderUrl</name>

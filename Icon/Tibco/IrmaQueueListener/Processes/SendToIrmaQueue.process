@@ -3,11 +3,11 @@
     <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/Shared Resources/Schemas/Application/ActivityOutput.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" schemaLocation="/Shared Resources/Schemas/Application/IrmaPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/IrmaPrice.xsd"/>
     <pd:name>Processes/SendToIrmaQueue.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startType ref="pfx5:IrmaPrice"/>
+    <pd:startType ref="pfx5:IrmaPrices"/>
     <pd:startX>116</pd:startX>
     <pd:startY>176</pd:startY>
     <pd:returnBindings/>
@@ -131,13 +131,15 @@
                 </ConfigurableHeaders>
                 <ConnectionReference>/Connections/IRMA Destination Connection.sharedjmscon</ConnectionReference>
                 <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
-                <InDataxsdString ref="pfx5:IrmaPrice"/>
+                <InDataxsdString ref="pfx5:IrmaPrices"/>
             </config>
             <pd:inputBindings>
                 <ns0:ActivityInput>
-                    <Body>
-                        <xsl:copy-of select="$Start/pfx5:IrmaPrice"/>
-                    </Body>
+                    <xsl:for-each select="$Start/pfx5:IrmaPrices">
+                        <Body>
+                            <xsl:copy-of select="."/>
+                        </Body>
+                    </xsl:for-each>
                 </ns0:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
