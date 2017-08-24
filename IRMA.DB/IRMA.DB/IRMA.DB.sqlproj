@@ -3236,6 +3236,8 @@
     <Build Include="Schema\infor\Tables\OrderExpectedDateChangeQueue.sql" />
     <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.RollBack.sql" />
     <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.sql" />
+    <Build Include="Security\TibcoLogin.sql" />
+    <Build Include="Security\TibcoUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
