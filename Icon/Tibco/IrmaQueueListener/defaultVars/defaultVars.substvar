@@ -2,6 +2,14 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
+			<value>file:///C:/Certificates</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503517909955</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Deployment</name>
 			<value>PriceListener1</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -43,11 +51,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>IrmaConnectionString</name>
-			<value>jdbc:sqlserver://idd-fl\fld;DatabaseName=ItemCatalog_Test;IntegratedSecurity=true;</value>
+			<value>jdbc:sqlserver://idd-fl\fld;DatabaseName=ItemCatalog_Test;IntegratedSecurity=false;</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502909182140</modTime>
+			<modTime>1503516461444</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsProviderUrl</name>

@@ -51,19 +51,35 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPassword</name>
-			<value>maMmOthU$er</value>
+			<value>SB1_MammothPriceIrmaUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972862130</modTime>
+			<modTime>1503512431118</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>JmsPasswordWritePermissions</name>
+			<value>SB1_IrmaPriceUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503515753989</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsername</name>
-			<value>mammothUser</value>
+			<value>SB1_MammothPriceIrmaUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863568</modTime>
+			<modTime>1503512431287</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>JmsUsernameWritePermissions</name>
+			<value>SB1_IrmaPriceUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503515754031</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiConextUrl</name>
@@ -75,19 +91,35 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>maMmothU$er</value>
+			<value>jndiSB1_MammothPriceIrmaUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863686</modTime>
+			<modTime>1503515754069</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>JndiPasswordWritePermissions</name>
+			<value>jndiSB1_IrmaPriceUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503515754108</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiUsername</name>
-			<value>jndiMammothUser</value>
+			<value>jndiSB1_MammothPriceIrmaUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863054</modTime>
+			<modTime>1503515754145</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>JndiUsernameWritePermissions</name>
+			<value>jndiSB1_IrmaPriceUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503515754180</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SslPassword</name>
