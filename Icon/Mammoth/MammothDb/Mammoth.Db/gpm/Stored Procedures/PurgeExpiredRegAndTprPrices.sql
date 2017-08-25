@@ -24,6 +24,7 @@ BEGIN
 	EXEC gpm.PurgeExpiredRegPrices @RegionCode = 'SO', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 	EXEC gpm.PurgeExpiredRegPrices @RegionCode = 'SP', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 	EXEC gpm.PurgeExpiredRegPrices @RegionCode = 'SW', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC gpm.PurgeExpiredRegPrices @RegionCode = 'TS', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 	EXEC gpm.PurgeExpiredRegPrices @RegionCode = 'UK', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 
 	EXEC gpm.PurgeExpiredTprPrices @RegionCode = 'FL', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
@@ -37,5 +38,6 @@ BEGIN
 	EXEC gpm.PurgeExpiredTprPrices @RegionCode = 'SO', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 	EXEC gpm.PurgeExpiredTprPrices @RegionCode = 'SP', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 	EXEC gpm.PurgeExpiredTprPrices @RegionCode = 'SW', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
+	EXEC gpm.PurgeExpiredTprPrices @RegionCode = 'TS', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 	EXEC gpm.PurgeExpiredTprPrices @RegionCode = 'UK', @MaxDeleteCount = @MaxDeleteCount, @BatchSize = @BatchSize
 END

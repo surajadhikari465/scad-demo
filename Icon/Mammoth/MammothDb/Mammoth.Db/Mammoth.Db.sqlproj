@@ -664,9 +664,9 @@
     <Build Include="gpm\Stored Procedures\PurgeExpiredRegPrices.sql" />
     <Build Include="gpm\Stored Procedures\PurgeExpiredTprPrices.sql" />
     <Build Include="gpm\Stored Procedures\PurgeExpiredRegAndTprPrices.sql" />
-    <None Include="Jobs\MAMMOTH . GPM . Purge Expired REG and TPR Prices.sql" />
+    <None Include="Jobs\MAMMOTH.GPM.PurgeExpiredRegAndTprPrices.sql" />
     <Build Include="gpm\Stored Procedures\PurgePriceHistory.sql" />
-    <None Include="Jobs\MAMMOTH . GPM . Purge Price History.sql" />
+    <None Include="Jobs\MAMMOTH.GPM.PurgePriceHistory.sql" />
     <Build Include="Security\DatabaseRoles.sql" />
   </ItemGroup>
   <ItemGroup>
