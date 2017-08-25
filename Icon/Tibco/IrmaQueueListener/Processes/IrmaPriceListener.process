@@ -431,6 +431,16 @@ AND Unit_Abbreviation = ?</statement>
             </DeadLetterInput>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Confirm-Error">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>596</pd:x>
+        <pd:y>449</pd:y>
+        <config>
+            <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
     <pd:transition>
         <pd:from>IrmaPriceMessageReceiver</pd:from>
         <pd:to>Parse Price Message</pd:to>
@@ -482,6 +492,13 @@ AND Unit_Abbreviation = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Dead Letter Queue Exception</pd:from>
+        <pd:to>Confirm-Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm-Error</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
