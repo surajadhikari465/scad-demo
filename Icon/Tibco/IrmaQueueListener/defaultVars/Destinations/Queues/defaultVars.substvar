@@ -1,0 +1,46 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>BOD</name>
+			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503332934321</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ConfirmBODQueue</name>
+			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503333048174</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>IrmaDestinationQueue</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.IrmaPrice.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503602537169</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>IrmaSourceQueue</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.MammothPrice.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503602537202</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Price</name>
+			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
+			<description></description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503333048010</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

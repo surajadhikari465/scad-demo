@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by sridhar (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionType/V1" xmlns:rrf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1" xmlns:tin="http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionInventory/V1" xmlns:tco="http://schemas.wfm.com/Enterprise/TransactionMgmt/CustomerOrder/V1" xmlns:tcf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Control/V1" xmlns:tnc="http://schemas.wfm.com/Enterprise/TransactionMgmt/TenderControl/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1" schemaLocation="Retail.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CustomerOrder/V1" schemaLocation="CustomerOrder.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Control/V1" schemaLocation="Control.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/TenderControl/V2" schemaLocation="TenderControl.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionInventory/V1" schemaLocation="../../Inventory/TransactionInventoryItem.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="transactionType" type="TransactionTypeType"/>
+	<xs:complexType name="TransactionTypeType">
+		<xs:choice maxOccurs="1">
+			<xs:element name="retail" type="rrf:RetailTransactionType"/>
+			<xs:element name="tenderControl" type="tnc:TenderControlType"/>
+			<xs:element name="control" type="tcf:ControlTransactionType"/>
+			<xs:element name="inventory" type="tin:TransactionInventoryType"/>
+			<xs:element name="customerOrder" type="tco:CustomerOrderTransactionType"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>
