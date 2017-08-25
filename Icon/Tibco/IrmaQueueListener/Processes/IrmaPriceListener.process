@@ -139,7 +139,7 @@
                     <pfx8:Action>
                         <xsl:value-of select="$currentMammothPrice/pfx10:MammothPrice/pfx10:Action"/>
                     </pfx8:Action>
-                    <xsl:if test="upper-case($currentMammothPrice/pfx10:MammothPrice/pfx10:PriceType) ='REG'">
+                    <xsl:if test="upper-case($Map-Price-Change-Type/PriceChangeType) ='REG'">
                         <pfx8:Multiple>
                             <xsl:value-of select="$currentMammothPrice/pfx10:MammothPrice/pfx10:Multiple"/>
                         </pfx8:Multiple>
@@ -150,22 +150,22 @@
                     <pfx8:PricingChgTypeId>
                         <xsl:value-of select="$GetDataFromIrma/resultSet/Record[1]/PriceChgTypeID"/>
                     </pfx8:PricingChgTypeId>
-                    <xsl:if test="upper-case($currentMammothPrice/pfx10:MammothPrice/pfx10:PriceType) ='SAL'">
+                    <xsl:if test="upper-case($Map-Price-Change-Type/PriceChangeType) ='SAL'">
                         <pfx8:Sale_Multiple>
                             <xsl:value-of select="$currentMammothPrice/pfx10:MammothPrice/pfx10:Multiple"/>
                         </pfx8:Sale_Multiple>
                     </xsl:if>
-                    <xsl:if test="upper-case($currentMammothPrice/pfx10:MammothPrice/pfx10:PriceType) ='SAL'">
+                    <xsl:if test="upper-case($Map-Price-Change-Type/PriceChangeType) ='SAL'">
                         <pfx8:Sale_Price>
                             <xsl:value-of select="$currentMammothPrice/pfx10:MammothPrice/pfx10:Price"/>
                         </pfx8:Sale_Price>
                     </xsl:if>
-                    <xsl:if test="upper-case($currentMammothPrice/pfx10:MammothPrice/pfx10:PriceType) ='SAL'">
+                    <xsl:if test="upper-case($Map-Price-Change-Type/PriceChangeType) ='SAL'">
                         <pfx8:Sale_StartDate>
                             <xsl:value-of select="$currentMammothPrice/pfx10:MammothPrice/pfx10:StartDate"/>
                         </pfx8:Sale_StartDate>
                     </xsl:if>
-                    <xsl:if test="upper-case($currentMammothPrice/pfx10:MammothPrice/pfx10:PriceType) ='SAL'">
+                    <xsl:if test="upper-case($Map-Price-Change-Type/PriceChangeType) ='SAL'">
                         <pfx8:Sale_EndDate>
                             <xsl:value-of select="$currentMammothPrice/pfx10:MammothPrice/pfx10:EndDate"/>
                         </pfx8:Sale_EndDate>
