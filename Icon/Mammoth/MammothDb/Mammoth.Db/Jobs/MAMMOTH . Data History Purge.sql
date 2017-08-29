@@ -1,19 +1,30 @@
 ﻿USE [msdb]
 GO
 
-/****** Object:  Job [MAMMOTH . Data History Purge]    Script Date: 2/17/2016 4:12:23 PM ******/
 BEGIN TRANSACTION
 DECLARE @ReturnCode INT
 SELECT @ReturnCode = 0
-/****** Object:  JobCategory [[Uncategorized (Local)]]    Script Date: 2/17/2016 4:12:23 PM ******/
+
 IF NOT EXISTS (SELECT name FROM msdb.dbo.syscategories WHERE name=N'[Uncategorized (Local)]' AND category_class=1)
 BEGIN
 	EXEC @ReturnCode = msdb.dbo.sp_add_category @class=N'JOB', @type=N'LOCAL', @name=N'[Uncategorized (Local)]'
 	IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 END
 
+-----------------------------------------------------
+-- NOTE: If you want to build this job for a Dev DB, specify the Dev DB name in this variable.
+DECLARE @dbName sysname = 'Mammoth'
+-----------------------------------------------------
+
+DECLARE @jobName sysname = (@dbName + ' . Data History Purge')
+
+
+-- Remove existing job.
+IF EXISTS (SELECT job_id FROM msdb.dbo.sysjobs_view WHERE name = @jobName)
+	EXEC msdb.dbo.sp_delete_job @job_name=@jobName, @delete_unused_schedule = 1
+
 DECLARE @jobId BINARY(16)
-EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'MAMMOTH . Data History Purge', 
+EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=@jobName, 
               @enabled=1, 
               @notify_level_eventlog=0, 
               @notify_level_email=2, 
@@ -25,7 +36,6 @@ EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'MAMMOTH . Data History Purge
               @owner_login_name=N'sa', 
               @notify_email_operator_name=N'SQL Server DBAs', @job_id = @jobId OUTPUT
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-/****** Object:  Step [Check Maintenance Mode]    Script Date: 3/23/2017 4:34:56 AM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Maintenance Mode', 
 			@step_id=1, 
 			@cmdexec_success_code=0, 
@@ -36,11 +46,11 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Ma
 			@retry_attempts=0, 
 			@retry_interval=0, 
 			@os_run_priority=0, @subsystem=N'TSQL', 
-			@command=N'IF (SELECT StatusFlagValue FROM app.DbStatus where FlagName = ''IsOfflineForMaintenance'') = 1
-						RAISERROR(''Database is in maintenance mode.'', 16, 1)', 
+			@command=N'IF (SELECT StatusFlagValue FROM app.DbStatus where StatusFlagName = ''IsOfflineForMaintenance'') = 1
+			RAISERROR(''Database is in maintenance mode.  See Report step for other details.'', 16, 1)', 
+			@database_name=@dbName, 
 			@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-/****** Object:  Step [Purge Data]    Script Date: 2/17/2016 4:12:23 PM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Purge Data', 
               @step_id=2, 
               @cmdexec_success_code=0, 
@@ -52,10 +62,9 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Purge Da
               @retry_interval=0, 
               @os_run_priority=0, @subsystem=N'TSQL', 
               @command=N'EXECUTE app.PurgeData', 
-              @database_name=N'Mammoth', 
+              @database_name=@dbName, 
               @flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-/****** Object:  Step [Log success]    Script Date: 2/17/2016 4:12:23 PM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Log success', 
               @step_id=3, 
               @cmdexec_success_code=0, 
@@ -77,10 +86,9 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Log succ
 						, @Source = ''Mammoth Data Purge''
 						, @Message = ''Mammoth Data Purge was successful.''
 						, @MachineName = @Here', 
-              @database_name=N'Mammoth', 
+              @database_name=@dbName, 
               @flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-/****** Object:  Step [Log failure]    Script Date: 2/17/2016 4:12:23 PM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Log failure', 
               @step_id=4, 
               @cmdexec_success_code=0, 
@@ -102,10 +110,9 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Log fail
 						, @Source = ''Mammoth Data Purge''
 						, @Message = ''Mammoth Data Purge was unsuccessful.  View job history for details.''
 						, @MachineName = @Here', 
-              @database_name=N'Mammoth', 
+              @database_name=@dbName, 
               @flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-/****** Object:  Step [Report Maintenance Mode]    Script Date: 3/23/2017 4:34:56 AM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Report Maintenance Mode', 
 		@step_id=5, 
 		@cmdexec_success_code=0, 
@@ -116,30 +123,12 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Report M
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL',
-		@command=N'IF EXISTS (
-			SELECT *
-			FROM app.DbStatus
-			WHERE StatusFlagName = ''IsOfflineForMaintenance'' AND StatusFlagValue = 1
-		)
-		BEGIN
-			DECLARE @statusMsg nvarchar(256), @appName nvarchar(128), @dbState varchar(128)
-
-			SELECT @appName = ltrim(rtrim(program_name))
-			FROM sys.sysprocesses
-			WHERE spid = @@spid
-
-			SELECT @dbState = N''DbName='' + [name] + '', IsReadOnly='' + convert(nvarchar,is_read_only) 
-				+ N'', UserAccess='' + convert(nvarchar,user_access_desc collate SQL_Latin1_General_CP1_CI_AS )
-				+ N'', State='' + state_desc
-			FROM sys.databases
-			WHERE NAME LIKE db_name()
-
-			SELECT @statusMsg = ''** DB Offline For Maintenance ** --> '' 
-				+ ''AppName='' + @appName + '', '' + @dbstate
-
-			RAISERROR (@statusMsg, 16, 0)
-		END',
-		@database_name=N'master', 
+		@command=N'declare @statusMsg nvarchar(256), @appName nvarchar(128), @dbState varchar(128)
+select @appName = ltrim(rtrim(program_name)) from sys.sysprocesses where spid = @@spid
+select @dbState = ''DbName='' + name + '', IsReadOnly='' + cast(is_read_only as varchar) + '', UserAccess='' + user_access_desc + '', State='' + state_desc from sys.databases where name like db_name()
+select @statusMsg = ''** DB Offline For Maintenance ** --> '' + ''LogDate='' + convert(nvarchar, getdate(), 121) + '', AppName='' + @appName + '', '' + @dbstate
+print @statusMsg;', 
+		@database_name=@dbName, 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_update_job @job_id = @jobId, @start_step_id = 1
