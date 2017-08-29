@@ -2,76 +2,76 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>OraDBDriver</name>
-			<value>oracle.jdbc.driver.OracleDriver</value>
+			<name>SB1JNDIContextFactory</name>
+			<value>com.tibco.tibjms.naming.TibjmsInitialContextFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863254</modTime>
+			<modTime>1503698462511</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBHost</name>
-			<value></value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972863722</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>OraDBInstance</name>
-			<value></value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972861985</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>OraDBPort</name>
-			<value></value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862176</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>OraDBPwd</name>
-			<value>#!9QQ8xKLSWer33uLqR/KNJw==</value>
+			<name>SB1JmsPassword</name>
+			<value>#!ATUhGN6lMqUVwPtgqJmtEHRTn2oibV5bJ2tkzmvwgvWS+Xa3PL/+VukMZMTWKK3pF8WvmfOzZEw=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1499972862962</modTime>
+			<modTime>1503946511481</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBUrl</name>
-			<value>jdbc:oracle:thin:</value>
+			<name>SB1JmsUserName</name>
+			<value>SB1_MammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863156</modTime>
+			<modTime>1503946511564</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBUser</name>
-			<value></value>
+			<name>SB1JndiContextUrl</name>
+			<value>ssl://cerd1616.wfm.pvt:7233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863653</modTime>
+			<modTime>1503698462699</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraLoginTimeout</name>
-			<value>0</value>
+			<name>SB1JndiPassword</name>
+			<value>#!wJOxgw+muqyh5RpxNjp6C65z0Cfi4PZWOyBdazJ7qncetx32Rci3PBUmNXNkFKbZSU9vksi0bwlWUb2IDNdGlA==</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1503698462761</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SB1JndiUserName</name>
+			<value>jndiSB1_MammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863551</modTime>
+			<modTime>1503698462824</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraMaxConn</name>
-			<value>10</value>
+			<name>SB1QueueConnectionFactory</name>
+			<value>SB1MammothPriceQueueConnectionFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861802</modTime>
+			<modTime>1503698462887</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SB1SslPassword</name>
+			<value>#!mNUV69RV8diEnFbse2eXig==</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1503698462933</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SB1TopicConnectionFactory</name>
+			<value>SB1MammothPriceTopicConnectionFactory</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503698462980</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

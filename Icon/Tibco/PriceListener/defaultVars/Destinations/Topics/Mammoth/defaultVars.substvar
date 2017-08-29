@@ -2,12 +2,12 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>redeliveryCount</name>
-			<value>3</value>
+			<name>JustInTimeTopic</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503346743472</modTime>
+			<modTime>1503371957128</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

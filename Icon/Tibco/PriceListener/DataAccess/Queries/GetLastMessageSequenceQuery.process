@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
     <pd:name>DataAccess/Queries/GetLastMessageSequenceQuery.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -11,11 +12,12 @@
                     <xsd:element name="GpmMessageId" type="xsd:string"/>
                     <xsd:element name="PatchFamilyId" type="xsd:string"/>
                     <xsd:element name="SequenceID" type="xsd:int"/>
+                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>63</pd:startX>
+    <pd:startX>73</pd:startX>
     <pd:startY>61</pd:startY>
     <pd:returnBindings>
         <root>
@@ -50,18 +52,18 @@
             </xsd:complexType>
         </xsd:element>
     </pd:endType>
-    <pd:endX>614</pd:endX>
-    <pd:endY>66</pd:endY>
+    <pd:endX>691</pd:endX>
+    <pd:endY>67</pd:endY>
     <pd:errorSchemas>
-        <ErrorSchemas ref="pfx3:ExceptionRequest"/>
+        <ErrorSchemas ref="pfx4:Error"/>
     </pd:errorSchemas>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1495058550155</pd:targetNamespace>
     <pd:activity name="GetLastSequenceQuery">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>222</pd:x>
-        <pd:y>62</pd:y>
+        <pd:x>317</pd:x>
+        <pd:y>66</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -105,8 +107,8 @@
     <pd:activity name="Map Data">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>413</pd:x>
-        <pd:y>64</pd:y>
+        <pd:x>514</pd:x>
+        <pd:y>66</pd:y>
         <config>
             <element>
                 <xsd:element name="root">

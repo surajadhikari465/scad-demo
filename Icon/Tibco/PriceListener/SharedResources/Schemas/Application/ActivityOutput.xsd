@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="ActivityOutput">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="OtherProperties" minOccurs="0"/>
+				<xs:element ref="Body"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="OtherProperties">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="MessageId" minOccurs="0"/>
+				<xs:element ref="BusinessObject" minOccurs="0"/>
+				<xs:element ref="SequenceID" minOccurs="0"/>
+				<xs:element ref="nonReceivingSysName" minOccurs="0"/>
+				<xs:element ref="Source" minOccurs="0"/>
+				<xs:element ref="PatchFamilyID" minOccurs="0"/>
+				<xs:element ref="JMSCorrelationID" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MessageId" type="xs:string"/>
+	<xs:element name="BusinessObject" type="xs:string"/>
+	<xs:element name="SequenceID" type="xs:string"/>
+	<xs:element name="nonReceivingSysName" type="xs:string"/>
+	<xs:element name="Source" type="xs:string"/>
+	<xs:element name="PatchFamilyID" type="xs:string"/>
+	<xs:element name="Body" type="xs:string"/>
+	<xs:element name="JMSCorrelationID" type="xs:string"/>
+</xs:schema>
