@@ -29,11 +29,11 @@
         </config>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:group name="Send to Publisher Queue">
+    <pd:group name="Publisher Queue">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>215</pd:x>
-        <pd:y>21</pd:y>
+        <pd:x>209</pd:x>
+        <pd:y>15</pd:y>
         <pd:width>261</pd:width>
         <pd:height>278</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -44,20 +44,20 @@
             <pd:groupType>errorLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
             <pd:indexSlot>retryCountIndex</pd:indexSlot>
-            <pd:errorCondition>$retryCountIndex = $_globalVariables/pfx:GlobalVariables/SendToRegionQueue/retryCount</pd:errorCondition>
+            <pd:errorCondition>$retryCountIndex = $_globalVariables/pfx:GlobalVariables/SendToPublisherQueue/retryCount</pd:errorCondition>
             <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
         </config>
         <pd:inputBindings/>
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>Send To Publisher Queue</pd:to>
+            <pd:to>Send TO Publisher Queue</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send To Publisher Queue</pd:from>
+            <pd:from>Send TO Publisher Queue</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -71,17 +71,17 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send To Publisher Queue</pd:from>
+            <pd:from>Send TO Publisher Queue</pd:from>
             <pd:to>Sleep</pd:to>
             <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-65485</pd:lineColor>
+            <pd:lineColor>-65536</pd:lineColor>
             <pd:conditionType>error</pd:conditionType>
         </pd:transition>
         <pd:activity name="Generate Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>411</pd:x>
-            <pd:y>210</pd:y>
+            <pd:x>406</pd:x>
+            <pd:y>205</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -101,8 +101,8 @@
         <pd:activity name="Sleep">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>317</pd:x>
-            <pd:y>209</pd:y>
+            <pd:x>309</pd:x>
+            <pd:y>203</pd:y>
             <config/>
             <pd:inputBindings>
                 <ns12:SleepInputSchema>
@@ -112,11 +112,11 @@
                 </ns12:SleepInputSchema>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Send To Publisher Queue">
+        <pd:activity name="Send TO Publisher Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>324</pd:x>
-            <pd:y>88</pd:y>
+            <pd:x>313</pd:x>
+            <pd:y>83</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
                 <SessionAttributes>
@@ -173,13 +173,13 @@
     </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
-        <pd:to>Send to Publisher Queue</pd:to>
+        <pd:to>Publisher Queue</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Send to Publisher Queue</pd:from>
+        <pd:from>Publisher Queue</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
