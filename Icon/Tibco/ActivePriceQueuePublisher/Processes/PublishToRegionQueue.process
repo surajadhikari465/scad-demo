@@ -138,7 +138,7 @@
                 <ns0:ActivityInput>
                     <JMSProperties>
                         <ns0:JMSXGroupID>
-                            <xsl:value-of select="$Start/pfx6:JobSchedule/pfx6:Region"/>
+                            <xsl:value-of select="upper-case($Start/pfx6:JobSchedule/pfx6:Region)"/>
                         </ns0:JMSXGroupID>
                     </JMSProperties>
                     <Body>

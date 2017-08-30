@@ -2,20 +2,12 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>Password</name>
-			<value>$tand@rd</value>
+			<name>RegionPriceQueuePublisher</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.IrmaPrice.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504122458305</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>UserName</name>
-			<value>IconReports</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1504122458387</modTime>
+			<modTime>1504110069829</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

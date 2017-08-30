@@ -10,6 +10,14 @@
 			<modTime>1499962574607</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
+			<value>file:///C:/Certificates</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1504111097112</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Deployment</name>
 			<value>MammothActivePriceService</value>
 			<deploymentSettable>true</deploymentSettable>

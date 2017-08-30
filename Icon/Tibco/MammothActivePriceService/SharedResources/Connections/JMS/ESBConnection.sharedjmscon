@@ -20,7 +20,7 @@
             <autoGenClientID>true</autoGenClientID>
         </ConnectionAttributes>
         <UseXACF>false</UseXACF>
-        <useSsl>false</useSsl>
+        <useSsl>true</useSsl>
         <AdmFactorySslPassword>%%Mammoth/ESB/SslPassword%%</AdmFactorySslPassword>
         <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
             <ns0:trace>true</ns0:trace>

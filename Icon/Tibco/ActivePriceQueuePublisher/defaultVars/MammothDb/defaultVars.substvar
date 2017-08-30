@@ -35,11 +35,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>RetrySleepInMilliseconds</name>
-			<value>5000</value>
+			<value>300</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1499972862601</modTime>
+			<modTime>1504122633464</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>StoredProcedureTimeout</name>
