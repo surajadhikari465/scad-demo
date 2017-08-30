@@ -12,7 +12,6 @@
             <xsd:complexType>
                 <xsd:sequence>
                     <xsd:element ref="pfx8:MammothPrice"/>
-                    <xsd:element name="MessageId" type="xsd:string"/>
                     <xsd:element name="PatchFamilyID" type="xsd:string"/>
                     <xsd:element ref="ns8:ActivityOutput"/>
                     <xsd:element name="GPMSequenceID" type="xsd:int"/>
@@ -20,8 +19,8 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>71</pd:startX>
-    <pd:startY>290</pd:startY>
+    <pd:startX>66</pd:startX>
+    <pd:startY>284</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>791</pd:endX>
@@ -34,7 +33,7 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>752</pd:x>
+        <pd:x>746</pd:x>
         <pd:y>554</pd:y>
         <pd:handler>true</pd:handler>
         <config>
@@ -68,18 +67,6 @@
                 <xsl:copy-of select="$Start/Input/pfx8:MammothPrice"/>
             </Input>
         </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="CatchOtherErrrors">
-        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-        <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>1004</pd:x>
-        <pd:y>292</pd:y>
-        <pd:handler>true</pd:handler>
-        <config>
-            <catchAll>true</catchAll>
-            <fault>localname=Error namespace=http://schemas.wfm.com/Mammoth/Error.xsd</fault>
-        </config>
-        <pd:inputBindings/>
     </pd:activity>
     <pd:activity name="Generate Error">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
@@ -116,8 +103,8 @@
     <pd:activity name="Generate-Error-1">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
         <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>761</pd:x>
-        <pd:y>294</pd:y>
+        <pd:x>773</pd:x>
+        <pd:y>274</pd:y>
         <config>
             <faultName/>
         </config>
@@ -821,16 +808,31 @@ result=Math.pow(2,retryCount)*100L;
             <pd:x>415</pd:x>
             <pd:y>364</pd:y>
             <config>
-                <faultName/>
+                <faultName>Error</faultName>
             </config>
             <pd:inputBindings>
                 <pfx7:ActivityInput>
                     <message>
                         <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
                     </message>
-                    <messageCode>
-                        <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
-                    </messageCode>
+                    <xsl:if test="$_error/ns7:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                    <data>
+                        <pfx6:Error>
+                            <pfx6:StackTrace>
+                                <xsl:value-of select="$_error/ns7:ErrorReport/StackTrace"/>
+                            </pfx6:StackTrace>
+                            <pfx6:Code>
+                                <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
+                            </pfx6:Code>
+                            <pfx6:Message>
+                                <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
+                            </pfx6:Message>
+                        </pfx6:Error>
+                    </data>
                 </pfx7:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
@@ -959,13 +961,6 @@ result=Math.pow(2,retryCount)*100L;
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>CatchOtherErrrors</pd:from>
-        <pd:to>Generate-Error-1</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>DatabaseLogger</pd:from>
