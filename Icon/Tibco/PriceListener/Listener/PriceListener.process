@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns5="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
@@ -12,29 +12,29 @@
     <pd:starter name="PriceMessageReceiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>80</pd:x>
-        <pd:y>275</pd:y>
+        <pd:x>81</pd:x>
+        <pd:y>174</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
                 <transacted>false</transacted>
                 <acknowledgeMode>23</acknowledgeMode>
                 <maxSessions>1</maxSessions>
-                <destination>%%ESBConnectionSettings/EsbPriceQueueName%%</destination>
+                <destination>%%Destinations/Queues/ESBGpmPriceQueue%%</destination>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
                 <JMSExpiration>0</JMSExpiration>
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
-            <ConnectionReference>/Connections/ESB Price Connection.sharedjmscon</ConnectionReference>
-            <ApplicationProperties>/Shared Resources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <ConnectionReference>/Connections/ESB Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
         </config>
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1097</pd:endX>
-    <pd:endY>211</pd:endY>
+    <pd:endX>476</pd:endX>
+    <pd:endY>294</pd:endY>
     <pd:errorSchemas>
         <OutOfSequence ref="pfx3:Error"/>
     </pd:errorSchemas>
@@ -43,16 +43,16 @@
     <pd:activity name="ProcessPriceMessage">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>691</pd:x>
-        <pd:y>88</pd:y>
+        <pd:x>540</pd:x>
+        <pd:y>44</pd:y>
         <config>
             <processName>/Processors/ProcessPriceMessage.process</processName>
         </config>
         <pd:inputBindings>
             <root>
-                <xsl:copy-of select="$Call-Message-Parser/pfx2:item"/>
+                <xsl:copy-of select="$MapPrices/ns5:MammothPrices"/>
                 <MessageId>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId"/>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
                 </MessageId>
                 <PatchFamilyId>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
@@ -107,8 +107,8 @@
     <pd:activity name="Call Message Parser">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>531</pd:x>
-        <pd:y>102</pd:y>
+        <pd:x>233</pd:x>
+        <pd:y>52</pd:y>
         <config>
             <processName>/Processors/ParsePriceMessage.process</processName>
         </config>
@@ -123,8 +123,8 @@
     <pd:activity name="Confirm on Success">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>894</pd:x>
-        <pd:y>93</pd:y>
+        <pd:x>632</pd:x>
+        <pd:y>174</pd:y>
         <config>
             <ConfirmEvent>PriceMessageReceiver</ConfirmEvent>
         </config>
@@ -133,8 +133,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>478</pd:x>
-        <pd:y>378</pd:y>
+        <pd:x>46</pd:x>
+        <pd:y>414</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -144,162 +144,42 @@
     <pd:activity name="Confirm on Error">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>1001</pd:x>
-        <pd:y>378</pd:y>
+        <pd:x>472</pd:x>
+        <pd:y>414</pd:y>
         <config>
             <ConfirmEvent>PriceMessageReceiver</ConfirmEvent>
         </config>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:activity name="Confirm">
-        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
-        <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>802</pd:x>
-        <pd:y>275</pd:y>
-        <config>
-            <ConfirmEvent>PriceMessageReceiver</ConfirmEvent>
-        </config>
-        <pd:inputBindings/>
-    </pd:activity>
-    <pd:group name="RepeatIfOutOfSequence">
-        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
-        <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>167</pd:x>
-        <pd:y>20</pd:y>
-        <pd:width>262</pd:width>
-        <pd:height>493</pd:height>
-        <pd:collapsedWidth>57</pd:collapsedWidth>
-        <pd:collapsedHeight>70</pd:collapsedHeight>
-        <pd:groupVariables/>
-        <pd:joinToggle>inherit</pd:joinToggle>
-        <config>
-            <pd:groupType>errorLoop</pd:groupType>
-            <pd:serializable>false</pd:serializable>
-            <pd:indexSlot>retryCountIndex</pd:indexSlot>
-            <pd:errorCondition>$retryCountIndex = $_globalVariables/ns1:GlobalVariables/OutOfSequence/retryCount</pd:errorCondition>
-            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
-        </config>
-        <pd:inputBindings/>
-        <pd:expanded>true</pd:expanded>
-        <pd:transition>
-            <pd:from>start</pd:from>
-            <pd:to>Call Sequence Validation</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Call Sequence Validation</pd:from>
-            <pd:to>end</pd:to>
-            <pd:xpathDescription>Otherwise</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>otherwise</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Call Sequence Validation</pd:from>
-            <pd:to>WaitBeforeRetry (Sleep)</pd:to>
-            <pd:xpathDescription>OutOfSequence</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Call-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>WaitBeforeRetry (Sleep)</pd:from>
-            <pd:to>Generate Error</pd:to>
-            <pd:xpathDescription>Generate Error</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:activity name="Call Sequence Validation">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>312</pd:x>
-            <pd:y>88</pd:y>
-            <config>
-                <processName>/DataAccess/Queries/GetLastMessageSequenceQuery.process</processName>
-            </config>
-            <pd:inputBindings>
-                <root>
-                    <GpmMessageId>
-                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId"/>
-                    </GpmMessageId>
-                    <PatchFamilyId>
-                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
-                    </PatchFamilyId>
-                    <SequenceID>
-                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
-                    </SequenceID>
-                </root>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="WaitBeforeRetry (Sleep)">
-            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
-            <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>309</pd:x>
-            <pd:y>242</pd:y>
-            <config/>
-            <pd:inputBindings>
-                <ns0:SleepInputSchema>
-                    <IntervalInMillisec>
-                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/OutOfSequence/RetrySleepInMilliseconds"/>
-                    </IntervalInMillisec>
-                </ns0:SleepInputSchema>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="Generate Error">
-            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
-            <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>308</pd:x>
-            <pd:y>361</pd:y>
-            <config>
-                <faultName>OutOfSequence</faultName>
-            </config>
-            <pd:inputBindings>
-                <ns3:ActivityInput>
-                    <message>
-                        <xsl:value-of select="&quot;Out Of Sequence Error&quot;"/>
-                    </message>
-                    <messageCode>
-                        <xsl:value-of select="&quot;Out Of Sequence Error&quot;"/>
-                    </messageCode>
-                    <data>
-                        <pfx3:Error>
-                            <pfx3:StackTrace>
-                                <xsl:value-of select="&quot;Coming From Call Validation Sequence&quot;"/>
-                            </pfx3:StackTrace>
-                            <pfx3:Code>
-                                <xsl:value-of select="&quot;Out Of Sequence Error&quot;"/>
-                            </pfx3:Code>
-                            <pfx3:Message>
-                                <xsl:value-of select="&quot;Out Of Sequence Error&quot;"/>
-                            </pfx3:Message>
-                        </pfx3:Error>
-                    </data>
-                </ns3:ActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="Catch Exception">
-            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-            <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>261</pd:x>
-            <pd:y>440</pd:y>
-            <pd:handler>true</pd:handler>
-            <config>
-                <catchAll>true</catchAll>
-            </config>
-            <pd:inputBindings/>
-        </pd:activity>
-    </pd:group>
-    <pd:activity name="BODRequestION">
+    <pd:activity name="Call Message Sequence Validation">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>675</pd:x>
-        <pd:y>482</pd:y>
+        <pd:x>233</pd:x>
+        <pd:y>189</pd:y>
         <config>
-            <processName>/Processors/BODRequestION.process</processName>
+            <processName>/DataAccess/Queries/GetLastMessageSequenceQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <GpmMessageId>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
+                </GpmMessageId>
+                <PatchFamilyId>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
+                </PatchFamilyId>
+                <SequenceID>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
+                </SequenceID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ProcessBODRequestION">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>124</pd:x>
+        <pd:y>544</pd:y>
+        <config>
+            <processName>/Processors/ProcessBODRequestION.process</processName>
             <spawn>true</spawn>
         </config>
         <pd:inputBindings>
@@ -330,78 +210,11 @@
             </Input>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="call-DLQ">
+    <pd:activity name="SendToRealTimeESBQueue">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>841</pd:x>
-        <pd:y>381</pd:y>
-        <config>
-            <processName>/Processes/Common/JMS/PublishOntoDeadLetterQ.process</processName>
-            <spawn>true</spawn>
-        </config>
-        <pd:inputBindings>
-            <DeadLetterInput>
-                <ns4:request>
-                    <ns4:applicationID>
-                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
-                    </ns4:applicationID>
-                    <ns4:transactionID>
-                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
-                    </ns4:transactionID>
-                    <ns4:correlationID>
-                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/JMSCorrelationID"/>
-                    </ns4:correlationID>
-                    <ns4:failedSystemName>
-                        <xsl:value-of select="&quot;ESB-DATA-JDBC&quot;"/>
-                    </ns4:failedSystemName>
-                    <ns4:timeInterval>
-                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/DLQ/TimeInterval"/>
-                    </ns4:timeInterval>
-                    <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
-                        <ns4:errorCode>
-                            <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
-                        </ns4:errorCode>
-                    </xsl:if>
-                    <ns4:errorMessage>
-                        <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
-                    </ns4:errorMessage>
-                    <xsl:if test="$_error/pfx4:ErrorReport/StackTrace">
-                        <ns4:stackTrace>
-                            <xsl:value-of select="$_error/pfx4:ErrorReport/StackTrace"/>
-                        </ns4:stackTrace>
-                    </xsl:if>
-                    <ns4:currentTimestamp>
-                        <xsl:value-of select="current-dateTime()"/>
-                    </ns4:currentTimestamp>
-                    <ns4:exception>
-                        <ns4:system>
-                            <ns4:payload>
-                                <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/Body"/>
-                            </ns4:payload>
-                            <ns4:destinationQueue>
-                                <xsl:value-of select="&quot;WFMESB.ProductDev.ItemGateway.Price.Queue.V2&quot;"/>
-                            </ns4:destinationQueue>
-                            <ns4:isEncrypted>
-                                <xsl:value-of select="&quot;false&quot;"/>
-                            </ns4:isEncrypted>
-                            <ns4:toRecipient>
-                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/To"/>
-                            </ns4:toRecipient>
-                            <ns4:ccRecipient>
-                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/cC"/>
-                            </ns4:ccRecipient>
-                        </ns4:system>
-                    </ns4:exception>
-                </ns4:request>
-                <OtherProperties/>
-            </DeadLetterInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="SendToESBForSpliceSlaw">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1097</pd:x>
-        <pd:y>93</pd:y>
+        <pd:x>801</pd:x>
+        <pd:y>294</pd:y>
         <config>
             <processName>/Processors/SendToESBRealTimeQueue.process</processName>
         </config>
@@ -452,10 +265,89 @@
             </pfx5:ActivityOutput>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>227</pd:x>
+        <pd:y>324</pd:y>
+        <config>
+            <faultName>OutOfSequence</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Message is out of sequence and has exceeded the redelivery count of  &quot;,  $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;MessageOutOfSequence&quot;"/>
+                </messageCode>
+                <data>
+                    <pfx3:Error>
+                        <pfx3:StackTrace>
+                            <xsl:value-of select="concat(&quot;Message is out of sequence and has exceeded the redelivery count of  &quot;,  $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount, &quot;.  For MessageID: &quot;,$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId, &quot;; PatchFamilyID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID, &quot;;  SequenceID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID)"/>
+                        </pfx3:StackTrace>
+                        <pfx3:Code>
+                            <xsl:value-of select="&quot;MessageOutOfSequence&quot;"/>
+                        </pfx3:Code>
+                        <pfx3:Message>
+                            <xsl:value-of select="concat(&quot;Message is out of sequence and has exceeded the redelivery count of  &quot;,  $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount, &quot;.  For MessageID: &quot;,$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId, &quot;; PatchFamilyID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID, &quot;;  SequenceID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID)"/>
+                        </pfx3:Message>
+                    </pfx3:Error>
+                </data>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MapPrices">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>385</pd:x>
+        <pd:y>44</pd:y>
+        <config>
+            <processName>/Processors/MapMessagePricesToMammothPrices.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Call-Message-Parser/pfx2:item"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>236</pd:x>
+        <pd:y>414</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns6:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat($_error/pfx4:ErrorReport/Msg, &quot;.  StackTrace:&quot;, $_error/pfx4:ErrorReport/StackTrace)"/>
+                </message>
+                <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </ns6:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="HandleEmergencyPrices">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>631</pd:x>
+        <pd:y>294</pd:y>
+        <config>
+            <processName>/Processors/HandleEmergencyPrices.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns5:MammothPrices>
+                <xsl:copy-of select="$MapPrices/ns5:MammothPrices/ns5:MammothPrice"/>
+            </ns5:MammothPrices>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>ProcessPriceMessage</pd:from>
         <pd:to>Confirm on Success</pd:to>
-        <pd:lineType>Default</pd:lineType>
+        <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
@@ -467,86 +359,113 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>RepeatIfOutOfSequence</pd:from>
-        <pd:to>Call Message Parser</pd:to>
-        <pd:xpathDescription>InSequence</pd:xpathDescription>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Sequence-Validation/root/IsInSequence = "true"</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>PriceMessageReceiver</pd:from>
-        <pd:to>RepeatIfOutOfSequence</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>RepeatIfOutOfSequence</pd:from>
-        <pd:to>Confirm</pd:to>
-        <pd:xpathDescription>AlreadyProcessed</pd:xpathDescription>
-        <pd:lineType>Multiple Bends</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Sequence-Validation/root/IsAlreadyProcessed = "true"</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>call-DLQ</pd:from>
-        <pd:to>Confirm on Error</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Catch</pd:from>
-        <pd:to>BODRequestION</pd:to>
-        <pd:xpathDescription>OutOfSequenceError</pd:xpathDescription>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>contains($_error/pfx4:ErrorReport/ProcessStack,'GenerateError')=1</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Catch</pd:from>
-        <pd:to>call-DLQ</pd:to>
-        <pd:xpathDescription>OtherWise</pd:xpathDescription>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>BODRequestION</pd:from>
-        <pd:to>call-DLQ</pd:to>
+        <pd:to>Log</pd:to>
+        <pd:xpathDescription/>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Confirm on Success</pd:from>
-        <pd:to>SendToESBForSpliceSlaw</pd:to>
-        <pd:lineType>Default</pd:lineType>
+        <pd:to>SendToRealTimeESBQueue</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Call Message Parser</pd:from>
+        <pd:to>MapPrices</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendToRealTimeESBQueue</pd:from>
+        <pd:to>HandleEmergencyPrices</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PriceMessageReceiver</pd:from>
+        <pd:to>Call Message Sequence Validation</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Message Sequence Validation</pd:from>
+        <pd:to>Call Message Parser</pd:to>
+        <pd:xpathDescription>InSequence</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsInSequence="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Message Sequence Validation</pd:from>
+        <pd:to>Confirm on Success</pd:to>
+        <pd:xpathDescription>Already Processed</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Message Sequence Validation</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>Redelivery</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &lt;= $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount
+and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ProcessBODRequestION</pd:to>
+        <pd:xpathDescription>OutOfSequence</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_error_Generate-Error/pfx3:Error/pfx3:Code = "MessageOutOfSequence"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Message Sequence Validation</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>Exceeded Redelivery and Out of Sequence</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &gt; $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount
+and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MapPrices</pd:from>
         <pd:to>ProcessPriceMessage</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>SendToESBForSpliceSlaw</pd:from>
+        <pd:from>HandleEmergencyPrices</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Confirm</pd:from>
-        <pd:to>SendToESBForSpliceSlaw</pd:to>
+        <pd:from>Log</pd:from>
+        <pd:to>Confirm on Error</pd:to>
         <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ProcessBODRequestION</pd:from>
+        <pd:to>Confirm on Error</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>

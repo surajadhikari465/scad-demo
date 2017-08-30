@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns8="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx4="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pfx7="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx6="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/Shared Resources/Schemas/Application/MammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
-    <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/Shared Resources/Schemas/Application/ActivityOutput.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothPrices.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/SharedResources/Schemas/Application/ActivityOutput.xsd"/>
     <pd:name>Processors/ProcessPriceMessage.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
         <xsd:element name="root">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element ref="ns:item"/>
+                    <xsd:element ref="pfx7:MammothPrices"/>
                     <xsd:element name="MessageId" type="xsd:string"/>
                     <xsd:element name="PatchFamilyId" type="xsd:string"/>
                     <xsd:element name="GpmSequenceID" type="xsd:int"/>
@@ -19,34 +20,20 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>90</pd:startX>
-    <pd:startY>66</pd:startY>
+    <pd:startX>42</pd:startX>
+    <pd:startY>297</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>955</pd:endX>
-    <pd:endY>242</pd:endY>
+    <pd:endX>956</pd:endX>
+    <pd:endY>284</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1495053255704</pd:targetNamespace>
-    <pd:activity name="GetRegion">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>300</pd:x>
-        <pd:y>64</pd:y>
-        <config>
-            <processName>/DataAccess/Queries/GetRegionQuery.process</processName>
-        </config>
-        <pd:inputBindings>
-            <BusinessUnitId>
-                <xsl:value-of select="$Start/root/ns:item/ns:locale[1]/pfx2:id"/>
-            </BusinessUnitId>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:group name="Transaction">
         <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>54</pd:x>
-        <pd:y>134</pd:y>
+        <pd:x>121</pd:x>
+        <pd:y>63</pd:y>
         <pd:width>710</pd:width>
         <pd:height>444</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -69,13 +56,6 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Catch</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
             <pd:from>AddUpdateMessageSequence</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
@@ -92,8 +72,8 @@
         <pd:group name="IteratePrices">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>125</pd:x>
-            <pd:y>192</pd:y>
+            <pd:x>201</pd:x>
+            <pd:y>117</pd:y>
             <pd:width>404</pd:width>
             <pd:height>333</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -103,7 +83,7 @@
             <config>
                 <pd:groupType>inputLoop</pd:groupType>
                 <pd:serializable>false</pd:serializable>
-                <pd:over>$Start/root/ns:item/ns:locale/pfx2:storeItemAttributes/pfx:prices/pfx4:price</pd:over>
+                <pd:over>$Start/root/pfx7:MammothPrices/pfx7:MammothPrice</pd:over>
                 <pd:iterationElementSlot>currentPrice</pd:iterationElementSlot>
                 <pd:indexSlot>priceIndex</pd:indexSlot>
                 <pd:activityOutputName/>
@@ -114,7 +94,7 @@
             <pd:transition>
                 <pd:from>start</pd:from>
                 <pd:to>Call Price Command</pd:to>
-                <pd:xpathDescription>Success</pd:xpathDescription>
+                <pd:xpathDescription/>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
@@ -129,61 +109,14 @@
             <pd:activity name="Call Price Command">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>298</pd:x>
-                <pd:y>362</pd:y>
+                <pd:x>375</pd:x>
+                <pd:y>285</pd:y>
                 <config>
                     <processName>/DataAccess/Commands/PriceCommand.process</processName>
                 </config>
                 <pd:inputBindings>
                     <Input>
-                        <ns0:price>
-                            <ns0:Region>
-                                <xsl:value-of select="$GetRegion/Locale/Region"/>
-                            </ns0:Region>
-                            <ns0:BusinessUnit>
-                                <xsl:value-of select="$GetRegion/Locale/BusinessUnitId"/>
-                            </ns0:BusinessUnit>
-                            <ns0:ItemId>
-                                <xsl:value-of select="$Start/root/ns:item/ns:id"/>
-                            </ns0:ItemId>
-                            <ns0:GpmId>
-                                <xsl:value-of select="$currentPrice/pfx4:price/pfx4:gpmId"/>
-                            </ns0:GpmId>
-                            <ns0:Multiple>
-                                <xsl:value-of select="$currentPrice/pfx4:price/pfx4:priceMultiple"/>
-                            </ns0:Multiple>
-                            <ns0:Price>
-                                <xsl:value-of select="$currentPrice/pfx4:price/pfx4:priceAmount/ns1:amount"/>
-                            </ns0:Price>
-                            <ns0:StartDate>
-                                <xsl:value-of select="$currentPrice/pfx4:price/pfx4:priceStartDate"/>
-                            </ns0:StartDate>
-                            <xsl:if test="$currentPrice/pfx4:price/pfx4:priceEndDate">
-                                <ns0:EndDate>
-                                    <xsl:value-of select="$currentPrice/pfx4:price/pfx4:priceEndDate"/>
-                                </ns0:EndDate>
-                            </xsl:if>
-                            <ns0:PriceType>
-                                <xsl:value-of select="$currentPrice/pfx4:price/pfx4:type/ns2:id"/>
-                            </ns0:PriceType>
-                            <ns0:PriceTypeAttribute>
-                                <xsl:value-of select="$currentPrice/pfx4:price/pfx4:type/ns2:type/ns2:id"/>
-                            </ns0:PriceTypeAttribute>
-                            <ns0:SellableUom>
-                                <xsl:value-of select="$currentPrice/pfx4:price/pfx4:uom/ns3:code"/>
-                            </ns0:SellableUom>
-                            <ns0:CurrencyCode>
-                                <xsl:value-of select="$currentPrice/pfx4:price/pfx4:currencyTypeCode"/>
-                            </ns0:CurrencyCode>
-                            <xsl:if test="exists($currentPrice/pfx4:price/pfx4:traits/pfx3:trait[ns5:code=&quot;NTE&quot;])">
-                                <ns0:NewTagExpiration>
-                                    <xsl:value-of select="$currentPrice/pfx4:price/pfx4:traits/pfx3:trait[ns5:code='NTE']/ns5:type/ns4:value[1]/ns6:value"/>
-                                </ns0:NewTagExpiration>
-                            </xsl:if>
-                            <ns0:Action>
-                                <xsl:value-of select="$currentPrice/pfx4:price/@pfx3:Action"/>
-                            </ns0:Action>
-                        </ns0:price>
+                        <xsl:copy-of select="$currentPrice/pfx7:MammothPrice"/>
                         <MessageId>
                             <xsl:value-of select="$Start/root/MessageId"/>
                         </MessageId>
@@ -201,8 +134,8 @@
         <pd:activity name="AddUpdateMessageSequence">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>641</pd:x>
-            <pd:y>366</pd:y>
+            <pd:x>710</pd:x>
+            <pd:y>284</pd:y>
             <config>
                 <processName>/DataAccess/Commands/AddOrUpdateMessageSequenceCommand.process</processName>
             </config>
@@ -220,44 +153,7 @@
                 </root>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Catch">
-            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-            <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>603</pd:x>
-            <pd:y>485</pd:y>
-            <pd:handler>true</pd:handler>
-            <config>
-                <catchAll>true</catchAll>
-            </config>
-            <pd:inputBindings/>
-        </pd:activity>
     </pd:group>
-    <pd:activity name="Generate Error">
-        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
-        <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>922</pd:x>
-        <pd:y>418</pd:y>
-        <config>
-            <faultName/>
-        </config>
-        <pd:inputBindings>
-            <pfx5:ActivityInput/>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:transition>
-        <pd:from>Start</pd:from>
-        <pd:to>GetRegion</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>GetRegion</pd:from>
-        <pd:to>Transaction</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
     <pd:transition>
         <pd:from>Transaction</pd:from>
         <pd:to>End</pd:to>
@@ -266,12 +162,10 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Transaction</pd:from>
-        <pd:to>Generate Error</pd:to>
-        <pd:xpathDescription>caught exception</pd:xpathDescription>
+        <pd:from>Start</pd:from>
+        <pd:to>Transaction</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Catch/exceptiondata !=""</pd:xpath>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

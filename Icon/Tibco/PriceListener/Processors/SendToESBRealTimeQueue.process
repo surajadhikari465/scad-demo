@@ -2,17 +2,17 @@
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns12="www.tibco.com/plugin/Sleep" xmlns:ns13="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx3="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1">
     <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
-    <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/Shared Resources/Schemas/Application/ActivityOutput.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/SharedResources/Schemas/Application/ActivityOutput.xsd"/>
     <pd:name>Processors/SendToESBRealTimeQueue.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx3:ActivityOutput"/>
     <pd:startX>65</pd:startX>
-    <pd:startY>171</pd:startY>
+    <pd:startY>193</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>586</pd:endX>
-    <pd:endY>172</pd:endY>
+    <pd:endX>580</pd:endX>
+    <pd:endY>197</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1499718410700</pd:targetNamespace>
@@ -52,7 +52,7 @@
         <pd:x>155</pd:x>
         <pd:y>24</pd:y>
         <pd:width>261</pd:width>
-        <pd:height>281</pd:height>
+        <pd:height>327</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -97,8 +97,8 @@
         <pd:activity name="Generate Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>350</pd:x>
-            <pd:y>230</pd:y>
+            <pd:x>348</pd:x>
+            <pd:y>285</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -147,8 +147,8 @@
                     <JMSExpiration>%%Environment/ESBForSpiceSlaw/JMSExpiration%%</JMSExpiration>
                     <JMSPriority>%%Environment/ESBForSpiceSlaw/JMSPriority%%</JMSPriority>
                 </ConfigurableHeaders>
-                <ConnectionReference>/Connections/ESB Price Connection.sharedjmscon</ConnectionReference>
-                <ApplicationProperties>/Shared Resources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+                <ConnectionReference>/Connections/ESB Connection.sharedjmscon</ConnectionReference>
+                <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
                 <InDataxsdString>
                     <xsd:element name="Body" type="xsd:string"/>
                 </InDataxsdString>

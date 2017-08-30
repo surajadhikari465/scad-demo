@@ -7,7 +7,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502389673800</modTime>
+			<modTime>1503943284398</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SqlDBDriver</name>
@@ -19,7 +19,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SqlDBPwd</name>
-			<value>#!xu7W7YEgwO0TBErpc9E3/PS7DfFsvZqq4Os7PCmCyBpfHyM5A/nY+w==</value>
+			<value>#!vXNs2xPgIIVlnVJObp//yozqjsAeG93unidSK935ZS+eZss295gNGA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

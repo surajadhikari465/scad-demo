@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns12="http://schema.infor.com/InforOAGIS/2" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib" xmlns:pfx7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx6="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib" xmlns:pfx8="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx6="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns12="http://schema.infor.com/InforOAGIS/2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:ns8="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/Shared Resources/Schemas/Application/MammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
-    <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/Shared Resources/Schemas/Application/ActivityOutput.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothPrices.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/SharedResources/Schemas/Application/ActivityOutput.xsd"/>
     <pd:name>DataAccess/Commands/PriceCommand.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
         <xsd:element name="Input">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element ref="pfx5:price"/>
+                    <xsd:element ref="pfx8:MammothPrice"/>
                     <xsd:element name="MessageId" type="xsd:string"/>
                     <xsd:element name="PatchFamilyID" type="xsd:string"/>
                     <xsd:element ref="ns8:ActivityOutput"/>
@@ -33,8 +34,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>757</pd:x>
-        <pd:y>627</pd:y>
+        <pd:x>752</pd:x>
+        <pd:y>554</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>false</catchAll>
@@ -64,33 +65,7 @@
                         <xsl:value-of select="$Catch/pfx6:Error/pfx6:Message"/>
                     </pfx6:Message>
                 </pfx6:Error>
-                <xsl:copy-of select="$Start/Input/pfx5:price"/>
-            </Input>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="FileLogger">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1032</pd:x>
-        <pd:y>426</pd:y>
-        <config>
-            <processName>/Processors/FileLogger.process</processName>
-            <spawn>true</spawn>
-        </config>
-        <pd:inputBindings>
-            <Input>
-                <xsl:copy-of select="$Start/Input/pfx5:price"/>
-                <pfx6:Error>
-                    <pfx6:StackTrace>
-                        <xsl:value-of select="$Catch/pfx6:Error/pfx6:StackTrace"/>
-                    </pfx6:StackTrace>
-                    <pfx6:Code>
-                        <xsl:value-of select="$Catch/pfx6:Error/pfx6:Code"/>
-                    </pfx6:Code>
-                    <pfx6:Message>
-                        <xsl:value-of select="$Catch/pfx6:Error/pfx6:Message"/>
-                    </pfx6:Message>
-                </pfx6:Error>
+                <xsl:copy-of select="$Start/Input/pfx8:MammothPrice"/>
             </Input>
         </pd:inputBindings>
     </pd:activity>
@@ -141,13 +116,20 @@
     <pd:activity name="Generate-Error-1">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
         <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>762</pd:x>
+        <pd:x>761</pd:x>
         <pd:y>294</pd:y>
         <config>
             <faultName/>
         </config>
         <pd:inputBindings>
-            <pfx7:ActivityInput/>
+            <pfx7:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Catch/pfx6:Error/pfx6:Message"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="$Catch/pfx6:Error/pfx6:Code"/>
+                </messageCode>
+            </pfx7:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:group name="RepeatOnDbError">
@@ -177,7 +159,7 @@
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/Input/pfx5:price/pfx5:Action="Delete"</pd:xpath>
+            <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Delete"</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>start</pd:from>
@@ -186,7 +168,7 @@
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/Input/pfx5:price/pfx5:Action="Update"</pd:xpath>
+            <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Update"</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>start</pd:from>
@@ -195,14 +177,7 @@
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/Input/pfx5:price/pfx5:Action="Add"</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Update Price</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>otherwise</pd:conditionType>
+            <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Add"</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>DeletePrice</pd:from>
@@ -212,9 +187,16 @@
             <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
+            <pd:from>Update Price</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
             <pd:from>AddPrice</pd:from>
             <pd:to>end</pd:to>
-            <pd:xpathDescription>Otherwise</pd:xpathDescription>
+            <pd:xpathDescription/>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>otherwise</pd:conditionType>
@@ -301,8 +283,8 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
         <pd:activity name="Update Price">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>417</pd:x>
-            <pd:y>89</pd:y>
+            <pd:x>421</pd:x>
+            <pd:y>74</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -407,27 +389,27 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
                 <inputs>
                     <inputSet>
                         <Region>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:Region"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Region"/>
                         </Region>
                         <GpmID>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:GpmId"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:GpmId"/>
                         </GpmID>
                         <ItemID>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:ItemId"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:ItemId"/>
                         </ItemID>
                         <BusinessUnitID>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:BusinessUnit"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit"/>
                         </BusinessUnitID>
                         <Price>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:Price"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Price"/>
                         </Price>
                         <StartDate>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:StartDate"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:StartDate"/>
                         </StartDate>
                         <EndDate>
                             <xsl:choose>
-                                <xsl:when test="exists($Start/Input/pfx5:price/pfx5:EndDate)">
-                                    <xsl:value-of select="$Start/Input/pfx5:price/pfx5:EndDate"/>
+                                <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:EndDate)">
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:EndDate"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:attribute name="xsi:nil">true</xsl:attribute>
@@ -435,24 +417,24 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
                             </xsl:choose>
                         </EndDate>
                         <PriceType>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:PriceType"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:PriceType"/>
                         </PriceType>
                         <PriceTypeAttribute>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:PriceTypeAttribute"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:PriceTypeAttribute"/>
                         </PriceTypeAttribute>
                         <SellableUOM>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:SellableUom"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:SellableUom"/>
                         </SellableUOM>
                         <CurrencyCode>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:CurrencyCode"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode"/>
                         </CurrencyCode>
                         <Multiple>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:Multiple"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Multiple"/>
                         </Multiple>
                         <NewTagExpiration>
                             <xsl:choose>
-                                <xsl:when test="exists($Start/Input/pfx5:price/pfx5:NewTagExpiration)">
-                                    <xsl:value-of select="$Start/Input/pfx5:price/pfx5:NewTagExpiration"/>
+                                <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:NewTagExpiration)">
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:NewTagExpiration"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:attribute name="xsi:nil">true</xsl:attribute>
@@ -582,8 +564,8 @@ result=Math.pow(2,retryCount)*100L;
         <pd:activity name="AddPrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>416</pd:x>
-            <pd:y>297</pd:y>
+            <pd:x>431</pd:x>
+            <pd:y>284</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -689,27 +671,27 @@ result=Math.pow(2,retryCount)*100L;
                 <inputs>
                     <inputSet>
                         <Region>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:Region"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Region"/>
                         </Region>
                         <GpmID>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:GpmId"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:GpmId"/>
                         </GpmID>
                         <ItemID>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:ItemId"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:ItemId"/>
                         </ItemID>
                         <BusinessUnitID>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:BusinessUnit"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit"/>
                         </BusinessUnitID>
                         <Price>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:Price"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Price"/>
                         </Price>
                         <StartDate>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:StartDate"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:StartDate"/>
                         </StartDate>
                         <EndDate>
                             <xsl:choose>
-                                <xsl:when test="exists($Start/Input/pfx5:price/pfx5:EndDate)">
-                                    <xsl:value-of select="$Start/Input/pfx5:price/pfx5:EndDate"/>
+                                <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:EndDate)">
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:EndDate"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:attribute name="xsi:nil">true</xsl:attribute>
@@ -717,24 +699,24 @@ result=Math.pow(2,retryCount)*100L;
                             </xsl:choose>
                         </EndDate>
                         <PriceType>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:PriceType"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:PriceType"/>
                         </PriceType>
                         <PriceTypeAttribute>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:PriceTypeAttribute"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:PriceTypeAttribute"/>
                         </PriceTypeAttribute>
                         <SellableUOM>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:SellableUom"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:SellableUom"/>
                         </SellableUOM>
                         <CurrencyCode>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:CurrencyCode"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode"/>
                         </CurrencyCode>
                         <Multiple>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:Multiple"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Multiple"/>
                         </Multiple>
                         <NewTagExpiration>
                             <xsl:choose>
-                                <xsl:when test="exists($Start/Input/pfx5:price/pfx5:NewTagExpiration)">
-                                    <xsl:value-of select="$Start/Input/pfx5:price/pfx5:NewTagExpiration"/>
+                                <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:NewTagExpiration)">
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:NewTagExpiration"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:attribute name="xsi:nil">true</xsl:attribute>
@@ -748,8 +730,8 @@ result=Math.pow(2,retryCount)*100L;
         <pd:activity name="DeletePrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>423</pd:x>
-            <pd:y>179</pd:y>
+            <pd:x>428</pd:x>
+            <pd:y>184</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -807,19 +789,19 @@ result=Math.pow(2,retryCount)*100L;
                 <inputs>
                     <inputSet>
                         <Region>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:Region"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Region"/>
                         </Region>
                         <ItemID>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:ItemId"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:ItemId"/>
                         </ItemID>
                         <BusinessUnitID>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:BusinessUnit"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit"/>
                         </BusinessUnitID>
                         <StartDate>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:StartDate"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:StartDate"/>
                         </StartDate>
                         <PriceType>
-                            <xsl:value-of select="$Start/Input/pfx5:price/pfx5:PriceType"/>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:PriceType"/>
                         </PriceType>
                     </inputSet>
                 </inputs>
@@ -829,7 +811,7 @@ result=Math.pow(2,retryCount)*100L;
             <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
             <pd:resourceType>ae.activities.null</pd:resourceType>
             <pd:x>243</pd:x>
-            <pd:y>363</pd:y>
+            <pd:y>364</pd:y>
             <config/>
             <pd:inputBindings/>
         </pd:activity>
@@ -837,7 +819,7 @@ result=Math.pow(2,retryCount)*100L;
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
             <pd:x>415</pd:x>
-            <pd:y>361</pd:y>
+            <pd:y>364</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -913,8 +895,8 @@ result=Math.pow(2,retryCount)*100L;
     <pd:activity name="ConfirmBODION-Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>871</pd:x>
-        <pd:y>512</pd:y>
+        <pd:x>891</pd:x>
+        <pd:y>481</pd:y>
         <config>
             <processName>/Processors/ConfirmBODION.process</processName>
         </config>
@@ -972,13 +954,6 @@ result=Math.pow(2,retryCount)*100L;
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
-        <pd:from>DatabaseLogger</pd:from>
-        <pd:to>FileLogger</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-65485</pd:lineColor>
-        <pd:conditionType>error</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>Generate Error</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -1000,20 +975,13 @@ result=Math.pow(2,retryCount)*100L;
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>FileLogger</pd:from>
-        <pd:to>Generate-Error-1</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>RepeatOnDbError</pd:to>
         <pd:xpathDescription>MandatoryCheck</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>string-length($Start/Input/pfx5:price/pfx5:Action)&gt;0</pd:xpath>
+        <pd:xpath>string-length($Start/Input/pfx8:MammothPrice/pfx8:Action)&gt;0</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>RepeatOnDbError</pd:from>

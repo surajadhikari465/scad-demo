@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx6="http://www.tibco.com/pe/WriteToLogActivitySchema">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothPrices.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <pd:name>Processors/MapMessagePricesToMammothPrices.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:item"/>
+    <pd:startX>83</pd:startX>
+    <pd:startY>175</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Map-Data/pfx2:MammothPrices"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:MammothPrices"/>
+    <pd:endX>951</pd:endX>
+    <pd:endY>175</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1503347071489</pd:targetNamespace>
+    <pd:group name="Iterate Locale">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>229</pd:x>
+        <pd:y>13</pd:y>
+        <pd:width>517</pd:width>
+        <pd:height>300</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/pfx:item/pfx:locale</pd:over>
+            <pd:iterationElementSlot>currentLocale</pd:iterationElementSlot>
+            <pd:indexSlot>localeIndex</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Get RegionCode</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get RegionCode</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Get RegionCode">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>372</pd:x>
+            <pd:y>174</pd:y>
+            <config>
+                <processName>/DataAccess/Queries/GetRegionQuery.process</processName>
+            </config>
+            <pd:inputBindings>
+                <BusinessUnitId>
+                    <xsl:value-of select="$currentLocale/pfx:locale/pfx5:id"/>
+                </BusinessUnitId>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>571</pd:x>
+            <pd:y>174</pd:y>
+            <config>
+                <element ref="pfx2:MammothPrices"/>
+            </config>
+            <pd:inputBindings>
+                <pfx2:MammothPrices>
+                    <xsl:for-each select="$currentLocale/pfx:locale/pfx5:storeItemAttributes/pfx4:prices/pfx3:price">
+                        <pfx2:MammothPrice>
+                            <pfx2:Region>
+                                <xsl:value-of select="$Get-RegionCode/Locale/Region"/>
+                            </pfx2:Region>
+                            <pfx2:BusinessUnit>
+                                <xsl:value-of select="../../../pfx5:id"/>
+                            </pfx2:BusinessUnit>
+                            <pfx2:ItemId>
+                                <xsl:value-of select="$Start/pfx:item/pfx:id"/>
+                            </pfx2:ItemId>
+                            <pfx2:GpmId>
+                                <xsl:value-of select="pfx3:gpmId"/>
+                            </pfx2:GpmId>
+                            <pfx2:Multiple>
+                                <xsl:value-of select="pfx3:priceMultiple"/>
+                            </pfx2:Multiple>
+                            <pfx2:Price>
+                                <xsl:value-of select="pfx3:priceAmount/ns1:amount"/>
+                            </pfx2:Price>
+                            <pfx2:StartDate>
+                                <xsl:value-of select="pfx3:priceStartDate"/>
+                            </pfx2:StartDate>
+                            <xsl:if test="pfx3:priceEndDate">
+                                <pfx2:EndDate>
+                                    <xsl:value-of select="pfx3:priceEndDate"/>
+                                </pfx2:EndDate>
+                            </xsl:if>
+                            <pfx2:PriceType>
+                                <xsl:value-of select="pfx3:type/ns2:id"/>
+                            </pfx2:PriceType>
+                            <pfx2:PriceTypeAttribute>
+                                <xsl:value-of select="pfx3:type/ns2:type/ns2:id"/>
+                            </pfx2:PriceTypeAttribute>
+                            <pfx2:SellableUom>
+                                <xsl:value-of select="pfx3:uom/ns3:code"/>
+                            </pfx2:SellableUom>
+                            <pfx2:CurrencyCode>
+                                <xsl:value-of select="pfx3:currencyTypeCode"/>
+                            </pfx2:CurrencyCode>
+                            <xsl:if test="exists(pfx3:traits/ns:trait[ns6:code=&quot;NTE&quot;])">
+                                <pfx2:NewTagExpiration>
+                                    <xsl:value-of select="pfx3:traits/ns:trait[ns6:code=&quot;NTE&quot;]/ns6:type/ns5:value[1]/ns4:value"/>
+                                </pfx2:NewTagExpiration>
+                            </xsl:if>
+                            <pfx2:Action>
+                                <xsl:value-of select="@ns:Action"/>
+                            </pfx2:Action>
+                        </pfx2:MammothPrice>
+                    </xsl:for-each>
+                </pfx2:MammothPrices>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Iterate Locale</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Iterate Locale</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

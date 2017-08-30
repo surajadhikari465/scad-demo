@@ -2,20 +2,20 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>BOD</name>
-			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972861950</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>ConfirmBODQueue</name>
 			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1501525882391</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ESBGpmPriceQueue</name>
+			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503698678745</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ESBRealTimePriceQueue</name>
@@ -26,12 +26,12 @@
 			<modTime>1502833727906</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Price</name>
-			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
+			<name>ErrorBODQueue</name>
+			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863518</modTime>
+			<modTime>1503346304006</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

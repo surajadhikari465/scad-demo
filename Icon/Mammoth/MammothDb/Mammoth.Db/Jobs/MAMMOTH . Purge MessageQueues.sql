@@ -16,7 +16,7 @@ END
 DECLARE @dbName sysname = 'Mammoth'
 -----------------------------------------------------
 
-DECLARE @jobName sysname = (@dbName + ' . Delete Expired Prices and Sales')
+DECLARE @jobName sysname = (@dbName + ' . Purge MessageQueues')
 
 
 -- Remove existing job.
@@ -31,7 +31,7 @@ EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=@jobName,
 		@notify_level_netsend=0, 
 		@notify_level_page=0, 
 		@delete_level=0, 
-		@description=N'Deletes prices from all regional data tables where the prices have expired', 
+		@description=N'Purges processed message records from the MessageQueue tables', 
 		@category_name=N'[Uncategorized (Local)]', 
 		@owner_login_name=N'sa', @job_id = @jobId OUTPUT
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
@@ -41,7 +41,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Ma
 		@on_success_action=3, 
 		@on_success_step_id=0, 
 		@on_fail_action=4, 
-		@on_fail_step_id=4, 
+		@on_fail_step_id=3, 
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
@@ -50,40 +50,22 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Ma
 		@database_name=@dbName, 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Delete prices and sales', 
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Purge MessageQueue tables', 
 		@step_id=2, 
 		@cmdexec_success_code=0, 
 		@on_success_action=1, 
-		@on_success_step_id=0, 
-		@on_fail_action=4, 
-		@on_fail_step_id=3, 
-		@retry_attempts=0, 
-		@retry_interval=0, 
-		@os_run_priority=0, @subsystem=N'TSQL', 
-		@command=N'EXEC dbo.DeleteExpiredPricesAndSales @MaxDeleteCount = 100000, @BatchSize = 20000', 
-		@database_name=@dbName, 
-		@flags=0
-IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'NotifyOnFailure', 
-		@step_id=3, 
-		@cmdexec_success_code=0, 
-		@on_success_action=2, 
 		@on_success_step_id=0, 
 		@on_fail_action=2, 
 		@on_fail_step_id=0, 
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
-		@command=N'EXEC msdb.dbo.sp_send_dbmail
-@recipients=N''DBA.SQLServer.Alert@wholefoods.com;IRMA.developers@wholefoods.com'',
-@body= ''MAMMOTH . Delete Expired Prices and Sales has failed. Please check job history for details'', 
-@subject = ''MAMMOTH . Delete Expired Prices and Sales - Failed'',
-@profile_name = ''SQLServerDBAs''', 
-		@database_name=N'master', 
+		@command=N'EXEC app.PurgeMessageQueues', 
+		@database_name=@dbName, 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Report Maintenance Mode', 
-		@step_id=4, 
+		@step_id=3, 
 		@cmdexec_success_code=0, 
 		@on_success_action=1, 
 		@on_success_step_id=0, 
@@ -100,18 +82,21 @@ print @statusMsg;',
 		@database_name=@dbName, 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-EXEC @ReturnCode = msdb.dbo.sp_add_jobschedule @job_id=@jobId, @name=N'Nightly except Sundays from 1 to 4 AM', 
+EXEC @ReturnCode = msdb.dbo.sp_update_job @job_id = @jobId, @start_step_id = 1
+IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
+EXEC @ReturnCode = msdb.dbo.sp_add_jobschedule @job_id=@jobId, @name=N'Every 30 minutes', 
 		@enabled=1, 
-		@freq_type=8, 
-		@freq_interval=126, 
-		@freq_subday_type=8, 
-		@freq_subday_interval=1, 
+		@freq_type=4, 
+		@freq_interval=1, 
+		@freq_subday_type=4, 
+		@freq_subday_interval=30, 
 		@freq_relative_interval=0, 
-		@freq_recurrence_factor=1, 
-		@active_start_date=20170413, 
+		@freq_recurrence_factor=0, 
+		@active_start_date=20170120, 
 		@active_end_date=99991231, 
-		@active_start_time=10000, 
-		@active_end_time=40000
+		@active_start_time=0, 
+		@active_end_time=235959, 
+		@schedule_uid=N'c780b08e-e817-458e-856f-d6bb102c696a'
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_add_jobserver @job_id = @jobId, @server_name = N'(local)'
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback

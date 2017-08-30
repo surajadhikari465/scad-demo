@@ -2,76 +2,76 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>OraDBDriver</name>
-			<value>oracle.jdbc.driver.OracleDriver</value>
+			<name>EsbJNDIContextFactory</name>
+			<value>com.tibco.tibjms.naming.TibjmsInitialContextFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863254</modTime>
+			<modTime>1503613342503</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBHost</name>
-			<value></value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972863722</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>OraDBInstance</name>
-			<value></value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972861985</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>OraDBPort</name>
-			<value></value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862176</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>OraDBPwd</name>
-			<value>#!9QQ8xKLSWer33uLqR/KNJw==</value>
+			<name>EsbJmsPassword</name>
+			<value>#!p/CIYkRyZFjlkWvFYUDyuczPLR3OoJx/JkkzBUvaFQk=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1499972862962</modTime>
+			<modTime>1503613663646</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBUrl</name>
-			<value>jdbc:oracle:thin:</value>
+			<name>EsbJmsUserName</name>
+			<value>mammothUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863156</modTime>
+			<modTime>1503613342430</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBUser</name>
-			<value></value>
+			<name>EsbJndiContextUrl</name>
+			<value>ssl://cerd1616.wfm.pvt:7233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863653</modTime>
+			<modTime>1503613663856</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraLoginTimeout</name>
-			<value>0</value>
+			<name>EsbJndiPassword</name>
+			<value>#!1/QyaPpuzqiNWkNSSQz2y4Iu/vlVw5PAZfXvrnoc9zI=</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1503613663994</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EsbJndiUserName</name>
+			<value>jndiMammothUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863551</modTime>
+			<modTime>1503613769291</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraMaxConn</name>
-			<value>10</value>
+			<name>EsbQueueConnectionFactory</name>
+			<value>ItemQueueConnectionFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861802</modTime>
+			<modTime>1503613664100</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EsbSslPassword</name>
+			<value>#!JhxbJ/YeZtCfmz+YhC3Q2w==</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1503613769382</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EsbTopicConnectionFactory</name>
+			<value>ItemTopicConnectionFactory</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503613664192</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

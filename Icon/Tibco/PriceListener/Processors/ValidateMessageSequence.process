@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
     <pd:name>Processors/ValidateMessageSequence.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -50,7 +51,9 @@
     </pd:endType>
     <pd:endX>576</pd:endX>
     <pd:endY>75</pd:endY>
-    <pd:errorSchemas/>
+    <pd:errorSchemas>
+        <Error ref="pfx2:Error"/>
+    </pd:errorSchemas>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1495058550155</pd:targetNamespace>
     <pd:activity name="GetLatestSequenceId">

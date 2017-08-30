@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/Shared Resources/Schemas/Application/MammothDbPrice.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothPrices.xsd"/>
     <pd:name>DataAccess/Commands/DatabaseLogger.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -9,7 +10,7 @@
             <xsd:complexType>
                 <xsd:sequence>
                     <xsd:element ref="pfx2:Error"/>
-                    <xsd:element ref="pfx:price"/>
+                    <xsd:element ref="pfx3:MammothPrice"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -138,27 +139,27 @@
             <inputs>
                 <inputSet>
                     <Region>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:Region"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:Region"/>
                     </Region>
                     <GpmID>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:GpmId"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:GpmId"/>
                     </GpmID>
                     <ItemID>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:ItemId"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:ItemId"/>
                     </ItemID>
                     <BusinessUnitID>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:BusinessUnit"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:BusinessUnit"/>
                     </BusinessUnitID>
                     <Price>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:Price"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:Price"/>
                     </Price>
                     <StartDate>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:StartDate"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:StartDate"/>
                     </StartDate>
                     <EndDate>
                         <xsl:choose>
-                            <xsl:when test="exists($Start/Input/pfx:price/pfx:EndDate)">
-                                <xsl:value-of select="$Start/Input/pfx:price/pfx:EndDate"/>
+                            <xsl:when test="exists($Start/Input/pfx3:MammothPrice/pfx3:EndDate)">
+                                <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:EndDate"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:attribute name="xsi:nil">true</xsl:attribute>
@@ -166,24 +167,24 @@
                         </xsl:choose>
                     </EndDate>
                     <PriceType>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:PriceType"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:PriceType"/>
                     </PriceType>
                     <PriceTypeAttribute>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:PriceTypeAttribute"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:PriceTypeAttribute"/>
                     </PriceTypeAttribute>
                     <SellableUOM>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:SellableUom"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:SellableUom"/>
                     </SellableUOM>
                     <CurrencyCode>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:CurrencyCode"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:CurrencyCode"/>
                     </CurrencyCode>
                     <Multiple>
-                        <xsl:value-of select="$Start/Input/pfx:price/pfx:Multiple"/>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:Multiple"/>
                     </Multiple>
                     <NewTagExpiration>
                         <xsl:choose>
-                            <xsl:when test="exists($Start/Input/pfx:price/pfx:NewTagExpiration)">
-                                <xsl:value-of select="$Start/Input/pfx:price/pfx:NewTagExpiration"/>
+                            <xsl:when test="exists($Start/Input/pfx3:MammothPrice/pfx3:NewTagExpiration)">
+                                <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:NewTagExpiration"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:attribute name="xsi:nil">true</xsl:attribute>

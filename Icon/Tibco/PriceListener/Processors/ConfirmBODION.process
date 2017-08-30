@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns13="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://schema.infor.com/InforOAGIS/2">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
-    <xsd:import namespace="http://schema.infor.com/InforOAGIS/2" schemaLocation="/Shared Resources/Schemas/Application/ConfirmBOD.xsd"/>
+    <xsd:import namespace="http://schema.infor.com/InforOAGIS/2" schemaLocation="/SharedResources/Schemas/Application/ConfirmBOD.xsd"/>
     <pd:name>Processors/ConfirmBODION.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -42,9 +42,10 @@
         <pd:y>17</pd:y>
         <pd:width>219</pd:width>
         <pd:height>399</pd:height>
-        <pd:collapsedWidth>52</pd:collapsedWidth>
-        <pd:collapsedHeight>69</pd:collapsedHeight>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
         <config>
             <pd:groupType>errorLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
@@ -133,8 +134,8 @@
                     <JMSExpiration>%%Environment/ConfirmBOD/JMSExpiration%%</JMSExpiration>
                     <JMSPriority>%%Environment/ConfirmBOD/JMSPriority%%</JMSPriority>
                 </ConfigurableHeaders>
-                <ConnectionReference>/Connections/ESB Price Connection.sharedjmscon</ConnectionReference>
-                <ApplicationProperties>/Shared Resources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+                <ConnectionReference>/Connections/ESB Connection.sharedjmscon</ConnectionReference>
+                <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
                 <InDataxsdString ref="pfx:ConfirmBOD"/>
             </config>
             <pd:inputBindings>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
-    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
     <pd:name>Processors/ParsePriceMessage.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -21,10 +22,10 @@
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
     <pd:endType ref="pfx:item"/>
-    <pd:endX>612</pd:endX>
-    <pd:endY>65</pd:endY>
+    <pd:endX>606</pd:endX>
+    <pd:endY>64</pd:endY>
     <pd:errorSchemas>
-        <ErrorSchema ref="pfx2:ExceptionRequest"/>
+        <ErrorSchema ref="pfx4:Error"/>
     </pd:errorSchemas>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1498065918152</pd:targetNamespace>
@@ -45,38 +46,6 @@
             </xmlString>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Catch">
-        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-        <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>236</pd:x>
-        <pd:y>162</pd:y>
-        <pd:handler>true</pd:handler>
-        <config>
-            <catchAll>true</catchAll>
-        </config>
-        <pd:inputBindings/>
-    </pd:activity>
-    <pd:activity name="Generate Error">
-        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
-        <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>433</pd:x>
-        <pd:y>166</pd:y>
-        <config>
-            <faultName/>
-        </config>
-        <pd:inputBindings>
-            <ns:ActivityInput>
-                <xsl:if test="$_error/ns1:ErrorReport/Msg">
-                    <message>
-                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
-                    </message>
-                </xsl:if>
-                <messageCode>
-                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
-                </messageCode>
-            </ns:ActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>Parse XML Price Message</pd:to>
@@ -87,13 +56,6 @@
     <pd:transition>
         <pd:from>Parse XML Price Message</pd:from>
         <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Catch</pd:from>
-        <pd:to>Generate Error</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
