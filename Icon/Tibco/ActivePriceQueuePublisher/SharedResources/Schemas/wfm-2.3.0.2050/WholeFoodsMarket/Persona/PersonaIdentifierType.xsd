@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaIdentifierType/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:psf="http://schemas.wfm.com/Enterprise/PersonaMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaIdentifierType/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PersonaMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="personaIdentifierType" type="PersonaIdentifierTypeType"/>
+	<xs:complexType name="PersonaIdentifierTypeType">
+		<xs:sequence>
+			<xs:element name="name" type="psf:PersonaIdentifierNameType"/>
+			<xs:element name="description" type="psf:PersonaIdentifierTypeDescType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Team Member ID, Customer ID, External ID, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

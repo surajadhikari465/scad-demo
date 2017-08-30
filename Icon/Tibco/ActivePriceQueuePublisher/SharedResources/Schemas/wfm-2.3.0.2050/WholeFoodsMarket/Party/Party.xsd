@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- edited with XMLSpy v2015 sp2 (x64) (http://www.altova.com) by Madelyn Lescalleet (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2"
+     xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+     xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1"
+     xmlns:ptp="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyType/V2"
+     xmlns:pid="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyIdentifier/V2"
+     xmlns:dmg="http://schemas.wfm.com/Enterprise/DemographicMgmt/Demographic/V1"
+     xmlns:stt="http://schemas.wfm.com/Enterprise/StatusMgmt/StatusHistory/V1"
+     targetNamespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2"
+     version="0.1"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified">
+
+    <!-- ================== -->
+    <!-- Schema Imports             -->
+    <!-- ================== -->
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyType/V2" schemaLocation="PartyType.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/PartyIdentifier/V2" schemaLocation="PartyIdentifier.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/DemographicMgmt/Demographic/V1" schemaLocation="../Demographic/Demographic.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/StatusMgmt/StatusHistory/V1" schemaLocation="../Status/StatusHistory.xsd"/>
+
+    <!-- ================== -->
+    <!-- Global Elements             -->
+    <!-- ================== -->
+    <xs:element name="parties" type="PartiesType"/>
+    <xs:element name="party" type="PartyType"/>
+    <xs:complexType name="PartyType">
+        <xs:sequence>
+            <xs:element name="id" type="crf:PartyIdType" minOccurs="0"/>
+            <xs:element name="identifiers" type="pid:PartyIdentifiersType" minOccurs="0"/>
+            <xs:element name="demographics" type="dmg:DemographicsType" minOccurs="0"/>
+            <xs:element name="type" type="ptp:PartyTypeType"/>
+            <xs:element name="statusHistories" type="stt:StatusHistoriesType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute ref="crf:Action"/>
+    </xs:complexType>
+    <xs:complexType name="PartiesType">
+        <xs:sequence>
+            <xs:element name="party" type="PartyType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns="http://schemas.wfm.com/Enterprise/PromoMgmt/CommonRefTypes/V1"
+     xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1"
+     targetNamespace="http://schemas.wfm.com/Enterprise/PromoMgmt/CommonRefTypes/V1"
+     version="0.1"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified">
+
+    <!-- ================== -->
+    <!-- Schema Imports             -->
+    <!-- ================== -->
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1" schemaLocation="../Transaction/Common/CommonRefPromoTypes.xsd"/>
+
+    <!-- ================== -->
+    <xs:complexType name="TransactionPromotionAttrType">
+        <xs:complexContent>
+            <xs:extension base="tpf:PromotionSummaryType">
+                <xs:sequence>
+                    <xs:element name="refundablePromotions" type="tpf:RefundablePromotionsType" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!-- Simple Types                 -->
+    <!-- ================== -->
+    <!-- ================== -->
+    <!--  Complex Types              -->
+    <!-- ================== -->
+</xs:schema>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by sridhar (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/V1"
+     xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+     xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1"
+     xmlns:srf="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Sale/V1"
+     xmlns:rrf="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Return/V1"
+     xmlns:ltr="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Tender/V2"
+     xmlns:orf="http://schemas.wfm.com/Enterprise/TransactionMgmt/OnlineService/V1"
+     xmlns:yrf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Layaway/V1"
+     xmlns:xrf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TransactionTax/V1"
+     xmlns:aff="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1"
+     xmlns:vrf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Void/V1"
+     xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+     targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/V1"
+     version="2.1"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified">
+
+    <!-- ================== -->
+    <!-- Schema Imports             -->
+    <!-- ================== -->
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" schemaLocation="../Common/CommonRefEnumTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Sale/V1" schemaLocation="Sale.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Layaway/V1" schemaLocation="Layaway.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/OnlineService/V1" schemaLocation="OnlineService.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Return/V1" schemaLocation="Return.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Tender/V2" schemaLocation="Tender.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Void/V1" schemaLocation="Void.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1" schemaLocation="../../Affinity/Affinity.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TransactionTax/V1" schemaLocation="../../Tax/TransactionTax.xsd"/>
+
+    <!-- ================== -->
+    <!-- Global Elements             -->
+    <!-- ================== -->
+    <xs:element name="lineItemType" type="LineItemTypeType"/>
+    <xs:complexType name="LineItemTypeType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="affinity" type="aff:AffinityType"/>
+                <xs:element name="return" type="rrf:ReturnType"/>
+                <xs:element name="sale" type="srf:SaleType"/>
+                <xs:element name="tax" type="xrf:TransactionTaxType"/>
+                <xs:element name="tender" type="ltr:TenderType"/>
+            </xs:choice>
+            <xs:choice minOccurs="0">
+                <xs:element name="onlineServices" type="orf:OnlineServicesType"/>
+                <xs:element name="scanData" type="txf:ScanDataBase"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx5="http://www.tibco.com/Customer/CommonLE/namespace/Public/Common/CustomerRequestHeader.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.macys.com/CommonLE/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx3="http://www.realmed.com/CommonLE/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx7="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pfx="http://www.nscorp.com/CommonLE/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd">
+    <xsd:import namespace="http://www.tibco.com/Customer/CommonLE/namespace/Public/Common/CustomerRequestHeader.xsd" schemaLocation="/SharedResources/Schemas/CLE2007/Common/CustomerRequestHeader.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Logging/LogRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" schemaLocation="/SharedResources/Schemas/Public/Common/RequestHeader.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" schemaLocation="/SharedResources/Schemas/CLE/ClientInterface.xsd"/>
+    <pd:name>Processes/Common/Helper/MergeHeader.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx7:Header"/>
+    <pd:startX>28</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Merge-Headers/root/pfx2:Header"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:Header"/>
+    <pd:endX>690</pd:endX>
+    <pd:endY>35</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1222699346203</pd:targetNamespace>
+    <pd:activity name="Get Default Header">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>164</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <variableConfig>/SharedResources/Variables/Header.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Combine Alt Key Fields">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>348</pd:x>
+        <pd:y>42</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="AltKey" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="AltKeyName" type="xsd:string"/>
+                                        <xsd:element name="AltKeyValue" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each select="$Get-Default-Header/pfx7:Header/pfx7:AltKey">
+                    <xsl:if test="string-length(tib:trim(current()/pfx7:AltKeyValue ))>0">
+                        <AltKey>
+                            <AltKeyName>
+                                <xsl:value-of select="pfx7:AltKeyValue"/>
+                            </AltKeyName>
+                            <AltKeyValue>
+                                <xsl:value-of select="pfx7:AltKeyName"/>
+                            </AltKeyValue>
+                        </AltKey>
+                    </xsl:if>
+                </xsl:for-each>
+                <xsl:for-each select="$Start/pfx7:Header/pfx7:AltKey">
+                    <xsl:if test="string-length(tib:trim(current()/pfx7:AltKeyValue))>0">
+                        <AltKey>
+                            <AltKeyName>
+                                <xsl:value-of select="pfx7:AltKeyName"/>
+                            </AltKeyName>
+                            <AltKeyValue>
+                                <xsl:value-of select="pfx7:AltKeyValue"/>
+                            </AltKeyValue>
+                        </AltKey>
+                    </xsl:if>
+                </xsl:for-each>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Merge Headers">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>526</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="pfx2:Header"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <pfx2:Header>
+                    <pfx2:ApplicationID>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Environment/CommonLE/ApplicationID"/>
+                    </pfx2:ApplicationID>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:ComponentName))>0">
+                            <pfx2:ComponentName>
+                                <xsl:value-of select="$Start/pfx7:Header/pfx7:ComponentName"/>
+                            </pfx2:ComponentName>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:ComponentName))=0 and exists($Get-Default-Header/pfx7:Header/pfx7:ComponentName)">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:ComponentName">
+                                <pfx2:ComponentName>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:ComponentName"/>
+                                </pfx2:ComponentName>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:Hostname))>0">
+                            <pfx2:Hostname>
+                                <xsl:value-of select="$Start/pfx7:Header/pfx7:Hostname"/>
+                            </pfx2:Hostname>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:Hostname))=0 and exists($Get-Default-Header/pfx7:Header/pfx7:Hostname)">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:Hostname">
+                                <pfx2:Hostname>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:Hostname"/>
+                                </pfx2:Hostname>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Hostname>
+                                <xsl:value-of select="BW:getHostName()"/>
+                            </pfx2:Hostname>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <pfx2:Timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </pfx2:Timestamp>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:TransactionDomain))>0">
+                            <pfx2:TransactionDomain>
+                                <xsl:value-of select="$Start/pfx7:Header/pfx7:TransactionDomain"/>
+                            </pfx2:TransactionDomain>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:TransactionDomain))=0 and exists($Get-Default-Header/pfx7:Header/pfx7:TransactionDomain)">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:TransactionDomain">
+                                <pfx2:TransactionDomain>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:TransactionDomain"/>
+                                </pfx2:TransactionDomain>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:TransactionType))>0">
+                            <pfx2:TransactionType>
+                                <xsl:value-of select="$Start/pfx7:Header/pfx7:TransactionType"/>
+                            </pfx2:TransactionType>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:TransactionType))=0 and exists($Get-Default-Header/pfx7:Header/pfx7:TransactionType)">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:TransactionType">
+                                <pfx2:TransactionType>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:TransactionType"/>
+                                </pfx2:TransactionType>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:TransactionID))>0">
+                            <pfx2:TransactionID>
+                                <xsl:value-of select="$Start/pfx7:Header/pfx7:TransactionID"/>
+                            </pfx2:TransactionID>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:TransactionID))=0 and exists($Get-Default-Header/pfx7:Header/pfx7:TransactionID)">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:TransactionID">
+                                <pfx2:TransactionID>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:TransactionID"/>
+                                </pfx2:TransactionID>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:CorrelationID))>0">
+                            <pfx2:CorrelationID>
+                                <xsl:value-of select="$Start/pfx7:Header/pfx7:CorrelationID"/>
+                            </pfx2:CorrelationID>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:CorrelationID))=0 and exists($Get-Default-Header/pfx7:Header/pfx7:CorrelationID)">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:CorrelationID">
+                                <pfx2:CorrelationID>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:CorrelationID"/>
+                                </pfx2:CorrelationID>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:InterfaceID))>0">
+                            <pfx2:InterfaceID>
+                                <xsl:value-of select="$Start/pfx7:Header/pfx7:InterfaceID"/>
+                            </pfx2:InterfaceID>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Get-Default-Header/pfx7:Header/pfx7:InterfaceID))>0">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:InterfaceID">
+                                <pfx2:InterfaceID>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:InterfaceID"/>
+                                </pfx2:InterfaceID>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:Filename))>0">
+                            <xsl:if test="$Start/pfx7:Header/pfx7:Filename">
+                                <pfx2:Filename>
+                                    <xsl:value-of select="$Start/pfx7:Header/pfx7:Filename"/>
+                                </pfx2:Filename>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Get-Default-Header/pfx7:Header/pfx7:Filename))>0">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:Filename">
+                                <pfx2:Filename>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:Filename"/>
+                                </pfx2:Filename>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:Message))>0">
+                            <pfx2:Message>
+                                <xsl:value-of select="$Start/pfx7:Header/pfx7:Message"/>
+                            </pfx2:Message>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Get-Default-Header/pfx7:Header/pfx7:Message))>0">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:Message">
+                                <pfx2:Message>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:Message"/>
+                                </pfx2:Message>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:RenderID))>0">
+                            <xsl:if test="$Start/pfx7:Header/pfx7:RenderID">
+                                <pfx2:RenderID>
+                                    <xsl:value-of select="$Start/pfx7:Header/pfx7:RenderID"/>
+                                </pfx2:RenderID>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Get-Default-Header/pfx7:Header/pfx7:RenderID))>0">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:RenderID">
+                                <pfx2:RenderID>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:RenderID"/>
+                                </pfx2:RenderID>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:DataEncoding))>0">
+                            <xsl:if test="$Start/pfx7:Header/pfx7:DataEncoding">
+                                <pfx2:DataEncoding>
+                                    <xsl:value-of select="$Start/pfx7:Header/pfx7:DataEncoding"/>
+                                </pfx2:DataEncoding>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Get-Default-Header/pfx7:Header/pfx7:DataEncoding))>0">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:DataEncoding">
+                                <pfx2:DataEncoding>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:DataEncoding"/>
+                                </pfx2:DataEncoding>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="string-length(tib:trim($Start/pfx7:Header/pfx7:Transaction))>0">
+                            <xsl:if test="$Start/pfx7:Header/pfx7:Transaction">
+                                <pfx2:Transaction>
+                                    <xsl:value-of select="$Start/pfx7:Header/pfx7:Transaction"/>
+                                </pfx2:Transaction>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:when test="string-length(tib:trim($Get-Default-Header/pfx7:Header/pfx7:Transaction))>0">
+                            <xsl:if test="$Get-Default-Header/pfx7:Header/pfx7:Transaction">
+                                <pfx2:Transaction>
+                                    <xsl:value-of select="$Get-Default-Header/pfx7:Header/pfx7:Transaction"/>
+                                </pfx2:Transaction>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:for-each-group select="$Combine-Alt-Key-Fields/root/AltKey" group-by="AltKeyName">
+                        <pfx2:AltKey>
+                            <pfx2:AltKeyName>
+                                <xsl:value-of select="current-group()[1]/AltKeyName"/>
+                            </pfx2:AltKeyName>
+                            <pfx2:AltKeyValue>
+                                <xsl:value-of select="current-group()[1]/AltKeyValue"/>
+                            </pfx2:AltKeyValue>
+                        </pfx2:AltKey>
+                    </xsl:for-each-group>
+                </pfx2:Header>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>166</pd:x>
+        <pd:y>177</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Default Header</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Default Header</pd:from>
+        <pd:to>Combine Alt Key Fields</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Merge Headers</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Default Header</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Combine Alt Key Fields</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Combine Alt Key Fields</pd:from>
+        <pd:to>Merge Headers</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

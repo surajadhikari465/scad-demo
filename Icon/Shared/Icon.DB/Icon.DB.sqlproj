@@ -643,6 +643,7 @@
     <Build Include="infor\Tables\MessageArchiveNewItem.sql" />
     <Build Include="infor\Stored Procedures\GetScanCodeToIconItemIds.sql" />
     <Build Include="Scripts\Jobs\InforExtract_FromIcon.sql" />
+    <Build Include="app\Tables\JobSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
