@@ -35,7 +35,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>OraDBPwd</name>
-			<value>#!KHoVBtKO+wkQ8PrSBsQxww==</value>
+			<value>#!hDZwjIk2QZwPZSBg+P65xw==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

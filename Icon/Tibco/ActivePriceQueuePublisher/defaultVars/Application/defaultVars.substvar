@@ -3,11 +3,19 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ApplicationID</name>
-			<value>Price Listener</value>
+			<value>Price Queue Publisher</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863463</modTime>
+			<modTime>1504193654816</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>JobName</name>
+			<value>JustInTimePricePush</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1504193886691</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

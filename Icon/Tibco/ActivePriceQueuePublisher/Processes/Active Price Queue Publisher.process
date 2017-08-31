@@ -48,7 +48,7 @@
 	   WHERE ISNULL( DATEDIFF( second, LastRunDateTimeUtc,SYSUTCDATETIME())
 							 ,IntervalInSeconds) &gt;= IntervalInSeconds
             AND Enabled = 1
-	   </statement>
+	   AND JobName = ?</statement>
             <wizardData/>
             <oraObjects/>
             <oraTables/>
@@ -88,9 +88,19 @@
             <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>JobName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
         </config>
         <pd:inputBindings>
-            <jdbcQueryActivityInput/>
+            <jdbcQueryActivityInput>
+                <JobName>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/Application/JobName"/>
+                </JobName>
+            </jdbcQueryActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:group name="Iterate">
@@ -216,7 +226,7 @@
         </config>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:activity name="Call Process">
+    <pd:activity name="Log Exception">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>235</pd:x>
@@ -312,7 +322,7 @@
     <pd:transition>
         <pd:from>JDBC Query</pd:from>
         <pd:to>Iterate</pd:to>
-        <pd:xpathDescription>Run Service</pd:xpathDescription>
+        <pd:xpathDescription>count &gt; 0</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
@@ -320,13 +330,13 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Catch</pd:from>
-        <pd:to>Call Process</pd:to>
+        <pd:to>Log Exception</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Call Process</pd:from>
+        <pd:from>Log Exception</pd:from>
         <pd:to>Dead Letter Queue Exception</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
