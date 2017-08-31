@@ -19,11 +19,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Region</name>
-			<value>'FL'</value>
+			<value>FL</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504116510861</modTime>
+			<modTime>1504209943140</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

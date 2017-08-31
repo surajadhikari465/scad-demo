@@ -115,7 +115,7 @@
         <pd:activity name="Send TO Publisher Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>313</pd:x>
+            <pd:x>311</pd:x>
             <pd:y>83</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
@@ -136,11 +136,7 @@
             </config>
             <pd:inputBindings>
                 <ns0:ActivityInput>
-                    <JMSProperties>
-                        <ns0:JMSXGroupID>
-                            <xsl:value-of select="upper-case($Start/pfx6:JobSchedule/pfx6:Region)"/>
-                        </ns0:JMSXGroupID>
-                    </JMSProperties>
+                    <JMSProperties/>
                     <Body>
                         <xsl:copy-of select="$Start/pfx6:JobSchedule"/>
                     </Body>

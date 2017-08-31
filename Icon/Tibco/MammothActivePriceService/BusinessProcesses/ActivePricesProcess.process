@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/MammothPrice.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" schemaLocation="/SharedResources/Schemas/JobSchedule.xsd"/>
     <pd:name>BusinessProcesses/ActivePricesProcess.process</pd:name>
     <pd:startName>Publisher Queue Receiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -9,8 +10,8 @@
     <pd:starter name="Publisher Queue Receiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>149</pd:x>
-        <pd:y>165</pd:y>
+        <pd:x>82</pd:x>
+        <pd:y>167</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -18,7 +19,7 @@
                 <acknowledgeMode>23</acknowledgeMode>
                 <maxSessions>1</maxSessions>
                 <destination>%%Destinations/Queues/RegionPriceQueuePublisher%%</destination>
-                <selector>JMSXGroupID= %%Mammoth/Application/Region%%</selector>
+                <selector/>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
@@ -223,10 +224,10 @@ WHERE p.Region = ?
             <pd:inputBindings>
                 <jdbcQueryActivityInput>
                     <Region>
-                        <xsl:value-of select="translate($_globalVariables/ns1:GlobalVariables/Mammoth/Application/Region, &quot;'&quot;,&quot;&quot;)"/>
+                        <xsl:value-of select="$Parse-XML/pfx2:JobSchedule/pfx2:Region"/>
                     </Region>
                     <RegionArchive>
-                        <xsl:value-of select="translate($_globalVariables/ns1:GlobalVariables/Mammoth/Application/Region, &quot;'&quot;,&quot;&quot;)"/>
+                        <xsl:value-of select="$Parse-XML/pfx2:JobSchedule/pfx2:Region"/>
                     </RegionArchive>
                     <subsetSize>
                         <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/Application/ActivePriceSubsetSize"/>
@@ -414,13 +415,23 @@ VALUES (?, ?)
         </config>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:transition>
-        <pd:from>Publisher Queue Receiver</pd:from>
-        <pd:to>ProcessActivePriceSubsets</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>183</pd:x>
+        <pd:y>161</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:JobSchedule"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Publisher-Queue-Receiver/ns12:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>ProcessActivePriceSubsets</pd:from>
         <pd:to>Confirm</pd:to>
@@ -431,6 +442,20 @@ VALUES (?, ?)
     <pd:transition>
         <pd:from>Confirm</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Publisher Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>ProcessActivePriceSubsets</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

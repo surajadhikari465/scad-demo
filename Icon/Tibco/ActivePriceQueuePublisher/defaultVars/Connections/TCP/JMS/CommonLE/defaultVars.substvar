@@ -19,7 +19,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIPassword</name>
-			<value>#!dKAopxTxG0qg85BiCqRHVOdoLUKITN1D/7ZaSJyMn+g=</value>
+			<value>#!u7TkpZilFf0qn0jx5D3Y+rSSqI3HzJ6cMqC6ONujmVg=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -35,7 +35,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_Password</name>
-			<value>#!7v7yhglPU6BX62josXeJ4WbPAPjtIjo9FNs/fmjO5MU=</value>
+			<value>#!fUTJ1olX3CSa9UK7HMAASI1tqg6VoCmfU87rG3ARONg=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

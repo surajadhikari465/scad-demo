@@ -83,11 +83,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>PublisherTimerInMilliseconds</name>
-			<value>300000</value>
+			<value>300</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504201418166</modTime>
+			<modTime>1504212311700</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RemoteRvDaemon</name>
