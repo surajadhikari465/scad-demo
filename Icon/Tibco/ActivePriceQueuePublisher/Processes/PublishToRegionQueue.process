@@ -136,6 +136,9 @@
             </config>
             <pd:inputBindings>
                 <ns0:ActivityInput>
+                    <destinationQueue>
+                        <xsl:value-of select="$Start/pfx6:JobSchedule/pfx6:DestinationQueueName"/>
+                    </destinationQueue>
                     <JMSProperties/>
                     <Body>
                         <xsl:copy-of select="$Start/pfx6:JobSchedule"/>
