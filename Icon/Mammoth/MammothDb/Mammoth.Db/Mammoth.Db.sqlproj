@@ -668,6 +668,10 @@
     <Build Include="gpm\Stored Procedures\PurgePriceHistory.sql" />
     <None Include="Jobs\MAMMOTH.GPM.PurgePriceHistory.sql" />
     <Build Include="Security\DatabaseRoles.sql" />
+    <Build Include="app\Tables\JobSchedule.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

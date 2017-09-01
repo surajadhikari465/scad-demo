@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BWSharedResource>
-    <name>ICON</name>
+    <name>Mammoth</name>
     <resourceType>ae.shared.JDBCSharedResource</resourceType>
     <config>
         <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
@@ -8,8 +8,8 @@
         <loginTimeout>0</loginTimeout>
         <connectionType>JDBC</connectionType>
         <UseSharedJndiConfig>false</UseSharedJndiConfig>
-        <location>%%IconConnectionString%%</location>
-        <user>%%Connections/ICON/UserName%%  </user>
-        <password>%%Connections/ICON/Password%%</password>
+        <location>%%MammothConnectionString%%</location>
+        <user>%%Connections/Mammoth/UserName%%  </user>
+        <password>%%Connections/Mammoth/Password%%</password>
     </config>
 </BWSharedResource>

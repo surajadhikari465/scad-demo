@@ -3,19 +3,19 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Password</name>
-			<value>$tand@rd</value>
+			<value>P3nDr4g0nF@LL</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504122458305</modTime>
+			<modTime>1504298804983</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>UserName</name>
-			<value>IconReports</value>
+			<value>Mammoth.tibco.Dev</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504122458387</modTime>
+			<modTime>1504298804927</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

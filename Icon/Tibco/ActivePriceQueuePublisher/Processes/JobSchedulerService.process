@@ -34,7 +34,7 @@
             <commit>false</commit>
             <maxRows>100</maxRows>
             <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/Connections/ICON.sharedjdbc</jdbcSharedConfig>
+            <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
             <statement>SELECT JobScheduleId ,
 		JobName,
 	  	 Region,
@@ -198,7 +198,7 @@
                 <statement>	UPDATE  [app].[JobSchedule]
 	SET LastRunDateTimeUtc = SYSUTCDATETIME()
 	WHERE JobScheduleID = ?</statement>
-                <jdbcSharedConfig>/Connections/ICON.sharedjdbc</jdbcSharedConfig>
+                <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
                 <Prepared_Param_DataType>
                     <parameter>
                         <parameterName>JobScheduledID1</parameterName>
