@@ -28,7 +28,7 @@
             <ns0:verifyHostName>true</ns0:verifyHostName>
             <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
             <ns0:expectedHostName>cerd1616.wfm.pvt</ns0:expectedHostName>
-            <ns0:cert isRef="true">/SharedResources/Schemas/Certificates/.folder</ns0:cert>
+            <ns0:cert isRef="true">/SharedResources/Certificates/.folder</ns0:cert>
         </ns0:ssl>
     </config>
 </BWSharedResource>
