@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+     xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+     xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1"
+     xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1"
+     xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1"
+     xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2"
+     xmlns:lrf="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1"
+     xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2"
+     xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2"
+     xmlns:arf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1"
+     xmlns:xrf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1"
+     xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2"
+     xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2"
+     targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+     version="16.27"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified">
+
+    <!-- ================== -->
+    <!-- Schema Imports             -->
+    <!-- ================== -->
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" schemaLocation="CommonRefEnumTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" schemaLocation="../../Common/NameType.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" schemaLocation="../../Common/LinkType.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../../Amount/Amount.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" schemaLocation="../../Locale/Locale.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../../Party/Party.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" schemaLocation="../../Timezone/Timezone.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1" schemaLocation="../../Tax/TaxAuthority.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1" schemaLocation="../../Tax/TaxRate.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../../Uom/UnitOfMeasure.xsd"/>
+
+    <!-- ================== -->
+    <!-- Simple Types                 -->
+    <!-- ================== -->
+    <xs:simpleType name="AccountIdType">
+        <xs:restriction base="crf:IdStrType"/>
+    </xs:simpleType>
+    <xs:simpleType name="CardNumberType">
+        <xs:restriction base="crf:IdStrType"/>
+    </xs:simpleType>
+    <xs:simpleType name="CustomerOverrideIdType">
+        <xs:restriction base="crf:IdStrType"/>
+    </xs:simpleType>
+    <xs:simpleType name="InventoryCountIdType">
+        <xs:annotation>
+            <xs:documentation>Unique identifier of a specific inventory count</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="crf:IdStrType"/>
+    </xs:simpleType>
+    <xs:simpleType name="PolicyIdType">
+        <xs:restriction base="crf:IdStrType"/>
+    </xs:simpleType>
+    <xs:simpleType name="ProviderIdType">
+        <xs:restriction base="crf:IdStrType"/>
+    </xs:simpleType>
+    <xs:simpleType name="RuleNameType">
+        <xs:restriction base="crf:WfmStrType"/>
+    </xs:simpleType>
+    <xs:simpleType name="TillIdType">
+        <xs:restriction base="crf:IdStrType"/>
+    </xs:simpleType>
+    <xs:simpleType name="TransactionDocumentIdType">
+        <xs:annotation>
+            <xs:documentation>Unique identifier of a specific transaction document</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="crf:IdStrType"/>
+    </xs:simpleType>
+    <xs:simpleType name="SequenceNumberType">
+        <xs:restriction base="xs:unsignedLong">
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ================== -->
+    <!--  Complex Types              -->
+    <!-- ================== -->
+    <xs:complexType name="ActionType">
+        <xs:sequence>
+            <xs:element name="messageName" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="actionType" type="crf:WfmStrType"/>
+            <xs:element name="isApproved" type="crf:WfmBoolType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdjudicationCodeType">
+        <xs:complexContent>
+            <xs:extension base="crf:CodeType"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ApportionmentAmountType">
+        <xs:complexContent>
+            <xs:extension base="amt:AmountType">
+                <xs:sequence>
+                    <xs:element name="participatorId" type="crf:WfmStrType"/>
+                    <xs:element name="participator" type="crf:WfmStrType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ApprovalsBase">
+        <xs:sequence>
+            <xs:element name="approval" type="ApprovalBase" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ApprovalBase">
+        <xs:sequence>
+            <xs:element name="sequenceNumber" type="crf:SequenceNumberType" form="qualified"/>
+            <xs:element name="approver" type="prf:PartyType" form="qualified"/>
+            <xs:element name="lineApprovalCode" type="LineApprovalCode" form="qualified" minOccurs="0"/>
+            <xs:element name="description" type="DescriptionCommonData" form="qualified" minOccurs="0"/>
+            <xs:element name="entryMethod" type="tmf:EntryMethodEnum" form="qualified" minOccurs="0"/>
+            <xs:element name="approvalDateTime" type="tmz:DateTimezoneType" form="qualified" minOccurs="0"/>
+            <xs:element name="businessRuleManager" type="BusinessRuleManagerType" minOccurs="0"/>
+            <xs:element name="policyRuleManager" type="PolicyRuleManagerType" minOccurs="0"/>
+            <xs:element name="returnPolicy" type="ReturnPolicy" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BankReceiptType">
+        <xs:sequence>
+            <xs:element name="Bank" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="Account" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="Description" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="Amount" type="amt:AmountType" minOccurs="0"/>
+            <xs:element name="ReceiptDetail" type="ReceiptDetailType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BusinessActionType">
+        <xs:sequence>
+            <xs:element name="messageName" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="inputType" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="actionType" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="inputValue" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="isApproved" type="crf:WfmBoolType" minOccurs="0"/>
+            <xs:element name="lineItemSequenceLink" type="crf:SequenceNumberType" minOccurs="0"/>
+            <xs:element name="reasonGroup" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="reasonName" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="reasonCode" type="crf:ReasonCodeType" minOccurs="0"/>
+            <xs:element name="requiresAttendant" type="crf:WfmBoolType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BusinessRuleManagerType">
+        <xs:sequence>
+            <xs:element name="businessRule" type="BusinessRuleType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BusinessRuleType">
+        <xs:sequence>
+            <xs:element name="businessAction" type="BusinessActionType"/>
+            <xs:element name="ruleType" type="RuleType" minOccurs="0"/>
+            <xs:element name="ruleName" type="RuleName" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CouponLogType">
+        <xs:sequence>
+            <xs:element name="sequenceNumber" type="crf:SequenceNumberType" minOccurs="0"/>
+            <xs:element name="couponID" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="scanData" type="ScanDataBase" minOccurs="0"/>
+            <xs:element name="seriesID" type="crf:WfmIntType" minOccurs="0"/>
+            <xs:element name="offerId" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="amount" type="amt:AmountType" minOccurs="0"/>
+            <xs:element name="quantity" type="QuantityType" minOccurs="0"/>
+            <xs:element name="promotionId" type="crf:PromotionIdType" minOccurs="0"/>
+            <xs:element name="threshold" type="crf:WfmDecimalType" minOccurs="0"/>
+            <xs:element name="rewardType" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="fallback" type="crf:WfmBoolType" minOccurs="0"/>
+            <xs:element name="extendedValidation" type="crf:WfmBoolType" minOccurs="0"/>
+            <xs:element name="validationLevel" type="crf:WfmIntType" minOccurs="0"/>
+            <xs:element name="offline" type="crf:WfmBoolType" minOccurs="0"/>
+            <xs:element name="groupId" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="reason" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="endDateTime" type="tmz:DateTimezoneType" minOccurs="0"/>
+            <xs:element name="entryMethod" type="tmf:EntryMethodEnum" minOccurs="0"/>
+            <xs:element name="refusalReason" type="crf:ReasonCodeType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DescriptionCommonData">
+        <xs:sequence>
+            <xs:element name="language" type="erf:LanguageCodeEnum" minOccurs="0"/>
+            <xs:element name="typeCode" type="crf:CodeType" minOccurs="0"/>
+            <xs:element name="culture" type="erf:CultureTypeCodeEnum" minOccurs="0"/>
+            <xs:element name="description" type="crf:WfmStrType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="LineApprovalCode">
+        <xs:complexContent>
+            <xs:extension base="crf:WfmStrType"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="OperatorsType">
+        <xs:sequence>
+            <xs:element name="operator" type="prf:PartyType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="OverShortType">
+        <xs:sequence>
+            <xs:element name="Over" type="POSLogTotalsBaseType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Short" type="POSLogTotalsBaseType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyRuleManagerType">
+        <xs:sequence>
+            <xs:element name="policy" type="PolicyType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyType">
+        <xs:sequence>
+            <xs:element name="policyRules" type="PolicyRulesType" minOccurs="0"/>
+            <xs:element name="policyID" type="PolicyIdType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyRulesType">
+        <xs:sequence>
+            <xs:element name="rule" type="PolicyRuleType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyRuleType">
+        <xs:sequence>
+            <xs:element name="businessAction" type="BusinessActionType"/>
+            <xs:element name="approverID" type="prf:PartyType" minOccurs="0"/>
+            <xs:element name="ruleType" type="RuleNameType"/>
+            <xs:element name="entryMethod" type="tmf:EntryMethodEnum"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="POSLogTotalsBaseType">
+        <xs:sequence>
+            <xs:element name="tenderType" type="tmf:TenderTypeCodeEnum"/>
+            <xs:element name="subTenderType" type="crf:WfmIntType"/>
+            <xs:element name="denomination" type="crf:WfmIntType"/>
+            <xs:element name="amount" type="amt:AmountType" form="qualified"/>
+            <xs:element name="count" type="crf:WfmIntType" form="qualified" minOccurs="0"/>
+            <xs:element name="reason" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
+            <xs:element name="foreignCurrency" type="TenderForeignCurrencyBaseType" form="qualified" minOccurs="0"/>
+            <xs:element name="tenderID" type="crf:WfmIntType" form="qualified" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="QuantitiesType">
+        <xs:sequence>
+            <xs:element name="quantity" type="QuantityType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="QuantityType">
+        <xs:sequence>
+            <xs:element name="type" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="value" type="crf:WfmDecimalType" minOccurs="0"/>
+            <xs:element name="units" type="UnitsType" minOccurs="0"/>
+            <xs:element name="entryMethod" type="tmf:EntryMethodEnum" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ReceiptDetailType">
+        <xs:sequence>
+            <xs:element name="Totals" type="POSLogTotalsBaseType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ReceiptImagesDataType">
+        <xs:sequence>
+            <xs:element name="receiptData" type="ReceiptImageDataType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ReceiptImageDataType">
+        <xs:sequence>
+            <xs:element name="kind" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="format" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="notPrinted" type="crf:WfmStrType" minOccurs="0"/>
+            <xs:element name="line" type="crf:WfmStrType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ReversalType">
+        <xs:sequence>
+            <xs:element name="sequenceNumber" type="crf:SequenceNumberType" form="qualified" minOccurs="0"/>
+            <xs:element name="dateTime" type="tmz:DateTimezoneType" form="qualified" minOccurs="0"/>
+            <xs:element name="adjudicationCode" type="AdjudicationCodeType" form="qualified" minOccurs="0"/>
+            <xs:element name="referenceNumber" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
+            <xs:element name="hostText" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
+            <xs:element name="reversedAmount" type="amt:AmountType" form="qualified" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="ReversalReason" type="crf:WfmStrType" form="unqualified"/>
+    </xs:complexType>
+    <xs:complexType name="ReturnPolicy">
+        <xs:sequence>
+            <xs:element name="rule" type="Rule">
+                <xs:annotation>
+                    <xs:documentation>The return rule that was triggered in the containing return policy for the current return.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="ID" type="crf:WfmStrType" use="required">
+            <xs:annotation>
+                <xs:documentation>The ID of the return policy that was enforced for the current return.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="Rule">
+        <xs:sequence>
+            <xs:element name="action" type="ActionType">
+                <xs:annotation>
+                    <xs:documentation>The action that resulted from enforcement of the containing return rule.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ruleName" type="RuleNameType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RuleName">
+        <xs:complexContent>
+            <xs:extension base="crf:WfmStrType"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RuleType">
+        <xs:complexContent>
+            <xs:extension base="crf:WfmStrType"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ScanDataBase">
+        <xs:sequence>
+            <xs:element name="typeCode" type="tmf:ScanDataTypeCodeEnum" minOccurs="0"/>
+            <xs:element name="subType" type="tmf:SubTypeTypeCodeEnum" minOccurs="0"/>
+            <xs:element name="scanData" type="crf:WfmStrType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TaxDefinitionsType">
+        <xs:sequence>
+            <xs:element name="tax" type="TaxDefinitionType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TaxDefinitionType">
+        <xs:sequence>
+            <xs:element name="taxAuthority" type="arf:TaxAuthorityType" minOccurs="0"/>
+            <xs:element name="taxRate" type="xrf:TaxRateType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TenderForeignCurrencyBaseType">
+        <xs:annotation>
+            <xs:documentation>provides details about the foreign currency exchange rates, etc.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="dateTime" type="tmz:DateTimezoneType" form="qualified" minOccurs="0"/>
+            <xs:element name="originalFaceAmount" type="amt:AmountType" form="qualified">
+                <xs:annotation>
+                    <xs:documentation>the original amount in the foreign currency the being converted to local currency. For example, converting Yen to Dollars, this amount would be the amount of Yen</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="exchangeRate" type="crf:WfmDecimalType" form="qualified" minOccurs="0"/>
+            <xs:element name="serviceCharge" type="amt:AmountType" form="qualified" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>The amount charged to make the conversion from the foreign currency to the local currency</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TransactionLinksType">
+        <xs:sequence>
+            <xs:element name="link" type="TransactionLinkType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TransactionLinkReasonType">
+        <xs:complexContent>
+            <xs:extension base="tmf:TransactionLinkReasonEnum"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="TransactionLinkType">
+        <xs:sequence>
+            <xs:element name="transactionId" type="crf:TransactionIdType"/>
+            <xs:element name="reason" type="TransactionLinkReasonType" minOccurs="0"/>
+            <xs:element name="locale" type="lcl:LocaleType">
+                <xs:annotation>
+                    <xs:documentation>locale contains business unit id and register/workstation id within store/pointOfSaleRegisters</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="businessDayDateStart" type="crf:WfmDateType" minOccurs="0"/>
+            <xs:element name="businessDayDateEnd" type="crf:WfmDateType" minOccurs="0"/>
+            <xs:element name="beginDateTime" type="tmz:DateTimezoneType" minOccurs="0"/>
+            <xs:element name="endDateTime" type="tmz:DateTimezoneType" minOccurs="0"/>
+            <xs:element name="lineItemSequenceNumber" type="crf:SequenceNumberType" minOccurs="0"/>
+            <xs:element name="sequenceNumber" type="crf:SequenceNumberType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TransactionLineItemLinkType">
+        <xs:sequence>
+            <xs:element name="lineItemSequenceNumber" type="crf:SequenceNumberType" minOccurs="0"/>
+            <xs:element name="beginDateTime" type="tmz:DateTimezoneType" minOccurs="0"/>
+            <xs:element name="endDateTime" type="tmz:DateTimezoneType" minOccurs="0"/>
+            <xs:element name="transactionLinks" type="TransactionLinksType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="UnitsType">
+        <xs:sequence>
+            <xs:element name="value" type="crf:WfmDecimalType" minOccurs="0"/>
+            <xs:element name="uom" type="uom:UomType"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

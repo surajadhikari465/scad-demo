@@ -1,0 +1,21 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>NotifyError</name>
+			<value>WFMESB.Commerce.DeadLetter.Alert.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503333048226</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SystemError</name>
+			<value>WFMESB.Commerce.DeadLetter.Retry.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503333048120</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:tns="http://schemas.wfm.com/Mammoth/R10Prices.xsd"
+	 targetNamespace="http://schemas.wfm.com/Mammoth/R10Prices.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+
+	<xs:element name="R10Price" type="tns:R10PriceType"/>
+	<xs:element name="R10Prices" type="tns:R10PricesType"/>
+	<xs:complexType name="R10PricesType">
+		<xs:sequence>
+			<xs:element name="R10Price" type="tns:R10PriceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="R10PriceType">
+		<xs:sequence>
+			<xs:element name="RegionCode" type="xs:string"/>
+			<xs:element name="BusinessUnit_ID" type="xs:int"/>
+			<xs:element name="ItemId" type="xs:int"/>
+            <xs:element name="ItemTypeCode" type="xs:string"/>
+            <xs:element name="ItemTypeDesc" type="xs:string"/>
+            <xs:element name="LocaleId" type="xs:int"/>
+            <xs:element name="LocaleName" type="xs:string"/>
+            <xs:element name="ScanCodeId" type="xs:int"/>
+            <xs:element name="ScanCode" type="xs:string"/>
+            <xs:element name="ScanCodeTypeId" type="xs:int"/>
+            <xs:element name="ScanCodeTypeDesc" type="xs:string"/>
+            <xs:element name="ChangeType" type="xs:string"/>
+            <xs:element name="UomCode" type="xs:string"/>
+            <xs:element name="UomName" type="xs:string" minOccurs="0"/>
+            <xs:element name="CurrencyCode" type="xs:string"/>
+			<xs:element name="RegPrice" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="RegMultiple" type="xs:int" minOccurs="0"/>
+			<xs:element name="StartDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="SalePrice" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="SaleMultiple" type="xs:int" minOccurs="0"/>
+            <xs:element name="SaleStartDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="SaleEndDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="PreviousSalePrice" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="PreviousSaleMultiple" type="xs:int" minOccurs="0"/>
+            <xs:element name="PreviousSaleStartDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="PreviousSaleEndDate" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

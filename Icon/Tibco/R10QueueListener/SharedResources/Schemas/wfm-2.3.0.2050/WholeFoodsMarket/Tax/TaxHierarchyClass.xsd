@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (http://www.altova.com) by santosh (wholefoods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxHierarchyClass/V1" xmlns:taf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:hrf="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" targetNamespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxHierarchyClass/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.2">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" schemaLocation="../Hierarchy/HierarchyClass.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="taxHierarchyClasses">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="taxHierarchyClass" type="hrf:HierarchyClassType" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="taf:cchVersion" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
