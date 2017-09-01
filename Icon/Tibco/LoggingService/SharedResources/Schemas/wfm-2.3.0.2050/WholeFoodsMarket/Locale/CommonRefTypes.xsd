@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:str="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:add="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2" targetNamespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="5.5">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" schemaLocation="../Store/Store.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" schemaLocation="../Locale/Locale.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2" schemaLocation="../Address/Address.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="LocaleCodeType">
+		<xs:restriction base="LocaleCodeTypeEnum"/>
+	</xs:simpleType>
+	<xs:simpleType name="LocaleDescType">
+		<xs:restriction base="LocaleDescTypeEnum"/>
+	</xs:simpleType>
+	<xs:simpleType name="LocaleParentIdType">
+		<xs:annotation>
+			<xs:documentation>ParentId for a locale</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="LocaleNmType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="LocaleOpenDtType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmDateType"/>
+	</xs:simpleType>
+	<xs:simpleType name="LocaleCloseDtType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmDateType"/>
+	</xs:simpleType>
+	<xs:simpleType name="ParentLocaleIdType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="AddressIdType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="AddressUsgCodeType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="TraitCodeType">
+		<xs:annotation>
+			<xs:documentation>Unique identifier sent by Icon as TraitId</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="TraitValueType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="traitValue">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="LocaleTypeCdDescType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!--  Enumerations                -->
+	<!-- ================== -->
+	<xs:simpleType name="LocaleCodeTypeEnum">
+		<xs:annotation>
+			<xs:documentation>Code can represent - company, chain, region, metro, store, bakehouse, office, distribution center and so on..</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="CMP"/>
+			<xs:enumeration value="CHN"/>
+			<xs:enumeration value="REG"/>
+			<xs:enumeration value="STR"/>
+			<xs:enumeration value="OFF"/>
+			<xs:enumeration value="MTR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LocaleDescTypeEnum">
+		<xs:annotation>
+			<xs:documentation>Description can represent - company, chain, region, metro, store, bakehouse, office, distribution center and so on..</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Company"/>
+			<xs:enumeration value="Chain"/>
+			<xs:enumeration value="Region"/>
+			<xs:enumeration value="Metro"/>
+			<xs:enumeration value="Store"/>
+			<xs:enumeration value="Office"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!--  Complex Types              -->
+	<!-- ================== -->
+	<xs:complexType name="StoresType">
+		<xs:sequence>
+			<xs:element name="store" type="str:StoreType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocalesType">
+		<xs:sequence>
+			<xs:element name="locale" type="lcl:LocaleType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AddressesType">
+		<xs:sequence>
+			<xs:element name="address" type="add:AddressType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
