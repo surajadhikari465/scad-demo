@@ -1,7 +1,7 @@
-﻿@model Icon.Dashboard.Mvc.ViewModels.IconAppLogViewModel
+﻿@model Icon.Dashboard.Mvc.ViewModels.IconLogEntryViewModel
 
 @{ 
-    string rowId = $"row{Model.AppLogID}";
+    string rowId = "row" + Model.AppLogID.ToString();
 }
 
 <tr id="@rowId">

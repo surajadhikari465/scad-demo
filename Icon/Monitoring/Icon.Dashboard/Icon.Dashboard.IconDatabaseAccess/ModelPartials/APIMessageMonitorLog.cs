@@ -14,7 +14,7 @@ namespace Icon.Dashboard.IconDatabaseAccess
         {
             get
             {
-                return this.MessageType?.MessageTypeName;
+                return this.MessageType == null ? null : this.MessageType.MessageTypeName;
             }
         }
     }

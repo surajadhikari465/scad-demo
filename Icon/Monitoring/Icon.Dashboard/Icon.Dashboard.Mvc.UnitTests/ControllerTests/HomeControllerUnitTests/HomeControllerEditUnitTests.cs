@@ -20,9 +20,9 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         public void MvcHomeController_Edit_Get_Service_Should_ReturnViewResult()
         {
             //Given
-            var testService = base.fakeServiceA;
+            var testService = base.FakeServiceViewModelA;
             mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(s => s.GetApplication(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(testService);
             var controller = ConstructController();
 
@@ -39,7 +39,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             //Given
             var testService = base.FakeServiceViewModelA;
             mockDataServiceWrapper
-                .Setup(s => s.GetApplicationViewModel(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(testService);
             var controller = ConstructController();
 
@@ -47,17 +47,17 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             ActionResult result = controller.Edit(testService.Name, testService.Server);
 
             //Then
-            mockDataServiceWrapper.Verify(s => s.GetApplicationViewModel(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockDataServiceWrapper.Verify(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [TestMethod]
         public void MvcHomeController_Edit_Post_Service_Should_CallUpdateApplication()
         {
             //Given
-            var testService = base.fakeServiceA;
-            ServiceViewModel postModel = base.FakeServiceViewModelA;
+            var testService = base.FakeServiceViewModelA;
+            var postModel = base.FakeServiceViewModelA;
             mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(testService);
             var controller = ConstructController();
 
@@ -65,17 +65,17 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             ActionResult result = controller.Edit(postModel);
 
             //Then
-            mockDataServiceWrapper.Verify(s => s.UpdateApplication(It.IsAny<HttpServerUtilityBase>(), postModel, It.IsAny<string>()), Times.Once);
+            mockDataServiceWrapper.Verify(s => s.UpdateApplication(It.IsAny<string>(), postModel), Times.Once);
         }
 
         [TestMethod]
         public void MvcHomeController_Edit_Post_Service_Should_RedirectToGetAfterExecutingCommand()
         {
             //Given
-            var testService = base.fakeServiceA;
+            var testService = base.FakeServiceViewModelA;
             var postModel = base.FakeServiceViewModelA;
             mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(testService);
             var controller = ConstructController();
 
@@ -91,7 +91,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         public void MvcHomeController_Edit_Post_Service_Should_RedirectToGetWithExpectedRouteValues()
         {
             //Given
-            var testService = base.fakeServiceA;
+            var testService = base.FakeServiceViewModelA;
             var postModel = base.FakeServiceViewModelA;
             var controller = ConstructController();
 

@@ -8,9 +8,9 @@
     [Export(typeof(EsbEnvironmentFactory))]
     public class EsbEnvironmentFactory : EsbEnvironmentFactoryBase
     {
-        public override IEsbEnvironment GetEsbEnvironment(XElement esbEnvironmentElement)
+        public override IEsbEnvironmentDefinition GetEsbEnvironment(XElement esbEnvironmentElement)
         {
-            var esbEnvironment = new EsbEnvironment();
+            var esbEnvironment = new EsbEnvironmentDefinition();
             base.SetEsbEnvironmentProperties(esbEnvironment, esbEnvironmentElement);
             return esbEnvironment;
         }

@@ -8,7 +8,7 @@
     }
     else
     {
-        using (Html.BeginForm("Edit", "EsbSwitch", new { name = Model.Name }, FormMethod.Post, null))
+        using (Html.BeginForm("Edit", "Esb", new { name = Model.Name }, FormMethod.Post, null))
         {
             @Html.EditorForModel();
 
@@ -23,7 +23,7 @@
     <div class="row">
         <p></p>
         <div class="col-xs-offset-2 col-xs-8 text-center">
-            @using (Html.BeginForm("Delete", "EsbSwitch", new { name = Model.Name }, FormMethod.Post, null))
+            @using (Html.BeginForm("Delete", "Esb", new { name = Model.Name }, FormMethod.Post, null))
             {
                 <button type="submit" value="@("Delete")" class="btn btn-danger btn-block margin-top-10">@("Delete")</button>
             }
@@ -33,18 +33,11 @@
     <div class="row">
         <p></p>
         <div class="col-xs-offset-2 col-xs-8 text-center">
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to ESB Index", "Index")
         </div>
     </div>
-</div>
 
 @section scripts {
-    <script type="text/javascript">
-        @* set js variable from razor, for use in script when editing/creating the esb environment *@
-        var urlToAddEsbEnvironmentApp = "@Url.Action("AddApplicationRow")";
-    </script>
-
+    
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Scripts/dashboardCustomEsbSwitchAddRemove.js")
-    @Scripts.Render("~/Scripts/esbSwitch.js")
 }

@@ -3,7 +3,9 @@
 @{
     string environment = "Environment";
     string pathAndQuery = Request.Url.PathAndQuery ?? "Home";
-    var activeEnvironment = Model.FirstOrDefault(e => String.Compare(e.Value, Request.Url.Host, StringComparison.InvariantCultureIgnoreCase) == 0).Key;
+    var activeEnvironment = Model.FirstOrDefault(e =>
+            e.Value.Equals(Request.Url.Host, StringComparison.InvariantCultureIgnoreCase)
+        ).Key;
     if (String.IsNullOrWhiteSpace(activeEnvironment))
     {
         if (Request.Url.Host.Contains("localhost"))
@@ -14,7 +16,7 @@
     }
     if (!String.IsNullOrWhiteSpace(activeEnvironment))
     {
-        environment += $": {activeEnvironment}";
+        environment += ": " + activeEnvironment;
     }
     var color = Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment(activeEnvironment);
 }
@@ -33,7 +35,7 @@
         var active = Request.Url.Host == entry.Value ? "active" : "";
         var disabled = entry.Key == "Prod" ? "disabled" : "";
         var server = entry.Value;
-        var link = $"http://{server}{pathAndQuery}";
+        var link = "http://" + server + pathAndQuery;
         <li class="btn-@color @active @disabled"><a class="dropdown-item" href="@link">@entry.Key</a></li>
     }
 </ul>

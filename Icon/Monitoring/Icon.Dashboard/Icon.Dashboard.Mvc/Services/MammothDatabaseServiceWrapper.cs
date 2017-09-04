@@ -27,32 +27,32 @@ namespace Icon.Dashboard.Mvc.Services
             return MammothLoggingService.GetApp(appID);
         }
 
-        public List<IconAppViewModel> GetApps()
+        public List<IconLoggedAppViewModel> GetApps()
         {
             var apps = MammothLoggingService.GetApps();
-            var appViewModels = new List<IconAppViewModel>(apps.Count());
+            var appViewModels = new List<IconLoggedAppViewModel>(apps.Count());
             foreach (var app in apps)
             {
-                appViewModels.Add(new IconAppViewModel(app));
+                appViewModels.Add(new IconLoggedAppViewModel(app));
             }
             return appViewModels;
         }
 
-        public List<IconAppLogViewModel> GetPagedAppLogsByApp(string appName, int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize)
+        public List<IconLogEntryViewModel> GetPagedAppLogsByApp(string appName, int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize)
         {
             var appLogs = MammothLoggingService.GetPagedAppLogsByApp(appName, page, pageSize);
             var logViewModels = AppLogViewModelsFromEntities(appLogs);
             return logViewModels;
         }
 
-        public List<IconAppLogViewModel> GetPagedAppLogs(int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize)
+        public List<IconLogEntryViewModel> GetPagedAppLogs(int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize)
         {
             var appLogs = MammothLoggingService.GetPagedAppLogs(page, pageSize);
             var logViewModels = AppLogViewModelsFromEntities(appLogs);
             return logViewModels;
         }
 
-        public List<IconAppLogViewModel> GetPagedFilteredAppLogs(
+        public List<IconLogEntryViewModel> GetPagedFilteredAppLogs(
            Expression<Func<IAppLog, bool>> filter,
            int page = PagingConstants.DefaultPage,
            int pageSize = PagingConstants.DefaultPageSize,
@@ -63,20 +63,20 @@ namespace Icon.Dashboard.Mvc.Services
             return logViewModels;
         }
 
-        private List<IconAppLogViewModel> AppLogViewModelsFromEntities(IEnumerable<IAppLog> appLogs)
+        private List<IconLogEntryViewModel> AppLogViewModelsFromEntities(IEnumerable<IAppLog> appLogs)
         {
-            var logViewModels = new List<IconAppLogViewModel>(appLogs.Count());
+            var logViewModels = new List<IconLogEntryViewModel>(appLogs.Count());
             foreach (var appLog in appLogs)
             {
-                logViewModels.Add(new IconAppLogViewModel(appLog));
+                logViewModels.Add(new IconLogEntryViewModel(appLog));
             }
             return logViewModels;
         }
 
-        public IconAppLogViewModel GetSingleAppLog(int appLogId)
+        public IconLogEntryViewModel GetSingleAppLog(int appLogId)
         {
             var appLog = MammothLoggingService.GetSingleAppLog(appLogId);
-            var logViewModel = new IconAppLogViewModel(appLog);
+            var logViewModel = new IconLogEntryViewModel(appLog);
             return logViewModel;
         }
 
@@ -98,7 +98,7 @@ namespace Icon.Dashboard.Mvc.Services
             return logEntryReportViewModel;
         }
 
-        public IEnumerable<RecentLogEntriesReportViewModel> GetEmptyLogEntriesReportList(IEnumerable<IconAppViewModel> iconAppDefinitions)
+        public IEnumerable<RecentLogEntriesReportViewModel> GetEmptyLogEntriesReportList(IEnumerable<IconLoggedAppViewModel> iconAppDefinitions)
         {
             if (iconAppDefinitions != null)
             {

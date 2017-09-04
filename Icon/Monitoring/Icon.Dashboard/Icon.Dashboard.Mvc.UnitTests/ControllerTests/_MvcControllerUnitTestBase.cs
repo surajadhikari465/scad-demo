@@ -5,7 +5,9 @@ using Icon.Dashboard.Mvc.ViewModels;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -16,7 +18,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
     public class _MvcControllerUnitTestBase
     {
         protected string dataFilePath = "MvcDashboardUnitTestData.xml";
-        protected Mock<HttpServerUtilityBase> mockServer = new Mock<HttpServerUtilityBase>();
+        protected Mock<HttpServerUtilityBase> mockServerUtility = new Mock<HttpServerUtilityBase>();
         protected Mock<IDataFileServiceWrapper> mockDataServiceWrapper = new Mock<IDataFileServiceWrapper>();
         protected Mock<IIconDatabaseServiceWrapper> mockIconLoggingServiceWrapper = new Mock<IIconDatabaseServiceWrapper>();
         protected Mock<HttpContextBase> mockHttpContext = new Mock<HttpContextBase>();
@@ -26,6 +28,14 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             SetupFakeIconApplicationData();
             SetupFakeIconAppLogData();
             SetupFakeApiJobSummaryData();
+            SetupStubServerUtility();
+        }
+
+        private void SetupStubServerUtility()
+        {
+            var testDataFilePath = File.Exists(dataFilePath) ? dataFilePath : $"..\\..\\{dataFilePath}";
+            mockServerUtility.Setup(s => s.MapPath(It.IsAny<string>()))
+                .Returns(testDataFilePath);
         }
 
         protected void SetMockHttpContext(Controller controller)
@@ -48,7 +58,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         {
             get
             {
-                return mockServer.Object;
+                return mockServerUtility.Object;
             }
         }
 
@@ -67,16 +77,16 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             }
         }
 
-        protected WindowsService fakeServiceA = null;
-        protected WindowsService fakeServiceB = null;
-        protected ServiceViewModel FakeServiceViewModelA = null;
-        protected ServiceViewModel FakeServiceViewModelB = null;
+        protected IconService fakeServiceA = null;
+        protected IconService fakeServiceB = null;
+        protected IconApplicationViewModel FakeServiceViewModelA = null;
+        protected IconApplicationViewModel FakeServiceViewModelB = null;
 
-        protected List<IApplication> AllFakeApps
+        protected List<IIconApplication> AllFakeApps
         {
             get
             {
-                return new List<IApplication>() { fakeServiceA, fakeServiceB };
+                return new List<IIconApplication>() { fakeServiceA, fakeServiceB };
             }
         }
 
@@ -91,7 +101,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 
         protected void SetupFakeIconApplicationData()
         {
-            fakeServiceA = Mock.Of<WindowsService>();
+            fakeServiceA = Mock.Of<IconService>();
             fakeServiceA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
             fakeServiceA.DataFlowFrom = "None";
             fakeServiceA.DataFlowTo = "ESB";
@@ -100,7 +110,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             fakeServiceA.Server = "test-Server1";
             Mock.Get(fakeServiceA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
-            FakeServiceViewModelA = Mock.Of<ServiceViewModel>();
+            FakeServiceViewModelA = Mock.Of<IconApplicationViewModel>();
             FakeServiceViewModelA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
             FakeServiceViewModelA.DataFlowFrom = "None";
             FakeServiceViewModelA.DataFlowTo = "ESB";
@@ -109,7 +119,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             FakeServiceViewModelA.Server = "test-Server1";
             Mock.Get(FakeServiceViewModelA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
-            fakeServiceB = Mock.Of<WindowsService>();
+            fakeServiceB = Mock.Of<IconService>();
             fakeServiceB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
             fakeServiceB.DataFlowFrom = "None";
             fakeServiceB.DataFlowTo = "Unknown";
@@ -118,49 +128,14 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             fakeServiceB.Server = "test-Server1";
             Mock.Get(fakeServiceB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
-            FakeServiceViewModelB = Mock.Of<ServiceViewModel>();
+            FakeServiceViewModelB = Mock.Of<IconApplicationViewModel>();
             FakeServiceViewModelB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
             FakeServiceViewModelB.DataFlowFrom = "None";
             FakeServiceViewModelB.DataFlowTo = "Unknown";
             FakeServiceViewModelB.DisplayName = "BBBB Service";
             FakeServiceViewModelB.Name = "Fake.Name.BBBBB";
             FakeServiceViewModelB.Server = "test-Server1";
-            Mock.Get(FakeServiceViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
-
-            //fakeTaskA = Mock.Of<ScheduledTask>();
-            //fakeTaskA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            //fakeTaskA.DataFlowFrom = "None";
-            //fakeTaskA.DataFlowTo = "Other";
-            //fakeTaskA.DisplayName = "AAAAAA Task";
-            //fakeTaskA.Environment = EnvironmentEnum.Dev;
-            //fakeTaskA.Name = "Fake.Name.AAAAAA";
-            //fakeTaskA.Server = "test-Server1";
-            //Mock.Get(fakeTaskA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);
-            //FakeTaskViewModelA = Mock.Of<TaskViewModel>();
-            //FakeTaskViewModelA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            //FakeTaskViewModelA.DataFlowFrom = "None";
-            //FakeTaskViewModelA.DataFlowTo = "Unknown";
-            //FakeTaskViewModelA.DisplayName = "AAAAAA Service";
-            //FakeTaskViewModelA.Name = "Fake.Name.AAAAAA";
-            //FakeTaskViewModelA.Server = "test-Server1";
-            //Mock.Get(FakeTaskViewModelA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
-            //fakeTaskB = Mock.Of<ScheduledTask>();
-            //fakeTaskB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            //fakeTaskB.DataFlowFrom = "None";
-            //fakeTaskB.DataFlowTo = "FTP";
-            //fakeTaskB.DisplayName = "BBBB Task";
-            //fakeTaskB.Environment = EnvironmentEnum.Dev;
-            //fakeTaskB.Name = "Fake.Name.BBBBB";
-            //fakeTaskB.Server = "test-Server1";
-            //Mock.Get(fakeTaskB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);
-            //FakeTaskViewModelB = Mock.Of<TaskViewModel>();
-            //FakeTaskViewModelB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            //FakeTaskViewModelB.DataFlowFrom = "None";
-            //FakeTaskViewModelB.DataFlowTo = "None";
-            //FakeTaskViewModelB.DisplayName = "BBBB Task";
-            //FakeTaskViewModelB.Name = "Fake.Name.BBBBB";
-            //FakeTaskViewModelB.Server = "test-Server1";
-            //Mock.Get(FakeTaskViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.ScheduledTask);
+            Mock.Get(FakeServiceViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);            
         }
 
         protected IApp GetFakeApiControllerApp(int id = 99, string name = "ICON Test ApiController App")
@@ -179,11 +154,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         protected IAppLog FakeAppLogB2 = null;
         protected IAppLog FakeAppLogB3 = null;
         protected IAppLog FakeAppLogC1 = null;
-        protected IconAppLogViewModel FakeIconAppLogViewModelA1 = null;
-        protected IconAppLogViewModel FakeIconAppLogViewModelB1 = null;
-        protected IconAppLogViewModel FakeIconAppLogViewModelB2 = null;
-        protected IconAppLogViewModel FakeIconAppLogViewModelB3 = null;
-        protected IconAppLogViewModel FakeIconAppLogViewModelC1 = null;
+        protected IconLogEntryViewModel FakeIconAppLogViewModelA1 = null;
+        protected IconLogEntryViewModel FakeIconAppLogViewModelB1 = null;
+        protected IconLogEntryViewModel FakeIconAppLogViewModelB2 = null;
+        protected IconLogEntryViewModel FakeIconAppLogViewModelB3 = null;
+        protected IconLogEntryViewModel FakeIconAppLogViewModelC1 = null;
 
         protected void SetupFakeIconAppLogData()
         {
@@ -204,7 +179,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             FakeAppLogA1.UserName = @"WFM\FakeUser";
             Mock.Get(FakeAppLogA1).SetupGet(a => a.AppName).Returns(FakeAppA.AppName);
 
-            FakeIconAppLogViewModelA1 = Mock.Of<IconAppLogViewModel>();
+            FakeIconAppLogViewModelA1 = Mock.Of<IconLogEntryViewModel>();
             FakeIconAppLogViewModelA1.AppID = FakeAppLogA1.AppID;
             FakeIconAppLogViewModelA1.AppLogID = FakeAppLogA1.AppLogID;
             FakeIconAppLogViewModelA1.AppName = FakeAppA.AppName;
@@ -234,7 +209,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Mock.Get(FakeAppLogB1).SetupGet(a => a).Returns(FakeAppB);
             Mock.Get(FakeAppLogB1).SetupGet(a => a.AppName).Returns(FakeAppB.AppName);
 
-            FakeIconAppLogViewModelB1 = Mock.Of<IconAppLogViewModel>();
+            FakeIconAppLogViewModelB1 = Mock.Of<IconLogEntryViewModel>();
             FakeIconAppLogViewModelB1.AppID = FakeAppLogB1.AppID;
             FakeIconAppLogViewModelB1.AppLogID = FakeAppLogB1.AppLogID;
             FakeIconAppLogViewModelB1.AppName = FakeAppB.AppName;
@@ -260,7 +235,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Mock.Get(FakeAppLogB2).SetupGet(a => a.App).Returns(FakeAppB);
             Mock.Get(FakeAppLogB2).SetupGet(a => a.AppName).Returns(FakeAppB.AppName);
 
-            FakeIconAppLogViewModelB2 = Mock.Of<IconAppLogViewModel>();
+            FakeIconAppLogViewModelB2 = Mock.Of<IconLogEntryViewModel>();
             FakeIconAppLogViewModelB2.AppID = FakeAppLogB2.AppID;
             FakeIconAppLogViewModelB2.AppLogID = FakeAppLogB2.AppLogID;
             FakeIconAppLogViewModelB2.AppName = FakeAppB.AppName;
@@ -286,7 +261,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Mock.Get(FakeAppLogB3).SetupGet(a => a.App).Returns(FakeAppB);
             Mock.Get(FakeAppLogB3).SetupGet(a => a.AppName).Returns(FakeAppB.AppName);
 
-            FakeIconAppLogViewModelB3 = Mock.Of<IconAppLogViewModel>();
+            FakeIconAppLogViewModelB3 = Mock.Of<IconLogEntryViewModel>();
             FakeIconAppLogViewModelB3.AppID = FakeAppLogB3.AppID;
             FakeIconAppLogViewModelB3.AppLogID = FakeAppLogB3.AppLogID;
             FakeIconAppLogViewModelB3.AppName = FakeAppB.AppName;
@@ -316,7 +291,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Mock.Get(FakeAppLogC1).SetupGet(a => a.App).Returns(FakeAppC);
             Mock.Get(FakeAppLogC1).SetupGet(a => a.AppName).Returns(FakeAppC.AppName);
 
-            FakeIconAppLogViewModelC1 = Mock.Of<IconAppLogViewModel>();
+            FakeIconAppLogViewModelC1 = Mock.Of<IconLogEntryViewModel>();
             FakeIconAppLogViewModelC1.AppID = FakeAppLogC1.AppID;
             FakeIconAppLogViewModelC1.AppLogID = FakeAppLogC1.AppLogID;
             FakeIconAppLogViewModelC1.AppName = FakeAppC.AppName;
@@ -337,11 +312,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             }
         }
 
-        protected List<IconAppLogViewModel> AllFakeIconAppLogViewModels
+        protected List<IconLogEntryViewModel> AllFakeIconAppLogViewModels
         {
             get
             {
-                var list = new List<IconAppLogViewModel>()
+                var list = new List<IconLogEntryViewModel>()
                 {
                     FakeIconAppLogViewModelA1,
                     FakeIconAppLogViewModelB1,

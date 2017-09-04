@@ -6,25 +6,35 @@ namespace Icon.Dashboard.DataFileAccess.Models
     using System.ServiceProcess;
 
     /// <summary>
-    /// This class represents a process that is run via Windows Service.
+    /// This class represents an Icon application or process that runs as a Windows Service.
     /// </summary>
-    public class WindowsService : IApplication, IDisposable
+    public class IconService : IIconApplication, IDisposable
     {
-        public WindowsService()
+        #region constructors
+        public IconService()
         {
             this.TypeOfApplication = ApplicationTypeEnum.WindowsService;
         }
 
-        public void FindAndCreateInstance()
+        public IconService(string name, string server, string configFilePath, string displayName = null)
+            : this()
         {
-            this.Instance = new ServiceController(this.Name, this.Server);
-            SetValidCommands(GetStatus());
+            this.Name = name;
+            this.Server = server;
+            this.ConfigFilePath = configFilePath;
+            this.DisplayName = String.IsNullOrWhiteSpace(displayName) ? name : displayName;
         }
+        #endregion
 
-        private Lazy<Dictionary<string, string>> appSettings = new Lazy<Dictionary<string, string>>(
-            () => new Dictionary<string, string>());
-        private Lazy<Dictionary<string, string>> esbConnectionSettings = new Lazy<Dictionary<string, string>>(
-            () => new Dictionary<string, string>());
+        #region private fields
+
+        private Lazy<Dictionary<string, string>> appSettings =
+            new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>());
+        private Lazy<Dictionary<string, string>> esbConnectionSettings =
+            new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>());
+        #endregion
+
+        #region public properties
 
         public Dictionary<string, string> AppSettings
         {
@@ -66,6 +76,33 @@ namespace Icon.Dashboard.DataFileAccess.Models
         public List<string> ValidCommands { get; private set; }
 
         /// <summary>
+        /// True/false flag indicating whether the application is configured for
+        ///   communicating with ESB Queues or not
+        /// </summary>
+        public bool HasEsbConfiguration
+        {
+            get
+            {
+                return this.EsbConnectionSettings.Any();
+            }
+        }
+
+        public string NameAndServer
+        {
+            get
+            {
+                return $"{this.Name} | {this.Server}";
+            }
+        }
+        #endregion
+
+        #region public methods
+        public void FindAndCreateInstance()
+        {
+            this.Instance = new ServiceController(this.Name, this.Server);
+            SetValidCommands(GetStatus());
+        }
+        /// <summary>
         /// Refreshes the information about the instance of the windows service and return the status.
         /// </summary>
         /// <returns>
@@ -81,8 +118,12 @@ namespace Icon.Dashboard.DataFileAccess.Models
             }
             try
             {
-                this.Instance?.Refresh();
-                return this.Instance?.Status.ToString() ?? "Undefined";
+                if (this.Instance != null)
+                {
+                    this.Instance.Refresh();
+                    return this.Instance.Status.ToString();
+                }
+                return "Undefined";
             }
             catch (InvalidOperationException)
             {
@@ -90,21 +131,49 @@ namespace Icon.Dashboard.DataFileAccess.Models
             }
         }
 
-        public void Start(string[] args)
+        public void Start(TimeSpan timeout, string[] args)
         {
             if (this.Instance == null) this.FindAndCreateInstance();
-            this.Instance?.Start(args ?? Enumerable.Empty<string>().ToArray());
-            this.Instance?.WaitForStatus(ServiceControllerStatus.Running);
-        }
+            if (args == null) args = Enumerable.Empty<string>().ToArray();
 
-        public void Stop()
+            switch (this.Instance.Status)
+            {
+                case ServiceControllerStatus.Paused:
+                case ServiceControllerStatus.PausePending:
+                case ServiceControllerStatus.Stopped:
+                case ServiceControllerStatus.StopPending:
+                    this.Instance.Start(args);
+                    this.Instance.WaitForStatus(ServiceControllerStatus.Running, timeout);
+                    break;
+                case ServiceControllerStatus.ContinuePending:
+                case ServiceControllerStatus.StartPending:
+                case ServiceControllerStatus.Running:
+                default:
+                    break;
+            }
+        }        
+
+        public void Stop(TimeSpan timeout)
         {
             if (this.Instance == null) this.FindAndCreateInstance();
-
-            this.Instance?.Stop();
-            this.Instance?.WaitForStatus(ServiceControllerStatus.Stopped);
+            
+            switch (this.Instance.Status)
+            {
+                case ServiceControllerStatus.Running:
+                case ServiceControllerStatus.ContinuePending:
+                case ServiceControllerStatus.Paused:
+                case ServiceControllerStatus.PausePending:
+                case ServiceControllerStatus.StopPending:
+                case ServiceControllerStatus.StartPending:
+                    this.Instance.Stop();
+                    this.Instance.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+                    break;
+                case ServiceControllerStatus.Stopped:
+                default:
+                    break;
+            }
         }
-
+        
         public bool StatusIsGreen
         {
             get
@@ -151,17 +220,17 @@ namespace Icon.Dashboard.DataFileAccess.Models
             }
         }
 
-        public void Execute(string command, string[] args = null)
+        public void Execute(TimeSpan timeout, string command, string[] args = null)
         {
             if (!String.IsNullOrWhiteSpace(command))
             {
                 switch (command.ToLower())
                 {
                     case "start":
-                        Start(args);
+                        Start(timeout, args);
                         break;
                     case "stop":
-                        Stop();
+                        Stop(timeout);
                         break;
                     default:
                         break;
@@ -171,7 +240,11 @@ namespace Icon.Dashboard.DataFileAccess.Models
 
         public void Dispose()
         {
-            this.Instance?.Dispose();
+            if (this.Instance != null)
+            {
+                this.Instance.Dispose();
+            }
         }
+        #endregion
     }
 }

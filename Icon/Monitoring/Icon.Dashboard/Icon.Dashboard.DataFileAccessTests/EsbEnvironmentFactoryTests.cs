@@ -3,6 +3,7 @@
     using DataFileAccess.Constants;
     using DataFileAccess.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
     using System.Linq;
     using System.Xml.Linq;
 
@@ -36,8 +37,6 @@
             Assert.AreEqual("secret1234", env.JmsPassword);
             Assert.AreEqual("jndiUserX", env.JndiUsername);
             Assert.AreEqual("topSecret99", env.JndiPassword);
-            Assert.IsNotNull(env.Applications);
-            Assert.AreEqual(2, env.Applications.Count());
         }
     }
 }

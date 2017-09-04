@@ -23,7 +23,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             //Given
             var fakeData = base.AllFakeAppViewModels;
             base.mockDataServiceWrapper
-                .Setup(s => s.GetApplicationListViewModels(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>()))
+                .Setup(s => s.GetApplications( It.IsAny<string>()))
                 .Returns(fakeData);
             var controller = ConstructController();
 
@@ -41,7 +41,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             var fakeData = base.AllFakeAppViewModels;
             int expectedCount = fakeData.Count;
             base.mockDataServiceWrapper
-                .Setup(s => s.GetApplicationListViewModels(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>()))
+                .Setup(s => s.GetApplications( It.IsAny<string>()))
                 .Returns(fakeData);
             var controller = ConstructController();
 
@@ -60,8 +60,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         {
             //Given
             mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(fakeServiceA);
+                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "Start";
 
@@ -70,7 +70,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
 
             //Then
             mockDataServiceWrapper.Verify(s => s
-                .ExecuteCommand(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), cmd),
+                .ExecuteServiceCommand( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), cmd),
                 Times.Once);
         }
 
@@ -79,8 +79,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         {
             //Given
             mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(fakeServiceA);
+                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "Stop";
 
@@ -89,7 +89,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
 
             //Then
             mockDataServiceWrapper.Verify(s => s
-                .ExecuteCommand(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), cmd),
+                .ExecuteServiceCommand( It.IsAny<string>(),  It.IsAny<string>(), It.IsAny<string>(), cmd),
                 Times.Once);
         }
 
@@ -98,8 +98,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         {
             //Given
             mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(fakeServiceA);
+                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "DoIt";
 
@@ -108,7 +108,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
 
             //Then
             mockDataServiceWrapper.Verify(s => s
-                .ExecuteCommand(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), cmd),
+                .ExecuteServiceCommand( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), cmd),
                 Times.Once);
         }
 
@@ -117,8 +117,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         {
             //Given
             mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(fakeServiceA);
+                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "Start";
 
@@ -135,8 +135,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         {
             //Given
             mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<HttpServerUtilityBase>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(fakeServiceA);
+                .Setup(s => s.GetApplication( It.IsAny<string>(),  It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "Start";
 

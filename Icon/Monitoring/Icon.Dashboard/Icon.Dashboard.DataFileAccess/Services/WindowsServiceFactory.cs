@@ -8,9 +8,9 @@
     [Export(typeof(ApplicationFactory))]
     public class WindowsServiceFactory : ApplicationFactory
     {
-        public override IApplication GetApplication(XElement applicationElement)
+        public override IIconApplication GetApplication(XElement applicationElement)
         {
-            var winService = new WindowsService();
+            var winService = new IconService();
             try
             {
                 base.SetApplicationProperties(winService, applicationElement);

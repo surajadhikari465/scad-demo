@@ -15,6 +15,9 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,13 +76,13 @@
     <Compile Include="Constants\EsbEnvironmentSchema.cs" />
     <Compile Include="Constants\ApplicationSchema.cs" />
     <Compile Include="Constants\EsbSettings.cs" />
+    <Compile Include="Constants\ServiceConstants.cs" />
     <Compile Include="Models\Enums\EnvironmentEnum.cs" />
-    <Compile Include="Models\IApplication.cs" />
+    <Compile Include="Models\IIconApplication.cs" />
     <Compile Include="Models\Enums\ApplicationTypeEnum.cs" />
-    <Compile Include="Models\IconApplicationIdentifier.cs" />
-    <Compile Include="Models\IEsbEnvironment.cs" />
-    <Compile Include="Models\EsbEnvironment.cs" />
-    <Compile Include="Models\WindowsService.cs" />
+    <Compile Include="Models\IEsbEnvironmentDefinition.cs" />
+    <Compile Include="Models\EsbEnvironmentDefinition.cs" />
+    <Compile Include="Models\IconService.cs" />
     <Compile Include="Services\EsbEnvironmentFactoryBase.cs" />
     <Compile Include="Services\ApplicationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

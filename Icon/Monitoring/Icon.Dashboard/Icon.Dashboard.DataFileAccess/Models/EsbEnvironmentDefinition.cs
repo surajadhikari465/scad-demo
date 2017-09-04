@@ -8,9 +8,9 @@
     /// <summary>
     /// Class representing an ESB Environment, as laid out in an XML data file
     /// </summary>
-    public class EsbEnvironment : IEsbEnvironment
+    public class EsbEnvironmentDefinition : IEsbEnvironmentDefinition
     {
-        public EsbEnvironment() { }
+        public EsbEnvironmentDefinition() { }
 
         public string Name { get; set; }
 
@@ -26,11 +26,11 @@
 
         public string JndiPassword { get; set; }
 
-        public string ConnectionFactoryName { get; set; }
+        //public string ConnectionFactoryName { get; set; }
 
         public string SslPassword { get; set; }
 
-        public string QueueName { get; set; }
+        //public string QueueName { get; set; }
 
         public string SessionMode { get; set; }
 
@@ -43,19 +43,6 @@
         public string ReconnectDelay { get; set; }
 
         public int NumberOfListenerThreads { get; set; }
-
-        public virtual IList<IconApplicationIdentifier> Applications { get; set; }
-
-        public IconApplicationIdentifier AddApplication(string name, string server)
-        {
-            if (this.Applications == null)
-            {
-                this.Applications = new List<IconApplicationIdentifier>();
-            }
-            var newIdentifier = new IconApplicationIdentifier(name, server);
-            this.Applications.Add(newIdentifier);
-            return this.Applications.First(a => a.Name == name && a.Server == server);
-        }
 
         /// <summary>
         /// Hard-coded list of EsbEnvironment Properties. This can be used to distinguish App Settings related to 
@@ -72,9 +59,9 @@
             nameof(JmsPassword),
             nameof(JndiUsername),
             nameof(JndiPassword),
-            nameof(ConnectionFactoryName),
+            //nameof(ConnectionFactoryName),
             nameof(SslPassword),
-            nameof(QueueName),
+            //nameof(QueueName),
             nameof(SessionMode),
             nameof(CertificateName),
             nameof(CertificateStoreName),

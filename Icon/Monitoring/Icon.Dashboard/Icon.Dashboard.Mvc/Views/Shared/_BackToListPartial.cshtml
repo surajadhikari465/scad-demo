@@ -4,11 +4,11 @@
 <div class="row">
     <div class="col-xs-offset-2 col-xs-8">
         @Html.ActionLink(
-            $"Back to List of Applications",
+            "Back to List of Applications",
             "Index",
             "Home",
             null,
-            new { @class = $"btn btn-{Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment()} btn-block" }
+            new { @class = "btn btn-" + Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment() + " btn-block" }
         )
     </div>
 </div>

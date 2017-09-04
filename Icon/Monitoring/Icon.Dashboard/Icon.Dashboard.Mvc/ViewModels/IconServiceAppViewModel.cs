@@ -7,11 +7,12 @@ using System.Web;
 
 namespace Icon.Dashboard.Mvc.ViewModels
 {
-    public class ServiceViewModel : IconApplicationViewModel
+    public class IconServiceAppViewModel : IconApplicationViewModel
     {
-        public ServiceViewModel() : base() { }
+        public IconServiceAppViewModel() : base() { }
 
-        public ServiceViewModel(WindowsService app) : base(app)
+        public IconServiceAppViewModel(IconService app)
+            : base(app)
         {
         }
     }

@@ -1,7 +1,7 @@
 ﻿@model Icon.Dashboard.Mvc.ViewModels.ApiMessageJobSummaryViewModel
 
 @{
-    string rowId = $"row{Model.APIMessageMonitorLogID}";
+    string rowId = "row" + Model.APIMessageMonitorLogID.ToString();
 }
 
 <tr id="@rowId">

@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Icon.Dashboard.Mvc.ViewModels
 {
-    public class IconAppViewModel
+    public class IconLoggedAppViewModel
     {
-        public IconAppViewModel() { }
+        public IconLoggedAppViewModel() { }
 
-        public IconAppViewModel(IApp entity) : this()
+        public IconLoggedAppViewModel(IApp entity) : this()
         {
             this.AppID = entity.AppID;
             this.AppName = entity.AppName;

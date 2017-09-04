@@ -2,7 +2,7 @@
 
 <p></p>
 <div class="container-wide">
-    @using (Html.BeginForm("Create", "EsbSwitch", new { name = Model.Name }, FormMethod.Post, null))
+    @using (Html.BeginForm("Create", "Esb", new { name = Model.Name }, FormMethod.Post, null))
     {
         @Html.EditorForModel();
 
@@ -23,12 +23,5 @@
 </div>
 
 @section scripts {
-    <script type="text/javascript">
-        @* set js variable from razor, for use in script when editing/creating the esb environment *@
-        var urlToAddEsbEnvironmentApp = "@Url.Action("AddApplicationRow")";
-    </script>
-
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Scripts/dashboardCustomEsbSwitchAddRemove.js")
-    @Scripts.Render("~/Scripts/esbSwitch.js")
 }

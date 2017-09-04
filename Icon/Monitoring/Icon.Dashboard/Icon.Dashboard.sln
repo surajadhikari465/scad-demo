@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Dashboard.Mvc", "Icon.Dashboard.Mvc\Icon.Dashboard.Mvc.csproj", "{05B111C4-587A-42A1-964F-472CCEF00196}"
 EndProject
@@ -78,8 +78,8 @@ Global
 		{4B5102CE-6F3A-4C31-81DA-483F3DFF988F}.QA|Any CPU.Build.0 = Release|Any CPU
 		{4B5102CE-6F3A-4C31-81DA-483F3DFF988F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B5102CE-6F3A-4C31-81DA-483F3DFF988F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B5102CE-6F3A-4C31-81DA-483F3DFF988F}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{4B5102CE-6F3A-4C31-81DA-483F3DFF988F}.Test|Any CPU.Build.0 = Release|Any CPU
+		{4B5102CE-6F3A-4C31-81DA-483F3DFF988F}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B5102CE-6F3A-4C31-81DA-483F3DFF988F}.Test|Any CPU.Build.0 = Debug|Any CPU
 		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
@@ -88,8 +88,8 @@ Global
 		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.QA|Any CPU.Build.0 = Release|Any CPU
 		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.Test|Any CPU.Build.0 = Release|Any CPU
+		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A21F392-B78C-45CB-892D-B8A9FC4F2D9D}.Test|Any CPU.Build.0 = Debug|Any CPU
 		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
@@ -98,8 +98,8 @@ Global
 		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.QA|Any CPU.Build.0 = Release|Any CPU
 		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.Test|Any CPU.Build.0 = Release|Any CPU
+		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}.Test|Any CPU.Build.0 = Debug|Any CPU
 		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
@@ -108,8 +108,8 @@ Global
 		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.QA|Any CPU.Build.0 = Release|Any CPU
 		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.Test|Any CPU.Build.0 = Release|Any CPU
+		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}.Test|Any CPU.Build.0 = Debug|Any CPU
 		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
@@ -118,43 +118,10 @@ Global
 		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.QA|Any CPU.Build.0 = Release|Any CPU
 		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.Test|Any CPU.Build.0 = Release|Any CPU
+		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}.Test|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 10
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Icon.Dashboard.Mvc\\Icon.Dashboard.Mvc.csproj
-		SccProjectName1 = Icon.Dashboard.Mvc
-		SccLocalPath1 = Icon.Dashboard.Mvc
-		SccProjectUniqueName2 = Icon.Dashboard.Mvc.UnitTests\\Icon.Dashboard.Mvc.UnitTests.csproj
-		SccProjectName2 = Icon.Dashboard.Mvc.UnitTests
-		SccLocalPath2 = Icon.Dashboard.Mvc.UnitTests
-		SccProjectUniqueName3 = Icon.Dashboard.DataFileAccess\\Icon.Dashboard.DataFileAccess.csproj
-		SccProjectName3 = Icon.Dashboard.DataFileAccess
-		SccLocalPath3 = Icon.Dashboard.DataFileAccess
-		SccProjectUniqueName4 = Icon.Dashboard.DataFileAccessTests\\Icon.Dashboard.DataFileAccess.Tests.csproj
-		SccProjectName4 = Icon.Dashboard.DataFileAccessTests
-		SccLocalPath4 = Icon.Dashboard.DataFileAccessTests
-		SccProjectUniqueName5 = Icon.Dashboard.IconDatabaseAccess\\Icon.Dashboard.IconDatabaseAccess.csproj
-		SccProjectName5 = Icon.Dashboard.IconDatabaseAccess
-		SccLocalPath5 = Icon.Dashboard.IconDatabaseAccess
-		SccProjectUniqueName6 = Icon.Dashboard.IconDatabaseAccess.Tests\\Icon.Dashboard.IconDatabaseAccess.Tests.csproj
-		SccProjectName6 = Icon.Dashboard.IconDatabaseAccess.Tests
-		SccLocalPath6 = Icon.Dashboard.IconDatabaseAccess.Tests
-		SccProjectUniqueName7 = Icon.Dashboard.MammothDatabaseAccess\\Icon.Dashboard.MammothDatabaseAccess.csproj
-		SccProjectName7 = Icon.Dashboard.MammothDatabaseAccess
-		SccLocalPath7 = Icon.Dashboard.MammothDatabaseAccess
-		SccProjectUniqueName8 = Icon.Dashboard.CommonDatabaseAccess\\Icon.Dashboard.CommonDatabaseAccess.csproj
-		SccProjectName8 = Icon.Dashboard.CommonDatabaseAccess
-		SccLocalPath8 = Icon.Dashboard.CommonDatabaseAccess
-		SccProjectUniqueName9 = Icon.Dashboard.MammothDatabaseAccess.Tests\\Icon.Dashboard.MammothDatabaseAccess.Tests.csproj
-		SccProjectName9 = Icon.Dashboard.MammothDatabaseAccess.Tests
-		SccLocalPath9 = Icon.Dashboard.MammothDatabaseAccess.Tests
 	EndGlobalSection
 EndGlobal

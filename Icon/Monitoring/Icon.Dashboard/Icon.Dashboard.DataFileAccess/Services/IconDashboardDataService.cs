@@ -10,6 +10,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.ServiceProcess;
     using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Linq;
@@ -43,10 +44,10 @@
 
         List<string> applicationPropertiesToSkipWhenSaving = new List<string>()
         {
-            nameof(IApplication.AppSettings),
-            nameof(IApplication.ValidCommands),
-            nameof(IApplication.StatusIsGreen),
-            nameof(IApplication.EsbConnectionSettings)
+            nameof(IIconApplication.AppSettings),
+            nameof(IIconApplication.ValidCommands),
+            nameof(IIconApplication.StatusIsGreen),
+            nameof(IIconApplication.EsbConnectionSettings)
         };
 
         /// <summary>
@@ -54,15 +55,15 @@
         /// </summary>
         /// <param name="application">Only need to supply the name of the application.</param>
         /// <param name="pathToXmlDataFile">Path to the configuraiton file</param>
-        public void AddApplication(IApplication application, string pathToXmlDataFile)
+        public void AddApplication(IIconApplication application, string pathToXmlDataFile)
         {
             var appName = application.Name;
             var appServer = application.Server;
-            var targetConfig = LoadDataFile(pathToXmlDataFile);
+            var dataFile = LoadDataFile(pathToXmlDataFile);
 
-            var duplicateAppNames = targetConfig.Root.Descendants(ApplicationSchema.Application).Where(e =>
-                e.Attribute(nameof(application.Name)).Value.Equals(appName, StringComparison.InvariantCultureIgnoreCase)
-                && e.Attribute(nameof(application.Server)).Value.Equals(appServer, StringComparison.InvariantCultureIgnoreCase));
+            var duplicateAppNames = dataFile.Root.Descendants(ApplicationSchema.Application).Where(e =>
+                e.Attribute(nameof(application.Name)).Value.Equals(appName, _strcmpOption)
+                && e.Attribute(nameof(application.Server)).Value.Equals(appServer, _strcmpOption));
 
             if (duplicateAppNames.Any())
             {
@@ -70,18 +71,18 @@
                     string.Format("Application Name:{0} Server:{1} already exists.", appName, appServer));
             }
 
-            var properties = typeof(IApplication)
+            var properties = typeof(IIconApplication)
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Where (p => !applicationPropertiesToSkipWhenSaving.Contains(p.Name))
                 .AsParallel()
                 .Select(p => new XAttribute(p.Name, p.GetValue(application) ?? string.Empty));
 
-            targetConfig.Root.Element(ApplicationSchema.Applications).Add(
+            dataFile.Root.Element(ApplicationSchema.Applications).Add(
                 new XElement(
                     ApplicationSchema.Application,
                     properties));
 
-            targetConfig.Save(pathToXmlDataFile);
+            dataFile.Save(pathToXmlDataFile);
         }
 
         /// <summary>
@@ -89,20 +90,23 @@
         /// </summary>
         /// <param name="application">Only need to supply the name of the application.</param>
         /// <param name="pathToXmlDataFile">Path to the configuraiton file</param>
-        public void DeleteApplication(IApplication application, string pathToXmlDataFile)
+        public void DeleteApplication(IIconApplication application, string pathToXmlDataFile)
         {
-            var targetConfig = LoadDataFile(pathToXmlDataFile);
-            var appConfig = targetConfig.Root.Element(ApplicationSchema.Applications).Elements(ApplicationSchema.Application)
+            var dataFile = LoadDataFile(pathToXmlDataFile);
+            var appConfig = dataFile.Root.Element(ApplicationSchema.Applications).Elements(ApplicationSchema.Application)
                 .FirstOrDefault(
-                    e => e.Attribute(nameof(application.Name)).Value.Equals(application.Name, StringComparison.InvariantCultureIgnoreCase)
-                    && e.Attribute(nameof(application.Server)).Value.Equals(application.Server, StringComparison.InvariantCultureIgnoreCase));
+                    e => e.Attribute(nameof(application.Name)).Value.Equals(application.Name, _strcmpOption)
+                    && e.Attribute(nameof(application.Server)).Value.Equals(application.Server, _strcmpOption));
 
-            appConfig?.Remove();
+            if (appConfig != null)
+            {
+                appConfig.Remove();
+            }
 
-            targetConfig.Save(pathToXmlDataFile);
+            dataFile.Save(pathToXmlDataFile);
         }
 
-        private IApplication ManufactureApplication(XElement dataFileApplicationElement)
+        private IIconApplication ManufactureApplication(XElement dataFileApplicationElement)
         {
             try
             {
@@ -129,20 +133,21 @@
                 //return (IApplication)null;
             }
 
-            return (IApplication)null;
+            return (IIconApplication)null;
         }       
 
-        public IApplication GetApplication(string pathToXmlDataFile, string appName, string server)
+        public IIconApplication GetApplication(string pathToXmlDataFile, string appName, string server)
         {
             if (pathToXmlDataFile == null) throw new ArgumentNullException(nameof(pathToXmlDataFile));
             if (appName == null) throw new ArgumentNullException(nameof(appName));
             if (server == null) throw new ArgumentNullException(nameof(server));
             
-            var dataFile = this.LoadDataFile(pathToXmlDataFile);
+            var dataFile = LoadDataFile(pathToXmlDataFile);
             var applicationElements = dataFile.Root.Element(ApplicationSchema.Applications).Elements(ApplicationSchema.Application);
             var matchingApplicationElement = applicationElements.FirstOrDefault(el =>
-                String.Compare(el.Attribute("Name")?.Value, appName, StringComparison.InvariantCultureIgnoreCase) == 0 &&
-                String.Compare(el.Attribute("Server")?.Value,server, StringComparison.InvariantCultureIgnoreCase)==0);
+                el.Attribute("Name") != null && el.Attribute("Server") != null &&
+                el.Attribute("Name").Value.Equals(appName, _strcmpOption) &&
+                el.Attribute("Server").Value.Equals(server, _strcmpOption));
 
             return ManufactureApplication(matchingApplicationElement);
         }
@@ -153,30 +158,33 @@
         /// <param name="application">Only need to supply the name of the application.</param>
         /// <param name="pathToXmlDataFile">Path to the configuraiton file</param>
         /// <returns>XDocument</returns>
-        public void UpdateApplication(IApplication application, string pathToXmlDataFile)
+        public void UpdateApplication(IIconApplication application, string pathToXmlDataFile)
         {
-            var targetConfig = LoadDataFile(pathToXmlDataFile);
+            var dataFile = LoadDataFile(pathToXmlDataFile);
 
-            var appConfig = targetConfig.Root.Element(ApplicationSchema.Applications).Elements(ApplicationSchema.Application)
+            var appConfig = dataFile.Root.Element(ApplicationSchema.Applications).Elements(ApplicationSchema.Application)
                 .FirstOrDefault(
-                    e => e.Attribute(nameof(application.Name)).Value.Equals(application.Name, StringComparison.InvariantCultureIgnoreCase)
-                    && e.Attribute(nameof(application.Server)).Value.Equals(application.Server, StringComparison.InvariantCultureIgnoreCase));
+                    e => e.Attribute(nameof(application.Name)).Value.Equals(application.Name, _strcmpOption)
+                    && e.Attribute(nameof(application.Server)).Value.Equals(application.Server, _strcmpOption));
 
-            var properties = typeof(IApplication)
+            var properties = typeof(IIconApplication)
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Where(p => !applicationPropertiesToSkipWhenSaving.Contains(p.Name))
                 .AsParallel()
                 .Select(p => new XAttribute(p.Name, p.GetValue(application) ?? string.Empty));
 
-            appConfig?.ReplaceWith(
-                new XElement(
-                    ApplicationSchema.Application,
-                    properties));
+            if (appConfig != null)
+            {
+                appConfig.ReplaceWith(
+                    new XElement(
+                        ApplicationSchema.Application,
+                        properties));
+            }
 
-            targetConfig.Save(pathToXmlDataFile);
+            dataFile.Save(pathToXmlDataFile);
         }
 
-        public void SaveAppSettings(IApplication application)
+        public void SaveAppSettings(IIconApplication application)
         {
             try
             {
@@ -190,7 +198,7 @@
                 var updatedElements = combinedDictionary.Select(i =>
                         new XElement("add",
                             new XAttribute("key", i.Key),
-                            new XAttribute("value", i.Value)));
+                            new XAttribute("value", i.Value ?? String.Empty)));
 
                 //replace the existing appSettings node in the XML file with the new element collection
                 var configAppSettingsElement = appConfig.Root.Element("appSettings");
@@ -214,23 +222,61 @@
             return combinedDictionaryWithDuplicatesIgnored;
         }
 
-        public void Start(IApplication application, params string[] args)
+        public string StartService(IIconApplication application, TimeSpan waitTime, params string[] args)
         {
             if (application == null) throw new ArgumentNullException(nameof(application));
             if (string.IsNullOrEmpty(application.Name)) throw new ArgumentNullException(nameof(application.Name));
             if (string.IsNullOrEmpty(application.Server)) throw new ArgumentNullException(nameof(application.Server));
 
-            application.Start(args);
+            try
+            {
+                application.Start(waitTime, args);
+            }
+            catch (Exception ex)
+            {
+                return String.Format("Could not start {0} service on {1}.{2} Error: '{3}'",
+                        application.Name, application.Server, Environment.NewLine, ex.Message);
+            }
+            return String.Empty;
         }
 
-        public void Stop(IApplication application)
+        public string StopService(IIconApplication application, TimeSpan waitTime)
         {
             if (application == null) throw new ArgumentNullException(nameof(application));
             if (string.IsNullOrEmpty(application.Name)) throw new ArgumentNullException(nameof(application.Name));
             if (string.IsNullOrEmpty(application.Server)) throw new ArgumentNullException(nameof(application.Server));
 
-            application.Stop();
-        }        
+            try
+            {
+                application.Stop(waitTime);
+            }
+            catch (Exception ex)
+            {
+                return String.Format("Could not stop {0} service on {1}.{2} Error: '{3}'",
+                    application.Name, application.Server, Environment.NewLine, ex.Message);
+            }
+            return String.Empty;
+        }
+
+        public string RestartService(IIconApplication application, int waitTimeoutMilliseconds = ServiceConstants.DefaultServiceTimeoutMilliseconds)
+        {
+            if (application.TypeOfApplication != ApplicationTypeEnum.WindowsService)
+            {
+                return String.Format("Unable to restart application {0} on {1} since it is not identified as a Windows Service (type: {3})",
+                    application.Name, application.Server, application.TypeOfApplication);
+            }
+            try
+            {
+                StopService(application, TimeSpan.FromMilliseconds(waitTimeoutMilliseconds));
+                StartService(application, TimeSpan.FromMilliseconds(waitTimeoutMilliseconds));
+            }
+            catch (Exception ex)
+            {
+                while (ex.InnerException != null) ex = ex.InnerException;
+                return ex.Message;
+            }
+            return String.Empty;
+        }      
 
         /// <summary>
         /// Checks the structure of the data file and applies corrections if needed. (For example,
@@ -238,27 +284,27 @@
         /// </summary>
         public void VerifyDataFileSchema(string pathToXmlDataFile, string pathToSchema)
         {
-            var xmlDocument = LoadDataFile(pathToXmlDataFile);
+            var dataFile = LoadDataFile(pathToXmlDataFile);
 
-            var currentRootName = xmlDocument.Root.Name.ToString();
+            var currentRootName = dataFile.Root.Name.ToString();
 
             //is there an unexepected root element?
-            if (String.Compare(currentRootName, ApplicationSchema.Root, StringComparison.CurrentCultureIgnoreCase) != 0)
+            if (currentRootName.Equals(ApplicationSchema.Root, _strcmpOption))
             {
                 // is this an old-style schema? (before Applications was moved below the new IconApplicationData root element)
-                if (String.Compare(currentRootName, ApplicationSchema.Applications, StringComparison.CurrentCultureIgnoreCase) == 0)
+                if (currentRootName.Equals(ApplicationSchema.Applications, _strcmpOption))
                 {
-                    var applicationsElement = xmlDocument.Root;
+                    var applicationsElement = dataFile.Root;
                     var newRoot = new XElement(ApplicationSchema.Root, applicationsElement);
-                    xmlDocument.Root.ReplaceWith(newRoot);
-                    xmlDocument.Save(pathToXmlDataFile);
+                    dataFile.Root.ReplaceWith(newRoot);
+                    dataFile.Save(pathToXmlDataFile);
                 }
             }
             
             XmlSchemaSet schemaSet = new XmlSchemaSet();
 
             schemaSet.Add(null, pathToSchema);
-            xmlDocument.Validate(schemaSet, new ValidationEventHandler(XmlSchemaValidationEventHandler));
+            dataFile.Validate(schemaSet, new ValidationEventHandler(XmlSchemaValidationEventHandler));
         }
 
         static void XmlSchemaValidationEventHandler(object sender, ValidationEventArgs e)
@@ -276,14 +322,16 @@
         /// <summary>
         /// Retrieves all applications from configuration.
         /// </summary>
-        /// <param name="targetConfig">The xml config where the applications are defined.</param>
+        /// <param name="serverDataFilePath">The xml config where the applications are defined.</param>
         /// <returns>Applications from the configuration file that the service could create.</returns>
-        public IEnumerable<IApplication> GetApplications(string pathToXmlDataFile)
+        public IEnumerable<IIconApplication> GetApplications(string serverDataFilePath)
         {
-            var applications = new ConcurrentBag<IApplication>();
+            var applications = new ConcurrentBag<IIconApplication>();
 
-            var dataFile = this.LoadDataFile(pathToXmlDataFile);
-            var applicationElements = dataFile.Root.Element(ApplicationSchema.Applications).Elements(ApplicationSchema.Application);
+            var dataFile = this.LoadDataFile(serverDataFilePath);
+            var applicationElements = dataFile.Root
+                .Element(ApplicationSchema.Applications)
+                .Elements(ApplicationSchema.Application);
 
             Parallel.ForEach(applicationElements, ac =>
             {
@@ -314,7 +362,9 @@
                 return xDoc;
             }
         }
-        
+
         #endregion
+
+        private const StringComparison _strcmpOption = StringComparison.InvariantCultureIgnoreCase;
     }
 }

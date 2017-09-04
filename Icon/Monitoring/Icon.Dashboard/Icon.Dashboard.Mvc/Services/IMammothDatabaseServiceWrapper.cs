@@ -13,20 +13,20 @@ namespace Icon.Dashboard.Mvc.Services
 
         IApp GetApp(string appName);
         IApp GetApp(int appID);
-        List<IconAppViewModel> GetApps();
-        List<IconAppLogViewModel> GetPagedAppLogs(int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize);
-        List<IconAppLogViewModel> GetPagedAppLogsByApp(string appName, int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize);
+        List<IconLoggedAppViewModel> GetApps();
+        List<IconLogEntryViewModel> GetPagedAppLogs(int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize);
+        List<IconLogEntryViewModel> GetPagedAppLogsByApp(string appName, int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize);
 
-        List<IconAppLogViewModel> GetPagedFilteredAppLogs(
+        List<IconLogEntryViewModel> GetPagedFilteredAppLogs(
            Expression<Func<IAppLog, bool>> filter,
            int page = PagingConstants.DefaultPage,
            int pageSize = PagingConstants.DefaultPageSize,
            QuerySortOrder sortOrder = QuerySortOrder.Unspecified);
 
-        IconAppLogViewModel GetSingleAppLog(int appLogId);
+        IconLogEntryViewModel GetSingleAppLog(int appLogId);
         RecentLogEntriesReportViewModel GetRecentLogEntriesReportForApp(string appName, TimeSpan timePeriod, LoggingLevel logLevel);
         RecentLogEntriesReportViewModel GetRecentLogEntriesReportForApp(int appID, TimeSpan timePeriod, LoggingLevel logLevel);
-        IEnumerable<RecentLogEntriesReportViewModel> GetEmptyLogEntriesReportList(IEnumerable<IconAppViewModel> iconAppDefinitions);
+        IEnumerable<RecentLogEntriesReportViewModel> GetEmptyLogEntriesReportList(IEnumerable<IconLoggedAppViewModel> iconAppDefinitions);
 
 
     }

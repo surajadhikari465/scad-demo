@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace Icon.Dashboard.Mvc.ViewModels
 {
-    public class IconAppLogViewModel
+    public class IconLogEntryViewModel
     {
-        public IconAppLogViewModel() { }
+        public IconLogEntryViewModel() { }
 
-        public IconAppLogViewModel(IAppLog entity) : this()
+        public IconLogEntryViewModel(IAppLog entity) : this()
         {
             this.AppLogID = entity.AppLogID;
             this.AppID = entity.AppID;

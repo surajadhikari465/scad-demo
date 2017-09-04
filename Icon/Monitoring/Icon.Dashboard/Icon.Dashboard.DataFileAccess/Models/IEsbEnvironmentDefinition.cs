@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Dashboard.DataFileAccess.Models
 {
-    public interface IEsbEnvironment
+    public interface IEsbEnvironmentDefinition
     {
         string Name { get; set; }
 
@@ -22,11 +22,11 @@ namespace Icon.Dashboard.DataFileAccess.Models
 
         string JndiPassword { get; set; }
 
-        string ConnectionFactoryName { get; set; }
+        //string ConnectionFactoryName { get; set; }
 
         string SslPassword { get; set; }
 
-        string QueueName { get; set; }
+        //string QueueName { get; set; }
 
         string SessionMode { get; set; }
 
@@ -39,9 +39,5 @@ namespace Icon.Dashboard.DataFileAccess.Models
         string ReconnectDelay { get; set; }
 
         int NumberOfListenerThreads { get; set; }
-
-        IList<IconApplicationIdentifier> Applications { get; set; }
-
-        IconApplicationIdentifier AddApplication(string name, string server);
     }
 }

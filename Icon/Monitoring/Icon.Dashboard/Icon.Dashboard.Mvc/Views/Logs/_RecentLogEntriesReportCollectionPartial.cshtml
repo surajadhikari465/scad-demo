@@ -25,7 +25,7 @@
                                 @{Html.RenderPartial("_RecentLogEntriesReportPartial", logEntryReport);}
                             </div>
                             <div class="panel-footer">
-                                @using (Ajax.BeginForm("RecentErrors", "Logs", new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = $"logEntryReport{logEntryReport.AppID}", OnFailure = "getRecentErrorsFailed" }))
+                                @using (Ajax.BeginForm("RecentErrors", "Logs", new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "logEntryReport" + logEntryReport.AppID.ToString(), OnFailure = "getRecentErrorsFailed" }))
                                 {
                                     <input class="hidden" id="appID" name="appID" value="@logEntryReport.AppID" />
                                     <input class="hidden" id="hours" name="hours" value="@hoursConsideredRecent" />

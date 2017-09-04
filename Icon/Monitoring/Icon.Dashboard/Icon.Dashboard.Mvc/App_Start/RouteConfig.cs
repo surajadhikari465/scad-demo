@@ -37,10 +37,10 @@ namespace Icon.Dashboard.Mvc
 
             routes.MapRoute(
                 name: "EsbSwitchWithName",
-                url: "EsbSwitch/{action}/{name}",
+                url: "Esb/{action}/{name}",
                 defaults: new
                 {
-                    controller = "EsbSwitch",
+                    controller = "Esb",
                     action = "Index",
                     name = UrlParameter.Optional
                 }

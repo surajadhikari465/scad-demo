@@ -11,14 +11,8 @@
         @Html.DisplayForModel()
 
         <div class="row">
-            <div class="col-xs-offset-2 col-xs-8 margin-bottom-10">
-                @{Html.RenderPartial("_SetEsbEnvironmentPartial", Model);}
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-xs-offset-2 col-xs-8">
-                @Html.ActionLink("Edit", "Edit", "EsbSwitch", new { name = Model.Name }, new { @class = "btn btn-primary btn-block" })
+                @Html.ActionLink("Edit", "Edit", "Esb", new { name = Model.Name }, new { @class = "btn btn-primary btn-block" })
             </div>
         </div>
     }
@@ -30,7 +24,3 @@
         </div>
     </div>
 </div>
-
-@section scripts {
-    @Scripts.Render("~/Scripts/esbSwitch.js")
-}

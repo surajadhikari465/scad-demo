@@ -8,14 +8,14 @@
     if (ViewBag.PaginationPageSetViewModel != null)
     {
         pageSetModel = ViewBag.PaginationPageSetViewModel as Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel;
-        pageInfo = $"(Page {pageSetModel.CurrentPage})";
+        pageInfo = "(Page " + pageSetModel.CurrentPage.ToString() + ")";
     }
 }
 
 <div id="pagingDataTable" 
-         data-page="@(pageSetModel?.CurrentPage)" 
-         data-pageSize="@(pageSetModel?.PageSize)" 
-         data-route-parameter="@(pageSetModel?.RouteParameter)">
+         data-page="@(pageSetModel.CurrentPage)" 
+         data-pageSize="@(pageSetModel.PageSize)" 
+         data-route-parameter="@(pageSetModel.RouteParameter)">
     <table class="table table-bordered table-condensed no-bottom-margin">
         <caption class="text-center"><h3>@caption @pageInfo</h3></caption>
         <thead>

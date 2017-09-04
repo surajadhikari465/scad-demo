@@ -16,13 +16,17 @@
             // Given
             const string appName = "icon.App.Name.1";
             const string server = "vvv-xxxx-11";
+            const string configPath = @"\\vvv-xxxx-11\e$\Stuff\My Thingy_NA\Argle.Bargle.Controller.exe.config";
+            const string displayName = "Apppy App";
 
             // When
-            var appIdentifier = new IconApplicationIdentifier(appName, server);
+            var app = new IconService(appName, server, configPath, displayName);
 
             // Then
-            Assert.AreEqual(appName, appIdentifier.Name);
-            Assert.AreEqual(server, appIdentifier.Server);
+            Assert.AreEqual(appName, app.Name);
+            Assert.AreEqual(server, app.Server);
+            Assert.AreEqual(configPath, app.ConfigFilePath);
+            Assert.AreEqual(displayName, app.DisplayName);
         }
     }
 }

@@ -14,9 +14,9 @@
         /// </summary>
         /// <param name="applicationElement">Application Configuration Element.</param>
         /// <returns>A concrete Application implementation.</returns>
-        public abstract IApplication GetApplication(XElement applicationElement);
+        public abstract IIconApplication GetApplication(XElement applicationElement);
 
-        protected virtual void SetApplicationProperties(IApplication application, XElement applicationElement)
+        protected virtual void SetApplicationProperties(IIconApplication application, XElement applicationElement)
         {
             if (application == null) throw new ArgumentNullException(nameof(application));
             if (applicationElement == null) throw new ArgumentNullException(nameof(applicationElement));
@@ -58,7 +58,7 @@
         /// </summary>
         /// <param name="application">IApplication definition which will have its AppSettings (and
         ///     EsbConnectionSettings) property populated</param>
-        protected virtual void LoadAppSettings(IApplication application)
+        protected virtual void LoadAppSettings(IIconApplication application)
         {
             try
             {
@@ -72,11 +72,15 @@
                             Value = e.Attribute("value").Value
                         });
 
-                    var esbEnvironmentSettings = allAppSettings.Where(s => EsbEnvironment.EsbAppSettingsNames.Contains(s.Key));
-                    var nonEsbSettings = allAppSettings.Where(s => !EsbEnvironment.EsbAppSettingsNames.Contains(s.Key));
+                    var esbEnvironmentSettings = allAppSettings
+                        .Where(s => EsbEnvironmentDefinition.EsbAppSettingsNames.Contains(s.Key));
+                    var nonEsbSettings = allAppSettings
+                        .Where(s => !EsbEnvironmentDefinition.EsbAppSettingsNames.Contains(s.Key));
 
-                    nonEsbSettings.ToList().ForEach(e => application.AppSettings.Add(e.Key, e.Value));
-                    esbEnvironmentSettings.ToList().ForEach(e => application.EsbConnectionSettings.Add(e.Key, e.Value));
+                    nonEsbSettings.ToList()
+                        .ForEach(e => application.AppSettings.Add(e.Key, e.Value));
+                    esbEnvironmentSettings.ToList()
+                        .ForEach(e => application.EsbConnectionSettings.Add(e.Key, e.Value));
                 }
             }
             catch (Exception ex)

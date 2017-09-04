@@ -1,8 +1,9 @@
 ﻿namespace Icon.Dashboard.DataFileAccess.Models
 {
+    using System;
     using System.Collections.Generic;
 
-    public interface IApplication
+    public interface IIconApplication
     {
         /// <summary>
         /// String Dictionary representing key/value pairs from the appSettings element in the config file
@@ -66,18 +67,18 @@
         /// <summary>
         /// Starts the application.
         /// </summary>
-        void Start(params string[] args);
+        void Start(TimeSpan timeout, params string[] args);
 
         /// <summary>
         /// Stops the application.
         /// </summary>
-        void Stop();
+        void Stop(TimeSpan timeout);
         
         /// <summary>
         /// Calls the process instance and command it to execute some behavior identified by the provided string
         /// </summary>
         /// <param name="command"></param>
-        void Execute(string command, string[] args = null);
+        void Execute(TimeSpan timeout, string command, string[] args = null);
 
         /// <summary>
         /// List of valid commands (e.g. start, stop, run, enable) allowed for the process
@@ -89,5 +90,14 @@
         ///  to look up associated logging data for the applicatoin
         /// </summary>
         string LoggingName { get; set; }
+
+        /// <summary>
+        /// True/false flag indicating whether the application is configured for
+        ///   communicating with ESB Queues or not (whether it has app settings 
+        ///   needed for configuring ESB connections)
+        /// </summary>
+        bool HasEsbConfiguration { get;  }
+
+        string NameAndServer { get; }
     }
 }

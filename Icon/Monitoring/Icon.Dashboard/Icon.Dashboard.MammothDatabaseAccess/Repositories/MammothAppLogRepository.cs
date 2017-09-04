@@ -134,7 +134,7 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
         public int GetLogErrorsOverPeriod(TimeSpan timePeriod)
         {
             return DbContext.AppLogs
-                .Count(l => String.Compare(l.Level, "Error", StringComparison.CurrentCultureIgnoreCase) == 0
+                .Count(l => String.Compare(l.Level, "Error", _strcmpOption) == 0
                             && (DateTime.Now - l.LogDate.GetValueOrDefault()).CompareTo(timePeriod) <= 0);
         }
 
@@ -147,7 +147,7 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
         {
             return DbContext.AppLogs
                 .Join(DbContext.Apps, al => al.AppID, a => a.AppID, (al, a) => new { al.Level, al.LogDate })
-                 .Count(anonObj => String.Compare(anonObj.Level, "Error", StringComparison.CurrentCultureIgnoreCase) == 0
+                 .Count(anonObj => String.Compare(anonObj.Level, "Error", _strcmpOption) == 0
                             && (DateTime.Now - anonObj.LogDate.GetValueOrDefault()).CompareTo(timePeriod) <= 0);
         }
 
@@ -249,6 +249,8 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
                         .ToList();
             }
         }
+
+        private const StringComparison _strcmpOption = StringComparison.CurrentCultureIgnoreCase;
         #endregion
     }
 }

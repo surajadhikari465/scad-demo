@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.IconAppLogViewModel>
+﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.IconLogEntryViewModel>
 @{
     string caption = ViewBag.Title ?? "ICON Dashboard Log Viewer";
     string pageInfo = String.Empty;
@@ -8,14 +8,14 @@
     if (ViewBag.PaginationPageSetViewModel != null)
     {
         pageSetModel = ViewBag.PaginationPageSetViewModel as Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel;
-        pageInfo = $"(Page {pageSetModel.CurrentPage})";
+        pageInfo = String.Format("(Page {0})", pageSetModel.CurrentPage);
     }
 }
 
 <div id="pagingDataTable" 
-         data-page="@(pageSetModel?.CurrentPage)" 
-         data-pageSize="@(pageSetModel?.PageSize)" 
-         data-route-parameter="@(pageSetModel?.RouteParameter)">
+         data-page="@(pageSetModel.CurrentPage)" 
+         data-pageSize="@(pageSetModel.PageSize)" 
+         data-route-parameter="@(pageSetModel.RouteParameter)">
     <table class="table table-bordered table-condensed table-striped no-bottom-margin">
         <caption class="text-center"><h3>@caption @pageInfo</h3></caption>
         <thead>

@@ -11,12 +11,16 @@
     [TestClass]
     public class DataServiceEsbEnvironmentTests
     {
-        private string configPath = "IconApplication.xml";
+        private string dataFilePath = "IconApplication.xml";
+        protected const string appName = "Mammoth.Price.Controller";
+        protected const string appServer = "vm-icon-testX";
+        protected const string appConfigPath = @"\\vm-icon-testX\e$\Mammoth\Price Controller_NA\Mammoth.Price.Controller.exe.config";
+        protected const string appDisplayName = "Mammoth Price Controller";
 
         #region helpers
-        protected EsbEnvironment GetValidObjectToTest()
+        protected EsbEnvironmentDefinition GetValidObjectToTest()
         {
-            var esbEnvironment = new EsbEnvironment
+            var esbEnvironment = new EsbEnvironmentDefinition
             {
                 Name = "NAMEYNAME",
                 ServerUrl = "asldka2.saodif.com",
@@ -25,12 +29,11 @@
                 JmsPassword = "$)($292e^&",
                 JndiUsername = "jndiUser1@dsapofi.org",
                 JndiPassword = "!09/2PO7oo",
-                Applications = new List<IconApplicationIdentifier>()
             };
             return esbEnvironment;
         }
 
-        protected void AssertObjectPropertiesMatch(Dictionary<string, string> expected, IEsbEnvironment actual)
+        protected void AssertObjectPropertiesMatch(Dictionary<string, string> expected, IEsbEnvironmentDefinition actual)
         {
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected[nameof(actual.Name)], actual.Name);
@@ -42,7 +45,7 @@
             Assert.AreEqual(expected[nameof(actual.JndiPassword)], actual.JndiPassword);
         }
 
-        protected void AssertObjectPropertiesMatch(IEsbEnvironment expected, IEsbEnvironment actual)
+        protected void AssertObjectPropertiesMatch(IEsbEnvironmentDefinition expected, IEsbEnvironmentDefinition actual)
         {
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected.Name, actual.Name);
@@ -53,19 +56,6 @@
             Assert.AreEqual(expected.JndiUsername, actual.JndiUsername);
             Assert.AreEqual(expected.JndiPassword, actual.JndiPassword);
         }
-
-        protected void AssertEsbEnvironmentApplicationsProperty(IEsbEnvironment esbEnvironment, int? expectedNumberOfAplications)
-        {
-            if (expectedNumberOfAplications.HasValue)
-            {
-                Assert.IsNotNull(esbEnvironment.Applications);
-                Assert.AreEqual(expectedNumberOfAplications.Value, esbEnvironment.Applications.Count());
-            }
-            else
-            {
-                Assert.IsNull(esbEnvironment.Applications);
-            }
-        }
         #endregion
 
         [TestCleanup]
@@ -74,10 +64,10 @@
             List<string> environmentNamesToCheck = new List<string>() { "ADDED", "deleteMe", "Delete After Updating" };
             foreach (var name in environmentNamesToCheck)
             {
-                var addedDuringTest = IconDashboardDataService.Instance.GetEsbEnvironment(configPath, name);
+                var addedDuringTest = IconDashboardDataService.Instance.GetEsbEnvironment(dataFilePath, name);
                 if (addedDuringTest != null)
                 {
-                    IconDashboardDataService.Instance.DeleteEsbEnvironment(addedDuringTest, this.configPath);
+                    IconDashboardDataService.Instance.DeleteEsbEnvironment(addedDuringTest, this.dataFilePath);
                 }
             }
         }
@@ -96,29 +86,27 @@
             // assume we already have data in the data (config) file with data as follows
             var expectedValues = new Dictionary<string, string>()
             {
-                { nameof(EsbEnvironment.Name), "ENV_A" },
-                { nameof(EsbEnvironment.ServerUrl), "ssl://cerd1617.wfm.pvt:17293" },
-                { nameof(EsbEnvironment.TargetHostName), "cerd1617.wfm.pvt" },
-                { nameof(EsbEnvironment.JmsUsername), "jmsUser1" },
-                { nameof(EsbEnvironment.JmsPassword), "secret1234" },
-                { nameof(EsbEnvironment.JndiUsername), "jndiUserX" },
-                { nameof(EsbEnvironment.JndiPassword), "topSecret99" }
+                { nameof(EsbEnvironmentDefinition.Name), "ENV_A" },
+                { nameof(EsbEnvironmentDefinition.ServerUrl), "ssl://cerd1617.wfm.pvt:17293" },
+                { nameof(EsbEnvironmentDefinition.TargetHostName), "cerd1617.wfm.pvt" },
+                { nameof(EsbEnvironmentDefinition.JmsUsername), "jmsUser1" },
+                { nameof(EsbEnvironmentDefinition.JmsPassword), "secret1234" },
+                { nameof(EsbEnvironmentDefinition.JndiUsername), "jndiUserX" },
+                { nameof(EsbEnvironmentDefinition.JndiPassword), "topSecret99" }
             };
-            int expectedApplicationCount = 2;
 
             // When
-            var actual = IconDashboardDataService.Instance.GetEsbEnvironment(configPath, "ENV_A");
+            var actual = IconDashboardDataService.Instance.GetEsbEnvironment(dataFilePath, "ENV_A");
 
             // Then
             AssertObjectPropertiesMatch(expectedValues, actual);
-            AssertEsbEnvironmentApplicationsProperty(actual, expectedApplicationCount);
         }
 
         [TestMethod]
         public void WhenExistingEsbEnvironmentInDataFile_ThenAddEsbEnvironment_ShouldReturnWithNewEsbEnvironment()
         {
             // Given
-            var toAdd = new EsbEnvironment
+            var toAdd = new EsbEnvironmentDefinition
             {
                 Name = "ADDED",
                 ServerUrl = "myServer",
@@ -127,21 +115,16 @@
                 JmsPassword = "p@ssw0rd1",
                 JndiUsername = "userA",
                 JndiPassword = "p@ssw0rd2",
-                Applications = new List<IconApplicationIdentifier>()
-                {
-                    new IconApplicationIdentifier("Mammoth.Price.Controller", "vm-icon-test1")
-                }
             };
 
             // When
-            IconDashboardDataService.Instance.AddEsbEnvironment(toAdd, this.configPath);
+            IconDashboardDataService.Instance.AddEsbEnvironment(toAdd, this.dataFilePath);
 
             // Then
-            var retrieved = IconDashboardDataService.Instance.GetEsbEnvironment(this.configPath, toAdd.Name);
+            var retrieved = IconDashboardDataService.Instance.GetEsbEnvironment(this.dataFilePath, toAdd.Name);
             AssertObjectPropertiesMatch(toAdd, retrieved);
-            AssertEsbEnvironmentApplicationsProperty(retrieved, 1);
             //cleanup
-            IconDashboardDataService.Instance.DeleteEsbEnvironment(retrieved, this.configPath);
+            IconDashboardDataService.Instance.DeleteEsbEnvironment(retrieved, this.dataFilePath);
         }
 
         [TestMethod]
@@ -149,7 +132,7 @@
         {
             // Given  
             const string expectedName = "deleteMe";
-            var addToDelete = new EsbEnvironment
+            var addToDelete = new EsbEnvironmentDefinition
             {
                 Name = expectedName,
                 ServerUrl = "esbServer",
@@ -158,14 +141,10 @@
                 JmsPassword = "123",
                 JndiUsername = "yyy",
                 JndiPassword = "@666",
-                Applications = new List<IconApplicationIdentifier>()
-                {
-                    new IconApplicationIdentifier("Mammoth.Price.Controller", "vm-icon-test1")
-                }
             };
-            IconDashboardDataService.Instance.AddEsbEnvironment(addToDelete, this.configPath);
+            IconDashboardDataService.Instance.AddEsbEnvironment(addToDelete, this.dataFilePath);
 
-            var toDelete = new EsbEnvironment
+            var toDelete = new EsbEnvironmentDefinition
             {
                 Name = expectedName,
                 ServerUrl = "esbServer",
@@ -174,17 +153,13 @@
                 JmsPassword = "123",
                 JndiUsername = "yyy",
                 JndiPassword = "@666",
-                Applications = new List<IconApplicationIdentifier>()
-                {
-                    new IconApplicationIdentifier("Mammoth.Price.Controller", "vm-icon-test1")
-                }
             };
 
             // When
-            IconDashboardDataService.Instance.DeleteEsbEnvironment(toDelete, this.configPath);
+            IconDashboardDataService.Instance.DeleteEsbEnvironment(toDelete, this.dataFilePath);
 
             // Then
-            var envs = IconDashboardDataService.Instance.GetEsbEnvironments(this.configPath)
+            var envs = IconDashboardDataService.Instance.GetEsbEnvironments(this.dataFilePath)
                 .Where(a => a.Name == expectedName);
             Assert.IsFalse(envs.Any());
         }
@@ -194,7 +169,7 @@
         {
             // Given  
             const string expectedName = "Delete After Updating";
-            var addForUpdating = new EsbEnvironment
+            var addForUpdating = new EsbEnvironmentDefinition
             {
                 Name = expectedName,
                 ServerUrl = "my_server",
@@ -203,14 +178,10 @@
                 JmsPassword = "123",
                 JndiUsername = "bbbbbb",
                 JndiPassword = "@p@ssw0rd",
-                Applications = new List<IconApplicationIdentifier>()
-                {
-                    new IconApplicationIdentifier("Mammoth.Price.Controller", "vm-icon-test1")
-                }
             };
-            IconDashboardDataService.Instance.AddEsbEnvironment(addForUpdating, this.configPath);
+            IconDashboardDataService.Instance.AddEsbEnvironment(addForUpdating, this.dataFilePath);
 
-            var toUpdate = new EsbEnvironment
+            var toUpdate = new EsbEnvironmentDefinition
             {
                 Name = expectedName,
                 ServerUrl = "a_Nother_server",
@@ -219,22 +190,17 @@
                 JmsPassword = "secret1234",
                 JndiUsername = "jndiguy",
                 JndiPassword = "soupOrSecret",
-                Applications = new List<IconApplicationIdentifier>()
-                {
-                    new IconApplicationIdentifier("Mammoth.Price.Controller", "vm-icon-test1")
-                }
             };
 
             // When
-            IconDashboardDataService.Instance.UpdateEsbEnvironment(toUpdate, this.configPath);
+            IconDashboardDataService.Instance.UpdateEsbEnvironment(toUpdate, this.dataFilePath);
 
-            var updated = IconDashboardDataService.Instance.GetEsbEnvironment(this.configPath, expectedName);
+            var updated = IconDashboardDataService.Instance.GetEsbEnvironment(this.dataFilePath, expectedName);
 
             // Then
             AssertObjectPropertiesMatch(toUpdate, updated);
-            AssertEsbEnvironmentApplicationsProperty(updated, 1);
             //cleanup
-            IconDashboardDataService.Instance.DeleteEsbEnvironment(updated, this.configPath);
+            IconDashboardDataService.Instance.DeleteEsbEnvironment(updated, this.dataFilePath);
         }
 
         //TODO need to allow way to mock out dependency on LoadDataFile() ( can't read file on build server & is a dependency)
@@ -250,17 +216,17 @@
         //    Assert.AreEqual("ENV_A", currentEnvironment.Name);
         //}
 
-        [TestMethod]
-        public void WhenUsingDataFileWithNoEsbEnvironmentsDefined_GetCurrentEsbEnvironment_ReturnsNull()
-        {
-            // Given 
-            // data file with no entries for anything esb-environment related
-            var oldDataFile = "OldStyleDataFile.xml";
-            // When
-            var currentEnvironment = IconDashboardDataService.Instance.GetCurrentEsbEnvironment(oldDataFile);
-            // Then
-            Assert.IsNull(currentEnvironment);
-        }
+        //[TestMethod]
+        //public void WhenUsingDataFileWithNoEsbEnvironmentsDefined_GetCurrentEsbEnvironment_ReturnsNull()
+        //{
+        //    // Given 
+        //    // data file with no entries for anything esb-environment related
+        //    var oldDataFile = "OldStyleDataFile.xml";
+        //    // When
+        //    var currentEnvironment = IconDashboardDataService.Instance.GetCurrentEsbEnvironment(oldDataFile);
+        //    // Then
+        //    Assert.IsNull(currentEnvironment);
+        //}
 
         [TestMethod]
         public void WhenUsingValidDataFile_GetEsbEnvironments_ShouldRetrieveExpectedEsbEnvironmentCount()
@@ -290,7 +256,6 @@
             environmentB.ServerUrl.ShouldBeEquivalentTo(expectedServerUrl);
             environmentB.NumberOfListenerThreads.ShouldBeEquivalentTo(expectedNumberOfListenerThreads);
         }
-
-        //TODO the same application can be in multiple ESB environments!
+        
     }
 }

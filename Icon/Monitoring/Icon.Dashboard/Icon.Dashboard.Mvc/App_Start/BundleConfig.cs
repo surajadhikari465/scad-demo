@@ -33,7 +33,6 @@ namespace Icon.Dashboard.Mvc
                     "~/Scripts/moment*",
                     "~/Scripts/bootstrap-datetimepicker*"));
 
-
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/bootstrap-datetimepicker.css",

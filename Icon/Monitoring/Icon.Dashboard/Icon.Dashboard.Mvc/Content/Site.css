@@ -117,22 +117,6 @@ textarea {
     max-width: 100%;
 }
 
-.applicationRow {
-    /* empty class just so we can easily count all the elements with this class*/
-}
-
-.margin-bottom-10 {
-    margin-bottom: 10px;
-}
-
-.set-esb-btn {
-    /* empty class just so we can easily count all the elements with this class*/
-}
-
-.disable-link {
-    pointer-events: none;
-}
-
 div.applicationIdentifierPanel {
      margin-bottom: 0;
      margin-left: 10px;
@@ -177,6 +161,7 @@ div.applicationIdentifierPanelBody {
     border-top-right-radius: 0;
     border-bottom-left-radius: 4px;
 }
+
 .panel.panel-horizontal > .panel-footer {
     border-left: 1px solid #ddd;
     border-top-left-radius: 0;
@@ -189,4 +174,40 @@ div.applicationIdentifierPanelBody {
     background-size: contain;
     background-position: center;
     height: 80vh;
+}
+
+#vueElement {
+    margin-bottom: 20px;
+}
+
+.draggable-div {
+    padding: 20px;
+    min-height: 10px;
+    text-align: center;
+}
+
+.drag-item {
+    border-radius: 20px;
+    border: 2px solid #134E5E;
+    padding: 4px;
+    margin: 4px;
+    background: #00ffff; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(-90deg, #93F9B9, #71B280); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-90deg, #93F9B9, #71B280); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-90deg, #93F9B9, #71B280); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(-90deg, #93F9B9, #71B280); /* Standard syntax */
+}
+
+a.esbAppAnchor {
+    color: #000;
+}
+
+a:hover.esbAppAnchor, a:focus.esbAppAnchor {
+    color: #0026ff;
+    text-decoration: underline;
+}
+
+.esbEnvPanel {
+    border: 4px solid #1D976C;
+    border-radius: 10px;
 }

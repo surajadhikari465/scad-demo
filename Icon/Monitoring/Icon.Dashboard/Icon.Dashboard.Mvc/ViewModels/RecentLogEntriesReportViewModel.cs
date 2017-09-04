@@ -31,7 +31,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
             this.LogEntryCount = logEntryReport.LogEntryCount;
         }
 
-        public RecentLogEntriesReportViewModel(IconAppViewModel iconApp) : this()
+        public RecentLogEntriesReportViewModel(IconLoggedAppViewModel iconApp) : this()
         {
             this.AppID = iconApp.AppID;
             this.Name = iconApp.AppName;

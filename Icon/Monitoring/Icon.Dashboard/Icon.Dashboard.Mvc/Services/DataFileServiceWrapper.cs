@@ -4,83 +4,58 @@ using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Icon.Dashboard.Mvc.Services
 {
     public class DataFileServiceWrapper : IDataFileServiceWrapper
     {
         public IIconDashboardDataService IconMonitoringService { get; private set; }
+
         public IIconDatabaseServiceWrapper LoggingService { get; private set; }
 
-        public DataFileServiceWrapper(IIconDashboardDataService dataService = null, IIconDatabaseServiceWrapper loggingServiceWrapper = null)
+        public DataFileServiceWrapper(IIconDashboardDataService dataService = null,
+            IIconDatabaseServiceWrapper loggingServiceWrapper = null)
         {
             IconMonitoringService = dataService ?? IconDashboardDataService.Instance;
             LoggingService = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
         }
 
-        public IEnumerable<IApplication> GetApplications(HttpServerUtilityBase serverUtility, string dataFileName)
+        public IEnumerable<IconApplicationViewModel> GetApplications(string pathToXmlDataFile)
         {
-            var configFile = GetPathForDataFile(serverUtility, dataFileName);
-            var apps = IconMonitoringService.GetApplications(configFile);
-            return apps;
-        }
+            var apps = IconMonitoringService.GetApplications(pathToXmlDataFile);
+            var allEsbEnvironments = GetEsbEnvironments(pathToXmlDataFile);
 
-        public IEnumerable<IconApplicationViewModel> GetApplicationListViewModels(HttpServerUtilityBase serverUtility, string dataFileName)
-        {
-            var apps = this.GetApplications(serverUtility, dataFileName);
             var viewModels = new List<IconApplicationViewModel>(apps.Count());
 
             foreach (var app in apps)
             {
-                viewModels.Add(CreateViewModel(serverUtility, dataFileName, app));
+                viewModels.Add(FindEsbEnvironmentForApp(app, allEsbEnvironments));
             }
             return viewModels;
         }
 
-        public IEnumerable<IconApplicationViewModel> ToViewModels(IEnumerable<IApplication> applications,
-            HttpServerUtilityBase serverUtility, string dataFileName)
+        public IconApplicationViewModel GetApplication(string pathToXmlDataFile,
+            string application, string server)
         {
-            var viewModels = new List<IconApplicationViewModel>(applications.Count());
-
-            foreach (var app in applications)
-            {
-                viewModels.Add(CreateViewModel(serverUtility, dataFileName, app));
-            }
-            return viewModels;
+            return GetApplication(pathToXmlDataFile, application, server, null);
         }
 
-        public IApplication GetApplication(HttpServerUtilityBase serverUtility, string dataFileName, string application, string server)
+        public IconApplicationViewModel GetApplication(string pathToXmlDataFile,
+            string application, string server, IEnumerable<EsbEnvironmentViewModel> esbEnvironments = null)
         {
-            var configFile = this.GetPathForDataFile(serverUtility, dataFileName);
-            var app = IconMonitoringService.GetApplication(configFile, application, server);
-            return app;
-        }
-
-        public IconApplicationViewModel GetApplicationViewModel(HttpServerUtilityBase serverUtility, string dataFileName, string application, string server)
-        {
-            var configFile = this.GetPathForDataFile(serverUtility, dataFileName);
-            var app = IconMonitoringService.GetApplication(configFile, application, server);
-            var viewModel = CreateViewModel(serverUtility, dataFileName, app);
+            var app = IconMonitoringService.GetApplication(pathToXmlDataFile, application, server);
+            var allEsbEnvironments = esbEnvironments ?? GetEsbEnvironments(pathToXmlDataFile);
+            var viewModel = FindEsbEnvironmentForApp(app, allEsbEnvironments);
             return viewModel;
         }
 
-        public ServiceViewModel GetServiceViewModel(HttpServerUtilityBase serverUtility, string dataFileName, string application, string server)
+        public void ExecuteServiceCommand(string pathToXmlDataFile,
+            string application, string server, string command)
         {
-            var configFile = this.GetPathForDataFile(serverUtility, dataFileName);
-            var app = IconMonitoringService.GetApplication(configFile, application, server) as WindowsService;
-            var serviceViewModel = CreateViewModel(serverUtility, dataFileName, app) as ServiceViewModel;
-            return serviceViewModel;
-        }
-
-        public void ExecuteCommand(HttpServerUtilityBase serverUtility, string dataFileName, string application, string server, string command)
-        {
-            var configFile = this.GetPathForDataFile(serverUtility, dataFileName);
-            var app = IconMonitoringService.GetApplication(configFile, application, server);
-            if (app == null) throw new ArgumentNullException($"Unable to find process to monitor ({server}-{application})");
+            var app = IconMonitoringService.GetApplication(pathToXmlDataFile, application, server);
+            if (app == null) throw new ArgumentNullException(
+                String.Format("Unable to find process to monitor ({server}-{application})", server, application));
             if (app.TypeOfApplication == ApplicationTypeEnum.ScheduledTask) command = "Start";
 
             switch (command)
@@ -88,280 +63,230 @@ namespace Icon.Dashboard.Mvc.Services
                 case "Start":
                 case "start":
                     string[] startArgs = null;
-                    IconMonitoringService.Start(app, startArgs);
+                    IconMonitoringService.StartService(app, TimeSpan.FromMilliseconds(Utils.ServiceCommandTimeout), startArgs);
                     break;
                 case "Stop":
                 case "stop":
                 default:
-                    IconMonitoringService.Stop(app);
+                    IconMonitoringService.StopService(app, TimeSpan.FromMilliseconds(Utils.ServiceCommandTimeout));
                     break;
             }
         }
 
-        public string GetPathForDataFile(HttpServerUtilityBase serverUtility, string dataFileName, bool validateXml = true)
+        public void UpdateApplication(string pathToXmlDataFile, IconApplicationViewModel appViewModel)
         {
-            if (serverUtility == null) throw new ArgumentNullException(nameof(serverUtility));
-            if (String.IsNullOrWhiteSpace(dataFileName)) throw new ArgumentNullException(nameof(dataFileName));
-            var dataFilePath = serverUtility.MapPath($"~/App_Data/{dataFileName}");
+            var updatedApplication = appViewModel.ToDataModel();
+            IconMonitoringService.UpdateApplication(updatedApplication, pathToXmlDataFile);
+        }
 
-            if (!File.Exists(dataFilePath))
+        public void AddApplication(string pathToXmlDataFile, IconApplicationViewModel appViewModel)
+        {
+            var newApplication = appViewModel.ToDataModel();
+            IconMonitoringService.AddApplication(newApplication, pathToXmlDataFile);
+        }
+
+        public void DeleteApplication(string pathToXmlDataFile, IconApplicationViewModel appViewModel)
+        {
+            var viewModelToDelete = appViewModel.ToDataModel();
+            IconMonitoringService.DeleteApplication(viewModelToDelete, pathToXmlDataFile);
+        }
+
+        public void SaveAppSettings(IconApplicationViewModel appViewModel)
+        {
+            IconMonitoringService.SaveAppSettings(appViewModel.ToDataModel());
+        }
+
+        public IEnumerable<EsbEnvironmentViewModel> GetEsbEnvironments(string pathToXmlDataFile, bool includeUnassignedApps = false)
+        {
+            var environmentViewModels = new List<EsbEnvironmentViewModel>();            
+            var esbEnvironments = IconMonitoringService.GetEsbEnvironments(pathToXmlDataFile);
+
+            if (esbEnvironments != null && esbEnvironments.Any())
             {
-                throw new FileNotFoundException($"Unable to find or read application data file for dashboard ('{dataFilePath}')", dataFilePath);
-            }
+                var allApplications = IconMonitoringService.GetApplications(pathToXmlDataFile);
 
-            if (validateXml)
-            {
-                string pathToXsdSchema = "Applications.xsd";
-                var schemaFilePath = serverUtility.MapPath($"~/App_Data/{pathToXsdSchema}");
-                IconMonitoringService.VerifyDataFileSchema(dataFilePath, schemaFilePath);
-            }
-
-            return dataFilePath;
-        }
-
-        public void UpdateApplication(HttpServerUtilityBase serverUtility, IconApplicationViewModel appViewModel, string dataFileName)
-        {
-            var configFile = GetPathForDataFile(serverUtility, dataFileName);
-            var updatedApplication = FromViewModel(appViewModel);
-            IconMonitoringService.UpdateApplication(updatedApplication, configFile);
-        }
-
-        public void AddApplication(HttpServerUtilityBase serverUtility, IconApplicationViewModel appViewModel, string dataFileName)
-        {
-            var configFile = GetPathForDataFile(serverUtility, dataFileName);
-            var newApplication = FromViewModel(appViewModel);
-            IconMonitoringService.AddApplication(newApplication, configFile);
-        }
-
-        public void DeleteApplication(HttpServerUtilityBase serverUtility, IApplication application, string dataFileName)
-        {
-            var configFile = GetPathForDataFile(serverUtility, dataFileName);
-            IconMonitoringService.DeleteApplication(application, configFile);
-        }
-
-        public void SaveAppSettings(IconApplicationViewModel viewModel)
-        {
-            IconMonitoringService.SaveAppSettings(FromViewModel(viewModel));
-        }
-
-        public IApplication FromViewModel(IconApplicationViewModel viewModel)
-        {
-            IApplication app = null;
-            switch (viewModel.TypeOfApplication)
-            {
-                case ApplicationTypeEnum.WindowsService:
-                    app = new WindowsService();
-                    PopulatePropertiesFromViewModel(app, viewModel);
-                    break;
-                case ApplicationTypeEnum.ScheduledTask:
-                //case ApplicationTypeEnum.SqlAgentJob:
-                case ApplicationTypeEnum.Unknown:
-                default:
-                    break;
-            }
-            return app;
-        }
-
-        private void PopulatePropertiesFromViewModel(IApplication app, IconApplicationViewModel viewModel)
-        {
-            app.Server = viewModel.Server;
-            app.Name = viewModel.Name;
-            app.DisplayName = viewModel.DisplayName;
-            app.DataFlowFrom = viewModel.DataFlowFrom;
-            app.DataFlowTo = viewModel.DataFlowTo;
-            app.ConfigFilePath = viewModel.ConfigFilePath;
-            app.LoggingName = viewModel.LoggingName;
-
-            // Updating basic settings does not need to call a save to the app.config's appsettings.
-            viewModel.AppSettings?.ToList().ForEach(e =>
-               app.AppSettings[e.Key] = e.Value ?? string.Empty);
-        }
-
-        private ServiceViewModel CreateViewModel(
-           HttpServerUtilityBase serverUtility, string dataFileName, WindowsService app)
-        {
-            if (app == null) return null;
-            var viewModel = new ServiceViewModel(app);
-            SetCurrentEsbEnvironment(viewModel, serverUtility, dataFileName, app); ;
-            return viewModel;
-        }
-
-        private void SetCurrentEsbEnvironment(IconApplicationViewModel viewModel,
-            HttpServerUtilityBase serverUtility, string dataFileName, IApplication app)
-        {
-            viewModel.CurrentEsbEnvironment = GetCurrentEsbEnvironmentForApplication(serverUtility, dataFileName, app);
-            viewModel.ConfigFilePathIsValid = File.Exists(viewModel.ConfigFilePath);
-        }
-
-        private IconApplicationViewModel CreateViewModel(
-            HttpServerUtilityBase serverUtility, string dataFileName, IApplication app)
-        {
-            if (app == null) return null;
-            IconApplicationViewModel viewModel = null;
-
-            switch (app.TypeOfApplication)
-            {
-                case ApplicationTypeEnum.WindowsService:
-                    viewModel = new ServiceViewModel(app as WindowsService);
-                    break;
-                case ApplicationTypeEnum.ScheduledTask:
-                case ApplicationTypeEnum.Unknown:
-                default:
-                    viewModel = new IconApplicationViewModel(app);
-                    break;
-            }
-
-            SetCurrentEsbEnvironment(viewModel, serverUtility, dataFileName, app);
-            return viewModel;
-        }
-
-        public static IEsbEnvironment FromViewModel(EsbEnvironmentViewModel viewModel)
-        {
-            if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
-
-            IEsbEnvironment environment = new EsbEnvironment
-            {
-                Name = viewModel.Name,
-                ServerUrl = viewModel.ServerUrl,
-                TargetHostName = viewModel.TargetHostName,
-                JmsUsername = viewModel.JmsUsername,
-                JmsPassword = viewModel.JmsPassword,
-                JndiUsername = viewModel.JndiUsername,
-                JndiPassword = viewModel.JndiPassword
-            };
-
-            viewModel.Applications?.ToList().ForEach(a => environment.AddApplication(a.Name, a.Server));
-
-            return environment;
-        }
-
-        public IEnumerable<EsbEnvironmentViewModel> GetEsbEnvironments(HttpServerUtilityBase serverUtility, string pathToXmlDataFile)
-        {
-            var configFile = GetPathForDataFile(serverUtility, pathToXmlDataFile);
-            var esbEnvironments = IconMonitoringService.GetEsbEnvironments(configFile)
-                .Select(each => new EsbEnvironmentViewModel(each));
-            return esbEnvironments;
-        }
-
-        public IEnumerable<string> GetEsbEnvironmentNames(HttpServerUtilityBase serverUtility, string pathToXmlDataFile)
-        {
-            var esbEnvironments = GetEsbEnvironments(serverUtility, pathToXmlDataFile);
-            if (esbEnvironments != null)
-            {
-                return esbEnvironments.Select(e => e.Name);
-            }
-            return null;
-        }
-
-        public EsbEnvironmentViewModel GetEsbEnvironment(HttpServerUtilityBase serverUtility, string pathToXmlDataFile, string name)
-        {
-            var configFile = GetPathForDataFile(serverUtility, pathToXmlDataFile);
-            var esbEnvironment = new EsbEnvironmentViewModel(IconMonitoringService.GetEsbEnvironment(configFile, name));
-            return esbEnvironment;
-        }
-
-        public void AddEsbEnvironment(HttpServerUtilityBase serverUtility, EsbEnvironmentViewModel esbEnvironment, string pathToXmlDataFile)
-        {
-            var configFile = GetPathForDataFile(serverUtility, pathToXmlDataFile);
-            var newEnvironment = FromViewModel(esbEnvironment);
-            IconMonitoringService.AddEsbEnvironment(newEnvironment, configFile);
-        }
-
-        public void UpdateEsbEnvironment(HttpServerUtilityBase serverUtility, EsbEnvironmentViewModel esbEnvironment, string pathToXmlDataFile)
-        {
-            var configFile = GetPathForDataFile(serverUtility, pathToXmlDataFile);
-            var updated = FromViewModel(esbEnvironment);
-            IconMonitoringService.UpdateEsbEnvironment(updated, configFile);
-        }
-
-        public void DeleteEsbEnvironment(HttpServerUtilityBase serverUtility, EsbEnvironmentViewModel esbEnvironment, string pathToXmlDataFile)
-        {
-            var configFile = GetPathForDataFile(serverUtility, pathToXmlDataFile);
-            var toDelete = FromViewModel(esbEnvironment);
-            IconMonitoringService.DeleteEsbEnvironment(toDelete, configFile);
-        }
-
-        public List<Tuple<bool, string>> SetEsbEnvironment(HttpServerUtilityBase serverUtility, EsbEnvironmentViewModel esbEnvironment, string pathToXmlDataFile)
-        {
-            var configFile = GetPathForDataFile(serverUtility, pathToXmlDataFile);
-            var results = IconMonitoringService.UpdateApplicationsToEsbEnvironment(FromViewModel(esbEnvironment), configFile);
-            return results;
-        }
-
-        public EsbEnvironmentViewModel GetCurrentEsbEnvironment(HttpServerUtilityBase serverUtility, string pathToXmlDataFile)
-        {
-            var configFile = GetPathForDataFile(serverUtility, pathToXmlDataFile);
-            var esbEnvironment = IconMonitoringService.GetCurrentEsbEnvironment(configFile);
-            if (esbEnvironment != null)
-            {
-                return new EsbEnvironmentViewModel(esbEnvironment);
-            }
-            return (EsbEnvironmentViewModel)null;
-        }
-
-        public string GetCurrentEsbEnvironmentForApplication(HttpServerUtilityBase serverUtility,
-            string pathToXmlDataFile, IApplication application)
-        {
-            const string keyForServerUrl = "ServerUrl";
-            const string keyForTargetHostNamel = "TargetHostName";
-            string applicationName = $"{application.Name}-{application.Server}";
-            var possibleEsbEnvironments = GetEsbEnvironments(serverUtility, pathToXmlDataFile);
-            string currentEsbEnvironment = null;
-
-            //check for an explict EsbConfigurationSettings section
-            if (application.EsbConnectionSettings != null && application.EsbConnectionSettings.Count > 0)
-            {
-                currentEsbEnvironment = ReadEsbEnvironmentFromConfiguration(
-                    configSection: application.EsbConnectionSettings,
-                    knownEsbEnvironments: possibleEsbEnvironments,
-                    keyForServerName: keyForServerUrl,
-                    keyForTargetHost: keyForTargetHostNamel,
-                    nameOfApplication: applicationName);
-            }
-
-            return currentEsbEnvironment;
-        }
-
-        /// <summary>
-        /// Checks a dictionary (such as from an app.settings file section) for a key/value pair which indicates that the 
-        ///   application using the configration data is configured for communication with a known ESB environment
-        /// </summary>
-        /// <param name="configSection">A Dictionary of strings represeentng the key/value pair settings</param>
-        /// <param name="knownEsbEnvironments">An enumerable collection of EsbEnvironment models, to use when searching for a match</param>
-        /// <param name="keyForServerName">Key for the key/value pair in the configuration dictionary representing the target ESB server</param>
-        /// <param name="keyForTargetHost">Key for the key/value pair in the configuration dictionary representing the target ESB Host Name</param>
-        /// <param name="nameOfApplication">Name of the application associated with the config data, used when potentially building an error message</param>
-        /// <returns></returns>
-        private string ReadEsbEnvironmentFromConfiguration(Dictionary<string,string> configSection,
-            IEnumerable<EsbEnvironmentViewModel> knownEsbEnvironments,
-            string keyForServerName,
-            string keyForTargetHost,
-            string nameOfApplication)
-        {
-            if (configSection != null)
-            {
-                if (configSection.ContainsKey(keyForServerName) && configSection.ContainsKey(keyForTargetHost))
+                foreach (var esbEnvironment in esbEnvironments)
                 {
-                    string esbServer = String.Empty;
-                    string esbTargetHost = String.Empty;
-                    if (configSection.TryGetValue(keyForServerName, out esbServer) && configSection.TryGetValue(keyForTargetHost, out esbTargetHost))
+                    var esbEnvironmentViewModel = AssignAppsForEsbEnvironment(esbEnvironment, allApplications);
+                    environmentViewModels.Add(esbEnvironmentViewModel);
+                }
+                if (includeUnassignedApps)
+                {
+                    var unassignedEsbApps = allApplications.Where(a => a.HasEsbConfiguration
+                        && a.EsbConnectionSettings != null
+                        && a.EsbConnectionSettings.ContainsKey("Name")
+                        && !esbEnvironments.Select(e => e.Name).Contains(a.EsbConnectionSettings["Name"]));
+                    var unassignedEnvironment = new EsbEnvironmentViewModel()
                     {
-                        var matchingEsbEnvironments = knownEsbEnvironments.Where(e =>
-                            String.Compare(e.ServerUrl, esbServer, StringComparison.CurrentCultureIgnoreCase) == 0 &&
-                            String.Compare(e.TargetHostName, esbTargetHost, StringComparison.CurrentCultureIgnoreCase) == 0);
+                        Name = "UNASSIGNED",
+                        ServerUrl = "N//A",
+                        TargetHostName = "N//A",
+                        //JmsUsername = JmsUsername,
+                        //JmsPassword = JmsPassword,
+                        //JndiUsername = JndiUsername,
+                        //JndiPassword = JndiPassword,
+                        //ConnectionFactoryName = ConnectionFactoryName,
+                        //SslPassword = SslPassword,
+                        //QueueName = QueueName,
+                        //SessionMode = SessionMode,
+                        //CertificateName = CertificateName,
+                        //CertificateStoreName = CertificateStoreName,
+                        //CertificateStoreLocation = CertificateStoreLocation,
+                        //ReconnectDelay = ReconnectDelay,
+                        //NumberOfListenerThreads = NumberOfListenerThreads,
+                        //AppsInEnvironment = unassignedEsbApps
+                        //    .Select(u => new IconAppSummaryViewModel(u)).OrderBy(a=>a.Name)
+                        //    .ToList()
+                    };
+                    unassignedEnvironment.AppsInEnvironment = unassignedEsbApps?
+                        .Select(u => new IconApplicationViewModel(u)).OrderBy(a => a.Name).ToList() 
+                        ?? new List<IconApplicationViewModel>();
+                    environmentViewModels.Add(unassignedEnvironment);
+                }
+            }
 
-                        if (matchingEsbEnvironments != null && matchingEsbEnvironments.Count() == 1)
+            return environmentViewModels.OrderBy(e=>e.Name);
+        }
+
+        public EsbEnvironmentViewModel AssignAppsForEsbEnvironment(
+            IEsbEnvironmentDefinition esbEnvironment,
+            IEnumerable<IconApplicationViewModel> allApplicationViewModels)
+        {
+            var serverUrlKey = nameof(EsbEnvironmentViewModel.ServerUrl);
+
+            var esbEnvironmentViewModel = new EsbEnvironmentViewModel(esbEnvironment);
+            var hostsForEnvironment = GetHostsFromServerUrl(esbEnvironmentViewModel.ServerUrl);
+            if (hostsForEnvironment != null)
+            {
+                foreach (var app in allApplicationViewModels)
+                {
+                    if (app.EsbConnectionSettings.Any() && app.EsbConnectionSettings.ContainsKey(serverUrlKey))
+                    {
+                        var hostsForApp = GetHostsFromServerUrl(app.EsbConnectionSettings[serverUrlKey]);
+                        bool match = false;
+                        foreach (var appHost in hostsForApp)
                         {
-                            return matchingEsbEnvironments.First().Name;
+                            match = hostsForEnvironment.Contains(appHost, StringComparer.InvariantCultureIgnoreCase);
+                            if (!match) break;
                         }
-                        else if (matchingEsbEnvironments != null && matchingEsbEnvironments.Count() > 1)
+                        if (match)
                         {
-                            throw new ArgumentOutOfRangeException($"{nameOfApplication} is configured for more than 1 esb environment");
+                            esbEnvironmentViewModel.AppsInEnvironment.Add(app);
+                        }
+                    }
+                }
+                esbEnvironmentViewModel.AppsInEnvironment = esbEnvironmentViewModel.AppsInEnvironment
+                    .OrderBy(a => a.Server).ThenBy(a => a.Name)
+                    .ToList();
+            }
+            return esbEnvironmentViewModel;
+        }
+
+        public static IEnumerable<string> GetHostsFromServerUrl(string serverUrlSettingValue)
+        {
+            if (String.IsNullOrWhiteSpace(serverUrlSettingValue)) return null;
+            var hosts = new List<string>();
+            // server url app setting could contain a single url or two urls separated by a comma
+            var serverUrls = serverUrlSettingValue.Split(',');
+            foreach (var serverUrl in serverUrls)
+            {
+                var systemUri = new Uri(serverUrl);
+                if (systemUri.Host.Contains("."))
+                {
+                    //we only want the first element of the domain host (e.g. "myMachine" out of "myMachine.wfm.pvt")
+                    hosts.Add(systemUri.Host.Split('.')[0]);
+                }
+                else
+                {
+                    hosts.Add(systemUri.Host);
+                }
+            }
+            return hosts;
+        }
+
+        public EsbEnvironmentViewModel AssignAppsForEsbEnvironment(
+            IEsbEnvironmentDefinition esbEnvironment,
+            IEnumerable<IIconApplication> allIconApplications)
+        {
+            var allAppViewModels = allIconApplications.Select(a => new IconApplicationViewModel(a));
+            return AssignAppsForEsbEnvironment(esbEnvironment, allAppViewModels);
+        }
+
+        public IconApplicationViewModel FindEsbEnvironmentForApp(
+            IIconApplication iconApplication,
+            IEnumerable<EsbEnvironmentViewModel> allEsbEnvironments)
+        {
+            var serverUrlKey = nameof(EsbEnvironmentViewModel.ServerUrl);
+            if (iconApplication == null) throw new ArgumentNullException(nameof(iconApplication));
+            if (allEsbEnvironments == null) throw new ArgumentNullException(nameof(allEsbEnvironments));
+
+            var appViewModel = new IconApplicationViewModel(iconApplication);
+            if (appViewModel.EsbConnectionSettings.Any() && appViewModel.EsbConnectionSettings.ContainsKey(serverUrlKey))
+            {
+                var hostsForApp = GetHostsFromServerUrl(appViewModel.EsbConnectionSettings[serverUrlKey]);
+                if (hostsForApp != null)
+                {
+                    foreach (var env in allEsbEnvironments)
+                    {
+                        var hostsForEnvironment = GetHostsFromServerUrl(env.ServerUrl);
+                        if (hostsForEnvironment != null)
+                        {
+                            bool match = false;
+                            foreach( var appHost in hostsForApp)
+                            {
+                                match = hostsForEnvironment.Contains(appHost);
+                                if (!match) break;
+                            }
+                            if (match) appViewModel.CurrentEsbEnvironment = env.Name;
                         }
                     }
                 }
             }
-            return null;
+            return appViewModel;
+        }
+
+        public Dictionary<string,string> ReconfigureEsbApps(string pathToXmlDataFile,
+            IEnumerable<EsbEnvironmentViewModel> viewModelWithChanges)
+        {
+            var totalResults = new Dictionary<string, string>();
+            foreach (var env in viewModelWithChanges)
+            {
+                var appsInEnv = env.AppsInEnvironment.Select(a => a.ToDataModel());
+                var eachResults = IconMonitoringService.ReconfigureEsbSettingsAndRestartServices(
+                    pathToXmlDataFile, appsInEnv, env.Name, Utils.ServiceCommandTimeout);
+                //combine results
+                eachResults.ToList().ForEach(x => totalResults.Add(x.Key, x.Value));
+            }
+
+            return totalResults;
+        }
+
+        public EsbEnvironmentViewModel GetEsbEnvironment(string pathToXmlDataFile, string name)
+        {
+            var environment = IconMonitoringService.GetEsbEnvironment(pathToXmlDataFile, name);
+            var allApps = GetApplications(pathToXmlDataFile);
+            var viewModel = AssignAppsForEsbEnvironment(environment, allApps);
+            return viewModel;
+        }
+
+        public void AddEsbEnvironment(string pathToXmlDataFile, EsbEnvironmentViewModel esbEnvironment)
+        {
+            var newEnvironment = esbEnvironment.ToDataModel();
+            IconMonitoringService.AddEsbEnvironment(newEnvironment, pathToXmlDataFile);
+        }
+
+        public void UpdateEsbEnvironment(string pathToXmlDataFile,
+            EsbEnvironmentViewModel esbEnvironment)
+        {
+            var updated = esbEnvironment.ToDataModel();
+            IconMonitoringService.UpdateEsbEnvironment(updated, pathToXmlDataFile);
+        }
+
+        public void DeleteEsbEnvironment(string pathToXmlDataFile,
+            EsbEnvironmentViewModel esbEnvironment)
+        {
+            var toDelete = esbEnvironment.ToDataModel();
+            IconMonitoringService.DeleteEsbEnvironment(toDelete, pathToXmlDataFile);
         }
     }
 }

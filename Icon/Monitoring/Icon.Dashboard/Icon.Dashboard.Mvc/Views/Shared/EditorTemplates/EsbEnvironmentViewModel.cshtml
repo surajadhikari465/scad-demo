@@ -8,7 +8,7 @@
         <div class="panel-heading">
             <h4 class="panel-title text-center">
                 <a data-toggle="collapse" href="#collapsibleEsbEnvironment@(Model.Name)">
-                    @(ViewBag.Title ?? $"{Model.Name} ESB Environment Details")
+                    @(ViewBag.Title ?? Model.Name + " ESB Environment Details")
                 </a>
             </h4>
         </div>
@@ -68,13 +68,13 @@
                         @Html.ValidationMessageFor(model => model.JndiPassword, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                @*<div class="form-group col-xs-12 col-sm-6 col-lg-4">
                     @Html.LabelFor(model => model.ConnectionFactoryName, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
                         @Html.EditorFor(model => model.ConnectionFactoryName, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ConnectionFactoryName, "", new { @class = "text-danger" })
                     </div>
-                </div>
+                </div>*@
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
                     @Html.LabelFor(model => model.SslPassword, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
@@ -82,13 +82,13 @@
                         @Html.ValidationMessageFor(model => model.SslPassword, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                @*<div class="form-group col-xs-12 col-sm-6 col-lg-4">
                     @Html.LabelFor(model => model.QueueName, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
                         @Html.EditorFor(model => model.QueueName, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.QueueName, "", new { @class = "text-danger" })
                     </div>
-                </div>
+                </div>*@
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
                     @Html.LabelFor(model => model.SessionMode, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
@@ -137,23 +137,19 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" href="#collapsibleApplications@(Model.Name)">
-                                    @Html.DisplayNameFor(model => model.Applications) Configured for @(Model.Name)
+                                    @Html.DisplayNameFor(model => model.AppsInEnvironment) Configured for @(Model.Name)
                                 </a>
                             </h4>
                         </div>
                         <div id="collapsibleApplications@(Model.Name)" class="panel-collapse collapse">
                             <div id="applicationsPanelBody" class="panel-body">
-                                @Html.ValidationMessageFor(model => model.Applications, "", new { @class = "text-danger" })
-                                @Html.EditorFor(model => model.Applications, new { htmlAttributes = new { @class = "form-control" } })
-
-                                <div id="rowForAddApplicationButton" class="row">
-                                    <div class="col-xs-offset-1 col-xs-10">
-                                        <button type="button" class="btn btn-sm btn-block btn-success" onclick="addRow(this)">
-                                            @*<span class="glyphicon glyphicon-plus"></span>*@
-                                            Add Application
-                                        </button>
-                                    </div>
-                                </div>
+                                @if (Model.AppsInEnvironment != null)
+                                {
+                                    foreach (var associatedApplication in Model.AppsInEnvironment)
+                                    {
+                                        @Html.DisplayFor(model => associatedApplication, "IconEsbAppSummaryViewModel")
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
