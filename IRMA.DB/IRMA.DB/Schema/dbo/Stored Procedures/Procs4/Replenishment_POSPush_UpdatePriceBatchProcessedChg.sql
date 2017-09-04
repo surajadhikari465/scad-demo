@@ -5,7 +5,9 @@ AS
 
 BEGIN
 SET NOCOUNT ON
-	    
+
+DECLARE @SignQueueIngredientLength INT = 3500
+
 DECLARE @RegPriceChgTypeID	int
 SELECT @RegPriceChgTypeID = PriceChgTypeID
 FROM	PriceChgType
@@ -270,7 +272,7 @@ UPDATE Price
 
     UPDATE SignQueue
     SET Sign_Description = ISNULL(PBD.Sign_Description, ''), 
-        Ingredients=PBD.Ingredients, 
+        Ingredients=SUBSTRING(PBD.Ingredients, 1, @SignQueueIngredientLength), 
         Identifier= ISNULL(PBD.Identifier, ''), 
         Sold_By_Weight=ISNULL(PBD.Sold_By_Weight, 0), 
             
@@ -376,7 +378,7 @@ UPDATE Price
     Discountable, Food_Stamps, IBM_Discount, New_Item, Price_Change, Item_Change, LastQueuedType, PriceChgTypeId, TagTypeID, ItemSurcharge)
     SELECT PBD.Item_Key, PBD.Store_No,
         ISNULL(PBD.Sign_Description, NULL), 
-        PBD.Ingredients, 
+        SUBSTRING(PBD.Ingredients, 1, @SignQueueIngredientLength), 
         ISNULL(PBD.Identifier, ''),
         ISNULL(PBD.Sold_By_Weight, 0),
             				 
