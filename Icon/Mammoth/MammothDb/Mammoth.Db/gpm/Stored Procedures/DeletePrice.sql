@@ -19,7 +19,7 @@ BEGIN
 			AND StartDate = @StartDate
 			AND PriceType = @PriceType';
 
-DECLARE @params NVARCHAR(500);
+	DECLARE @params NVARCHAR(500);
 	SET @params = N'
 		@Region nvarchar(2),
 		@ItemID int,

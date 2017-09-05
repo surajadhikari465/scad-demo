@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSupport", "WebSupport\WebSupport.csproj", "{C5E3E64B-CF38-409C-A04B-E47104EC790B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -13,6 +13,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSupport.DataAccess", "WebSupport.DataAccess\WebSupport.DataAccess.csproj", "{2AC1469A-E9C7-41F4-8809-C8F5647BAB68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSupport.DataAccess.Test", "WebSupport.DataAccess.Test\WebSupport.DataAccess.Test.csproj", "{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{155C004E-EE9B-42D6-AB3D-EA38BB5E0F9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Framework", "..\Mammoth.Shared\Mammoth.Framework\Mammoth.Framework.csproj", "{799950FA-6F28-43CA-A60C-769BBE9DE6A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common.DataAccess", "..\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj", "{82505A9B-2264-4428-9806-D5EF838109B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,26 +60,31 @@ Global
 		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{72620F1F-2D3D-4A2B-8A7D-E0318813C72E}.Test|Any CPU.Build.0 = Release|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.QA|Any CPU.Build.0 = QA|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Test|Any CPU.Build.0 = Test|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.Build.0 = QA|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = WebSupport.Tests\\WebSupport.Tests.csproj
-		SccProjectName1 = WebSupport.Tests
-		SccLocalPath1 = WebSupport.Tests
-		SccProjectUniqueName2 = WebSupport\\WebSupport.csproj
-		SccProjectName2 = WebSupport
-		SccLocalPath2 = WebSupport
-		SccProjectUniqueName3 = WebSupport.DataAccess\\WebSupport.DataAccess.csproj
-		SccProjectName3 = WebSupport.DataAccess
-		SccLocalPath3 = WebSupport.DataAccess
-		SccProjectUniqueName4 = WebSupport.DataAccess.Test\\WebSupport.DataAccess.Test.csproj
-		SccProjectName4 = WebSupport.DataAccess.Test
-		SccLocalPath4 = WebSupport.DataAccess.Test
+	GlobalSection(NestedProjects) = preSolution
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9} = {155C004E-EE9B-42D6-AB3D-EA38BB5E0F9B}
+		{82505A9B-2264-4428-9806-D5EF838109B3} = {155C004E-EE9B-42D6-AB3D-EA38BB5E0F9B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B060B419-5BD7-4BC5-9420-F2E7C40AF793}
 	EndGlobalSection
 EndGlobal

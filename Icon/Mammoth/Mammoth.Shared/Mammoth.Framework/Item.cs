@@ -24,7 +24,7 @@ namespace Mammoth.Framework
 
         public int? TaxClassHCID { get; set; }
 
-        public int? FinancialHCID { get; set; }
+        public int? PSNumber { get; set; }
 
         [StringLength(255)]
         public string Desc_Product { get; set; }
@@ -41,10 +41,9 @@ namespace Mammoth.Framework
         [StringLength(255)]
         public string RetailUOM { get; set; }
 
-        public DateTime? ValidationDate { get; set; }
-
         public bool? FoodStampEligible { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime AddedDate { get; set; }
 
         public DateTime? ModifiedDate { get; set; }

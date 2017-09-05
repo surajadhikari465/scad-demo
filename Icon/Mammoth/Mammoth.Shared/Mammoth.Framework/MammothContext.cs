@@ -4,6 +4,7 @@ namespace Mammoth.Framework
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using System.Collections.Generic;
 
     public partial class MammothContext : DbContext
     {
@@ -27,5 +28,6 @@ namespace Mammoth.Framework
         public virtual DbSet<MessageQueuePrice> MessageQueuePrices { get; set; }
         public virtual DbSet<MessageStatus> MessageStatus { get; set; }
         public virtual DbSet<MessageType> MessageTypes { get; set; }
+        public virtual DbSet<PriceResetMessageHistory> PriceResetMessageHistories { get; set; }
     }
 }
