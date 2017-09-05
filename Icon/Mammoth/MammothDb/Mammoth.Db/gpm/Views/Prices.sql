@@ -38,3 +38,7 @@
 	UNION ALL
 	SELECT Region, PriceID, GpmID, ItemID, BusinessUnitID, StartDate, EndDate, Price, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, NewTagExpiration, InsertDateUtc, ModifiedDateUtc
 	FROM [gpm].[Price_UK]
+GO
+
+GRANT SELECT ON [gpm].[Prices] TO [TibcoRole]
+GO
