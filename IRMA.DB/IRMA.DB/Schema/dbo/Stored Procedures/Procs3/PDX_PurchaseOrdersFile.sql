@@ -42,11 +42,11 @@ else RIGHT('0000000000'+ISNULL(v.PS_Vendor_ID,''),10) end) as VENDOR_NUMBER,
 convert(varchar, oh.OrderDate, 112) as PO_CREATE_DATE, 
 convert(varchar, oh.Expected_Date, 112) as PO_ETA_DATE, convert(varchar, oh.OriginalCloseDate, 112) as PO_CLOSE_DATE,
 st.SubTeam_Name as PROD_SUBTEAM,
-CASE 
-    WHEN oh.Transfer_To_SubTeam = i.SubTeam_No
-	THEN 'Y'
-	ELSE 'N'
-END AS HOST_SUBTEAM_FLAG,
+case 
+    when oh.Transfer_To_SubTeam = i.SubTeam_No
+	then 'Y'
+	else 'N'
+end as HOST_SUBTEAM_FLAG,
 rtrim(iu.Unit_Name) as CASE_UOM
 from OrderHeader oh
 join OrderItem oi on oh.OrderHeader_Id = oi.OrderHeader_Id 
@@ -73,7 +73,7 @@ and (
              and SentDate < @today and SentDate >= @today - 5)
 		or (edcq.OrderHeader_ID is not null)
 	)
-order by oh.OrderHeader_Id, PO_LINE_NUMBER, oi.OrderItem_ID
+order by oh.OrderHeader_Id, oi.OrderItem_ID
 END
 
 GO

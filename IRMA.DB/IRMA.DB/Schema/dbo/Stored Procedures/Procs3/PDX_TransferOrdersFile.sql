@@ -34,39 +34,7 @@ where  oh.OrderType_ID = 3
 and    oh.Sent = 1
 and    ((OrderDate < @today and OrderDate >= @today - 5)
  or    (CloseDate < @today and CloseDate >= @yesterday))
-and    oh.PurchaseLocation_ID = oh.Vendor_ID --In-store transfer only for 365 stores
-union
--- Transfer orders with the selected stores as a "transfer from" stores. This is for store-to-store transfers. 
--- Only include WFM banner stores because 365 stores only need to report on in-store transfers, which are included above 
-select oh.OrderHeader_ID, s.BusinessUnit_ID, sv.BusinessUnit_ID
-from   OrderHeader oh
-join   Vendor v on oh.Vendor_ID = v.Vendor_ID
-join   @IncludedStores ist on ist.Store_No = v.Store_no
-join   Store sv on sv.Store_No = v.Store_no
-join   Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-join   Store s on s.Store_No = psl.Store_no
-where  oh.OrderType_ID = 3
-and    oh.Sent = 1
-and    ((OrderDate < @today and OrderDate >= @today - 5)
- or    (CloseDate < @today and CloseDate >= @yesterday))
-and    ist.WFMStore = 1
-and    oh.PurchaseLocation_ID <> oh.Vendor_ID
-union
--- Transfer orders with the selected stores as a "transfer to" stores. This is for store-to-store transfers. 
--- Only include WFM banner stores because 365 stores only need to report on in-store transfers, which are included above 
-select oh.OrderHeader_ID, s.BusinessUnit_ID, sv.BusinessUnit_ID
-from   OrderHeader oh
-join   Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-join   @IncludedStores ist on ist.Store_No = psl.Store_no
-join   Store s on s.Store_No = psl.Store_no
-join   Vendor v on oh.Vendor_ID = v.Vendor_ID
-join   Store sv on sv.Store_No = v.Store_no
-where  oh.OrderType_ID = 3
-and    oh.Sent = 1
-and    ((OrderDate < @today and OrderDate >= @today - 5)
- or    (CloseDate < @today and CloseDate >= @yesterday))
-and    ist.WFMStore = 1
-and    oh.PurchaseLocation_ID <> oh.Vendor_ID
+and    oh.PurchaseLocation_ID = oh.Vendor_ID 
 
 select oh.OrderHeader_Id as PO_NUMBER, ROW_NUMBER() OVER(PARTITION BY oh.OrderHeader_Id ORDER BY oi.OrderItem_ID) as PO_LINE_NUMBER, 
 RIGHT('0000000000000'+ISNULL(ii.Identifier,''),13) as UPC, 
@@ -107,11 +75,10 @@ and (
         or  (vsc.InsertDate < @today and vsc.InsertDate >= @yesterday
              and SentDate < @today and SentDate >= @today - 5)
 	)
-order by oh.OrderHeader_Id, PO_LINE_NUMBER, oi.OrderItem_ID
+order by oh.OrderHeader_Id, oi.OrderItem_ID
 END
 
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[PDX_TransferOrdersFile] TO [IRMAPDXExtractRole]
     AS [dbo];
-
