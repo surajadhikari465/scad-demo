@@ -642,7 +642,7 @@
     <Build Include="infor\Tables\LocaleSequence.sql" />
     <Build Include="infor\Tables\MessageArchiveNewItem.sql" />
     <Build Include="infor\Stored Procedures\GetScanCodeToIconItemIds.sql" />
-    <Build Include="Scripts\Jobs\InforExtract_FromIcon.sql" />
+    <None Include="Scripts\Jobs\InforExtract_FromIcon.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
