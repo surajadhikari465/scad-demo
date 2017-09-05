@@ -28,7 +28,7 @@
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
         <pd:x>181</pd:x>
-        <pd:y>101</pd:y>
+        <pd:y>102</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>

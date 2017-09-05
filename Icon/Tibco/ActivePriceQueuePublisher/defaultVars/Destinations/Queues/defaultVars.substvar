@@ -34,6 +34,14 @@
 			<modTime>1503602537202</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>JustInTimePricePushQueue</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.IrmaPrice.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1504618780054</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Price</name>
 			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
 			<description></description>
@@ -41,14 +49,6 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1503333048010</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>RegionPriceQueuePublisher</name>
-			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.IrmaPrice.Queue.V1</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1503949538978</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
