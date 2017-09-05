@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns32="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns33="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pfx="http://schemas.wfm.com/Mammoth/R10Prices.xsd" xmlns:ns42="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns53="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns52="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/R10Prices.xsd" schemaLocation="/SharedResources/Schemas/Application/R10Prices.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <pd:name>Processes/Create Reg Price Entry.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:R10Price"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Map-Data/pfx2:items"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:items"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1504619379073</pd:targetNamespace>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>300</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <element ref="pfx2:items"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:items>
+                <pfx2:item>
+                    <pfx2:id>
+                        <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemId"/>
+                    </pfx2:id>
+                    <pfx2:base>
+                        <ns2:type>
+                            <ns3:code>
+                                <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemTypeCode"/>
+                            </ns3:code>
+                            <ns3:description>
+                                <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemTypeDesc"/>
+                            </ns3:description>
+                        </ns2:type>
+                    </pfx2:base>
+                    <pfx2:locale>
+                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="ns1:Action">
+                            <xsl:value-of select="&quot;AddOrUpdate&quot;"/>
+                        </xsl:attribute>
+                        <ns22:id>
+                            <xsl:value-of select="$Start/pfx:R10Price/pfx:BusinessUnit_ID"/>
+                        </ns22:id>
+                        <ns22:name>
+                            <xsl:value-of select="$Start/pfx:R10Price/pfx:LocaleName"/>
+                        </ns22:name>
+                        <ns22:type>
+                            <ns32:code>
+                                <xsl:value-of select="&quot;STR&quot;"/>
+                            </ns32:code>
+                            <ns32:description>
+                                <xsl:value-of select="&quot;Store&quot;"/>
+                            </ns32:description>
+                        </ns22:type>
+                        <ns22:storeItemAttributes>
+                            <ns33:scanCode>
+                                <ns4:id>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeId"/>
+                                </ns4:id>
+                                <ns4:code>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCode"/>
+                                </ns4:code>
+                                <ns4:typeId>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeTypeId"/>
+                                </ns4:typeId>
+                                <ns4:typeDescription>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeTypeDesc"/>
+                                </ns4:typeDescription>
+                            </ns33:scanCode>
+                            <ns33:prices>
+                                <ns42:price>
+                                    <ns42:type>
+                                        <ns5:id>
+                                            <xsl:value-of select="&quot;REG&quot;"/>
+                                        </ns5:id>
+                                        <ns5:description>
+                                            <xsl:value-of select="&quot;Regular Price&quot;"/>
+                                        </ns5:description>
+                                    </ns42:type>
+                                    <ns42:uom>
+                                        <ns52:code>
+                                            <xsl:value-of select="$Start/pfx:R10Price/pfx:UomCode"/>
+                                        </ns52:code>
+                                        <xsl:if test="$Start/pfx:R10Price/pfx:UomName">
+                                            <ns52:name>
+                                                <xsl:value-of select="$Start/pfx:R10Price/pfx:UomName"/>
+                                            </ns52:name>
+                                        </xsl:if>
+                                    </ns42:uom>
+                                    <ns42:currencyTypeCode>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:CurrencyCode"/>
+                                    </ns42:currencyTypeCode>
+                                    <ns42:priceAmount>
+                                        <xsl:if test="$Start/pfx:R10Price/pfx:PreviousSalePrice">
+                                            <ns53:amount>
+                                                <xsl:value-of select="$Start/pfx:R10Price/pfx:PreviousSalePrice"/>
+                                            </ns53:amount>
+                                        </xsl:if>
+                                    </ns42:priceAmount>
+                                    <ns42:priceMultiple>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:RegMultiple"/>
+                                    </ns42:priceMultiple>
+                                    <ns42:priceStartDate>
+                                        <xsl:value-of select="tib:create-date(1970,1,1)"/>
+                                    </ns42:priceStartDate>
+                                </ns42:price>
+                            </ns33:prices>
+                        </ns22:storeItemAttributes>
+                    </pfx2:locale>
+                </pfx2:item>
+            </pfx2:items>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

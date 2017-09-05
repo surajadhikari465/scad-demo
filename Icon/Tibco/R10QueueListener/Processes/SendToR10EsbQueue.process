@@ -5,9 +5,10 @@
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/IrmaPrice.xsd"/>
-    <pd:name>Processes/SendToIrmaQueue.process</pd:name>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <pd:name>Processes/SendToR10EsbQueue.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startType ref="pfx5:IrmaPrices"/>
+    <pd:startType ref="pfx4:items"/>
     <pd:startX>116</pd:startX>
     <pd:startY>176</pd:startY>
     <pd:returnBindings/>
@@ -50,13 +51,13 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>Send to RealTime Queue</pd:to>
+            <pd:to>Send to R10 Queue</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send to RealTime Queue</pd:from>
+            <pd:from>Send to R10 Queue</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -70,7 +71,7 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send to RealTime Queue</pd:from>
+            <pd:from>Send to R10 Queue</pd:from>
             <pd:to>Sleep</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-52429</pd:lineColor>
@@ -111,7 +112,7 @@
                 </ns12:SleepInputSchema>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Send to RealTime Queue">
+        <pd:activity name="Send to R10 Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
             <pd:x>334</pd:x>
@@ -129,17 +130,15 @@
                     <JMSExpiration>%%Environment/IrmaQueue/JMSExpiration%%</JMSExpiration>
                     <JMSPriority>%%Environment/IrmaQueue/JMSPriority%%</JMSPriority>
                 </ConfigurableHeaders>
-                <ConnectionReference>/Connections/IRMA Destination Connection.sharedjmscon</ConnectionReference>
+                <ConnectionReference>/Connections/R10 Destination Connection.sharedjmscon</ConnectionReference>
                 <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
-                <InDataxsdString ref="pfx5:IrmaPrices"/>
+                <InDataxsdString ref="pfx4:items"/>
             </config>
             <pd:inputBindings>
                 <ns0:ActivityInput>
-                    <xsl:for-each select="$Start/pfx5:IrmaPrices">
-                        <Body>
-                            <xsl:copy-of select="."/>
-                        </Body>
-                    </xsl:for-each>
+                    <Body>
+                        <xsl:copy-of select="$Start/pfx4:items"/>
+                    </Body>
                 </ns0:ActivityInput>
             </pd:inputBindings>
         </pd:activity>

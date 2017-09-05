@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx="http://schemas.wfm.com/Mammoth/R10Prices.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/R10Prices.xsd" schemaLocation="/SharedResources/Schemas/Application/R10Prices.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <pd:name>Processes/Process Price Data.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:R10Price"/>
+    <pd:startX>47</pd:startX>
+    <pd:startY>210</pd:startY>
+    <pd:returnBindings>
+        <xsl:choose>
+            <xsl:when test="count($Delete-TPR/pfx2:items/pfx2:item)>0">
+                <xsl:copy-of select="$Delete-TPR/pfx2:items"/>
+            </xsl:when>
+            <xsl:when test="count($Create-New-TPR/pfx2:items/pfx2:item)>0">
+                <xsl:copy-of select="$Create-New-TPR/pfx2:items"/>
+            </xsl:when>
+            <xsl:when test="count($Update-Existing-TPR/pfx2:items/pfx2:item)>0">
+                <xsl:copy-of select="$Update-Existing-TPR/pfx2:items"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="$Create-Reg-Price-Entry/pfx2:items"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:items"/>
+    <pd:endX>687</pd:endX>
+    <pd:endY>242</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1504634082142</pd:targetNamespace>
+    <pd:activity name="Delete TPR">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>319</pd:x>
+        <pd:y>93</pd:y>
+        <config>
+            <processName>/Processes/Create Delete TPR.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/pfx:R10Price"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Create New TPR">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>331</pd:x>
+        <pd:y>304</pd:y>
+        <config>
+            <processName>/Processes/Create New TPR.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/pfx:R10Price"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Update Existing TPR">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>321</pd:x>
+        <pd:y>410</pd:y>
+        <config>
+            <processName>/Processes/Update Existing TPR.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/pfx:R10Price"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Create Reg Price Entry">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>322</pd:x>
+        <pd:y>195</pd:y>
+        <config>
+            <processName>/Processes/Create Reg Price Entry.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/pfx:R10Price"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Update Existing TPR</pd:to>
+        <pd:xpathDescription>Update Existing TPR</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/pfx:R10Price/pfx:SalePrice )
+ and exists($Start/pfx:R10Price/pfx:PreviousSalePrice)
+and $Start/pfx:R10Price/pfx:SaleStartDate !=$Start/pfx:R10Price/pfx:PreviousSaleStartDate</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Delete TPR</pd:to>
+        <pd:xpathDescription>Delete TPR</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>upper-case($Start/pfx:R10Price/pfx:ChangeType) ="CANCELALLSALES"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Create Reg Price Entry</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Create New TPR</pd:to>
+        <pd:xpathDescription>New TPR</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/pfx:R10Price/pfx:SalePrice)
+and (  not(exists($Start/pfx:R10Price/pfx:PreviousSalePrice))
+          or ($Start/pfx:R10Price/pfx:StartDate=$Start/pfx:R10Price/pfx:PreviousSaleStartDate  ))</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update Existing TPR</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create New TPR</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create Reg Price Entry</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Delete TPR</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

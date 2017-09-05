@@ -55,7 +55,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503512431118</modTime>
+			<modTime>1504641722992</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPasswordWritePermissions</name>
@@ -71,7 +71,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503512431287</modTime>
+			<modTime>1504641815738</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsernameWritePermissions</name>
@@ -95,7 +95,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503515754069</modTime>
+			<modTime>1504641723075</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPasswordWritePermissions</name>
@@ -111,7 +111,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503515754145</modTime>
+			<modTime>1504641723121</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiUsernameWritePermissions</name>
