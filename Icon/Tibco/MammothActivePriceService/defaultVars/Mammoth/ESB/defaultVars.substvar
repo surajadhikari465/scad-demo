@@ -35,59 +35,59 @@
 		</globalVariable>
 		<globalVariable>
 			<name>ConnectionFactoryName</name>
-			<value>QueueConnectionFactory</value>
+			<value>ItemQueueConnectionFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1500409245342</modTime>
+			<modTime>1504111408144</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbPriceQueueName</name>
-			<value>PriceQueue</value>
+			<value>Mammoth.Retail.JustInTimeIrmaFL.MammothPrice.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499793474704</modTime>
+			<modTime>1504110987615</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPassword</name>
-			<value></value>
+			<value>SB1_IrmaPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1500409426049</modTime>
+			<modTime>1504110987646</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsername</name>
-			<value>admin</value>
+			<value>SB1_IrmaPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1500409426091</modTime>
+			<modTime>1504110987678</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiContextUrl</name>
-			<value>tcp://localhost:7222</value>
+			<value>ssl://cerd1616.wfm.pvt:7233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1500409426111</modTime>
+			<modTime>1504110987709</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value></value>
+			<value>jndiSB1_MammothPriceIrmaUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1500409426131</modTime>
+			<modTime>1504110987725</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiUsername</name>
-			<value></value>
+			<value>jndiSB1_MammothPriceIrmaUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1500409426149</modTime>
+			<modTime>1504110987756</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SslPassword</name>
@@ -99,19 +99,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>TargetHostName</name>
-			<value></value>
+			<value>cerd1616.wfm.pvt</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1500409426162</modTime>
+			<modTime>1504111339600</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TopicConnectionFactoryName</name>
-			<value>TopicConnectionFactory</value>
+			<value>ItemTopicConnectionFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1500409245373</modTime>
+			<modTime>1504111339647</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

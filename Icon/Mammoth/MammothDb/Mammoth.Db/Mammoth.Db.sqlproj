@@ -673,6 +673,10 @@
     <Build Include="gpm\User Defined Types\BusinessUnitIdsType.sql" />
     <Build Include="gpm\User Defined Types\ScanCodesType.sql" />
     <Build Include="gpm\Tables\PriceResetMessageHistory.sql" />
+    <Build Include="app\Tables\JobSchedule.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

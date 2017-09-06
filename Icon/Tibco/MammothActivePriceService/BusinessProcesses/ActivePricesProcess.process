@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/MammothPrice.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" schemaLocation="/SharedResources/Schemas/JobSchedule.xsd"/>
     <pd:name>BusinessProcesses/ActivePricesProcess.process</pd:name>
-    <pd:startName>Start</pd:startName>
-    <pd:startX>78</pd:startX>
-    <pd:startY>45</pd:startY>
+    <pd:startName>Publisher Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
     <pd:returnBindings/>
+    <pd:starter name="Publisher Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>82</pd:x>
+        <pd:y>167</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>23</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/Queues/RegionPriceQueuePublisher%%</destination>
+                <selector/>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/SharedResources/Connections/JMS/ESBConnection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
     <pd:endName>End</pd:endName>
     <pd:endX>1251</pd:endX>
     <pd:endY>45</pd:endY>
@@ -16,7 +40,7 @@
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
         <pd:x>274</pd:x>
-        <pd:y>11</pd:y>
+        <pd:y>12</pd:y>
         <pd:width>768</pd:width>
         <pd:height>274</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -41,6 +65,13 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
+            <pd:from>ArchiveSentPrices</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
             <pd:from>IteratePrices</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
@@ -49,18 +80,21 @@
             <pd:xpath>count($GetActivePrices/resultSet) = 0</pd:xpath>
         </pd:transition>
         <pd:transition>
-            <pd:from>ArchiveSentPrices</pd:from>
+            <pd:from>GetActivePrices</pd:from>
             <pd:to>end</pd:to>
+            <pd:xpathDescription>Otherwise</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
+            <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>GetActivePrices</pd:from>
             <pd:to>IteratePrices</pd:to>
+            <pd:xpathDescription>Count &gt;0</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>count($GetActivePrices/resultSet/Record)&gt;0</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>IteratePrices</pd:from>
@@ -73,8 +107,8 @@
         <pd:activity name="GetActivePrices">
             <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-            <pd:x>404</pd:x>
-            <pd:y>157</pd:y>
+            <pd:x>361</pd:x>
+            <pd:y>70</pd:y>
             <config>
                 <timeout>120</timeout>
                 <commit>false</commit>
@@ -190,10 +224,10 @@ WHERE p.Region = ?
             <pd:inputBindings>
                 <jdbcQueryActivityInput>
                     <Region>
-                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/Application/Region"/>
+                        <xsl:value-of select="$Parse-XML/pfx2:JobSchedule/pfx2:Region"/>
                     </Region>
                     <RegionArchive>
-                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/Application/Region"/>
+                        <xsl:value-of select="$Parse-XML/pfx2:JobSchedule/pfx2:Region"/>
                     </RegionArchive>
                     <subsetSize>
                         <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/Application/ActivePriceSubsetSize"/>
@@ -204,8 +238,8 @@ WHERE p.Region = ?
         <pd:group name="IteratePrices">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>521</pd:x>
-            <pd:y>82</pd:y>
+            <pd:x>509</pd:x>
+            <pd:y>117</pd:y>
             <pd:width>240</pd:width>
             <pd:height>140</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -240,8 +274,8 @@ WHERE p.Region = ?
             <pd:activity name="SendPriceToEMS">
                 <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-                <pd:x>634</pd:x>
-                <pd:y>161</pd:y>
+                <pd:x>622</pd:x>
+                <pd:y>196</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -259,38 +293,38 @@ WHERE p.Region = ?
                     <InDataxsdString ref="pfx:price"/>
                 </config>
                 <pd:inputBindings>
-                    <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
+                    <ns12:ActivityInput>
                         <destinationQueue>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Mammoth/ESB/EsbPriceQueueName"/>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/ESB/EsbPriceQueueName"/>
                         </destinationQueue>
                         <Body>
-                            <ns2:price xmlns:ns2="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd">
-                                <ns2:PriceId>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/PriceID"/>
-                                </ns2:PriceId>
-                                <ns2:Region>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/Region"/>
-                                </ns2:Region>
-                                <ns2:BusinessUnit>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/BusinessUnitID"/>
-                                </ns2:BusinessUnit>
-                                <ns2:ItemId>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/ItemID"/>
-                                </ns2:ItemId>
-                                <ns2:GpmId>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/GpmID"/>
-                                </ns2:GpmId>
-                                <ns2:Multiple>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/Multiple"/>
-                                </ns2:Multiple>
-                                <ns2:Price>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/Price"/>
-                                </ns2:Price>
-                                <ns2:StartDate>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/StartDate"/>
-                                </ns2:StartDate>
+                            <pfx:price>
+                                <pfx:PriceId>
+                                    <xsl:value-of select="$Price/Record/PriceID"/>
+                                </pfx:PriceId>
+                                <pfx:Region>
+                                    <xsl:value-of select="$Price/Record/Region"/>
+                                </pfx:Region>
+                                <pfx:BusinessUnit>
+                                    <xsl:value-of select="$Price/Record/BusinessUnitID"/>
+                                </pfx:BusinessUnit>
+                                <pfx:ItemId>
+                                    <xsl:value-of select="$Price/Record/ItemID"/>
+                                </pfx:ItemId>
+                                <pfx:GpmId>
+                                    <xsl:value-of select="$Price/Record/GpmID"/>
+                                </pfx:GpmId>
+                                <pfx:Multiple>
+                                    <xsl:value-of select="$Price/Record/Multiple"/>
+                                </pfx:Multiple>
+                                <pfx:Price>
+                                    <xsl:value-of select="$Price/Record/Price"/>
+                                </pfx:Price>
+                                <pfx:StartDate>
+                                    <xsl:value-of select="$Price/Record/StartDate"/>
+                                </pfx:StartDate>
                                 <xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="exists($Price/Record/EndDate)">
-                                    <ns2:EndDate>
+                                    <pfx:EndDate>
                                         <xsl:choose>
                                             <xsl:when test="exists($Price/Record/EndDate)">
                                                 <xsl:value-of select="$Price/Record/EndDate"/>
@@ -299,33 +333,33 @@ WHERE p.Region = ?
                                                 <xsl:attribute name="xsi:nil">true</xsl:attribute>
                                             </xsl:otherwise>
                                         </xsl:choose>
-                                    </ns2:EndDate>
+                                    </pfx:EndDate>
                                 </xsl:if>
-                                <ns2:PriceType>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/PriceType"/>
-                                </ns2:PriceType>
-                                <ns2:PriceTypeAttribute>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/PriceTypeAttribute"/>
-                                </ns2:PriceTypeAttribute>
-                                <ns2:SellableUom>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/SellableUOM"/>
-                                </ns2:SellableUom>
-                                <ns2:CurrencyCode>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Price/Record/CurrencyCode"/>
-                                </ns2:CurrencyCode>
+                                <pfx:PriceType>
+                                    <xsl:value-of select="$Price/Record/PriceType"/>
+                                </pfx:PriceType>
+                                <pfx:PriceTypeAttribute>
+                                    <xsl:value-of select="$Price/Record/PriceTypeAttribute"/>
+                                </pfx:PriceTypeAttribute>
+                                <pfx:SellableUom>
+                                    <xsl:value-of select="$Price/Record/SellableUOM"/>
+                                </pfx:SellableUom>
+                                <pfx:CurrencyCode>
+                                    <xsl:value-of select="$Price/Record/CurrencyCode"/>
+                                </pfx:CurrencyCode>
                                 <xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="exists($Price/Record/NewTagExpiration)">
                                     <xsl:if test="$Price/Record/NewTagExpiration">
-                                        <ns2:NewTagExpiration>
+                                        <pfx:NewTagExpiration>
                                             <xsl:value-of select="$Price/Record/NewTagExpiration"/>
-                                        </ns2:NewTagExpiration>
+                                        </pfx:NewTagExpiration>
                                     </xsl:if>
                                 </xsl:if>
-                                <ns2:Action>
-                                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;AddOrUpdate&quot;"/>
-                                </ns2:Action>
-                            </ns2:price>
+                                <pfx:Action>
+                                    <xsl:value-of select="&quot;AddOrUpdate&quot;"/>
+                                </pfx:Action>
+                            </pfx:price>
                         </Body>
-                    </ns1:ActivityInput>
+                    </ns12:ActivityInput>
                 </pd:inputBindings>
             </pd:activity>
         </pd:group>
@@ -334,7 +368,7 @@ WHERE p.Region = ?
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
             <pd:description>Inserts the prices that were sent to the ESB into a table so that there is a record of what was sent to the ESB. The GetActivePrices query uses that table to filter out any prices that have already been sent.</pd:description>
             <pd:x>888</pd:x>
-            <pd:y>224</pd:y>
+            <pd:y>225</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -371,15 +405,56 @@ VALUES (?, ?)
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>1108</pd:x>
+        <pd:y>150</pd:y>
+        <config>
+            <ConfirmEvent>Publisher Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>183</pd:x>
+        <pd:y>161</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:JobSchedule"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Publisher-Queue-Receiver/ns12:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>ProcessActivePriceSubsets</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Start</pd:from>
+        <pd:from>Publisher Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
         <pd:to>ProcessActivePriceSubsets</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

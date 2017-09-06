@@ -1,0 +1,21 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>To</name>
+			<value>Benjamin.Sims@wholefoods.com</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1504193678891</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>cC</name>
+			<value>Amit.Uppal@wholefoods.com</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1499972862290</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>
