@@ -41,7 +41,7 @@ namespace WebSupport.ViewModels
         }
 
         [Required]
-		[Display(Name = "IRMA Region")]
+		[Display(Name = "Region")]
 		public int RegionIndex { get; set; }
 
 		[Required]
