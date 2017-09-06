@@ -1,0 +1,43 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.EsbEnvironmentViewModel
+
+<p></p>
+<div class="container-wide">
+    @if (Model == null)
+    {
+        @: no valid data found
+    }
+    else
+    {
+        using (Html.BeginForm("Edit", "Esb", new { name = Model.Name }, FormMethod.Post, null))
+        {
+            @Html.EditorForModel();
+
+            <div class="row">
+                <div class="col-xs-offset-2 col-xs-8">
+                    <button type="submit" value="Save" class="btn btn-warning btn-block">Save</button>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="row">
+        <p></p>
+        <div class="col-xs-offset-2 col-xs-8 text-center">
+            @using (Html.BeginForm("Delete", "Esb", new { name = Model.Name }, FormMethod.Post, null))
+            {
+                <button type="submit" value="@("Delete")" class="btn btn-danger btn-block margin-top-10">@("Delete")</button>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <p></p>
+        <div class="col-xs-offset-2 col-xs-8 text-center">
+            @Html.ActionLink("Back to ESB Index", "Index")
+        </div>
+    </div>
+
+@section scripts {
+    
+    @Scripts.Render("~/bundles/jqueryval")
+}

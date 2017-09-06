@@ -1,14 +1,10 @@
-﻿using Icon.Dashboard.CommonDatabaseAccess;
-using Icon.Dashboard.DataFileAccess.Models;
-using Icon.Dashboard.Mvc.Helpers;
+﻿using Icon.Dashboard.DataFileAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Icon.Dashboard.Mvc.ViewModels
 {
@@ -17,9 +13,10 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public IconApplicationViewModel()
         {
             this.ValidCommands = new List<string>();
+            this.TypeOfApplication = ApplicationTypeEnum.WindowsService;
         }
 
-        public IconApplicationViewModel(IApplication app) : this()
+        public IconApplicationViewModel(IIconApplication app) : this()
         {
             if (app != null)
             {
@@ -35,9 +32,46 @@ namespace Icon.Dashboard.Mvc.ViewModels
                 this.StatusIsGreen = app.StatusIsGreen;
                 this.LoggingName = app.LoggingName;
                 this.LoggingID = app.LoggingID;
-                this.AppSettings = app.AppSettings ?? new Dictionary<string, string>();
-                this.EsbConnectionSettings = app.EsbConnectionSettings ?? new Dictionary<string, string>();
+                this.AppSettings = app.AppSettings == null
+                    ? new Dictionary<string, string>()
+                    : app.AppSettings.ToDictionary(e=>e.Key, e=>e.Value);
+                this.EsbConnectionSettings = (app.EsbConnectionSettings ==  null)
+                    ? new Dictionary<string, string>()
+                    : app.EsbConnectionSettings.ToDictionary(e => e.Key, e => e.Value);
+
+                this.ConfigFilePathIsValid = File.Exists(this.ConfigFilePath);
             }
+        }
+
+        public IIconApplication ToDataModel()
+        {
+            IIconApplication app = null;
+            switch (this.TypeOfApplication)
+            {
+                case ApplicationTypeEnum.WindowsService:
+                    app = new IconService();
+                    app.Server = this.Server;
+                    app.Name = this.Name;
+                    app.DisplayName = this.DisplayName;
+                    app.DataFlowFrom = this.DataFlowFrom;
+                    app.DataFlowTo = this.DataFlowTo;
+                    app.ConfigFilePath = this.ConfigFilePath;
+                    app.LoggingName = this.LoggingName;
+
+                    if (this.AppSettings != null)
+                    {
+                        // Updating basic settings does not need to call a save to the app.config's appsettings.
+                        this.AppSettings.ToList().ForEach(e =>
+                           app.AppSettings[e.Key] = e.Value ?? string.Empty);
+                    }
+
+                    break;
+                case ApplicationTypeEnum.ScheduledTask:
+                case ApplicationTypeEnum.Unknown:
+                default:
+                    break;
+            }
+            return app;
         }
         
         public Dictionary<string, string> AppSettings { get; set; }
@@ -82,5 +116,6 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public string CurrentEsbEnvironment { get; set; }
 
         public bool ConfigFilePathIsValid { get; set; }
+        
     }
 }

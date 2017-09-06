@@ -14,7 +14,7 @@ namespace Icon.Dashboard.MammothDatabaseAccess
         {
             get
             {
-                return this.App?.AppName;
+                return (this.App == null) ? null : this.App.AppName;
             }
         }
 

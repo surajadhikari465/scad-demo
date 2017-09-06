@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd" schemaLocation="/SharedResources/Schemas/Application/AppLog.xsd"/>
+    <pd:name>Listener/DB Log.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx2:AppLog"/>
+    <pd:startX>66</pd:startX>
+    <pd:startY>244</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>716</pd:endX>
+    <pd:endY>244</pd:endY>
+    <pd:errorSchemas>
+        <Error ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1504032972440</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>185</pd:x>
+        <pd:y>38</pd:y>
+        <pd:width>423</pd:width>
+        <pd:height>414</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>retryIndex</pd:indexSlot>
+            <pd:errorCondition>$retryIndex &gt; $_globalVariables/pfx3:GlobalVariables/MammothDb/CommandRetryCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>JDBC Update</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Update</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Update</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="JDBC Update">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>362</pd:x>
+            <pd:y>134</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <statement>INSERT INTO app.AppLog(AppId, Level, Logger, UserName, MachineName, LogDate, Thread, Message, CallSite, Exception, StackTrace) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>AppID</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Level</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Logger</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>UserName</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>MachineName</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>LogDate</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Thread</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Message</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>CallSite</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Exception</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>StackTrace</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <AppID>
+                        <xsl:value-of select="$Start/pfx2:AppLog/pfx2:AppId"/>
+                    </AppID>
+                    <Level>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx2:AppLog/pfx2:Level)">
+                                <xsl:value-of select="$Start/pfx2:AppLog/pfx2:Level"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </Level>
+                    <Logger>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx2:AppLog/pfx2:Logger)">
+                                <xsl:value-of select="$Start/pfx2:AppLog/pfx2:Logger"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </Logger>
+                    <UserName>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx2:AppLog/pfx2:UserName)">
+                                <xsl:value-of select="$Start/pfx2:AppLog/pfx2:UserName"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </UserName>
+                    <MachineName>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx2:AppLog/pfx2:MachineName)">
+                                <xsl:value-of select="$Start/pfx2:AppLog/pfx2:MachineName"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </MachineName>
+                    <LogDate>
+                        <xsl:value-of select="$Start/pfx2:AppLog/pfx2:LogDate"/>
+                    </LogDate>
+                    <Thread>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx2:AppLog/pfx2:Thread)">
+                                <xsl:value-of select="$Start/pfx2:AppLog/pfx2:Thread"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </Thread>
+                    <Message>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx2:AppLog/pfx2:Message)">
+                                <xsl:value-of select="$Start/pfx2:AppLog/pfx2:Message"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </Message>
+                    <CallSite>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx2:AppLog/pfx2:CallSite)">
+                                <xsl:value-of select="$Start/pfx2:AppLog/pfx2:CallSite"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </CallSite>
+                    <Exception>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx2:AppLog/pfx2:Exception)">
+                                <xsl:value-of select="$Start/pfx2:AppLog/pfx2:Exception"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </Exception>
+                    <StackTrace>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx2:AppLog/pfx2:StackTrace)">
+                                <xsl:value-of select="$Start/pfx2:AppLog/pfx2:StackTrace"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </StackTrace>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>356</pd:x>
+            <pd:y>254</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/pfx3:GlobalVariables/MammothDb/RetrySleepInMilliseconds"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>357</pd:x>
+            <pd:y>364</pd:y>
+            <config>
+                <faultName>Error</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                    <message>
+                        <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                    </message>
+                    <xsl:if test="$_error/ns:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                    <data>
+                        <pfx:Error>
+                            <pfx:StackTrace>
+                                <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                            </pfx:StackTrace>
+                            <pfx:Code>
+                                <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                            </pfx:Code>
+                            <pfx:Message>
+                                <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                            </pfx:Message>
+                        </pfx:Error>
+                    </data>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

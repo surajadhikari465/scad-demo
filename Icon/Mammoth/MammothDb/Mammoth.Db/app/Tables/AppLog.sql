@@ -15,4 +15,8 @@
     CONSTRAINT [AppLog_PK] PRIMARY KEY CLUSTERED ([AppLogID] ASC) WITH (FILLFACTOR = 100),
     CONSTRAINT [App_AppLog_FK] FOREIGN KEY ([AppID]) REFERENCES [app].[App] ([AppID])
 );
+GO
+
+GRANT INSERT, SELECT ON [app].[AppLog] TO [TibcoRole]
+GO
 

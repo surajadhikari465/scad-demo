@@ -97,6 +97,7 @@
     <Compile Include="MessageQueuePrice.cs" />
     <Compile Include="MessageStatus.cs" />
     <Compile Include="MessageType.cs" />
+    <Compile Include="PriceResetMessageHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

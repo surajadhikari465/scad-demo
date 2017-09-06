@@ -18,10 +18,12 @@
     <pd:startX>150</pd:startX>
     <pd:startY>63</pd:startY>
     <pd:returnBindings>
-        <xsl:copy-of select="$Parse-XML-Price-Message/pfx:item"/>
+        <pfx:items>
+            <xsl:copy-of select="$Parse-XML-Price-Message/pfx:items/pfx:item"/>
+        </pfx:items>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
-    <pd:endType ref="pfx:item"/>
+    <pd:endType ref="pfx:items"/>
     <pd:endX>606</pd:endX>
     <pd:endY>64</pd:endY>
     <pd:errorSchemas>
@@ -38,7 +40,7 @@
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
             <validateOutput>true</validateOutput>
-            <term ref="pfx:item"/>
+            <term ref="pfx:items"/>
         </config>
         <pd:inputBindings>
             <xmlString>

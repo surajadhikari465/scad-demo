@@ -16,7 +16,7 @@
             // Given
 
             // When
-            var winService = new WindowsService();
+            var winService = new IconService();
 
             // Then
             Assert.IsNotNull(winService);

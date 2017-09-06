@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" type="image/ico" href="~/Content/Images/favicon.ico">
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -31,9 +32,9 @@
                     <a href="@Url.Action("Index", "Home")">Home</a>
                 </li>
 
-                @if (ViewBag.MenuOptionsForAppLogs != null && ViewBag.MenuOptionsForAppLogs is IDictionary<Icon.Dashboard.Mvc.ViewModels.IconAppViewModel, bool>)
+                @if (ViewBag.MenuOptionsForAppLogs != null && ViewBag.MenuOptionsForAppLogs is IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>)
                 {
-                     Html.RenderPartial("_SubMenuForAppLogs", ViewBag.MenuOptionsForAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconAppViewModel, bool>);
+                     Html.RenderPartial("_SubMenuForAppLogs", ViewBag.MenuOptionsForAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>);
                 }
                 else
                 {
@@ -54,7 +55,7 @@
                 }
 
                 <li>
-                    <a href="@Url.Action("Index", "EsbSwitch")">ESB Connections</a>
+                    <a href="@Url.Action("Index", "Esb")">ESB Connections</a>
                 </li>
 
                 @if (ViewBag.EnvironmentOptions != null && ViewBag.EnvironmentOptions is IDictionary<string, string>)

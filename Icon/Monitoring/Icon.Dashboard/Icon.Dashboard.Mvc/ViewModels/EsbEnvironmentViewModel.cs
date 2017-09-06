@@ -11,10 +11,14 @@ namespace Icon.Dashboard.Mvc.ViewModels
     {
         public EsbEnvironmentViewModel()
         {
-            this.Applications = new List<IconApplicationIdentifierViewModel>();
+            this.AppsInEnvironment = new List<IconApplicationViewModel>();
         }
 
-        public EsbEnvironmentViewModel(IEsbEnvironment model)
+        public EsbEnvironmentViewModel(IEsbEnvironmentDefinition model)
+            : this(model, (IEnumerable<IconApplicationViewModel>)null) { }
+
+        public EsbEnvironmentViewModel(IEsbEnvironmentDefinition model,
+            IEnumerable<IconApplicationViewModel> apps) : this()
         {
             this.Name = model.Name;
             this.ServerUrl = model.ServerUrl;
@@ -23,9 +27,9 @@ namespace Icon.Dashboard.Mvc.ViewModels
             this.JmsPassword = model.JmsPassword;
             this.JndiUsername = model.JndiUsername;
             this.JndiPassword = model.JndiPassword;
-            this.ConnectionFactoryName = model.ConnectionFactoryName;
+            //this.ConnectionFactoryName = model.ConnectionFactoryName;
             this.SslPassword = model.SslPassword;
-            this.QueueName = model.QueueName;
+            //this.QueueName = model.QueueName;
             this.SessionMode = model.SessionMode;
             this.CertificateName = model.CertificateName;
             this.CertificateStoreName = model.CertificateStoreName;
@@ -33,18 +37,34 @@ namespace Icon.Dashboard.Mvc.ViewModels
             this.ReconnectDelay = model.ReconnectDelay;
             this.NumberOfListenerThreads = model.NumberOfListenerThreads;
 
-            if (this.Applications == null)
-            {
-                this.Applications = new List<IconApplicationIdentifierViewModel>();
-            }
+            this.AppsInEnvironment = (apps == null) 
+                ? new List<IconApplicationViewModel>() 
+                : apps.OrderBy(a => a.Name).ToList();
+        }
 
-            if (model.Applications != null)
+        public IEsbEnvironmentDefinition ToDataModel()
+        {
+            IEsbEnvironmentDefinition environment = new EsbEnvironmentDefinition
             {
-                foreach (var appDefinition in model.Applications)
-                {
-                    this.Applications.Add(new IconApplicationIdentifierViewModel(appDefinition.Name, appDefinition.Server));
-                }
-            }
+                Name = this.Name,
+                ServerUrl = this.ServerUrl,
+                TargetHostName = this.TargetHostName,
+                JmsUsername = this.JmsUsername,
+                JmsPassword = this.JmsPassword,
+                JndiUsername = this.JndiUsername,
+                JndiPassword = this.JndiPassword,
+                //ConnectionFactoryName = this.ConnectionFactoryName,
+                SslPassword = this.SslPassword,
+                //QueueName = this.QueueName,
+                SessionMode = this.SessionMode,
+                CertificateName = this.CertificateName,
+                CertificateStoreName = this.CertificateStoreName,
+                CertificateStoreLocation = this.CertificateStoreLocation,
+                ReconnectDelay = this.ReconnectDelay,
+                NumberOfListenerThreads = this.NumberOfListenerThreads,
+            };
+
+            return environment;
         }
 
         public string Name { get; set; }
@@ -52,7 +72,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
         [DisplayName("Server Url")]
         public string ServerUrl { get; set; }
 
-        [DisplayName("Target Host")]
+        [DisplayName("Target Host Name")]
         public string TargetHostName { get; set; }
 
         [DisplayName("JMS Username")]
@@ -67,14 +87,14 @@ namespace Icon.Dashboard.Mvc.ViewModels
         [DisplayName("JNDI Password")]
         public string JndiPassword { get; set; }
 
-        [DisplayName("Cnxn. Factory")]
-        public string ConnectionFactoryName { get; set; }
+        //[DisplayName("Cnxn. Factory")]
+        //public string ConnectionFactoryName { get; set; }
 
         [DisplayName("SSL Password")]
         public string SslPassword { get; set; }
 
-        [DisplayName("Queue Name")]
-        public string QueueName { get; set; }
+        //[DisplayName("Queue Name")]
+        //public string QueueName { get; set; }
 
         [DisplayName("Session Mode")]
         public string SessionMode { get; set; }
@@ -94,6 +114,19 @@ namespace Icon.Dashboard.Mvc.ViewModels
         [DisplayName("# Listnr. Threads")]
         public int NumberOfListenerThreads { get; set; }
 
-        public virtual IList<IconApplicationIdentifierViewModel> Applications { get; set; }
+        [DisplayName("Host")]
+        public string TargetHostNameOnly
+        {
+            get
+            {
+                if (TargetHostName != null && TargetHostName.Contains('.'))
+                {
+                    return TargetHostName.Split('.')[0];
+                }
+                return String.Empty;
+            }
+        }
+
+        public virtual IList<IconApplicationViewModel> AppsInEnvironment { get; set; }
     }
 }

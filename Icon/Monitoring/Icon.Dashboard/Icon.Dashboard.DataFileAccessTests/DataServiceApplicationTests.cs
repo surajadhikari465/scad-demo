@@ -42,7 +42,7 @@
         public void WhenNewValidWindowsService_ThenAddApplication_ShouldReturnWithNewApplication()
         {
             // Given
-            var winService = new WindowsService
+            var winService = new IconService
             {
                 Name = "Mammoth.ItemLocale.Controller",
                 ConfigFilePath = "\\\\vm-icon-test1\\e$\\Mammoth\\Item Locale Controller\\Mammoth.ItemLocale.Controller.exe.config",
@@ -68,7 +68,7 @@
         public void WhenConfigHasWindowsService_ThenDeleteApplication_ShouldReturnWithoutApplication()
         {
             // Given
-            var winService = new WindowsService
+            var winService = new IconService
             {
                 Name = "Mammoth.Delete.Controller",
                 ConfigFilePath = "\\\\vm-icon-test1\\e$\\Mammoth\\Item Locale Controller\\Mammoth.ItemLocale.Controller.exe.config",
@@ -91,7 +91,7 @@
         public void WhenConfigHasWindowsService_ThenUpdateApplication_ShouldReturnWithUpdates()
         {
             // Given
-            var winService = new WindowsService
+            var winService = new IconService
             {
                 Name = "Mammoth.Update.Controller",
                 ConfigFilePath = "\\\\vm-icon-test1\\e$\\Mammoth\\Item Locale Controller\\Mammoth.ItemLocale.Controller.exe.config",
@@ -101,7 +101,7 @@
 
             IconDashboardDataService.Instance.AddApplication(winService, this.configPath);
 
-            var updateService = new WindowsService
+            var updateService = new IconService
             {
                 Name = "Mammoth.Update.Controller",
                 ConfigFilePath = "update.config",
@@ -121,41 +121,7 @@
             Assert.AreEqual("update name", app.DisplayName);
 
             Assert.AreEqual(ApplicationTypeEnum.WindowsService, app.TypeOfApplication);
-        }
-
-
-
-        [TestMethod]
-        public void WhenXmlDataFileHasOldSchema_ThenVerifyDataFileSchema_ShouldRepairSchema()
-        {
-            //Given
-            //old-style xml data file
-            var oldDataFile = "OldStyleDataFile.xml";
-            try
-            {
-                //When
-                IconDashboardDataService.Instance.VerifyDataFileSchema(oldDataFile, xsdPath);
-                //Then
-                //reload data file
-                var xmlDoc = new XmlDocument();
-                xmlDoc.PreserveWhitespace = true;
-                xmlDoc.Load(oldDataFile);
-                using (var nodeReader = new XmlNodeReader(xmlDoc))
-                {
-                    nodeReader.MoveToContent();
-                    var reloadedDoc = XDocument.Load(nodeReader);
-                    //verify structure is now as expected
-                    Assert.AreEqual(ApplicationSchema.Root, reloadedDoc.Root.Name);
-                    Assert.IsNotNull(reloadedDoc.Root.Element(ApplicationSchema.Applications));
-                    IconDashboardDataService.Instance.VerifyDataFileSchema(oldDataFile, xsdPath);
-                }
-            }
-            finally
-            {
-                //revert data file for future tests
-                File.Copy(sourceFileName: "OldStyleDataFileBackup.xml", destFileName: oldDataFile, overwrite: true);
-            }
-        }
+        }        
 
         [TestMethod]
         [ExpectedException(typeof(XmlSchemaException))]

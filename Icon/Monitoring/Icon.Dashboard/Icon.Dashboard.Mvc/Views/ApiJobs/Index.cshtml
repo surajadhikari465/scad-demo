@@ -6,6 +6,8 @@
     {
         jobReportModel = new Icon.Dashboard.Mvc.ViewModels.ApiMessageJobTimedReportViewModel(ViewBag.JobType.ToString());
     }
+    var jobStart = (jobReportModel == null) ? String.Empty : jobReportModel.StartTime.Value.ToString("YYYY-MM-DD HH:mm:ss");
+    var jobEnd = (jobReportModel == null) ? String.Empty : jobReportModel.EndTime.Value.ToString("YYYY-MM-DD HH:mm:ss");
 }
 <p></p>
 
@@ -42,15 +44,15 @@
 
         @* javascript data set from server-side Razor code for ApiJobs view*@
         $(function () {
-            $('#@(nameof(jobReportModel.StartTime))').datetimepicker({
-                defaultDate: '@(jobReportModel?.StartTime.Value.ToString("YYYY-MM-DD HH:mm:ss"))',
+            $('#@("StartTime")').datetimepicker({
+                defaultDate: '@jobStart',
                 format: 'YYYY-MM-DD HH:mm:ss',
                 showClose: true,
                 showClear: true,
                 toolbarPlacement: 'top'
             });
-            $('#@(nameof(jobReportModel.EndTime))').datetimepicker({
-                defaultDate: '@(jobReportModel?.EndTime.Value.ToString("YYYY-MM-DD HH:mm:ss"))',
+            $('#@("EndTime")').datetimepicker({
+                defaultDate: '@jobEnd',
                 format: 'YYYY-MM-DD HH:mm:ss',
                 showClose: true,
                 showClear: true,

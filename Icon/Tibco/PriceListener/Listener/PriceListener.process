@@ -43,23 +43,20 @@
     <pd:activity name="ProcessPriceMessage">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>540</pd:x>
+        <pd:x>530</pd:x>
         <pd:y>44</pd:y>
         <config>
             <processName>/Processors/ProcessPriceMessage.process</processName>
         </config>
         <pd:inputBindings>
             <root>
-                <xsl:copy-of select="$MapPrices/ns5:MammothPrices"/>
-                <MessageId>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
-                </MessageId>
+                <xsl:copy-of select="$Map-Prices/ns5:MammothPrices"/>
                 <PatchFamilyId>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
                 </PatchFamilyId>
-                <GpmSequenceID>
+                <GpmSequenceId>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
-                </GpmSequenceID>
+                </GpmSequenceId>
                 <xsl:for-each select="$PriceMessageReceiver/ns:ActivityOutput">
                     <pfx5:ActivityOutput>
                         <xsl:for-each select="OtherProperties">
@@ -104,11 +101,11 @@
             </root>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Call Message Parser">
+    <pd:activity name="Parse Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>233</pd:x>
-        <pd:y>52</pd:y>
+        <pd:x>239</pd:x>
+        <pd:y>44</pd:y>
         <config>
             <processName>/Processors/ParsePriceMessage.process</processName>
         </config>
@@ -297,16 +294,16 @@
             </ns3:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="MapPrices">
+    <pd:activity name="Map Prices">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>385</pd:x>
         <pd:y>44</pd:y>
         <config>
-            <processName>/Processors/MapMessagePricesToMammothPrices.process</processName>
+            <processName>/Processors/MapToMammothPrices.process</processName>
         </config>
         <pd:inputBindings>
-            <xsl:copy-of select="$Call-Message-Parser/pfx2:item"/>
+            <xsl:copy-of select="$Parse-Message/pfx2:items"/>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Log">
@@ -340,7 +337,7 @@
         </config>
         <pd:inputBindings>
             <ns5:MammothPrices>
-                <xsl:copy-of select="$MapPrices/ns5:MammothPrices/ns5:MammothPrice"/>
+                <xsl:copy-of select="$Map-Prices/ns5:MammothPrices/ns5:MammothPrice"/>
             </ns5:MammothPrices>
         </pd:inputBindings>
     </pd:activity>
@@ -374,8 +371,8 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Call Message Parser</pd:from>
-        <pd:to>MapPrices</pd:to>
+        <pd:from>Parse Message</pd:from>
+        <pd:to>Map Prices</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -396,7 +393,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Call Message Sequence Validation</pd:from>
-        <pd:to>Call Message Parser</pd:to>
+        <pd:to>Parse Message</pd:to>
         <pd:xpathDescription>InSequence</pd:xpathDescription>
         <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -435,14 +432,14 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
         <pd:from>Call Message Sequence Validation</pd:from>
         <pd:to>Generate Error</pd:to>
         <pd:xpathDescription>Exceeded Redelivery and Out of Sequence</pd:xpathDescription>
-        <pd:lineType>Straight</pd:lineType>
+        <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>$PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &gt; $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount
 and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
     </pd:transition>
     <pd:transition>
-        <pd:from>MapPrices</pd:from>
+        <pd:from>Map Prices</pd:from>
         <pd:to>ProcessPriceMessage</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

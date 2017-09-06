@@ -91,7 +91,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             return pagingData;
         }
 
-        private IEnumerable<IconAppLogViewModel> GetAppLogsAndSetRelatedViewData(string appName, int page, int pageSize)
+        private IEnumerable<IconLogEntryViewModel> GetAppLogsAndSetRelatedViewData(string appName, int page, int pageSize)
         {
             if (String.IsNullOrWhiteSpace(appName))
             {
@@ -100,17 +100,16 @@ namespace Icon.Dashboard.Mvc.Controllers
             var logs = IconDatabaseDataAccess.GetPagedAppLogsByApp(appName, page, pageSize);
 
             ViewBag.AppName = appName;
-            ViewBag.Title = $"{appName} Log Viewer";
+            ViewBag.Title = appName + " Log Viewer";
             ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(appName, page, pageSize);
 
             return logs;
         }
 
-        private IEnumerable<IconAppLogViewModel> GetAppLogsAndSetRelatedViewData(int page, int pageSize)
+        private IEnumerable<IconLogEntryViewModel> GetAppLogsAndSetRelatedViewData(int page, int pageSize)
         {
             var logs = IconDatabaseDataAccess.GetPagedAppLogs(page, pageSize);
-
-            //ViewBag.AppName = null;
+            
             ViewBag.Title = "ICON Dashboard Log Viewer (All Apps)";
             ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(page, pageSize);
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -101,10 +102,43 @@ namespace Icon.Dashboard.Mvc.Helpers
         {
             get
             {
-                return ConfigurationManager.AppSettings["dataFile"] ?? DefaultDataFileName;
+                return ConfigurationManager.AppSettings["pathToXmlDataFile"] ?? DefaultDataFileName;
             }
         }
 
         private const string DefaultDataFileName = "SampleDataFile.xml";
+
+        public static string GetPathForDataFile(HttpServerUtilityBase serverUtility, string dataFileName)
+            //string pathToXsdSchema = "Applications.xsd", bool validateXml = true)
+        {
+            if (serverUtility == null) throw new ArgumentNullException(nameof(serverUtility));
+            if (String.IsNullOrWhiteSpace(dataFileName)) throw new ArgumentNullException(nameof(dataFileName));
+
+            // only map path on the server if it is not already mapped!
+            var mappedDataFilePath = dataFileName.Contains("App_Data")
+                    ? dataFileName
+                    : serverUtility.MapPath("~/App_Data/" + dataFileName);
+
+            if (!File.Exists(mappedDataFilePath))
+            {
+                throw new FileNotFoundException(
+                    String.Format("Unable to find or read application data file for dashboard ('{0}')", mappedDataFilePath)
+                    , mappedDataFilePath);
+            }
+
+            return mappedDataFilePath;
+        }
+
+        public const StringComparison StrcmpOption = StringComparison.InvariantCultureIgnoreCase;
+
+        public static int ServiceCommandTimeout
+        {
+            get
+            {
+                var stringVal = ConfigurationManager.AppSettings["serviceCommandTimeoutMilliseconds"];
+                if (!int.TryParse(stringVal, out int val)) val = 10000;
+                return val;
+            }
+        }
     }
 }

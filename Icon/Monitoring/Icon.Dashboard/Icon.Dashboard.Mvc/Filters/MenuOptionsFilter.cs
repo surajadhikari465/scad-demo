@@ -36,12 +36,12 @@ namespace Icon.Dashboard.Mvc.Helpers
             }
         }
 
-        public static Dictionary<IconAppViewModel, bool> GetMenuOptionsForAppLogs(
+        public static Dictionary<IconLoggedAppViewModel, bool> GetMenuOptionsForAppLogs(
             Uri currentUri,
             string controllerName,
-            IEnumerable<IconAppViewModel> knownApps)
+            IEnumerable<IconLoggedAppViewModel> knownApps)
         {
-            var appLogsMenuOptions = new Dictionary<IconAppViewModel, bool>();
+            var appLogsMenuOptions = new Dictionary<IconLoggedAppViewModel, bool>();
             bool isActive;
             var requestIdParameter = Utils.GetIdParameterFronUrl(currentUri);
 

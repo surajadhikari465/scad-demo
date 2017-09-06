@@ -164,6 +164,7 @@
     <Folder Include="stage\Stored Procedures" />
     <Folder Include="gpm\Stored Procedures" />
     <Folder Include="gpm\Views" />
+    <Folder Include="gpm\User Defined Types" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -668,6 +669,10 @@
     <Build Include="gpm\Stored Procedures\PurgePriceHistory.sql" />
     <None Include="Jobs\MAMMOTH.GPM.PurgePriceHistory.sql" />
     <Build Include="Security\DatabaseRoles.sql" />
+    <Build Include="gpm\Stored Procedures\GetPriceResetPrices.sql" />
+    <Build Include="gpm\User Defined Types\BusinessUnitIdsType.sql" />
+    <Build Include="gpm\User Defined Types\ScanCodesType.sql" />
+    <Build Include="gpm\Tables\PriceResetMessageHistory.sql" />
     <Build Include="app\Tables\JobSchedule.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>

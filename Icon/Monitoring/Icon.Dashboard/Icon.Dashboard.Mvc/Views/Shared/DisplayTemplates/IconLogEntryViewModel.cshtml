@@ -1,0 +1,38 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.IconLogEntryViewModel
+
+@{ 
+    string rowId = "row" + Model.AppLogID.ToString();
+}
+
+<tr id="@rowId">
+    <td class="text-center hidden-xs hidden-sm hidden-md">
+        @Html.DisplayFor(model => model.AppLogID)
+    </td>
+    <td class="text-center hidden-xs hidden-sm hidden-md">
+        @Html.DisplayFor(model => model.AppID)
+    </td>
+    <td class="text-center">
+        @Html.DisplayFor(model => model.AppName)
+    </td>
+    <td class="text-center">
+        @Html.DisplayFor(model => model.LogDate)
+    </td>
+    <td class="text-center btn-@Model.GetBootstrapClassForLevel()">
+        @Html.DisplayFor(model => model.Level)
+    </td>
+    <td class="text-left word-wrap:break-word">
+        @Html.DisplayFor(model => model.Message)
+    </td>
+    <td class="text-center hidden-xs">
+        @Html.DisplayFor(model => model.MachineName)
+    </td>
+    <td class="text-center hidden-xs hidden-sm">
+        @Html.DisplayFor(model => model.UserName)
+    </td>
+    <td class="customScrollColumn text-left hidden-xs hidden-sm hidden-md">
+        @Html.DisplayFor(model => model.Logger)
+    </td>
+    @*<td class="text-center hidden-xs hidden-sm hidden-md">
+        @Html.DisplayFor(model => model.InsertDate)
+    </td>*@
+</tr>

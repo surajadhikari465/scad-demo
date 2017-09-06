@@ -14,9 +14,7 @@
   <xs:complexType name="Applications">
     <xs:sequence>
       <xs:element name="Application" minOccurs="0" maxOccurs="unbounded" type="Application"></xs:element>
-    </xs:sequence>
-  </xs:complexType>
-
+    </xs:sequence>  </xs:complexType>
 
   <xs:complexType name="Application">
     <xs:attribute name="Name" type="xs:string" use="required" />
@@ -53,10 +51,6 @@
   </xs:complexType>
 
   <xs:complexType name="EsbEnvironment">
-    <xs:sequence>
-      <xs:element name="ApplicationsInEnvironment" minOccurs="0" maxOccurs="1" type="ApplicationsInEnvironment">
-      </xs:element>
-    </xs:sequence>
     <xs:attribute name="Name" type="xs:string" use="required" />
     <xs:attribute name="ServerUrl" type="xs:string" use="required" />
     <xs:attribute name="TargetHostName" type="xs:string" use="required"/>
@@ -64,9 +58,9 @@
     <xs:attribute name="JmsPassword" type="xs:string" use="required" />
     <xs:attribute name="JndiUsername" type="xs:string" use="required" />
     <xs:attribute name="JndiPassword" type="xs:string" use="required" />
-    <xs:attribute name="ConnectionFactoryName" type="xs:string" use="optional" />
+    <!--<xs:attribute name="ConnectionFactoryName" type="xs:string" use="optional" />-->
     <xs:attribute name="SslPassword" type="xs:string" use="optional" />
-    <xs:attribute name="QueueName" type="xs:string" use="optional" />
+    <!--<xs:attribute name="QueueName" type="xs:string" use="optional" />-->
     <xs:attribute name="SessionMode" type="xs:string" use="optional" />
     <xs:attribute name="CertificateName" type="xs:string" use="optional" />
     <xs:attribute name="CertificateStoreName" type="xs:string" use="optional" />
@@ -75,14 +69,4 @@
     <xs:attribute name="NumberOfListenerThreads" type="xs:integer" use="optional" />
   </xs:complexType>
 
-  <xs:complexType name="ApplicationsInEnvironment">
-    <xs:sequence>
-      <xs:element name="ApplicationInEnvironment" minOccurs="0" maxOccurs="unbounded" type="ApplicationIdentifier"></xs:element>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="ApplicationIdentifier">
-    <xs:attribute name="Name" type="xs:string" use="required" />
-    <xs:attribute name="Server" type="xs:string" use="required" />
-  </xs:complexType>
 </xs:schema>

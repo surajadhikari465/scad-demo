@@ -3,37 +3,59 @@
     using System;
     using System.Collections.Generic;
     using Icon.Dashboard.DataFileAccess.Models;
+    using Icon.Dashboard.DataFileAccess.Constants;
 
     public interface IIconDashboardDataService
     {
         IEnumerable<ApplicationFactory> ApplicationFactories { get; }
+
         void VerifyDataFileSchema(string pathToXmlDataFile, string pathToSchema);
 
-        void AddApplication(IApplication application, string pathToXmlDataFile);
-        void DeleteApplication(IApplication application, string pathToXmlDataFile);
-        IApplication GetApplication(string pathToXmlDataFile, string appName, string server);
-        IEnumerable<IApplication> GetApplications(string pathToXmlDataFile);
-        void UpdateApplication(IApplication application, string pathToXmlDataFile);
-        void SaveAppSettings(IApplication application);
-        void Start(IApplication application, params string[] args);
-        void Stop(IApplication application);
+        void AddApplication(IIconApplication application, string pathToXmlDataFile);
 
-        IEnumerable<IEsbEnvironment> GetEsbEnvironments(string pathToXmlDataFile);
-        IEsbEnvironment GetEsbEnvironment(string pathToXmlDataFile, string name);
-        void AddEsbEnvironment(IEsbEnvironment esbEnvironment, string pathToXmlDataFile);
-        void UpdateEsbEnvironment(IEsbEnvironment esbEnvironment, string pathToXmlDataFile);
-        void DeleteEsbEnvironment(IEsbEnvironment esbEnvironment, string pathToXmlDataFile);
-        List<Tuple<bool, string>> UpdateApplicationsToEsbEnvironment(IEsbEnvironment esbEnvironment, string pathToXmlDataFile);
-        Tuple<bool, string> UpdateApplicationEsbEnvironmentAndRestart(IconApplicationIdentifier applicationIdentifier, IEsbEnvironment esbEnvironment, string pathToXmlDataFile);
+        void DeleteApplication(IIconApplication application, string pathToXmlDataFile);
 
-        /// <summary>
-        /// Searches the data file to find whether one of the esb envrionments defined in the data 
-        ///   has every ESB-using application configured to use the server associated with the 
-        ///   esb environment definition
-        /// </summary>
-        /// <param name="pathToXmlDataFile">ICON Dashboard data file</param>
-        /// <returns>Returns an object implementing IEsbEnvrionment. Or null if none of the environments has all its applications
-        /// configured for the same esb environment.</returns>
-        IEsbEnvironment GetCurrentEsbEnvironment(string pathToXmlDataFile);
+        IIconApplication GetApplication(string pathToXmlDataFile, string appName, string server);
+
+        IEnumerable<IIconApplication> GetApplications(string pathToXmlDataFile);
+
+        void UpdateApplication(IIconApplication application, string pathToXmlDataFile);
+
+        void SaveAppSettings(IIconApplication application);
+
+        IEnumerable<IEsbEnvironmentDefinition> GetEsbEnvironments(string pathToXmlDataFile);
+
+        IEsbEnvironmentDefinition GetEsbEnvironment(string pathToXmlDataFile, string name);
+
+        void AddEsbEnvironment(IEsbEnvironmentDefinition esbEnvironment, string pathToXmlDataFile);
+
+        void UpdateEsbEnvironment(IEsbEnvironmentDefinition esbEnvironment, string pathToXmlDataFile);
+
+        void DeleteEsbEnvironment(IEsbEnvironmentDefinition esbEnvironment, string pathToXmlDataFile);
+
+        string StartService(IIconApplication application, TimeSpan waitTime, params string[] args);
+
+        string StopService(IIconApplication application, TimeSpan waitTime);
+
+        string RestartService(IIconApplication app,
+            int waitTimeoutMilliseconds = ServiceConstants.DefaultServiceTimeoutMilliseconds);
+
+        KeyValuePair<string, string> ReconfigureEsbSettingsForSingleApp(string pathToXmlDataFile,
+            IIconApplication application, IEsbEnvironmentDefinition chosenEsbEnvironment);
+
+        Dictionary<string, string> ReconfigureEsbSettings(string pathToXmlDataFile,
+            IEnumerable<IIconApplication> apps, string esbEnvironmentName);
+
+        Dictionary<string, string> ReconfigureEsbSettingsAndRestartServices(string pathToXmlDataFile,
+            IEnumerable<IIconApplication> apps,
+            string esbEnvironmentName,
+            int waitTimeoutMilliseconds = ServiceConstants.DefaultServiceTimeoutMilliseconds);
+
+        Dictionary<string, string> RestartServices(string pathToXmlDataFile,
+            IEnumerable<IIconApplication> apps,
+            Dictionary<string, string> reconfigResults,
+            int waitTimeoutMilliseconds = ServiceConstants.DefaultServiceTimeoutMilliseconds);
+
+        bool HasEsbEnvrionmentChangedForApp(IIconApplication app, string intendedEsbEnvrionmentName);
     }
 }

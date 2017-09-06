@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.EsbEnvironmentViewModel>
+
+<p></p>
+<div class="container-wide">
+    <div id="vueElement" class="row">
+        <h1 class="text-center">Assign Apps to ESB Connections</h1>
+
+        <div class="col-lg-4 col-md-6" v-for="(env, envIndex) in esbEnvironments" :key="env.id">
+            <div class="panel panel-success esbEnvPanel">
+                <div class="panel-heading">
+                    <h1 class="text-center">
+                        <a v-bind:href="env.DetailsUrl">{{env.Name}}</a>
+                    </h1>
+                    <h4 class="text-center">
+                        <span class="label label-info">
+                            {{env.ServerUrl}}
+                        </span>
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <draggable class="draggable-div"
+                               v-model="env.AppsInEnvironment"
+                               :list="env.AppsInEnvironment"
+                               :options="{group:'myOptions'}">
+                        <div class="drag-item"
+                             v-for="(app, appIndex) in env.AppsInEnvironment"
+                             :key="app.id">
+                            <a v-bind:href="app.AppConfigUrl" class="esbAppAnchor">
+                                {{app.DisplayName}} ({{app.Server}})
+                            </a>
+                        </div>
+                    </draggable>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-8">
+                <button id="saveChangesBtn" v-on:click="submitVueModelToServer" class="btn btn-warning btn-block">
+                    <img id="saveChangesLoadingImg" src="~/Content/Images/loading_blue_on_yellow.gif" class="hidden" />
+                    Save Changes
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-8 margin-top-10">
+                @Html.ActionLink("Define New ESB Environment", "Create", "Esb", null, new { @class = "btn btn-info btn-block" })
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+@Scripts.Render("~/Scripts/vue.js")
+@Scripts.Render("~/Scripts/Sortable.js")
+@Scripts.Render("~/Scripts/vuedraggable.js")
+
+@* generate javascript code from the MVC view model*@
+<script type="text/javascript">
+@* some variables which will be needed in the vue_dashboard_esb_connections script *@
+var urlForPost = "@Url.Action("Index", "Esb")";
+var urlForEnvDetails= "@Url.Action("Details", "Esb")";
+var urlForAppConfig = "@Url.Action("Configure", "Home")";
+var vueElementSelector = "#vueElement";
+var btnSaveSelector = "#saveChangesBtn";
+var btnLoadingImgSelector = "#saveChangesLoadingImg";
+
+@* put the MVC view model(s) into a javascript data object ready for Vue.js initial binding  *@
+var vueData = {
+    @* declare an array of esb environment objects*@
+    esbEnvironments:
+    [
+    @* razor loop through environment view models *@
+@for (int envCounter = 0; envCounter < Model.Count(); envCounter++)
+{
+    var eachEnvironment = Model.ElementAt(envCounter);
+        @* javascript object for environment: *@
+        <text>
+        {
+            id: @envCounter,
+            //newAppNameText: "",
+            //newAppServerText: "",
+            Name: '@eachEnvironment.Name',
+            TargetHostName: '@eachEnvironment.TargetHostName',
+            DetailsUrl: '@Html.Raw(Url.Action("Details", "Esb", new { name = eachEnvironment.Name }))',
+            ServerUrl: '@eachEnvironment.ServerUrl',
+            AppsInEnvironment:
+        [
+        </text>
+    @* razor inner loop through environment app view models *@
+    for (int appCounter = 0; appCounter < eachEnvironment.AppsInEnvironment.Count; appCounter++)
+    {
+        var eachApp = eachEnvironment.AppsInEnvironment[appCounter];
+            @* javascript object for each app *@
+            <text>
+            {
+                id: @(envCounter)@(appCounter),
+                parentId: @envCounter,
+                Name: '@eachApp.Name',
+                Server: '@eachApp.Server',
+                DisplayName: '@eachApp.DisplayName',
+                ConfigFilePath: '@Html.Raw(eachApp.ConfigFilePath)',
+                AppConfigUrl: '@Html.Raw(Url.Action("Configure", "Home", new { application = eachApp.Name, server = eachApp.Server }))'
+            },
+            </text>
+    } @* end inner razor loop*@
+        <text>
+        ]   @* end AppsInEnvironment javascript array *@
+        },      @* end each environment javascript object *@
+        </text>
+} @* end outer razor loop *@
+    ] @* end esbEnvironments javascript array*@
+}; @* end vue data javascript object *@
+
+</script>
+
+@Scripts.Render("~/Scripts/vue_dashboard_esb_connections.js")
+
+}

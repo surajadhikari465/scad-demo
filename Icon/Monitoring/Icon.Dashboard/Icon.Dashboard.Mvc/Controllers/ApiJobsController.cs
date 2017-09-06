@@ -86,13 +86,13 @@ namespace Icon.Dashboard.Mvc.Controllers
                 catch (Exception ex)
                 {
                     while (ex.InnerException != null) ex = ex.InnerException;
-                    viewModel.Errors = $"Server {ex.Message}";
+                    viewModel.Errors = "Server " + ex.Message;
                 }
             }
             else
             {
                 var modelErrors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                viewModel.Errors = String.Join(Environment.NewLine, modelErrors);
+                viewModel.Errors = string.Join(System.Environment.NewLine, modelErrors);
             }
             return PartialView("_ApiMessageJobTimedReportResultPartial", viewModel);
         }
@@ -129,7 +129,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseDataAccess.GetPagedApiJobSummariesByMessageType(jobType, page, pageSize);
 
             ViewBag.JobType = jobType;
-            ViewBag.Title = $"API Controller {jobType} Message Jobs";
+            ViewBag.Title = String.Format("API Controller {0} Message Jobs", jobType);
             ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(jobType, page, pageSize);
 
             return jobSummaries;
@@ -138,8 +138,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         private IEnumerable<ApiMessageJobSummaryViewModel> GetJobSummariesAndSetRelatedViewData(int page, int pageSize)
         {
             List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseDataAccess.GetPagedApiJobSummaries(page, pageSize);
-
-            //ViewBag.JobType = null;
+            
             ViewBag.Title = "API Controller Message Jobs Summary";
             ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(page, pageSize);
 

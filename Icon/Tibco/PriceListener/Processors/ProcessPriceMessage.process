@@ -12,16 +12,16 @@
             <xsd:complexType>
                 <xsd:sequence>
                     <xsd:element ref="pfx7:MammothPrices"/>
-                    <xsd:element name="MessageId" type="xsd:string"/>
+                    <xsd:element name="MessageId" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="PatchFamilyId" type="xsd:string"/>
-                    <xsd:element name="GpmSequenceID" type="xsd:int"/>
+                    <xsd:element name="GpmSequenceId" type="xsd:int"/>
                     <xsd:element ref="pfx6:ActivityOutput"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>42</pd:startX>
-    <pd:startY>297</pd:startY>
+    <pd:startX>26</pd:startX>
+    <pd:startY>294</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>956</pd:endX>
@@ -109,23 +109,20 @@
             <pd:activity name="Call Price Command">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>375</pd:x>
-                <pd:y>285</pd:y>
+                <pd:x>372</pd:x>
+                <pd:y>284</pd:y>
                 <config>
                     <processName>/DataAccess/Commands/PriceCommand.process</processName>
                 </config>
                 <pd:inputBindings>
                     <Input>
                         <xsl:copy-of select="$currentPrice/pfx7:MammothPrice"/>
-                        <MessageId>
-                            <xsl:value-of select="$Start/root/MessageId"/>
-                        </MessageId>
                         <PatchFamilyID>
                             <xsl:value-of select="$Start/root/PatchFamilyId"/>
                         </PatchFamilyID>
                         <xsl:copy-of select="$Start/root/pfx6:ActivityOutput"/>
                         <GPMSequenceID>
-                            <xsl:value-of select="$Start/root/GpmSequenceID"/>
+                            <xsl:value-of select="$Start/root/GpmSequenceId"/>
                         </GPMSequenceID>
                     </Input>
                 </pd:inputBindings>
@@ -134,22 +131,28 @@
         <pd:activity name="AddUpdateMessageSequence">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>710</pd:x>
+            <pd:x>703</pd:x>
             <pd:y>284</pd:y>
             <config>
                 <processName>/DataAccess/Commands/AddOrUpdateMessageSequenceCommand.process</processName>
             </config>
             <pd:inputBindings>
                 <root>
+                    <ItemId>
+                        <xsl:value-of select="$Start/root/pfx7:MammothPrices/pfx7:MammothPrice[1]/pfx7:ItemId"/>
+                    </ItemId>
+                    <BusinessUnitId>
+                        <xsl:value-of select="$Start/root/pfx7:MammothPrices/pfx7:MammothPrice[1]/pfx7:BusinessUnit"/>
+                    </BusinessUnitId>
                     <MessageId>
                         <xsl:value-of select="$Start/root/MessageId"/>
                     </MessageId>
                     <PatchFamilyId>
                         <xsl:value-of select="$Start/root/PatchFamilyId"/>
                     </PatchFamilyId>
-                    <GpmSequenceID>
-                        <xsl:value-of select="$Start/root/GpmSequenceID"/>
-                    </GpmSequenceID>
+                    <GpmSequenceId>
+                        <xsl:value-of select="$Start/root/GpmSequenceId"/>
+                    </GpmSequenceId>
                 </root>
             </pd:inputBindings>
         </pd:activity>

@@ -1,13 +1,11 @@
 ﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel
 
-@{
-    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
-    string rowColorClass = Model.StatusIsGreen ? "success" : "danger";
-    string rowTargetId = $"target{Model.Name}{Model.Server}";
-}
-
 @if (Model != null)
 {
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
+    string rowColorClass = Model.StatusIsGreen ? "success" : "danger";
+    string rowTargetId = "target" + Model.Name + Model.Server;
+
 <tr id="@rowTargetId" class="@rowColorClass">
     <td class="hidden-xs ">
         @Html.DisplayFor(model => model.TypeOfApplication)

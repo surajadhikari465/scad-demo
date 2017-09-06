@@ -14,5 +14,14 @@ namespace Icon.Dashboard.DataFileAccess.Constants
         public const string JmsPasswordKey = "JmsPassword";
         public const string JndiPasswordKey = "JndiPassword";
         public const string JndiUsernameKey = "JndiUsername";
+        //public const string ConnectionFactoryNameKey = "ConnectionFactoryName";
+        public const string SslPasswordKey = "SslPassword";
+        //public const string QueueNameKey = "QueueName";
+        public const string SessionModeKey = "SessionMode";
+        public const string CertificateNameKey = "CertificateName";
+        public const string CertificateStoreNameKey = "CertificateStoreName";
+        public const string CertificateStoreLocationKey = "CertificateStoreLocation";
+        public const string ReconnectDelayKey = "ReconnectDelay"; 
+        public const string NumberOfListenerThreadsKey = "NumberOfListenerThreads";
     }
 }

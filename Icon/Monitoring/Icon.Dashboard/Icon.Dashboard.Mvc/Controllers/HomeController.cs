@@ -20,16 +20,16 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
         }
 
-        public HomeController(string dataFile = null,
+        public HomeController(string pathToXmlDataFile = null,
             IDataFileServiceWrapper dataServiceWrapper = null,
             IIconDatabaseServiceWrapper loggingServiceWrapper = null,
             HttpServerUtilityBase serverUtility = null)
         {
-            XmlDataFile = dataFile ?? Utils.DataFileName;
+            DataFileName = pathToXmlDataFile ?? Utils.DataFileName;
+            _serverUtility = serverUtility;
             DashboardDataFileService = dataServiceWrapper ?? new DataFileServiceWrapper();
             IconDatabaseService = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
 
-            _serverUtility = serverUtility;
         }
 
         public IDataFileServiceWrapper DashboardDataFileService { get; private set; }
@@ -42,7 +42,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             }
         }
 
-        public string XmlDataFile { get; set; }
+        public string DataFileName { get; set; }
 
         #region GET
         [HttpGet]
@@ -50,7 +50,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Index()
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var viewModels = DashboardDataFileService.GetApplicationListViewModels(ServerUtility, XmlDataFile);
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            var viewModels = DashboardDataFileService.GetApplications(dataFileWebServerPath);
             return View(viewModels);
         }
 
@@ -59,7 +60,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Details(string application, string server)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var viewModel = DashboardDataFileService.GetApplicationViewModel(ServerUtility, XmlDataFile, application, server);
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            var viewModel = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
             return View(viewModel);
         }
 
@@ -68,7 +70,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Edit(string application, string server)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var viewModel = DashboardDataFileService.GetApplicationViewModel(ServerUtility, XmlDataFile, application, server);
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            var viewModel = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
             return View(viewModel);
         }
 
@@ -77,7 +80,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Configure(string application, string server)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var viewModel = DashboardDataFileService.GetApplicationViewModel(ServerUtility, XmlDataFile, application, server);
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            var viewModel = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
             return View(viewModel);
         }
 
@@ -89,15 +93,6 @@ namespace Icon.Dashboard.Mvc.Controllers
             var viewModel = new IconApplicationViewModel();
             return View(viewModel);
         }
-
-        [HttpGet]
-        [ChildActionOnly]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
-        public ActionResult IconApiServicePartial(string application, string server)
-        {
-            var task = DashboardDataFileService.GetServiceViewModel(ServerUtility, XmlDataFile, application, server);
-            return PartialView("_IconApiServicePartial", task);
-        }
         #endregion
 
         #region POST
@@ -105,7 +100,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Index(string application, string server, string command)
         {
-            DashboardDataFileService.ExecuteCommand(ServerUtility, XmlDataFile, application, server, command);
+            DashboardDataFileService.ExecuteServiceCommand(DataFileName, application, server, command);
             return RedirectToAction("Index", "Home");
         }
 
@@ -113,7 +108,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Details(string application, string server, string command)
         {
-            DashboardDataFileService.ExecuteCommand(ServerUtility, XmlDataFile, application, server, command);
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            DashboardDataFileService.ExecuteServiceCommand( dataFileWebServerPath, application, server, command);
             return RedirectToAction("Details", "Home", new { application = application, server = server });
         }
 
@@ -121,7 +117,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Edit(IconApplicationViewModel appViewModel)
         {
-            DashboardDataFileService.UpdateApplication(ServerUtility, appViewModel, XmlDataFile);
+            DashboardDataFileService.UpdateApplication(DataFileName, appViewModel);
             return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
         }
 
@@ -131,23 +127,33 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             ViewBag.EnvironmentOptions = new EnvironmentSwitcher().GetServersForEnvironments();
             DashboardDataFileService.SaveAppSettings(appViewModel);
-            return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
+            return RedirectToAction("Details", "Home", new
+            {
+                application = appViewModel.Name,
+                server = appViewModel.Server
+            });
         }
 
         [HttpPost]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Create(IconApplicationViewModel appViewModel)
         {
-            DashboardDataFileService.AddApplication(ServerUtility, appViewModel, XmlDataFile);
-            return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            DashboardDataFileService.AddApplication(dataFileWebServerPath, appViewModel);
+            return RedirectToAction("Details", "Home", new
+            {
+                application = appViewModel.Name,
+                server = appViewModel.Server
+            });
         }
 
         [HttpPost]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Delete(string application, string server)
         {
-            var app = DashboardDataFileService.GetApplication(ServerUtility, XmlDataFile, application, server);
-            DashboardDataFileService.DeleteApplication(ServerUtility, app, XmlDataFile);
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            var app = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
+            DashboardDataFileService.DeleteApplication(dataFileWebServerPath, app);
             return RedirectToAction("Index", "Home");
         }
         #endregion

@@ -1,7 +1,7 @@
 ﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel
 
 @{
-    string title = $"Edit Dashboard Entry for \"{Model.DisplayName}\"";
+    string title = String.Format("Edit Dashboard Entry for \"{0}\"", Model.DisplayName);
     ViewBag.Title =title;
 }
 

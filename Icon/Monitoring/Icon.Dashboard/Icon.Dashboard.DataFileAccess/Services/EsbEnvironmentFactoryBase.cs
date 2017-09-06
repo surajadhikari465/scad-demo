@@ -10,10 +10,10 @@
 
     public abstract class EsbEnvironmentFactoryBase
     {
-        public abstract IEsbEnvironment GetEsbEnvironment(XElement esbEnvironmentElement);
+        public abstract IEsbEnvironmentDefinition GetEsbEnvironment(XElement esbEnvironmentElement);
 
         protected virtual void SetEsbEnvironmentProperties(
-            IEsbEnvironment esbEnvironment, XElement esbEnvironmentElement)
+            IEsbEnvironmentDefinition esbEnvironment, XElement esbEnvironmentElement)
         {
             if (esbEnvironment == null)
             {
@@ -45,12 +45,12 @@
                 ? configValue : string.Empty;
             esbEnvironment.JndiPassword = attributes.TryGetValue(nameof(esbEnvironment.JndiPassword), out configValue)
                 ? configValue : string.Empty;
-            esbEnvironment.ConnectionFactoryName = attributes.TryGetValue(nameof(esbEnvironment.ConnectionFactoryName), out configValue)
-                ? configValue : string.Empty;
+            //esbEnvironment.ConnectionFactoryName = attributes.TryGetValue(nameof(esbEnvironment.ConnectionFactoryName), out configValue)
+            //    ? configValue : string.Empty;
             esbEnvironment.SslPassword = attributes.TryGetValue(nameof(esbEnvironment.SslPassword), out configValue)
                 ? configValue : string.Empty;
-            esbEnvironment.QueueName = attributes.TryGetValue(nameof(esbEnvironment.QueueName), out configValue)
-                ? configValue : string.Empty;
+            //esbEnvironment.QueueName = attributes.TryGetValue(nameof(esbEnvironment.QueueName), out configValue)
+            //    ? configValue : string.Empty;
             esbEnvironment.CertificateName = attributes.TryGetValue(nameof(esbEnvironment.CertificateName), out configValue)
                 ? configValue : string.Empty;
             esbEnvironment.CertificateStoreName = attributes.TryGetValue(nameof(esbEnvironment.CertificateStoreName), out configValue)
@@ -61,23 +61,6 @@
                 ? configValue : string.Empty;
             esbEnvironment.NumberOfListenerThreads = attributes.TryGetValue(nameof(esbEnvironment.NumberOfListenerThreads), out configValue)
                 ? (int.TryParse(configValue, out tempIntVal) ? tempIntVal : 0) : 0;
-
-            var appsInEnvironmentElement = esbEnvironmentElement.Element(EsbEnvironmentSchema.EsbEnvironmentApplications);
-            if (appsInEnvironmentElement != null)
-            {
-                var appIdentifierName = String.Empty;
-                var appIdentifierServer = String.Empty;
-
-                foreach (var appIdentierElement in appsInEnvironmentElement.Elements())
-                {
-                    appIdentifierName = appIdentierElement.Attribute(nameof(IconApplicationIdentifier.Name))?.Value;
-                    appIdentifierServer = appIdentierElement.Attribute(nameof(IconApplicationIdentifier.Server))?.Value;
-                    if (!String.IsNullOrWhiteSpace(appIdentifierName) && !String.IsNullOrWhiteSpace(appIdentifierServer))
-                    {
-                        esbEnvironment.AddApplication(appIdentifierName, appIdentifierServer);
-                    }
-                }
-            }
         }
     }
 }

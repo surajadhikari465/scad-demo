@@ -249,7 +249,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Then
             var viewResult = (ViewResult)result;
             Assert.IsNotNull(viewResult.Model);
-            var modelResult = viewResult.Model as List<IconAppLogViewModel>;
+            var modelResult = viewResult.Model as List<IconLogEntryViewModel>;
             Assert.AreEqual(expectedCount, modelResult.Count);
         }
 
@@ -268,7 +268,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Then
             var viewResult = (ViewResult)result;
             Assert.IsNotNull(viewResult.Model);
-            var modelResult = viewResult.Model as List<IconAppLogViewModel>;
+            var modelResult = viewResult.Model as List<IconLogEntryViewModel>;
             Assert.AreEqual(expectedCount, modelResult.Count);
         }
     }

@@ -755,6 +755,7 @@
     <None Include="Scripts\PopulateData\Release\RetentionPolicyMessageArchiveProductOutOfSync.sql" />
     <None Include="Scripts\PopulateData\Release\PBI21913_Add_HealthyEatingRating_of_None.sql" />
     <None Include="Scripts\PopulateData\Release\InsertInforHierarchySequenceIdError.sql" />
+    <None Include="Scripts\PopulateData\Release\AddDeliverySystemValues.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

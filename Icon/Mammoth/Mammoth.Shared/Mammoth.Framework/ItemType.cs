@@ -8,7 +8,7 @@ namespace Mammoth.Framework
 
     public partial class ItemType
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int itemTypeID { get; set; }
 
         [Required]
@@ -18,6 +18,7 @@ namespace Mammoth.Framework
         [StringLength(255)]
         public string itemTypeDesc { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime AddedDate { get; set; }
 
         public DateTime? ModifiedDate { get; set; }
