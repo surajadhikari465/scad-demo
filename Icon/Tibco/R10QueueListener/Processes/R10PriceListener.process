@@ -17,8 +17,8 @@
     <pd:starter name="MammothPriceR10MessageReceiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>66</pd:x>
-        <pd:y>71</pd:y>
+        <pd:x>78</pd:x>
+        <pd:y>128</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -38,8 +38,8 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>668</pd:endX>
-    <pd:endY>356</pd:endY>
+    <pd:endX>764</pd:endX>
+    <pd:endY>360</pd:endY>
     <pd:errorSchemas>
         <Error ref="pfx9:ExceptionRequest"/>
     </pd:errorSchemas>
@@ -48,8 +48,8 @@
     <pd:activity name="Parse Mammoth Price R10 Message">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>65</pd:x>
-        <pd:y>231</pd:y>
+        <pd:x>246</pd:x>
+        <pd:y>138</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -65,8 +65,8 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>827</pd:x>
-        <pd:y>354</pd:y>
+        <pd:x>962</pd:x>
+        <pd:y>358</pd:y>
         <config>
             <ConfirmEvent>MammothPriceR10MessageReceiver</ConfirmEvent>
         </config>
@@ -75,20 +75,20 @@
     <pd:activity name="Send to R10Price Queue">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>826</pd:x>
-        <pd:y>216</pd:y>
+        <pd:x>965</pd:x>
+        <pd:y>217</pd:y>
         <config>
             <processName>/Processes/SendToR10EsbQueue.process</processName>
         </config>
         <pd:inputBindings>
-            <xsl:copy-of select="$Accumulated-Data/pfx2:items"/>
+            <xsl:copy-of select="$Accumulate-Data/pfx2:items"/>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Catch-All-Exceptions">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>166</pd:x>
-        <pd:y>358</pd:y>
+        <pd:x>237</pd:x>
+        <pd:y>357</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -98,8 +98,8 @@
     <pd:activity name="Dead Letter Queue Exception">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>310</pd:x>
-        <pd:y>365</pd:y>
+        <pd:x>392</pd:x>
+        <pd:y>363</pd:y>
         <config>
             <processName>/Processes/Common/JMS/PublishOntoDeadLetterQ.process</processName>
         </config>
@@ -178,8 +178,8 @@
     <pd:activity name="Confirm-Error">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>469</pd:x>
-        <pd:y>358</pd:y>
+        <pd:x>565</pd:x>
+        <pd:y>356</pd:y>
         <config>
             <ConfirmEvent>MammothPriceR10MessageReceiver</ConfirmEvent>
         </config>
@@ -188,8 +188,8 @@
     <pd:group name="iterate Prices">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>179</pd:x>
-        <pd:y>32</pd:y>
+        <pd:x>334</pd:x>
+        <pd:y>11</pd:y>
         <pd:width>510</pd:width>
         <pd:height>234</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -239,8 +239,8 @@
         <pd:activity name="Process Price Data">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>306</pd:x>
-            <pd:y>105</pd:y>
+            <pd:x>461</pd:x>
+            <pd:y>84</pd:y>
             <config>
                 <processName>/Processes/Process Price Data.process</processName>
             </config>
@@ -251,8 +251,8 @@
         <pd:activity name="Catch">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>305</pd:x>
-            <pd:y>190</pd:y>
+            <pd:x>460</pd:x>
+            <pd:y>169</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <catchAll>true</catchAll>
@@ -262,8 +262,8 @@
         <pd:activity name="Generate Data Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>526</pd:x>
-            <pd:y>196</pd:y>
+            <pd:x>681</pd:x>
+            <pd:y>175</pd:y>
             <config>
                 <faultName>Error</faultName>
             </config>
@@ -300,8 +300,8 @@
         <pd:activity name="Map Data to Items">
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>507</pd:x>
-            <pd:y>105</pd:y>
+            <pd:x>662</pd:x>
+            <pd:y>84</pd:y>
             <config>
                 <element ref="pfx2:items"/>
             </config>
@@ -310,11 +310,11 @@
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
-    <pd:activity name="Accumulated Data">
+    <pd:activity name="Accumulate Data">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>826</pd:x>
-        <pd:y>83</pd:y>
+        <pd:x>963</pd:x>
+        <pd:y>88</pd:y>
         <config>
             <element ref="pfx2:items"/>
         </config>
@@ -589,13 +589,13 @@
     </pd:transition>
     <pd:transition>
         <pd:from>iterate Prices</pd:from>
-        <pd:to>Accumulated Data</pd:to>
+        <pd:to>Accumulate Data</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Accumulated Data</pd:from>
+        <pd:from>Accumulate Data</pd:from>
         <pd:to>Send to R10Price Queue</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

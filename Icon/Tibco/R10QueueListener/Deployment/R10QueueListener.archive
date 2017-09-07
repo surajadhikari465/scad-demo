@@ -13,7 +13,7 @@
             <authorProperty>2096654</authorProperty>
             <processProperty>/Processes/R10PriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>11</versionProperty>
+        <versionProperty>12</versionProperty>
         <authorProperty>2096654</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>R10QueueListener</name>
