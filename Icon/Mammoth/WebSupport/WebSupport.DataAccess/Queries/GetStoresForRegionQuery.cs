@@ -23,8 +23,9 @@ namespace WebSupport.DataAccess.Queries
                         CAST(BusinessUnitID AS NVARCHAR(10)) AS BusinessUnit, 
                         StoreAbbrev AS Abbreviation, 
                         StoreName AS Name 
-                        FROM dbo.Locale 
-                        WHERE Region = '{parameters.Region}'")
+                    FROM dbo.Locale 
+                    WHERE Region = '{parameters.Region}'
+                    ORDER BY BusinessUnit")
                 .ToList();
         }
     }
