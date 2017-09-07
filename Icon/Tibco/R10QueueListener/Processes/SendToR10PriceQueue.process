@@ -6,7 +6,7 @@
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/IrmaPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
-    <pd:name>Processes/SendToR10EsbQueue.process</pd:name>
+    <pd:name>Processes/SendToR10PriceQueue.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx4:items"/>
     <pd:startX>116</pd:startX>

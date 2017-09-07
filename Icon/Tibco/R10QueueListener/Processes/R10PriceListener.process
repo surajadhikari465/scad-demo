@@ -78,7 +78,7 @@
         <pd:x>965</pd:x>
         <pd:y>217</pd:y>
         <config>
-            <processName>/Processes/SendToR10EsbQueue.process</processName>
+            <processName>/Processes/SendToR10PriceQueue.process</processName>
         </config>
         <pd:inputBindings>
             <xsl:copy-of select="$Accumulate-Data/pfx2:items"/>
