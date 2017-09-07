@@ -3237,6 +3237,8 @@
     <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.RollBack.sql" />
     <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.sql" />
     <None Include="SQL Agent Job\VIM - Infor Data Feeds - IRMA Extract %28NC).sql" />
+    <Build Include="Security\TibcoLogin.sql" />
+    <Build Include="Security\TibcoUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
