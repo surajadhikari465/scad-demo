@@ -4,6 +4,18 @@ BEGIN
 SET NOCOUNT ON
 set transaction isolation level read uncommitted
 
+declare @IncludedStores as table (Store_No int)
+
+insert into @IncludedStores
+select store_no
+from   Store
+where  mega_store = 1
+union
+select s.store_no
+from   Store s
+join   [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('WFMBannerStoresForOrdering', 'IRMA CLIENT'), '|') bs 
+	   on s.BusinessUnit_ID = bs.Key_Value
+
 declare @PDXSourceID int
 select @PDXSourceID = ID from OrderExternalSource where Description = 'PDX'
 
@@ -24,17 +36,17 @@ CASE
 END AS HOST_SUBTEAM_FLAG,
 rtrim(iu.Unit_Name) as CASE_UOM
 from OrderHeader oh
-join OrderItem oi on oh.OrderHeader_Id = oi.OrderHeader_Id 
-join Item i on oi.Item_Key = i.Item_Key
 join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-join ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1 and ii.Deleted_Identifier = 0 and ii.Remove_Identifier = 0
-join ValidatedScanCode vsc on vsc.ScanCode = ii.Identifier 
+join @IncludedStores ist on psl.Store_no = ist.Store_No
 join Store s on s.Store_No = psl.Store_no 
 join SubTeam st on st.Subteam_No = oh.Transfer_To_SubTeam
+join OrderItem oi on oh.OrderHeader_Id = oi.OrderHeader_Id 
+join Item i on oi.Item_Key = i.Item_Key
+join ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1 and ii.Deleted_Identifier = 0 and ii.Remove_Identifier = 0
+join ValidatedScanCode vsc on vsc.ScanCode = ii.Identifier 
 join ItemUnit iu on iu.Unit_Id = oi.QuantityUnit
 left outer join ExternalOrderInformation eoi on oh.OrderHeader_ID = eoi.OrderHeader_ID and eoi.ExternalSource_ID = @PDXSourceID
-where s.Mega_Store = 1
-and oh.Sent = 1
+where oh.Sent = 1
 and oh.OrderType_ID <> 3
 and oh.Return_Order = 0
 and ((oi.DateReceived < @today and oi.DateReceived >= @yesterday)

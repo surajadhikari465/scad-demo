@@ -1,8 +1,8 @@
 USE [msdb]
 GO
 
-IF  EXISTS (SELECT job_id FROM msdb.dbo.sysjobs_view WHERE name = N'ItemCatalog - EIM Purge')
-EXEC msdb.dbo.sp_delete_job @job_name=N'ItemCatalog - EIM Purge', @delete_unused_schedule = 1
+IF  EXISTS (SELECT job_id FROM msdb.dbo.sysjobs_view WHERE name = N'ItemCatalog - Straight Purge')
+EXEC msdb.dbo.sp_delete_job @job_name=N'ItemCatalog - Straight Purge', @delete_unused_schedule = 1
 GO
 
 DECLARE @Environment varchar(10)
@@ -21,20 +21,19 @@ DECLARE @ReturnCode INT
 SELECT @ReturnCode = 0
 IF NOT EXISTS (SELECT name FROM msdb.dbo.syscategories WHERE name=N'[Uncategorized (Local)]' AND category_class=1)
 BEGIN
-EXEC @ReturnCode = msdb.dbo.sp_add_category @class=N'JOB', @type=N'LOCAL', @name=N'[Uncategorized (Local)]'
-IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-
+	EXEC @ReturnCode = msdb.dbo.sp_add_category @class=N'JOB', @type=N'LOCAL', @name=N'[Uncategorized (Local)]'
+	IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 END
 
 DECLARE @jobId BINARY(16)
-EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'ItemCatalog - EIM Purge', 
+EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'ItemCatalog - Straight Purge', 
 		@enabled=1, 
 		@notify_level_eventlog=0, 
 		@notify_level_email=2, 
 		@notify_level_netsend=0, 
 		@notify_level_page=0, 
 		@delete_level=0, 
-		@description=N'Daily EIM Purge Job', 
+		@description=N'Daily Straight Purge Job', 
 		@category_name=N'[Uncategorized (Local)]', 
 		@owner_login_name=N'sa', 
 		@notify_email_operator_name=N'IRMA Developers', @job_id = @jobId OUTPUT
@@ -64,7 +63,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Purge Da
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
-		@command=N'EXEC [dbo].[PurgeEIM] @batchVolume = 50000, @eimSessionBatch = 200', 
+		@command=N'EXEC [dbo].[PurgeStraight] @batchVolume = 50000', 
 		@database_name=@DBNAME, 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
@@ -110,5 +109,3 @@ QuitWithRollback:
 EndSave:
 
 GO
-
-

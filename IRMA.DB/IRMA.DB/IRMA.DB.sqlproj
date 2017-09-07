@@ -24,8 +24,8 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
-    <AnsiNulls>False</AnsiNulls>
-    <QuotedIdentifier>False</QuotedIdentifier>
+    <AnsiNulls>True</AnsiNulls>
+    <QuotedIdentifier>True</QuotedIdentifier>
     <IsChangeTrackingOn>True</IsChangeTrackingOn>
     <IsChangeTrackingAutoCleanupOn>True</IsChangeTrackingAutoCleanupOn>
     <ChangeTrackingRetentionPeriod>4</ChangeTrackingRetentionPeriod>
@@ -44,10 +44,10 @@
     <SupplementalLoggingOn>False</SupplementalLoggingOn>
     <CompatibilityMode>90</CompatibilityMode>
     <AnsiNullDefault>False</AnsiNullDefault>
-    <AnsiPadding>False</AnsiPadding>
-    <AnsiWarnings>False</AnsiWarnings>
-    <ArithAbort>False</ArithAbort>
-    <ConcatNullYieldsNull>False</ConcatNullYieldsNull>
+    <AnsiPadding>True</AnsiPadding>
+    <AnsiWarnings>True</AnsiWarnings>
+    <ArithAbort>True</ArithAbort>
+    <ConcatNullYieldsNull>True</ConcatNullYieldsNull>
     <NumericRoundAbort>False</NumericRoundAbort>
     <RecursiveTriggersEnabled>False</RecursiveTriggersEnabled>
     <DatabaseChaining>False</DatabaseChaining>
@@ -3236,6 +3236,7 @@
     <Build Include="Schema\infor\Tables\OrderExpectedDateChangeQueue.sql" />
     <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.RollBack.sql" />
     <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.sql" />
+    <None Include="SQL Agent Job\VIM - Infor Data Feeds - IRMA Extract %28NC).sql" />
     <Build Include="Security\TibcoLogin.sql" />
     <Build Include="Security\TibcoUser.sql" />
   </ItemGroup>
