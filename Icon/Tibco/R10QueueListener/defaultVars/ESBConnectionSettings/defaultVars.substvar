@@ -51,35 +51,35 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPassword</name>
-			<value>SB1_MammothPriceIrmaUser</value>
+			<value>SB1_IrmaAppsUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504641722992</modTime>
+			<modTime>1504792761881</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPasswordWritePermissions</name>
-			<value>SB1_IrmaPriceUser</value>
+			<value>SB1_IrmaAppsUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503515753989</modTime>
+			<modTime>1504811245922</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsername</name>
-			<value>SB1_MammothPriceIrmaUser</value>
+			<value>SB1_IrmaAppsUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504641815738</modTime>
+			<modTime>1504792761928</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsernameWritePermissions</name>
-			<value>SB1_IrmaPriceUser</value>
+			<value>SB1_IrmaAppsUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503515754031</modTime>
+			<modTime>1504811245974</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiConextUrl</name>

@@ -51,13 +51,13 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>Send to R10 Queue</pd:to>
+            <pd:to>Send to R10 Price Queue</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send to R10 Queue</pd:from>
+            <pd:from>Send to R10 Price Queue</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -71,7 +71,7 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send to R10 Queue</pd:from>
+            <pd:from>Send to R10 Price Queue</pd:from>
             <pd:to>Sleep</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-52429</pd:lineColor>
@@ -112,7 +112,7 @@
                 </ns12:SleepInputSchema>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Send to R10 Queue">
+        <pd:activity name="Send to R10 Price Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
             <pd:x>334</pd:x>

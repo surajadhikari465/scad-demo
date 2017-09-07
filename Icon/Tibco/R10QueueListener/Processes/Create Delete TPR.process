@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx11="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pfx10="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pfx="http://schemas.wfm.com/Mammoth/R10Prices.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pfx8="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx11="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pfx10="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pfx="http://schemas.wfm.com/Mammoth/R10Prices.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pfx8="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/R10Prices.xsd" schemaLocation="/SharedResources/Schemas/Application/R10Prices.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
     <pd:name>Processes/Create Delete TPR.process</pd:name>
@@ -43,7 +43,7 @@
                     </pfx2:base>
                     <pfx2:locale>
                         <xsl:attribute name="ns1:Action">
-                            <xsl:value-of select="&quot;Delete&quot;"/>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/Constants/DeleteAction"/>
                         </xsl:attribute>
                         <pfx4:id>
                             <xsl:value-of select="$Start/pfx:R10Price/pfx:BusinessUnit_ID"/>
@@ -53,10 +53,10 @@
                         </pfx4:name>
                         <pfx4:type>
                             <pfx5:code>
-                                <xsl:value-of select="&quot;STR&quot;"/>
+                                <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/Constants/Str"/>
                             </pfx5:code>
                             <pfx5:description>
-                                <xsl:value-of select="&quot;Store&quot;"/>
+                                <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/Constants/Store"/>
                             </pfx5:description>
                         </pfx4:type>
                         <pfx4:storeItemAttributes>
@@ -78,10 +78,10 @@
                                 <pfx8:price>
                                     <pfx8:type>
                                         <pfx9:id>
-                                            <xsl:value-of select="&quot;TPR&quot;"/>
+                                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/Constants/Tpr"/>
                                         </pfx9:id>
                                         <pfx9:description>
-                                            <xsl:value-of select="&quot;Temporary Price Reduction&quot;"/>
+                                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/Constants/TemporaryPriceReduction"/>
                                         </pfx9:description>
                                     </pfx8:type>
                                     <pfx8:uom>

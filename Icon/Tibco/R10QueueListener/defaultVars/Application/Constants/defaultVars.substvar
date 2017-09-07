@@ -2,76 +2,68 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>OraDBDriver</name>
-			<value>oracle.jdbc.driver.OracleDriver</value>
+			<name>AddOrUpdateAction</name>
+			<value>AddOrUpdate</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863254</modTime>
+			<modTime>1504711108833</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBHost</name>
-			<value></value>
+			<name>DeleteAction</name>
+			<value>Delete</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863722</modTime>
+			<modTime>1504710919777</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBInstance</name>
-			<value></value>
+			<name>Reg</name>
+			<value>REG</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861985</modTime>
+			<modTime>1504793089613</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBPort</name>
-			<value></value>
+			<name>RegularPrice</name>
+			<value>Regular Price</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972862176</modTime>
+			<modTime>1504710596424</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBPwd</name>
-			<value>#!nhnXUAeqvv0eIbD5kd+cJg==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1499972862962</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>OraDBUrl</name>
-			<value>jdbc:oracle:thin:</value>
+			<name>Store</name>
+			<value>Store</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863156</modTime>
+			<modTime>1504710892049</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraDBUser</name>
-			<value></value>
+			<name>Str</name>
+			<value>STR</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863653</modTime>
+			<modTime>1504710892118</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraLoginTimeout</name>
-			<value>0</value>
+			<name>TemporaryPriceReduction</name>
+			<value>Temporary Price Reduction</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863551</modTime>
+			<modTime>1504710596531</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>OraMaxConn</name>
-			<value>10</value>
+			<name>Tpr</name>
+			<value>TPR</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861802</modTime>
+			<modTime>1504793089682</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

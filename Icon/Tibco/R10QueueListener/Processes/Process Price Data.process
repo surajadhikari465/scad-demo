@@ -5,8 +5,8 @@
     <pd:name>Processes/Process Price Data.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx:R10Price"/>
-    <pd:startX>47</pd:startX>
-    <pd:startY>210</pd:startY>
+    <pd:startX>48</pd:startX>
+    <pd:startY>211</pd:startY>
     <pd:returnBindings>
         <xsl:choose>
             <xsl:when test="count($Delete-TPR/pfx2:items/pfx2:item)>0">
@@ -33,7 +33,7 @@
     <pd:activity name="Delete TPR">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>319</pd:x>
+        <pd:x>318</pd:x>
         <pd:y>93</pd:y>
         <config>
             <processName>/Processes/Create Delete TPR.process</processName>
@@ -115,7 +115,7 @@ and $Start/pfx:R10Price/pfx:SaleStartDate !=$Start/pfx:R10Price/pfx:PreviousSale
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>exists($Start/pfx:R10Price/pfx:SalePrice)
 and (  not(exists($Start/pfx:R10Price/pfx:PreviousSalePrice))
-          or ($Start/pfx:R10Price/pfx:StartDate=$Start/pfx:R10Price/pfx:PreviousSaleStartDate  ))</pd:xpath>
+          or ($Start/pfx:R10Price/pfx:SaleStartDate=$Start/pfx:R10Price/pfx:PreviousSaleStartDate  ))</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Update Existing TPR</pd:from>

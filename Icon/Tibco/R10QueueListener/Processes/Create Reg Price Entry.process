@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns32="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns33="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pfx="http://schemas.wfm.com/Mammoth/R10Prices.xsd" xmlns:ns42="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns53="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns52="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns32="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns33="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pfx="http://schemas.wfm.com/Mammoth/R10Prices.xsd" xmlns:ns42="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns53="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns52="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/R10Prices.xsd" schemaLocation="/SharedResources/Schemas/Application/R10Prices.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
     <pd:name>Processes/Create Reg Price Entry.process</pd:name>
@@ -42,8 +42,8 @@
                         </ns2:type>
                     </pfx2:base>
                     <pfx2:locale>
-                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="ns1:Action">
-                            <xsl:value-of select="&quot;AddOrUpdate&quot;"/>
+                        <xsl:attribute name="ns1:Action">
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/Constants/AddOrUpdateAction"/>
                         </xsl:attribute>
                         <ns22:id>
                             <xsl:value-of select="$Start/pfx:R10Price/pfx:BusinessUnit_ID"/>
@@ -53,10 +53,10 @@
                         </ns22:name>
                         <ns22:type>
                             <ns32:code>
-                                <xsl:value-of select="&quot;STR&quot;"/>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/Constants/Str"/>
                             </ns32:code>
                             <ns32:description>
-                                <xsl:value-of select="&quot;Store&quot;"/>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/Constants/Store"/>
                             </ns32:description>
                         </ns22:type>
                         <ns22:storeItemAttributes>
@@ -78,10 +78,10 @@
                                 <ns42:price>
                                     <ns42:type>
                                         <ns5:id>
-                                            <xsl:value-of select="&quot;REG&quot;"/>
+                                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/Constants/Reg"/>
                                         </ns5:id>
                                         <ns5:description>
-                                            <xsl:value-of select="&quot;Regular Price&quot;"/>
+                                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/Constants/RegularPrice"/>
                                         </ns5:description>
                                     </ns42:type>
                                     <ns42:uom>
@@ -108,7 +108,7 @@
                                         <xsl:value-of select="$Start/pfx:R10Price/pfx:RegMultiple"/>
                                     </ns42:priceMultiple>
                                     <ns42:priceStartDate>
-                                        <xsl:value-of select="tib:create-date(1970,1,1)"/>
+                                        <xsl:value-of select="tib:create-dateTime(1970,1,1,0,0,0)"/>
                                     </ns42:priceStartDate>
                                 </ns42:price>
                             </ns33:prices>
