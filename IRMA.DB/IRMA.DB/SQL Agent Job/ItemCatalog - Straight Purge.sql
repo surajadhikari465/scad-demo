@@ -92,7 +92,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobschedule @job_id=@jobId, @name=N'Daily - 2
 		@freq_type=4, 
 		@freq_interval=1, 
 		@freq_subday_type=4, 
-		@freq_subday_interval=10, 
+		@freq_subday_interval=5, 
 		@freq_relative_interval=0, 
 		@freq_recurrence_factor=0, 
 		@active_start_date=20160919, 
