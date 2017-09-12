@@ -6,7 +6,7 @@
        [BusinessUnitID] [int] NOT NULL,
        [StartDate] [datetime2](7) NOT NULL,
        [EndDate] [datetime2](7) NULL,
-       [Price] DECIMAL(19,4) NOT NULL,
+       [Price] DECIMAL(9,2) NOT NULL,
        [PriceType] [nvarchar](3) NOT NULL,
        [PriceTypeAttribute] [nvarchar](10) NOT NULL,
        [SellableUOM] [nvarchar](3) NOT NULL,
