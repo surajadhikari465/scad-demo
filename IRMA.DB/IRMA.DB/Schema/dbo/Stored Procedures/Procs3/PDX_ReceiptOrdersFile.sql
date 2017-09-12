@@ -27,7 +27,7 @@ set @fiveDaysAgo = Convert(Date, getdate()-5, 102)
 
 select oh.OrderHeader_Id as PO_NUMBER, eoi.ExternalOrder_Id as PDX_PO_SUGGESTED_ID, ROW_NUMBER() OVER(PARTITION BY oh.OrderHeader_Id ORDER BY oi.OrderItem_ID) as PO_LINE_NUMBER, 
 RIGHT('0000000000000'+ISNULL(ii.Identifier,''),13) as UPC, s.BusinessUnit_ID as STORE_NUMBER, 
-convert(varchar, oi.DateReceived, 112) as LI_RECEIVE_DAY, oi.QuantityReceived as RCV_Qty,
+convert(varchar, oi.DateReceived, 112) as LI_RECEIVE_DAY, ISNULL(oi.QuantityReceived, 0) as RCV_Qty,
 st.SubTeam_Name as PROD_SUBTEAM,
 CASE 
     WHEN oh.Transfer_To_SubTeam = i.SubTeam_No
