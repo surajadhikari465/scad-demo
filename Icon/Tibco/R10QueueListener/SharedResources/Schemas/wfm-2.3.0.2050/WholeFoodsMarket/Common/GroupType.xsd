@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="groupType" type="GroupTypeType"/>
+	<xs:complexType name="GroupTypeType">
+		<xs:sequence>
+			<xs:element name="id" type="crf:IdStrType"/>
+			<xs:element name="description" type="crf:DescriptionType" minOccurs="0"/>
+			<xs:element name="name" type="crf:NameType" minOccurs="0"/>
+			<xs:element name="type" type="crf:TypeType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
+	</xs:complexType>
+</xs:schema>

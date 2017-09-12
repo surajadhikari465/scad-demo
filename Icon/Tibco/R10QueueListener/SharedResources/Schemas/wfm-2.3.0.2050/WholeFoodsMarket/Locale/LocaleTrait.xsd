@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleTrait/V1"
+     xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2"
+     xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2"
+     xmlns:lrf="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1"
+     xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+     targetNamespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleTrait/V1"
+     version="0.1"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified">
+
+    <!-- ================== -->
+    <!-- Schema Imports             -->
+    <!-- ================== -->
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" schemaLocation="../Trait/Trait.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../Uom/UnitOfMeasure.xsd"/>
+
+    <!-- ================== -->
+    <!-- Global Elements             -->
+    <!-- ================== -->
+    <!--NOT REFERENCING THIS FILE RIGHT NOW. SHOULD BE ABLE TO DELETE-->
+    <xs:element name="localeTrait" type="LocaleTraitType"/>
+    <xs:complexType name="LocaleTraitType">
+        <xs:sequence>
+            <xs:element name="trait" type="trt:TraitType"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

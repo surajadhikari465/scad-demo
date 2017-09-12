@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns32="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pfx="http://schemas.wfm.com/Mammoth/R10Prices.xsd" xmlns:ns42="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns53="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns52="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns0="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/R10Prices.xsd" schemaLocation="/SharedResources/Schemas/Application/R10Prices.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <pd:name>Processes/Update Existing TPR.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:R10Price"/>
+    <pd:startX>84</pd:startX>
+    <pd:startY>55</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Map-Data/pfx2:items"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:items"/>
+    <pd:endX>376</pd:endX>
+    <pd:endY>56</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1504619340115</pd:targetNamespace>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>232</pd:x>
+        <pd:y>56</pd:y>
+        <config>
+            <element ref="pfx2:items"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:items>
+                <xsl:if test="tib:compare-date($Start/pfx:R10Price/pfx:PreviousSaleEndDate, current-date()) =1&#xA;or tib:compare-date($Start/pfx:R10Price/pfx:PreviousSaleEndDate, current-date()) =0">
+                    <pfx2:item>
+                        <pfx2:id>
+                            <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemId"/>
+                        </pfx2:id>
+                        <pfx2:base>
+                            <ns2:type>
+                                <ns0:code>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemTypeCode"/>
+                                </ns0:code>
+                                <ns0:description>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemTypeDesc"/>
+                                </ns0:description>
+                            </ns2:type>
+                        </pfx2:base>
+                        <pfx2:locale>
+                            <xsl:attribute name="ns:Action">
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/DeleteAction"/>
+                            </xsl:attribute>
+                            <ns22:id>
+                                <xsl:value-of select="$Start/pfx:R10Price/pfx:BusinessUnit_ID"/>
+                            </ns22:id>
+                            <ns22:name>
+                                <xsl:value-of select="$Start/pfx:R10Price/pfx:LocaleName"/>
+                            </ns22:name>
+                            <ns22:type>
+                                <ns3:code>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/Str"/>
+                                </ns3:code>
+                                <ns3:description>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/Store"/>
+                                </ns3:description>
+                            </ns22:type>
+                            <ns22:storeItemAttributes>
+                                <ns32:scanCode>
+                                    <ns4:id>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeId"/>
+                                    </ns4:id>
+                                    <ns4:code>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCode"/>
+                                    </ns4:code>
+                                    <ns4:typeId>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeTypeId"/>
+                                    </ns4:typeId>
+                                    <ns4:typeDescription>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeTypeDesc"/>
+                                    </ns4:typeDescription>
+                                </ns32:scanCode>
+                                <ns32:prices>
+                                    <ns42:price>
+                                        <ns42:type>
+                                            <ns5:id>
+                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/Tpr"/>
+                                            </ns5:id>
+                                            <ns5:description>
+                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/TemporaryPriceReduction"/>
+                                            </ns5:description>
+                                        </ns42:type>
+                                        <ns42:uom>
+                                            <ns52:code>
+                                                <xsl:value-of select="$Start/pfx:R10Price/pfx:UomCode"/>
+                                            </ns52:code>
+                                            <xsl:if test="$Start/pfx:R10Price/pfx:UomName">
+                                                <ns52:name>
+                                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:UomName"/>
+                                                </ns52:name>
+                                            </xsl:if>
+                                        </ns42:uom>
+                                        <ns42:currencyTypeCode>
+                                            <xsl:value-of select="$Start/pfx:R10Price/pfx:CurrencyCode"/>
+                                        </ns42:currencyTypeCode>
+                                        <ns42:priceAmount>
+                                            <xsl:if test="$Start/pfx:R10Price/pfx:SalePrice">
+                                                <ns53:amount>
+                                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:SalePrice"/>
+                                                </ns53:amount>
+                                            </xsl:if>
+                                        </ns42:priceAmount>
+                                        <ns42:priceMultiple>
+                                            <xsl:value-of select="$Start/pfx:R10Price/pfx:SaleMultiple"/>
+                                        </ns42:priceMultiple>
+                                        <ns42:priceStartDate>
+                                            <xsl:value-of select="if(exists($Start/pfx:R10Price/pfx:StartDate)) then $Start/pfx:R10Price/pfx:StartDate &#xA;else current-date()"/>
+                                        </ns42:priceStartDate>
+                                        <ns42:priceEndDate>
+                                            <xsl:value-of select="if(exists($Start/pfx:R10Price/pfx:SaleEndDate) )then&#xA; tib:add-to-dateTime($Start/pfx:R10Price/pfx:SaleEndDate, 0,0,0,23,59,59) &#xA;else current-date()"/>
+                                        </ns42:priceEndDate>
+                                    </ns42:price>
+                                </ns32:prices>
+                            </ns22:storeItemAttributes>
+                        </pfx2:locale>
+                    </pfx2:item>
+                </xsl:if>
+                <pfx2:item>
+                    <pfx2:id>
+                        <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemId"/>
+                    </pfx2:id>
+                    <pfx2:base>
+                        <ns2:type>
+                            <ns0:code>
+                                <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemTypeCode"/>
+                            </ns0:code>
+                            <ns0:description>
+                                <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemTypeDesc"/>
+                            </ns0:description>
+                        </ns2:type>
+                    </pfx2:base>
+                    <pfx2:locale>
+                        <xsl:attribute name="ns:Action">
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/AddOrUpdateAction"/>
+                        </xsl:attribute>
+                        <ns22:id>
+                            <xsl:value-of select="$Start/pfx:R10Price/pfx:BusinessUnit_ID"/>
+                        </ns22:id>
+                        <ns22:name>
+                            <xsl:value-of select="$Start/pfx:R10Price/pfx:LocaleName"/>
+                        </ns22:name>
+                        <ns22:type>
+                            <ns3:code>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/Str"/>
+                            </ns3:code>
+                            <ns3:description>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/Store"/>
+                            </ns3:description>
+                        </ns22:type>
+                        <ns22:storeItemAttributes>
+                            <ns32:scanCode>
+                                <ns4:id>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeId"/>
+                                </ns4:id>
+                                <ns4:code>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCode"/>
+                                </ns4:code>
+                                <ns4:typeId>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeTypeId"/>
+                                </ns4:typeId>
+                                <ns4:typeDescription>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeTypeDesc"/>
+                                </ns4:typeDescription>
+                            </ns32:scanCode>
+                            <ns32:prices>
+                                <ns42:price>
+                                    <ns42:type>
+                                        <ns5:id>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/Tpr"/>
+                                        </ns5:id>
+                                        <ns5:description>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/TemporaryPriceReduction"/>
+                                        </ns5:description>
+                                    </ns42:type>
+                                    <ns42:uom>
+                                        <ns52:code>
+                                            <xsl:value-of select="$Start/pfx:R10Price/pfx:UomCode"/>
+                                        </ns52:code>
+                                        <xsl:if test="$Start/pfx:R10Price/pfx:UomName">
+                                            <ns52:name>
+                                                <xsl:value-of select="$Start/pfx:R10Price/pfx:UomName"/>
+                                            </ns52:name>
+                                        </xsl:if>
+                                    </ns42:uom>
+                                    <ns42:currencyTypeCode>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:CurrencyCode"/>
+                                    </ns42:currencyTypeCode>
+                                    <ns42:priceAmount>
+                                        <xsl:if test="$Start/pfx:R10Price/pfx:SalePrice">
+                                            <ns53:amount>
+                                                <xsl:value-of select="$Start/pfx:R10Price/pfx:SalePrice"/>
+                                            </ns53:amount>
+                                        </xsl:if>
+                                    </ns42:priceAmount>
+                                    <ns42:priceMultiple>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:SaleMultiple"/>
+                                    </ns42:priceMultiple>
+                                    <ns42:priceStartDate>
+                                        <xsl:value-of select="if(exists($Start/pfx:R10Price/pfx:StartDate)) then $Start/pfx:R10Price/pfx:StartDate &#xA;else current-date()"/>
+                                    </ns42:priceStartDate>
+                                    <ns42:priceEndDate>
+                                        <xsl:value-of select="if(exists($Start/pfx:R10Price/pfx:SaleEndDate) )then&#xA; tib:add-to-dateTime($Start/pfx:R10Price/pfx:SaleEndDate, 0,0,0,23,59,59) &#xA;else current-date()"/>
+                                    </ns42:priceEndDate>
+                                </ns42:price>
+                            </ns32:prices>
+                        </ns22:storeItemAttributes>
+                    </pfx2:locale>
+                </pfx2:item>
+                <pfx2:item>
+                    <pfx2:id>
+                        <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemId"/>
+                    </pfx2:id>
+                    <pfx2:base>
+                        <ns2:type>
+                            <ns0:code>
+                                <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemTypeCode"/>
+                            </ns0:code>
+                            <ns0:description>
+                                <xsl:value-of select="$Start/pfx:R10Price/pfx:ItemTypeDesc"/>
+                            </ns0:description>
+                        </ns2:type>
+                    </pfx2:base>
+                    <pfx2:locale>
+                        <xsl:attribute name="ns:Action">
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/AddOrUpdateAction"/>
+                        </xsl:attribute>
+                        <ns22:id>
+                            <xsl:value-of select="$Start/pfx:R10Price/pfx:BusinessUnit_ID"/>
+                        </ns22:id>
+                        <ns22:name>
+                            <xsl:value-of select="$Start/pfx:R10Price/pfx:LocaleName"/>
+                        </ns22:name>
+                        <ns22:type>
+                            <ns3:code>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/Str"/>
+                            </ns3:code>
+                            <ns3:description>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/Store"/>
+                            </ns3:description>
+                        </ns22:type>
+                        <ns22:storeItemAttributes>
+                            <ns32:scanCode>
+                                <ns4:id>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeId"/>
+                                </ns4:id>
+                                <ns4:code>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCode"/>
+                                </ns4:code>
+                                <ns4:typeId>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeTypeId"/>
+                                </ns4:typeId>
+                                <ns4:typeDescription>
+                                    <xsl:value-of select="$Start/pfx:R10Price/pfx:ScanCodeTypeDesc"/>
+                                </ns4:typeDescription>
+                            </ns32:scanCode>
+                            <ns32:prices>
+                                <ns42:price>
+                                    <ns42:type>
+                                        <ns5:id>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/Reg"/>
+                                        </ns5:id>
+                                        <ns5:description>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Constants/RegularPrice"/>
+                                        </ns5:description>
+                                    </ns42:type>
+                                    <ns42:uom>
+                                        <ns52:code>
+                                            <xsl:value-of select="$Start/pfx:R10Price/pfx:UomCode"/>
+                                        </ns52:code>
+                                        <xsl:if test="$Start/pfx:R10Price/pfx:UomName">
+                                            <ns52:name>
+                                                <xsl:value-of select="$Start/pfx:R10Price/pfx:UomName"/>
+                                            </ns52:name>
+                                        </xsl:if>
+                                    </ns42:uom>
+                                    <ns42:currencyTypeCode>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:CurrencyCode"/>
+                                    </ns42:currencyTypeCode>
+                                    <ns42:priceAmount>
+                                        <xsl:if test="$Start/pfx:R10Price/pfx:RegPrice">
+                                            <ns53:amount>
+                                                <xsl:value-of select="$Start/pfx:R10Price/pfx:RegPrice"/>
+                                            </ns53:amount>
+                                        </xsl:if>
+                                    </ns42:priceAmount>
+                                    <ns42:priceMultiple>
+                                        <xsl:value-of select="$Start/pfx:R10Price/pfx:RegMultiple"/>
+                                    </ns42:priceMultiple>
+                                    <ns42:priceStartDate>
+                                        <xsl:value-of select="tib:create-dateTime(1970,1,1,0,0,0)"/>
+                                    </ns42:priceStartDate>
+                                </ns42:price>
+                            </ns32:prices>
+                        </ns22:storeItemAttributes>
+                    </pfx2:locale>
+                </pfx2:item>
+            </pfx2:items>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>169</pd:x>
+        <pd:y>562</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/TenderControl/V2"
+     xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2"
+     xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+     targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/TenderControl/V2"
+     version="0.0"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified">
+
+    <!-- ================== -->
+    <!-- Schema Imports             -->
+    <!-- ================== -->
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" schemaLocation="CommonRefTypes.xsd"/>
+
+    <!-- ================== -->
+    <!-- Global Elements             -->
+    <!-- ================== -->
+    <xs:element name="tenderControl" type="TenderControlType"/>
+    <xs:complexType name="TenderControlType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="bankDeposit" type="tpf:BankDepositType">
+                    <xs:annotation>
+                        <xs:documentation>Facilitates the money flow from the store safe to the bank account.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="bankReceipt" type="tpf:BankReceiptType">
+                    <xs:annotation>
+                        <xs:documentation>Facilitates the money flow from the bank withdrawl to the store safe.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="blindPickup" type="tpf:BlindPickupType">
+                    <xs:annotation>
+                        <xs:documentation>The retailer wants cashier to withdraw tenders from the POS without counting them. The pickup is processed in the Store Team Leader application by the cash office clerk. The cashier is not required to deal with activities other than sales activities.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="paidIn" type="tpf:PaidInType">
+                    <xs:annotation>
+                        <xs:documentation>Transactions in which money is paid at the POS, other than from direct sales. eg: store leader receives payment from a flower vendor, who wants to put a flower stand in the front of the store, and is required to pay for this service.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="paidOut" type="tpf:PaidOutType">
+                    <xs:annotation>
+                        <xs:documentation>Transactions in which money is paid out at the POS, for goods and services. eg: store leader buys flowers from the flower store to decorate the store, and is required to pay for the flowers.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="safeTransfer" type="tpf:SafeTransferType">
+                    <xs:annotation>
+                        <xs:documentation>Facilitates the money flow from one safe to another.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="tenderDeclaration" type="tpf:TenderDeclarationType">
+                    <xs:annotation>
+                        <xs:documentation>The store manager wants to declare the takings in a selected POS in a specified time period.  The declared amounts and the amounts recorded in the system are compared to view and prevent potential loss.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="tenderPickup" type="tpf:TenderPickupType">
+                    <xs:annotation>
+                        <xs:documentation>At the end of the business day, the Cash Office Team Member will remove the money from the POS and place it in a bag in the Customer Service Safe. The next day, the pickup will be counted and entered into Office.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="tenderLoan" type="tpf:TenderLoanType">
+                    <xs:annotation>
+                        <xs:documentation>When a cashier needs change, they will call a Cash Office Store Team Leader. The CO Store TL obtains the requested change from the Cash Office Safe and records the Tender Loan. The CO Store TL takes the change to the cashier. The Cashier will add the change to the POS.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="tillSettles" type="tpf:TillSettlesType"/>
+                <xs:element name="safeSettles" type="tpf:SafeSettlesType"/>
+            </xs:choice>
+            <xs:element name="transactionLink" type="txf:TransactionLinkType" minOccurs="0"/>
+            <xs:element name="adjustments" type="tpf:AdjustmentsTenderType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>At end of day when during counts someone finds they've incorrectly tendered some transactions. Example - you find the theoretical cash deposit is wrong because you tendered a $100 order to cash and not credit. It shows you have $100 more in cash than you do -and it shows you have a $100 less in your credit card batch than you do.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="account" type="tpf:TenderAccountType" minOccurs="0"/>
+            <xs:element name="overShort" type="tpf:TenderOverShortType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

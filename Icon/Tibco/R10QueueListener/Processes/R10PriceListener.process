@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns29="http://schemas.wfm.com/Enterprise/StoreMgmt/StoreGroup/V1" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns25="http://schemas.wfm.com/Enterprise/FinancialMgmt/Gainshare/V1" xmlns:ns26="http://schemas.wfm.com/Enterprise/StoreMgmt/CommonRefTypes/V1" xmlns:pfx11="http://schemas.wfm.com/Mammoth/R10Prices.xsd" xmlns:ns27="http://schemas.wfm.com/Enterprise/Subteam/CommonRefTypes/V1" xmlns:pfx10="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns28="http://schemas.wfm.com/Enterprise/GainshareMgmt/CommonRefTypes/V1" xmlns:ns21="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2" xmlns:ns22="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2" xmlns:ns23="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2" xmlns:ns24="http://schemas.wfm.com/Enterprise/FinancialMgmt/Subteam/V1" xmlns:ns20="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx7="http://www.tibco.com/schemas/IrmaQueueListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx6="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:ns16="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns17="http://schemas.wfm.com/Enterprise/FinancialMgmt/FinancialTransactionAccount/V1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns15="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" xmlns:ns18="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" xmlns:ns19="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns9="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns30="http://schemas.wfm.com/Enterprise/StoreMgmt/StoreGroupType/V1" xmlns:ns12="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:ns5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns31="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:ns13="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns10="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns11="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns8="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/IrmaPrice.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothDbPrice.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/R10Prices.xsd" schemaLocation="/SharedResources/Schemas/Application/R10Prices.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <pd:name>Processes/R10PriceListener.process</pd:name>
+    <pd:startName>MammothPriceR10MessageReceiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="MammothPriceR10MessageReceiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>78</pd:x>
+        <pd:y>128</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>23</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/Queues/R10SourceQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Connections/R10 Source Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>764</pd:endX>
+    <pd:endY>360</pd:endY>
+    <pd:errorSchemas>
+        <Error ref="pfx9:ExceptionRequest"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1495053049862</pd:targetNamespace>
+    <pd:activity name="Parse Mammoth Price R10 Message">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>138</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx11:R10Prices"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$MammothPriceR10MessageReceiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>962</pd:x>
+        <pd:y>358</pd:y>
+        <config>
+            <ConfirmEvent>MammothPriceR10MessageReceiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Send to R10Price Queue">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>965</pd:x>
+        <pd:y>217</pd:y>
+        <config>
+            <processName>/Processes/SendToR10PriceQueue.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Accumulate-Data/pfx2:items"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch-All-Exceptions">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>237</pd:x>
+        <pd:y>357</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Dead Letter Queue Exception">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>392</pd:x>
+        <pd:y>363</pd:y>
+        <config>
+            <processName>/Processes/Common/JMS/PublishOntoDeadLetterQ.process</processName>
+        </config>
+        <pd:inputBindings>
+            <DeadLetterInput>
+                <ns4:request>
+                    <ns4:applicationID>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                    </ns4:applicationID>
+                    <ns4:transactionID>
+                        <xsl:value-of select="$MammothPriceR10MessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSMessageID"/>
+                    </ns4:transactionID>
+                    <ns4:correlationID>
+                        <xsl:value-of select="$MammothPriceR10MessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
+                    </ns4:correlationID>
+                    <ns4:failedSystemName>
+                        <xsl:value-of select="&quot;R10QueueListener&quot;"/>
+                    </ns4:failedSystemName>
+                    <ns4:timeInterval>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/DLQ/TimeInterval"/>
+                    </ns4:timeInterval>
+                    <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
+                        <ns4:errorCode>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
+                        </ns4:errorCode>
+                    </xsl:if>
+                    <ns4:errorMessage>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
+                    </ns4:errorMessage>
+                    <xsl:if test="$_error/pfx4:ErrorReport/StackTrace">
+                        <ns4:stackTrace>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/StackTrace"/>
+                        </ns4:stackTrace>
+                    </xsl:if>
+                    <ns4:currentTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns4:currentTimestamp>
+                    <ns4:exception>
+                        <xsl:choose>
+                            <xsl:when test="$_error_Generate-Data-Error/pfx9:ExceptionRequest/ExceptionCode =&quot;DataError&quot;">
+                                <ns4:data>
+                                    <ns4:toRecipient>
+                                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/To"/>
+                                    </ns4:toRecipient>
+                                    <ns4:ccRecipient>
+                                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/cC"/>
+                                    </ns4:ccRecipient>
+                                </ns4:data>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns4:system>
+                                    <ns4:payload>
+                                        <xsl:value-of select="$MammothPriceR10MessageReceiver/ns:ActivityOutput/Body"/>
+                                    </ns4:payload>
+                                    <ns4:destinationQueue>
+                                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Destinations/Queues/R10SourceQueue"/>
+                                    </ns4:destinationQueue>
+                                    <ns4:isEncrypted>
+                                        <xsl:value-of select="&quot;false&quot;"/>
+                                    </ns4:isEncrypted>
+                                    <ns4:toRecipient>
+                                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/To"/>
+                                    </ns4:toRecipient>
+                                    <ns4:ccRecipient>
+                                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/cC"/>
+                                    </ns4:ccRecipient>
+                                </ns4:system>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ns4:exception>
+                </ns4:request>
+                <OtherProperties/>
+            </DeadLetterInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm-Error">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>565</pd:x>
+        <pd:y>356</pd:y>
+        <config>
+            <ConfirmEvent>MammothPriceR10MessageReceiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="iterate Prices">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>334</pd:x>
+        <pd:y>11</pd:y>
+        <pd:width>510</pd:width>
+        <pd:height>234</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-Mammoth-Price-R10-Message/pfx11:R10Prices/pfx11:R10Price</pd:over>
+            <pd:iterationElementSlot>currentR10Price</pd:iterationElementSlot>
+            <pd:indexSlot>R10Price</pd:indexSlot>
+            <pd:outSlot>Prices</pd:outSlot>
+            <pd:activityOutputName>Map Data to Items</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Process Price Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data to Items</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>Generate Data Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Process Price Data</pd:from>
+            <pd:to>Map Data to Items</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Process Price Data">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>461</pd:x>
+            <pd:y>84</pd:y>
+            <config>
+                <processName>/Processes/Process Price Data.process</processName>
+            </config>
+            <pd:inputBindings>
+                <xsl:copy-of select="$currentR10Price/pfx11:R10Price"/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>460</pd:x>
+            <pd:y>169</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Generate Data Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>681</pd:x>
+            <pd:y>175</pd:y>
+            <config>
+                <faultName>Error</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns3:ActivityInput>
+                    <xsl:if test="$_error/pfx4:ErrorReport/Msg">
+                        <message>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
+                        </message>
+                    </xsl:if>
+                    <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                    <data>
+                        <pfx9:ExceptionRequest>
+                            <ns5:Header>
+                                <ns5:ApplicationID>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                                </ns5:ApplicationID>
+                                <ns5:Timestamp>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </ns5:Timestamp>
+                            </ns5:Header>
+                            <ExceptionCode>
+                                <xsl:value-of select="&quot;DataError&quot;"/>
+                            </ExceptionCode>
+                        </pfx9:ExceptionRequest>
+                    </data>
+                </ns3:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Data to Items">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>662</pd:x>
+            <pd:y>84</pd:y>
+            <config>
+                <element ref="pfx2:items"/>
+            </config>
+            <pd:inputBindings>
+                <xsl:copy-of select="$Process-Price-Data/pfx2:items"/>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Accumulate Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>963</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <element ref="pfx2:items"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:items>
+                <xsl:for-each select="$Prices/AccumulatedOutput/pfx2:items/pfx2:item">
+                    <pfx2:item>
+                        <xsl:if test="@ns6:Action">
+                            <xsl:attribute name="ns6:Action">
+                                <xsl:value-of select="@ns6:Action"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <pfx2:id>
+                            <xsl:value-of select="pfx2:id"/>
+                        </pfx2:id>
+                        <xsl:for-each select="pfx2:base">
+                            <pfx2:base>
+                                <xsl:for-each select="ns7:type">
+                                    <ns7:type>
+                                        <ns9:code>
+                                            <xsl:value-of select="ns9:code"/>
+                                        </ns9:code>
+                                        <xsl:if test="ns9:description">
+                                            <ns9:description>
+                                                <xsl:value-of select="ns9:description"/>
+                                            </ns9:description>
+                                        </xsl:if>
+                                    </ns7:type>
+                                </xsl:for-each>
+                                <xsl:for-each select="ns7:consumerInformation">
+                                    <ns7:consumerInformation>
+                                        <xsl:for-each select="ns10:stockItemConsumerProductLabel">
+                                            <ns10:stockItemConsumerProductLabel>
+                                                <xsl:if test="@ns6:Action">
+                                                    <xsl:attribute name="ns6:Action">
+                                                        <xsl:value-of select="@ns6:Action"/>
+                                                    </xsl:attribute>
+                                                </xsl:if>
+                                                <ns12:consumerLabelTypeCode>
+                                                    <xsl:copy-of select="ns12:consumerLabelTypeCode/@xsi:nil"/>
+                                                    <xsl:value-of select="ns12:consumerLabelTypeCode"/>
+                                                </ns12:consumerLabelTypeCode>
+                                                <xsl:for-each select="ns12:servingSizeUom">
+                                                    <ns12:servingSizeUom>
+                                                        <xsl:if test="ns19:code">
+                                                            <ns19:code>
+                                                                <xsl:value-of select="ns19:code"/>
+                                                            </ns19:code>
+                                                        </xsl:if>
+                                                        <xsl:if test="ns19:name">
+                                                            <ns19:name>
+                                                                <xsl:value-of select="ns19:name"/>
+                                                            </ns19:name>
+                                                        </xsl:if>
+                                                    </ns12:servingSizeUom>
+                                                </xsl:for-each>
+                                                <ns12:servingSizeUomCount>
+                                                    <xsl:value-of select="ns12:servingSizeUomCount"/>
+                                                </ns12:servingSizeUomCount>
+                                                <xsl:for-each select="ns12:servingsInRetailSaleUnitCount">
+                                                    <ns12:servingsInRetailSaleUnitCount>
+                                                        <xsl:if test="ns19:code">
+                                                            <ns19:code>
+                                                                <xsl:value-of select="ns19:code"/>
+                                                            </ns19:code>
+                                                        </xsl:if>
+                                                        <xsl:if test="ns19:name">
+                                                            <ns19:name>
+                                                                <xsl:value-of select="ns19:name"/>
+                                                            </ns19:name>
+                                                        </xsl:if>
+                                                    </ns12:servingsInRetailSaleUnitCount>
+                                                </xsl:for-each>
+                                                <ns12:caloriesCount>
+                                                    <xsl:value-of select="ns12:caloriesCount"/>
+                                                </ns12:caloriesCount>
+                                                <ns12:caloriesFromFatCount>
+                                                    <xsl:value-of select="ns12:caloriesFromFatCount"/>
+                                                </ns12:caloriesFromFatCount>
+                                                <ns12:totalFatGramsAmount>
+                                                    <xsl:value-of select="ns12:totalFatGramsAmount"/>
+                                                </ns12:totalFatGramsAmount>
+                                                <ns12:totalFatDailyIntakePercent>
+                                                    <xsl:value-of select="ns12:totalFatDailyIntakePercent"/>
+                                                </ns12:totalFatDailyIntakePercent>
+                                                <ns12:saturatedFatGramsAmount>
+                                                    <xsl:value-of select="ns12:saturatedFatGramsAmount"/>
+                                                </ns12:saturatedFatGramsAmount>
+                                                <ns12:saturatedFatPercent>
+                                                    <xsl:value-of select="ns12:saturatedFatPercent"/>
+                                                </ns12:saturatedFatPercent>
+                                                <ns12:cholesterolMilligramsCount>
+                                                    <xsl:value-of select="ns12:cholesterolMilligramsCount"/>
+                                                </ns12:cholesterolMilligramsCount>
+                                                <ns12:cholesterolPercent>
+                                                    <xsl:value-of select="ns12:cholesterolPercent"/>
+                                                </ns12:cholesterolPercent>
+                                                <ns12:sodiumMilligramsCount>
+                                                    <xsl:value-of select="ns12:sodiumMilligramsCount"/>
+                                                </ns12:sodiumMilligramsCount>
+                                                <ns12:sodiumPercent>
+                                                    <xsl:value-of select="ns12:sodiumPercent"/>
+                                                </ns12:sodiumPercent>
+                                                <ns12:totalCarbohydrateMilligramsCount>
+                                                    <xsl:value-of select="ns12:totalCarbohydrateMilligramsCount"/>
+                                                </ns12:totalCarbohydrateMilligramsCount>
+                                                <ns12:totalCarbohydratePercent>
+                                                    <xsl:value-of select="ns12:totalCarbohydratePercent"/>
+                                                </ns12:totalCarbohydratePercent>
+                                                <ns12:dietaryFiberGramsCount>
+                                                    <xsl:value-of select="ns12:dietaryFiberGramsCount"/>
+                                                </ns12:dietaryFiberGramsCount>
+                                                <ns12:sugarsGramsCount>
+                                                    <xsl:value-of select="ns12:sugarsGramsCount"/>
+                                                </ns12:sugarsGramsCount>
+                                                <ns12:proteinGramsCount>
+                                                    <xsl:value-of select="ns12:proteinGramsCount"/>
+                                                </ns12:proteinGramsCount>
+                                                <ns12:vitaminADailyMinimumPercent>
+                                                    <xsl:value-of select="ns12:vitaminADailyMinimumPercent"/>
+                                                </ns12:vitaminADailyMinimumPercent>
+                                                <ns12:vitaminBDailyMinimumPercent>
+                                                    <xsl:value-of select="ns12:vitaminBDailyMinimumPercent"/>
+                                                </ns12:vitaminBDailyMinimumPercent>
+                                                <ns12:vitaminCDailyMinimumPercent>
+                                                    <xsl:value-of select="ns12:vitaminCDailyMinimumPercent"/>
+                                                </ns12:vitaminCDailyMinimumPercent>
+                                                <ns12:calciumDailyMinimumPercent>
+                                                    <xsl:value-of select="ns12:calciumDailyMinimumPercent"/>
+                                                </ns12:calciumDailyMinimumPercent>
+                                                <ns12:ironDailyMinimumPercent>
+                                                    <xsl:value-of select="ns12:ironDailyMinimumPercent"/>
+                                                </ns12:ironDailyMinimumPercent>
+                                                <xsl:if test="ns12:nutritionalDescriptionText">
+                                                    <ns12:nutritionalDescriptionText>
+                                                        <xsl:value-of select="ns12:nutritionalDescriptionText"/>
+                                                    </ns12:nutritionalDescriptionText>
+                                                </xsl:if>
+                                                <ns12:isHazardousMaterial>
+                                                    <xsl:value-of select="ns12:isHazardousMaterial"/>
+                                                </ns12:isHazardousMaterial>
+                                                <ns12:hazardousMaterialTypeCode>
+                                                    <xsl:copy-of select="ns12:hazardousMaterialTypeCode/@xsi:nil"/>
+                                                    <xsl:value-of select="ns12:hazardousMaterialTypeCode"/>
+                                                </ns12:hazardousMaterialTypeCode>
+                                            </ns10:stockItemConsumerProductLabel>
+                                        </xsl:for-each>
+                                    </ns7:consumerInformation>
+                                </xsl:for-each>
+                                <xsl:for-each select="ns7:traits">
+                                    <ns7:traits>
+                                        <xsl:for-each select="ns6:trait">
+                                            <ns6:trait>
+                                                <xsl:if test="@ns6:Action">
+                                                    <xsl:attribute name="ns6:Action">
+                                                        <xsl:value-of select="@ns6:Action"/>
+                                                    </xsl:attribute>
+                                                </xsl:if>
+                                                <ns11:code>
+                                                    <xsl:value-of select="ns11:code"/>
+                                                </ns11:code>
+                                                <xsl:if test="ns11:pattern">
+                                                    <ns11:pattern>
+                                                        <xsl:value-of select="ns11:pattern"/>
+                                                    </ns11:pattern>
+                                                </xsl:if>
+                                                <xsl:for-each select="ns11:group">
+                                                    <ns11:group>
+                                                        <xsl:if test="@ns6:Action">
+                                                            <xsl:attribute name="ns6:Action">
+                                                                <xsl:value-of select="@ns6:Action"/>
+                                                            </xsl:attribute>
+                                                        </xsl:if>
+                                                        <ns13:code>
+                                                            <xsl:value-of select="ns13:code"/>
+                                                        </ns13:code>
+                                                        <xsl:if test="ns13:description">
+                                                            <ns13:description>
+                                                                <xsl:value-of select="ns13:description"/>
+                                                            </ns13:description>
+                                                        </xsl:if>
+                                                    </ns11:group>
+                                                </xsl:for-each>
+                                                <xsl:for-each select="ns11:type">
+                                                    <ns11:type>
+                                                        <ns14:description>
+                                                            <xsl:value-of select="ns14:description"/>
+                                                        </ns14:description>
+                                                        <xsl:for-each select="ns14:value">
+                                                            <ns14:value>
+                                                                <ns20:value>
+                                                                    <xsl:value-of select="ns20:value"/>
+                                                                </ns20:value>
+                                                                <xsl:for-each select="ns20:uom">
+                                                                    <ns20:uom>
+                                                                        <xsl:if test="ns19:code">
+                                                                            <ns19:code>
+                                                                                <xsl:value-of select="ns19:code"/>
+                                                                            </ns19:code>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="ns19:name">
+                                                                            <ns19:name>
+                                                                                <xsl:value-of select="ns19:name"/>
+                                                                            </ns19:name>
+                                                                        </xsl:if>
+                                                                    </ns20:uom>
+                                                                </xsl:for-each>
+                                                            </ns14:value>
+                                                        </xsl:for-each>
+                                                    </ns11:type>
+                                                </xsl:for-each>
+                                            </ns6:trait>
+                                        </xsl:for-each>
+                                    </ns7:traits>
+                                </xsl:for-each>
+                            </pfx2:base>
+                        </xsl:for-each>
+                        <xsl:copy-of select="pfx2:locale"/>
+                    </pfx2:item>
+                </xsl:for-each>
+            </pfx2:items>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>MammothPriceR10MessageReceiver</pd:from>
+        <pd:to>Parse Mammoth Price R10 Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send to R10Price Queue</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Dead Letter Queue Exception</pd:from>
+        <pd:to>Confirm-Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm-Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch-All-Exceptions</pd:from>
+        <pd:to>Dead Letter Queue Exception</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Mammoth Price R10 Message</pd:from>
+        <pd:to>iterate Prices</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>iterate Prices</pd:from>
+        <pd:to>Accumulate Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Accumulate Data</pd:from>
+        <pd:to>Send to R10Price Queue</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
