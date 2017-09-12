@@ -69,7 +69,7 @@ SELECT
 	s.BusinessUnit_ID as 'STORE_NUMBER', 
 	'REG' as 'PRICE_TYPE', 
 	p.Multiple as MULTIPLE,
-	p.Price as PRICE, 
+	CAST(p.Price AS decimal (9,2)) as PRICE, 
 	CASE 
 		WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
 			THEN 'LB'
@@ -108,7 +108,7 @@ SELECT
 	s.BusinessUnit_ID as 'STORE_NUMBER', 
 	pct.PriceChgTypeDesc as 'PRICE_TYPE', 
 	p.Multiple as MULTIPLE,
-	p.Sale_Price as PRICE, 
+	CAST(p.Sale_Price AS decimal (9,2)) as PRICE, 
 	CASE 
 		WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
 			THEN 'LB'
@@ -153,7 +153,7 @@ SELECT
 	s.BusinessUnit_ID as 'STORE_NUMBER', 
 	'REG' as 'PRICE_TYPE', 
 	pbd.Multiple as MULTIPLE,
-	pbd.Price as PRICE, 
+	CAST(pbd.Price AS decimal (9,2)) as PRICE, 
 	CASE 
 		WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
 			THEN 'LB'
@@ -190,7 +190,7 @@ SELECT
 	s.BusinessUnit_ID as 'STORE_NUMBER', 
 	pct.PriceChgTypeDesc as 'PRICE_TYPE', 
 	pbd.Multiple as MULTIPLE,
-	pbd.Sale_Price as PRICE, 
+	CAST(pbd.Sale_Price AS decimal (9,2)) as PRICE, 
 	CASE 
 		WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
 			THEN 'LB'
