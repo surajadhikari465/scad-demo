@@ -2,36 +2,44 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;</value>
+			<name>DataError</name>
+			<value>"Data Error</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503943284398</modTime>
+			<modTime>1505397979495</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SqlDBDriver</name>
-			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
+			<name>DatabaseError</name>
+			<value>Database Error</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502389673601</modTime>
+			<modTime>1505397979441</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SqlDBPwd</name>
-			<value>#!e7lOxMnCl+LzKpzvLRu2sPvqPULBaSaRy6mgRWomTQzkQbAMsZm7rA==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1502389673668</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SqlDBUser</name>
-			<value>Mammoth.tibco.Dev</value>
+			<name>MappingError</name>
+			<value>Error In Mapping</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502389673740</modTime>
+			<modTime>1505405488520</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>PriceNotSupplied</name>
+			<value>Price Value Not Supplied</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505401652008</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ZeroRowsImpacted</name>
+			<value>Zero Rows were Impacted</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505400454352</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

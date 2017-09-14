@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BWSharedResource>
-    <name>ESB Connection</name>
+    <name>Confirm BOD Connection</name>
     <resourceType>ae.shared.JMSConnectionKey</resourceType>
     <config>
         <NamingEnvironment>
             <UseJNDI>true</UseJNDI>
             <ProviderURL>tcp://localhost:7222</ProviderURL>
-            <NamingURL>%%Connections/TCP/JMS/EsbEMS/EsbJndiContextUrl%%</NamingURL>
-            <NamingInitialContextFactory>%%Connections/TCP/JMS/EsbEMS/EsbJNDIContextFactory%%</NamingInitialContextFactory>
-            <TopicFactoryName>%%Connections/TCP/JMS/EsbEMS/EsbTopicConnectionFactory%%</TopicFactoryName>
-            <QueueFactoryName>%%Connections/TCP/JMS/EsbEMS/EsbQueueConnectionFactory%%</QueueFactoryName>
-            <NamingPrincipal>%%Connections/TCP/JMS/EsbEMS/EsbJndiUserName%%</NamingPrincipal>
-            <NamingCredential>%%Connections/TCP/JMS/EsbEMS/EsbJndiPassword%%</NamingCredential>
+            <NamingURL>%%Connections/JMS/EsbJndiContextUrl%%</NamingURL>
+            <NamingInitialContextFactory>%%Connections/JMS/EsbJNDIContextFactory%%</NamingInitialContextFactory>
+            <TopicFactoryName>%%Connections/JMS/EsbTopicConnectionFactory%%</TopicFactoryName>
+            <QueueFactoryName>%%Connections/JMS/EsbQueueConnectionFactory%%</QueueFactoryName>
+            <NamingPrincipal>%%Connections/JMS/EsbJndiUserName%%</NamingPrincipal>
+            <NamingCredential>%%Connections/JMS/EsbJndiPassword%%</NamingCredential>
         </NamingEnvironment>
         <ConnectionAttributes>
-            <username>%%Connections/TCP/JMS/EsbEMS/EsbJmsUserName%%</username>
-            <password>%%Connections/TCP/JMS/EsbEMS/EsbJmsPassword%%</password>
+            <username>%%Connections/JMS/EsbJmsUserName%%</username>
+            <password>%%Connections/JMS/EsbJmsPassword%%</password>
             <clientID/>
             <autoGenClientID>true</autoGenClientID>
         </ConnectionAttributes>
         <UseXACF>false</UseXACF>
         <useSsl>true</useSsl>
-        <AdmFactorySslPassword>%%Connections/TCP/JMS/EsbEMS/EsbSslPassword%%</AdmFactorySslPassword>
+        <AdmFactorySslPassword>%%Connections/JMS/EsbSslPassword%%</AdmFactorySslPassword>
         <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
             <ns0:trace>true</ns0:trace>
             <ns0:debugTrace>true</ns0:debugTrace>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns8="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx4="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pfx7="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx6="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns8="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pfx8="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx7="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothPrices.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/SharedResources/Schemas/Application/ActivityOutput.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
     <pd:name>Processors/ProcessPriceMessage.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -24,9 +25,12 @@
     <pd:startY>294</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
+    <pd:endType/>
     <pd:endX>956</pd:endX>
     <pd:endY>284</pd:endY>
-    <pd:errorSchemas/>
+    <pd:errorSchemas>
+        <Error ref="pfx8:ExceptionRequest"/>
+    </pd:errorSchemas>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1495053255704</pd:targetNamespace>
     <pd:group name="Transaction">
@@ -110,7 +114,7 @@
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
                 <pd:x>372</pd:x>
-                <pd:y>284</pd:y>
+                <pd:y>285</pd:y>
                 <config>
                     <processName>/DataAccess/Commands/PriceCommand.process</processName>
                 </config>

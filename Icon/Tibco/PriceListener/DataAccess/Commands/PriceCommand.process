@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib" xmlns:pfx8="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx6="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns12="http://schema.infor.com/InforOAGIS/2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:ns8="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib" xmlns:pfx8="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx6="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns12="http://schema.infor.com/InforOAGIS/2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:ns8="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothPrices.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" schemaLocation="/SharedResources/Schemas/Application/ActivityOutput.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
     <pd:name>DataAccess/Commands/PriceCommand.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -23,51 +24,13 @@
     <pd:startY>284</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>791</pd:endX>
-    <pd:endY>169</pd:endY>
+    <pd:endX>884</pd:endX>
+    <pd:endY>255</pd:endY>
     <pd:errorSchemas>
-        <Error ref="pfx6:Error"/>
+        <Error ref="pfx9:ExceptionRequest"/>
     </pd:errorSchemas>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1498075441413</pd:targetNamespace>
-    <pd:activity name="Catch">
-        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-        <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>746</pd:x>
-        <pd:y>554</pd:y>
-        <pd:handler>true</pd:handler>
-        <config>
-            <catchAll>false</catchAll>
-            <fault>localname=Error namespace=http://schemas.wfm.com/Mammoth/Error.xsd</fault>
-        </config>
-        <pd:inputBindings/>
-    </pd:activity>
-    <pd:activity name="DatabaseLogger">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>767</pd:x>
-        <pd:y>425</pd:y>
-        <config>
-            <processName>/DataAccess/Commands/DatabaseLogger.process</processName>
-            <spawn>true</spawn>
-        </config>
-        <pd:inputBindings>
-            <Input>
-                <pfx6:Error>
-                    <pfx6:StackTrace>
-                        <xsl:value-of select="$Catch/pfx6:Error/pfx6:StackTrace"/>
-                    </pfx6:StackTrace>
-                    <pfx6:Code>
-                        <xsl:value-of select="$Catch/pfx6:Error/pfx6:Code"/>
-                    </pfx6:Code>
-                    <pfx6:Message>
-                        <xsl:value-of select="$Catch/pfx6:Error/pfx6:Message"/>
-                    </pfx6:Message>
-                </pfx6:Error>
-                <xsl:copy-of select="$Start/Input/pfx8:MammothPrice"/>
-            </Input>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:activity name="Generate Error">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
         <pd:resourceType>ae.activities.throw</pd:resourceType>
@@ -79,43 +42,26 @@
         <pd:inputBindings>
             <pfx7:ActivityInput>
                 <message>
-                    <xsl:value-of select="&quot;Price Not supplied&quot;"/>
+                    <xsl:value-of select="concat(&quot;Price Not supplied &quot;,&quot;Patch Family Id: &quot;,$Start/Input/PatchFamilyID,&#xA;&quot;Item Id: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId,&#xA;&quot;Region&quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region)"/>
                 </message>
                 <messageCode>
-                    <xsl:value-of select="&quot;PriceNotSupplied&quot;"/>
+                    <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/PriceNotSupplied"/>
                 </messageCode>
                 <data>
-                    <pfx6:Error>
-                        <pfx6:StackTrace>
-                            <xsl:value-of select="&quot;Price Command &quot;"/>
-                        </pfx6:StackTrace>
-                        <pfx6:Code>
-                            <xsl:value-of select="&quot;PriceNotSupplied&quot;"/>
-                        </pfx6:Code>
-                        <pfx6:Message>
-                            <xsl:value-of select="&quot;Price Not supplied&quot;"/>
-                        </pfx6:Message>
-                    </pfx6:Error>
+                    <pfx9:ExceptionRequest>
+                        <ns9:Header>
+                            <ns9:ApplicationID>
+                                <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ApplicationID"/>
+                            </ns9:ApplicationID>
+                            <ns9:Timestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns9:Timestamp>
+                        </ns9:Header>
+                        <ExceptionCode>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/PriceNotSupplied"/>
+                        </ExceptionCode>
+                    </pfx9:ExceptionRequest>
                 </data>
-            </pfx7:ActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Generate-Error-1">
-        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
-        <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>773</pd:x>
-        <pd:y>274</pd:y>
-        <config>
-            <faultName/>
-        </config>
-        <pd:inputBindings>
-            <pfx7:ActivityInput>
-                <message>
-                    <xsl:value-of select="$Catch/pfx6:Error/pfx6:Message"/>
-                </message>
-                <messageCode>
-                    <xsl:value-of select="$Catch/pfx6:Error/pfx6:Code"/>
-                </messageCode>
             </pfx7:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
@@ -167,6 +113,13 @@
             <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Add"</pd:xpath>
         </pd:transition>
         <pd:transition>
+            <pd:from>Update Price</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
             <pd:from>DeletePrice</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
@@ -174,11 +127,11 @@
             <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Update Price</pd:from>
+            <pd:from>Map Database Error</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>otherwise</pd:conditionType>
+            <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>AddPrice</pd:from>
@@ -189,7 +142,7 @@
             <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>ConfirmBODION</pd:from>
+            <pd:from>MapZeroRowsImpactedError</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -243,16 +196,14 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>Null</pd:from>
-            <pd:to>Throw-Error</pd:to>
-            <pd:xpathDescription>No Retry Error</pd:xpathDescription>
+            <pd:to>Map Database Error</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>Update Price</pd:from>
-            <pd:to>ConfirmBODION</pd:to>
-            <pd:xpathDescription>ZeroRowsAffected</pd:xpathDescription>
+            <pd:to>MapZeroRowsImpactedError</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
@@ -260,12 +211,11 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>DeletePrice</pd:from>
-            <pd:to>ConfirmBODION</pd:to>
-            <pd:xpathDescription>ZeroRowsAffected</pd:xpathDescription>
+            <pd:to>MapZeroRowsImpactedError</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$DeletePrice/resultSet/outputSet/NumberOfRowsDeleted&gt;0</pd:xpath>
+            <pd:xpath>$DeletePrice/resultSet/outputSet/NumberOfRowsDeleted=0</pd:xpath>
         </pd:transition>
         <pd:activity name="Update Price">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
@@ -449,7 +399,7 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
         <pd:activity name="Throw-Db-Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>514</pd:x>
+            <pd:x>516</pd:x>
             <pd:y>487</pd:y>
             <config>
                 <faultName>Error</faultName>
@@ -457,7 +407,7 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
             <pd:inputBindings>
                 <pfx7:ActivityInput>
                     <message>
-                        <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
+                        <xsl:value-of select="concat(&quot;Database Related Error for: &quot;,&quot;PatchFamilyId: &quot;, $Start/Input/PatchFamilyID,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit,&#xA;&quot;Error: &quot;,$_error/ns7:ErrorReport/Msg)"/>
                     </message>
                     <xsl:if test="$_error/ns7:ErrorReport/MsgCode">
                         <messageCode>
@@ -465,17 +415,19 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
                         </messageCode>
                     </xsl:if>
                     <data>
-                        <pfx6:Error>
-                            <pfx6:StackTrace>
-                                <xsl:value-of select="$_error/ns7:ErrorReport/StackTrace"/>
-                            </pfx6:StackTrace>
-                            <pfx6:Code>
-                                <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
-                            </pfx6:Code>
-                            <pfx6:Message>
-                                <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
-                            </pfx6:Message>
-                        </pfx6:Error>
+                        <pfx9:ExceptionRequest>
+                            <ns9:Header>
+                                <ns9:ApplicationID>
+                                    <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ApplicationID"/>
+                                </ns9:ApplicationID>
+                                <ns9:Timestamp>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </ns9:Timestamp>
+                            </ns9:Header>
+                            <ExceptionCode>
+                                <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/DatabaseError"/>
+                            </ExceptionCode>
+                        </pfx9:ExceptionRequest>
                     </data>
                 </pfx7:ActivityInput>
             </pd:inputBindings>
@@ -802,157 +754,98 @@ result=Math.pow(2,retryCount)*100L;
             <config/>
             <pd:inputBindings/>
         </pd:activity>
-        <pd:activity name="Throw-Error">
-            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
-            <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>415</pd:x>
-            <pd:y>364</pd:y>
+        <pd:activity name="Map Database Error">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>389</pd:x>
+            <pd:y>361</pd:y>
             <config>
-                <faultName>Error</faultName>
+                <element ref="pfx9:ExceptionRequest"/>
             </config>
             <pd:inputBindings>
-                <pfx7:ActivityInput>
-                    <message>
-                        <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
-                    </message>
-                    <xsl:if test="$_error/ns7:ErrorReport/MsgCode">
-                        <messageCode>
-                            <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
-                        </messageCode>
-                    </xsl:if>
-                    <data>
-                        <pfx6:Error>
-                            <pfx6:StackTrace>
-                                <xsl:value-of select="$_error/ns7:ErrorReport/StackTrace"/>
-                            </pfx6:StackTrace>
-                            <pfx6:Code>
-                                <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
-                            </pfx6:Code>
-                            <pfx6:Message>
-                                <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
-                            </pfx6:Message>
-                        </pfx6:Error>
-                    </data>
-                </pfx7:ActivityInput>
+                <pfx9:ExceptionRequest>
+                    <ns9:Header>
+                        <ns9:ApplicationID>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ApplicationID"/>
+                        </ns9:ApplicationID>
+                        <ns9:Timestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns9:Timestamp>
+                        <ns9:Message>
+                            <xsl:value-of select="concat(&quot;Data Error For: &quot;,&quot;PatchFamilyId: &quot;, $Start/Input/PatchFamilyID,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit,&#xA;&quot;Error: &quot;,$_error/ns7:ErrorReport/Msg)"/>
+                        </ns9:Message>
+                    </ns9:Header>
+                    <ExceptionCode>
+                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/DataError"/>
+                    </ExceptionCode>
+                </pfx9:ExceptionRequest>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="ConfirmBODION">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>617</pd:x>
-            <pd:y>87</pd:y>
+        <pd:activity name="MapZeroRowsImpactedError">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>604</pd:x>
+            <pd:y>80</pd:y>
             <config>
-                <processName>/Processors/ConfirmBODION.process</processName>
+                <element ref="pfx9:ExceptionRequest"/>
             </config>
             <pd:inputBindings>
-                <InputData>
-                    <SequenceID>
-                        <xsl:value-of select="$Start/Input/GPMSequenceID"/>
-                    </SequenceID>
-                    <PatchFamilyID>
-                        <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                    </PatchFamilyID>
-                    <ns12:ConfirmBOD>
-                        <xsl:attribute name="releaseID">
-                            <xsl:value-of select="9.2"/>
-                        </xsl:attribute>
-                        <ns12:ApplicationArea>
-                            <ns12:CreationDateTime>
-                                <xsl:value-of select="current-dateTime()"/>
-                            </ns12:CreationDateTime>
-                        </ns12:ApplicationArea>
-                        <ns12:DataArea>
-                            <ns12:Confirm>
-                                <ns12:ResponseCriteria/>
-                            </ns12:Confirm>
-                            <ns12:BOD>
-                                <ns12:Description>
-                                    <xsl:value-of select="&quot;Data Not Found&quot;"/>
-                                </ns12:Description>
-                                <ns12:BODFailureMessage>
-                                    <ns12:ErrorProcessMessage>
-                                        <ns12:Description>
-                                            <xsl:value-of select="&quot;Data not found in mammoth database.&quot;"/>
-                                        </ns12:Description>
-                                        <ns12:Type>
-                                            <xsl:value-of select="&quot;Data&quot;"/>
-                                        </ns12:Type>
-                                        <ns12:ReasonCode>
-                                            <xsl:value-of select="&quot;DataNotFound&quot;"/>
-                                        </ns12:ReasonCode>
-                                    </ns12:ErrorProcessMessage>
-                                </ns12:BODFailureMessage>
-                                <ns12:OriginalBOD>
-                                    <ns12:MessageContent>
-                                        <xsl:value-of select="concat(concat(&quot;[CDATA[&quot;,tib:string-to-base64( $Start/Input/ns8:ActivityOutput/ns8:Body)),&quot;]]&quot;)"/>
-                                    </ns12:MessageContent>
-                                </ns12:OriginalBOD>
-                            </ns12:BOD>
-                        </ns12:DataArea>
-                    </ns12:ConfirmBOD>
-                </InputData>
+                <pfx9:ExceptionRequest>
+                    <ns9:Header>
+                        <ns9:ApplicationID>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ApplicationID"/>
+                        </ns9:ApplicationID>
+                        <ns9:Timestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns9:Timestamp>
+                        <ns9:Message>
+                            <xsl:value-of select="concat(&quot;0 Rows were &quot;,$Start/Input/pfx8:MammothPrice/pfx8:Action, &quot;PatchFamilyId: &quot;, $Start/Input/PatchFamilyID,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit)"/>
+                        </ns9:Message>
+                    </ns9:Header>
+                    <ExceptionCode>
+                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted"/>
+                    </ExceptionCode>
+                </pfx9:ExceptionRequest>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
-    <pd:activity name="ConfirmBODION-Error">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>891</pd:x>
-        <pd:y>481</pd:y>
+    <pd:activity name="Generate-DataError">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>863</pd:x>
+        <pd:y>126</pd:y>
         <config>
-            <processName>/Processors/ConfirmBODION.process</processName>
+            <faultName>Error</faultName>
         </config>
         <pd:inputBindings>
-            <InputData>
-                <SequenceID>
-                    <xsl:value-of select="$Start/Input/GPMSequenceID"/>
-                </SequenceID>
-                <PatchFamilyID>
-                    <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                </PatchFamilyID>
-                <ns12:ConfirmBOD>
-                    <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="releaseID">
-                        <xsl:value-of select="9.2"/>
-                    </xsl:attribute>
-                    <ns12:ApplicationArea>
-                        <ns12:CreationDateTime>
-                            <xsl:value-of select="current-dateTime()"/>
-                        </ns12:CreationDateTime>
-                    </ns12:ApplicationArea>
-                    <ns12:DataArea>
-                        <ns12:Confirm>
-                            <ns12:ResponseCriteria/>
-                        </ns12:Confirm>
-                        <ns12:BOD>
-                            <ns12:Description>
-                                <xsl:copy-of select="$_error/ns7:ErrorReport/Msg/ancestor-or-self::*/namespace::node()"/>
-                                <xsl:copy-of select="$_error/ns7:ErrorReport/Msg/@*"/>
-                                <xsl:copy-of select="$_error/ns7:ErrorReport/Msg/node()"/>
-                            </ns12:Description>
-                            <ns12:BODFailureMessage>
-                                <ns12:ErrorProcessMessage>
-                                    <ns12:Description>
-                                        <xsl:copy-of select="$_error/ns7:ErrorReport/Msg/ancestor-or-self::*/namespace::node()"/>
-                                        <xsl:copy-of select="$_error/ns7:ErrorReport/Msg/@*"/>
-                                        <xsl:copy-of select="$_error/ns7:ErrorReport/Msg/node()"/>
-                                    </ns12:Description>
-                                    <ns12:Type>
-                                        <xsl:value-of select="&quot;Data&quot;"/>
-                                    </ns12:Type>
-                                    <ns12:ReasonCode>
-                                        <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
-                                    </ns12:ReasonCode>
-                                </ns12:ErrorProcessMessage>
-                            </ns12:BODFailureMessage>
-                            <ns12:OriginalBOD>
-                                <ns12:MessageContent>
-                                    <xsl:value-of select="concat(concat(&quot;[CDATA[&quot;,tib:string-to-base64( $Start/Input/ns8:ActivityOutput/ns8:Body)),&quot;]]&quot;)"/>
-                                </ns12:MessageContent>
-                            </ns12:OriginalBOD>
-                        </ns12:BOD>
-                    </ns12:DataArea>
-                </ns12:ConfirmBOD>
-            </InputData>
+            <xsl:choose>
+                <xsl:when test="exists($MapZeroRowsImpactedError/pfx9:ExceptionRequest/ExceptionCode)">
+                    <pfx7:ActivityInput>
+                        <message>
+                            <xsl:value-of select="&quot;Zero Rows Were Impacted&quot;"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted"/>
+                        </messageCode>
+                        <data>
+                            <xsl:copy-of select="$MapZeroRowsImpactedError/pfx9:ExceptionRequest"/>
+                        </data>
+                    </pfx7:ActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <pfx7:ActivityInput>
+                        <message>
+                            <xsl:value-of select="&quot;Data Error&quot;"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/DataError"/>
+                        </messageCode>
+                        <data>
+                            <xsl:copy-of select="$Map-Database-Error/pfx9:ExceptionRequest"/>
+                        </data>
+                    </pfx7:ActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -961,13 +854,6 @@ result=Math.pow(2,retryCount)*100L;
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>DatabaseLogger</pd:from>
-        <pd:to>Generate-Error-1</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Start</pd:from>
@@ -980,23 +866,19 @@ result=Math.pow(2,retryCount)*100L;
     </pd:transition>
     <pd:transition>
         <pd:from>RepeatOnDbError</pd:from>
+        <pd:to>Generate-DataError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($MapZeroRowsImpactedError/pfx9:ExceptionRequest/ExceptionCode)
+or
+exists($Map-Database-Error/pfx9:ExceptionRequest/ExceptionCode)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RepeatOnDbError</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Catch</pd:from>
-        <pd:to>ConfirmBODION-Error</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>ConfirmBODION-Error</pd:from>
-        <pd:to>DatabaseLogger</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
+        <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>
