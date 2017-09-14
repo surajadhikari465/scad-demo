@@ -50,7 +50,5 @@ GO
 CREATE NONCLUSTERED INDEX [IX_MessageSequence_PatchFamilyID] ON [gpm].[MessageSequence] ([PatchFamilyID])
 GO
 
-
-
 GRANT INSERT, UPDATE, SELECT ON [gpm].[MessageSequence] TO [TibcoRole]
 GO

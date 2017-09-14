@@ -63,7 +63,7 @@ BEGIN
 		@StartDate datetime2,
 		@EndDate datetime2,
 		@PriceType nvarchar(3),
-		@PriceTypeAttribute nvarchar(3),
+		@PriceTypeAttribute nvarchar(10),
 		@SellableUOM nvarchar(3),
 		@CurrencyCode nvarchar(3),
 		@Multiple int,

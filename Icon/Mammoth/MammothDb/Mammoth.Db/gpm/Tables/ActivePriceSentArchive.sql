@@ -7,3 +7,7 @@
 GO
 
 CREATE CLUSTERED INDEX CIX_ActivePriceSentArchive ON gpm.ActivePriceSentArchive (Region, PriceID)
+GO
+
+GRANT INSERT ON [gpm].[ActivePriceSentArchive] TO [TibcoRole]
+GO

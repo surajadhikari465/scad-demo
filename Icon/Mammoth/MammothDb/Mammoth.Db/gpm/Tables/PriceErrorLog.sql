@@ -27,3 +27,6 @@
 ) ON [FG_FL]
 
 GO
+
+GRANT INSERT ON [gpm].[PriceErrorLog] TO [TibcoRole]
+GO

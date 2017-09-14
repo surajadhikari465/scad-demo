@@ -75,3 +75,7 @@ GO
 
 CREATE INDEX [IX_Price_MA_StartDate] ON [gpm].[Price_MA] ([StartDate])
 	INCLUDE (Region, PriceID, GpmID, ItemID, BusinessUnitID, EndDate, Price, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, NewTagExpiration, InsertDateUtc, ModifiedDateUtc)
+GO
+
+GRANT INSERT, UPDATE, DELETE on gpm.Price_MA to [TibcoRole]
+GO
