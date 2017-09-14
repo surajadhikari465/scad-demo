@@ -12,7 +12,7 @@
     <pd:starter name="PriceMessageReceiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>81</pd:x>
+        <pd:x>80</pd:x>
         <pd:y>174</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
@@ -104,8 +104,8 @@
     <pd:activity name="Parse Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>239</pd:x>
-        <pd:y>44</pd:y>
+        <pd:x>238</pd:x>
+        <pd:y>43</pd:y>
         <config>
             <processName>/Processors/ParsePriceMessage.process</processName>
         </config>
@@ -309,7 +309,7 @@
     <pd:activity name="HandleEmergencyPrices">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>631</pd:x>
+        <pd:x>632</pd:x>
         <pd:y>294</pd:y>
         <config>
             <processName>/Processors/HandleEmergencyPrices.process</processName>

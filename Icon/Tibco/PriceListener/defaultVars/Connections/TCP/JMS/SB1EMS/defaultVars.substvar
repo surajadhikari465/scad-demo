@@ -11,19 +11,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SB1JmsPassword</name>
-			<value>#!4oKfVd/0mENg8M1o1QerMNVahuNJ7Ob1dcGFFNJWSRmRI19ExWp7K3UYty5DbmR5Gfbn8+ABb00=</value>
+			<value>#!+KKNTLNgzuIu51lcKNCydqkbYEZ0YzZ9Wcl0Onc0ZAscJuFxAO+Ntk8kzgFIegMtlCwLWwFhPPI=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1503946511481</modTime>
+			<modTime>1505420011896</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SB1JmsUserName</name>
-			<value>SB1_MammothPriceUser</value>
+			<value>sb1_mammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503946511564</modTime>
+			<modTime>1505420012289</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SB1JndiContextUrl</name>
@@ -35,19 +35,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SB1JndiPassword</name>
-			<value>#!9WakIzRPblAO28ffu2JCfS56uewJs4ruSf6DHggc95bC81afe/XFYWa02vRn/dy/BJF9B9YIu+VnAKpeZ7Ih1Q==</value>
+			<value>#!iHZ5SlGW/M3dKjb6ZfsMvB2EKADXbx3dHVNjH4Fa8hOflPBNlfSkfZ4v7RrQyIs947k9Zt4EtNdKims21/Py8A==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1503698462761</modTime>
+			<modTime>1505423221754</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SB1JndiUserName</name>
-			<value>jndiSB1_MammothPriceUser</value>
+			<value>sb1_jndiMammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503698462824</modTime>
+			<modTime>1505423221801</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SB1QueueConnectionFactory</name>
@@ -59,7 +59,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SB1SslPassword</name>
-			<value>#!/8PhVrVpgZVF9k0847qajw==</value>
+			<value>#!CpKlx5vTDgelYIg3R6IgpA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
