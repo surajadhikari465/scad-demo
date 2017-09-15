@@ -2,6 +2,7 @@
 using System;
 using System.Xml.Serialization;
 using Esb.Core.Constants;
+using Icon.Esb.Schemas.Infor.ContractTypes;
 
 namespace Esb.Core.Serializer
 {
@@ -27,12 +28,21 @@ namespace Esb.Core.Serializer
             {
                 AddSelectionGroupsNameSpaces(namespaces);
             }
+            else if (t == typeof(ConfirmBODType))
+            {
+                AddConfirmBodNameSpaces(namespaces);
+            }
             else
             {
                 throw new ArgumentException(String.Format("No namespaces set for type {0}", t.ToString()));
             }
 
             return namespaces;
+        }
+
+        private static void AddConfirmBodNameSpaces(XmlSerializerNamespaces namespaces)
+        {
+            namespaces.Add(string.Empty, NamespaceConstants.XmlNamespaces.InforSchema);
         }
 
         private static void AddSelectionGroupsNameSpaces(XmlSerializerNamespaces namespaces)

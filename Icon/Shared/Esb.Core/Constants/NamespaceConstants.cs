@@ -41,6 +41,7 @@ namespace Esb.Core.Constants
             public const string EnterpriseTraitMgmtTraitValue = "http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2";
             public const string EnterpriseItemMgmtCommonRefTypes = "http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1";
             public const string EnterpriseItemMgmtConsumerInformation = "http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1";
+            public const string InforSchema = "http://schema.infor.com/InforOAGIS/2";
         }
     }
 }

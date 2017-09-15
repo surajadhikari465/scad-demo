@@ -42,13 +42,15 @@
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Irma.Framework.2016.10.20.1\lib\net45\Irma.Framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Irma.Framework.2017.8.31.1\lib\net45\Irma.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

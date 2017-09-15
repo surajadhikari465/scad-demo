@@ -39,7 +39,6 @@ namespace Irma.Testing.Builders
         private Irma.Framework.Users users;
         private System.Collections.Generic.ICollection<Irma.Framework.MammothItemLocaleChangeQueue> itemLocaleChangeQueue;
         private System.Collections.Generic.ICollection<Irma.Framework.StoreSubTeam> storeSubTeam;
-        private System.Collections.Generic.ICollection<Irma.Framework.TlogReprocessRequest> tlogReprocessRequest;
         private System.Collections.Generic.ICollection<Irma.Framework.Users> users1;
         private System.Collections.Generic.ICollection<Irma.Framework.Users> users2;
         private System.Collections.Generic.ICollection<Irma.Framework.MammothPriceChangeQueue> priceChangeQueue;
@@ -81,7 +80,6 @@ namespace Irma.Testing.Builders
             this.users = null;
             this.itemLocaleChangeQueue = null;
             this.storeSubTeam = null;
-            this.tlogReprocessRequest = null;
             this.users1 = null;
             this.users2 = null;
             this.priceChangeQueue = null;
@@ -299,12 +297,6 @@ namespace Irma.Testing.Builders
             return this;
         }
 
-        public TestIrmaStoreBuilder WithTlogReprocessRequest(System.Collections.Generic.ICollection<Irma.Framework.TlogReprocessRequest> tlogReprocessRequest)
-        {
-            this.tlogReprocessRequest = tlogReprocessRequest;
-            return this;
-        }
-
         public TestIrmaStoreBuilder WithUsers1(System.Collections.Generic.ICollection<Irma.Framework.Users> users1)
         {
             this.users1 = users1;
@@ -362,7 +354,6 @@ namespace Irma.Testing.Builders
             store.Users = this.users;
             store.ItemLocaleChangeQueue = this.itemLocaleChangeQueue;
             store.StoreSubTeam = this.storeSubTeam;
-            store.TlogReprocessRequest = this.tlogReprocessRequest;
             store.Users1 = this.users1;
             store.Users2 = this.users2;
             store.PriceChangeQueue = this.priceChangeQueue;
