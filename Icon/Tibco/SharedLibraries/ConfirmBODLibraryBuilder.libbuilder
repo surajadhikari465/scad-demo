@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <name name="ConfirmBODLibraryBuilder">
-        <version>3</version>
+        <version>4</version>
         <author>2096654</author>
         <fileLocation>C:\Code\TFS\Git\Icon\Tibco\SharedLibraries\ConfirmBODLibrary.projlib</fileLocation>
         <resources>/ConfirmBod/Confirm BOD.process</resources>

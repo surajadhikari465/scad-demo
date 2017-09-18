@@ -11,19 +11,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJmsPassword</name>
-			<value>sb1_mammothPriceR10User</value>
+			<value>maMmOthU$er</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505331568724</modTime>
+			<modTime>1505749860805</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJmsUserName</name>
-			<value>sb1_mammothPriceR10User</value>
+			<value>mammothUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505333798973</modTime>
+			<modTime>1505749860884</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJndiContextUrl</name>
@@ -35,31 +35,31 @@
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJndiPassword</name>
-			<value>sb1_jndiMammothPriceR10User</value>
+			<value>sb1_jndiMammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505331568830</modTime>
+			<modTime>1505749486704</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJndiUserName</name>
-			<value>sb1_jndiMammothPriceR10User</value>
+			<value>sb1_jndiMammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505331568875</modTime>
+			<modTime>1505749403467</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbQueueConnectionFactory</name>
-			<value>ItemQueueConnectionFactory</value>
+			<value>SB1MammothPriceQueueConnectionFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505330985172</modTime>
+			<modTime>1505749093789</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbSslPassword</name>
-			<value>#!g3QrWJZXZFfIvhhWesrEgg==</value>
+			<value>#!KU67o5rvqiH3R2wIQC70AQ==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -67,11 +67,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>EsbTopicConnectionFactory</name>
-			<value>ItemTopicConnectionFactory</value>
+			<value>SB1MammothPriceTopicConnectionFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505330985201</modTime>
+			<modTime>1505749093820</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
