@@ -135,6 +135,7 @@
     <Folder Include="Scripts\22494-AddItemStatusCodeToEIM" />
     <Folder Include="Scripts\22441-DesignUserExport" />
     <Folder Include="Scripts\20620 - AddAppConfigForOrderingBannerStore" />
+    <Folder Include="Scripts\22981-AddInstanceDataFlagForExtraTextLineFeed" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3254,6 +3255,8 @@
     <None Include="Scripts\16278-NationalHierarchyScripts\GetNationalClassesFromIconForBulkImport.sql" />
     <None Include="Scripts\16278-NationalHierarchyScripts\DeleteTempTables_7.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21974 - PostDeploy Schema PopData - AddInstanceDataFlag - TagUom - ChiBaby.sql" />
+    <None Include="Scripts\22981-AddInstanceDataFlagForExtraTextLineFeed\AddInstanceDataFlageForExtraTextAndStorageDataLineFeed.sql" />
+    <None Include="Scripts\22981-AddInstanceDataFlagForExtraTextLineFeed\AddInstanceDataFlageForExtraTextAndStorageDataLineFeed.RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

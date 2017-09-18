@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE dbo.Scale_InsertUpdateExtraText
+﻿CREATE PROCEDURE dbo.Scale_InsertUpdateExtraText
 	@ID int,
 	@Description varchar(50),
 	@Scale_LabelType_ID int,
@@ -9,10 +8,14 @@ AS
 BEGIN 
     DECLARE @ItemKey int, @Error_No int, @StoreJurisdictionID int
 	DECLARE @IdentifiersTable dbo.IdentifiersType
+	DECLARE @EnableReturnsInExtraText BIT = (SELECT FlagValue FROM InstanceDataFlags idf WHERE idf.FlagKey = 'EnableReturnsInExtraTextAndStorageData')
 
-	SET @ExtraText = REPLACE(@ExtraText, CHAR(9),  '')
-    SET @ExtraText = REPLACE(@ExtraText, CHAR(10), '')
-    SET @ExtraText = REPLACE(@ExtraText, CHAR(13), '')
+	IF @EnableReturnsInExtraText = 0
+	BEGIN
+		SET @ExtraText = REPLACE(@ExtraText, CHAR(9),  '')
+		SET @ExtraText = REPLACE(@ExtraText, CHAR(10), '')
+		SET @ExtraText = REPLACE(@ExtraText, CHAR(13), '')
+	END
 
 	SELECT TOP 1 @StoreJurisdictionID = StoreJurisdictionID FROM StoreJurisdiction WHERE StoreJurisdictionID > 1
 

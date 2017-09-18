@@ -22,28 +22,28 @@ Partial Class ExtraTextEdit
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Me.grpDetails = New System.Windows.Forms.GroupBox
-        Me.txtExtraTextDescription = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.lblLabelType = New System.Windows.Forms.Label
-        Me.cmbLabelType = New System.Windows.Forms.ComboBox
-        Me.txtExtraText = New System.Windows.Forms.TextBox
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.btnExtraTxtLookup = New System.Windows.Forms.Button
-        Me.btnExtraTxtNew = New System.Windows.Forms.Button
-        Me.btnExtraTxtLink = New System.Windows.Forms.Button
+        Me.components = New System.ComponentModel.Container()
+        Me.grpDetails = New System.Windows.Forms.GroupBox()
+        Me.txtExtraTextDescription = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblLabelType = New System.Windows.Forms.Label()
+        Me.cmbLabelType = New System.Windows.Forms.ComboBox()
+        Me.txtExtraText = New System.Windows.Forms.TextBox()
+        Me.cmdSave = New System.Windows.Forms.Button()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.btnExtraTxtLookup = New System.Windows.Forms.Button()
+        Me.btnExtraTxtNew = New System.Windows.Forms.Button()
+        Me.btnExtraTxtLink = New System.Windows.Forms.Button()
         Me.formToolTip = New System.Windows.Forms.ToolTip(Me.components)
-        Me.cmdClose = New System.Windows.Forms.Button
-        Me.lblExtraTextItemIdentifier = New System.Windows.Forms.Label
-        Me.lblExtraTextItemDesc = New System.Windows.Forms.Label
-        Me.grpCurrentItem = New System.Windows.Forms.GroupBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.lblLinkedIdentifier = New System.Windows.Forms.Label
+        Me.cmdClose = New System.Windows.Forms.Button()
+        Me.lblExtraTextItemIdentifier = New System.Windows.Forms.Label()
+        Me.lblExtraTextItemDesc = New System.Windows.Forms.Label()
+        Me.grpCurrentItem = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblLinkedIdentifier = New System.Windows.Forms.Label()
         Me.frmErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.grpCurrentRecordOptions = New System.Windows.Forms.GroupBox
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.grpCurrentRecordOptions = New System.Windows.Forms.GroupBox()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.grpDetails.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.grpCurrentItem.SuspendLayout()
@@ -105,8 +105,8 @@ Partial Class ExtraTextEdit
         'txtExtraText
         '
         Me.txtExtraText.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtExtraText.Location = New System.Drawing.Point(12, 78)
         Me.txtExtraText.MaxLength = 4200
         Me.txtExtraText.Multiline = True

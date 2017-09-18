@@ -1,3 +1,4 @@
+Imports WholeFoods.IRMA.Common.DataAccess
 Imports WholeFoods.IRMA.ItemHosting.BusinessLogic
 Imports WholeFoods.IRMA.ItemHosting.DataAccess
 
@@ -7,6 +8,7 @@ Public Class ExtraTextEdit
     Private _itemKey As Integer
     Private _hasChanged As Boolean
     Private _isInitializing As Boolean
+    Private _enableReturnsInExtraText As Boolean
 
     Public Property ItemKey() As Integer
         Get
@@ -117,6 +119,8 @@ Public Class ExtraTextEdit
         InitializeComponent()
 
         Me._isInitializing = True
+        Me._enableReturnsInExtraText = InstanceDataDAO.IsFlagActive("EnableReturnsInExtraTextAndStorageData")
+        Me.txtExtraText.AcceptsReturn = Me._enableReturnsInExtraText
 
     End Sub
 
@@ -213,10 +217,12 @@ Public Class ExtraTextEdit
         If Not Me._isInitializing Then
             Me.HasChanged = True
 
-            'Prevent users from pasting in TABs and CR/LF.
-            txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(9), "")
-            txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(10), "")
-            txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(13), "")
+            If Not _enableReturnsInExtraText Then
+                'Prevent users from pasting in TABs and CR/LF.
+                txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(9), "")
+                txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(10), "")
+                txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(13), "")
+            End If
         End If
     End Sub
 

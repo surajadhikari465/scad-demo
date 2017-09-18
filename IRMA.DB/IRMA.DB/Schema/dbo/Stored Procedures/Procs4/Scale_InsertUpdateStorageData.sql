@@ -5,9 +5,14 @@ CREATE PROCEDURE [dbo].[Scale_InsertUpdateStorageData]
 	@NEW_ID int OUTPUT
 AS 
 BEGIN 
-	SET @StorageData = REPLACE(@StorageData, CHAR(9),  '')
-    SET @StorageData = REPLACE(@StorageData, CHAR(10), '')
-    SET @StorageData = REPLACE(@StorageData, CHAR(13), '')
+	DECLARE @EnableReturnsInStorageData BIT = (SELECT FlagValue FROM InstanceDataFlags idf WHERE idf.FlagKey = 'EnableReturnsInExtraTextAndStorageData')
+
+	IF @EnableReturnsInStorageData = 0
+	BEGIN
+		SET @StorageData = REPLACE(@StorageData, CHAR(9),  '')
+		SET @StorageData = REPLACE(@StorageData, CHAR(10), '')
+		SET @StorageData = REPLACE(@StorageData, CHAR(13), '')
+	END
 
 	IF @ID > 0 
 		BEGIN

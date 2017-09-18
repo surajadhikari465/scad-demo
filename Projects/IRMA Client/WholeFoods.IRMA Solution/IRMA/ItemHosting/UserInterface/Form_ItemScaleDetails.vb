@@ -1,5 +1,3 @@
-
-
 Option Strict Off
 
 Imports System.Text
@@ -30,6 +28,7 @@ Imports log4net
     Private addIngredients As Boolean
     Private addAllergens As Boolean
     Private addStorageData As Boolean
+    Private _enableReturnsInExtraText As Boolean
 
     ' Define the log4net logger for this class.
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
@@ -46,6 +45,9 @@ Imports log4net
         ' Add any initialization after the InitializeComponent() call.
         Me.ScaleDetailsBO = New ScaleDetailsBO
         Me.FormOwnsData = True
+
+        Me._enableReturnsInExtraText = InstanceDataDAO.IsFlagActive("EnableReturnsInExtraTextAndStorageData")
+        Me.StorageDataTxt.AcceptsReturn = Me._enableReturnsInExtraText
 
     End Sub
 #End Region
