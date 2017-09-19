@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns5="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns7="http://schema.infor.com/InforOAGIS/2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns5="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns7="http://schema.infor.com/InforOAGIS/2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
@@ -329,78 +329,31 @@
             <processName>/ConfirmBod/Confirm BOD.process</processName>
         </config>
         <pd:inputBindings>
-            <xsl:choose>
-                <xsl:when test="exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)&#xA;and &#xA;$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/PriceNotSupplied">
-                    <Input>
-                        <ns7:ConfirmBOD>
-                            <xsl:attribute name="releaseID">
-                                <xsl:value-of select="9.2"/>
-                            </xsl:attribute>
-                            <ns7:ApplicationArea>
-                                <ns7:CreationDateTime>
-                                    <xsl:value-of select="current-dateTime()"/>
-                                </ns7:CreationDateTime>
-                            </ns7:ApplicationArea>
-                            <ns7:DataArea>
-                                <ns7:Confirm>
-                                    <ns7:OriginalApplicationArea>
-                                        <ns7:CreationDateTime>
-                                            <xsl:value-of select="current-dateTime()"/>
-                                        </ns7:CreationDateTime>
-                                    </ns7:OriginalApplicationArea>
-                                </ns7:Confirm>
-                                <ns7:BOD>
-                                    <xsl:if test="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message">
-                                        <ns7:Description>
-                                            <xsl:value-of select="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message"/>
-                                        </ns7:Description>
-                                    </xsl:if>
-                                    <ns7:BODFailureMessage>
-                                        <ns7:ErrorProcessMessage>
-                                            <ns7:Type>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DataError"/>
-                                            </ns7:Type>
-                                            <ns7:ReasonCode>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/PriceNotSupplied"/>
-                                            </ns7:ReasonCode>
-                                        </ns7:ErrorProcessMessage>
-                                    </ns7:BODFailureMessage>
-                                    <ns7:OriginalBOD>
-                                        <ns7:MessageContent>
-                                            <xsl:value-of select="concat(concat(&quot;[CDATA[&quot;,tib:string-to-base64( $PriceMessageReceiver/ns:ActivityOutput/Body)),&quot;]]&quot;)"/>
-                                        </ns7:MessageContent>
-                                    </ns7:OriginalBOD>
-                                </ns7:BOD>
-                            </ns7:DataArea>
-                        </ns7:ConfirmBOD>
-                    </Input>
-                </xsl:when>
-                <xsl:when test="exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)&#xA;and &#xA;$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DatabaseError">
-                    <Input>
-                        <ns7:ConfirmBOD>
-                            <xsl:attribute name="releaseID">
-                                <xsl:value-of select="9.2"/>
-                            </xsl:attribute>
-                            <ns7:ApplicationArea>
-                                <ns7:CreationDateTime>
-                                    <xsl:value-of select="current-dateTime()"/>
-                                </ns7:CreationDateTime>
-                            </ns7:ApplicationArea>
-                            <ns7:DataArea>
-                                <ns7:Confirm>
-                                    <ns7:OriginalApplicationArea>
-                                        <ns7:CreationDateTime>
-                                            <xsl:value-of select="current-dateTime()"/>
-                                        </ns7:CreationDateTime>
-                                    </ns7:OriginalApplicationArea>
-                                </ns7:Confirm>
-                                <ns7:BOD>
-                                    <xsl:if test="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message">
-                                        <ns7:Description>
-                                            <xsl:value-of select="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message"/>
-                                        </ns7:Description>
-                                    </xsl:if>
-                                    <ns7:BODFailureMessage>
+            <Input>
+                <ns7:ConfirmBOD>
+                    <xsl:attribute name="releaseID">
+                        <xsl:value-of select="9.2"/>
+                    </xsl:attribute>
+                    <ns7:ApplicationArea>
+                        <ns7:CreationDateTime>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns7:CreationDateTime>
+                    </ns7:ApplicationArea>
+                    <ns7:DataArea>
+                        <ns7:Confirm>
+                            <ns7:TenantID>
+                                <xsl:value-of select="&quot;Price Listener&quot;"/>
+                            </ns7:TenantID>
+                        </ns7:Confirm>
+                        <ns7:BOD>
+                            <xsl:if test="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message">
+                                <ns7:Description>
+                                    <xsl:value-of select="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message"/>
+                                </ns7:Description>
+                            </xsl:if>
+                            <ns7:BODFailureMessage>
+                                <xsl:choose>
+                                    <xsl:when test="exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)&#xA;and &#xA;$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ActionNotSupplied">
                                         <ns7:ErrorProcessMessage>
                                             <ns7:Type>
                                                 <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/DatabaseConstraint"/>
@@ -409,37 +362,8 @@
                                                 <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DatabaseError"/>
                                             </ns7:ReasonCode>
                                         </ns7:ErrorProcessMessage>
-                                    </ns7:BODFailureMessage>
-                                    <ns7:OriginalBOD>
-                                        <ns7:MessageContent>
-                                            <xsl:value-of select="concat(concat(&quot;[CDATA[&quot;,tib:string-to-base64( $PriceMessageReceiver/ns:ActivityOutput/Body)),&quot;]]&quot;)"/>
-                                        </ns7:MessageContent>
-                                    </ns7:OriginalBOD>
-                                </ns7:BOD>
-                            </ns7:DataArea>
-                        </ns7:ConfirmBOD>
-                    </Input>
-                </xsl:when>
-                <xsl:when test="exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)">
-                    <Input>
-                        <ns7:ConfirmBOD>
-                            <xsl:attribute name="releaseID">
-                                <xsl:value-of select="9.2"/>
-                            </xsl:attribute>
-                            <ns7:ApplicationArea>
-                                <ns7:CreationDateTime>
-                                    <xsl:value-of select="current-dateTime()"/>
-                                </ns7:CreationDateTime>
-                            </ns7:ApplicationArea>
-                            <ns7:DataArea>
-                                <ns7:Confirm/>
-                                <ns7:BOD>
-                                    <ns7:Description>
-                                        <xsl:copy-of select="$_error_Map-Prices/pfx6:ExceptionRequest/ns8:Header/ns8:Message/ancestor-or-self::*/namespace::node()"/>
-                                        <xsl:copy-of select="$_error_Map-Prices/pfx6:ExceptionRequest/ns8:Header/ns8:Message/@*"/>
-                                        <xsl:copy-of select="$_error_Map-Prices/pfx6:ExceptionRequest/ns8:Header/ns8:Message/node()"/>
-                                    </ns7:Description>
-                                    <ns7:BODFailureMessage>
+                                    </xsl:when>
+                                    <xsl:when test="exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)">
                                         <ns7:ErrorProcessMessage>
                                             <ns7:Type>
                                                 <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/Schema"/>
@@ -448,43 +372,18 @@
                                                 <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/MappingError"/>
                                             </ns7:ReasonCode>
                                         </ns7:ErrorProcessMessage>
-                                    </ns7:BODFailureMessage>
-                                    <ns7:OriginalBOD>
-                                        <ns7:MessageContent>
-                                            <xsl:value-of select="concat(concat(&quot;[CDATA[&quot;,tib:string-to-base64( $PriceMessageReceiver/ns:ActivityOutput/Body)),&quot;]]&quot;)"/>
-                                        </ns7:MessageContent>
-                                    </ns7:OriginalBOD>
-                                </ns7:BOD>
-                            </ns7:DataArea>
-                        </ns7:ConfirmBOD>
-                    </Input>
-                </xsl:when>
-                <xsl:when test="exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)&#xA;and &#xA;$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode =$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted">
-                    <Input>
-                        <ns7:ConfirmBOD>
-                            <xsl:attribute name="releaseID">
-                                <xsl:value-of select="9.2"/>
-                            </xsl:attribute>
-                            <ns7:ApplicationArea>
-                                <ns7:CreationDateTime>
-                                    <xsl:value-of select="current-dateTime()"/>
-                                </ns7:CreationDateTime>
-                            </ns7:ApplicationArea>
-                            <ns7:DataArea>
-                                <ns7:Confirm>
-                                    <ns7:OriginalApplicationArea>
-                                        <ns7:CreationDateTime>
-                                            <xsl:value-of select="current-dateTime()"/>
-                                        </ns7:CreationDateTime>
-                                    </ns7:OriginalApplicationArea>
-                                </ns7:Confirm>
-                                <ns7:BOD>
-                                    <xsl:if test="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message">
-                                        <ns7:Description>
-                                            <xsl:value-of select="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message"/>
-                                        </ns7:Description>
-                                    </xsl:if>
-                                    <ns7:BODFailureMessage>
+                                    </xsl:when>
+                                    <xsl:when test="exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)">
+                                        <ns7:ErrorProcessMessage>
+                                            <ns7:Type>
+                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/Schema"/>
+                                            </ns7:Type>
+                                            <ns7:ReasonCode>
+                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/MappingError"/>
+                                            </ns7:ReasonCode>
+                                        </ns7:ErrorProcessMessage>
+                                    </xsl:when>
+                                    <xsl:when test="exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)&#xA;and &#xA;$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode =$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted">
                                         <ns7:ErrorProcessMessage>
                                             <ns7:Type>
                                                 <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/Data"/>
@@ -493,37 +392,8 @@
                                                 <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted"/>
                                             </ns7:ReasonCode>
                                         </ns7:ErrorProcessMessage>
-                                    </ns7:BODFailureMessage>
-                                    <ns7:OriginalBOD>
-                                        <ns7:MessageContent>
-                                            <xsl:value-of select="concat(concat(&quot;[CDATA[&quot;,tib:string-to-base64( $PriceMessageReceiver/ns:ActivityOutput/Body)),&quot;]]&quot;)"/>
-                                        </ns7:MessageContent>
-                                    </ns7:OriginalBOD>
-                                </ns7:BOD>
-                            </ns7:DataArea>
-                        </ns7:ConfirmBOD>
-                    </Input>
-                </xsl:when>
-                <xsl:otherwise>
-                    <Input>
-                        <ns7:ConfirmBOD>
-                            <xsl:attribute name="releaseID">
-                                <xsl:value-of select="9.2"/>
-                            </xsl:attribute>
-                            <ns7:ApplicationArea>
-                                <ns7:CreationDateTime>
-                                    <xsl:value-of select="current-dateTime()"/>
-                                </ns7:CreationDateTime>
-                            </ns7:ApplicationArea>
-                            <ns7:DataArea>
-                                <ns7:Confirm/>
-                                <ns7:BOD>
-                                    <ns7:Description>
-                                        <xsl:copy-of select="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message/ancestor-or-self::*/namespace::node()"/>
-                                        <xsl:copy-of select="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message/@*"/>
-                                        <xsl:copy-of select="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message/node()"/>
-                                    </ns7:Description>
-                                    <ns7:BODFailureMessage>
+                                    </xsl:when>
+                                    <xsl:otherwise>
                                         <ns7:ErrorProcessMessage>
                                             <ns7:Type>
                                                 <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/DatabaseConstraint"/>
@@ -532,18 +402,18 @@
                                                 <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DataError"/>
                                             </ns7:ReasonCode>
                                         </ns7:ErrorProcessMessage>
-                                    </ns7:BODFailureMessage>
-                                    <ns7:OriginalBOD>
-                                        <ns7:MessageContent>
-                                            <xsl:value-of select="concat(concat(&quot;[CDATA[&quot;,tib:string-to-base64( $PriceMessageReceiver/ns:ActivityOutput/Body)),&quot;]]&quot;)"/>
-                                        </ns7:MessageContent>
-                                    </ns7:OriginalBOD>
-                                </ns7:BOD>
-                            </ns7:DataArea>
-                        </ns7:ConfirmBOD>
-                    </Input>
-                </xsl:otherwise>
-            </xsl:choose>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns7:BODFailureMessage>
+                            <ns7:OriginalBOD>
+                                <ns7:MessageContent>
+                                    <xsl:value-of select="concat(concat(&quot;&lt;[CDATA[&quot;,tib:string-to-base64( $PriceMessageReceiver/ns:ActivityOutput/Body)),&quot;]]>&quot;)"/>
+                                </ns7:MessageContent>
+                            </ns7:OriginalBOD>
+                        </ns7:BOD>
+                    </ns7:DataArea>
+                </ns7:ConfirmBOD>
+            </Input>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -680,7 +550,7 @@ $_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariab
 or
 $_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DatabaseError
 or
-$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/PriceNotSupplied 
+$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ActionNotSupplied 
 )
 )</pd:xpath>
     </pd:transition>

@@ -11,7 +11,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SB1JmsPassword</name>
-			<value>#!+KKNTLNgzuIu51lcKNCydqkbYEZ0YzZ9Wcl0Onc0ZAscJuFxAO+Ntk8kzgFIegMtlCwLWwFhPPI=</value>
+			<value>#!nKTRyCA6gknPnPoR2sNRPo4ZU5CzGrC33dnSDoxyuEYUWhpCYaCoOuVQ4vkQnzetoogn47YIt70=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -35,7 +35,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SB1JndiPassword</name>
-			<value>#!iHZ5SlGW/M3dKjb6ZfsMvB2EKADXbx3dHVNjH4Fa8hOflPBNlfSkfZ4v7RrQyIs947k9Zt4EtNdKims21/Py8A==</value>
+			<value>#!gdg73NIUf3L+Dhvof7gNKGuiL7QWPqbcY6U73sDiRaXQPndbpUrTKWdhvTG0x3vQJrsqJsBe8u5k0mtSpjZZMQ==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -59,7 +59,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SB1SslPassword</name>
-			<value>#!CpKlx5vTDgelYIg3R6IgpA==</value>
+			<value>#!9YCQPuE79oyJs63b0wsBgA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

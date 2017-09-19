@@ -11,7 +11,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJmsPassword</name>
-			<value>#!e9XINnXjU0DD1iBkUU2Bt6d+2ZwvmnCBlz8YvudEqyc=</value>
+			<value>#!bY8GaQ1kU4moAnix7Nbyx81nr7oe/332SRH6TgwO35I=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -35,7 +35,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJndiPassword</name>
-			<value>#!gX1GLE1dwORpF7I7Cvi1sRfsWGmgtMJ8GMhATWJPkNg=</value>
+			<value>#!2nKaQtQets8JprOMf+b+142ts9T9p9Lk6jGAP+inJE0=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -59,7 +59,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>EsbSslPassword</name>
-			<value>#!onf8T6XUbe9Iu5UhofyrnA==</value>
+			<value>#!9AIMHEsIdYXxfY+Fcix+pA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

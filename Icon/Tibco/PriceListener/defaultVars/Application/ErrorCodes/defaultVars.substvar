@@ -2,6 +2,14 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>ActionNotSupplied</name>
+			<value>Action Value not supplied.</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505836948937</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>DataError</name>
 			<value>"Data Error</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -24,14 +32,6 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1505405488520</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>PriceNotSupplied</name>
-			<value>Price Value Not Supplied</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1505401652008</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ZeroRowsImpacted</name>
