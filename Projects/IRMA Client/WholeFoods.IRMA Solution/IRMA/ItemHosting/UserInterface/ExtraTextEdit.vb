@@ -135,6 +135,7 @@ Public Class ExtraTextEdit
         End If
         '20110210 - DBS Set Permissions logic to allow non editors to view ingredients
         SetPermissions()
+
         cmdClose.Enabled = True
         Me._isInitializing = False
         Me._hasChanged = False
@@ -156,6 +157,10 @@ Public Class ExtraTextEdit
         Me.btnExtraTxtNew.Enabled = IsEditable
         Me.btnExtraTxtLink.Enabled = IsEditable
         Me.cmdSave.Enabled = IsEditable
+
+        Me._enableReturnsInExtraText = (Not IsReadOnly) AndAlso InstanceDataDAO.IsFlagActive("EnableReturnsInExtraTextAndStorageData")
+        Me.txtExtraText.AcceptsReturn = Me._enableReturnsInExtraText
+
     End Sub
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
 

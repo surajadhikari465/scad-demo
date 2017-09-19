@@ -617,6 +617,9 @@ Imports log4net
 
         nutrifactsAreReadyOnly = InstanceDataDAO.IsFlagActive("EnableNutrifactIntegration")
 
+        Me._enableReturnsInExtraText = InstanceDataDAO.IsFlagActive("EnableReturnsInExtraTextAndStorageData")
+        Me.StorageDataTxt.AcceptsReturn = Me._enableReturnsInExtraText
+
         logger.Debug("Form_ItemScaleDetails_Load Exit")
     End Sub
 

@@ -1,10 +1,12 @@
 Imports WholeFoods.IRMA.ItemHosting.BusinessLogic
 Imports WholeFoods.IRMA.ItemHosting.DataAccess
 Imports System.Text
+Imports WholeFoods.IRMA.Common.DataAccess
 
 Public Class ExtraTextNew
 
     Private _newScaleBO As ScaleExtraTextBO
+    Private _enableReturnsInExtraText As Boolean
 
     Public Property NewExtraTextBO() As ScaleExtraTextBO
         Get
@@ -40,6 +42,9 @@ Public Class ExtraTextNew
             Me.cmbLabelType.ValueMember = "ID"
             Me.cmbLabelType.SelectedIndex = -1
         End If
+
+        Me._enableReturnsInExtraText = InstanceDataDAO.IsFlagActive("EnableReturnsInExtraTextAndStorageData")
+        Me.txtExtraText.AcceptsReturn = Me._enableReturnsInExtraText
 
         Me.txtDescription.Focus()
 
@@ -126,11 +131,13 @@ Public Class ExtraTextNew
 
     End Function
 
-Private Sub txtExtraText_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtExtraText.TextChanged
-    'Prevent users from pasting in TABs and CR/LF.
-    txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(9), "")
-    txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(10), "")
-    txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(13), "")
-End Sub
+    Private Sub txtExtraText_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtExtraText.TextChanged
+        If Not Me._enableReturnsInExtraText Then
+            'Prevent users from pasting in TABs and CR/LF.
+            txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(9), "")
+            txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(10), "")
+            txtExtraText.Text = txtExtraText.Text.Replace(Convert.ToChar(13), "")
+        End If
+    End Sub
 
 End Class
