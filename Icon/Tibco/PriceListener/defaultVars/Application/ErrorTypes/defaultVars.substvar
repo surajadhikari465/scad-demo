@@ -2,36 +2,28 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;</value>
+			<name>Data</name>
+			<value>Data</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503943284398</modTime>
+			<modTime>1505413003411</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SqlDBDriver</name>
-			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
+			<name>DatabaseConstraint</name>
+			<value>DatabaseConstraint</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502389673601</modTime>
+			<modTime>1505413003355</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SqlDBPwd</name>
-			<value>#!RK5BCzChR+uoB18GE9i5nk+DKgGW5xOeci8EKXNJqI289Ka6cyPh5w==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1502389673668</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SqlDBUser</name>
-			<value>Mammoth.tibco.Dev</value>
+			<name>Schema</name>
+			<value>Schema</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502389673740</modTime>
+			<modTime>1505413003458</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

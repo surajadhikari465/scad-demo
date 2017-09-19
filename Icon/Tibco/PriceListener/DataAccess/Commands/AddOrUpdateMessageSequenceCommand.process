@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns02="www.tibco.com/plugin/Sleep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <pd:name>DataAccess/Commands/AddOrUpdateMessageSequenceCommand.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -230,23 +230,23 @@ VALUES (?, ?, ?, ?, ?)</statement>
             <pd:y>344</pd:y>
             <config/>
             <pd:inputBindings>
-                <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                <ns02:SleepInputSchema>
                     <IntervalInMillisec>
                         <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/MammothDb/RetrySleepInMilliseconds"/>
                     </IntervalInMillisec>
-                </ns0:SleepInputSchema>
+                </ns02:SleepInputSchema>
             </pd:inputBindings>
         </pd:activity>
         <pd:activity name="Generate Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>438</pd:x>
+            <pd:x>439</pd:x>
             <pd:y>349</pd:y>
             <config>
                 <faultName/>
             </config>
             <pd:inputBindings>
-                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <ns0:ActivityInput>
                     <message>
                         <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
                     </message>

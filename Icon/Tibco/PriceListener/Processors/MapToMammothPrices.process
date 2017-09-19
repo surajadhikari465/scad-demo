@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx6="http://www.tibco.com/pe/WriteToLogActivitySchema">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns9="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns10="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns8="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx6="http://www.tibco.com/pe/WriteToLogActivitySchema">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothPrices.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
     <pd:name>Processors/MapToMammothPrices.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx:items"/>
@@ -14,7 +15,9 @@
     <pd:endType ref="pfx2:MammothPrices"/>
     <pd:endX>996</pd:endX>
     <pd:endY>234</pd:endY>
-    <pd:errorSchemas/>
+    <pd:errorSchemas>
+        <Error ref="pfx7:ExceptionRequest"/>
+    </pd:errorSchemas>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1503347071489</pd:targetNamespace>
     <pd:group name="Iterate Items">
@@ -113,7 +116,7 @@
             <pd:activity name="Map Data">
                 <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
                 <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-                <pd:x>581</pd:x>
+                <pd:x>583</pd:x>
                 <pd:y>234</pd:y>
                 <config>
                     <element ref="pfx2:MammothPrices"/>
@@ -175,6 +178,60 @@
             </pd:activity>
         </pd:group>
     </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>368</pd:x>
+        <pd:y>479</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Mapping Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>559</pd:x>
+        <pd:y>489</pd:y>
+        <config>
+            <faultName>Error</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns8:ActivityInput>
+                <xsl:if test="$_error/ns7:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns7:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <pfx7:ExceptionRequest>
+                        <ns10:Header>
+                            <ns10:ApplicationID>
+                                <xsl:value-of select="$_globalVariables/ns9:GlobalVariables/Application/ApplicationID"/>
+                            </ns10:ApplicationID>
+                            <ns10:Timestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns10:Timestamp>
+                            <xsl:if test="$_error/ns7:ErrorReport/Msg">
+                                <ns10:Message>
+                                    <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
+                                </ns10:Message>
+                            </xsl:if>
+                        </ns10:Header>
+                        <ExceptionCode>
+                            <xsl:value-of select="$_globalVariables/ns9:GlobalVariables/Application/ErrorCodes/MappingError"/>
+                        </ExceptionCode>
+                    </pfx7:ExceptionRequest>
+                </data>
+            </ns8:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>Iterate Items</pd:to>
@@ -185,6 +242,13 @@
     <pd:transition>
         <pd:from>Iterate Items</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Mapping Error</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

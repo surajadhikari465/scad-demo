@@ -2,76 +2,76 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>SB1JNDIContextFactory</name>
+			<name>EsbJNDIContextFactory</name>
 			<value>com.tibco.tibjms.naming.TibjmsInitialContextFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503698462511</modTime>
+			<modTime>1505330985142</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SB1JmsPassword</name>
-			<value>#!nKTRyCA6gknPnPoR2sNRPo4ZU5CzGrC33dnSDoxyuEYUWhpCYaCoOuVQ4vkQnzetoogn47YIt70=</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1505420011896</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SB1JmsUserName</name>
-			<value>sb1_mammothPriceUser</value>
+			<name>EsbJmsPassword</name>
+			<value>maMmOthU$er</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505420012289</modTime>
+			<modTime>1505749860805</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SB1JndiContextUrl</name>
+			<name>EsbJmsUserName</name>
+			<value>mammothUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505749860884</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EsbJndiContextUrl</name>
 			<value>ssl://cerd1616.wfm.pvt:7233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503698462699</modTime>
+			<modTime>1505330985052</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SB1JndiPassword</name>
-			<value>#!gdg73NIUf3L+Dhvof7gNKGuiL7QWPqbcY6U73sDiRaXQPndbpUrTKWdhvTG0x3vQJrsqJsBe8u5k0mtSpjZZMQ==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1505423221754</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SB1JndiUserName</name>
+			<name>EsbJndiPassword</name>
 			<value>sb1_jndiMammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505423221801</modTime>
+			<modTime>1505749486704</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SB1QueueConnectionFactory</name>
+			<name>EsbJndiUserName</name>
+			<value>sb1_jndiMammothPriceUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505749403467</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EsbQueueConnectionFactory</name>
 			<value>SB1MammothPriceQueueConnectionFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503698462887</modTime>
+			<modTime>1505749093789</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SB1SslPassword</name>
-			<value>#!9YCQPuE79oyJs63b0wsBgA==</value>
+			<name>EsbSslPassword</name>
+			<value>#!KU67o5rvqiH3R2wIQC70AQ==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1503698462933</modTime>
+			<modTime>1505333799045</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SB1TopicConnectionFactory</name>
+			<name>EsbTopicConnectionFactory</name>
 			<value>SB1MammothPriceTopicConnectionFactory</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503698462980</modTime>
+			<modTime>1505749093820</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

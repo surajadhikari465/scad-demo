@@ -2,6 +2,46 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>BW_GLOBAL_HOSTNAME</name>
+			<value>cerd1616.wfm.pvt</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505333858624</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
+			<value>file:///C:/Certificates</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505331378268</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ConfirmBODQueue</name>
+			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505329439237</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>CountSeperator</name>
+			<value>##</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505329748620</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DeliveryMode</name>
+			<value>Persistent</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505329748657</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Deployment</name>
 			<value>SharedLibraries</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -42,6 +82,22 @@
 			<modTime>1502295985340</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>JMSExpiration</name>
+			<value>0</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505329748688</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>JMSPriority</name>
+			<value>4</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505328905385</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>JmsProviderUrl</name>
 			<value>tcp://localhost:7222</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -64,6 +120,14 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1502295985419</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>RetrySleepInMilliseconds</name>
+			<value>5000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505329748719</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvDaemon</name>
@@ -128,6 +192,14 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1502295985343</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>retryCount</name>
+			<value>3</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505328810901</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
