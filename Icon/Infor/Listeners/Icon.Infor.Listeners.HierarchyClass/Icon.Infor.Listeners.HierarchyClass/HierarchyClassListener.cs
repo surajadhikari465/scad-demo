@@ -19,6 +19,7 @@ using Icon.Infor.Listeners.HierarchyClass.Constants;
 using Icon.Common.Context;
 using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Extensions;
+using Icon.Infor.Listeners.HierarchyClass.EsbService;
 
 namespace Icon.Infor.Listeners.HierarchyClass
 {
@@ -26,6 +27,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
     {
         private IMessageParser<IEnumerable<InforHierarchyClassModel>> messageParser;
         private IEnumerable<IHierarchyClassService> services;
+        private HierarchyClassEsbService esbService;
         private ICollectionValidator<InforHierarchyClassModel> validator;
         private IHierarchyClassListenerNotifier notifier;
         private ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler;
@@ -35,6 +37,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             IMessageParser<IEnumerable<InforHierarchyClassModel>> messageParser,
             ICollectionValidator<InforHierarchyClassModel> validator,
             IEnumerable<IHierarchyClassService> services,
+            HierarchyClassEsbService esbService,
             ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler,
             ICommandHandler<ArchiveMessageCommand> archiveMessageCommandHandler,
             ListenerApplicationSettings listenerApplicationSettings,
@@ -47,6 +50,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
         {
             this.messageParser = messageParser;
             this.services = services;
+            this.esbService = esbService;
             this.validator = validator;
             this.archiveHierarchyClassesCommandHandler = archiveHierarchyClassesCommandHandler;
             this.archiveMessageCommandHandler = archiveMessageCommandHandler;

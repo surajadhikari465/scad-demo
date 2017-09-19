@@ -16,6 +16,7 @@ using Icon.Infor.Listeners.HierarchyClass.Commands;
 using Icon.Common.DataAccess;
 using Icon.Common.Context;
 using Icon.Framework;
+using Icon.Infor.Listeners.HierarchyClass.EsbService;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests
 {
@@ -25,6 +26,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
         private HierarchyClassListener listener;
         private Mock<IMessageParser<IEnumerable<InforHierarchyClassModel>>> mockMessageParser;
         private Mock<IHierarchyClassService> mockService;
+        private Mock<HierarchyClassEsbService> mockEsbService;  
         private ListenerApplicationSettings listenerApplicationSettings;
         private EsbConnectionSettings esbConnectionSettings;
         private Mock<IEsbSubscriber> mockSubscriber;
@@ -43,6 +45,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
         {
             mockMessageParser = new Mock<IMessageParser<IEnumerable<InforHierarchyClassModel>>>();
             mockService = new Mock<IHierarchyClassService>();
+            mockEsbService = new Mock<HierarchyClassEsbService>();
             listenerApplicationSettings = new ListenerApplicationSettings();
             esbConnectionSettings = new EsbConnectionSettings();
             mockSubscriber = new Mock<IEsbSubscriber>();
@@ -57,6 +60,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
                 mockMessageParser.Object,
                 mockValidator.Object,
                 new[] { mockService.Object },
+                mockEsbService.Object,
                 mockArchiveHierarchyClassesCommandHandler.Object,
                 mockArchiveMessageCommandHandler.Object,
                 listenerApplicationSettings,
