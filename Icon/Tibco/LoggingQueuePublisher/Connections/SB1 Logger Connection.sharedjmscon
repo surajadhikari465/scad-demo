@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>SB1 Logger Connection</name>
+    <resourceType>ae.shared.JMSConnectionKey</resourceType>
+    <config>
+        <NamingEnvironment>
+            <UseJNDI>false</UseJNDI>
+            <ProviderURL>%%LoggerSettings/EMSConnection/SB1LogJndiContextUrl%%</ProviderURL>
+            <NamingURL>%%LoggerSettings/EMSConnection/SB1LogJndiContextUrl%%</NamingURL>
+            <NamingInitialContextFactory>com.tibco.tibjms.naming.TibjmsInitialContextFactory</NamingInitialContextFactory>
+            <TopicFactoryName>%%LoggerSettings/EMSConnection/SB1LogTopicConnectionFactory%%</TopicFactoryName>
+            <QueueFactoryName>%%LoggerSettings/EMSConnection/SB1LogQueueConnectionFactory%%</QueueFactoryName>
+            <NamingPrincipal>%%LoggerSettings/EMSConnection/SB1LogJnfiUserName%%</NamingPrincipal>
+            <NamingCredential>%%LoggerSettings/EMSConnection/SB1LogJndiPassword%%</NamingCredential>
+        </NamingEnvironment>
+        <ConnectionAttributes>
+            <username>%%LoggerSettings/EMSConnection/SB1LogJmsUserName%%</username>
+            <password>%%LoggerSettings/EMSConnection/SB1LogJmsPassword%%</password>
+            <clientID/>
+            <autoGenClientID>true</autoGenClientID>
+        </ConnectionAttributes>
+        <UseXACF>false</UseXACF>
+        <useSsl>true</useSsl>
+        <AdmFactorySslPassword>%%LoggerSettings/EMSConnection/SB1LogSslPassword%%</AdmFactorySslPassword>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+            <ns0:trace>true</ns0:trace>
+            <ns0:debugTrace>false</ns0:debugTrace>
+            <ns0:verifyHostName>true</ns0:verifyHostName>
+            <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+            <ns0:cert isRef="true">%%BW_GLOBAL_TRUSTED_CA_STORE%%</ns0:cert>
+            <ns0:expectedHostName>%%BW_GLOBAL_HOSTNAME%%</ns0:expectedHostName>
+        </ns0:ssl>
+    </config>
+</BWSharedResource>
