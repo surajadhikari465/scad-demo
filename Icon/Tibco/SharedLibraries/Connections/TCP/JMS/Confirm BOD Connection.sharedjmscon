@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Confirm BOD Connection</name>
+    <resourceType>ae.shared.JMSConnectionKey</resourceType>
+    <config>
+        <NamingEnvironment>
+            <UseJNDI>true</UseJNDI>
+            <ProviderURL>tcp://localhost:7222</ProviderURL>
+            <NamingURL>%%Connections/JMS/EsbJndiContextUrl%%</NamingURL>
+            <NamingInitialContextFactory>%%Connections/JMS/EsbJNDIContextFactory%%</NamingInitialContextFactory>
+            <TopicFactoryName>%%Connections/JMS/EsbTopicConnectionFactory%%</TopicFactoryName>
+            <QueueFactoryName>%%Connections/JMS/EsbQueueConnectionFactory%%</QueueFactoryName>
+            <NamingPrincipal>%%Connections/JMS/EsbJndiUserName%%</NamingPrincipal>
+            <NamingCredential>%%Connections/JMS/EsbJndiPassword%%</NamingCredential>
+        </NamingEnvironment>
+        <ConnectionAttributes>
+            <username>%%Connections/JMS/EsbJmsUserName%%</username>
+            <password>%%Connections/JMS/EsbJmsPassword%%</password>
+            <clientID/>
+            <autoGenClientID>true</autoGenClientID>
+        </ConnectionAttributes>
+        <UseXACF>false</UseXACF>
+        <useSsl>true</useSsl>
+        <AdmFactorySslPassword>%%Connections/JMS/EsbSslPassword%%</AdmFactorySslPassword>
+        <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+            <ns0:trace>true</ns0:trace>
+            <ns0:debugTrace>true</ns0:debugTrace>
+            <ns0:verifyHostName>true</ns0:verifyHostName>
+            <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+            <ns0:expectedHostName>%%BW_GLOBAL_HOSTNAME%%</ns0:expectedHostName>
+            <ns0:cert isRef="true">/SharedResources/Certificates/.folder</ns0:cert>
+        </ns0:ssl>
+    </config>
+</BWSharedResource>

@@ -19,7 +19,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SqlDBPwd</name>
-			<value>#!vXNs2xPgIIVlnVJObp//yozqjsAeG93unidSK935ZS+eZss295gNGA==</value>
+			<value>#!RK5BCzChR+uoB18GE9i5nk+DKgGW5xOeci8EKXNJqI289Ka6cyPh5w==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

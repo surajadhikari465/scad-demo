@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>ActionNotSupplied</name>
+			<value>Action Value not supplied.</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505836948937</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DataError</name>
+			<value>"Data Error</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505397979495</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DatabaseError</name>
+			<value>Database Error</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505397979441</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>MappingError</name>
+			<value>Error In Mapping</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505405488520</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ZeroRowsImpacted</name>
+			<value>Zero Rows were Impacted</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1505400454352</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>
