@@ -10,6 +10,6 @@ namespace Icon.Infor.Listeners.Item.Notifiers
 {
     public interface IItemListenerNotifier
     {
-        void NotifyOfItemError(IEsbMessage message, List<ItemModel> itemModelsWithErrors);
+        void NotifyOfItemError(IEsbMessage message, bool schemaErrorOccurred, List<ItemModel> itemModelsWithErrors);
     }
 }

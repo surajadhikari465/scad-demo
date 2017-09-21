@@ -18,6 +18,8 @@ using Icon.Infor.Listeners.Item.Notifiers;
 using System.Xml.Linq;
 using Icon.Infor.Listeners.Item.Queries;
 using System.Transactions;
+using Esb.Core.EsbServices;
+using Icon.Esb.Services.ConfirmationBod;
 
 namespace Icon.Infor.Listeners.Item.Tests.Integration
 {
@@ -42,7 +44,10 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
                                   EsbConnectionSettings.CreateSettingsFromConfig(),
                                   new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromConfig()),
                                   EmailClient.CreateFromConfig(),
-                                  new ItemListenerNotifier(EmailClient.CreateFromConfig()),
+                                  new ItemListenerNotifier(
+                                      EmailClient.CreateFromConfig(), 
+                                      settings,
+                                      new Mock<IEsbService<ConfirmationBodEsbRequest>>().Object),
                                   new NLogLogger<ItemListener>());
             return il;
         }

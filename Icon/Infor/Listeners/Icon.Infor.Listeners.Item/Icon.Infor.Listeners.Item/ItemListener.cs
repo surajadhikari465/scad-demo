@@ -48,9 +48,9 @@ namespace Icon.Infor.Listeners.Item
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
         {
+            bool schemaErrorOccurred = false;
             try
             {
-
                 models = messageParser.ParseMessage(args.Message).ToList();
                 if (models.Any())
                 {
@@ -62,12 +62,13 @@ namespace Icon.Infor.Listeners.Item
             catch (Exception ex)
             {
                 LogAndNotifyErrorWithMessage(ex, args);
+                schemaErrorOccurred = ex.Message == ApplicationErrors.Messages.UnableToParseMessage;
             }
             finally
             {
                 ArchiveMessage(args.Message);
                 ArchiveItems(models);
-                NotifyItemErrors(args.Message, models);
+                NotifyItemErrors(args.Message, schemaErrorOccurred, models);
 
                 AcknowledgeMessage(args);
                 models.Clear();
@@ -115,9 +116,9 @@ namespace Icon.Infor.Listeners.Item
             }
         }
 
-        private void NotifyItemErrors(IEsbMessage message, List<ItemModel> models)
+        private void NotifyItemErrors(IEsbMessage message, bool schemaErrorOccurred, List<ItemModel> models)
         {
-            notifier.NotifyOfItemError(message, models.Where(m => m.ErrorCode != null).ToList());
+            notifier.NotifyOfItemError(message, schemaErrorOccurred, models.Where(m => m.ErrorCode != null).ToList());
         }
     }
 }

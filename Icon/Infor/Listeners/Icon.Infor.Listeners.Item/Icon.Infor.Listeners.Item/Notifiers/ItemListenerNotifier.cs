@@ -1,25 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Esb.Subscriber;
-using Icon.Infor.Listeners.Item.Models;
+﻿using Esb.Core.EsbServices;
 using Icon.Common.Email;
+using Icon.Esb.Services.ConfirmationBod;
+using Icon.Esb.Subscriber;
+using Icon.Infor.Listeners.Item.Constants;
+using Icon.Infor.Listeners.Item.Models;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Icon.Infor.Listeners.Item.Notifiers
 {
     public class ItemListenerNotifier : IItemListenerNotifier
     {
+        private const string WfmTenantId = "WFM";
         private IEmailClient emailClient;
+        private ItemListenerSettings settings;
+        private IEsbService<ConfirmationBodEsbRequest> confirmationBodeEsbService;
 
-        public ItemListenerNotifier(IEmailClient emailClient)
+        public ItemListenerNotifier(
+            IEmailClient emailClient,
+            ItemListenerSettings settings,
+            IEsbService<ConfirmationBodEsbRequest> confirmationBodeEsbService)
         {
             this.emailClient = emailClient;
+            this.settings = settings;
+            this.confirmationBodeEsbService = confirmationBodeEsbService;
         }
 
-        public void NotifyOfItemError(IEsbMessage message, List<ItemModel> itemModelsWithErrors)
+        public void NotifyOfItemError(IEsbMessage message, bool schemaErrorOccurred, List<ItemModel> itemModelsWithErrors)
         {
+            if (settings.EnableConfirmBods)
+            {
+                SendConfirmationBod(message, schemaErrorOccurred, itemModelsWithErrors);
+            }
             if (itemModelsWithErrors.Count > 0)
             {
                 StringBuilder builder = new StringBuilder();
@@ -42,6 +54,61 @@ namespace Icon.Infor.Listeners.Item.Notifiers
                         .Append("<br /><br />");
                 }
                 emailClient.Send(builder.ToString(), "Infor Item Listener: Item Errors");
+            }
+        }
+
+        private void SendConfirmationBod(IEsbMessage message, bool schemaErrorOccurred, List<ItemModel> itemModelsWithErrors)
+        {
+            var messageId = message.GetProperty("IconMessageID");
+            if (schemaErrorOccurred)
+            {
+                ConfirmationBodEsbRequest request = new ConfirmationBodEsbRequest
+                {
+                    BodId = messageId,
+                    ErrorDescription = ApplicationErrors.Messages.UnableToParseMessage,
+                    ErrorReasonCode = ApplicationErrors.Codes.UnableToParseMessage,
+                    ErrorType = ConfirmationBodEsbErrorTypes.Schema,
+                    EsbMessageProperties = new Dictionary<string, string>
+                    {
+                        { "IconMessageID", messageId }
+                    },
+                    OriginalMessage = message.MessageText,
+                    TenantId = WfmTenantId
+                };
+                confirmationBodeEsbService.Send(request);
+            }
+            else
+            {
+                foreach (var item in itemModelsWithErrors)
+                {
+                    ConfirmationBodEsbRequest request = new ConfirmationBodEsbRequest
+                    {
+                        BodId = messageId,
+                        ErrorDescription = item.ErrorDetails,
+                        ErrorReasonCode = item.ErrorCode,
+                        ErrorType = GetErrorType(item),
+                        EsbMessageProperties = new Dictionary<string, string>
+                        {
+                            { "IconMessageID", messageId }
+                        },
+                        OriginalMessage = message.MessageText,
+                        TenantId = WfmTenantId
+                    };
+                    confirmationBodeEsbService.Send(request);
+                }
+            }
+        }
+
+        private ConfirmationBodEsbErrorTypes GetErrorType(ItemModel item)
+        {
+            if(item.ErrorCode == ApplicationErrors.Codes.ItemAddOrUpdateError 
+                || item.ErrorCode == ApplicationErrors.Codes.GenerateItemMessagesError)
+            {
+                return ConfirmationBodEsbErrorTypes.DatabaseConstraint;
+            }
+            else
+            {
+                return ConfirmationBodEsbErrorTypes.Data;
             }
         }
     }

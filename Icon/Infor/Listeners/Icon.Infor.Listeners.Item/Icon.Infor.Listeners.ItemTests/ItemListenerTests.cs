@@ -1,25 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Infor.Listeners.Item;
+﻿using Icon.Common.Email;
+using Icon.Esb;
+using Icon.Esb.ListenerApplication;
+using Icon.Esb.MessageParsers;
+using Icon.Esb.Subscriber;
+using Icon.Infor.Listeners.Item.Models;
+using Icon.Infor.Listeners.Item.Notifiers;
+using Icon.Infor.Listeners.Item.Services;
+using Icon.Infor.Listeners.Item.Validators;
+using Icon.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Esb.Subscriber;
-using Moq;
-using Icon.Esb.MessageParsers;
-using System.Collections;
-using Icon.Infor.Listeners.Item.Models;
-using Icon.Infor.Listeners.Item.Services;
-using Icon.Esb;
-using Icon.Common.Email;
-using Icon.Esb.ListenerApplication;
-using Icon.Logging;
 using TIBCO.EMS;
-using Icon.Infor.Listeners.Item.Validators;
-using Icon.Common.Context;
-using Icon.Framework;
-using Icon.Infor.Listeners.Item.Notifiers;
 
 namespace Icon.Infor.Listeners.Item.Tests
 {
