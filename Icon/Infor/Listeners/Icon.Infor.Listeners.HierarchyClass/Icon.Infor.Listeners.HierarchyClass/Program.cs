@@ -9,6 +9,7 @@ using Icon.Esb;
 using Icon.Esb.Factory;
 using Icon.Esb.ListenerApplication;
 using Icon.Esb.MessageParsers;
+using Icon.Esb.Services.ConfirmationBod;
 using Icon.Esb.Subscriber;
 using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.EsbService;
@@ -54,7 +55,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
         public static Container CreateHierarchyClassListener()
         {
             var container = new Container();
-            
+
             container.Register<IListenerApplication, HierarchyClassListener>();
             container.Register<IMessageParser<IEnumerable<InforHierarchyClassModel>>, HierarchyClassMessageParser>();
             container.Register(() => ListenerApplicationSettings.CreateDefaultSettings(ApplicationName));
@@ -78,11 +79,28 @@ namespace Icon.Infor.Listeners.HierarchyClass
 
             container.Register<IEsbConnectionFactory, VimEsbConnectionFactory>();
 
+            container.Register<IEsbConnectionFactory, EsbConnectionFactory>();
+            container.Register<IMessageBuilder<ConfirmationBodEsbRequest>, ConfirmationBodMessageBuilder>();
+            container.Register<IEsbService<ConfirmationBodEsbRequest>>(() => GetConfirmationBodEsbService(container));
+
             var types = GetHierarchyClassServices();
 
             container.RegisterCollection<IHierarchyClassService>(types);
 
             return container;
+        }
+
+        private static IEsbService<ConfirmationBodEsbRequest> GetConfirmationBodEsbService(Container container)
+        {
+            ConfirmationBodEsbService confirmationBodEsbService =
+                new ConfirmationBodEsbService
+                (
+                        EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ConfirmBOD"),
+                        container.GetInstance<IEsbConnectionFactory>(),
+                        container.GetInstance<IMessageBuilder<ConfirmationBodEsbRequest>>()
+                );
+
+            return confirmationBodEsbService;
         }
 
         private static IEnumerable<Type> GetHierarchyClassServices()

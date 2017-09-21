@@ -19,6 +19,9 @@ using Icon.Infor.Listeners.HierarchyClass.Constants;
 using Icon.Common.Context;
 using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Extensions;
+using Icon.Infor.Listeners.HierarchyClass.EsbService;
+using System.Data.SqlClient;
+using Icon.Esb.Services.ConfirmationBod;
 
 namespace Icon.Infor.Listeners.HierarchyClass
 {
@@ -26,6 +29,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
     {
         private IMessageParser<IEnumerable<InforHierarchyClassModel>> messageParser;
         private IEnumerable<IHierarchyClassService> services;
+        private HierarchyClassEsbService esbService;
         private ICollectionValidator<InforHierarchyClassModel> validator;
         private IHierarchyClassListenerNotifier notifier;
         private ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler;
@@ -35,6 +39,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             IMessageParser<IEnumerable<InforHierarchyClassModel>> messageParser,
             ICollectionValidator<InforHierarchyClassModel> validator,
             IEnumerable<IHierarchyClassService> services,
+            HierarchyClassEsbService esbService,
             ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler,
             ICommandHandler<ArchiveMessageCommand> archiveMessageCommandHandler,
             ListenerApplicationSettings listenerApplicationSettings,
@@ -42,11 +47,12 @@ namespace Icon.Infor.Listeners.HierarchyClass
             IEsbSubscriber subscriber,
             IEmailClient emailClient,
             IHierarchyClassListenerNotifier notifier,
-            ILogger<HierarchyClassListener> logger) 
+            ILogger<HierarchyClassListener> logger)
             : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, logger)
         {
             this.messageParser = messageParser;
             this.services = services;
+            this.esbService = esbService;
             this.validator = validator;
             this.archiveHierarchyClassesCommandHandler = archiveHierarchyClassesCommandHandler;
             this.archiveMessageCommandHandler = archiveMessageCommandHandler;
@@ -56,6 +62,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
         {
             IEnumerable<InforHierarchyClassModel> hierarchyClasses = new List<InforHierarchyClassModel>();
+            ConfirmationBodEsbErrorTypes errorType = ConfirmationBodEsbErrorTypes.Data;
             try
             {
                 hierarchyClasses = messageParser.ParseMessage(args.Message);
@@ -68,9 +75,12 @@ namespace Icon.Infor.Listeners.HierarchyClass
                         s => s.ProcessHierarchyClassMessages(hierarchyClasses));
                 }
             }
+
             catch (Exception ex)
             {
                 this.LogAndNotifyErrorWithMessage(ex, args);
+                errorType = GetErrorTypeFromException(ex);
+
                 if(hierarchyClasses != null)
                 {
                     foreach (var hierarchyClass in hierarchyClasses.Where(hc => hc.ErrorCode == null))
@@ -88,8 +98,8 @@ namespace Icon.Infor.Listeners.HierarchyClass
                     if (hierarchyClasses.Any())
                     {
                         archiveHierarchyClassesCommandHandler.Execute(new ArchiveHierarchyClassesCommand { Models = hierarchyClasses });
-                        notifier.NotifyOfError(args.Message, hierarchyClasses.Where(hc => hc.ErrorCode != null).ToList());
-                    }
+                        notifier.NotifyOfError(args.Message, errorType, hierarchyClasses.Where(hc => hc.ErrorCode != null).ToList());
+                    }            
                 }
                 catch (Exception ex)
                 {
@@ -104,6 +114,26 @@ namespace Icon.Infor.Listeners.HierarchyClass
                 }
                 this.AcknowledgeMessage(args);
             }
+        }
+
+        private ConfirmationBodEsbErrorTypes GetErrorTypeFromException(Exception ex)
+        {
+            ConfirmationBodEsbErrorTypes errorType;
+            if (ex.Message == ApplicationErrors.Codes.UnableToParseHierarchyClass)
+            {
+                errorType = ConfirmationBodEsbErrorTypes.Schema;
+            }
+            // 2627 is unique constraint key error and 547 is foreign key violation
+            else if (ex.GetBaseException().GetType() == typeof(SqlException) &&
+                     ((SqlException)ex).Number == 2627 || ((SqlException)ex).Number == 547)
+            {
+                errorType = ConfirmationBodEsbErrorTypes.DatabaseConstraint;
+            }
+            else
+            {
+                errorType = ConfirmationBodEsbErrorTypes.Data;
+            }
+            return errorType;
         }
     }
 }

@@ -1,25 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Icon.Esb.Subscriber;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using Icon.Common.Email;
+using Icon.Esb.Services.ConfirmationBod;
+using Esb.Core.EsbServices;
+using Icon.Infor.Listeners.HierarchyClass.Constants;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Notifier
 {
     public class HierarchyClassListenerNotifier : IHierarchyClassListenerNotifier
     {
+        private const string WfmTenantId = "WFM";
         private IEmailClient emailClient;
+        private HierarchyClassListenerSettings settings;
+        private IEsbService<ConfirmationBodEsbRequest> confirmationBodeEsbService;
 
-        public HierarchyClassListenerNotifier(IEmailClient emailClient)
+        public HierarchyClassListenerNotifier(IEmailClient emailClient,
+                                              HierarchyClassListenerSettings settings,
+                                              IEsbService<ConfirmationBodEsbRequest> confirmationBodeEsbService
+                                              )
         {
             this.emailClient = emailClient;
+            this.settings = settings;
+            this.confirmationBodeEsbService = confirmationBodeEsbService;
         }
 
-        public void NotifyOfError(IEsbMessage message, List<InforHierarchyClassModel> hierarchyClassModelsWithErrors)
+        public void NotifyOfError(IEsbMessage message, ConfirmationBodEsbErrorTypes errorType, List<InforHierarchyClassModel> hierarchyClassModelsWithErrors)
         {
+            if (settings.EnableConfirmBods)
+            {
+                SendConfirmationBod(message, errorType, hierarchyClassModelsWithErrors);
+            }
             if (hierarchyClassModelsWithErrors.Count > 0)
             {
                 StringBuilder builder = new StringBuilder();
@@ -50,6 +62,55 @@ namespace Icon.Infor.Listeners.HierarchyClass.Notifier
                         .Append("<br /><br />");
                 }
                 emailClient.Send(builder.ToString(), "Infor Hierarchy Class Listener: Hierarchy Class Errors");
+            }
+        }
+
+        private void SendConfirmationBod(IEsbMessage message, ConfirmationBodEsbErrorTypes errorType, List<InforHierarchyClassModel> hierarchyClassModelsWithErrors)
+        {
+            var messageId = message.GetProperty("IconMessageID");
+            ConfirmationBodEsbRequest request;
+            switch (errorType)
+            {
+                case ConfirmationBodEsbErrorTypes.Schema:
+
+                    request = new ConfirmationBodEsbRequest
+                    {
+                        BodId = messageId,
+                        ErrorDescription = ApplicationErrors.Descriptions.UnableToParseHierarchyClass,
+                        ErrorReasonCode = ApplicationErrors.Codes.UnableToParseHierarchyClass,
+                        ErrorType = ConfirmationBodEsbErrorTypes.Schema,
+                        EsbMessageProperties = new Dictionary<string, string>
+                    {
+                        { "IconMessageID", messageId }
+                    },
+                        OriginalMessage = message.MessageText,
+                        TenantId = WfmTenantId
+                    };
+                    confirmationBodeEsbService.Send(request);
+                    break;
+
+                case ConfirmationBodEsbErrorTypes.Data:
+                case ConfirmationBodEsbErrorTypes.DatabaseConstraint:
+                    foreach (var hierarchyClass in hierarchyClassModelsWithErrors)
+                    {
+                        request = new ConfirmationBodEsbRequest
+                        {
+                            BodId = messageId,
+                            ErrorDescription = hierarchyClass.ErrorDetails,
+                            ErrorReasonCode = hierarchyClass.ErrorCode,
+                            ErrorType = errorType,
+                            EsbMessageProperties = new Dictionary<string, string>
+                        {
+                            { "IconMessageID", messageId }
+                        },
+                            OriginalMessage = message.MessageText,
+                            TenantId = WfmTenantId
+                        };
+                        confirmationBodeEsbService.Send(request);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     }

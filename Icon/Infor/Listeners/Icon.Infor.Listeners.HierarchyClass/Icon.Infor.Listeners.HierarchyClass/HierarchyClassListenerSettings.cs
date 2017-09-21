@@ -11,6 +11,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
     {
         public bool EnableNationalClassEventGeneration { get; set; }
         public bool ValidateSequenceId { get; set; }
+        public bool EnableConfirmBods { get; set; }
 
         public static HierarchyClassListenerSettings CreateFromConfig()
         {
@@ -19,7 +20,9 @@ namespace Icon.Infor.Listeners.HierarchyClass
                 EnableNationalClassEventGeneration = AppSettingsAccessor
                     .GetBoolSetting(nameof(EnableNationalClassEventGeneration)),
                 ValidateSequenceId = AppSettingsAccessor
-                    .GetBoolSetting(nameof(ValidateSequenceId))
+                    .GetBoolSetting(nameof(ValidateSequenceId)),
+                EnableConfirmBods= AppSettingsAccessor
+                    .GetBoolSetting(nameof(EnableConfirmBods))
             };
         }
     }
