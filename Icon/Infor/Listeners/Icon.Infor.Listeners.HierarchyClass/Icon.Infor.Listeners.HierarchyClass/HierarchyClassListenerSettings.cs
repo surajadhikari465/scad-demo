@@ -21,7 +21,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
                     .GetBoolSetting(nameof(EnableNationalClassEventGeneration)),
                 ValidateSequenceId = AppSettingsAccessor
                     .GetBoolSetting(nameof(ValidateSequenceId)),
-                    EnableConfirmBods= AppSettingsAccessor
+                EnableConfirmBods= AppSettingsAccessor
                     .GetBoolSetting(nameof(EnableConfirmBods))
             };
         }

@@ -79,7 +79,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             catch (Exception ex)
             {
                 this.LogAndNotifyErrorWithMessage(ex, args);
-                errorType = getErrorTypeFromException(ex);
+                errorType = GetErrorTypeFromException(ex);
 
                 if(hierarchyClasses != null)
                 {
@@ -116,7 +116,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             }
         }
 
-        private ConfirmationBodEsbErrorTypes getErrorTypeFromException(Exception ex)
+        private ConfirmationBodEsbErrorTypes GetErrorTypeFromException(Exception ex)
         {
             ConfirmationBodEsbErrorTypes errorType;
             if (ex.Message == ApplicationErrors.Codes.UnableToParseHierarchyClass)

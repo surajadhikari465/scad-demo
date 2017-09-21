@@ -63,7 +63,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Notifiers
            
         }
         [TestMethod]
-        public void NotifyOfHierarchyError_ConfirmBodEnabled_HierarchyModelHasDataErrors_ShouldSendDataError()
+        public void NotifyOfHierarchyError_ConfirmBodEnabledAndHierarchyModelHasDataErrors_ShouldSendDataError()
         {
             //Given
             settings.EnableConfirmBods = true;
@@ -78,7 +78,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Notifiers
         }
 
         [TestMethod]
-        public void NotifyOfHierarchyError_ConfirmBodEnabled_HierarchyModelHasDataErrors_ShouldSendSchemaError()
+        public void NotifyOfHierarchyError_ConfirmBodEnabledAndHierarchyModelHasDataErrors_ShouldSendSchemaError()
         {
             //Given
             settings.EnableConfirmBods = true;
@@ -93,7 +93,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Notifiers
         }
 
         [TestMethod]
-        public void NotifyOfHierarchyError_ConfirmBodEnabled_HierarchyModelHasDataErrors_ShouldSendDatabaseConstraintError()
+        public void NotifyOfHierarchyError_ConfirmBodEnabledAndHierarchyModelHasDataErrors_ShouldSendDatabaseConstraintError()
         {
             //Given
             settings.EnableConfirmBods = true;
