@@ -119,8 +119,6 @@ Public Class ExtraTextEdit
         InitializeComponent()
 
         Me._isInitializing = True
-        Me._enableReturnsInExtraText = InstanceDataDAO.IsFlagActive("EnableReturnsInExtraTextAndStorageData")
-        Me.txtExtraText.AcceptsReturn = Me._enableReturnsInExtraText
 
     End Sub
 
@@ -160,8 +158,8 @@ Public Class ExtraTextEdit
 
         Me._enableReturnsInExtraText = (Not IsReadOnly) AndAlso InstanceDataDAO.IsFlagActive("EnableReturnsInExtraTextAndStorageData")
         Me.txtExtraText.AcceptsReturn = Me._enableReturnsInExtraText
-
     End Sub
+
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
 
         Windows.Forms.Cursor.Current = Cursors.WaitCursor
@@ -174,7 +172,7 @@ Public Class ExtraTextEdit
         Me.CurrentExtraTextBO.Scale_LabelType_ID = CInt(Me.cmbLabelType.SelectedValue)
 
         extraTextCount = ScaleExtraTextDAO.GetItemScaleCountWithExtraText(CurrentExtraTextBO.ID)
-        If extraTextCount <= 1 OrElse _
+        If extraTextCount <= 1 OrElse
         MessageBox.Show(String.Format(ResourcesCommon.GetString("msg_confirmUpdateMultiple"), extraTextCount.ToString(), "items"), Me.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
 
             ScaleExtraTextDAO.Save(Me.CurrentExtraTextBO)

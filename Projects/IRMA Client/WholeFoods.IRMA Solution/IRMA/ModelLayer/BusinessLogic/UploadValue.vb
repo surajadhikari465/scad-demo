@@ -761,6 +761,13 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
 
                     theTranslatedValue = ItemChainDAO.Instance.GetChainIdsFromNameList(theValue)
                 End If
+            ElseIf Me.Key.Equals(EIM_Constants.SCALE_EXTRATEXT_EXTRATEXT) OrElse Me.Key.Equals(EIM_Constants.SCALE_STORAGEDATA_STORAGEDATA) Then
+                If Not String.IsNullOrEmpty(theValue) Then
+                    'Importing from a spreadsheet causes Carriage Return + Line Feed combinations to become
+                    'only Line Feeds which causes display issues in the client and in the output of the
+                    'Scale Push for Extra Text and Storage Data. So replacing Line Feeds with Carriage Return + Line Feed.
+                    theTranslatedValue = theTranslatedValue.Replace(vbLf, vbCrLf)
+                End If
             End If
 
             If IsNothing(theTranslatedValue) Then
