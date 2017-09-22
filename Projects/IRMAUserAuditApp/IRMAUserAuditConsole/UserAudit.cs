@@ -103,7 +103,7 @@ namespace IRMAUserAuditConsole
             {
                 var environments = configRepo.GetEnvironmentList();
                 EnvId = environments
-                    .SingleOrDefault(e => e.Name.ToLower().Trim() == options.Environment.ToString().ToLower())
+                    .SingleOrDefault(e => e.Name.Replace(" ", "").ToLower().Trim() == options.Environment.ToString().ToLower())
                     .EnvironmentID;
                 if (EnvId != null)
                 {
