@@ -40,15 +40,22 @@ GRANT EXECUTE
     ON OBJECT::[dbo].[fn_InstanceDataValue] TO [IRMASupportRole]
     AS [dbo];
 
-
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[fn_InstanceDataValue] TO [IRMAClientRole]
     AS [dbo];
-
 
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[fn_InstanceDataValue] TO [IRMAReports]
     AS [dbo];
 
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[fn_InstanceDataValue] TO [IConInterface]
+    AS [dbo];
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[fn_InstanceDataValue] TO [MammothRole]
+    AS [dbo];

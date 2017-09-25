@@ -19,6 +19,7 @@ BEGIN
 	BS		12-15-2016  VSTS 19477		Added @StoreJurisdictionID parameter in order to consolidate
 										some mammoth event creation stored procedures, namely being able to remove
 										mammoth.IconGenerateMammothEvents which is no longer used by the Icon Global Controller
+	BJ		09-25-2017	VSTS 23436		No longer generate price events if GlobalPriceManagement is active
 	=============================================*/
 
 	-- ===============================================
@@ -39,6 +40,7 @@ BEGIN
 	DECLARE @ItemLocaleConfigValue varchar(350) = (SELECT dbo.fn_GetAppConfigValue('MammothItemLocaleChanges','IRMA Client')), 
 			@PriceConfigValue varchar(350) = (SELECT dbo.fn_GetAppConfigValue('MammothPriceChanges','IRMA Client')), 
 			@ExcludedStoreNo varchar(250) = (SELECT dbo.fn_GetAppConfigValue('LabAndClosedStoreNo','IRMA Client')),
+			@GlobalPriceManagementIdfKey nvarchar(21) = 'GlobalPriceManagement',
 			@NewItemChangeTypeId int = (select ItemChgTypeID from ItemChgType where ItemChgTypeDesc = 'New');
 
 	-- Do nothing if the configuration is turned off
@@ -123,7 +125,8 @@ BEGIN
 				JOIN #ActiveStores s ON s.Store_No = p.Store_No 
 				JOIN StoreItem si on p.Item_Key = si.Item_Key
 					AND p.Store_No = si.Store_No
-			 WHERE 
+				JOIN fn_GetInstanceDataFlagStoreValues(@GlobalPriceManagementIdfKey) idf ON si.Store_No = idf.Store_No
+			WHERE 
 				ii.Remove_Identifier = 0
 				AND ii.Deleted_Identifier = 0
 				AND si.Authorized = 1
@@ -136,6 +139,7 @@ BEGIN
 						AND q.EventTypeID = @eventTypeId
 						AND q.InProcessBy IS NULL
 						AND q.ProcessFailedDate IS NULL)
+				AND idf.FlagValue = 0
 			UNION
 			SELECT 
 				ii.Item_Key,
@@ -151,7 +155,8 @@ BEGIN
 				JOIN PriceBatchHeader pbh ON pbd.PriceBatchHeaderID = pbh.PriceBatchHeaderID
 				JOIN PriceChgType PCT ON PBD.PriceChgTypeID = PCT.PriceChgTypeID
 				JOIN #ActiveStores s on pbd.Store_No = s.Store_No
-			 WHERE 
+				JOIN fn_GetInstanceDataFlagStoreValues(@GlobalPriceManagementIdfKey) idf ON s.Store_No = idf.Store_No
+			WHERE 
 				ii.Remove_Identifier = 0
 				AND ii.Deleted_Identifier = 0
 				AND pbh.PriceBatchStatusID = @sentPriceBatchStatus
@@ -168,6 +173,7 @@ BEGIN
 						AND q.EventTypeID = @eventTypeId
 						AND q.InProcessBy IS NULL
 						AND q.ProcessFailedDate IS NULL)
+				AND idf.FlagValue = 0
 		END
 
 	DROP TABLE #ActiveStores
@@ -184,3 +190,4 @@ GO
 GRANT EXECUTE
     ON OBJECT::[mammoth].[GenerateEvents] TO [MammothRole]
     AS [dbo];
+GO

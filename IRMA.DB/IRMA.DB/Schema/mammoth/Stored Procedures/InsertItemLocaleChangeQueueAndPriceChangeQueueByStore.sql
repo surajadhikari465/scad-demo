@@ -33,10 +33,12 @@ begin try
 			--************************************************************************************************************************************
 				declare @priceConfigValue varchar(350);
 				declare @priceRowCount int = 0
+				declare @globalPriceManagementEnabled bit = 0
 
 				set @priceConfigValue = (select dbo.fn_GetAppConfigValue('MammothPriceChanges','IRMA Client'));
-			
-				if @priceConfigValue != 1
+				set @globalPriceManagementEnabled = (select dbo.fn_InstanceDataValue('GlobalPriceManagement', @Store_No))
+
+				if @priceConfigValue != 1 and @globalPriceManagementEnabled = 0
 				begin
 					set @successCode = 1
 					set @message = @message + ' Mammoth Price changes are disabled. '
@@ -171,9 +173,9 @@ GRANT EXECUTE
     ON OBJECT::[mammoth].[InsertItemLocaleChangeQueueAndPriceChangeQueueByStore] TO [IRMAClientRole]
     AS [dbo];
 
-
 GO
 GRANT EXECUTE
     ON OBJECT::[mammoth].[InsertItemLocaleChangeQueueAndPriceChangeQueueByStore] TO [IRSUser]
     AS [dbo];
 
+GO
