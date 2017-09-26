@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.Schemas.Wfm", "Ico
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.Schemas.Infor", "Icon.Esb.Schemas.Infor\Icon.Esb.Schemas.Infor.csproj", "{D8523A10-E03B-4FB4-906F-560C0BD54F55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.Schemas.Mammoth", "Icon.Esb.Schemas.Mammoth\Icon.Esb.Schemas.Mammoth.csproj", "{1653A95A-89C9-406E-B976-E930AC36B382}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.Schemas.Mammoth", "Icon.Esb.Schemas.Mammoth\Icon.Esb.Schemas.Mammoth.csproj", "{A2763A43-D9EA-402E-B46B-95AD46C121D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{D8523A10-E03B-4FB4-906F-560C0BD54F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8523A10-E03B-4FB4-906F-560C0BD54F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8523A10-E03B-4FB4-906F-560C0BD54F55}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1653A95A-89C9-406E-B976-E930AC36B382}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1653A95A-89C9-406E-B976-E930AC36B382}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1653A95A-89C9-406E-B976-E930AC36B382}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1653A95A-89C9-406E-B976-E930AC36B382}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2763A43-D9EA-402E-B46B-95AD46C121D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2763A43-D9EA-402E-B46B-95AD46C121D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2763A43-D9EA-402E-B46B-95AD46C121D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2763A43-D9EA-402E-B46B-95AD46C121D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
