@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schema.infor.com/InforOAGIS/2" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema">
     <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
+    <xsd:import namespace="http://schema.infor.com/InforOAGIS/2" schemaLocation="/Schemas/Application/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd"/>
     <pd:name>Processors/ProcessBODRequestION.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -14,6 +15,7 @@
                     <xsd:element name="PatchFamilyID" type="xsd:string"/>
                     <xsd:element name="MessageId" type="xsd:string"/>
                     <xsd:element ref="pfx2:Error"/>
+                    <xsd:element name="LastProcessedGpmSequenceId" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -49,13 +51,13 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>Send to Error Queue</pd:to>
+            <pd:to>Send to Process BOD Queue</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send to Error Queue</pd:from>
+            <pd:from>Send to Process BOD Queue</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -69,7 +71,7 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send to Error Queue</pd:from>
+            <pd:from>Send to Process BOD Queue</pd:from>
             <pd:to>Sleep</pd:to>
             <pd:xpathDescription>Error</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
@@ -111,18 +113,18 @@
                 </ns1:SleepInputSchema>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Send to Error Queue">
+        <pd:activity name="Send to Process BOD Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>318</pd:x>
-            <pd:y>86</pd:y>
+            <pd:x>317</pd:x>
+            <pd:y>88</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
                 <SessionAttributes>
                     <transacted>false</transacted>
                     <acknowledgeMode>1</acknowledgeMode>
                     <maxSessions>1</maxSessions>
-                    <destination>%%Destinations/Queues/ErrorBODQueue%%</destination>
+                    <destination>WFMESB.Technical.ItemMgmt.IntegrationTest.Temp.Queue.V2</destination>
                 </SessionAttributes>
                 <ConfigurableHeaders>
                     <JMSDeliveryMode>%%Environment/BOD/DeliveryMode%%</JMSDeliveryMode>
@@ -131,19 +133,7 @@
                 </ConfigurableHeaders>
                 <ConnectionReference>/Connections/ESB Connection.sharedjmscon</ConnectionReference>
                 <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
-                <InDataxsdString>
-                    <xsd:element name="Input">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="MessageID" type="xsd:string"/>
-                                <xsd:element ref="pfx2:Error"/>
-                                <xsd:element name="Body" type="xsd:string"/>
-                                <xsd:element name="GpmSequenceID" type="xsd:string"/>
-                                <xsd:element name="PatchFamilyID" type="xsd:string"/>
-                            </xsd:sequence>
-                        </xsd:complexType>
-                    </xsd:element>
-                </InDataxsdString>
+                <InDataxsdString ref="pfx4:ProcessPriceChangePatchMaster"/>
             </config>
             <pd:inputBindings>
                 <ns0:ActivityInput>
@@ -162,21 +152,47 @@
                         </PatchFamilyID>
                     </OtherProperties>
                     <Body>
-                        <Input>
-                            <MessageID>
-                                <xsl:value-of select="$Start/Input/MessageId"/>
-                            </MessageID>
-                            <xsl:copy-of select="$Start/Input/pfx2:Error"/>
-                            <Body>
-                                <xsl:value-of select="$Start/Input/Body"/>
-                            </Body>
-                            <GpmSequenceID>
-                                <xsl:value-of select="$Start/Input/GpmSequenceId"/>
-                            </GpmSequenceID>
-                            <PatchFamilyID>
-                                <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                            </PatchFamilyID>
-                        </Input>
+                        <pfx4:ProcessPriceChangePatchMaster>
+                            <xsl:attribute name="releaseID">
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/BODRequest/ProcessBODVersionID"/>
+                            </xsl:attribute>
+                            <pfx4:ApplicationArea>
+                                <pfx4:Sender>
+                                    <pfx4:LogicalID>
+                                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/BODRequest/ProcessBODLogicalID"/>
+                                    </pfx4:LogicalID>
+                                </pfx4:Sender>
+                                <pfx4:CreationDateTime>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </pfx4:CreationDateTime>
+                            </pfx4:ApplicationArea>
+                            <pfx4:DataArea>
+                                <pfx4:Process>
+                                    <pfx4:TenantID>
+                                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/BODRequest/ProcessBODTenantID"/>
+                                    </pfx4:TenantID>
+                                </pfx4:Process>
+                                <pfx4:PriceChangePatchMaster>
+                                    <pfx4:BusinessKey>
+                                        <xsl:attribute name="variationID">
+                                            <xsl:value-of select="0"/>
+                                        </xsl:attribute>
+                                        <xsl:value-of select="$Start/Input/MessageId"/>
+                                    </pfx4:BusinessKey>
+                                    <pfx4:PriceChangePatchHeader>
+                                        <pfx4:PatchFamilyID>
+                                            <xsl:value-of select="$Start/Input/PatchFamilyID"/>
+                                        </pfx4:PatchFamilyID>
+                                        <pfx4:PatchNum>
+                                            <xsl:value-of select="$Start/Input/LastProcessedGpmSequenceId + 1"/>
+                                        </pfx4:PatchNum>
+                                        <pfx4:TimeStamp>
+                                            <xsl:value-of select="current-dateTime()"/>
+                                        </pfx4:TimeStamp>
+                                    </pfx4:PriceChangePatchHeader>
+                                </pfx4:PriceChangePatchMaster>
+                            </pfx4:DataArea>
+                        </pfx4:ProcessPriceChangePatchMaster>
                     </Body>
                 </ns0:ActivityInput>
             </pd:inputBindings>
@@ -204,7 +220,7 @@
         <pd:inputBindings>
             <pfx:ActivityInput>
                 <message>
-                    <xsl:value-of select="concat( &quot;Error trying to send BOD Request to JMS Queue: &#xD;&#xA; &quot; &#xA;,tib:render-xml($_error_Send-to-Error-Queue/ActivityErrors, false() , true()) )"/>
+                    <xsl:value-of select="concat( &quot;Error trying to send BOD Request to JMS Queue: &#xD;&#xA; &quot; &#xA;,tib:render-xml($_error_Send-to-Process-BOD-Queue/ActivityErrors, false() , true()) )"/>
                 </message>
                 <msgCode>
                     <xsl:value-of select="&quot;BOD-EXCEPTION-QSEND-ERROR&quot;"/>

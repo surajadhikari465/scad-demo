@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <name name="SchemasLibraryBuilder">
+        <version>3</version>
+        <author>blake.jones</author>
+        <fileLocation>C:\dev\VSTS\Icon\Icon\Tibco\SharedLibraries\Libraries\SchemasLibrary.v1.projlib</fileLocation>
+        <resources>/Schemas/Application/ActivityOutput.xsd,/Schemas/Application/ActivityOutputBackUp.xsd,/Schemas/Application/AppLog.xsd,/Schemas/Application/BOD.xsd,/Schemas/Application/ConfirmBOD.xsd,/Schemas/Application/Error.xsd,/Schemas/Application/MammothPrices.xsd,/Schemas/Application/Meta.xsd,/Schemas/Application/PriceSchemas/derivative/GetPriceChangePatchMaster.xsd,/Schemas/Application/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd,/Schemas/Application/PriceSchemas/derivative/ShowPriceChangePatchMaster.xsd,/Schemas/Application/PriceSchemas/derivative/SyncPriceChangePatchMaster.xsd,/Schemas/Application/PriceSchemas/master/AttributeValueType.xsd,/Schemas/Application/PriceSchemas/master/AuditInfo.xsd,/Schemas/Application/PriceSchemas/master/PriceChange.xsd,/Schemas/Application/PriceSchemas/master/PriceChangePatch.xsd,/Schemas/Application/PriceSchemas/master/UUID.xsd</resources>
+    </name>
+</Repository:repository>

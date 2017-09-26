@@ -26,12 +26,12 @@
 			<modTime>1502833727906</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ErrorBODQueue</name>
+			<name>ProcessBODQueue</name>
 			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503346304006</modTime>
+			<modTime>1505933113057</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
