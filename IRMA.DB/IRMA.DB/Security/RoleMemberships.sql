@@ -76,7 +76,7 @@ EXECUTE sp_addrolemember @rolename = N'db_datareader', @membername = N'WFM\IRMA 
 GO
 EXECUTE sp_addrolemember @rolename = N'db_datareader', @membername = N'WFM\Infrastructure SQL Server OpsWatch Production';
 
-
+/*
 GO
 EXECUTE sp_addrolemember @rolename = N'db_owner', @membername = N'MSSql.RplAgt.Log';
 
@@ -91,4 +91,4 @@ EXECUTE sp_addrolemember @rolename = N'db_owner', @membername = N'WFM\sql.rplagt
 
 GO
 EXECUTE sp_addrolemember @rolename = N'db_owner', @membername = N'WFM\sql.rplagt.log.prd';
-
+*/

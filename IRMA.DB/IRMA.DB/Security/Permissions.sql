@@ -148,7 +148,7 @@ GRANT CONNECT TO [iCONReports];
 GO
 GRANT CONNECT TO [spice_user];
 
-
+/*
 GO
 GRANT CONNECT TO [MSSql.RplAgt.Log];
 
@@ -179,7 +179,7 @@ GRANT CONNECT TO [WFM\sql.rplagt.snap.prd];
 
 GO
 GRANT CONNECT TO [WFM\sql.rplagt.log.prd];
-
+*/
 
 GO
 GRANT CONNECT TO [NutriChefDataWriter];
