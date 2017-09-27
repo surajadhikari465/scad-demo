@@ -1,8 +1,9 @@
-﻿using Icon.Esb.Schemas.Wfm.Contracts;
+﻿using Esb.Core.Constants;
+using Icon.Esb.Schemas.Infor.ContractTypes;
+using Icon.Esb.Schemas.Mammoth.ContractTypes;
+using Icon.Esb.Schemas.Wfm.Contracts;
 using System;
 using System.Xml.Serialization;
-using Esb.Core.Constants;
-using Icon.Esb.Schemas.Infor.ContractTypes;
 
 namespace Esb.Core.Serializer
 {
@@ -32,12 +33,21 @@ namespace Esb.Core.Serializer
             {
                 AddConfirmBodNameSpaces(namespaces);
             }
+            else if (t == typeof(JobSchedule))
+            {
+                AddJobScheduleNameSpaces(namespaces);
+            }
             else
             {
                 throw new ArgumentException(String.Format("No namespaces set for type {0}", t.ToString()));
             }
 
             return namespaces;
+        }
+
+        private static void AddJobScheduleNameSpaces(XmlSerializerNamespaces namespaces)
+        {
+            namespaces.Add(string.Empty, NamespaceConstants.XmlNamespaces.MammothSchema);
         }
 
         private static void AddConfirmBodNameSpaces(XmlSerializerNamespaces namespaces)
