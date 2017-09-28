@@ -25,22 +25,22 @@ namespace Icon.Esb
 
         public virtual void LoadFromConfig(string queueConfigName = "QueueName")
         {
-            ServerUrl = AppSettingsAccessor.GetStringSetting("ServerUrl");
-            JndiUsername = AppSettingsAccessor.GetStringSetting("JndiUsername");
-            JndiPassword = AppSettingsAccessor.GetStringSetting("JndiPassword");
-            ConnectionFactoryName = AppSettingsAccessor.GetStringSetting("ConnectionFactoryName");
-            SslPassword = AppSettingsAccessor.GetStringSetting("SslPassword");
-            JmsUsername = AppSettingsAccessor.GetStringSetting("JmsUsername");
-            JmsPassword = AppSettingsAccessor.GetStringSetting("JmsPassword");
+            ServerUrl = AppSettingsAccessor.GetStringSetting("ServerUrl", false);
+            JndiUsername = AppSettingsAccessor.GetStringSetting("JndiUsername", false);
+            JndiPassword = AppSettingsAccessor.GetStringSetting("JndiPassword", false);
+            ConnectionFactoryName = AppSettingsAccessor.GetStringSetting("ConnectionFactoryName", false);
+            SslPassword = AppSettingsAccessor.GetStringSetting("SslPassword", false);
+            JmsUsername = AppSettingsAccessor.GetStringSetting("JmsUsername", false);
+            JmsPassword = AppSettingsAccessor.GetStringSetting("JmsPassword", false);
 
-            TargetHostName = AppSettingsAccessor.GetStringSetting("TargetHostName");
-            CertificateName = AppSettingsAccessor.GetStringSetting("CertificateName");
-            CertificateStoreName = AppSettingsAccessor.GetEnumSetting<StoreName>("CertificateStoreName");
-            CertificateStoreLocation = AppSettingsAccessor.GetEnumSetting<StoreLocation>("CertificateStoreLocation");
+            TargetHostName = AppSettingsAccessor.GetStringSetting("TargetHostName", false);
+            CertificateName = AppSettingsAccessor.GetStringSetting("CertificateName", false);
+            CertificateStoreName = AppSettingsAccessor.GetEnumSetting<StoreName>("CertificateStoreName", false);
+            CertificateStoreLocation = AppSettingsAccessor.GetEnumSetting<StoreLocation>("CertificateStoreLocation", false);
             ReconnectDelay = AppSettingsAccessor.GetIntSetting("ReconnectDelay", false);
 
-            QueueName = AppSettingsAccessor.GetStringSetting(queueConfigName);
-            SessionMode = AppSettingsAccessor.GetEnumSetting<SessionMode>("SessionMode");
+            QueueName = AppSettingsAccessor.GetStringSetting(queueConfigName, false);
+            SessionMode = AppSettingsAccessor.GetEnumSetting<SessionMode>("SessionMode", false);
         }
 
         public virtual void LoadFromNamedConfig(string connectionName)
@@ -55,12 +55,12 @@ namespace Icon.Esb
             ConnectionFactoryName = connectionConfiguration.ConnectionFactoryName;
             SslPassword = connectionConfiguration.SslPassword;
             QueueName = connectionConfiguration.QueueName;
-            SessionMode = (SessionMode)Enum.Parse(typeof(SessionMode), connectionConfiguration.SessionMode);
+            SessionMode = !string.IsNullOrWhiteSpace(connectionConfiguration.SessionMode) ? (SessionMode)Enum.Parse(typeof(SessionMode), connectionConfiguration.SessionMode) : default(SessionMode);
             CertificateName = connectionConfiguration.CertificateName;
-            CertificateStoreName = (StoreName)Enum.Parse(typeof(StoreName), connectionConfiguration.CertificateStoreName);
-            CertificateStoreLocation = (StoreLocation)Enum.Parse(typeof(StoreLocation), connectionConfiguration.CertificateStoreLocation);
+            CertificateStoreName = !string.IsNullOrWhiteSpace(connectionConfiguration.CertificateStoreName) ? (StoreName)Enum.Parse(typeof(StoreName), connectionConfiguration.CertificateStoreName) : default(StoreName);
+            CertificateStoreLocation = !string.IsNullOrWhiteSpace(connectionConfiguration.CertificateStoreLocation) ? (StoreLocation)Enum.Parse(typeof(StoreLocation), connectionConfiguration.CertificateStoreLocation) : default(StoreLocation);
             TargetHostName = connectionConfiguration.TargetHostName;
-            ReconnectDelay = Int32.Parse(connectionConfiguration.ReconnectDelay);
+            ReconnectDelay = !string.IsNullOrWhiteSpace(connectionConfiguration.ReconnectDelay) ? Int32.Parse(connectionConfiguration.ReconnectDelay) : 0;
         }
 
         public static EsbConnectionSettings CreateSettingsFromConfig()
