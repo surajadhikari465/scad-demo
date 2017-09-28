@@ -4,6 +4,7 @@ namespace Esb.Core.Serializer
 {
     public interface ISerializer<T>
     {
-        string Serialize(T miniBulk, TextWriter writer);
+        string Serialize(T t);
+        string Serialize(T t, TextWriter writer);
     }
 }

@@ -4,12 +4,11 @@ using System.Xml.Serialization;
 
 namespace Esb.Core.Serializer
 {
-    public class Serializer<T> : ISerializer<T>
+    public class SerializerWithoutNamepaceAliases<T> : ISerializer<T>
     {
         private XmlWriterSettings settings;
-        private XmlSerializerNamespaces namespaces;
 
-        public Serializer()
+        public SerializerWithoutNamepaceAliases()
         {
             settings = new XmlWriterSettings();
             // These settings prevent things like tab and newline characters from appearing in the serialized string.
@@ -17,7 +16,6 @@ namespace Esb.Core.Serializer
             settings.Indent = false;
             // UTF-8 is the desired format for ESB.
             settings.Encoding = System.Text.Encoding.UTF8;
-            namespaces = NamespaceHelper.SetupNamespaces(typeof(T));
         }
 
         public string Serialize(T t)
@@ -42,7 +40,7 @@ namespace Esb.Core.Serializer
         private string Serialize(T t, TextWriter writer, XmlWriter xmlWriter)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
-            serializer.Serialize(xmlWriter, t, namespaces);
+            serializer.Serialize(xmlWriter, t);
 
             return writer.ToString();
         }
