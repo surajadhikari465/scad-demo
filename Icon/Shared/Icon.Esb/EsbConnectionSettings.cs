@@ -55,12 +55,20 @@ namespace Icon.Esb
             ConnectionFactoryName = connectionConfiguration.ConnectionFactoryName;
             SslPassword = connectionConfiguration.SslPassword;
             QueueName = connectionConfiguration.QueueName;
-            SessionMode = !string.IsNullOrWhiteSpace(connectionConfiguration.SessionMode) ? (SessionMode)Enum.Parse(typeof(SessionMode), connectionConfiguration.SessionMode) : default(SessionMode);
+            SessionMode = !string.IsNullOrWhiteSpace(connectionConfiguration.SessionMode) 
+                ? (SessionMode)Enum.Parse(typeof(SessionMode), connectionConfiguration.SessionMode) 
+                : default(SessionMode);
             CertificateName = connectionConfiguration.CertificateName;
-            CertificateStoreName = !string.IsNullOrWhiteSpace(connectionConfiguration.CertificateStoreName) ? (StoreName)Enum.Parse(typeof(StoreName), connectionConfiguration.CertificateStoreName) : default(StoreName);
-            CertificateStoreLocation = !string.IsNullOrWhiteSpace(connectionConfiguration.CertificateStoreLocation) ? (StoreLocation)Enum.Parse(typeof(StoreLocation), connectionConfiguration.CertificateStoreLocation) : default(StoreLocation);
+            CertificateStoreName = !string.IsNullOrWhiteSpace(connectionConfiguration.CertificateStoreName) 
+                ? (StoreName)Enum.Parse(typeof(StoreName), connectionConfiguration.CertificateStoreName) 
+                : default(StoreName);
+            CertificateStoreLocation = !string.IsNullOrWhiteSpace(connectionConfiguration.CertificateStoreLocation) 
+                ? (StoreLocation)Enum.Parse(typeof(StoreLocation), connectionConfiguration.CertificateStoreLocation) 
+                : default(StoreLocation);
             TargetHostName = connectionConfiguration.TargetHostName;
-            ReconnectDelay = !string.IsNullOrWhiteSpace(connectionConfiguration.ReconnectDelay) ? Int32.Parse(connectionConfiguration.ReconnectDelay) : 0;
+            ReconnectDelay = !string.IsNullOrWhiteSpace(connectionConfiguration.ReconnectDelay) 
+                ? Int32.Parse(connectionConfiguration.ReconnectDelay) 
+                : 0;
         }
 
         public static EsbConnectionSettings CreateSettingsFromConfig()
