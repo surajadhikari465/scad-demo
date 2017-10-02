@@ -6,17 +6,17 @@
         <xsd:element name="root">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element name="ItemId" type="xsd:int"/>
-                    <xsd:element name="BusinessUnitId" type="xsd:int"/>
-                    <xsd:element name="MessageId" type="xsd:string" minOccurs="0"/>
-                    <xsd:element name="PatchFamilyId" type="xsd:string"/>
-                    <xsd:element name="GpmSequenceId" type="xsd:int"/>
+                    <xsd:element name="ItemID" type="xsd:int"/>
+                    <xsd:element name="BusinessUnitID" type="xsd:int"/>
+                    <xsd:element name="MessageID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="PatchFamilyID" type="xsd:string"/>
+                    <xsd:element name="PatchFamilySequenceID" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>75</pd:startX>
-    <pd:startY>241</pd:startY>
+    <pd:startX>74</pd:startX>
+    <pd:startY>242</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>862</pd:endX>
@@ -51,7 +51,7 @@
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-13382656</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/root/GpmSequenceId !=1</pd:xpath>
+            <pd:xpath>$Start/root/PatchFamilySequenceID !=1</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>start</pd:from>
@@ -60,7 +60,7 @@
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16750849</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/root/GpmSequenceId = 1</pd:xpath>
+            <pd:xpath>$Start/root/PatchFamilySequenceID = 1</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>InsertMessageSequence</pd:from>
@@ -101,7 +101,7 @@
         <pd:activity name="UpdateMessageSequence">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>423</pd:x>
+            <pd:x>413</pd:x>
             <pd:y>94</pd:y>
             <config>
                 <timeout>10</timeout>
@@ -109,18 +109,18 @@
                 <emptyStrAsNil>true</emptyStrAsNil>
                 <statement>UPDATE [gpm].[MessageSequence]
 SET 
-	GpmSequenceID = ?,
-	GpmMessageID = ?,
+	PatchFamilySequenceID = ?,
+	MessageID = ?,
 	ModifiedDateUtc = SYSUTCDATETIME()
 WHERE PatchFamilyID = ?</statement>
                 <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
                 <Prepared_Param_DataType>
                     <parameter>
-                        <parameterName>GpmSequenceID</parameterName>
-                        <dataType>INTEGER</dataType>
+                        <parameterName>PatchFamilySequenceID</parameterName>
+                        <dataType>VARCHAR</dataType>
                     </parameter>
                     <parameter>
-                        <parameterName>GpmMessageID</parameterName>
+                        <parameterName>MessageID</parameterName>
                         <dataType>VARCHAR</dataType>
                     </parameter>
                     <parameter>
@@ -131,23 +131,37 @@ WHERE PatchFamilyID = ?</statement>
             </config>
             <pd:inputBindings>
                 <jdbcUpdateActivityInput>
-                    <GpmSequenceID>
-                        <xsl:value-of select="$Start/root/GpmSequenceId"/>
-                    </GpmSequenceID>
+                    <PatchFamilySequenceID>
+                        <xsl:value-of select="$Start/root/PatchFamilySequenceID"/>
+                    </PatchFamilySequenceID>
                     <xsl:choose>
-                        <xsl:when test="exists($Start/root/MessageId)">
-                            <GpmMessageID>
-                                <xsl:value-of select="$Start/root/MessageId"/>
-                            </GpmMessageID>
+                        <xsl:when test="exists($Start/root/MessageID)">
+                            <MessageID>
+                                <xsl:choose>
+                                    <xsl:when test="exists($Start/root/MessageID)">
+                                        <xsl:value-of select="$Start/root/MessageID"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </MessageID>
                         </xsl:when>
                         <xsl:otherwise>
-                            <GpmMessageID>
-                                <xsl:value-of select="&quot;&quot;"/>
-                            </GpmMessageID>
+                            <MessageID>
+                                <xsl:choose>
+                                    <xsl:when test="exists(&quot;&quot;)">
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </MessageID>
                         </xsl:otherwise>
                     </xsl:choose>
                     <PatchFamilyID>
-                        <xsl:value-of select="$Start/root/PatchFamilyId"/>
+                        <xsl:value-of select="$Start/root/PatchFamilyID"/>
                     </PatchFamilyID>
                 </jdbcUpdateActivityInput>
             </pd:inputBindings>
@@ -155,14 +169,14 @@ WHERE PatchFamilyID = ?</statement>
         <pd:activity name="InsertMessageSequence">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>439</pd:x>
+            <pd:x>429</pd:x>
             <pd:y>254</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>true</emptyStrAsNil>
                 <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
-                <statement>INSERT INTO [gpm].[MessageSequence] (ItemID, BusinessUnitID, PatchFamilyID, GpmSequenceID, GpmMessageID)
+                <statement>INSERT INTO [gpm].[MessageSequence] (ItemID, BusinessUnitID, PatchFamilyID, PatchFamilySequenceID, MessageID)
 VALUES (?, ?, ?, ?, ?)</statement>
                 <Prepared_Param_DataType>
                     <parameter>
@@ -178,46 +192,53 @@ VALUES (?, ?, ?, ?, ?)</statement>
                         <dataType>VARCHAR</dataType>
                     </parameter>
                     <parameter>
-                        <parameterName>GpmSequenceID</parameterName>
-                        <dataType>INTEGER</dataType>
+                        <parameterName>SequenceID</parameterName>
+                        <dataType>VARCHAR</dataType>
                     </parameter>
                     <parameter>
-                        <parameterName>GpmMessageID</parameterName>
-                        <dataType>CHAR</dataType>
+                        <parameterName>MessageID</parameterName>
+                        <dataType>VARCHAR</dataType>
                     </parameter>
                 </Prepared_Param_DataType>
             </config>
             <pd:inputBindings>
                 <jdbcUpdateActivityInput>
                     <ItemID>
-                        <xsl:value-of select="$Start/root/ItemId"/>
+                        <xsl:value-of select="$Start/root/ItemID"/>
                     </ItemID>
                     <BusinessUnitID>
-                        <xsl:value-of select="$Start/root/BusinessUnitId"/>
+                        <xsl:value-of select="$Start/root/BusinessUnitID"/>
                     </BusinessUnitID>
                     <PatchFamilyID>
-                        <xsl:value-of select="$Start/root/PatchFamilyId"/>
+                        <xsl:value-of select="$Start/root/PatchFamilyID"/>
                     </PatchFamilyID>
-                    <GpmSequenceID>
-                        <xsl:value-of select="$Start/root/GpmSequenceId"/>
-                    </GpmSequenceID>
+                    <SequenceID>
+                        <xsl:value-of select="$Start/root/PatchFamilySequenceID"/>
+                    </SequenceID>
                     <xsl:choose>
-                        <xsl:when test="exists($Start/root/MessageId)">
-                            <GpmMessageID>
+                        <xsl:when test="exists($Start/root/MessageID)">
+                            <MessageID>
                                 <xsl:choose>
-                                    <xsl:when test="exists($Start/root/MessageId)">
-                                        <xsl:value-of select="$Start/root/MessageId"/>
+                                    <xsl:when test="exists($Start/root/MessageID)">
+                                        <xsl:value-of select="$Start/root/MessageID"/>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:attribute name="xsi:nil">true</xsl:attribute>
                                     </xsl:otherwise>
                                 </xsl:choose>
-                            </GpmMessageID>
+                            </MessageID>
                         </xsl:when>
                         <xsl:otherwise>
-                            <GpmMessageID>
-                                <xsl:value-of select="&quot;&quot;"/>
-                            </GpmMessageID>
+                            <MessageID>
+                                <xsl:choose>
+                                    <xsl:when test="exists(&quot;&quot;)">
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </MessageID>
                         </xsl:otherwise>
                     </xsl:choose>
                 </jdbcUpdateActivityInput>

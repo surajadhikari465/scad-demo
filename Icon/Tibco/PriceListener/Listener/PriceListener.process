@@ -12,7 +12,7 @@
     <pd:starter name="PriceMessageReceiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>80</pd:x>
+        <pd:x>81</pd:x>
         <pd:y>174</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
@@ -43,7 +43,7 @@
     <pd:activity name="ProcessPriceMessage">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>530</pd:x>
+        <pd:x>520</pd:x>
         <pd:y>44</pd:y>
         <config>
             <processName>/Processors/ProcessPriceMessage.process</processName>
@@ -51,53 +51,33 @@
         <pd:inputBindings>
             <root>
                 <xsl:copy-of select="$Map-Prices/ns5:MammothPrices"/>
-                <PatchFamilyId>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
-                </PatchFamilyId>
-                <GpmSequenceId>
+                <xsl:choose>
+                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID)">
+                        <MessageId>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                        </MessageId>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <MessageId>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId"/>
+                        </MessageId>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID)">
+                        <PatchFamilyID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                        </PatchFamilyID>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <PatchFamilyID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
+                        </PatchFamilyID>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <PatchFamilySequenceID>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
-                </GpmSequenceId>
-                <xsl:for-each select="$PriceMessageReceiver/ns:ActivityOutput">
-                    <pfx5:ActivityOutput>
-                        <xsl:for-each select="OtherProperties">
-                            <pfx5:OtherProperties>
-                                <xsl:if test="MessageId">
-                                    <pfx5:MessageId>
-                                        <xsl:value-of select="MessageId"/>
-                                    </pfx5:MessageId>
-                                </xsl:if>
-                                <xsl:if test="BusinessObject">
-                                    <pfx5:BusinessObject>
-                                        <xsl:value-of select="BusinessObject"/>
-                                    </pfx5:BusinessObject>
-                                </xsl:if>
-                                <xsl:if test="SequenceID">
-                                    <pfx5:SequenceID>
-                                        <xsl:value-of select="SequenceID"/>
-                                    </pfx5:SequenceID>
-                                </xsl:if>
-                                <xsl:if test="nonReceivingSysName">
-                                    <pfx5:nonReceivingSysName>
-                                        <xsl:value-of select="nonReceivingSysName"/>
-                                    </pfx5:nonReceivingSysName>
-                                </xsl:if>
-                                <xsl:if test="Source">
-                                    <pfx5:Source>
-                                        <xsl:value-of select="Source"/>
-                                    </pfx5:Source>
-                                </xsl:if>
-                                <xsl:if test="PatchFamilyID">
-                                    <pfx5:PatchFamilyID>
-                                        <xsl:value-of select="PatchFamilyID"/>
-                                    </pfx5:PatchFamilyID>
-                                </xsl:if>
-                            </pfx5:OtherProperties>
-                        </xsl:for-each>
-                        <pfx5:Body>
-                            <xsl:value-of select="Body"/>
-                        </pfx5:Body>
-                    </pfx5:ActivityOutput>
-                </xsl:for-each>
+                </PatchFamilySequenceID>
             </root>
         </pd:inputBindings>
     </pd:activity>
@@ -158,12 +138,30 @@
         </config>
         <pd:inputBindings>
             <root>
-                <GpmMessageId>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
-                </GpmMessageId>
-                <PatchFamilyId>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
-                </PatchFamilyId>
+                <xsl:choose>
+                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID)">
+                        <MessageID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                        </MessageID>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <MessageID>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </MessageID>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID)">
+                        <PatchFamilyID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
+                        </PatchFamilyID>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <PatchFamilyID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                        </PatchFamilyID>
+                    </xsl:otherwise>
+                </xsl:choose>
                 <SequenceID>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
                 </SequenceID>
@@ -187,12 +185,30 @@
                 <Body>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/Body"/>
                 </Body>
-                <PatchFamilyID>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
-                </PatchFamilyID>
-                <MessageId>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId"/>
-                </MessageId>
+                <xsl:choose>
+                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID)">
+                        <PatchFamilyID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                        </PatchFamilyID>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <PatchFamilyID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
+                        </PatchFamilyID>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID)">
+                        <MessageId>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                        </MessageId>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <MessageId>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId"/>
+                        </MessageId>
+                    </xsl:otherwise>
+                </xsl:choose>
                 <pfx3:Error>
                     <pfx3:StackTrace>
                         <xsl:value-of select="$_error_Generate-Error/pfx3:Error/pfx3:StackTrace"/>
@@ -219,50 +235,51 @@
             <processName>/Processors/SendToESBRealTimeQueue.process</processName>
         </config>
         <pd:inputBindings>
-            <pfx5:ActivityOutput>
-                <xsl:for-each select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties">
-                    <pfx5:OtherProperties>
-                        <xsl:if test="MessageId">
-                            <pfx5:MessageId>
-                                <xsl:value-of select="MessageId"/>
-                            </pfx5:MessageId>
-                        </xsl:if>
-                        <xsl:if test="BusinessObject">
-                            <pfx5:BusinessObject>
-                                <xsl:value-of select="BusinessObject"/>
-                            </pfx5:BusinessObject>
-                        </xsl:if>
-                        <xsl:if test="SequenceID">
-                            <pfx5:SequenceID>
-                                <xsl:value-of select="SequenceID"/>
-                            </pfx5:SequenceID>
-                        </xsl:if>
-                        <xsl:if test="nonReceivingSysName">
-                            <pfx5:nonReceivingSysName>
-                                <xsl:value-of select="nonReceivingSysName"/>
-                            </pfx5:nonReceivingSysName>
-                        </xsl:if>
-                        <xsl:if test="Source">
-                            <pfx5:Source>
-                                <xsl:value-of select="Source"/>
-                            </pfx5:Source>
-                        </xsl:if>
-                        <xsl:if test="PatchFamilyID">
-                            <pfx5:PatchFamilyID>
-                                <xsl:value-of select="PatchFamilyID"/>
-                            </pfx5:PatchFamilyID>
-                        </xsl:if>
-                        <xsl:if test="JMSCorrelationID">
-                            <pfx5:JMSCorrelationID>
-                                <xsl:value-of select="JMSCorrelationID"/>
-                            </pfx5:JMSCorrelationID>
-                        </xsl:if>
-                    </pfx5:OtherProperties>
-                </xsl:for-each>
-                <pfx5:Body>
+            <root>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID">
+                    <PatchFamilyID>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
+                    </PatchFamilyID>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID">
+                    <TransactionID>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                    </TransactionID>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID">
+                    <CorrelationID>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                    </CorrelationID>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType">
+                    <TransactionType>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType"/>
+                    </TransactionType>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag">
+                    <ResetFlag>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag"/>
+                    </ResetFlag>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID">
+                    <SequenceID>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
+                    </SequenceID>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source">
+                    <Source>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source"/>
+                    </Source>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName">
+                    <nonReceivingSysName>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName"/>
+                    </nonReceivingSysName>
+                </xsl:if>
+                <Body>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/Body"/>
-                </pfx5:Body>
-            </pfx5:ActivityOutput>
+                </Body>
+            </root>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Generate Error">
@@ -312,7 +329,7 @@
     <pd:activity name="HandleEmergencyPrices">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>632</pd:x>
+        <pd:x>631</pd:x>
         <pd:y>294</pd:y>
         <config>
             <processName>/Processors/HandleEmergencyPrices.process</processName>
@@ -326,8 +343,8 @@
     <pd:activity name="Confirm BOD">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>604</pd:x>
-        <pd:y>399</pd:y>
+        <pd:x>651</pd:x>
+        <pd:y>414</pd:y>
         <config>
             <processName>/ConfirmBod/Confirm BOD.process</processName>
         </config>

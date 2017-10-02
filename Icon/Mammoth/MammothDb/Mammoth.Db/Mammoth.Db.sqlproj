@@ -683,10 +683,8 @@
     <None Include="Mammoth.publish.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SqlSchemaCompare1.scmp" />
     <Build Include="dbo\Tables\ItemPriceType.sql" />
     <Build Include="dbo\Tables\Uom.sql" />
-    <None Include="SqlSchemaCompare_Mammoth_localhost.scmp" />
     <None Include="Scripts\PopulateScripts\DevBuild\PopulateLocales.sql" />
     <None Include="Scripts\PopulateScripts\DevBuild\PopulateItems.sql" />
     <None Include="Jobs\DataHistoryPurge.sql" />
@@ -694,6 +692,7 @@
     <None Include="Scripts\PostDeploymentScripts\Currency_RemoveTrailingSpaces_PostDeployment.sql" />
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddMaintFlagRowToDbStatusTable.sql" />
+    <None Include="SqlSchemaCompare_MammothDev.scmp" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

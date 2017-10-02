@@ -13,9 +13,6 @@
             <xsd:complexType>
                 <xsd:sequence>
                     <xsd:element ref="pfx8:MammothPrice"/>
-                    <xsd:element name="PatchFamilyID" type="xsd:string"/>
-                    <xsd:element ref="ns8:ActivityOutput"/>
-                    <xsd:element name="GPMSequenceID" type="xsd:int"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -372,7 +369,7 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
             <pd:inputBindings>
                 <pfx7:ActivityInput>
                     <message>
-                        <xsl:value-of select="concat(&quot;Database Related Error for: &quot;,&quot;PatchFamilyId: &quot;, $Start/Input/PatchFamilyID,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit,&#xA;&quot;Error: &quot;,$_error/ns7:ErrorReport/Msg)"/>
+                        <xsl:value-of select="concat(&quot;Database Related Error for: &quot;,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit,&#xA;&quot;Error: &quot;,$_error/ns7:ErrorReport/Msg)"/>
                     </message>
                     <xsl:if test="$_error/ns7:ErrorReport/MsgCode">
                         <messageCode>
@@ -737,7 +734,7 @@ result=Math.pow(2,retryCount)*100L;
                             <xsl:value-of select="current-dateTime()"/>
                         </ns9:Timestamp>
                         <ns9:Message>
-                            <xsl:value-of select="concat(&quot;Data Error For: &quot;,&quot;PatchFamilyId: &quot;, $Start/Input/PatchFamilyID,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit,&#xA;&quot;Error: &quot;,$_error/ns7:ErrorReport/Msg)"/>
+                            <xsl:value-of select="concat(&quot;Data Error For: &quot;,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit,&#xA;&quot;Error: &quot;,$_error/ns7:ErrorReport/Msg)"/>
                         </ns9:Message>
                     </ns9:Header>
                     <ExceptionCode>
@@ -764,7 +761,7 @@ result=Math.pow(2,retryCount)*100L;
                             <xsl:value-of select="current-dateTime()"/>
                         </ns9:Timestamp>
                         <ns9:Message>
-                            <xsl:value-of select="concat(&quot;0 Rows were &quot;,$Start/Input/pfx8:MammothPrice/pfx8:Action, &quot;PatchFamilyId: &quot;, $Start/Input/PatchFamilyID,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit)"/>
+                            <xsl:value-of select="concat(&quot;0 Rows were &quot;,$Start/Input/pfx8:MammothPrice/pfx8:Action,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit)"/>
                         </ns9:Message>
                     </ns9:Header>
                     <ExceptionCode>
@@ -823,13 +820,7 @@ result=Math.pow(2,retryCount)*100L;
         </config>
         <pd:inputBindings>
             <Input>
-                <PatchFamilyID>
-                    <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                </PatchFamilyID>
                 <xsl:copy-of select="$Start/Input/pfx8:MammothPrice"/>
-                <GPMSequenceID>
-                    <xsl:value-of select="$Start/Input/GPMSequenceID"/>
-                </GPMSequenceID>
             </Input>
         </pd:inputBindings>
     </pd:activity>

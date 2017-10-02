@@ -4,12 +4,12 @@
 	[ItemID] INT NOT NULL,
 	[BusinessUnitID] INT NOT NULL,
     [PatchFamilyID] NVARCHAR(50) NOT NULL, 
-    [GpmSequenceID] INT NOT NULL,
-	[GpmMessageID] UNIQUEIDENTIFIER NULL,
+    [PatchFamilySequenceID] NVARCHAR(50) NOT NULL,
+	[MessageID] NVARCHAR(50) NULL,
     [InsertDateUtc] DATETIME2(7) NOT NULL DEFAULT (SYSUTCDATETIME()),
 	[ModifiedDateUtc] DATETIME2(7) NULL,
 	CONSTRAINT [PK_MessageSequence] PRIMARY KEY CLUSTERED ([MessageSequenceID] ASC) WITH (FILLFACTOR = 100),
-	CONSTRAINT [UNQ_PatchFamilyID] UNIQUE (PatchFamilyID)
+	CONSTRAINT [UNQ_PatchFamilyID] UNIQUE ([PatchFamilyID])
 )
 
 GO
@@ -27,19 +27,19 @@ CREATE TRIGGER [gpm].[Trigger_MessageSequence]
 			ItemID,
 			BusinessUnitID,
 			PatchFamilyID,
-			GpmSequenceID,
-			GpmMessageId,
+			PatchFamilySequenceID,
+			MessageID,
 			InsertDateUtc,
 			ModifiedDateUtc,
 			HistoryInsertDateUtc
 		)
 		SELECT
-			deleted.ItemID,
-			deleted.BusinessUnitID,
 			deleted.MessageSequenceID,
-			deleted.PatchFamilyID,
-			deleted.[GpmSequenceID],
-			deleted.GpmMessageId,
+			deleted.ItemID,
+			deleted.BusinessUnitID,			
+			deleted.[PatchFamilyID],
+			deleted.[PatchFamilySequenceID],
+			deleted.[MessageID],
 			deleted.InsertDateUtc,
 			deleted.ModifiedDateUtc,
 			SYSUTCDATETIME() as HistoryInsertDateUtc

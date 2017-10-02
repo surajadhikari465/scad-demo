@@ -4,8 +4,8 @@
 	[ItemID] INT NOT NULL,
 	[BusinessUnitID] INT NOT NULL,
     [PatchFamilyID] NVARCHAR(50) NOT NULL, 
-    [GpmSequenceID] INT NOT NULL,
-	[GpmMessageId] UNIQUEIDENTIFIER NULL,
+    [PatchFamilySequenceID] NVARCHAR(50) NOT NULL,
+	[MessageID] NVARCHAR(50) NULL,
     [InsertDateUtc] DATETIME2(7) NOT NULL,
 	[ModifiedDateUtc] DATETIME2(7) NULL,
 	[HistoryInsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME())

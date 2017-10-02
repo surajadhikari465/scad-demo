@@ -35,4 +35,74 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="GpmSequenceID" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="9120673a-ab2c-4dc8-b093-c6f552f8e851" ChangeDateTime="09/27/2017 18:19:59">
+    <Property Name="ElementName" Value="[gpm].[MessageSequence].[PatchFamilyID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequence]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CorrelationID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bf494004-e370-49bc-89a9-4b4845ff20e6" ChangeDateTime="09/27/2017 18:21:13">
+    <Property Name="ElementName" Value="[gpm].[MessageSequence].[GpmSequenceID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequence]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SequenceID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8bc1121e-e346-4963-8126-6e15d9218b4c" ChangeDateTime="09/27/2017 18:22:07">
+    <Property Name="ElementName" Value="[gpm].[MessageSequence].[GpmMessageID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequence]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MessageID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2a4bfbbf-998b-4ed3-bddd-e7e3ba435d8b" ChangeDateTime="09/27/2017 18:22:18">
+    <Property Name="ElementName" Value="[gpm].[MessageSequence].[MessageID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequence]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TransactionID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="11c0c069-5cb4-4e49-8673-427d6c856bbc" ChangeDateTime="09/27/2017 18:31:26">
+    <Property Name="ElementName" Value="[gpm].[MessageSequence].[CorrelationID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequence]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PatchFamilyID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="304f7799-ec29-4df1-bd7e-9a8a15e2a2b8" ChangeDateTime="09/27/2017 18:31:51">
+    <Property Name="ElementName" Value="[gpm].[MessageSequence].[TransactionID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequence]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MessageID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4436a444-341c-485f-ac1b-c044be9b03f9" ChangeDateTime="09/27/2017 18:33:03">
+    <Property Name="ElementName" Value="[gpm].[MessageSequenceHistory].[GpmSequenceID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequenceHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SequenceID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a569a16f-26f2-4834-a828-9a9e5a50b310" ChangeDateTime="09/27/2017 18:33:06">
+    <Property Name="ElementName" Value="[gpm].[MessageSequenceHistory].[GpmMessageId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequenceHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MessageID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3b136c32-6e2c-49e8-8670-a0880e976208" ChangeDateTime="09/27/2017 18:59:19">
+    <Property Name="ElementName" Value="[gpm].[MessageSequence].[SequenceID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequence]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PatchFamilySequenceID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bdfbbc2f-f843-45e3-b567-1d199f0e3e4f" ChangeDateTime="09/27/2017 18:59:39">
+    <Property Name="ElementName" Value="[gpm].[MessageSequenceHistory].[SequenceID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[gpm].[MessageSequenceHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PatchFamilySequenceID" />
+  </Operation>
 </Operations>

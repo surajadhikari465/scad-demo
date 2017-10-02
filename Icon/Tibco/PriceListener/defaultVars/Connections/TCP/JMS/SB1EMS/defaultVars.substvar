@@ -2,16 +2,8 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>SB1JNDIContextFactory</name>
-			<value>com.tibco.tibjms.naming.TibjmsInitialContextFactory</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1503698462511</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>SB1JmsPassword</name>
-			<value>#!Ema2fBkIqzdUI6DJiSPI0UES8Tre/sISreEWvo/F1JP8SBjdx8Bfp0hX2YOqVXCm41w6dh0QZFk=</value>
+			<value>#!5eoqz2lawfP8ucTZYU9Fk6OvuzcAg/zl2POUmqsyMI2Fw3suZhUNmANZlY6/cCIYMjnCmxYCzVo=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -34,44 +26,12 @@
 			<modTime>1503698462699</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SB1JndiPassword</name>
-			<value>#!fPHlwWn+UIdbg4PLLm7sNOvj7RBNtcNJ2Q9NkYELGFX413Bu3ajj67eHfYMD/UPz+eKp/Ss+Pdk7gpsXS6EABw==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1505423221754</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SB1JndiUserName</name>
-			<value>sb1_jndiMammothPriceUser</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1505423221801</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SB1QueueConnectionFactory</name>
-			<value>SB1MammothPriceQueueConnectionFactory</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1503698462887</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>SB1SslPassword</name>
-			<value>#!y5zoJhhVeaATuaRPaTC/2w==</value>
+			<value>#!pFIHqnKNh/rPzubYe+mmAw==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
 			<modTime>1503698462933</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SB1TopicConnectionFactory</name>
-			<value>SB1MammothPriceTopicConnectionFactory</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1503698462980</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

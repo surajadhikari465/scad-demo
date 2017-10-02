@@ -74,8 +74,9 @@ CREATE TRIGGER [gpm].[Trigger_Price_MA]
 GO
 
 CREATE INDEX [IX_Price_MA_StartDate] ON [gpm].[Price_MA] ([StartDate])
-	INCLUDE (Region, PriceID, GpmID, ItemID, BusinessUnitID, EndDate, Price, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, NewTagExpiration, InsertDateUtc, ModifiedDateUtc)
+	INCLUDE (Region, PriceID, GpmID, ItemID, BusinessUnitID, EndDate, Price, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, NewTagExpiration, InsertDateUtc, ModifiedDateUtc) WITH (FILLFACTOR = 100)
+    ON [FG_MA];
 GO
 
-GRANT INSERT, UPDATE, DELETE on gpm.Price_MA to [TibcoRole]
+GRANT SELECT, INSERT, UPDATE, DELETE on gpm.Price_MA to [TibcoRole]
 GO

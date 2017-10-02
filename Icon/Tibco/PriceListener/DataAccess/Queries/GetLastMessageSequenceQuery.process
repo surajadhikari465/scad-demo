@@ -9,10 +9,9 @@
         <xsd:element name="root">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element name="GpmMessageId" type="xsd:string"/>
-                    <xsd:element name="PatchFamilyId" type="xsd:string"/>
+                    <xsd:element name="MessageID" type="xsd:string"/>
+                    <xsd:element name="PatchFamilyID" type="xsd:string"/>
                     <xsd:element name="SequenceID" type="xsd:int"/>
-                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -21,12 +20,12 @@
     <pd:startY>61</pd:startY>
     <pd:returnBindings>
         <root>
-            <PatchFamilyId>
+            <PatchFamilyID>
                 <xsl:value-of select="$Map-Data/root/PatchFamilyId"/>
-            </PatchFamilyId>
-            <MessageGpmSequenceID>
+            </PatchFamilyID>
+            <PatchFamilySequenceID>
                 <xsl:value-of select="$Map-Data/root/SequenceID"/>
-            </MessageGpmSequenceID>
+            </PatchFamilySequenceID>
             <LastProcessedGpmSequenceID>
                 <xsl:value-of select="$Map-Data/root/LastProcessedGpmSequenceID"/>
             </LastProcessedGpmSequenceID>
@@ -43,8 +42,8 @@
         <xsd:element name="root">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element name="PatchFamilyId" type="xsd:string"/>
-                    <xsd:element name="MessageGpmSequenceID" type="xsd:int"/>
+                    <xsd:element name="PatchFamilyID" type="xsd:string"/>
+                    <xsd:element name="PatchFamilySequenceID" type="xsd:string"/>
                     <xsd:element name="LastProcessedGpmSequenceID" type="xsd:int"/>
                     <xsd:element name="IsInSequence" type="xsd:boolean"/>
                     <xsd:element name="IsAlreadyProcessed" type="xsd:boolean"/>
@@ -52,8 +51,8 @@
             </xsd:complexType>
         </xsd:element>
     </pd:endType>
-    <pd:endX>691</pd:endX>
-    <pd:endY>67</pd:endY>
+    <pd:endX>690</pd:endX>
+    <pd:endY>70</pd:endY>
     <pd:errorSchemas>
         <ErrorSchemas ref="pfx4:Error"/>
     </pd:errorSchemas>
@@ -63,17 +62,17 @@
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
         <pd:x>317</pd:x>
-        <pd:y>66</pd:y>
+        <pd:y>67</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
             <maxRows>100</maxRows>
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
-            <statement>SELECT MessageSequenceID, PatchFamilyID, GpmSequenceID AS LastProcessedGpmSequenceID, InsertDateUtc FROM [gpm].[MessageSequence] WHERE PatchFamilyID = ?</statement>
+            <statement>SELECT MessageSequenceID, PatchFamilyID, PatchFamilySequenceID AS LastProcessedGpmSequenceID FROM [gpm].[MessageSequence] WHERE PatchFamilyID = ?</statement>
             <Prepared_Param_DataType>
                 <parameter>
-                    <parameterName>PatchFamilyId</parameterName>
+                    <parameterName>PatchFamilyID</parameterName>
                     <dataType>VARCHAR</dataType>
                 </parameter>
             </Prepared_Param_DataType>
@@ -88,19 +87,15 @@
             <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>LastProcessedGpmSequenceID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>InsertDateUtc</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
         </config>
         <pd:inputBindings>
             <jdbcQueryActivityInput>
-                <PatchFamilyId>
-                    <xsl:value-of select="$Start/root/PatchFamilyId"/>
-                </PatchFamilyId>
+                <PatchFamilyID>
+                    <xsl:value-of select="$Start/root/PatchFamilyID"/>
+                </PatchFamilyID>
             </jdbcQueryActivityInput>
         </pd:inputBindings>
     </pd:activity>
@@ -127,7 +122,7 @@
         <pd:inputBindings>
             <root>
                 <PatchFamilyId>
-                    <xsl:value-of select="$Start/root/PatchFamilyId"/>
+                    <xsl:value-of select="$Start/root/PatchFamilyID"/>
                 </PatchFamilyId>
                 <SequenceID>
                     <xsl:value-of select="$Start/root/SequenceID"/>

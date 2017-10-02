@@ -5,7 +5,7 @@
     <config>
         <NamingEnvironment>
             <UseJNDI>true</UseJNDI>
-            <ProviderURL>tcp://localhost:7222</ProviderURL>
+            <ProviderURL>%%Connections/JMS/EsbJndiContextUrl%%</ProviderURL>
             <NamingURL>%%Connections/TCP/JMS/EsbEMS/EsbJndiContextUrl%%</NamingURL>
             <NamingInitialContextFactory>%%Connections/TCP/JMS/EsbEMS/EsbJNDIContextFactory%%</NamingInitialContextFactory>
             <TopicFactoryName>%%Connections/TCP/JMS/EsbEMS/EsbTopicConnectionFactory%%</TopicFactoryName>
