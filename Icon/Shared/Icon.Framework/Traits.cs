@@ -162,6 +162,7 @@ namespace Icon.Framework
         public const int ProductFlavorType = 148;
         public const int Paleo = 149;
         public const int LocalLoanProducer = 150;
+        public const int CustomerFriendlyDescription = 151;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -314,7 +315,8 @@ namespace Icon.Framework
 				{ "MPN", 147 },
 				{ "PFT", 148 },
 				{ "PLO", 149 },
-				{ "LLP", 150 }
+				{ "LLP", 150 },
+				{ "CFD", 151 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -470,6 +472,7 @@ namespace Icon.Framework
 			public const string ProductFlavorType = "Product Flavor/Type";
 			public const string Paleo = "Paleo";
 			public const string LocalLoanProducer = "Local Loan Producer";
+			public const string CustomerFriendlyDescription = "Customer Friendly Description";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -622,7 +625,8 @@ namespace Icon.Framework
 				{ 147, "Main Product Name" },
 				{ 148, "Product Flavor/Type" },
 				{ 149, "Paleo" },
-				{ 150, "Local Loan Producer" }
+				{ 150, "Local Loan Producer" },
+				{ 151, "Customer Friendly Description" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -779,6 +783,7 @@ namespace Icon.Framework
 			public const string ProductFlavorType = "PFT";
 			public const string Paleo = "PLO";
 			public const string LocalLoanProducer = "LLP";
+			public const string CustomerFriendlyDescription = "CFD";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -931,7 +936,8 @@ namespace Icon.Framework
 				{ 147, "MPN" },
 				{ 148, "PFT" },
 				{ 149, "PLO" },
-				{ 150, "LLP" }
+				{ 150, "LLP" },
+				{ 151, "CFD" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

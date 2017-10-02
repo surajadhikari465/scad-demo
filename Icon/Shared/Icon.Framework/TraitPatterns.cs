@@ -161,5 +161,6 @@ namespace Icon.Framework
         public const string ProductFlavorType = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,255}$";
         public const string Paleo = @"0|1";
         public const string LocalLoanProducer = @"0|1";
+        public const string CustomerFriendlyDescription = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,60}$";
 	}
 }
