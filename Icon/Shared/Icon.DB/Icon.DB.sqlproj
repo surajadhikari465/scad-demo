@@ -643,6 +643,7 @@
     <Build Include="infor\Tables\MessageArchiveNewItem.sql" />
     <Build Include="infor\Stored Procedures\GetScanCodeToIconItemIds.sql" />
     <None Include="Scripts\Jobs\InforExtract_FromIcon.sql" />
+    <None Include="Scripts\PopulateData\Release\AddCustomerFriendlyDescriptionTraitCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
