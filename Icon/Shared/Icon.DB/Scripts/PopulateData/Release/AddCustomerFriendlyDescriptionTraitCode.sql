@@ -1,13 +1,15 @@
 SET IDENTITY_INSERT [dbo].[Trait] ON
 GO
 
-DECLARE @TraitID int
-DECLARE @TraitGroupID int
+DECLARE @TraitID INT
+DECLARE @TraitGroupID INT
 
 SET @TraitID = (SELECT MAX(TraitID) FROM [dbo].[Trait])
-SET @TraitID = @TraitID+1
+SET @TraitID = @TraitID + 1
 
-SET @TraitGroupID = (SELECT TraitGroupID FROM [dbo].[Trait] WHERE traitCode= 'PRD')
+SET @TraitGroupID = (SELECT TraitGroupID 
+					 FROM [dbo].[Trait] 
+					 WHERE traitCode= 'PRD')
 
 IF NOT EXISTS (SELECT 1 FROM [dbo].[Trait] WHERE traitCode= 'CFD')
 INSERT [dbo].[Trait] (
