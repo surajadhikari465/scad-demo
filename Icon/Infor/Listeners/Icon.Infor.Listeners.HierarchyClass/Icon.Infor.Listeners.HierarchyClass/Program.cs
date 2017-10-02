@@ -9,6 +9,7 @@ using Icon.Esb;
 using Icon.Esb.Factory;
 using Icon.Esb.ListenerApplication;
 using Icon.Esb.MessageParsers;
+using Icon.Esb.Schemas.Infor.ContractTypes;
 using Icon.Esb.Services.ConfirmationBod;
 using Icon.Esb.Subscriber;
 using Icon.Framework;
@@ -77,11 +78,10 @@ namespace Icon.Infor.Listeners.HierarchyClass
             container.Register(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Infor"), Lifestyle.Singleton);
             container.Register<VimEsbConnectionFactory>();
 
-            container.Register<IEsbConnectionFactory, VimEsbConnectionFactory>();
-
             container.Register<IEsbConnectionFactory, EsbConnectionFactory>();
             container.Register<IMessageBuilder<ConfirmationBodEsbRequest>, ConfirmationBodMessageBuilder>();
             container.Register<IEsbService<ConfirmationBodEsbRequest>>(() => GetConfirmationBodEsbService(container));
+            container.Register<ISerializer<ConfirmBODType>, Serializer<ConfirmBODType>>();
 
             var types = GetHierarchyClassServices();
 
@@ -95,9 +95,9 @@ namespace Icon.Infor.Listeners.HierarchyClass
             ConfirmationBodEsbService confirmationBodEsbService =
                 new ConfirmationBodEsbService
                 (
-                        EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ConfirmBOD"),
-                        container.GetInstance<IEsbConnectionFactory>(),
-                        container.GetInstance<IMessageBuilder<ConfirmationBodEsbRequest>>()
+                    EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ConfirmBOD"),
+                    container.GetInstance<IEsbConnectionFactory>(),
+                    container.GetInstance<IMessageBuilder<ConfirmationBodEsbRequest>>()
                 );
 
             return confirmationBodEsbService;
