@@ -891,7 +891,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                     },
                  new Contracts.TraitType
                     {
-                        code = TraitCodes.AirChilled,
+                        code = TraitCodes.CustomerFriendlyDescription,
                         type = new Contracts.TraitTypeType
                         {
                             description = TraitDescriptions.CustomerFriendlyDescription,
