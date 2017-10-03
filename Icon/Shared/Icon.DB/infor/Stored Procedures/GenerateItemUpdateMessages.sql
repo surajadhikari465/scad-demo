@@ -206,9 +206,9 @@ BEGIN
 		LEFT JOIN ItemTrait				cfd			ON	i.itemID					= cfd.itemID
 														AND cfd.traitID				= @customerFriendlyDescriptionTraitID
 														AND cfd.localeID			= @localeID
-		LEFT JOIN ItemTrait				nr			ON	i.itemID					= cfd.itemID
-														AND cfd.traitID				= @nutritionRequired
-														AND cfd.localeID			= @localeID												
+		LEFT JOIN ItemTrait				nr			ON	i.itemID					= nr.itemID
+														AND nr.traitID				= @nutritionRequired
+														AND nr.localeID				= @localeID												
 	where
 		it.itemTypeID <> @couponItemTypeId
 
