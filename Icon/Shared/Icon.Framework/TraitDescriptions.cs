@@ -161,5 +161,6 @@ namespace Icon.Framework
         public const string ProductFlavorType = "Product Flavor/Type";
         public const string Paleo = "Paleo";
         public const string LocalLoanProducer = "Local Loan Producer";
+        public const string CustomerFriendlyDescription = "Customer Friendly Description";
 	}
 }

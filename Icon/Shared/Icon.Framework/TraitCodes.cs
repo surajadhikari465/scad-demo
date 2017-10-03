@@ -161,5 +161,6 @@ namespace Icon.Framework
         public const string ProductFlavorType = "PFT";
         public const string Paleo = "PLO";
         public const string LocalLoanProducer = "LLP";
+        public const string CustomerFriendlyDescription = "CFD";
 	}
 }
