@@ -85,6 +85,8 @@ namespace Icon.Framework
         public string DryAged { get; set; }
         public string AirChilled { get; set; }
         public string MadeInHouse { get; set; }
+        public string CustomerFriendlyDescription { get; set; }
+        public string NutritionRequired { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
