@@ -44,6 +44,7 @@ namespace Icon.Framework
         public string NonGmoAgencyName { get; set; }
         public string OrganicAgencyName { get; set; }
         public string VeganAgencyName { get; set; }
+        public string CustomerFriendlyDescription { get; set; }
     
         public virtual AnimalWelfareRating AnimalWelfareRating { get; set; }
         public virtual EcoScaleRating EcoScaleRating { get; set; }

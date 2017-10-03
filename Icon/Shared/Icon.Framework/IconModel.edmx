@@ -492,6 +492,8 @@
           <Property Name="DryAged" Type="nvarchar" MaxLength="1" />
           <Property Name="AirChilled" Type="nvarchar" MaxLength="1" />
           <Property Name="MadeInHouse" Type="nvarchar" MaxLength="1" />
+          <Property Name="CustomerFriendlyDescription" Type="nvarchar" MaxLength="60" />
+          <Property Name="NutritionRequired" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="MessageQueueProductSelectionGroup">
           <Key>
@@ -873,6 +875,7 @@
           <Property Name="DryAged" Type="bit" Nullable="false" />
           <Property Name="AirChilled" Type="bit" Nullable="false" />
           <Property Name="MadeInHouse" Type="bit" Nullable="false" />
+          <Property Name="CustomerFriendlyDescription" Type="nvarchar" MaxLength="60" />
         </EntityType>
         <EntityType Name="ItemTrait">
           <Key>
@@ -1113,7 +1116,7 @@
           </Key>
           <Property Name="MessageArchiveId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ItemId" Type="int" Nullable="false" />
-          <Property Name="ScanCode" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="ScanCode" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="InforMessageId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Context" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ErrorCode" Type="nvarchar" MaxLength="100" />
@@ -4993,6 +4996,8 @@
           <Property Name="AirChilled" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
           <Property Name="MadeInHouse" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MessageQueueNutrition" Relationship="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" FromRole="MessageQueueProduct" ToRole="MessageQueueNutrition" />
+          <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="NutritionRequired" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_MessageQueueProduct_MessageHistoryId">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
@@ -6108,6 +6113,7 @@
           <Property Name="NonGmoAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="OrganicAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="VeganAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_ItemSignAttribute_AnimalWelfareRatingId">
           <End Type="Icon.Framework.Model.AnimalWelfareRating" Role="AnimalWelfareRating" Multiplicity="0..1" />
@@ -6409,7 +6415,7 @@
           </Key>
           <Property Name="MessageArchiveId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ItemId" Type="Int32" Nullable="false" />
-          <Property Name="ScanCode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="ScanCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="InforMessageId" Type="Guid" Nullable="false" />
           <Property Name="Context" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ErrorCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -6896,6 +6902,8 @@
           <EntitySetMapping Name="MessageQueueProduct">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueProduct">
               <MappingFragment StoreEntitySet="MessageQueueProduct">
+                <ScalarProperty Name="NutritionRequired" ColumnName="NutritionRequired" />
+                <ScalarProperty Name="CustomerFriendlyDescription" ColumnName="CustomerFriendlyDescription" />
                 <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
                 <ScalarProperty Name="AirChilled" ColumnName="AirChilled" />
                 <ScalarProperty Name="DryAged" ColumnName="DryAged" />
@@ -7635,6 +7643,7 @@
           <EntitySetMapping Name="ItemSignAttribute">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ItemSignAttribute">
               <MappingFragment StoreEntitySet="ItemSignAttribute">
+                <ScalarProperty Name="CustomerFriendlyDescription" ColumnName="CustomerFriendlyDescription" />
                 <ScalarProperty Name="VeganAgencyName" ColumnName="VeganAgencyName" />
                 <ScalarProperty Name="OrganicAgencyName" ColumnName="OrganicAgencyName" />
                 <ScalarProperty Name="NonGmoAgencyName" ColumnName="NonGmoAgencyName" />
