@@ -21,6 +21,7 @@
 	[FreeRange] [bit] NOT NULL,
 	[DryAged] [bit] NOT NULL,
 	[AirChilled] [bit] NOT NULL,
-	[MadeInHouse] [bit] NOT NULL
+	[MadeInHouse] [bit] NOT NULL,
+	[CustomerFriendlyDescription] [nvarchar](60) NULL
 )
 GO

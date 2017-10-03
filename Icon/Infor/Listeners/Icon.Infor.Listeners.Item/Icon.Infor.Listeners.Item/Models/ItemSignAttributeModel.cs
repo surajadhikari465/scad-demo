@@ -31,7 +31,7 @@ namespace Icon.Infor.Listeners.Item.Models
         public bool DryAged { get; set; }
         public bool AirChilled { get; set; }
         public bool MadeInHouse { get; set; }
-
+        public string CustomerFriendlyDescription { get; set; }
         public ItemSignAttributeModel(
             int itemId,
             int? AnimalWelfareRatingId,
@@ -55,7 +55,8 @@ namespace Icon.Infor.Listeners.Item.Models
             bool FreeRange,
             bool DryAged,
             bool AirChilled,
-            bool MadeInHouse)
+            bool MadeInHouse,
+            string CustomerFriendlyDescription)
         {
             this.ItemId = itemId;
             this.AnimalWelfareRatingId = AnimalWelfareRatingId;
@@ -80,6 +81,7 @@ namespace Icon.Infor.Listeners.Item.Models
             this.DryAged = DryAged;
             this.AirChilled = AirChilled;
             this.MadeInHouse = MadeInHouse;
+            this.CustomerFriendlyDescription = CustomerFriendlyDescription;
         }
     }
 }

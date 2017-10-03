@@ -106,6 +106,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                     new ItemTrait { traitID = Traits.RetailUom, traitValue = "Infor Test RetailUom", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.FoodStampEligible, traitValue = "Infor Test FoodStampEligible", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.ValidationDate, traitValue = "Infor Test ValidationDate", localeID = Locales.WholeFoods },
+                    new ItemTrait { traitID = Traits.CustomerFriendlyDescription, traitValue = "Test Customer Friendly Descrition", localeID = Locales.WholeFoods },
                 }
             };
 

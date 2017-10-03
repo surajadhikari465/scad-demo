@@ -279,5 +279,7 @@ INSERT [dbo].[Trait] ([traitID], [traitCode], [traitPattern], [traitDesc], [trai
 GO
 INSERT [dbo].[Trait] ([traitID], [traitCode], [traitPattern], [traitDesc], [traitGroupID]) VALUES (138, N'DS', N'^[a-zA-z ]+$', N'Delivery System', 1)
 GO
+INSERT [dbo].[Trait] ([traitID], [traitCode], [traitPattern], [traitDesc], [traitGroupID]) VALUES (0, N'CFD', N'^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,60}$', N'Customer Friendly Description', 1)
+GO
 SET IDENTITY_INSERT [dbo].[Trait] OFF
 GO

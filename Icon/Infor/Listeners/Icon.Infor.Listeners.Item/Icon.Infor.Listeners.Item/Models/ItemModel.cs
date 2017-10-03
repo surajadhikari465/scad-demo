@@ -72,5 +72,6 @@ namespace Icon.Infor.Listeners.Item.Models
         public bool ContainesDuplicateNationalClass { get; set; }
         public DateTime MessageParseTime { get; set; }
         public decimal? SequenceId { get; set; }
+        public string CustomerFriendlyDescription { get; set; }
     }
 }

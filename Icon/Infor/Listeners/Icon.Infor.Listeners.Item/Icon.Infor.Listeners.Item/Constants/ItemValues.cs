@@ -14,6 +14,7 @@ namespace Icon.Infor.Listeners.Item.Constants
         public const int PackageUnitMaxLength = 3;
         public const int PosDescriptionMaxLength = 25;
         public const int ProductDescriptionMaxLength = 60;
+        public const int CustomerFriendlyDescriptionLength = 60;
         public const int ScanCodeMaxLength = 13;
         public const decimal RetailSizeMax = 99999.9999m; 
         public const int RetailSizeScaleMax = 4;

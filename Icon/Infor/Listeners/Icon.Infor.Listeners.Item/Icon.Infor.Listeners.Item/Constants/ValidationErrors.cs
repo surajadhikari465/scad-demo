@@ -75,6 +75,7 @@ namespace Icon.Infor.Listeners.Item.Constants
             public const string NonExistentNationalClass = "NonExistentNationalClass";
             public const string NonExistentTax = "NonExistentTax";
             public const string OutOfSyncItemUpdateErrorCode = "OutOfSyncItemUpdateErrorCode";
+            public const string InvalidCustomerFriendlyDescription = "InvalidCustomerFriendlyDescription";
         }
 
         public static class Messages
@@ -138,7 +139,8 @@ namespace Icon.Infor.Listeners.Item.Constants
             public const string NonExistentTax = "No Tax Class exists in Icon with a tax code '{0}'.";
             public const string OutOfSyncItemUpdateErrorCode = "Item update rejected: time stamp on update was '{0}' but the item was updated more recently at '{1}'.";
             public const string OutOfSyncItemUpdateSequenceIdErrorCode = "Item update rejected: message Sequence ID was '{0}' but the item has a larger Sequence ID of '{1}'.";
-
+            public static readonly string InvalidCustomerFriendlyDescription = InvalidValueMessage +
+             " {PropertyName} must be less than " + ItemValues.CustomerFriendlyDescriptionLength + " characters and can contain whitespaces, !, #, $, %, &, ', (, ), *, commas, -, ., /, :, ;, <, =, >, ?, or @, following the regular expression: " + TraitPatterns.CustomerFriendlyDescription;
             private static string BuildInvalidPropertyMessageForCollection(IEnumerable<string> collection, bool isRequired = false)
             {
                 if(isRequired)

@@ -89,7 +89,8 @@ namespace Icon.Infor.Listeners.Item.Commands
                                 new ItemTraitModel(i.ItemId, Traits.ModifiedUser, i.ModifiedUser, Locales.WholeFoods),
                                 new ItemTraitModel(i.ItemId, Traits.HiddenItem, i.HiddenItem, Locales.WholeFoods),
                                 new ItemTraitModel(i.ItemId, Traits.Notes, i.Notes, Locales.WholeFoods),
-                                new ItemTraitModel(i.ItemId, Traits.DeliverySystem, i.DeliverySystem, Locales.WholeFoods)
+                                new ItemTraitModel(i.ItemId, Traits.DeliverySystem, i.DeliverySystem, Locales.WholeFoods),
+                                new ItemTraitModel(i.ItemId, Traits.CustomerFriendlyDescription, i.CustomerFriendlyDescription, Locales.WholeFoods),
                             }).ToTvp("itemTraits", "infor.ItemTraitAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemTraitAddOrUpdate @itemTraits", itemTraits);
@@ -136,7 +137,8 @@ namespace Icon.Infor.Listeners.Item.Commands
                          i.FreeRange.ToBool(),
                          i.DryAged.ToBool(),
                          i.AirChilled.ToBool(),
-                         i.MadeInHouse.ToBool()
+                         i.MadeInHouse.ToBool(),
+                         i.CustomerFriendlyDescription
                      )).ToTvp("itemSignAttributes", "infor.ItemSignAttributeAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemSignAttributeAddOrUpdate @itemSignAttributes", itemSignAttributes);

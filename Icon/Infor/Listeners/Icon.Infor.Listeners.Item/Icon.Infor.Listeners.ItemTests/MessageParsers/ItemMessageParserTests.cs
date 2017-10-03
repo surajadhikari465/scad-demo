@@ -167,7 +167,8 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
                     NutritionRequired = "0",
                     OrganicPersonalCare = "0",
                     Paleo = "0",
-                    ProductFlavorType = "0"
+                    ProductFlavorType = "0",
+                    CustomerFriendlyDescription = "Test Customer Friendly Description"
                 },
                 new ItemModel
                 {
@@ -221,7 +222,8 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
                     NutritionRequired = "1",
                     OrganicPersonalCare = "1",
                     Paleo = "1",
-                    ProductFlavorType = "1"
+                    ProductFlavorType = "1",
+                    CustomerFriendlyDescription = "Test Customer Friendly Description"
                 },
                 new ItemModel
                 {
@@ -275,7 +277,8 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
                     NutritionRequired = "0",
                     OrganicPersonalCare = "0",
                     Paleo = "0",
-                    ProductFlavorType = "0"
+                    ProductFlavorType = "0",
+                    CustomerFriendlyDescription = ""
                 }
             };
             var listItems = items.ToList();
@@ -334,6 +337,7 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
                 Assert.AreEqual(messageItems[i].Paleo, listItems[i].Paleo);
                 Assert.AreEqual(messageItems[i].ProductFlavorType, listItems[i].ProductFlavorType);
                 Assert.AreEqual(sequenceId, listItems[i].SequenceId);
+                Assert.AreEqual(messageItems[i].CustomerFriendlyDescription, listItems[i].CustomerFriendlyDescription);
             }
         }
 
@@ -395,7 +399,8 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
                     NutritionRequired = "0",
                     OrganicPersonalCare = "0",
                     Paleo = "0",
-                    ProductFlavorType = "0"
+                    ProductFlavorType = "0",
+                    CustomerFriendlyDescription= "Test Customer Friendly Description"
                 }
             };
             var listItems = items.ToList();
@@ -453,6 +458,7 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
                 Assert.AreEqual(messageItems[i].OrganicPersonalCare, listItems[i].OrganicPersonalCare);
                 Assert.AreEqual(messageItems[i].Paleo, listItems[i].Paleo);
                 Assert.AreEqual(messageItems[i].ProductFlavorType, listItems[i].ProductFlavorType);
+                Assert.AreEqual(messageItems[i].CustomerFriendlyDescription, listItems[i].CustomerFriendlyDescription);
             }
         }
     }

@@ -75,6 +75,15 @@
             </tra:type>
           </crf:trait>
           <crf:trait>
+            <tra:code>CFD</tra:code>
+            <tra:type>
+              <trt:description>Customer Friendly Description</trt:description>
+              <trt:value>
+                <trv:value>Test Customer Friendly Description</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
             <tra:code>POS</tra:code>
             <tra:type>
               <trt:description>POS Description</trt:description>
@@ -523,6 +532,15 @@
               <trt:description>Product Description</trt:description>
               <trt:value>
                 <trv:value>ALMOND MILK VANILLA OG</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>CFD</tra:code>
+            <tra:type>
+              <trt:description>Customer Friendly Description</trt:description>
+              <trt:value>
+                <trv:value>Test Customer Friendly Description</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -977,7 +995,7 @@
                 <trv:value>ALMOND MILK UNSWEETENED OG</trv:value>
               </trt:value>
             </tra:type>
-          </crf:trait>
+          </crf:trait>    
           <crf:trait>
             <tra:code>POS</tra:code>
             <tra:type>

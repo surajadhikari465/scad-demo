@@ -118,7 +118,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                 DryAged = "0",
                 AirChilled = "1",
                 MadeInHouse = "1",
-                SequenceId = 10
+                SequenceId = 10,
+                CustomerFriendlyDescription = "Test Customer Friendly Description"
             };
 
             command.Items = new List<ItemModel>
@@ -206,6 +207,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             //Sequence ID
             var sequenceId = context.Database.SqlQuery<decimal?>($"SELECT SequenceID FROM infor.ItemSequence WHERE ItemID = {item.itemID}").First();
             Assert.AreEqual(expectedItem.SequenceId, sequenceId);
+            Assert.AreEqual(expectedItem.CustomerFriendlyDescription, traits.Single(it => it.traitID == Traits.CustomerFriendlyDescription).traitValue);
         }
 
         [TestMethod]
@@ -225,7 +227,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             {
                 ItemId = context.Item.Max(i => i.itemID) + 1,
                 ItemTypeCode = ItemTypes.Codes.NonRetail,
-                ScanCode = "3334445552",
+                ScanCode = "33344455552",
                 ScanCodeType = ScanCodeTypes.Descriptions.ScalePlu,
                 //Hierarchy
                 MerchandiseHierarchyClassId = testMerchandiseHierarchyClass.hierarchyClassID.ToString(),
@@ -254,6 +256,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                 OrganicPersonalCare = "Test OrganicPersonalCare",
                 Paleo = "Test Paleo",
                 ProductFlavorType = "Test ProductFlavorType",
+                CustomerFriendlyDescription = "Test Customer Friendly Description",
                 //ItemSignAttribute
                 AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step2,
                 Biodynamic = "1",
@@ -357,7 +360,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNull(traits.SingleOrDefault(it => it.traitID == Traits.DeliverySystem));
             Assert.AreEqual(expectedItem.Notes, traits.Single(it => it.traitID == Traits.Notes).traitValue);
             Assert.AreEqual(expectedItem.HiddenItem, traits.Single(it => it.traitID == Traits.HiddenItem).traitValue);
-           
+            Assert.AreEqual(expectedItem.CustomerFriendlyDescription, traits.Single(it => it.traitID == Traits.CustomerFriendlyDescription).traitValue);
             //hierarchy classes
             Assert.AreEqual(AnimalWelfareRatings.Ids[expectedItem.AnimalWelfareRating], signAttributes.AnimalWelfareRatingId);
             Assert.AreEqual(expectedItem.Biodynamic.ToBool(), signAttributes.Biodynamic);
@@ -431,6 +434,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                 DeliverySystem = null,
                 Notes = "Test Notes",
                 HiddenItem = "Test Hidden Item",
+                CustomerFriendlyDescription = "Test Customer Friendly Description",
                 //ItemSignAttribute
                 AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step2,
                 Biodynamic = "1",
@@ -516,6 +520,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNull(traits.SingleOrDefault(it => it.traitID == Traits.DeliverySystem));
             Assert.AreEqual(expectedItem.Notes, traits.Single(it => it.traitID == Traits.Notes).traitValue);
             Assert.AreEqual(expectedItem.HiddenItem, traits.Single(it => it.traitID == Traits.HiddenItem).traitValue);
+            Assert.AreEqual(expectedItem.CustomerFriendlyDescription, traits.Single(it => it.traitID == Traits.CustomerFriendlyDescription).traitValue);
             //hierarchy classes
             Assert.AreEqual(AnimalWelfareRatings.Ids[expectedItem.AnimalWelfareRating], signAttributes.AnimalWelfareRatingId);
             Assert.AreEqual(expectedItem.Biodynamic.ToBool(), signAttributes.Biodynamic);
@@ -585,6 +590,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             item.DeliverySystem = null;
             item.Notes = "Changed Notes";
             item.HiddenItem = "Changed Hidden Item";
+            item.CustomerFriendlyDescription = "Changed Customer Friendly Description";
 
             //ItemSignAttribute
             item.AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step3;
@@ -610,7 +616,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             item.AirChilled = "0";
             item.MadeInHouse = "0";
             item.SequenceId = 11;
-
+           
             return item;
         }
     }

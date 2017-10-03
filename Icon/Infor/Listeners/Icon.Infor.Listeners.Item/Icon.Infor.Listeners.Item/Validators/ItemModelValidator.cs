@@ -253,6 +253,10 @@ namespace Icon.Infor.Listeners.Item.Validators
                 .Matches(TraitPatterns.ProductDescription)
                 .WithErrorCode(ValidationErrors.Codes.InvalidProductDescription)
                 .WithMessage(ValidationErrors.Messages.InvalidProductDescription);
+            RuleFor(i => i.CustomerFriendlyDescription)
+                .Matches(TraitPatterns.CustomerFriendlyDescription)
+                .WithErrorCode(ValidationErrors.Codes.InvalidCustomerFriendlyDescription)
+                .WithMessage(ValidationErrors.Messages.InvalidCustomerFriendlyDescription);
             RuleFor(i => i.ProductFlavorType)
                 .Matches(TraitPatterns.ProductFlavorType)
                 .WithErrorCode(ValidationErrors.Codes.InvalidProductFlavorType)

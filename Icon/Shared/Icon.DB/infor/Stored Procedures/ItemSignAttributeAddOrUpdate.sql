@@ -32,7 +32,8 @@ BEGIN
 		FreeRange = Source.FreeRange,
 		DryAged = Source.DryAged,
 		AirChilled = Source.AirChilled,
-		MadeInHouse = Source.MadeInHouse
+		MadeInHouse = Source.MadeInHouse,
+		CustomerFriendlyDescription = Source.CustomerFriendlyDescription
 	WHEN NOT MATCHED THEN
 	INSERT 
 		(ItemId,
@@ -57,7 +58,8 @@ BEGIN
 		FreeRange,
 		DryAged,
 		AirChilled,
-		MadeInHouse)
+		MadeInHouse,
+		CustomerFriendlyDescription)
 		VALUES
 		(Source.ItemId,
 		Source.AnimalWelfareRatingId,
@@ -81,6 +83,7 @@ BEGIN
 		Source.FreeRange,
 		Source.DryAged,
 		Source.AirChilled,
-		Source.MadeInHouse);
+		Source.MadeInHouse,
+		Source.CustomerFriendlyDescription);
 END
 GO
