@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WebSupport.DataAccess</RootNamespace>
     <AssemblyName>WebSupport.DataAccess</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -51,7 +54,7 @@
       <HintPath>..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2016.11.16.1\lib\net45\Icon.Esb.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.2017.9.28.1\lib\net45\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -61,7 +64,13 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Irma.Framework.2017.6.6.2\lib\net45\Irma.Framework.dll</HintPath>
+      <HintPath>..\packages\Irma.Framework.2017.8.31.1\lib\net45\Irma.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2017.6.15.2\lib\net451\Mammoth.Common.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.Framework.2017.9.20.8\lib\net452\Mammoth.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -90,15 +99,26 @@
   <ItemGroup>
     <Compile Include="Commands\CreateEventsForRegionCommand.cs" />
     <Compile Include="Commands\CreateEventsForRegionCommandHandler.cs" />
+    <Compile Include="Commands\CreateJobScheduleCommand.cs" />
+    <Compile Include="Commands\CreateJobScheduleCommandHandler.cs" />
+    <Compile Include="Commands\DeleteJobScheduleCommand.cs" />
+    <Compile Include="Commands\DeleteJobScheduleCommandHandler.cs" />
     <Compile Include="Commands\SaveSentMessageCommand.cs" />
     <Compile Include="Commands\SaveSentMessageCommandHandler.cs" />
+    <Compile Include="Commands\UpdateJobScheduleCommand.cs" />
+    <Compile Include="Commands\UpdateJobScheduleCommandHandler.cs" />
     <Compile Include="DataConstants.cs" />
     <Compile Include="IIrmaContextFactory.cs" />
     <Compile Include="IrmaContextFactory.cs" />
+    <Compile Include="Models\JobSchedule.cs" />
     <Compile Include="Models\PriceResetPrice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetExistingScanCodesParameters.cs" />
     <Compile Include="Queries\GetExistingScanCodesQuery.cs" />
+    <Compile Include="Queries\GetJobScheduleParameters.cs" />
+    <Compile Include="Queries\GetJobScheduleQuery.cs" />
+    <Compile Include="Queries\GetJobSchedulesParameters.cs" />
+    <Compile Include="Queries\GetJobSchedulesQuery.cs" />
     <Compile Include="Queries\GetPriceResetPricesParameters.cs" />
     <Compile Include="Queries\GetPriceResetPricesQuery.cs" />
     <Compile Include="Queries\GetStoresForRegionParameters.cs" />
@@ -113,16 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj">
-      <Project>{82505A9B-2264-4428-9806-D5EF838109B3}</Project>
-      <Name>Mammoth.Common.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Framework\Mammoth.Framework.csproj">
-      <Project>{799950fa-6f28-43ca-a60c-769bbe9de6a9}</Project>
-      <Name>Mammoth.Framework</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

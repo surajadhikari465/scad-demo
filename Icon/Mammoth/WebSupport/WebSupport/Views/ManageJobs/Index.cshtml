@@ -1,0 +1,90 @@
+﻿@model IEnumerable<WebSupport.DataAccess.Models.JobSchedule>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.JobName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Region)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DestinationQueueName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDateTimeUtc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastRunDateTimeUtc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IntervalInSeconds)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Enabled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.XmlObject)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Start", "Start", new { id = item.JobScheduleId }) |
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Region)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DestinationQueueName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDateTimeUtc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastRunDateTimeUtc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IntervalInSeconds)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Enabled)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.XmlObject)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.JobScheduleId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.JobScheduleId })
+        </td>
+    </tr>
+}
+
+</table>
+
+@if (ViewBag.Error != null)
+{
+    <div class="form-group">
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>@ViewBag.Error</strong>
+        </div>
+    </div>
+}

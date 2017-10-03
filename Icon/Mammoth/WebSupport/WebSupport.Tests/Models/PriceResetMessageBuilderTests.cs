@@ -1,20 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Esb.Core.Serializer;
+using Icon.Esb.Schemas.Wfm.Contracts;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebSupport.Models;
-using Esb.Core.Serializer;
-using Icon.Esb.Schemas.Wfm.Contracts;
-using Moq;
-using WebSupport.DataAccess.Models;
-using System.Xml.Serialization;
 using System.IO;
-using System.Xml;
+using System.Linq;
 using System.Xml.Linq;
+using System.Xml.Serialization;
+using WebSupport.DataAccess.Models;
+using WebSupport.Models;
+using WebSupport.Tests.Helpers;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
-using Mammoth.Common.DataAccess;
 
 namespace WebSupport.Tests.Models
 {
