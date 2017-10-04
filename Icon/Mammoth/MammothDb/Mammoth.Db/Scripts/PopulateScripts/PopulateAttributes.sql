@@ -63,7 +63,11 @@ BEGIN
 		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (2,'LNG','Sign Romance Long',@Today);
 	IF NOT EXISTS (SELECT 1 FROM Attributes WHERE AttributeCode = 'RTU')
 		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (2,'RTU','Retail Unit',@Today);
+	IF NOT EXISTS (SELECT 1 FROM Attributes WHERE AttributeCode = 'CFD')
+		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (2,'CFD','Customer Friendly Description',@Today);
+	
 	insert into app.PostDeploymentScriptHistory values(@scriptKey, getdate())
+
 END
 ELSE
 BEGIN

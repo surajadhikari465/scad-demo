@@ -29,6 +29,7 @@
 	[DryAged] [bit] NOT NULL DEFAULT 0,
 	[AirChilled] [bit] NOT NULL DEFAULT 0,
 	[MadeInHouse] [bit] NOT NULL DEFAULT 0,
+	[CustomerFriendlyDescription] NVARCHAR (60) NULL,
  CONSTRAINT [PK_ItemSignAttribute] PRIMARY KEY CLUSTERED 
 (
 	[ItemSignAttributeID] ASC

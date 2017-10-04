@@ -88,7 +88,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
                 TaxHierarchyClassId = "0123456",
                 Vegan = string.Empty,
                 Vegetarian = string.Empty,
-                WholeTrade = string.Empty
+                WholeTrade = string.Empty,
+                CustomerFriendlyDescription = "Test Customer Friendly Description"
             };
 
             testItems = new List<ItemModel>
@@ -1415,6 +1416,36 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.NutritionRequired = string.Empty;
 
             PerformValidateCollectionWhenAndThenSteps(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_CustomerFriendlyDescriptionIsValid_NoError()
+        {
+            //Given
+            testItem.CustomerFriendlyDescription = "abcd";
+            PerformValidateCollectionWhenAndThenSteps(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_CustomerFriendlyDescriptionIsEmpty_NoError()
+        {
+            //Given
+            testItem.CustomerFriendlyDescription = string.Empty;
+
+            PerformValidateCollectionWhenAndThenSteps(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_CustomerFriendlyDescriptionIsInvalid_InvalidCustomerFriendlyDescriptionError()
+        {
+            //Given
+            testItem.CustomerFriendlyDescription = "123456789123456789123456789123456789123456789123456789123456789";
+          
+            PerformValidateCollectionWhenAndThenSteps(
+                ValidationErrors.Codes.InvalidCustomerFriendlyDescription,
+                ValidationErrors.Messages.InvalidCustomerFriendlyDescription,
+                nameof(testItem.CustomerFriendlyDescription),
+                (i) => i.CustomerFriendlyDescription);
         }
 
         [TestMethod]

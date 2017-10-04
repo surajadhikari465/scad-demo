@@ -888,6 +888,36 @@ namespace Icon.ApiController.Controller.QueueReaders
                                 }
                             }
                         }
+                    },
+                 new Contracts.TraitType
+                    {
+                        code = TraitCodes.CustomerFriendlyDescription,
+                        type = new Contracts.TraitTypeType
+                        {
+                            description = TraitDescriptions.CustomerFriendlyDescription,
+                            value = new Contracts.TraitValueType[]
+                            {
+                                new Contracts.TraitValueType
+                                {
+                                    value = message.CustomerFriendlyDescription == null ? string.Empty : message.CustomerFriendlyDescription.ToString()
+                                }
+                            }
+                        }
+                    },
+                   new Contracts.TraitType
+                    {
+                        code = TraitCodes.NutritionRequired,
+                        type = new Contracts.TraitTypeType
+                        {
+                            description = TraitDescriptions.NutritionRequired,
+                            value = new Contracts.TraitValueType[]
+                            {
+                                new Contracts.TraitValueType
+                                {
+                                    value = message.NutritionRequired == null ? string.Empty : message.NutritionRequired.ToString()
+                                }
+                            }
+                        }
                     }
                 };
 

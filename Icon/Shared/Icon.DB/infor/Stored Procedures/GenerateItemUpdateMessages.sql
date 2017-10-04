@@ -32,7 +32,9 @@ BEGIN
 		@retailSizeID int,
 		@retailUomID int,
 		@couponItemTypeId int,
-		@nonRetailItemTypeId int
+		@nonRetailItemTypeId int,
+		@customerFriendlyDescriptionTraitID int,
+		@nutritionRequired int
 
 	declare @distinctProductMessageIDs table (MessageQueueId int, scancode varchar(13));
 
@@ -58,6 +60,8 @@ BEGIN
 	SET @retailUomID				= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'RUM')
 	SET @couponItemTypeId			= (SELECT tp.itemTypeID FROM ItemType tp WHERE tp.itemTypeCode = 'CPN')
 	SET @nonRetailItemTypeId		= (SELECT tp.itemTypeID FROM ItemType tp WHERE tp.itemTypeCode = 'NRT')
+	SET @customerFriendlyDescriptionTraitID	= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'CFD')
+	SET @nutritionRequired          = (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'NR')
 
 	insert into 
 		app.MessageQueueProduct
@@ -136,7 +140,10 @@ BEGIN
 		ia.[FreeRange]						AS [FreeRange],
 		ia.[DryAged]						AS [DryAged],
 		ia.[AirChilled]						AS [AirChilled],
-		ia.[MadeInHouse]					AS [MadeInHouse]
+		ia.[MadeInHouse]					AS [MadeInHouse],
+		CASE WHEN ISNULL(ia.CustomerFriendlyDescription,'') = '' THEN prd.traitValue	
+		            ELSE ia.CustomerFriendlyDescription END AS CustomerFriendlyDescription,
+		nr.traitValue						AS NutritionRequired    
 	from 
 		@updatedItemIDs					ui
 		JOIN Item						i			ON	ui.itemID					= i.itemID
@@ -196,7 +203,9 @@ BEGIN
 		LEFT JOIN HealthyEatingRating	he			ON ia.HealthyEatingRatingID		= he.HealthyEatingRatingID
 		LEFT JOIN SeafoodCatchType		sfc			ON ia.SeafoodCatchTypeID		= sfc.SeafoodCatchTypeID
 		LEFT JOIN SeafoodFreshOrFrozen	sff			ON ia.SeafoodFreshOrFrozenID	= sff.SeafoodFreshOrFrozenID
-														
+		LEFT JOIN ItemTrait				nr			ON	i.itemID					= nr.itemID
+														AND nr.traitID				= @nutritionRequired
+														AND nr.localeID				= @localeID												
 	where
 		it.itemTypeID <> @couponItemTypeId
 
@@ -275,5 +284,5 @@ BEGIN
 		sysdatetime() AS InsertDate
 	from 
 		@distinctProductMessageIDs dpm
-		JOIN nutrition.ItemNutrition inn on dpm.scancode = inn.Plu
+		JOIN nutrition.ItemNutrition inn on dpm.scancode = inn.Plu	
 END

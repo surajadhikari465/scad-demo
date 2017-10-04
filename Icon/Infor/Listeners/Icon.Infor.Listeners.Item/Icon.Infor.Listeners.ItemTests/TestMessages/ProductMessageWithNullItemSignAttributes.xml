@@ -93,6 +93,15 @@
             </tra:type>
           </crf:trait>
           <crf:trait>
+            <tra:code>CFD</tra:code>
+            <tra:type>
+              <trt:description>Customer Friendly Description</trt:description>
+              <trt:value>
+                <trv:value />
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
             <tra:code>SCT</tra:code>
             <tra:type>
               <trt:description>POS Scale Tare</trt:description>

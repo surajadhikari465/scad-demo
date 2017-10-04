@@ -83,7 +83,8 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 ContainesDuplicateMerchandiseClass = ContainsDuplicateHierarchyClass(enterpriseAttributes, HierarchyNames.Merchandise),
                 ContainesDuplicateNationalClass = ContainsDuplicateHierarchyClass(enterpriseAttributes, HierarchyNames.National),
                 MessageParseTime = messageParseTime,
-                SequenceId = sequenceId
+                SequenceId = sequenceId,
+                CustomerFriendlyDescription = GetTraitValue(enterpriseAttributes, TraitCodes.CustomerFriendlyDescription)
             };
         }
 

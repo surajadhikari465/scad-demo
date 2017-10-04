@@ -136,7 +136,8 @@ namespace Icon.Infor.Listeners.Item.Commands
                          i.FreeRange.ToBool(),
                          i.DryAged.ToBool(),
                          i.AirChilled.ToBool(),
-                         i.MadeInHouse.ToBool()
+                         i.MadeInHouse.ToBool(),
+                         i.CustomerFriendlyDescription
                      )).ToTvp("itemSignAttributes", "infor.ItemSignAttributeAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemSignAttributeAddOrUpdate @itemSignAttributes", itemSignAttributes);
