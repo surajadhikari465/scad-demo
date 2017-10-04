@@ -400,7 +400,7 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
                     OrganicPersonalCare = "0",
                     Paleo = "0",
                     ProductFlavorType = "0",
-                    CustomerFriendlyDescription= "Test Customer Friendly Description"
+                    CustomerFriendlyDescription= string.Empty
                 }
             };
             var listItems = items.ToList();
