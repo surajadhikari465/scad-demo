@@ -90,7 +90,6 @@ namespace Icon.Infor.Listeners.Item.Commands
                                 new ItemTraitModel(i.ItemId, Traits.HiddenItem, i.HiddenItem, Locales.WholeFoods),
                                 new ItemTraitModel(i.ItemId, Traits.Notes, i.Notes, Locales.WholeFoods),
                                 new ItemTraitModel(i.ItemId, Traits.DeliverySystem, i.DeliverySystem, Locales.WholeFoods),
-                                new ItemTraitModel(i.ItemId, Traits.CustomerFriendlyDescription, i.CustomerFriendlyDescription, Locales.WholeFoods),
                             }).ToTvp("itemTraits", "infor.ItemTraitAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemTraitAddOrUpdate @itemTraits", itemTraits);

@@ -1436,7 +1436,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateCollection_CustomerFriendlyDescriptionIsInvalid_InvalidNutritionRequiredError()
+        public void ValidateCollection_CustomerFriendlyDescriptionIsInvalid_InvalidCustomerFriendlyDescriptionError()
         {
             //Given
             testItem.CustomerFriendlyDescription = "123456789123456789123456789123456789123456789123456789123456789";

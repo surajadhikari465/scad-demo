@@ -32,6 +32,7 @@ namespace Icon.Infor.Listeners.Item.Models
         public bool AirChilled { get; set; }
         public bool MadeInHouse { get; set; }
         public string CustomerFriendlyDescription { get; set; }
+
         public ItemSignAttributeModel(
             int itemId,
             int? AnimalWelfareRatingId,

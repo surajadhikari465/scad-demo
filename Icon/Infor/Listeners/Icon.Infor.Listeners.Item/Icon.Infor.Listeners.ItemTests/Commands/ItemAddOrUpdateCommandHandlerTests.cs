@@ -181,7 +181,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNull(traits.SingleOrDefault(it => it.traitID == Traits.DeliverySystem));
             Assert.AreEqual(expectedItem.Notes, traits.Single(it => it.traitID == Traits.Notes).traitValue);
             Assert.AreEqual(expectedItem.HiddenItem, traits.Single(it => it.traitID == Traits.HiddenItem).traitValue);
-            //hierarchy classes
+            //Sign Attributes
             Assert.AreEqual(AnimalWelfareRatings.Ids[expectedItem.AnimalWelfareRating], signAttributes.AnimalWelfareRatingId);
             Assert.AreEqual(expectedItem.Biodynamic.ToBool(), signAttributes.Biodynamic);
             Assert.AreEqual(MilkTypes.Ids[expectedItem.CheeseMilkType], signAttributes.CheeseMilkTypeId);
@@ -204,10 +204,10 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(expectedItem.DryAged.ToBool(), signAttributes.DryAged);
             Assert.AreEqual(expectedItem.AirChilled.ToBool(), signAttributes.AirChilled);
             Assert.AreEqual(expectedItem.MadeInHouse.ToBool(), signAttributes.MadeInHouse);
+            Assert.AreEqual(expectedItem.CustomerFriendlyDescription, signAttributes.CustomerFriendlyDescription);
             //Sequence ID
             var sequenceId = context.Database.SqlQuery<decimal?>($"SELECT SequenceID FROM infor.ItemSequence WHERE ItemID = {item.itemID}").First();
-            Assert.AreEqual(expectedItem.SequenceId, sequenceId);
-            Assert.AreEqual(expectedItem.CustomerFriendlyDescription, traits.Single(it => it.traitID == Traits.CustomerFriendlyDescription).traitValue);
+            Assert.AreEqual(expectedItem.SequenceId, sequenceId);          
         }
 
         [TestMethod]
@@ -360,8 +360,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNull(traits.SingleOrDefault(it => it.traitID == Traits.DeliverySystem));
             Assert.AreEqual(expectedItem.Notes, traits.Single(it => it.traitID == Traits.Notes).traitValue);
             Assert.AreEqual(expectedItem.HiddenItem, traits.Single(it => it.traitID == Traits.HiddenItem).traitValue);
-            Assert.AreEqual(expectedItem.CustomerFriendlyDescription, traits.Single(it => it.traitID == Traits.CustomerFriendlyDescription).traitValue);
-            //hierarchy classes
+            //Sign Attributes
             Assert.AreEqual(AnimalWelfareRatings.Ids[expectedItem.AnimalWelfareRating], signAttributes.AnimalWelfareRatingId);
             Assert.AreEqual(expectedItem.Biodynamic.ToBool(), signAttributes.Biodynamic);
             Assert.AreEqual(MilkTypes.Ids[expectedItem.CheeseMilkType], signAttributes.CheeseMilkTypeId);
@@ -384,7 +383,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(expectedItem.DryAged.ToBool(), signAttributes.DryAged);
             Assert.AreEqual(expectedItem.AirChilled.ToBool(), signAttributes.AirChilled);
             Assert.AreEqual(expectedItem.MadeInHouse.ToBool(), signAttributes.MadeInHouse);
-
+            Assert.AreEqual(expectedItem.CustomerFriendlyDescription, signAttributes.CustomerFriendlyDescription);
             //Sequence ID
             var sequenceId = context.Database.SqlQuery<decimal?>($"SELECT SequenceID FROM infor.ItemSequence WHERE ItemID = {item.itemID}").First();
             Assert.AreEqual(expectedItem.SequenceId, sequenceId);
@@ -519,9 +518,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.IsNull(traits.SingleOrDefault(it => it.traitID == Traits.ModifiedUser));
             Assert.IsNull(traits.SingleOrDefault(it => it.traitID == Traits.DeliverySystem));
             Assert.AreEqual(expectedItem.Notes, traits.Single(it => it.traitID == Traits.Notes).traitValue);
-            Assert.AreEqual(expectedItem.HiddenItem, traits.Single(it => it.traitID == Traits.HiddenItem).traitValue);
-            Assert.AreEqual(expectedItem.CustomerFriendlyDescription, traits.Single(it => it.traitID == Traits.CustomerFriendlyDescription).traitValue);
-            //hierarchy classes
+            Assert.AreEqual(expectedItem.HiddenItem, traits.Single(it => it.traitID == Traits.HiddenItem).traitValue);         
+            //Sign Attributes
             Assert.AreEqual(AnimalWelfareRatings.Ids[expectedItem.AnimalWelfareRating], signAttributes.AnimalWelfareRatingId);
             Assert.AreEqual(expectedItem.Biodynamic.ToBool(), signAttributes.Biodynamic);
             Assert.AreEqual(MilkTypes.Ids[expectedItem.CheeseMilkType], signAttributes.CheeseMilkTypeId);
@@ -544,6 +542,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(expectedItem.DryAged.ToBool(), signAttributes.DryAged);
             Assert.AreEqual(expectedItem.AirChilled.ToBool(), signAttributes.AirChilled);
             Assert.AreEqual(expectedItem.MadeInHouse.ToBool(), signAttributes.MadeInHouse);
+            Assert.AreEqual(expectedItem.CustomerFriendlyDescription, signAttributes.CustomerFriendlyDescription);
             //Sequence ID
             var sequenceId = context.Database.SqlQuery<decimal?>($"SELECT SequenceID FROM infor.ItemSequence WHERE ItemID = {item.itemID}").FirstOrDefault();
             Assert.IsNull(sequenceId);

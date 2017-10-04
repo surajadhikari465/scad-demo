@@ -141,8 +141,8 @@ BEGIN
 		ia.[DryAged]						AS [DryAged],
 		ia.[AirChilled]						AS [AirChilled],
 		ia.[MadeInHouse]					AS [MadeInHouse],
-		CASE WHEN ISNULL(cfd.traitValue,'') = '' THEN prd.traitValue	
-		            ELSE cfd.traitValue END AS CustomerFriendlyDescription,
+		CASE WHEN ISNULL(ia.CustomerFriendlyDescription,'') = '' THEN prd.traitValue	
+		            ELSE ia.CustomerFriendlyDescription END AS CustomerFriendlyDescription,
 		nr.traitValue						AS NutritionRequired    
 	from 
 		@updatedItemIDs					ui
@@ -203,9 +203,6 @@ BEGIN
 		LEFT JOIN HealthyEatingRating	he			ON ia.HealthyEatingRatingID		= he.HealthyEatingRatingID
 		LEFT JOIN SeafoodCatchType		sfc			ON ia.SeafoodCatchTypeID		= sfc.SeafoodCatchTypeID
 		LEFT JOIN SeafoodFreshOrFrozen	sff			ON ia.SeafoodFreshOrFrozenID	= sff.SeafoodFreshOrFrozenID
-		LEFT JOIN ItemTrait				cfd			ON	i.itemID					= cfd.itemID
-														AND cfd.traitID				= @customerFriendlyDescriptionTraitID
-														AND cfd.localeID			= @localeID
 		LEFT JOIN ItemTrait				nr			ON	i.itemID					= nr.itemID
 														AND nr.traitID				= @nutritionRequired
 														AND nr.localeID				= @localeID												
