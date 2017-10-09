@@ -248,6 +248,57 @@ namespace Infor.Services.NewItem.Tests.Validators
                 item.ErrorDetails);
         }
 
+        [TestMethod]
+        public void Validate_CustomerFriendlyDescriptionIsInvalid_CustomerFriendlyDescriptionError()
+        {
+            //Given
+            testItems.Add(CreateTestItem("123456789", customerFriendlyDescription: "An Excessively Long Customer Friendly Description over 60 characters"));
+
+            //When
+            var result = validator.ValidateCollection(testItems);
+
+            //Then
+            Assert.AreEqual(1, result.InvalidEntities.Count());
+            Assert.AreEqual(0, result.ValidEntities.Count());
+            var item = result.InvalidEntities.Single();
+            Assert.AreEqual(ApplicationErrors.Codes.InvalidCustomerFriendlyDescription, item.ErrorCode);
+            Assert.AreEqual(
+                @"Customer Friendly Description has invalid value 'An Excessively Long Customer Friendly Description over 60 characters'. Maximum length is 60 characters.",
+                item.ErrorDetails);
+        }
+
+        [TestMethod]
+        public void Validate_CustomerFriendlyDescriptionIsValid_NullValueIsAcceptable()
+        {
+            //Given
+            testItems.Add(CreateTestItem("123456789", customerFriendlyDescription: null));
+
+            //When
+            var result = validator.ValidateCollection(testItems);
+
+            //Then
+            Assert.AreEqual(0, result.InvalidEntities.Count());
+            Assert.AreEqual(1, result.ValidEntities.Count());
+            var item = result.ValidEntities.Single();
+            Assert.IsNull(item.CustomerFriendlyDescription);
+        }
+
+        [TestMethod]
+        public void Validate_CustomerFriendlyDescriptionIsValid_EmptyValueIsAcceptable()
+        {
+            //Given
+            testItems.Add(CreateTestItem("123456789", customerFriendlyDescription: String.Empty));
+
+            //When
+            var result = validator.ValidateCollection(testItems);
+
+            //Then
+            Assert.AreEqual(0, result.InvalidEntities.Count());
+            Assert.AreEqual(1, result.ValidEntities.Count());
+            var item = result.ValidEntities.Single();
+            Assert.AreEqual(String.Empty, item.CustomerFriendlyDescription);
+        }
+
         private NewItemModel CreateTestItem(
             string scanCode, 
             bool isRetailSale = false, 
@@ -256,7 +307,8 @@ namespace Infor.Services.NewItem.Tests.Validators
             string retailUom = "EA",
             string taxClassCode = testTaxClassCode,
             int iconBrandId = testIconBrandId,
-            string nationalClassCode = testNationalClassCode)
+            string nationalClassCode = testNationalClassCode,
+            string customerFriendlyDescription = null)
         {
             return new NewItemModel
             {
@@ -267,7 +319,8 @@ namespace Infor.Services.NewItem.Tests.Validators
                 RetailUom = retailUom,
                 TaxClassCode = taxClassCode,
                 IconBrandId = iconBrandId,
-                NationalClassCode = nationalClassCode
+                NationalClassCode = nationalClassCode,
+                CustomerFriendlyDescription = customerFriendlyDescription
             };
         }
     }

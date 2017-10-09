@@ -50,6 +50,7 @@ namespace Infor.Services.NewItem.Queries
                                         END AS nvarchar(5)) AS NationalClassCode,
                                         LEFT(tc.TaxClassDesc, 7) AS TaxClassCode,
                                         COALESCE(isa.Organic, i.Organic) AS Organic,
+                                        i.Sign_Description AS CustomerFriendlyDescription,
                                         q.InsertDate AS QueueInsertDate
                                     FROM dbo.IconItemChangeQueue q
                                     JOIN dbo.ItemIdentifier ii on q.Identifier = ii.Identifier

@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Infor.Services.NewItem.Tests</RootNamespace>
     <AssemblyName>Infor.Services.NewItem.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -20,6 +20,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,8 +53,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Esb.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Esb.Core.2016.10.21.1\lib\net45\Esb.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Esb.Core.2017.9.28.1\lib\net461\Esb.Core.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation, Version=6.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.6.4.0\lib\Net45\FluentValidation.dll</HintPath>
@@ -63,17 +63,23 @@
       <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2016.10.21.2\lib\net45\Icon.Esb.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Esb.2017.9.28.1\lib\net45\Icon.Esb.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Infor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Infor.2017.9.13.1\lib\net461\Icon.Esb.Schemas.Infor.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Mammoth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2017.9.26.6\lib\net461\Icon.Esb.Schemas.Mammoth.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2016.10.18.1\lib\net45\Icon.Esb.Schemas.Wfm.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2017.3.14.1\lib\net45\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2016.10.21.1\lib\net45\Icon.Framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Framework.2017.10.3.3\lib\net45\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -84,12 +90,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Irma.Framework.2016.10.20.1\lib\net45\Irma.Framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Irma.Framework.2017.8.31.1\lib\net45\Irma.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Irma.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Irma.Testing.2016.10.21.2\lib\net45\Irma.Testing.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Irma.Testing.2017.6.6.3\lib\net45\Irma.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.5.30.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.30\lib\net45\Moq.dll</HintPath>
@@ -115,6 +119,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TIBCO.EMS, Version=1.0.800.9, Culture=neutral, PublicKeyToken=5b83db8ff05c64ba, processorArchitecture=MSIL">
       <HintPath>..\packages\TIBCO.EMS.2016.10.21.1\lib\TIBCO.EMS.dll</HintPath>
@@ -141,6 +146,7 @@
     <Compile Include="Commands\AddNewItemsToIconCommandHandlerTests.cs" />
     <Compile Include="Commands\ArchiveNewItemsCommandHandlerTests.cs" />
     <Compile Include="Commands\FinalizeNewItemEventsCommandHandlerTests.cs" />
+    <Compile Include="Helpers\XmlDeepEquals.cs" />
     <Compile Include="Infrastructure\RegionalEmailClientFactoryTests.cs" />
     <Compile Include="MessageBuilders\NewItemMessageBuilderTests.cs" />
     <Compile Include="Notifiers\NewItemNotifierSettingsTests.cs" />
@@ -172,6 +178,7 @@
     </None>
     <None Include="TestMessages\OneExistingItemWithNoSubTeam.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="TestMessages\ThreeNewItems.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -190,6 +197,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TestMessages\ThreeNewItemsWithOrganicSetToFalse.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestMessages\ThreeNewItemsWithCustomerFacingDescriptionsSet.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestMessages\ThreeNewItemsWithCustomerFacingDescriptionsAbsent.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestMessages\ThreeExistingItemsWithCustomerFacingDescriptions.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -27,7 +27,8 @@ namespace Infor.Services.NewItem.Models
         public string NationalClassCode { get; set; }
         public string TaxClassCode { get; set; }
         public bool Organic { get; set; }
-        public DateTime QueueInsertDate { get; set; }
+		public string CustomerFriendlyDescription { get; set; }
+		public DateTime QueueInsertDate { get; set; }
         public int? IconItemId { get; set; }
         public bool MessageSentToInfor { get; set; }
         public int? MessageHistoryId { get; set; }

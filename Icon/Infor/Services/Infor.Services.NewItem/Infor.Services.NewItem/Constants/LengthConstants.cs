@@ -10,5 +10,6 @@ namespace Infor.Services.NewItem.Constants
     {
         public const int ProductDescriptionMaxLength = 60;
         public const int PosDescriptionMaxLength = 25;
+        public const int CustomerFriendlyDescriptionMaxLength = 60;
     }
 }

@@ -17,6 +17,7 @@ namespace Infor.Services.NewItem.Constants
             public const string InvalidPosDescription = "Invalid POS Description";
             public const string InvalidRetailUom = "Invalid Retail UOM";
             public const string FailedToAddGloConEventError = "FailedToAddGloConEventError";
+            public const string InvalidCustomerFriendlyDescription = "InvalidCustomerFriendlyDescription";
         }
 
         public static class Details
@@ -34,6 +35,7 @@ namespace Infor.Services.NewItem.Constants
             public static readonly string InvalidPosDescription = "POS Description has invalid value '{PropertyValue}'." +
                 " POS Description is requried and must be less than " + LengthConstants.PosDescriptionMaxLength + " characters and can contain whitespaces, !, #, $, %, &, ', (, ), *, commas, -, ., /, :, ;, <, =, >, ?, or @. Please remove the invalid characters and refresh the item.";
             public static readonly string InvalidRetailUom = "Retail UOM has invalid value '{PropertyValue}'." + " Retail UOM is required and must be one of the following: " + string.Join(",", UomCodes.ByName.Values) + ". Please remove the invalid UOM and refresh the item.";
+            public static readonly string InvalidCustomerFriendlyDescription = "Customer Friendly Description has invalid value '{PropertyValue}'." + " Maximum length is " + LengthConstants.CustomerFriendlyDescriptionMaxLength + " characters.";
         }
     }
 }

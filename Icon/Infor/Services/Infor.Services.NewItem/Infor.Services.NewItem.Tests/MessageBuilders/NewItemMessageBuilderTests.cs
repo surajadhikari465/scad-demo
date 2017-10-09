@@ -62,7 +62,7 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
         public void BuildMessage_GivenAListOfThreeNewItems_ShouldReturnItemXmlStringForThreeItems()
         {
             // Given
-            List<NewItemModel> newItemModel = BuildNewItemModel(3);
+            List<NewItemModel> newItemModel = BuildNewItemModel(numberOfItems: 3);
 
             this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
                 .Returns(new Dictionary<string, int>
@@ -73,11 +73,11 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                 });
 
             // When
-            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+            var actualXmlString = this.newItemMessageBuilder.BuildMessage(newItemModel);
 
             // Then
-            var expectedXml = File.ReadAllText(@"TestMessages\ThreeNewItems.xml");
-            Assert.AreEqual(expectedXml, actualXml);
+            Helpers.XmlDeepEquals.AssertEquivalentFileToLoadAndXmlString(
+                @"TestMessages\ThreeNewItems.xml", actualXmlString);
         }
 
         [TestMethod]
@@ -95,18 +95,18 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                 });
 
             // When
-            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+            var actualXmlString = this.newItemMessageBuilder.BuildMessage(newItemModel);
 
             // Then
-            var expectedXml = File.ReadAllText(@"TestMessages\ThreeNewItemsWithNoMatchingBrandTaxNationalCode.xml");
-            Assert.AreEqual(expectedXml, actualXml);
+            Helpers.XmlDeepEquals.AssertEquivalentFileToLoadAndXmlString
+                (@"TestMessages\ThreeNewItemsWithNoMatchingBrandTaxNationalCode.xml", actualXmlString);
         }
 
         [TestMethod]
         public void BuildMessage_GivenAListOfThreeItemsThatExistInIcon_ShouldReturnItemXmlStringForThreeItemsWithIdsSetToIconIds()
         {
             // Given
-            List<NewItemModel> newItemModel = BuildNewItemModel(3);
+            List<NewItemModel> newItemModel = BuildNewItemModel(numberOfItems: 3);
 
             this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
                 .Returns(newItemModel.ToDictionary(
@@ -114,11 +114,31 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                     m => int.Parse(m.ScanCode)));
 
             // When
-            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+            var actualXmlString = this.newItemMessageBuilder.BuildMessage(newItemModel);
 
             // Then
-            var expectedXml = File.ReadAllText(@"TestMessages\ThreeExistingItems.xml");
-            Assert.AreEqual(expectedXml, actualXml);
+            Helpers.XmlDeepEquals.AssertEquivalentFileToLoadAndXmlString
+                (@"TestMessages\ThreeExistingItems.xml", actualXmlString);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenAListOfThreeItemsThatExistInIconWithCFDs_ShouldReturnItemXmlStringWithCFDs()
+        {
+            // Given
+            settings.IncludeCustomerFacingDescription = true;
+            List<NewItemModel> newItemModel = BuildNewItemModel(numberOfItems: 3);
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(newItemModel.ToDictionary(
+                    m => m.ScanCode,
+                    m => int.Parse(m.ScanCode)));
+
+            // When
+            var actualXmlString = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            // Then
+            Helpers.XmlDeepEquals.AssertEquivalentFileToLoadAndXmlString
+                (@"TestMessages\ThreeExistingItemsWithCustomerFacingDescriptions.xml", actualXmlString);
         }
 
         [TestMethod]
@@ -134,11 +154,11 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                     m => int.Parse(m.ScanCode)));
 
             // When
-            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+            var actualXmlString = this.newItemMessageBuilder.BuildMessage(newItemModel);
 
             // Then
-            var expectedXml = File.ReadAllText(@"TestMessages\OneExistingItemWithNoSubTeam.xml");
-            Assert.AreEqual(expectedXml, actualXml);
+            Helpers.XmlDeepEquals.AssertEquivalentFileToLoadAndXmlString(
+                @"TestMessages\OneExistingItemWithNoSubTeam.xml", actualXmlString);
         }
 
         [TestMethod]
@@ -294,7 +314,6 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
             settings.SendOrganic = true;
 
             List<NewItemModel> newItemModel = BuildNewItemModel(3);
-            newItemModel.ForEach(nim => nim.Organic = true);
 
             this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
                 .Returns(new Dictionary<string, int>
@@ -305,11 +324,11 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                 });
 
             // When
-            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+            var actualXmlString = this.newItemMessageBuilder.BuildMessage(newItemModel);
 
             // Then
-            var expectedXml = File.ReadAllText(@"TestMessages\ThreeNewItemsWithOrganicSet.xml");
-            Assert.AreEqual(expectedXml, actualXml);
+            Helpers.XmlDeepEquals.AssertEquivalentFileToLoadAndXmlString(
+                @"TestMessages\ThreeNewItemsWithOrganicSet.xml", actualXmlString);
         }
 
         [TestMethod]
@@ -319,7 +338,6 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
             settings.SendOrganic = true;
 
             List<NewItemModel> newItemModel = BuildNewItemModel(3);
-            newItemModel.ForEach(nim => nim.Organic = false);
 
             this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
                 .Returns(new Dictionary<string, int>
@@ -330,11 +348,58 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                 });
 
             // When
-            var actualXml = this.newItemMessageBuilder.BuildMessage(newItemModel);
+            var actualXmlString = this.newItemMessageBuilder.BuildMessage(newItemModel);
 
             // Then
             var expectedXml = File.ReadAllText(@"TestMessages\ThreeNewItemsWithOrganicSetToFalse.xml");
-            Assert.AreEqual(expectedXml, actualXml);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenAListOfThreeNewItemsWithCFD_ShouldReturnItemXmlStringForThreeItemsWithCFDTraits()
+        {
+            // Given
+            settings.IncludeCustomerFacingDescription = true;
+
+            List<NewItemModel> newItemModel = BuildNewItemModel(3);
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(new Dictionary<string, int>
+                {
+                    { "test1", 111 },
+                    { "test2", 112 },
+                    { "test3", 113 }
+                });
+
+            // When
+            var actualXmlString = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            // Then
+            Helpers.XmlDeepEquals.AssertEquivalentFileToLoadAndXmlString(
+                @"TestMessages\ThreeNewItemsWithCustomerFacingDescriptionsSet.xml", actualXmlString);
+        }
+
+        [TestMethod]
+        public void BuildMessage_GivenAListOfThreeNewItemsWithoutCFD_ShouldReturnItemXmlStringForThreeItemsWithoutCFD()
+        {
+            // Given
+            settings.IncludeCustomerFacingDescription = false;
+
+            List<NewItemModel> newItemModel = BuildNewItemModel(3);
+
+            this.mockGetItemIdsQueryHandler.Setup(qh => qh.Search(It.IsAny<GetItemIdsQuery>()))
+                .Returns(new Dictionary<string, int>
+                {
+                    { "test1", 111 },
+                    { "test2", 112 },
+                    { "test3", 113 }
+                });
+
+            // When
+            var actualXmlString = this.newItemMessageBuilder.BuildMessage(newItemModel);
+
+            // Then
+            Helpers.XmlDeepEquals.AssertEquivalentFileToLoadAndXmlString(
+                @"TestMessages\ThreeNewItemsWithCustomerFacingDescriptionsAbsent.xml", actualXmlString);
         }
 
         private List<NewItemModel> BuildNewItemModel(int numberOfItems)
@@ -360,7 +425,15 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                     SubTeamName = "Test Sub Team",
                     SubTeamNumber = "1234",
                     NationalClassCode = "12345"
-                };
+				};
+                if (settings.SendOrganic)
+                {
+                    newItem.Organic = true;
+                }
+                if (settings.IncludeCustomerFacingDescription)
+                {
+                    newItem.CustomerFriendlyDescription = "Test Customer Friendly Description";
+                }
                 newItemModel.Add(newItem);
             }
             return newItemModel;
@@ -390,6 +463,14 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
                     SubTeamNumber = "1234",
                     NationalClassCode = "56789"
                 };
+                if (settings.SendOrganic)
+                {
+                    newItem.Organic = true;
+                }
+                if (settings.IncludeCustomerFacingDescription)
+                {
+                    newItem.CustomerFriendlyDescription = "Test Customer Friendly Description";
+                }
                 newItemModel.Add(newItem);
             }
             return newItemModel;

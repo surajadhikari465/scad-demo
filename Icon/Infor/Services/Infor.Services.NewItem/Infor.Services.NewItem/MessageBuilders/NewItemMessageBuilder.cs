@@ -379,7 +379,14 @@ namespace Infor.Services.NewItem.MessageBuilders
                 }
             };
 
-            if(settings.SendOrganic)
+            var itemTraitsIncludingOptional = AddOptionalItemTraits(newItemModel, itemTraits);
+
+            return itemTraitsIncludingOptional.ToArray();
+        }
+        
+        private IEnumerable<Contracts.TraitType> AddOptionalItemTraits(NewItemModel newItemModel, List<Contracts.TraitType> itemTraits)
+        {
+            if (settings.SendOrganic)
             {
                 itemTraits.Add(new Contracts.TraitType
                 {
@@ -396,8 +403,28 @@ namespace Infor.Services.NewItem.MessageBuilders
                         }
                     }
                 });
+            }                
+
+            if (settings.IncludeCustomerFacingDescription)
+            {
+                itemTraits.Add(new Contracts.TraitType
+                {
+                    code = TraitCodes.CustomerFriendlyDescription,
+                    type = new Contracts.TraitTypeType
+                    {
+                        description = TraitDescriptions.CustomerFriendlyDescription,
+                        value = new Contracts.TraitValueType[]
+                        {
+                            new Contracts.TraitValueType
+                            {
+                                value = newItemModel.CustomerFriendlyDescription == null ? string.Empty : newItemModel.CustomerFriendlyDescription
+                            }
+                        }
+                    }
+                });
             }
-            return itemTraits.ToArray();
+
+            return itemTraits;
         }
 
         private string GetPosDescription(NewItemModel newItemModel)

@@ -51,6 +51,10 @@ namespace Infor.Services.NewItem.Validators
                 .Must(i => UomCodes.ByName.Values.Contains(i))
                 .WithErrorCode(ApplicationErrors.Codes.InvalidRetailUom)
                 .WithMessage(ApplicationErrors.Details.InvalidRetailUom);
+            RuleFor(i => i.CustomerFriendlyDescription)
+                .Length(0, LengthConstants.CustomerFriendlyDescriptionMaxLength)
+                .WithErrorCode(ApplicationErrors.Codes.InvalidCustomerFriendlyDescription)
+                .WithMessage(ApplicationErrors.Details.InvalidCustomerFriendlyDescription);
         }
 
         public CollectionValidatorResult<NewItemModel> ValidateCollection(IEnumerable<NewItemModel> collection)

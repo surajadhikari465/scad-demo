@@ -116,11 +116,11 @@
             </tra:type>
           </crf:trait>
           <crf:trait>
-            <tra:code>OG</tra:code>
+            <tra:code>CFD</tra:code>
             <tra:type>
-              <trt:description>Organic</trt:description>
+              <trt:description>Customer Friendly Description</trt:description>
               <trt:value>
-                <trv:value>0</trv:value>
+                <trv:value>Test Customer Friendly Description</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -240,15 +240,6 @@
                   <uom:code>EA</uom:code>
                   <uom:name>EACH</uom:name>
                 </trv:uom>
-              </trt:value>
-            </tra:type>
-          </crf:trait>
-          <crf:trait>
-            <tra:code>OG</tra:code>
-            <tra:type>
-              <trt:description>Organic</trt:description>
-              <trt:value>
-                <trv:value>0</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -377,15 +368,6 @@
                   <uom:code>EA</uom:code>
                   <uom:name>EACH</uom:name>
                 </trv:uom>
-              </trt:value>
-            </tra:type>
-          </crf:trait>
-          <crf:trait>
-            <tra:code>OG</tra:code>
-            <tra:type>
-              <trt:description>Organic</trt:description>
-              <trt:value>
-                <trv:value>0</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
