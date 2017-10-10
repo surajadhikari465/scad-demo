@@ -7,13 +7,13 @@
   DTS:CreatorName="WFM\Ben.Sims"
   DTS:DTSID="{E6A2F4FF-94CA-4763-BF6C-F62C27AAB42B}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="14.0.0600.250"
+  DTS:LastModifiedProductVersion="14.0.0800.60"
   DTS:LocaleID="1033"
   DTS:ObjectName="InforGpmDataConversion"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="159"
-  DTS:VersionGUID="{E9EC177F-DE2F-462F-985D-F35F7F0C0FDE}">
+  DTS:VersionBuild="168"
+  DTS:VersionGUID="{A371EBEE-C8FA-4018-8EC8-454A43973C87}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -26,7 +26,7 @@
         DTS:Name="ConnectionString">@[$Package::IRMADb_ConnectionString]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=IDT-SP\SPT;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=IDD-FL\FLD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -51,86 +51,193 @@
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnDelimiter="_x002C_"
               DTS:DataType="3"
               DTS:TextQualified="True"
               DTS:ObjectName="ITEM_ID"
-              DTS:DTSID="{51AF1542-62F7-4AD0-BB5D-FE7A3FF8B14E}"
+              DTS:DTSID="{27A55D2A-5BA7-4EDD-B1A3-D77C8B5F2951}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnDelimiter="_x002C_"
               DTS:MaximumWidth="13"
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="SCAN_CODE"
-              DTS:DTSID="{0C8F758B-8096-4EDA-A16F-E59C1B42E493}"
+              DTS:DTSID="{7C19C533-AF4F-4E78-A279-D8F0E1341CFC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnDelimiter="_x002C_"
               DTS:DataType="3"
               DTS:TextQualified="True"
               DTS:ObjectName="STORE_NUMBER"
-              DTS:DTSID="{07571D4C-7D4C-4AD6-9A96-6EAE26BADDEE}"
+              DTS:DTSID="{C85048D9-FAD4-49A6-BE99-4B595CAEF180}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnDelimiter="_x002C_"
               DTS:MaximumWidth="20"
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE_TYPE"
-              DTS:DTSID="{2C808A85-CF72-4AF3-A25B-17B20A329C98}"
+              DTS:DTSID="{8A7072F7-4D0B-4D46-ADF0-78BF054F6F28}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnDelimiter="_x002C_"
               DTS:DataType="17"
               DTS:TextQualified="True"
               DTS:ObjectName="MULTIPLE"
-              DTS:DTSID="{232929B6-F284-44FF-8393-1FAA31B4B7FF}"
+              DTS:DTSID="{7E757245-ED1E-47C0-A942-8726A84D1D8D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
-              DTS:DataType="6"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="131"
+              DTS:DataPrecision="9"
+              DTS:DataScale="2"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE"
-              DTS:DTSID="{9545F9BD-5A24-437B-B1B8-8F30479845F6}"
+              DTS:DTSID="{0A79068D-F310-4505-A55D-B786C8C949B9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnDelimiter="_x002C_"
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="SELLING_UOM"
-              DTS:DTSID="{1164F35C-ED99-450D-AF81-5292317A6AEB}"
+              DTS:DTSID="{04243E4A-EE8B-4C23-81A7-F3AF580E984D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnDelimiter="_x002C_"
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="START_DATE"
-              DTS:DTSID="{F810A728-14DD-47CF-93BB-7476770C3F38}"
+              DTS:DTSID="{5EDA86AC-C193-4046-B14C-88BB249973B8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnDelimiter="_x002C_"
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="END_DATE"
-              DTS:DTSID="{4806B8A3-B698-4C62-9165-5656269326CE}"
+              DTS:DTSID="{EE431440-8E86-49AC-BCF9-540313DD09C4}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="135"
+              DTS:TextQualified="True"
+              DTS:ObjectName="INSERT_DATE"
+              DTS:DTSID="{697574E6-C32B-41EA-8FF5-9EDB63E78E98}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Region_Code"
+              DTS:DTSID="{DC188692-204C-4233-9C63-2F51E197070A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="CurrencyCode"
+              DTS:DTSID="{AE3B38EC-AB25-4030-8852-9E5F8D6EE627}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="72"
+              DTS:TextQualified="True"
+              DTS:ObjectName="GPM_ID"
+              DTS:DTSID="{EFA9C7DC-8406-47F5-930E-3225B873F668}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="20"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="INFOR_REASON_CODE"
+              DTS:DTSID="{BAF6F92A-9B03-4982-8F78-285A70DAE159}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="135"
+              DTS:TextQualified="True"
+              DTS:ObjectName="NEW_TAG_EXPIRATION"
+              DTS:DTSID="{1CF84123-89ED-46E7-B455-D6132D2B6DE1}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="MainPriceType"
+              DTS:DTSID="{40BBEACB-938A-47DC-A93D-3B0FBD092F8B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="7"
+              DTS:TextQualified="True"
+              DTS:ObjectName="InsertDateUtc"
+              DTS:DTSID="{9E64F40D-FB8A-41B5-81AB-7F0333621614}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Converted PRICE_TYPE"
+              DTS:DTSID="{072B1B0B-2A90-4916-ADB8-B1D61FE0AFDD}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Converted SELLING_UOM"
+              DTS:DTSID="{BBC58A09-A038-49CF-B5DD-5445A627E15F}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Converted CurrencyCode"
+              DTS:DTSID="{2131F311-5F27-4B50-9156-0739EFE7204B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="2"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Converted Region_Code"
+              DTS:DTSID="{4FFBFDAF-2C2F-43CC-9689-AC3B7EE75063}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x000D__x000A_"
-              DTS:DataType="135"
+              DTS:MaximumWidth="10"
+              DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="INSERT_DATE"
-              DTS:DTSID="{B485C4CC-12C8-46C3-82C7-9F0249B203DC}"
+              DTS:ObjectName="Converted INFOR_REASON_CODE"
+              DTS:DTSID="{5D002F88-A640-4836-A057-A5981BA91075}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -183,7 +290,7 @@
       DTS:Required="True">
       <DTS:Property
         DTS:DataType="8"
-        DTS:Name="ParameterValue">Data Source=IDT-SP\SPT;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:Property>
+        DTS:Name="ParameterValue">Data Source=IDD-FL\FLD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:Property>
     </DTS:PackageParameter>
     <DTS:PackageParameter
       DTS:CreationName=""
@@ -229,7 +336,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="NowDateTimeUtc">
       <DTS:VariableValue
-        DTS:DataType="7">8/15/2017 9:49:39 PM</DTS:VariableValue>
+        DTS:DataType="7">10/5/2017 10:41:04 PM</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -320,7 +427,7 @@
                       refId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[SELLING_UOM]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="2"
+                      cachedLength="5"
                       cachedName="SELLING_UOM"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]" />
                     <inputColumn
@@ -330,6 +437,13 @@
                       cachedLength="3"
                       cachedName="Region_Code"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[Region_Code]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[INFOR_REASON_CODE]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="INFOR_REASON_CODE"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[INFOR_REASON_CODE]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -425,6 +539,27 @@
                           name="FastParse">false</property>
                       </properties>
                     </outputColumn>
+                    <outputColumn
+                      refId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted INFOR_REASON_CODE]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="10"
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted INFOR_REASON_CODE]"
+                      name="Converted INFOR_REASON_CODE"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[INFOR_REASON_CODE]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -504,14 +639,6 @@
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[STORE_NUMBER]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[STORE_NUMBER]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[PRICE_TYPE]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="20"
-                      cachedName="PRICE_TYPE"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE_TYPE]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE_TYPE]" />
-                    <inputColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[MULTIPLE]"
                       cachedDataType="ui1"
                       cachedName="MULTIPLE"
@@ -519,15 +646,17 @@
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[MULTIPLE]" />
                     <inputColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[PRICE]"
-                      cachedDataType="cy"
+                      cachedDataType="numeric"
                       cachedName="PRICE"
+                      cachedPrecision="9"
+                      cachedScale="2"
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE]" />
                     <inputColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[SELLING_UOM]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="2"
+                      cachedLength="5"
                       cachedName="SELLING_UOM"
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[SELLING_UOM]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]" />
@@ -549,6 +678,32 @@
                       cachedName="INSERT_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[INSERT_DATE]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[INSERT_DATE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Converted INFOR_REASON_CODE]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Converted INFOR_REASON_CODE"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[INFOR_REASON_CODE]"
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted INFOR_REASON_CODE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[Converted PRICE_TYPE]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Converted PRICE_TYPE"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE_TYPE]"
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted PRICE_TYPE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[NEW_TAG_EXPIRATION]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="NEW_TAG_EXPIRATION"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[NEW_TAG_EXPIRATION]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[NEW_TAG_EXPIRATION]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[GPM_ID]"
+                      cachedDataType="guid"
+                      cachedName="GPM_ID"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[GPM_ID]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[GPM_ID]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -578,8 +733,10 @@
                       name="MULTIPLE" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE]"
-                      dataType="cy"
-                      name="PRICE" />
+                      dataType="numeric"
+                      name="PRICE"
+                      precision="9"
+                      scale="2" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[SELLING_UOM]"
                       codePage="1252"
@@ -598,6 +755,66 @@
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[INSERT_DATE]"
                       dataType="dbTimeStamp"
                       name="INSERT_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Region_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="Region_Code" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[CurrencyCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="CurrencyCode" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[GPM_ID]"
+                      dataType="guid"
+                      name="GPM_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[INFOR_REASON_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="INFOR_REASON_CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[NEW_TAG_EXPIRATION]"
+                      dataType="dbTimeStamp"
+                      name="NEW_TAG_EXPIRATION" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[MainPriceType]"
+                      dataType="wstr"
+                      length="3"
+                      name="MainPriceType" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[InsertDateUtc]"
+                      dataType="date"
+                      name="InsertDateUtc" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Converted PRICE_TYPE]"
+                      dataType="wstr"
+                      length="10"
+                      name="Converted PRICE_TYPE" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Converted SELLING_UOM]"
+                      dataType="wstr"
+                      length="3"
+                      name="Converted SELLING_UOM" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Converted CurrencyCode]"
+                      dataType="wstr"
+                      length="3"
+                      name="Converted CurrencyCode" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Converted Region_Code]"
+                      dataType="wstr"
+                      length="2"
+                      name="Converted Region_Code" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Converted INFOR_REASON_CODE]"
+                      dataType="wstr"
+                      length="10"
+                      name="Converted INFOR_REASON_CODE" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -714,12 +931,14 @@
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE]"
-                      dataType="cy"
+                      dataType="numeric"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[PRICE]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE]"
                       name="PRICE"
+                      precision="9"
+                      scale="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]"
@@ -728,7 +947,7 @@
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[SELLING_UOM]"
-                      length="2"
+                      length="5"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]"
                       name="SELLING_UOM"
                       truncationRowDisposition="FailComponent" />
@@ -781,6 +1000,35 @@
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[CurrencyCode]"
                       name="CurrencyCode"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[GPM_ID]"
+                      dataType="guid"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[GPM_ID]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[GPM_ID]"
+                      name="GPM_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[INFOR_REASON_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[INFOR_REASON_CODE]"
+                      length="20"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[INFOR_REASON_CODE]"
+                      name="INFOR_REASON_CODE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[NEW_TAG_EXPIRATION]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[NEW_TAG_EXPIRATION]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[NEW_TAG_EXPIRATION]"
+                      name="NEW_TAG_EXPIRATION"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -810,13 +1058,15 @@
                       name="MULTIPLE" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[PRICE]"
-                      dataType="cy"
-                      name="PRICE" />
+                      dataType="numeric"
+                      name="PRICE"
+                      precision="9"
+                      scale="2" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[SELLING_UOM]"
                       codePage="1252"
                       dataType="str"
-                      length="2"
+                      length="5"
                       name="SELLING_UOM" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[START_DATE]"
@@ -842,6 +1092,20 @@
                       dataType="str"
                       length="3"
                       name="CurrencyCode" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[GPM_ID]"
+                      dataType="guid"
+                      name="GPM_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[INFOR_REASON_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="INFOR_REASON_CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[NEW_TAG_EXPIRATION]"
+                      dataType="dbTimeStamp"
+                      name="NEW_TAG_EXPIRATION" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -880,14 +1144,16 @@
                       name="MULTIPLE" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[PRICE]"
-                      dataType="cy"
+                      dataType="numeric"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[PRICE]"
-                      name="PRICE" />
+                      name="PRICE"
+                      precision="9"
+                      scale="2" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[SELLING_UOM]"
                       codePage="1252"
                       dataType="str"
-                      length="2"
+                      length="5"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[SELLING_UOM]"
                       name="SELLING_UOM" />
                     <outputColumn
@@ -919,6 +1185,23 @@
                       length="3"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[CurrencyCode]"
                       name="CurrencyCode" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[GPM_ID]"
+                      dataType="guid"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[GPM_ID]"
+                      name="GPM_ID" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[INFOR_REASON_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[INFOR_REASON_CODE]"
+                      name="INFOR_REASON_CODE" />
+                    <outputColumn
+                      refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[NEW_TAG_EXPIRATION]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[NEW_TAG_EXPIRATION]"
+                      name="NEW_TAG_EXPIRATION" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -1035,15 +1318,17 @@
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[InsertDateUtc]"
                       lineageId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Outputs[Derived Column Output].Columns[InsertDateUtc]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[gpmID]"
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[GPM_ID]"
                       cachedDataType="guid"
-                      cachedName="gpmID"
+                      cachedName="GPM_ID"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[GpmID]"
-                      lineageId="Package\Transfer Price\Script Component.Outputs[Output 0].Columns[gpmID]" />
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[GPM_ID]" />
                     <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[PRICE]"
-                      cachedDataType="cy"
+                      cachedDataType="numeric"
                       cachedName="PRICE"
+                      cachedPrecision="9"
+                      cachedScale="2"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[Price]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE]" />
                     <inputColumn
@@ -1078,19 +1363,25 @@
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[SellableUOM]"
                       lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SELLING_UOM]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted PRICE_TYPE]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="Converted PRICE_TYPE"
-                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[PriceTypeAttribute]"
-                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted PRICE_TYPE]" />
-                    <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted Region_Code]"
                       cachedDataType="wstr"
                       cachedLength="2"
                       cachedName="Converted Region_Code"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
                       lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Region_Code]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[NEW_TAG_EXPIRATION]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="NEW_TAG_EXPIRATION"
+                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[NewTagExpiration]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[NEW_TAG_EXPIRATION]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted INFOR_REASON_CODE]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Converted INFOR_REASON_CODE"
+                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[PriceTypeAttribute]"
+                      lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted INFOR_REASON_CODE]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1334,881 +1625,6 @@
                 </output>
               </outputs>
             </component>
-            <component
-              refId="Package\Transfer Price\Script Component"
-              componentClassID="Microsoft.ManagedComponentHost"
-              contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;11"
-              description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
-              name="Script Component"
-              version="9">
-              <properties>
-                <property
-                  dataType="System.String"
-                  description="Stores the source code of the component"
-                  isArray="true"
-                  name="SourceCode"
-                  state="cdata">
-                  <arrayElements
-                    arrayElementCount="30">
-                    <arrayElement
-                      dataType="System.String"><![CDATA[main.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[#region Help:  Introduction to the Script Component
-/* The Script Component allows you to perform virtually any operation that can be accomplished in
- * a .Net application within the context of an Integration Services data flow.
- *
- * Expand the other regions which have "Help" prefixes for examples of specific ways to use
- * Integration Services features within this script component. */
-#endregion
-
-#region Namespaces
-using System;
-using System.Data;
-using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
-using Microsoft.SqlServer.Dts.Runtime.Wrapper;
-#endregion
-
-/// <summary>
-/// This is the class to which to add your code.  Do not change the name, attributes, or parent
-/// of this class.
-/// </summary>
-[Microsoft.SqlServer.Dts.Pipeline.SSISScriptComponentEntryPointAttribute]
-public class ScriptMain : UserComponent
-{
-    #region Help:  Using Integration Services variables and parameters
-    /* To use a variable in this script, first ensure that the variable has been added to
-     * either the list contained in the ReadOnlyVariables property or the list contained in
-     * the ReadWriteVariables property of this script component, according to whether or not your
-     * code needs to write into the variable.  To do so, save this script, close this instance of
-     * Visual Studio, and update the ReadOnlyVariables and ReadWriteVariables properties in the
-     * Script Transformation Editor window.
-     * To use a parameter in this script, follow the same steps. Parameters are always read-only.
-     *
-     * Example of reading from a variable or parameter:
-     *  DateTime startTime = Variables.MyStartTime;
-     *
-     * Example of writing to a variable:
-     *  Variables.myStringVariable = "new value";
-     */
-    #endregion
-
-    #region Help:  Using Integration Services Connnection Managers
-    /* Some types of connection managers can be used in this script component.  See the help topic
-     * "Working with Connection Managers Programatically" for details.
-     *
-     * To use a connection manager in this script, first ensure that the connection manager has
-     * been added to either the list of connection managers on the Connection Managers page of the
-     * script component editor.  To add the connection manager, save this script, close this instance of
-     * Visual Studio, and add the Connection Manager to the list.
-     *
-     * If the component needs to hold a connection open while processing rows, override the
-     * AcquireConnections and ReleaseConnections methods.
-     * 
-     * Example of using an ADO.Net connection manager to acquire a SqlConnection:
-     *  object rawConnection = Connections.SalesDB.AcquireConnection(transaction);
-     *  SqlConnection salesDBConn = (SqlConnection)rawConnection;
-     *
-     * Example of using a File connection manager to acquire a file path:
-     *  object rawConnection = Connections.Prices_zip.AcquireConnection(transaction);
-     *  string filePath = (string)rawConnection;
-     *
-     * Example of releasing a connection manager:
-     *  Connections.SalesDB.ReleaseConnection(rawConnection);
-     */
-    #endregion
-
-    #region Help:  Firing Integration Services Events
-    /* This script component can fire events.
-     *
-     * Example of firing an error event:
-     *  ComponentMetaData.FireError(10, "Process Values", "Bad value", "", 0, out cancel);
-     *
-     * Example of firing an information event:
-     *  ComponentMetaData.FireInformation(10, "Process Values", "Processing has started", "", 0, fireAgain);
-     *
-     * Example of firing a warning event:
-     *  ComponentMetaData.FireWarning(10, "Process Values", "No rows were received", "", 0);
-     */
-    #endregion
-
-    /// <summary>
-    /// This method is called once, before rows begin to be processed in the data flow.
-    ///
-    /// You can remove this method if you don't need to do anything here.
-    /// </summary>
-    public override void PreExecute()
-    {
-        base.PreExecute();
-        /*
-         * Add your code here
-         */
-    }
-
-    /// <summary>
-    /// This method is called after all the rows have passed through this component.
-    ///
-    /// You can delete this method if you don't need to do anything here.
-    /// </summary>
-    public override void PostExecute()
-    {
-        base.PostExecute();
-        /*
-         * Add your code here
-         */
-    }
-
-    /// <summary>
-    /// This method is called once for every row that passes through the component from Input0.
-    ///
-    /// Example of reading a value from a column in the the row:
-    ///  string zipCode = Row.ZipCode
-    ///
-    /// Example of writing a value to a column in the row:
-    ///  Row.ZipCode = zipCode
-    /// </summary>
-    /// <param name="Row">The row that is currently passing through the component</param>
-    public override void Input0_ProcessInputRow(Input0Buffer Row)
-    {
-        Row.gpmID = Guid.NewGuid();
-    }
-
-}
-]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[SC_f2d0037319f24a4999f5ee9c8aaebf7a.csproj]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{e33cd353-79f0-47e1-a48f-63d7f2cd1aa6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SC_f2d0037319f24a4999f5ee9c8aaebf7a</RootNamespace>
-    <AssemblyName>SC_f2d0037319f24a4999f5ee9c8aaebf7a</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>.\bin\Debug\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugSymbols>false</DebugSymbols>
-    <Optimize>true</Optimize>
-    <OutputPath>.\bin\Release\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.SqlServer.TxScript, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Compile Include="main.cs" />
-    <Compile Include="BufferWrapper.cs" />
-    <Compile Include="ComponentWrapper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <AppDesigner Include="Properties\" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <!-- Include the build rules for a C# project.-->
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- This section defines VSTA properties that describe the host-changable project properties. -->
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
-        <ProjectProperties HostName="ScriptComponent" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoExeName="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
-        <Host Name="ScriptComponent" GeneratedNamespace="SC_f2d0037319f24a4999f5ee9c8aaebf7a" IconIndex="0"></Host>
-        <ProjectClient>
-          <HostIdentifier>SSIS_SC120</HostIdentifier>
-        </ProjectClient>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
-</Project>]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\Resources.resx]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-</root>]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[BufferWrapper.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
-*  Microsoft SQL Server Integration Services buffer wrappers
-*  This module defines classes for accessing data flow buffers
-*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
-
-
-
-using System;
-using System.Data;
-using Microsoft.SqlServer.Dts.Pipeline;
-using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
-
-public class Input0Buffer: ScriptBuffer
-
-{
-    public Input0Buffer(PipelineBuffer Buffer, int[] BufferColumnIndexes, OutputNameMap OutputMap)
-        : base(Buffer, BufferColumnIndexes, OutputMap)
-    {
-    }
-
-    public Guid gpmID
-    {
-        set
-        {
-            this[0] = value;
-        }
-    }
-    public bool gpmID_IsNull
-    {
-        set
-        {
-            if (value)
-            {
-                SetNull(0);
-            }
-            else
-            {
-                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
-            }
-        }
-    }
-
-    new public bool NextRow()
-    {
-        return base.NextRow();
-    }
-
-    new public bool EndOfRowset()
-    {
-        return base.EndOfRowset();
-    }
-
-}
-]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\Settings.Designer.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_f2d0037319f24a4999f5ee9c8aaebf7a.Properties.Settings.get_Default():SC_f2d0037319f24a4999f5ee9c8aaebf7a.Properties.Sett" +
-    "ings")]
-
-namespace SC_f2d0037319f24a4999f5ee9c8aaebf7a.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}
-]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[ComponentWrapper.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
-*  Microsoft SQL Server Integration Services component wrapper
-*  This module defines the base class for your component
-*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
-
-using System;
-using System.Data;
-using Microsoft.SqlServer.Dts.Pipeline;
-using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
-using Microsoft.SqlServer.Dts.Runtime.Wrapper;
-
-public class UserComponent: ScriptComponent
-{
-    public Connections Connections;
-    public Variables Variables;
-    public UserComponent()
-    {
-        Connections = new Connections(this);
-        Variables = new Variables(this);
-    }
-
-    public override void ProcessInput(int InputID, string InputName, PipelineBuffer Buffer, OutputNameMap OutputMap)
-    {
-
-        if (InputName.Equals(@"Input 0", StringComparison.Ordinal))
-        {
-            Input0_ProcessInput(new Input0Buffer(Buffer, GetColumnIndexes(InputID), OutputMap));
-        }
-
-    }
-
-    public virtual void Input0_ProcessInput(Input0Buffer Buffer)
-    {
-        while (Buffer.NextRow())
-        {
-            Input0_ProcessInputRow(Buffer);
-        }
-    }
-
-    public virtual void Input0_ProcessInputRow(Input0Buffer Row)
-    {
-    }
-
-}
-
-public class Connections
-{
-    ScriptComponent ParentComponent;
-
-    public Connections(ScriptComponent Component)
-    {
-        ParentComponent = Component;
-    }
-
-}
-
-public class Variables
-{
-    ScriptComponent ParentComponent;
-
-    public Variables(ScriptComponent Component)
-    {
-        ParentComponent = Component;
-    }
-
-}
-]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Project]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
-<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
-	<msb:PropertyGroup>
-		<msb:Language>msBuild</msb:Language>
-		<msb:CodeName>SC_f2d0037319f24a4999f5ee9c8aaebf7a</msb:CodeName>
-		<msb:DisplayName>SC_f2d0037319f24a4999f5ee9c8aaebf7a</msb:DisplayName>
-		<msb:ProjectId>{668F687A-5B38-42B8-A967-FC3A450CBD40}</msb:ProjectId>
-	</msb:PropertyGroup>
-	<msb:ItemGroup>
-		<msb:Project Include="SC_f2d0037319f24a4999f5ee9c8aaebf7a.csproj"/>
-		<msb:File Include="Properties\Settings.settings"/>
-		<msb:File Include="Properties\AssemblyInfo.cs"/>
-		<msb:File Include="Properties\Resources.resx"/>
-		<msb:File Include="Properties\Resources.Designer.cs"/>
-		<msb:File Include="BufferWrapper.cs"/>
-		<msb:File Include="main.cs"/>
-		<msb:File Include="Properties\Settings.Designer.cs"/>
-		<msb:File Include="ComponentWrapper.cs"/>
-	</msb:ItemGroup>
-</c:Project>]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\AssemblyInfo.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("SC_f2d0037319f24a4999f5ee9c8aaebf7a")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SC_f2d0037319f24a4999f5ee9c8aaebf7a")]
-[assembly: AssemblyCopyright("Copyright @  2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.0.0")]
-]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\Settings.settings]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\Resources.Designer.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_f2d0037319f24a4999f5ee9c8aaebf7a.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
-    "rceManager")]
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_f2d0037319f24a4999f5ee9c8aaebf7a.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
-    "fo")]
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_f2d0037319f24a4999f5ee9c8aaebf7a.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
-    "):Void")]
-
-namespace SC_f2d0037319f24a4999f5ee9c8aaebf7a.Properties {
-    
-    
-    /// <summary>
-    ///   A strongly-typed resource class, for looking up localized strings, etc.
-    /// </summary>
-    // This class was auto-generated by the StronglyTypedResourceBuilder
-    // class via a tool like ResGen or Visual Studio.
-    // To add or remove a member, edit your .ResX file then rerun ResGen
-    // with the /str option, or rebuild your VS project.
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    internal class Resources {
-        
-        private static global::System.Resources.ResourceManager resourceMan;
-        
-        private static global::System.Globalization.CultureInfo resourceCulture;
-        
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
-        }
-        
-        /// <summary>
-        ///   Returns the cached ResourceManager instance used by this class.
-        /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if ((resourceMan == null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SC_f2d0037319f24a4999f5ee9c8aaebf7a.Properties.Resources", typeof(Resources).Assembly);
-                    resourceMan = temp;
-                }
-                return resourceMan;
-            }
-        }
-        
-        /// <summary>
-        ///   Overrides the current thread's CurrentUICulture property for all
-        ///   resource lookups using this strongly typed resource class.
-        /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
-                return resourceCulture;
-            }
-            set {
-                resourceCulture = value;
-            }
-        }
-    }
-}
-]]></arrayElement>
-                  </arrayElements>
-                </property>
-                <property
-                  dataType="System.String"
-                  description="Stores the binary representation of the component"
-                  isArray="true"
-                  name="BinaryCode"
-                  state="cdata">
-                  <arrayElements
-                    arrayElementCount="2">
-                    <arrayElement
-                      dataType="System.String"><![CDATA[SC_f2d0037319f24a4999f5ee9c8aaebf7a.dll]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAOF+JFkAAAAAAAAAAOAAIiALATAAABIAAAAIAAAAAAAAAjEA
-AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
-ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAALAwAABPAAAAAEAAAEgEAAAAAAAAAAAAAAAAAAAA
-AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAACBEAAAAgAAAAEgAAAAIA
-AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAEgEAAAAQAAAAAYAAAAUAAAAAAAAAAAAAAAAAABAAABA
-LnJlbG9jAAAMAAAAAGAAAAACAAAAGgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAADk
-MAAAAAAAAEgAAAACAAUAjCEAAGwOAAABAAAAAAAAAPgvAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKBAAAAoqHgIoEQAACioyAygSAAAKbwYAAAYqHgIoCgAA
-BioqAgMEBSgTAAAKKjoCFgOMEQAAASgUAAAKKloDLAgCFigVAAAKKnIBAABwcxYAAAp6HgIoFwAA
-CioeAigYAAAKKn4CKBkAAAoCAnMOAAAGfQEAAAQCAnMPAAAGfQIAAAQqkgRyngAAcBpvGgAACiwV
-AgUCAygbAAAKDgRzBQAABm8MAAAGKkorBwIDbw0AAAYDbwgAAAYt8SoGKjoCKBwAAAoCA30DAAAE
-KjoCKBwAAAoCA30EAAAEKh4CKBwAAAoqrn4FAAAELR5yrgAAcNAHAAACKB0AAApvHgAACnMfAAAK
-gAUAAAR+BQAABCoafgYAAAQqHgKABgAABCoafgcAAAQqHgIoIAAACioucxUAAAaABwAABCpCU0pC
-AQABAAAAAAAMAAAAdjQuMC4zMDMxOQAAAAAFAGwAAAAkBQAAI34AAJAFAAAUBgAAI1N0cmluZ3MA
-AAAApAsAACABAAAjVVMAxAwAABAAAAAjR1VJRAAAANQMAACYAQAAI0Jsb2IAAAAAAAAAAgAAAVcV
-oAEJAQAAAPoBMwAWAAABAAAAIAAAAAgAAAAHAAAAFgAAAA8AAAAgAAAAEAAAAAMAAAAFAAAABgAA
-AAEAAAAEAAAAAQAAAAAA/AIBAAAAAAAGAPYBTAQGAIoCTAQGAEIBOQQPAMAEAAAGAG8BjgMGANkB
-jgMGALoBjgMGAHECjgMGABYCjgMGAC8CjgMGAIYBjgMGAKEBxQIKAEoCjwAKAAsEjwAOAPwDjwAK
-ANcDjwAGAEwARgMKAIYFjwAGAEkFRgMGACUBOQQGABwEbAQGAMsDeQMSAPUA5gISAFYB5gISAN0A
-ZAMGAAoBTAQGAKADRgMGAN8CRgMGALoDRgMGALAARgMGAGEARgMGAAsGjgMAAAAAAQAAAAAAAQAB
-AAEAEABZAwAAEAABAAEAAQAQAO8DAAA5AAEABQABABAAaAUAAEkAAQAKAAEAEAA9BQAATQADAA4A
-AQAQAP4EAABNAAQADwAAABAAcwTPBE0ABQAQAAABEAAtBc8EZQAHABQABgA9BWgABgD+BGwAAQB2
-BXAAAQB2BXAAEQBNA3QAEQDNAHgAEQBRAHwAUCAAAAAAxgCoAgYAAQBYIAAAAADGALMCBgABAGAg
-AAAAAMYA6AWAAAEAbSAAAAAAhhgsBAYAAgB1IAAAAACGGCwEIAACAIAgAAAAAIYICgCGAAUAjyAA
-AAAAhggkA4wABgCmIAAAAACGAP8FMAAHAK4gAAAAAIYAUAUwAAcAtiAAAAAAhhgsBAYABwDWIAAA
-AADGANsFkQAHAPsgAAAAAMYB1AWAAAsADiEAAAAAxgHoBYAADAAQIQAAAACGGCwEmwANAB8hAAAA
-AIYYLASbAA4ALiEAAAAAgxgsBAYADwA2IQAAAACTCBgEoQAPAGIhAAAAAJMItQCmAA8AaSEAAAAA
-kwjBAKsADwBxIQAAAACWCFwFsQAQAHghAAAAAIYYLAQGABAAgCEAAAAAkRgyBLYAEAAAAAEAAwYA
-AAEAEQQAAAIACAUAAAMA5QMAAAEAvwIAAAEAvwIAAAEAFAAAAAIAhQAAAAMAEQQAAAQA5QMAAAEA
-EQQAAAEAAwYAAAEAjAUAAAEAjAUAAAEAvwIJACwEAQARACwEBgAZACwECgApACwEEAAxACwEEAA5
-ACwEEABBACwEEABJACwEEABRACwEEABZACwEEABhACwEEABpACwEBgChACwEBgDBACwEFQDRACwE
-BgCRAKgCBgCRALMCBgCJAEkAGwBxACwEIABxAD0DKgBxADUDAQDZACwEEABxAP8FMABxAFAFMACR
-ACwEBgDhADYFNACRABwFOwCZACwEBgDxAHMAQQDxAAcGSACpACwETgDJACwEBgAuAAsA0gAuABMA
-2wAuABsA+gAuACMAAwEuACsALAEuADMALAEuADsALAEuAEMAAwEuAEsAMgEuAFMALAEuAFsASQFD
-AGMAkwFpAHMA+gCJAHMA+gDhAHsAkwHjAGsAkwEDAAEABwADAAgABQAAAA4AugAAACgDvwAAABwE
-wwAAANUAyAAAAGAFzQABAAYAAwABAAcABQACABEABwACABIACQABABMACQACABQACwAEgAAAAQAA
-AAAAAAAAAAAAAAAcAAAABAAAAAAAAAAAAAAAVgBAAAAAAAAMAAAAAAAAAAAAAABfAJYFAAAAAAwA
-AAAAAAAAAAAAAF8AswUAAAAABAAAAAAAAAAAAAAAVgBGAwAAAAAAAAAAAQAAAH0EAAAAAAA8TW9k
-dWxlPgBzZXRfZ3BtSUQASW5wdXRJRABTQ19mMmQwMDM3MzE5ZjI0YTQ5OTlmNWVlOWM4YWFlYmY3
-YQBtc2NvcmxpYgBOZXdHdWlkAGRlZmF1bHRJbnN0YW5jZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRU
-eXBlRnJvbUhhbmRsZQBJbnB1dE5hbWUATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUGlwZWxpbmUA
-VHlwZQBnZXRfQ3VsdHVyZQBzZXRfQ3VsdHVyZQByZXNvdXJjZUN1bHR1cmUAQXBwbGljYXRpb25T
-ZXR0aW5nc0Jhc2UARWRpdG9yQnJvd3NhYmxlU3RhdGUAQ29tcGlsZXJHZW5lcmF0ZWRBdHRyaWJ1
-dGUARGVidWdnZXJOb25Vc2VyQ29kZUF0dHJpYnV0ZQBEZWJ1Z2dhYmxlQXR0cmlidXRlAEVkaXRv
-ckJyb3dzYWJsZUF0dHJpYnV0ZQBBc3NlbWJseVRpdGxlQXR0cmlidXRlAEFzc2VtYmx5VHJhZGVt
-YXJrQXR0cmlidXRlAFRhcmdldEZyYW1ld29ya0F0dHJpYnV0ZQBBc3NlbWJseUNvbmZpZ3VyYXRp
-b25BdHRyaWJ1dGUAQXNzZW1ibHlEZXNjcmlwdGlvbkF0dHJpYnV0ZQBDb21waWxhdGlvblJlbGF4
-YXRpb25zQXR0cmlidXRlAEFzc2VtYmx5UHJvZHVjdEF0dHJpYnV0ZQBBc3NlbWJseUNvcHlyaWdo
-dEF0dHJpYnV0ZQBTU0lTU2NyaXB0Q29tcG9uZW50RW50cnlQb2ludEF0dHJpYnV0ZQBBc3NlbWJs
-eUNvbXBhbnlBdHRyaWJ1dGUAUnVudGltZUNvbXBhdGliaWxpdHlBdHRyaWJ1dGUAUHJlRXhlY3V0
-ZQBQb3N0RXhlY3V0ZQB2YWx1ZQBTeXN0ZW0uUnVudGltZS5WZXJzaW9uaW5nAFN0cmluZwBTeXN0
-ZW0uQ29tcG9uZW50TW9kZWwAU0NfZjJkMDAzNzMxOWYyNGE0OTk5ZjVlZTljOGFhZWJmN2EuZGxs
-AHNldF9ncG1JRF9Jc051bGwAU2V0TnVsbABzZXRfSXRlbQBTeXN0ZW0AcmVzb3VyY2VNYW4AU2Ny
-aXB0TWFpbgBTeXN0ZW0uQ29uZmlndXJhdGlvbgBTeXN0ZW0uR2xvYmFsaXphdGlvbgBTeXN0ZW0u
-UmVmbGVjdGlvbgBJbnZhbGlkT3BlcmF0aW9uRXhjZXB0aW9uAFN0cmluZ0NvbXBhcmlzb24AQ3Vs
-dHVyZUluZm8AT3V0cHV0TmFtZU1hcABPdXRwdXRNYXAASW5wdXQwQnVmZmVyAFBpcGVsaW5lQnVm
-ZmVyAFNjcmlwdEJ1ZmZlcgBnZXRfUmVzb3VyY2VNYW5hZ2VyAC5jdG9yAC5jY3RvcgBTeXN0ZW0u
-RGlhZ25vc3RpY3MAU3lzdGVtLlJ1bnRpbWUuQ29tcGlsZXJTZXJ2aWNlcwBTeXN0ZW0uUmVzb3Vy
-Y2VzAFNDX2YyZDAwMzczMTlmMjRhNDk5OWY1ZWU5YzhhYWViZjdhLlByb3BlcnRpZXMuUmVzb3Vy
-Y2VzLnJlc291cmNlcwBEZWJ1Z2dpbmdNb2RlcwBTQ19mMmQwMDM3MzE5ZjI0YTQ5OTlmNWVlOWM4
-YWFlYmY3YS5Qcm9wZXJ0aWVzAFZhcmlhYmxlcwBCdWZmZXJDb2x1bW5JbmRleGVzAEdldENvbHVt
-bkluZGV4ZXMAU2V0dGluZ3MARXF1YWxzAENvbm5lY3Rpb25zAE9iamVjdABFbmRPZlJvd3NldABn
-ZXRfRGVmYXVsdABVc2VyQ29tcG9uZW50AFBhcmVudENvbXBvbmVudABTY3JpcHRDb21wb25lbnQA
-TWljcm9zb2Z0LlNxbFNlcnZlci5UeFNjcmlwdABNaWNyb3NvZnQuU3FsU2VydmVyLlBpcGVsaW5l
-SG9zdABJbnB1dDBfUHJvY2Vzc0lucHV0AElucHV0MF9Qcm9jZXNzSW5wdXRSb3cATmV4dFJvdwBn
-ZXRfQXNzZW1ibHkAAICbSQBzAE4AdQBsAGwAIABwAHIAbwBwAGUAcgB0AHkAIABjAGEAbgBuAG8A
-dAAgAGIAZQAgAHMAZQB0ACAAdABvACAARgBhAGwAcwBlAC4AIABBAHMAcwBpAGcAbgAgAGEAIAB2
-AGEAbAB1AGUAIAB0AG8AIAB0AGgAZQAgAGMAbwBsAHUAbQBuACAAaQBuAHMAdABlAGEAZAAuAAAP
-SQBuAHAAdQB0ACAAMAAAcVMAQwBfAGYAMgBkADAAMAAzADcAMwAxADkAZgAyADQAYQA0ADkAOQA5
-AGYANQBlAGUAOQBjADgAYQBhAGUAYgBmADcAYQAuAFAAcgBvAHAAZQByAHQAaQBlAHMALgBSAGUA
-cwBvAHUAcgBjAGUAcwAABkiGRua9eUyE8lgcTLLxJgAEIAEBCAMgAAEFIAEBEREEIAEBDgUgAQER
-XQQAABFFCSADARI9HQgSQQUgAgEIHAMgAAIGIAICDhF1BSABHQgIBgABEnkRfQUgABKAgQcgAgEO
-EoCBCLd6XFYZNOCJCImEXc2AgMyRAwYSFAMGEhgDBhJJAwYSVQMGElkDBhIgBSABARIMBSABARFF
-BCABAQIJIAQBCA4SPRJBBSABARJJBAAAElUEAAASWQUAAQESWQQAABIgAwAAAQQoABFFAygAAgQI
-ABJVBAgAElkECAASIAgBAAgAAAAAAB4BAAEAVAIWV3JhcE5vbkV4Y2VwdGlvblRocm93cwEIAQAC
-AAAAAAAoAQAjU0NfZjJkMDAzNzMxOWYyNGE0OTk5ZjVlZTljOGFhZWJmN2EAAAUBAAAAABYBABFD
-b3B5cmlnaHQgQCAgMjAxNwAASQEAGi5ORVRGcmFtZXdvcmssVmVyc2lvbj12NC41AQBUDhRGcmFt
-ZXdvcmtEaXNwbGF5TmFtZRIuTkVUIEZyYW1ld29yayA0LjUEAQAAALQAAADOyu++AQAAAJEAAABs
-U3lzdGVtLlJlc291cmNlcy5SZXNvdXJjZVJlYWRlciwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAu
-MCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5I1N5c3Rl
-bS5SZXNvdXJjZXMuUnVudGltZVJlc291cmNlU2V0AgAAAAAAAAAAAAAAUEFEUEFEULQAAADYMAAA
-AAAAAAAAAADyMAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA5DAAAAAAAAAAAAAAAABfQ29yRGxs
-TWFpbgBtc2NvcmVlLmRsbAAAAAAA/yUAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAEAEAAAABgAAIAAAAAAAAAAAAAAAAAAAAEAAQAAADAAAIAAAAAAAAAAAAAAAAAAAAEAAAAA
-AEgAAABYQAAA7AMAAAAAAAAAAAAA7AM0AAAAVgBTAF8AVgBFAFIAUwBJAE8ATgBfAEkATgBGAE8A
-AAAAAL0E7/4AAAEAAAABAAAAAAAAAAEAAAAAAD8AAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAABE
-AAAAAQBWAGEAcgBGAGkAbABlAEkAbgBmAG8AAAAAACQABAAAAFQAcgBhAG4AcwBsAGEAdABpAG8A
-bgAAAAAAAACwBEwDAAABAFMAdAByAGkAbgBnAEYAaQBsAGUASQBuAGYAbwAAACgDAAABADAAMAAw
-ADAAMAA0AGIAMAAAABoAAQABAEMAbwBtAG0AZQBuAHQAcwAAAAAAAAAiAAEAAQBDAG8AbQBwAGEA
-bgB5AE4AYQBtAGUAAAAAAAAAAABwACQAAQBGAGkAbABlAEQAZQBzAGMAcgBpAHAAdABpAG8AbgAA
-AAAAUwBDAF8AZgAyAGQAMAAwADMANwAzADEAOQBmADIANABhADQAOQA5ADkAZgA1AGUAZQA5AGMA
-OABhAGEAZQBiAGYANwBhAAAAMAAIAAEARgBpAGwAZQBWAGUAcgBzAGkAbwBuAAAAAAAxAC4AMAAu
-ADAALgAwAAAAcAAoAAEASQBuAHQAZQByAG4AYQBsAE4AYQBtAGUAAABTAEMAXwBmADIAZAAwADAA
-MwA3ADMAMQA5AGYAMgA0AGEANAA5ADkAOQBmADUAZQBlADkAYwA4AGEAYQBlAGIAZgA3AGEALgBk
-AGwAbAAAAEgAEgABAEwAZQBnAGEAbABDAG8AcAB5AHIAaQBnAGgAdAAAAEMAbwBwAHkAcgBpAGcA
-aAB0ACAAQAAgACAAMgAwADEANwAAACoAAQABAEwAZQBnAGEAbABUAHIAYQBkAGUAbQBhAHIAawBz
-AAAAAAAAAAAAeAAoAAEATwByAGkAZwBpAG4AYQBsAEYAaQBsAGUAbgBhAG0AZQAAAFMAQwBfAGYA
-MgBkADAAMAAzADcAMwAxADkAZgAyADQAYQA0ADkAOQA5AGYANQBlAGUAOQBjADgAYQBhAGUAYgBm
-ADcAYQAuAGQAbABsAAAAaAAkAAEAUAByAG8AZAB1AGMAdABOAGEAbQBlAAAAAABTAEMAXwBmADIA
-ZAAwADAAMwA3ADMAMQA5AGYAMgA0AGEANAA5ADkAOQBmADUAZQBlADkAYwA4AGEAYQBlAGIAZgA3
-AGEAAAA0AAgAAQBQAHIAbwBkAHUAYwB0AFYAZQByAHMAaQBvAG4AAAAxAC4AMAAuADAALgAwAAAA
-OAAIAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4AMAAuADAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAADAAAAAQxAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
-                  </arrayElements>
-                </property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
-                  name="VSTAProjectName"
-                  typeConverter="NOTBROWSABLE">SC_f2d0037319f24a4999f5ee9c8aaebf7a</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the programming language used by the script."
-                  name="ScriptLanguage"
-                  typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages">CSharp</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies a comma-separated list of read-only variables."
-                  name="ReadOnlyVariables"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg"></property>
-                <property
-                  dataType="System.String"
-                  description="Specifies a comma-separated list of read/write variables."
-                  name="ReadWriteVariables"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg"></property>
-                <property
-                  dataType="System.String"
-                  description="List of breakpoints present on the script."
-                  isArray="true"
-                  name="BreakpointCollection"
-                  typeConverter="NOTBROWSABLE">
-                  <arrayElements
-                    arrayElementCount="0" />
-                </property>
-                <property
-                  dataType="System.String"
-                  description="Checksum to match component metedata against compiled codes."
-                  name="MetadataChecksum140"
-                  typeConverter="NOTBROWSABLE">89</property>
-                <property
-                  dataType="System.String"
-                  name="UserComponentTypeName">Microsoft.ScriptComponentHost</property>
-                <property
-                  dataType="System.String"
-                  description="Checksum to match component metedata against compiled codes."
-                  name="MetadataChecksum"
-                  typeConverter="NOTBROWSABLE">7a230afc948d26336ba5635b4c0305de</property>
-                <property
-                  dataType="System.String"
-                  description="Checksum to match component metedata against compiled codes."
-                  name="MetadataShaChecksum"
-                  typeConverter="NOTBROWSABLE">40d81691d3d86c042494352692d7a904fb6c0d39</property>
-              </properties>
-              <inputs>
-                <input
-                  refId="Package\Transfer Price\Script Component.Inputs[Input 0]"
-                  hasSideEffects="true"
-                  name="Input 0">
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Transfer Price\Script Component.Outputs[Output 0]"
-                  name="Output 0"
-                  synchronousInputId="Package\Transfer Price\Script Component.Inputs[Input 0]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Transfer Price\Script Component.Outputs[Output 0].Columns[gpmID]"
-                      dataType="guid"
-                      lineageId="Package\Transfer Price\Script Component.Outputs[Output 0].Columns[gpmID]"
-                      name="gpmID" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
           </components>
           <paths>
             <path
@@ -2233,14 +1649,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
               startId="Package\Transfer Price\Multicast.Outputs[Multicast Output 3]" />
             <path
               refId="Package\Transfer Price.Paths[OLE DB Source Output]"
-              endId="Package\Transfer Price\Script Component.Inputs[Input 0]"
+              endId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Inputs[Derived Column Input]"
               name="OLE DB Source Output"
               startId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output]" />
-            <path
-              refId="Package\Transfer Price.Paths[Output 0]"
-              endId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Inputs[Derived Column Input]"
-              name="Output 0"
-              startId="Package\Transfer Price\Script Component.Outputs[Output 0]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -2329,7 +1740,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="225,42"
+          Size="223,42"
           Id="Package\Insert Into Price From Staging"
           TopLeft="366,165" />
         <NodeLayout
@@ -2394,7 +1805,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="479,207">
+          TopLeft="478.5,207">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -2447,101 +1858,41 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
         <NodeLayout
           Size="161,42"
           Id="Package\Transfer Price\Get IRMA Prices"
-          TopLeft="65,33" />
+          TopLeft="321,24" />
         <NodeLayout
           Size="219,42"
           Id="Package\Transfer Price\REG, TPR, and InsertDateUtc"
-          TopLeft="60,130" />
-        <NodeLayout
-          Size="167,42"
-          Id="Package\Transfer Price\Script Component"
-          TopLeft="280,39" />
+          TopLeft="296,92" />
         <NodeLayout
           Size="123,42"
           Id="Package\Transfer Price\Multicast"
-          TopLeft="336,231" />
+          TopLeft="346,242" />
         <NodeLayout
           Size="176,42"
           Id="Package\Transfer Price\Flat File Destination"
-          TopLeft="557,233" />
+          TopLeft="552,243" />
         <NodeLayout
           Size="182,42"
           Id="Package\Transfer Price\Insert Into Mammoth"
-          TopLeft="105,364" />
+          TopLeft="95,240" />
         <NodeLayout
-          Size="215,42"
+          Size="213,42"
           Id="Package\Transfer Price\Convert varchar to nvarchar"
-          TopLeft="40,226" />
-        <EdgeLayout
-          Id="Package\Transfer Price.Paths[Output 0]"
-          TopLeft="363.5,81">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-194,49"
-              Start="0,0"
-              End="-194,41.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,20.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,20.5"
-                    Point2="0,24.5"
-                    Point3="-4,24.5" />
-                  <mssgle:LineSegment
-                    End="-190,24.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-190,24.5"
-                    Point2="-194,24.5"
-                    Point3="-194,28.5" />
-                  <mssgle:LineSegment
-                    End="-194,41.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Transfer Price.Paths[OLE DB Source Output]"
-          TopLeft="226,57">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="54,0"
-              Start="0,0"
-              End="46.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="46.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          TopLeft="300,158" />
         <EdgeLayout
           Id="Package\Transfer Price.Paths[Multicast Output 3]"
-          TopLeft="459,253">
+          TopLeft="469,263.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="98,0"
+              EndConnector="83,0"
               Start="0,0"
-              End="90.5,0">
+              End="75.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="90.5,0" />
+                    End="75.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2552,30 +1903,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[Multicast Output 1]"
-          TopLeft="397.5,273">
+          TopLeft="346,262">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-201.5,91"
+              EndConnector="-69,0"
               Start="0,0"
-              End="-201.5,83.5">
+              End="-61.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,41.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,41.5"
-                    Point2="0,45.5"
-                    Point3="-4,45.5" />
-                  <mssgle:LineSegment
-                    End="-197.5,45.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-197.5,45.5"
-                    Point2="-201.5,45.5"
-                    Point3="-201.5,49.5" />
-                  <mssgle:LineSegment
-                    End="-201.5,83.5" />
+                    End="-61.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2586,30 +1925,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[Derived Column Output]"
-          TopLeft="169.5,172">
+          TopLeft="406,134">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-22,54"
+              EndConnector="0,24"
               Start="0,0"
-              End="-22,46.5">
+              End="0,16.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,23" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,23"
-                    Point2="0,27"
-                    Point3="-4,27" />
-                  <mssgle:LineSegment
-                    End="-18,27" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-18,27"
-                    Point2="-22,27"
-                    Point3="-22,31" />
-                  <mssgle:LineSegment
-                    End="-22,46.5" />
+                    End="0,16.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2620,18 +1947,40 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[Data Conversion Output]"
-          TopLeft="255,249.5">
+          TopLeft="407,200">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="81,0"
+              EndConnector="0,42"
               Start="0,0"
-              End="73.5,0">
+              End="0,34.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="73.5,0" />
+                    End="0,34.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Transfer Price.Paths[OLE DB Source Output]"
+          TopLeft="403.5,66">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,26"
+              Start="0,0"
+              End="0,18.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
