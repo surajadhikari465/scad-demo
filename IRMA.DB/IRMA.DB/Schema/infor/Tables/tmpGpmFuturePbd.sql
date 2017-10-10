@@ -3,6 +3,8 @@
 	[Item_Key] [int] NOT NULL,
 	[Store_No] [int] NOT NULL,
 	[PriceBatchDetailId] [int] NOT NULL, 
+    [StartDate] SMALLDATETIME  NOT NULL,
+    [PriceChgTypeDesc] VARCHAR (20) NOT NULL,
     CONSTRAINT [PK_tmpGpmFuturePbd] PRIMARY KEY ([PriceBatchDetailId])
 )
 
