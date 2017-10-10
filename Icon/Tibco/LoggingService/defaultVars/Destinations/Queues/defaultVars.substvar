@@ -35,11 +35,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SB1LoggingQueue</name>
-			<value>WFMSB1.Technical.Reference.Mammoth.Log.Queue.V1</value>
+			<value>WFMSB1.GIS.EMS1.CLE.Log.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504033283057</modTime>
+			<modTime>1507148993276</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Logging Service Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <sharedResources/>
+            <sharedFiles/>
+            <sharedJarFiles/>
+        </sharedArchive>
+        <processArchive name="Logging Service Process Archive">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <processProperty>/Listener/LoggingListener.process</processProperty>
+        </processArchive>
+        <versionProperty>6</versionProperty>
+        <authorProperty>Ben.Sims</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>LoggingService</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\Dev\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\LoggingService.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

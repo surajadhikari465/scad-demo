@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLog.xsd">
-    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd" schemaLocation="/SharedResources/Schemas/Application/AppLog.xsd"/>
+<pd:ProcessDefinition xmlns:ns03="www.tibco.com/plugin/Sleep" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns04="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLogs.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns02="http://www.tibco.com/namespaces/tnt/plugins/jms">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd" schemaLocation="/Schemas/Application/AppLog.xsd"/>
     <pd:name>Processes/LogPublisher.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx:AppLog"/>
-    <pd:startX>46</pd:startX>
-    <pd:startY>194</pd:startY>
+    <pd:startX>36</pd:startX>
+    <pd:startY>193</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>836</pd:endX>
@@ -71,7 +71,7 @@
         <pd:activity name="JMS Queue Sender">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>411</pd:x>
+            <pd:x>409</pd:x>
             <pd:y>84</pd:y>
             <config>
                 <PermittedMessageType>Text</PermittedMessageType>
@@ -89,11 +89,11 @@
                 <ConnectionReference>/Connections/SB1 Logger Connection.sharedjmscon</ConnectionReference>
             </config>
             <pd:inputBindings>
-                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms">
+                <ns02:ActivityInput>
                     <Body>
                         <xsl:value-of select="$Render-XML/xmlString"/>
                     </Body>
-                </ns0:ActivityInput>
+                </ns02:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
         <pd:activity name="Log">
@@ -105,7 +105,7 @@
                 <role>User</role>
             </config>
             <pd:inputBindings>
-                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema">
+                <ns0:ActivityInput>
                     <message>
                         <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
                     </message>
@@ -124,11 +124,11 @@
             <pd:y>254</pd:y>
             <config/>
             <pd:inputBindings>
-                <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                <ns03:SleepInputSchema>
                     <IntervalInMillisec>
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/LoggerSettings/retrySleepInMilliseconds"/>
                     </IntervalInMillisec>
-                </ns0:SleepInputSchema>
+                </ns03:SleepInputSchema>
             </pd:inputBindings>
         </pd:activity>
         <pd:activity name="Generate Error">
@@ -140,7 +140,7 @@
                 <faultName/>
             </config>
             <pd:inputBindings>
-                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <ns04:ActivityInput>
                     <message>
                         <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
                     </message>
@@ -149,7 +149,7 @@
                             <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
                         </messageCode>
                     </xsl:if>
-                </ns0:ActivityInput>
+                </ns04:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
@@ -176,11 +176,12 @@
     <pd:activity name="Render XML">
         <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
         <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
-        <pd:x>179</pd:x>
+        <pd:x>169</pd:x>
         <pd:y>194</pd:y>
         <config>
             <renderAsText>text</renderAsText>
             <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
             <term ref="pfx:AppLog"/>
         </config>
         <pd:inputBindings>

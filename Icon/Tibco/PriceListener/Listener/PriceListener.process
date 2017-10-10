@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns5="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns7="http://schema.infor.com/InforOAGIS/2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns9="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns5="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns10="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns7="http://schema.infor.com/InforOAGIS/2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx7="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Schemas/Application/Error.xsd"/>
     <pd:name>Listener/PriceListener.process</pd:name>
     <pd:startName>PriceMessageReceiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -33,8 +33,8 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>476</pd:endX>
-    <pd:endY>294</pd:endY>
+    <pd:endX>876</pd:endX>
+    <pd:endY>494</pd:endY>
     <pd:errorSchemas>
         <OutOfSequence ref="pfx3:Error"/>
     </pd:errorSchemas>
@@ -43,7 +43,7 @@
     <pd:activity name="ProcessPriceMessage">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>520</pd:x>
+        <pd:x>480</pd:x>
         <pd:y>44</pd:y>
         <config>
             <processName>/Processors/ProcessPriceMessage.process</processName>
@@ -59,22 +59,13 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <MessageId>
-                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId"/>
+                            <xsl:value-of select="&quot;&quot;"/>
                         </MessageId>
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:choose>
-                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID)">
-                        <PatchFamilyID>
-                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
-                        </PatchFamilyID>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <PatchFamilyID>
-                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
-                        </PatchFamilyID>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <PatchFamilyID>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                </PatchFamilyID>
                 <PatchFamilySequenceID>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
                 </PatchFamilySequenceID>
@@ -84,8 +75,8 @@
     <pd:activity name="Parse Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>238</pd:x>
-        <pd:y>43</pd:y>
+        <pd:x>229</pd:x>
+        <pd:y>44</pd:y>
         <config>
             <processName>/Processors/ParsePriceMessage.process</processName>
         </config>
@@ -100,7 +91,7 @@
     <pd:activity name="Confirm on Success">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>632</pd:x>
+        <pd:x>592</pd:x>
         <pd:y>174</pd:y>
         <config>
             <ConfirmEvent>PriceMessageReceiver</ConfirmEvent>
@@ -110,8 +101,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>46</pd:x>
-        <pd:y>415</pd:y>
+        <pd:x>156</pd:x>
+        <pd:y>384</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -121,8 +112,8 @@
     <pd:activity name="Confirm on Error">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>464</pd:x>
-        <pd:y>416</pd:y>
+        <pd:x>302</pd:x>
+        <pd:y>494</pd:y>
         <config>
             <ConfirmEvent>PriceMessageReceiver</ConfirmEvent>
         </config>
@@ -150,18 +141,9 @@
                         </MessageID>
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:choose>
-                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID)">
-                        <PatchFamilyID>
-                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
-                        </PatchFamilyID>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <PatchFamilyID>
-                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
-                        </PatchFamilyID>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <PatchFamilyID>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                </PatchFamilyID>
                 <SequenceID>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
                 </SequenceID>
@@ -171,44 +153,45 @@
     <pd:activity name="ProcessBODRequestION">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>133</pd:x>
-        <pd:y>535</pd:y>
+        <pd:x>154</pd:x>
+        <pd:y>544</pd:y>
         <config>
             <processName>/Processors/ProcessBODRequestION.process</processName>
             <spawn>true</spawn>
         </config>
         <pd:inputBindings>
             <Input>
-                <GpmSequenceId>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
-                </GpmSequenceId>
                 <Body>
                     <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/Body"/>
                 </Body>
-                <xsl:choose>
-                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID)">
-                        <PatchFamilyID>
-                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
-                        </PatchFamilyID>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <PatchFamilyID>
-                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
-                        </PatchFamilyID>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:choose>
-                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID)">
-                        <MessageId>
-                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
-                        </MessageId>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <MessageId>
-                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId"/>
-                        </MessageId>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID">
+                    <MessageID>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                    </MessageID>
+                </xsl:if>
+                <PatchFamilyID>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                </PatchFamilyID>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID">
+                    <SequenceID>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
+                    </SequenceID>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag">
+                    <ResetFlag>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag"/>
+                    </ResetFlag>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType">
+                    <TransactionType>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType"/>
+                    </TransactionType>
+                </xsl:if>
+                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source">
+                    <Source>
+                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source"/>
+                    </Source>
+                </xsl:if>
                 <pfx3:Error>
                     <pfx3:StackTrace>
                         <xsl:value-of select="$_error_Generate-Error/pfx3:Error/pfx3:StackTrace"/>
@@ -229,18 +212,13 @@
     <pd:activity name="SendToRealTimeESBQueue">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>801</pd:x>
-        <pd:y>294</pd:y>
+        <pd:x>731</pd:x>
+        <pd:y>174</pd:y>
         <config>
             <processName>/Processors/SendToESBRealTimeQueue.process</processName>
         </config>
         <pd:inputBindings>
             <root>
-                <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID">
-                    <PatchFamilyID>
-                        <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID"/>
-                    </PatchFamilyID>
-                </xsl:if>
                 <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID">
                     <TransactionID>
                         <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
@@ -285,7 +263,7 @@
     <pd:activity name="Generate Error">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
         <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>227</pd:x>
+        <pd:x>67</pd:x>
         <pd:y>324</pd:y>
         <config>
             <faultName>OutOfSequence</faultName>
@@ -301,13 +279,13 @@
                 <data>
                     <pfx3:Error>
                         <pfx3:StackTrace>
-                            <xsl:value-of select="concat(&quot;Message is out of sequence and has exceeded the redelivery count of  &quot;,  $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount, &quot;.  For MessageID: &quot;,$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId, &quot;; PatchFamilyID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID, &quot;;  SequenceID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID)"/>
+                            <xsl:value-of select="concat(&quot;Message is out of sequence and has exceeded the redelivery count of  &quot;,  $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount, &quot;.  For MessageID: &quot;,$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID, &quot;; PatchFamilyID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID, &quot;;  SequenceID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID)"/>
                         </pfx3:StackTrace>
                         <pfx3:Code>
                             <xsl:value-of select="&quot;MessageOutOfSequence&quot;"/>
                         </pfx3:Code>
                         <pfx3:Message>
-                            <xsl:value-of select="concat(&quot;Message is out of sequence and has exceeded the redelivery count of  &quot;,  $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount, &quot;.  For MessageID: &quot;,$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/MessageId, &quot;; PatchFamilyID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/PatchFamilyID, &quot;;  SequenceID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID)"/>
+                            <xsl:value-of select="concat(&quot;Message is out of sequence and has exceeded the redelivery count of  &quot;,  $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount, &quot;.  For MessageID: &quot;,$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID, &quot;; PatchFamilyID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID, &quot;;  SequenceID:  &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID)"/>
                         </pfx3:Message>
                     </pfx3:Error>
                 </data>
@@ -317,7 +295,7 @@
     <pd:activity name="Map Prices">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>385</pd:x>
+        <pd:x>347</pd:x>
         <pd:y>44</pd:y>
         <config>
             <processName>/Processors/MapToMammothPrices.process</processName>
@@ -329,8 +307,8 @@
     <pd:activity name="HandleEmergencyPrices">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>631</pd:x>
-        <pd:y>294</pd:y>
+        <pd:x>871</pd:x>
+        <pd:y>174</pd:y>
         <config>
             <processName>/Processors/HandleEmergencyPrices.process</processName>
         </config>
@@ -343,8 +321,8 @@
     <pd:activity name="Confirm BOD">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>651</pd:x>
-        <pd:y>414</pd:y>
+        <pd:x>381</pd:x>
+        <pd:y>354</pd:y>
         <config>
             <processName>/ConfirmBod/Confirm BOD.process</processName>
         </config>
@@ -436,6 +414,252 @@
             </Input>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Archive Message">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>874</pd:x>
+        <pd:y>274</pd:y>
+        <config>
+            <processName>/Processors/ArchiveMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ItemID>
+                    <xsl:value-of select="$Parse-Message/pfx2:items/pfx2:item[1]/pfx2:id"/>
+                </ItemID>
+                <BusinessUnitID>
+                    <xsl:value-of select="$Parse-Message/pfx2:items/pfx2:item[1]/pfx2:locale[1]/ns10:id"/>
+                </BusinessUnitID>
+                <MessageID>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                </MessageID>
+                <MessageHeaders>
+                    <xsl:value-of select="concat('{&quot;TransactionID&quot;:&quot;',  $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID, '&quot;, ',&#xA;'&quot;CorrelationID&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID, '&quot;, ',&#xA;'&quot;SequenceID&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID, '&quot;, ',&#xA;'&quot;TransactionType&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType, '&quot;, ',&#xA;'&quot;ResetFlag&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag, '&quot;, ',&#xA;'&quot;Source&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source, '&quot;, ',&#xA;'&quot;nonReceivingSysName&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName, '&quot;}')"/>
+                </MessageHeaders>
+                <MessageBody>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/Body"/>
+                </MessageBody>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>867</pd:x>
+        <pd:y>374</pd:y>
+        <config>
+            <processName>/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx7:AppLog>
+                <pfx7:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/AppID"/>
+                </pfx7:AppId>
+                <pfx7:Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </pfx7:Level>
+                <pfx7:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:Logger>
+                <pfx7:UserName>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx7:UserName>
+                <pfx7:MachineName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </pfx7:MachineName>
+                <pfx7:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx7:LogDate>
+                <pfx7:Thread>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProcessId"/>
+                </pfx7:Thread>
+                <pfx7:Message>
+                    <xsl:value-of select="concat(&quot;Successfully processed MessageID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID,&#xA;&quot;.  PatchFamilyID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID,&#xA;&quot;. SequenceID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID, &quot;.&quot;)"/>
+                </pfx7:Message>
+                <pfx7:CallSite>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:CallSite>
+            </pfx7:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>496</pd:x>
+        <pd:y>494</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>621</pd:x>
+        <pd:y>494</pd:y>
+        <config>
+            <processName>/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx7:AppLog>
+                <pfx7:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/AppID"/>
+                </pfx7:AppId>
+                <pfx7:Level>
+                    <xsl:value-of select="&quot;Error&quot;"/>
+                </pfx7:Level>
+                <pfx7:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:Logger>
+                <pfx7:UserName>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx7:UserName>
+                <pfx7:MachineName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </pfx7:MachineName>
+                <pfx7:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx7:LogDate>
+                <pfx7:Thread>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProcessId"/>
+                </pfx7:Thread>
+                <xsl:if test="$_error/pfx4:ErrorReport/Msg">
+                    <pfx7:Message>
+                        <xsl:value-of select="concat(&quot;There was an error processing MessageID: &quot;,$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID,&#xA;&quot;.  ErrorMessage: &quot;,$_error/pfx4:ErrorReport/Msg)"/>
+                    </pfx7:Message>
+                </xsl:if>
+                <pfx7:CallSite>
+                    <xsl:value-of select="BW:getCurrentActivityName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:CallSite>
+                <xsl:if test="$_error/pfx4:ErrorReport/FullClass">
+                    <pfx7:Exception>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/FullClass"/>
+                    </pfx7:Exception>
+                </xsl:if>
+                <xsl:if test="$_error/pfx4:ErrorReport/StackTrace">
+                    <pfx7:StackTrace>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/StackTrace"/>
+                    </pfx7:StackTrace>
+                </xsl:if>
+            </pfx7:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Redelivery Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>476</pd:x>
+        <pd:y>302</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx7:AppLog>
+                <pfx7:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/AppID"/>
+                </pfx7:AppId>
+                <pfx7:Level>
+                    <xsl:value-of select="&quot;Warn&quot;"/>
+                </pfx7:Level>
+                <pfx7:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:Logger>
+                <pfx7:UserName>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx7:UserName>
+                <pfx7:MachineName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </pfx7:MachineName>
+                <pfx7:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx7:LogDate>
+                <pfx7:Thread>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProcessId"/>
+                </pfx7:Thread>
+                <pfx7:Message>
+                    <xsl:value-of select="concat(&quot;Requesting redelivery for MessageID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID,&#xA;&quot; and PatchFamilyID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID,&#xA;&quot;. Current JMSXDeliveryCount is &quot;,&#xA;if(exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount))&#xA;then ($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount )&#xA;else (&quot;1&quot; ), &quot;.&quot;)"/>
+                </pfx7:Message>
+                <pfx7:CallSite>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:CallSite>
+            </pfx7:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Archive Message With Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>744</pd:x>
+        <pd:y>502</pd:y>
+        <config>
+            <processName>/Processors/ArchiveMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ItemID>
+                    <xsl:value-of select="substring-before($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID, &quot;-&quot;)"/>
+                </ItemID>
+                <BusinessUnitID>
+                    <xsl:value-of select="substring-after($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID, &quot;-&quot;)"/>
+                </BusinessUnitID>
+                <MessageID>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                </MessageID>
+                <MessageHeaders>
+                    <xsl:value-of select="concat('{&quot;TransactionID&quot;:&quot;',  $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID, '&quot;, ',&#xA;'&quot;CorrelationID&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID, '&quot;, ',&#xA;'&quot;SequenceID&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID, '&quot;, ',&#xA;'&quot;TransactionType&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType, '&quot;, ',&#xA;'&quot;ResetFlag&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag, '&quot;, ',&#xA;'&quot;Source&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source, '&quot;, ',&#xA;'&quot;nonReceivingSysName&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName, '&quot;}')"/>
+                </MessageHeaders>
+                <MessageBody>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/Body"/>
+                </MessageBody>
+                <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
+                    <ErrorCode>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
+                    </ErrorCode>
+                </xsl:if>
+                <xsl:if test="$_error/pfx4:ErrorReport/Msg">
+                    <ErrorDetails>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
+                    </ErrorDetails>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Archive Message Redelivery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>634</pd:x>
+        <pd:y>382</pd:y>
+        <config>
+            <processName>/Processors/ArchiveMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ItemID>
+                    <xsl:value-of select="substring-before($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID, &quot;-&quot;)"/>
+                </ItemID>
+                <BusinessUnitID>
+                    <xsl:value-of select="substring-after($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID, &quot;-&quot;)"/>
+                </BusinessUnitID>
+                <MessageID>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                </MessageID>
+                <MessageHeaders>
+                    <xsl:value-of select="concat('{&quot;TransactionID&quot;:&quot;',  $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID, '&quot;, ',&#xA;'&quot;CorrelationID&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID, '&quot;, ',&#xA;'&quot;SequenceID&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID, '&quot;, ',&#xA;'&quot;TransactionType&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType, '&quot;, ',&#xA;'&quot;ResetFlag&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag, '&quot;, ',&#xA;'&quot;Source&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source, '&quot;, ',&#xA;'&quot;nonReceivingSysName&quot;:&quot;', $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName, '&quot;}')"/>
+                </MessageHeaders>
+                <MessageBody>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/Body"/>
+                </MessageBody>
+                <ErrorCode>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/OutOfSequenceRedelivery"/>
+                </ErrorCode>
+                <ErrorDetails>
+                    <xsl:value-of select="concat(&quot;MessageID [&quot;,  $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID,&#xA;&quot;] is out of sequence.  Putting back into the queue for redelivery.  The current JMSXDelivery count is &quot;,&#xA;if(exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount))&#xA;then ($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount )&#xA;else (&quot;1&quot; ), &quot;.&quot;)"/>
+                </ErrorDetails>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>ProcessPriceMessage</pd:from>
         <pd:to>Confirm on Success</pd:to>
@@ -445,7 +669,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Confirm on Error</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Null</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
@@ -498,19 +722,23 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Call Message Sequence Validation</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Log Redelivery Info</pd:to>
         <pd:xpathDescription>Redelivery</pd:xpathDescription>
-        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &lt;= $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount
-and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
+        <pd:xpath>(not(exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount))
+and ($Call-Message-Sequence-Validation/root/IsInSequence="false")
+or
+(exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount)
+and ($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &lt;= $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount)
+and $Call-Message-Sequence-Validation/root/IsInSequence="false"))</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Catch</pd:from>
         <pd:to>ProcessBODRequestION</pd:to>
         <pd:xpathDescription>OutOfSequence</pd:xpathDescription>
-        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>$_error_Generate-Error/pfx3:Error/pfx3:Code = "MessageOutOfSequence"</pd:xpath>
@@ -519,10 +747,11 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
         <pd:from>Call Message Sequence Validation</pd:from>
         <pd:to>Generate Error</pd:to>
         <pd:xpathDescription>Exceeded Redelivery and Out of Sequence</pd:xpathDescription>
-        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &gt; $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount
+        <pd:xpath>exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount)
+and ($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &gt; $_globalVariables/ns1:GlobalVariables/OutOfSequence/redeliveryCount)
 and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
     </pd:transition>
     <pd:transition>
@@ -534,7 +763,7 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>HandleEmergencyPrices</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Archive Message</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -542,7 +771,7 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
     <pd:transition>
         <pd:from>ProcessBODRequestION</pd:from>
         <pd:to>Confirm on Error</pd:to>
-        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
@@ -556,7 +785,8 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
     <pd:transition>
         <pd:from>Confirm on Error</pd:from>
         <pd:to>Confirm BOD</pd:to>
-        <pd:lineType>Default</pd:lineType>
+        <pd:xpathDescription>Data Or DB Errors</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)
@@ -576,6 +806,55 @@ $_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariab
     </pd:transition>
     <pd:transition>
         <pd:from>Confirm BOD</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Archive Message</pd:from>
+        <pd:to>Log Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Log Error</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Info</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Redelivery Info</pd:from>
+        <pd:to>Archive Message Redelivery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Error</pd:from>
+        <pd:to>Archive Message With Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Archive Message With Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Archive Message Redelivery</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

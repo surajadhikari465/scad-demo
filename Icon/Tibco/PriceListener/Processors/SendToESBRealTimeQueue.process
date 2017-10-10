@@ -10,7 +10,6 @@
         <xsd:element name="root">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element name="PatchFamilyID" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="TransactionID" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="CorrelationID" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="TransactionType" type="xsd:string" minOccurs="0"/>
@@ -24,7 +23,7 @@
         </xsd:element>
     </pd:startType>
     <pd:startX>56</pd:startX>
-    <pd:startY>184</pd:startY>
+    <pd:startY>204</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>716</pd:endX>
@@ -113,8 +112,8 @@
         <pd:activity name="Generate Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>412</pd:x>
-            <pd:y>259</pd:y>
+            <pd:x>427</pd:x>
+            <pd:y>254</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -134,8 +133,8 @@
         <pd:activity name="Sleep">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>281</pd:x>
-            <pd:y>259</pd:y>
+            <pd:x>286</pd:x>
+            <pd:y>254</pd:y>
             <config/>
             <pd:inputBindings>
                 <ns12:SleepInputSchema>
@@ -169,11 +168,6 @@
             <pd:inputBindings>
                 <ns0:ActivityInput>
                     <OtherProperties>
-                        <xsl:if test="$Start/root/PatchFamilyID">
-                            <PatchFamilyID>
-                                <xsl:value-of select="$Start/root/PatchFamilyID"/>
-                            </PatchFamilyID>
-                        </xsl:if>
                         <xsl:if test="$Start/root/TransactionID">
                             <TransactionID>
                                 <xsl:value-of select="$Start/root/TransactionID"/>

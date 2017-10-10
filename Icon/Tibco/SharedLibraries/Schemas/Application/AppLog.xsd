@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	 xmlns:tns="http://schemas.wfm.com/Mammoth/AppLogs.xsd"
-	 targetNamespace="http://schemas.wfm.com/Mammoth/AppLogs.xsd"
+	 xmlns:tns="http://schemas.wfm.com/Mammoth/AppLog.xsd"
+	 targetNamespace="http://schemas.wfm.com/Mammoth/AppLog.xsd"
 	 elementFormDefault="qualified"
 	 attributeFormDefault="unqualified">
 	<xs:element name="AppLog" type="tns:AppLogType"/>

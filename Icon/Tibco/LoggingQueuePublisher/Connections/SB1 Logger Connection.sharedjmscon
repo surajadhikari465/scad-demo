@@ -6,12 +6,12 @@
         <NamingEnvironment>
             <UseJNDI>false</UseJNDI>
             <ProviderURL>%%LoggerSettings/EMSConnection/SB1LogJndiContextUrl%%</ProviderURL>
-            <NamingURL>%%LoggerSettings/EMSConnection/SB1LogJndiContextUrl%%</NamingURL>
+            <NamingURL/>
             <NamingInitialContextFactory>com.tibco.tibjms.naming.TibjmsInitialContextFactory</NamingInitialContextFactory>
-            <TopicFactoryName>%%LoggerSettings/EMSConnection/SB1LogTopicConnectionFactory%%</TopicFactoryName>
-            <QueueFactoryName>%%LoggerSettings/EMSConnection/SB1LogQueueConnectionFactory%%</QueueFactoryName>
-            <NamingPrincipal>%%LoggerSettings/EMSConnection/SB1LogJnfiUserName%%</NamingPrincipal>
-            <NamingCredential>%%LoggerSettings/EMSConnection/SB1LogJndiPassword%%</NamingCredential>
+            <TopicFactoryName/>
+            <QueueFactoryName/>
+            <NamingPrincipal/>
+            <NamingCredential/>
         </NamingEnvironment>
         <ConnectionAttributes>
             <username>%%LoggerSettings/EMSConnection/SB1LogJmsUserName%%</username>
@@ -21,7 +21,7 @@
         </ConnectionAttributes>
         <UseXACF>false</UseXACF>
         <useSsl>true</useSsl>
-        <AdmFactorySslPassword>%%LoggerSettings/EMSConnection/SB1LogSslPassword%%</AdmFactorySslPassword>
+        <AdmFactorySslPassword/>
         <UseSharedJndiConfig>false</UseSharedJndiConfig>
         <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
             <ns0:trace>true</ns0:trace>

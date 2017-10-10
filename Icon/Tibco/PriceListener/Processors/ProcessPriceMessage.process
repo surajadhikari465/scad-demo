@@ -111,8 +111,8 @@
             <pd:activity name="Call Price Command">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>373</pd:x>
-                <pd:y>285</pd:y>
+                <pd:x>372</pd:x>
+                <pd:y>284</pd:y>
                 <config>
                     <processName>/DataAccess/Commands/PriceCommand.process</processName>
                 </config>

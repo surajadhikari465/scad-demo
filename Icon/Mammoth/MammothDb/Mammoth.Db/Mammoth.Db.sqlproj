@@ -648,7 +648,6 @@
     </Build>
     <Build Include="dbo\Views\Locale.sql" />
     <Build Include="gpm\Tables\PriceHistory.sql" />
-    <Build Include="gpm\Tables\MessageDetailArchivePrice.sql" />
     <Build Include="app\Tables\DbStatus.sql" />
     <Build Include="stage\Tables\GpmDataConversion.sql" />
     <Build Include="stage\Stored Procedures\GpmInsertPriceDataConversion.sql" />
@@ -678,6 +677,8 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <None Include="Scripts\PreDeploymentScripts\DropPriceTables.sql" />
+    <Build Include="gpm\Tables\MessageArchivePrice.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddAppsToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

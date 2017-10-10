@@ -9,7 +9,7 @@
     [InsertDateUtc] DATETIME2(7) NOT NULL DEFAULT (SYSUTCDATETIME()),
 	[ModifiedDateUtc] DATETIME2(7) NULL,
 	CONSTRAINT [PK_MessageSequence] PRIMARY KEY CLUSTERED ([MessageSequenceID] ASC) WITH (FILLFACTOR = 100),
-	CONSTRAINT [UNQ_PatchFamilyID] UNIQUE ([PatchFamilyID])
+	CONSTRAINT [UNQ_PatchFamilyID] UNIQUE ([PatchFamilyID]) WITH (FILLFACTOR = 100)
 )
 
 GO
@@ -47,7 +47,7 @@ CREATE TRIGGER [gpm].[Trigger_MessageSequence]
     END
 GO
 
-CREATE NONCLUSTERED INDEX [IX_MessageSequence_PatchFamilyID] ON [gpm].[MessageSequence] ([PatchFamilyID])
+CREATE NONCLUSTERED INDEX [IX_MessageSequence_PatchFamilyID] ON [gpm].[MessageSequence] ([PatchFamilyID]) WITH (FILLFACTOR = 100)
 GO
 
 GRANT INSERT, UPDATE, SELECT ON [gpm].[MessageSequence] TO [TibcoRole]

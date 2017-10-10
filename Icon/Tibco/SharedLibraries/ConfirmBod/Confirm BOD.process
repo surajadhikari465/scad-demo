@@ -122,8 +122,8 @@
                     <JMSExpiration>%%JMSExpiration%%</JMSExpiration>
                     <JMSPriority>%%JMSPriority%%</JMSPriority>
                 </ConfigurableHeaders>
-                <ConnectionReference>/Connections/TCP/JMS/Confirm BOD Connection.sharedjmscon</ConnectionReference>
-                <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+                <ConnectionReference>/Connections/Confirm BOD Connection.sharedjmscon</ConnectionReference>
+                <ApplicationProperties/>
                 <InDataxsdString ref="pfx:ConfirmBOD"/>
             </config>
             <pd:inputBindings>

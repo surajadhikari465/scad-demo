@@ -14,6 +14,7 @@ Post-Deployment Script Template
 --:r Currency_RemoveTrailingSpaces_PostDeployment.sql
 
 :r AddMaintFlagRowToDbStatusTable.sql
+:r AddAppsToAppTable.sql
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql

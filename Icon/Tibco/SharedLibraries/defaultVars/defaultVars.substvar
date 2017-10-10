@@ -11,11 +11,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
-			<value>file:///C:/Certificates</value>
+			<value>file:///C:/Certs</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505331378268</modTime>
+			<modTime>1506982409479</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ConfirmBODQueue</name>

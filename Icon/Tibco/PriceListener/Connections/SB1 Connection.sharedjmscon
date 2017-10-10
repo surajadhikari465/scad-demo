@@ -30,5 +30,6 @@
             <ns0:cert isRef="true">/SharedResources/Certificates/.folder</ns0:cert>
             <ns0:expectedHostName>%%BW_GLOBAL_HOSTNAME%%</ns0:expectedHostName>
         </ns0:ssl>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
     </config>
 </BWSharedResource>

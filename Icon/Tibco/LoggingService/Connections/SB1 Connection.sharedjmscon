@@ -4,14 +4,14 @@
     <resourceType>ae.shared.JMSConnectionKey</resourceType>
     <config>
         <NamingEnvironment>
-            <UseJNDI>true</UseJNDI>
-            <ProviderURL>tcp://localhost:7222</ProviderURL>
-            <NamingURL>%%Connections/TCP/JMS/SB1EMS/SB1JndiContextUrl%%</NamingURL>
-            <NamingInitialContextFactory>%%Connections/TCP/JMS/SB1EMS/SB1JNDIContextFactory%%</NamingInitialContextFactory>
-            <TopicFactoryName>%%Connections/TCP/JMS/SB1EMS/SB1TopicConnectionFactory%%</TopicFactoryName>
-            <QueueFactoryName>%%Connections/TCP/JMS/SB1EMS/SB1QueueConnectionFactory%%</QueueFactoryName>
-            <NamingPrincipal>%%Connections/TCP/JMS/SB1EMS/SB1JndiUserName%%</NamingPrincipal>
-            <NamingCredential>%%Connections/TCP/JMS/SB1EMS/SB1JndiPassword%%</NamingCredential>
+            <UseJNDI>false</UseJNDI>
+            <ProviderURL>%%Connections/TCP/JMS/SB1EMS/SB1Url%%</ProviderURL>
+            <NamingURL/>
+            <NamingInitialContextFactory/>
+            <TopicFactoryName/>
+            <QueueFactoryName/>
+            <NamingPrincipal/>
+            <NamingCredential/>
         </NamingEnvironment>
         <ConnectionAttributes>
             <username>%%Connections/TCP/JMS/SB1EMS/SB1JmsUserName%%</username>
@@ -21,7 +21,7 @@
         </ConnectionAttributes>
         <UseXACF>false</UseXACF>
         <useSsl>true</useSsl>
-        <AdmFactorySslPassword>%%Connections/TCP/JMS/SB1EMS/SB1SslPassword%%</AdmFactorySslPassword>
+        <AdmFactorySslPassword/>
         <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
             <ns0:trace>true</ns0:trace>
             <ns0:debugTrace>false</ns0:debugTrace>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
-    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd" schemaLocation="/SharedResources/Schemas/Application/AppLog.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx4="http://schemas.wfm.com/Mammoth/AppLogs.xsd" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns02="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Schemas/Application/Error.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd" schemaLocation="/Schemas/Application/AppLog.xsd"/>
     <pd:name>Listener/DB Log.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx2:AppLog"/>
@@ -231,7 +231,7 @@
             <pd:y>254</pd:y>
             <config/>
             <pd:inputBindings>
-                <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                <ns0:SleepInputSchema>
                     <IntervalInMillisec>
                         <xsl:value-of select="$_globalVariables/pfx3:GlobalVariables/MammothDb/RetrySleepInMilliseconds"/>
                     </IntervalInMillisec>
@@ -247,7 +247,7 @@
                 <faultName>Error</faultName>
             </config>
             <pd:inputBindings>
-                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <ns02:ActivityInput>
                     <message>
                         <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
                     </message>
@@ -269,7 +269,7 @@
                             </pfx:Message>
                         </pfx:Error>
                     </data>
-                </ns0:ActivityInput>
+                </ns02:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>

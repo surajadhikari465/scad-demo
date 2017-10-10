@@ -3,7 +3,7 @@
 	<globalVariables>
 		<globalVariable>
 			<name>SB1JmsPassword</name>
-			<value>#!5eoqz2lawfP8ucTZYU9Fk6OvuzcAg/zl2POUmqsyMI2Fw3suZhUNmANZlY6/cCIYMjnCmxYCzVo=</value>
+			<value>#!2rDN0xL8lSgpGj2nSbU6M4ntr2dxd4reW/PDR+5wu3zvk7r/DEwx0qKlBFAV4ZDw9pgbWzznQ+0=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -24,14 +24,6 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1503698462699</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SB1SslPassword</name>
-			<value>#!pFIHqnKNh/rPzubYe+mmAw==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1503698462933</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

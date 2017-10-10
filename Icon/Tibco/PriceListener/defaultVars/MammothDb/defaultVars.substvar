@@ -10,14 +10,6 @@
 			<modTime>1499972862582</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>MammothConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;IntegratedSecurity=true;</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862833</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>MaxRetryDelayInSeconds</name>
 			<value>120</value>
 			<deploymentSettable>true</deploymentSettable>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schema.infor.com/InforOAGIS/2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schema.infor.com/InforOAGIS/2" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema">
     <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
@@ -10,10 +10,13 @@
         <xsd:element name="Input">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element name="GpmSequenceId" type="xsd:string"/>
                     <xsd:element name="Body" type="xsd:string"/>
-                    <xsd:element name="PatchFamilyID" type="xsd:string"/>
-                    <xsd:element name="MessageId" type="xsd:string"/>
+                    <xsd:element name="MessageID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="PatchFamilyID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="SequenceID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="ResetFlag" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="TransactionType" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Source" type="xsd:string" minOccurs="0"/>
                     <xsd:element ref="pfx2:Error"/>
                     <xsd:element name="LastProcessedGpmSequenceId" type="xsd:string"/>
                 </xsd:sequence>
@@ -144,12 +147,30 @@
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Environment/BOD/DeliveryMode"/>
                     </JMSDeliveryMode>
                     <OtherProperties>
-                        <MessageId>
-                            <xsl:value-of select="$Start/Input/MessageId"/>
-                        </MessageId>
-                        <PatchFamilyID>
+                        <TransactionID>
+                            <xsl:value-of select="$Start/Input/MessageID"/>
+                        </TransactionID>
+                        <CorrelationID>
                             <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                        </PatchFamilyID>
+                        </CorrelationID>
+                        <xsl:if test="$Start/Input/TransactionType">
+                            <TransactionType>
+                                <xsl:value-of select="$Start/Input/TransactionType"/>
+                            </TransactionType>
+                        </xsl:if>
+                        <xsl:if test="$Start/Input/ResetFlag">
+                            <ResetFlag>
+                                <xsl:value-of select="$Start/Input/ResetFlag"/>
+                            </ResetFlag>
+                        </xsl:if>
+                        <SequenceID>
+                            <xsl:value-of select="$Start/Input/SequenceID"/>
+                        </SequenceID>
+                        <xsl:if test="$Start/Input/Source">
+                            <Source>
+                                <xsl:value-of select="$Start/Input/Source"/>
+                            </Source>
+                        </xsl:if>
                     </OtherProperties>
                     <Body>
                         <pfx4:ProcessPriceChangePatchMaster>
@@ -177,14 +198,14 @@
                                         <xsl:attribute name="variationID">
                                             <xsl:value-of select="0"/>
                                         </xsl:attribute>
-                                        <xsl:value-of select="$Start/Input/MessageId"/>
+                                        <xsl:value-of select="$Start/Input/MessageID"/>
                                     </pfx4:BusinessKey>
                                     <pfx4:PriceChangePatchHeader>
                                         <pfx4:PatchFamilyID>
                                             <xsl:value-of select="$Start/Input/PatchFamilyID"/>
                                         </pfx4:PatchFamilyID>
                                         <pfx4:PatchNum>
-                                            <xsl:value-of select="$Start/Input/LastProcessedGpmSequenceId + 1"/>
+                                            <xsl:value-of select="$Start/Input/SequenceID + 1"/>
                                         </pfx4:PatchNum>
                                         <pfx4:TimeStamp>
                                             <xsl:value-of select="current-dateTime()"/>

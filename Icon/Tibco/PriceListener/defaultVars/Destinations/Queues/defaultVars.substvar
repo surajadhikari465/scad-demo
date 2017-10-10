@@ -26,6 +26,14 @@
 			<modTime>1502833727906</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>MessageArchiveQueue</name>
+			<value>WFMSB1.WFMSB1.Mammoth.Retail.RealTimeArchive.Price.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1507321914180</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>ProcessBODQueue</name>
 			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
 			<deploymentSettable>true</deploymentSettable>

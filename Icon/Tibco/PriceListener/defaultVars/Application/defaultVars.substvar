@@ -2,6 +2,14 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>AppID</name>
+			<value>9</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1507225692328</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>ApplicationID</name>
 			<value>Price Listener</value>
 			<deploymentSettable>true</deploymentSettable>

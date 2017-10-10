@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Listener/PriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>27</versionProperty>
+        <versionProperty>34</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>MammothPriceListener</name>

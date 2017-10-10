@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLogs.xsd">
-    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd" schemaLocation="/SharedResources/Schemas/Application/AppLog.xsd"/>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLogs.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd" schemaLocation="/Schemas/Application/AppLog.xsd"/>
     <pd:name>Listener/LoggingListener.process</pd:name>
-    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startName>Logging Queue Receiver</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
     <pd:returnBindings/>
-    <pd:starter name="JMS Queue Receiver">
+    <pd:starter name="Logging Queue Receiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
         <pd:x>124</pd:x>
@@ -47,7 +47,7 @@
         </config>
         <pd:inputBindings>
             <xmlString>
-                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                <xsl:value-of select="$Logging-Queue-Receiver/ns:ActivityOutput/Body"/>
             </xmlString>
         </pd:inputBindings>
     </pd:activity>
@@ -115,13 +115,13 @@
             </pfx2:AppLog>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Confirm">
+    <pd:activity name="ConfirmOnSuccess">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
         <pd:x>657</pd:x>
         <pd:y>124</pd:y>
         <config>
-            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
+            <ConfirmEvent>Logging Queue Receiver</ConfirmEvent>
         </config>
         <pd:inputBindings/>
     </pd:activity>
@@ -147,26 +147,26 @@
         <pd:inputBindings>
             <ns2:ActivityInput>
                 <message>
-                    <xsl:value-of select="string($Catch/exceptiondata)"/>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
                 </message>
                 <msgCode>
-                    <xsl:value-of select="&quot;LoggingError&quot;"/>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
                 </msgCode>
             </ns2:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="ConfirmException">
+    <pd:activity name="ConfirmOnError">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>553</pd:x>
+        <pd:x>545</pd:x>
         <pd:y>244</pd:y>
         <config>
-            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
+            <ConfirmEvent>Logging Queue Receiver</ConfirmEvent>
         </config>
         <pd:inputBindings/>
     </pd:activity>
     <pd:transition>
-        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:from>Logging Queue Receiver</pd:from>
         <pd:to>Parse XML</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -181,7 +181,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Log</pd:from>
-        <pd:to>Confirm</pd:to>
+        <pd:to>ConfirmOnSuccess</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -195,20 +195,20 @@
     </pd:transition>
     <pd:transition>
         <pd:from>ConsoleLog</pd:from>
-        <pd:to>ConfirmException</pd:to>
+        <pd:to>ConfirmOnError</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Confirm</pd:from>
+        <pd:from>ConfirmOnSuccess</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>ConfirmException</pd:from>
+        <pd:from>ConfirmOnError</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

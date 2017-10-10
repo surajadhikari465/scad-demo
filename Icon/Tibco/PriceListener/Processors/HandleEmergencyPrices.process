@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:WFM.DateTimeCompare="java://com.tibco.wfm.DateTimeComparison" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd">
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothPrices.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/Schemas/Application/MammothPrices.xsd"/>
     <pd:name>Processors/HandleEmergencyPrices.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx:MammothPrices"/>
@@ -61,7 +61,7 @@
     <pd:activity name="Map Data">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>291</pd:x>
+        <pd:x>281</pd:x>
         <pd:y>104</pd:y>
         <config>
             <element ref="pfx:MammothPrices"/>

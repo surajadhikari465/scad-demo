@@ -11,11 +11,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>DataError</name>
-			<value>"Data Error</value>
+			<value>Data Error</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505397979495</modTime>
+			<modTime>1507310862014</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DatabaseError</name>
@@ -32,6 +32,14 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1505405488520</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>OutOfSequenceRedelivery</name>
+			<value>OurOfSequenceRedelivery</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1507310862107</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ZeroRowsImpacted</name>

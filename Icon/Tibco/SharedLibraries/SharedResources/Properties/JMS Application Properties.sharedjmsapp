@@ -10,12 +10,22 @@
                 <Cardinality>optional</Cardinality>
             </row>
             <row>
-                <PropertyName>JMSCorrelationID</PropertyName>
+                <PropertyName>BusinessObject</PropertyName>
                 <Type>string</Type>
                 <Cardinality>optional</Cardinality>
             </row>
             <row>
-                <PropertyName>BusinessObject</PropertyName>
+                <PropertyName>PatchFamilyID</PropertyName>
+                <Type>string</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>TransactionID</PropertyName>
+                <Type>string</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>CorrelationID</PropertyName>
                 <Type>string</Type>
                 <Cardinality>optional</Cardinality>
             </row>
@@ -25,7 +35,12 @@
                 <Cardinality>optional</Cardinality>
             </row>
             <row>
-                <PropertyName>nonReceivingSysName</PropertyName>
+                <PropertyName>ResetFlag</PropertyName>
+                <Type>boolean</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>TransactionType</PropertyName>
                 <Type>string</Type>
                 <Cardinality>optional</Cardinality>
             </row>
@@ -35,7 +50,7 @@
                 <Cardinality>optional</Cardinality>
             </row>
             <row>
-                <PropertyName>PatchFamilyID</PropertyName>
+                <PropertyName>nonReceivingSysName</PropertyName>
                 <Type>string</Type>
                 <Cardinality>optional</Cardinality>
             </row>

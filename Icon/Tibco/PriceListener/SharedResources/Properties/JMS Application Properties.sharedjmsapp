@@ -10,11 +10,6 @@
                 <Cardinality>optional</Cardinality>
             </row>
             <row>
-                <PropertyName>PatchFamilyID</PropertyName>
-                <Type>string</Type>
-                <Cardinality>optional</Cardinality>
-            </row>
-            <row>
                 <PropertyName>TransactionID</PropertyName>
                 <Type>string</Type>
                 <Cardinality>optional</Cardinality>

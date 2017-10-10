@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Price Message Archiver Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <sharedResources/>
+            <sharedFiles/>
+            <sharedJarFiles/>
+        </sharedArchive>
+        <processArchive name="Price Message Archiver Process Archive">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <processProperty>/Processes/PriceMessageArchiveQueueReceiver.process</processProperty>
+        </processArchive>
+        <versionProperty>6</versionProperty>
+        <authorProperty>Ben.Sims</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>PriceListenerMessageArchiver</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\Dev\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\PriceListenerMessageArchiver.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

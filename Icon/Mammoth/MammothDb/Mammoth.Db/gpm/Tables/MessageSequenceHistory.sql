@@ -12,10 +12,10 @@
 )
 GO
 
-CREATE NONCLUSTERED INDEX [IX_MessageSequenceHistory_MessageSequenceID] ON [gpm].[MessageSequenceHistory] ([MessageSequenceID])
+CREATE NONCLUSTERED INDEX [IX_MessageSequenceHistory_MessageSequenceID] ON [gpm].[MessageSequenceHistory] ([MessageSequenceID]) WITH (FILLFACTOR = 100)
 GO
 
-CREATE NONCLUSTERED INDEX [IX_MessageSequenceHistory_PatchFamilyID] ON [gpm].[MessageSequenceHistory] ([PatchFamilyID])
+CREATE NONCLUSTERED INDEX [IX_MessageSequenceHistory_PatchFamilyID] ON [gpm].[MessageSequenceHistory] ([PatchFamilyID]) WITH (FILLFACTOR = 100)
 GO
 
 GRANT UPDATE, INSERT, SELECT ON [gpm].[MessageSequenceHistory] TO [TibcoRole]
