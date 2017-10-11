@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://schema.infor.com/InforOAGIS/2">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://schema.infor.com/InforOAGIS/2">
     <xsd:import namespace="http://schema.infor.com/InforOAGIS/2" schemaLocation="/Schemas/Application/ConfirmBOD.xsd"/>
-    <pd:name>ConfirmBod/Confirm BOD.process</pd:name>
+    <pd:name>Processes/Confirm BOD.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
         <xsd:element name="Input">
@@ -14,22 +14,22 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>87</pd:startX>
-    <pd:startY>235</pd:startY>
+    <pd:startX>96</pd:startX>
+    <pd:startY>244</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>596</pd:endX>
-    <pd:endY>235</pd:endY>
+    <pd:endY>244</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:targetNamespace>http://xmlns.example.com/1505321840135</pd:targetNamespace>
+    <pd:targetNamespace>http://xmlns.example.com/1507744635415</pd:targetNamespace>
     <pd:group name="RepeatOnError">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>242</pd:x>
-        <pd:y>19</pd:y>
-        <pd:width>165</pd:width>
-        <pd:height>416</pd:height>
+        <pd:x>185</pd:x>
+        <pd:y>29</pd:y>
+        <pd:width>300</pd:width>
+        <pd:height>417</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -38,7 +38,7 @@
             <pd:groupType>errorLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
             <pd:indexSlot>retryCountIndex</pd:indexSlot>
-            <pd:errorCondition>$retryCountIndex =$_globalVariables/ns:GlobalVariables/retryCount</pd:errorCondition>
+            <pd:errorCondition>$retryCountIndex = $_globalVariables/ns:GlobalVariables/ConfirmBODSettings/RetryCount</pd:errorCondition>
             <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
         </config>
         <pd:inputBindings/>
@@ -74,8 +74,8 @@
         <pd:activity name="Generate Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>318</pd:x>
-            <pd:y>359</pd:y>
+            <pd:x>327</pd:x>
+            <pd:y>369</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -93,13 +93,13 @@
         <pd:activity name="Sleep">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>315</pd:x>
-            <pd:y>231</pd:y>
+            <pd:x>324</pd:x>
+            <pd:y>241</pd:y>
             <config/>
             <pd:inputBindings>
                 <ns1:SleepInputSchema>
                     <IntervalInMillisec>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/RetrySleepInMilliseconds"/>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ConfirmBODSettings/RetrySleepInMilliseconds"/>
                     </IntervalInMillisec>
                 </ns1:SleepInputSchema>
             </pd:inputBindings>
@@ -107,20 +107,20 @@
         <pd:activity name="Send to Confirm BOD Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>313</pd:x>
-            <pd:y>90</pd:y>
+            <pd:x>319</pd:x>
+            <pd:y>92</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
                 <SessionAttributes>
                     <transacted>false</transacted>
                     <acknowledgeMode>1</acknowledgeMode>
                     <maxSessions>1</maxSessions>
-                    <destination>%%ConfirmBODQueue%%</destination>
+                    <destination>%%ConfirmBODSettings/ConfirmBODQueue%%</destination>
                 </SessionAttributes>
                 <ConfigurableHeaders>
-                    <JMSDeliveryMode>%%DeliveryMode%%</JMSDeliveryMode>
-                    <JMSExpiration>%%JMSExpiration%%</JMSExpiration>
-                    <JMSPriority>%%JMSPriority%%</JMSPriority>
+                    <JMSDeliveryMode>%%ConfirmBODSettings/DeliveryMode%%</JMSDeliveryMode>
+                    <JMSExpiration>%%ConfirmBODSettings/JMSExpiration%%</JMSExpiration>
+                    <JMSPriority>%%ConfirmBODSettings/JMSPriority%%</JMSPriority>
                 </ConfigurableHeaders>
                 <ConnectionReference>/Connections/Confirm BOD Connection.sharedjmscon</ConnectionReference>
                 <ApplicationProperties/>
@@ -129,10 +129,10 @@
             <pd:inputBindings>
                 <ns13:ActivityInput>
                     <JMSPriority>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/JMSPriority"/>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ConfirmBODSettings/JMSPriority"/>
                     </JMSPriority>
                     <JMSDeliveryMode>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/DeliveryMode"/>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ConfirmBODSettings/DeliveryMode"/>
                     </JMSDeliveryMode>
                     <Body>
                         <xsl:copy-of select="$Start/Input/pfx:ConfirmBOD"/>
@@ -142,15 +142,15 @@
         </pd:activity>
     </pd:group>
     <pd:transition>
-        <pd:from>Start</pd:from>
-        <pd:to>RepeatOnError</pd:to>
+        <pd:from>RepeatOnError</pd:from>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>RepeatOnError</pd:from>
-        <pd:to>End</pd:to>
+        <pd:from>Start</pd:from>
+        <pd:to>RepeatOnError</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

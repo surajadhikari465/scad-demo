@@ -2,20 +2,12 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>EsbJNDIContextFactory</name>
-			<value>com.tibco.tibjms.naming.TibjmsInitialContextFactory</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1506982303739</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>EsbJmsPassword</name>
-			<value>#!lbQ1P3tVH14mIpFUDhVNM+o1qEB9GFdPblisqxdAqQs=</value>
+			<value>#!K4z8/UEagRe3FT7SKTZR+uo1Ke6JMkbVLag7qU12zRc=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1506982303793</modTime>
+			<modTime>1507749664151</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJmsUserName</name>
@@ -23,7 +15,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1506982303776</modTime>
+			<modTime>1507749664266</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EsbJndiConextFactory</name>
+			<value>com.tibco.tibjms.naming.TibjmsInitialContextFactory</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1507749664360</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJndiContextUrl</name>
@@ -31,15 +31,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1506982303690</modTime>
+			<modTime>1507749664453</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJndiPassword</name>
-			<value>#!SZutIoCuhs+Fr6naeULcW88+vCmHWXYBifFcLO3MBpo=</value>
+			<value>#!K8g69IWdUQLdiza9LFngU0eMVnD85JoChr4mA5mjeqY=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1506982303756</modTime>
+			<modTime>1507749664547</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbJndiUserName</name>
@@ -47,7 +47,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1506982303828</modTime>
+			<modTime>1507749664657</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbQueueConnectionFactory</name>
@@ -55,15 +55,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1506982303722</modTime>
+			<modTime>1507749664766</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbSslPassword</name>
-			<value>#!wP8KZw8iDEjRt5gLdSBFLA==</value>
+			<value>#!YfXN3ADd6QCc8VZsQ3hPhA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1506982303812</modTime>
+			<modTime>1507749664860</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EsbTopicConnectionFactory</name>
@@ -71,7 +71,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1506982303705</modTime>
+			<modTime>1507749664954</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

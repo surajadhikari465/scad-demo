@@ -4,6 +4,6 @@
         <version>7</version>
         <author>2096654</author>
         <fileLocation>C:\Dev\Source\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\ConfirmBODLibrary.v1.projlib</fileLocation>
-        <resources>/ConfirmBod/Confirm BOD.process</resources>
+        <resources/>
     </name>
 </Repository:repository>

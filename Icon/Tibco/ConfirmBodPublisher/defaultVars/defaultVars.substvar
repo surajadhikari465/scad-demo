@@ -2,20 +2,28 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>CountSeperator</name>
-			<value>##</value>
+			<name>BW_GLOBAL_HOSTNAME</name>
+			<value>cerd1616.wfm.pvt</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505329748620</modTime>
+			<modTime>1507749944805</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
+			<value>file:///C:/Certs</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1507749944696</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Deployment</name>
-			<value>SharedLibraries</value>
+			<value>ConfirmBodPublisher</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985424</modTime>
+			<modTime>1507744389425</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DirLedger</name>
@@ -23,7 +31,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985429</modTime>
+			<modTime>1507744389434</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DirTrace</name>
@@ -31,7 +39,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985374</modTime>
+			<modTime>1507744389368</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Domain</name>
@@ -39,7 +47,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985336</modTime>
+			<modTime>1507744389341</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>HawkEnabled</name>
@@ -47,7 +55,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985340</modTime>
+			<modTime>1507744389346</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsProviderUrl</name>
@@ -55,7 +63,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985363</modTime>
+			<modTime>1507744389363</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsSslProviderUrl</name>
@@ -63,7 +71,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985402</modTime>
+			<modTime>1507744389397</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RemoteRvDaemon</name>
@@ -71,7 +79,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985419</modTime>
+			<modTime>1507744389418</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvDaemon</name>
@@ -79,7 +87,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985413</modTime>
+			<modTime>1507744389411</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvNetwork</name>
@@ -87,7 +95,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985408</modTime>
+			<modTime>1507744389404</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvService</name>
@@ -95,7 +103,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985380</modTime>
+			<modTime>1507744389375</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvaHost</name>
@@ -103,7 +111,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985351</modTime>
+			<modTime>1507744389357</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvaPort</name>
@@ -111,7 +119,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985387</modTime>
+			<modTime>1507744389382</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TIBHawkDaemon</name>
@@ -119,7 +127,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985395</modTime>
+			<modTime>1507744389389</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TIBHawkNetwork</name>
@@ -127,7 +135,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985332</modTime>
+			<modTime>1507744389335</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TIBHawkService</name>
@@ -135,7 +143,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502295985343</modTime>
+			<modTime>1507744389351</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

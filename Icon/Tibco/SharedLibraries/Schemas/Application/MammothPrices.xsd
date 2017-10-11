@@ -5,7 +5,6 @@
 	 targetNamespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd"
 	 elementFormDefault="qualified"
 	 attributeFormDefault="unqualified">
-
 	<xs:element name="MammothPrice" type="tns:MammothPriceType"/>
 	<xs:element name="MammothPrices" type="tns:MammothPricesType"/>
 	<xs:complexType name="MammothPricesType">
@@ -29,6 +28,9 @@
 			<xs:element name="CurrencyCode" type="xs:string"/>
 			<xs:element name="NewTagExpiration" type="xs:dateTime" minOccurs="0"/>
 			<xs:element name="Action" type="xs:string"/>
+			<xs:element name="ItemTypeCode" type="xs:string"/>
+			<xs:element name="StoreName" type="xs:string"/>
+			<xs:element name="ScanCode" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
