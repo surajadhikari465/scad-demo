@@ -555,6 +555,8 @@ ExitSub:
         Dim newStatusDesc As String = String.Empty
         Dim doSearch As Boolean
         Dim selectAllInGrid As Boolean = chkSelectAll.Checked
+        Dim storeNumber As Integer
+        Dim chgType As String = String.Empty
 
         Select Case Index
             Case 0 'Add batch
@@ -705,20 +707,30 @@ ExitSub:
                             logger.Info("Auto-processing Print Shelf Tags action for the user: PriceBatchHeaderID=" + header.PriceBatchHeaderId.ToString)
 
                             If ugrdList.Selected.Rows(i).Cells("PriceBatchStatusID").Value = "3" AndAlso gbPriceBatchProcessor Then
-
+                                storeNumber = CInt(ugrdList.Selected.Rows(i).Cells("Store_No").Value)
+                                chgType = ugrdList.Selected.Rows(i).Cells("ItemChgTypeDesc").Value.ToString().ToUpper()
                                 'although this step is being bypassed, steps may need to be performed to
                                 'perform the actual printing of shelf tags
-                                If InstanceDataDAO.IsFlagActiveCached("BypassPrintShelfTags_PerformPrintLogic") Then
+                                If InstanceDataDAO.IsFlagActiveCached("BypassPrintShelfTags_PerformPrintLogic") _
+                                    AndAlso
+                                    (
+                                        (chgType <> "DELETE" _
+                                         AndAlso InstanceDataDAO.IsFlagActive("GlobalPriceManagement", storeNumber)
+                                        ) _
+                                         Or chgType = "DELETE"
+                                    ) Then
                                     logger.Debug("PerformPrintLogic Start: PriceBatchHeaderID=" + ugrdList.Selected.Rows(i).Cells("PriceBatchHeaderID").Value.ToString + ", BypassPrintShelfTags_PerformPrintLogic= TRUE")
                                     PerformPrintLogic(rowIndex:=i, isReprint:=False)
                                     logger.Debug("PerformPrintLogic End")
+                                Else
+                                    logger.Info("Store Number:" + storeNumber.ToString() + " is on GPM thus PrintBatches will not be sent to SLAW(" + "PriceBatchHeaderID=" + ugrdList.Selected.Rows(i).Cells("PriceBatchHeaderID").Value.ToString + ")")
                                 End If
 
                                 'set new status id
                                 header.PriceBatchStatusID = 4
 
                                 'update PriceBatchHeader.PriceBatchStatusID
-                                logger.Info("Updating batch status to PRINTED: PriceBatchHeaderID=" + header.PriceBatchHeaderId.ToString)
+                                logger.Info("Updating batch status to PRINTED: PriceBatchHeaderID =" + header.PriceBatchHeaderId.ToString)
 
                                 newStatusDesc = headerDAO.UpdatePriceBatchStatus(header)
 
@@ -873,6 +885,7 @@ ExitSub:
 
         NotifyIfNoTagLogicWasIgnored()
     End Sub
+
 
     Private Function DoesBatchesHavePendingPriceChange() As Boolean
         Dim conflictingBatches As New List(Of DataRow)
