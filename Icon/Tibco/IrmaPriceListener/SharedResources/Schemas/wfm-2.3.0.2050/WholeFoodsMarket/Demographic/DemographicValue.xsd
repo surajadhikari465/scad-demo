@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/DemographicMgmt/DemographicValue/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:drf="http://schemas.wfm.com/Enterprise/DemographicMgmt/CommonRefTypes/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Enterprise/DemographicMgmt/DemographicValue/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/DemographicMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../Uom/UnitOfMeasure.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="demographicValue" type="DemographicValueType"/>
+	<xs:complexType name="DemographicValueType">
+		<xs:sequence>
+			<xs:element name="value" type="drf:DemographicValueType"/>
+			<xs:element name="uom" type="uom:UomType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<lcl:locale xmlns:iea="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V1" xmlns:ltp="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V1" xmlns:ett="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V1" xmlns:str="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V1" xmlns:eat="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V1" xmlns:cry="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V1" xmlns:ira="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesRegional/V1" xmlns:trf="http://schemas.wfm.com/Enterprise/TraitMgmt/CommonRefType/V1" xmlns:adr="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V1" xmlns:fsb="http://schemas.wfm.com/Enterprise/FinancialMgmt/Subteam/V1" xmlns:frf="http://schemas.wfm.com/Enterprise/FinancialMgmt/CommonRefTypes/V1" xmlns:gst="http://schemas.wfm.com/Enterprise/FinancialMgmt/Gainshare/V1" xmlns:grf="http://schemas.wfm.com/Enterprise/GainshareMgmt/CommonRefTypes/V1" xmlns:phs="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V1" xmlns:lrf="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefType/V2" xmlns:eau="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V1" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V1" xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" crf:Action="Inherit">
+	<lcl:id>1</lcl:id>
+	<lcl:name>Whole Foods Market</lcl:name>
+	<lcl:type>
+		<ltp:code>CHN</ltp:code>
+		<ltp:description>Chain</ltp:description>
+	</lcl:type>
+	<lcl:locales>
+		<locale xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" crf:Action="Inherit">
+			<lcl:id>2</lcl:id>
+			<lcl:name>Florida</lcl:name>
+			<lcl:type>
+				<ltp:code>REG</ltp:code>
+				<ltp:description>Region</ltp:description>
+			</lcl:type>
+			<lcl:locales>
+				<locale crf:Action="AddOrUpdate">
+					<lcl:id>10069</lcl:id>
+					<lcl:name>Plantation</lcl:name>
+					<lcl:type>
+						<ltp:code>STR</ltp:code>
+						<ltp:description>Store</ltp:description>
+					</lcl:type>
+					<!-- EXAMPLE FINANCIAL ACCOUNT INFO HERE -->
+					<lcl:financialTransactionAccounts>
+						<financialSubteams>
+							<fsb:subteam crf:Action="Archive">
+								<!-- 4 digit #; peoplesoft subteam, financials id -->
+								<id>1234</id>
+								<name>String</name>
+								<description>String</description>
+								<fsb:team crf:Action="AddOrUpdate">
+									<!-- 3 digit # -->
+									<id>0</id>
+									<!-- uppercase restriction -->
+									<name>STRING</name>
+									<description>String</description>
+								</fsb:team>
+							</fsb:subteam>
+							<fsb:subteam crf:Action="Inherit">
+								<id>0</id>
+								<name>String</name>
+								<description>String</description>
+								<fsb:team crf:Action="Update">
+									<id>0</id>
+									<name>STRING</name>
+									<description>String</description>
+								</fsb:team>
+							</fsb:subteam>
+						</financialSubteams>
+						<fst:gainshares>
+							<!--In this Locale schema each Gainshare represents a store location's Gainshare Team 
+								attached to Labor Account Percents that can span the team's fiscal year.  
+								Financial Subteam can be attached to the Gainshare as well. -->
+							<gst:gainshare crf:Action="AddOrUpdate">
+								<gst:isComboTeam>false</gst:isComboTeam>
+								<!-- 2 digit # 0[1-9]|[1-9][0-9] -->
+								<gst:gainshareTeamNumber>01</gst:gainshareTeamNumber>
+								<!-- 3 digit #; specific to Gainshare application -->								
+								<gst:gainshareTeamId>100</gst:gainshareTeamId>
+								<!-- 4 digit #; specific to Gainshare application -->
+								<gst:gainshareSubteamId>1000</gst:gainshareSubteamId>
+								<gst:teamRenamed>Grocery</gst:teamRenamed>
+								<!-- financialSubteam is optional but available -->
+								<gst:financialSubteam crf:Action="Add">
+									<!-- 4 digit #; peoplesoft subteam, financials id -->
+									<fsb:id>1000</fsb:id>
+									<fsb:name>Grocery</fsb:name>
+									<fsb:description>
+										<!-- String field not required but available -->
+									</fsb:description>
+									<fsb:team crf:Action="Inactivate">
+										<!-- 3 digit # -->
+										<sbf:id>100</sbf:id>
+										<!-- uppercase restriction -->
+										<sbf:name>GROCERY</sbf:name>
+										<sbf:description>
+											<!-- String field not required but available -->
+										</sbf:description>
+									</fsb:team>
+								</gst:financialSubteam>
+								<gst:labor>
+									<!-- HR/Workday account#/Workday Subteam -->
+									<grf:accountId>9100</grf:accountId>
+									<grf:percents>
+										<!--fiscal Period restricted to 1-13-->
+										<grf:percent crf:Action="AddOrUpdate" crf:fiscalYear="2015" crf:fiscalPeriod="7">0</grf:percent>
+										<grf:percent crf:Action="AddOrUpdate" crf:fiscalYear="2015" crf:fiscalPeriod="8">15.5</grf:percent>										
+										<grf:percent crf:Action="AddOrUpdate" crf:fiscalYear="2015" crf:fiscalPeriod="9">0</grf:percent>
+										<grf:percent crf:Action="AddOrUpdate" crf:fiscalYear="2015" crf:fiscalPeriod="10">4.25</grf:percent>
+									</grf:percents>
+								</gst:labor>
+							</gst:gainshare>
+							<gst:gainshare crf:Action="AddOrUpdate">
+								<!--....ELEMENT REPEATS TO REPRESENT ANOTHER GAINSHARE TEAM-->
+								<gst:isComboTeam>false</gst:isComboTeam>
+								<gst:gainshareTeamNumber>01</gst:gainshareTeamNumber>
+								<gst:gainshareTeamId>9999</gst:gainshareTeamId>
+								<gst:gainshareSubteamId>222</gst:gainshareSubteamId>
+								<gst:teamRenamed>String</gst:teamRenamed>
+								<gst:financialSubteam crf:Action="Update">
+									<fsb:id>1111</fsb:id>
+									<fsb:name>String</fsb:name>
+									<fsb:description>String</fsb:description>
+									<fsb:team crf:Action="Delete">
+										<sbf:id>999</sbf:id>
+										<sbf:name>A</sbf:name>
+										<sbf:description>String</sbf:description>
+									</fsb:team>
+								</gst:financialSubteam>
+								<gst:labor>
+									<grf:accountId>6666</grf:accountId>
+									<grf:percents>
+										<grf:percent crf:Action="Update" crf:fiscalYear="1900" crf:fiscalPeriod="1">0</grf:percent>
+										<grf:percent crf:Action="Update" crf:fiscalYear="1900" crf:fiscalPeriod="1">0</grf:percent>
+										<grf:percent crf:Action="Update" crf:fiscalYear="1900" crf:fiscalPeriod="1">0</grf:percent>
+										<grf:percent crf:Action="Update" crf:fiscalYear="1900" crf:fiscalPeriod="1">0</grf:percent>
+										<grf:percent crf:Action="Update" crf:fiscalYear="1900" crf:fiscalPeriod="1">0</grf:percent>
+										<grf:percent crf:Action="Update" crf:fiscalYear="1900" crf:fiscalPeriod="1">0</grf:percent>
+										<grf:percent crf:Action="Update" crf:fiscalYear="1900" crf:fiscalPeriod="1">0</grf:percent>
+										<grf:percent crf:Action="Update" crf:fiscalYear="1900" crf:fiscalPeriod="1">0</grf:percent>
+									</grf:percents>
+								</gst:labor>
+							</gst:gainshare>
+						</fst:gainshares>
+					</lcl:financialTransactionAccounts>
+					<!--   //END FINANCIAL ACCOUNT EXAMPLE   -->
+				</locale>
+			</lcl:locales>
+		</locale>
+	</lcl:locales>
+</lcl:locale>

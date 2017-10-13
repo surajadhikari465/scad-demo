@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualAddress/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:add="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2" xmlns:irf="http://schemas.wfm.com/Enterprise/IndividualMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/IndividualMgmt/IndividualAddress/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/IndividualMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2" schemaLocation="../Address/Address.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="individualAddresses" type="IndividualAddressesType"/>
+	<xs:complexType name="IndividualAddressesType">
+		<xs:sequence>
+			<xs:element name="address" type="add:AddressType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

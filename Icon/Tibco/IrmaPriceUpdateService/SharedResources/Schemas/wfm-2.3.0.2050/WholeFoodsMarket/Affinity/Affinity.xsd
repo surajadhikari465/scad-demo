@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:amf="http://schemas.wfm.com/Enterprise/AffinityMgmt/CommonRefTypes/V1" xmlns:aot="http://schemas.wfm.com/Enterprise/AffinityMgmt/AffinityType/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../Uom/UnitOfMeasure.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AffinityMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AffinityMgmt/AffinityType/V1" schemaLocation="AffinityType.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="affinity" type="AffinityType"/>
+	<xs:element name="affinities" type="AffinityType"/>
+	<xs:complexType name="AffinitiesType">
+		<xs:sequence>
+			<xs:element name="affinity" type="AffinitiesType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AffinityType">		
+		<xs:annotation>
+			<xs:documentation>THIS SCHEMA IS STILL YET TO BE DEFINED AND IS A PLACEHOLDER UNTIL REQUIREMENTS DISCOVERED</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="id" type="amf:AffinityIdType" minOccurs="0"/>
+			<xs:element name="typeCode" type="amf:AffinityTypeCodeType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

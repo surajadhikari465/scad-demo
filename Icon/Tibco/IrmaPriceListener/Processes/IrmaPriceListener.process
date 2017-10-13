@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx10="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:WFM.UID="java://UID" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx7="http://www.tibco.com/schemas/IrmaQueueListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx6="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/IrmaPrice.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothDbPrice.xsd"/>
+    <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
+    <pd:name>Processes/IrmaPriceListener.process</pd:name>
+    <pd:startName>IrmaPriceMessageReceiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="IrmaPriceMessageReceiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>67</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>23</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/Queues/MammothSourceQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Connections/IRMA Source Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1515</pd:endX>
+    <pd:endY>630</pd:endY>
+    <pd:errorSchemas>
+        <Error ref="pfx9:ExceptionRequest"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <transactionId>
+            <xsd:element name="UID" type="xsd:string"/>
+        </transactionId>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1495053049862</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>504</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>303</pd:width>
+        <pd:height>283</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>idxLoadPrices</pd:indexSlot>
+            <pd:errorCondition>$idxLoadPrices &gt; $_globalVariables/ns1:GlobalVariables/Application/DBTimeOutRetryCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Load Prices Into IRMA (Batch Update)</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Load Prices Into IRMA (Batch Update)</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Load Prices Into IRMA (Batch Update)">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>651</pd:x>
+            <pd:y>96</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <statement>INSERT INTO [infor].[StagingMammothPrice]
+           ([BusinessUnit_ID]
+           ,[ItemId]
+           ,[Multiple]
+           ,[Price]
+           ,[StartDate]
+           ,[EndDate]
+           ,[PriceType]
+           ,[PriceTypeAttribute]
+           ,[SellableUOM]
+	  , [TransactionId])
+     VALUES
+           (?, ?, ?, ?, ?, ?, ?, ?, ?,?)</statement>
+                <batchUpdate>true</batchUpdate>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>BusinessUnit_ID</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ItemId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Multiple</parameterName>
+                        <dataType>TINYINT</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Price</parameterName>
+                        <dataType>DECIMAL</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>StartDate</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>EndDate</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceType</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceTypeAttribute</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>SellableUOM</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>TransactionId</parameterName>
+                        <dataType>LONGNVARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <xsl:for-each select="$Parse-Price-Message/pfx10:MammothPrices/pfx10:MammothPrice">
+                        <Record>
+                            <BusinessUnit_ID>
+                                <xsl:value-of select="pfx10:BusinessUnit"/>
+                            </BusinessUnit_ID>
+                            <ItemId>
+                                <xsl:value-of select="pfx10:ItemId"/>
+                            </ItemId>
+                            <Multiple>
+                                <xsl:value-of select="pfx10:Multiple"/>
+                            </Multiple>
+                            <Price>
+                                <xsl:value-of select="pfx10:Price"/>
+                            </Price>
+                            <StartDate>
+                                <xsl:value-of select="pfx10:StartDate"/>
+                            </StartDate>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx10:EndDate) and string-length(pfx10:EndDate) > 0)">
+                                    <EndDate>
+                                        <xsl:value-of select="pfx10:EndDate"/>
+                                    </EndDate>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <EndDate xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <PriceType>
+                                <xsl:value-of select="pfx10:PriceType"/>
+                            </PriceType>
+                            <PriceTypeAttribute>
+                                <xsl:value-of select="pfx10:PriceTypeAttribute"/>
+                            </PriceTypeAttribute>
+                            <SellableUOM>
+                                <xsl:value-of select="pfx10:SellableUom"/>
+                            </SellableUOM>
+                            <TransactionId>
+                                <xsl:value-of select="$transactionId/UID"/>
+                            </TransactionId>
+                        </Record>
+                    </xsl:for-each>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:group name="Load One By One Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>496</pd:x>
+        <pd:y>320</pd:y>
+        <pd:width>316</pd:width>
+        <pd:height>247</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-Price-Message/pfx10:MammothPrices/pfx10:MammothPrice</pd:over>
+            <pd:iterationElementSlot>SinglePriceLoad</pd:iterationElementSlot>
+            <pd:indexSlot>idxSingleLoad</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Load Prices Into IRMA (One-by-One Update)</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Single Load Dead Letter Queue Exception</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Load Prices Into IRMA (One-by-One Update)</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch Single Load Exception</pd:from>
+            <pd:to>Single Load Dead Letter Queue Exception</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Load Prices Into IRMA (One-by-One Update)">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>626</pd:x>
+            <pd:y>391</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <statement>INSERT INTO [infor].[StagingMammothPrice]
+           ([BusinessUnit_ID]
+           ,[ItemId]
+           ,[Multiple]
+           ,[Price]
+           ,[StartDate]
+           ,[EndDate]
+           ,[PriceType]
+           ,[PriceTypeAttribute]
+           ,[SellableUOM]
+	  , [TransactionId])
+     VALUES
+           (?, ?, ?, ?, ?, ?, ?, ?, ?,?)</statement>
+                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>BusinessUnit_ID</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ItemId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Multiple</parameterName>
+                        <dataType>TINYINT</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Price</parameterName>
+                        <dataType>DECIMAL</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>StartDate</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>EndDate</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceType</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceTypeAttribute</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>SellableUOM</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>TransactionId</parameterName>
+                        <dataType>LONGNVARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <BusinessUnit_ID>
+                        <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:BusinessUnit"/>
+                    </BusinessUnit_ID>
+                    <ItemId>
+                        <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:ItemId"/>
+                    </ItemId>
+                    <Multiple>
+                        <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:Multiple"/>
+                    </Multiple>
+                    <Price>
+                        <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:Price"/>
+                    </Price>
+                    <StartDate>
+                        <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:StartDate"/>
+                    </StartDate>
+                    <EndDate>
+                        <xsl:choose>
+                            <xsl:when test="exists($SinglePriceLoad/pfx10:MammothPrice/pfx10:EndDate)">
+                                <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:EndDate"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </EndDate>
+                    <PriceType>
+                        <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:PriceType"/>
+                    </PriceType>
+                    <PriceTypeAttribute>
+                        <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:PriceTypeAttribute"/>
+                    </PriceTypeAttribute>
+                    <SellableUOM>
+                        <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:SellableUom"/>
+                    </SellableUOM>
+                    <TransactionId>
+                        <xsl:value-of select="$transactionId/UID"/>
+                    </TransactionId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch Single Load Exception">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>579</pd:x>
+            <pd:y>482</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <fault>localname=JDBCSQLException namespace=http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions</fault>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Single Load Dead Letter Queue Exception">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>709</pd:x>
+            <pd:y>476</pd:y>
+            <config>
+                <processName>/Processes/Common/JMS/PublishOntoDeadLetterQ.process</processName>
+            </config>
+            <pd:inputBindings>
+                <DeadLetterInput>
+                    <ns4:request>
+                        <ns4:applicationID>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                        </ns4:applicationID>
+                        <ns4:transactionID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSMessageID"/>
+                        </ns4:transactionID>
+                        <ns4:correlationID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
+                        </ns4:correlationID>
+                        <ns4:failedSystemName>
+                            <xsl:value-of select="&quot;IrmaQueueListener&quot;"/>
+                        </ns4:failedSystemName>
+                        <ns4:timeInterval>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/DLQ/TimeInterval"/>
+                        </ns4:timeInterval>
+                        <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
+                            <ns4:errorCode>
+                                <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
+                            </ns4:errorCode>
+                        </xsl:if>
+                        <ns4:errorMessage>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
+                        </ns4:errorMessage>
+                        <ns4:stackTrace>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/StackTrace"/>
+                        </ns4:stackTrace>
+                        <ns4:currentTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns4:currentTimestamp>
+                        <ns4:exception>
+                            <ns4:system>
+                                <ns4:payload>
+                                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
+                                </ns4:payload>
+                                <ns4:destinationQueue>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Destinations/Queues/MammothSourceQueue"/>
+                                </ns4:destinationQueue>
+                                <ns4:isEncrypted>
+                                    <xsl:value-of select="&quot;false&quot;"/>
+                                </ns4:isEncrypted>
+                                <ns4:toRecipient>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/To"/>
+                                </ns4:toRecipient>
+                                <ns4:ccRecipient>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/cC"/>
+                                </ns4:ccRecipient>
+                            </ns4:system>
+                        </ns4:exception>
+                    </ns4:request>
+                    <OtherProperties/>
+                </DeadLetterInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>211</pd:x>
+        <pd:y>39</pd:y>
+        <config>
+            <variableName>transactionId</variableName>
+        </config>
+        <pd:inputBindings>
+            <UID>
+                <xsl:value-of select="WFM.UID:UID()"/>
+            </UID>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch-All-Exceptions">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>168</pd:x>
+        <pd:y>632</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>1514</pd:x>
+        <pd:y>203</pd:y>
+        <config>
+            <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm-Error">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>1062</pd:x>
+        <pd:y>621</pd:y>
+        <config>
+            <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Dead Letter Queue Exception">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>429</pd:x>
+        <pd:y>632</pd:y>
+        <config>
+            <processName>/Processes/Common/JMS/PublishOntoDeadLetterQ.process</processName>
+        </config>
+        <pd:inputBindings>
+            <DeadLetterInput>
+                <ns4:request>
+                    <ns4:applicationID>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                    </ns4:applicationID>
+                    <ns4:transactionID>
+                        <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSMessageID"/>
+                    </ns4:transactionID>
+                    <ns4:correlationID>
+                        <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
+                    </ns4:correlationID>
+                    <ns4:failedSystemName>
+                        <xsl:value-of select="&quot;IrmaQueueListener&quot;"/>
+                    </ns4:failedSystemName>
+                    <ns4:timeInterval>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/DLQ/TimeInterval"/>
+                    </ns4:timeInterval>
+                    <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
+                        <ns4:errorCode>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
+                        </ns4:errorCode>
+                    </xsl:if>
+                    <ns4:errorMessage>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
+                    </ns4:errorMessage>
+                    <xsl:if test="$_error/pfx4:ErrorReport/StackTrace">
+                        <ns4:stackTrace>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/StackTrace"/>
+                        </ns4:stackTrace>
+                    </xsl:if>
+                    <ns4:currentTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns4:currentTimestamp>
+                    <ns4:exception>
+                        <ns4:system>
+                            <ns4:payload>
+                                <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
+                            </ns4:payload>
+                            <ns4:destinationQueue>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Destinations/Queues/MammothSourceQueue"/>
+                            </ns4:destinationQueue>
+                            <ns4:isEncrypted>
+                                <xsl:value-of select="&quot;false&quot;"/>
+                            </ns4:isEncrypted>
+                            <ns4:toRecipient>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/To"/>
+                            </ns4:toRecipient>
+                            <ns4:ccRecipient>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/cC"/>
+                            </ns4:ccRecipient>
+                        </ns4:system>
+                    </ns4:exception>
+                </ns4:request>
+                <OtherProperties/>
+            </DeadLetterInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse Price Message">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>336</pd:x>
+        <pd:y>43</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx10:MammothPrices"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Irma Price Update Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>910</pd:x>
+        <pd:y>44</pd:y>
+        <pd:width>258</pd:width>
+        <pd:height>173</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>idxIrmaPriceUpdate</pd:indexSlot>
+            <pd:errorCondition>$idxIrmaPriceUpdate &gt; $_globalVariables/ns1:GlobalVariables/Application/DBTimeOutRetryCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Update IRMA Price</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Update IRMA Price</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Update IRMA Price">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>1036</pd:x>
+            <pd:y>111</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <schema>infor</schema>
+                <catalog/>
+                <ProcedureName>BatchUpdatePriceFromGPM</ProcedureName>
+                <useSchema>true</useSchema>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@transactionId</colName>
+                        <colType>1</colType>
+                        <dataType>1</dataType>
+                        <typeName>uniqueidentifier</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@fullUpdate</colName>
+                        <colType>2</colType>
+                        <dataType>-7</dataType>
+                        <typeName>bit</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <transactionId>
+                            <xsl:value-of select="$transactionId/UID"/>
+                        </transactionId>
+                        <fullUpdate>
+                            <xsl:value-of select="0"/>
+                        </fullUpdate>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Delete All Staging Price Records (All Failed)">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>727</pd:x>
+        <pd:y>636</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>DELETE infor.StagingMammothPrice
+WHERE TransactionId = ?
+
+DELETE infor.StagingIrmaPrice
+WHERE TransactionId = ?</statement>
+            <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MammothPriceTransactionId</parameterName>
+                    <dataType>LONGNVARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>IrmaPriceTransactionId</parameterName>
+                    <dataType>LONGVARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <MammothPriceTransactionId>
+                    <xsl:value-of select="$transactionId/UID"/>
+                </MammothPriceTransactionId>
+                <IrmaPriceTransactionId>
+                    <xsl:value-of select="$transactionId/UID"/>
+                </IrmaPriceTransactionId>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>1360</pd:x>
+        <pd:y>345</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx11:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
+                </message>
+            </pfx11:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Delete All Staging (All Good) Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>1244</pd:x>
+        <pd:y>52</pd:y>
+        <pd:width>175</pd:width>
+        <pd:height>223</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>idxDeleteAllStagingAllGood</pd:indexSlot>
+            <pd:errorCondition>$idxDeleteAllStagingAllGood = $_globalVariables/ns1:GlobalVariables/Application/DBTimeOutRetryCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Delete All Staging Price Records (All Good)</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Delete All Staging Price Records (All Good)</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Delete All Staging Price Records (All Good)">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>1324</pd:x>
+            <pd:y>136</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <statement>DELETE infor.StagingMammothPrice
+WHERE TransactionId = ?
+
+DELETE infor.StagingIrmaPrice
+WHERE TransactionId = ?</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>MammothPriceTransactionId</parameterName>
+                        <dataType>LONGNVARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>IrmaPriceTransactionId</parameterName>
+                        <dataType>LONGNVARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <MammothPriceTransactionId>
+                        <xsl:value-of select="$transactionId/UID"/>
+                    </MammothPriceTransactionId>
+                    <IrmaPriceTransactionId>
+                        <xsl:value-of select="$transactionId/UID"/>
+                    </IrmaPriceTransactionId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>IrmaPriceMessageReceiver</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch-All-Exceptions</pd:from>
+        <pd:to>Dead Letter Queue Exception</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Parse Price Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Price Message</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Load One By One Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Irma Price Update Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Load One By One Group</pd:from>
+        <pd:to>Irma Price Update Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Dead Letter Queue Exception</pd:from>
+        <pd:to>Delete All Staging Price Records (All Failed)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Delete All Staging Price Records (All Failed)</pd:from>
+        <pd:to>Confirm-Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm-Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Irma Price Update Group</pd:from>
+        <pd:to>Delete All Staging (All Good) Group</pd:to>
+        <pd:xpathDescription>Full Price Update</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Update-IRMA-Price/resultSet/outputSet/fullUpdate = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Delete All Staging (All Good) Group</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Delete All Staging (All Good) Group</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

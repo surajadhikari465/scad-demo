@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.3">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="Party.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="transactionParty" type="TransactionPartyType"/>
+	<xs:element name="transactionParties" type="TransactionPartiesType"/>
+	<xs:complexType name="TransactionPartiesType">
+		<xs:sequence>
+			<xs:element name="transactionParty" type="TransactionPartyType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransactionPartyType">
+		<xs:sequence>
+			<xs:element name="transactionAttributes" type="prf:TransactionAttributes"/>
+			<xs:element name="party" type="prt:PartyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

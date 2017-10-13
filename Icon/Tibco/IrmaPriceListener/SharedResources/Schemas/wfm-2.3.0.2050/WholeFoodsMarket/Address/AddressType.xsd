@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2"
+     xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+     xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1"
+     xmlns:pad="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1"
+     xmlns:tph="http://schemas.wfm.com/Enterprise/AddressMgmt/PhoneAddress/V1"
+     targetNamespace="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2"
+     version="0.1"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified">
+
+    <!-- ================== -->
+    <!-- Schema Imports             -->
+    <!-- ================== -->
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1" schemaLocation="PhysicalAddress.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/PhoneAddress/V1" schemaLocation="PhoneAddress.xsd"/>
+
+    <!-- ================== -->
+    <!-- Global Elements             -->
+    <!-- ================== -->
+    <xs:element name="addressType" type="AddressTypeType"/>
+    <xs:complexType name="AddressTypeType">
+        <xs:sequence>
+            <xs:element name="code" type="crf:IdStrType" minOccurs="0"/>
+            <xs:element name="description" type="arf:AddressDescType">
+                <xs:annotation>
+                    <xs:documentation>type of address defined: physical, email, url, phone</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:choice>
+                <xs:element name="physical" type="pad:PhysicalAddressType"/>
+                <xs:element name="email" type="arf:EmailAddressType"/>
+                <xs:element name="url" type="arf:urlType"/>
+                <xs:element name="phone" type="tph:PhoneType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

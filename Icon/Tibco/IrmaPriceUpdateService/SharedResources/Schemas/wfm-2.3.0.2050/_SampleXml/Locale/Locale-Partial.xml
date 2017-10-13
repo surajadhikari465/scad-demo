@@ -1,0 +1,89 @@
+<lcl:locale xmlns:iea="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V1" xmlns:ltp="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V1" xmlns:ett="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V1" xmlns:str="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V1" xmlns:eat="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V1" xmlns:cry="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V1" xmlns:ira="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesRegional/V1" xmlns:trf="http://schemas.wfm.com/Enterprise/TraitMgmt/CommonRefType/V1" xmlns:adr="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V1" xmlns:phs="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V1" xmlns:lrf="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefType/V2" xmlns:eau="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V1" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V1" xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" crf:Action="Inherit" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2">
+	<lcl:id>1</lcl:id>
+	<lcl:name>Whole Foods Market</lcl:name>
+	<lcl:type>
+		<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">CHN</code>
+		<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Chain</description>
+	</lcl:type>
+	<lcl:locales>
+		<locale crf:Action="Inherit" xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1">
+			<lcl:id>2</lcl:id>
+			<lcl:name>Florida</lcl:name>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">REG</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Region</description>
+			</lcl:type>
+			<lcl:locales>
+				<locale crf:Action="Inherit">
+					<lcl:id>14</lcl:id>
+					<lcl:name>MET_FL</lcl:name>
+					<lcl:type>
+						<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">MTR</code>
+						<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Metro</description>
+					</lcl:type>
+					<lcl:locales>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10130</lcl:id>
+							<lcl:name>Boca Raton</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">1</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>1400 Glades Road Ste 110</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Boca Raton</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">FL</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Florida</name>
+											</phs:territoryType>
+											<phs:postalCode>33486</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Eastern Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">BCA</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+					</lcl:locales>
+				</locale>
+			</lcl:locales>
+		</locale>
+	</lcl:locales>
+</lcl:locale>

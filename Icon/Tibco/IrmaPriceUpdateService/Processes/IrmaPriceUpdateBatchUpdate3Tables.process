@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx10="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx7="http://www.tibco.com/schemas/IrmaQueueListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx6="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothDbPrice.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/IrmaPrice.xsd"/>
+    <pd:name>Processes/IrmaPriceUpdateBatchUpdate3Tables.process</pd:name>
+    <pd:startName>IrmaPriceMessageReceiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="IrmaPriceMessageReceiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>68</pd:x>
+        <pd:y>37</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>23</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/Queues/IrmaSourceQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Connections/IRMA Source Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1080</pd:endX>
+    <pd:endY>410</pd:endY>
+    <pd:errorSchemas>
+        <Error ref="pfx9:ExceptionRequest"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1495053049862</pd:targetNamespace>
+    <pd:activity name="Parse Price Message">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>203</pd:x>
+        <pd:y>43</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx8:IrmaPrices"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>1063</pd:x>
+        <pd:y>162</pd:y>
+        <config>
+            <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch-All-Exceptions">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>159</pd:x>
+        <pd:y>407</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Dead Letter Queue Exception">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>557</pd:x>
+        <pd:y>414</pd:y>
+        <config>
+            <processName>/Processes/Common/JMS/PublishOntoDeadLetterQ.process</processName>
+        </config>
+        <pd:inputBindings>
+            <DeadLetterInput>
+                <ns4:request>
+                    <ns4:applicationID>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                    </ns4:applicationID>
+                    <ns4:transactionID>
+                        <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSMessageID"/>
+                    </ns4:transactionID>
+                    <ns4:correlationID>
+                        <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
+                    </ns4:correlationID>
+                    <ns4:failedSystemName>
+                        <xsl:value-of select="&quot;IrmaQueueListener&quot;"/>
+                    </ns4:failedSystemName>
+                    <ns4:timeInterval>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/DLQ/TimeInterval"/>
+                    </ns4:timeInterval>
+                    <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
+                        <ns4:errorCode>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
+                        </ns4:errorCode>
+                    </xsl:if>
+                    <ns4:errorMessage>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
+                    </ns4:errorMessage>
+                    <xsl:if test="$_error/pfx4:ErrorReport/StackTrace">
+                        <ns4:stackTrace>
+                            <xsl:value-of select="$_error/pfx4:ErrorReport/StackTrace"/>
+                        </ns4:stackTrace>
+                    </xsl:if>
+                    <ns4:currentTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns4:currentTimestamp>
+                    <ns4:exception>
+                        <ns4:system>
+                            <ns4:payload>
+                                <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
+                            </ns4:payload>
+                            <ns4:destinationQueue>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Destinations/Queues/IrmaSourceQueue"/>
+                            </ns4:destinationQueue>
+                            <ns4:isEncrypted>
+                                <xsl:value-of select="&quot;false&quot;"/>
+                            </ns4:isEncrypted>
+                            <ns4:toRecipient>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/To"/>
+                            </ns4:toRecipient>
+                            <ns4:ccRecipient>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/cC"/>
+                            </ns4:ccRecipient>
+                        </ns4:system>
+                    </ns4:exception>
+                </ns4:request>
+                <OtherProperties/>
+            </DeadLetterInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm-Error">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>788</pd:x>
+        <pd:y>411</pd:y>
+        <config>
+            <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="IRMA Price Group">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>349</pd:x>
+        <pd:y>25</pd:y>
+        <pd:width>585</pd:width>
+        <pd:height>278</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Price Table Update</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>PriceBatchDetail Update</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Price Table Update</pd:from>
+            <pd:to>ItemUomOverride Update</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ItemUomOverride Update</pd:from>
+            <pd:to>PriceBatchDetail Update</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Price Table Update">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>457</pd:x>
+            <pd:y>94</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <statement>UPDATE p
+	SET  Multiple = ISNULL(?, p.Multiple)
+		,Price = ISNULL(?, p.Price)
+		,PriceChgTypeId = ?
+		,Sale_Multiple = ISNULL(?, p.Sale_Multiple)
+		,Sale_Price = ISNULL(?, p.Sale_Price)
+		,Sale_Start_Date = ISNULL(?, p.Sale_Start_Date)
+		,Sale_End_Date = ISNULL(?, p.Sale_End_Date)
+	FROM  Price p
+	WHERE Store_No = ?
+	AND   Item_key = ?</statement>
+                <batchUpdate>true</batchUpdate>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>Multiple</parameterName>
+                        <dataType>TINYINT</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Price</parameterName>
+                        <dataType>DECIMAL</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceChgTypeId</parameterName>
+                        <dataType>TINYINT</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Sale_Multiple</parameterName>
+                        <dataType>TINYINT</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Sale_Price</parameterName>
+                        <dataType>DECIMAL</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Sale_Start_Date</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Sale_End_Date</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Store_No</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Item_key</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <xsl:for-each select="$Parse-Price-Message/pfx8:IrmaPrices/pfx8:IrmaPrice">
+                        <Record>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Multiple) and string-length(pfx8:Multiple) > 0)">
+                                    <Multiple>
+                                        <xsl:value-of select="pfx8:Multiple"/>
+                                    </Multiple>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Multiple>
+                                        <xsl:value-of select="-1"/>
+                                    </Multiple>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Price) and string-length(pfx8:Price) > 0)">
+                                    <Price>
+                                        <xsl:value-of select="pfx8:Price"/>
+                                    </Price>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Price xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <PriceChgTypeId>
+                                <xsl:value-of select="pfx8:PricingChgTypeId"/>
+                            </PriceChgTypeId>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Sale_Multiple) and string-length(pfx8:Sale_Multiple) > 0)">
+                                    <Sale_Multiple>
+                                        <xsl:value-of select="pfx8:Sale_Multiple"/>
+                                    </Sale_Multiple>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Sale_Multiple xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Sale_Price)  and string-length(pfx8:Sale_Price) > 0)">
+                                    <Sale_Price>
+                                        <xsl:value-of select="pfx8:Sale_Price"/>
+                                    </Sale_Price>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Sale_Price xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Sale_StartDate) and string-length(pfx8:Sale_StartDate) > 0)">
+                                    <Sale_Start_Date>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(pfx8:Sale_StartDate)">
+                                                <xsl:value-of select="pfx8:Sale_StartDate"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </Sale_Start_Date>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Sale_Start_Date xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Sale_EndDate) and string-length(pfx8:Sale_EndDate) > 0)">
+                                    <Sale_End_Date>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(pfx8:Sale_EndDate)">
+                                                <xsl:value-of select="pfx8:Sale_EndDate"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </Sale_End_Date>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Sale_End_Date xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <Store_No>
+                                <xsl:value-of select="pfx8:Store_No"/>
+                            </Store_No>
+                            <Item_key>
+                                <xsl:value-of select="pfx8:Item_Key"/>
+                            </Item_key>
+                        </Record>
+                    </xsl:for-each>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="ItemUomOverride Update">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>594</pd:x>
+            <pd:y>101</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <statement>UPDATE ItemUomOverride 
+	SET Retail_Unit_ID = ?
+	WHERE Item_key = ?
+	  AND Store_No = ?
+	
+	IF @@ROWCOUNT=0
+		INSERT INTO ItemUomOverride (Item_Key, Store_No, Retail_Unit_ID)
+		VALUES (?, ?, ?)</statement>
+                <batchUpdate>true</batchUpdate>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>Update_Unit_Id</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Update_Item_key</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Update_Store_No</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Insert_Item_Key</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Insert_Store_No</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Insert_Unit_Id</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <xsl:for-each select="$Parse-Price-Message/pfx8:IrmaPrices/pfx8:IrmaPrice">
+                        <Record>
+                            <Update_Unit_Id>
+                                <xsl:choose>
+                                    <xsl:when test="exists(pfx8:Unit_Id)">
+                                        <xsl:value-of select="pfx8:Unit_Id"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </Update_Unit_Id>
+                            <Update_Item_key>
+                                <xsl:choose>
+                                    <xsl:when test="exists(pfx8:Item_Key)">
+                                        <xsl:value-of select="pfx8:Item_Key"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </Update_Item_key>
+                            <Update_Store_No>
+                                <xsl:choose>
+                                    <xsl:when test="exists(pfx8:Store_No)">
+                                        <xsl:value-of select="pfx8:Store_No"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </Update_Store_No>
+                            <Insert_Item_Key>
+                                <xsl:choose>
+                                    <xsl:when test="exists(pfx8:Item_Key)">
+                                        <xsl:value-of select="pfx8:Item_Key"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </Insert_Item_Key>
+                            <Insert_Store_No>
+                                <xsl:choose>
+                                    <xsl:when test="exists(pfx8:Store_No)">
+                                        <xsl:value-of select="pfx8:Store_No"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </Insert_Store_No>
+                            <Insert_Unit_Id>
+                                <xsl:choose>
+                                    <xsl:when test="exists(pfx8:Unit_Id)">
+                                        <xsl:value-of select="pfx8:Unit_Id"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </Insert_Unit_Id>
+                        </Record>
+                    </xsl:for-each>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="PriceBatchDetail Update">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>721</pd:x>
+            <pd:y>102</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <statement>UPDATE p
+	SET  Multiple = ISNULL(?, p.Multiple)
+		,Price = ISNULL(?, p.Price)
+		,PriceChgTypeId = ?
+		,Sale_Multiple = ISNULL(?, p.Sale_Multiple)
+		,Sale_Price = ISNULL(?, p.Sale_Price)
+		,StartDate = ISNULL(?, p.StartDate)
+		,Sale_End_Date = ISNULL(?, p.Sale_End_Date)
+		,Retail_Unit_ID = ?
+	FROM PriceBatchDetail p
+	WHERE Item_key = ?
+	AND Store_No = ?
+	AND ItemChgTypeID = 1
+	AND PriceBatchHeaderID is NULL
+	AND Expired = 0</statement>
+                <batchUpdate>true</batchUpdate>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>Multiple</parameterName>
+                        <dataType>TINYINT</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Price</parameterName>
+                        <dataType>DECIMAL</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceChgTypeId</parameterName>
+                        <dataType>TINYINT</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Sale_Multiple</parameterName>
+                        <dataType>TINYINT</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Sale_Price</parameterName>
+                        <dataType>DECIMAL</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Sale_Start_Date</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Sale_End_Date</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Unit_Id</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Item_key</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Store_No</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <xsl:for-each select="$Parse-Price-Message/pfx8:IrmaPrices/pfx8:IrmaPrice">
+                        <Record>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Multiple) and string-length(pfx8:Multiple) > 0)">
+                                    <Multiple>
+                                        <xsl:value-of select="pfx8:Multiple"/>
+                                    </Multiple>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Multiple xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Price) and string-length(pfx8:Price) > 0)">
+                                    <Price>
+                                        <xsl:value-of select="pfx8:Price"/>
+                                    </Price>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Price xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <PriceChgTypeId>
+                                <xsl:value-of select="pfx8:PricingChgTypeId"/>
+                            </PriceChgTypeId>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Sale_Multiple) and string-length(pfx8:Sale_Multiple) > 0)">
+                                    <Sale_Multiple>
+                                        <xsl:value-of select="pfx8:Sale_Multiple"/>
+                                    </Sale_Multiple>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Sale_Multiple xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Sale_Price)  and string-length(pfx8:Sale_Price) > 0)">
+                                    <Sale_Price>
+                                        <xsl:value-of select="pfx8:Sale_Price"/>
+                                    </Sale_Price>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Sale_Price xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Sale_StartDate) and string-length(pfx8:Sale_StartDate) > 0)">
+                                    <Sale_Start_Date>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(pfx8:Sale_StartDate)">
+                                                <xsl:value-of select="pfx8:Sale_StartDate"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </Sale_Start_Date>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Sale_Start_Date xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:choose>
+                                <xsl:when test="(exists(pfx8:Sale_EndDate) and string-length(pfx8:Sale_EndDate) > 0)">
+                                    <Sale_End_Date>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(pfx8:Sale_EndDate)">
+                                                <xsl:value-of select="pfx8:Sale_EndDate"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </Sale_End_Date>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Sale_End_Date xsi:nil="true"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <Unit_Id>
+                                <xsl:value-of select="pfx8:Unit_Id"/>
+                            </Unit_Id>
+                            <Item_key>
+                                <xsl:value-of select="pfx8:Item_Key"/>
+                            </Item_key>
+                            <Store_No>
+                                <xsl:value-of select="pfx8:Store_No"/>
+                            </Store_No>
+                        </Record>
+                    </xsl:for-each>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>IrmaPriceMessageReceiver</pd:from>
+        <pd:to>Parse Price Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Dead Letter Queue Exception</pd:from>
+        <pd:to>Confirm-Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm-Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch-All-Exceptions</pd:from>
+        <pd:to>Dead Letter Queue Exception</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Price Message</pd:from>
+        <pd:to>IRMA Price Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IRMA Price Group</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

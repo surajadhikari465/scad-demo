@@ -1,0 +1,1353 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<pfx6:taxHierarchyClasses ns1:cchVersion = "1" xmlns:ns = "http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0 = "www.tibco.com/plugin/Sleep" xmlns:ns1 = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1" xmlns:ns10 = "http://schemas.tibco.com/bw/plugins/xml/5.0/xmlExceptions" xmlns:ns11 = "http://www.tibco.com/pe/EngineTypes" xmlns:ns12 = "http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns122 = "http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns13 = "http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns14 = "http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns2 = "http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V1" xmlns:ns21 = "http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns22 = "http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V1" xmlns:ns23 = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefType/V1" xmlns:ns3 = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns31 = "http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:ns32 = "http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V1" xmlns:ns4 = "http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V1" xmlns:ns5 = "http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V1" xmlns:ns51 = "http://xmlns.tibco.com/bw/activity/xml/render/bytesEnvelope/2003/05" xmlns:ns6 = "http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V1" xmlns:ns7 = "http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:ns72 = "http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns8 = "http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns9 = "http://schemas.tibco.com/bw/plugins/file/5.0/fileExceptions" xmlns:pd = "http://xmlns.tibco.com/bw/process/2003" xmlns:pfx = "http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Specific/CCH/WFM_AuthorityRequest.xsd" xmlns:pfx13 = "http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2 = "http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Specific/CCH/WFM_TaxClassesRequest.xsd" xmlns:pfx3 = "http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Specific/CCH/WFM_TaxRateRequest.xsd" xmlns:pfx4 = "http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Specific/CCH/WFM_ZoneRequest.xsd" xmlns:pfx5 = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1" xmlns:pfx6 = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxHierarchyClass/V1" xmlns:pfx7 = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxZone/V1" xmlns:pfx8 = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1" xmlns:pfx9 = "http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:tib = "http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsd = "http://www.w3.org/2001/XMLSchema">
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0000000</ns7:id>
+		<ns7:name>0000000 GENERAL MERCHANDISE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0003001</ns7:id>
+		<ns7:name>0003001 CLOTHING-GENERAL - GENERAL CLOTHING</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0003008</ns7:id>
+		<ns7:name>0003008 CLOTHING-GENERAL - HAIRBOWS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0003011</ns7:id>
+		<ns7:name>0003011 CLOTHING-GENERAL - RECEIVING BLANKETS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0003012</ns7:id>
+		<ns7:name>0003012 CLOTHING-GENERAL - CRIB BLANKETS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0003013</ns7:id>
+		<ns7:name>0003013 CLOTHING-GENERAL - CHILDRENS CLOTHING</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0011001</ns7:id>
+		<ns7:name>0011001 BOOKS - BOOKS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0020001</ns7:id>
+		<ns7:name>0020001 PERIODICALS - NEWSPAPER NEWSSTAND SALES DAILY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0020017</ns7:id>
+		<ns7:name>0020017 PERIODICALS - MAGAZINES NEWSSTAND SALES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0100001</ns7:id>
+		<ns7:name>0100001 GENERAL FOOD - FOOD FOR HOME CONSUMPTION</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101001</ns7:id>
+		<ns7:name>0101001 CANDY AND CONFECTIONERY - MARKETED AS CANDY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101002</ns7:id>
+		<ns7:name>0101002 CANDY AND CONFECTIONERY - FOOD MIXED OR COVERED WITH CANDY WHERE CANDY IS THE PRIMARY PRODUCT</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101003</ns7:id>
+		<ns7:name>0101003 CANDY AND CONFECTIONERY - INTENDED FOR USE IN COOKING OR DECORATING</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101004</ns7:id>
+		<ns7:name>0101004 CANDY AND CONFECTIONERY - GUM - CHEWING OR BUBBLE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101005</ns7:id>
+		<ns7:name>0101005 CANDY AND CONFECTIONERY - CEREAL BARS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101006</ns7:id>
+		<ns7:name>0101006 CANDY AND CONFECTIONERY - CANDY-COATED POPCORN</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101008</ns7:id>
+		<ns7:name>0101008 CANDY AND CONFECTIONERY - CANDY-COATED PRETZELS - COOKIES - WAFERS - CEREAL BARS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101009</ns7:id>
+		<ns7:name>0101009 CANDY AND CONFECTIONERY - MARSHMALLOWS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101010</ns7:id>
+		<ns7:name>0101010 CANDY AND CONFECTIONERY - NUTS - HONEY ROASTED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101011</ns7:id>
+		<ns7:name>0101011 CANDY AND CONFECTIONERY - NUTS - FRUIT - CANDY COATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0101012</ns7:id>
+		<ns7:name>0101012 CANDY AND CONFECTIONERY - LICORICE - CANDY CONTAINS FLOUR</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0102001</ns7:id>
+		<ns7:name>0102001 NON-CARBONATED BEVERAGES - MIXES - COFFEE - TEA - COCOA</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0102012</ns7:id>
+		<ns7:name>0102012 NON-CARBONATED BEVERAGES - MIXES - SOFT DRINK MIXES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0102019</ns7:id>
+		<ns7:name>0102019 NON-CARBONATED BEVERAGES - MIXES - DRINK MIX INTENDED TO BE MIXED WITH MILK</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0104001</ns7:id>
+		<ns7:name>0104001 FOOD SUPPLEMENTS - SUBSTITUTES - VITAMINS AND MINERALS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0104003</ns7:id>
+		<ns7:name>0104003 VITAMINS AND SUPPLEMENTS - FOOD SUBSTITUTES - POWDER - LIQUID</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0104004</ns7:id>
+		<ns7:name>0104004 FOOD SUPPLEMENTS - SUBSTITUTES - FOOD SUBSTITUTES - BAR</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0104006</ns7:id>
+		<ns7:name>0104006 FOOD SUPPLEMENTS - SUBSTITUTES - EDIBLE OIL WITH SUPPLEMENT FACTS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0104007</ns7:id>
+		<ns7:name>0104007 FOOD SUPPLEMENTS - SUBSTITUTES - ENERGY DRINK WITH SUPPLEMENT FACTS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0106002</ns7:id>
+		<ns7:name>0106002 MISCELLANEOUS FOOD ITEMS - ICE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0106003</ns7:id>
+		<ns7:name>0106003 MISCELLANEOUS FOOD ITEMS - FOOD COLORING</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0109001</ns7:id>
+		<ns7:name>0109001 SEEDS AND PLANTS - NON-FOOD PRODUCING SEEDS AND PLANTS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0109002</ns7:id>
+		<ns7:name>0109002 SEEDS AND PLANTS - FOOD-PRODUCING SEEDS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0109003</ns7:id>
+		<ns7:name>0109003 SEEDS AND PLANTS - FOOD-PRODUCING PLANTS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0111002</ns7:id>
+		<ns7:name>0111002 ALCOHOLIC BEVERAGES-GROCERY - LIQUOR</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0111003</ns7:id>
+		<ns7:name>0111003 ALCOHOLIC BEVERAGES-GROCERY - WINE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0111004</ns7:id>
+		<ns7:name>0111004 ALCOHOLIC BEVERAGES-GROCERY - COCKTAIL MIXES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0111005</ns7:id>
+		<ns7:name>0111005 ALCOHOLIC BEVERAGES-GROCERY - BEER OR MALT CONTAINING 3.2% ALCOHOL OR LESS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0112001</ns7:id>
+		<ns7:name>0112001 NON-PRESCRIPTION MEDICATIONS - PRODUCTS WITH A MEDICINAL VALUE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0112006</ns7:id>
+		<ns7:name>0112006 NON-PRESCRIPTION MEDICATIONS - EYE CARE PRODUCTS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0112008</ns7:id>
+		<ns7:name>0112008 NON-PRESCRIPTION MEDICATIONS - LOZENGES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0112010</ns7:id>
+		<ns7:name>0112010 NON-PRESCRIPTION MEDICATIONS - BANDAGES AND GAUZE-NON-MEDICATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0112011</ns7:id>
+		<ns7:name>0112011 NON-PRESCRIPTION MEDICATIONS - BANDAGES AND GAUZE-MEDICATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0113001</ns7:id>
+		<ns7:name>0113001 FROZEN PACKAGED ICE CREAM - ICES - PREPACKAGED IN CONTAINERS LARGER THAN 1 PINT</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0113002</ns7:id>
+		<ns7:name>0113002 FROZEN PACKAGED ICE CREAM - ICES - INDIVIDUAL ICE CREAM - ICES SUNDRIES SOLD IN PACKAGES OF 2 OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0113003</ns7:id>
+		<ns7:name>0113003 FROZEN PACKAGED ICE CREAM - ICES - PREPACKAGED IN PINT SIZED CONTAINER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0113004</ns7:id>
+		<ns7:name>0113004 FROZEN PACKAGED ICE CREAM - ICES - INDIVIDUAL ICE CREAM - ICES SUNDRIES SOLD INDIVIDUALLY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0114003</ns7:id>
+		<ns7:name>0114003 DISPOSABLE DOMESTIC PAPER GOOD - WIPES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0114005</ns7:id>
+		<ns7:name>0114005 DISPOSABLE DOMESTIC PAPER GOOD - TOILET TISSUE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0114006</ns7:id>
+		<ns7:name>0114006 DISPOSABLE DOMESTIC PAPER GOOD - PAPER TOWELS - PAPER NAPKINS - TOILET TISSUES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0114007</ns7:id>
+		<ns7:name>0114007 DISPOSABLE DOMESTIC PAPER GOOD - PAPER PLATES AND CUPS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0114008</ns7:id>
+		<ns7:name>0114008 DISPOSABLE DOMESTIC PAPER GOOD - PLASTIC PLATES AND CUPS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0115001</ns7:id>
+		<ns7:name>0115001 GIFT ITEM CONTAINING FOOD - TPP + CANDY AT LEAST 50%; TPP AT LEAST 50%</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0115002</ns7:id>
+		<ns7:name>0115002 GIFT ITEM CONTAINING FOOD - TPP + CANDY AT LEAST 50%; TPP LESS THAN 50%</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0115003</ns7:id>
+		<ns7:name>0115003 GIFT ITEM CONTAINING FOOD - TPP + CANDY AT LEAST 25% BUT LESS THAN 50%</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0115004</ns7:id>
+		<ns7:name>0115004 GIFT ITEM CONTAINING FOOD - TPP + CANDY AT LEAST 10% BUT LESS THAN 25%</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0116001</ns7:id>
+		<ns7:name>0116001 MISCELLANEOUS NON-FOOD ITEMS - SUNBLOCK - SUNSCREEN</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0116002</ns7:id>
+		<ns7:name>0116002 MISCELLANEOUS NON-FOOD ITEMS - CHARCOAL</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0116003</ns7:id>
+		<ns7:name>0116003 MISCELLANEOUS NON-FOOD ITEMS - SHAMPOO- MEDICATED - DANDRUFF</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0116004</ns7:id>
+		<ns7:name>0116004 MISCELLANEOUS NON-FOOD ITEMS - SHAMPOO- NON-MEDICATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0116005</ns7:id>
+		<ns7:name>0116005 MISCELLANEOUS NON-FOOD ITEMS - PET FOOD</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0116009</ns7:id>
+		<ns7:name>0116009 MISCELLANEOUS NON-FOOD ITEMS - CHARCOAL LIGHTER - LIGHTER FLUID</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0117001</ns7:id>
+		<ns7:name>0117001 BABY CARE PRODUCTS - BABY OIL</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0117002</ns7:id>
+		<ns7:name>0117002 BABY CARE PRODUCTS - BABY LOTION - SHAMPOO - SIMILAR ITEMS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0117003</ns7:id>
+		<ns7:name>0117003 BABY CARE PRODUCTS - BOTTLES - NIPPLES - PACIFIERS - TEETHING RINGS - SIMILAR ITEMS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0117004</ns7:id>
+		<ns7:name>0117004 BABY CARE PRODUCTS - DISPOSABLE DIAPERS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0117005</ns7:id>
+		<ns7:name>0117005 BABY CARE PRODUCTS - BABY POWDER - MEDICATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0117006</ns7:id>
+		<ns7:name>0117006 BABY CARE PRODUCTS - BABY POWDER - NON-MEDICATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0118001</ns7:id>
+		<ns7:name>0118001 FEMININE HYGIENE - SANITARY NAPKINS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0118002</ns7:id>
+		<ns7:name>0118002 FEMININE HYGIENE - TAMPONS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0118003</ns7:id>
+		<ns7:name>0118003 FEMININE HYGIENE - SPRAYS - DOUCHES - SIMILAR ITEMS- NON-MEDICATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0118004</ns7:id>
+		<ns7:name>0118004 FEMININE HYGIENE - SPRAYS - DOUCHES - SIMILAR ITEMS- MEDICATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0123003</ns7:id>
+		<ns7:name>0123003 ORAL HYGIENE - MOUTHWASH-MEDICATED - ANTISEPTIC</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0123004</ns7:id>
+		<ns7:name>0123004 ORAL HYGIENE - MOUTHWASH-NON-MEDICATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0123005</ns7:id>
+		<ns7:name>0123005 ORAL HYGIENE - TOOTHPASTE-MEDICATED - GERMICIDAL - CONTAINS FLUORIDE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0123006</ns7:id>
+		<ns7:name>0123006 ORAL HYGIENE - TOOTHPASTE-NON MEDICATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0123007</ns7:id>
+		<ns7:name>0123007 ORAL HYGIENE - FLUORIDE RINSE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0123008</ns7:id>
+		<ns7:name>0123008 ORAL HYGIENE - DENTAL FLOSS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0123009</ns7:id>
+		<ns7:name>0123009 ORAL HYGIENE - TOOTHBRUSHES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0123010</ns7:id>
+		<ns7:name>0123010 ORAL HYGIENE - LIP BALM-MEDICINAL</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0124001</ns7:id>
+		<ns7:name>0124001 NUTRITION &amp; ENERGY BARS - NUTRITION - ENERGY BAR WITH NO CANDY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0124002</ns7:id>
+		<ns7:name>0124002 NUTRITION &amp; ENERGY BARS - NUTRITION - ENERGY BAR CONTAINS CANDY &amp; FLOUR</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0124003</ns7:id>
+		<ns7:name>0124003 NUTRITION &amp; ENERGY BARS - NUTRITION - ENERGY BAR CONTAINS CANDY BUT NO FLOUR</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0124004</ns7:id>
+		<ns7:name>0124004 NUTRITION &amp; ENERGY BARS - NUTRITION - ENERGY BAR WITH CANDY COATING - CONTAINS FLOUR</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0124005</ns7:id>
+		<ns7:name>0124005 NUTRITION &amp; ENERGY BARS - NUTRITION - ENERGY BAR WITH CANDY COATING - DOES NOT CONTAIN FLOUR</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0150001</ns7:id>
+		<ns7:name>0150001 RESTAURANT PREPARED FOOD AND NONALCOHOLIC BEVERAGES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0151002</ns7:id>
+		<ns7:name>0151002 ALCOHOLIC BEVERAGES RESTAURANT SALES - BEER CONTAINING MORE THAN 3.2% ALCOHOL</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0151003</ns7:id>
+		<ns7:name>0151003 ALCOHOLIC BEVERAGES RESTAURANT SALES - WINE OTHER THAN TABLE WINE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0153009</ns7:id>
+		<ns7:name>0153009 MISC. RESTAURANT CHARGES - DELIVERY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154006</ns7:id>
+		<ns7:name>0154006 UNHEATED GROCERY AND DELI - PREPARED BY RETAILER - PACKAGED BY RETAILER - SOLD BY WT - VOL - INTENDED TO BE EATEN UNHEATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154007</ns7:id>
+		<ns7:name>0154007 UNHEATED GROCERY AND DELI - PREPARED BY RETAILER - PACKAGED BY RETAILER - SOLD BY WT - VOL - USUALLY REHEATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154008</ns7:id>
+		<ns7:name>0154008 UNHEATED GROCERY AND DELI - PREPARED BY RETAILER - PACKAGED BY RETAILER - SOLD BY WT - VOL - REQUIRES COOKING</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154009</ns7:id>
+		<ns7:name>0154009 UNHEATED GROCERY AND DELI - PREPARED BY RETAILER - PACKAGED BY RETAILER - NOT SOLD BY WT - VOL - INTENDED TO BE EATEN UNHEATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154010</ns7:id>
+		<ns7:name>0154010 UNHEATED GROCERY AND DELI - PREPARED BY RETAILER - PACKAGED BY RETAILER - NOT SOLD BY WT - VOL - USUALLY REHEATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154013</ns7:id>
+		<ns7:name>0154013 UNHEATED GROCERY AND DELI - PREPARED BY THIRD PARTY - PACKAGED BY THIRD PARTY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154014</ns7:id>
+		<ns7:name>0154014 UNHEATED GROCERY AND DELI - SALAD BAR</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154015</ns7:id>
+		<ns7:name>0154015 UNHEATED GROCERY AND DELI - SLICED BY RETAILER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154020</ns7:id>
+		<ns7:name>0154020 UNHEATED GROCERY AND DELI - DELI PLATTER - PREPARED BY RETAILER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154022</ns7:id>
+		<ns7:name>0154022 UNHEATED GROCERY AND DELI - SUSHI PLATTER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0154026</ns7:id>
+		<ns7:name>0154026 UNHEATED GROCERY AND DELI - FROZEN SANDWICH - PREPARED BY THIRD PARTY - HEATING DEVICE AVAILABLE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155001</ns7:id>
+		<ns7:name>0155001 PREPACKAGED NON-CARBONATED BEV - SOFT DRINK - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155002</ns7:id>
+		<ns7:name>0155002 PREPACKAGED NON-CARBONATED BEV - SOFT DRINK - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155003</ns7:id>
+		<ns7:name>0155003 PREPACKAGED NON-CARBONATED BEV - SOFT DRINK - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155004</ns7:id>
+		<ns7:name>0155004 PREPACKAGED NON-CARBONATED BEV - SOFT DRINK - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155005</ns7:id>
+		<ns7:name>0155005 PREPACKAGED NON-CARBONATED BEV - SOFT DRINK - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155006</ns7:id>
+		<ns7:name>0155006 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE UNDER 25% - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155007</ns7:id>
+		<ns7:name>0155007 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE UNDER 25% - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155008</ns7:id>
+		<ns7:name>0155008 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE UNDER 25% - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155009</ns7:id>
+		<ns7:name>0155009 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE UNDER 25% - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155010</ns7:id>
+		<ns7:name>0155010 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE UNDER 25% - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155011</ns7:id>
+		<ns7:name>0155011 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 25-50% - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155012</ns7:id>
+		<ns7:name>0155012 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 25-50% - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155013</ns7:id>
+		<ns7:name>0155013 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 25-50% - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155014</ns7:id>
+		<ns7:name>0155014 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 25-50% - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155015</ns7:id>
+		<ns7:name>0155015 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 25-50% - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155016</ns7:id>
+		<ns7:name>0155016 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 50-70% - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155017</ns7:id>
+		<ns7:name>0155017 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 50-70% - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155018</ns7:id>
+		<ns7:name>0155018 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 50-70% - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155019</ns7:id>
+		<ns7:name>0155019 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 50-70% - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155020</ns7:id>
+		<ns7:name>0155020 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 50-70% - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155021</ns7:id>
+		<ns7:name>0155021 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 70 TO LESS THAN 100% - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155022</ns7:id>
+		<ns7:name>0155022 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 70 TO LESS THAN 100% - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155023</ns7:id>
+		<ns7:name>0155023 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 70 TO LESS THAN 100% - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155024</ns7:id>
+		<ns7:name>0155024 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 70 TO LESS THAN 100% - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155025</ns7:id>
+		<ns7:name>0155025 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 70 TO LESS THAN 100% - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155026</ns7:id>
+		<ns7:name>0155026 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 100% JUICE OR CONTAINS MILK OTHER THAN COFFEE - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155027</ns7:id>
+		<ns7:name>0155027 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 100% JUICE OR CONTAINS MILK OTHER THAN COFFEE - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155028</ns7:id>
+		<ns7:name>0155028 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 100% JUICE OR CONTAINS MILK OTHER THAN COFFEE - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155029</ns7:id>
+		<ns7:name>0155029 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 100% JUICE OR CONTAINS MILK OTHER THAN COFFEE - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155030</ns7:id>
+		<ns7:name>0155030 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 100% JUICE OR CONTAINS MILK OTHER THAN COFFEE - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155046</ns7:id>
+		<ns7:name>0155046 PREPACKAGED NON-CARBONATED BEV - SWEETENED TEA - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155047</ns7:id>
+		<ns7:name>0155047 PREPACKAGED NON-CARBONATED BEV - SWEETENED TEA - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155048</ns7:id>
+		<ns7:name>0155048 PREPACKAGED NON-CARBONATED BEV - SWEETENED TEA - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155049</ns7:id>
+		<ns7:name>0155049 PREPACKAGED NON-CARBONATED BEV - SWEETENED TEA - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155050</ns7:id>
+		<ns7:name>0155050 PREPACKAGED NON-CARBONATED BEV - SWEETENED TEA - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155051</ns7:id>
+		<ns7:name>0155051 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED TEA - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155052</ns7:id>
+		<ns7:name>0155052 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED TEA - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155053</ns7:id>
+		<ns7:name>0155053 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED TEA - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155054</ns7:id>
+		<ns7:name>0155054 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED TEA - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155055</ns7:id>
+		<ns7:name>0155055 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED TEA - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155056</ns7:id>
+		<ns7:name>0155056 PREPACKAGED NON-CARBONATED BEV - COFFEE - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155057</ns7:id>
+		<ns7:name>0155057 PREPACKAGED NON-CARBONATED BEV - COFFEE - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155058</ns7:id>
+		<ns7:name>0155058 PREPACKAGED NON-CARBONATED BEV - COFFEE - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155059</ns7:id>
+		<ns7:name>0155059 PREPACKAGED NON-CARBONATED BEV - COFFEE - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155060</ns7:id>
+		<ns7:name>0155060 PREPACKAGED NON-CARBONATED BEV - COFFEE - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155061</ns7:id>
+		<ns7:name>0155061 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED WATER - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155062</ns7:id>
+		<ns7:name>0155062 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED WATER - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155063</ns7:id>
+		<ns7:name>0155063 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED WATER - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155064</ns7:id>
+		<ns7:name>0155064 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED WATER - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155065</ns7:id>
+		<ns7:name>0155065 PREPACKAGED NON-CARBONATED BEV - UNSWEETENED WATER - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155066</ns7:id>
+		<ns7:name>0155066 PREPACKAGED NON-CARBONATED BEV - FLAVORED UNSWEETENED WATER - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155067</ns7:id>
+		<ns7:name>0155067 PREPACKAGED NON-CARBONATED BEV - FLAVORED UNSWEETENED WATER - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155068</ns7:id>
+		<ns7:name>0155068 PREPACKAGED NON-CARBONATED BEV - FLAVORED UNSWEETENED WATER - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155069</ns7:id>
+		<ns7:name>0155069 PREPACKAGED NON-CARBONATED BEV - FLAVORED UNSWEETENED WATER - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0155070</ns7:id>
+		<ns7:name>0155070 PREPACKAGED NON-CARBONATED BEV - FLAVORED UNSWEETENED WATER - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156001</ns7:id>
+		<ns7:name>0156001 PREPACKAGED CARBONATED BEV - LESS THAN 25% JUICE OR SWEETENED OTHER THAN TEA AND W - O MILK - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156002</ns7:id>
+		<ns7:name>0156002 PREPACKAGED CARBONATED BEV - LESS THAN 25% JUICE OR SWEETENED OTHER THAN TEA AND W - O MILK - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156003</ns7:id>
+		<ns7:name>0156003 PREPACKAGED CARBONATED BEV - LESS THAN 25% JUICE OR SWEETENED OTHER THAN TEA AND W - O MILK - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156004</ns7:id>
+		<ns7:name>0156004 PREPACKAGED CARBONATED BEV - LESS THAN 25% JUICE OR SWEETENED OTHER THAN TEA AND W - O MILK - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156005</ns7:id>
+		<ns7:name>0156005 PREPACKAGED CARBONATED BEV - LESS THAN 25% JUICE OR SWEETENED OTHER THAN TEA AND W - O MILK - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156006</ns7:id>
+		<ns7:name>0156006 PREPACKAGED CARBONATED BEV - 25-50% JUICE - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156007</ns7:id>
+		<ns7:name>0156007 PREPACKAGED CARBONATED BEV - 25-50% JUICE - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156008</ns7:id>
+		<ns7:name>0156008 PREPACKAGED CARBONATED BEV - 25-50% JUICE - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156009</ns7:id>
+		<ns7:name>0156009 PREPACKAGED CARBONATED BEV - 25-50% JUICE - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156010</ns7:id>
+		<ns7:name>0156010 PREPACKAGED CARBONATED BEV - 25-50% JUICE - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156011</ns7:id>
+		<ns7:name>0156011 PREPACKAGED CARBONATED BEV - 50 TO LESS THAN 70% JUICE - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156012</ns7:id>
+		<ns7:name>0156012 PREPACKAGED CARBONATED BEV - 50 TO LESS THAN 70% JUICE - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156013</ns7:id>
+		<ns7:name>0156013 PREPACKAGED CARBONATED BEV - 50 TO LESS THAN 70% JUICE - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156014</ns7:id>
+		<ns7:name>0156014 PREPACKAGED CARBONATED BEV - 50 TO LESS THAN 70% JUICE - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156015</ns7:id>
+		<ns7:name>0156015 PREPACKAGED CARBONATED BEV - 50 TO LESS THAN 70% JUICE - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156016</ns7:id>
+		<ns7:name>0156016 PREPACKAGED CARBONATED BEV - 70 TO LESS THAN 100% JUICE - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156017</ns7:id>
+		<ns7:name>0156017 PREPACKAGED CARBONATED BEV - 70 TO LESS THAN 100% JUICE - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156018</ns7:id>
+		<ns7:name>0156018 PREPACKAGED CARBONATED BEV - 70 TO LESS THAN 100% JUICE - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156019</ns7:id>
+		<ns7:name>0156019 PREPACKAGED CARBONATED BEV - 70 TO LESS THAN 100% JUICE - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156020</ns7:id>
+		<ns7:name>0156020 PREPACKAGED CARBONATED BEV - 70 TO LESS THAN 100% JUICE - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156021</ns7:id>
+		<ns7:name>0156021 PREPACKAGED CARBONATED BEV - 100% JUICE - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156022</ns7:id>
+		<ns7:name>0156022 PREPACKAGED CARBONATED BEV - 100% JUICE - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156023</ns7:id>
+		<ns7:name>0156023 PREPACKAGED CARBONATED BEV - 100% JUICE - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156024</ns7:id>
+		<ns7:name>0156024 PREPACKAGED CARBONATED BEV - 100% JUICE - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156025</ns7:id>
+		<ns7:name>0156025 PREPACKAGED CARBONATED BEV - 100% JUICE - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156041</ns7:id>
+		<ns7:name>0156041 PREPACKAGED CARBONATED BEV - UNSWEETENED WATER - UNDER 8 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156042</ns7:id>
+		<ns7:name>0156042 PREPACKAGED CARBONATED BEV - UNSWEETENED WATER - 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156043</ns7:id>
+		<ns7:name>0156043 PREPACKAGED CARBONATED BEV - UNSWEETENED WATER - 16-26 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156044</ns7:id>
+		<ns7:name>0156044 PREPACKAGED CARBONATED BEV - UNSWEETENED WATER - 26-32 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156045</ns7:id>
+		<ns7:name>0156045 PREPACKAGED CARBONATED BEV - UNSWEETENED WATER - 32 OZ OR MORE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0156047</ns7:id>
+		<ns7:name>0156047 NEAR BEER 8-16 OZ</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0157016</ns7:id>
+		<ns7:name>0157016 SNACK AND GROCERY - SNACKS - INDIVIDUAL SERVING</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0157020</ns7:id>
+		<ns7:name>0157020 SNACK AND GROCERY - SNACKS - PACKAGE OF 6 OR MORE SERVINGS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158001</ns7:id>
+		<ns7:name>0158001 BAKERY ITEMS - INDIVIDUAL-SIZED PORTION SOLD INDIVIDUALLY-PREPARED BY RETAILER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158002</ns7:id>
+		<ns7:name>0158002 BAKERY ITEMS - INDIVIDUAL-SIZED PORTIONS SOLD IN QUANTITIES OF 2-PREPARED BY RETAILER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158003</ns7:id>
+		<ns7:name>0158003 BAKERY ITEMS - INDIVIDUAL-SIZED PORTIONS SOLD IN QUANTITIES OF 3 - PREPARED BY RETAILER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158004</ns7:id>
+		<ns7:name>0158004 BAKERY ITEMS - INDIVIDUAL-SIZED PORTIONS SOLD IN QUANTITIES OF 4 OR 5 - PREPARED BY RETAILER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158005</ns7:id>
+		<ns7:name>0158005 BAKERY ITEMS - INDIVIDUAL-SIZED PORTIONS SOLD IN QUANTITIES OF 6 OR MORE - PREPARED BY RETAILER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158006</ns7:id>
+		<ns7:name>0158006 BAKERY ITEMS - INDIVIDUAL-SIZED PORTION SOLD INDIVIDUALLY-PREPARED BY THIRD PARTY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158007</ns7:id>
+		<ns7:name>0158007 BAKERY ITEMS - INDIVIDUAL-SIZED PORTIONS SOLD IN QUANTITIES OF 2-PREPARED BY THIRD PARTY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158008</ns7:id>
+		<ns7:name>0158008 BAKERY ITEMS - INDIVIDUAL-SIZED PORTIONS SOLD IN QUANTITIES OF 3-PREPARED BY THIRD PARTY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158009</ns7:id>
+		<ns7:name>0158009 BAKERY ITEMS - INDIVIDUAL-SIZED PORTIONS SOLD IN QUANTITIES OF 4 OR 5-PREPARED BY THIRD PARTY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158010</ns7:id>
+		<ns7:name>0158010 BAKERY ITEMS - INDIVIDUAL-SIZED PORTIONS SOLD IN QUANTITIES OF 6 OR MORE-PREPARED BY THIRD PARTY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158011</ns7:id>
+		<ns7:name>0158011 BAKERY ITEMS - OTHER BAKERY ITEMS - PREPARED BY THIRD PARTY</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0158012</ns7:id>
+		<ns7:name>0158012 BAKERY ITEMS - OTHER BAKERY ITEMS - PREPARED BY RETAILER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0159013</ns7:id>
+		<ns7:name>0159013 FROZEN DESSERTS - PREPARED BY RETAILER HAND-DIPPED HALF-PINT TO LESS THAN 1 PINT</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0159014</ns7:id>
+		<ns7:name>0159014 FROZEN DESSERTS - PREPARED BY RETAILER- HAND-DIPPED- PINT TO LESS THAN 1 QUART</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0160001</ns7:id>
+		<ns7:name>0160001 PREPARED FOOD - NONALCOHOLIC BEV - HOT FOOD - NO BEVERAGE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0160002</ns7:id>
+		<ns7:name>0160002 PREPARED FOOD - NONALCOHOLIC BEV - COLD SANDWICH - RETAILER PREPARED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0160003</ns7:id>
+		<ns7:name>0160003 PREPARED FOOD - NONALCOHOLIC BEV - COLD SANDWICH - THIRD PARTY PREPARED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0160010</ns7:id>
+		<ns7:name>0160010 PREPARED FOOD - NONALCOHOLIC BEV - RETAILER PREPARED COMBINATION WITHOUT BEVERAGE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0160027</ns7:id>
+		<ns7:name>0160027 PREPARED FOOD - NONALCOHOLIC BEV - HOT DRINK - SWEETENED WITH NO MILK - LESS THAN 50% JUICE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0160030</ns7:id>
+		<ns7:name>0160030 PREPARED FOOD - NONALCOHOLIC BEV - FOUNTAIN DRINK - NONCARBONATED - UNSWEETENED OR CONTAINS MILK - GREATER THAN 50% JUICE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>0160033</ns7:id>
+		<ns7:name>0160033 PREPARED FOOD - NONALCOHOLIC BEV - HOT SANDWICH</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>7026001</ns7:id>
+		<ns7:name>7026001 CUSTOM WHOLE FOODS ALCOHOL - BEER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>7026002</ns7:id>
+		<ns7:name>7026002 CUSTOM WHOLE FOODS ALCOHOL - WINE 14% OR LESS ALCOHOL</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>7026003</ns7:id>
+		<ns7:name>7026003 CUSTOM WHOLE FOODS ALCOHOL - WINE GREATER THAN 14% BUT LESS THAN 20% ALCOHOL</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>7026004</ns7:id>
+		<ns7:name>7026004 CUSTOM WHOLE FOODS ALCOHOL - WINE 20% OR MORE ALCOHOL</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>7026008</ns7:id>
+		<ns7:name>7026008 CUSTOM WHOLE FOODS ALCOHOL - LIQUOR 20% OR MORE ALCOHOL</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>7027001</ns7:id>
+		<ns7:name>7027001 CUSTOM BAG FEES - CHECKOUT BAG</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>8900001</ns7:id>
+		<ns7:name>8900001 TAX HOLIDAY - ELIGIBLE BACK TO SCHOOL SUPPLIES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>8900002</ns7:id>
+		<ns7:name>8900002 TAX HOLIDAY - HURRICANE PREPAREDNESS SUPPLIES</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>8900003</ns7:id>
+		<ns7:name>8900003 TAX HOLIDAY - ELIGIBLE BEDDING </ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>8900004</ns7:id>
+		<ns7:name>8900004 TAX HOLIDAY - ELIGIBLE ACCESSORIES AND COSMETICS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>8910001</ns7:id>
+		<ns7:name>8910001 PRODUCE CUT AND MIXED BY RETAILER</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>8910002</ns7:id>
+		<ns7:name>8910002 PREPARED FOOD/NONALCOHOLIC BEV - LARGE RETAILER PREPARED COMBINATION WITHOUT BEVERAGE</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>8910003</ns7:id>
+		<ns7:name>8910003 UNHEATED GROCERY AND DELI - SUSHI PREPARED BY RETAILER - SOLD BY WT/VOL - INTENDED TO BE EATEN UNHEATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>8910004</ns7:id>
+		<ns7:name>8910004 UNHEATED GROCERY AND DELI - SUSHI PREPARED BY RETAILER - NOT SOLD BY WT/VOL - INTENDED TO BE EATEN UNHEATED</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>9989000</ns7:id>
+		<ns7:name>9989000 NON-TAXABLE PRODUCTS AND SVCS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+	<pfx6:taxHierarchyClass ns3:Action = "Insert">
+		<ns7:id>9999000</ns7:id>
+		<ns7:name>9999000 TAXABLE PRODUCTS AND SVCS</ns7:name>
+		<ns7:level>0</ns7:level>
+		<ns7:parentId>0</ns7:parentId>
+	</pfx6:taxHierarchyClass>
+</pfx6:taxHierarchyClasses>

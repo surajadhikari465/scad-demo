@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Tender/V2"
+     xmlns:lif="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V2"
+     xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+     xmlns:prf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1"
+     xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+     xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1"
+     xmlns:aff="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1"
+     xmlns:ttf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1"
+     targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Tender/V2"
+     version="0.0"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified">
+
+    <!-- ================== -->
+    <!-- Schema Imports             -->
+    <!-- ================== -->
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1" schemaLocation="../Common/CommonRefPromoTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1" schemaLocation="../Common/CommonRefTenderTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V2" schemaLocation="CommonRefTypes.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../../Amount/Amount.xsd"/>
+    <xs:import namespace="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1" schemaLocation="../../Affinity/Affinity.xsd"/>
+
+    <!-- ================== -->
+    <!-- Global Elements             -->
+    <!-- ================== -->
+    <xs:element name="tender" type="TenderType"/>
+    <xs:complexType name="TenderType">
+        <xs:sequence>
+            <xs:element name="isAutoReconcile" type="crf:WfmBoolType" minOccurs="0"/>
+            <xs:element name="isRewardTender" type="crf:WfmBoolType" minOccurs="0"/>
+            <xs:element name="tenderType" type="lif:TenderTypeCode" minOccurs="0"/>
+            <xs:element name="typeCode" type="lif:TenderSalesTypeCode" minOccurs="0"/>
+            <xs:element name="amount" type="amt:AmountType" minOccurs="0"/>
+            <xs:element name="tenderChanges" type="lif:TenderChangesBase" minOccurs="0"/>
+            <xs:element name="cashBack" type="amt:AmountType" minOccurs="0"/>
+            <xs:element name="resonCode" type="crf:ReasonCodeType" minOccurs="0"/>
+            <xs:element name="authorizations" type="lif:TenderAuthorizationsBase" minOccurs="0"/>
+            <xs:element name="tip" type="amt:AmountType" minOccurs="0"/>
+            <xs:element name="roundings" type="amt:AmountsRoundedType" minOccurs="0"/>
+            <xs:element name="checks" type="lif:TenderChecksBase" minOccurs="0"/>
+            <xs:element name="creditDebitCards" type="lif:TenderCreditDebitsDomainSpecific" minOccurs="0"/>
+            <xs:element name="coupons" type="lif:TenderCouponsBase" minOccurs="0"/>
+            <xs:element name="foodStamps" type="lif:TenderFoodStampsBase" minOccurs="0"/>
+            <xs:element name="affinities" type="aff:AffinitiesType" minOccurs="0"/>
+            <xs:element name="giftCards" type="lif:TenderGiftCardsBase" minOccurs="0"/>
+            <xs:element name="tenderId" type="lif:TenderId" minOccurs="0"/>
+            <xs:element name="wicCvCheck" type="lif:WICCheckType" minOccurs="0"/>
+            <xs:element name="cashbackTenderId" type="lif:TenderId" minOccurs="0"/>
+            <xs:element name="tenderDescription" type="txf:DescriptionCommonData" minOccurs="0"/>
+            <xs:element name="promotionId" type="crf:PromotionIdType" minOccurs="0"/>
+            <xs:element name="tenderRestrictionRule" type="lif:TenderRestrictionRuleType" minOccurs="0"/>
+            <xs:element name="wicCheck" type="lif:WICCheckType" minOccurs="0"/>
+            <xs:element name="eWic" type="lif:EwicPaymentProcessType" minOccurs="0"/>
+            <xs:element name="houseAccount" type="lif:HouseAccountType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
