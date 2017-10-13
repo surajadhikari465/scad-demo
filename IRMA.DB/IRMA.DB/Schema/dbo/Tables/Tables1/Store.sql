@@ -240,3 +240,7 @@ GRANT SELECT
     ON OBJECT::[dbo].[Store] TO [IRMAPDXExtractRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[Store] TO [TibcoDataWriter]
+    AS [dbo];

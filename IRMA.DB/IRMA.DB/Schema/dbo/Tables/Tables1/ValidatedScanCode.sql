@@ -126,3 +126,7 @@ GRANT SELECT
     ON OBJECT::[dbo].[ValidatedScanCode] TO [IRMAPDXExtractRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[ValidatedScanCode] TO [TibcoDataWriter]
+    AS [dbo];

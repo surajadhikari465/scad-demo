@@ -387,3 +387,12 @@ GRANT SELECT
     ON OBJECT::[dbo].[Price] TO [MammothRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[Price] TO [TibcoDataWriter]
+    AS [dbo];
+
+GO
+GRANT UPDATE
+    ON OBJECT::[dbo].[Price] TO [TibcoDataWriter]
+    AS [dbo];

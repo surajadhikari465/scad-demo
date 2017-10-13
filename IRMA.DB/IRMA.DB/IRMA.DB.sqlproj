@@ -3245,6 +3245,9 @@
     <None Include="SQL Agent Job\ItemCatalog - Straight Purge.sql" />
     <Build Include="Security\TibcoLogin.sql" />
     <Build Include="Security\TibcoUser.sql" />
+    <Build Include="Schema\infor\Stored Procedures\BatchUpdatePriceFromGPM.sql" />
+    <Build Include="Schema\infor\Tables\StagingMammothPrice.sql" />
+    <Build Include="Schema\infor\Tables\StagingIrmaPrice.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

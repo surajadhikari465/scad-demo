@@ -609,3 +609,8 @@ GRANT SELECT
     ON OBJECT::[dbo].[ItemIdentifier] TO [IRMAPDXExtractRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[ItemIdentifier] TO [TibcoDataWriter]
+    AS [dbo];
+

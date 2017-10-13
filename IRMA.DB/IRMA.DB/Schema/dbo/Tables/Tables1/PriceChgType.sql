@@ -130,3 +130,8 @@ GRANT VIEW CHANGE TRACKING
     ON OBJECT::[dbo].[PriceChgType] TO [iCONReportingRole]
     AS [dbo];
 
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[PriceChgType] TO [TibcoDataWriter]
+    AS [dbo];

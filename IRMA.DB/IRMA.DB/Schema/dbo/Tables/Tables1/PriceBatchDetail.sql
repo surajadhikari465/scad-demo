@@ -769,3 +769,12 @@ GRANT VIEW CHANGE TRACKING
     ON OBJECT::[dbo].[PriceBatchDetail] TO [iCONReportingRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[PriceBatchDetail] TO [TibcoDataWriter]
+    AS [dbo];
+
+GO
+GRANT UPDATE
+    ON OBJECT::[dbo].[PriceBatchDetail] TO [TibcoDataWriter]
+    AS [dbo];

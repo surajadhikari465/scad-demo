@@ -47,3 +47,18 @@ GRANT VIEW CHANGE TRACKING
     ON OBJECT::[dbo].[ItemUomOverride] TO [spice_user]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[ItemUomOverride] TO [TibcoDataWriter]
+    AS [dbo];
+
+GO
+GRANT UPDATE
+    ON OBJECT::[dbo].[ItemUomOverride] TO [TibcoDataWriter]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[dbo].[ItemUomOverride] TO [TibcoDataWriter]
+    AS [dbo];
