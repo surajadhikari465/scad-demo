@@ -714,11 +714,8 @@ ExitSub:
                                 If InstanceDataDAO.IsFlagActiveCached("BypassPrintShelfTags_PerformPrintLogic") _
                                     AndAlso
                                     (
-                                       Not (chgType = "DELETE" _
-                                            Or InstanceDataDAO.IsFlagActive("GlobalPriceManagement", storeNumber)
-                                        ) _
-                                         Or chgType = "DELETE"
-                                    ) Then
+                                       chgType = "DELETE" OrElse Not InstanceDataDAO.IsFlagActive("GlobalPriceManagement", storeNumber)
+                                     ) Then
                                     logger.Debug("PerformPrintLogic Start: PriceBatchHeaderID=" + ugrdList.Selected.Rows(i).Cells("PriceBatchHeaderID").Value.ToString + ", BypassPrintShelfTags_PerformPrintLogic= TRUE")
                                     PerformPrintLogic(rowIndex:=i, isReprint:=False)
                                     logger.Debug("PerformPrintLogic End")
