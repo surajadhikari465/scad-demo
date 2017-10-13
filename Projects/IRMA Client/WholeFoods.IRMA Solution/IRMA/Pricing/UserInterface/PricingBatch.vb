@@ -714,8 +714,8 @@ ExitSub:
                                 If InstanceDataDAO.IsFlagActiveCached("BypassPrintShelfTags_PerformPrintLogic") _
                                     AndAlso
                                     (
-                                        (chgType <> "DELETE" _
-                                         AndAlso InstanceDataDAO.IsFlagActive("GlobalPriceManagement", storeNumber)
+                                       Not (chgType = "DELETE" _
+                                            Or InstanceDataDAO.IsFlagActive("GlobalPriceManagement", storeNumber)
                                         ) _
                                          Or chgType = "DELETE"
                                     ) Then
