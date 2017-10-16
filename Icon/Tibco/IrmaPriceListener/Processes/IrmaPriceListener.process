@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx10="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:WFM.UID="java://UID" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx7="http://www.tibco.com/schemas/IrmaQueueListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx6="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx10="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:WFM.UID="java://UID" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx7="http://www.tibco.com/schemas/IrmaQueueListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
@@ -226,7 +226,7 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Single Load Dead Letter Queue Exception</pd:from>
+            <pd:from>Catch Single Load Exception</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -235,13 +235,6 @@
         <pd:transition>
             <pd:from>Load Prices Into IRMA (One-by-One Update)</pd:from>
             <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Catch Single Load Exception</pd:from>
-            <pd:to>Single Load Dead Letter Queue Exception</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -365,70 +358,6 @@
             </config>
             <pd:inputBindings/>
         </pd:activity>
-        <pd:activity name="Single Load Dead Letter Queue Exception">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>709</pd:x>
-            <pd:y>476</pd:y>
-            <config>
-                <processName>/Processes/Common/JMS/PublishOntoDeadLetterQ.process</processName>
-            </config>
-            <pd:inputBindings>
-                <DeadLetterInput>
-                    <ns4:request>
-                        <ns4:applicationID>
-                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
-                        </ns4:applicationID>
-                        <ns4:transactionID>
-                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSMessageID"/>
-                        </ns4:transactionID>
-                        <ns4:correlationID>
-                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
-                        </ns4:correlationID>
-                        <ns4:failedSystemName>
-                            <xsl:value-of select="&quot;IrmaQueueListener&quot;"/>
-                        </ns4:failedSystemName>
-                        <ns4:timeInterval>
-                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/DLQ/TimeInterval"/>
-                        </ns4:timeInterval>
-                        <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
-                            <ns4:errorCode>
-                                <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
-                            </ns4:errorCode>
-                        </xsl:if>
-                        <ns4:errorMessage>
-                            <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
-                        </ns4:errorMessage>
-                        <ns4:stackTrace>
-                            <xsl:value-of select="$_error/pfx4:ErrorReport/StackTrace"/>
-                        </ns4:stackTrace>
-                        <ns4:currentTimestamp>
-                            <xsl:value-of select="current-dateTime()"/>
-                        </ns4:currentTimestamp>
-                        <ns4:exception>
-                            <ns4:system>
-                                <ns4:payload>
-                                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
-                                </ns4:payload>
-                                <ns4:destinationQueue>
-                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Destinations/Queues/MammothSourceQueue"/>
-                                </ns4:destinationQueue>
-                                <ns4:isEncrypted>
-                                    <xsl:value-of select="&quot;false&quot;"/>
-                                </ns4:isEncrypted>
-                                <ns4:toRecipient>
-                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/To"/>
-                                </ns4:toRecipient>
-                                <ns4:ccRecipient>
-                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/cC"/>
-                                </ns4:ccRecipient>
-                            </ns4:system>
-                        </ns4:exception>
-                    </ns4:request>
-                    <OtherProperties/>
-                </DeadLetterInput>
-            </pd:inputBindings>
-        </pd:activity>
     </pd:group>
     <pd:activity name="Assign">
         <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
@@ -474,72 +403,6 @@
             <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
         </config>
         <pd:inputBindings/>
-    </pd:activity>
-    <pd:activity name="Dead Letter Queue Exception">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>429</pd:x>
-        <pd:y>632</pd:y>
-        <config>
-            <processName>/Processes/Common/JMS/PublishOntoDeadLetterQ.process</processName>
-        </config>
-        <pd:inputBindings>
-            <DeadLetterInput>
-                <ns4:request>
-                    <ns4:applicationID>
-                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
-                    </ns4:applicationID>
-                    <ns4:transactionID>
-                        <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSMessageID"/>
-                    </ns4:transactionID>
-                    <ns4:correlationID>
-                        <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/JMSHeaders/ns:JMSCorrelationID"/>
-                    </ns4:correlationID>
-                    <ns4:failedSystemName>
-                        <xsl:value-of select="&quot;IrmaQueueListener&quot;"/>
-                    </ns4:failedSystemName>
-                    <ns4:timeInterval>
-                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/DLQ/TimeInterval"/>
-                    </ns4:timeInterval>
-                    <xsl:if test="$_error/pfx4:ErrorReport/MsgCode">
-                        <ns4:errorCode>
-                            <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
-                        </ns4:errorCode>
-                    </xsl:if>
-                    <ns4:errorMessage>
-                        <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
-                    </ns4:errorMessage>
-                    <xsl:if test="$_error/pfx4:ErrorReport/StackTrace">
-                        <ns4:stackTrace>
-                            <xsl:value-of select="$_error/pfx4:ErrorReport/StackTrace"/>
-                        </ns4:stackTrace>
-                    </xsl:if>
-                    <ns4:currentTimestamp>
-                        <xsl:value-of select="current-dateTime()"/>
-                    </ns4:currentTimestamp>
-                    <ns4:exception>
-                        <ns4:system>
-                            <ns4:payload>
-                                <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
-                            </ns4:payload>
-                            <ns4:destinationQueue>
-                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Destinations/Queues/MammothSourceQueue"/>
-                            </ns4:destinationQueue>
-                            <ns4:isEncrypted>
-                                <xsl:value-of select="&quot;false&quot;"/>
-                            </ns4:isEncrypted>
-                            <ns4:toRecipient>
-                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/To"/>
-                            </ns4:toRecipient>
-                            <ns4:ccRecipient>
-                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/Notification/cC"/>
-                            </ns4:ccRecipient>
-                        </ns4:system>
-                    </ns4:exception>
-                </ns4:request>
-                <OtherProperties/>
-            </DeadLetterInput>
-        </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Parse Price Message">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
@@ -781,13 +644,6 @@ WHERE TransactionId = ?</statement>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Catch-All-Exceptions</pd:from>
-        <pd:to>Dead Letter Queue Exception</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Assign</pd:from>
         <pd:to>Parse Price Message</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -818,13 +674,6 @@ WHERE TransactionId = ?</statement>
     <pd:transition>
         <pd:from>Load One By One Group</pd:from>
         <pd:to>Irma Price Update Group</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Dead Letter Queue Exception</pd:from>
-        <pd:to>Delete All Staging Price Records (All Failed)</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -872,5 +721,12 @@ WHERE TransactionId = ?</statement>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch-All-Exceptions</pd:from>
+        <pd:to>Delete All Staging Price Records (All Failed)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>
