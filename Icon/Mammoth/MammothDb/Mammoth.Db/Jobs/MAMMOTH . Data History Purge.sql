@@ -31,7 +31,7 @@ EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=@jobName,
               @notify_level_netsend=0, 
               @notify_level_page=0, 
               @delete_level=0, 
-              @description=N'No description available.', 
+              @description=N'Mammoth Daily Data History Purge', 
               @category_name=N'[Uncategorized (Local)]', 
               @owner_login_name=N'sa', 
               @notify_email_operator_name=N'SQL Server DBAs', @job_id = @jobId OUTPUT
@@ -61,7 +61,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Purge Da
               @retry_attempts=0, 
               @retry_interval=0, 
               @os_run_priority=0, @subsystem=N'TSQL', 
-              @command=N'EXECUTE app.PurgeData', 
+              @command=N'EXECUTE app.PurgeData 50000', 
               @database_name=@dbName, 
               @flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
@@ -135,17 +135,16 @@ EXEC @ReturnCode = msdb.dbo.sp_update_job @job_id = @jobId, @start_step_id = 1
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_add_jobschedule @job_id=@jobId, @name=N'DAILY . MTWRFSN . 01X . 0000', 
               @enabled=1, 
-              @freq_type=4, 
-              @freq_interval=1, 
-              @freq_subday_type=1, 
-              @freq_subday_interval=0, 
+			  @freq_type=4, 
+			  @freq_interval=1, 
+			  @freq_subday_type=4, 
+			  @freq_subday_interval=10, 
               @freq_relative_interval=0, 
               @freq_recurrence_factor=0, 
               @active_start_date=20160209, 
               @active_end_date=99991231, 
               @active_start_time=0, 
-              @active_end_time=235959, 
-              @schedule_uid=N'a9e2f64d-0b45-4020-93b6-92a2dcdbfc14'
+              @active_end_time=235959
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_add_jobserver @job_id = @jobId, @server_name = N'(local)'
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback

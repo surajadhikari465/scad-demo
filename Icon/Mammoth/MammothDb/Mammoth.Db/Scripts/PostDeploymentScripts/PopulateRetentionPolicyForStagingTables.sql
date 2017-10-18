@@ -15,77 +15,64 @@ BEGIN
 		USE Mammoth_Dev
 
 		-- DEV DB
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth_Dev' AND rp.[Schema] = 'stage' AND rp.[Table] = 'Price')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth_Dev', N'stage', N'Price', 1)
+		TRUNCATE TABLE [app].[RetentionPolicy]
 
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth_Dev' AND rp.[Schema] = 'stage' AND rp.[Table] = 'ItemLocale')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth_Dev', N'stage', N'ItemLocale', 1)
+		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
+		VALUES 
+		('Mammoth_Dev', 'app', 'AppLog', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth_Dev', 'esb', 'MessageQueueItemLocale', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth_Dev', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth_Dev', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth_Dev', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth_Dev', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth_Dev' AND rp.[Schema] = 'stage' AND rp.[Table] = 'ItemLocaleExtended')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth_Dev', N'stage', N'ItemLocaleExtended', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth_Dev' AND rp.[Schema] = 'stage' AND rp.[Table] = 'Items')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth_Dev', N'stage', N'Items', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth_Dev' AND rp.[Schema] = 'stage' AND rp.[Table] = 'HierarchyClass')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth_Dev', N'stage', N'HierarchyClass', 1)
 
 		-- TEST DB
 		USE Mammoth
-			IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'Price')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth', N'stage', N'Price', 1)
+		
+		TRUNCATE TABLE [app].[RetentionPolicy]
 
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'ItemLocale')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth', N'stage', N'ItemLocale', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'ItemLocaleExtended')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth', N'stage', N'ItemLocaleExtended', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'Items')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth', N'stage', N'Items', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-DEV\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'HierarchyClass')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-DEV\MAMMOTH', N'Mammoth', N'stage', N'HierarchyClass', 1)
+		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
+		VALUES 
+		('Mammoth', 'app', 'AppLog', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueueItemLocale', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 	END
 
 	-- QA Instance
 	IF @serverName = 'QA-01-MAMMOTH\MAMMOTH'
 	BEGIN
 		USE Mammoth
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-QA\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'Price')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-QA\MAMMOTH', N'Mammoth', N'stage', N'Price', 1)
 
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-QA\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'ItemLocale')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-QA\MAMMOTH', N'Mammoth', N'stage', N'ItemLocale', 1)
+		TRUNCATE TABLE [app].[RetentionPolicy]
 
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-QA\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'ItemLocaleExtended')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-QA\MAMMOTH', N'Mammoth', N'stage', N'ItemLocaleExtended', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-QA\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'Items')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-QA\MAMMOTH', N'Mammoth', N'stage', N'Items', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-QA\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'HierarchyClass')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-QA\MAMMOTH', N'Mammoth', N'stage', N'HierarchyClass', 1)
+		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
+		VALUES 
+		('Mammoth', 'app', 'AppLog', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueueItemLocale', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 	END
 
 	-- PRD Instance
 	IF @serverName = 'PRD-01-MAMMOTH\MAMMOTH'
 	BEGIN
 		USE Mammoth
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-PRD\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'Price')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-PRD\MAMMOTH', N'Mammoth', N'stage', N'Price', 1)
+		TRUNCATE TABLE [app].[RetentionPolicy]
 
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-PRD\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'ItemLocale')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-PRD\MAMMOTH', N'Mammoth', N'stage', N'ItemLocale', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-PRD\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'ItemLocaleExtended')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-PRD\MAMMOTH', N'Mammoth', N'stage', N'ItemLocaleExtended', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-PRD\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'Items')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-PRD\MAMMOTH', N'Mammoth', N'stage', N'Items', 1)
-
-		IF NOT EXISTS (SELECT * FROM [app].[RetentionPolicy] rp WHERE rp.[Server] = 'MAMMOTH-DB01-PRD\MAMMOTH' AND rp.[Database] = 'Mammoth' AND rp.[Schema] = 'stage' AND rp.[Table] = 'HierarchyClass')
-			INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'MAMMOTH-DB01-PRD\MAMMOTH', N'Mammoth', N'stage', N'HierarchyClass', 1)
+		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
+		VALUES 
+		('Mammoth', 'app', 'AppLog', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueueItemLocale', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 	END
 
 	insert into app.PostDeploymentScriptHistory values(@scriptKey, getdate())

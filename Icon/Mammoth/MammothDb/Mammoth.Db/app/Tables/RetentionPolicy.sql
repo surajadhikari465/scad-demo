@@ -2,15 +2,27 @@
 
 [RetentionPolicyId] [int] IDENTITY(1,1) NOT NULL,
 
-[Server] [nvarchar](50) NULL,
+[Database] [nvarchar](16) NOT NULL,
 
-[Database] [nvarchar](16) NULL,
+[Schema] [nvarchar](50) NOT NULL,
 
-[Schema] [nvarchar](50) NULL,
+[Table] [nvarchar](64) NOT NULL,
 
-[Table] [nvarchar](64) NULL,
+[ReferenceColumn] [nvarchar](50) NOT NULL,
 
-[DaysToKeep] [int] NULL,
+[DaysToKeep] [int] NOT NULL,
+
+[TimeToStart] [int] NOT NULL,
+
+[TimeToEnd] [int] NOT NULL,
+
+[IncludedInDailyPurge] [bit] NOT NULL,
+
+[DailyPurgeCompleted] [bit] NOT NULL,
+
+[PurgeJobName] [nvarchar](50) NOT NULL,
+
+[LastPurgedDateTime] [datetime] NULL,
 
  CONSTRAINT [PK_RetentionPolicy] PRIMARY KEY CLUSTERED 
 

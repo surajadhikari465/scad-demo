@@ -1,45 +1,80 @@
 ﻿CREATE PROCEDURE [app].[PurgeData] 
-AS 
+@batchVolume	 INT
+AS
 BEGIN
-	-- Loop through the tables to be purged and delete them according to the retention policy.
-	DECLARE @DeleteCommands TABLE(Command NVARCHAR(255)
-	)
+	UPDATE app.RetentionPolicy
+	SET DailyPurgeCompleted = 0
+	WHERE CONVERT(DATE, GETDATE()) <>  CONVERT(DATE, ISNULL(LastPurgedDateTime, GETDATE()))
+	AND PurgeJobName = 'Data History Purge'
+	AND DailyPurgeCompleted = 1
 
-	DECLARE @Command nvarchar(255)
+	-- Execute Delete commands based on RetentionPolicy table.
+	IF OBJECT_ID('tempdb..#DeteleCommands') IS NOT NULL
+		BEGIN
+			DROP TABLE #DeleteCommands
+		END
 
-	PRINT 'Inserting  Delete Commands'
+	DECLARE @currentHour int 
+	SELECT @currentHour = DATEPART(HOUR, GETDATE())
 
-	INSERT INTO @DeleteCommands
+	CREATE TABLE #DeleteCommands(Command NVARCHAR(max));
 
-	SELECT 'DELETE FROM ' +
-		QUOTENAME(rp.[Database]) + '.' + 
-		QUOTENAME(rp.[Schema]) + '.' + 
-		QUOTENAME(rp.[Table]) + 
-		'WHERE InsertDate < DATEADD(d, -' + convert(nvarchar(8), rp.DaysToKeep) + ', GETDATE())
-	'
-	FROM app.RetentionPolicy rp
+	INSERT INTO
+		#DeleteCommands
+	SELECT
+		'
+			declare @actualPurgeCount int = 0
 
+			begin
+				DELETE top(' + convert(varchar(5), @batchVolume) + ') FROM ' +
+				QUOTENAME(rp.[Schema]) + '.' +
+				QUOTENAME(rp.[Table]) +
+				' WHERE ' + QUOTENAME(rp.[ReferenceColumn]) + ' < ' +
+				'CAST(DATEADD(d, -' +
+				convert(nvarchar(4), rp.DaysToKeep) +
+				', GETDATE()) AS DATE)
+
+				set @actualPurgeCount = @@rowcount
+
+				UPDATE app.RetentionPolicy
+				SET DailyPurgeCompleted = 1
+				WHERE @actualPurgeCount < ' + convert(varchar(5), @batchVolume) + '
+				and RetentionPolicyId = ' + convert(varchar(5), rp.[RetentionPolicyId]) + '
+
+				UPDATE app.RetentionPolicy
+				SET LastPurgedDateTime = ''' + convert(varchar(25), getdate(), 120) + '''
+				WHERE RetentionPolicyId = ' + convert(varchar(5), rp.[RetentionPolicyId]) + '
+			end
+		'      
+	FROM
+		app.RetentionPolicy rp
+	WHERE 
+	    rp.IncludedInDailyPurge = 1
+	  AND
+	    rp.DailyPurgeCompleted = 0
+	  AND 
+	    rp.PurgeJobName = 'Data History Purge'
+	  AND
+		(@currentHour >= rp.TimeToStart AND @currentHour < rp.TimeToEnd)
+
+	DECLARE @Command nvarchar(max)
 
 	DECLARE CommandsCursor CURSOR
-	FOR SELECT * FROM @DeleteCommands
-
+		FOR SELECT * FROM #DeleteCommands
 	OPEN CommandsCursor
 
 	FETCH NEXT FROM CommandsCursor INTO @Command
 
-	WHILE @@FETCH_STATUS = 0 BEGIN
-
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
 		PRINT ''
-
 		PRINT 'Executing - ' + @Command
-
 		EXECUTE sp_executesql @Command
-
 		FETCH NEXT FROM CommandsCursor INTO @Command
-
 	END
 
 	CLOSE CommandsCursor
-
 	DEALLOCATE CommandsCursor
+
+	DROP TABLE #DeleteCommands
 END
