@@ -104,6 +104,7 @@
     <Compile Include="Serializer\ISerializer.cs" />
     <Compile Include="Serializer\NamespaceHelper.cs" />
     <Compile Include="Serializer\Serializer.cs" />
+    <Compile Include="Serializer\SerializerWithoutEncodingType.cs" />
     <Compile Include="Serializer\SerializerWithoutNamespaceAliases.cs" />
     <Compile Include="Serializer\Utf8StringWriter.cs" />
   </ItemGroup>

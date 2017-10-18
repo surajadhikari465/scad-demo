@@ -47,7 +47,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Esb.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Esb.Core.2017.10.9.3\lib\net46\Esb.Core.dll</HintPath>
+      <HintPath>..\packages\Esb.Core.2017.10.18.1\lib\net46\Esb.Core.dll</HintPath>
     </Reference>
     <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>

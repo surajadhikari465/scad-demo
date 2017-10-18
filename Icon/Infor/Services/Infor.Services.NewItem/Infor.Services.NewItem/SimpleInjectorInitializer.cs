@@ -37,7 +37,7 @@ namespace Infor.Services.NewItem
             container.Register<IEsbConnectionFactory>(() => new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromConfig("QueueName") });
             container.Register<IMessageBuilder<IEnumerable<NewItemModel>>, NewItemMessageBuilder>();
             container.Register<IUomMapper, UomMapper>();
-            container.Register<ISerializer<items>, Serializer<items>>();
+            container.Register<ISerializer<items>, SerializerWithoutEncodingType<items>>();
             container.Register<ICollectionValidator<NewItemModel>, NewItemModelCollectionValidator>();
             container.Register(typeof(ICommandHandler<>), new[] { typeof(InforNewItemApplication).Assembly });
             container.Register(typeof(IQueryHandler<,>), new[] { typeof(InforNewItemApplication).Assembly });
