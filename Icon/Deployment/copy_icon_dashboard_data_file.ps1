@@ -17,7 +17,7 @@
 $ext = $args[0].Split(".")[1]
 $srcpath = $args[1]
 $dstpath = $args[2]
-$webServers = $args[3]
+$webServers =  $args[3] -split ","
 $username = $args[4]
 $password = ConvertTo-SecureString -AsPlainText $args[5] -Force
 
