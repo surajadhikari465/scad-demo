@@ -1,6 +1,5 @@
 ﻿using Icon.Dashboard.Mvc.Filters;
 using Icon.Dashboard.Mvc.Helpers;
-using Icon.Dashboard.Mvc.Infrastructure;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.ViewModels;
@@ -12,33 +11,16 @@ using System.Web.Mvc;
 
 namespace Icon.Dashboard.Mvc.Controllers
 {
-    public class EsbController : Controller
+    public class EsbController : BaseDashboardController
     {
         public EsbController() : this(null, null, null, null) { }
 
-        public EsbController(HttpServerUtilityBase serverUtility = null,
+        public EsbController(
+            HttpServerUtilityBase serverUtility = null,
+            IIconDatabaseServiceWrapper loggingServiceWrapper = null,
             string pathToXmlDataFile = null,
-            IDataFileServiceWrapper dataServiceWrapper = null,
-            IIconDatabaseServiceWrapper loggingServiceWrapper = null)
-        {
-            DataFileName = pathToXmlDataFile ?? Utils.DataFileName;
-            _serverUtility = serverUtility;
-            DashboardDataFileService = dataServiceWrapper ?? new DataFileServiceWrapper();
-            IconDatabaseDataAccess = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
-
-        }
-
-        public IDataFileServiceWrapper DashboardDataFileService { get; private set; }
-        public IIconDatabaseServiceWrapper IconDatabaseDataAccess { get; private set; }
-        public HttpServerUtilityBase ServerUtility
-        {
-            get
-            {
-                return _serverUtility ?? Server;
-            }
-        }
-        public string DataFileName { get; set; }
-        private HttpServerUtilityBase _serverUtility;
+            IDataFileServiceWrapper dataServiceWrapper = null)
+            : base(serverUtility, loggingServiceWrapper, pathToXmlDataFile, dataServiceWrapper) { }
 
         #region GET
 
@@ -47,7 +29,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Index()
         {
             //enable filter to use the logging service for building menus
-            HttpContext.Items["loggingDataService"] = IconDatabaseDataAccess;
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
             ViewBag.Action = nameof(Index);
             ViewBag.Title = "Configure ESB Apps";
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
@@ -60,7 +42,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Details(string name)
         {
             //enable filter to use the logging service for building menus
-            HttpContext.Items["loggingDataService"] = IconDatabaseDataAccess;
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
 
             if (String.IsNullOrWhiteSpace(name))
             {
@@ -78,7 +60,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Edit(string name)
         {
             //enable filter to use the logging service for building menus
-            HttpContext.Items["loggingDataService"] = IconDatabaseDataAccess;
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
 
             if (String.IsNullOrWhiteSpace(name))
             {
@@ -96,7 +78,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Create()
         {
             //enable filter to use the logging service for building menus
-            HttpContext.Items["loggingDataService"] = IconDatabaseDataAccess;
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
 
             var viewModel = new EsbEnvironmentViewModel();
             ViewBag.Title = "Create New ESB Environment Configuration";

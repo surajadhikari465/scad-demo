@@ -55,7 +55,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
         {
             // Arrange
             string serverUrlValue = "https://www.wholefoods.com:8080";
-            string expectedHostValue = "www.wholefoods.com";
+            string expectedHostValue = "www";
             // Act
             var hosts = DataFileServiceWrapper.GetHostsFromServerUrl(serverUrlValue);
             // Assert

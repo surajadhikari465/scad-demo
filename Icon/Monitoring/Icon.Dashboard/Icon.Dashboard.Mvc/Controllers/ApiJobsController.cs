@@ -1,39 +1,25 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
 using Icon.Dashboard.Mvc.Filters;
-using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Icon.Dashboard.Mvc.Controllers
 {
-    public class ApiJobsController : Controller
+    public class ApiJobsController : BaseDashboardController
     {
-
-        private HttpServerUtilityBase _serverUtility;
-
         public ApiJobsController() : this(null, null) { }
 
-        public ApiJobsController(IIconDatabaseServiceWrapper loggingServiceWrapper = null,
-            HttpServerUtilityBase serverUtility = null)
-        {
-            IconDatabaseDataAccess = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
-            _serverUtility = serverUtility;
-        }
-        public IIconDatabaseServiceWrapper IconDatabaseDataAccess { get; private set; }
-        public HttpServerUtilityBase ServerUtility
-        {
-            get
-            {
-                return _serverUtility ?? Server;
-            }
-        }
+        public ApiJobsController(
+            HttpServerUtilityBase serverUtility = null,
+            IIconDatabaseServiceWrapper loggingServiceWrapper = null)
+            : base (serverUtility, loggingServiceWrapper ) { }
+
         #region GET
 
         [HttpGet]
@@ -41,7 +27,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Index(string id = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
             //enable filter to use the data service
-            HttpContext.Items["loggingDataService"] = IconDatabaseDataAccess;
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var jobSummaries = GetJobSummariesAndSetRelatedViewData(id, page, pageSize);
 
             return View(jobSummaries);
@@ -51,7 +37,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Pending()
         {
-            var pendingMessages = IconDatabaseDataAccess.GetPendingMessages();
+            var pendingMessages = IconDatabaseService.GetPendingMessages();
             return View(pendingMessages);
         }
 
@@ -81,7 +67,7 @@ namespace Icon.Dashboard.Mvc.Controllers
                 ModelState.Clear();
                 try
                 {
-                    viewModel = IconDatabaseDataAccess.GetApiJobSummaryReport(viewModel.MessageType, viewModel.StartTime.Value, viewModel.EndTime.Value);
+                    viewModel = IconDatabaseService.GetApiJobSummaryReport(viewModel.MessageType, viewModel.StartTime.Value, viewModel.EndTime.Value);
                 }
                 catch (Exception ex)
                 {
@@ -126,7 +112,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             {
                 return GetJobSummariesAndSetRelatedViewData(page, pageSize);
             }
-            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseDataAccess.GetPagedApiJobSummariesByMessageType(jobType, page, pageSize);
+            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseService.GetPagedApiJobSummariesByMessageType(jobType, page, pageSize);
 
             ViewBag.JobType = jobType;
             ViewBag.Title = String.Format("API Controller {0} Message Jobs", jobType);
@@ -137,7 +123,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         private IEnumerable<ApiMessageJobSummaryViewModel> GetJobSummariesAndSetRelatedViewData(int page, int pageSize)
         {
-            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseDataAccess.GetPagedApiJobSummaries(page, pageSize);
+            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseService.GetPagedApiJobSummaries(page, pageSize);
             
             ViewBag.Title = "API Controller Message Jobs Summary";
             ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(page, pageSize);

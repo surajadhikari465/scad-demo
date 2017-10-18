@@ -1,6 +1,5 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
 using Icon.Dashboard.Mvc.Filters;
-using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.ViewModels;
@@ -13,26 +12,14 @@ using System.Web.Mvc;
 
 namespace Icon.Dashboard.Mvc.Controllers
 {
-    public class LogsController : Controller
+    public class LogsController : BaseDashboardController
     {
-        private HttpServerUtilityBase _serverUtility;
-
         public LogsController() : this(null, null) { }
 
-        public LogsController(IIconDatabaseServiceWrapper loggingServiceWrapper = null,
-            HttpServerUtilityBase serverUtility = null)
-        {
-            IconDatabaseDataAccess = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
-            _serverUtility = serverUtility;
-        }
-        public IIconDatabaseServiceWrapper IconDatabaseDataAccess { get; private set; }
-        public HttpServerUtilityBase ServerUtility
-        {
-            get
-            {
-                return _serverUtility ?? Server;
-            }
-        }
+        public LogsController(
+            HttpServerUtilityBase serverUtility = null,
+            IIconDatabaseServiceWrapper loggingServiceWrapper = null)
+            : base (serverUtility, loggingServiceWrapper) { }
 
         #region GET
         [HttpGet]
@@ -41,7 +28,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             string errorLevel = "Any")
         {
             //enable filter to use the data service
-            HttpContext.Items["loggingDataService"] = IconDatabaseDataAccess;
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var logs = GetAppLogsAndSetRelatedViewData(id, page, pageSize);
             SetViewBagLogEntryReportList();
             return View(logs);
@@ -51,7 +38,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult RecentErrors(int appID, int hours = 24)
         {
-            var recentLogEntryReportForApp = IconDatabaseDataAccess.GetRecentLogEntriesReportForApp(
+            var recentLogEntryReportForApp = IconDatabaseService.GetRecentLogEntriesReportForApp(
                 appID, new TimeSpan(hours, 0, 0), LoggingLevel.Error);
             return PartialView("_RecentLogEntriesReportPartial", recentLogEntryReportForApp);
         }
@@ -97,7 +84,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             {
                 return GetAppLogsAndSetRelatedViewData(page, pageSize);
             }
-            var logs = IconDatabaseDataAccess.GetPagedAppLogsByApp(appName, page, pageSize);
+            var logs = IconDatabaseService.GetPagedAppLogsByApp(appName, page, pageSize);
 
             ViewBag.AppName = appName;
             ViewBag.Title = appName + " Log Viewer";
@@ -108,7 +95,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         private IEnumerable<IconLogEntryViewModel> GetAppLogsAndSetRelatedViewData(int page, int pageSize)
         {
-            var logs = IconDatabaseDataAccess.GetPagedAppLogs(page, pageSize);
+            var logs = IconDatabaseService.GetPagedAppLogs(page, pageSize);
             
             ViewBag.Title = "ICON Dashboard Log Viewer (All Apps)";
             ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(page, pageSize);
@@ -134,11 +121,11 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         private void SetViewBagLogEntryReportList()
         {
-            if (null != IconDatabaseDataAccess && IconDatabaseDataAccess is IIconDatabaseServiceWrapper)
+            if (null != IconDatabaseService && IconDatabaseService is IIconDatabaseServiceWrapper)
             {
-                var allApps = (IconDatabaseDataAccess as IIconDatabaseServiceWrapper).GetApps();
+                var allApps = (IconDatabaseService as IIconDatabaseServiceWrapper).GetApps();
 
-                ViewBag.RecentLogEntriesReportList = IconDatabaseDataAccess.GetEmptyLogEntriesReportList(allApps);
+                ViewBag.RecentLogEntriesReportList = IconDatabaseService.GetEmptyLogEntriesReportList(allApps);
                 ViewBag.RecentLogEntriesHours = GetHoursForRecentErrors();
                 ViewBag.MillisecondsForRecentErrorsPolling = GetMillisecondsForRecentErrorsPolling();
             }

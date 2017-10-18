@@ -5,47 +5,26 @@ using System.Web;
 using System.Web.Mvc;
 using Icon.Dashboard.Mvc.ViewModels;
 using Icon.Dashboard.Mvc.Services;
-using System.Configuration;
 using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Filters;
 
 namespace Icon.Dashboard.Mvc.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseDashboardController
     {
-        private HttpServerUtilityBase _serverUtility;
+        public HomeController() : this(null, null, null, null) { }
 
-        public HomeController() : this(null, null, null, null)
-        {
-        }
-
-        public HomeController(string pathToXmlDataFile = null,
-            IDataFileServiceWrapper dataServiceWrapper = null,
+        public HomeController(
+            HttpServerUtilityBase serverUtility = null,
             IIconDatabaseServiceWrapper loggingServiceWrapper = null,
-            HttpServerUtilityBase serverUtility = null)
-        {
-            DataFileName = pathToXmlDataFile ?? Utils.DataFileName;
-            _serverUtility = serverUtility;
-            DashboardDataFileService = dataServiceWrapper ?? new DataFileServiceWrapper();
-            IconDatabaseService = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
-
-        }
-
-        public IDataFileServiceWrapper DashboardDataFileService { get; private set; }
-        public IIconDatabaseServiceWrapper IconDatabaseService { get; private set; }
-        public HttpServerUtilityBase ServerUtility
-        {
-            get
-            {
-                return _serverUtility ?? Server;
-            }
-        }
-
-        public string DataFileName { get; set; }
+            string pathToXmlDataFile = null,
+            IDataFileServiceWrapper dataServiceWrapper = null)
+            : base(serverUtility, loggingServiceWrapper, pathToXmlDataFile, dataServiceWrapper) { }
 
         #region GET
         [HttpGet]
+        [MenuOptionsFilter]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Index()
         {
@@ -56,6 +35,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
+        [MenuOptionsFilter]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Details(string application, string server)
         {
@@ -66,6 +46,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
+        [MenuOptionsFilter]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Edit(string application, string server)
         {
@@ -76,16 +57,18 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
+        [MenuOptionsFilter]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Configure(string application, string server)
         {
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
+            //HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
             var viewModel = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
             return View(viewModel);
         }
 
         [HttpGet]
+        [MenuOptionsFilter]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Create()
         {
@@ -100,7 +83,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Index(string application, string server, string command)
         {
-            DashboardDataFileService.ExecuteServiceCommand(DataFileName, application, server, command);
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            DashboardDataFileService.ExecuteServiceCommand(dataFileWebServerPath, application, server, command);
             return RedirectToAction("Index", "Home");
         }
 
@@ -117,7 +101,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Edit(IconApplicationViewModel appViewModel)
         {
-            DashboardDataFileService.UpdateApplication(DataFileName, appViewModel);
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            DashboardDataFileService.UpdateApplication(dataFileWebServerPath, appViewModel);
             return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
         }
 

@@ -29,7 +29,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         protected LogsController ConstructController(IIconDatabaseServiceWrapper loggingServiceWrapper = null,
             HttpServerUtilityBase serverUtility = null)
         {
-            var controller = new LogsController(base.loggingServiceWrapper, base.serverUtility);
+            var controller = new LogsController(base.serverUtility, base.loggingServiceWrapper);
             base.SetupMockHttpContext(controller, loggingDataServiceName, mockIconLoggingServiceWrapper);
             return controller;
         }
@@ -42,8 +42,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
                 .Setup(s => s.GetPagedAppLogs(page, pageSize))
                 .Returns(fakeData);
             return fakeData.Count;
-        }
-        
+        }        
 
         protected int SetupTestLoggingServiceForGetSingleApp(int page=1, int pageSize = PagingConstants.DefaultPageSize)
         {

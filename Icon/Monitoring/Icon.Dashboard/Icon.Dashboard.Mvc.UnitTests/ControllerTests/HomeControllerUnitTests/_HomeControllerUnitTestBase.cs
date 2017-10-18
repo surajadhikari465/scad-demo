@@ -15,15 +15,16 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
 
         protected HomeController ConstructController()
         {
-            return ConstructController(base.dataFilePath, base.dataServiceWrapper, base.loggingServiceWrapper, base.serverUtility);
+            return ConstructController(base.serverUtility, base.loggingServiceWrapper, base.dataFilePath, base.dataServiceWrapper);
         }
 
-        protected HomeController ConstructController(string pathToXmlDataFile = null,
-            IDataFileServiceWrapper dataServiceWrapper = null,
+        protected HomeController ConstructController(
+            HttpServerUtilityBase serverUtility = null,
             IIconDatabaseServiceWrapper loggingServiceWrapper = null,
-            HttpServerUtilityBase serverUtility = null)
+            string pathToXmlDataFile = null,
+            IDataFileServiceWrapper dataServiceWrapper = null)
         {
-            var controller = new HomeController(pathToXmlDataFile, dataServiceWrapper, loggingServiceWrapper, serverUtility);
+            var controller = new HomeController(serverUtility, loggingServiceWrapper, pathToXmlDataFile, dataServiceWrapper);
             base.SetupMockHttpContext(controller);
             return controller;
         }

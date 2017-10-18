@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Dashboard.Mvc", "Icon.Dashboard.Mvc\Icon.Dashboard.Mvc.csproj", "{05B111C4-587A-42A1-964F-472CCEF00196}"
 EndProject
@@ -20,6 +20,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Dashboard.CommonDatabaseAccess", "Icon.Dashboard.CommonDatabaseAccess\Icon.Dashboard.CommonDatabaseAccess.csproj", "{C31DCEAE-C79B-4466-B592-F1C58C7C1E2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Dashboard.MammothDatabaseAccess.Tests", "Icon.Dashboard.MammothDatabaseAccess.Tests\Icon.Dashboard.MammothDatabaseAccess.Tests.csproj", "{8E3C146D-23DB-43D3-BFF4-EF3DCD4A0814}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeploymentScripts", "DeploymentScripts", "{B6816F1A-4371-4124-8512-69E1F42DCF17}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Deployment\copy_icon_dashboard_data_file.ps1 = ..\..\Deployment\copy_icon_dashboard_data_file.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,5 +128,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {603D2F1B-CD74-4D7F-9F85-B48680784228}
 	EndGlobalSection
 EndGlobal
