@@ -14,18 +14,19 @@
 # args[5]: password for user, e.g. "1234*****"
 
 #set up script variables from expected arguments
-$ext = $args[0].Split(".")[1]
-$srcpath = $args[1]
-$dstpath = $args[2]
-$webServers =  $args[3] -split ","
-$username = $args[4]
-$password = ConvertTo-SecureString -AsPlainText $args[5] -Force
+$datafile   = $args[0].Split(".")[0]
+$ext        = $args[0].Split(".")[1]
+$srcpath    = $args[1]
+$dstpath    = $args[2]
+$webServers = $args[3] -split ","
+$username   = $args[4]
+$password   = ConvertTo-SecureString -AsPlainText $args[5] -Force
 
 $creds = new-object -typename System.Management.Automation.PSCredential -argumentlist $username, $password
 
 Foreach ($webServer in $webServers.GetEnumerator())
 { 
-    Invoke-Command -ComputerName $webServer -Credential $creds  -ScriptBlock {
+    Invoke-Command -ComputerName $webServer -Credential $creds -ScriptBlock {
     param($file, $ext, $srcPath, $destPath)
 
     #create backup folder in case it does not exist
@@ -69,5 +70,5 @@ Foreach ($webServer in $webServers.GetEnumerator())
         Write-Host "... but source data not found"
     }
     
-    } -ArgumentList ($datafile, $ext,$srcpath, $dstpath)
+    } -ArgumentList ($datafile, $ext, $srcpath, $dstpath)
 }
