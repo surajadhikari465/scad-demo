@@ -88,21 +88,21 @@ BEGIN
 		AND pbd.StartDate < DATEADD(day, 15, @today)
 
 	--Current REGs
-	SELECT vsc.inforItemId AS 'ITEM_ID'
-		,ii.Identifier AS 'SCAN_CODE'
+	SELECT 
+		NEWID() AS 'GUID'
+		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,'REG' AS 'PRICE_TYPE'
-		,p.Multiple AS MULTIPLE
-		,CAST(p.Price AS DECIMAL(9, 2)) AS PRICE
-		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) 'SELLING_UOM'
+		,CAST(p.Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,p.Multiple AS 'MULTIPLE'
+		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) AS 'SELLING_UOM'
+		,'REG' AS 'PRICE_TYPE_CODE'
+		,'REG' AS 'PRICE_ATTRIBUTE_CODE'
+		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
 		,@today AS 'START_DATE'
 		,NULL AS 'END_DATE'
-		,@today AS 'INSERT_DATE'
-		,srm.Region_Code
-		,c.CurrencyCode
-		,NEWID() AS 'GPM_ID'
-		,'REG' AS 'INFOR_REASON_CODE'
-		,NULL AS 'NEW_TAG_EXPIRATION'
+		,@today AS 'CREATED_DATE'
+		,srm.Region_Code AS 'REGION_CODE'
+		,c.CurrencyCode AS 'CURRENCY_CODE'
 	FROM Price p
 	JOIN PriceChgType pct ON p.PriceChgTypeId = pct.PriceChgTypeID
 	JOIN Item i ON p.Item_Key = i.Item_Key
@@ -142,31 +142,31 @@ BEGIN
 	UNION
 	
 	--Current Long Running TPRs that are becoming REGs
-	SELECT vsc.inforItemId AS 'ITEM_ID'
-		,ii.Identifier AS 'SCAN_CODE'
+	SELECT 
+		NEWID() AS 'GUID'
+		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,'REG' AS 'PRICE_TYPE'
-		,p.Multiple AS MULTIPLE
-		,CAST(p.Sale_Price AS DECIMAL(9, 2)) AS PRICE
-		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) 'SELLING_UOM'
-		,@today AS 'START_DATE'
-		,p.Sale_End_Date AS 'END_DATE'
-		,@today AS 'INSERT_DATE'
-		,srm.Region_Code
-		,c.CurrencyCode
-		,NEWID() AS 'GPM_ID'
+		,CAST(p.Sale_Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,p.Multiple AS 'MULTIPLE'
+		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) AS 'SELLING_UOM'
+		,'REG' AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
 				THEN 'REG'
 			WHEN pct.PriceChgTypeDesc = 'GSP'
 				THEN 'EDV'
 			ELSE pct.PriceChgTypeDesc
-			END AS 'INFOR_REASON_CODE'
+		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
 				THEN p.Sale_End_Date
 			ELSE NULL
-			END AS 'NEW_TAG_EXPIRATION'
+		 END AS 'NEW_TAG_EXPIRATION_DATE'
+		,@today AS 'START_DATE'
+		,p.Sale_End_Date AS 'END_DATE'
+		,@today AS 'CREATED_DATE'
+		,srm.Region_Code AS 'REGION_CODE'
+		,c.CurrencyCode AS 'CURRENCY_CODE'
 	FROM Price p
 	JOIN Item i ON p.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON p.Item_Key = ii.Item_Key
@@ -207,19 +207,14 @@ BEGIN
 	UNION
 	
 	--Current TPRs
-	SELECT vsc.inforItemId AS 'ITEM_ID'
-		,ii.Identifier AS 'SCAN_CODE'
+	SELECT 
+		NEWID() AS 'GUID'
+		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,'TPR' AS 'PRICE_TYPE'
-		,p.Multiple AS MULTIPLE
-		,CAST(p.Sale_Price AS DECIMAL(9, 2)) AS PRICE
-		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) 'SELLING_UOM'
-		,p.Sale_Start_Date AS 'START_DATE'
-		,p.Sale_End_Date AS 'END_DATE'
-		,@today AS 'INSERT_DATE'
-		,srm.Region_Code
-		,c.CurrencyCode
-		,NEWID() AS 'GPM_ID'
+		,CAST(p.Sale_Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,p.Multiple AS 'MULTIPLE'
+		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) AS 'SELLING_UOM'
+		,'TPR' AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'SAL'
 				THEN 'MSAL'
@@ -228,8 +223,13 @@ BEGIN
 			WHEN pct.PriceChgTypeDesc = 'FRZ'
 				THEN 'MSAL'
 			ELSE pct.PriceChgTypeDesc
-			END AS 'INFOR_REASON_CODE'
-		,NULL AS 'NEW_TAG_EXPIRATION'
+			END AS 'PRICE_ATTRIBUTE_CODE'
+		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
+		,p.Sale_Start_Date AS 'START_DATE'
+		,p.Sale_End_Date AS 'END_DATE'
+		,@today AS 'CREATED_DATE'
+		,srm.Region_Code AS 'REGION_CODE'
+		,c.CurrencyCode AS 'CURRENCY_CODE'
 	FROM Price p
 	JOIN Item i ON p.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON p.Item_Key = ii.Item_Key
@@ -270,21 +270,21 @@ BEGIN
 	UNION
 	
 	--Future REGs (excluding Sale-Off)
-	SELECT vsc.inforItemId AS 'ITEM_ID'
-		,ii.Identifier AS 'SCAN_CODE'
+	SELECT 
+		NEWID() AS 'GUID'
+		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,'REG' AS 'PRICE_TYPE'
-		,pbd.Multiple AS MULTIPLE
-		,CAST(pbd.Price AS DECIMAL(9, 2)) AS PRICE
+		,CAST(pbd.Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,pbd.Multiple AS 'MULTIPLE'
 		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) 'SELLING_UOM'
+		,'REG' AS 'PRICE_TYPE_CODE'
+		,'REG' AS 'PRICE_ATTRIBUTE_CODE'
+		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
 		,pbd.StartDate AS 'START_DATE'
-		,pbd.Sale_End_Date AS 'END_DATE'
-		,@today AS 'INSERT_DATE'
+		,NULL AS 'END_DATE'
+		,@today AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
-		,NEWID() AS 'GPM_ID'
-		,'REG' AS 'INFOR_REASON_CODE'
-		,NULL AS 'NEW_TAG_EXPIRATION'
 	FROM infor.tmpGpmFuturePbd l
 	JOIN Item i ON l.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON l.Item_Key = ii.Item_Key
@@ -300,37 +300,44 @@ BEGIN
 		AND iuo.Store_No = l.Store_No
 	LEFT JOIN ItemUnit rounit WITH (NOLOCK) ON iuo.Retail_Unit_ID = rounit.Unit_ID
 	WHERE pbd.Price IS NOT NULL
-		AND pbd.Sale_End_Date IS NULL
 		AND ii.Default_Identifier = 1
+		AND pct.PriceChgTypeDesc NOT IN (
+			'DIS'
+			,'CLR'
+			,'CMP'
+			,'GSP'
+			,'EDV'
+			,'NEW'
+			)
 	
 	UNION
 	
 	--Future Long Running TPRs that are becoming REGs
-	SELECT vsc.inforItemId AS 'ITEM_ID'
-		,ii.Identifier AS 'SCAN_CODE'
+	SELECT 
+		NEWID() AS 'GUID'
+		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,pct.PriceChgTypeDesc AS 'PRICE_TYPE'
-		,pbd.Multiple AS MULTIPLE
-		,CAST(pbd.Sale_Price AS DECIMAL(9, 2)) AS PRICE
+		,CAST(pbd.Sale_Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,pbd.Multiple AS 'MULTIPLE'
 		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) 'SELLING_UOM'
-		,pbd.StartDate AS 'START_DATE'
-		,pbd.Sale_End_Date AS 'END_DATE'
-		,@today AS 'INSERT_DATE'
-		,srm.Region_Code
-		,c.CurrencyCode
-		,NEWID() AS 'GPM_ID'
+		,'REG' AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
 				THEN 'REG'
 			WHEN pct.PriceChgTypeDesc = 'GSP'
 				THEN 'EDV'
 			ELSE pct.PriceChgTypeDesc
-			END AS 'INFOR_REASON_CODE'
+		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
 				THEN pbd.Sale_End_Date
 			ELSE NULL
-			END AS 'NEW_TAG_EXPIRATION'
+		 END AS 'NEW_TAG_EXPIRATION_DATE'
+		,pbd.StartDate AS 'START_DATE'
+		,pbd.Sale_End_Date AS 'END_DATE'
+		,@today AS 'CREATED_DATE'
+		,srm.Region_Code
+		,c.CurrencyCode
 	FROM infor.tmpGpmFuturePbd l
 	JOIN Item i ON l.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON l.Item_Key = ii.Item_Key
@@ -359,19 +366,14 @@ BEGIN
 	UNION
 	
 	--Future TPRs (excluding Sale-Off)
-	SELECT vsc.inforItemId AS 'ITEM_ID'
-		,ii.Identifier AS 'SCAN_CODE'
+	SELECT 
+		NEWID() AS 'GUID'
+		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,pct.PriceChgTypeDesc AS 'PRICE_TYPE'
-		,pbd.Multiple AS MULTIPLE
-		,CAST(pbd.Sale_Price AS DECIMAL(9, 2)) AS PRICE
+		,CAST(pbd.Sale_Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,pbd.Multiple AS 'MULTIPLE'
 		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) 'SELLING_UOM'
-		,pbd.StartDate AS 'START_DATE'
-		,pbd.Sale_End_Date AS 'END_DATE'
-		,@today AS 'INSERT_DATE'
-		,srm.Region_Code
-		,c.CurrencyCode
-		,NEWID() AS 'GPM_ID'
+		,pct.PriceChgTypeDesc AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'SAL'
 				THEN 'MSAL'
@@ -380,8 +382,13 @@ BEGIN
 			WHEN pct.PriceChgTypeDesc = 'FRZ'
 				THEN 'MSAL'
 			ELSE pct.PriceChgTypeDesc
-			END AS 'INFOR_REASON_CODE'
-		,NULL AS 'NEW_TAG_EXPIRATION'
+		 END AS 'PRICE_ATTRIBUTE_CODE'
+		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
+		,pbd.StartDate AS 'START_DATE'
+		,pbd.Sale_End_Date AS 'END_DATE'
+		,@today AS 'CREATED_DATE'
+		,srm.Region_Code
+		,c.CurrencyCode
 	FROM infor.tmpGpmFuturePbd l
 	JOIN Item i ON l.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON l.Item_Key = ii.Item_Key
