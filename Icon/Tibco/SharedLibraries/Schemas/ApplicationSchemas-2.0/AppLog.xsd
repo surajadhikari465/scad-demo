@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:tns="http://schemas.wfm.com/Mammoth/AppLog.xsd"
+	 targetNamespace="http://schemas.wfm.com/Mammoth/AppLog.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="AppLog" type="tns:AppLogType"/>
+	<xs:complexType name="AppLogType">
+		<xs:sequence>
+			<xs:element name="AppId" type="xs:int"/>
+			<xs:element name="Level" type="xs:string" minOccurs="0"/>
+			<xs:element name="Logger" type="xs:string" minOccurs="0"/>
+			<xs:element name="UserName" type="xs:string" minOccurs="0"/>
+			<xs:element name="MachineName" type="xs:string" minOccurs="0"/>
+			<xs:element name="LogDate" type="xs:dateTime"/>
+			<xs:element name="Thread" type="xs:string" minOccurs="0"/>
+			<xs:element name="Message" type="xs:string" minOccurs="0"/>
+			<xs:element name="CallSite" type="xs:string" minOccurs="0"/>
+			<xs:element name="Exception" type="xs:string" minOccurs="0"/>
+			<xs:element name="StackTrace" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

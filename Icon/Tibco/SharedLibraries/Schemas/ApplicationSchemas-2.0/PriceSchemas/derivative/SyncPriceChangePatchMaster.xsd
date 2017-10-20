@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Infor IT Dept - USSP1 (Infor IT Dept - USSP1) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://schema.infor.com/InforOAGIS/2"
+	 xmlns:altova="http://www.altova.com/xml-schema-extensions"
+	 targetNamespace="http://schema.infor.com/InforOAGIS/2"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="../../Meta.xsd"/>
+	<xs:include schemaLocation="../master/PriceChangePatch.xsd"/>
+	<xs:element name="SyncPriceChangePatchMaster" type="SyncPriceChangePatchMasterType"/>
+	<xs:complexType name="SyncPriceChangePatchMasterType">
+		<xs:complexContent>
+			<xs:extension base="BusinessObjectDocumentType">
+				<xs:sequence>
+					<xs:element name="DataArea" type="SyncPriceChangePatchMasterDataAreaType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SyncPriceChangePatchMasterDataAreaType">
+		<xs:sequence>
+			<xs:element ref="Sync"/>
+			<xs:element ref="PriceChangePatchMaster" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

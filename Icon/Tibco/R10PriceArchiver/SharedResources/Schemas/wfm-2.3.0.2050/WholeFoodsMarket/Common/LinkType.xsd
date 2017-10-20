@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="linkType" type="LinkTypeType"/>
+	<xs:complexType name="LinkTypeType">
+		<xs:sequence>
+			<xs:element name="parentId" type="crf:IdIntType" minOccurs="0"/>
+			<xs:element name="childId" type="crf:IdIntType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

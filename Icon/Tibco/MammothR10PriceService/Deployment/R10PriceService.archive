@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="R10PriceServiceSharedArchive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <sharedResources/>
+            <sharedFiles/>
+            <sharedJarFiles/>
+        </sharedArchive>
+        <processArchive name="R10PriceServiceProcessArchive">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <processProperty>/Processes/MammothPriceR10QueueReceiver.process</processProperty>
+        </processArchive>
+        <versionProperty>7</versionProperty>
+        <authorProperty>Ben.Sims</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>R10PriceService</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\Dev\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\R10PriceService.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

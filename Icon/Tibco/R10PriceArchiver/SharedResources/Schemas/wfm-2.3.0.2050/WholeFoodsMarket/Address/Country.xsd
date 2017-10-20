@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="country" type="CountryType"/>
+	<xs:complexType name="CountryType">
+		<xs:sequence>
+			<xs:element name="code" type="arf:CountryCodeType"/>
+			<xs:element name="name" type="arf:CountryNameType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

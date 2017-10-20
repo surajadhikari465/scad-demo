@@ -1,0 +1,992 @@
+<itm:items xmlns:cry="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V1" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ltp="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V1" xmlns:tgr="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V1" xmlns:slg="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:adr="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V1" xmlns:iae="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V1" xmlns:tzn="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V1" xmlns:itp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:tmt="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V1" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V1" xmlns:lkt="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:hrh="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V1" xmlns:trf="http://schemas.wfm.com/Enterprise/TraitMgmt/CommonRefType/V1" xmlns:hrf="http://schemas.wfm.com/Enterprise/HierarchyMgmt/CommonRefType/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefType/V1" xmlns:phs="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1" xmlns:lrf="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefType/V1" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:hrc="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:acr="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefType/V1" xmlns:gpt="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V1" xmlns:rgt="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:lcc="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefType/V2" xmlns:adt="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V1" xmlns:adu="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V1" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+	<itm:item crf:Action="AddOrUpdate">
+		<itm:id>61898</itm:id>
+		<itm:base>
+			<ibi:type>
+				<itp:code>RTL</itp:code>
+				<itp:description>Retail Sale</itp:description>
+			</ibi:type>
+		</itm:base>
+		<itm:locale crf:Action="AddOrUpdate">
+			<lcl:id>10072</lcl:id>
+			<lcl:name>Hillcrest</lcl:name>
+			<lcl:traits>
+				<crf:trait>
+					<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">BU</code>
+					<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+						<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PS Business Unit ID</description>
+						<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">10072</value>
+						</value>
+					</type>
+				</crf:trait>
+			</lcl:traits>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+			</lcl:type>
+			<lcl:storeItemAttributes>
+				<scanCode xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<id xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">69568</id>
+					<code xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">73647310065</code>
+					<typeId xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">1</typeId>
+					<typeDescription xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">UPC</typeDescription>
+				</scanCode>
+				<traits xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RS</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Locked For Sale</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RCL</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Recall</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SBW</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Sold by Weight</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QTY</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PRQ</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Price Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QPR</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Prohibit</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">VV</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Visual Verify</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SCT</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">POS Scale Tare</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+				</traits>
+			</lcl:storeItemAttributes>
+		</itm:locale>
+	</itm:item>
+	<itm:item crf:Action="AddOrUpdate">
+		<itm:id>25291</itm:id>
+		<itm:base>
+			<ibi:type>
+				<itp:code>RTL</itp:code>
+				<itp:description>Retail Sale</itp:description>
+			</ibi:type>
+		</itm:base>
+		<itm:locale crf:Action="AddOrUpdate">
+			<lcl:id>10072</lcl:id>
+			<lcl:name>Hillcrest</lcl:name>
+			<lcl:traits>
+				<crf:trait>
+					<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">BU</code>
+					<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+						<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PS Business Unit ID</description>
+						<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">10072</value>
+						</value>
+					</type>
+				</crf:trait>
+			</lcl:traits>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+			</lcl:type>
+			<lcl:storeItemAttributes>
+				<scanCode xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<id xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">29927</id>
+					<code xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">8248800007</code>
+					<typeId xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">1</typeId>
+					<typeDescription xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">UPC</typeDescription>
+				</scanCode>
+				<traits xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RS</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Locked For Sale</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RCL</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Recall</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SBW</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Sold by Weight</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QTY</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PRQ</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Price Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QPR</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Prohibit</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">VV</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Visual Verify</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SCT</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">POS Scale Tare</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+				</traits>
+			</lcl:storeItemAttributes>
+		</itm:locale>
+	</itm:item>
+	<itm:item crf:Action="AddOrUpdate">
+		<itm:id>158425</itm:id>
+		<itm:base>
+			<ibi:type>
+				<itp:code>RTL</itp:code>
+				<itp:description>Retail Sale</itp:description>
+			</ibi:type>
+		</itm:base>
+		<itm:locale crf:Action="AddOrUpdate">
+			<lcl:id>10072</lcl:id>
+			<lcl:name>Hillcrest</lcl:name>
+			<lcl:traits>
+				<crf:trait>
+					<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">BU</code>
+					<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+						<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PS Business Unit ID</description>
+						<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">10072</value>
+						</value>
+					</type>
+				</crf:trait>
+			</lcl:traits>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+			</lcl:type>
+			<lcl:storeItemAttributes>
+				<scanCode xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<id xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">156574</id>
+					<code xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">71246900119</code>
+					<typeId xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">1</typeId>
+					<typeDescription xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">UPC</typeDescription>
+				</scanCode>
+				<traits xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RS</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Locked For Sale</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RCL</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Recall</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SBW</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Sold by Weight</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QTY</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PRQ</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Price Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QPR</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Prohibit</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">VV</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Visual Verify</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SCT</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">POS Scale Tare</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+				</traits>
+			</lcl:storeItemAttributes>
+		</itm:locale>
+	</itm:item>
+	<itm:item crf:Action="AddOrUpdate">
+		<itm:id>57223</itm:id>
+		<itm:base>
+			<ibi:type>
+				<itp:code>RTL</itp:code>
+				<itp:description>Retail Sale</itp:description>
+			</ibi:type>
+		</itm:base>
+		<itm:locale crf:Action="AddOrUpdate">
+			<lcl:id>10072</lcl:id>
+			<lcl:name>Hillcrest</lcl:name>
+			<lcl:traits>
+				<crf:trait>
+					<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">BU</code>
+					<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+						<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PS Business Unit ID</description>
+						<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">10072</value>
+						</value>
+					</type>
+				</crf:trait>
+			</lcl:traits>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+			</lcl:type>
+			<lcl:storeItemAttributes>
+				<scanCode xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<id xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">68262</id>
+					<code xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">71016802301</code>
+					<typeId xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">1</typeId>
+					<typeDescription xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">UPC</typeDescription>
+				</scanCode>
+				<traits xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RS</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Locked For Sale</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RCL</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Recall</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SBW</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Sold by Weight</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QTY</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PRQ</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Price Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QPR</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Prohibit</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">VV</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Visual Verify</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SCT</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">POS Scale Tare</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+				</traits>
+			</lcl:storeItemAttributes>
+		</itm:locale>
+	</itm:item>
+	<itm:item crf:Action="AddOrUpdate">
+		<itm:id>66495</itm:id>
+		<itm:base>
+			<ibi:type>
+				<itp:code>RTL</itp:code>
+				<itp:description>Retail Sale</itp:description>
+			</ibi:type>
+		</itm:base>
+		<itm:locale crf:Action="AddOrUpdate">
+			<lcl:id>10072</lcl:id>
+			<lcl:name>Hillcrest</lcl:name>
+			<lcl:traits>
+				<crf:trait>
+					<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">BU</code>
+					<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+						<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PS Business Unit ID</description>
+						<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">10072</value>
+						</value>
+					</type>
+				</crf:trait>
+			</lcl:traits>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+			</lcl:type>
+			<lcl:storeItemAttributes>
+				<scanCode xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<id xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">66147</id>
+					<code xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">70706006502</code>
+					<typeId xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">1</typeId>
+					<typeDescription xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">UPC</typeDescription>
+				</scanCode>
+				<traits xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RS</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Locked For Sale</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RCL</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Recall</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SBW</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Sold by Weight</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QTY</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PRQ</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Price Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QPR</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Prohibit</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">VV</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Visual Verify</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SCT</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">POS Scale Tare</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+				</traits>
+			</lcl:storeItemAttributes>
+		</itm:locale>
+	</itm:item>
+	<itm:item crf:Action="AddOrUpdate">
+		<itm:id>120349</itm:id>
+		<itm:base>
+			<ibi:type>
+				<itp:code>RTL</itp:code>
+				<itp:description>Retail Sale</itp:description>
+			</ibi:type>
+		</itm:base>
+		<itm:locale crf:Action="AddOrUpdate">
+			<lcl:id>10072</lcl:id>
+			<lcl:name>Hillcrest</lcl:name>
+			<lcl:traits>
+				<crf:trait>
+					<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">BU</code>
+					<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+						<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PS Business Unit ID</description>
+						<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">10072</value>
+						</value>
+					</type>
+				</crf:trait>
+			</lcl:traits>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+			</lcl:type>
+			<lcl:storeItemAttributes>
+				<scanCode xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<id xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">118368</id>
+					<code xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">51960</code>
+					<typeId xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">2</typeId>
+					<typeDescription xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">POS PLU</typeDescription>
+				</scanCode>
+				<traits xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RS</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Locked For Sale</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RCL</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Recall</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SBW</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Sold by Weight</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QTY</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PRQ</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Price Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QPR</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Prohibit</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">VV</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Visual Verify</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SCT</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">POS Scale Tare</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+				</traits>
+			</lcl:storeItemAttributes>
+		</itm:locale>
+	</itm:item>
+	<itm:item crf:Action="AddOrUpdate">
+		<itm:id>180285</itm:id>
+		<itm:base>
+			<ibi:type>
+				<itp:code>RTL</itp:code>
+				<itp:description>Retail Sale</itp:description>
+			</ibi:type>
+		</itm:base>
+		<itm:locale crf:Action="AddOrUpdate">
+			<lcl:id>10072</lcl:id>
+			<lcl:name>Hillcrest</lcl:name>
+			<lcl:traits>
+				<crf:trait>
+					<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">BU</code>
+					<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+						<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PS Business Unit ID</description>
+						<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">10072</value>
+						</value>
+					</type>
+				</crf:trait>
+			</lcl:traits>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+			</lcl:type>
+			<lcl:storeItemAttributes>
+				<scanCode xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<id xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">175103</id>
+					<code xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">7537609010</code>
+					<typeId xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">1</typeId>
+					<typeDescription xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">UPC</typeDescription>
+				</scanCode>
+				<traits xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RS</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Locked For Sale</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RCL</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Recall</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SBW</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Sold by Weight</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QTY</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PRQ</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Price Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QPR</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Prohibit</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">VV</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Visual Verify</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SCT</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">POS Scale Tare</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+				</traits>
+			</lcl:storeItemAttributes>
+		</itm:locale>
+	</itm:item>
+	<itm:item crf:Action="AddOrUpdate">
+		<itm:id>85136</itm:id>
+		<itm:base>
+			<ibi:type>
+				<itp:code>RTL</itp:code>
+				<itp:description>Retail Sale</itp:description>
+			</ibi:type>
+		</itm:base>
+		<itm:locale crf:Action="AddOrUpdate">
+			<lcl:id>10072</lcl:id>
+			<lcl:name>Hillcrest</lcl:name>
+			<lcl:traits>
+				<crf:trait>
+					<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">BU</code>
+					<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+						<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PS Business Unit ID</description>
+						<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">10072</value>
+						</value>
+					</type>
+				</crf:trait>
+			</lcl:traits>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+			</lcl:type>
+			<lcl:storeItemAttributes>
+				<scanCode xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<id xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">74852</id>
+					<code xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">64637800406</code>
+					<typeId xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">1</typeId>
+					<typeDescription xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">UPC</typeDescription>
+				</scanCode>
+				<traits xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RS</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Locked For Sale</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RCL</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Recall</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SBW</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Sold by Weight</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QTY</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PRQ</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Price Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QPR</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Prohibit</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">VV</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Visual Verify</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SCT</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">POS Scale Tare</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+				</traits>
+			</lcl:storeItemAttributes>
+		</itm:locale>
+	</itm:item>
+	<itm:item crf:Action="AddOrUpdate">
+		<itm:id>983</itm:id>
+		<itm:base>
+			<ibi:type>
+				<itp:code>RTL</itp:code>
+				<itp:description>Retail Sale</itp:description>
+			</ibi:type>
+		</itm:base>
+		<itm:locale crf:Action="AddOrUpdate">
+			<lcl:id>10072</lcl:id>
+			<lcl:name>Hillcrest</lcl:name>
+			<lcl:traits>
+				<crf:trait>
+					<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">BU</code>
+					<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+						<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">PS Business Unit ID</description>
+						<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">10072</value>
+						</value>
+					</type>
+				</crf:trait>
+			</lcl:traits>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">STR</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+			</lcl:type>
+			<lcl:storeItemAttributes>
+				<scanCode xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<id xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">14942</id>
+					<code xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">534STR</code>
+					<typeId xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">2</typeId>
+					<typeDescription xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2">POS PLU</typeDescription>
+				</scanCode>
+				<traits xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RS</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Locked For Sale</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">RCL</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Recall</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SBW</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Sold by Weight</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">1</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QTY</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PRQ</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Price Required</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">QPR</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Quantity Prohibit</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">VV</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Visual Verify</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0</value>
+							</value>
+						</type>
+					</crf:trait>
+					<crf:trait>
+						<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SCT</code>
+						<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+							<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">POS Scale Tare</description>
+							<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+								<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">0.01</value>
+							</value>
+						</type>
+					</crf:trait>
+				</traits>
+			</lcl:storeItemAttributes>
+		</itm:locale>
+	</itm:item>
+</itm:items>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/City/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" xmlns:try="http://schemas.wfm.com/Enterprise/AddressMgmt/Territory/V2" xmlns:cny="http://schemas.wfm.com/Enterprise/AddressMgmt/County/V2" targetNamespace="http://schemas.wfm.com/Enterprise/AddressMgmt/City/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/Territory/V2" schemaLocation="Territory.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/County/V2" schemaLocation="County.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="city" type="CityType"/>
+	<xs:complexType name="CityType">
+		<xs:sequence>
+			<xs:element name="type" type="arf:CityType"/>
+			<xs:element name="county" type="cny:CountyType" minOccurs="0"/>
+			<xs:element name="territory" type="try:TerritoryType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

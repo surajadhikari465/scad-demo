@@ -1,0 +1,28 @@
+<POSLog xmlns="http://www.nrf-arts.org/IXRetail/namespace/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:r10Ex="http://www.Retalix.com/Extensions" MajorVersion="6">
+  <Transaction MajorVersion="6" MinorVersion="0" FixVersion="1">
+    <BusinessUnit>
+      <UnitID>10072</UnitID>
+    </BusinessUnit>
+    <WorkstationID TypeCode="POS" WorkstationLocation="TouchPoint">10</WorkstationID>
+    <SequenceNumber>2</SequenceNumber>
+    <TransactionID>XWJTUJODHB</TransactionID>
+    <OperatorID OperatorName="Cashier 1" OperatorType="Cashier">C1</OperatorID>
+    <BusinessDayDate>2015-01-04</BusinessDayDate>
+    <BeginDateTime r10Ex:Offset="-08:00:00">2015-01-04T03:51:04.2802593</BeginDateTime>
+	<EndDateTime r10Ex:Offset="-08:00:00">2015-01-04T03:51:04.2802593</EndDateTime>
+    <TenderControlTransaction>
+      <TenderLoan TypeCode="x:OpenFloat">
+        <SafeID>10072 Customer Service Safe Account</SafeID>
+        <Totals>
+          <Amount Currency="USD">300.00</Amount>
+          <Count>0</Count>
+          <TenderID>1</TenderID>
+        </Totals>
+        <ReasonCode Name="Reference" />
+        <r10Ex:Account>
+          <r10Ex:Destination>Till10</r10Ex:Destination>
+        </r10Ex:Account>
+      </TenderLoan>
+    </TenderControlTransaction>
+  </Transaction>
+</POSLog>

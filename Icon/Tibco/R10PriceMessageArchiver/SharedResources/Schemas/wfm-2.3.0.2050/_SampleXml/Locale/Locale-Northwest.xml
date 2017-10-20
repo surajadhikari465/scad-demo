@@ -1,0 +1,1171 @@
+<lcl:locale xmlns:cry="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V1" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ltp="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V1" xmlns:tgr="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V1" xmlns:slg="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:adr="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V1" xmlns:iae="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V1" xmlns:tzn="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V1" xmlns:itp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:tmt="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V1" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V1" xmlns:lkt="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:hrh="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V1" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V1" xmlns:trf="http://schemas.wfm.com/Enterprise/TraitMgmt/CommonRefType/V1" xmlns:hrf="http://schemas.wfm.com/Enterprise/HierarchyMgmt/CommonRefType/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefType/V1" xmlns:phs="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1" xmlns:lrf="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefType/V1" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:hrc="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:acr="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefType/V1" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:gpt="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V1" xmlns:rgt="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:lcc="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefType/V2" xmlns:adt="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V1" xmlns:adu="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V1" crf:Action="Inherit" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2">
+	<lcl:id>1</lcl:id>
+	<lcl:name>Whole Foods Market</lcl:name>
+	<lcl:type>
+		<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">1</code>
+		<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Chain</description>
+	</lcl:type>
+	<lcl:locales>
+		<locale crf:Action="AddOrUpdate" xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1">
+			<lcl:id>8</lcl:id>
+			<lcl:name>Pacific Northwest</lcl:name>
+			<lcl:type>
+				<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">2</code>
+				<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Region</description>
+			</lcl:type>
+			<lcl:locales>
+				<locale crf:Action="AddOrUpdate">
+					<lcl:id>50</lcl:id>
+					<lcl:name>MET_CP</lcl:name>
+					<lcl:type>
+						<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">3</code>
+						<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Metro</description>
+					</lcl:type>
+					<lcl:locales>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10248</lcl:id>
+							<lcl:name>Cambie</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">224</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>510 W 8th Ave.</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Vancouver</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">BC</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">British Columbia</name>
+											</phs:territoryType>
+											<phs:postalCode>V5Z 1C5</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">CAN</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">Canada</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">CMB</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10348</lcl:id>
+							<lcl:name>Kitsilano</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">225</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>2285 West 4th Avenue</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Vancouver</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">BC</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">British Columbia</name>
+											</phs:territoryType>
+											<phs:postalCode>V6K 1N9</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">CAN</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">Canada</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">KIT</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10212</lcl:id>
+							<lcl:name>W Vancouver</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">226</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>925 Main St</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">West Vancouver</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">BC</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">British Columbia</name>
+											</phs:territoryType>
+											<phs:postalCode>V7T 2Z3</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">CAN</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">Canada</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">PRV</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10360</lcl:id>
+							<lcl:name>Robson</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">227</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>1675 Robson Street</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Vancouver</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">BC</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">British Columbia</name>
+											</phs:territoryType>
+											<phs:postalCode>V6G 1C8</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">CAN</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">Canada</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">RBS</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+					</lcl:locales>
+				</locale>
+				<locale crf:Action="AddOrUpdate">
+					<lcl:id>51</lcl:id>
+					<lcl:name>MET_OR</lcl:name>
+					<lcl:type>
+						<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">3</code>
+						<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Metro</description>
+					</lcl:type>
+					<lcl:locales>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10407</lcl:id>
+							<lcl:name>Bend</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">228</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>2610 NE Hwy 20</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Bend</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">OR</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Oregon</name>
+											</phs:territoryType>
+											<phs:postalCode>97701</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">BND</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10266</lcl:id>
+							<lcl:name>Bridgeport</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">229</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>7380 SW Bridgeport Road</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Lake Oswego</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">OR</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Oregon</name>
+											</phs:territoryType>
+											<phs:postalCode>97224</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">BRD</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10375</lcl:id>
+							<lcl:name>Fremont</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">230</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>3535 NE 15th Ave</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Portland</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">OR</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Oregon</name>
+											</phs:territoryType>
+											<phs:postalCode>97212</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">FMT</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10537</lcl:id>
+							<lcl:name>Tigard (Greenway)</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">231</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>12220 SW Scholls Ferry Road</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Tigard</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">OR</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Oregon</name>
+											</phs:territoryType>
+											<phs:postalCode>97223</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">GNW</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10243</lcl:id>
+							<lcl:name>East Portland</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">232</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>NE Sandy Blvd at NE 44th Ave</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Portland</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">OR</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Oregon</name>
+											</phs:territoryType>
+											<phs:postalCode>97213</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">HWD</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10402</lcl:id>
+							<lcl:name>Laurelhurst</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">233</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>2825 E Burnside St</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Portland</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">OR</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Oregon</name>
+											</phs:territoryType>
+											<phs:postalCode>97232</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">LLH</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10148</lcl:id>
+							<lcl:name>Portland</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">234</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>1210 NW Couch Street</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Portland</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">OR</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Oregon</name>
+											</phs:territoryType>
+											<phs:postalCode>97209</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">PRT</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10327</lcl:id>
+							<lcl:name>Tanasbourne</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">235</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>19440 NW Cornell Rd</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Tanasbourne</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">OR</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Oregon</name>
+											</phs:territoryType>
+											<phs:postalCode>97006</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">TAN</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10412</lcl:id>
+							<lcl:name>Mill Plain</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">239</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>815 Se 160th Ave</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Vancouver</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">WA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Washington</name>
+											</phs:territoryType>
+											<phs:postalCode>98683</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">MLP</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+					</lcl:locales>
+				</locale>
+				<locale crf:Action="AddOrUpdate">
+					<lcl:id>52</lcl:id>
+					<lcl:name>MET_WA</lcl:name>
+					<lcl:type>
+						<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">3</code>
+						<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Metro</description>
+					</lcl:type>
+					<lcl:locales>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10153</lcl:id>
+							<lcl:name>Bellevue</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">236</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>888 116th Avenue NE</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Bellevue</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">WA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Washington</name>
+											</phs:territoryType>
+											<phs:postalCode>98005</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">BLV</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10275</lcl:id>
+							<lcl:name>Interbay</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">237</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>2001 15th Avenue West</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Seattle</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">WA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Washington</name>
+											</phs:territoryType>
+											<phs:postalCode>98119</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">INT</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10436</lcl:id>
+							<lcl:name>Lynnwood</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">238</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>2800 SW 196th St. SW</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Lynnwood</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">WA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Washington</name>
+											</phs:territoryType>
+											<phs:postalCode>98036</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">LNW</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10260</lcl:id>
+							<lcl:name>Redmond</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">240</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>17991 NE Redmond Way</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Redmond</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">WA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Washington</name>
+											</phs:territoryType>
+											<phs:postalCode>98052</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">RMD</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10103</lcl:id>
+							<lcl:name>Roosevelt Square</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">241</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>1026 NE 64th Street</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Seattle</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">WA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Washington</name>
+											</phs:territoryType>
+											<phs:postalCode>98115</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">RSQ</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+						<locale crf:Action="AddOrUpdate">
+							<lcl:id>10216</lcl:id>
+							<lcl:name>Westlake</lcl:name>
+							<lcl:addresses>
+								<address>
+									<id xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">242</id>
+									<usage xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">SHP</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2">street</description>
+									</usage>
+									<type xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2">
+										<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">PHY</code>
+										<description xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">physical</description>
+										<physical xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2">
+											<phs:addressLine1>2210 Westlake Ave</phs:addressLine1>
+											<phs:cityType>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Westlake</name>
+											</phs:cityType>
+											<phs:territoryType>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">WA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1">Washington</name>
+											</phs:territoryType>
+											<phs:postalCode>98121</phs:postalCode>
+											<phs:country>
+												<code xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">USA</code>
+												<name xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2">United States</name>
+											</phs:country>
+											<phs:timezone>
+												<code xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2">Pacific Standard Time</code>
+											</phs:timezone>
+										</physical>
+									</type>
+								</address>
+							</lcl:addresses>
+							<lcl:traits>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">SAB</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Store Abbreviation</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">WSL</value>
+										</value>
+									</type>
+								</crf:trait>
+								<crf:trait>
+									<code xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">PHN</code>
+									<type xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
+										<description xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">Phone Number</description>
+										<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2">
+											<value xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2">512-999-9999</value>
+										</value>
+									</type>
+								</crf:trait>
+							</lcl:traits>
+							<lcl:type>
+								<code xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">4</code>
+								<description xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">Store</description>
+							</lcl:type>
+						</locale>
+					</lcl:locales>
+				</locale>
+			</lcl:locales>
+		</locale>
+	</lcl:locales>
+</lcl:locale>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/FinancialMgmt/Gainshare/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:grf="http://schemas.wfm.com/Enterprise/GainshareMgmt/CommonRefTypes/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:fsb="http://schemas.wfm.com/Enterprise/FinancialMgmt/Subteam/V1" xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" targetNamespace="http://schemas.wfm.com/Enterprise/FinancialMgmt/Gainshare/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/GainshareMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/FinancialMgmt/Subteam/V1" schemaLocation="../Subteam/Subteam.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" schemaLocation="../../Common/NameType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../../Party/Party.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" schemaLocation="../../Timezone/Timezone.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="gainshare" type="GainshareType"/>
+	<xs:element name="gainshares" type="GainsharesType"/>
+	<xs:complexType name="GainsharesType">
+		<xs:sequence>
+			<xs:element name="gainshare" type="GainshareType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GainshareType">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Gainsharing is a program that enables Team Members to earn monthly dividends (i.e., Labor Surplus payouts) from the excess Labor Budget of their individual teams. </xs:documentation>
+			</xs:annotation>
+			<xs:element name="isComboTeam" type="grf:IsComboTeamType" default="false"/>
+			<xs:element name="gainshareTeamNumber" type="grf:GainshareTeamNumType"/>
+			<xs:element name="gainshareTeamId" type="grf:GainshareTeamIdType"/>
+			<xs:element name="gainshareSubteamId" type="grf:GainshareSubteamIdType"/>
+			<xs:element name="teamRenamed" type="crf:WfmStrType"/>
+			<xs:element name="financialSubteam" type="fsb:FinancialSubteamType" minOccurs="0"/>
+			<xs:element name="labor" type="grf:GainshareLaborType"/>
+		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
+	</xs:complexType>
+</xs:schema>

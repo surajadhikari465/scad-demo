@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/MammothPrices.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/MessageHeaders.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <pd:name>Processes/ArchiveSentMessage.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:MammothPrices"/>
+                    <xsd:element ref="pfx2:MessageHeaders"/>
+                    <xsd:element ref="pfx3:items"/>
+                    <xsd:element name="MessageID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>45</pd:startX>
+    <pd:startY>132</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>894</pd:endX>
+    <pd:endY>137</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1508356108526</pd:targetNamespace>
+    <pd:activity name="ArchiveMessageDetails">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>525</pd:x>
+        <pd:y>136</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <batchUpdate>true</batchUpdate>
+            <statement>INSERT INTO [gpm].[MessageArchivePriceR10] (ItemID, BusinessUnitID, PriceType, StartDate, MessageID, MessageDetailJson)
+VALUES (?, ?, ?, ?, ?, ?)</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>ItemID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>BusinessUnitID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>PriceType</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>StartDate</parameterName>
+                    <dataType>TIMESTAMP</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageDetailJson</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <xsl:for-each select="$MessageArchiveList/AccumulatedOutput/ArchiveMessage">
+                    <Record>
+                        <ItemID>
+                            <xsl:value-of select="ItemID"/>
+                        </ItemID>
+                        <BusinessUnitID>
+                            <xsl:value-of select="BusinessUnitID"/>
+                        </BusinessUnitID>
+                        <PriceType>
+                            <xsl:value-of select="PriceType"/>
+                        </PriceType>
+                        <StartDate>
+                            <xsl:value-of select="StartDate"/>
+                        </StartDate>
+                        <MessageID>
+                            <xsl:value-of select="MessageID"/>
+                        </MessageID>
+                        <MessageDetailJson>
+                            <xsl:value-of select="MessageDetailJson"/>
+                        </MessageDetailJson>
+                    </Record>
+                </xsl:for-each>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ArchiveXml">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>792</pd:x>
+        <pd:y>134</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <statement>INSERT INTO [esb].[MessageArchive] (MessageID, MessageTypeID, MessageStatusID, MessageHeadersJson, MessageBody)
+SELECT 
+?,
+(SELECT MessageTypeId FROM esb.MessageType WHERE MessageTypeName = 'Price') as MessageTypeID,
+(SELECT MessageStatusId FROM esb.MessageStatus WHERE MessageStatusName = 'Sent') as MessageStatusID,
+?,
+?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MessageID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageHeadersJson</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageBody</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <MessageID>
+                    <xsl:value-of select="$Start/root/MessageID"/>
+                </MessageID>
+                <MessageHeadersJson>
+                    <xsl:value-of select="$JsonSerializeHeaders/ns0:ActivityOutputClass/jsonString"/>
+                </MessageHeadersJson>
+                <MessageBody>
+                    <xsl:value-of select="tib:render-xml($Start/root/pfx3:items,1)"/>
+                </MessageBody>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JsonSerializeHeaders">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>665</pd:x>
+        <pd:y>138</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx2:MessageHeaders"/>
+        </config>
+        <pd:inputBindings>
+            <ns0:ActivityInputClass>
+                <xsl:copy-of select="$Start/root/pfx2:MessageHeaders" copy-namespaces="no"/>
+            </ns0:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>197</pd:x>
+        <pd:y>273</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="LogError">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>474</pd:x>
+        <pd:y>274</pd:y>
+        <config>
+            <processName>/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns2:AppLog>
+                <ns2:AppId>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/AppID"/>
+                </ns2:AppId>
+                <ns2:Level>
+                    <xsl:value-of select="&quot;Error&quot;"/>
+                </ns2:Level>
+                <ns2:Logger>
+                    <xsl:value-of select="$_processContext/ns1:ProcessContext/ProjectName"/>
+                </ns2:Logger>
+                <ns2:UserName>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationName"/>
+                </ns2:UserName>
+                <ns2:MachineName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </ns2:MachineName>
+                <ns2:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns2:LogDate>
+                <ns2:Thread>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
+                </ns2:Thread>
+                <xsl:if test="$_error/ns1:ErrorReport/Msg">
+                    <ns2:Message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </ns2:Message>
+                </xsl:if>
+                <ns2:CallSite>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                </ns2:CallSite>
+                <xsl:if test="$_error/ns1:ErrorReport/FullClass">
+                    <ns2:Exception>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/FullClass"/>
+                    </ns2:Exception>
+                </xsl:if>
+                <xsl:if test="$_error/ns1:ErrorReport/StackTrace">
+                    <ns2:StackTrace>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                    </ns2:StackTrace>
+                </xsl:if>
+            </ns2:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>717</pd:x>
+        <pd:y>273</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>133</pd:x>
+        <pd:y>28</pd:y>
+        <pd:width>323</pd:width>
+        <pd:height>184</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/root/pfx:MammothPrices/pfx:MammothPrice</pd:over>
+            <pd:iterationElementSlot>currentPrice</pd:iterationElementSlot>
+            <pd:indexSlot>p</pd:indexSlot>
+            <pd:outSlot>MessageArchiveList</pd:outSlot>
+            <pd:activityOutputName>Map Data</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>JsonSerializeDetails</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JsonSerializeDetails</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="JsonSerializeDetails">
+            <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+            <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+            <pd:x>230</pd:x>
+            <pd:y>130</pd:y>
+            <config>
+                <SchemaType>xsdType</SchemaType>
+                <BadgerfishCheck>false</BadgerfishCheck>
+                <ActivityInputEditor>
+                    <xsd:element name="MessageDetail">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ItemID" type="xsd:string"/>
+                                <xsd:element name="BusinessUnitID" type="xsd:string"/>
+                                <xsd:element name="MessageID" type="xsd:string"/>
+                                <xsd:element ref="pfx2:MessageHeaders"/>
+                                <xsd:element ref="pfx:MammothPrice"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </ActivityInputEditor>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInputClass>
+                    <MessageDetail>
+                        <ItemID>
+                            <xsl:value-of select="$currentPrice/pfx:MammothPrice/pfx:ItemId"/>
+                        </ItemID>
+                        <BusinessUnitID>
+                            <xsl:value-of select="$currentPrice/pfx:MammothPrice/pfx:BusinessUnit"/>
+                        </BusinessUnitID>
+                        <MessageID>
+                            <xsl:value-of select="$Start/root/MessageID"/>
+                        </MessageID>
+                        <xsl:copy-of select="$Start/root/pfx2:MessageHeaders"/>
+                        <xsl:copy-of select="$currentPrice/pfx:MammothPrice"/>
+                    </MessageDetail>
+                </ns0:ActivityInputClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>354</pd:x>
+            <pd:y>131</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="ArchiveMessage">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ItemID" type="xsd:int"/>
+                                <xsd:element name="BusinessUnitID" type="xsd:int"/>
+                                <xsd:element name="PriceType" type="xsd:string"/>
+                                <xsd:element name="StartDate" type="xsd:dateTime"/>
+                                <xsd:element name="MessageID" type="xsd:string"/>
+                                <xsd:element name="MessageDetailJson" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <ArchiveMessage>
+                    <ItemID>
+                        <xsl:value-of select="$currentPrice/pfx:MammothPrice/pfx:ItemId"/>
+                    </ItemID>
+                    <BusinessUnitID>
+                        <xsl:value-of select="$currentPrice/pfx:MammothPrice/pfx:BusinessUnit"/>
+                    </BusinessUnitID>
+                    <PriceType>
+                        <xsl:value-of select="$currentPrice/pfx:MammothPrice/pfx:PriceType"/>
+                    </PriceType>
+                    <StartDate>
+                        <xsl:value-of select="$currentPrice/pfx:MammothPrice/pfx:StartDate"/>
+                    </StartDate>
+                    <MessageID>
+                        <xsl:value-of select="$Start/root/MessageID"/>
+                    </MessageID>
+                    <MessageDetailJson>
+                        <xsl:value-of select="$JsonSerializeDetails/ns0:ActivityOutputClass/jsonString"/>
+                    </MessageDetailJson>
+                </ArchiveMessage>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>ArchiveMessageDetails</pd:from>
+        <pd:to>JsonSerializeHeaders</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JsonSerializeHeaders</pd:from>
+        <pd:to>ArchiveXml</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>LogError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogError</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ArchiveXml</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>ArchiveMessageDetails</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

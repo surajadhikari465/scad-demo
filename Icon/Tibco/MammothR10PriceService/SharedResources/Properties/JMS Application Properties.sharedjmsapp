@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JMS Application Properties</name>
+    <resourceType>ae.shared.JMSAppPropResource</resourceType>
+    <config>
+        <Properties>
+            <row>
+                <PropertyName>TransactionID</PropertyName>
+                <Type>string</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>CorrelationID</PropertyName>
+                <Type>string</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>TransactionType</PropertyName>
+                <Type>string</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>ResetFlag</PropertyName>
+                <Type>boolean</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>SequenceID</PropertyName>
+                <Type>string</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>Source</PropertyName>
+                <Type>string</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>nonReceivingSysName</PropertyName>
+                <Type>string</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
+        </Properties>
+    </config>
+</BWSharedResource>

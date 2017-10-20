@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns32="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns33="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns6="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:WFM.UID="java://UID" xmlns:ns42="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns53="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns52="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/MammothPrices.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/MessageHeaders.xsd"/>
+    <pd:name>Processes/SendToESB.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:MammothPrices"/>
+                    <xsd:element ref="pfx4:MessageHeaders" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>77</pd:startX>
+    <pd:startY>204</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:for-each select="$UniqueBusinessUnits/root/businessUnit">
+                <BusinessUnits>
+                    <xsl:value-of select="."/>
+                </BusinessUnits>
+            </xsl:for-each>
+            <MessageID>
+                <xsl:value-of select="$MessageID/MessageID"/>
+            </MessageID>
+            <MessageBody>
+                <xsl:value-of select="$Render-XML/xmlString"/>
+            </MessageBody>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1111</pd:endX>
+    <pd:endY>208</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <MessageID>
+            <xsd:element name="MessageID" type="xsd:string"/>
+        </MessageID>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1508188646046</pd:targetNamespace>
+    <pd:activity name="UniqueBusinessUnits">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>216</pd:x>
+        <pd:y>205</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence maxOccurs="unbounded">
+                            <xsd:element name="businessUnit" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each-group select="$Start/root/pfx:MammothPrices/pfx:MammothPrice" group-by="pfx:BusinessUnit">
+                    <businessUnit>
+                        <xsl:value-of select="pfx:BusinessUnit"/>
+                    </businessUnit>
+                </xsl:for-each-group>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="ErrorRetry">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>325</pd:x>
+        <pd:y>3</pd:y>
+        <pd:width>641</pd:width>
+        <pd:height>388</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>j</pd:indexSlot>
+            <pd:errorCondition>$_globalVariables/pfx3:GlobalVariables/SendToESB/retryCount = $j</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>IterateBusinessUnits</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>IterateBusinessUnits</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="IterateBusinessUnits">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>384</pd:x>
+            <pd:y>45</pd:y>
+            <pd:width>501</pd:width>
+            <pd:height>301</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$UniqueBusinessUnits/root/businessUnit</pd:over>
+                <pd:iterationElementSlot>currentBusinessUnit</pd:iterationElementSlot>
+                <pd:indexSlot>i</pd:indexSlot>
+                <pd:activityOutputName/>
+                <pd:accumulateOutput>false</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Assign</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>ArchiveMessage</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>MapToPriceCanonical</pd:from>
+                <pd:to>Render XML</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Render XML</pd:from>
+                <pd:to>SendPricesToESB</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Assign</pd:from>
+                <pd:to>MapToPriceCanonical</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>SendPricesToESB</pd:from>
+                <pd:to>ArchiveMessage</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="MapToPriceCanonical">
+                <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+                <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+                <pd:x>659</pd:x>
+                <pd:y>132</pd:y>
+                <config>
+                    <x__copyToClipboardReference>
+                        <ref>
+                            <pfx>xsd</pfx>
+                            <type>N</type>
+                            <ns>http://www.w3.org/2001/XMLSchema</ns>
+                        </ref>
+                        <ref>
+                            <loc>/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd</loc>
+                            <pfx>pfx</pfx>
+                            <type>S</type>
+                            <ns>http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1</ns>
+                        </ref>
+                    </x__copyToClipboardReference>
+                    <element ref="pfx2:items"/>
+                </config>
+                <pd:inputBindings excludePrefixes="">
+                    <pfx2:items>
+                        <xsl:variable name="var" select="$currentBusinessUnit/businessUnit"/>
+                        <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/root/pfx:MammothPrices/pfx:MammothPrice[ pfx:BusinessUnit = $var ]">
+                            <pfx2:item>
+                                <pfx2:id>
+                                    <xsl:value-of select="pfx:ItemId"/>
+                                </pfx2:id>
+                                <pfx2:base>
+                                    <ns2:type>
+                                        <ns3:code>
+                                            <xsl:value-of select="pfx:ItemTypeCode"/>
+                                        </ns3:code>
+                                    </ns2:type>
+                                </pfx2:base>
+                                <pfx2:locale>
+                                    <xsl:attribute name="ns:Action">
+                                        <xsl:value-of select="&quot;AddOrUpdate&quot;"/>
+                                    </xsl:attribute>
+                                    <ns22:id>
+                                        <xsl:value-of select="pfx:BusinessUnit"/>
+                                    </ns22:id>
+                                    <ns22:name>
+                                        <xsl:value-of select="pfx:StoreName"/>
+                                    </ns22:name>
+                                    <ns22:type>
+                                        <ns32:code>
+                                            <xsl:value-of select="&quot;STR&quot;"/>
+                                        </ns32:code>
+                                        <ns32:description>
+                                            <xsl:value-of select="&quot;Store&quot;"/>
+                                        </ns32:description>
+                                    </ns22:type>
+                                    <ns22:storeItemAttributes>
+                                        <ns33:scanCode>
+                                            <ns4:code>
+                                                <xsl:value-of select="pfx:ScanCode"/>
+                                            </ns4:code>
+                                        </ns33:scanCode>
+                                        <ns33:prices>
+                                            <ns42:price>
+                                                <ns42:gpmId>
+                                                    <xsl:value-of select="pfx:GpmId"/>
+                                                </ns42:gpmId>
+                                                <ns42:type>
+                                                    <ns5:id>
+                                                        <xsl:value-of select="pfx:PriceType"/>
+                                                    </ns5:id>
+                                                    <xsl:choose>
+                                                        <xsl:when test="pfx:PriceType = &quot;TPR&quot;">
+                                                            <ns5:description>
+                                                                <xsl:value-of select="&quot;Temporary Price Reduction&quot;"/>
+                                                            </ns5:description>
+                                                        </xsl:when>
+                                                        <xsl:otherwise>
+                                                            <ns5:description>
+                                                                <xsl:value-of select="&quot;Regular Price&quot;"/>
+                                                            </ns5:description>
+                                                        </xsl:otherwise>
+                                                    </xsl:choose>
+                                                </ns42:type>
+                                                <ns42:uom>
+                                                    <ns52:code>
+                                                        <xsl:value-of select="pfx:SellableUom"/>
+                                                    </ns52:code>
+                                                </ns42:uom>
+                                                <ns42:currencyTypeCode>
+                                                    <xsl:value-of select="pfx:CurrencyCode"/>
+                                                </ns42:currencyTypeCode>
+                                                <ns42:priceAmount>
+                                                    <ns53:amount>
+                                                        <xsl:value-of select="pfx:Price"/>
+                                                    </ns53:amount>
+                                                </ns42:priceAmount>
+                                                <ns42:priceMultiple>
+                                                    <xsl:value-of select="pfx:Multiple"/>
+                                                </ns42:priceMultiple>
+                                                <ns42:priceStartDate>
+                                                    <xsl:value-of select="pfx:StartDate"/>
+                                                </ns42:priceStartDate>
+                                                <xsl:if test="pfx:EndDate">
+                                                    <ns42:priceEndDate>
+                                                        <xsl:value-of select="pfx:EndDate"/>
+                                                    </ns42:priceEndDate>
+                                                </xsl:if>
+                                            </ns42:price>
+                                        </ns33:prices>
+                                    </ns22:storeItemAttributes>
+                                </pfx2:locale>
+                            </pfx2:item>
+                        </xsl:for-each>
+                    </pfx2:items>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="SendPricesToESB">
+                <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+                <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+                <pd:x>638</pd:x>
+                <pd:y>268</pd:y>
+                <config>
+                    <PermittedMessageType>Text</PermittedMessageType>
+                    <SessionAttributes>
+                        <transacted>false</transacted>
+                        <acknowledgeMode>1</acknowledgeMode>
+                        <maxSessions>1</maxSessions>
+                        <destination>%%Destinations/Queues/EsbJustInTimeQueue%%</destination>
+                    </SessionAttributes>
+                    <ConfigurableHeaders>
+                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                        <JMSExpiration>0</JMSExpiration>
+                        <JMSPriority>4</JMSPriority>
+                    </ConfigurableHeaders>
+                    <ConnectionReference>/Connections/ESB Connection.sharedjmscon</ConnectionReference>
+                    <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+                </config>
+                <pd:inputBindings>
+                    <ns0:ActivityInput>
+                        <OtherProperties>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/root/pfx4:MessageHeaders/pfx4:TransactionID)">
+                                    <xsl:if test="$Start/root/pfx4:MessageHeaders/pfx4:TransactionID">
+                                        <TransactionID>
+                                            <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:TransactionID"/>
+                                        </TransactionID>
+                                    </xsl:if>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <TransactionID>
+                                        <xsl:value-of select="$MessageID/MessageID"/>
+                                    </TransactionID>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:if test="$Start/root/pfx4:MessageHeaders/pfx4:CorrelationID">
+                                <CorrelationID>
+                                    <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:CorrelationID"/>
+                                </CorrelationID>
+                            </xsl:if>
+                            <TransactionType>
+                                <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:TransactionType"/>
+                            </TransactionType>
+                            <xsl:if test="$Start/root/pfx4:MessageHeaders/pfx4:ResetFlag">
+                                <ResetFlag>
+                                    <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:ResetFlag"/>
+                                </ResetFlag>
+                            </xsl:if>
+                            <xsl:if test="$Start/root/pfx4:MessageHeaders/pfx4:SequenceID">
+                                <SequenceID>
+                                    <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:SequenceID"/>
+                                </SequenceID>
+                            </xsl:if>
+                            <Source>
+                                <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:Source"/>
+                            </Source>
+                            <nonReceivingSysName>
+                                <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:nonReceivingSysName"/>
+                            </nonReceivingSysName>
+                        </OtherProperties>
+                        <Body>
+                            <xsl:value-of select="$Render-XML/xmlString"/>
+                        </Body>
+                    </ns0:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Render XML">
+                <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+                <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+                <pd:x>513</pd:x>
+                <pd:y>265</pd:y>
+                <config>
+                    <renderAsText>text</renderAsText>
+                    <validateInput>false</validateInput>
+                    <textEncoding>UTF-8</textEncoding>
+                    <renderDefaultPrefix>true</renderDefaultPrefix>
+                    <term ref="pfx2:items"/>
+                </config>
+                <pd:inputBindings>
+                    <xsl:copy-of select="$MapToPriceCanonical/pfx2:items"/>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Assign">
+                <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+                <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+                <pd:x>497</pd:x>
+                <pd:y>129</pd:y>
+                <config>
+                    <variableName>MessageID</variableName>
+                </config>
+                <pd:inputBindings>
+                    <MessageID>
+                        <xsl:value-of select="WFM.UID:UID()"/>
+                    </MessageID>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="ArchiveMessage">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>773</pd:x>
+                <pd:y>270</pd:y>
+                <config>
+                    <spawn>true</spawn>
+                    <processName>/Processes/ArchiveSentMessage.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <root>
+                        <xsl:copy-of select="$Start/root/pfx:MammothPrices"/>
+                        <xsl:copy-of select="$Start/root/pfx4:MessageHeaders"/>
+                        <xsl:copy-of select="$MapToPriceCanonical/pfx2:items"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/root/pfx4:MessageHeaders/pfx4:TransactionID)">
+                                <MessageID>
+                                    <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:TransactionID"/>
+                                </MessageID>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <MessageID>
+                                    <xsl:value-of select="$MessageID/MessageID"/>
+                                </MessageID>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </root>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>1059</pd:x>
+        <pd:y>353</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns6:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;There was an error when sending the Just-in-time price to ESB.  Error Message: &quot;,&#xA;$_error/ns1:ErrorReport/Msg, &quot;;  &quot;,$_error/ns1:ErrorReport/FullClass, &quot;. StackTrace: &quot;,&#xA;$_error/ns1:ErrorReport/StackTrace)"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="&quot;SendToESBForR10Error&quot;"/>
+                    </messageCode>
+                </xsl:if>
+            </ns6:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>UniqueBusinessUnits</pd:from>
+        <pd:to>ErrorRetry</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorRetry</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorRetry</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>UniqueBusinessUnits</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -679,6 +679,8 @@
     <None Include="Scripts\PreDeploymentScripts\DropPriceTables.sql" />
     <Build Include="gpm\Tables\MessageArchivePrice.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddAppsToAppTable.sql" />
+    <Build Include="gpm\Tables\MessageArchivePriceR10.sql" />
+    <Build Include="esb\Tables\MessageArchive.sql" />
     <None Include="Jobs\MAMMOTH . Data History Purge.sql" />
   </ItemGroup>
   <ItemGroup>

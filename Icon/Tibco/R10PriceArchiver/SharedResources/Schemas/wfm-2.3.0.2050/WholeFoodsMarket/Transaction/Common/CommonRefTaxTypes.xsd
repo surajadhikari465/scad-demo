@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.2">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" schemaLocation="../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../../Amount/Amount.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" schemaLocation="../../Timezone/Timezone.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../../Uom/UnitOfMeasure.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="CategoryIdType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:IdStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="CustomerExemptionIdType">
+		<xs:restriction base="crf:IdStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="ImpositionIdType">
+		<xs:restriction base="crf:IdStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="ProductGroupIdType">
+		<xs:restriction base="crf:IdStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="DependenceTaxRuleIdType">
+		<xs:restriction base="crf:IdStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="TaxSaleTypeType">
+		<xs:restriction base="TaxSaleTypeEnum"/>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!-- Enums		                   -->
+	<!-- ================== -->
+	<xs:simpleType name="TaxAtSourceTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="TaxedAtOrigin"/>
+			<xs:enumeration value="TaxedAtDestination"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxSaleTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Sale"/>
+			<xs:enumeration value="Refund"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxSummaryEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="ConsumptionTax"/>
+			<xs:enumeration value="ExcludedConsumptionTax"/>
+			<xs:enumeration value="IncludedConsumptionTax"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxSubTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Standard"/>
+			<xs:enumeration value="Luxury"/>
+			<xs:enumeration value="Exempt"/>
+			<xs:enumeration value="ZeroRated"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Sales"/>
+			<xs:enumeration value="VAT"/>
+			<xs:enumeration value="GST"/>
+			<xs:enumeration value="PST"/>
+			<xs:enumeration value="HST"/>
+			<xs:enumeration value="Excise"/>
+			<xs:enumeration value="UseTax"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!-- Complex Types              -->
+	<!-- ================== -->
+	<xs:complexType name="TaxCertificateCommonData">
+		<xs:annotation>
+			<xs:documentation>A document that certifies that a Customer holds a special tax status
+                that may exempt or reduce the amount of tax that is withheld by a
+                Seller.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="number" type="crf:WfmStrType" form="qualified" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The certificate number assigned to a purchaser by a Tax Authority exempting the purchaser from tax in that authority.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="holderName" type="crf:WfmStrType" form="qualified" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The name of the individual or organization that holds the tax exemption certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="formNumber" type="crf:WfmStrType" form="qualified" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An identifier of the form for the
+                        Certificate</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="jurisdictionID" type="crf:WfmStrType" form="qualified" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Jurisdiction in which the Certificate
+                        applies</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issueDate" type="tmz:DateTimezoneType" form="qualified" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The date that the Certificate was issued to the
+                        holde</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="tmz:DateTimezoneType" form="qualified" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The date that the Certificate expires.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxGroupID" type="crf:TaxGroupIdType" form="qualified" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A unique retailer assigned identifier for the Tax
+                        Group</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="typeCode" type="crf:CodeType" form="unqualified"/>
+	</xs:complexType>
+	<xs:complexType name="TaxOverrideBase">
+		<xs:sequence>
+			<xs:element name="customerOverrideID" type="txf:CustomerOverrideIdType" form="qualified" minOccurs="0"/>
+			<xs:element name="taxableAmount" type="amt:AmountType" form="qualified" minOccurs="0"/>
+			<xs:element name="originalPercent" type="crf:PercentageType" form="qualified">
+				<xs:annotation>
+					<xs:documentation>The tax rate percentage that is being
+                        overriden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="originalTaxAmount" type="amt:AmountType" form="qualified"/>
+			<xs:element name="newTaxPercent" type="crf:PercentageType" form="qualified"/>
+			<xs:element name="newTaxAmount" type="amt:AmountType" form="qualified"/>
+			<xs:element name="reasonCode" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
+			<xs:element name="certificateNumber" type="crf:WfmIntType" form="qualified" minOccurs="0"/>
+			<xs:element name="certificateHolderName" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
+			<xs:element name="operatorBypassApproval" type="txf:ApprovalBase" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxExemptionBase">
+		<xs:sequence>
+			<xs:element name="customerExemptionID" type="CustomerExemptionIdType" form="qualified" minOccurs="0"/>
+			<xs:element name="exemptTaxableAmount" type="amt:AmountType" form="qualified" minOccurs="0"/>
+			<xs:element name="exemptTaxAmount" type="amt:AmountType" form="qualified">
+				<xs:annotation>
+					<xs:documentation>The monetary value of the retail transaction line that would
+                        normally be taxable but, because of special circumstances, is not. For
+                        example, the sale of machinery is normally subject to sales tax. However,
+                        when the machinery is used in manufacturing, some taxing jurisdictions
+                        consider the sale exempt. A certificate is usually required for an exemption
+                        to apply</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reasonCode" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
+			<xs:element name="operatorBypassApproval" type="txf:ApprovalBase" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="certificateNumber" type="crf:WfmIntType" form="qualified" minOccurs="0"/>
+			<xs:element name="certificateHolderName" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tieredLevelType">
+		<xs:annotation>
+			<xs:documentation>Represent  the tax levels , notice that value as for now refers to percentage</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="fromValue" type="crf:WfmDecimalType"/>
+			<xs:element name="toValue" type="crf:WfmDecimalType" minOccurs="0"/>
+			<xs:element name="value" type="crf:WfmDecimalType"/>
+			<xs:element name="taxIndicator" type="crf:WfmStrType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The indicator (symbol) of the tax rate</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="impositionId" type="ImpositionIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The imposition id of the tax calculation method</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxCalculatedMethodBaseType">
+		<xs:sequence>
+			<xs:element name="value" type="crf:WfmDecimalType"/>
+			<xs:element name="impositionId" type="ImpositionIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The imposition id of the tax calculation method</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxProductSelectConditionType">
+		<xs:annotation>
+			<xs:documentation>Type of TaxProductSelectCondition Item</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProductGroupId" type="ProductGroupIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxProductCategoryConditionType">
+		<xs:annotation>
+			<xs:documentation>Type of TaxProductSelectCondition Item</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="categoryId" type="CategoryIdType"/>
+			<xs:element name="categoryLabel" type="crf:WfmStrType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxDateConditionType">
+		<xs:annotation>
+			<xs:documentation>Type of TaxDateCondition Item. Determines between which dates the rate is relevant</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="startDateTime" type="tmz:DateTimezoneType">
+				<xs:annotation>
+					<xs:documentation>Define the start date of the rate. For tax range condition this value is mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="endDateTime" type="tmz:DateTimezoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Define the expiration date of the tax rate. This value is optional. If not set, the Tax Rate will never expire.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MinimumTaxableAmountConditionType">
+		<xs:annotation>
+			<xs:documentation>Type of MinimumTaxableAmountConditionType Item</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Value" type="crf:WfmDecimalType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EatInConditionType">
+		<xs:annotation>
+			<xs:documentation>Type of EatInCondition item. This condition will be relevant only when EatIn is applied on the transaction</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="crf:WfmStrType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TaxZoneConditionType">
+		<xs:annotation>
+			<xs:documentation>Type of TaxLocationCondition Item</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TaxZoneId" type="crf:TaxZoneIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxType">
+		<xs:simpleContent>
+			<xs:extension base="TaxTypeCodeEnum"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TaxSubType">
+		<xs:simpleContent>
+			<xs:extension base="TaxSubTypeCode"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="TaxSubTypeCode">
+		<xs:restriction base="TaxSubTypeCodeEnum"/>
+	</xs:simpleType>
+	<xs:complexType name="Sign">
+		<xs:simpleContent>
+			<xs:extension base="crf:WfmStrType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Imposition">
+		<xs:simpleContent>
+			<xs:extension base="crf:WfmStrType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="CalulcationMethod">
+		<xs:simpleContent>
+			<xs:extension base="crf:WfmStrType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="OriginalPercent">
+		<xs:simpleContent>
+			<xs:extension base="crf:WfmStrType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="CouponReducesTaxationAmount">
+		<xs:complexContent>
+			<xs:extension base="amt:AmountType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TaxRoundingMethod">
+		<xs:simpleContent>
+			<xs:extension base="crf:WfmStrType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TaxRuleId">
+		<xs:simpleContent>
+			<xs:extension base="crf:TaxRuleIdType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TaxGroupID">
+		<xs:simpleContent>
+			<xs:extension base="crf:TaxGroupIdType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TaxJurisdictionID">
+		<xs:simpleContent>
+			<xs:extension base="crf:TaxJurisdictionIdType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="DependenceTaxRuleID">
+		<xs:simpleContent>
+			<xs:extension base="crf:TaxRuleIdType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:schema>
