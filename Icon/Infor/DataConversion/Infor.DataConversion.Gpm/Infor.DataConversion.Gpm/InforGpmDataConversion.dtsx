@@ -12,8 +12,8 @@
   DTS:ObjectName="InforGpmDataConversion"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="194"
-  DTS:VersionGUID="{3F571D17-ABA2-4D56-BE59-60962013548D}">
+  DTS:VersionBuild="202"
+  DTS:VersionGUID="{EF6BC283-48EA-45E5-B34B-C2DAAA3DDEFD}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -33,99 +33,99 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_Prices_20171018.csv">
+          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_Prices_20171023.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="72"
               DTS:TextQualified="True"
               DTS:ObjectName="GUID"
-              DTS:DTSID="{E3065921-1C87-47D8-979F-0E100F7143A6}"
+              DTS:DTSID="{59CAA21A-31C5-450A-8095-31C09182C758}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="3"
               DTS:TextQualified="True"
               DTS:ObjectName="ITEM_ID"
-              DTS:DTSID="{F9CA4C5B-CC70-4198-B929-BD81426A1284}"
+              DTS:DTSID="{2A681E6C-6992-4C36-A763-41C29A75A58F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="3"
               DTS:TextQualified="True"
               DTS:ObjectName="STORE_NUMBER"
-              DTS:DTSID="{8ACBB466-7F68-4E17-A9FE-4366BC962DC7}"
+              DTS:DTSID="{1350D9BB-6218-4E82-B88A-5A28DB935576}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="131"
               DTS:DataPrecision="18"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE"
-              DTS:DTSID="{D5C296A8-692D-410B-9698-160F46AFCC11}"
+              DTS:DTSID="{D57E0CA3-F530-4D69-BF43-3F5445DC2ADA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="16"
               DTS:TextQualified="True"
               DTS:ObjectName="MULTIPLE"
-              DTS:DTSID="{DA5AEFF0-E842-4388-AEC3-3429E2766F13}"
+              DTS:DTSID="{46885572-944F-421A-954A-A5CBDFD3B644}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:MaximumWidth="3"
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="SELLING_UOM"
-              DTS:DTSID="{E64A7419-5D62-4646-82C6-EA23F8074C8D}"
+              DTS:DTSID="{54C5E565-64CA-49E3-B0B7-1E781D50EAFB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:MaximumWidth="3"
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE_TYPE_CODE"
-              DTS:DTSID="{BD6D3538-B468-4A0A-B633-943E6864C3F0}"
+              DTS:DTSID="{989B35A7-DE08-45C4-9444-4104CE23647A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE_ATTRIBUTE_CODE"
-              DTS:DTSID="{C836FE6A-FC70-41FC-B36A-03EBE3650565}"
+              DTS:DTSID="{659DC6B5-FEAA-49FB-806F-1BD1F68C18AD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="NEW_TAG_EXPIRATION_DATE"
-              DTS:DTSID="{EE03B865-58DF-48B0-A6B8-4FF7FB37D209}"
+              DTS:DTSID="{7FD938AE-5BC6-4D89-9BA5-298DF10B8534}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="START_DATE"
-              DTS:DTSID="{2216F589-F55C-49CC-9378-C41F3D7C2DBA}"
+              DTS:DTSID="{646DC1C6-C05A-4EA3-99B0-79F25F68A91F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
+              DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="END_DATE"
-              DTS:DTSID="{0E47E187-85FE-4F6D-B78F-1B7AB6D1F151}"
+              DTS:DTSID="{27E8644F-CB0F-4167-862B-B0D77188153B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -133,7 +133,7 @@
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="CREATED_DATE"
-              DTS:DTSID="{1D743EE0-EF5D-41A1-86C8-9AB6F78F7DB4}"
+              DTS:DTSID="{55BAB99F-D01E-4656-A28C-263DFF4138F2}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -255,7 +255,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="FlatFileName">
       <DTS:VariableValue
-        DTS:DataType="8">FL_Prices_20171018.csv</DTS:VariableValue>
+        DTS:DataType="8">FL_Prices_20171023.csv</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -266,7 +266,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="NowDateTimeUtc">
       <DTS:VariableValue
-        DTS:DataType="7">10/18/2017 10:09:59 PM</DTS:VariableValue>
+        DTS:DataType="7">10/23/2017 7:02:53 PM</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -1729,51 +1729,29 @@
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="123.2,41.6"
-          Id="Package\Transfer Price\Multicast"
-          TopLeft="346,242" />
+          Size="179.2,41.6"
+          Id="Package\Transfer Price\Insert Into Mammoth"
+          TopLeft="95,240" />
         <NodeLayout
           Size="171.2,41.6"
           Id="Package\Transfer Price\Flat File Destination"
           TopLeft="560.000009536743,244.705885784849" />
         <NodeLayout
-          Size="160.8,41.6"
-          Id="Package\Transfer Price\Get IRMA Prices"
-          TopLeft="321,24" />
-        <NodeLayout
           Size="219.2,41.6"
           Id="Package\Transfer Price\REG, TPR, and InsertDateUtc"
           TopLeft="296,92" />
         <NodeLayout
+          Size="123.2,41.6"
+          Id="Package\Transfer Price\Multicast"
+          TopLeft="346,242" />
+        <NodeLayout
+          Size="160.8,41.6"
+          Id="Package\Transfer Price\Get IRMA Prices"
+          TopLeft="321,24" />
+        <NodeLayout
           Size="210.4,41.6"
           Id="Package\Transfer Price\Convert varchar to nvarchar"
           TopLeft="297.1428570942,173.294117861553" />
-        <NodeLayout
-          Size="179.2,41.6"
-          Id="Package\Transfer Price\Insert Into Mammoth"
-          TopLeft="95,240" />
-        <EdgeLayout
-          Id="Package\Transfer Price.Paths[Data Conversion Output]"
-          TopLeft="404.9714285471,214.894117861553">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,27.105882138447"
-              Start="0,0"
-              End="0,19.605882138447">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,19.605882138447" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[OLE DB Source Output]"
           TopLeft="403.5,66">
@@ -1788,28 +1766,6 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,18.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Transfer Price.Paths[Derived Column Output]"
-          TopLeft="403.9714285471,133.6">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,39.6941178615531"
-              Start="0,0"
-              End="0,32.1941178615531">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,32.1941178615531" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1854,6 +1810,50 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="83.3000095367431,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Transfer Price.Paths[Derived Column Output]"
+          TopLeft="403.9714285471,133.6">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39.6941178615531"
+              Start="0,0"
+              End="0,32.1941178615531">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.1941178615531" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Transfer Price.Paths[Data Conversion Output]"
+          TopLeft="404.9714285471,214.894117861553">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.105882138447"
+              Start="0,0"
+              End="0,19.605882138447">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.605882138447" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
