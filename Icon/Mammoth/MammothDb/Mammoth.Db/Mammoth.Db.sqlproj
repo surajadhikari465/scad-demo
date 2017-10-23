@@ -682,6 +682,7 @@
     <Build Include="gpm\Tables\MessageArchivePriceR10.sql" />
     <Build Include="esb\Tables\MessageArchive.sql" />
     <None Include="Jobs\MAMMOTH . Data History Purge.sql" />
+    <None Include="Scripts\PreDeploymentScripts\TruncateRetentionPolicyTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

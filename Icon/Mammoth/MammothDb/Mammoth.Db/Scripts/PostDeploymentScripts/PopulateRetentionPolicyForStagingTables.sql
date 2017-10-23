@@ -1,6 +1,6 @@
 ﻿declare @scriptKey varchar(128)
 
-set @scriptKey = 'PopulateRetentionPolicyForStagingTables'
+set @scriptKey = 'Re-PopulateRetentionPolicyForStagingTables'
 
 IF(NOT exists(Select * from app.PostDeploymentScriptHistory where ScriptKey = @scriptKey))
 BEGIN
@@ -12,11 +12,8 @@ BEGIN
 	-- DEV and TEST Instance
 	IF @serverName = 'CEWD6587\MAMMOTH'
 	BEGIN
-		USE Mammoth_Dev
-
 		-- DEV DB
-		TRUNCATE TABLE [app].[RetentionPolicy]
-
+		USE Mammoth_Dev
 		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 		VALUES 
 		('Mammoth_Dev', 'app', 'AppLog', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
@@ -24,13 +21,13 @@ BEGIN
 		('Mammoth_Dev', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth_Dev', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth_Dev', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
-		('Mammoth_Dev', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+		('Mammoth_Dev', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth_Dev', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth_Dev', 'gpm', 'MessageArchivePriceR10', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 
 		-- TEST DB
 		USE Mammoth
-		
-		TRUNCATE TABLE [app].[RetentionPolicy]
 
 		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 		VALUES 
@@ -39,7 +36,9 @@ BEGIN
 		('Mammoth', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
-		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'gpm', 'MessageArchivePriceR10', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 	END
 
 	-- QA Instance
@@ -47,8 +46,6 @@ BEGIN
 	BEGIN
 		USE Mammoth
 
-		TRUNCATE TABLE [app].[RetentionPolicy]
-
 		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 		VALUES 
 		('Mammoth', 'app', 'AppLog', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
@@ -56,14 +53,15 @@ BEGIN
 		('Mammoth', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
-		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'gpm', 'MessageArchivePriceR10', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 	END
 
 	-- PRD Instance
 	IF @serverName = 'PRD-01-MAMMOTH\MAMMOTH'
 	BEGIN
 		USE Mammoth
-		TRUNCATE TABLE [app].[RetentionPolicy]
 
 		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 		VALUES 
@@ -72,7 +70,9 @@ BEGIN
 		('Mammoth', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
-		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'gpm', 'MessageArchivePriceR10', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 	END
 
 	insert into app.PostDeploymentScriptHistory values(@scriptKey, getdate())
