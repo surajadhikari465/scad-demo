@@ -23,6 +23,7 @@ AS
 -- 06/11/2015   Min Zhao		16195   When calling stored procedure UpdateStoreItemVendorDiscontinue, pass in variable 
 --                                      @ToUpload_DiscontinueItem rather than @DiscontinueItem
 -- 2017-08-04   Min Zhao        22494   Added ItemStatusCode store/item attribute to EIM Price upload.
+-- 2017-10-21   Min Zhao        20173   Stop generating PBD records for GPM stores thru EIM Price Data update
 -- **************************************************************************
 	set nocount on
 	
@@ -208,7 +209,8 @@ AS
 		@ToUpload_Refresh bit,
 		@ToUpload_LocalItem bit,
 		@ToUpload_ItemSurcharge int,
-		@ToUpload_DiscontinueItem bit
+		@ToUpload_DiscontinueItem bit,
+		@gpmStore bit
 
 	-- initialize the flags to false
 	SET @HasValue_Multiple = 0
@@ -688,7 +690,12 @@ AS
 		-- is the price change attribute not part
 		-- of the upload
 		-- or, if it is, is this row a price change?
-		If @IsPriceChange IS NULL OR @IsPriceChange = 1
+
+		SELECT @gpmStore = FlagValue 
+		FROM   [dbo].[fn_GetInstanceDataFlagStoreValues]('GlobalPriceManagement')
+		WHERE  Store_No = @Store_No
+
+		If (@IsPriceChange IS NULL OR @IsPriceChange = 1) AND @gpmStore = 0
 		BEGIN
 			-- default the date to the current date if not provided
 			IF @PriceStartDate IS NULL
