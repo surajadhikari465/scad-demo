@@ -1,0 +1,41 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<root>
+	<MammothPrices xmlns = "http://schemas.wfm.com/Mammoth/MammothPrices.xsd">
+		<MammothPrice>
+			<Region>FL</Region>
+			<BusinessUnit>10105</BusinessUnit>
+			<ItemId>10</ItemId>
+			<GpmId>629ADB93-6DE9-414A-AFD5-A45B7DF65B7B</GpmId>
+			<Multiple>1</Multiple>
+			<Price>.99</Price>
+			<StartDate>2018-01-01T01:04:04</StartDate>
+			<EndDate>2018-01-01T01:04:05</EndDate>
+			<PriceType>REG</PriceType>
+			<PriceTypeAttribute>REG</PriceTypeAttribute>
+			<SellableUom>EA</SellableUom>
+			<CurrencyCode>USD</CurrencyCode>
+			<Action>AddOrUpdate</Action>
+			<ItemTypeCode>RTL</ItemTypeCode>
+			<StoreName>TEST STORE</StoreName>
+			<ScanCode>40115</ScanCode>
+		</MammothPrice>
+		<MammothPrice>
+			<Region>FL</Region>
+			<BusinessUnit>10105</BusinessUnit>
+			<ItemId>10</ItemId>
+			<GpmId>629ADB93-6DE9-414A-AFD5-A45B7DF65B7B</GpmId>
+			<Multiple>1</Multiple>
+			<Price>.79</Price>
+			<StartDate>2018-01-01T01:04:04</StartDate>
+			<EndDate>2018-01-01T01:04:05</EndDate>
+			<PriceType>TPR</PriceType>
+			<PriceTypeAttribute>ISS</PriceTypeAttribute>
+			<SellableUom>EA</SellableUom>
+			<CurrencyCode>USD</CurrencyCode>
+			<Action>AddOrUpdate</Action>
+			<ItemTypeCode>RTL</ItemTypeCode>
+			<StoreName>TEST STORE</StoreName>
+			<ScanCode>40115</ScanCode>
+		</MammothPrice>
+	</MammothPrices>
+</root>

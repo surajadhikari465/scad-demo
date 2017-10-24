@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Dev\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\R10PriceService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\R10PriceService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

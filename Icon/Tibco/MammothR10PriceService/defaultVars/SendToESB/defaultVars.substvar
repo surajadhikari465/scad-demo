@@ -10,6 +10,14 @@
 			<modTime>1508190492226</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>RegStartDate</name>
+			<value>1970-01-01T00:00:00</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1508861316966</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>retryCount</name>
 			<value>3</value>
 			<deploymentSettable>true</deploymentSettable>
