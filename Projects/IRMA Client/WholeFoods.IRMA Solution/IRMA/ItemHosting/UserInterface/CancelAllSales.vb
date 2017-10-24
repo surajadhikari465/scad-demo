@@ -69,6 +69,8 @@ Public Class CancelAllSales
         Dim mdtStores As DataTable = StoreDAO.GetRetailStoreList
         ugrdStoreList.DataSource = mdtStores
 
+        DisableRowsWithGPMStore(mdtStores.Rows.Count)
+
         'load zone drop down
         LoadZone(cmbZones)
 
@@ -76,6 +78,14 @@ Public Class CancelAllSales
         Call StoreListGridLoadStatesCombo(mdtStores, cmbStates)
 
         Call SetCombos()
+    End Sub
+
+    Private Sub DisableRowsWithGPMStore(ByVal rowcount As Integer)
+        For currentRowNumber As Integer = 0 To rowcount - 1
+            If ugrdStoreList.Rows(currentRowNumber).Cells("IsGPMStore").Value Then
+                ugrdStoreList.Rows(currentRowNumber).Activation = Infragistics.Win.UltraWinGrid.Activation.Disabled
+            End If
+        Next
     End Sub
 
     Private Function ApplyChanges() As Boolean

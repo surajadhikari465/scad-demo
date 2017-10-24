@@ -170,6 +170,7 @@ Friend Class frmPriceChange
             While Not rsStores.EOF
                 PopGridRow(rsStores.Fields, iRow)
                 CheckHasVendor(rsStores.Fields, iRow)
+                DisableRowIfStoreIsOnGpm(rsStores.Fields("Store_No").Value, iRow)
                 iRow = iRow + 1
                 rsStores.MoveNext()
             End While
@@ -204,6 +205,12 @@ Friend Class frmPriceChange
         If rsFields("hasVendor").Value = False Then
             ugrdStoreList.Rows(iRow).Activation = Activation.Disabled
             cmdItemVendors.Enabled = True
+        End If
+    End Sub
+
+    Private Sub DisableRowIfStoreIsOnGpm(ByVal storeNo As String, ByVal iRow As Integer)
+        If (InstanceDataDAO.IsFlagActive("GlobalPriceManagement", storeNo) = True) Then
+            ugrdStoreList.Rows(iRow).Activation = Activation.Disabled
         End If
     End Sub
 

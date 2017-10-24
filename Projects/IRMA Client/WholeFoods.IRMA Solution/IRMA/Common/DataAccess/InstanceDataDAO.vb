@@ -224,6 +224,30 @@ Namespace WholeFoods.IRMA.Common.DataAccess
 
         End Sub
 
+        Public Shared Function FlagHasNoStoreOverrides(ByVal flagKey As String) As Boolean
+
+            Dim factory As New DataFactory(DataFactory.ItemCatalog)
+            Dim results As SqlDataReader = Nothing
+            Dim allStoresOnGPM As Boolean = False
+            Dim paramList As New ArrayList
+            Dim currentParam As DBParam
+
+            ' setup parameters for stored proc
+            currentParam = New DBParam
+            currentParam.Name = "FlagKey"
+            currentParam.Value = flagKey
+            currentParam.Type = DBParamType.String
+            paramList.Add(currentParam)
+
+            ' Execute the stored procedure to query the Instance Data record.
+            results = factory.GetStoredProcedureDataReader("FlagHasNoStoreOverrides", paramList)
+
+            While results.Read
+                allStoresOnGPM = results.GetBoolean(results.GetOrdinal("FlagHasNoStoreOverrides"))
+            End While
+
+            Return allStoresOnGPM
+        End Function
     End Class
 
 End Namespace

@@ -102,6 +102,11 @@ me_err:
         If InstanceDataDAO.IsFlagActive("ShowCancelAllSalesButton") Then
             Me.Button_CancelAllSales.Visible = True
         End If
+
+        If InstanceDataDAO.IsFlagActive("GlobalPriceManagement") And InstanceDataDAO.FlagHasNoStoreOverrides("GlobalPriceManagement") Then
+            Me.cmdPrice.Visible = False
+        End If
+
     End Sub
 
     Private Sub SetupItemData()

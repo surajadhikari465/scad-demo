@@ -1,7 +1,7 @@
 Imports System.Data.SqlClient
 Imports WholeFoods.Utility.DataAccess
 Imports WholeFoods.IRMA.ItemHosting.BusinessLogic
-
+Imports WholeFoods.IRMA.Common.DataAccess
 Imports log4net
 
 
@@ -145,7 +145,7 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                 dtStores.Columns.Add(New DataColumn("WFM_Store", GetType(Boolean)))
                 dtStores.Columns.Add(New DataColumn("Mega_Store", GetType(Boolean)))
                 dtStores.Columns.Add(New DataColumn("CustomerType", GetType(Integer)))
-
+                dtStores.Columns.Add(New DataColumn("IsGPMStore", GetType(Boolean)))
 
                 While results.Read
                     row = dtStores.NewRow
@@ -163,6 +163,7 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                     If (Not results.IsDBNull(results.GetOrdinal("CustomerType"))) Then
                         row("CustomerType") = results.GetByte(results.GetOrdinal("CustomerType"))
                     End If
+                    row("IsGPMStore") = InstanceDataDAO.IsFlagActive("GlobalPriceManagement", row("Store_No"))
 
                     dtStores.Rows.Add(row)
                 End While

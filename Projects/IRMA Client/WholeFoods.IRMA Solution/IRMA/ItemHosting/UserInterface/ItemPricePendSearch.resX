@@ -126,31 +126,31 @@
   </data>
   <data name="_cmdFunction_3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgZJREFUWEe9lFFy
-        wzAIRHP0HC1navvfsguLkYQVtzP1m1kDKyTkZJLHP/PdA98VfVvQ9Cf1HMOvXIAHvV4v7LwM9vSMwyFO
-        OcEarOWXF9C+lXGwxEkNtuggxwXk1SiJmo/A72V7FmzhALUuIMlXDryOYsAHtfIzBmxhBN67rwA92joe
-        EYM6sXG8gBkr8OdPoPZ6rbxGPE7EBo+2nyA5VfcVANUfX58W5dWIxyQueHw+uZ9wyE4z2APp3EuXoOER
-        wxE53UAnipTqGkX2wC5aL6GzTCVq+PAJsN3imUTWsGQrNx2X0L4jYqEOR7Q1gh1vQR970V63qA75Jbyo
-        sRkOEWuCd0SpwhpWtVVPmi8RH3c7HFgj/FxICeZ+3oHqVvp1jMN1biixHXvYo8OF6kX2iNgNB5EnaSpK
-        gjlKWcoX2SPik/n65iDypJqp+vtnDw/eyR4Rc3hE7i/EjCTsPexDayt7RHw3HMDDYFFN5t2/INewvMge
-        EXfD6/mRJ2lqYL3A/hKqrw2XF3lC8yrsx5YSd8M7sI7Bgub89jVXLbgH2yxeeXOhPPyEZh2mgbMnH2Bf
-        J9GtQWUtoXknmOmjHZrdm9bY5R06D7HLQdQJTR08a7cGaR3ndAIndULzTjDTRzs05ze6UgPsl2pd8+qB
-        qBOadchOtRd7q8DszSo9Cc07wUwf7ci4WY/HD5gFwxJzM9KEAAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACBklEQVRYR72UUXLDMAhEc/QcLWdq+9+y
+        C4uRhBW3M/WbWQMrJORkksc/890D3xV9W9D0J/Ucw69cgAe9Xi/svAz29IzDIU45wRqs5ZcX0L6VcbDE
+        SQ226CDHBeTVKImaj8DvZXsWbOEAtS4gyVcOvI5iwAe18jMGbGEE3ruvAD3aOh4RgzqxcbyAGSvw50+g
+        9nqtvEY8TsQGj7afIDlV9xUA1R9fnxbl1YjHJC54fD65n3DITjPYA+ncS5eg4RHDETndQCeKlOoaRfbA
+        LlovobNMJWr48Amw3eKZRNawZCs3HZfQviNioQ5HtDWCHW9BH3vRXreoDvklvKixGQ4Ra4J3RKnCGla1
+        VU+aLxEfdzscWCP8XEgJ5n7egepW+nWMw3VuKLEde9ijw4XqRfaI2A0HkSdpKkqCOUpZyhfZI+KT+frm
+        IPKkmqn6+2cPD97JHhFzeETuL8SMJOw97ENrK3tEfDccwMNgUU3m3b8g17C8yB4Rd8Pr+ZEnaWpgvcD+
+        EqqvDZcXeULzKuzHlhJ3wzuwjsGC5vz2NVctuAfbLF55c6E8/IRmHaaBsycfYF8n0a1BZS2heSeY6aMd
+        mt2b1tjlHToPsctB1AlNHTxrtwZpHed0Aid1QvNOMNNHOzTnN7pSA+yXal3z6oGoE5p1yE61F3urwOzN
+        Kj0JzTvBTB/tyLhZj8cPmAXDEnMz0oQAAAAASUVORK5CYII=
 </value>
   </data>
   <metadata name="cmdFunction.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>105, 17</value>
   </metadata>
   <data name="_cmdFunction_3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>244, 579</value>
+    <value>209, 507</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_cmdFunction_3.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_cmdFunction_3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 47</value>
+    <value>41, 41</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_cmdFunction_3.TabIndex" type="System.Int32, mscorlib">
@@ -179,26 +179,25 @@
   </data>
   <data name="_cmdFunction_2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAaJJREFUWEe9kQGS
-        wzAIA/P0PK0/a73YSimxU7hrqxmNAwZJSbYf4x74U9wBJ0/bvp9CqPHS/BAm5qMeeF48k32Mt9utPy/N
-        afoAI0QEQhVIwzw4J+ZgGQDD/9L0g/ne9Q+cA4ylCAQrkM7EHB6YB2AjoBLANOx8Nc8F0BA9R/ukoTel
-        dk2n1zIuBdB/rND0Jua1APRaHYHBFbTnzRVM9/kAjRFXAWyHc2EO6JV+gfUcEYs9o2Ztb9TSCXOlAHqD
-        K9p+MMcEzmbzv6DVEYh4aM6by2wG7vMBGiO8sM1wJs0BM6VfYD1HxO1ZdzY3au25+RPbXCmA3sjT5jXb
-        HqgRhbN5T82ahsM5AL1WRxzLdnZziWfAfD5AY4T1dTZWzAE7uQAaojfoFvszdPcparfrHFgG0BtCapah
-        71coDfN0OAeg12qBJYBIBra/YD5AY0QlgMCOM00G0BA9R/uMoTdl2wXePJ6NB5YBEPgLtetN1c8FoGfv
-        8ApEMmA/mr8P0JsHZ6gEgN78OgCchPgG119gXPjE36D5hQDgZ1/A8YS3A5/Htj0AVWJflC/fbs8AAAAA
-        SUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABoklEQVRYR72RAZLDMAgD8/Q8rT9rvdhK
+        KbFTuGurGY0DBklJth/jHvhT3AEnT9u+n0Ko8dL8ECbmox54XjyTfYy3260/L81p+gAjRARCFUjDPDgn
+        5mAZAMP/0vSD+d71D5wDjKUIBCuQzsQcHpgHYCOgEsA07Hw1zwXQED1H+6ShN6V2TafXMi4F0H+s0PQm
+        5rUA9FodgcEVtOfNFUz3+QCNEVcBbIdzYQ7olX6B9RwRiz2jZm1v1NIJc6UAeoMr2n4wxwTOZvO/oNUR
+        iHhozpvLbAbu8wEaI7ywzXAmzQEzpV9gPUfE7Vl3Njdq7bn5E9tcKYDeyNPmNdseqBGFs3lPzZqGwzkA
+        vVZHHMt2dnOJZ8B8PkBjhPV1NlbMATu5ABqiN+gW+zN09ylqt+scWAbQG0JqlqHvVygN83Q4B6DXaoEl
+        gEgGtr9gPkBjRCWAwI4zTQbQED1H+4yhN2XbBd48no0HlgEQ+Au1603VzwWgZ+/wCkQyYD+avw/Qmwdn
+        qASA3vw6AJyE+AbXX2Bc+MTfoPmFAOBnX8DxhLcDn8e2PQBVYl+UL99uzwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="_cmdFunction_2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 579</value>
+    <value>160, 507</value>
   </data>
   <data name="_cmdFunction_2.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_cmdFunction_2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 47</value>
+    <value>41, 41</value>
   </data>
   <data name="_cmdFunction_2.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -226,24 +225,23 @@
   </data>
   <data name="_cmdFunction_1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAASpJREFUWEftlFuu
-        gzAMRNn/qtgZzbiZyHEckwRU+sFIRwY/xm57dbdX/65D8XOVpcfRHKLfmbtNxXjf92KOI/QhfDfHgWUV
-        g2hZBOdXJQb81Ma0WUbQj8i+xLJOlxFnqX6/pMrQkr+dqkfHzCVVCzWosR7FxLLEJAI9CwxLmr3FBD/B
-        LNl36JDS6C2/gjoklDQz5uf0MB89Ro4ozXheRKQXExyAiPK3q1UzNALmMinR1jW615M71AP9mZRo6xbV
-        LzOe3EEL+jIp0dYj1KzMe5LiyXBKtPUe3szQH6RHzzCCs5yZ/d+g1TWdySOq3JSKoTGG+Fzl2Wc+tWZK
-        1XKCPOm992JiWjKsQY55L56wpLI8WubVVd9lWUNrXB1guFWRqT3gET26/NWAtu0D8Eb7ZW4IRfgAAAAA
-        SUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABKklEQVRYR+2UW66DMAxE2f+q2BnNuJnI
+        cRyTBFT6wUhHBj/Gbnt1t1f/rkPxc5Wlx9Ecot+Zu03FeN/3Yo4j9CF8N8eBZRWDaFkE51clBvzUxrRZ
+        RtCPyL7Esk6XEWepfr+kytCSv52qR8fMJVULNaixHsXEssQkAj0LDEuavcUEP8Es2XfokNLoLb+COiSU
+        NDPm5/QwHz1GjijNeF5EpBcTHICI8rerVTM0AuYyKdHWNbrXkzvUA/2ZlGjrFtUvM57cQQv6MinR1iPU
+        rMx7kuLJcEq09R7ezNAfpEfPMIKznJn936DVNZ3JI6rclIqhMYb4XOXZZz61ZkrVcoI86b33YmJaMqxB
+        jnkvnrCksjxa5tVV32VZQ2tcHWC4VZGpPeARPbr81YC27QPwRvtlbghF+AAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="_cmdFunction_1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 579</value>
+    <value>111, 507</value>
   </data>
   <data name="_cmdFunction_1.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_cmdFunction_1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 47</value>
+    <value>41, 41</value>
   </data>
   <data name="_cmdFunction_1.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -271,24 +269,24 @@
   </data>
   <data name="cmdFilter.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAADBQTFRFAAAAzAAA
-        AJkAmZkAAACZmQCZAJmZmZmZzMzM/wAAAP8A//8AAAD//wD/AP//////xN0xbQAAAPRJREFUKM+VkCGu
-        xCAQQEfRJhVcEUVW1oFrVUGVq+C5z8+64hYFOzPA+o9p8/r6hgwkOhHw8FviB6yllNYRAXA+hNBag40B
-        WGvJwJMJRGOm0drGAA0PICdIYJwLsmVEwEDiSI/fS4aTo+QiayH4nQFWaQAOcn1sbO1jTJbB2w7SYg5U
-        1uKmgRFjDhnsrniKUCPiTq3oYlr1iLdC642A5kh27gc4ku2uGSShe2Q5NTdSFBw5VvqjLwg4svAaCcSa
-        aacg9Lhpks/z3Nd1qbnkWGt9v14kdEDK3YUBIhksDIDK3YUJYn13YYIkh/AD8W/7NwAGKX0BMWA0C8KQ
-        xYkAAAAASUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAMFBMVEUAAADMAAAAmQCZmQAAAJmZAJkA
+        mZmZmZnMzMz/AAAA/wD//wAAAP//AP8A///////E3TFtAAAA9ElEQVQoz5WQIa7EIBBAR9EmFVwRRVbW
+        gWtVQZWr4LnPz7riFgU7M8D6j2nz+vqGDCQ6EfDwW+IHrKWU1hEBcD6E0FqDjQFYa8nAkwlEY6bR2sYA
+        DQ8gJ0hgnAuyZUTAQOJIj99LhpOj5CJrIfidAVZpAA5yfWxs7WNMlsHbDtJiDlTW4qaBEWMOGeyueIpQ
+        I+JOrehiWvWIt0LrjYDmSHbuBziS7a4ZJKF7ZDk1N1IUHDlW+qMvCDiy8BoJxJpppyD0uGmSz/Pc13Wp
+        ueRYa32/XiR0QMrdhQEiGSwMgMrdhQlifXdhgiSH8APxb/s3AAYpfQExYDQLwpDFiQAAAABJRU5ErkJg
+        gg==
 </value>
   </data>
   <data name="cmdFilter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>722, 21</value>
+    <value>619, 18</value>
   </data>
   <data name="cmdFilter.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="cmdFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 47</value>
+    <value>41, 41</value>
   </data>
   <data name="cmdFilter.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -319,22 +317,22 @@
   </data>
   <data name="cmdExit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAN5JREFUWEftkAkO
-        wjAMBPP0/KxPC7FVA3adw7ksIVYaldKSGREMS4sxL8UYpwkp+QSgGLiuswFMTJwIUMUnAqpiYkdAl5hY
-        GWASE9aA/Db+qBigSWqMBADuAVrEdAAcKq8t3AMA94Ar4xZA8iUBcJi8SkBKwD3JZQDe5+dMpgHvWFaS
-        fwfAZxi+LoUSPNKwkhx4/wP3c3xdCiV4pGEgz5eHHIUU8DmYyzSsAffaAb38A0YDJB4BbD8TQF/0wDYU
-        0DjTNFPACqFcV8AOMa0asFNMUwNOiGks4KRYbEIcwguMkVSBf8LqdAAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA3klEQVRYR+2QCQ7CMAwE8/T8rE8LsVUD
+        dp3DuSwhVhqV0pIZEQxLizEvxRinCSn5BKAYuK6zAUxMnAhQxScCqmJiR0CXmFgZYBIT1oD8Nv6oGKBJ
+        aowEAO4BWsR0ABwqry3cAwD3gCvjFkDyJQFwmLxKQErAPcllAN7n50ymAe9YVpJ/B8BnGL4uhRI80rCS
+        HHj/A/dzfF0KJXikYSDPl4cchRTwOZjLNKwB99oBvfwDRgMkHgFsPxNAX/TANhTQONM0U8AKoVxXwA4x
+        rRqwU0xTA06IaSzgpFhsQhzCC4yRVIF/wup0AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="cmdExit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 579</value>
+    <value>828, 507</value>
   </data>
   <data name="cmdExit.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="cmdExit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 47</value>
+    <value>41, 41</value>
   </data>
   <data name="cmdExit.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -362,27 +360,27 @@
   </data>
   <data name="_cmdFunction_0.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAe1JREFUWEe9kgmW
-        gzAMQzl6j9abMZFkBWcB0pky4vmZyLG/u2yL2lNcaX+9Xnd3Ptb+fr9r4Cx70L7tO+vfXoJg6GIBwQF+
-        YIm7b0BQPIB+YQlDcvPMgwQLMBf84xL8LBjEzzQCsw549NDzAr9YglDpyPBVbqThAWe2h+wFWJe3skT9
-        5DnDV7lKQzk8YI0nYF0geXdLECodGb7KlIZxaEDs+ZyA9Zy8pSVO/gMawmHp27EXfg/M74Av/RQprANU
-        ngFuzxke/ViixCp8Jg3KoM5bWeJ/4c6osf67JdSYASvw4vnMB3d477Ml1BAA5g/hPvNugq8soAY3q2H0
-        UjTQlHX/Sbif8r4IzzFIDdHMQfY4TP4Q9stzB0fdwdlJasDFEqfwPqe4gUO8A80WgNSohuO9Do1PaM8P
-        zs29KRxivwNn2a2u4c7wcuBhPoVbBs9qlIY0Qzv4JC/Cb6UhMfAa9hQczSUegvNeikEahiElzuCu63wK
-        70GckwOeSq00NACGp4YjBJzCywT2IONsqOUzauzoNC4RIDcG8BQuKcNDD+R+v6PGromaJXCeNXdwKO6M
-        34D7cqDGrhMdS0yGsD4KHbznJeC5B/K7a+y6kJYoefYT8MaoCkfGGeFeR/hLqkt0caXZvexlf0mz3/sL
-        2rYfsQ2Qgoaz+wUAAAAASUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAB7UlEQVRYR72SCZaDMAxDOXqP1psxkWQF
+        ZwHSmTLi+ZnIsb+7bIvaU1xpf71ed3c+1v5+v2vgLHvQvu07699egmDoYgHBAX5gibtvQFA8gH5hCUNy
+        88yDBAswF/zjEvwsGMTPNAKzDnj00PMCv1iCUOnI8FVupOEBZ7aH7AVYl7eyRP3kOcNXuUpDOTxgjSdg
+        XSB5d0sQKh0ZvsqUhnFoQOz5nID1nLylJU7+AxrCYenbsRd+D8zvgC/9FCmsA1SeAW7PGR79WKLEKnwm
+        DcqgzltZ4n/hzqix/rsl1JgBK/Di+cwHd3jvsyXUEADmD+E+826CryygBjerYfRSNNCUdf9JuJ/yvgjP
+        MUgN0cxB9jhM/hD2y3MHR93B2UlqwMUSp/A+p7iBQ7wDzRaA1KiG470OjU9ozw/Ozb0pHGK/A2fZra7h
+        zvBy4GE+hVsGz2qUhjRDO/gkL8JvpSEx8Br2FBzNJR6C816KQRqGISXO4K7rfArvQZyTA55KrTQ0AIan
+        hiMEnMLLBPYg42yo5TNq7Og0LhEgNwbwFC4pw0MP5H6/o8auiZolcJ41d3Ao7ozfgPtyoMauEx1LTIaw
+        PgodvOcl4LkH8rtr7LqQlih59hPwxqgKR8YZ4V5H+EuqS3Rxpdm97GV/SbPf+wvath+xDZCChrP7BQAA
+        AABJRU5ErkJggg==
 </value>
   </data>
   <data name="_cmdFunction_0.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 579</value>
+    <value>62, 507</value>
   </data>
   <data name="_cmdFunction_0.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_cmdFunction_0.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 47</value>
+    <value>41, 41</value>
   </data>
   <data name="_cmdFunction_0.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -410,21 +408,21 @@
   </data>
   <data name="cmdItemSearch.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAKRJREFUWEftkQEK
-        hDAMBPv0Pq0/66lgSMPYNMcdImZgQJo1rLYkyYQ+kaDc6Vf0Wuvh/mwkonmXdxegJVYNza0haIFVQ3Nr
-        CFpg1dDcGqK31sSFe43mEXrpXyISuPiCkM4ORAJ3FJD725+9AmeOzld3bA5kgWcVuPJnBRbVHGfBHQMU
-        8NTQ3HOAAp4amnsOyO+b3F2E8L4scH+BBSPQ+9Yk2SjlA6G+rpV7VZn6AAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAApElEQVRYR+2RAQqEMAwE+/Q+rT/rqWBI
+        w9g0xx0iZmBAmjWstiTJhD6RoNzpV/Ra6+H+bCSieZd3F6AlVg3NrSFogVVDc2sIWmDV0NwaorfWxIV7
+        jeYReulfIhK4+IKQzg5EAncUkPvbn70CZ47OV3dsDmSBZxW48mcFFtUcZ8EdAxTw1NDcc4ACnhqaew7I
+        75vcXYTwvixwf4EFI9D71iTZKOUDob6ulXtVmfoAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="cmdItemSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 579</value>
+    <value>13, 507</value>
   </data>
   <data name="cmdItemSearch.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="cmdItemSearch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 47</value>
+    <value>41, 41</value>
   </data>
   <data name="cmdItemSearch.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -454,13 +452,13 @@
     <value>217, 17</value>
   </metadata>
   <data name="_optSelection_4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>476, 18</value>
+    <value>408, 16</value>
   </data>
   <data name="_optSelection_4.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_optSelection_4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 19</value>
+    <value>81, 17</value>
   </data>
   <data name="_optSelection_4.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -484,13 +482,13 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="_optSelection_3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>373, 18</value>
+    <value>320, 16</value>
   </data>
   <data name="_optSelection_3.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_optSelection_3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 19</value>
+    <value>81, 17</value>
   </data>
   <data name="_optSelection_3.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -514,13 +512,13 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="cmbZones.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 46</value>
+    <value>80, 40</value>
   </data>
   <data name="cmbZones.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="cmbZones.Size" type="System.Drawing.Size, System.Drawing">
-    <value>271, 24</value>
+    <value>233, 22</value>
   </data>
   <data name="cmbZones.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -541,13 +539,13 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="_optSelection_1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 46</value>
+    <value>8, 40</value>
   </data>
   <data name="_optSelection_1.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_optSelection_1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 19</value>
+    <value>65, 17</value>
   </data>
   <data name="_optSelection_1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -571,13 +569,13 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="_optSelection_5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>579, 18</value>
+    <value>496, 16</value>
   </data>
   <data name="_optSelection_5.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_optSelection_5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 19</value>
+    <value>89, 17</value>
   </data>
   <data name="_optSelection_5.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -601,13 +599,13 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="cmbStore.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 18</value>
+    <value>80, 16</value>
   </data>
   <data name="cmbStore.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="cmbStore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>271, 24</value>
+    <value>233, 22</value>
   </data>
   <data name="cmbStore.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -628,13 +626,13 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="_optSelection_0.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 18</value>
+    <value>8, 16</value>
   </data>
   <data name="_optSelection_0.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_optSelection_0.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 19</value>
+    <value>65, 17</value>
   </data>
   <data name="_optSelection_0.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -658,13 +656,13 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="_optSelection_2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>373, 46</value>
+    <value>320, 40</value>
   </data>
   <data name="_optSelection_2.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="_optSelection_2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 19</value>
+    <value>65, 17</value>
   </data>
   <data name="_optSelection_2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -688,13 +686,13 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="cmbState.Location" type="System.Drawing.Point, System.Drawing">
-    <value>457, 46</value>
+    <value>392, 40</value>
   </data>
   <data name="cmbState.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="cmbState.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 24</value>
+    <value>57, 22</value>
   </data>
   <data name="cmbState.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -715,13 +713,13 @@
     <value>Arial, 8pt</value>
   </data>
   <data name="fraStores.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 0</value>
+    <value>8, 0</value>
   </data>
   <data name="fraStores.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="fraStores.Size" type="System.Drawing.Size, System.Drawing">
-    <value>792, 83</value>
+    <value>679, 73</value>
   </data>
   <data name="fraStores.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -741,9 +739,6 @@
   <metadata name="UltraDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>329, 17</value>
   </metadata>
-  <data name="Appearance2.TextHAlignAsString" xml:space="preserve">
-    <value>Center</value>
-  </data>
   <data name="resource.BoldAsString" xml:space="preserve">
     <value>True</value>
   </data>
@@ -763,10 +758,10 @@
     <value>Arial, 8pt</value>
   </data>
   <data name="ugrdList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 93</value>
+    <value>8, 81</value>
   </data>
   <data name="ugrdList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1009, 480</value>
+    <value>865, 420</value>
   </data>
   <data name="ugrdList.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -793,10 +788,10 @@
     <value>52</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>7, 16</value>
+    <value>6, 14</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1025, 634</value>
+    <value>879, 555</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>

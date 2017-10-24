@@ -58,7 +58,8 @@
         Dim UltraGridColumn7 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("Sale End")
         Dim UltraGridColumn8 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("Batch Status")
         Dim UltraGridColumn9 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("Priority")
-        Dim Appearance2 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
+        Dim UltraGridColumn10 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("StoreIsOnGpm", 0)
+        Dim UltraGridColumn11 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("Store_No", 1)
         Dim Appearance3 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
         Dim Appearance4 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
         Dim Appearance5 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
@@ -351,12 +352,14 @@
         UltraGridColumn8.RowLayoutColumnInfo.PreferredCellSize = New System.Drawing.Size(91, 0)
         UltraGridColumn9.AutoCompleteMode = Infragistics.Win.AutoCompleteMode.Append
         UltraGridColumn9.CellActivation = Infragistics.Win.UltraWinGrid.Activation.NoEdit
-        resources.ApplyResources(Appearance2, "Appearance2")
-        Appearance2.ForceApplyResources = ""
-        UltraGridColumn9.CellAppearance = Appearance2
         UltraGridColumn9.Header.VisiblePosition = 6
         UltraGridColumn9.RowLayoutColumnInfo.PreferredCellSize = New System.Drawing.Size(60, 0)
-        UltraGridBand1.Columns.AddRange(New Object() {UltraGridColumn1, UltraGridColumn2, UltraGridColumn3, UltraGridColumn4, UltraGridColumn5, UltraGridColumn6, UltraGridColumn7, UltraGridColumn8, UltraGridColumn9})
+        UltraGridColumn10.DataType = GetType(Boolean)
+        UltraGridColumn10.Header.VisiblePosition = 9
+        UltraGridColumn10.Hidden = True
+        UltraGridColumn11.Header.VisiblePosition = 10
+        UltraGridColumn11.Hidden = True
+        UltraGridBand1.Columns.AddRange(New Object() {UltraGridColumn1, UltraGridColumn2, UltraGridColumn3, UltraGridColumn4, UltraGridColumn5, UltraGridColumn6, UltraGridColumn7, UltraGridColumn8, UltraGridColumn9, UltraGridColumn10, UltraGridColumn11})
         Me.ugrdList.DisplayLayout.BandsSerializer.Add(UltraGridBand1)
         Me.ugrdList.DisplayLayout.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid
         Appearance3.FontData.BoldAsString = resources.GetString("resource.BoldAsString")

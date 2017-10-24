@@ -54,6 +54,8 @@ Friend Class frmItemPricePendSearch
         'Hidden on grid.
         '--------------------
         mdt.Columns.Add(New DataColumn("ID", GetType(String)))
+        mdt.Columns.Add(New DataColumn("Store_No", GetType(String)))
+        mdt.Columns.Add(New DataColumn("StoreIsOnGpm", GetType(String)))
 
     End Sub
 
@@ -121,6 +123,8 @@ ExitSub:
         Dim row As DataRow
         Dim sDateFormat As String = ResourcesIRMA.GetString("DateStringFormat")
         Dim dtDate As Date
+        Dim allStoresInGridAreOnGpm As Boolean = True
+        Dim currentStoreIsOnGpm As Boolean
 
         'Load the data set.
         mdt.Rows.Clear()
@@ -161,6 +165,8 @@ ExitSub:
                 'SV 08/30/2006: Change the formatting so that the correct date format is displayed based on user's locale
                 row("Sale End") = IIf(dtDate > DateTime.MinValue, dtDate.ToString("d"), String.Empty)
                 row("Batch Status") = mrsPendPrice.Fields("PriceBatchStatusDesc").Value
+                row("Store_No") = CStr(mrsPendPrice.Fields("Store_No").Value)
+                row("StoreIsOnGpm") = InstanceDataDAO.IsFlagActive("GlobalPriceManagement", CStr(mrsPendPrice.Fields("Store_No").Value))
 
                 mdt.Rows.Add(row)
 
@@ -186,6 +192,19 @@ ExitSub:
         ugrdList.Selected.Rows.Clear()
         ugrdList.ActiveRow = Nothing
 
+        ' find whether all the selected rows are for stores under GPM and en/dis-able the row 
+        Dim currentRow As Infragistics.Win.UltraWinGrid.UltraGridRow
+        For Each currentRow In ugrdList.Rows
+            currentStoreIsOnGpm = currentRow.Cells("StoreIsOnGpm").Value
+            If (currentStoreIsOnGpm = True) Then
+                currentRow.Activation = Infragistics.Win.UltraWinGrid.Activation.Disabled
+            Else
+                allStoresInGridAreOnGpm = False
+            End If
+        Next
+
+        ' enable or disable the Edit button (users may only edit prices for stores which don't have GPM)
+        _cmdFunction_2.Enabled = Not allStoresInGridAreOnGpm
     End Sub
 
     Public ReadOnly Property LockDate() As String
@@ -509,7 +528,6 @@ me_exit:
         End Try
 
         PopGrid()
-
     End Sub
 	
 	Private Sub frmItemPricePendSearch_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
@@ -619,42 +637,74 @@ me_exit:
 		
 		GetStoreListString = msStores
 	End Function
-	
-	Public Function GetStoreListRS() As ADODB.Recordset
-		Dim rs As ADODB.Recordset
-		
-		rs = New ADODB.Recordset
-		rs.Fields.Append("Store_No", ADODB.DataTypeEnum.adInteger)
-		rs.Fields.Append("Store_Name", ADODB.DataTypeEnum.adVarChar, 255)
-		rs.Fields.Append("Zone_ID", ADODB.DataTypeEnum.adInteger)
-		rs.Fields.Append("State", ADODB.DataTypeEnum.adVarChar, 2)
-		rs.Fields.Append("WFM_Store", ADODB.DataTypeEnum.adInteger)
-		rs.Fields.Append("Mega_Store", ADODB.DataTypeEnum.adInteger)
-		rs.Fields.Append("CustomerType", ADODB.DataTypeEnum.adInteger)
-		
-		rs.Open()
-		
-		If Not (mrsStore Is Nothing) Then
-			If mrsStore.State = ADODB.ObjectStateEnum.adStateOpen Then
-				mrsStore.Filter = ADODB.FilterGroupEnum.adFilterNone
-				mrsStore.Sort = "Store_Name"
-				Do 
-					rs.AddNew()
-					rs.Fields("Store_Name").Value = mrsStore.Fields("Store_Name").Value
-					rs.Fields("Store_No").Value = mrsStore.Fields("Store_No").Value
-					rs.Fields("Zone_ID").Value = mrsStore.Fields("Zone_ID").Value
-					rs.Fields("State").Value = mrsStore.Fields("State").Value
-					rs.Fields("WFM_Store").Value = mrsStore.Fields("WFM_Store").Value
-					rs.Fields("Mega_Store").Value = mrsStore.Fields("Mega_Store").Value
-					rs.Fields("CustomerType").Value = mrsStore.Fields("CustomerType").Value
-					rs.Update()
-					mrsStore.MoveNext()
-				Loop Until mrsStore.EOF
-				rs.MoveFirst()
-			End If
-		End If
-		
-		GetStoreListRS = rs
+
+    Public Function GetStoreListRS() As ADODB.Recordset
+        Dim rs As ADODB.Recordset
+
+        rs = New ADODB.Recordset
+        rs.Fields.Append("Store_No", ADODB.DataTypeEnum.adInteger)
+        rs.Fields.Append("Store_Name", ADODB.DataTypeEnum.adVarChar, 255)
+        rs.Fields.Append("Zone_ID", ADODB.DataTypeEnum.adInteger)
+        rs.Fields.Append("State", ADODB.DataTypeEnum.adVarChar, 2)
+        rs.Fields.Append("WFM_Store", ADODB.DataTypeEnum.adInteger)
+        rs.Fields.Append("Mega_Store", ADODB.DataTypeEnum.adInteger)
+        rs.Fields.Append("CustomerType", ADODB.DataTypeEnum.adInteger)
+
+        rs.Open()
+
+        If Not (mrsStore Is Nothing) Then
+            If mrsStore.State = ADODB.ObjectStateEnum.adStateOpen Then
+                mrsStore.Filter = ADODB.FilterGroupEnum.adFilterNone
+                mrsStore.Sort = "Store_Name"
+                Do
+                    rs.AddNew()
+                    rs.Fields("Store_Name").Value = mrsStore.Fields("Store_Name").Value
+                    rs.Fields("Store_No").Value = mrsStore.Fields("Store_No").Value
+                    rs.Fields("Zone_ID").Value = mrsStore.Fields("Zone_ID").Value
+                    rs.Fields("State").Value = mrsStore.Fields("State").Value
+                    rs.Fields("WFM_Store").Value = mrsStore.Fields("WFM_Store").Value
+                    rs.Fields("Mega_Store").Value = mrsStore.Fields("Mega_Store").Value
+                    rs.Fields("CustomerType").Value = mrsStore.Fields("CustomerType").Value
+                    rs.Update()
+                    mrsStore.MoveNext()
+                Loop Until mrsStore.EOF
+                rs.MoveFirst()
+            End If
+        End If
+
+        GetStoreListRS = rs
     End Function
 
+
+    Private Sub ugrdList_ClickCell(ByVal sender As Infragistics.Win.UltraWinGrid.UltraGrid,
+                                   ByVal e As Infragistics.Win.UltraWinGrid.ClickCellEventArgs) Handles ugrdList.ClickCell
+
+        Dim allStoresAreOnGpm As Boolean = True
+
+        ' find whether all of the selected rows (stores) is under GPM control 
+        allStoresAreOnGpm = DoAllSelectedStoreRowsMatchFlagValue(sender.Selected.Rows, "GlobalPriceManagement", True)
+
+        ' enable or disable the Edit button (if all stores are on GPM then users cannot edit prices in IRMA)
+        _cmdFunction_2.Enabled = Not allStoresAreOnGpm
+    End Sub
+
+    Private Function DoAllSelectedStoreRowsMatchFlagValue(selectedRowWithStoreNo As Infragistics.Win.UltraWinGrid.SelectedRowsCollection,
+                                                             flagKey As String, expectedFlagValue As Boolean) As Boolean
+
+        Dim currentRow As Infragistics.Win.UltraWinGrid.UltraGridRow
+        Dim currentStoreNo As String
+        Dim currentStoreFlagValue As Boolean
+        Dim allStoresMatchExpectedFlagValue As Boolean = True
+
+        ' find whether any of the selected rows (stores) fail to match the same flag value
+        For Each currentRow In selectedRowWithStoreNo
+            currentStoreNo = CStr(currentRow.Cells("StoreNo").Value)
+            currentStoreFlagValue = InstanceDataDAO.IsFlagActive(flagKey, currentStoreNo)
+            If currentStoreFlagValue <> expectedFlagValue Then
+                allStoresMatchExpectedFlagValue = False
+                Exit For
+            End If
+        Next
+        Return allStoresMatchExpectedFlagValue
+    End Function
 End Class
