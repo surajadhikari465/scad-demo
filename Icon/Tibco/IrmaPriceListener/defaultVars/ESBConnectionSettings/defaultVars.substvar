@@ -42,28 +42,20 @@
 			<modTime>1499972862738</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>EsbPriceQueueName</name>
-			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.MammothPrice.Queue.V1</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1502904550410</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>EsbServerUrl</name>
-			<value>ssl://cerd1616.wfm.pvt:7233</value>
+			<value>ssl://cerd1617.wfm.pvt:17233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1507065736689</modTime>
+			<modTime>1508530405383</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPassword</name>
-			<value>sb1_mammothPriceIrmaUser</value>
+			<value>#!K+nZ4DU5FCUHKt3jWm2g2wynlRm1eBQHe792DkakPW6jZBVG/ftJP3DkaAakH94L78/acF4uYxsl7l5B1ewoKg==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1507065736546</modTime>
+			<type>Password</type>
+			<modTime>1508508828536</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPasswordWritePermissions</name>
@@ -91,19 +83,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JndiConextUrl</name>
-			<value>ssl://cerd1616.wfm.pvt:7233</value>
+			<value>ssl://cerd1617.wfm.pvt:17233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861817</modTime>
+			<modTime>1508530405444</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>jndiSB1_MammothPriceIrmaUser</value>
+			<value>#!9MC9Bw9H17t47/LOHJot0w==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1503515754069</modTime>
+			<type>Password</type>
+			<modTime>1508508828634</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPasswordWritePermissions</name>
@@ -131,27 +123,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SslPassword</name>
-			<value>esb</value>
+			<value>#!xkkn3ThlvYBRlc9/3rhmIQ==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972863351</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>TargetHostName</name>
-			<value>cerd1616.wfm.pvt</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972861683</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>TopicConnectionFactoryName</name>
-			<value>ItemTopicConnectionFactory</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972863705</modTime>
+			<type>Password</type>
+			<modTime>1508508828727</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

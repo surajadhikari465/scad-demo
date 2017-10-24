@@ -2,14 +2,6 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
-			<value>file:///C:/Certificates</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1503517909955</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>Deployment</name>
 			<value>PriceListener1</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -51,107 +43,83 @@
 		</globalVariable>
 		<globalVariable>
 			<name>IrmaConnectionString</name>
-			<value>jdbc:sqlserver://idd-fl\fld;DatabaseName=ItemCatalog_Test;IntegratedSecurity=false;</value>
+			<value>jdbc:sqlserver://idt-sw\swt;DatabaseName=ItemCatalog_Test;IntegratedSecurity=false;</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1503602560002</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>JmsProviderUrl</name>
-			<value>tcp://localhost:7222</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972861720</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>JmsSslProviderUrl</name>
-			<value>ssl://localhost:7243</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862795</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>NewItem</name>
-			<value>no value</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499972862273</modTime>
+			<modTime>1508532130256</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RemoteRvDaemon</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863415</modTime>
+			<modTime>1508474143469</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvDaemon</name>
 			<value>tcp:7500</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972862504</modTime>
+			<modTime>1508474020213</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvNetwork</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972862485</modTime>
+			<modTime>1508474020280</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvService</name>
 			<value>7500</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863000</modTime>
+			<modTime>1508474020344</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvaHost</name>
 			<value>localhost</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863302</modTime>
+			<modTime>1508474020414</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvaPort</name>
 			<value>7600</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863037</modTime>
+			<modTime>1508474020478</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TIBHawkDaemon</name>
 			<value>tcp:7474</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972862192</modTime>
+			<modTime>1508474020542</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TIBHawkNetwork</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863496</modTime>
+			<modTime>1508474020602</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TIBHawkService</name>
 			<value>7474</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863286</modTime>
+			<modTime>1508474020662</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

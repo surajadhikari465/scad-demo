@@ -51,7 +51,7 @@
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>504</pd:x>
+        <pd:x>480</pd:x>
         <pd:y>1</pd:y>
         <pd:width>303</pd:width>
         <pd:height>283</pd:height>
@@ -85,8 +85,8 @@
         <pd:activity name="Load Prices Into IRMA (Batch Update)">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>651</pd:x>
-            <pd:y>96</pd:y>
+            <pd:x>626</pd:x>
+            <pd:y>95</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -407,7 +407,7 @@
     <pd:activity name="Parse Price Message">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>336</pd:x>
+        <pd:x>335</pd:x>
         <pd:y>43</pd:y>
         <config>
             <inputStyle>text</inputStyle>

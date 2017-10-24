@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Layaway/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/TransactionMgmt/RetailTransaction/LineItemType/TransactionItemBaseType/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Layaway/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/RetailTransaction/LineItemType/TransactionItemBaseType/V1" schemaLocation="../../Item/TransactionItem.xsd"/>
-	<xs:complexType name="Layaway">
-		<xs:sequence>
-			<xs:element name="transactionItem" type="irf:TransactionItemBaseType"/>
-		</xs:sequence>
-	</xs:complexType>
-</xs:schema>

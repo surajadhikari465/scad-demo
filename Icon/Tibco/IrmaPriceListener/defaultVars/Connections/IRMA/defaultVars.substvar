@@ -3,11 +3,12 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Password</name>
-			<value>TibcoDataWriter</value>
+			<value>#!p4T1lmSECHz02OfAJQ0WOSqRJHphWZ9tQFxcXY8bNnOrIyZdVry/xg==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1506109791384</modTime>
+			<type>Password</type>
+			<constraint></constraint>
+			<modTime>1508507763997</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>UserName</name>

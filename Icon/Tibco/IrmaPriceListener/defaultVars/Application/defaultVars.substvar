@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ApplicationID</name>
-			<value>Price Listener</value>
+			<value>IRMA Price Listener</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863463</modTime>
+			<modTime>1508474020010</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DBTimeOutRetryCount</name>

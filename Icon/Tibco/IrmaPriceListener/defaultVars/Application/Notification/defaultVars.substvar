@@ -3,19 +3,19 @@
 	<globalVariables>
 		<globalVariable>
 			<name>To</name>
-			<value>Amit.Uppal@wholefoods.com</value>
+			<value>IRMA.Developers@wholefoods.com</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972861848</modTime>
+			<modTime>1508474020068</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>cC</name>
-			<value>Amit.Uppal@wholefoods.com</value>
+			<value>IRMA.Developers@wholefoods.com</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972862290</modTime>
+			<modTime>1508474020146</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

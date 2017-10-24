@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <enterpriseArchive>
-        <sharedArchive name="Irma ETL Shared Archive">
+        <sharedArchive name="Irma Price Listener Shared">
             <resourceType>shared.archive.resource</resourceType>
             <authorProperty>2096654</authorProperty>
             <sharedResources/>
             <sharedFiles/>
             <sharedJarFiles/>
         </sharedArchive>
-        <processArchive name="Irma ETL Process Archive">
+        <processArchive name="Irma Price Listener Process">
             <resourceType>process.archive.resource</resourceType>
             <authorProperty>2096654</authorProperty>
             <processProperty>/Processes/IrmaPriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>11</versionProperty>
+        <versionProperty>17</versionProperty>
         <authorProperty>2096654</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>IrmaQueueListener</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Deployment\IrmaQueueListener.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Deployment\IrmaPriceListener.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

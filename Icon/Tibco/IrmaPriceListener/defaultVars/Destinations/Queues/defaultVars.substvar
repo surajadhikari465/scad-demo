@@ -19,20 +19,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MammothSourceQueue</name>
-			<value>WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1</value>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SW.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1507130468472</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>Price</name>
-			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
-			<description></description>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1503333048010</modTime>
+			<modTime>1508530405310</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
