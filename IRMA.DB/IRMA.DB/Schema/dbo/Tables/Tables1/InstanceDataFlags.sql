@@ -29,3 +29,7 @@ GRANT SELECT
     ON OBJECT::[dbo].[InstanceDataFlags] TO [IRMAExcelRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[InstanceDataFlags] TO [IConInterface]
+    AS [dbo];
