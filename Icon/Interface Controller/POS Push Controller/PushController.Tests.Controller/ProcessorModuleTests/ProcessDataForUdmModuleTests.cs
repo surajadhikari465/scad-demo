@@ -56,6 +56,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             this.mockItemLinkDeleteService = new Mock<IUdmDeleteService<ItemLinkModel>>();
 
             StartupOptions.RegionsToProcess = ConfigurationManager.AppSettings["RegionsToProcess"].Split(',');
+            SetUpCache(false);
 
             processorModule = new ProcessDataForUdmModule(
                 mockIconContext.Object,
@@ -343,6 +344,65 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
 
             // Then.
             mockUpdateStagingTableDatesCommandHandler.Verify(c => c.Execute(It.IsAny<UpdateStagingTableDatesForUdmCommand>()), Times.Once);
+        }
+        [TestMethod]
+        public void ProcessDataForUdm_AllRegionsOnGPM__SaveEntitiesForPriceShouldNotBeCalled()
+        {
+            // Given.
+            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            var mockEmptyPosData = new List<IRMAPush>();
+            Cache.ClearAll();
+            SetUpCache(true);
+
+            var queuedPosData = new Queue<List<IRMAPush>>();
+            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(mockEmptyPosData);
+
+            mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
+            mockItemPriceEntityGenerator.Setup(eg => eg.BuildEntities(It.IsAny<List<IRMAPush>>())).Returns(new List<ItemPriceModel> { new ItemPriceModel() });
+            mockItemLinkEntityGenerator.Setup(eg => eg.BuildEntities(It.IsAny<List<IRMAPush>>())).Returns(new List<ItemLinkModel> { new ItemLinkModel() });
+
+            // When.
+            processorModule.Execute();
+
+            // Then.
+            mockItemPriceEntityGenerator.Verify(eg => eg.SaveEntities(It.IsAny<List<ItemPriceModel>>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void ProcessDataForUdm_NoRegionOnGPM__SaveEntitiesForPriceShouldBeCalled()
+        {
+            // Given.
+            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            var mockEmptyPosData = new List<IRMAPush>();
+
+            var queuedPosData = new Queue<List<IRMAPush>>();
+            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(mockEmptyPosData);
+
+            mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
+            mockItemPriceEntityGenerator.Setup(eg => eg.BuildEntities(It.IsAny<List<IRMAPush>>())).Returns(new List<ItemPriceModel> { new ItemPriceModel() });
+            mockItemLinkEntityGenerator.Setup(eg => eg.BuildEntities(It.IsAny<List<IRMAPush>>())).Returns(new List<ItemLinkModel> { new ItemLinkModel() });
+
+            // When.
+            processorModule.Execute();
+
+            // Then.
+            mockItemPriceEntityGenerator.Verify(eg => eg.SaveEntities(It.IsAny<List<ItemPriceModel>>()), Times.Once);
+        }
+        private void SetUpCache(Boolean isRegionGPM)
+        {
+            Cache.regionCodeToGPMInstanceDataFlag.Add("FL", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("MA", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("MW", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("NA", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("NC", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("NE", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("PN", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("RM", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("SO", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("SP", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("SW", isRegionGPM);
         }
     }
 }

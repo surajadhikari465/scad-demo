@@ -17,6 +17,7 @@ namespace PushController.Tests.DataAccess.Queries
         private GetInstanceDataFlagValueByFlagKeyQueryHandler getInstanceDataFlagValueByFlagKeyQueryHandler;
         private TransactionScope transaction;
         string flagKey ;
+
         [TestInitialize]
         public void Initialize()
         {

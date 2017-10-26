@@ -48,7 +48,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             this.mockMessageGeneratorPrice = new Mock<IMessageGenerator<MessageQueuePrice>>();
 
             StartupOptions.RegionsToProcess = ConfigurationManager.AppSettings["RegionsToProcess"].Split(',');
-            setUpCache(false);
+            SetUpCache(false);
 
             processorModule = new ProcessDataForEsbModule(
                 mockIconContext.Object,
@@ -261,7 +261,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
             Cache.ClearAll();
-            setUpCache(true);
+            SetUpCache(true);
 
             var queuedPosData = new Queue<List<IRMAPush>>();
             queuedPosData.Enqueue(mockPosData);
@@ -299,7 +299,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             mockMessageGeneratorPrice.Verify(mg => mg.SaveMessages(It.IsAny<List<MessageQueuePrice>>()), Times.Once);
         }
 
-        private void setUpCache(Boolean isRegionGPM)
+        private void SetUpCache(Boolean isRegionGPM)
         {
             Cache.regionCodeToGPMInstanceDataFlag.Add("FL", isRegionGPM);
             Cache.regionCodeToGPMInstanceDataFlag.Add("MA", isRegionGPM);

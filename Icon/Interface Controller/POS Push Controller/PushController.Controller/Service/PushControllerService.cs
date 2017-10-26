@@ -18,7 +18,7 @@ namespace PushController.Controller.Service
         private Timer timer;
         private const string flagKey = "GlobalPriceManagement";
         private PushController.DataAccess.Interfaces.IQueryHandler<GetInstanceDataFlagValueByFlagKeyQuery, bool> getInstanceDataFlagsByFlagKeyQueryHandler = new GetInstanceDataFlagValueByFlagKeyQueryHandler();
-  
+
         public PushControllerService()
         {
             int runInterval = AppSettingsAccessor.GetIntSetting("RunInterval");
@@ -63,20 +63,29 @@ namespace PushController.Controller.Service
                 {
                     foreach (string region in regionsToCheckForGPM)
                     {
-                        string connectionString = ConnectionBuilder.GetConnection(region);
-                        IrmaContext context = new IrmaContext(ConnectionBuilder.GetConnection(region));
-
-                        var query = new GetInstanceDataFlagValueByFlagKeyQuery
+                        try
                         {
-                            FlagKey = flagKey,
-                            StoreNo = null,
-                            Context = context
-                        };
+                            string connectionString = ConnectionBuilder.GetConnection(region);
+                            IrmaContext context = new IrmaContext(ConnectionBuilder.GetConnection(region));
 
-                        if (!Cache.regionCodeToGPMInstanceDataFlag.ContainsKey(region))
+                            var query = new GetInstanceDataFlagValueByFlagKeyQuery
+                            {
+                                FlagKey = flagKey,
+                                StoreNo = null,
+                                Context = context
+                            };
+
+
+                            if (!Cache.regionCodeToGPMInstanceDataFlag.ContainsKey(region))
+                            {
+                                Cache.regionCodeToGPMInstanceDataFlag.Add(region, getInstanceDataFlagsByFlagKeyQueryHandler.Execute(query));
+                            }
+                        }
+                        catch (Exception error)
                         {
-                            Cache.regionCodeToGPMInstanceDataFlag.Add(region, getInstanceDataFlagsByFlagKeyQueryHandler.Execute(query));
-                        }                     
+                            logger.Error("Not able to connect to Irma Database: " + region +".Error is:"+ error.Message.ToString());
+                            continue;
+                        }
                     }
                 }
 

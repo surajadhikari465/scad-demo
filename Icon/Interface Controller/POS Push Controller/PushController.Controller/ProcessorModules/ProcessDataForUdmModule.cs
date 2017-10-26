@@ -73,7 +73,7 @@ namespace PushController.Controller.ProcessorModules
                 PopulateCaches(posDataReadyForUdm);
                 UpdateItemLinks(posDataReadyForUdm);
 
-                DeleteCancelledTemporaryPriceReductions(posDataReadyForUdm);
+               
 
                 List<String> nonGpmRegionList = Cache.regionCodeToGPMInstanceDataFlag
                                                       .Where(rg => rg.Value == false).
@@ -81,8 +81,10 @@ namespace PushController.Controller.ProcessorModules
                 // get data for regions that are not on GPM 
                 var posDataForNonGPMRegions = posDataReadyForUdm.Where(pdr => nonGpmRegionList.Contains(pdr.RegionCode)).ToList();
 
+
                 if (posDataForNonGPMRegions.Count > 0)
                 {
+                    DeleteCancelledTemporaryPriceReductions(posDataForNonGPMRegions);
                     var itemPriceUpdates = BuildItemPriceUpdates(posDataForNonGPMRegions);
 
                     if (itemPriceUpdates.Count > 0)
