@@ -255,7 +255,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         }
 
         [TestMethod]
-        public void ProcessDataForEsb_AllRegionsOnGPM__SaveMessagesShouldNotBeCalled()
+        public void ProcessDataForEsb_AllRegionsOnGPM__SaveMessagesForPriceShouldNotBeCalled()
         {
             // Given.
             var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
@@ -278,7 +278,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         }
 
         [TestMethod]
-        public void ProcessDataForEsb_NoRegionOnGPM__SaveMessagesShouldBeCalled()
+        public void ProcessDataForEsb_NoRegionOnGPM__SaveMessagesForPriceShouldBeCalled()
         {
             // Given.
             var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
