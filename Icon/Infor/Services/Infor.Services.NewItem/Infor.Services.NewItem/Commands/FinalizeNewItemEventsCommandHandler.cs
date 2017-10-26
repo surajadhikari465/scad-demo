@@ -11,6 +11,9 @@ using System.Data;
 using Icon.Common.Context;
 using Infor.Services.NewItem.Infrastructure;
 using Icon.Logging;
+using Infor.Services.NewItem.Models;
+using Infor.Services.NewItem.Constants;
+using Newtonsoft.Json;
 
 namespace Infor.Services.NewItem.Commands
 {
@@ -41,26 +44,33 @@ namespace Infor.Services.NewItem.Commands
 
         public void Execute(FinalizeNewItemEventsCommand data)
         {
-            if (data.NewItems.Any())
+            try
             {
-                var queueIds = data.NewItems
-                    .Select(i => new { i.QueueId })
-                    .ToTvp("queueIds", "infor.NewItemEventType");
-                var errorOccurred = new SqlParameter("errorOccurred", SqlDbType.Bit) { Value = data.ErrorOccurred };
-                var instanceId = new SqlParameter("instanceId", SqlDbType.Int) { Value = data.Instance };
+                if (data.NewItems.Any())
+                {
+                    var queueIds = data.NewItems
+                        .Select(i => new { i.QueueId })
+                        .ToTvp("queueIds", "infor.NewItemEventType");
+                    var errorOccurred = new SqlParameter("errorOccurred", SqlDbType.Bit) { Value = data.ErrorOccurred };
+                    var instanceId = new SqlParameter("instanceId", SqlDbType.Int) { Value = data.Instance };
 
-                context.Context.Database.ExecuteSqlCommand("EXEC infor.FinalizeNewItemEvents @queueIds, @instanceId, @errorOccurred", queueIds, instanceId, errorOccurred);
+                    context.Context.Database.ExecuteSqlCommand("EXEC infor.FinalizeNewItemEvents @queueIds, @instanceId, @errorOccurred", queueIds, instanceId, errorOccurred);
+                }
+
+                var instanceIdForFailUnprocessedEvents = new SqlParameter("instanceId", SqlDbType.Int) { Value = data.Instance };
+                context.Context.Database.ExecuteSqlCommand("EXEC infor.FailUnprocessedEvents @instanceId", instanceIdForFailUnprocessedEvents);
+
+                LogFinalizedItems(data);
             }
-
-            var instanceIdForFailUnprocessedEvents = new SqlParameter("instanceId", SqlDbType.Int) { Value = data.Instance };
-            context.Context.Database.ExecuteSqlCommand("EXEC infor.FailUnprocessedEvents @instanceId", instanceIdForFailUnprocessedEvents);
-
-            LogFinalizedItems(data);
+            catch (Exception ex)
+            {
+                LogException(ex, data);
+            }
         }
 
         private void LogFinalizedItems(FinalizeNewItemEventsCommand data)
         {
-            if(data.NewItems.Any())
+            if (data.NewItems.Any())
             {
                 logger.Info(string.Format(
                     "FinalizeNewItemEvents finalized {0} items. Region: {1}, ScanCodes: {2}",
@@ -75,6 +85,19 @@ namespace Infor.Services.NewItem.Commands
                     0,
                     data.Region));
             }
+        }
+
+        private void LogException(Exception ex, FinalizeNewItemEventsCommand data)
+        {
+            logger.Error(JsonConvert.SerializeObject(
+                new
+                {
+                    Message = ApplicationErrors.Codes.FailedToFinalizeItemsError,
+                    Region = data.Region,
+                    Items = data.NewItems,
+                    ExceptionMessage = ex.Message,
+                    Exception = ex.ToString()
+                }));
         }
     }
 }

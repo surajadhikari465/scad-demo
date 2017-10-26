@@ -10,6 +10,7 @@ using Infor.Services.NewItem.Queries;
 using Infor.Services.NewItem.Services;
 using Infor.Services.NewItem.Validators;
 using Irma.Framework;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,11 +67,11 @@ namespace Infor.Services.NewItem.Processor
                 IEnumerable<NewItemModel> newItems = new List<NewItemModel>();
                 do
                 {
-                    irmaContext.Refresh(region);
-                    iconContext.Refresh();
                     bool errorOccurredWhileProcessing = false;
                     try
                     {
+                        irmaContext.Refresh(region);
+                        iconContext.Refresh();
                         newItems = getNewItemsQueryHandler.Search(
                             new GetNewItemsQuery
                             {
@@ -89,7 +90,7 @@ namespace Infor.Services.NewItem.Processor
                     }
                     catch (Exception ex)
                     {
-                        logger.Error(ex.ToString());
+                        LogException(ex, region, newItems);
                         errorOccurredWhileProcessing = true;
                         foreach (var item in newItems.Where(i => i.ErrorCode == null))
                         {
@@ -134,6 +135,19 @@ namespace Infor.Services.NewItem.Processor
             }
 
             return errorOccurredWhileProcessing;
+        }
+
+        private void LogException(Exception ex, string region, IEnumerable<NewItemModel> newItems)
+        {
+            logger.Error(JsonConvert.SerializeObject(
+                new
+                {
+                    Message = ApplicationErrors.Codes.UnexpectedProcessingError,
+                    Region = region,
+                    Items = newItems,
+                    ExceptionMessage = ex.Message,
+                    Exception = ex.ToString()
+                }));
         }
     }
 }

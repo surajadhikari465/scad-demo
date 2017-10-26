@@ -18,6 +18,7 @@ namespace Infor.Services.NewItem.Constants
             public const string InvalidRetailUom = "Invalid Retail UOM";
             public const string FailedToAddGloConEventError = "FailedToAddGloConEventError";
             public const string InvalidCustomerFriendlyDescription = "InvalidCustomerFriendlyDescription";
+            public const string FailedToFinalizeItemsError = "FailedToFinalizeItemsError";
         }
 
         public static class Details

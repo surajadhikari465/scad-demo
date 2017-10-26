@@ -1,4 +1,5 @@
-﻿using Icon.Logging;
+﻿using Icon.Common.Email;
+using Icon.Logging;
 using Icon.Testing.Builders;
 using InterfaceController.Common;
 using Irma.Framework;
@@ -29,6 +30,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         private Mock<ICommandHandler<MarkPublishedRecordsAsInProcessCommand>> mockMarkRecordsAsInProcessCommandHandler;
         private Mock<ICommandHandler<UpdatePublishTableDatesCommand>> mockUpdatePublishTableDatesCommandHandler;
         private Mock<IPosDataGenerator<IrmaPushModel>> mockIrmaPushGenerator;
+        private Mock<IEmailClient> mockEmailClient;
 
         [TestInitialize]
         public void Initialize()
@@ -40,6 +42,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             this.mockMarkRecordsAsInProcessCommandHandler = new Mock<ICommandHandler<MarkPublishedRecordsAsInProcessCommand>>();
             this.mockUpdatePublishTableDatesCommandHandler = new Mock<ICommandHandler<UpdatePublishTableDatesCommand>>();
             this.mockIrmaPushGenerator = new Mock<IPosDataGenerator<IrmaPushModel>>();
+            this.mockEmailClient = new Mock<IEmailClient>();
 
             StartupOptions.Instance = 1;
             StartupOptions.RegionsToProcess = new [] { "FL" };
@@ -61,7 +64,8 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
                 mockGetIrmaPosDataQueryHandler.Object,
                 mockMarkRecordsAsInProcessCommandHandler.Object,
                 mockUpdatePublishTableDatesCommandHandler.Object,
-                mockIrmaPushGenerator.Object);
+                mockIrmaPushGenerator.Object,
+                mockEmailClient.Object);
         }
 
         [TestMethod]

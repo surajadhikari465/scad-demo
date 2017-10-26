@@ -12,6 +12,9 @@ using PushController.DataAccess.Queries;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using Icon.Common;
+using System.Reflection;
+using Icon.Common.Email;
 
 namespace PushController.Controller.ProcessorModules
 {
@@ -25,6 +28,7 @@ namespace PushController.Controller.ProcessorModules
         private ICommandHandler<MarkPublishedRecordsAsInProcessCommand> markPublishedRecordsAsInProcessCommandHandler;
         private ICommandHandler<UpdatePublishTableDatesCommand> updatePublishTableDatesCommandHandler;
         private IPosDataGenerator<IrmaPushModel> irmaPushDataGenerator;
+        private IEmailClient emailClient;
 
         public string CurrentRegion { get; private set; }
 
@@ -35,7 +39,8 @@ namespace PushController.Controller.ProcessorModules
             IQueryHandler<GetIrmaPosDataQuery, List<IConPOSPushPublish>> getIrmaPosDataQueryHandler,
             ICommandHandler<MarkPublishedRecordsAsInProcessCommand> markPublishedRecordsAsInProcessCommandHandler,
             ICommandHandler<UpdatePublishTableDatesCommand> updatePublishTableDatesCommandHandler,
-            IPosDataGenerator<IrmaPushModel> irmaPushDataGenerator)
+            IPosDataGenerator<IrmaPushModel> irmaPushDataGenerator,
+            IEmailClient emailClient)
         {
             this.logger = logger;
             this.contextProvider = contextProvider;
@@ -44,6 +49,7 @@ namespace PushController.Controller.ProcessorModules
             this.markPublishedRecordsAsInProcessCommandHandler = markPublishedRecordsAsInProcessCommandHandler;
             this.updatePublishTableDatesCommandHandler = updatePublishTableDatesCommandHandler;
             this.irmaPushDataGenerator = irmaPushDataGenerator;
+            this.emailClient = emailClient;
         }
 
         public void Execute()
@@ -52,32 +58,39 @@ namespace PushController.Controller.ProcessorModules
 
             foreach (string region in StartupOptions.RegionsToProcess)
             {
-                CurrentRegion = region;
-
-                regionalConnectionString = ConnectionBuilder.GetConnection(region);
-                globalContext = new GlobalIrmaContext(contextProvider.GetRegionalContext(regionalConnectionString), regionalConnectionString);
-
-                if (!PosPushIsRunning(region))
+                try
                 {
-                    MarkPosDataAsInProcess();
-                    var publishedPosData = GetPublishedPosData();
+                    CurrentRegion = region;
 
-                    while (publishedPosData.Count > 0)
+                    regionalConnectionString = ConnectionBuilder.GetConnection(region);
+                    globalContext = new GlobalIrmaContext(contextProvider.GetRegionalContext(regionalConnectionString), regionalConnectionString);
+
+                    if (!PosPushIsRunning(region))
                     {
-                        logger.Info(String.Format("Found {0} records to be processed for the {1} region.", publishedPosData.Count.ToString(), region));
-
-                        var posDataReadyToBeStaged = ConvertIrmaPosData(publishedPosData);
-
-                        if (posDataReadyToBeStaged.Count > 0)
-                        {
-                            StagePosData(posDataReadyToBeStaged);
-                            UpdatePosDataProcessedDate(publishedPosData);
-                        }
-
-                        globalContext.Refresh();
                         MarkPosDataAsInProcess();
-                        publishedPosData = GetPublishedPosData();
+                        var publishedPosData = GetPublishedPosData();
+
+                        while (publishedPosData.Count > 0)
+                        {
+                            logger.Info(String.Format("Found {0} records to be processed for the {1} region.", publishedPosData.Count.ToString(), region));
+
+                            var posDataReadyToBeStaged = ConvertIrmaPosData(publishedPosData);
+
+                            if (posDataReadyToBeStaged.Count > 0)
+                            {
+                                StagePosData(posDataReadyToBeStaged);
+                                UpdatePosDataProcessedDate(publishedPosData);
+                            }
+
+                            globalContext.Refresh();
+                            MarkPosDataAsInProcess();
+                            publishedPosData = GetPublishedPosData();
+                        }
                     }
+                }
+                catch(Exception ex)
+                {
+                    HandleException(ex);
                 }
             }
         }
@@ -170,6 +183,33 @@ namespace PushController.Controller.ProcessorModules
             }
 
             return jobIsRunning;
+        }
+
+        private void HandleException(Exception ex)
+        {
+            string failedRegion = CurrentRegion;
+
+            var exceptionHandler = new ExceptionHandler<StagePosDataModule>(this.logger);
+            exceptionHandler.HandleException(String.Format("{0} - An unhandled exception occurred in the Staging module.", failedRegion), ex, this.GetType(), MethodBase.GetCurrentMethod());
+
+            string errorMessage = String.Format(Resource.StagingUnhandledExceptionMessage, failedRegion, StartupOptions.Instance.ToString());
+            string emailSubject = Resource.StagingUnhandledExceptionEmailSubject;
+            string emailBody = EmailHelper.BuildMessageBodyForUnhandledException(errorMessage, ex.ToString());
+
+            try
+            {
+
+                if (EmailAlertApprover.ShouldSendEmailAlert(ex, AppSettingsAccessor.GetIntSetting("EmailAlertFrequencyMinutes", true)))
+                {
+                    emailClient.Send(emailBody, emailSubject);
+                }
+
+            }
+            catch (Exception mailEx)
+            {
+                string message = String.Format("{0} - A failure occurred while attempting to send the alert email.", failedRegion);
+                exceptionHandler.HandleException(message, mailEx, this.GetType(), MethodBase.GetCurrentMethod());
+            }
         }
     }
 }

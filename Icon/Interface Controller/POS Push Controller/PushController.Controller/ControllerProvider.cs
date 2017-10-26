@@ -289,7 +289,8 @@ namespace PushController.Controller
                 getIrmaPosPushDataQueryHandler,
                 markPublishedRecordsAsInProcessCommandHandler,
                 updatePublishTableDatesCommandHandler,
-                irmaPushDataGenerator);
+                irmaPushDataGenerator,
+                emailClient);
         }
     }
 }
