@@ -1,8 +1,12 @@
 ﻿
 namespace PushController.Controller.Service
 {
+    using DataAccess.Queries;
     using Icon.Common;
+    using Icon.Common.DataAccess;
     using Icon.Logging;
+    using InterfaceController.Common;
+    using Irma.Framework;
     using PushController.Common;
     using System;
     using System.Configuration;
@@ -12,7 +16,9 @@ namespace PushController.Controller.Service
     {
         private static NLogLogger<Program> logger = new NLogLogger<Program>();
         private Timer timer;
-
+        private const string flagKey = "GlobalPriceManagement";
+        private PushController.DataAccess.Interfaces.IQueryHandler<GetInstanceDataFlagValueByFlagKeyQuery, bool> getInstanceDataFlagsByFlagKeyQueryHandler = new GetInstanceDataFlagValueByFlagKeyQueryHandler();
+  
         public PushControllerService()
         {
             int runInterval = AppSettingsAccessor.GetIntSetting("RunInterval");
@@ -49,6 +55,29 @@ namespace PushController.Controller.Service
                 {
                     logger.Error("No regions are configured for processing.");
                     return;
+                }
+
+                string[] regionsToCheckForGPM = ConfigurationManager.AppSettings["RegionsToCheckForGPM"].Split(',');
+
+                if (regionsToCheckForGPM.Length > 0)
+                {
+                    foreach (string region in regionsToCheckForGPM)
+                    {
+                        string connectionString = ConnectionBuilder.GetConnection(region);
+                        IrmaContext context = new IrmaContext(ConnectionBuilder.GetConnection(region));
+
+                        var query = new GetInstanceDataFlagValueByFlagKeyQuery
+                        {
+                            FlagKey = flagKey,
+                            StoreNo = null,
+                            Context = context
+                        };
+
+                        if (!Cache.regionCodeToGPMInstanceDataFlag.ContainsKey(region))
+                        {
+                            Cache.regionCodeToGPMInstanceDataFlag.Add(region, getInstanceDataFlagsByFlagKeyQueryHandler.Execute(query));
+                        }                     
+                    }
                 }
 
                 StartupOptions.RegionsToProcess = configuredRegions;

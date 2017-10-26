@@ -32,7 +32,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         private Mock<ICommandHandler<UpdateStagingTableDatesForEsbCommand>> mockUpdateStagingTableDatesForEsbCommandHandler;
         private Mock<IMessageGenerator<MessageQueueItemLocale>> mockMessageGeneratorItemLocale;
         private Mock<IMessageGenerator<MessageQueuePrice>> mockMessageGeneratorPrice;
-        
+
         [TestInitialize]
         public void Initialize()
         {
@@ -48,6 +48,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             this.mockMessageGeneratorPrice = new Mock<IMessageGenerator<MessageQueuePrice>>();
 
             StartupOptions.RegionsToProcess = ConfigurationManager.AppSettings["RegionsToProcess"].Split(',');
+            setUpCache(false);
 
             processorModule = new ProcessDataForEsbModule(
                 mockIconContext.Object,
@@ -251,6 +252,66 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
 
             // Then.
             mockUpdateStagingTableDatesForEsbCommandHandler.Verify(c => c.Execute(It.IsAny<UpdateStagingTableDatesForEsbCommand>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void ProcessDataForEsb_AllRegionsOnGPM__SaveMessagesShouldNotBeCalled()
+        {
+            // Given.
+            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            var mockEmptyPosData = new List<IRMAPush>();
+            Cache.ClearAll();
+            setUpCache(true);
+
+            var queuedPosData = new Queue<List<IRMAPush>>();
+            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(mockEmptyPosData);
+            mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
+            mockMessageGeneratorItemLocale.Setup(mg => mg.BuildMessages(It.IsAny<List<IRMAPush>>())).Returns(new List<MessageQueueItemLocale> { new TestItemLocaleMessageBuilder() });
+            mockMessageGeneratorPrice.Setup(mg => mg.BuildMessages(It.IsAny<List<IRMAPush>>())).Returns(new List<MessageQueuePrice> { new TestPriceMessageBuilder() });
+
+            // When.
+            processorModule.Execute();
+
+            // Then.
+            mockMessageGeneratorPrice.Verify(mg => mg.SaveMessages(It.IsAny<List<MessageQueuePrice>>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void ProcessDataForEsb_NoRegionOnGPM__SaveMessagesShouldBeCalled()
+        {
+            // Given.
+            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            var mockEmptyPosData = new List<IRMAPush>();
+
+            var queuedPosData = new Queue<List<IRMAPush>>();
+            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(mockEmptyPosData);
+
+            mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
+            mockMessageGeneratorItemLocale.Setup(mg => mg.BuildMessages(It.IsAny<List<IRMAPush>>())).Returns(new List<MessageQueueItemLocale> { new TestItemLocaleMessageBuilder() });
+            mockMessageGeneratorPrice.Setup(mg => mg.BuildMessages(It.IsAny<List<IRMAPush>>())).Returns(new List<MessageQueuePrice> { new TestPriceMessageBuilder() });
+
+            // When.
+            processorModule.Execute();
+
+            // Then.
+            mockMessageGeneratorPrice.Verify(mg => mg.SaveMessages(It.IsAny<List<MessageQueuePrice>>()), Times.Once);
+        }
+
+        private void setUpCache(Boolean isRegionGPM)
+        {
+            Cache.regionCodeToGPMInstanceDataFlag.Add("FL", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("MA", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("MW", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("NA", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("NC", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("NE", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("PN", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("RM", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("SO", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("SP", isRegionGPM);
+            Cache.regionCodeToGPMInstanceDataFlag.Add("SW", isRegionGPM);
         }
     }
 }

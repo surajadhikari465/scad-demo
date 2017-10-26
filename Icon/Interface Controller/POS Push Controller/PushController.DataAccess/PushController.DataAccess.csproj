@@ -142,6 +142,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetCurrentLinkedScanCodesQuery.cs" />
     <Compile Include="Queries\GetCurrentLinkedScanCodesQueryHandler.cs" />
+    <Compile Include="Queries\GetInstanceDataFlagValueByFlagKeyQuery.cs" />
+    <Compile Include="Queries\GetInstanceDataFlagValueByFlagKeyQueryHandler.cs" />
     <Compile Include="Queries\GetJobStatusQuery.cs" />
     <Compile Include="Queries\GetAppConfigKeysQuery.cs" />
     <Compile Include="Queries\GetJobStatusQueryHandler.cs" />
