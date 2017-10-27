@@ -73,13 +73,24 @@ namespace PushController.Controller.ProcessorModules
                 PopulateCaches(posDataReadyForUdm);
                 UpdateItemLinks(posDataReadyForUdm);
 
-                DeleteCancelledTemporaryPriceReductions(posDataReadyForUdm);
+               
 
-                var itemPriceUpdates = BuildItemPriceUpdates(posDataReadyForUdm);
+                List<String> nonGpmRegionList = Cache.regionCodeToGPMInstanceDataFlag
+                                                      .Where(rg => rg.Value == false).
+                                                      Select(idf => idf.Key).ToList();
+                // get data for regions that are not on GPM 
+                var posDataForNonGPMRegions = posDataReadyForUdm.Where(pdr => nonGpmRegionList.Contains(pdr.RegionCode)).ToList();
 
-                if (itemPriceUpdates.Count > 0)
+
+                if (posDataForNonGPMRegions.Count > 0)
                 {
-                    SaveItemPriceUpdates(itemPriceUpdates);
+                    DeleteCancelledTemporaryPriceReductions(posDataForNonGPMRegions);
+                    var itemPriceUpdates = BuildItemPriceUpdates(posDataForNonGPMRegions);
+
+                    if (itemPriceUpdates.Count > 0)
+                    {
+                        SaveItemPriceUpdates(itemPriceUpdates);
+                    }
                 }
 
                 var unsubscribedItems = CheckForUnsubscribedItems(posDataReadyForUdm);

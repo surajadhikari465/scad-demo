@@ -11,6 +11,7 @@ namespace PushController.Common
         public static Dictionary<string, ScanCodeModel> identifierToScanCode = new Dictionary<string, ScanCodeModel>();
         public static Dictionary<Tuple<string, int>, string> scanCodeByBusinessUnitToLinkedScanCode = new Dictionary<Tuple<string, int>, string>();
         public static Dictionary<int, UOM> uomIdToUom = new Dictionary<int, UOM>();
+        public static Dictionary<string, bool> regionCodeToGPMInstanceDataFlag = new Dictionary<string, bool>();
 
         public static void ClearAll()
         {
@@ -18,6 +19,7 @@ namespace PushController.Common
             identifierToScanCode.Clear();
             scanCodeByBusinessUnitToLinkedScanCode.Clear();
             uomIdToUom.Clear();
+            regionCodeToGPMInstanceDataFlag.Clear();
         }
     }
 }

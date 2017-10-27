@@ -11,11 +11,14 @@ using PushController.DataAccess.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using InterfaceController.Common;
+using Irma.Framework;
 
 namespace PushController.Controller.ProcessorModules
 {
     public class ProcessDataForEsbModule : IIconPosDataProcessingModule
     {
+        private const string flagKey = "GlobalPriceManagement";
         private IRenewableContext<IconContext> context;
         private ILogger<ProcessDataForEsbModule> logger;
         private ICacheHelper<string, ScanCodeModel> scanCodeCacheHelper;
@@ -56,7 +59,6 @@ namespace PushController.Controller.ProcessorModules
             MarkPosDataAsInProcess();
 
             var posDataReadyForEsb = GetPosDataForEsb();
-
             while (posDataReadyForEsb.Count > 0)
             {
                 logger.Info(String.Format("Found {0} records for ESB processing.", posDataReadyForEsb.Count.ToString()));
@@ -69,12 +71,20 @@ namespace PushController.Controller.ProcessorModules
                 {
                     SaveItemLocaleMessages(itemLocaleMessages);
                 }
+                List<String> nonGpmRegionList = Cache.regionCodeToGPMInstanceDataFlag
+                                                      .Where(rg => rg.Value == false)
+                                                      .Select(idf =>idf.Key)
+                                                      .ToList();
+                // get data for regions that are not on GPM 
+                var posDataForNonGPMRegions = posDataReadyForEsb.Where(pdr => nonGpmRegionList.Contains(pdr.RegionCode)).ToList();
 
-                var priceMessages = GeneratePriceMessages(posDataReadyForEsb);
-
-                if (priceMessages.Count > 0)
+                if (posDataForNonGPMRegions.Count > 0)
                 {
-                    SavePriceMessages(priceMessages);
+                    var priceMessages = GeneratePriceMessages(posDataForNonGPMRegions);
+                    if (priceMessages.Count > 0)
+                    {
+                        SavePriceMessages(priceMessages);
+                    }
                 }
 
                 UpdatePosDataProcessedDate(posDataReadyForEsb);
