@@ -31,3 +31,7 @@ GRANT SELECT
     ON OBJECT::[dbo].[InstanceDataFlagsStoreOverride] TO [IRMAExcelRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[InstanceDataFlagsStoreOverride] TO [IConInterface]
+    AS [dbo];

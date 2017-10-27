@@ -69,3 +69,7 @@ GRANT EXECUTE
     ON OBJECT::[dbo].[GetInstanceDataFlagValue] TO [IRMASLIMRole]
     AS [dbo];
 
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetInstanceDataFlagValue] TO [IConInterface]
+    AS [dbo];
