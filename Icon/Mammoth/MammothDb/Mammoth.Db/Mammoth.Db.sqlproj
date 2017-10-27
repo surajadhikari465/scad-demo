@@ -605,7 +605,6 @@
     <Build Include="esb\Stored Procedures\MarkMessageQueueItemLocaleEntriesAsInProcess.sql" />
     <Build Include="esb\Stored Procedures\MarkMessageQueuePriceEntriesAsInProcess.sql" />
     <Build Include="app\Stored Procedures\PurgeMessageQueues.sql" />
-    <None Include="Jobs\PurgeMessageQueues.sql" />
     <Build Include="Security\gpm.sql" />
     <Build Include="gpm\Tables\Price_FL.sql">
       <AnsiNulls>On</AnsiNulls>
@@ -697,6 +696,7 @@
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddMaintFlagRowToDbStatusTable.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
+    <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
@@ -710,9 +710,6 @@
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeploymentScripts\Script.PreDeployment1.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="Mammoth.Db.refactorlog" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MammothStaging.Db\MammothStaging.Db.sqlproj">

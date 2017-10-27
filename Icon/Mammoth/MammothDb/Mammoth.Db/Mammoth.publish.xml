@@ -2,7 +2,7 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IncludeCompositeObjects>False</IncludeCompositeObjects>
-    <TargetDatabaseName>Mammoth</TargetDatabaseName>
+    <TargetDatabaseName>Mammoth_Dev</TargetDatabaseName>
     <DeployScriptFileName>Mammoth.Db.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Integrated Security=True;Pooling=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
