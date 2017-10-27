@@ -92,7 +92,11 @@ namespace WebSupport.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            return View();
+            var jobSchedule = new JobSchedule()
+            {
+                StartDateTimeUtc = DateTime.UtcNow
+            };
+            return View(jobSchedule);
         }
 
         [HttpPost]
