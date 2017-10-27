@@ -3,7 +3,7 @@
 	<globalVariables>
 		<globalVariable>
 			<name>SB1JmsPassword</name>
-			<value>#!2rDN0xL8lSgpGj2nSbU6M4ntr2dxd4reW/PDR+5wu3zvk7r/DEwx0qKlBFAV4ZDw9pgbWzznQ+0=</value>
+			<value>#!IN8ms7MyYwaivVDKhmnmNpcTt7Q3faP+8qQPng4KrVA1JhQovH6n3X+qDhdM3F1X76Vp9rVvrr4=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
