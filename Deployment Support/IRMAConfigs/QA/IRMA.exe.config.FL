@@ -14,9 +14,9 @@
 	</appSettings>
 
 	<connectionStrings>
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idq-fl\flq;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=Sup#rm@n!;" />
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idq-fl\flq;Database=ItemCatalog;UID=IRSUser;PWD=Sup#rm@n!;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idq-fl\flq;Database=ItemCatalog;UID=IRMAReports;PWD=TheWh0leTruth.;"/>
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idq-fl\flq;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=6S33EnG%30km;" />
+		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idq-fl\flq;Database=ItemCatalog;UID=IRSUser;PWD=6S33EnG%30km;APP="/>
+		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idq-fl\flq;Database=ItemCatalog;UID=IRMAReports;PWD=81Z2Gb9p&F3W;"/>
 	</connectionStrings>
 
   	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

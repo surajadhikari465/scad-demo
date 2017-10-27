@@ -14,10 +14,10 @@
 	<connectionStrings>
 		<!-- Server: idd-ma   Database: ItemCatalog_Test -->
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idq-nc\ncq;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=Cedar$R3st;" />
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idq-nc\ncq;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=n84X0&amp;69TGeW;" />
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idq-nc\ncq;Database=ItemCatalog;UID=IRSUser;PWD=Cedar$R3st;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idq-nc\ncq;Database=ItemCatalog;UID=IRMAReports;PWD=Cedar$R3st;"/>
+		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idq-nc\ncq;Database=ItemCatalog;UID=IRSUser;PWD=n84X0&amp;69TGeW;APP="/>
+		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idq-nc\ncq;Database=ItemCatalog;UID=IRMAReports;PWD=BSR5z9x0e87#;"/>
 	</connectionStrings>
 
 	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

@@ -13,10 +13,10 @@
 
   <connectionStrings>
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idq-sw\swq;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=C0ffeeCup;" />
+    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idq-sw\swq;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=TM4100@4ev2a;" />
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idq-sw\swq;Database=ItemCatalog;UID=IRSUser;PWD=C0ffeeCup;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idq-sw\swq;Database=ItemCatalog;UID=IRMAReports;PWD=W@terAgu@;"/>
+		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idq-sw\swq;Database=ItemCatalog;UID=IRSUser;PWD=TM4100@4ev2a;APP="/>
+		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idq-sw\swq;Database=ItemCatalog;UID=IRMAReports;PWD=E129Ny&R46Bd;"/>
   </connectionStrings>
 
 
