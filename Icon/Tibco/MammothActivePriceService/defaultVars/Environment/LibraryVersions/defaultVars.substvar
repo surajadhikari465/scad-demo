@@ -2,44 +2,44 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ActivePriceSubsetSize</name>
-			<value>10000</value>
+			<name>CleClient</name>
+			<value>3.1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1501188982176</modTime>
+			<modTime>1509375120397</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>AppID</name>
-			<value>11</value>
+			<name>Encrypter</name>
+			<value>1.0</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1509379394804</modTime>
+			<modTime>1509375120413</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>DeleteSentPricesStartTime</name>
-			<value>2017 Jul 13 00:00:00</value>
+			<name>R10Schemas</name>
+			<value>5.1.0</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1501183784024</modTime>
+			<modTime>1509375120428</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>EMSPriceBatchsize</name>
-			<value>100</value>
+			<name>Utilities</name>
+			<value>1.0</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1509116883817</modTime>
+			<modTime>1509375120444</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Region</name>
-			<value>FL</value>
+			<name>WFMSchemas</name>
+			<value>1.2.5</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504209943140</modTime>
+			<modTime>1509375120462</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

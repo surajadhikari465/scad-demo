@@ -2,44 +2,36 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ActivePriceSubsetSize</name>
-			<value>10000</value>
+			<name>ConnectionString</name>
+			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1501188982176</modTime>
+			<modTime>1509389679155</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>AppID</name>
-			<value>11</value>
+			<name>SqlDBDriver</name>
+			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1509379394804</modTime>
+			<modTime>1509375119840</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>DeleteSentPricesStartTime</name>
-			<value>2017 Jul 13 00:00:00</value>
+			<name>SqlDBPwd</name>
+			<value>#!75NDakR0Uj1SxwDltmU8G8oQM+GrZODBqzf1BiHIcPKLo9PKz/GAtg==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1501183784024</modTime>
+			<type>Password</type>
+			<modTime>1509375119851</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>EMSPriceBatchsize</name>
-			<value>100</value>
+			<name>SqlDBUser</name>
+			<value>Mammoth.tibco.Dev</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1509116883817</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>Region</name>
-			<value>FL</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1504209943140</modTime>
+			<modTime>1509375119863</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

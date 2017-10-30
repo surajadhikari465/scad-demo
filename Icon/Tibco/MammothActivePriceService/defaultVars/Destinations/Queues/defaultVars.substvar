@@ -2,12 +2,52 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>ConfirmBODQueue</name>
+			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509375119921</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ESBGpmPriceQueue</name>
+			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509375119932</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ESBRealTimePriceQueue</name>
+			<value>WFMESB.Commerce.Retail.PriceMgmt.Price.RealTime.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509375119944</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ErrorBODQueue</name>
+			<value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509375119957</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>RegionPriceQueuePublisher</name>
 			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.IrmaPrice.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1504110069829</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SB1LoggingQueue</name>
+			<value>WFMSB1.GIS.EMS1.CLE.Log.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509375119970</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

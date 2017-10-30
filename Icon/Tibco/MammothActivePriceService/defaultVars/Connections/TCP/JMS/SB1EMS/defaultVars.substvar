@@ -2,44 +2,36 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ActivePriceSubsetSize</name>
-			<value>10000</value>
+			<name>SB1JmsPassword</name>
+			<value>#!jI9BEtxl+efBfQkPDSE+0/WQ6PWxAwAAdZW5QaE6mWE=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1501188982176</modTime>
+			<type>Password</type>
+			<modTime>1509375119874</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>AppID</name>
-			<value>11</value>
+			<name>SB1JmsUserName</name>
+			<value>sb1_cleUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1509379394804</modTime>
+			<modTime>1509375119886</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>DeleteSentPricesStartTime</name>
-			<value>2017 Jul 13 00:00:00</value>
+			<name>SB1SslPassword</name>
+			<value>#!Gk8CEdIOYTjHvZf6yeurHw==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1501183784024</modTime>
+			<type>Password</type>
+			<modTime>1509375119897</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>EMSPriceBatchsize</name>
-			<value>100</value>
+			<name>SB1Url</name>
+			<value>ssl://cerd1616.wfm.pvt:7233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1509116883817</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>Region</name>
-			<value>FL</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1504209943140</modTime>
+			<modTime>1509375119909</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

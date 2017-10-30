@@ -2,12 +2,20 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>MammothConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth;IntegratedSecurity=true;</value>
+			<name>RetrySleepInMilliseconds</name>
+			<value>5000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1509126929880</modTime>
+			<modTime>1509375119777</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>retryCount</name>
+			<value>3</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509375119789</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

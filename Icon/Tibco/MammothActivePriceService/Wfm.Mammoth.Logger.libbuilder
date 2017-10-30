@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <name name="Wfm.Mammoth.Logger">
+        <version>6</version>
+        <author>Ben.Sims</author>
+        <fileLocation>C:\Dev\Source\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\Wfm.Mammoth.Logger.v1.projlib</fileLocation>
+        <resources>/Processes/LogPublisher.process</resources>
+    </name>
+</Repository:repository>
