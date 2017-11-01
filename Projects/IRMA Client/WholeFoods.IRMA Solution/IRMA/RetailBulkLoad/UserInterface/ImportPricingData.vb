@@ -33,7 +33,7 @@ Public Class ImportPricingData
         LoadZone(cmbZones)
 
         '-- Fill out the store list
-        mdtStores = StoreDAO.GetRetailStoreList()
+        mdtStores = WholeFoods.IRMA.ItemHosting.DataAccess.StoreDAO.GetRetailStoreList()
         UltraGrid1.DataSource = mdtStores
 
         Call StoreListGridLoadStatesCombo(mdtStores, cmbStates)

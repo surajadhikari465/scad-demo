@@ -66,7 +66,7 @@ Public Class CancelAllSales
 
     Private Sub SetupStoreSelectionGrid()
         '-- Fill out the store list
-        Dim mdtStores As DataTable = StoreDAO.GetRetailStoreList
+        Dim mdtStores As DataTable = WholeFoods.IRMA.ItemHosting.DataAccess.StoreDAO.GetRetailStoreList
         ugrdStoreList.DataSource = mdtStores
 
         DisableRowsWithGPMStore(mdtStores.Rows.Count)

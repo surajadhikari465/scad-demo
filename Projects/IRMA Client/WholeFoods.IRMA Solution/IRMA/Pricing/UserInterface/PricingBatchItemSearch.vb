@@ -30,6 +30,7 @@ Friend Class frmPricingBatchItemSearch
     Dim IsInitializing As Boolean
     Dim _isLoading As Boolean
     Dim _isHeaderInfoChanged As Boolean
+    Dim _globalPriceManagementBO As GlobalPriceManagementBO
 
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
 
@@ -45,10 +46,14 @@ Friend Class frmPricingBatchItemSearch
     Private Sub frmPricingBatchItemSearch_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
         logger.Debug("frmPricingBatchItemSearch_Load Enter")
 
+        IsInitializing = True
+
+        _globalPriceManagementBO = New GlobalPriceManagementBO()
+
         CenterForm(Me)
 
         If Not editExistingBatch Then
-            InitializeComboBoxes(True)
+            InitializeComboBoxes(Not _globalPriceManagementBO.IsGlobalPriceManagementEnabled)
 
             If cmbSubTeam.Items.Count > 0 Then cmbSubTeam.SelectedIndex = 0 'Sub-Team is required
 
@@ -77,17 +82,36 @@ Friend Class frmPricingBatchItemSearch
         Dim bIncludeNonRetailItemsDefaulValue As Boolean = ConfigurationServices.AppSettings("IncludeNonRetailItemsDefaultValue")
         Me.chkIncludeNonRetailItems.Checked = bIncludeNonRetailItemsDefaulValue
 
+        GlobalPriceManagementUiUpdates()
+
+        IsInitializing = False
+
         logger.Debug("frmPricingBatchItemSearch_Load Exit")
+    End Sub
+
+    Private Sub GlobalPriceManagementUiUpdates()
+        If _globalPriceManagementBO.IsGlobalPriceManagementEnabled Then
+            _optType_4.Enabled = False
+            _optType_5.Enabled = False
+
+            If _globalPriceManagementBO.AreAllStoresGpm Then
+                _optType_3.Checked = False
+                _optType_3.Enabled = False
+                _optType_1.Checked = True
+            Else
+                FilterStoreComboBoxToNonGpmStores()
+            End If
+        End If
     End Sub
 
     Private Sub InitializeComboBoxes(ByVal includeALL As Boolean)
         logger.Debug("InitializeComboBoxes Enter")
 
-        frmPricingBatch.PopulateSubTeamDropDown((Me.cmbSubTeam))
+        frmPricingBatch.PopulateSubTeamDropDown(Me.cmbSubTeam)
         LoadPriceTypeCombo(includeALL)
         frmPricingBatch.PopulateRetailStoreDropDown((Me.ucmbStoreList))
-        frmPricingBatch.PopulateRetailStoreZoneDropDown((Me.cmbZones))
-        frmPricingBatch.PopulateRetailStoreStateDropDown((Me.cmbState))
+        frmPricingBatch.PopulateRetailStoreZoneDropDown(Me.cmbZones)
+        frmPricingBatch.PopulateRetailStoreStateDropDown(Me.cmbState)
 
         logger.Debug("InitializeComboBoxes Exit")
     End Sub
@@ -226,7 +250,7 @@ Friend Class frmPricingBatchItemSearch
         mlPriceBatchHeaderID = PriceBatchHeaderID
 
         ' Initialize the combo boxes so the values can be pre-filled
-        InitializeComboBoxes(True)
+        InitializeComboBoxes(Not _globalPriceManagementBO.IsGlobalPriceManagementEnabled)
 
         frmPricingBatch.GetBatchInfo(PriceBatchHeaderID, lStore_No, lSubTeam_No, iItemChgTypeID, iPriceChgTypeID, dStartDate)
 
@@ -694,12 +718,27 @@ Friend Class frmPricingBatchItemSearch
             If optType(5).Checked = True Then
                 incAll = False
             End If
+
+            If _globalPriceManagementBO.IsGlobalPriceManagementEnabled AndAlso optType(3).Checked Then
+                FilterStoreComboBoxToNonGpmStores()
+            Else
+                FilterStoreComboBoxToAllStores()
+            End If
         End If
 
         If Not editExistingBatch Then
             Call SetOptions(incAll)
         End If
         logger.Debug("optType_CheckedChanged Exit")
+    End Sub
+
+    Private Sub FilterStoreComboBoxToAllStores()
+        ucmbStoreList.DisplayLayout.Bands(0).ColumnFilters.ClearAllFilters()
+    End Sub
+
+    Private Sub FilterStoreComboBoxToNonGpmStores()
+        Dim gpmFilter As FilterCondition = New FilterCondition(ucmbStoreList.DisplayLayout.Bands(0).Columns("IsGpmStore"), FilterComparisionOperator.Equals, False)
+        ucmbStoreList.DisplayLayout.Bands(0).ColumnFilters("IsGpmStore").FilterConditions.Add(gpmFilter)
     End Sub
 
     Private Sub SetOptions(ByVal includeALL As Boolean)
@@ -847,7 +886,8 @@ Friend Class frmPricingBatchItemSearch
         End Select
 
         If Len(sStores) = 0 Or sStores = "NULL" Then
-            sStores = frmPricingBatch.GetStoreListString(Nothing, lZone_ID, sState, optSelection(3).Checked, optSelection(4).Checked, optSelection(5).Checked)
+            Dim getNonGpmStores As Boolean = GetGetNonGpmStores()
+            sStores = frmPricingBatch.GetStoreListString(Nothing, lZone_ID, sState, optSelection(3).Checked, optSelection(4).Checked, optSelection(5).Checked, getNonGpmStores)
         End If
 
         ' Validate change type selection
@@ -923,6 +963,10 @@ Friend Class frmPricingBatchItemSearch
 
         logger.Debug("RunSearch Exit")
 
+    End Function
+
+    Private Function GetGetNonGpmStores() As Boolean
+        Return _globalPriceManagementBO.IsGlobalPriceManagementEnabled AndAlso Not _globalPriceManagementBO.AreAllStoresGpm AndAlso _optType_3.Checked
     End Function
 
     Private Sub cmbSubTeam_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles cmbSubTeam.KeyPress

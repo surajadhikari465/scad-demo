@@ -167,6 +167,25 @@ Namespace WholeFoods.IRMA.Common.DataAccess
 
         End Function
 
+        Public Shared Function GetRetailStores() As DataTable
+            logger.Debug("GetRetailStores entry")
+
+            Dim factory As New DataFactory(DataFactory.ItemCatalog)
+
+            Dim results As DataTable = New DataTable()
+
+            Try
+                results = factory.GetStoredProcedureDataTable("GetRetailStores")
+            Catch ex As Exception
+                logger.Error("GetRetailStores error occurred when calling procedure GetRetailStores", ex)
+                Throw
+            Finally
+                logger.Debug("GetRetailStores exit")
+            End Try
+
+            Return results
+        End Function
+
     End Class
 
 End Namespace

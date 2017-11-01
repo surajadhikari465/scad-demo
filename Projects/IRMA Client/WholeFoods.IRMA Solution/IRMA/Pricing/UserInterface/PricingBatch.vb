@@ -104,7 +104,7 @@ Friend Class frmPricingBatch
         Dim factory As New DataFactory(DataFactory.ItemCatalog)
 
         Try
-            dtStores = factory.GetStoredProcedureDataTable("GetRetailStores")
+            dtStores = StoreListDAO.GetRetailStores()
 
             ucmbStoreList.DataSource = dtStores
             ucmbStoreList.DisplayMember = "StoreAbbr"
@@ -204,7 +204,7 @@ Friend Class frmPricingBatch
     ''' Sets the layout of the Store combo box
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub SetStoreListCombo(ByRef ultraCombo As Infragistics.Win.UltraWinGrid.UltraCombo)
+    Public Sub SetStoreListCombo(ByRef ultraCombo As Infragistics.Win.UltraWinGrid.UltraCombo)
         logger.Debug("SetStoreListCombo Entry")
 
         'Add an additional unbound column to WinCombo. 
@@ -239,6 +239,7 @@ Friend Class frmPricingBatch
         ultraCombo.DisplayLayout.Bands(0).Columns("CustomerType").Hidden = True
         ultraCombo.DisplayLayout.Bands(0).Columns("BusinessUnit_ID").Hidden = True
         ultraCombo.DisplayLayout.Bands(0).Columns("BusinessUnit_ID").Hidden = True
+        ultraCombo.DisplayLayout.Bands(0).Columns("IsGpmStore").Hidden = True
         ultraCombo.DisplayLayout.Bands(0).Columns("StoreAbbr").Width = 60
         ultraCombo.DisplayLayout.Bands(0).Columns("Store_Name").Width = 200
 
@@ -1356,7 +1357,7 @@ ExitSub:
         GetStoreListString = GetStoreListString(dtStores, lZone_ID, msState, bMega_Stores, bWFM_Stores, bAllStores)
     End Function
 
-    Public Function GetStoreListString(ByRef dt As DataTable, ByRef lZone_ID As Integer, ByRef msState As String, ByRef bMega_Stores As Boolean, ByRef bWFM_Stores As Boolean, ByRef bAllStores As Boolean) As String
+    Public Function GetStoreListString(ByRef dt As DataTable, ByRef lZone_ID As Integer, ByRef msState As String, ByRef bMega_Stores As Boolean, ByRef bWFM_Stores As Boolean, ByRef bAllStores As Boolean, Optional ByRef bNonGpmStores As Boolean = False) As String
         logger.Debug("GetStoreListString Enter")
 
         Dim sStores As String
@@ -1373,6 +1374,12 @@ ExitSub:
             sFilter = "Mega_Store = 1"
         ElseIf bWFM_Stores Then
             sFilter = "WFM_Store = 1"
+        ElseIf bNonGpmStores Then
+            If sFilter.Length = 0 Then
+                sFilter += "IsGpmStore = 0"
+            Else
+                sFilter = " AND IsGpmStore = 0"
+            End If
         End If
 
         Dim dt2 As DataTable
