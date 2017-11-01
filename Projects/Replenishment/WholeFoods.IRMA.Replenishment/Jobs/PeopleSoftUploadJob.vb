@@ -871,7 +871,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 currentLine.Append(currentGLRecord.BusinessUnitId.ToString.PadRight(5, " "))                    'Business Unit
             End If
             currentLine.Append(iGLRowNumber.ToString.PadRight(9, " "))                                          'Journal Line
-            currentLine.Append("ACTUALS".PadRight(10, " "))                                                     'Ledger
+            currentLine.Append("ACTUAL".PadRight(10, " "))                                                     'Ledger
             currentLine.Append(currentGLRecord.AccountNumber.ToString.PadRight(6, " "))                         'Account
             'currentLine.Append(currentGLRecord.DepartmentId.ToString.PadRight(10, " "))                        'Department ID
             currentLine.Append(IIf(currentGLRecord.DepartmentId = 0, " ", currentGLRecord.DepartmentId).ToString.PadRight(10, " ")) 'Department ID

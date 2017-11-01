@@ -227,7 +227,7 @@ Friend Class frmGLUploads
 
                 For Each dr In dt.Rows()
 
-                    sOut = """" & IIf(dr.Item("TransferUnit") > 0, dr.Item("TransferUnit"), "") & """," & """ACTUALS""," & """" & IIf(dr.Item("Account") > 0, dr.Item("Account"), "") & """," & """" & IIf(dr.Item("DeptID") > 0, dr.Item("DeptID"), "") & """," & """" & IIf(dr.Item("Product") > 0, dr.Item("Product"), "") & """," & """""," & """""," & """USD""," & dr.Item("Amount") & "," & """CRRNT""," & """PO#" & dr.Item("Description") & """," & """""," & """""," & """""," & """" & ""","
+                    sOut = """" & IIf(dr.Item("TransferUnit") > 0, dr.Item("TransferUnit"), "") & """," & """ACTUAL""," & """" & IIf(dr.Item("Account") > 0, dr.Item("Account"), "") & """," & """" & IIf(dr.Item("DeptID") > 0, dr.Item("DeptID"), "") & """," & """" & IIf(dr.Item("Product") > 0, dr.Item("Product"), "") & """," & """""," & """""," & """USD""," & dr.Item("Amount") & "," & """CRRNT""," & """PO#" & dr.Item("Description") & """," & """""," & """""," & """""," & """" & ""","
 
                     PrintLine(1, sOut)
 

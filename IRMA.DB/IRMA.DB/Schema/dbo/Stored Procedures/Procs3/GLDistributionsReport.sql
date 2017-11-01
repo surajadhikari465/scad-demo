@@ -28,7 +28,7 @@ BEGIN
 
 	SELECT 
 		[Unit]			= s.BusinessUnit_ID, 
-		[Ledger]		= 'ACTUALS', 
+		[Ledger]		= 'ACTUAL', 
 		[Account]		=	CASE
 								WHEN oh.Return_Order = 1 THEN
 									'537000'
@@ -80,7 +80,7 @@ BEGIN
 
 	SELECT 
 		[Unit]			= s.BusinessUnit_ID, 
-		[Ledger]		= 'ACTUALS', 
+		[Ledger]		= 'ACTUAL', 
 		[Account]		=	CASE
 								WHEN oh.Return_Order = 0 THEN
 									'537000'

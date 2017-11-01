@@ -404,7 +404,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
             currentLine.Append("L")                                                                             'Record Type
             currentLine.Append(currentGLRecord.BusinessUnitId.ToString.PadRight(5, " "))                        'Business Unit
             currentLine.Append(iGLRowNumber.ToString.PadLeft(9, " "))                                          'Journal Line
-            currentLine.Append("ACTUALS".PadRight(10, " "))                                                     'Ledger
+            currentLine.Append("ACTUAL".PadRight(10, " "))                                                     'Ledger
             currentLine.Append(currentGLRecord.AccountNumber.ToString.PadRight(6, " "))                         'Account
 
             If IsExlcudedAccount(currentGLRecord.AccountNumber) Then
