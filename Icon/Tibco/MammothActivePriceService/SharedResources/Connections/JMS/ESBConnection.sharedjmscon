@@ -4,8 +4,8 @@
     <resourceType>ae.shared.JMSConnectionKey</resourceType>
     <config>
         <NamingEnvironment>
-            <UseJNDI>true</UseJNDI>
-            <ProviderURL>tcp://localhost:7222</ProviderURL>
+            <UseJNDI>false</UseJNDI>
+            <ProviderURL>%%Mammoth/ESB/ESBUrl%%</ProviderURL>
             <NamingURL>%%Mammoth/ESB/JndiContextUrl%%</NamingURL>
             <NamingInitialContextFactory>com.tibco.tibjms.naming.TibjmsInitialContextFactory</NamingInitialContextFactory>
             <TopicFactoryName>%%Mammoth/ESB/TopicConnectionFactoryName%%</TopicFactoryName>

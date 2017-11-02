@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>LogDirectory</name>
+			<value>/LogErrors/</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509376866375</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>LogExtension</name>
+			<value>.txt</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509376866400</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>LogQueue</name>
+			<value>WFMSB1.GIS.EMS1.CLE.Log.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509376866426</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>retryCount</name>
+			<value>5</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1509376866451</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>retrySleepInMilliseconds</name>
+			<value>1000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1509376866477</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

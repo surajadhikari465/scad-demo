@@ -3,11 +3,19 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ActivePriceSubsetSize</name>
-			<value>10000</value>
+			<value>3</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1501188982176</modTime>
+			<modTime>1509550052731</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>AppID</name>
+			<value>11</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509379394804</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DeleteSentPricesStartTime</name>
@@ -16,6 +24,14 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1501183784024</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EMSPriceBatchsize</name>
+			<value>2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509548165096</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Region</name>
