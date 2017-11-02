@@ -10,8 +10,8 @@
     <pd:starter name="Publisher Queue Receiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>53</pd:x>
-        <pd:y>248</pd:y>
+        <pd:x>68</pd:x>
+        <pd:y>81</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -31,16 +31,16 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1039</pd:endX>
-    <pd:endY>510</pd:endY>
+    <pd:endX>1143</pd:endX>
+    <pd:endY>544</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1499373839783</pd:targetNamespace>
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>1031</pd:x>
-        <pd:y>261</pd:y>
+        <pd:x>1134</pd:x>
+        <pd:y>262</pd:y>
         <config>
             <ConfirmEvent>Publisher Queue Receiver</ConfirmEvent>
         </config>
@@ -49,8 +49,8 @@
     <pd:activity name="Parse XML">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>159</pd:x>
-        <pd:y>241</pd:y>
+        <pd:x>68</pd:x>
+        <pd:y>267</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -66,8 +66,8 @@
     <pd:activity name="ErrorLogPublisher">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>470</pd:x>
-        <pd:y>511</pd:y>
+        <pd:x>475</pd:x>
+        <pd:y>543</pd:y>
         <config>
             <processName>/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -110,21 +110,47 @@
     <pd:activity name="CatchAll">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>306</pd:x>
-        <pd:y>510</pd:y>
+        <pd:x>304</pd:x>
+        <pd:y>541</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
     </pd:activity>
+    <pd:activity name="Confirm-ToBeReplacedByDLQ">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>644</pd:x>
+        <pd:y>546</pd:y>
+        <config>
+            <ConfirmEvent>Publisher Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="MapProcessStartDateTime">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>218</pd:x>
+        <pd:y>269</pd:y>
+        <config>
+            <element>
+                <xsd:element name="currentDateTime" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <currentDateTime>
+                <xsl:value-of select="current-dateTime()"/>
+            </currentDateTime>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:group name="ProcessActivePriceSubsets">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>286</pd:x>
-        <pd:y>55</pd:y>
-        <pd:width>686</pd:width>
-        <pd:height>405</pd:height>
+        <pd:x>339</pd:x>
+        <pd:y>48</pd:y>
+        <pd:width>698</pd:width>
+        <pd:height>450</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -172,15 +198,15 @@
         <pd:activity name="GetActivePrices">
             <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-            <pd:x>410</pd:x>
-            <pd:y>112</pd:y>
+            <pd:x>470</pd:x>
+            <pd:y>110</pd:y>
             <config>
                 <timeout>120</timeout>
                 <commit>false</commit>
                 <maxRows>10000000</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/SharedResources/Connections/JDBC/Mammoth.sharedjdbc</jdbcSharedConfig>
-                <statement>SELECT
+                <statement>SELECT Top 5
 	PriceID, 
 	CAST(p.Region AS NVARCHAR(2)) AS Region, 
 	CAST(GpmID AS NVARCHAR(255)) AS GpmID, 
@@ -324,10 +350,10 @@ WHERE p.Region = ?
         <pd:group name="BatchAndSendActivePrices">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>339</pd:x>
-            <pd:y>212</pd:y>
-            <pd:width>506</pd:width>
-            <pd:height>215</pd:height>
+            <pd:x>372</pd:x>
+            <pd:y>225</pd:y>
+            <pd:width>497</pd:width>
+            <pd:height>250</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
             <pd:collapsedHeight>70</pd:collapsedHeight>
             <pd:groupVariables/>
@@ -365,13 +391,6 @@ WHERE p.Region = ?
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>SendPriceToEMS</pd:from>
-                <pd:to>InfoLogPublisher</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
                 <pd:from>Catch</pd:from>
                 <pd:to>RowByRowProcessingActivePrice</pd:to>
                 <pd:lineType>Default</pd:lineType>
@@ -380,7 +399,14 @@ WHERE p.Region = ?
             </pd:transition>
             <pd:transition>
                 <pd:from>Map Data</pd:from>
-                <pd:to>SendPriceToEMS</pd:to>
+                <pd:to>Send PriceToTopic</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Send PriceToTopic</pd:from>
+                <pd:to>InfoLogPublisher</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
@@ -388,8 +414,8 @@ WHERE p.Region = ?
             <pd:activity name="Map Data">
                 <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
                 <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-                <pd:x>429</pd:x>
-                <pd:y>277</pd:y>
+                <pd:x>423</pd:x>
+                <pd:y>297</pd:y>
                 <config>
                     <element ref="pfx3:MammothPrices"/>
                 </config>
@@ -459,63 +485,11 @@ WHERE p.Region = ?
                     </pfx3:MammothPrices>
                 </pd:inputBindings>
             </pd:activity>
-            <pd:activity name="SendPriceToEMS">
-                <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
-                <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-                <pd:x>584</pd:x>
-                <pd:y>277</pd:y>
-                <config>
-                    <PermittedMessageType>XML Text</PermittedMessageType>
-                    <SessionAttributes>
-                        <transacted>false</transacted>
-                        <acknowledgeMode>1</acknowledgeMode>
-                        <maxSessions>1</maxSessions>
-                        <destination>%%Mammoth/ESB/EsbPriceQueueName%%</destination>
-                    </SessionAttributes>
-                    <ConfigurableHeaders>
-                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
-                        <JMSExpiration>0</JMSExpiration>
-                        <JMSPriority>4</JMSPriority>
-                    </ConfigurableHeaders>
-                    <ConnectionReference>/SharedResources/Connections/JMS/ESBConnection.sharedjmscon</ConnectionReference>
-                    <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
-                    <InDataxsdString ref="pfx3:MammothPrices"/>
-                </config>
-                <pd:inputBindings>
-                    <ns12:ActivityInput>
-                        <destinationQueue>
-                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/ESB/EsbPriceQueueName"/>
-                        </destinationQueue>
-                        <OtherProperties>
-                            <xsl:if test="$Publisher-Queue-Receiver/ns12:ActivityOutput/JMSHeaders/ns12:JMSMessageID">
-                                <MessageId>
-                                    <xsl:value-of select="$Publisher-Queue-Receiver/ns12:ActivityOutput/JMSHeaders/ns12:JMSMessageID"/>
-                                </MessageId>
-                            </xsl:if>
-                            <TransactionID>
-                                <xsl:value-of select="WFM.UID:UID()"/>
-                            </TransactionID>
-                            <CorrelationID>
-                                <xsl:value-of select="$MapProcessStartDateTime/currentDateTime"/>
-                            </CorrelationID>
-                            <Source>
-                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Source"/>
-                            </Source>
-                            <RegionCode>
-                                <xsl:value-of select="$Parse-XML/pfx2:JobSchedule/pfx2:Region"/>
-                            </RegionCode>
-                        </OtherProperties>
-                        <Body>
-                            <xsl:copy-of select="$Map-Data/pfx3:MammothPrices"/>
-                        </Body>
-                    </ns12:ActivityInput>
-                </pd:inputBindings>
-            </pd:activity>
             <pd:activity name="InfoLogPublisher">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>713</pd:x>
-                <pd:y>278</pd:y>
+                <pd:x>712</pd:x>
+                <pd:y>297</pd:y>
                 <config>
                     <processName>/Processes/LogPublisher.process</processName>
                     <spawn>true</spawn>
@@ -546,8 +520,8 @@ WHERE p.Region = ?
             <pd:activity name="Catch">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>419</pd:x>
-                <pd:y>356</pd:y>
+                <pd:x>433</pd:x>
+                <pd:y>397</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <catchAll>true</catchAll>
@@ -557,8 +531,8 @@ WHERE p.Region = ?
             <pd:activity name="RowByRowProcessingActivePrice">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>583</pd:x>
-                <pd:y>357</pd:y>
+                <pd:x>600</pd:x>
+                <pd:y>400</pd:y>
                 <config>
                     <processName>/BusinessProcesses/RowByRowProcessorForActivePrice.process</processName>
                 </config>
@@ -639,34 +613,64 @@ WHERE p.Region = ?
                     </Input>
                 </pd:inputBindings>
             </pd:activity>
+            <pd:activity name="Send PriceToTopic">
+                <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
+                <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
+                <pd:x>563</pd:x>
+                <pd:y>299</pd:y>
+                <config>
+                    <PermittedMessageType>XML Text</PermittedMessageType>
+                    <SessionAttributes>
+                        <transacted>false</transacted>
+                        <acknowledgeMode>1</acknowledgeMode>
+                        <maxSessions>1</maxSessions>
+                        <destination>$_globalVariables/ns1:GlobalVariables/Mammoth/ESB/EsbPriceTopic</destination>
+                    </SessionAttributes>
+                    <ConfigurableHeaders>
+                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                        <JMSExpiration>0</JMSExpiration>
+                        <JMSPriority>4</JMSPriority>
+                    </ConfigurableHeaders>
+                    <ConnectionReference>/SharedResources/Connections/JMS/ESBConnection.sharedjmscon</ConnectionReference>
+                    <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+                    <InDataxsdString ref="pfx3:MammothPrices"/>
+                </config>
+                <pd:inputBindings>
+                    <ns12:ActivityInput>
+                        <destinationTopic>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mammoth/ESB/EsbPriceTopic"/>
+                        </destinationTopic>
+                        <OtherProperties>
+                            <xsl:if test="$Publisher-Queue-Receiver/ns12:ActivityOutput/JMSHeaders/ns12:JMSMessageID">
+                                <MessageId>
+                                    <xsl:value-of select="$Publisher-Queue-Receiver/ns12:ActivityOutput/JMSHeaders/ns12:JMSMessageID"/>
+                                </MessageId>
+                            </xsl:if>
+                            <TransactionID>
+                                <xsl:value-of select="WFM.UID:UID()"/>
+                            </TransactionID>
+                            <xsl:if test="$MapProcessStartDateTime/currentDateTime">
+                                <CorrelationID>
+                                    <xsl:value-of select="$MapProcessStartDateTime/currentDateTime"/>
+                                </CorrelationID>
+                            </xsl:if>
+                            <Source>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Source"/>
+                            </Source>
+                            <xsl:if test="$Parse-XML/pfx2:JobSchedule/pfx2:Region">
+                                <RegionCode>
+                                    <xsl:value-of select="$Parse-XML/pfx2:JobSchedule/pfx2:Region"/>
+                                </RegionCode>
+                            </xsl:if>
+                        </OtherProperties>
+                        <Body>
+                            <xsl:copy-of select="$Map-Data/pfx3:MammothPrices"/>
+                        </Body>
+                    </ns12:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
         </pd:group>
     </pd:group>
-    <pd:activity name="Confirm-ToBeReplacedByDLQ">
-        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
-        <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>635</pd:x>
-        <pd:y>515</pd:y>
-        <config>
-            <ConfirmEvent>Publisher Queue Receiver</ConfirmEvent>
-        </config>
-        <pd:inputBindings/>
-    </pd:activity>
-    <pd:activity name="MapProcessStartDateTime">
-        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
-        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>190</pd:x>
-        <pd:y>137</pd:y>
-        <config>
-            <element>
-                <xsd:element name="currentDateTime" type="xsd:string"/>
-            </element>
-        </config>
-        <pd:inputBindings>
-            <currentDateTime>
-                <xsl:value-of select="current-dateTime()"/>
-            </currentDateTime>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:transition>
         <pd:from>Confirm</pd:from>
         <pd:to>End</pd:to>
@@ -684,13 +688,6 @@ WHERE p.Region = ?
     <pd:transition>
         <pd:from>CatchAll</pd:from>
         <pd:to>ErrorLogPublisher</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>ProcessActivePriceSubsets</pd:from>
-        <pd:to>Confirm</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -719,6 +716,13 @@ WHERE p.Region = ?
     <pd:transition>
         <pd:from>MapProcessStartDateTime</pd:from>
         <pd:to>ProcessActivePriceSubsets</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ProcessActivePriceSubsets</pd:from>
+        <pd:to>Confirm</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

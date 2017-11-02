@@ -55,7 +55,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1509631091418</modTime>
+			<modTime>1509638409981</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EsbPriceTopic</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509639007943</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPassword</name>
