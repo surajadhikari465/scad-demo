@@ -13,7 +13,7 @@ BEGIN
 		,ISNULL(State, '') As State
 	    ,dbo.fn_getCustomerType(Store.Store_No, Store.Internal, Store.BusinessUnit_ID) as CustomerType -- 3 = Regional
 	    ,BusinessUnit_ID
-		,fn_InstanceDataValue('GlobalPriceManagement', Store_No) AS IsGpmStore
+		,dbo.fn_InstanceDataValue('GlobalPriceManagement', Store.Store_No) AS IsGpmStore
     FROM Zone (nolock)
     INNER JOIN 
         Store (nolock)
