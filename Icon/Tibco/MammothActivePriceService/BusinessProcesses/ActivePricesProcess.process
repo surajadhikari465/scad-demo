@@ -206,7 +206,7 @@
                 <maxRows>10000000</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/SharedResources/Connections/JDBC/Mammoth.sharedjdbc</jdbcSharedConfig>
-                <statement>SELECT Top 5
+                <statement>SELECT 
 	PriceID, 
 	CAST(p.Region AS NVARCHAR(2)) AS Region, 
 	CAST(GpmID AS NVARCHAR(255)) AS GpmID, 
