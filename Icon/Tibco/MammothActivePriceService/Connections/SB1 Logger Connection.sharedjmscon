@@ -5,7 +5,7 @@
     <config>
         <NamingEnvironment>
             <UseJNDI>false</UseJNDI>
-            <ProviderURL>%%LoggerSettings/EMSConnection/SB1LogJndiContextUrl%%</ProviderURL>
+            <ProviderURL>%%LoggerSettings/EMSConnection/Sb1LogUrl%%</ProviderURL>
             <NamingURL/>
             <NamingInitialContextFactory>com.tibco.tibjms.naming.TibjmsInitialContextFactory</NamingInitialContextFactory>
             <TopicFactoryName/>

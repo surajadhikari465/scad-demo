@@ -42,28 +42,36 @@
 			<modTime>1504111408144</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>EsbPriceQueueName</name>
-			<value>Mammoth.Retail.JustInTimeIrmaFL.MammothPrice.Queue.V1</value>
+			<name>ESBUrl</name>
+			<value>ssl://cerd1616.wfm.pvt:7233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504110987615</modTime>
+			<modTime>1509469918561</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EsbPriceQueueName</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509631091418</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPassword</name>
-			<value>SB1_IrmaPriceUser</value>
+			<value>sb1_mammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504110987646</modTime>
+			<modTime>1509465449826</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsername</name>
-			<value>SB1_IrmaPriceUser</value>
+			<value>sb1_mammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504110987678</modTime>
+			<modTime>1509465449902</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiContextUrl</name>

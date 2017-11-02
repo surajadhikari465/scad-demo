@@ -54,6 +54,11 @@
                 <Type>string</Type>
                 <Cardinality>optional</Cardinality>
             </row>
+            <row>
+                <PropertyName>RegionCode</PropertyName>
+                <Type>string</Type>
+                <Cardinality>optional</Cardinality>
+            </row>
         </Properties>
     </config>
 </BWSharedResource>

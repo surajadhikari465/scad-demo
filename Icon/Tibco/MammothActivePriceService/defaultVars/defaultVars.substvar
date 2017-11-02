@@ -131,6 +131,14 @@
 			<modTime>1499292451166</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>Source</name>
+			<value>Mammoth</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509569723416</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>TIBHawkDaemon</name>
 			<value>tcp:7474</value>
 			<deploymentSettable>true</deploymentSettable>

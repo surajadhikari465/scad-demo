@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>MammothConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth;IntegratedSecurity=true;</value>
+			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;IntegratedSecurity=true;</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1509126929880</modTime>
+			<modTime>1509468392126</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

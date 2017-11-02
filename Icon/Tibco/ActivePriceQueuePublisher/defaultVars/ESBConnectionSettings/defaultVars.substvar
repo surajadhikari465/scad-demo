@@ -42,6 +42,14 @@
 			<modTime>1499972862738</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>ESBUrl</name>
+			<value>ssl://cerd1616.wfm.pvt:7233</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1509469996296</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>EsbPriceQueueName</name>
 			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.MammothPrice.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -51,11 +59,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPassword</name>
-			<value>SB1_IrmaPriceUser</value>
+			<value>sb1_mammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504023260856</modTime>
+			<modTime>1509465066276</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsPasswordWritePermissions</name>
@@ -67,11 +75,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsername</name>
-			<value>SB1_IrmaPriceUser</value>
+			<value>sb1_mammothPriceUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504023260932</modTime>
+			<modTime>1509465066350</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsUsernameWritePermissions</name>

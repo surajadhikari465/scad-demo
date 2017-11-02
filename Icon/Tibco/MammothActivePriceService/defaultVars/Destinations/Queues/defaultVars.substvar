@@ -35,11 +35,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>RegionPriceQueuePublisher</name>
-			<value>WFMSB1.Mammoth.Retail.JustInTimeIrmaFL.IrmaPrice.Queue.V1</value>
+			<value>WFMSB1.Mammoth.Retail.JustInTime.PricePushStarter.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504110069829</modTime>
+			<modTime>1509465373004</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SB1LoggingQueue</name>
