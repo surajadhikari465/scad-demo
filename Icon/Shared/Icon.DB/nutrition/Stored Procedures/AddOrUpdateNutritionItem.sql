@@ -341,7 +341,7 @@ declare @validationDateTraitID int;
 	JOIN ScanCode sc
 		ON sc.scanCode = dii.plu
 
-	exec app.GenerateItemUpdateMessages @distinctItemIDs
+	exec infor.GenerateItemUpdateMessages @distinctItemIDs
 
 	 select @resultMessage;
 END
