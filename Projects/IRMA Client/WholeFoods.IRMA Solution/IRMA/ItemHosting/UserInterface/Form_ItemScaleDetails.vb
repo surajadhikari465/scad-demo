@@ -1636,22 +1636,18 @@ Imports log4net
             Return isSuccessful
         End If
 
-        If IsIngredientsInputValid() Then
-            IngredientsBO.ID = Me.ScaleIngredientsID
-            IngredientsBO.Ingredients = IngredientsTxt.Text.Trim()
-            IngredientsBO.Description = ""
-            IngredientsBO.LabelTypeID = 0
+        IngredientsBO.ID = Me.ScaleIngredientsID
+        IngredientsBO.Ingredients = IngredientsTxt.Text.Trim()
+        IngredientsBO.Description = ""
+        IngredientsBO.LabelTypeID = 0
 
-            If addIngredients = True Then
-                ScaleIngredientsDAO.AddIngredientsToItem(ItemKey, IngredientsBO)
-            Else
-                ScaleIngredientsDAO.UpdateIngredients(IngredientsBO)
-            End If
-
-            isSuccessful = True
+        If addIngredients = True And Not (String.IsNullOrEmpty(IngredientsBO.Ingredients)) Then
+            ScaleIngredientsDAO.AddIngredientsToItem(ItemKey, IngredientsBO)
         Else
-            MessageBox.Show("Description, Ingredients, and Label Type cannot be empty.")
+            ScaleIngredientsDAO.UpdateIngredients(IngredientsBO)
         End If
+
+        isSuccessful = True
 
         Return isSuccessful
     End Function
@@ -1665,23 +1661,18 @@ Imports log4net
             Return isSuccessful
         End If
 
-        If IsAllergensInputValid() Then
-            AllergensBO.ID = Me.ScaleAllergensID
-            AllergensBO.Allergens = AllergensTxt.Text.Trim()
-            AllergensBO.Description = ""
-            AllergensBO.LabelTypeID = 0
+        AllergensBO.ID = Me.ScaleAllergensID
+        AllergensBO.Allergens = AllergensTxt.Text.Trim()
+        AllergensBO.Description = ""
+        AllergensBO.LabelTypeID = 0
 
-            If addAllergens = True Then
-                ScaleAllergensDAO.AddAllergensToItem(ItemKey, AllergensBO)
-            Else
-                ScaleAllergensDAO.UpdateAllergens(AllergensBO)
-
-            End If
-
-            isSuccessful = True
+        If addAllergens = True And Not (String.IsNullOrEmpty(AllergensBO.Allergens)) Then
+            ScaleAllergensDAO.AddAllergensToItem(ItemKey, AllergensBO)
         Else
-            MessageBox.Show("Description, Allergens, and Label Type cannot be empty.")
+            ScaleAllergensDAO.UpdateAllergens(AllergensBO)
         End If
+
+        isSuccessful = True
 
         Return isSuccessful
     End Function
@@ -1793,14 +1784,6 @@ Imports log4net
     Private Sub IngredientsTxt_TextChanged(sender As Object, e As EventArgs) Handles IngredientsTxt.TextChanged
         SetIngredientsDataChanges(True)
     End Sub
-
-    Private Function IsIngredientsInputValid() As Boolean
-        Return Not String.IsNullOrWhiteSpace(IngredientsTxt.Text)
-    End Function
-
-    Private Function IsAllergensInputValid() As Boolean
-        Return Not String.IsNullOrWhiteSpace(AllergensTxt.Text)
-    End Function
 
     Private Sub AllergensDescriptionTxt_TextChanged(sender As Object, e As EventArgs)
         SetAllergensDataChanges(True)
