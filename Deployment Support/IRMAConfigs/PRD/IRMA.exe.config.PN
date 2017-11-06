@@ -33,11 +33,11 @@ Date        Init	Description
 
   <connectionStrings>
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idp-pn\pnp;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=h0t2m0rr0w;" />
+    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idp-pn\pnp;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=D6bLcXPr6#lk51;" />
     
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-	<add name="ODBC" connectionString ="Driver={SQL Server};Server=idp-pn\pnp;Database=ItemCatalog;UID=IRSUser;PWD=h0t2m0rr0w;APP="/>
-	<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idp-pn\pnp;Database=ItemCatalog;UID=IRMAReports;PWD=h0t3times;"/>
+	<add name="ODBC" connectionString ="Driver={SQL Server};Server=idp-pn\pnp;Database=ItemCatalog;UID=IRSUser;PWD=D6bLcXPr6#lk51;APP="/>
+	<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idp-pn\pnp;Database=ItemCatalog;UID=IRMAReports;PWD=6x8aIEQgw#EDql;"/>
   </connectionStrings>
 
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

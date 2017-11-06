@@ -14,12 +14,12 @@
 	<connectionStrings>
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
 		<!--UK Test Database: idq-uk.ItemCatalogt using IRMA Client account-->
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="FktsCUEMiAzpkeqE0gu12f4D0rcsSeLKfQ5lPSvYtYgE26O41g9gSTHCpA/kCiT5FJlMnAl+CHBhUt92yvqz1xLSg7NXsvjG5KFBLfZAStt7sLhMmAdF1arXPiTWtiPE" />
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="FktsCUEMiAzpkeqE0gu12f4D0rcsSeLKfQ5lPSvYtYgE26O41g9gSTHCpA/kCiT5FJlMnAl+CHBhUt92yvqz12SAU/6n15ZzSXQxKo5pfeiLma2Y5Gkn2DssprQPRMeq" />
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
 		<!--UK Test Database: idd-uk.ItemCatalog_Test using IRMA Client account-->
-		<add name="ODBC" connectionString="XYP0rQPBWTAn4nfL8gfEfGi5FxdKYT1zr8OHqQU2mIW1OQ9wzIBzWLk52JXM3Pun1GIbMqi+Q5dJFteRstNqv796lnp1kgEGwgMJHOCXs8HlxhtwzakFtYVC9fZeI/Ze" />
+		<add name="ODBC" connectionString="XYP0rQPBWTAn4nfL8gfEfGi5FxdKYT1zr8OHqQU2mIW1OQ9wzIBzWLk52JXM3Pun1GIbMqi+Q5dJFteRstNqv8p6TmAi0lgGrZa4PtxBQpXc+L/7tMlHrhYQlVqrmzLq" />
 		<!--UK Test Database: idq-uk.ItemCatalog using IRMA Reporting account-->
-		<add name="ODBCCrystal" connectionString="3erouAbxHX8TwORnjPyvFgNW7hCmCqY4RfaDLUdwx30Ma7tBabGP5fMQYtc6TNq4GTrwWutclddCf3/VlHqVFYLwNXNdoLidLQRBx05dFoTc8kVUfu98MBOLJeZXr4FB" />
+		<add name="ODBCCrystal" connectionString="XYP0rQPBWTAn4nfL8gfEfGi5FxdKYT1zr8OHqQU2mIW1OQ9wzIBzWLk52JXM3Pun1GIbMqi+Q5dJFteRstNqv8Lt2wUXeCWCeZUwN+nyHQpjxGcQoSH3WzwyJb55Ihzo" />
 	</connectionStrings>
 
 	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

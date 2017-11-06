@@ -14,9 +14,9 @@
 	</appSettings>
 
 	<connectionStrings>
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="FktsCUEMiAzpkeqE0gu12SyM+dYINvksNAcuAqD3vZY26+dILXG7xiPOkwLBwkMHN1lU0GLe+aTuv0xEsWlM/LF21nYM81FvTZQxjVtAErgGkgC5KVqJ3261svSnA4U+" />
-		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfD3RfZvm7m3revACrFBp7c/g8I2cC7EQDXcOhX3LEDZVkhzgln3Wo3lMLai7vHiiKyobjOO7rafba386K2nrl5iy2RIqsv+jnmkP7BjI75bN"/>
-		<add name="ODBCCrystal" connectionString ="XYP0rQPBWTAn4nfL8gfEfJy/m0HR9Rbv4MkL9MXQtxEed7N+5I1uXuEze+XJlR8YVUXTkaoaquwxYXatmpFWngrGooOp5tACIHhAmkmlr0qerZy4C7otsZ/BKauzMwVG"/>
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="FktsCUEMiAzpkeqE0gu12SyM+dYINvksNAcuAqD3vZY26+dILXG7xiPOkwLBwkMHN1lU0GLe+aTuv0xEsWlM/EVpmU75eGY3U9mRi7HVmd/Nn/5jOhqnxWv9wsVCXVd6" />
+		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfD3RfZvm7m3revACrFBp7c/g8I2cC7EQDXcOhX3LEDZVkhzgln3Wo3lMLai7vHiiKwqFQt5RBJexHQE+F9vV/DRWhrXQk65sftyZdvMDQ5iO"/>
+		<add name="ODBCCrystal" connectionString ="XYP0rQPBWTAn4nfL8gfEfD3RfZvm7m3revACrFBp7c/g8I2cC7EQDXcOhX3LEDZVkhzgln3Wo3lMLai7vHiiK7wrOYNzuwJTl3qyrulUnToej/B8otVt/BhPQBhcTUgS"/>
 	</connectionStrings>
 
   	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
