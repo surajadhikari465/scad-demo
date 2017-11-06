@@ -1670,7 +1670,6 @@ Imports log4net
             ScaleAllergensDAO.AddAllergensToItem(ItemKey, AllergensBO)
         Else
             ScaleAllergensDAO.UpdateAllergens(AllergensBO)
-
         End If
 
         isSuccessful = True
@@ -1785,6 +1784,7 @@ Imports log4net
     Private Sub IngredientsTxt_TextChanged(sender As Object, e As EventArgs) Handles IngredientsTxt.TextChanged
         SetIngredientsDataChanges(True)
     End Sub
+
     Private Sub AllergensDescriptionTxt_TextChanged(sender As Object, e As EventArgs)
         SetAllergensDataChanges(True)
     End Sub

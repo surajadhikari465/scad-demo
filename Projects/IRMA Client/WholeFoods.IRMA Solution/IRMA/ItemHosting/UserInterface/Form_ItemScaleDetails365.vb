@@ -1621,14 +1621,6 @@ Imports log4net
         SetIngredientsDataChanges(True)
     End Sub
 
-    Private Function IsIngredientsInputValid() As Boolean
-        Return Not String.IsNullOrWhiteSpace(IngredientsTxt.Text)
-    End Function
-
-    Private Function IsAllergensInputValid() As Boolean
-        Return Not String.IsNullOrWhiteSpace(AllergensTxt.Text)
-    End Function
-
     Private Sub AllergensDescriptionTxt_TextChanged(sender As Object, e As EventArgs)
         SetAllergensDataChanges(True)
     End Sub
