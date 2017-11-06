@@ -22,3 +22,18 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* overrides the mvc default max-width: 280px; allowing a wider input */
+.custom-wide-input {
+    max-width: 540px;
+}
+
+/* helps to vertically align a checkbox form-control within a form-group in bootstrap */
+.custom-checkbox-form-control {
+    padding-left: 20px;
+}
+
+/* wraps table cell text - breaks long strings like UTC dates or queue names to preserve table format */
+td.wrap-ugly-text {
+    word-break: break-all;
+}

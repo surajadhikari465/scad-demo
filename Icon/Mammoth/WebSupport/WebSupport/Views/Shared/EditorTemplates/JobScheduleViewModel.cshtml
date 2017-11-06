@@ -1,0 +1,83 @@
+﻿@model WebSupport.ViewModels.JobScheduleViewModel
+@* editor template view for JobSchedule model, expected to be used within a form *@
+
+<hr />
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(model => model.JobScheduleId)
+
+<div class="form-group">
+    @Html.LabelFor(model => model.JobName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.JobName,  new { @class = "form-control"})
+        @Html.ValidationMessageFor(model => model.JobName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Region, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Region, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Region, "", new {  @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.DestinationQueueName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @* using TextArea to allow stretching the input for long queue names *@
+        @* CSS class '.custom-wide-input' overrides the mvc default max-width to make the input wider *@
+        @Html.TextAreaFor(model => model.DestinationQueueName, 1, 38, new { @class = "form-control custom-wide-input" })
+        @Html.ValidationMessageFor(model => model.DestinationQueueName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.StartDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @* We are using a bootstrap-datetimepicker here, which depends on Moment.js as well as Bootstrap
+            so make sure those are already included & available to the view. There must also be a javascript
+            method to launch the datepicker as in $('#StartDateTimeUtc').datetimepicker(); *@
+        @Html.EditorFor(model => model.StartDateTimeUtc, new { @class = "form-control datepicker" })
+        @Html.ValidationMessageFor(model => model.StartDateTimeUtc, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@if (Model.LastRunDateTimeUtc.HasValue)
+{
+<div class="form-group">
+    @Html.LabelFor(model => model.LastRunDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DisplayFor(model => model.LastRunDateTimeUtc, new { @class = "form-control" })
+    </div>
+</div>
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.IntervalInSeconds, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.IntervalInSeconds, new  {
+            @class = "form-control", data_toggle = "tooltip", data_placement = "right", title = "IntervalInSeconds" })
+        @Html.ValidationMessageFor(model => model.IntervalInSeconds, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @* CSS class '.custom-checkbox-form-control' adds some padding-left which helps vertically align the checkbox *@
+        <div class="checkbox custom-checkbox-form-control">
+            @Html.EditorFor(model => model.Enabled)
+            @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.XmlObject, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @* using TextArea to allow stretching the input for complex multiline xml data entry if needed *@
+        @* CSS class '.custom-wide-input' overrides the mvc default max-width to make the input wider *@
+        @Html.TextAreaFor(model => model.XmlObject, 1, 38, new { @class = "form-control custom-wide-input" })
+        @Html.ValidationMessageFor(model => model.XmlObject, "", new { @class = "text-danger" })
+    </div>
+</div>

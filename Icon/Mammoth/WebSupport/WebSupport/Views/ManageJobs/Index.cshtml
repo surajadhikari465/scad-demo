@@ -1,81 +1,83 @@
-﻿@model IEnumerable<WebSupport.DataAccess.Models.JobSchedule>
+﻿@model IEnumerable<WebSupport.ViewModels.JobScheduleViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
+<h2>Manage Jobs</h2>
 
-<h2>Index</h2>
+<div class="table-responsive">
+    <table class="table table-condensed">
+        <tr>
+            <th></th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="JobName">
+                @Html.DisplayNameFor(model => model.JobName)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="Region">
+                @Html.DisplayNameFor(model => model.Region)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="DestinationQueueName">
+                @Html.DisplayNameFor(model => model.DestinationQueueName)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="StartDateTimeUtc">
+                @Html.DisplayNameFor(model => model.StartDateTimeUtc)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="LastRunDateTimeUtc">
+                @Html.DisplayNameFor(model => model.LastRunDateTimeUtc)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="IntervalInSeconds">
+                @Html.DisplayNameFor(model => model.IntervalInSeconds)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="Enabled">
+                @Html.DisplayNameFor(model => model.Enabled)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="XmlObject">
+                @Html.DisplayNameFor(model => model.XmlObject)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th></th>
-        <th>
-            @Html.DisplayNameFor(model => model.JobName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Region)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DestinationQueueName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDateTimeUtc)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastRunDateTimeUtc)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IntervalInSeconds)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Enabled)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.XmlObject)
-        </th>
-        <th></th>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink("Start", "Start", new { id = item.JobScheduleId }, new { @class = "btn btn-success", data_toggle = "tooltip", data_placement = "bottom", data_container = "body", title = "Start " + item.JobName })
+                </td>
+                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="JobName">
+                    @Html.DisplayFor(modelItem => item.JobName)
+                </td>
+                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Region">
+                    @Html.DisplayFor(modelItem => item.Region)
+                </td>
+                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="DestinationQueueName">
+                    @Html.DisplayFor(modelItem => item.DestinationQueueName)
+                </td>
+                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="StartDateTimeUtc">
+                    @Html.DisplayFor(modelItem => item.StartDateTimeUtc)
+                </td>
+                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastRunDateTimeUtc">
+                    @Html.DisplayFor(modelItem => item.LastRunDateTimeUtc)
+                </td>
+                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="IntervalInSeconds">
+                    @Html.DisplayFor(modelItem => item.IntervalInSeconds)
+                </td>
+                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Enabled">
+                    @Html.DisplayFor(modelItem => item.Enabled)
+                </td>
+                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="XmlObject">
+                    @Html.DisplayFor(modelItem => item.XmlObject)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.JobScheduleId }, new { @class = "btn btn-primary", data_toggle = "tooltip", data_placement = "bottom", data_container = "body", title = "Edit " + item.JobName })
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.JobScheduleId }, new { @class = "btn btn-danger", data_toggle = "tooltip", data_placement = "bottom", data_container = "body", title = "Delete " + item.JobName })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink("Start", "Start", new { id = item.JobScheduleId }) |
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.JobName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Region)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DestinationQueueName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDateTimeUtc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastRunDateTimeUtc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IntervalInSeconds)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Enabled)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.XmlObject)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.JobScheduleId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.JobScheduleId })
-        </td>
-    </tr>
-}
-
-</table>
+    </table>
+</div>
 
 @if (ViewBag.Error != null)
 {
@@ -87,4 +89,19 @@
             <strong>@ViewBag.Error</strong>
         </div>
     </div>
+}
+
+<div>
+    <p>
+        @Html.ActionLink("Create a New Job Schedule", "Create", null, new { @class = "btn btn-info" })
+    </p>
+</div>
+
+@section Scripts {
+<script type="text/javascript">    
+    $(document).ready(function () {
+        @* must enable bootstrap tooltips in js *@
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 }

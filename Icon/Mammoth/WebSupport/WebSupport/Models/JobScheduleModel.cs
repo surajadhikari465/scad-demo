@@ -16,7 +16,7 @@ namespace WebSupport.Models
         [XmlElement]
         public string DestinationQueueName { get; set; }
         [XmlElement]
-        [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:"+ ValidationConstants.XmlDateTimeFormat + "}", ApplyFormatInEditMode = true)]
         public DateTime StartDateTimeUtc { get; set; }
         [XmlElement]
         public DateTime? LastRunDateTimeUtc { get; set; }

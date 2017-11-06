@@ -4,12 +4,14 @@ using Icon.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using WebSupport.DataAccess.Commands;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
 using WebSupport.Filters;
 using WebSupport.Models;
+using WebSupport.ViewModels;
 
 namespace WebSupport.Controllers
 {
@@ -45,8 +47,9 @@ namespace WebSupport.Controllers
         public ActionResult Index()
         {
             List<JobSchedule> jobSchedules = getJobSchedulesQueryHandler.Search(new GetJobSchedulesParameters());
+            var jobScheduleViewModels = jobSchedules.Select(m=> JobScheduleViewModel.FromDataAccessModel(m));
 
-            return View(jobSchedules);
+            return View(jobScheduleViewModels);
         }
 
         [HttpGet]
@@ -56,12 +59,13 @@ namespace WebSupport.Controllers
             {
                 JobScheduleId = id
             });
+            var jobScheduleViewModel = JobScheduleViewModel.FromDataAccessModel(jobSchedule);
 
-            return View(jobSchedule);
+            return View(jobScheduleViewModel);
         }
 
         [HttpPost]
-        public ActionResult Edit(JobSchedule jobSchedule)
+        public ActionResult Edit(JobScheduleViewModel jobSchedule)
         {
             updateJobScheduleCommandHandler.Execute(new UpdateJobScheduleCommand
             {
@@ -92,7 +96,7 @@ namespace WebSupport.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var jobSchedule = new JobSchedule()
+            var jobSchedule = new JobScheduleViewModel()
             {
                 StartDateTimeUtc = DateTime.UtcNow
             };
@@ -100,7 +104,7 @@ namespace WebSupport.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(JobSchedule jobSchedule)
+        public ActionResult Create(JobScheduleViewModel jobSchedule)
         {
             createJobScheduleCommandHandler.Execute(new CreateJobScheduleCommand
             {
@@ -113,7 +117,7 @@ namespace WebSupport.Controllers
         }
 
         [HttpGet]
-        public ActionResult Start(JobSchedule jobSchedule)
+        public ActionResult Start(JobScheduleViewModel jobSchedule)
         {
             if (ModelState.IsValid)
             {
