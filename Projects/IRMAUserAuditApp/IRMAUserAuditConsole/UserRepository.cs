@@ -135,7 +135,7 @@ namespace IRMAUserAuditConsole
             User u = userCache.SingleOrDefault(user => user.User_ID == id);
             UserInfo ui = UserInfoFromUser(u);
 
-            return null;
+            return ui;
         }
 
         public int? GetTitleIdFromName(string titleName)
@@ -245,6 +245,10 @@ namespace IRMAUserAuditConsole
             //log.Message("updating " + newUserInfo.FullName);
             User user = GetUser(newUserInfo.User_ID);
             // see if title or store has changed, otherwise ignore
+
+            user.AccountEnabled = newUserInfo.User_Disabled.ToUpper() == "YES" ? false : true;
+
+
             int? titleId = GetTitleIdFromName(newUserInfo.Title);
             if (titleId.HasValue)
             {
@@ -258,13 +262,14 @@ namespace IRMAUserAuditConsole
             {
                 titleId = null;
             }
-            if (user.Title != titleId)
+            if (titleId != null && user.Title != titleId)
             {
                 // title has changed.
                 //log.Message("Title changing...assigning default perms");
-                TitleDefaultPermission defaultPerms = GetDefaultPermissionsByTitleId(titleId);
-                AssignDefaultPerms(ref user, defaultPerms);
+                //TitleDefaultPermission defaultPerms = GetDefaultPermissionsByTitleId(titleId);
+                //AssignDefaultPerms(ref user, defaultPerms);
                 user.Title1 = db.Titles.SingleOrDefault(t => t.Title_ID == titleId);
+                //user.Title = titleId;
             }
 
             int? storeId = GetStoreIdFromName(newUserInfo.Location);
@@ -291,25 +296,11 @@ namespace IRMAUserAuditConsole
             }
 
             log.Message("calling UpdateUser!!");
-            // Do it.  DO IT!!!
+
             try
             {
-                int result = db.Administration_UserAdmin_UpdateUser(
-                    user.AccountEnabled, user.CoverPage, user.EMail,
-                    user.Fax_Number, user.FullName, user.Pager_Email,
-                    user.Phone_Number, user.Printer, user.RecvLog_Store_Limit,
-                    user.Telxon_Store_Limit, user.Title, user.User_ID,
-                    user.UserName, user.Accountant, user.ApplicationConfigAdmin,
-                    user.BatchBuildOnly, user.Buyer, user.Coordinator, user.CostAdmin,
-                    user.FacilityCreditProcessor, user.DataAdministrator, user.DCAdmin,
-                    user.Distributor, user.DeletePO, user.EInvoicing_Administrator,
-                    user.Inventory_Administrator, user.Item_Administrator, user.JobAdministrator,
-                    user.Lock_Administrator, user.SuperUser, user.PO_Accountant,
-                    user.POApprovalAdmin, user.POEditor, user.POSInterfaceAdministrator,
-                    user.PriceBatchProcessor, user.PromoAccessLevel, user.SecurityAdministrator,
-                    user.Shrink, user.ShrinkAdmin, user.StoreAdministrator, user.SystemConfigurationAdministrator,
-                    user.TaxAdministrator, user.UserMaintenance, user.Vendor_Administrator,
-                    user.VendorCostDiscrepancyAdmin, user.Warehouse);
+                int result = db.Administration_UserAudit_UpdateUser(
+                    user.AccountEnabled, user.Telxon_Store_Limit, user.Title, user.User_ID);
 
                 log.Message("UpdateUser result: " + result.ToString());
             }

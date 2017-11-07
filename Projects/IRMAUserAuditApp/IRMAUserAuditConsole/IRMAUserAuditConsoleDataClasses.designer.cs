@@ -251,6 +251,13 @@ namespace IRMAUserAuditConsole
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), accountEnabled, coverPage, eMail, fax_Number, fullName, pager_Email, phone_Number, printer, recvLog_Store_Limit, telxon_Store_Limit, title, user_Id, userName, accountant, applicationConfigAdmin, batchBuildOnly, buyer, coordinator, costAdmin, facilityCreditProcessor, dataAdministrator, dCAdmin, distributor, deletePO, eInvoicingAdmin, inventory_Administrator, item_Administrator, jobAdministrator, lock_Administrator, superUser, pO_Accountant, pOApprovalAdmin, pOEditor, pOSInterfaceAdministrator, priceBatchProcessor, promoAccessLevel, securityAdministrator, shrink, shrinkAdmin, storeAdministrator, systemConfigurationAdministrator, taxAdministrator, userMaintenance, vendor_Administrator, vendorCostDiscrepancyAdmin, warehouse);
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.Administration_UserAudit_UpdateUser")]
+		public int Administration_UserAudit_UpdateUser([global::System.Data.Linq.Mapping.ParameterAttribute(Name="AccountEnabled", DbType="Bit")] System.Nullable<bool> accountEnabled, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Telxon_Store_Limit", DbType="Int")] System.Nullable<int> telxon_Store_Limit, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Title", DbType="Int")] System.Nullable<int> title, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="User_Id", DbType="Int")] System.Nullable<int> user_Id)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), accountEnabled, telxon_Store_Limit, title, user_Id);
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Store")]

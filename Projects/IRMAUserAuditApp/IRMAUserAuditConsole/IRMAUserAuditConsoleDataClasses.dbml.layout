@@ -131,7 +131,7 @@
         <elementListCompartment Id="0ea71c46-a73b-4131-88d0-d895df1fc33b" absoluteBounds="9.265, 18.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.9687475 : 16.5302555338542); (6.9687475 : 17.53125); (7.41666666666667 : 17.53125 : JumpStart); (7.58333333333333 : 17.53125 : JumpEnd); (12.125 : 17.53125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.9687475 : 16.5302555338542); (6.9687475 : 17.53125); (12.125 : 17.53125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/IRMAUserAuditConsoleDataClassesDataContext/User/User_AppConfigApp" />
       <nodes>
         <classShapeMoniker Id="36503dab-31d4-4a7a-95ba-81b61b190522" />

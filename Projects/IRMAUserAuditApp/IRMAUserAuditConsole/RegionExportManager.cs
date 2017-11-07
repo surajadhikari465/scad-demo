@@ -213,6 +213,7 @@ namespace IRMAUserAuditConsole
             master.Close(masterFileName);
 
             var groupByTitle = users.GroupBy(ur => ur.Title).ToList();
+            int rowCounter = 0;
 
             foreach (var group in groupByTitle)
             {
@@ -220,14 +221,17 @@ namespace IRMAUserAuditConsole
                 SpreadsheetManager ssm = Common.SetupStoreSpreadsheet(fileName, repo.GetStoreNames(), repo.GetTitles());
                 // header is row 1, then skip row 2:
                 ssm.JumpToRow("Users", 3);
+                rowCounter = 0;
 
                 foreach (var userInfo in group)
                 {
                     log.Message("Adding " + userInfo.FullName + "...");
                     Common.AddUserToSpreadsheet(ref ssm, userInfo);
+                    rowCounter++;
                 }
 
                 ssm.AutosizeColumns("Users");
+                ssm.LockWorkSheet("Users", 1, 4, rowCounter + 2, 7); //rowCounter + 2 is total number of users on the sheet plus a column header row and a blank row.
                 log.Message("saving " + fileName);
                 ssm.Close(fileName);
             }

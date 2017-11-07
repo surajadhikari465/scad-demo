@@ -20,7 +20,6 @@ namespace IRMAUserAuditConsole
         public Guid EnvId { get; set; }
 
         private DateTime AuditRunTime { get; set; }
-        private bool backupSuccessful = false;
         #endregion
 
         #region constructors
@@ -247,18 +246,10 @@ namespace IRMAUserAuditConsole
             switch (action)
             {
                 case UserAuditFunctionEnum.Import:
-                    Import(Options);
-                    bwImport_RunWorkerCompleted(AuditRunTime);
+                    Import(Options, folderName);
                     break;
                 case UserAuditFunctionEnum.Export:
                     Export(Options, folderName);
-                    bwExport_RunWorkerCompleted(AuditRunTime);
-                    break;
-                case UserAuditFunctionEnum.Backup:
-                    break;
-                case UserAuditFunctionEnum.Restore:
-                    Restore(Options);
-                    bwRestore_RunWorkerCompleted(AuditRunTime);
                     break;
                 case UserAuditFunctionEnum.None:
                     Logger.Info("No action scheduled today.  Exiting.");
@@ -291,117 +282,18 @@ namespace IRMAUserAuditConsole
             }
         }
 
-        public void Import(AuditOptions opts)
+        public void Import(AuditOptions opts, string folderName)
         {
-            int result = Backup(opts);
+            RegionImportManager rim = new RegionImportManager(opts.Region, opts.ConnectionString, opts.Environment);
+            int result = rim.Import(folderName);
             if (result != 0)
-            {
-                Logger.Error("Backup returned nonzero result!  Stopping since unsafe to import without current backup.");
-                Logger.Error("Check backup log for more info.");
-            }
-            else
-            {
-                RegionImportManager rim = new RegionImportManager(opts.Region, opts.ConnectionString, opts.Environment);
-                result = rim.Import();
-                if (result != 0)
-                    Logger.Error("Import return non-zero result!  Check log for possible errors!!");
-            }
-
-            backupSuccessful = true;
-        }
-
-        public int Backup(AuditOptions opts)
-        {
-            Logger.Info("connecting to " + opts.Region + "...");
-            RegionBackupManager rbm = new RegionBackupManager(opts.Region, opts.ConnectionString, opts.Environment);
-            Logger.Info("Backing up...");
-            int result = rbm.BackupUsers();
-            return result;
-        }
-
-        public void Restore(AuditOptions opts)
-        {
-            Logger.Info("connecting to " + opts.Region + " " + opts.Environment.ToString() + " environment...");
-            RegionRestoreManager rrm = new RegionRestoreManager(opts.Region, opts.ConnectionString, opts.Environment);
-            Logger.Info("Connected.");
-
-            int result = rrm.RestoreUsers();
-            if (result != 0)
-                Logger.Error("Restore returned with errors!  Check log for details!");
-            else
-                Logger.Info("Users restored.");
-        }
-
-        public void SetNextRunDateAction(DateTime dateOfCurrentRun, string completedAction)
-        {
-            DateTime nextRunDate = dateOfCurrentRun;
-            int currentYear = Dates.FiscalYear(dateOfCurrentRun);
-            int currentQuarter = Dates.FiscalQuarter(dateOfCurrentRun);
-
-            string nextRunAction = "";
-            switch (completedAction)
-            {
-                case "import":
-                    // next export will occur 5 weeks before the last weekday of the next quarter
-                    nextRunAction = "export";
-                    currentQuarter++;
-                    if (currentQuarter > 4)
-                    {
-                        currentQuarter = 1;
-                        currentYear++;
-                    }
-                    DateTime? qStart = Dates.GetQuarterStart(currentQuarter, currentYear);
-                    if (qStart.HasValue)
-                    {
-                        nextRunDate = Dates.LastWeekdayInQuarter(qStart.Value).AddDays(-35);
-                    }
-                    else
-                    {
-                        Logger.Error("Unable to set next run date!  Is it October 2015 already?");
-                        return;
-                    }
-                    break;
-                case "export":
-                    // backup/import will occur 3 weeks from the export date
-                    nextRunAction = "import";
-                    nextRunDate = dateOfCurrentRun.AddDays(21);
-                    break;
-            }
-
-            if (Config.UpdateKeyValue(AppId, EnvId, "NextRunDate", nextRunDate.ToString("G"), 0))
-            {
-                // only set run action if settig the date was successful
-                if (!Config.UpdateKeyValue(AppId, EnvId, "NextRunAction", nextRunAction, 0))
-                {
-                    Logger.Error("Unable to set next run action!");
-                }
-            }
-            else
-            {
-                Logger.Error("Unable to set next run date!");
-            }
+                Logger.Error("Import return non-zero result!  Check log for possible errors!!");
         }
 
         #endregion
 
         #region private methods
-        private void bwImport_RunWorkerCompleted(DateTime completionDateTime)
-        {
-            if (backupSuccessful)
-            {
-                SetNextRunDateAction(completionDateTime, "import");
-            }
-        }
-
-        private void bwExport_RunWorkerCompleted(DateTime completionDateTime)
-        {
-            SetNextRunDateAction(completionDateTime, "export");
-        }
-
-        private void bwRestore_RunWorkerCompleted(DateTime completionDateTime)
-        {
-            Logger.Warn("Restore complete! You MUST set next run date/action MANUALLY or imports/exports will NOT function!");
-        }
+    
         #endregion
     }
 }

@@ -289,9 +289,9 @@ namespace IRMAUserAuditConsole
         /// </summary>
         /// <param name="worksheet">which worksheet</param>
         /// <param name="columnIndex">the column to hide</param>
-        public void HideColumn(string worksheet, int columnIndex)
+        public void LockWorkSheet(string worksheet, int editableFromRow, int editableFromCol, int editableToRow, int editableToCol)
         {
-            helper.HideColumn(package, worksheet, columnIndex);
+            helper.LockWorkSheet(package, worksheet, editableFromRow, editableFromCol, editableToRow, editableToCol);
         }
 
         public void AutosizeColumns(string worksheet)

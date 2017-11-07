@@ -126,10 +126,18 @@ namespace IRMAUserAuditConsole
             }
         }
 
-        public void HideColumn(ExcelPackage package, string worksheet, int index)
+        public void LockWorkSheet(ExcelPackage package, string worksheet, int editableFromRow, int editableFromCol, int editableToRow, int editableToCol)
         {
             ExcelWorksheet ws = package.Workbook.Worksheets[worksheet];
-            ws.Column(index).Width = 0;
+
+            //ws.Protection.IsProtected = true;
+            ws.Protection.SetPassword("EPPlus");
+
+            if (editableFromRow > 0 && editableFromCol > 0 && editableToRow > editableFromRow && editableToCol > editableFromCol)
+            {
+                ws.Cells[editableFromRow, editableFromCol, editableToRow, editableToCol].Style.Locked = false;
+            }
+            
         }
 
         public List<object> RangeToObjectList(ExcelPackage package, string worksheet, string range)

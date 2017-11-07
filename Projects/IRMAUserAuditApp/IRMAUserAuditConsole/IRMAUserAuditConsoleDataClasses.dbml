@@ -324,4 +324,11 @@
     <Parameter Name="Warehouse" Parameter="warehouse" Type="System.Boolean" DbType="Bit" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.Administration_UserAudit_UpdateUser" Method="Administration_UserAudit_UpdateUser">
+    <Parameter Name="AccountEnabled" Parameter="accountEnabled" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Telxon_Store_Limit" Parameter="telxon_Store_Limit" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Title" Parameter="title" Type="System.Int32" DbType="Int" />
+    <Parameter Name="User_Id" Parameter="user_Id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
 </Database>

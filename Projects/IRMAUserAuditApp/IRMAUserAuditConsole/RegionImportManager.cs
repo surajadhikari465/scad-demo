@@ -20,7 +20,6 @@ namespace IRMAUserAuditConsole
         private SpreadsheetManager inputSheet = null;
         private SpreadsheetManager resultSheet = null;
         private Log log = null;
-        private string resultsPath = "";
         private int updateCount = 0;
         private int deleteCount = 0;
         private int unchangedCount = 0;
@@ -28,13 +27,11 @@ namespace IRMAUserAuditConsole
         private List<string> files = null;
         private string region = "";
         private string resultsFileName = "";
-        private string rootPath = "";
         private UserRepository repo;
         private ConfigRepository configRepo;
         private IRMAEnvironmentEnum environment;
         private Guid appId;
         private Guid envId;
-        private string fiscalYearString = "";
         private bool configOk = false;
 
         #endregion
@@ -50,34 +47,16 @@ namespace IRMAUserAuditConsole
             SetupLog();
             SetupConfig(_env);
         }
-        /*
-        public RegionImportManager(string _region, int quarter)
-        {
-#if DEBUG
-            rootPath = Properties.Settings.Default.LocalRootPath;
-#else
-            rootPath = Properties.Settings.Default.RootPath;
-#endif
-            region = _region;
-
-            resultsPath = Path.Combine(rootPath, Properties.Settings.Default.TempFilePath);
-
-            SetupLog();
-            // TODO:  this needs to not select the current quarter, but the previous one
-            // since we are importing.  For now, accept this UGLY hack.  :)
-            SetupResultsSheet(quarter);
-            BuildFileList(quarter);
-        
-        }
-        */
 
         #endregion
 
         #region Methods
 
-        public int Import()
+        public int Import(string folderName)
         {
             string basePath = "";
+            string masterFilePath = "";
+
             if ((configRepo.ConfigurationGetValue("BasePath", ref basePath)) == false)
             {
                 log.Error("Unable to get base path from config!  Aborting.");
@@ -85,16 +64,30 @@ namespace IRMAUserAuditConsole
                 return -1;
             }
 
-            fiscalYearString = Common.CreateFiscalYearString();
+            if ((configRepo.ConfigurationGetValue("MasterFilePath", ref masterFilePath)) == false)
+            {
+                log.Error("Unable to get master file path from config!  Aborting.");
+                // can't find the master file path.
+                return -1;
+            }
+            //fiscalYearString = Common.CreateFiscalYearString();
 
-            string regionPath = Path.Combine(basePath, region, fiscalYearString);
+            string regionPath = Path.Combine(basePath, region, folderName);
+            string masterFileRegionPath = Path.Combine(masterFilePath, region, folderName);
+
             if (!Directory.Exists(regionPath))
             {
                 log.Error("Cannot find import path: " + regionPath + "! Please verify and try again.");
                 return -2;
             }
 
-            SetupResultsSheet(regionPath);
+            if (!Directory.Exists(masterFileRegionPath))
+            {
+                log.Error("Cannot find master file path: " + masterFileRegionPath + "! Please verify and try again.");
+                return -2;
+            }
+
+            SetupResultsSheet(masterFileRegionPath);
             BuildFileList(regionPath);
 
             if (files.Count < 1)
@@ -123,12 +116,11 @@ namespace IRMAUserAuditConsole
                     {
                         try
                         {
-                            if (userRow.Length > 8)
+                            if (userRow.Length > 4) //This is to prevent the blank row (2nd row) being picked up for processing. Four columns are enabled for editing. 
                             {
                                 int number;
                                 if (Int32.TryParse(userRow[0].ToString(), out number))
                                 {
-                                    //bool deleteUser = ((string)userRow[8]).ToLower() == "yes" ? true : false;
                                     bool updateUser = ((string)userRow[6]).ToLower() == "yes" ? true : false;
                                     int userId = Int32.Parse(userRow[0].ToString());
                                     UserInfo ui = repo.GetUserInfo(userId);
@@ -142,46 +134,13 @@ namespace IRMAUserAuditConsole
                                         continue;
                                     }
 
-                                    // get previous store from history.
-                                    Store currentStore = repo.GetUsersPreviousStore(userRow[0].ToString());
-
-                                    bool storeMismatch = false;
-                                    if ((currentStore != null) && (currentStore.Store_No != ui.StoreId))
-                                        storeMismatch = true;
-
-                                    if ((currentStore == null) && (ui.StoreId != null))
-                                        storeMismatch = true;
-
-                                    if (storeMismatch)
-                                    {
-                                        log.Error("User " + ui.FullName + " does not belong to current store.  NO UPDATE performed");
-                                        Console.WriteLine("User " + ui.FullName + " does not belong to current store.  NO UPDATE performed");
-                                        List<object> row = new List<object>(userRow);
-                                        row.Add("User not in this store.  Not updated.");
-                                        AddResultRow(ImportResultType.Errored, row.ToArray());
-                                        continue;
-                                    }
-
-                                    //if (deleteUser)
-                                    //{
-                                    //    try
-                                    //    {
-                                    //        repo.DeleteUser(userId, ref log);
-                                    //    }
-                                    //    catch (Exception ex)
-                                    //    {
-                                    //        log.Error("Delete user " + ui.FullName + ": " + ex.Message);
-                                    //    }
-                                    //    AddResultRow(ImportResultType.Deleted, userRow);
-                                    //    log.Message("user " + ui.FullName + " deleted.");
-                                    //}
                                     if (updateUser)
                                     {
                                         //update fields
                                         ui.Location = userRow[4] as string;
                                         ui.Title = userRow[3] as string;
+                                        ui.User_Disabled = userRow[5] as string;
 
-                                        // ready to go!
                                         UserUpdateError uue = repo.UpdateUser(ui, ref log);
                                         if (uue != UserUpdateError.None)
                                         {
@@ -235,6 +194,15 @@ namespace IRMAUserAuditConsole
                     }
                 }
             }
+
+            resultSheet.AutosizeColumns("Updated");
+            resultSheet.AutosizeColumns("Unchanged");
+            resultSheet.AutosizeColumns("Errored");
+
+            resultSheet.LockWorkSheet("Updated", 0, 0, 0, 0);
+            resultSheet.LockWorkSheet("Unchanged", 0, 0, 0, 0);
+            resultSheet.LockWorkSheet("Errored", 0, 0, 0, 0);
+
             log.Message(Results());
             this.Close();
             return 0;
@@ -339,16 +307,13 @@ namespace IRMAUserAuditConsole
             resultsFileName = CreateResultsFilename(path);
             resultSheet = new SpreadsheetManager(resultsFileName);
             resultSheet.CreateWorksheet("Updated");
-            resultSheet.CreateWorksheet("Deleted");
             resultSheet.CreateWorksheet("Unchanged");
             resultSheet.CreateWorksheet("Errored");
             List<string> columns = new List<string> { "User_ID", "UserName", "FullName", "Title", "Location", "User_Disabled", "User Edited?" };
             resultSheet.CreateHeader("Updated", columns);
-            resultSheet.CreateHeader("Deleted", columns);
             resultSheet.CreateHeader("Unchanged", columns);
             resultSheet.CreateHeader("Errored", columns);
             resultSheet.JumpToRow("Updated", 3);
-            resultSheet.JumpToRow("Deleted", 3);
             resultSheet.JumpToRow("Unchanged", 3);
             resultSheet.JumpToRow("Errored", 3);
         }
@@ -357,10 +322,6 @@ namespace IRMAUserAuditConsole
         {
             switch (type)
             {
-                case ImportResultType.Deleted:
-                    resultSheet.AddRow("Deleted", items);
-                    deleteCount++;
-                    break;
                 case ImportResultType.Updated:
                     resultSheet.AddRow("Updated", items);
                     updateCount++;
@@ -413,11 +374,6 @@ namespace IRMAUserAuditConsole
             return sb.ToString();
 
         }
-
-        //public void MoveResultsFile(string toPath)
-        //{
-        //    File.Move(resultsFileName, Path.Combine(toPath, Path.GetFileName(resultsFileName)));
-        //}
 
         #endregion
 

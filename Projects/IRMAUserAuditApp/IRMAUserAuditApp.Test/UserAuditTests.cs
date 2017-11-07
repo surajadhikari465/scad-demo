@@ -105,67 +105,98 @@ namespace IRMAUserAuditApp.Test
         }
 
         [TestMethod]
-        public void UserAudit_DetermineAuditAction_WhenHasImportDate_ReturnsActionImport()
+        public void UserAudit_DetermineAuditAction_WhenRunDateIsImportDate_ReturnsActionImport()
         {
             //Arrange
-            this.auditRunTime = new DateTime(2013, 6, 6);
+            this.auditRunTime = DateTime.Now;
             string exportDates = "";
-            string importDates = "2013-6-6";
-            string folderName = "";
+            string exportDate1 = DateTime.Today.AddDays(-21).ToShortDateString();
+            string exportDate2 = DateTime.Today.AddDays(-21).AddYears(1).ToShortDateString();
+            string folderName1 = "FY2018Q4";
+            string folderName2 = "FY2019Q4";
+            string importDates = "";
+            string importDate1 = DateTime.Today.ToShortDateString(); 
+            string importDate2 = DateTime.Today.AddYears(1).ToShortDateString(); 
             string delimiter = ";";
+
+            //The exportDates and importDates should like this:
+            //    FY2017Q4:11/3/2017;FY2018Q4:11/3/2018
+            //    FY2017Q4:11/24/2017;FY2018Q4:11/24/201
+
+            exportDates = folderName1 + ":" + exportDate1 + delimiter + folderName2 + ":" + exportDate2;
+            importDates = folderName1 + ":" + importDate1 + delimiter + folderName2 + ":" + importDate2;
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ExportDates")))
                 .Returns(exportDates);
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ImportDates")))
                 .Returns(importDates);
-            mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "delimiter")))
-                .Returns(delimiter);
+      
             var userAudit = new UserAudit(options, testLog, auditRunTime, testConfigRepo, testDateRepo);
             //Act
-            var functionEnum = userAudit.DetermineAuditAction(ref folderName);
+            var functionEnum = userAudit.DetermineAuditAction(ref folderName1);
             //Assert
             Assert.AreEqual(UserAuditFunctionEnum.Import, functionEnum);
         }
 
         [TestMethod]
-        public void UserAudit_DetermineAuditAction_WhenHasExportDate_ReturnsActionExport()
+        public void UserAudit_DetermineAuditAction_WhenRunDateIsExportDate_ReturnsActionExport()
         {
             //Arrange
-            this.auditRunTime = new DateTime(2013, 6, 6);
-            string exportDates = "2013-06-06";
-            string folderName = "";
+            this.auditRunTime = DateTime.Now;
+            string exportDates = "";
+            string exportDate1 = DateTime.Today.ToShortDateString();
+            string exportDate2 = DateTime.Today.AddYears(1).ToShortDateString();
+            string folderName1 = "FY2017Q4";
+            string folderName2 = "FY2018Q4";
             string importDates = "";
-            string delimiter = "|";
+            string importDate1 = DateTime.Today.AddDays(21).ToShortDateString();
+            string importDate2 = DateTime.Today.AddDays(21).AddYears(1).ToShortDateString();
+            string delimiter = ";";
+
+            //The exportDates and importDates should like this:
+            //    FY2017Q4:11/3/2017;FY2018Q4:11/3/2018
+            //    FY2017Q4:11/24/2017;FY2018Q4:11/24/201
+
+            exportDates = folderName1 + ":" + exportDate1 + delimiter + folderName2 + ":" + exportDate2;
+            importDates = folderName1 + ":" + importDate1 + delimiter + folderName2 + ":" + importDate2;
+
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ExportDates")))
                 .Returns(exportDates);
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ImportDates")))
                 .Returns(importDates);
-            mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "delimiter")))
-                .Returns(delimiter);
+         
             var userAudit = new UserAudit(options, testLog, auditRunTime, testConfigRepo, testDateRepo);
             //Act
-            var functionEnum = userAudit.DetermineAuditAction(ref folderName);
+            var functionEnum = userAudit.DetermineAuditAction(ref folderName1);
             //Assert
             Assert.AreEqual(UserAuditFunctionEnum.Export, functionEnum);
         }
 
         [TestMethod]
-        public void UserAudit_DetermineAuditAction_WhenHasMultipleExportDates_ReturnsActionExport()
+        public void UserAudit_DetermineAuditAction_WhenRunDateIsExportDateAndSingleExportDateExists_ReturnsActionExport()
         {
             //Arrange
-            this.auditRunTime = new DateTime(2013, 6, 6);
-            string folderName = "";
-            string exportDates = "2014-1-1|2001-12-31|2013-06-06";
+            this.auditRunTime = DateTime.Now;
+            string exportDates = "";
+            string exportDate1 = DateTime.Today.ToShortDateString();
+            string folderName1 = "FY2017Q4";
             string importDates = "";
-            string delimiter = "|";
+            string importDate1 = DateTime.Today.AddDays(21).ToShortDateString();
+
+            //The exportDates and importDates should like this:
+            //    FY2017Q4:11/3/2017
+            //    FY2017Q4:11/24/2017
+
+            exportDates = folderName1 + ":" + exportDate1;
+            importDates = folderName1 + ":" + importDate1;
+
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ExportDates")))
                 .Returns(exportDates);
             mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "ImportDates")))
                 .Returns(importDates);
-            mockConfigRepo.Setup(c => c.ConfigurationGetValue(It.Is<string>(s => s == "delimiter")))
-                .Returns(delimiter);
+
             var userAudit = new UserAudit(options, testLog, auditRunTime, testConfigRepo, testDateRepo);
             //Act
-            var functionEnum = userAudit.DetermineAuditAction(ref folderName);
+            var functionEnum = userAudit.DetermineAuditAction(ref folderName1);
             //Assert
             Assert.AreEqual(UserAuditFunctionEnum.Export, functionEnum);
         }
