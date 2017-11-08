@@ -352,7 +352,7 @@
                         <PaddingTop>2pt</PaddingTop>
                       </Style>
                       <CanGrow>true</CanGrow>
-                      <Value>="ACTUALS"</Value>
+                      <Value>="ACTUAL"</Value>
                     </Textbox>
                   </ReportItems>
                 </TableCell>

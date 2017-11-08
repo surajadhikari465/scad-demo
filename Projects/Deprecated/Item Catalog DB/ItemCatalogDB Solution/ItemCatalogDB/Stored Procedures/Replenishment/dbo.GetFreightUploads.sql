@@ -161,7 +161,7 @@ BEGIN
 			'L' +  
 			left(CAST(@BusinessUnit_ID as varchar)+replicate(' ', 5), 5)  +                  -- BusinessUnit_ID 
 			left(CAST(@JournalLineNumber as varchar)+replicate(' ', 9), 9) +                 -- LINE NUMBER
-			left('ACTUALS'+replicate(' ', 10), 10) +                                         -- Ledger 
+			left('ACTUAL'+replicate(' ', 10), 10) +                                          -- Ledger 
 			left(CAST(@AccountNum as varchar) + replicate(' ', 6), 6) +                      -- Account 
 			left(CAST(ss.PS_Team_No as varchar) + replicate(' ', 10), 10) +                  -- PSFT Dept 
 			left(CAST(ss.PS_SubTeam_No as varchar) + replicate(' ', 6), 6) +                 -- PSFT Subteam
@@ -205,7 +205,7 @@ BEGIN
 			'L' +  
 			left(CAST(@BusinessUnit_ID as varchar)+replicate(' ', 5), 5)  +                  -- BusinessUnit_ID 
 			left(CAST(@JournalLineNumber as varchar)+replicate(' ', 9), 9) +                 -- LINE NUMBER
-			left('ACTUALS'+replicate(' ', 10), 10) +                                         -- Ledger 
+			left('ACTUAL'+replicate(' ', 10), 10) +                                         -- Ledger 
 			left(CAST(@FreightAccountNum as varchar) + replicate(' ', 6), 6) +               -- Freight Account 
 			left(CAST(ss.PS_Team_No as varchar) + replicate(' ', 10), 10) +                  -- PSFT Dept 
 			left(CAST(ss.PS_SubTeam_No as varchar) + replicate(' ', 6), 6) +                 -- PSFT Subteam

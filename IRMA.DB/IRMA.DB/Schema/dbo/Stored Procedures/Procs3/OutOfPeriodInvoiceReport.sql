@@ -66,7 +66,7 @@ WHERE
 SELECT	
 	[Unit]			=	s.BusinessUnit_ID,
 	[StoreName]     =   s.Store_Name,
-	[Ledger]		=	'ACTUALS',
+	[Ledger]		=	'ACTUAL',
 	[Account]		=	'500000',
 	[Team]			=	Team_No,
 	[Dept]			=	oi.Subteam_No,
