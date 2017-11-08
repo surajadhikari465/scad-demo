@@ -67,9 +67,9 @@
     Public WithEvents _txtField_9 As System.Windows.Forms.TextBox
     Public WithEvents _txtField_8 As System.Windows.Forms.TextBox
     Public WithEvents _txtField_6 As System.Windows.Forms.TextBox
-    Public WithEvents _cmbField_6 As System.Windows.Forms.ComboBox
-    Public WithEvents _txtField_5 As System.Windows.Forms.TextBox
-    Public WithEvents _txtField_4 As System.Windows.Forms.TextBox
+    Public WithEvents _cmbField_RetailPackUOM As System.Windows.Forms.ComboBox
+    Public WithEvents _txtField_RetailPackSize As System.Windows.Forms.TextBox
+    Public WithEvents _txtField_Pack As System.Windows.Forms.TextBox
     Public WithEvents _cmbField_3 As System.Windows.Forms.ComboBox
     Public WithEvents _txtField_2 As System.Windows.Forms.TextBox
     Public WithEvents _txtField_3 As System.Windows.Forms.TextBox
@@ -163,9 +163,9 @@
         Me._txtField_9 = New System.Windows.Forms.TextBox()
         Me._txtField_8 = New System.Windows.Forms.TextBox()
         Me._txtField_6 = New System.Windows.Forms.TextBox()
-        Me._cmbField_6 = New System.Windows.Forms.ComboBox()
-        Me._txtField_5 = New System.Windows.Forms.TextBox()
-        Me._txtField_4 = New System.Windows.Forms.TextBox()
+        Me._cmbField_RetailPackUOM = New System.Windows.Forms.ComboBox()
+        Me._txtField_RetailPackSize = New System.Windows.Forms.TextBox()
+        Me._txtField_Pack = New System.Windows.Forms.TextBox()
         Me._cmbField_3 = New System.Windows.Forms.ComboBox()
         Me._txtField_2 = New System.Windows.Forms.TextBox()
         Me._txtField_3 = New System.Windows.Forms.TextBox()
@@ -850,40 +850,40 @@
         Me._txtField_6.Name = "_txtField_6"
         Me._txtField_6.Tag = "Number"
         '
-        '_cmbField_6
+        '_cmbField_RetailPackUOM
         '
-        Me._cmbField_6.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append
-        Me._cmbField_6.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me._cmbField_6.BackColor = System.Drawing.SystemColors.Window
-        Me._cmbField_6.Cursor = System.Windows.Forms.Cursors.Default
-        Me._cmbField_6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        resources.ApplyResources(Me._cmbField_6, "_cmbField_6")
-        Me._cmbField_6.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cmbField.SetIndex(Me._cmbField_6, CType(6, Short))
-        Me._cmbField_6.Name = "_cmbField_6"
-        Me._cmbField_6.Sorted = True
+        Me._cmbField_RetailPackUOM.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append
+        Me._cmbField_RetailPackUOM.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me._cmbField_RetailPackUOM.BackColor = System.Drawing.SystemColors.Window
+        Me._cmbField_RetailPackUOM.Cursor = System.Windows.Forms.Cursors.Default
+        Me._cmbField_RetailPackUOM.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        resources.ApplyResources(Me._cmbField_RetailPackUOM, "_cmbField_RetailPackUOM")
+        Me._cmbField_RetailPackUOM.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.cmbField.SetIndex(Me._cmbField_RetailPackUOM, CType(6, Short))
+        Me._cmbField_RetailPackUOM.Name = "_cmbField_RetailPackUOM"
+        Me._cmbField_RetailPackUOM.Sorted = True
         '
-        '_txtField_5
+        '_txtField_RetailPackSize
         '
-        Me._txtField_5.AcceptsReturn = True
-        Me._txtField_5.BackColor = System.Drawing.SystemColors.Window
-        Me._txtField_5.Cursor = System.Windows.Forms.Cursors.IBeam
-        resources.ApplyResources(Me._txtField_5, "_txtField_5")
-        Me._txtField_5.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtField.SetIndex(Me._txtField_5, CType(5, Short))
-        Me._txtField_5.Name = "_txtField_5"
-        Me._txtField_5.Tag = "ExtCurrency"
+        Me._txtField_RetailPackSize.AcceptsReturn = True
+        Me._txtField_RetailPackSize.BackColor = System.Drawing.SystemColors.Window
+        Me._txtField_RetailPackSize.Cursor = System.Windows.Forms.Cursors.IBeam
+        resources.ApplyResources(Me._txtField_RetailPackSize, "_txtField_RetailPackSize")
+        Me._txtField_RetailPackSize.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.txtField.SetIndex(Me._txtField_RetailPackSize, CType(5, Short))
+        Me._txtField_RetailPackSize.Name = "_txtField_RetailPackSize"
+        Me._txtField_RetailPackSize.Tag = "ExtCurrency"
         '
-        '_txtField_4
+        '_txtField__Pack
         '
-        Me._txtField_4.AcceptsReturn = True
-        Me._txtField_4.BackColor = System.Drawing.SystemColors.Window
-        Me._txtField_4.Cursor = System.Windows.Forms.Cursors.IBeam
-        resources.ApplyResources(Me._txtField_4, "_txtField_4")
-        Me._txtField_4.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtField.SetIndex(Me._txtField_4, CType(4, Short))
-        Me._txtField_4.Name = "_txtField_4"
-        Me._txtField_4.Tag = "ExtCurrency"
+        Me._txtField_Pack.AcceptsReturn = True
+        Me._txtField_Pack.BackColor = System.Drawing.SystemColors.Window
+        Me._txtField_Pack.Cursor = System.Windows.Forms.Cursors.IBeam
+        resources.ApplyResources(Me._txtField_Pack, "_txtField__Pack")
+        Me._txtField_Pack.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.txtField.SetIndex(Me._txtField_Pack, CType(4, Short))
+        Me._txtField_Pack.Name = "_txtField__Pack"
+        Me._txtField_Pack.Tag = "ExtCurrency"
         '
         '_cmbField_3
         '
@@ -1312,10 +1312,10 @@
         Me.GroupBox_RetailPackage.Controls.Add(Me.Label_RetailPackSize)
         Me.GroupBox_RetailPackage.Controls.Add(Me.Label_Pack)
         Me.GroupBox_RetailPackage.Controls.Add(Me.Label_RetailPackUOM)
-        Me.GroupBox_RetailPackage.Controls.Add(Me._cmbField_6)
+        Me.GroupBox_RetailPackage.Controls.Add(Me._cmbField_RetailPackUOM)
         Me.GroupBox_RetailPackage.Controls.Add(Me.lblSlash1)
-        Me.GroupBox_RetailPackage.Controls.Add(Me._txtField_4)
-        Me.GroupBox_RetailPackage.Controls.Add(Me._txtField_5)
+        Me.GroupBox_RetailPackage.Controls.Add(Me._txtField_Pack)
+        Me.GroupBox_RetailPackage.Controls.Add(Me._txtField_RetailPackSize)
         resources.ApplyResources(Me.GroupBox_RetailPackage, "GroupBox_RetailPackage")
         Me.GroupBox_RetailPackage.ForeColor = System.Drawing.SystemColors.ControlText
         Me.GroupBox_RetailPackage.Name = "GroupBox_RetailPackage"

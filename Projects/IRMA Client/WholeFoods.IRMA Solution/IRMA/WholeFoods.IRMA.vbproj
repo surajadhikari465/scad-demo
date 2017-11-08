@@ -727,6 +727,7 @@
     <Compile Include="Administration\UserAdmin\UserInterface\Form_RoleConflictReason.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Common\BusinessLogic\InstanceDataOverrideStoreCountsBO.vb" />
     <Compile Include="Common\BusinessLogic\ItemKeyIdentifierModel.vb" />
     <Compile Include="Common\DataAccess\SlawApiConfigurationDAO.vb" />
     <Compile Include="Common\FailedRequestsDialog.Designer.vb">

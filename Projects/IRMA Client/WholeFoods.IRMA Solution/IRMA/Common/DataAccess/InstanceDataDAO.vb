@@ -248,6 +248,178 @@ Namespace WholeFoods.IRMA.Common.DataAccess
 
             Return allStoresOnGPM
         End Function
-    End Class
 
+        Public Shared Function GetInstanceDataFlagOverrideStoreCounts() As ArrayList
+
+            logger.Debug("GetInstanceDataFlagOverrideStoreCounts Entry")
+
+            Dim factory As New DataFactory(DataFactory.ItemCatalog)
+            Dim results As SqlDataReader = Nothing
+            Dim paramList As New ArrayList
+            Dim currentParam As DBParam
+            Dim flagOverrideInfo As InstanceDataOverrideStoreCountsBO
+            Dim overrideCountsList As New ArrayList
+
+            ' setup parameters for stored proc
+            currentParam = New DBParam With {
+                .Name = "FlagKey",
+                .Value = Nothing,
+                .Type = DBParamType.String
+            }
+            paramList.Add(currentParam)
+
+            Try
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("GetInstanceDataFlagOverrideStoreCounts", paramList)
+
+                While results.Read
+                    flagOverrideInfo = New InstanceDataOverrideStoreCountsBO With {
+                        .FlagKey = results.GetString(results.GetOrdinal("FlagKey")),
+                        .RegionalFlagValue = results.GetBoolean(results.GetOrdinal("RegionalFlagValue")),
+                        .NumStoresWithOverrides = results.GetInt32(results.GetOrdinal("NumStoresWithOverrides")),
+                        .NumStoresTotal = results.GetInt32(results.GetOrdinal("NumStoresTotal"))
+                    }
+                    overrideCountsList.Add(flagOverrideInfo)
+                End While
+
+            Finally
+                If results IsNot Nothing Then
+                    results.Close()
+                End If
+            End Try
+
+            logger.Debug("GetInstanceDataFlagOverrideStoreCounts Exit")
+
+            Return overrideCountsList
+        End Function
+
+        Public Shared Function GetInstanceDataFlagOverrideStoreCounts(ByVal flagKey As String) As InstanceDataOverrideStoreCountsBO
+
+            logger.Debug("GetInstanceDataFlagOverrideStoreCounts Entry")
+
+            Dim factory As New DataFactory(DataFactory.ItemCatalog)
+            Dim results As SqlDataReader = Nothing
+            Dim paramList As New ArrayList
+            Dim currentParam As DBParam
+            Dim flagOverrideInfo As InstanceDataOverrideStoreCountsBO
+
+            ' setup parameters for stored proc
+            currentParam = New DBParam With {
+                .Name = "FlagKey",
+                .Value = flagKey,
+                .Type = DBParamType.String
+            }
+            paramList.Add(currentParam)
+
+            Try
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("GetInstanceDataFlagOverrideStoreCounts", paramList)
+
+                While results.Read
+                    flagOverrideInfo = New InstanceDataOverrideStoreCountsBO With {
+                        .FlagKey = results.GetString(results.GetOrdinal("FlagKey")),
+                        .RegionalFlagValue = results.GetBoolean(results.GetOrdinal("RegionalFlagValue")),
+                        .NumStoresWithOverrides = results.GetInt32(results.GetOrdinal("NumStoresWithOverrides")),
+                        .NumStoresTotal = results.GetInt32(results.GetOrdinal("NumStoresTotal"))
+                    }
+                End While
+
+            Finally
+                If results IsNot Nothing Then
+                    results.Close()
+                End If
+            End Try
+
+            logger.Debug("GetInstanceDataFlagOverrideStoreCounts Exit")
+            Return flagOverrideInfo
+        End Function
+
+        Public Shared Function FlagIsOnForEveryStore(ByVal flagKey As String) As Boolean
+            If flagKey Is Nothing Then
+                Throw New ArgumentException("Invalid argument", "flagKey")
+            End If
+            Dim isTrue As Boolean = False
+            Dim flagOverrideInfo As InstanceDataOverrideStoreCountsBO
+
+            'call function to query database about overrides for this flag
+            flagOverrideInfo = GetInstanceDataFlagOverrideStoreCounts(flagKey)
+            'calculate true/false and return
+            If flagOverrideInfo IsNot Nothing Then
+                isTrue = (flagOverrideInfo.RegionalFlagValue = True And flagOverrideInfo.NumStoresWithOverrides = 0) _
+                    Or (flagOverrideInfo.RegionalFlagValue = False And flagOverrideInfo.NumStoresWithOverrides = flagOverrideInfo.NumStoresTotal)
+            End If
+            Return isTrue
+        End Function
+
+        Public Shared Function FlagIsOffForEveryStore(ByVal flagKey As String) As Boolean
+            If flagKey Is Nothing Then
+                Throw New ArgumentException("Invalid argument", "flagKey")
+            End If
+            Dim isTrue As Boolean = False
+            Dim flagOverrideInfo As InstanceDataOverrideStoreCountsBO
+
+            'call function to query database about overrides for this flag
+            flagOverrideInfo = GetInstanceDataFlagOverrideStoreCounts(flagKey)
+            'calculate true/false and return
+            If flagOverrideInfo IsNot Nothing Then
+                isTrue = (flagOverrideInfo.RegionalFlagValue = False And flagOverrideInfo.NumStoresWithOverrides = 0) _
+                    Or (flagOverrideInfo.RegionalFlagValue = True And flagOverrideInfo.NumStoresWithOverrides = flagOverrideInfo.NumStoresTotal)
+            End If
+            Return isTrue
+        End Function
+
+        Public Shared Function FlagIsOnForAnyStore(ByVal flagKey As String) As Boolean
+            If flagKey Is Nothing Then
+                Throw New ArgumentException("Invalid argument", "flagKey")
+            End If
+            Dim isTrue As Boolean = False
+            Dim flagOverrideInfo As InstanceDataOverrideStoreCountsBO
+
+            'call function to query database about overrides for this flag
+            flagOverrideInfo = GetInstanceDataFlagOverrideStoreCounts(flagKey)
+            'calculate true/false and return
+            If flagOverrideInfo IsNot Nothing Then
+                isTrue = (flagOverrideInfo.RegionalFlagValue = True And flagOverrideInfo.NumStoresWithOverrides < flagOverrideInfo.NumStoresTotal) _
+                    Or (flagOverrideInfo.RegionalFlagValue = False And flagOverrideInfo.NumStoresWithOverrides > 0)
+            End If
+            Return isTrue
+        End Function
+
+        Public Shared Function FlagIsOffForAnyStore(ByVal flagKey As String) As Boolean
+            If flagKey Is Nothing Then
+                Throw New ArgumentException("Invalid argument", "flagKey")
+            End If
+
+            Dim isTrue As Boolean = False
+
+            'call function to query database about overrides for this flag
+            Dim flagOverrideInfo As InstanceDataOverrideStoreCountsBO
+            flagOverrideInfo = GetInstanceDataFlagOverrideStoreCounts(flagKey)
+
+            'calculate true/false and return
+            If flagOverrideInfo IsNot Nothing Then
+                isTrue = (flagOverrideInfo.RegionalFlagValue = False And flagOverrideInfo.NumStoresWithOverrides < flagOverrideInfo.NumStoresTotal) _
+                    Or (flagOverrideInfo.RegionalFlagValue = True And flagOverrideInfo.NumStoresWithOverrides > 0)
+            End If
+
+            Return isTrue
+        End Function
+
+        Public Shared Function FlagIsOffForNoStores(ByVal flagKey As String) As Boolean
+            Return FlagIsOnForEveryStore(flagKey)
+        End Function
+
+        Public Shared Function FlagIsNotOffForAnyStore(ByVal flagKey As String) As Boolean
+            Return FlagIsOnForEveryStore(flagKey)
+        End Function
+
+        Public Shared Function FlagIsOnForNoStores(ByVal flagKey As String) As Boolean
+            Return FlagIsOffForEveryStore(flagKey)
+        End Function
+
+        Public Shared Function FlagIsNotOnForAnyStore(ByVal flagKey As String) As Boolean
+            Return FlagIsOffForEveryStore(flagKey)
+        End Function
+
+    End Class
 End Namespace

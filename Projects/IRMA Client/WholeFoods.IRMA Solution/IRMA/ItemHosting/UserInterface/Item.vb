@@ -1413,6 +1413,13 @@ me_err:
         grpManageBy.Visible = InstanceDataDAO.IsFlagActive("ShowManagedBy")
     End Sub
 
+    Private Sub SetGpmFieldsAvailability(ByVal pricesAreGloballyManaged As Boolean)
+        ' only allow users to edit default retail size and default UOM for an item if the whole region is Not on GPM
+        _txtField_Pack.Enabled = Not pricesAreGloballyManaged
+        _txtField_RetailPackSize.Enabled = Not pricesAreGloballyManaged
+        _cmbField_RetailPackUOM.Enabled = Not pricesAreGloballyManaged
+    End Sub
+
     Private Sub RefreshDataSource(ByRef lRecord As Integer)
         logger.Info("Refreshing item screen...")
 
@@ -1992,6 +1999,10 @@ me_err:
             End If
 
             SetFieldsStates(plSubTeam_No, chkField(iItemRetail_Sale).Checked, bIsIngredientItem, _itemData.IsValidated)
+
+            ' if any store in the region is on GPM, disable default jurisdiction Size/UOM controls
+            Dim anyStoreInRegionIsOnGpm As Boolean = InstanceDataDAO.FlagIsOnForAnyStore("GlobalPriceManagement")
+            SetGpmFieldsAvailability(anyStoreInRegionIsOnGpm)
 
         Catch ex As Exception
             logger.Error(ex.Message)

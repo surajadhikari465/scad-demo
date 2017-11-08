@@ -241,6 +241,7 @@ KM		2015-12-24	13326	Allow batchable maintenance to be created when Icon updates
 MU		2015-01-06	13476	Removing Product_Code from the fields that generate PBD inserts.
 CM		2016-01-12	13691	Enable batchable maintenance when UOM changes
 MU		2016-01-27	13661	Removing ItemLabelType_ID from the fields that generate PBD inserts.
+EM      2017-11-06  23919   Disable item maintenance when GPM is active 
 ***********************************************************************************************/
 
 BEGIN
@@ -358,8 +359,7 @@ BEGIN
 	SELECT @error_no = @@ERROR
 	
 	IF @error_no = 0
-		BEGIN
-			-- Queue for Price Modeling if necessary
+		BEGIN -- Queue for Price Modeling if necessary			
 			INSERT INTO PMProductChg
 			(
 				HierLevel,
@@ -429,7 +429,7 @@ BEGIN
 		END
 	
 	IF @error_no = 0
-		BEGIN
+		BEGIN -- Insert ItemChangeHistory
 			INSERT INTO ItemChangeHistory
 			(
 				Item_Key,
@@ -664,10 +664,9 @@ BEGIN
 			SELECT @error_no = @@ERROR
 		END
 	
-	-- SEND DOWN PRICE BATCH DETAIL RECORDS TO ALLOW ITEM CHANGES TO BE BATCHED
 	DECLARE @BatchOrganicChanges BIT = (SELECT dbo.fn_InstanceDataValue('BatchOrganicChanges', NULL)); -- Organic changes are controlled by 'BatchOrganicChanges' IDF
 	IF @error_no = 0
-		BEGIN
+		BEGIN -- send down PriceBatchDetail records to allow item changes to be batched
 			INSERT INTO PriceBatchDetail
 			(
 				Store_No,
@@ -684,6 +683,10 @@ BEGIN
 				INSERTED
 				INNER JOIN DELETED
 					ON  DELETED.Item_Key = INSERTED.Item_Key
+				LEFT OUTER JOIN dbo.InstanceDataFlagsStoreOverride IDFO
+					ON IDFO.Store_No = Store_No
+				LEFT OUTER JOIN dbo.InstanceDataFlagsStore IDF
+					ON IDF.Store_No = Store_No
 				CROSS JOIN (
 						SELECT Store_No
 						FROM   Store(NOLOCK)
@@ -692,12 +695,17 @@ BEGIN
 					) Store
 			WHERE  
 				(INSERTED.Remove_Item = 0 AND INSERTED.Deleted_Item = 0)
+				AND IDFO.Flag_Key = 'GlobalPriceManagement' AND IDF.Flag_Key = 'GlobalPriceManagement'
 				AND (
-						-- Don't allow maintenance to be created if Icon is doing the update, unless it's a subteam or package unit update.
+						-- Don't allow maintenance to be created if Icon is doing the update, unless...                       
 						(ISNULL(inserted.LastModifiedUser_ID, 0) <> ISNULL(@IconControllerUserId, 0)) 
+						  -- ... icon is doing the update and it's a subteam update (then do create maintenance)... 
 						OR (ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND inserted.SubTeam_No <> deleted.SubTeam_No)
-						OR (ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND inserted.Package_Desc1 <> deleted.Package_Desc1)
-						OR (ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND inserted.Package_Unit_ID <> deleted.Package_Unit_ID)
+						  -- ... or if icon is doing the update and it's a package unit update
+						  -- ... but only if it's for a store not under GPM
+						OR ( ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND 
+							(inserted.Package_Desc1 <> deleted.Package_Desc1 OR inserted.Package_Unit_ID <> deleted.Package_Unit_ID) AND
+							COALESCE(IDFO.FlagValue, IDF.FlagValue, 0) = 0 )
 					)
 				AND (
 						INSERTED.Item_Description <> DELETED.Item_Description
@@ -740,10 +748,8 @@ BEGIN
 			SELECT @error_no = @@ERROR
 		END
 
-	-- If Retail_Sale flag was flipped from 1 to 0 then remove all the identifiers (default and alternate) from the
-	-- ValidatedScanCode table.
 	IF @error_no = 0
-		BEGIN
+		BEGIN -- If Retail_Sale flag 1->0 then delete all identifiers (default and alternate) from VSC
 			DECLARE @ItemsChangedFromRetailSale TABLE (Item_Key int, RetailSaleChanged bit);
 			
 			INSERT INTO 
@@ -802,10 +808,8 @@ BEGIN
 			SELECT @error_no = @@ERROR
 		END
 
-	-- If Retail_Sale flag was flipped from 0 to 1 then insert the Item as a new Item into IconItemChangeQueue so 
-	-- that Icon can manage the Item's information.
 	IF @error_no = 0
-		BEGIN
+		BEGIN -- If Retail_Sale flag 0->1 then insert as new Item(s) into IconItemChangeQueue so icon can manage the Item's information. 
 			DECLARE @ItemsChangedToRetailSale TABLE (Item_Key int, RetailSaleChanged bit);
 			
 			INSERT INTO 
@@ -885,7 +889,7 @@ BEGIN
 		END
 	
 	IF @error_no = 0
-		BEGIN
+		BEGIN -- insert to PLUMCorpChgQueue if needed
 			INSERT INTO PLUMCorpChgQueue
 			(
 				Item_Key,
@@ -940,9 +944,8 @@ BEGIN
 			SELECT @error_no = @@ERROR
 		END
 	
-	-- Insert non-batchable changes when GloCon makes changes to Items
 	IF @error_no = 0
-		BEGIN
+		BEGIN -- Insert non-batchable changes when GloCon makes changes to Items
 
 			DECLARE @EnableIconItemNonBatchableChanges bit = 0
 			SELECT @EnableIconItemNonBatchableChanges = FlagValue
@@ -1012,7 +1015,7 @@ BEGIN
 		END
 
 	IF @error_no = 0
-		BEGIN
+		BEGIN -- update Item.LastModifiedUser_ID
 			UPDATE ITEM
 			   SET LastModifiedUser_ID = NULL
 			  FROM INSERTED
@@ -1023,7 +1026,7 @@ BEGIN
 		END
 
 	IF @error_no <> 0
-		BEGIN
+		BEGIN -- rollback transaction because of error
 			ROLLBACK TRAN
 			DECLARE @Severity SMALLINT
 			SELECT @Severity = ISNULL(

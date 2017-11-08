@@ -2574,91 +2574,91 @@
   <data name="&gt;&gt;_txtField_6.ZOrder" xml:space="preserve">
     <value>79</value>
   </data>
-  <data name="_cmbField_6.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="_cmbField_RetailPackUOM .Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
-  <data name="_cmbField_6.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_cmbField_RetailPackUOM .Location" type="System.Drawing.Point, System.Drawing">
     <value>106, 35</value>
   </data>
-  <data name="_cmbField_6.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="_cmbField_RetailPackUOM .RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="_cmbField_6.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_cmbField_RetailPackUOM .Size" type="System.Drawing.Size, System.Drawing">
     <value>129, 22</value>
   </data>
-  <data name="_cmbField_6.TabIndex" type="System.Int32, mscorlib">
+  <data name="_cmbField_RetailPackUOM .TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;_cmbField_6.Name" xml:space="preserve">
-    <value>_cmbField_6</value>
+  <data name="&gt;&gt;_cmbField_RetailPackUOM .Name" xml:space="preserve">
+    <value>_cmbField_RetailPackUOM </value>
   </data>
-  <data name="&gt;&gt;_cmbField_6.Type" xml:space="preserve">
+  <data name="&gt;&gt;_cmbField_RetailPackUOM .Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;_cmbField_6.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_cmbField_RetailPackUOM .Parent" xml:space="preserve">
     <value>GroupBox_RetailPackage</value>
   </data>
-  <data name="&gt;&gt;_cmbField_6.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_cmbField_RetailPackUOM .ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="_txtField_5.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="_txtField_RetailPackSize.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
-  <data name="_txtField_5.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_txtField_RetailPackSize.Location" type="System.Drawing.Point, System.Drawing">
     <value>60, 37</value>
   </data>
-  <data name="_txtField_5.MaxLength" type="System.Int32, mscorlib">
+  <data name="_txtField_RetailPackSize.MaxLength" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="_txtField_5.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="_txtField_RetailPackSize.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="_txtField_5.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_txtField_RetailPackSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 20</value>
   </data>
-  <data name="_txtField_5.TabIndex" type="System.Int32, mscorlib">
+  <data name="_txtField_RetailPackSize.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;_txtField_5.Name" xml:space="preserve">
-    <value>_txtField_5</value>
+  <data name="&gt;&gt;_txtField_RetailPackSize.Name" xml:space="preserve">
+    <value>_txtField_RetailPackSize</value>
   </data>
-  <data name="&gt;&gt;_txtField_5.Type" xml:space="preserve">
+  <data name="&gt;&gt;_txtField_RetailPackSize.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;_txtField_5.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_txtField_RetailPackSize.Parent" xml:space="preserve">
     <value>GroupBox_RetailPackage</value>
   </data>
-  <data name="&gt;&gt;_txtField_5.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_txtField_RetailPackSize.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="_txtField_4.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="_txtField_Pack .Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
-  <data name="_txtField_4.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_txtField_Pack .Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 37</value>
   </data>
-  <data name="_txtField_4.MaxLength" type="System.Int32, mscorlib">
+  <data name="_txtField_Pack .MaxLength" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="_txtField_4.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="_txtField_Pack .RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="_txtField_4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_txtField_Pack .Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 20</value>
   </data>
-  <data name="_txtField_4.TabIndex" type="System.Int32, mscorlib">
+  <data name="_txtField_Pack .TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;_txtField_4.Name" xml:space="preserve">
-    <value>_txtField_4</value>
+  <data name="&gt;&gt;_txtField_Pack .Name" xml:space="preserve">
+    <value>_txtField_Pack </value>
   </data>
-  <data name="&gt;&gt;_txtField_4.Type" xml:space="preserve">
+  <data name="&gt;&gt;_txtField_Pack .Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;_txtField_4.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_txtField_Pack .Parent" xml:space="preserve">
     <value>GroupBox_RetailPackage</value>
   </data>
-  <data name="&gt;&gt;_txtField_4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_txtField_Pack .ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="_cmbField_3.Font" type="System.Drawing.Font, System.Drawing">
