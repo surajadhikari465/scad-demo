@@ -75,7 +75,8 @@
       <HintPath>..\packages\Icon.Esb.2017.10.9.1\lib\net45\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Infor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Infor.2017.10.9.1\lib\net46\Icon.Esb.Schemas.Infor.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Infor.2017.11.13.1\lib\net46\Icon.Esb.Schemas.Infor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Mammoth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2017.10.9.1\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
@@ -188,6 +189,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SimpleInjectorInitializer.cs" />
+    <Compile Include="Controllers\CheckPointRequestToGPMController.cs" />
     <Compile Include="Controllers\ManageJobsController.cs" />
     <Compile Include="Controllers\PriceResetController.cs" />
     <Compile Include="Controllers\EventCreatorController.cs" />
@@ -199,6 +201,8 @@
     <Compile Include="Helpers\BootstrapAlertHelper.cs" />
     <Compile Include="Helpers\SelectListHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
+    <Compile Include="MessageBuilders\CheckPointRequestMessageBuilder.cs" />
+    <Compile Include="Models\CheckPointRequestBuilderModel.cs" />
     <Compile Include="Models\ErrorConstants.cs" />
     <Compile Include="Models\EsbConstants.cs" />
     <Compile Include="Models\JobScheduleModel.cs" />
@@ -208,8 +212,9 @@
     <Compile Include="Models\ValidationConstants.cs" />
     <Compile Include="Models\WebSupportPriceMessageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\WebSupportCheckPointRequestMessageService.cs" />
     <Compile Include="Services\WebSupportJobScheduleMessageService.cs" />
-    <Compile Include="ViewModels\JobScheduleViewModel.cs" />
+    <Compile Include="ViewModels\CheckPointRequestViewModel.cs" />
     <Compile Include="ViewModels\PriceResetRequestViewModel.cs" />
     <Compile Include="ViewModels\EventCreatorViewModel.cs" />
     <Compile Include="ViewModels\StoreViewModel.cs" />
@@ -287,7 +292,7 @@
     <Content Include="Views\ManageJobs\Index.cshtml" />
     <Content Include="Views\ManageJobs\Edit.cshtml" />
     <Content Include="Views\ManageJobs\Create.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\JobScheduleViewModel.cshtml" />
+    <Content Include="Views\CheckPointRequest\Index.cshtml" />
     <None Include="Web.Dev.Config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -301,7 +306,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="MessageBuilders\" />
+    <Folder Include="Views\CheckPointRequestFromGPM\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

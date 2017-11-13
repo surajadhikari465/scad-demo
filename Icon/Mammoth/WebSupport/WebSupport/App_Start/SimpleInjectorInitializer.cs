@@ -28,6 +28,7 @@ namespace WebSupport.App_Start
     using WebSupport.DataAccess.Queries;
     using System.Collections.Generic;
     using WebSupport.DataAccess.Commands;
+    using MessageBuilders;
 
     public class SimpleInjectorInitializer
     {
@@ -54,9 +55,11 @@ namespace WebSupport.App_Start
             container.Register(typeof(IQueryHandler<,>), new[] { Assembly.Load("WebSupport.DataAccess") }, Lifestyle.Scoped);
             container.Register<IEsbService<JobScheduleModel>>(() => CreateJobScheduleMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbService<PriceResetRequestViewModel>>(() => CreatePriceResetMessageService(container), Lifestyle.Scoped);
+            container.Register<IEsbService<CheckPointRequestBuilderModel>>(() => CreateCheckPointRequestMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbConnectionFactory, EsbConnectionFactory>(Lifestyle.Scoped);
             container.Register<MammothContext>(Lifestyle.Scoped);
             container.Register<IMessageBuilder<PriceResetMessageBuilderModel>, PriceResetMessageBuilder>(Lifestyle.Scoped);
+            container.Register<IMessageBuilder<CheckPointRequestBuilderModel>, CheckPointRequestMessageBuilder>(Lifestyle.Scoped);
             container.Register<ISerializer<Icon.Esb.Schemas.Mammoth.ContractTypes.JobSchedule>, Serializer<Icon.Esb.Schemas.Mammoth.ContractTypes.JobSchedule>>(Lifestyle.Scoped);
             container.Register<ISerializer<items>, Serializer<items>>(Lifestyle.Scoped);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString), Lifestyle.Scoped);
@@ -69,6 +72,14 @@ namespace WebSupport.App_Start
                 EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsConnection"),
                 container.GetInstance<IMessageBuilder<PriceResetMessageBuilderModel>>(),
                 container.GetInstance<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>>(),
+                container.GetInstance<ICommandHandler<SaveSentMessageCommand>>());
+        }
+        private static WebSupportCheckPointRequestMessageService CreateCheckPointRequestMessageService(Container container)
+        {
+            return new WebSupportCheckPointRequestMessageService(
+                container.GetInstance<IEsbConnectionFactory>(),
+                EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsConfirmBodConnection"),
+                container.GetInstance<IMessageBuilder<CheckPointRequestBuilderModel>>(),
                 container.GetInstance<ICommandHandler<SaveSentMessageCommand>>());
         }
 
