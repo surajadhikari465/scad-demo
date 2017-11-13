@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Infor IT Dept - USSP1 (Infor IT Dept - USSP1) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schema.infor.com/InforOAGIS/2"
+           targetNamespace="http://schema.infor.com/InforOAGIS/2" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+	<xs:include schemaLocation="AuditInfo.xsd"/>
+	<xs:complexType name="AttributeValueType">
+		<xs:sequence>
+			<xs:element name="AttributeID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>An identifier used to reference the attribute outside of IM.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InforInternalID" type="UUID" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>UUID assigned by IM for the Attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Attribute Name / Tag Name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AttrValueLock" type="xs:boolean" default="false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Is the Attribute Locked? If  true, only those with  unlock privileges can change the attribute. Default  is false</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ItemAttrLock" type="xs:boolean" default="false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>If the Attribute is associated with  an Item and locked, the  attribute  can not  be  edited on the item unless the user has proper privileges. Default  is false</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AttributeOrigin" type="xs:string" default="false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates the origin of Attribute (Item, Hierarchy, ReferenceData)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Values" type="ValueType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Associated value  type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MetaData" type="PropertyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Properties of an attribute</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="createOnly">
+			<xs:annotation>
+				<xs:documentation>This attribute, if defined and set to true, indicates that the attribute is to be created and and it's initial value set.  Subsequent updates to the attribute will not effect a change of the value.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="primaryID" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The primaryID attribute is used to indicate whether the  particular attribute should be used a key (single or composite) when referencing data.  This attribute is primarily used with Reference Data.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="PropertyType">
+		<xs:sequence>
+			<xs:element name="ID" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An  identifier that is used by  an external entity to identify the  Property.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InforInternalID" type="UUID">
+				<xs:annotation>
+					<xs:documentation>The internal identifier applied by the system for this property.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The name of the Property</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value" type="ValueType">
+				<xs:annotation>
+					<xs:documentation>The value of the property.  The value may be a single ValueType or a composite.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="createOnly" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>This attribute, if defined and set to true, indicates that the attribute is to be created and and it's initial value set.  Subsequent updates to the attribute will not effect a change of the value.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ValueType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="AttributeType">
+				<xs:annotation>
+					<xs:documentation>The data type of the  underlying  value.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="NumberValue" type="xs:double">
+					<xs:annotation>
+						<xs:documentation>Value  is of type xs:double</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="StringValue" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Value is of type xs:string</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DateTimeValue" type="xs:dateTime">
+					<xs:annotation>
+						<xs:documentation>Value is of type xs:DateTime</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="BooleanValue" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>Value is type xs:boolean</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="UUIDValue" type="UUID">
+					<xs:annotation>
+						<xs:documentation>Value  is of type UUID</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="MetaData" type="PropertyType">
+					<xs:annotation>
+						<xs:documentation>Value is of type MetaData</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AttributeValuesType">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Attribute" type="AttributeValueType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
