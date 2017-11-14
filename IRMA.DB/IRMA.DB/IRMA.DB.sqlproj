@@ -3251,6 +3251,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs1\Administration_UserAudit_UpdateUser.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs2\GetInstanceDataFlagOverrideStoreCounts.sql" />
     <Build Include="Schema\dbo\Views\IDF_OverrideStoreCountView.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs2\FlagHasNoStoreOverrides.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
