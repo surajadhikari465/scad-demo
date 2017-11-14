@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[NatItemFamily] (
-    [NatFamilyID]         INT          NOT NULL,
+    [NatFamilyID]         INT IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
     [NatFamilyName]       VARCHAR (65) NULL,
     [NatSubTeam_No]       INT          NULL,
     [SubTeam_No]          INT          NULL,

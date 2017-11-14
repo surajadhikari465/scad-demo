@@ -3238,7 +3238,7 @@
     <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.RollBack.sql" />
     <None Include="Scripts\20620 - AddAppConfigForOrderingBannerStore\20620 - AddAppConfigForOrderingBannerStore.sql" />
     <None Include="SQL Agent Job\VIM - Infor Data Feeds - IRMA Extract.sql" />
-    <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeOrders.sql" />
+    <None Include="Schema\dbo\Stored Procedures\Procs3\PurgeOrders.sql" />
     <None Include="SQL Agent Job\ItemCatalog - Order Purge.sql" />
     <None Include="SQL Agent Job\ItemCatalog - ItemHistory Purge.sql" />
     <None Include="SQL Agent Job\ItemCatalog - PriceHistory Purge.sql" />

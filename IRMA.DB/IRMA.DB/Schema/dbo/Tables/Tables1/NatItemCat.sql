@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[NatItemCat] (
-    [NatCatID]            INT          NOT NULL,
+	[NatCatID]            INT IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
     [NatCatName]          VARCHAR (65) NULL,
     [NatFamilyID]         INT          NOT NULL,
     [LastUpdateTimestamp] DATETIME     NULL,
