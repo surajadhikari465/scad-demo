@@ -1,11 +1,6 @@
 ﻿using Esb.Core.MessageBuilders;
 using Esb.Core.Serializer;
-using Icon.Esb.Schemas.Wfm.Contracts;
-using Mammoth.Common.DataAccess;
 using System;
-using System.Globalization;
-using System.Linq;
-using WebSupport.DataAccess.Models;
 using WebSupport.Models;
 using Contracts = Icon.Esb.Schemas.Infor.ContractTypes;
 
@@ -24,14 +19,17 @@ namespace WebSupport.MessageBuilders
         public string BuildMessage(CheckPointRequestBuilderModel request)
         {
             Contracts.ProcessPriceChangePatchType processPriceChangePatchType = new Contracts.ProcessPriceChangePatchType
-            {     
+            {
                 DataArea = new Contracts.ProcessPriceChangePatchDataAreaType
                 {
-                    Process =  new Contracts.ProcessType
+                    Process = new Contracts.ProcessType
                     {
-
+                        TenantID = new Contracts.MetaIdentifierType
+                        {
+                            Value = "WFM"
+                        }
                     },
-                    PriceChangePatchMaster =  new Contracts.PriceChangePatchMaster[]
+                    PriceChangePatchMaster = new Contracts.PriceChangePatchMaster[]
                     {
                         new Contracts.PriceChangePatchMaster
                         {
@@ -42,7 +40,7 @@ namespace WebSupport.MessageBuilders
                                     {
                                       PatchFamilyID = request.getCurrentPriceInfo.PatchFamilyId,
                                       PatchNum = request.getCurrentPriceInfo.SequenceId.ToString(),
-                                      TimeStamp = DateTime.Now
+                                      TimeStamp = Convert.ToDateTime(DateTime.Now.ToString(DateTimeFormat))
                                     }
                             }
                         }

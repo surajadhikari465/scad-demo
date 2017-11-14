@@ -12,12 +12,13 @@ using Esb.Core.EsbServices;
 
 namespace WebSupport.Controllers
 {
-    public class CheckPointRequestToGPMController : Controller
+    public class CheckPointRequestController : Controller
     {
         private ILogger logger;
-       private IEsbService<CheckPointRequestViewModel> checkPointRequestMessageService;
+        private IEsbService<CheckPointRequestViewModel> checkPointRequestMessageService;
         private IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>> queryForStores;
-        public CheckPointRequestToGPMController(
+
+        public CheckPointRequestController(
             ILogger logger,
             IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>> storesQuery,
             IEsbService<CheckPointRequestViewModel> service)
@@ -36,8 +37,8 @@ namespace WebSupport.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
         // POST: CheckPointRequestFromGPM
+        [HttpPost]
         public ActionResult Index(CheckPointRequestViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -46,27 +47,28 @@ namespace WebSupport.Controllers
                 if (response.Status == EsbServiceResponseStatus.Failed)
                 {
                     ViewBag.Error = response.ErrorDetails;
-                    return HandleErrorForPriceReset(viewModel);
+                    return HandleErrorForCheckPointMessage(viewModel);
                 }
+
+                this.logger.Info("CheckPoint Request send to GPM for ScanCode:" + viewModel.Item +" Business Unit:"+ viewModel.Store);
             }
             else
             {
-                return HandleErrorForPriceReset(viewModel);
+                return HandleErrorForCheckPointMessage(viewModel);
             }
 
             return RedirectToAction("Index");
         }
 
-        private ActionResult HandleErrorForPriceReset(CheckPointRequestViewModel viewModel)
+        private ActionResult HandleErrorForCheckPointMessage(CheckPointRequestViewModel viewModel)
         {
-            //re-populate options for view model
             var existingRegionChoice = viewModel.RegionIndex;
             viewModel.SetRegions(StaticData.WholeFoodsRegions);
             if (viewModel.RegionIndex > 0)
             {
                 var chosenRegion = StaticData.WholeFoodsRegions.ElementAt(viewModel.RegionIndex);
                 var queryParam = new GetStoresForRegionParameters { Region = chosenRegion };
-                //TODO re-pop already selected stores (if stores are valid but items/downstream not)
+          
                 var stores = queryForStores.Search(queryParam).Select(sto => new StoreViewModel(sto));
                 viewModel.SetStoreOptions(stores);
             }

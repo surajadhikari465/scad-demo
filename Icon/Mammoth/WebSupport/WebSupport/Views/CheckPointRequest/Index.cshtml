@@ -2,10 +2,10 @@
 @using WebSupport.Models
 @model WebSupport.ViewModels.CheckPointRequestViewModel
 @{
-    ViewBag.Title = "Price CheckPoint";
+    ViewBag.Title = "Check Point Request";
 }
-<div class="row container-fluid">
-    @using (Html.BeginForm("Index", "CheckPointRequestToGPMController", null, FormMethod.Post, new { @class = "" }))
+<div class="row container-fluid" style="margin-top:60px">
+    @using (Html.BeginForm("Index", "CheckPointRequest", null, FormMethod.Post, new { @class = "" }))
     {
         <div class="form-group">
             <div class="col-sm-offset-0 col-sm-2">
@@ -30,23 +30,20 @@
                 @Html.ValidationMessageFor(model => model.Store, "", new { @class = "text-danger" })
             </div>
         </div>
-
+    
         <div class="form-group">
-            <div class="col-sm-offset-0 col-sm-2">
+            <div class="col-sm-offset-0 col-sm-2" style="margin-top:10px">
                 @Html.LabelFor(m => m.Item, new { @class = "control-label" })
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4"  style="margin-top:10px">
 
                 @Html.TextBoxFor(model => Model.Item)
                 @Html.ValidationMessageFor(model => model.Item, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="row"></div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-2">
-                <input type="submit" value="Send Message" class="btn btn-danger form-submit col-md-offset-4" id="search-button" />
+         <div class="form-group" >
+            <div class="col-sm-offset-8 col-sm-2">
+                <input type="submit" value="Send Request" class="btn btn-danger form-submit col-md-offset-4" id="search-button" />
             </div>
         </div>
 
@@ -54,7 +51,7 @@
         if (ViewBag.Error != null)
         {
             <div class="form-group">
-                <div class="alert alert-danger alert-dismissible" role="alert">
+                <div class="alert alert-danger alert-dismissible"  style="margin-top:15px" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -64,3 +61,57 @@
         }
     }
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+    var getStoresSuccessCallback = function (data, textStatus, xhr) {
+        var storesControl = $("#Store");
+        storesControl.empty();
+        $.each(data,
+            function (index, store) {
+                storesControl.append(
+                    $("<option />",
+                        {
+                            value: store.BusinessUnit,
+                            text: store.BusinessUnit + ": " + store.Name
+                        }))
+            });
+    }
+
+    var getStoresErrorCallback = function (xhr, textStatus, errorThrown) {
+        responseHTML = $.parseHTML(xhr.responseText);
+
+        var errorInfo = "Error attempting to load store data for region.\n"
+            + "url: \"@(Url.Action("Stores", "CheckPointRequest"))\"\n"
+            + "data: \"" + $("#RegionIndex :selected").text() + "\" (" + $("#RegionIndex").val() + ")\n"
+            + "call state: \"" + xhr.state() + "\".\n"
+            + "response: \"" + errorThrown + "\" (" + xhr.status + ")\n"
+            + "server error: \"" + $(responseHTML).find('h2').text() + "\"\n";
+        console.log(errorInfo);
+        console.log(xhr.responseText);
+        alert(errorInfo)
+
+        $("#Store").empty();
+    }
+
+    $("#RegionIndex").change(function () {
+        var url = "@(Url.Action("Stores", "CheckPointRequest"))";
+        var data = { regionCode: $(this).val() };
+
+        var storesControl = $("#Store");
+        var loadingDiv = $("#storesDiv");
+
+        storesControl.fadeOut();
+        storesControl.addClass("hidden");
+        loadingDiv.removeClass("hidden");
+
+        $.getJSON(url, data, getStoresSuccessCallback)
+            .fail(getStoresErrorCallback);
+
+        loadingDiv.addClass("hidden");
+        storesControl.removeClass("hidden");
+        storesControl.fadeIn();
+    });
+    </script>
+}

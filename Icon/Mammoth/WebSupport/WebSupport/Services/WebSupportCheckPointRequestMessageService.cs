@@ -6,70 +6,67 @@ using Icon.Esb.Factory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebSupport.DataAccess.Commands;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
 using WebSupport.Models;
 using WebSupport.ViewModels;
+
 namespace WebSupport.Services
 {
-    public class WebSupportCheckPointRequestMessageService : IEsbService<CheckPointRequestBuilderModel>
+    public class WebSupportCheckPointRequestMessageService : IEsbService<CheckPointRequestViewModel>
     {
         private IEsbConnectionFactory esbConnectionFactory;
         private IMessageBuilder<CheckPointRequestBuilderModel> checkPointRequestMessageBuilder;
-        private ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler;
-        private IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>> getPriceResetPricesQuery;
+        private IQueryHandler<GetCheckPointMessageParameters, CheckPointMessageModel> GetCheckPointMessageQuery;
 
         public EsbConnectionSettings Settings { get; set; }
         public WebSupportCheckPointRequestMessageService(
           IEsbConnectionFactory esbConnectionFactory,
           EsbConnectionSettings settings,
           IMessageBuilder<CheckPointRequestBuilderModel> checkPointRequestMessageBuilder,
-          ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler,
-          IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>> getPriceResetPricesQuery)
+          IQueryHandler<GetCheckPointMessageParameters, CheckPointMessageModel> GetCheckPointMessageQuery)
         {
             this.esbConnectionFactory = esbConnectionFactory;
             this.Settings = settings;
             this.checkPointRequestMessageBuilder = checkPointRequestMessageBuilder;
-            this.saveSentMessageCommandHandler = saveSentMessageCommandHandler;
-            this.getPriceResetPricesQuery = getPriceResetPricesQuery;
+            this.GetCheckPointMessageQuery = GetCheckPointMessageQuery;
         }
 
-        public EsbServiceResponse Send(CheckPointRequestBuilderModel request)
+        public EsbServiceResponse Send(CheckPointRequestViewModel request)
         {
-            var getCurrentPriceInfo = getPriceResetPricesQuery.Search(new GetPriceResetPricesParameters
+            var getCurrentPriceInfo = GetCheckPointMessageQuery.Search(new GetCheckPointMessageParameters
             {
-                BusinessUnitIds = new List<string> { request.Store },
+                BusinessUnitId = request.Store,
                 Region = StaticData.WholeFoodsRegions.ElementAt(request.RegionIndex),
-                ScanCodes = new List<string> { request.Item }
+                ScanCode = request.Item
             });
 
-            if (getCurrentPriceInfo.Any())
+            CheckPointRequestBuilderModel checkPointRequestBuilderModel = new CheckPointRequestBuilderModel();
+            checkPointRequestBuilderModel.CheckPointRequestViewModel = request;
+
+            if (getCurrentPriceInfo != null)
             {
-                request.getCurrentPriceInfo = getCurrentPriceInfo.FirstOrDefault();
+                checkPointRequestBuilderModel.getCurrentPriceInfo = getCurrentPriceInfo;
+
                 using (var producer = esbConnectionFactory.CreateProducer(Settings))
                 {
-
-                    var message = checkPointRequestMessageBuilder.BuildMessage(request);
+                    var message = checkPointRequestMessageBuilder.BuildMessage(checkPointRequestBuilderModel);
 
                     Guid messageId = Guid.NewGuid();
-                    var sequenceId = request.getCurrentPriceInfo.SequenceId;
-                    var patchFamilyId = request.getCurrentPriceInfo.PatchFamilyId;
+                    var sequenceId = checkPointRequestBuilderModel.getCurrentPriceInfo.SequenceId;
+                    var patchFamilyId = checkPointRequestBuilderModel.getCurrentPriceInfo.PatchFamilyId;
+
                     Dictionary<string, string> messageProperties = new Dictionary<string, string>
                         {
-                            { EsbConstants.TransactionTypeKey, EsbConstants.CheckPointRequestToGPM },
+                            { EsbConstants.TransactionTypeKey, EsbConstants.CheckPointRequest },
                             { EsbConstants.TransactionIdKey, messageId.ToString() },
                             { EsbConstants.CorrelationIdKey, patchFamilyId },
                             { EsbConstants.SequenceIdKey, sequenceId.HasValue ? sequenceId.ToString() : null },
                             { EsbConstants.SourceKey, EsbConstants.MammothSourceValueName }
                         };
+
+                    producer.OpenConnection();
                     producer.Send(message, messageId.ToString(), messageProperties);
-                    saveSentMessageCommandHandler.Execute(new SaveSentMessageCommand
-                    {
-                        Message = message,
-                        MessageId = messageId,
-                        MessageProperties = messageProperties
-                    });
                 }
 
                 var response = new EsbServiceResponse
@@ -84,8 +81,8 @@ namespace WebSupport.Services
                 return new EsbServiceResponse
                 {
                     Status = EsbServiceResponseStatus.Failed,
-                    ErrorCode = ErrorConstants.Codes.NoPricesExist,
-                    ErrorDetails = ErrorConstants.Details.NoPricesExist
+                    ErrorCode = ErrorConstants.Codes.ItemDoesNotExist,
+                    ErrorDetails = ErrorConstants.Details.ItemDoesNotExist
                 };
             }
         }
