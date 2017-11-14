@@ -42,7 +42,7 @@ SET NOCOUNT ON
 
 	SELECT
 		[Unit]			= sv.BusinessUnit_ID,
-		[Ledger]		= 'ACTUAL',
+		[Ledger]		= 'ACTUALS',
 		[Account]		= '500000',
 		sst.Team_No,
 		st.SubTeam_No,
@@ -74,7 +74,7 @@ SET NOCOUNT ON
 	
 	SELECT
 		[Unit]			= sr.BusinessUnit_ID,
-		[Ledger]		= 'ACTUAL',
+		[Ledger]		= 'ACTUALS',
 		[Account]		= '500000',
 		sst.Team_No,
 		sst.SubTeam_No,
