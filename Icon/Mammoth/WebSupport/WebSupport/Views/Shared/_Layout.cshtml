@@ -39,14 +39,15 @@
             </div>
         </div>
     </div>
+    @* add whitespace when in sm viewport so the content won't be covered by navbar*@
+    <div class="visible-sm"><br /><br /></div>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year Whole Foods Market Inc.</p>
+            <p>&copy; @DateTime.Now.Year Whole Foods Market Inc. <span style="float:right;">@DateTime.Now (UTC @DateTime.UtcNow.ToUniversalTime())</span></p>
         </footer>
     </div>
-
     @RenderSection("scripts", required: false)
 </body>
 </html>
