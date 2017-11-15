@@ -10,10 +10,6 @@ BEGIN
 		CONVERT(INT,ISNULL(ms.PatchFamilySequenceID,1)) AS SequenceId,
 		ISNULL(ms.PatchFamilyID,CONCAT(i.ItemID,'-',@BusinessUnitId)) AS PatchFamilyId
 	FROM Items i 
-	LEFT JOIN gpm.Prices p 
-	         ON i.ItemID = p.ItemID
-			 AND p.BusinessUnitID = @BusinessUnitId
-			 AND p.Region = @Region 
 	LEFT JOIN gpm.MessageSequence ms 
 			  ON ms.BusinessUnitID =@BusinessUnitId
 			  AND ms.ItemID = i.ItemID

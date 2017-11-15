@@ -33,12 +33,12 @@
     
         <div class="form-group">
             <div class="col-sm-offset-0 col-sm-2">
-                @Html.LabelFor(m => m.Item, new { @class = "control-label" })
+                @Html.LabelFor(m => m.ScanCode, new { @class = "control-label" })
             </div>
             <div class="col-sm-6"  style="margin-top:10px">
 
-                @Html.TextBoxFor(model => Model.Item, new { style = "height:25px;" })
-                @Html.ValidationMessageFor(model => model.Item, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => Model.ScanCode, new { style = "height:25px;" })
+                @Html.ValidationMessageFor(model => model.ScanCode, "", new { @class = "text-danger" })
             </div>
         </div>
          <div class="form-group" >

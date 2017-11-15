@@ -50,7 +50,7 @@ namespace WebSupport.Controllers
                     return HandleErrorForCheckPointMessage(viewModel);
                 }
 
-                this.logger.Info("CheckPoint Request send to GPM for ScanCode:" + viewModel.Item +" Business Unit:"+ viewModel.Store);
+                this.logger.Info("CheckPoint Request sent to GPM for ScanCode:" + viewModel.ScanCode + " Business Unit:"+ viewModel.Store);
             }
             else
             {

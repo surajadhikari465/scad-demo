@@ -34,7 +34,7 @@ namespace WebSupport.ViewModels
         [Required]
         [Display(Name = "Scan Code")]
         [RegularExpression(ValidationConstants.RegExForValidScanCode, ErrorMessage = ValidationConstants.ErrorMsgForInvalidScanCode)]
-        public string Item { get; set; }
+        public string ScanCode { get; set; }
         public void SetRegions(IEnumerable<string> regionSelections)
         {
             if (regionSelections != null)

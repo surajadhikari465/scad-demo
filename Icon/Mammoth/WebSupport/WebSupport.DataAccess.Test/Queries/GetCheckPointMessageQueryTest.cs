@@ -36,12 +36,6 @@ namespace WebSupport.DataAccess.Test.Queries
             //Given
             var businessUnitId = "6789";
             var storeName = "UNIT TEST STORE";
-            var priceType = "TPR";
-            var priceTypeAttribute = "FAKE";
-            var sellableUom = "EA";
-            var currencyCode = "USD";
-            decimal price = 4.00m;
-            byte multiple = 1;
             var messageID = "1233";
             var patchFamilySequenceId = "1";
             var PatchFamilyId = "88997798-6789";
@@ -56,7 +50,6 @@ namespace WebSupport.DataAccess.Test.Queries
             var item = context.Items.Add(new Item { ItemID = ItemID, ScanCode = scanCode, ItemTypeID = itemType.itemTypeID });
             context.SaveChanges();
             InsertStoreIntoDatabase(businessUnitId, storeName);
-            InsertPriceIntoDatabase(businessUnitId, priceType, priceTypeAttribute, sellableUom, currencyCode, price, multiple, startDate, endDate, item);
             InsertIntoMessageSequence(ItemID, businessUnitId, PatchFamilyId, patchFamilySequenceId, messageID, DateTime.Now, DateTime.Now);
 
             parameters.BusinessUnitId = businessUnitId;

@@ -38,7 +38,7 @@ namespace WebSupport.Services
             {
                 BusinessUnitId = request.Store,
                 Region = StaticData.WholeFoodsRegions.ElementAt(request.RegionIndex),
-                ScanCode = request.Item
+                ScanCode = request.ScanCode
             });
 
             CheckPointRequestBuilderModel checkPointRequestBuilderModel = new CheckPointRequestBuilderModel();

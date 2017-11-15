@@ -96,7 +96,7 @@ namespace WebSupport.Tests.Controllers
             {
                 RegionIndex = 0,
                 Store = "10001",
-                Item = "4282342774"
+                ScanCode = "4282342774"
             };
             this.mockCheckPointRequestMessageService.Setup(m => m.Send(It.IsAny<CheckPointRequestViewModel>()))
                 .Returns(new EsbServiceResponse { Status = EsbServiceResponseStatus.Sent });

@@ -34,7 +34,7 @@ namespace WebSupport.Tests.Models
             request.CheckPointRequestViewModel = new CheckPointRequestViewModel
             {
               Store = "10001",
-              Item = "4282342774",
+              ScanCode = "4282342774",
               RegionIndex = 0
             };
 
