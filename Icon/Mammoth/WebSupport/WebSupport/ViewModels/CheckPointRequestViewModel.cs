@@ -17,7 +17,7 @@ namespace WebSupport.ViewModels
 
         public CheckPointRequestViewModel()
         {
-            var initialOption = new string[] { "- select region first -" };
+            var initialOption = new string[] { "- Select Region First -" };
             OptionsForStores = SelectListHelper.ArrayToSelectList(initialOption);
             OptionsForRegion = new List<SelectListItem>();
         }
