@@ -75,6 +75,7 @@ namespace WebSupport.App_Start
                 container.GetInstance<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>>(),
                 container.GetInstance<ICommandHandler<SaveSentMessageCommand>>());
         }
+
         private static WebSupportCheckPointRequestMessageService CreateCheckPointRequestMessageService(Container container)
         {
             return new WebSupportCheckPointRequestMessageService(
