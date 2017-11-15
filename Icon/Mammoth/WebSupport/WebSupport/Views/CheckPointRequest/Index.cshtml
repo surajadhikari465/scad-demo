@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Check Point Request";
 }
-<div class="row container-fluid" style="margin-top:60px">
+<div class="row container-fluid">
     @using (Html.BeginForm("Index", "CheckPointRequest", null, FormMethod.Post, new { @class = "" }))
     {
         <div class="form-group">
@@ -32,7 +32,7 @@
         </div>
     
         <div class="form-group">
-            <div class="col-sm-offset-0 col-sm-2" style="margin-top:10px">
+            <div class="col-sm-offset-0 col-sm-2">
                 @Html.LabelFor(m => m.Item, new { @class = "control-label" })
             </div>
             <div class="col-sm-6"  style="margin-top:10px">
@@ -51,7 +51,7 @@
         if (ViewBag.Error != null)
         {
             <div class="form-group">
-                <div class="alert alert-danger alert-dismissible"  style="margin-top:15px" role="alert">
+                <div class="alert alert-danger alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
