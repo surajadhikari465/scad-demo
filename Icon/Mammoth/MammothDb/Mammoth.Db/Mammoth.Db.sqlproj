@@ -683,6 +683,7 @@
     <None Include="Jobs\MAMMOTH . Data History Purge.sql" />
     <None Include="Scripts\PreDeploymentScripts\TruncateRetentionPolicyTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddWebSupportToAppTable.sql" />
+    <Build Include="gpm\Stored Procedures\GetCheckPointMessageData.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

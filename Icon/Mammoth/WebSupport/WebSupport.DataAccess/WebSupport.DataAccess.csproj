@@ -110,9 +110,12 @@
     <Compile Include="DataConstants.cs" />
     <Compile Include="IIrmaContextFactory.cs" />
     <Compile Include="IrmaContextFactory.cs" />
+    <Compile Include="Models\CheckPointMessageModel.cs" />
     <Compile Include="Models\JobSchedule.cs" />
     <Compile Include="Models\PriceResetPrice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetCheckPointMessageParameters.cs" />
+    <Compile Include="Queries\GetCheckPointMessageQuery.cs" />
     <Compile Include="Queries\GetExistingScanCodesParameters.cs" />
     <Compile Include="Queries\GetExistingScanCodesQuery.cs" />
     <Compile Include="Queries\GetJobScheduleParameters.cs" />

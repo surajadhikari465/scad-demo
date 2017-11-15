@@ -64,7 +64,8 @@
       <HintPath>..\packages\Icon.Esb.2017.10.9.1\lib\net45\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Infor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Infor.2017.10.9.1\lib\net46\Icon.Esb.Schemas.Infor.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Infor.2017.11.13.1\lib\net46\Icon.Esb.Schemas.Infor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Mammoth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2017.10.9.1\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
@@ -153,10 +154,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CheckPointRequestControllerTest.cs" />
     <Compile Include="Controllers\PriceResetControllerTest.cs" />
     <Compile Include="Helpers\ItemPriceTypes.cs" />
     <Compile Include="Helpers\SelectListHelperTest.cs" />
     <Compile Include="Helpers\ValidationHelperTest.cs" />
+    <Compile Include="Models\CheckPointRequestMessageBuilderTests.cs" />
     <Compile Include="Models\PriceResetMessageBuilderTests.cs" />
     <Compile Include="Models\WebSupportPriceMessageServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
