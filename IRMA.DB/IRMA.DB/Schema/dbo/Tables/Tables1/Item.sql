@@ -675,7 +675,7 @@ BEGIN
 				InsertApplication
 			)
 			SELECT 
-				Store_No,
+				Store.Store_No,
 				INSERTED.Item_Key,
 				2,
 				'ItemUpdate Trigger'
@@ -683,10 +683,6 @@ BEGIN
 				INSERTED
 				INNER JOIN DELETED
 					ON  DELETED.Item_Key = INSERTED.Item_Key
-				LEFT OUTER JOIN dbo.InstanceDataFlagsStoreOverride IDFO
-					ON IDFO.Store_No = Store_No
-				LEFT OUTER JOIN dbo.InstanceDataFlagsStore IDF
-					ON IDF.Store_No = Store_No
 				CROSS JOIN (
 						SELECT Store_No
 						FROM   Store(NOLOCK)
@@ -695,7 +691,6 @@ BEGIN
 					) Store
 			WHERE  
 				(INSERTED.Remove_Item = 0 AND INSERTED.Deleted_Item = 0)
-				AND IDFO.Flag_Key = 'GlobalPriceManagement' AND IDF.Flag_Key = 'GlobalPriceManagement'
 				AND (
 						-- Don't allow maintenance to be created if Icon is doing the update, unless...                       
 						(ISNULL(inserted.LastModifiedUser_ID, 0) <> ISNULL(@IconControllerUserId, 0)) 
@@ -705,7 +700,7 @@ BEGIN
 						  -- ... but only if it's for a store not under GPM
 						OR ( ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND 
 							(inserted.Package_Desc1 <> deleted.Package_Desc1 OR inserted.Package_Unit_ID <> deleted.Package_Unit_ID) AND
-							COALESCE(IDFO.FlagValue, IDF.FlagValue, 0) = 0 )
+							ISNULL(dbo.fn_InstanceDataValue('GlobalPriceManagement', Store.Store_No), 0)= 0 )
 					)
 				AND (
 						INSERTED.Item_Description <> DELETED.Item_Description
