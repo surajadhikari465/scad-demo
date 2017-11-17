@@ -1198,27 +1198,27 @@
   </data>
   <data name="Button365.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        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
+        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
 </value>
   </data>
   <data name="Button365.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -2574,38 +2574,35 @@
   <data name="&gt;&gt;_txtField_6.ZOrder" xml:space="preserve">
     <value>79</value>
   </data>
-  <data name="_cmbField_RetailPackUOM .Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8pt</value>
+  <metadata name="cmbField.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>308, 17</value>
+  </metadata>
+  <data name="_cmbField_RetailPackUOM.Location" type="System.Drawing.Point, System.Drawing">
+    <value>109, 36</value>
   </data>
-  <data name="_cmbField_RetailPackUOM .Location" type="System.Drawing.Point, System.Drawing">
-    <value>106, 35</value>
+  <data name="_cmbField_RetailPackUOM.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 22</value>
   </data>
-  <data name="_cmbField_RetailPackUOM .RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
+  <data name="_cmbField_RetailPackUOM.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="_cmbField_RetailPackUOM .Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 22</value>
+  <data name="&gt;&gt;_cmbField_RetailPackUOM.Name" xml:space="preserve">
+    <value>_cmbField_RetailPackUOM</value>
   </data>
-  <data name="_cmbField_RetailPackUOM .TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;_cmbField_RetailPackUOM .Name" xml:space="preserve">
-    <value>_cmbField_RetailPackUOM </value>
-  </data>
-  <data name="&gt;&gt;_cmbField_RetailPackUOM .Type" xml:space="preserve">
+  <data name="&gt;&gt;_cmbField_RetailPackUOM.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;_cmbField_RetailPackUOM .Parent" xml:space="preserve">
+  <data name="&gt;&gt;_cmbField_RetailPackUOM.Parent" xml:space="preserve">
     <value>GroupBox_RetailPackage</value>
   </data>
-  <data name="&gt;&gt;_cmbField_RetailPackUOM .ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_cmbField_RetailPackUOM.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="_txtField_RetailPackSize.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
   <data name="_txtField_RetailPackSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>60, 37</value>
+    <value>62, 37</value>
   </data>
   <data name="_txtField_RetailPackSize.MaxLength" type="System.Int32, mscorlib">
     <value>5</value>
@@ -2614,7 +2611,7 @@
     <value>No</value>
   </data>
   <data name="_txtField_RetailPackSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 20</value>
+    <value>38, 20</value>
   </data>
   <data name="_txtField_RetailPackSize.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -2631,34 +2628,25 @@
   <data name="&gt;&gt;_txtField_RetailPackSize.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="_txtField_Pack .Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8pt</value>
+  <data name="_txtField_Pack.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 37</value>
   </data>
-  <data name="_txtField_Pack .Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 37</value>
+  <data name="_txtField_Pack.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 20</value>
   </data>
-  <data name="_txtField_Pack .MaxLength" type="System.Int32, mscorlib">
+  <data name="_txtField_Pack.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="_txtField_Pack .RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
+  <data name="&gt;&gt;_txtField_Pack.Name" xml:space="preserve">
+    <value>_txtField_Pack</value>
   </data>
-  <data name="_txtField_Pack .Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 20</value>
-  </data>
-  <data name="_txtField_Pack .TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;_txtField_Pack .Name" xml:space="preserve">
-    <value>_txtField_Pack </value>
-  </data>
-  <data name="&gt;&gt;_txtField_Pack .Type" xml:space="preserve">
+  <data name="&gt;&gt;_txtField_Pack.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;_txtField_Pack .Parent" xml:space="preserve">
+  <data name="&gt;&gt;_txtField_Pack.Parent" xml:space="preserve">
     <value>GroupBox_RetailPackage</value>
   </data>
-  <data name="&gt;&gt;_txtField_Pack .ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_txtField_Pack.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="_cmbField_3.Font" type="System.Drawing.Font, System.Drawing">
@@ -3837,9 +3825,6 @@
   <data name="&gt;&gt;_chkField_25.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="cmbField.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>308, 17</value>
-  </metadata>
   <data name="cmbManagedBy.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
@@ -4000,7 +3985,7 @@
     <value>HierarchySelector1</value>
   </data>
   <data name="&gt;&gt;HierarchySelector1.Type" xml:space="preserve">
-    <value>HierarchySelector, IRMA, Version=7.7.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>HierarchySelector, IRMA, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;HierarchySelector1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -4209,69 +4194,6 @@
   <data name="&gt;&gt;lbl_UserID.ZOrder" xml:space="preserve">
     <value>26</value>
   </data>
-  <data name="&gt;&gt;Label_RetailPackSize.Name" xml:space="preserve">
-    <value>Label_RetailPackSize</value>
-  </data>
-  <data name="&gt;&gt;Label_RetailPackSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label_RetailPackSize.Parent" xml:space="preserve">
-    <value>GroupBox_RetailPackage</value>
-  </data>
-  <data name="&gt;&gt;Label_RetailPackSize.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;Label_Pack.Name" xml:space="preserve">
-    <value>Label_Pack</value>
-  </data>
-  <data name="&gt;&gt;Label_Pack.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label_Pack.Parent" xml:space="preserve">
-    <value>GroupBox_RetailPackage</value>
-  </data>
-  <data name="&gt;&gt;Label_Pack.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;Label_RetailPackUOM.Name" xml:space="preserve">
-    <value>Label_RetailPackUOM</value>
-  </data>
-  <data name="&gt;&gt;Label_RetailPackUOM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label_RetailPackUOM.Parent" xml:space="preserve">
-    <value>GroupBox_RetailPackage</value>
-  </data>
-  <data name="&gt;&gt;Label_RetailPackUOM.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="GroupBox_RetailPackage.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8pt, style=Bold</value>
-  </data>
-  <data name="GroupBox_RetailPackage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>373, 181</value>
-  </data>
-  <data name="GroupBox_RetailPackage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>246, 66</value>
-  </data>
-  <data name="GroupBox_RetailPackage.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="GroupBox_RetailPackage.Text" xml:space="preserve">
-    <value>Retail Package</value>
-  </data>
-  <data name="&gt;&gt;GroupBox_RetailPackage.Name" xml:space="preserve">
-    <value>GroupBox_RetailPackage</value>
-  </data>
-  <data name="&gt;&gt;GroupBox_RetailPackage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;GroupBox_RetailPackage.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;GroupBox_RetailPackage.ZOrder" xml:space="preserve">
-    <value>24</value>
-  </data>
   <data name="Label_RetailPackSize.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
@@ -4370,6 +4292,33 @@
   </data>
   <data name="&gt;&gt;Label_RetailPackUOM.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="GroupBox_RetailPackage.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt, style=Bold</value>
+  </data>
+  <data name="GroupBox_RetailPackage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>373, 181</value>
+  </data>
+  <data name="GroupBox_RetailPackage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>246, 66</value>
+  </data>
+  <data name="GroupBox_RetailPackage.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="GroupBox_RetailPackage.Text" xml:space="preserve">
+    <value>Retail Package</value>
+  </data>
+  <data name="&gt;&gt;GroupBox_RetailPackage.Name" xml:space="preserve">
+    <value>GroupBox_RetailPackage</value>
+  </data>
+  <data name="&gt;&gt;GroupBox_RetailPackage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;GroupBox_RetailPackage.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;GroupBox_RetailPackage.ZOrder" xml:space="preserve">
+    <value>24</value>
   </data>
   <data name="grpManageBy.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt, style=Bold</value>

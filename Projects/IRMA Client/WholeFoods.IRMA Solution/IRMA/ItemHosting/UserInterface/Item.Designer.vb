@@ -857,9 +857,9 @@
         Me._cmbField_RetailPackUOM.BackColor = System.Drawing.SystemColors.Window
         Me._cmbField_RetailPackUOM.Cursor = System.Windows.Forms.Cursors.Default
         Me._cmbField_RetailPackUOM.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        resources.ApplyResources(Me._cmbField_RetailPackUOM, "_cmbField_RetailPackUOM")
         Me._cmbField_RetailPackUOM.ForeColor = System.Drawing.SystemColors.WindowText
         Me.cmbField.SetIndex(Me._cmbField_RetailPackUOM, CType(6, Short))
+        resources.ApplyResources(Me._cmbField_RetailPackUOM, "_cmbField_RetailPackUOM")
         Me._cmbField_RetailPackUOM.Name = "_cmbField_RetailPackUOM"
         Me._cmbField_RetailPackUOM.Sorted = True
         '
@@ -874,15 +874,15 @@
         Me._txtField_RetailPackSize.Name = "_txtField_RetailPackSize"
         Me._txtField_RetailPackSize.Tag = "ExtCurrency"
         '
-        '_txtField__Pack
+        '_txtField_Pack
         '
         Me._txtField_Pack.AcceptsReturn = True
         Me._txtField_Pack.BackColor = System.Drawing.SystemColors.Window
         Me._txtField_Pack.Cursor = System.Windows.Forms.Cursors.IBeam
-        resources.ApplyResources(Me._txtField_Pack, "_txtField__Pack")
         Me._txtField_Pack.ForeColor = System.Drawing.SystemColors.WindowText
         Me.txtField.SetIndex(Me._txtField_Pack, CType(4, Short))
-        Me._txtField_Pack.Name = "_txtField__Pack"
+        resources.ApplyResources(Me._txtField_Pack, "_txtField_Pack")
+        Me._txtField_Pack.Name = "_txtField_Pack"
         Me._txtField_Pack.Tag = "ExtCurrency"
         '
         '_cmbField_3
