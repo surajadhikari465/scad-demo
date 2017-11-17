@@ -11,9 +11,9 @@
         <processArchive name="Logging Service Process Archive">
             <resourceType>process.archive.resource</resourceType>
             <authorProperty>Ben.Sims</authorProperty>
-            <processProperty>/Listener/LoggingListener.process</processProperty>
+            <processProperty>/Processes/LoggingListener.process</processProperty>
         </processArchive>
-        <versionProperty>6</versionProperty>
+        <versionProperty>8</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>LoggingService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Dev\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\LoggingService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\LoggingService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

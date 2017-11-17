@@ -2,30 +2,6 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ADBScriptFileDir</name>
-			<value>C:\tibco\adapter\adadb\7.2\sql</value>
-			<deploymentSettable>false</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1509375796208</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>BW_GLOBAL_HOSTNAME</name>
-			<value>cerd1616.wfm.pvt</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1509375119799</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
-			<value>file:///C:/Certificates</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1509375815848</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>Deployment</name>
 			<value>MammothActivePriceService</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -64,22 +40,6 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1499962574584</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>JmsProviderUrl</name>
-			<value>tcp://localhost:7222</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499292451156</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>JmsSslProviderUrl</name>
-			<value>ssl://localhost:7243</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1499292451175</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RemoteRvDaemon</name>

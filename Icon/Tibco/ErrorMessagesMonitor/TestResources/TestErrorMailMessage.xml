@@ -1,0 +1,14 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<ErrorMessages xmlns = "http://www.tibco.com/schemas/ErrorMessagesMonitor/Schemas/Schema.xsd">
+	<ErrorMessage>
+		<MessageID>12345</MessageID>
+		<ErrorDetails>test error details</ErrorDetails>
+	</ErrorMessage>
+	<ErrorMessage>
+		<MessageID>1234</MessageID>
+		<ErrorDetails>test error details</ErrorDetails>
+	</ErrorMessage>
+	<Application>TestApplication</Application>
+	<ErrorCode>TestErrorCode</ErrorCode>
+	<ErrorSeverity>TestErrorSeverity</ErrorSeverity>
+</ErrorMessages>

@@ -2,20 +2,86 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>AppID</name>
+			<name>ApplicationID</name>
 			<value>9</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1507225692328</modTime>
+			<constraint></constraint>
+			<modTime>1510680416136</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ApplicationID</name>
-			<value>Price Listener</value>
+			<name>BODRequestQueue</name>
+			<value>WFMESB.Technical.NotificationBOD.SequenceNotification.Queue.V2</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1499972863463</modTime>
+			<modTime>1510844018752</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DbRetrySleepInMilliseconds</name>
+			<value>3000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1510694828396</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>MaxDbRetryCount</name>
+			<value>3</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<constraint></constraint>
+			<modTime>1510684984368</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>MaxRedeliveryCount</name>
+			<value>1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1510679930649</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>MaxSendMessageRetryCount</name>
+			<value>3</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1510692758019</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ProcessBODLogicalID</name>
+			<value>WFM</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1510694530056</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ProcessBODTenantID</name>
+			<value>WFM</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1510694567031</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ProcessBODVersionID</name>
+			<value>9.2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1510694324523</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SendMessageRetrySleepInMilliseconds</name>
+			<value>3000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1510694828538</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

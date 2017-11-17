@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns32="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns33="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns6="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:WFM.UID="java://UID" xmlns:ns42="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns53="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns52="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/MammothPrices.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/MessageHeaders.xsd"/>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns32="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns33="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns6="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:WFM.UID="java://UID" xmlns:ns42="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns53="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns52="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/SendToESB.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -83,7 +83,7 @@
             <pd:groupType>errorLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
             <pd:indexSlot>j</pd:indexSlot>
-            <pd:errorCondition>$_globalVariables/pfx3:GlobalVariables/SendToESB/retryCount = $j</pd:errorCondition>
+            <pd:errorCondition>$_globalVariables/pfx3:GlobalVariables/Application/SendToEsbMaxRetryCount = $j</pd:errorCondition>
             <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
         </config>
         <pd:inputBindings/>
@@ -267,7 +267,7 @@
                                                 <xsl:choose>
                                                     <xsl:when test="pfx:PriceType = 'REG'">
                                                         <ns42:priceStartDate>
-                                                            <xsl:value-of select="$_globalVariables/pfx3:GlobalVariables/SendToESB/RegStartDate"/>
+                                                            <xsl:value-of select="$_globalVariables/pfx3:GlobalVariables/Application/RegStartDate"/>
                                                         </ns42:priceStartDate>
                                                     </xsl:when>
                                                     <xsl:otherwise>
@@ -301,14 +301,14 @@
                         <transacted>false</transacted>
                         <acknowledgeMode>1</acknowledgeMode>
                         <maxSessions>1</maxSessions>
-                        <destination>%%Destinations/Queues/EsbJustInTimeQueue%%</destination>
+                        <destination>%%Destinations/PriceMammothJustInTimeQueue%%</destination>
                     </SessionAttributes>
                     <ConfigurableHeaders>
                         <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
                         <JMSExpiration>0</JMSExpiration>
                         <JMSPriority>4</JMSPriority>
                     </ConfigurableHeaders>
-                    <ConnectionReference>/Connections/ESB Connection.sharedjmscon</ConnectionReference>
+                    <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
                     <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
                 </config>
                 <pd:inputBindings>
@@ -333,19 +333,19 @@
                                     <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:CorrelationID"/>
                                 </CorrelationID>
                             </xsl:if>
-                            <TransactionType>
-                                <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:TransactionType"/>
-                            </TransactionType>
-                            <xsl:if test="$Start/root/pfx4:MessageHeaders/pfx4:ResetFlag">
-                                <ResetFlag>
-                                    <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:ResetFlag"/>
-                                </ResetFlag>
-                            </xsl:if>
                             <xsl:if test="$Start/root/pfx4:MessageHeaders/pfx4:SequenceID">
                                 <SequenceID>
                                     <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:SequenceID"/>
                                 </SequenceID>
                             </xsl:if>
+                            <xsl:if test="$Start/root/pfx4:MessageHeaders/pfx4:ResetFlag">
+                                <ResetFlag>
+                                    <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:ResetFlag"/>
+                                </ResetFlag>
+                            </xsl:if>
+                            <TransactionType>
+                                <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:TransactionType"/>
+                            </TransactionType>
                             <Source>
                                 <xsl:value-of select="$Start/root/pfx4:MessageHeaders/pfx4:Source"/>
                             </Source>

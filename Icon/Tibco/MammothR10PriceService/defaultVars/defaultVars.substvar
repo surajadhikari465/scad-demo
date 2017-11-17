@@ -2,22 +2,6 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>BW_GLOBAL_HOSTNAME</name>
-			<value>cerd1616.wfm.pvt</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1508866892366</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>
-			<value>file:///C:/Certs</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1507928718100</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>Deployment</name>
 			<value>MammothR10PriceService</value>
 			<deploymentSettable>true</deploymentSettable>

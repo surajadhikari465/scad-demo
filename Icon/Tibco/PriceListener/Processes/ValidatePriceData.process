@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Tibco/Exception/ExceptionRequest.xsd"/>
+    <pd:name>Processes/ValidatePriceData.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:MammothPrice"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>116</pd:startX>
+    <pd:startY>62</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endType/>
+    <pd:endX>451</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas>
+        <Error ref="ns2:ExceptionRequest"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1505843890542</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>299</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <faultName>Error</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Price Not supplied &quot;,&#xA;&quot;Item Id: &quot;,$Start/Input/pfx:MammothPrice/pfx:ItemId,&#xA;&quot;Business Unit ID: &quot;, $Start/Input/pfx:MammothPrice/pfx:BusinessUnit,&#xA;&quot;Region&quot;, $Start/Input/pfx:MammothPrice/pfx:Region)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ErrorCodes/ActionNotSupplied"/>
+                </messageCode>
+                <data>
+                    <ns2:ExceptionRequest>
+                        <ns3:Header>
+                            <ns3:ApplicationID>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationID"/>
+                            </ns3:ApplicationID>
+                            <ns3:Timestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns3:Timestamp>
+                        </ns3:Header>
+                        <ExceptionCode>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ErrorCodes/ActionNotSupplied"/>
+                        </ExceptionCode>
+                    </ns2:ExceptionRequest>
+                </data>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>Val Action</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/Input/pfx:MammothPrice/pfx:Action)&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

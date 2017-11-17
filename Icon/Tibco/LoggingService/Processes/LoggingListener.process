@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLogs.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd" schemaLocation="/Schemas/Application/AppLog.xsd"/>
+    <pd:name>Processes/LoggingListener.process</pd:name>
+    <pd:startName>Logging Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Logging Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>124</pd:x>
+        <pd:y>124</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>23</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/CLELogQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>766</pd:endX>
+    <pd:endY>234</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1504031803446</pd:targetNamespace>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>296</pd:x>
+        <pd:y>124</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:AppLog"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Logging-Queue-Receiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>476</pd:x>
+        <pd:y>124</pd:y>
+        <config>
+            <processName>/Processes/DB Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:AppLog>
+                <pfx2:AppId>
+                    <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:AppId"/>
+                </pfx2:AppId>
+                <xsl:if test="$Parse-XML/pfx2:AppLog/pfx2:Level">
+                    <pfx2:Level>
+                        <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:Level"/>
+                    </pfx2:Level>
+                </xsl:if>
+                <xsl:if test="$Parse-XML/pfx2:AppLog/pfx2:Logger">
+                    <pfx2:Logger>
+                        <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:Logger"/>
+                    </pfx2:Logger>
+                </xsl:if>
+                <xsl:if test="$Parse-XML/pfx2:AppLog/pfx2:UserName">
+                    <pfx2:UserName>
+                        <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:UserName"/>
+                    </pfx2:UserName>
+                </xsl:if>
+                <xsl:if test="$Parse-XML/pfx2:AppLog/pfx2:MachineName">
+                    <pfx2:MachineName>
+                        <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:MachineName"/>
+                    </pfx2:MachineName>
+                </xsl:if>
+                <pfx2:LogDate>
+                    <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:LogDate"/>
+                </pfx2:LogDate>
+                <xsl:if test="$Parse-XML/pfx2:AppLog/pfx2:Thread">
+                    <pfx2:Thread>
+                        <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:Thread"/>
+                    </pfx2:Thread>
+                </xsl:if>
+                <xsl:if test="$Parse-XML/pfx2:AppLog/pfx2:Message">
+                    <pfx2:Message>
+                        <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:Message"/>
+                    </pfx2:Message>
+                </xsl:if>
+                <xsl:if test="$Parse-XML/pfx2:AppLog/pfx2:CallSite">
+                    <pfx2:CallSite>
+                        <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:CallSite"/>
+                    </pfx2:CallSite>
+                </xsl:if>
+                <xsl:if test="$Parse-XML/pfx2:AppLog/pfx2:Exception">
+                    <pfx2:Exception>
+                        <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:Exception"/>
+                    </pfx2:Exception>
+                </xsl:if>
+                <xsl:if test="$Parse-XML/pfx2:AppLog/pfx2:StackTrace">
+                    <pfx2:StackTrace>
+                        <xsl:value-of select="$Parse-XML/pfx2:AppLog/pfx2:StackTrace"/>
+                    </pfx2:StackTrace>
+                </xsl:if>
+            </pfx2:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ConfirmOnSuccess">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>657</pd:x>
+        <pd:y>124</pd:y>
+        <config>
+            <ConfirmEvent>Logging Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>186</pd:x>
+        <pd:y>244</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ConsoleLog">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>368</pd:x>
+        <pd:y>244</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                </msgCode>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ConfirmOnError">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>545</pd:x>
+        <pd:y>244</pd:y>
+        <config>
+            <ConfirmEvent>Logging Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Logging Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>ConfirmOnSuccess</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ConsoleLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConsoleLog</pd:from>
+        <pd:to>ConfirmOnError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConfirmOnSuccess</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConfirmOnError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

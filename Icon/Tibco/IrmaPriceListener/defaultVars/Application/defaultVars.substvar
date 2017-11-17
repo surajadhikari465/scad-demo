@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ApplicationID</name>
-			<value>IRMA Price Listener</value>
+			<value>14</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1508474020010</modTime>
+			<type>Integer</type>
+			<modTime>1510934180940</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DBTimeOutRetryCount</name>
@@ -16,6 +16,14 @@
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
 			<modTime>1507152025885</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>PriceIrmaQueue</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1510345906177</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

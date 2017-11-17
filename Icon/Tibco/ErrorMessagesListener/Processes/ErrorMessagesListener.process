@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx="http://www.tibco.com/schemas/DeadLetterQueueListener/Schemas/Schema.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/DeadLetterQueueListener/Schemas/Schema.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/ErrorMessage.xsd"/>
+    <pd:name>Processes/ErrorMessagesListener.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>90</pd:x>
+        <pd:y>83</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>Test2210<destination>%%Destinations/MammothErrorMessageQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1030</pd:endX>
+    <pd:endY>109</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1510068168432</pd:targetNamespace>
+    <pd:activity name="Parse Message">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>323</pd:x>
+        <pd:y>85</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:ErrorMessage"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>90</pd:x>
+        <pd:y>222</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Insert Error Message">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>854</pd:x>
+        <pd:y>112</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>INSERT INTO gpm.ErrorMessages
+           (Application
+           ,MessageID
+           ,MessageProperties
+           ,Message
+           ,ErrorCode
+           ,ErrorDetails
+           ,ErrorSeverity
+           ,ExtendedErrorProperties)
+values (?, ?, ?, ?, ?, ?, ?, ?)</statement>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>Application</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageProperties</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Message</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ErrorCode</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ErrorDetails</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ErrorSeverity</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ExtendedErrorProperties</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <Application>
+                    <xsl:value-of select="$Parse-Message/pfx2:ErrorMessage/pfx2:Application"/>
+                </Application>
+                <MessageID>
+                    <xsl:value-of select="$Parse-Message/pfx2:ErrorMessage/pfx2:MessageID"/>
+                </MessageID>
+                <MessageProperties>
+                    <xsl:value-of select="$Render-MessageProperties-XML/xmlString"/>
+                </MessageProperties>
+                <Message>
+                    <xsl:value-of select="$Parse-Message/pfx2:ErrorMessage/pfx2:Message"/>
+                </Message>
+                <ErrorCode>
+                    <xsl:value-of select="$Parse-Message/pfx2:ErrorMessage/pfx2:ErrorCode"/>
+                </ErrorCode>
+                <ErrorDetails>
+                    <xsl:value-of select="$Parse-Message/pfx2:ErrorMessage/pfx2:ErrorDetails"/>
+                </ErrorDetails>
+                <ErrorSeverity>
+                    <xsl:value-of select="$Parse-Message/pfx2:ErrorMessage/pfx2:ErrorSeverity"/>
+                </ErrorSeverity>
+                <ExtendedErrorProperties>
+                    <xsl:value-of select="$Render-ExtendedErrorProperties-XML/xmlString"/>
+                </ExtendedErrorProperties>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>945</pd:x>
+        <pd:y>105</pd:y>
+        <config>
+            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>1029</pd:x>
+        <pd:y>232</pd:y>
+        <config>
+            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render MessageProperties XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>565</pd:x>
+        <pd:y>51</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx2:MessageProperties"/>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Parse-Message/pfx2:ErrorMessage/pfx2:MessageProperties"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render ExtendedErrorProperties XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>558</pd:x>
+        <pd:y>154</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx2:ExtendedErrorProperties"/>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Parse-Message/pfx2:ErrorMessage/pfx2:ExtendedErrorProperties"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Message Received">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>214</pd:x>
+        <pd:y>89</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns4:AppLog>
+                <ns4:AppId>
+                    <xsl:value-of select="$_globalVariables/pfx3:GlobalVariables/Application/ApplicationID"/>
+                </ns4:AppId>
+                <ns4:Level>
+                    <xsl:value-of select="'Info'"/>
+                </ns4:Level>
+                <ns4:Logger>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
+                </ns4:Logger>
+                <ns4:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns4:LogDate>
+                <ns4:Message>
+                    <xsl:value-of select="concat(&quot;Received Message: &quot;, $JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/TransactionID)"/>
+                </ns4:Message>
+            </ns4:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>209</pd:x>
+        <pd:y>224</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns4:AppLog>
+                <ns4:AppId>
+                    <xsl:value-of select="$_globalVariables/pfx3:GlobalVariables/Application/ApplicationID"/>
+                </ns4:AppId>
+                <ns4:Level>
+                    <xsl:value-of select="'Error'"/>
+                </ns4:Level>
+                <ns4:Logger>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
+                </ns4:Logger>
+                <ns4:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns4:LogDate>
+                <ns4:Message>
+                    <xsl:value-of select="concat(&#xA;&#x9;concat(&quot;TransactionID:&quot;,$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/TransactionID),&#xA;&#x9;concat(&quot;ErrorHandlingDeadLetterQueueException: &quot;, $_error/ns2:ErrorReport/Msg),&#xA;&#x9;concat(&quot;Message: &quot;, $JMS-Queue-Receiver/ns:ActivityOutput/Body))"/>
+                </ns4:Message>
+                <xsl:if test="$_error/ns2:ErrorReport/Msg">
+                    <ns4:Exception>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                    </ns4:Exception>
+                </xsl:if>
+                <xsl:if test="$_error/ns2:ErrorReport/StackTrace">
+                    <ns4:StackTrace>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                    </ns4:StackTrace>
+                </xsl:if>
+            </ns4:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Log Message Received</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert Error Message</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Message</pd:from>
+        <pd:to>Render MessageProperties XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render MessageProperties XML</pd:from>
+        <pd:to>Insert Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Message</pd:from>
+        <pd:to>Render ExtendedErrorProperties XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render ExtendedErrorProperties XML</pd:from>
+        <pd:to>Insert Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Message Received</pd:from>
+        <pd:to>Parse Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Error</pd:from>
+        <pd:to>Error Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

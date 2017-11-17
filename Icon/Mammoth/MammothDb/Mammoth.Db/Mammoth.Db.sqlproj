@@ -684,6 +684,8 @@
     <None Include="Scripts\PreDeploymentScripts\TruncateRetentionPolicyTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddWebSupportToAppTable.sql" />
     <Build Include="gpm\Stored Procedures\GetCheckPointMessageData.sql" />
+    <Build Include="gpm\Tables\ErrorMessages.sql" />
+    <Build Include="gpm\Stored Procedures\DeleteAllPricesForItemIdBusinessUnitId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -699,6 +701,8 @@
     <None Include="Scripts\PostDeploymentScripts\AddMaintFlagRowToDbStatusTable.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddErrorMonitorToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddJobSchedulerToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

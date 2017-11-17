@@ -7,7 +7,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505836948937</modTime>
+			<modTime>1510681986739</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DataError</name>
@@ -15,7 +15,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1507310862014</modTime>
+			<modTime>1510681986815</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DatabaseError</name>
@@ -23,7 +23,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505397979441</modTime>
+			<modTime>1510681986664</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MappingError</name>
@@ -31,7 +31,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505405488520</modTime>
+			<modTime>1510681986889</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>OutOfSequenceRedelivery</name>
@@ -39,7 +39,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1507310862107</modTime>
+			<modTime>1510681986493</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ZeroRowsImpacted</name>
@@ -47,7 +47,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1505400454352</modTime>
+			<modTime>1510681986581</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

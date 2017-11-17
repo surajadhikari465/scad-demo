@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:pfx13="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx12="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx11="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pfx10="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns5="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns2="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx9="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pfx8="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2">
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/MammothPrices.xsd"/>
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pfx14="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:pfx13="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx12="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx11="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:pfx10="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:pfx4="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx9="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:pfx8="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/MammothPriceR10QueueReceiver.process</pd:name>
     <pd:startName>JMS Queue Receiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -18,14 +18,14 @@
                 <transacted>false</transacted>
                 <acknowledgeMode>23</acknowledgeMode>
                 <maxSessions>1</maxSessions>
-                <destination>%%Destinations/Queues/Sb1MammothPriceR10Queue%%</destination>
+                <destination>%%Destinations/PriceR10Queue%%</destination>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
                 <JMSExpiration>0</JMSExpiration>
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
-            <ConnectionReference>/Connections/SB1 Connection.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
             <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
         </config>
         <pd:inputBindings/>
@@ -91,7 +91,7 @@
                         </ns5:Source>
                     </xsl:if>
                     <ns5:nonReceivingSysName>
-                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/SendToESB/NonReceivingSystems"/>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/NonReceivingSystems"/>
                     </ns5:nonReceivingSysName>
                     <xsl:if test="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/ResetFlag">
                         <ns5:ResetFlag>
@@ -108,7 +108,7 @@
         <pd:x>581</pd:x>
         <pd:y>106</pd:y>
         <config>
-            <processName>/Processes/LogPublisher.process</processName>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
         </config>
         <pd:inputBindings>
@@ -120,7 +120,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </pfx12:Level>
                 <pfx12:Logger>
-                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/ApplicationName"/>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
                 </pfx12:Logger>
                 <pfx12:UserName>
                     <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
@@ -135,7 +135,7 @@
                     <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
                 </pfx12:Thread>
                 <pfx12:Message>
-                    <xsl:value-of select="concat(&quot;Successfully processed Mammoth Price  MessageID &quot;,&#xA;$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/TransactionID,&#xA;&quot;, mapped it to the ESB price canonical, and sent a message to ESB Queue ,&quot;,&#xA;$_globalVariables/ns3:GlobalVariables/Destinations/Queues/EsbJustInTimeQueue)"/>
+                    <xsl:value-of select="concat(&quot;Successfully processed Mammoth Price  MessageID &quot;,&#xA;$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/TransactionID,&#xA;&quot;, mapped it to the ESB price canonical, and sent a message to ESB Queue ,&quot;,&#xA;$_globalVariables/ns3:GlobalVariables/Destinations/PriceMammothJustInTimeQueue)"/>
                 </pfx12:Message>
                 <pfx12:CallSite>
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns4:ProcessContext/ProcessId)"/>
@@ -156,8 +156,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>236</pd:x>
-        <pd:y>243</pd:y>
+        <pd:x>238</pd:x>
+        <pd:y>250</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -167,11 +167,11 @@
     <pd:activity name="LogError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>415</pd:x>
-        <pd:y>246</pd:y>
+        <pd:x>366</pd:x>
+        <pd:y>251</pd:y>
         <config>
             <spawn>true</spawn>
-            <processName>/Processes/LogPublisher.process</processName>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
         </config>
         <pd:inputBindings>
             <pfx12:AppLog>
@@ -182,7 +182,7 @@
                     <xsl:value-of select="&quot;Error&quot;"/>
                 </pfx12:Level>
                 <pfx12:Logger>
-                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/ApplicationName"/>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
                 </pfx12:Logger>
                 <pfx12:UserName>
                     <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
@@ -232,8 +232,8 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>570</pd:x>
-        <pd:y>251</pd:y>
+        <pd:x>605</pd:x>
+        <pd:y>254</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -248,6 +248,69 @@
                     </msgCode>
                 </xsl:if>
             </pfx13:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Publish Error Message">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>486</pd:x>
+        <pd:y>260</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx14:ErrorMessage>
+                <pfx14:Application>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/AppID"/>
+                </pfx14:Application>
+                <pfx14:MessageID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/TransactionID"/>
+                </pfx14:MessageID>
+                <pfx14:MessageProperties>
+                    <xsl:for-each select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/node()">
+                        <pfx14:NameValuePair>
+                            <xsl:attribute name="name">
+                                <xsl:value-of select="local-name(current())"/>
+                            </xsl:attribute>
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="current()"/>
+                            </xsl:attribute>
+                        </pfx14:NameValuePair>
+                    </xsl:for-each>
+                </pfx14:MessageProperties>
+                <pfx14:Message>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body"/>
+                </pfx14:Message>
+                <pfx14:ErrorCode>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                </pfx14:ErrorCode>
+                <pfx14:ErrorDetails>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                </pfx14:ErrorDetails>
+                <xsl:choose>
+                    <xsl:when test="contains($_error/ns4:ErrorReport/Msg, &quot;Connection is closed&quot;)">
+                        <pfx14:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </pfx14:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="contains($_error/ns4:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException: Invalid object name&quot;)">
+                        <pfx14:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </pfx14:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="contains($_error/ns4:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException: Cannot open database&quot;)">
+                        <pfx14:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </pfx14:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx14:ErrorSeverity>
+                            <xsl:value-of select="&quot;Error&quot;"/>
+                        </pfx14:ErrorSeverity>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pfx14:ErrorMessage>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -294,7 +357,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>LogError</pd:from>
-        <pd:to>Log</pd:to>
+        <pd:to>Publish Error Message</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -309,6 +372,13 @@
     <pd:transition>
         <pd:from>Log</pd:from>
         <pd:to>Acknowledge Failure</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Publish Error Message</pd:from>
+        <pd:to>Log</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

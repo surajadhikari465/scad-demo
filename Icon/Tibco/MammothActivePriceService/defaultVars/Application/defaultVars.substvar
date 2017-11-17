@@ -2,12 +2,28 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ApplicationID</name>
-			<value>Price Listener</value>
+			<name>ActivePriceSubsetSize</name>
+			<value>5000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1509375119737</modTime>
+			<type>Integer</type>
+			<modTime>1510615455510</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ApplicationID</name>
+			<value>11</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1510934338608</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EMSPriceBatchsize</name>
+			<value>2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1510615671883</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

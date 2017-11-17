@@ -6,3 +6,8 @@
     [ModifiedDate] DATETIME       NULL,
     CONSTRAINT [PK_ItemTypes] PRIMARY KEY CLUSTERED ([itemTypeID] ASC) WITH (FILLFACTOR = 100)
 );
+
+GO
+
+GRANT SELECT ON [dbo].[ItemTypes] TO [TibcoRole]
+GO

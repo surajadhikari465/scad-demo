@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx10="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:WFM.UID="java://UID" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx7="http://www.tibco.com/schemas/IrmaQueueListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd">
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx12="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx10="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx7="http://www.tibco.com/schemas/IrmaQueueListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx6="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:WFM.UID="java://UID" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
@@ -16,7 +16,7 @@
     <pd:starter name="IrmaPriceMessageReceiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>67</pd:x>
+        <pd:x>66</pd:x>
         <pd:y>35</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
@@ -24,24 +24,22 @@
                 <transacted>false</transacted>
                 <acknowledgeMode>23</acknowledgeMode>
                 <maxSessions>1</maxSessions>
-                <destination>%%Destinations/Queues/MammothSourceQueue%%</destination>
+                <destination>%%Application/PriceIrmaQueue%%</destination>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
                 <JMSExpiration>0</JMSExpiration>
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
-            <ConnectionReference>/Connections/IRMA Source Connection.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
             <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
         </config>
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1515</pd:endX>
-    <pd:endY>630</pd:endY>
-    <pd:errorSchemas>
-        <Error ref="pfx9:ExceptionRequest"/>
-    </pd:errorSchemas>
+    <pd:endX>1349</pd:endX>
+    <pd:endY>536</pd:endY>
+    <pd:errorSchemas/>
     <pd:processVariables>
         <transactionId>
             <xsd:element name="UID" type="xsd:string"/>
@@ -51,10 +49,10 @@
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>480</pd:x>
+        <pd:x>349</pd:x>
         <pd:y>1</pd:y>
         <pd:width>303</pd:width>
-        <pd:height>283</pd:height>
+        <pd:height>184</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -85,13 +83,13 @@
         <pd:activity name="Load Prices Into IRMA (Batch Update)">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>626</pd:x>
-            <pd:y>95</pd:y>
+            <pd:x>481</pd:x>
+            <pd:y>84</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
-                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <statement>INSERT INTO [infor].[StagingMammothPrice]
            ([BusinessUnit_ID]
            ,[ItemId]
@@ -199,8 +197,8 @@
     <pd:group name="Load One By One Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>496</pd:x>
-        <pd:y>320</pd:y>
+        <pd:x>494</pd:x>
+        <pd:y>236</pd:y>
         <pd:width>316</pd:width>
         <pd:height>247</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -242,8 +240,8 @@
         <pd:activity name="Load Prices Into IRMA (One-by-One Update)">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>626</pd:x>
-            <pd:y>391</pd:y>
+            <pd:x>627</pd:x>
+            <pd:y>316</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -261,7 +259,7 @@
 	  , [TransactionId])
      VALUES
            (?, ?, ?, ?, ?, ?, ?, ?, ?,?)</statement>
-                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <Prepared_Param_DataType>
                     <parameter>
                         <parameterName>BusinessUnit_ID</parameterName>
@@ -350,8 +348,8 @@
         <pd:activity name="Catch Single Load Exception">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>579</pd:x>
-            <pd:y>482</pd:y>
+            <pd:x>636</pd:x>
+            <pd:y>410</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <fault>localname=JDBCSQLException namespace=http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions</fault>
@@ -362,8 +360,8 @@
     <pd:activity name="Assign">
         <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
         <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>211</pd:x>
-        <pd:y>39</pd:y>
+        <pd:x>175</pd:x>
+        <pd:y>37</pd:y>
         <config>
             <variableName>transactionId</variableName>
         </config>
@@ -376,8 +374,8 @@
     <pd:activity name="Catch-All-Exceptions">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>168</pd:x>
-        <pd:y>632</pd:y>
+        <pd:x>91</pd:x>
+        <pd:y>537</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -387,8 +385,8 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>1514</pd:x>
-        <pd:y>203</pd:y>
+        <pd:x>1343</pd:x>
+        <pd:y>101</pd:y>
         <config>
             <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
         </config>
@@ -397,8 +395,8 @@
     <pd:activity name="Confirm-Error">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>1062</pd:x>
-        <pd:y>621</pd:y>
+        <pd:x>1245</pd:x>
+        <pd:y>536</pd:y>
         <config>
             <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
         </config>
@@ -407,8 +405,8 @@
     <pd:activity name="Parse Price Message">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>335</pd:x>
-        <pd:y>43</pd:y>
+        <pd:x>268</pd:x>
+        <pd:y>44</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -424,8 +422,8 @@
     <pd:group name="Irma Price Update Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>910</pd:x>
-        <pd:y>44</pd:y>
+        <pd:x>689</pd:x>
+        <pd:y>1</pd:y>
         <pd:width>258</pd:width>
         <pd:height>173</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -458,13 +456,13 @@
         <pd:activity name="Update IRMA Price">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>1036</pd:x>
-            <pd:y>111</pd:y>
+            <pd:x>815</pd:x>
+            <pd:y>68</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
-                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <schema>infor</schema>
                 <catalog/>
                 <ProcedureName>BatchUpdatePriceFromGPM</ProcedureName>
@@ -507,8 +505,8 @@
     <pd:activity name="Delete All Staging Price Records (All Failed)">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>727</pd:x>
-        <pd:y>636</pd:y>
+        <pd:x>380</pd:x>
+        <pd:y>554</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -518,7 +516,7 @@ WHERE TransactionId = ?
 
 DELETE infor.StagingIrmaPrice
 WHERE TransactionId = ?</statement>
-            <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
             <Prepared_Param_DataType>
                 <parameter>
                     <parameterName>MammothPriceTransactionId</parameterName>
@@ -541,29 +539,13 @@ WHERE TransactionId = ?</statement>
             </jdbcUpdateActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Log">
-        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
-        <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>1360</pd:x>
-        <pd:y>345</pd:y>
-        <config>
-            <role>User</role>
-        </config>
-        <pd:inputBindings>
-            <pfx11:ActivityInput>
-                <message>
-                    <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
-                </message>
-            </pfx11:ActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:group name="Delete All Staging (All Good) Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>1244</pd:x>
-        <pd:y>52</pd:y>
+        <pd:x>1068</pd:x>
+        <pd:y>1</pd:y>
         <pd:width>175</pd:width>
-        <pd:height>223</pd:height>
+        <pd:height>174</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -594,13 +576,13 @@ WHERE TransactionId = ?</statement>
         <pd:activity name="Delete All Staging Price Records (All Good)">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1324</pd:x>
-            <pd:y>136</pd:y>
+            <pd:x>1147</pd:x>
+            <pd:y>84</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
-                <jdbcSharedConfig>/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <statement>DELETE infor.StagingMammothPrice
 WHERE TransactionId = ?
 
@@ -629,6 +611,137 @@ WHERE TransactionId = ?</statement>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
+    <pd:activity name="Publish Error Message">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>907</pd:x>
+        <pd:y>548</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx12:ErrorMessage>
+                <pfx12:Application>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx12:Application>
+                <pfx12:MessageID>
+                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                </pfx12:MessageID>
+                <pfx12:MessageProperties>
+                    <xsl:for-each select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/node()">
+                        <pfx12:NameValuePair>
+                            <xsl:attribute name="name">
+                                <xsl:value-of select="local-name(current())"/>
+                            </xsl:attribute>
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="current()"/>
+                            </xsl:attribute>
+                        </pfx12:NameValuePair>
+                    </xsl:for-each>
+                </pfx12:MessageProperties>
+                <pfx12:Message>
+                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
+                </pfx12:Message>
+                <pfx12:ErrorCode>
+                    <xsl:value-of select="$_error/pfx4:ErrorReport/MsgCode"/>
+                </pfx12:ErrorCode>
+                <pfx12:ErrorDetails>
+                    <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
+                </pfx12:ErrorDetails>
+                <xsl:choose>
+                    <xsl:when test="contains($_error/pfx4:ErrorReport/Msg, &quot;Connection is closed&quot;)">
+                        <pfx12:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </pfx12:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="contains($_error/pfx4:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException: Invalid object name&quot;)">
+                        <pfx12:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </pfx12:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="contains($_error/pfx4:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException: Cannot open database&quot;)">
+                        <pfx12:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </pfx12:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx12:ErrorSeverity>
+                            <xsl:value-of select="&quot;Error&quot;"/>
+                        </pfx12:ErrorSeverity>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pfx12:ErrorMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>668</pd:x>
+        <pd:y>538</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx13:AppLog>
+                <pfx13:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                </pfx13:AppId>
+                <pfx13:Level>
+                    <xsl:value-of select="&quot;Error&quot;"/>
+                </pfx13:Level>
+                <pfx13:Logger>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx13:Logger>
+                <pfx13:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx13:LogDate>
+                <pfx13:Message>
+                    <xsl:value-of select="concat(&quot;Error occurred on message &quot;, $IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID, &quot;. Error details: &quot;, $_error/pfx4:ErrorReport/Msg)"/>
+                </pfx13:Message>
+                <xsl:if test="$_error/pfx4:ErrorReport/Msg">
+                    <pfx13:Exception>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/Msg"/>
+                    </pfx13:Exception>
+                </xsl:if>
+                <xsl:if test="$_error/pfx4:ErrorReport/StackTrace">
+                    <pfx13:StackTrace>
+                        <xsl:value-of select="$_error/pfx4:ErrorReport/StackTrace"/>
+                    </pfx13:StackTrace>
+                </xsl:if>
+            </pfx13:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Message Received">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>267</pd:x>
+        <pd:y>162</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx13:AppLog>
+                <pfx13:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                </pfx13:AppId>
+                <pfx13:Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </pfx13:Level>
+                <pfx13:Logger>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx13:Logger>
+                <pfx13:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx13:LogDate>
+                <pfx13:Message>
+                    <xsl:value-of select="concat(&quot;Recieved message &quot;, $IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID)"/>
+                </pfx13:Message>
+            </pfx13:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>IrmaPriceMessageReceiver</pd:from>
         <pd:to>Assign</pd:to>
@@ -652,7 +765,7 @@ WHERE TransactionId = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Parse Price Message</pd:from>
-        <pd:to>Group</pd:to>
+        <pd:to>Log Message Received</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -680,7 +793,7 @@ WHERE TransactionId = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Delete All Staging Price Records (All Failed)</pd:from>
-        <pd:to>Confirm-Error</pd:to>
+        <pd:to>Log Error</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -688,13 +801,6 @@ WHERE TransactionId = ?</statement>
     <pd:transition>
         <pd:from>Confirm-Error</pd:from>
         <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Log</pd:from>
-        <pd:to>Confirm</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -716,15 +822,29 @@ WHERE TransactionId = ?</statement>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Delete All Staging (All Good) Group</pd:from>
-        <pd:to>Log</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>error</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Catch-All-Exceptions</pd:from>
         <pd:to>Delete All Staging Price Records (All Failed)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Publish Error Message</pd:from>
+        <pd:to>Confirm-Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Error</pd:from>
+        <pd:to>Publish Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Message Received</pd:from>
+        <pd:to>Group</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

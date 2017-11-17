@@ -8,3 +8,8 @@
     [ModifiedDate]   DATETIME       NULL,
     CONSTRAINT [PK_Locales_SW] PRIMARY KEY CLUSTERED ([Region] ASC, [LocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_SW]
 );
+
+GO
+
+GRANT SELECT ON [dbo].[Locales_SW] TO [TibcoRole]
+GO

@@ -23,3 +23,8 @@
 GO
 
 CREATE INDEX [IX_Items_ScanCode] ON [dbo].[Items] ([ScanCode]) INCLUDE ([ItemID])
+
+GO
+
+GRANT SELECT ON [dbo].[Items] TO [TibcoRole]
+GO

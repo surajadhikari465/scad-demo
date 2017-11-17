@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/ErrorMessagesMonitor/Schemas/Schema.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/ErrorMessagesMonitor/Schemas/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="ErrorMessages">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ErrorMessage" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="Application"/>
+				<xs:element ref="ErrorCode"/>
+				<xs:element ref="ErrorSeverity"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ErrorMessage">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="MessageID"/>
+				<xs:element ref="ErrorDetails"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Application" type="xs:string"/>
+	<xs:element name="ErrorCode" type="xs:string"/>
+	<xs:element name="ErrorSeverity" type="xs:string"/>
+	<xs:element name="MessageID" type="xs:string"/>
+	<xs:element name="ErrorDetails" type="xs:string"/>
+</xs:schema>

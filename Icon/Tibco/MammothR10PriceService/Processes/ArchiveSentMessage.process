@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pd:ProcessDefinition xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/MammothPrices.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/MessageHeaders.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/wfm-2.3.0.2050/WholeFoodsMarket/Item/Item.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/ArchiveSentMessage.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -35,7 +35,7 @@
             <timeout>10</timeout>
             <commit>false</commit>
             <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
             <batchUpdate>true</batchUpdate>
             <statement>INSERT INTO [gpm].[MessageArchivePriceR10] (ItemID, BusinessUnitID, PriceType, StartDate, MessageID, MessageDetailJson)
 VALUES (?, ?, ?, ?, ?, ?)</statement>
@@ -102,7 +102,7 @@ VALUES (?, ?, ?, ?, ?, ?)</statement>
             <timeout>10</timeout>
             <commit>false</commit>
             <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
             <statement>INSERT INTO [esb].[MessageArchive] (MessageID, MessageTypeID, MessageStatusID, MessageHeadersJson, MessageBody)
 SELECT 
 ?,
@@ -172,7 +172,7 @@ SELECT
         <pd:x>474</pd:x>
         <pd:y>274</pd:y>
         <config>
-            <processName>/Processes/LogPublisher.process</processName>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
         </config>
         <pd:inputBindings>
@@ -187,7 +187,7 @@ SELECT
                     <xsl:value-of select="$_processContext/ns1:ProcessContext/ProjectName"/>
                 </ns2:Logger>
                 <ns2:UserName>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationName"/>
+                    <xsl:value-of select="$_processContext/ns1:ProcessContext/ProjectName"/>
                 </ns2:UserName>
                 <ns2:MachineName>
                     <xsl:value-of select="BW:getHostName()"/>

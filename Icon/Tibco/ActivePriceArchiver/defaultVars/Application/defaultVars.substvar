@@ -3,11 +3,27 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ApplicationID</name>
-			<value>ActivePriceArchiver</value>
+			<value>12</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1510259609793</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ArchivePricesMaxDelayInSeconds</name>
+			<value>3</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502227220837</modTime>
+			<modTime>1510288149589</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ArchivePricesMaxRetryCount</name>
+			<value>3</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1510257528858</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

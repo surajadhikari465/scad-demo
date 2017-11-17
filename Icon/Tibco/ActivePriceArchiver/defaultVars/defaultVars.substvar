@@ -42,44 +42,13 @@
 			<modTime>1502125177186</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>JmsProviderUrl</name>
-			<value>tcp://localhost:7222</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1502125176772</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>JmsSslProviderUrl</name>
-			<value>ssl://localhost:7243</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1502125177746</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>MammothConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;IntegratedSecurity=true;</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1502125177611</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>NewItem</name>
-			<value>no value</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1502125177317</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>RemoteRvDaemon</name>
 			<value></value>
+			<description></description>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1502125178375</modTime>
+			<modTime>1510833801523</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RvDaemon</name>

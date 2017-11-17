@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>2130356</authorProperty>
+        </sharedArchive>
+        <processArchive name="ErrorMessagesListenerProcessArchive">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>2130356</authorProperty>
+            <processProperty>/Processes/ErrorMessagesListener.process</processProperty>
+        </processArchive>
+        <versionProperty>3</versionProperty>
+        <authorProperty>Blake Jones</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>ErrorMessagesListener</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\ErrorMessagesListener.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

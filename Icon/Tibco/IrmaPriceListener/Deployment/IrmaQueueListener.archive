@@ -10,11 +10,11 @@
         </sharedArchive>
         <processArchive name="Irma Price Listener Process">
             <resourceType>process.archive.resource</resourceType>
-            <authorProperty>2096654</authorProperty>
+            <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/IrmaPriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>17</versionProperty>
-        <authorProperty>2096654</authorProperty>
+        <versionProperty>20</versionProperty>
+        <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>IrmaQueueListener</name>
         <designer>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Deployment\IrmaPriceListener.ear</fileLocationProperty>
+        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\IrmaPriceListener.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

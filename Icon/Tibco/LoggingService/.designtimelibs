@@ -1,4 +1,6 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Wed Oct 04 15:43:41 CDT 2017
-0=SchemasLibrary.v1.1.projlib\=
+#Fri Nov 17 13:41:20 CST 2017
+2=SharedSchemas.projlib1\=
+1=SharedJmsConnections.projlib1\=
+0=SharedJdbcConnections.projlib1\=

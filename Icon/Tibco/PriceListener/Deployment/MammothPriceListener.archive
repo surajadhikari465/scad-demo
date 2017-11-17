@@ -11,9 +11,9 @@
         <processArchive name="MammothPriceListenerProcessArchive">
             <resourceType>process.archive.resource</resourceType>
             <authorProperty>Ben.Sims</authorProperty>
-            <processProperty>/Listener/PriceListener.process</processProperty>
+            <processProperty>/Processes/PriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>35</versionProperty>
+        <versionProperty>38</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>MammothPriceListener</name>

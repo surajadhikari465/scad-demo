@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="ActivePriceSharedArchive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <sharedResources/>
+            <sharedFiles/>
+            <sharedJarFiles/>
+        </sharedArchive>
+        <processArchive name="Active Price Archiver Process Archive">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <processProperty>/Processes/ActivePriceArchiverListener.process</processProperty>
+        </processArchive>
+        <versionProperty>6</versionProperty>
+        <authorProperty>Ben.Sims</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>ActivePriceArchiver</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\ActivePriceArchiver.ear</fileLocationProperty>
+        <description>Archives active prices sent through the Active Price Topic</description>
+    </enterpriseArchive>
+</Repository:repository>

@@ -15,3 +15,7 @@ BEGIN
 			  AND ms.ItemID = i.ItemID
      WHERE i.ScanCode = @ScanCode
 END
+
+GO
+GRANT EXEC ON [gpm].[GetCheckPointMessageData] TO TibcoRole
+GO

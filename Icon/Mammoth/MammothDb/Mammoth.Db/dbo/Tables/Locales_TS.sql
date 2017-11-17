@@ -10,4 +10,9 @@ CONSTRAINT [PK_Locales_TS] PRIMARY KEY CLUSTERED ([Region] ASC,	[LocaleID] ASC)
 WITH (FILLFACTOR = 100) ON [FG_RM]) ON [FG_RM]
 GO
 
+GO
+
+GRANT SELECT ON [dbo].[Locales_TS] TO [TibcoRole]
+GO
+
 

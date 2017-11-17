@@ -42,14 +42,6 @@
 			<modTime>1499972862146</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>IrmaConnectionString</name>
-			<value>jdbc:sqlserver://idt-sw\swt;DatabaseName=ItemCatalog_Test;IntegratedSecurity=false;</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1508532130256</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>RemoteRvDaemon</name>
 			<value></value>
 			<deploymentSettable>false</deploymentSettable>

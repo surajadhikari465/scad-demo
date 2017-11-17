@@ -2,12 +2,20 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ApplicationID</name>
-			<value>Price Listener</value>
+			<name>DbMaxRetryCount</name>
+			<value>3</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1504031596161</modTime>
+			<modTime>1510701694554</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DbRetrySleepInMillis</name>
+			<value>no value</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1510701694593</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

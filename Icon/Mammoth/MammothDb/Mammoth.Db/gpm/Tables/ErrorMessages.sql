@@ -1,0 +1,32 @@
+﻿CREATE TABLE gpm.ErrorMessages
+(
+	ErrorMessagesID INT IDENTITY(1, 1),
+	Application NVARCHAR(100) NOT NULL,
+	MessageID NVARCHAR(100) NOT NULL,
+	MessageProperties NVARCHAR(MAX) NULL,
+	Message NVARCHAR(MAX) NOT NULL,
+	ErrorCode NVARCHAR(100) NOT NULL,
+	ErrorDetails NVARCHAR(MAX) NOT NULL,
+	ErrorSeverity NVARCHAR(50) NOT NULL,
+	ExtendedErrorProperties NVARCHAR(MAX) NULL,
+	InstanceID UNIQUEIDENTIFIER NULL,
+	ProcessedDateUtc DATETIME2(7) NULL,
+	InsertDateUtc DATETIME2(7),
+	CONSTRAINT PK_ErrorMessages PRIMARY KEY CLUSTERED
+	(
+		ErrorMessagesID ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100) ON [PRIMARY],
+) ON [PRIMARY]
+GO
+
+ALTER TABLE gpm.ErrorMessages ADD  CONSTRAINT DF_ErrorMessages_InsertDate  DEFAULT (SYSUTCDATETIME()) FOR InsertDateUtc
+GO
+
+CREATE INDEX IX_ErrorMessages_MessageID ON gpm.ErrorMessages (MessageID)
+GO
+
+CREATE INDEX IX_ErrorMessages_InstanceID ON gpm.ErrorMessages (InstanceID)
+GO
+
+GRANT INSERT, UPDATE, SELECT ON gpm.ErrorMessages TO TibcoRole
+GO
