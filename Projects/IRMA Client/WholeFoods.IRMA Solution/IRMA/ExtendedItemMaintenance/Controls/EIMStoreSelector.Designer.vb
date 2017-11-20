@@ -29,6 +29,7 @@ Partial Class EIMStoreSelector
         Dim UltraGridColumn5 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("WFM_Store")
         Dim UltraGridColumn6 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("Mega_Store")
         Dim UltraGridColumn7 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("CustomerType")
+        Dim UltraGridColumn8 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("IsGPMStore", 0)
         Dim Appearance18 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
         Dim Appearance19 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
         Dim Appearance20 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
@@ -73,7 +74,7 @@ Partial Class EIMStoreSelector
         UltraGridColumn2.Header.Caption = "Stores"
         UltraGridColumn2.Header.VisiblePosition = 1
         UltraGridColumn2.SortIndicator = Infragistics.Win.UltraWinGrid.SortIndicator.Disabled
-        UltraGridColumn2.Width = 152
+        UltraGridColumn2.Width = 210
         UltraGridColumn3.Header.VisiblePosition = 2
         UltraGridColumn3.Hidden = True
         UltraGridColumn4.Header.VisiblePosition = 3
@@ -84,7 +85,10 @@ Partial Class EIMStoreSelector
         UltraGridColumn6.Hidden = True
         UltraGridColumn7.Header.VisiblePosition = 6
         UltraGridColumn7.Hidden = True
-        UltraGridBand1.Columns.AddRange(New Object() {UltraGridColumn1, UltraGridColumn2, UltraGridColumn3, UltraGridColumn4, UltraGridColumn5, UltraGridColumn6, UltraGridColumn7})
+        UltraGridColumn8.Header.VisiblePosition = 7
+        UltraGridColumn8.Hidden = True
+        UltraGridColumn8.Width = 86
+        UltraGridBand1.Columns.AddRange(New Object() {UltraGridColumn1, UltraGridColumn2, UltraGridColumn3, UltraGridColumn4, UltraGridColumn5, UltraGridColumn6, UltraGridColumn7, UltraGridColumn8})
         Me.UltraGrid1.DisplayLayout.BandsSerializer.Add(UltraGridBand1)
         Me.UltraGrid1.DisplayLayout.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid
         Appearance18.FontData.BoldAsString = "True"
@@ -149,9 +153,10 @@ Partial Class EIMStoreSelector
         Me.UltraGrid1.DisplayLayout.ViewStyle = Infragistics.Win.UltraWinGrid.ViewStyle.SingleBand
         Me.UltraGrid1.DisplayLayout.ViewStyleBand = Infragistics.Win.UltraWinGrid.ViewStyleBand.OutlookGroupBy
         Me.UltraGrid1.Font = New System.Drawing.Font("Arial", 8.0!)
-        Me.UltraGrid1.Location = New System.Drawing.Point(228, 3)
+        Me.UltraGrid1.Location = New System.Drawing.Point(304, 4)
+        Me.UltraGrid1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.UltraGrid1.Name = "UltraGrid1"
-        Me.UltraGrid1.Size = New System.Drawing.Size(173, 96)
+        Me.UltraGrid1.Size = New System.Drawing.Size(231, 118)
         Me.UltraGrid1.TabIndex = 47
         '
         'GroupBox2
@@ -166,10 +171,12 @@ Partial Class EIMStoreSelector
         Me.GroupBox2.Controls.Add(Me.ManualRadioButton)
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.GroupBox2.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.GroupBox2.Location = New System.Drawing.Point(3, 3)
+        Me.GroupBox2.Location = New System.Drawing.Point(4, 4)
+        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.GroupBox2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.GroupBox2.Size = New System.Drawing.Size(219, 96)
+        Me.GroupBox2.Size = New System.Drawing.Size(292, 118)
         Me.GroupBox2.TabIndex = 46
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Store Selection"
@@ -183,10 +190,11 @@ Partial Class EIMStoreSelector
         Me.cmbStates.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbStates.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.cmbStates.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cmbStates.Location = New System.Drawing.Point(90, 64)
+        Me.cmbStates.Location = New System.Drawing.Point(120, 79)
+        Me.cmbStates.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cmbStates.Name = "cmbStates"
         Me.cmbStates.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmbStates.Size = New System.Drawing.Size(118, 22)
+        Me.cmbStates.Size = New System.Drawing.Size(156, 24)
         Me.cmbStates.Sorted = True
         Me.cmbStates.TabIndex = 6
         '
@@ -197,10 +205,11 @@ Partial Class EIMStoreSelector
         Me.AllWFMRadioButton.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.AllWFMRadioButton.ForeColor = System.Drawing.SystemColors.ControlText
         Me.AllWFMRadioButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.AllWFMRadioButton.Location = New System.Drawing.Point(143, 16)
+        Me.AllWFMRadioButton.Location = New System.Drawing.Point(191, 20)
+        Me.AllWFMRadioButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.AllWFMRadioButton.Name = "AllWFMRadioButton"
         Me.AllWFMRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.AllWFMRadioButton.Size = New System.Drawing.Size(70, 17)
+        Me.AllWFMRadioButton.Size = New System.Drawing.Size(93, 21)
         Me.AllWFMRadioButton.TabIndex = 2
         Me.AllWFMRadioButton.TabStop = True
         Me.AllWFMRadioButton.Text = "All WFM"
@@ -213,10 +222,11 @@ Partial Class EIMStoreSelector
         Me.StateRadioButton.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.StateRadioButton.ForeColor = System.Drawing.SystemColors.ControlText
         Me.StateRadioButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.StateRadioButton.Location = New System.Drawing.Point(15, 66)
+        Me.StateRadioButton.Location = New System.Drawing.Point(20, 81)
+        Me.StateRadioButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.StateRadioButton.Name = "StateRadioButton"
         Me.StateRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.StateRadioButton.Size = New System.Drawing.Size(70, 17)
+        Me.StateRadioButton.Size = New System.Drawing.Size(93, 21)
         Me.StateRadioButton.TabIndex = 5
         Me.StateRadioButton.TabStop = True
         Me.StateRadioButton.Text = "By State"
@@ -231,10 +241,11 @@ Partial Class EIMStoreSelector
         Me.cmbZones.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbZones.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.cmbZones.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cmbZones.Location = New System.Drawing.Point(90, 37)
+        Me.cmbZones.Location = New System.Drawing.Point(120, 46)
+        Me.cmbZones.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cmbZones.Name = "cmbZones"
         Me.cmbZones.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmbZones.Size = New System.Drawing.Size(118, 22)
+        Me.cmbZones.Size = New System.Drawing.Size(156, 24)
         Me.cmbZones.Sorted = True
         Me.cmbZones.TabIndex = 4
         '
@@ -245,10 +256,11 @@ Partial Class EIMStoreSelector
         Me.ZoneRadioButton.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.ZoneRadioButton.ForeColor = System.Drawing.SystemColors.ControlText
         Me.ZoneRadioButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.ZoneRadioButton.Location = New System.Drawing.Point(15, 41)
+        Me.ZoneRadioButton.Location = New System.Drawing.Point(20, 50)
+        Me.ZoneRadioButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.ZoneRadioButton.Name = "ZoneRadioButton"
         Me.ZoneRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ZoneRadioButton.Size = New System.Drawing.Size(71, 17)
+        Me.ZoneRadioButton.Size = New System.Drawing.Size(95, 21)
         Me.ZoneRadioButton.TabIndex = 3
         Me.ZoneRadioButton.TabStop = True
         Me.ZoneRadioButton.Text = "By Zone"
@@ -261,10 +273,11 @@ Partial Class EIMStoreSelector
         Me.AllRadioButton.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.AllRadioButton.ForeColor = System.Drawing.SystemColors.ControlText
         Me.AllRadioButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.AllRadioButton.Location = New System.Drawing.Point(77, 16)
+        Me.AllRadioButton.Location = New System.Drawing.Point(103, 20)
+        Me.AllRadioButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.AllRadioButton.Name = "AllRadioButton"
         Me.AllRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.AllRadioButton.Size = New System.Drawing.Size(78, 17)
+        Me.AllRadioButton.Size = New System.Drawing.Size(104, 21)
         Me.AllRadioButton.TabIndex = 1
         Me.AllRadioButton.TabStop = True
         Me.AllRadioButton.Text = "All Stores"
@@ -278,10 +291,11 @@ Partial Class EIMStoreSelector
         Me.ManualRadioButton.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.ManualRadioButton.ForeColor = System.Drawing.SystemColors.ControlText
         Me.ManualRadioButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.ManualRadioButton.Location = New System.Drawing.Point(6, 16)
+        Me.ManualRadioButton.Location = New System.Drawing.Point(8, 20)
+        Me.ManualRadioButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.ManualRadioButton.Name = "ManualRadioButton"
         Me.ManualRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ManualRadioButton.Size = New System.Drawing.Size(66, 17)
+        Me.ManualRadioButton.Size = New System.Drawing.Size(88, 21)
         Me.ManualRadioButton.TabIndex = 0
         Me.ManualRadioButton.TabStop = True
         Me.ManualRadioButton.Text = "Manual"
@@ -289,33 +303,36 @@ Partial Class EIMStoreSelector
         '
         'ButtonCopyFrom
         '
-        Me.ButtonCopyFrom.Location = New System.Drawing.Point(407, 49)
+        Me.ButtonCopyFrom.Location = New System.Drawing.Point(543, 60)
+        Me.ButtonCopyFrom.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.ButtonCopyFrom.Name = "ButtonCopyFrom"
-        Me.ButtonCopyFrom.Size = New System.Drawing.Size(149, 23)
+        Me.ButtonCopyFrom.Size = New System.Drawing.Size(199, 28)
         Me.ButtonCopyFrom.TabIndex = 48
         Me.ButtonCopyFrom.Text = "Copy from Cost Upload"
         Me.ButtonCopyFrom.UseVisualStyleBackColor = True
         '
         'ButtonCopyTo
         '
-        Me.ButtonCopyTo.Location = New System.Drawing.Point(407, 20)
+        Me.ButtonCopyTo.Location = New System.Drawing.Point(543, 25)
+        Me.ButtonCopyTo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.ButtonCopyTo.Name = "ButtonCopyTo"
-        Me.ButtonCopyTo.Size = New System.Drawing.Size(149, 23)
+        Me.ButtonCopyTo.Size = New System.Drawing.Size(199, 28)
         Me.ButtonCopyTo.TabIndex = 49
         Me.ButtonCopyTo.Text = "Copy to Cost Upload"
         Me.ButtonCopyTo.UseVisualStyleBackColor = True
         '
         'EIMStoreSelector
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.ButtonCopyTo)
         Me.Controls.Add(Me.ButtonCopyFrom)
         Me.Controls.Add(Me.UltraGrid1)
         Me.Controls.Add(Me.GroupBox2)
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "EIMStoreSelector"
-        Me.Size = New System.Drawing.Size(560, 106)
+        Me.Size = New System.Drawing.Size(747, 130)
         CType(Me.UltraGrid1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.ResumeLayout(False)
