@@ -686,6 +686,7 @@
     <Build Include="gpm\Stored Procedures\GetCheckPointMessageData.sql" />
     <Build Include="gpm\Tables\ErrorMessages.sql" />
     <Build Include="gpm\Stored Procedures\DeleteAllPricesForItemIdBusinessUnitId.sql" />
+    <None Include="Jobs\MAMMOTH.ReseedMessageQueueId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
