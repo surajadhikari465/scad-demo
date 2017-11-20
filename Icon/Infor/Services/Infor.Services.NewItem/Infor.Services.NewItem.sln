@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infor.Services.NewItem", "Infor.Services.NewItem\Infor.Services.NewItem.csproj", "{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}"
 EndProject
@@ -9,12 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infor.Services.NewItem.Test
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		2016|Any CPU = 2016|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		QA|Any CPU = QA|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.2016|Any CPU.ActiveCfg = 2016|Any CPU
+		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.2016|Any CPU.Build.0 = 2016|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.QA|Any CPU.ActiveCfg = Release|Any CPU
@@ -23,6 +26,8 @@ Global
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.Test|Any CPU.Build.0 = Release|Any CPU
+		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.2016|Any CPU.ActiveCfg = 2016|Any CPU
+		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.2016|Any CPU.Build.0 = 2016|Any CPU
 		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.QA|Any CPU.ActiveCfg = Release|Any CPU
@@ -34,17 +39,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Infor.Services.NewItem\\Infor.Services.NewItem.csproj
-		SccProjectName1 = Infor.Services.NewItem
-		SccLocalPath1 = Infor.Services.NewItem
-		SccProjectUniqueName2 = Infor.Services.NewItem.Tests\\Infor.Services.NewItem.Tests.csproj
-		SccProjectName2 = Infor.Services.NewItem.Tests
-		SccLocalPath2 = Infor.Services.NewItem.Tests
 	EndGlobalSection
 EndGlobal

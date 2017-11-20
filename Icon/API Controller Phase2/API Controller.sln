@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.Tests", "Icon.ApiController.Tests\Icon.ApiController.Tests.csproj", "{436FE772-9141-4F76-B242-01D49FF02CD5}"
 EndProject
@@ -54,23 +54,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Icon.ApiController.Common\\Icon.ApiController.Common.csproj
-		SccProjectName1 = Icon.ApiController.Common
-		SccLocalPath1 = Icon.ApiController.Common
-		SccProjectUniqueName2 = Icon.ApiController.DataAccess\\Icon.ApiController.DataAccess.csproj
-		SccProjectName2 = Icon.ApiController.DataAccess
-		SccLocalPath2 = Icon.ApiController.DataAccess
-		SccProjectUniqueName3 = Icon.ApiController.Controller\\Icon.ApiController.Controller.csproj
-		SccProjectName3 = Icon.ApiController.Controller
-		SccLocalPath3 = Icon.ApiController.Controller
-		SccProjectUniqueName4 = Icon.ApiController.Tests\\Icon.ApiController.Tests.csproj
-		SccProjectName4 = Icon.ApiController.Tests
-		SccLocalPath4 = Icon.ApiController.Tests
 	EndGlobalSection
 EndGlobal

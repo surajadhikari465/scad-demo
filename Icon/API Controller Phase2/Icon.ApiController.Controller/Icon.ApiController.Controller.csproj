@@ -187,6 +187,7 @@
     <Compile Include="StartupOptions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.2016.config" />
     <None Include="App.config">
       <SubType>Designer</SubType>
       <TransformOnBuild>true</TransformOnBuild>
