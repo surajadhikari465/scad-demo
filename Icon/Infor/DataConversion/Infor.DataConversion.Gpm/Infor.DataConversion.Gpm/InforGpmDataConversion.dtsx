@@ -7,23 +7,23 @@
   DTS:CreatorName="WFM\Ben.Sims"
   DTS:DTSID="{E6A2F4FF-94CA-4763-BF6C-F62C27AAB42B}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="14.0.0800.60"
+  DTS:LastModifiedProductVersion="14.0.0600.250"
   DTS:LocaleID="1033"
   DTS:ObjectName="InforGpmDataConversion"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="202"
-  DTS:VersionGUID="{EF6BC283-48EA-45E5-B34B-C2DAAA3DDEFD}">
+  DTS:VersionBuild="242"
+  DTS:VersionGUID="{883FAA9A-7DFA-442A-8F7C-846EC9E95368}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
     <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[Flat File Connection Manager]"
+      DTS:refId="Package.ConnectionManagers[Converted Data Flat File Connection Manager]"
       DTS:CreationName="FLATFILE"
-      DTS:DTSID="{DE8279A0-FDFC-43DE-B5C9-45540146EBB4}"
-      DTS:ObjectName="Flat File Connection Manager">
+      DTS:DTSID="{ed826ac0-a112-42e6-9141-6effc6011b44}"
+      DTS:ObjectName="Converted Data Flat File Connection Manager">
       <DTS:PropertyExpression
-        DTS:Name="ConnectionString">@[$Package::FlatFileDirectory] + @[User::FlatFileName]</DTS:PropertyExpression>
+        DTS:Name="ConnectionString">@[$Package::FlatFileDirectory] + @[User::ConvertedDataReportName]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:Format="Delimited"
@@ -33,23 +33,15 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_Prices_20171023.csv">
+          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_ConvertedDataReport_20171120.csv">
           <DTS:FlatFileColumns>
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x007C_"
-              DTS:DataType="72"
-              DTS:TextQualified="True"
-              DTS:ObjectName="GUID"
-              DTS:DTSID="{59CAA21A-31C5-450A-8095-31C09182C758}"
-              DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="3"
               DTS:TextQualified="True"
               DTS:ObjectName="ITEM_ID"
-              DTS:DTSID="{2A681E6C-6992-4C36-A763-41C29A75A58F}"
+              DTS:DTSID="{C1FB7F49-398B-4B65-9C38-2B8EBF7A3F36}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -57,7 +49,25 @@
               DTS:DataType="3"
               DTS:TextQualified="True"
               DTS:ObjectName="STORE_NUMBER"
-              DTS:DTSID="{1350D9BB-6218-4E82-B88A-5A28DB935576}"
+              DTS:DTSID="{9C1DD059-DC52-4D34-BF9D-6050AE16A492}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:MaximumWidth="13"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="IDENTIFIER"
+              DTS:DTSID="{35445D14-0510-47E1-ABFA-2EA276B9C675}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="STORE"
+              DTS:DTSID="{AB2C74DC-6E01-4276-9B18-01E30D2F378C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -66,7 +76,7 @@
               DTS:DataPrecision="18"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE"
-              DTS:DTSID="{D57E0CA3-F530-4D69-BF43-3F5445DC2ADA}"
+              DTS:DTSID="{0263F492-1409-401F-8362-A663BE046A48}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -74,16 +84,16 @@
               DTS:DataType="16"
               DTS:TextQualified="True"
               DTS:ObjectName="MULTIPLE"
-              DTS:DTSID="{46885572-944F-421A-954A-A5CBDFD3B644}"
+              DTS:DTSID="{B0F36D61-E9B0-464B-8F97-1E5C68A9B890}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x007C_"
-              DTS:MaximumWidth="3"
-              DTS:DataType="130"
+              DTS:MaximumWidth="5"
+              DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="SELLING_UOM"
-              DTS:DTSID="{54C5E565-64CA-49E3-B0B7-1E781D50EAFB}"
+              DTS:DTSID="{9473ACD5-D3A6-4AEA-AEAA-4EF6B018D1A1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -92,7 +102,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE_TYPE_CODE"
-              DTS:DTSID="{989B35A7-DE08-45C4-9444-4104CE23647A}"
+              DTS:DTSID="{4EA2AB80-320B-4AD0-B64E-1B73630546CB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -101,7 +111,7 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE_ATTRIBUTE_CODE"
-              DTS:DTSID="{659DC6B5-FEAA-49FB-806F-1BD1F68C18AD}"
+              DTS:DTSID="{42D3BC77-7152-4D66-8E90-D1922FDE3115}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -109,7 +119,7 @@
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="NEW_TAG_EXPIRATION_DATE"
-              DTS:DTSID="{7FD938AE-5BC6-4D89-9BA5-298DF10B8534}"
+              DTS:DTSID="{617A5C70-9118-4466-AA6A-7B0D46AE8CBB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -117,7 +127,7 @@
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="START_DATE"
-              DTS:DTSID="{646DC1C6-C05A-4EA3-99B0-79F25F68A91F}"
+              DTS:DTSID="{8155E7EA-06CD-4A1E-9BAA-CC962736B357}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -125,7 +135,7 @@
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="END_DATE"
-              DTS:DTSID="{27E8644F-CB0F-4167-862B-B0D77188153B}"
+              DTS:DTSID="{2BE73222-AFB4-49BF-8FED-875A4A7E3521}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -133,7 +143,7 @@
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="CREATED_DATE"
-              DTS:DTSID="{55BAB99F-D01E-4656-A28C-263DFF4138F2}"
+              DTS:DTSID="{A23A95EA-CB98-4A83-A2C0-BAE8973FEFC8}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -161,6 +171,129 @@
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=Mammoth_Dev;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Price Extract Flat File Connection Manager]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{DE8279A0-FDFC-43DE-B5C9-45540146EBB4}"
+      DTS:ObjectName="Price Extract Flat File Connection Manager">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Package::FlatFileDirectory] +  @[User::PriceExtractFlatFileName]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x007C_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_Prices_20171120.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="GUID"
+              DTS:DTSID="{1F78C153-289B-4B2F-A476-E62B071401D3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ITEM_ID"
+              DTS:DTSID="{477C3BAE-3C0F-4B86-9F08-0750777987A1}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="STORE_NUMBER"
+              DTS:DTSID="{F10D4CA5-3927-4D03-99A7-7DD37DB8C062}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="131"
+              DTS:DataPrecision="18"
+              DTS:TextQualified="True"
+              DTS:ObjectName="PRICE"
+              DTS:DTSID="{54EDF95C-1C12-4E53-ACBD-277F374B10C8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="16"
+              DTS:TextQualified="True"
+              DTS:ObjectName="MULTIPLE"
+              DTS:DTSID="{77777674-A259-42A4-AA55-E833A17FC5EC}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="SELLING_UOM"
+              DTS:DTSID="{B4E6EF38-4A4C-4B89-BE24-2A511C81F51C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="PRICE_TYPE_CODE"
+              DTS:DTSID="{8E36A42A-3CBE-4080-AD32-7B8E19F89410}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="PRICE_ATTRIBUTE_CODE"
+              DTS:DTSID="{15F99C9F-3D03-41FD-BF63-4B1FFBE43D7A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="135"
+              DTS:TextQualified="True"
+              DTS:ObjectName="NEW_TAG_EXPIRATION_DATE"
+              DTS:DTSID="{7E0D9259-BAF1-4A3A-B1A6-D7EA1AFB3EA4}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="135"
+              DTS:TextQualified="True"
+              DTS:ObjectName="START_DATE"
+              DTS:DTSID="{00013173-F14D-40D5-B677-6B1049526220}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="135"
+              DTS:TextQualified="True"
+              DTS:ObjectName="END_DATE"
+              DTS:DTSID="{A9D70B62-9031-44FB-9543-5192612336B5}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:DataType="135"
+              DTS:TextQualified="True"
+              DTS:ObjectName="CREATED_DATE"
+              DTS:DTSID="{4125F43C-96B7-47B1-959C-6208FA0B2298}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -248,14 +381,14 @@
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{3CBD715D-44FB-48CD-B9E6-DCFB18951579}"
+      DTS:DTSID="{7AD167BB-5FBB-4235-973B-D2950C58082C}"
       DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Package::Region] + &quot;_Prices_&quot; + (DT_WSTR,4)DATEPART(&quot;yyyy&quot;,GetDate()) + RIGHT(&quot;0&quot; + (DT_WSTR,2)DATEPART(&quot;mm&quot;,GetDate()) ,2) + RIGHT(&quot;0&quot; + (DT_WSTR,2)DATEPART(&quot;dd&quot;,GetDate()),2) + &quot;.csv&quot;"
+      DTS:Expression="@[$Package::Region] + &quot;_ConvertedDataReport_&quot; + (DT_WSTR,4)DATEPART(&quot;yyyy&quot;,GetDate()) + RIGHT(&quot;0&quot; + (DT_WSTR,2)DATEPART(&quot;mm&quot;,GetDate()) ,2) + RIGHT(&quot;0&quot; + (DT_WSTR,2)DATEPART(&quot;dd&quot;,GetDate()),2) + &quot;.csv&quot;"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
-      DTS:ObjectName="FlatFileName">
+      DTS:ObjectName="ConvertedDataReportName">
       <DTS:VariableValue
-        DTS:DataType="8">FL_Prices_20171023.csv</DTS:VariableValue>
+        DTS:DataType="8">FL_ConvertedDataReport_20171120.csv</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -266,10 +399,638 @@
       DTS:Namespace="User"
       DTS:ObjectName="NowDateTimeUtc">
       <DTS:VariableValue
-        DTS:DataType="7">10/23/2017 7:02:53 PM</DTS:VariableValue>
+        DTS:DataType="7">11/20/2017 8:53:52 PM</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3CBD715D-44FB-48CD-B9E6-DCFB18951579}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[$Package::Region] + &quot;_Prices_&quot; + (DT_WSTR,4)DATEPART(&quot;yyyy&quot;,GetDate()) + RIGHT(&quot;0&quot; + (DT_WSTR,2)DATEPART(&quot;mm&quot;,GetDate()) ,2) + RIGHT(&quot;0&quot; + (DT_WSTR,2)DATEPART(&quot;dd&quot;,GetDate()),2) + &quot;.csv&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="PriceExtractFlatFileName">
+      <DTS:VariableValue
+        DTS:DataType="8">FL_Prices_20171120.csv</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create Converted Data Report"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{27CB78AE-948E-41CA-9105-350DA4360042}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Converted Data Report"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Create Converted Data Report\Flat File Destination"
+              componentClassID="Microsoft.FlatFileDestination"
+              contactInfo="Flat File Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Flat File Destination"
+              localeId="1033"
+              name="Flat File Destination">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether the data will overwrite or append to the destination file."
+                  name="Overwrite">true</property>
+                <property
+                  dataType="System.Null"
+                  description="Specifies the text to write to the destination file before any data is written."
+                  expressionType="Notify"
+                  name="Header" />
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Create Converted Data Report\Flat File Destination.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Converted Data Flat File Connection Manager]"
+                  connectionManagerRefId="Package.ConnectionManagers[Converted Data Flat File Connection Manager]"
+                  name="FlatFileConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input]"
+                  hasSideEffects="true"
+                  name="Flat File Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[ITEM_ID]"
+                      cachedDataType="i4"
+                      cachedName="ITEM_ID"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[ITEM_ID]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[ITEM_ID]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[STORE_NUMBER]"
+                      cachedDataType="i4"
+                      cachedName="STORE_NUMBER"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[STORE_NUMBER]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[STORE_NUMBER]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[PRICE]"
+                      cachedDataType="numeric"
+                      cachedName="PRICE"
+                      cachedPrecision="9"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[MULTIPLE]"
+                      cachedDataType="ui1"
+                      cachedName="MULTIPLE"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[MULTIPLE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[MULTIPLE]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[NEW_TAG_EXPIRATION_DATE]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="NEW_TAG_EXPIRATION_DATE"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[NEW_TAG_EXPIRATION_DATE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[NEW_TAG_EXPIRATION_DATE]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[START_DATE]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="START_DATE"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[START_DATE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[START_DATE]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[END_DATE]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="END_DATE"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[END_DATE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[END_DATE]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[CREATED_DATE]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="CREATED_DATE"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[CREATED_DATE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[CREATED_DATE]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[IDENTIFIER]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="13"
+                      cachedName="IDENTIFIER"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[IDENTIFIER]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[IDENTIFIER]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[PRICE_TYPE_CODE]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="PRICE_TYPE_CODE"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE_TYPE_CODE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE_TYPE_CODE]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[STORE]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="STORE"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[STORE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[STORE]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[SELLING_UOM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="SELLING_UOM"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[SELLING_UOM]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[SELLING_UOM]" />
+                    <inputColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[PRICE_ATTRIBUTE_CODE]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="PRICE_ATTRIBUTE_CODE"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE_ATTRIBUTE_CODE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE_ATTRIBUTE_CODE]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[ITEM_ID]"
+                      dataType="i4"
+                      name="ITEM_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[STORE_NUMBER]"
+                      dataType="i4"
+                      name="STORE_NUMBER" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE]"
+                      dataType="numeric"
+                      name="PRICE"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[MULTIPLE]"
+                      dataType="i1"
+                      name="MULTIPLE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[SELLING_UOM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="SELLING_UOM" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE_TYPE_CODE]"
+                      dataType="wstr"
+                      length="3"
+                      name="PRICE_TYPE_CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE_ATTRIBUTE_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="PRICE_ATTRIBUTE_CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[NEW_TAG_EXPIRATION_DATE]"
+                      dataType="dbTimeStamp"
+                      name="NEW_TAG_EXPIRATION_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[START_DATE]"
+                      dataType="dbTimeStamp"
+                      name="START_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[END_DATE]"
+                      dataType="dbTimeStamp"
+                      name="END_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[CREATED_DATE]"
+                      dataType="dbTimeStamp"
+                      name="CREATED_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[IDENTIFIER]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      name="IDENTIFIER" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[STORE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="STORE" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+            </component>
+            <component
+              refId="Package\Create Converted Data Report\Get Converted Price And UOM"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Get Converted Price And UOM"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXEC infor.PriceExtractDataConversionReport</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Create Converted Data Report\Get Converted Price And UOM.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[IRMA.Db]"
+                  connectionManagerRefId="Package.ConnectionManagers[IRMA.Db]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[ITEM_ID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[ITEM_ID]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[ITEM_ID]"
+                      name="ITEM_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[STORE_NUMBER]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[STORE_NUMBER]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[STORE_NUMBER]"
+                      name="STORE_NUMBER"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[MULTIPLE]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[MULTIPLE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[MULTIPLE]"
+                      name="MULTIPLE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[PRICE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE]"
+                      name="PRICE"
+                      precision="9"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[SELLING_UOM]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[SELLING_UOM]"
+                      length="5"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[SELLING_UOM]"
+                      name="SELLING_UOM"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[START_DATE]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[START_DATE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[START_DATE]"
+                      name="START_DATE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[END_DATE]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[END_DATE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[END_DATE]"
+                      name="END_DATE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE_TYPE_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[PRICE_TYPE_CODE]"
+                      length="20"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE_TYPE_CODE]"
+                      name="PRICE_TYPE_CODE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE_ATTRIBUTE_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[PRICE_ATTRIBUTE_CODE]"
+                      length="20"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE_ATTRIBUTE_CODE]"
+                      name="PRICE_ATTRIBUTE_CODE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[NEW_TAG_EXPIRATION_DATE]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[NEW_TAG_EXPIRATION_DATE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[NEW_TAG_EXPIRATION_DATE]"
+                      name="NEW_TAG_EXPIRATION_DATE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[CREATED_DATE]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[CREATED_DATE]"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[CREATED_DATE]"
+                      name="CREATED_DATE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[REGION_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[REGION_CODE]"
+                      length="3"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[REGION_CODE]"
+                      name="REGION_CODE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[CURRENCY_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[CURRENCY_CODE]"
+                      length="3"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[CURRENCY_CODE]"
+                      name="CURRENCY_CODE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[IDENTIFIER]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[IDENTIFIER]"
+                      length="13"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[IDENTIFIER]"
+                      name="IDENTIFIER"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[STORE]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[STORE]"
+                      length="50"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[STORE]"
+                      name="STORE"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[ITEM_ID]"
+                      dataType="i4"
+                      name="ITEM_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[STORE_NUMBER]"
+                      dataType="i4"
+                      name="STORE_NUMBER" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[MULTIPLE]"
+                      dataType="ui1"
+                      name="MULTIPLE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[PRICE]"
+                      dataType="cy"
+                      name="PRICE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[SELLING_UOM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="SELLING_UOM" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[START_DATE]"
+                      dataType="dbTimeStamp"
+                      name="START_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[END_DATE]"
+                      dataType="dbTimeStamp"
+                      name="END_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[PRICE_TYPE_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="PRICE_TYPE_CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[PRICE_ATTRIBUTE_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="PRICE_ATTRIBUTE_CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[NEW_TAG_EXPIRATION_DATE]"
+                      dataType="dbTimeStamp"
+                      name="NEW_TAG_EXPIRATION_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[CREATED_DATE]"
+                      dataType="dbTimeStamp"
+                      name="CREATED_DATE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[REGION_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="REGION_CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[CURRENCY_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="CURRENCY_CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[IDENTIFIER]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      name="IDENTIFIER" />
+                    <externalMetadataColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[STORE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="STORE" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[ITEM_ID]"
+                      dataType="i4"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[ITEM_ID]"
+                      name="ITEM_ID" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[STORE_NUMBER]"
+                      dataType="i4"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[STORE_NUMBER]"
+                      name="STORE_NUMBER" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[IDENTIFIER]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[IDENTIFIER]"
+                      name="IDENTIFIER" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[STORE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[STORE]"
+                      name="STORE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[MULTIPLE]"
+                      dataType="ui1"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[MULTIPLE]"
+                      name="MULTIPLE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[PRICE]"
+                      dataType="cy"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[PRICE]"
+                      name="PRICE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[SELLING_UOM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[SELLING_UOM]"
+                      name="SELLING_UOM" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[PRICE_TYPE_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[PRICE_TYPE_CODE]"
+                      name="PRICE_TYPE_CODE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[PRICE_ATTRIBUTE_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[PRICE_ATTRIBUTE_CODE]"
+                      name="PRICE_ATTRIBUTE_CODE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[NEW_TAG_EXPIRATION_DATE]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[NEW_TAG_EXPIRATION_DATE]"
+                      name="NEW_TAG_EXPIRATION_DATE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[START_DATE]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[START_DATE]"
+                      name="START_DATE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[END_DATE]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[END_DATE]"
+                      name="END_DATE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[CREATED_DATE]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[CREATED_DATE]"
+                      name="CREATED_DATE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[REGION_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[REGION_CODE]"
+                      name="REGION_CODE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[CURRENCY_CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[CURRENCY_CODE]"
+                      name="CURRENCY_CODE" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Create Converted Data Report.Paths[OLE DB Source Output]"
+              endId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\Insert Into Price From Staging"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
@@ -296,20 +1057,20 @@
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Transfer File to WFM Infor"
+      DTS:refId="Package\Transfer Converted Data Report to WFM Infor"
       DTS:CreationName="Microsoft.FileSystemTask"
       DTS:Description="File System Task"
-      DTS:DTSID="{0A180EA8-BF4C-47B8-98E0-48B48EB5512C}"
+      DTS:DTSID="{e17f876b-1cdd-488d-901d-c51c6cfcab0a}"
       DTS:ExecutableType="Microsoft.FileSystemTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Transfer File to WFM Infor"
+      DTS:ObjectName="Transfer Converted Data Report to WFM Infor"
       DTS:TaskContact="File System Task;Microsoft Corporation; SQL Server vNext CTP2.0; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <FileSystemData
           TaskOverwriteDestFile="True"
-          TaskSourcePath="{DE8279A0-FDFC-43DE-B5C9-45540146EBB4}"
+          TaskSourcePath="{ed826ac0-a112-42e6-9141-6effc6011b44}"
           TaskDestinationPath="{3D73518D-39EF-4EFC-8711-30CE38C02F49}" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -343,7 +1104,7 @@
                       refId="Package\Transfer Price\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[SELLING_UOM]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="5"
+                      cachedLength="2"
                       cachedName="SELLING_UOM"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]" />
                     <inputColumn
@@ -568,8 +1329,8 @@
               <connections>
                 <connection
                   refId="Package\Transfer Price\Flat File Destination.Connections[FlatFileConnection]"
-                  connectionManagerID="Package.ConnectionManagers[Flat File Connection Manager]"
-                  connectionManagerRefId="Package.ConnectionManagers[Flat File Connection Manager]"
+                  connectionManagerID="Package.ConnectionManagers[Price Extract Flat File Connection Manager]"
+                  connectionManagerRefId="Package.ConnectionManagers[Price Extract Flat File Connection Manager]"
                   name="FlatFileConnection" />
               </connections>
               <inputs>
@@ -584,12 +1345,6 @@
                       cachedName="ITEM_ID"
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[ITEM_ID]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[ITEM_ID]" />
-                    <inputColumn
-                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[GUID]"
-                      cachedDataType="guid"
-                      cachedName="GUID"
-                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[GUID]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[GUID]" />
                     <inputColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[STORE_NUMBER]"
                       cachedDataType="i4"
@@ -656,6 +1411,13 @@
                       cachedName="CREATED_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[CREATED_DATE]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[CREATED_DATE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[GUIDNoBraces]"
+                      cachedDataType="wstr"
+                      cachedLength="70"
+                      cachedName="GUIDNoBraces"
+                      externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[GUID]"
+                      lineageId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Outputs[Derived Column Output].Columns[GUIDNoBraces]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -665,7 +1427,9 @@
                       name="ITEM_ID" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[GUID]"
-                      dataType="guid"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
                       name="GUID" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[STORE_NUMBER]"
@@ -822,7 +1586,7 @@
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[SELLING_UOM]"
-                      length="5"
+                      length="2"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[SELLING_UOM]"
                       name="SELLING_UOM"
                       truncationRowDisposition="FailComponent" />
@@ -940,7 +1704,7 @@
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[SELLING_UOM]"
                       codePage="1252"
                       dataType="str"
-                      length="5"
+                      length="2"
                       name="SELLING_UOM" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[START_DATE]"
@@ -1024,7 +1788,7 @@
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[SELLING_UOM]"
                       codePage="1252"
                       dataType="str"
-                      length="5"
+                      length="2"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[SELLING_UOM]"
                       name="SELLING_UOM" />
                     <outputColumn
@@ -1224,12 +1988,6 @@
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
                       lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted Region_Code]" />
                     <inputColumn
-                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[GUID]"
-                      cachedDataType="guid"
-                      cachedName="GUID"
-                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[GpmID]"
-                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[GUID]" />
-                    <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[Converted PRICE_ATTRIBUTE_CODE]"
                       cachedDataType="wstr"
                       cachedLength="10"
@@ -1255,6 +2013,12 @@
                       cachedName="Converted CURRENCY_CODE"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[CurrencyCode]"
                       lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted CURRENCY_CODE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[GUID]"
+                      cachedDataType="guid"
+                      cachedName="GUID"
+                      externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[GpmID]"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[GUID]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1413,6 +2177,11 @@
                       cachedLength="20"
                       cachedName="PRICE_TYPE_CODE"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[PRICE_TYPE_CODE]" />
+                    <inputColumn
+                      refId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Inputs[Derived Column Input].Columns[GUID]"
+                      cachedDataType="guid"
+                      cachedName="GUID"
+                      lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[GUID]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1468,6 +2237,29 @@
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
                           name="FriendlyExpression">@[User::NowDateTimeUtc]</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Outputs[Derived Column Output].Columns[GUIDNoBraces]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="70"
+                      lineageId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Outputs[Derived Column Output].Columns[GUIDNoBraces]"
+                      name="GUIDNoBraces"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[REPLACE]([REPLACE]((DT_WSTR,70)#{Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[GUID]},"{",""),"}","")</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">REPLACE(REPLACE((DT_WSTR,70)GUID,"{",""),"}","")</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1530,6 +2322,24 @@
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
+      DTS:refId="Package\Transfer Price Extract File to WFM Infor"
+      DTS:CreationName="Microsoft.FileSystemTask"
+      DTS:Description="File System Task"
+      DTS:DTSID="{0A180EA8-BF4C-47B8-98E0-48B48EB5512C}"
+      DTS:ExecutableType="Microsoft.FileSystemTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Transfer Price Extract File to WFM Infor"
+      DTS:TaskContact="File System Task;Microsoft Corporation; SQL Server vNext CTP2.0; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <FileSystemData
+          TaskOverwriteDestFile="True"
+          TaskSourcePath="{DE8279A0-FDFC-43DE-B5C9-45540146EBB4}"
+          TaskDestinationPath="{3D73518D-39EF-4EFC-8711-30CE38C02F49}" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
       DTS:refId="Package\Truncate Mammoth Staging Table"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
@@ -1578,11 +2388,11 @@
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{DB174A4F-57C8-4CB3-990F-7485127E3D56}"
+      DTS:DTSID="{A35248D9-04AD-4B5A-9F88-BE1DB5339385}"
       DTS:From="Package\Transfer Price"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\Insert Into Price From Staging" />
+      DTS:To="Package\Create Converted Data Report" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
@@ -1590,14 +2400,30 @@
       DTS:From="Package\Insert Into Price From Staging"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Transfer File to WFM Infor" />
+      DTS:To="Package\Transfer Price Extract File to WFM Infor" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
       DTS:CreationName=""
-      DTS:DTSID="{5EFC803F-2C4A-4CD4-B4E8-0FC0919A9C90}"
-      DTS:From="Package\Transfer File to WFM Infor"
+      DTS:DTSID="{99A00859-E374-4197-AFA5-63A73273B811}"
+      DTS:From="Package\Transfer Price Extract File to WFM Infor"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Transfer Converted Data Report to WFM Infor" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{3442AE43-11BB-401B-92E6-795F6DA1E22E}"
+      DTS:From="Package\Create Converted Data Report"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Insert Into Price From Staging" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{9801CFD7-FC27-45D1-97DB-7C307EC1F469}"
+      DTS:From="Package\Transfer Converted Data Report to WFM Infor"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
       DTS:To="Package\Truncate Staging Table" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
@@ -1613,39 +2439,47 @@
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="223.2,41.6"
+          Size="223,42"
+          Id="Package\Create Converted Data Report"
+          TopLeft="349,164" />
+        <NodeLayout
+          Size="223,42"
           Id="Package\Insert Into Price From Staging"
-          TopLeft="366,165" />
+          TopLeft="641,165" />
         <NodeLayout
-          Size="202.4,41.6"
-          Id="Package\Transfer File to WFM Infor"
-          TopLeft="376,302" />
+          Size="297,42"
+          Id="Package\Transfer Converted Data Report to WFM Infor"
+          TopLeft="313,296" />
         <NodeLayout
-          Size="144,41.6"
+          Size="146,42"
           Id="Package\Transfer Price"
           TopLeft="111,163" />
         <NodeLayout
-          Size="244.8,41.6"
+          Size="267,42"
+          Id="Package\Transfer Price Extract File to WFM Infor"
+          TopLeft="644,298" />
+        <NodeLayout
+          Size="245,42"
           Id="Package\Truncate Mammoth Staging Table"
           TopLeft="61.57142858116,28" />
         <NodeLayout
-          Size="192.8,41.6"
+          Size="193,42"
           Id="Package\Truncate Staging Table"
           TopLeft="81,298" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="183.48571429058,69.6">
+          TopLeft="184.03571429058,70">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,93.4"
+              EndConnector="0,93"
               Start="0,0"
-              End="0,85.9">
+              End="0,85.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,85.9" />
+                    End="0,85.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1656,18 +2490,18 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="255,184.8">
+          TopLeft="257,184.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="111,0"
+              EndConnector="92,0"
               Start="0,0"
-              End="103.5,0">
+              End="84.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="103.5,0" />
+                    End="84.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1678,18 +2512,30 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="477.4,206.6">
+          TopLeft="752.5,207">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,95.4"
+              EndConnector="25,91"
               Start="0,0"
-              End="0,87.9">
+              End="25,83.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,87.9" />
+                    End="0,41.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,41.5"
+                    Point2="0,45.5"
+                    Point3="4,45.5" />
+                  <mssgle:LineSegment
+                    End="21,45.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="21,45.5"
+                    Point2="25,45.5"
+                    Point3="25,49.5" />
+                  <mssgle:LineSegment
+                    End="25,83.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1700,18 +2546,62 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="376,320.8">
+          TopLeft="644,318">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-102.2,0"
+              EndConnector="-34,0"
               Start="0,0"
-              End="-94.7,0">
+              End="-26.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-94.7,0" />
+                    End="-26.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="572,185.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="69,0"
+              Start="0,0"
+              End="61.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="61.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="313,318">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-39,0"
+              Start="0,0"
+              End="-31.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-31.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1724,37 +2614,119 @@
     </LayoutInfo>
   </Package>
   <TaskHost
+    design-time-name="Package\Create Converted Data Report">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="222,42"
+          Id="Package\Create Converted Data Report\Get Converted Price And UOM"
+          TopLeft="138,28" />
+        <NodeLayout
+          Size="174,42"
+          Id="Package\Create Converted Data Report\Flat File Destination"
+          TopLeft="141,116" />
+        <EdgeLayout
+          Id="Package\Create Converted Data Report.Paths[OLE DB Source Output]"
+          TopLeft="249,70">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-21,46"
+              Start="0,0"
+              End="-21,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19"
+                    Point2="0,23"
+                    Point3="-4,23" />
+                  <mssgle:LineSegment
+                    End="-17,23" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-17,23"
+                    Point2="-21,23"
+                    Point3="-21,27" />
+                  <mssgle:LineSegment
+                    End="-21,38.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Create Converted Data Report\Get Converted Price And UOM">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
     design-time-name="Package\Transfer Price">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="179.2,41.6"
-          Id="Package\Transfer Price\Insert Into Mammoth"
-          TopLeft="95,240" />
-        <NodeLayout
-          Size="171.2,41.6"
-          Id="Package\Transfer Price\Flat File Destination"
-          TopLeft="560.000009536743,244.705885784849" />
-        <NodeLayout
-          Size="219.2,41.6"
-          Id="Package\Transfer Price\REG, TPR, and InsertDateUtc"
-          TopLeft="296,92" />
-        <NodeLayout
-          Size="123.2,41.6"
+          Size="123,42"
           Id="Package\Transfer Price\Multicast"
           TopLeft="346,242" />
         <NodeLayout
-          Size="160.8,41.6"
+          Size="157,42"
           Id="Package\Transfer Price\Get IRMA Prices"
           TopLeft="321,24" />
         <NodeLayout
-          Size="210.4,41.6"
+          Size="210,42"
           Id="Package\Transfer Price\Convert varchar to nvarchar"
           TopLeft="297.1428570942,173.294117861553" />
+        <NodeLayout
+          Size="219,42"
+          Id="Package\Transfer Price\REG, TPR, and InsertDateUtc"
+          TopLeft="296,92" />
+        <NodeLayout
+          Size="179,42"
+          Id="Package\Transfer Price\Insert Into Mammoth"
+          TopLeft="95,240" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Transfer Price\Flat File Destination"
+          TopLeft="580.000009536743,242.705885784849" />
+        <EdgeLayout
+          Id="Package\Transfer Price.Paths[Data Conversion Output]"
+          TopLeft="404.9714285471,214.894117861553">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.105882138447"
+              Start="0,0"
+              End="0,19.605882138447">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.605882138447" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[OLE DB Source Output]"
-          TopLeft="403.5,66">
+          TopLeft="402.5,66">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1798,18 +2770,18 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[Multicast Output 1]"
-          TopLeft="469.2,264.152942892425">
+          TopLeft="469,263.352942892424">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="90.8000095367431,0"
+              EndConnector="111.000009536743,0"
               Start="0,0"
-              End="83.3000095367431,0">
+              End="103.500009536743,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="83.3000095367431,0" />
+                    End="103.500009536743,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1820,40 +2792,18 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[Derived Column Output]"
-          TopLeft="403.9714285471,133.6">
+          TopLeft="403.8214285471,134">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,39.6941178615531"
+              EndConnector="0,39.294117861553"
               Start="0,0"
-              End="0,32.1941178615531">
+              End="0,31.794117861553">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,32.1941178615531" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Transfer Price.Paths[Data Conversion Output]"
-          TopLeft="404.9714285471,214.894117861553">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,27.105882138447"
-              Start="0,0"
-              End="0,19.605882138447">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,19.605882138447" />
+                    End="0,31.794117861553" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1866,6 +2816,14 @@
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
+    design-time-name="Package\Transfer Price\Get IRMA Prices">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\Transfer Price\Insert Into Mammoth">
     <Properties>
       <Property>
@@ -1875,14 +2833,6 @@
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Transfer Price\Get IRMA Prices">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
