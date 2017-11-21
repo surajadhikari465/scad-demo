@@ -194,7 +194,7 @@
                     <xsl:value-of select="current-dateTime()"/>
                 </pfx9:LogDate>
                 <pfx9:Message>
-                    <xsl:value-of select="concat(&quot;Starting Job: &quot;, $Start/pfx7:JobSchedule/pfx7:JobName)"/>
+                    <xsl:value-of select="concat(&#xA;&#x9;&quot;Starting Job: &quot;, $Start/pfx7:JobSchedule/pfx7:JobName,&#xA;&#x9; &quot;, Region: &quot;, $Start/pfx7:JobSchedule/pfx7:Region,&#xA;&#x9;&quot;, DestinationQueueName: &quot;, $Start/pfx7:JobSchedule/pfx7:DestinationQueueName)"/>
                 </pfx9:Message>
             </pfx9:AppLog>
         </pd:inputBindings>

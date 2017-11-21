@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <name name="SharedErrorPublisherLibraryBuilder">
-        <version>11</version>
+        <version>12</version>
         <author>Blake Jones</author>
         <fileLocation>C:\dev\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedErrorPublisher.projlib</fileLocation>
         <resources>/SharedResources/Processes/HandlePublishErrorMessageFailure.process,/SharedResources/Processes/PublishErrorMessage.process</resources>

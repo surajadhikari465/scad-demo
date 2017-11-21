@@ -139,8 +139,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>106</pd:x>
-        <pd:y>194</pd:y>
+        <pd:x>81</pd:x>
+        <pd:y>200</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -160,8 +160,8 @@
     <pd:activity name="ConfirmOnFailure">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>644</pd:x>
-        <pd:y>194</pd:y>
+        <pd:x>198</pd:x>
+        <pd:y>200</pd:y>
         <config>
             <ConfirmEvent>Price Message Archive Queue Receiver</ConfirmEvent>
         </config>
@@ -170,8 +170,8 @@
     <pd:activity name="Call Logger">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>277</pd:x>
-        <pd:y>194</pd:y>
+        <pd:x>321</pd:x>
+        <pd:y>198</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -223,8 +223,8 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>486</pd:x>
-        <pd:y>194</pd:y>
+        <pd:x>529</pd:x>
+        <pd:y>196</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -259,8 +259,8 @@
     <pd:activity name="Publish Error Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>375</pd:x>
-        <pd:y>197</pd:y>
+        <pd:x>422</pd:x>
+        <pd:y>206</pd:y>
         <config>
             <spawn>true</spawn>
             <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
@@ -271,19 +271,17 @@
                     <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
                 </pfx4:Application>
                 <pfx4:MessageID>
-                    <xsl:value-of select="$Price-Message-Archive-Queue-Receiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                    <xsl:value-of select="$ParseMessageArchive/pfx2:PriceMessageArchive/pfx2:MessageID"/>
                 </pfx4:MessageID>
                 <pfx4:MessageProperties>
-                    <xsl:for-each select="$Price-Message-Archive-Queue-Receiver/ns:ActivityOutput/OtherProperties/node()">
-                        <pfx4:NameValuePair>
-                            <xsl:attribute name="name">
-                                <xsl:value-of select="local-name(current())"/>
-                            </xsl:attribute>
-                            <xsl:attribute name="value">
-                                <xsl:value-of select="current()"/>
-                            </xsl:attribute>
-                        </pfx4:NameValuePair>
-                    </xsl:for-each>
+                    <pfx4:NameValuePair>
+                        <xsl:attribute name="name">
+                            <xsl:value-of select="&quot;MessageHeaders&quot;"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="$ParseMessageArchive/pfx2:PriceMessageArchive/pfx2:MessageHeaders"/>
+                        </xsl:attribute>
+                    </pfx4:NameValuePair>
                 </pfx4:MessageProperties>
                 <pfx4:Message>
                     <xsl:value-of select="$Price-Message-Archive-Queue-Receiver/ns:ActivityOutput/Body"/>
@@ -342,14 +340,14 @@
     </pd:transition>
     <pd:transition>
         <pd:from>ConfirmOnFailure</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Call Logger</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Catch</pd:from>
-        <pd:to>Call Logger</pd:to>
+        <pd:to>ConfirmOnFailure</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -363,7 +361,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Log</pd:from>
-        <pd:to>ConfirmOnFailure</pd:to>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

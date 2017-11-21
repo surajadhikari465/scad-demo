@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>MammothErrorMessageQueue</name>
-			<value>WFMSB1.GIS.EMS1.CLE.Log.Queue.V1</value>
+			<value>WFMSB1.Mammoth.Retail.Errors.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510252035902</modTime>
+			<modTime>1510958826554</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

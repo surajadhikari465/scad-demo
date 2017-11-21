@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/schemas/ErrorMessagesMonitor/Schemas/Schema.xsd" xmlns:WFM.UID="java://UID">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/schemas/ErrorMessagesMonitor/Schemas/Schema.xsd" xmlns:WFM.UID="java://UID">
     <xsd:import namespace="http://www.tibco.com/schemas/ErrorMessagesMonitor/Schemas/Schema.xsd" schemaLocation="/Schemas/ErrorMessageMail.xsd"/>
     <pd:name>Processes/Process Error Messages.process</pd:name>
     <pd:startName>Timer</pd:startName>
@@ -12,10 +12,10 @@
         <pd:x>84</pd:x>
         <pd:y>85</pd:y>
         <config>
-            <StartTime>1509941679000</StartTime>
-            <Frequency>true</Frequency>
-            <TimeInterval>1</TimeInterval>
-            <FrequencyIndex>Second</FrequencyIndex>
+            <StartTime>%%Application/TimerStartTime%%</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>%%Application/TimerTimeIntervalInMilliseconds%%</TimeInterval>
+            <FrequencyIndex>Millisecond</FrequencyIndex>
         </config>
         <pd:inputBindings/>
     </pd:starter>

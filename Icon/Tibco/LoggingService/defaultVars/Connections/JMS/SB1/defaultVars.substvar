@@ -4,18 +4,18 @@
 		<globalVariable>
 			<name>Password</name>
 			<value>sb1_cleUser</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510831033687</modTime>
+			<modTime>1511157089574</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
 			<value>sb1_cleUser</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510831033726</modTime>
+			<modTime>1511157089603</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

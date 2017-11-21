@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/Process Error Messages.process</processProperty>
         </processArchive>
-        <versionProperty>4</versionProperty>
+        <versionProperty>6</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>ErrorMessagesMonitor</name>

@@ -65,5 +65,21 @@
 			<type>Boolean</type>
 			<modTime>1510941178759</modTime>
 		</globalVariable>
+		<globalVariable>
+			<name>TimerStartTime</name>
+			<value>2017 Nov 21 12:00:00 CST</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1511280061845</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TimerTimeIntervalInMilliseconds</name>
+			<value>900000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1511279667757</modTime>
+		</globalVariable>
 	</globalVariables>
 </repository>

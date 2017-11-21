@@ -2,7 +2,6 @@
     @Region nvarchar(2),
     @ItemID int,
     @BusinessUnitID int
-
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -13,21 +12,20 @@ BEGIN
         WHERE
             Region = @Region
             AND ItemID = @ItemID
-            AND    BusinessUnitID = @BusinessUnitID';
+            AND BusinessUnitID = @BusinessUnitID';
 
     DECLARE @params NVARCHAR(500);
     SET @params = N'
         @Region nvarchar(2),
         @ItemID int,
-        @BusinessUnitID int,
-        @StartDate datetime2,
-        @PriceType nvarchar(3)';
+        @BusinessUnitID int';
 
     EXEC sp_executesql
         @sql,
         @params,
-        @Region = @Region,
-        @ItemID = @ItemID
+        @Region,
+        @ItemID,
+		@BusinessUnitID
 END
 
 GO

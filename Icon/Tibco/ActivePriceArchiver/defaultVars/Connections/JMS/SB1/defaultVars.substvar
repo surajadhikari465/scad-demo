@@ -4,18 +4,18 @@
 		<globalVariable>
 			<name>Password</name>
 			<value>sb1_mammothPriceArchiveUser</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510833801389</modTime>
+			<modTime>1511286848211</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
 			<value>sb1_mammothPriceArchiveUser</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510833801462</modTime>
+			<modTime>1511286848272</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

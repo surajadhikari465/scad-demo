@@ -17,6 +17,19 @@
 );
 GO
 
+CREATE NONCLUSTERED INDEX [IX_AppID_IncludeLogDate]ON [app].[AppLog]
+(
+	[AppID] ASC
+)
+INCLUDE ([LogDate]) 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_AppLog_InsertDate] ON [app].[AppLog]
+(
+	[InsertDate] ASC
+)
+GO
+
 GRANT INSERT, SELECT ON [app].[AppLog] TO [TibcoRole]
 GO
 

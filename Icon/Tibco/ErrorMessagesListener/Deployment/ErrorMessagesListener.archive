@@ -10,7 +10,7 @@
             <authorProperty>2130356</authorProperty>
             <processProperty>/Processes/ErrorMessagesListener.process</processProperty>
         </processArchive>
-        <versionProperty>3</versionProperty>
+        <versionProperty>6</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>ErrorMessagesListener</name>

@@ -3,20 +3,20 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!3SiwWLhJ0bFFX5k+z7p9+qQzl0qb0BJIbdz37HydLGzO0gjJGuEPRPXa19DlDd4hjhPi1UGHzuE=</value>
-			<deploymentSettable>false</deploymentSettable>
+			<value>#!z2dwGgkgPvUW7B/ZtxeKDRh1uOkD6L/grhz+l3+eiI7y4uzhr2oFRw7EivXq6hABwQEJ9aYWtUo=</value>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
 			<constraint></constraint>
-			<modTime>1510831682011</modTime>
+			<modTime>1511157053385</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
 			<value>sb1_mammothPriceR10User</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510831682112</modTime>
+			<modTime>1511157053452</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
