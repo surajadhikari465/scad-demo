@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace WebSupport.DataAccess.Commands
 {
@@ -23,7 +24,7 @@ namespace WebSupport.DataAccess.Commands
         {
             context.PriceResetMessageHistories.Add(new PriceResetMessageHistory
             {
-                Message = data.Message,
+                Message = XDocument.Parse(data.Message).ToString(),
                 MessageId = data.MessageId,
                 MessageStatusId = MessageStatusTypes.Sent,
                 MessageTypeId = MessageTypes.Price,

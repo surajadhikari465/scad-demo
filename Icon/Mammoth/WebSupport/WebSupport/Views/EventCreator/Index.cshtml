@@ -33,7 +33,7 @@
                 <div class="row">
                     @Html.Label(String.Format("Scan Codes (one per line, maximum {0})", 3000), new { @class = "form-label col-md-4" })
                     <div>
-                        @Html.TextAreaFor(model => Model.ScanCodesText, 20, 20, new { @class = "form-input col-md-8", @type = "number" })
+                        @Html.TextAreaFor(model => Model.ScanCodesText, 20, 20, new { @class = "form-input col-md-8" })
                         @Html.ValidationMessageFor(model => Model.ScanCodesText, null, new { @class = "col-md-4 form-property-val" })
                     </div>
                 </div>

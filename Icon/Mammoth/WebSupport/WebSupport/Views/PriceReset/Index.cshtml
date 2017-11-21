@@ -58,7 +58,7 @@
                         itemBoxSize = (Model.Items.Count() <= 40) ? Model.Items.Count() : 40;
                     }
                 }
-                @Html.TextAreaFor(model => Model.Items, itemBoxSize, 20, new { @class = "form-control", @type = "number" })
+                @Html.TextAreaFor(model => Model.Items, itemBoxSize, 20, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Items, "", new { @class = "text-danger" })
             </div>
         </div>
