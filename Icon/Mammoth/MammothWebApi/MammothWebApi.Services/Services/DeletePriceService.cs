@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace MammothWebApi.Service.Services
 {
-    public class DeletePriceService : IService<DeletePrice>
+    public class DeletePriceService : IUpdateService<DeletePrice>
     {
         private ICommandHandler<StagingPriceCommand> stagePricesCommandHandler;
         private ICommandHandler<DeletePricesCommand> deletePricesCommandHandler;

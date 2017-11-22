@@ -21,7 +21,7 @@ namespace MammothWebApi.Tests.Controllers
     [TestClass]
     public class ItemLocaleControllerTests
     {
-        private Mock<IService<AddUpdateItemLocale>> mockItemLocaleService;
+        private Mock<IUpdateService<AddUpdateItemLocale>> mockItemLocaleService;
         private Mock<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>> mockGetAllBusinessUnitsQueryHandler;
         private Mock<ILogger> mockLogger;
         private ItemLocaleController itemLocaleController;
@@ -29,7 +29,7 @@ namespace MammothWebApi.Tests.Controllers
         [TestInitialize]
         public void InitializeTest()
         {
-            this.mockItemLocaleService = new Mock<IService<AddUpdateItemLocale>>();
+            this.mockItemLocaleService = new Mock<IUpdateService<AddUpdateItemLocale>>();
             this.mockGetAllBusinessUnitsQueryHandler = new Mock<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>>();
             this.mockLogger = new Mock<ILogger>();
             this.itemLocaleController = new ItemLocaleController(this.mockItemLocaleService.Object, 

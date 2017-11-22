@@ -10,14 +10,14 @@ using MammothWebApi.Service.Services;
 
 namespace MammothWebApi.Service.Decorators
 {
-    public class CancelAllSalesAddUpdatePriceServiceDecorator : IService<AddUpdatePrice>
+    public class CancelAllSalesAddUpdatePriceServiceDecorator : IUpdateService<AddUpdatePrice>
     {
         private const string RegPriceType = "REG";
 
-        private IService<AddUpdatePrice> priceService;
+        private IUpdateService<AddUpdatePrice> priceService;
         private IQueryHandler<GetPricesByScanCodeAndStoreQuery, List<ItemPriceModel>> getPricesByScanCodeAndStoreQuery;
 
-        public CancelAllSalesAddUpdatePriceServiceDecorator(IService<AddUpdatePrice> priceService,
+        public CancelAllSalesAddUpdatePriceServiceDecorator(IUpdateService<AddUpdatePrice> priceService,
             IQueryHandler<GetPricesByScanCodeAndStoreQuery, List<ItemPriceModel>> getPricesByScanCodeAndStoreQuery)
         {
             this.priceService = priceService;

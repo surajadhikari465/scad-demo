@@ -15,7 +15,7 @@ namespace MammothWebApi.Tests.Services
     public class CancelAllSalesAddUpdatePriceServiceDecoratorTests
     {
         private Mock<IQueryHandler<GetPricesByScanCodeAndStoreQuery, List<ItemPriceModel>>> mockGetPricesQuery;
-        private Mock<IService<AddUpdatePrice>> mockAddUpdatePriceService;
+        private Mock<IUpdateService<AddUpdatePrice>> mockAddUpdatePriceService;
         private CancelAllSalesAddUpdatePriceServiceDecorator cancelAllSalesDecorator;
         private AddUpdatePrice addUpdatePriceData;
 
@@ -23,7 +23,7 @@ namespace MammothWebApi.Tests.Services
         public void InitializeTest()
         {
             this.mockGetPricesQuery = new Mock<IQueryHandler<GetPricesByScanCodeAndStoreQuery, List<ItemPriceModel>>>();
-            this.mockAddUpdatePriceService = new Mock<IService<AddUpdatePrice>>();
+            this.mockAddUpdatePriceService = new Mock<IUpdateService<AddUpdatePrice>>();
             this.cancelAllSalesDecorator = new CancelAllSalesAddUpdatePriceServiceDecorator(this.mockAddUpdatePriceService.Object,
                 this.mockGetPricesQuery.Object);
 

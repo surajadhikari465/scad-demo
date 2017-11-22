@@ -62,9 +62,21 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mammoth.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.Common.2017.1.5.1\lib\net451\Mammoth.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2017.6.15.2\lib\net451\Mammoth.Common.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Mammoth.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.Logging.2017.11.15.10\lib\net46\Mammoth.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -79,6 +91,7 @@
     <Compile Include="Decorators\DbConnectionCommandHandlerDecorator.cs" />
     <Compile Include="Decorators\DbConnectionQueryHandlerDecorator.cs" />
     <Compile Include="Models\ItemLocaleServiceModel.cs" />
+    <Compile Include="Models\ItemStorePriceServiceModel.cs" />
     <Compile Include="Models\PriceServiceModel.cs" />
     <Compile Include="Decorators\DbConnectionServiceDecorator.cs" />
     <Compile Include="Decorators\EmailErrorServiceDecorator.cs" />
@@ -92,21 +105,12 @@
     <Compile Include="Services\AddUpdatePriceService.cs" />
     <Compile Include="Services\DeletePrice.cs" />
     <Compile Include="Services\DeletePriceService.cs" />
-    <Compile Include="Services\IService.cs" />
+    <Compile Include="Services\GetItemStorePriceAttributes.cs" />
+    <Compile Include="Services\GetItemStorePriceAttributesService.cs" />
+    <Compile Include="Services\IQueryService.cs" />
+    <Compile Include="Services\IUpdateService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj">
-      <Project>{82505a9b-2264-4428-9806-d5ef838109b3}</Project>
-      <Name>Mammoth.Common.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Common\Mammoth.Common.csproj">
-      <Project>{563f0633-8364-4ed0-88ff-f55302117348}</Project>
-      <Name>Mammoth.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Logging\Mammoth.Logging.csproj">
-      <Project>{eed6c132-5e76-46e9-bd78-103af9545ac7}</Project>
-      <Name>Mammoth.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MammothWebApi.Common\MammothWebApi.Common.csproj">
       <Project>{75837b38-43f8-4598-addb-075f580887e0}</Project>
       <Name>MammothWebApi.Common</Name>

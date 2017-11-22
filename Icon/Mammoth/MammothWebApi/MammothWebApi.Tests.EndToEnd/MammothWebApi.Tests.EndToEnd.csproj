@@ -44,6 +44,9 @@
       <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Mammoth.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.Common.2017.1.5.1\lib\net451\Mammoth.Common.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleInjector, Version=3.2.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleInjector.3.2.0\lib\net45\SimpleInjector.dll</HintPath>
       <Private>True</Private>
@@ -71,18 +74,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj">
-      <Project>{82505a9b-2264-4428-9806-d5ef838109b3}</Project>
-      <Name>Mammoth.Common.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Common\Mammoth.Common.csproj">
-      <Project>{563f0633-8364-4ed0-88ff-f55302117348}</Project>
-      <Name>Mammoth.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mammoth.Shared\Mammoth.Logging\Mammoth.Logging.csproj">
-      <Project>{eed6c132-5e76-46e9-bd78-103af9545ac7}</Project>
-      <Name>Mammoth.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MammothWebApi.Common\MammothWebApi.Common.csproj">
       <Project>{75837b38-43f8-4598-addb-075f580887e0}</Project>
       <Name>MammothWebApi.Common</Name>

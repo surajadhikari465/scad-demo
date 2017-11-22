@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace MammothWebApi.Service.Services
 {
-    public class AddUpdatePriceService : IService<AddUpdatePrice>
+    public class AddUpdatePriceService : IUpdateService<AddUpdatePrice>
     {
         private ILogger logger;
         private ICommandHandler<StagingPriceCommand> stagePricesCommandHandler;

@@ -1,8 +1,8 @@
 ﻿using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Logging;
 using MammothWebApi.Controllers;
+using MammothWebApi.DataAccess.Models;
 using MammothWebApi.DataAccess.Queries;
-using MammothWebApi.Models;
 using MammothWebApi.Service.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -20,21 +20,25 @@ namespace MammothWebApi.Tests.Controllers
     public class PriceControllerTests
     {
         private PriceController controller;
-        private Mock<IService<AddUpdatePrice>> mockAddUpdatePriceService;
-        private Mock<IService<DeletePrice>> mockDeletePriceService;
+        private Mock<IUpdateService<AddUpdatePrice>> mockAddUpdatePriceService;
+        private Mock<IUpdateService<DeletePrice>> mockDeletePriceService;
         private Mock<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>> mockGetAllBusinessUnitsQueryHandler;
+        private Mock<IQueryService<GetItemStorePriceAttributes, IEnumerable<ItemStorePriceModel>>> mockGetItemStorePriceService;
         private Mock<ILogger> mockLogger;
 
         [TestInitialize]
         public void InitializeTests()
         {
             this.mockLogger = new Mock<ILogger>();
-            this.mockAddUpdatePriceService = new Mock<IService<AddUpdatePrice>>();
-            this.mockDeletePriceService = new Mock<IService<DeletePrice>>();
+            this.mockAddUpdatePriceService = new Mock<IUpdateService<AddUpdatePrice>>();
+            this.mockDeletePriceService = new Mock<IUpdateService<DeletePrice>>();
             this.mockGetAllBusinessUnitsQueryHandler = new Mock<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>>();
-            this.controller = new PriceController(this.mockAddUpdatePriceService.Object, 
+            this.mockGetItemStorePriceService = new Mock<IQueryService<GetItemStorePriceAttributes, IEnumerable<ItemStorePriceModel>>>();
+            this.controller = new PriceController(
+                this.mockAddUpdatePriceService.Object, 
                 this.mockDeletePriceService.Object, 
                 this.mockGetAllBusinessUnitsQueryHandler.Object,
+                this.mockGetItemStorePriceService.Object,
                 this.mockLogger.Object);
         }
 
@@ -42,7 +46,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerAddOrUpdatePrices_PricesListIsNull_ReturnsBadRequest()
         {
             // Given
-            List<PriceModel> prices = null;
+            List<MammothWebApi.Models.PriceModel> prices = null;
             var expectedMessage = "There were no prices submitted or the format of the data could not be read.";
 
             // When
@@ -57,7 +61,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerAddOrUpdatePrices_PricesListIsNull_LoggerWarnCalled()
         {
             // Given
-            List<PriceModel> prices = null;
+            List<MammothWebApi.Models.PriceModel> prices = null;
 
             // When
             var result = this.controller.AddOrUpdatePrices(prices) as BadRequestErrorMessageResult;
@@ -71,7 +75,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerAddOrUpdatePrices_PricesListCountIsZero_ReturnsBadRequest()
         {
             // Given
-            List<PriceModel> prices = new List<PriceModel>();
+            List<MammothWebApi.Models.PriceModel> prices = new List<MammothWebApi.Models.PriceModel>();
             var expectedMessage = "There were no prices submitted or the format of the data could not be read.";
 
             // When
@@ -86,7 +90,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerAddOrUpdatePrices_PricesListCountIsZero_LoggerWarnedCalled()
         {
             // Given
-            List<PriceModel> prices = new List<PriceModel>();
+            List<MammothWebApi.Models.PriceModel> prices = new List<MammothWebApi.Models.PriceModel>();
 
             // When
             var result = this.controller.AddOrUpdatePrices(prices) as BadRequestErrorMessageResult;
@@ -100,7 +104,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerAddOrUpdatePrices_ValidPriceModelList_ReturnsCreatedResponse()
         {
             // Given
-            List<PriceModel> prices = BuildPriceModel(numberOfItems: 3);
+            List<MammothWebApi.Models.PriceModel> prices = BuildPriceModel(numberOfItems: 3);
             this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>()))
                 .Returns(new List<int>(prices.Select(p => p.BusinessUnitId)));
 
@@ -115,7 +119,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerAddOrUpdatePrices_NonSqlExceptionDuringService_ReturnsInternalServerErrorWithExceptionDetails()
         {
             // Given
-            List<PriceModel> prices = BuildPriceModel(numberOfItems: 3);
+            List<MammothWebApi.Models.PriceModel> prices = BuildPriceModel(numberOfItems: 3);
             this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>())).Returns(new List<int>());
             InvalidOperationException invalidOperationException = new InvalidOperationException("Test Invalid Operation Exception", new Exception("Test Inner Exception"));
             this.mockAddUpdatePriceService.Setup(s => s.Handle(It.IsAny<AddUpdatePrice>())).Throws(invalidOperationException);
@@ -134,7 +138,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerDeletePrices_NonSqlExceptionDuringService_ReturnsInternalServerErrorWithExceptionDetails()
         {
             // Given
-            List<PriceModel> prices = BuildPriceModel(numberOfItems: 3);
+            List<MammothWebApi.Models.PriceModel> prices = BuildPriceModel(numberOfItems: 3);
             this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>())).Returns(new List<int>());
             InvalidOperationException invalidOperationException = new InvalidOperationException("Test Invalid Operation Exception", new Exception("Test Inner Exception"));
             this.mockDeletePriceService.Setup(s => s.Handle(It.IsAny<DeletePrice>())).Throws(invalidOperationException);
@@ -152,7 +156,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerPrices_SqlExceptionDuringService_ReturnsInternalServerErrorWithSqlExceptionDetails()
         {
             // Given
-            List<PriceModel> prices = BuildPriceModel(numberOfItems: 3);
+            List<MammothWebApi.Models.PriceModel> prices = BuildPriceModel(numberOfItems: 3);
             SqlException sqlException = CreateSqlException();
             this.mockDeletePriceService.Setup(s => s.Handle(It.IsAny<DeletePrice>())).Throws(sqlException);
 
@@ -169,7 +173,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerAddOrUpdatePrices_SqlExceptionDuringService_ReturnsInternalServerErrorWithSqlExceptionDetails()
         {
             // Given
-            List<PriceModel> prices = BuildPriceModel(numberOfItems: 3);
+            List<MammothWebApi.Models.PriceModel> prices = BuildPriceModel(numberOfItems: 3);
             this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>())).Returns(new List<int>());
             SqlException sqlException = CreateSqlException();
             this.mockAddUpdatePriceService.Setup(s => s.Handle(It.IsAny<AddUpdatePrice>())).Throws(sqlException);
@@ -187,7 +191,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerDeletePrices_ValidPriceModelList_ReturnsOkResponse()
         {
             // Given
-            List<PriceModel> prices = BuildPriceModel(numberOfItems: 5);
+            List<MammothWebApi.Models.PriceModel> prices = BuildPriceModel(numberOfItems: 5);
 
             // When
             var result = this.controller.DeletePrices(prices) as OkResult;
@@ -200,7 +204,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerDeletePrices_PricesListIsNull_ReturnsBadRequest()
         {
             // Given
-            List<PriceModel> prices = null;
+            List<MammothWebApi.Models.PriceModel> prices = null;
             var expectedMessage = "There were no prices submitted or the format of the data could not be read.";
 
             // When
@@ -215,7 +219,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerDeletePrices_PricesListIsNull_LoggerWarnCalled()
         {
             // Given
-            List<PriceModel> prices = null;
+            List<MammothWebApi.Models.PriceModel> prices = null;
 
             // When
             var result = this.controller.DeletePrices(prices) as BadRequestErrorMessageResult;
@@ -229,7 +233,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerDeletePrices_PricesListCountIsZero_ReturnsBadRequest()
         {
             // Given
-            List<PriceModel> prices = new List<PriceModel>();
+            List<MammothWebApi.Models.PriceModel> prices = new List<MammothWebApi.Models.PriceModel>();
             var expectedMessage = "There were no prices submitted or the format of the data could not be read.";
 
             // When
@@ -244,7 +248,7 @@ namespace MammothWebApi.Tests.Controllers
         public void PriceControllerDeletePrices_PricesListCountIsZero_LoggerWarnedCalled()
         {
             // Given
-            List<PriceModel> prices = new List<PriceModel>();
+            List<MammothWebApi.Models.PriceModel> prices = new List<MammothWebApi.Models.PriceModel>();
 
             // When
             var result = this.controller.DeletePrices(prices) as BadRequestErrorMessageResult;
@@ -254,16 +258,16 @@ namespace MammothWebApi.Tests.Controllers
                 "Logger Warn was not called properly.");
         }
 
-        private List<PriceModel> BuildPriceModel(int numberOfItems)
+        private List<MammothWebApi.Models.PriceModel> BuildPriceModel(int numberOfItems)
         {
-            var prices = new List<PriceModel>();
+            var prices = new List<MammothWebApi.Models.PriceModel>();
 
             for (int i = 0; i < numberOfItems; i++)
             {
-                PriceModel model = new PriceModel
+                MammothWebApi.Models.PriceModel model = new MammothWebApi.Models.PriceModel
                 {
                     BusinessUnitId = 11111,
-                    ScanCode = String.Format("777777777{0}", i.ToString()),
+                    ScanCode = string.Format("777777777{0}", i.ToString()),
                     Price = 1.99M,
                     PriceType = "SAL",
                     Multiple = 1,
@@ -283,13 +287,13 @@ namespace MammothWebApi.Tests.Controllers
         public void BuildPriceJsonFile()
         {
             int rows = 1;
-            List<PriceModel> prices = new List<PriceModel>();
+            List<MammothWebApi.Models.PriceModel> prices = new List<MammothWebApi.Models.PriceModel>();
 
             for (int i = 0; i < rows; i++)
             {
-                PriceModel price = new PriceModel
+                MammothWebApi.Models.PriceModel price = new MammothWebApi.Models.PriceModel
                 {
-                    ScanCode = String.Format("994824192{0}", i.ToString()),
+                    ScanCode = string.Format("994824192{0}", i.ToString()),
                     BusinessUnitId = 10006,
                     Multiple = 1,
                     Price = 4.99M,
@@ -314,13 +318,13 @@ namespace MammothWebApi.Tests.Controllers
         public void BuildSalePriceJsonFile()
         {
             int rows = 5;
-            List<PriceModel> prices = new List<PriceModel>();
+            List<MammothWebApi.Models.PriceModel> prices = new List<MammothWebApi.Models.PriceModel>();
 
             for (int i = 0; i < rows; i++)
             {
-                PriceModel price = new PriceModel
+                MammothWebApi.Models.PriceModel price = new MammothWebApi.Models.PriceModel
                 {
-                    ScanCode = String.Format("994824192{0}", i.ToString()),
+                    ScanCode = string.Format("994824192{0}", i.ToString()),
                     BusinessUnitId = 10130,
                     Multiple = 1,
                     Price = 2.99M,

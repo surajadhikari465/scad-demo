@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace MammothWebApi.Service.Services
 {
-    public class AddUpdateItemLocaleService : IService<AddUpdateItemLocale>
+    public class AddUpdateItemLocaleService : IUpdateService<AddUpdateItemLocale>
     {
         private ILogger logger;
         private ICommandHandler<StagingItemLocaleCommand> itemLocaleStagingHandler;

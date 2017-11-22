@@ -66,12 +66,14 @@
     <Compile Include="CommandQuery\ICommandHandler.cs" />
     <Compile Include="CommandQuery\IQuery.cs" />
     <Compile Include="CommandQuery\IQueryHandler.cs" />
+    <Compile Include="CommandQuery\IQueryHandlerAsync.cs" />
     <Compile Include="ConnectionBuilders\ConnectionBuilder.cs" />
     <Compile Include="DbProviders\IDbProvider.cs" />
     <Compile Include="DbProviders\SqlDbProvider.cs" />
     <Compile Include="Decorators\DbProviderCommandHandlerDecorator.cs" />
     <Compile Include="Decorators\DbProviderQueryHandlerDecorator.cs" />
     <Compile Include="ConnectionBuilders\IConnectionBuilder.cs" />
+    <Compile Include="Decorators\DbProviderQueryHandlerDecoratorAsync.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\ChangeQueueHistoryModel.cs" />
     <Compile Include="Models\HierarchyClass.cs" />

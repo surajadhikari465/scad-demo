@@ -18,14 +18,14 @@ namespace MammothWebApi.Tests.Services
     public class LoggingServiceDecoratorTests
     {
         private LoggingServiceDecorator<AddUpdateItemLocale> decorator;
-        private Mock<IService<AddUpdateItemLocale>> mockService;
+        private Mock<IUpdateService<AddUpdateItemLocale>> mockService;
         private Mock<ILogger> mockLogger;
         private AddUpdateItemLocale serviceData;
         
         [TestInitialize]
         public void InitializeTest()
         {
-            this.mockService = new Mock<IService<AddUpdateItemLocale>>();
+            this.mockService = new Mock<IUpdateService<AddUpdateItemLocale>>();
             this.mockLogger = new Mock<ILogger>();
             this.serviceData = new AddUpdateItemLocale();
             this.serviceData.ItemLocales = new List<ItemLocaleServiceModel>

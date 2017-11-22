@@ -15,7 +15,7 @@ namespace MammothWebApi.Tests.Services
     public class TransactionServiceDecoratorTests
     {
         private TransactionServiceDecorator<AddUpdateItemLocale> decorator;
-        private Mock<IService<AddUpdateItemLocale>> mockService;
+        private Mock<IUpdateService<AddUpdateItemLocale>> mockService;
         private AddUpdateItemLocale itemLocaleData;
         private string connectionString;
         private Mock<IDbProvider> mockDb;
@@ -25,7 +25,7 @@ namespace MammothWebApi.Tests.Services
         [TestInitialize]
         public void InitializeTest()
         {
-            this.mockService = new Mock<IService<AddUpdateItemLocale>>();
+            this.mockService = new Mock<IUpdateService<AddUpdateItemLocale>>();
             this.connectionString = @"Data Source=IDW-DB01-DEV\IDWD;Initial Catalog=Mammoth_UnitTest;Integrated Security=SSPI";
             this.mockDb = new Mock<IDbProvider>();
             this.mockConnection = new Mock<IDbConnection>();

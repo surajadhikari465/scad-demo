@@ -17,7 +17,7 @@ namespace MammothWebApi.Tests.Services
     public class EmailErrorServiceDecoratorTests
     {
         private EmailErrorServiceDecorator<AddUpdateItemLocale> decorator;
-        private Mock<IService<AddUpdateItemLocale>> mockService;
+        private Mock<IUpdateService<AddUpdateItemLocale>> mockService;
         private AddUpdateItemLocale itemLocaleData;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<IEmailMessageBuilder<AddUpdateItemLocale>> mockEmailBuilder;
@@ -25,7 +25,7 @@ namespace MammothWebApi.Tests.Services
         [TestInitialize]
         public void InitializeTest()
         {
-            this.mockService = new Mock<IService<AddUpdateItemLocale>>();
+            this.mockService = new Mock<IUpdateService<AddUpdateItemLocale>>();
             this.mockEmailClient = new Mock<IEmailClient>();
             this.mockEmailBuilder = new Mock<IEmailMessageBuilder<AddUpdateItemLocale>>();
 

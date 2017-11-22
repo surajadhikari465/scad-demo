@@ -4,12 +4,12 @@ using System;
 
 namespace MammothWebApi.Service.Decorators
 {
-    public class LoggingServiceDecorator<T> : IService<T> where T: class
+    public class LoggingServiceDecorator<T> : IUpdateService<T> where T: class
     {
-        private IService<T> service;
+        private IUpdateService<T> service;
         private ILogger logger;
 
-        public LoggingServiceDecorator(IService<T> service, ILogger logger)
+        public LoggingServiceDecorator(IUpdateService<T> service, ILogger logger)
         {
             this.service = service;
             this.logger = logger;

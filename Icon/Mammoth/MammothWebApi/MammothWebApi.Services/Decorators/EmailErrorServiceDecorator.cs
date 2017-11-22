@@ -4,13 +4,13 @@ using System;
 
 namespace MammothWebApi.Service.Decorators
 {
-    public class EmailErrorServiceDecorator<T> : IService<T> where T: class
+    public class EmailErrorServiceDecorator<T> : IUpdateService<T> where T: class
     {
-        private IService<T> service;
+        private IUpdateService<T> service;
         private IEmailClient emailClient;
         private IEmailMessageBuilder<T> emailBuilder;
 
-        public EmailErrorServiceDecorator(IService<T> service,
+        public EmailErrorServiceDecorator(IUpdateService<T> service,
             IEmailClient emailClient,
             IEmailMessageBuilder<T> emailBuilder)
         {

@@ -16,7 +16,7 @@ namespace MammothWebApi.Tests.Services
     [TestClass]
     public class DbConnectionServiceDecoratorTests
     {
-        private Mock<IService<AddUpdateItemLocale>> mockService;
+        private Mock<IUpdateService<AddUpdateItemLocale>> mockService;
         private IServiceSettings settings;
         private Mock<IDbConnection> mockConnection;
 
@@ -26,7 +26,7 @@ namespace MammothWebApi.Tests.Services
         [TestInitialize]
         public void InitializeTest()
         {
-            this.mockService = new Mock<IService<AddUpdateItemLocale>>();
+            this.mockService = new Mock<IUpdateService<AddUpdateItemLocale>>();
             this.settings = new ServiceSettings();
             this.settings.ConnectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
 

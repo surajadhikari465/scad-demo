@@ -5,13 +5,13 @@ using System.Data.SqlClient;
 
 namespace MammothWebApi.Service.Decorators
 {
-    public class DbConnectionServiceDecorator<T> : IService<T> where T: class
+    public class DbConnectionServiceDecorator<T> : IUpdateService<T> where T: class
     {
-        private IService<T> service;
+        private IUpdateService<T> service;
         private IServiceSettings settings;
         private IDbProvider db;
 
-        public DbConnectionServiceDecorator(IService<T> service,
+        public DbConnectionServiceDecorator(IUpdateService<T> service,
             IDbProvider db,
             IServiceSettings settings)
         {

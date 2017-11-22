@@ -1,6 +1,7 @@
 ﻿using Mammoth.Common;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Logging;
+using MammothWebApi.DataAccess.Models;
 using MammothWebApi.DataAccess.Queries;
 using MammothWebApi.Extensions;
 using MammothWebApi.Models;
@@ -15,19 +16,22 @@ namespace MammothWebApi.Controllers
 {
     public class PriceController : ApiController
     {
-        private IService<AddUpdatePrice> addUpdatePriceService;
-        private IService<DeletePrice> deletePriceService;
+        private IUpdateService<AddUpdatePrice> addUpdatePriceService;
+        private IUpdateService<DeletePrice> deletePriceService;
         private IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler;
+        private IQueryService<GetItemStorePriceAttributes, IEnumerable<ItemStorePriceModel>> itemStorePriceQueryService;
         private ILogger logger;
 
-        public PriceController(IService<AddUpdatePrice> addUpdatePriceService, 
-            IService<DeletePrice> deletePriceService, 
+        public PriceController(IUpdateService<AddUpdatePrice> addUpdatePriceService,
+            IUpdateService<DeletePrice> deletePriceService,
             IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler,
+            IQueryService<GetItemStorePriceAttributes, IEnumerable<ItemStorePriceModel>> itemStorePriceQueryService,
             ILogger logger)
         {
             this.addUpdatePriceService = addUpdatePriceService;
             this.deletePriceService = deletePriceService;
             this.getAllBusinessUnitsQueryHandler = getAllBusinessUnitsQueryHandler;
+            this.itemStorePriceQueryService = itemStorePriceQueryService;
             this.logger = logger;
         }
 
@@ -133,6 +137,61 @@ namespace MammothWebApi.Controllers
             {
                 logger.Error("An unexpected exception occurred.", exception);
                 return InternalServerError(exception);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/store/item/price")]
+        public IHttpActionResult GetPrices([FromUri] PriceRequestModel request)
+        {
+            try
+            {
+                List<PriceRequestModel> priceRequests = new List<PriceRequestModel>()
+                {
+                    request
+                };
+
+                var getItemPrice = new GetItemStorePriceAttributes
+                {
+                    ItemStores = priceRequests.ToStoreScanCodeServiceModel(),
+                    EffectiveDate = request.EffectiveDate,
+                    IncludeFuturePrices = false
+                };
+
+                var prices = this.itemStorePriceQueryService.Get(getItemPrice);
+
+                return Json(prices);
+            }
+            catch (Exception e)
+            {
+                this.logger.Error("Error performing GetPrices Http Post request.", e);
+                return InternalServerError(new Exception(
+                    "There was an error retrieving the prices from the Mammoth database.  Please reach out to the support team for assistance."));
+            }
+        }
+
+        [HttpPost]
+        [Route("api/storeitems/prices")]
+        public IHttpActionResult GetPrices([FromBody] PriceCollectionRequestModel request)
+        {
+            try
+            {
+                var getItemPrice = new GetItemStorePriceAttributes
+                {
+                    ItemStores = request.StoreItems.ToStoreScanCodeServiceModel(),
+                    EffectiveDate = DateTime.Today, // Get current prices
+                    IncludeFuturePrices = request.IncludeFuturePrices // include future if requested
+                };
+
+                var prices = this.itemStorePriceQueryService.Get(getItemPrice);
+
+                return Json(prices);
+            }
+            catch (Exception e)
+            {
+                this.logger.Error("Error performing GetPrices Http Post request.", e);
+                return InternalServerError(new Exception(
+                    "There was an error retrieving the prices from the Mammoth database.  Please reach out to the support team for assistance."));
             }
         }
     }

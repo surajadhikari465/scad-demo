@@ -4,12 +4,12 @@ using System;
 
 namespace MammothWebApi.Service.Decorators
 {
-    public class TransactionServiceDecorator<T> : IService<T> where T: class
+    public class TransactionServiceDecorator<T> : IUpdateService<T> where T: class
     {
-        private IService<T> service;
+        private IUpdateService<T> service;
         private IDbProvider db;
 
-        public TransactionServiceDecorator(IService<T> service, IDbProvider db)
+        public TransactionServiceDecorator(IUpdateService<T> service, IDbProvider db)
         {
             this.service = service;
             this.db = db;

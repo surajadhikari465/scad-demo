@@ -17,11 +17,11 @@ namespace MammothWebApi.Controllers
     [Authorize]
     public class ItemLocaleController : ApiController
     {
-        private IService<AddUpdateItemLocale> itemLocaleService;
+        private IUpdateService<AddUpdateItemLocale> itemLocaleService;
         private IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler;
         private ILogger logger;
 
-        public ItemLocaleController(IService<AddUpdateItemLocale> itemLocaleService,
+        public ItemLocaleController(IUpdateService<AddUpdateItemLocale> itemLocaleService,
             IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler,
             ILogger logger)
         {

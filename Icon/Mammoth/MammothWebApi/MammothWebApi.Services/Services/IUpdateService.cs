@@ -1,7 +1,7 @@
 ﻿
 namespace MammothWebApi.Service.Services
 {
-    public interface IService<T>
+    public interface IUpdateService<T>
     {
         void Handle(T data);
     }

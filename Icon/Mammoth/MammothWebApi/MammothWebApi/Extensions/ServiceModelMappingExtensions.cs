@@ -4,6 +4,7 @@ using MammothWebApi.Models;
 using System.Collections.Generic;
 using Mammoth.Common.DataAccess;
 using System;
+using System.Linq;
 
 namespace MammothWebApi.Extensions
 {
@@ -79,6 +80,29 @@ namespace MammothWebApi.Extensions
             }
 
             return priceServiceList;
+        }
+
+        public static IEnumerable<StoreScanCodeServiceModel> ToStoreScanCodeServiceModel(this IEnumerable<PriceRequestModel> requests)
+        {
+            List<StoreScanCodeServiceModel> storeScanCodeCollection = new List<StoreScanCodeServiceModel>();
+
+            foreach (var request in requests)
+            {
+                var serviceModel = new StoreScanCodeServiceModel
+                {
+                    BusinessUnitId = request.BusinessUnitId,
+                    ScanCode = request.ScanCode
+                };
+
+                storeScanCodeCollection.Add(serviceModel);
+            }
+
+            return storeScanCodeCollection;
+        }
+
+        public static IEnumerable<StoreScanCodeServiceModel> ToStoreScanCodeServiceModel(this IEnumerable<StoreItem> storeItems)
+        {
+            return storeItems.Select(si => new StoreScanCodeServiceModel { BusinessUnitId = si.BusinessUnitId, ScanCode = si.ScanCode });
         }
 
         public static string ToLogString(this ItemLocaleModel itemLocaleModel)
