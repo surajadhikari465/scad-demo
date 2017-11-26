@@ -141,9 +141,14 @@ namespace MammothWebApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/store/item/price")]
+        [Route("api/price")]
         public IHttpActionResult GetPrices([FromUri] PriceRequestModel request)
         {
+            if (!ModelState.IsValid || request == null)
+            {
+                return this.BadRequest("Parameters are invalid.");
+            }
+
             try
             {
                 List<PriceRequestModel> priceRequests = new List<PriceRequestModel>()
@@ -171,9 +176,14 @@ namespace MammothWebApi.Controllers
         }
 
         [HttpPost]
-        [Route("api/storeitems/prices")]
+        [Route("api/price")]
         public IHttpActionResult GetPrices([FromBody] PriceCollectionRequestModel request)
         {
+            if (!ModelState.IsValid || request == null)
+            {
+                return this.BadRequest("Parameters are invalid.");
+            }
+
             try
             {
                 var getItemPrice = new GetItemStorePriceAttributes

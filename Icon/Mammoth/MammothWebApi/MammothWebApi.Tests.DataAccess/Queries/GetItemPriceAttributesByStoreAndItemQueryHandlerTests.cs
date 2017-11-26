@@ -124,7 +124,7 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             Assert.AreEqual(3.50m, price.Price);
             Assert.AreEqual(expectedStartDate, price.StartDate);
             Assert.AreEqual(expectedAuthorized, price.Authorized);
-            Assert.AreEqual(expectedItemId, price.ItemID);
+            Assert.AreEqual(expectedItemId, price.ItemId);
             Assert.AreEqual(expectedItemScanCode, price.ScanCode);
             Assert.AreEqual(expectedStoreBuId, price.BusinessUnitID);
             Assert.AreEqual(expectedCurrencyCode, price.Currency);
@@ -134,8 +134,8 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             Assert.AreEqual(expectedSignDescription, price.SignDescription);
             Assert.AreEqual(expectedBrandName, price.BrandName);
             Assert.AreEqual(expectedRetailSize, price.RetailSize);
-            Assert.AreEqual(expectedRetailUom, price.RetailUOM);
-            Assert.AreEqual("EA", price.SellableUOM);
+            Assert.AreEqual(expectedRetailUom, price.RetailUom);
+            Assert.AreEqual("EA", price.SellableUom);
             Assert.AreEqual(expectedSubTeamName, price.SubTeam);
         }
 
