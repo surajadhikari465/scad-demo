@@ -127,7 +127,7 @@ AS
 		#changes						c
 		LEFT JOIN ItemHierarchyClass	ihc on	c.itemID				= ihc.itemID
 		LEFT JOIN HierarchyClass		hc	on	ihc.hierarchyClassID	= hc.hierarchyClassID
-		JOIN HierarchyPrototype         hp on hc.hierarchyID = hp.hierarchyID 
+		JOIN HierarchyPrototype         hp  on  hc.hierarchyID          = hp.hierarchyID 
 	WHERE
 		hc.hierarchyID = @brandId AND hc.hierarchyLevel = @brandHierarchyLevel;
 
@@ -154,17 +154,17 @@ AS
 	-- merch/fin-item association temp table
 	SELECT
 		c.itemID,
-		seg.hierarchyClassID	as segmentId,
-		seg.hierarchyClassName  as segment,
-		fam.hierarchyClassID	as familyId,
-		fam.hierarchyClassName	as family,
-		cls.hierarchyClassID	as classId,
-		cls.hierarchyClassName	as class,
-		brk.hierarchyClassID	as brickId,
-		brk.hierarchyClassName	as brick,
-		sb.hierarchyClassID		as subBrickId,
-		sb.hierarchyClassName	as subBrick,
-		brk.hierarchyParentClassID as finHierarchyParentClassID
+		seg.hierarchyClassID		as segmentId,
+		seg.hierarchyClassName		as segment,
+		fam.hierarchyClassID		as familyId,
+		fam.hierarchyClassName		as family,
+		cls.hierarchyClassID		as classId,
+		cls.hierarchyClassName		as class,
+		brk.hierarchyClassID		as brickId,
+		brk.hierarchyClassName		as brick,
+		sb.hierarchyClassID			as subBrickId,
+		sb.hierarchyClassName		as subBrick,
+		brk.hierarchyParentClassID	as finHierarchyParentClassID
 		--mfm.traitValue			as subteam,
 		--pos.traitValue			as posDeptNo
 	INTO #itemMerch
