@@ -49,8 +49,11 @@ AS
 	SET @financialId		= (SELECT hierarchyID FROM Hierarchy WHERE hierarchyName = 'Financial');
 
 	--Hierarchy Level
-	SET @brandHierarchyLevel = (SELECT hierarchyLevel FROM HierarchyPrototype WHERE hierarchyID = @brandId 
-																			    AND hierarchyLevelName ='Brand');
+	SET @brandHierarchyLevel = ( SELECT hierarchyLevel 
+								 FROM HierarchyPrototype
+							     WHERE hierarchyID = @brandId 
+								 AND hierarchyLevelName ='Brand'
+								);
 
 	-- ======================================================
 	-- Gather all itemID changes
