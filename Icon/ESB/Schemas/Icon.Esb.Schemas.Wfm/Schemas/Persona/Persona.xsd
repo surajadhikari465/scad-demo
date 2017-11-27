@@ -27,6 +27,8 @@
 			<xs:element name="organization" type="org:OrganizationType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute ref="crf:Action"/>
+		<xs:attribute ref="prf:createdDateTime"/>
+		<xs:attribute ref="prf:modifiedDateTime"/>
 	</xs:complexType>
 	<xs:complexType name="PersonasType">
 		<xs:sequence>

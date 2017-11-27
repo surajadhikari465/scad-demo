@@ -12,10 +12,10 @@
 			<xs:documentation>Used for an email address. Eg: "team.member@wholefoods.com"></xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="crf:WfmStrType">
-			<xs:maxLength value="75"/>
-			<xs:pattern value="[A-Za-z0-9!#$%&amp;'*+/=?^_'{|}~-]+(\.[A-Za-z0-9!#$%&amp;'*+/=?^_'{|}~-]+)*@([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+([A-Za-z]{2}|[cC][oO][mM]|[oO][rR][gG]|[nN][eE][tT]|[eE][dD][uU]|[gG][oO][vV]|[mM][iI][lL]|[bB][iI][zZ]|[iI][nN][fF][oO]|[mM][oO][bB][iI]|[nN][aA][mM][eE]|[aA][eE][rR][oO]|[aA][sS][iI][aA]|[jJ][oO][bB][sS]|[mM][uU][sS][eE][uU][mM])">
+			<xs:maxLength value="100"/>
+			<xs:pattern value="(.+@.+)">
 				<xs:annotation>
-					<xs:documentation>This regex has two parts: the part before the @, and the part after the @. There are two alternatives for the part before the @: it can either consist of a series of letters, digits and certain symbols, including one or more dots. However, dots may not appear consecutively or at the start or end of the email address.  Allows any two-letter country code top level domain, and only specific generic top level domains. This regex filters dummy email addresses like asdf@adsf.adsf. You will need to update it as new top-level domains are added.</xs:documentation>
+					<xs:documentation>This regex now only checks for an '@'. This was a decision by the architecture team.</xs:documentation>
 				</xs:annotation>
 			</xs:pattern>
 		</xs:restriction>

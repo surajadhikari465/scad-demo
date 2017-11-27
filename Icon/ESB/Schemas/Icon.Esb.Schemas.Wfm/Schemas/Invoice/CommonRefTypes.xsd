@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" schemaLocation="../Timezone/Timezone.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../Party/Party.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../Amount/Amount.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="InvoiceIdType">
+		<xs:restriction base="crf:InvoiceIdType"/>
+	</xs:simpleType>
+	<xs:simpleType name="InvoiceTypeCodeType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:complexType name="AdjustmentsInvoiceType">
+		<xs:sequence>
+			<xs:element name="adjustment" type="AdjustmentInvoiceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdjustmentInvoiceType">
+		<xs:sequence>
+			<xs:element name="sequenceNumber" type="crf:SequenceNumberType" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation>the index of the adjustment (there could be more than one adjustment performed on a single transaction, the sequence order is important); example, if this is the 2nd adjustment vs the 1st</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="invoiceLineNumber" type="crf:WfmIntType" minOccurs="1"/>
+			<xs:element name="adjustmentType" type="AdjustmentTypeType" minOccurs="1"/>
+			<xs:element name="adjustmentReason" type="AdjustmentsReason"/>
+			<xs:element name="adjustDateTime" type="crf:WfmDateTimeType" minOccurs="1"/>
+			<xs:element name="adjustItemQuantity" type="crf:WfmIntType" minOccurs="0"/>
+			<xs:element name="adjustAmount" type="amt:AmountType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdjustmentsReason">
+		<xs:sequence>
+			<xs:element name="adjustmentReasonCode" type="crf:WfmStrType" minOccurs="1"/>
+			<xs:element name="adjustmentReasonDescription" type="crf:DescriptionType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdjustmentTypeType">
+		<xs:sequence>
+			<xs:element name="adjustmentTypeCode" type="crf:WfmStrType" minOccurs="1"/>
+			<xs:element name="adjustmentTypeDescription" type="crf:DescriptionType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ApprovalsBase">
+		<xs:sequence>
+			<xs:element name="approval" type="ApprovalBase" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ApprovalBase">
+		<xs:sequence>
+			<xs:element name="approver" type="prf:PartyType" form="qualified"/>
+			<xs:element name="lineApprovalCode" type="LineApprovalCode" form="qualified" minOccurs="0"/>
+			<xs:element name="description" type="DescriptionCommonData" form="qualified" minOccurs="0"/>
+			<xs:element name="approvalDateTime" type="tmz:DateTimezoneType" form="qualified" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DescriptionCommonData">
+		<xs:sequence>
+			<xs:element name="language" type="erf:LanguageCodeEnum" minOccurs="0"/>
+			<xs:element name="typeCode" type="crf:CodeType" minOccurs="0"/>
+			<xs:element name="culture" type="erf:CultureTypeCodeEnum" minOccurs="0"/>
+			<xs:element name="description" type="crf:WfmStrType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LineApprovalCode">
+		<xs:simpleContent>
+			<xs:extension base="crf:WfmStrType"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="PartyIdType">
+		<xs:sequence>
+			<xs:element name="partyIdType" type="prf:PartyType" form="qualified"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentTermTypeCodeType">
+		<xs:sequence>
+			<xs:element name="paymentTermTypeCode" type="InvoiceTypeCodeType" minOccurs="1"/>
+			<xs:element name="paymentTermTypeDescription" type="crf:DescriptionType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceRelationshipTypeCodeType">
+		<xs:sequence>
+			<xs:element name="invoiceRelationshipTypeCode" type="InvoiceTypeCodeType" minOccurs="1"/>
+			<xs:element name="invoiceRelationshipTypeDescription" type="crf:DescriptionType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FreightTermTypeCodeType">
+		<xs:sequence>
+			<xs:element name="freightTermTypeCode" type="InvoiceTypeCodeType" minOccurs="1"/>
+			<xs:element name="freightTermTypeDescription" type="crf:DescriptionType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

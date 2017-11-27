@@ -707,6 +707,7 @@
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddErrorMonitorToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddJobSchedulerToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddGpmPriceTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

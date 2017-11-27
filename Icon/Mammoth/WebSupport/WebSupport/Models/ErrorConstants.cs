@@ -12,6 +12,8 @@ namespace WebSupport.Models
             public const string NoPricesExist = "NoPricesExist";
             public const string NoJobProvided = "NoJobProvided";
             public const string ItemDoesNotExist = "ItemDoesNotExist";
+            public const string UnexpectedError = "UnexpectedError";
+            public const string SequenceIdOrPatchFamilyIdNotExist = "SequenceIdOrPatchFamilyIdNotExist";
         }
 
         public static class Details

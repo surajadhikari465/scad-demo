@@ -37,11 +37,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MaxRedeliveryCount</name>
-			<value>1</value>
+			<value>3</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1510679930649</modTime>
+			<modTime>1511378891350</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MaxSendMessageRetryCount</name>

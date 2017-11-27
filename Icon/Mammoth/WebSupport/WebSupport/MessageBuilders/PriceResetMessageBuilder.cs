@@ -6,9 +6,10 @@ using System;
 using System.Globalization;
 using System.Linq;
 using WebSupport.DataAccess.Models;
+using WebSupport.Models;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
-namespace WebSupport.Models
+namespace WebSupport.MessageBuilders
 {
     public class PriceResetMessageBuilder : IMessageBuilder<PriceResetMessageBuilderModel>
     {
@@ -47,8 +48,6 @@ namespace WebSupport.Models
                 {
                     new Contracts.LocaleType
                     {
-                        Action = Contracts.ActionEnum.AddOrUpdate,
-                        ActionSpecified = true,
                         id = price.BusinessUnitId.ToString(),
                         name = price.StoreName,
                         type = new Contracts.LocaleTypeType
@@ -68,28 +67,6 @@ namespace WebSupport.Models
                             prices = new Contracts.PriceType[]
                             {
                                 CreatePriceType(price)
-                            },
-                            traits = new Contracts.TraitType[]
-                            {
-                                new TraitType
-                                {
-                                    Action = price.NewTagExpiration.HasValue ? ActionEnum.AddOrUpdate : ActionEnum.Delete,
-                                    ActionSpecified = true,
-                                    code = EsbConstants.NewTagExpirationTraitCode,
-                                    type = new TraitTypeType
-                                    {
-                                        description = EsbConstants.NewTagExpirationTraitDescription,
-                                        value = new TraitValueType[]
-                                        {
-                                            new TraitValueType
-                                            {
-                                                value = price.NewTagExpiration.HasValue
-                                                    ? price.NewTagExpiration.Value.ToString(DateTimeFormat, CultureInfo.InvariantCulture)
-                                                    : string.Empty
-                                            }
-                                        }
-                                    }
-                                }
                             }
                         }
                     }
@@ -103,10 +80,18 @@ namespace WebSupport.Models
         {
             var priceType = new Contracts.PriceType
             {
+                Action = ActionEnum.Add,
+                ActionSpecified = true,
+                gpmId = price.GpmId.ToString(),
                 type = new Contracts.PriceTypeType
                 {
                     description = ItemPriceTypes.Descriptions.ByCode[price.PriceType],
-                    id = price.PriceType
+                    id = (Contracts.PriceTypeIdType)Enum.Parse(typeof(Contracts.PriceTypeIdType), price.PriceType),
+                    type = new PriceTypeType
+                    {
+                        description = ItemPriceTypes.Descriptions.ByCode[price.PriceTypeAttribute],
+                        id = (Contracts.PriceTypeIdType)Enum.Parse(typeof(Contracts.PriceTypeIdType), price.PriceTypeAttribute)
+                    }
                 },
                 uom = new Contracts.UomType
                 {
@@ -123,7 +108,8 @@ namespace WebSupport.Models
                 },
                 priceMultiple = price.Multiple,
                 priceStartDate = price.StartDate,
-                priceStartDateSpecified = true
+                priceStartDateSpecified = true,
+                traits = CreateTraits(price)
             };
 
             if (price.EndDate.HasValue)
@@ -133,6 +119,31 @@ namespace WebSupport.Models
             }
 
             return priceType;
+        }
+
+        private TraitType[] CreateTraits(PriceResetPrice price)
+        {
+            return new Contracts.TraitType[]
+            {
+                new TraitType
+                {
+                    ActionSpecified = false,
+                    code = EsbConstants.NewTagExpirationTraitCode,
+                    type = new TraitTypeType
+                    {
+                        description = EsbConstants.NewTagExpirationTraitDescription,
+                        value = new TraitValueType[]
+                        {
+                            new TraitValueType
+                            {
+                                value = price.NewTagExpiration.HasValue
+                                    ? price.NewTagExpiration.Value.ToString(DateTimeFormat, CultureInfo.InvariantCulture)
+                                    : string.Empty
+                            }
+                        }
+                    }
+                }
+            };
         }
 
         private Contracts.WfmUomCodeEnumType GetEsbUomCode(string uomCode)

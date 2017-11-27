@@ -227,6 +227,27 @@
     <None Include="Schemas\Inventory\TransactionInventoryItem.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Schemas\Invoice\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Invoice\Invoice.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Invoice\InvoiceDescriptionType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Invoice\InvoiceLineType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Invoice\InvoiceLink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Invoice\InvoicePO.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Invoice\InvoiceType.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Schemas\Item\BaseItem.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -380,6 +401,9 @@
     <None Include="Schemas\Tax\TaxHierarchyClass.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Schemas\Tax\TaxImposition.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Schemas\Tax\TaxRate.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -426,12 +450,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Schemas\Transaction\Common\CommonRefTypes.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schemas\Transaction\ItemMovement\CommonRefTypes.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schemas\Transaction\ItemMovement\TransactionItemMovement.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Schemas\Transaction\LineItem\CommonRefTypes.xsd">

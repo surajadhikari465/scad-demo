@@ -74,7 +74,10 @@
 		<xs:annotation>
 			<xs:documentation/>
 		</xs:annotation>
-		<xs:restriction base="NameType"/>
+		<xs:restriction base="crf:WfmStrType">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="101"/>
+			</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="SortingNameType">
 		<xs:annotation>

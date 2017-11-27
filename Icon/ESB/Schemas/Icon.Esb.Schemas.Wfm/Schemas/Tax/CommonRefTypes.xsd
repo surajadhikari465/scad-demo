@@ -97,7 +97,7 @@
 		<xs:sequence>
 			<xs:element name="taxRate" type="crf:WfmDecimalType"/>
 			<xs:element name="minBase" type="crf:WfmDecimalType" minOccurs="0"/>
-			<xs:element name="maxBase" type="crf:WfmDecimalType" minOccurs="0"/>
+			<xs:element name="maxBase" type="crf:WfmDecimalType" minOccurs="0"/>			
 			<xs:element name="uom" type="uom:UomType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>

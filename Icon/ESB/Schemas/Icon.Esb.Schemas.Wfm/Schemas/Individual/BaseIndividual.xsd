@@ -11,7 +11,7 @@
 	<xs:element name="individualBase" type="IndividualBaseType"/>
 	<xs:complexType name="IndividualBaseType">
 		<xs:sequence>
-			<xs:element name="names" type="irf:NamesType"/>
+			<xs:element name="names" type="irf:NamesType" minOccurs="0"/>
 			<xs:element name="gender" type="irf:GenderType" minOccurs="0"/>
 			<xs:element name="ethnicity" type="irf:EthnicityType" minOccurs="0"/>
 			<xs:element name="age" type="irf:AgeType" minOccurs="0"/>

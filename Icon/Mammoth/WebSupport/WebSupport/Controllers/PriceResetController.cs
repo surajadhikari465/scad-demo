@@ -9,6 +9,7 @@ using WebSupport.ViewModels;
 using WebSupport.DataAccess.TransferObjects;
 using WebSupport.Models;
 using Esb.Core.EsbServices;
+using Newtonsoft.Json;
 
 namespace WebSupport.Controllers
 {
@@ -43,7 +44,9 @@ namespace WebSupport.Controllers
         {
             if (ModelState.IsValid)
             {
+                LogPriceResetRequest("Log PriceResetRequest Start", viewModel);
                 var response = priceMessageService.Send(viewModel);
+                LogPriceResetRequest("Log PriceResetRequest Result", viewModel, response);
                 if(response.Status == EsbServiceResponseStatus.Failed)
                 {
                     ViewBag.Error = response.ErrorDetails;
@@ -93,6 +96,45 @@ namespace WebSupport.Controllers
             else
             {
                 throw new ArgumentOutOfRangeException(nameof(regionCode), $"invalid region code {regionCode}");
+            }
+        }
+
+        private void LogPriceResetRequest(string action, PriceResetRequestViewModel viewModel, EsbServiceResponse response = null)
+        {
+            if(response != null)
+            {
+                if(response.Status == EsbServiceResponseStatus.Sent)
+                {
+                    logger.Info(JsonConvert.SerializeObject(
+                        new
+                        {
+                            Action = action,
+                            Stores = viewModel.Stores,
+                            Items = viewModel.Items,
+                            Response = response
+                        }));
+                }
+                else
+                {
+                    logger.Error(JsonConvert.SerializeObject(
+                        new
+                        {
+                            Action = action,
+                            Stores = viewModel.Stores,
+                            Items = viewModel.Items,
+                            Response = response
+                        }));
+                }
+            }
+            else
+            {
+                logger.Info(JsonConvert.SerializeObject(
+                    new
+                    {
+                        Action = action,
+                        Stores = viewModel.Stores,
+                        Items = viewModel.Items
+                    }));
             }
         }
     }

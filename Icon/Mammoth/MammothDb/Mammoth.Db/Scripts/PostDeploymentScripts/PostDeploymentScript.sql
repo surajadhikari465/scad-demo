@@ -16,6 +16,10 @@ Post-Deployment Script Template
 :r AddMaintFlagRowToDbStatusTable.sql
 :r AddAppsToAppTable.sql
 :r PopulateRetentionPolicyForStagingTables.sql
+:r AddErrorMonitorToAppTable.sql
+:r AddJobSchedulerToAppTable.sql
+:r AddWebSupportToAppTable.sql
+:r AddGpmPriceTypes.sql
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql

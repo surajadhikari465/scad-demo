@@ -14,9 +14,11 @@ namespace WebSupport.Models
         public const string SequenceIdKey = "SequenceID";
         public const string SourceKey = "Source";
         public const string MammothSourceValueName = "Mammoth";
-        public const string PriceResetValueName = "PriceReset";
         public const string NewTagExpirationTraitCode = "NTE";
         public const string NewTagExpirationTraitDescription = "New Tag Expiration";
         public const string CheckPointRequest = "CheckPointRequest";
+        public const string PriceResetKey = "PriceReset";
+        public const string PriceTransactionTypeValue = "Price";
+        public const string PriceResetTrueValue = "1";
     }
 }

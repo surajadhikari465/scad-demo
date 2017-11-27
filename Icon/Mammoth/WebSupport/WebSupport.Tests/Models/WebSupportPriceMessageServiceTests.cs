@@ -16,6 +16,7 @@ using Moq;
 using Esb.Core.EsbServices;
 using Icon.Esb.Producer;
 using WebSupport.DataAccess.Commands;
+using WebSupport.Services;
 
 namespace WebSupport.Tests.Models
 {
@@ -64,7 +65,7 @@ namespace WebSupport.Tests.Models
         {
             //Given
             mockGetPriceResetPricesQuery.Setup(m => m.Search(It.IsAny<GetPriceResetPricesParameters>()))
-                .Returns(new List<PriceResetPrice> { new PriceResetPrice() });
+                .Returns(new List<PriceResetPrice> { new PriceResetPrice { PatchFamilyId = "111-11111", SequenceId = "1" } });
 
             //When
             var response = webSupportPriceMessageService.Send(request);
@@ -88,6 +89,23 @@ namespace WebSupport.Tests.Models
             Assert.AreEqual(EsbServiceResponseStatus.Failed, response.Status);
             Assert.AreEqual(ErrorConstants.Codes.NoPricesExist, response.ErrorCode);
             Assert.AreEqual(ErrorConstants.Details.NoPricesExist, response.ErrorDetails);
+            mockSaveSentMessageCommandHandler.Verify(m => m.Execute(It.IsAny<SaveSentMessageCommand>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void Send_PricesDontHavePatchFamilyOrSequenceId_ShouldNotSendPrices()
+        {
+            //Given
+            mockGetPriceResetPricesQuery.Setup(m => m.Search(It.IsAny<GetPriceResetPricesParameters>()))
+                .Returns(new List<PriceResetPrice> { new PriceResetPrice { ItemId = 1, ScanCode = "1111", BusinessUnitId = 2222 } });
+
+            //When
+            var response = webSupportPriceMessageService.Send(request);
+
+            //Then
+            Assert.AreEqual(EsbServiceResponseStatus.Failed, response.Status);
+            Assert.AreEqual(ErrorConstants.Codes.SequenceIdOrPatchFamilyIdNotExist, response.ErrorCode);
+            Assert.IsTrue(response.ErrorDetails.Contains("{ScanCode:1111,BusinessUnitID:2222}"));
             mockSaveSentMessageCommandHandler.Verify(m => m.Execute(It.IsAny<SaveSentMessageCommand>()), Times.Never);
         }
     }

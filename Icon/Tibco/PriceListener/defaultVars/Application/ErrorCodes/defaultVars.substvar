@@ -35,11 +35,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>OutOfSequenceRedelivery</name>
-			<value>OurOfSequenceRedelivery</value>
+			<value>OutOfSequenceRedelivery</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510681986493</modTime>
+			<modTime>1511378998470</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ZeroRowsImpacted</name>

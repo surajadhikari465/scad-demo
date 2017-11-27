@@ -39,12 +39,13 @@ namespace WebSupport.DataAccess.Test.Queries
             var businessUnitId = "6789";
             var storeName = "UNIT TEST STORE";
             var priceType = "TPR";
-            var priceTypeAttribute = "FAKE";
+            var priceTypeAttribute = "REG";
             var sellableUom = "EA";
             var currencyCode = "USD";
             decimal price = 4.00m;
             byte multiple = 1;
-            DateTime startDate = new DateTime(2017, 8, 28, 10, 10, 10, 0);
+            DateTime today = DateTime.Now;
+            DateTime startDate = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0, 0);
             DateTime endDate = startDate.AddDays(10);
 
             var itemType = context.ItemTypes.Add(new ItemType { itemTypeCode = "TST", itemTypeDesc = "TEST TYPE" });
@@ -70,6 +71,7 @@ namespace WebSupport.DataAccess.Test.Queries
             Assert.AreEqual(int.Parse(businessUnitId), priceResetPrice.BusinessUnitId);
             Assert.AreEqual(storeName, priceResetPrice.StoreName);
             Assert.AreEqual(priceType, priceResetPrice.PriceType);
+            Assert.AreEqual(priceTypeAttribute, priceResetPrice.PriceTypeAttribute);
             Assert.AreEqual(sellableUom, priceResetPrice.SellableUom);
             Assert.AreEqual(currencyCode, priceResetPrice.CurrencyCode);
             Assert.AreEqual(price, priceResetPrice.Price);
@@ -86,13 +88,14 @@ namespace WebSupport.DataAccess.Test.Queries
             var storeName = "UNIT TEST STORE";
             var regPriceType = "REG";
             var salePriceType = "TPR";
-            var priceTypeAttribute = "FAKE";
+            var priceTypeAttribute = "REG";
             var sellableUom = "EA";
             var currencyCode = "USD";
             decimal regPrice = 4.00m;
             decimal salePrice = 3.00m;
             byte multiple = 1;
-            DateTime startDate = new DateTime(2017, 8, 28, 10, 10, 10, 0);
+            DateTime today = DateTime.Now;
+            DateTime startDate = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0, 0);
             DateTime endDate = startDate.AddDays(10);
 
             var itemType = context.ItemTypes.Add(new ItemType { itemTypeCode = "TST", itemTypeDesc = "TEST TYPE" });
@@ -119,6 +122,7 @@ namespace WebSupport.DataAccess.Test.Queries
             Assert.AreEqual(int.Parse(businessUnitId), regPriceResetPrice.BusinessUnitId);
             Assert.AreEqual(storeName, regPriceResetPrice.StoreName);
             Assert.AreEqual(regPriceType, regPriceResetPrice.PriceType);
+            Assert.AreEqual(priceTypeAttribute, regPriceResetPrice.PriceTypeAttribute);
             Assert.AreEqual(sellableUom, regPriceResetPrice.SellableUom);
             Assert.AreEqual(currencyCode, regPriceResetPrice.CurrencyCode);
             Assert.AreEqual(regPrice, regPriceResetPrice.Price);
@@ -134,6 +138,7 @@ namespace WebSupport.DataAccess.Test.Queries
             Assert.AreEqual(int.Parse(businessUnitId), salePriceResetPrice.BusinessUnitId);
             Assert.AreEqual(storeName, salePriceResetPrice.StoreName);
             Assert.AreEqual(salePriceType, salePriceResetPrice.PriceType);
+            Assert.AreEqual(priceTypeAttribute, salePriceResetPrice.PriceTypeAttribute);
             Assert.AreEqual(sellableUom, salePriceResetPrice.SellableUom);
             Assert.AreEqual(currencyCode, salePriceResetPrice.CurrencyCode);
             Assert.AreEqual(salePrice, salePriceResetPrice.Price);
@@ -150,7 +155,7 @@ namespace WebSupport.DataAccess.Test.Queries
             var storeName = "UNIT TEST STORE";
             var regPriceType = "REG";
             var salePriceType = "TPR";
-            var priceTypeAttribute = "FAKE";
+            var priceTypeAttribute = "REG";
             var sellableUom = "EA";
             var currencyCode = "USD";
             decimal regPrice = 4.00m;
@@ -218,7 +223,7 @@ namespace WebSupport.DataAccess.Test.Queries
             var storeName = "UNIT TEST STORE";
             var regPriceType = "REG";
             var salePriceType = "TPR";
-            var priceTypeAttribute = "FAKE";
+            var priceTypeAttribute = "REG";
             var sellableUom = "EA";
             var currencyCode = "USD";
             decimal regPrice = 4.00m;

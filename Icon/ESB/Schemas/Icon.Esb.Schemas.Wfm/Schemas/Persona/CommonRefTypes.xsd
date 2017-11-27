@@ -48,6 +48,20 @@
 		</xs:annotation>
 		<xs:restriction base="crf:WfmStrType"/>
 	</xs:simpleType>
+	<xs:attribute name="createdDateTime">
+		<xs:annotation>
+			<xs:documentation>
+					Persona record creation date time. For eg: Customer record creation date time in Affinity.
+				</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="modifiedDateTime" type="crf:WfmDateTimeType">
+		<xs:annotation>
+			<xs:documentation>
+					Persona record modification date time. For eg: Customer record update date time in Affinity.
+				</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
 	<!-- ================== -->
 	<!--  Complex Types              -->
 	<!-- ================== -->
