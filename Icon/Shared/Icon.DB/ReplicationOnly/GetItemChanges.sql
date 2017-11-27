@@ -24,6 +24,7 @@ AS
 	DECLARE @posDeptNoId int;
 	DECLARE @sentToEsbId int;
 	DECLARE @alcoholByVolume int;
+	DECLARE @brandHierarchyLevel int;
 
 	-- Whole Foods Locale
 	SET @wholeFoods = (SELECT localeID FROM Locale l WHERE l.localeName = 'Whole Foods');
@@ -46,6 +47,10 @@ AS
 	SET @merchId			= (SELECT hierarchyID FROM Hierarchy WHERE hierarchyName = 'Merchandise');
 	SET @taxId				= (SELECT hierarchyID FROM Hierarchy WHERE hierarchyName = 'Tax');
 	SET @financialId		= (SELECT hierarchyID FROM Hierarchy WHERE hierarchyName = 'Financial');
+
+	--Hierarchy Level
+	SET @brandHierarchyLevel = (SELECT hierarchyLevel FROM HierarchyPrototype WHERE hierarchyID = @brandId 
+																			    AND hierarchyLevelName ='Brand');
 
 	-- ======================================================
 	-- Gather all itemID changes
@@ -113,14 +118,18 @@ AS
 	-- brand-item association temp table
 	SELECT
 		c.itemID,
-		hc.hierarchyClassName
+		hc.hierarchyClassName,
+		hc.hierarchyClassID,
+		hc.hierarchyParentClassID,
+		hp.hierarchyLevelName
 	INTO #itemBrand
 	FROM
 		#changes						c
 		LEFT JOIN ItemHierarchyClass	ihc on	c.itemID				= ihc.itemID
 		LEFT JOIN HierarchyClass		hc	on	ihc.hierarchyClassID	= hc.hierarchyClassID
+		JOIN HierarchyPrototype         hp on hc.hierarchyID = hp.hierarchyID 
 	WHERE
-		hc.hierarchyID = @brandId;
+		hc.hierarchyID = @brandId AND hc.hierarchyLevel = @brandHierarchyLevel;
 
 	CREATE NONCLUSTERED INDEX IX_#itemBrands_itemID on #itemBrand (itemID)
 		INCLUDE (hierarchyClassName);
@@ -128,7 +137,9 @@ AS
 	-- tax-item association temp table
 	SELECT
 		c.itemID,
-		hc.hierarchyClassName
+		hc.hierarchyClassName,
+		hc.hierarchyClassID,
+		hc.hierarchyParentClassID
 	INTO #itemTax
 	FROM 
 		#changes						c
@@ -152,7 +163,8 @@ AS
 		brk.hierarchyClassID	as brickId,
 		brk.hierarchyClassName	as brick,
 		sb.hierarchyClassID		as subBrickId,
-		sb.hierarchyClassName	as subBrick
+		sb.hierarchyClassName	as subBrick,
+		brk.hierarchyParentClassID as finHierarchyParentClassID
 		--mfm.traitValue			as subteam,
 		--pos.traitValue			as posDeptNo
 	INTO #itemMerch
@@ -239,33 +251,39 @@ AS
 	-- Main
 	-- ======================================================
 	SELECT
-		i.itemID				as itemID,
-		tp.itemTypeDesc			as itemTypeDesc,
-		sc.scanCode				as scanCode,
-		brnd.hierarchyClassName as brandName,
-		pd.traitValue			as productDescription,
-		pos.traitValue			as posDescription,
-		pack.traitValue			as packageUnit,
-		size.traitValue			as retailSize,
-		uom.traitValue			as retailUom,
-		fs.traitValue			as foodStamp,
-		tare.traitValue			as posScaleTare,
-		vld.traitValue			as validationDate,
-		abv.traitValue			as alcoholByVolume,
-		mrch.segmentId			as segmentId,
-		mrch.segment			as segment,
-		mrch.familyId			as familyId,
-		mrch.family				as family,
-		mrch.classId			as classId,
-		mrch.class				as class,
-		mrch.brickId			as brickId,
-		mrch.brick				as brick,
-		mrch.subBrickId			as subBrickId,
-		mrch.subBrick			as subBrick,
-		tax.hierarchyClassName	as taxClass,
+		i.itemID								as itemID,
+		tp.itemTypeDesc							as itemTypeDesc,
+		sc.scanCode								as scanCode,
+		brnd.hierarchyClassName					as brandName,
+		brnd.hierarchyClassID					as brandHierarchyClassID,
+		brnd.hierarchyParentClassID				as brandHierarchyParentClassID,
+		brnd.hierarchyLevelName					as brandHierarchyLevelName,
+		pd.traitValue							as productDescription,
+		pos.traitValue							as posDescription,
+		pack.traitValue							as packageUnit,
+		size.traitValue							as retailSize,
+		uom.traitValue							as retailUom,
+		fs.traitValue							as foodStamp,
+		tare.traitValue							as posScaleTare,
+		vld.traitValue							as validationDate,
+		abv.traitValue							as alcoholByVolume,
+		mrch.segmentId							as segmentId,
+		mrch.segment							as segment,
+		mrch.familyId							as familyId,
+		mrch.family								as family,
+		mrch.classId							as classId,
+		mrch.class								as class,
+		mrch.brickId							as brickId,
+		mrch.brick								as brick,
+		mrch.subBrickId							as subBrickId,
+		mrch.subBrick							as subBrick,
+		mrch.finHierarchyParentClassID			as finHierarchyParentClassID,
+		tax.hierarchyClassName					as taxClass,
+		tax.hierarchyClassId					as taxHierarchyClassID,
+		tax.hierarchyParentClassID				as taxHierarchyParentClassID,
 		LEFT(fin.subteam, CHARINDEX('(', fin.subTeam) - 1) as subTeamName,
 		REPLACE(REPLACE(SUBSTRING(fin.subTeam, CHARINDEX('(', fin.subteam), LEN(fin.subteam)), '(', ''), ')', '') as psSubTeamNo,
-		fin.posDeptNo			as posDeptNo,
+		fin.posDeptNo							as posDeptNo,
 		ia.AnimalWelfareDescription				as AnimalWelfareDescription,
 		ia.MilkTypeDescription					as MilkTypeDescription, 
 		ia.EcoScaleRatingDescription			as EcoScaleRatingDescription,
@@ -288,7 +306,7 @@ AS
 		ia.IsCertifiedNonGmo					as IsCertifiedNonGmo,   
 		ia.IsCertifiedOrganic					as IsCertifiedOrganic,   
 		ia.IsCertifiedVegan						as IsCertifiedVegan,
-		COUNT(*) OVER()			as totalRowCount
+		COUNT(*) OVER()							as totalRowCount
 	FROM
 		#changes				c
 		LEFT JOIN Item			i		on	c.itemID			= i.itemID	
