@@ -17,6 +17,8 @@ CM		2016-01-13					Added Retail Size and Retail UOM
 CM		2016-02-08					Added logic to include InstanceDataFlag to check whether or 
 									not to update Retail Size and Retail UOM 
 JA      2016-06-22	19897 (16243)   Update StoredProc to remove the retail restictions for subteam update
+EM		2017-11-22  24309			No longer update Retail Unit when UOM changes 
+									from EA to LB or vice versa when region is on GPM
 ***********************************************************************************************/
 
 	-- =====================================================
@@ -30,7 +32,7 @@ JA      2016-06-22	19897 (16243)   Update StoredProc to remove the retail restic
 	DECLARE @uomIdLb INT;
 	DECLARE @uomIdEa INT;
 	DECLARE @updateRetailUomSize BIT;
-    DECLARE @anyStoresOnGpm BIT;
+    DECLARE @regionIsOnGpm BIT;
 	
 	SET @userId = (SELECT u.User_ID FROM Users u WHERE u.UserName = @UserName);
 	SET @now = (SELECT GETDATE());
@@ -40,11 +42,7 @@ JA      2016-06-22	19897 (16243)   Update StoredProc to remove the retail restic
 	SET @uomIdLb = (SELECT uom.Unit_ID FROM ItemUnit uom WHERE uom.Unit_Abbreviation = 'LB');
 	SET @uomIdEa = (SELECT uom.Unit_ID FROM ItemUnit uom WHERE uom.Unit_Abbreviation = 'EA');
 	SET @updateRetailUomSize = (SELECT FlagValue FROM InstanceDataFlags WHERE FlagKey = 'EnableIconRetailUomSizeUpdates');
-    SET @anyStoresOnGpm = (
-        SELECT CASE WHEN (v.RegionalFlagValue=1 AND v.NumStoresWithOverrides<v.NumStoresTotal) 
-                          OR (v.RegionalFlagValue=0 AND v.NumStoresWithOverrides>0) THEN 1 ELSE 0 END
-        FROM dbo.IDF_OverrideStoreCountView v
-        WHERE v.FlagKey = 'GlobalPriceManagement');
+	SET @regionIsOnGpm = (SELECT FlagValue FROM InstanceDataFlags WHERE FlagKey = 'GlobalPriceManagement');
 
 	INSERT INTO @distinctList
 	SELECT DISTINCT *
@@ -125,9 +123,9 @@ JA      2016-06-22	19897 (16243)   Update StoredProc to remove the retail restic
 			i.Package_Unit_ID	= CASE @updateRetailUomSize WHEN 1 THEN ISNULL(iu.Unit_ID, i.Package_Unit_ID) ELSE i.Package_Unit_ID END,
 			i.Retail_Unit_ID	=	CASE
 										-- only update Retail_Unit_ID if Package_Unit_ID is changing from LB to Not LB or vice versa
-                                        -- and there are no stores in the region on GlobalPriceManagement (GPM)
+                                        -- and the region is not under GlobalPriceManagement (GPM)
 										WHEN 
-											(@anyStoresOnGpm = 0) AND (@updateRetailUomSize = 1)
+											(@regionIsOnGpm = 0) AND (@updateRetailUomSize = 1)
 											AND ((vi.RetailUom = 'LB' AND pu.Unit_Abbreviation <> 'LB')
 												OR (vi.RetailUom <> 'LB' AND pu.Unit_Abbreviation = 'LB'))
 											AND ((vi.RetailUom = 'LB' AND ru.Unit_Abbreviation <> 'LB')

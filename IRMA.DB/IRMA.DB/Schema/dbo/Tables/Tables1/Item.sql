@@ -241,7 +241,6 @@ KM		2015-12-24	13326	Allow batchable maintenance to be created when Icon updates
 MU		2015-01-06	13476	Removing Product_Code from the fields that generate PBD inserts.
 CM		2016-01-12	13691	Enable batchable maintenance when UOM changes
 MU		2016-01-27	13661	Removing ItemLabelType_ID from the fields that generate PBD inserts.
-EM      2017-11-06  23919   Disable item maintenance when GPM is active 
 ***********************************************************************************************/
 
 BEGIN
@@ -696,11 +695,6 @@ BEGIN
 						(ISNULL(inserted.LastModifiedUser_ID, 0) <> ISNULL(@IconControllerUserId, 0)) 
 						  -- ... icon is doing the update and it's a subteam update (then do create maintenance)... 
 						OR (ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND inserted.SubTeam_No <> deleted.SubTeam_No)
-						  -- ... or if icon is doing the update and it's a package unit update
-						  -- ... but only if it's for a store not under GPM
-						OR ( ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND 
-							(inserted.Package_Desc1 <> deleted.Package_Desc1 OR inserted.Package_Unit_ID <> deleted.Package_Unit_ID) AND
-							ISNULL(dbo.fn_InstanceDataValue('GlobalPriceManagement', Store.Store_No), 0)= 0 )
 					)
 				AND (
 						INSERTED.Item_Description <> DELETED.Item_Description
