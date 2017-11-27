@@ -12,14 +12,14 @@ IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 END
 
 DECLARE @jobId BINARY(16)
-EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'MAMMOTH.ReseedMessageQueueId', 
+EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'MAMMOTH.ReseedTables', 
 		@enabled=1, 
 		@notify_level_eventlog=0, 
 		@notify_level_email=0, 
 		@notify_level_netsend=0, 
 		@notify_level_page=0, 
 		@delete_level=0, 
-		@description=N'Reseeds the esb.MessageQueueItemLocale and esb.MessageQueuePrice tables twice a year to prevent reaching the max value for the INT data type.', 
+		@description=N'Reseeds the esb.MessageQueueItemLocale, esb.MessageQueuePrice and app.applog tables twice a year to prevent reaching the max value for the INT data type.', 
 		@category_name=N'MAMMOTH Maintenance', 
 		@owner_login_name=N'sa', @job_id = @jobId OUTPUT
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
@@ -29,7 +29,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Ma
 		@on_success_action=3, 
 		@on_success_step_id=0, 
 		@on_fail_action=4, 
-		@on_fail_step_id=4, 
+		@on_fail_step_id=5, 
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
@@ -44,7 +44,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Reseed M
 		@on_success_action=1, 
 		@on_success_step_id=0, 
 		@on_fail_action=4, 
-		@on_fail_step_id=3, 
+		@on_fail_step_id=4, 
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
@@ -55,8 +55,22 @@ GO',
 		@database_name=N'Mammoth', 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'NotifyOnFailure', 
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Reseed AppLog Table', 
 		@step_id=3, 
+		@cmdexec_success_code=0, 
+		@on_success_action=1, 
+		@on_success_step_id=0, 
+		@on_fail_action=4, 
+		@on_fail_step_id=4, 
+		@retry_attempts=0, 
+		@retry_interval=0, 
+		@os_run_priority=0, @subsystem=N'TSQL', 
+		@command=N'DBCC CHECKIDENT (''app.applog'', RESEED, 1)', 
+		@database_name=N'Mammoth', 
+		@flags=0
+IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
+EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'NotifyOnFailure', 
+		@step_id=4, 
 		@cmdexec_success_code=0, 
 		@on_success_action=2, 
 		@on_success_step_id=0, 
@@ -74,7 +88,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'NotifyOn
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Report Maintenance Mode', 
-		@step_id=4, 
+		@step_id=5, 
 		@cmdexec_success_code=0, 
 		@on_success_action=1, 
 		@on_success_step_id=0, 
