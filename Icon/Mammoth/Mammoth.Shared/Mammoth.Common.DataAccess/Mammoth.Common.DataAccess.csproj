@@ -153,50 +153,50 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="T4Templates\CurrencyCodes.tt">
+    <None Include="T4Templates\CurrencyCodes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CurrencyCodes.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\Hierarchies.tt">
+    </None>
+    <None Include="T4Templates\Hierarchies.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Hierarchies.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\IconEventTypes.tt">
+    </None>
+    <None Include="T4Templates\IconEventTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IconEventTypes.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\IrmaEventTypes.tt">
+    </None>
+    <None Include="T4Templates\IrmaEventTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IrmaEventTypes.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\Attributes.tt">
+    </None>
+    <None Include="T4Templates\Attributes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Attributes.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\ItemTypes.tt">
+    </None>
+    <None Include="T4Templates\ItemTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ItemTypes.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\ItemPriceTypes.tt">
+    </None>
+    <None Include="T4Templates\ItemPriceTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ItemPriceTypes.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\MessageActions.tt">
+    </None>
+    <None Include="T4Templates\MessageActions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessageActions.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\MessageStatusTypes.tt">
+    </None>
+    <None Include="T4Templates\MessageStatusTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessageStatusTypes.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\MessageTypes.tt">
+    </None>
+    <None Include="T4Templates\MessageTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessageTypes.cs</LastGenOutput>
-    </Content>
-    <Content Include="T4Templates\UomCodes.tt">
+    </None>
+    <None Include="T4Templates\UomCodes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UomCodes.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
