@@ -166,8 +166,7 @@ AS
 		brk.hierarchyClassID		as brickId,
 		brk.hierarchyClassName		as brick,
 		sb.hierarchyClassID			as subBrickId,
-		sb.hierarchyClassName		as subBrick,
-		brk.hierarchyParentClassID	as finHierarchyParentClassID
+		sb.hierarchyClassName		as subBrick
 		--mfm.traitValue			as subteam,
 		--pos.traitValue			as posDeptNo
 	INTO #itemMerch
@@ -187,9 +186,10 @@ AS
 
 	-- financial-item association temp table
 	SELECT
-		c.itemID				as itemID,
-		hc.hierarchyClassName	as subteam,
-		pos.traitValue			as posDeptNo
+		c.itemID				  as itemID,
+		hc.hierarchyClassName	  as subteam,
+		pos.traitValue			  as posDeptNo,
+		hc.hierarchyParentClassID as financialHierarchyParentClassID 
 	INTO #itemFinancial
 	FROM 
 		#changes						c
@@ -280,7 +280,7 @@ AS
 		mrch.brick								as brick,
 		mrch.subBrickId							as subBrickId,
 		mrch.subBrick							as subBrick,
-		mrch.finHierarchyParentClassID			as finHierarchyParentClassID,
+		fin.financialHierarchyParentClassID		as finHierarchyParentClassID,
 		tax.hierarchyClassName					as taxClass,
 		tax.hierarchyClassId					as taxHierarchyClassID,
 		tax.hierarchyParentClassID				as taxHierarchyParentClassID,
