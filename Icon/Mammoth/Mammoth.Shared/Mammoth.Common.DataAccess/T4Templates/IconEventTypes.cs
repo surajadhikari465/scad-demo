@@ -7,8 +7,8 @@ namespace Mammoth.Common.DataAccess
 	{
 		public const int ProductAdd = 1;
 		public const int ProductUpdate = 2;
-		public const int NationalClassAdd = 3;
-		public const int NationalClassUpdate = 4;
-		public const int NationalClassDelete = 5;
+		public const int HierarchyClassAdd = 3;
+		public const int HierarchyClassUpdate = 4;
+		public const int HierarchyClassDelete = 5;
 	}
 }
