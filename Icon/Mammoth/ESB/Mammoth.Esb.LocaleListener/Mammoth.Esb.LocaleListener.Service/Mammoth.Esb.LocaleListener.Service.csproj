@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mammoth.Esb.LocaleListener.Service</RootNamespace>
     <AssemblyName>Mammoth.Esb.LocaleListener.Service</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -65,36 +65,49 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2016.10.18.1\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2016.10.18.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Esb.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Esb.Core.2017.10.18.1\lib\net46\Esb.Core.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2016.10.18.3\lib\net45\Icon.Common.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2016.10.18.3\lib\net45\Icon.Esb.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Esb.2017.10.9.1\lib\net45\Icon.Esb.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Infor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Infor.2017.11.13.1\lib\net46\Icon.Esb.Schemas.Infor.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Mammoth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2017.10.9.1\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2017.11.22.3\lib\net45\Icon.Esb.Schemas.Wfm.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Framework.2017.10.3.3\lib\net45\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2016.10.18.3\lib\net45\Icon.Logging.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleInjector, Version=3.1.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.3.1.0\lib\net45\SimpleInjector.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SimpleInjector, Version=4.0.12.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.0.12\lib\net45\SimpleInjector.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -106,7 +119,7 @@
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
     <Reference Include="TIBCO.EMS, Version=1.0.800.9, Culture=neutral, PublicKeyToken=5b83db8ff05c64ba, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2016.10.18.3\lib\net45\TIBCO.EMS.dll</HintPath>
+      <HintPath>..\packages\TIBCO.EMS.2016.10.21.1\lib\TIBCO.EMS.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -147,10 +160,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Mammoth.Shared\Mammoth.Common\Mammoth.Common.csproj">
-      <Project>{563f0633-8364-4ed0-88ff-f55302117348}</Project>
-      <Name>Mammoth.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Mammoth.Esb.LocaleListener\Mammoth.Esb.LocaleListener.csproj">
       <Project>{66357147-724b-4abb-ada2-c31cf4dc4beb}</Project>
       <Name>Mammoth.Esb.LocaleListener</Name>
