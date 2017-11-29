@@ -28,7 +28,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             //Given
             command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Brands, HierarchyLevelName = HierarchyLevelNames.Brand }
+                new InforHierarchyClassModel
+                {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
+                    HierarchyClassId = 1234,
+                    HierarchyClassName = "Duplicate Test",
+                    HierarchyName = Hierarchies.Names.Brands,
+                    HierarchyLevelName = HierarchyLevelNames.Brand
+                }
             };
 
             //When
@@ -53,6 +60,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             {
                 new InforHierarchyClassModel
                 {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
                     HierarchyClassId = hierarchyClass.hierarchyClassID,
                     HierarchyClassName = "Add Or Update Hierarchy Class",
                     HierarchyName = Hierarchies.Names.National,
@@ -75,7 +83,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             //Given
             command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Brands, HierarchyLevelName = HierarchyLevelNames.Brand }
+                new InforHierarchyClassModel
+                {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
+                    HierarchyClassId = 1234,
+                    HierarchyClassName = "Duplicate Test",
+                    HierarchyName = Hierarchies.Names.Brands,
+                    HierarchyLevelName = HierarchyLevelNames.Brand
+                }
             };
             context.HierarchyClass.Add(new Framework.HierarchyClass
             {
@@ -100,7 +115,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             //Given
             command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Merchandise, HierarchyLevelName = HierarchyLevelNames.Segment }
+                new InforHierarchyClassModel
+                {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
+                    HierarchyClassId = 1234,
+                    HierarchyClassName = "Duplicate Test",
+                    HierarchyName = Hierarchies.Names.Merchandise,
+                    HierarchyLevelName = HierarchyLevelNames.Segment
+                }
             };
             context.HierarchyClass.Add(new Framework.HierarchyClass
             {
@@ -125,7 +147,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             //Given
             command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "Duplicate Test", HierarchyName = Hierarchies.Names.Tax, HierarchyLevelName = HierarchyLevelNames.Tax }
+                new InforHierarchyClassModel
+                {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
+                    HierarchyClassId = 1234,
+                    HierarchyClassName = "Duplicate Test",
+                    HierarchyName = Hierarchies.Names.Tax,
+                    HierarchyLevelName = HierarchyLevelNames.Tax
+                }
             };
             context.HierarchyClass.Add(new Framework.HierarchyClass
             {
@@ -150,7 +179,14 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             //Given
             command.HierarchyClasses = new List<InforHierarchyClassModel>
             {
-                new InforHierarchyClassModel { HierarchyClassId = 1234, HierarchyClassName = "1234567 Duplicate Test New", HierarchyName = Hierarchies.Names.Tax, HierarchyLevelName = HierarchyLevelNames.Tax }
+                new InforHierarchyClassModel
+                {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
+                    HierarchyClassId = 1234,
+                    HierarchyClassName = "1234567 Duplicate Test New",
+                    HierarchyName = Hierarchies.Names.Tax,
+                    HierarchyLevelName = HierarchyLevelNames.Tax
+                }
             };
             context.HierarchyClass.Add(new Framework.HierarchyClass
             {
@@ -177,6 +213,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             {
                 new InforHierarchyClassModel
                 {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
                     HierarchyClassId = 1234,
                     HierarchyClassName = "Duplicate Test",
                     HierarchyName = Hierarchies.Names.Merchandise,
@@ -222,6 +259,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             {
                 new InforHierarchyClassModel
                 {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
                     HierarchyClassId = 1234,
                     HierarchyClassName = "Duplicate Test 2",
                     HierarchyName = Hierarchies.Names.Merchandise,
@@ -249,6 +287,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             settings.ValidateSequenceId = true;
             var hierarchyClass = new InforHierarchyClassModel
             {
+                Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
                 HierarchyClassName = "Invalid Sequence ID Test",
                 HierarchyName = Hierarchies.Names.Brands,
                 HierarchyLevelName = HierarchyLevelNames.Brand,
@@ -287,6 +326,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             settings.ValidateSequenceId = false;
             var hierarchyClass = new InforHierarchyClassModel
             {
+                Action = Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate,
                 HierarchyClassName = "Invalid Sequence ID Test",
                 HierarchyName = Hierarchies.Names.Brands,
                 HierarchyLevelName = HierarchyLevelNames.Brand,
@@ -315,6 +355,67 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             //Then
             string expectedErrorCode = null;
             string expectedErrorDetails = null;
+            AssertValidationTest(expectedErrorCode, expectedErrorDetails);
+        }
+
+        [TestMethod]
+        public void ValidateHierarchyClasses_HierarchyClassDoesNotExistOnDelete_NonExistantHierarchyClassDeleteErrorCode()
+        {
+            //Given
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
+            {
+                new InforHierarchyClassModel
+                {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.Delete,
+                    HierarchyClassId = int.MaxValue,
+                    HierarchyClassName = "DeleteNonExistantHierarchyClass Test",
+                    HierarchyName = Hierarchies.Names.Brands,
+                    HierarchyLevelName = HierarchyLevelNames.Brand
+                }
+            };
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            string expectedErrorCode = "DeleteNonExistantHierarchyClass";
+            string expectedErrorDetails = "'DeleteNonExistantHierarchyClass Test' does not exists in Icon and cannot be deleted.";
+            AssertValidationTest(expectedErrorCode, expectedErrorDetails);
+        }
+
+        [TestMethod]
+        public void ValidateHierarchyClasses_HierarchyClassIsAssociatedToItemsOnDelete_HierarchyClassAssociatedToItemsOnDeleteErrorCode()
+        {
+            //Given
+            var hierarchyClass = context.HierarchyClass.Add(new Framework.HierarchyClass
+            {
+                hierarchyClassName = "DeleteHierarchyClassAssociatedToItems Test",
+                hierarchyID = Hierarchies.Brands,
+                hierarchyLevel = HierarchyLevels.Brand,
+                ItemHierarchyClass = new List<ItemHierarchyClass>
+                {
+                    new ItemHierarchyClass { localeID = 1, Item = new Item { itemTypeID = ItemTypes.RetailSale } }
+                }
+            });
+            context.SaveChanges();
+            command.HierarchyClasses = new List<InforHierarchyClassModel>
+            {
+                new InforHierarchyClassModel
+                {
+                    Action = Esb.Schemas.Wfm.Contracts.ActionEnum.Delete,
+                    HierarchyClassId = hierarchyClass.hierarchyClassID,
+                    HierarchyClassName = "DeleteHierarchyClassAssociatedToItems Test",
+                    HierarchyName = Hierarchies.Names.Brands,
+                    HierarchyLevelName = HierarchyLevelNames.Brand
+                }
+            };
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            string expectedErrorCode = "DeleteHierarchyClassAssociatedToItems";
+            string expectedErrorDetails = "'DeleteHierarchyClassAssociatedToItems Test' is associated to items and cannot be deleted.";
             AssertValidationTest(expectedErrorCode, expectedErrorDetails);
         }
 

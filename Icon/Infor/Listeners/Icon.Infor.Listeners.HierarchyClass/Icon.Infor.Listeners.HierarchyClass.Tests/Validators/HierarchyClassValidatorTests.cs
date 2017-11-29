@@ -1,18 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Infor.Listeners.HierarchyClass.Validators;
-using Icon.Infor.Listeners.HierarchyClass.Models;
+﻿using Icon.Common.DataAccess;
 using Icon.Esb.Schemas.Wfm.Contracts;
-using Icon.Infor.Listeners.HierarchyClass.Constants;
-using System.Collections.Generic;
 using Icon.Framework;
-using System.Linq;
-using Moq;
-using Icon.Common.DataAccess;
 using Icon.Infor.Listeners.HierarchyClass.Commands;
-using Icon.Common.Email;
-using Icon.Esb.Subscriber;
-using Icon.Infor.Listeners.HierarchyClass.Notifier;
+using Icon.Infor.Listeners.HierarchyClass.Constants;
+using Icon.Infor.Listeners.HierarchyClass.Models;
+using Icon.Infor.Listeners.HierarchyClass.Validators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Collections.Generic;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
 {
@@ -526,7 +522,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
             this.testHierarchyClass.HierarchyClassName = "Valid National Class";
             this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
             {
-                { TraitCodes.NationalClassCode, "1" }
+                { TraitCodes.NationalClassCode, "12345" }
             };
 
             PerformValidateCollectionWhenAndThenSteps(
@@ -550,7 +546,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
         }
 
         [TestMethod]
-        public void HierarchyClassModelValidator_NationalClassCodeIsInvalid_InvalidNationalClassCodeMessage()
+        public void HierarchyClassModelValidator_NationalClassCodeIsInvalid_InvalidNationalClassCodeLengthMessage()
         {
             // Given
             this.testHierarchyClass.HierarchyName = Hierarchies.Names.National;
@@ -563,7 +559,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
 
             PerformValidateCollectionWhenAndThenSteps(
                 ValidationErrors.Codes.InvalidNationalClassCode,
-                ValidationErrors.Descriptions.InvalidNationalClassCode.GetFormattedValidationMessage(
+                ValidationErrors.Descriptions.InvalidNationalClassCodeLength.GetFormattedValidationMessage(
                     Traits.Codes.NationalClassCode,
                     this.testHierarchyClass.HierarchyClassTraits[Traits.Codes.NationalClassCode]));
         }
@@ -647,7 +643,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Validators
             this.testHierarchyClass.HierarchyClassName = new string('a', 256);
             this.testHierarchyClass.HierarchyClassTraits = new Dictionary<string, string>
             {
-                { TraitCodes.NationalClassCode, "1" }
+                { TraitCodes.NationalClassCode, "12345" }
             };
 
             PerformValidateCollectionWhenAndThenSteps(

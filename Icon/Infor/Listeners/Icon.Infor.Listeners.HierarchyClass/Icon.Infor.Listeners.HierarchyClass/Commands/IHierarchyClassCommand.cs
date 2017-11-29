@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
-    public class AddOrUpdateHierarchyClassesCommand : IHierarchyClassCommand
+    public interface IHierarchyClassCommand
     {
-        public IEnumerable<InforHierarchyClassModel> HierarchyClasses { get; set; }
+        IEnumerable<InforHierarchyClassModel> HierarchyClasses { get; set; }
     }
 }

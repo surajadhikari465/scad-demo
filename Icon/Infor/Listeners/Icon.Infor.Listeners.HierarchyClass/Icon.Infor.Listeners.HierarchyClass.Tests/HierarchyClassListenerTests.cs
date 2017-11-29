@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Esb.Core.EsbServices;
+using Icon.Common.DataAccess;
 using Icon.Common.Email;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
 using Icon.Esb.MessageParsers;
 using Icon.Esb.Subscriber;
+using Icon.Infor.Listeners.HierarchyClass.Commands;
+using Icon.Infor.Listeners.HierarchyClass.EsbService;
 using Icon.Infor.Listeners.HierarchyClass.Models;
+using Icon.Infor.Listeners.HierarchyClass.Notifier;
+using Icon.Infor.Listeners.HierarchyClass.Requests;
+using Icon.Infor.Listeners.HierarchyClass.Validators;
 using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
 using TIBCO.EMS;
-using Icon.Infor.Listeners.HierarchyClass.Notifier;
-using Icon.Infor.Listeners.HierarchyClass.Validators;
-using Icon.Infor.Listeners.HierarchyClass.Commands;
-using Icon.Common.DataAccess;
-using Icon.Common.Context;
-using Icon.Framework;
-using Icon.Infor.Listeners.HierarchyClass.EsbService;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests
 {
@@ -26,7 +25,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
         private HierarchyClassListener listener;
         private Mock<IMessageParser<IEnumerable<InforHierarchyClassModel>>> mockMessageParser;
         private Mock<IHierarchyClassService> mockService;
-        private Mock<HierarchyClassEsbService> mockEsbService;  
+        private Mock<IEsbService<HierarchyClassEsbServiceRequest>> mockEsbService;  
         private ListenerApplicationSettings listenerApplicationSettings;
         private EsbConnectionSettings esbConnectionSettings;
         private Mock<IEsbSubscriber> mockSubscriber;
@@ -45,7 +44,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests
         {
             mockMessageParser = new Mock<IMessageParser<IEnumerable<InforHierarchyClassModel>>>();
             mockService = new Mock<IHierarchyClassService>();
-            mockEsbService = new Mock<HierarchyClassEsbService>();
+            mockEsbService = new Mock<IEsbService<HierarchyClassEsbServiceRequest>>();
             listenerApplicationSettings = new ListenerApplicationSettings();
             esbConnectionSettings = new EsbConnectionSettings();
             mockSubscriber = new Mock<IEsbSubscriber>();

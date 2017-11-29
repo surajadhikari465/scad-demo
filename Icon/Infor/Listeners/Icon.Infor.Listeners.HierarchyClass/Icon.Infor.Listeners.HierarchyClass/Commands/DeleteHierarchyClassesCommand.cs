@@ -7,7 +7,7 @@ using Icon.Infor.Listeners.HierarchyClass.Models;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
-    public class DeleteHierarchyClassesCommand
+    public class DeleteHierarchyClassesCommand : IHierarchyClassCommand
     {
         public IEnumerable<InforHierarchyClassModel> HierarchyClasses { get; set; }
     }

@@ -120,7 +120,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_BrandDelete_WhenNotExists_DoesNotGenerateEvent()
+        public void ProcessHierarchyClassMessages_BrandDelete_WhenAllErrored_DoesNotGenerateEvent()
         {
             //Given
             var hierarchyName = HierarchyNames.Brands;
@@ -129,9 +129,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //set an error on the command data, to simulate an error when attempting to delete
             foreach( var hc in hierarchyClasses)
             {
-
-                hc.ErrorCode = ApplicationErrors.Codes.UnableToFindMatchingHierarchyClass;
-                hc.ErrorDetails = ApplicationErrors.Descriptions.UnableToFindMatchingHierarchyClassToDeleteMessage;
+                hc.ErrorCode = ApplicationErrors.Codes.DeleteHierarchyClassError;
+                hc.ErrorDetails = ApplicationErrors.Descriptions.DeleteHierarchyClassError;
             }
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
@@ -185,7 +184,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalDelete_WhenNotExists_DoesNotGenerateEvent()
+        public void ProcessHierarchyClassMessages_NationalDelete_WhenAllErrored_DoesNotGenerateEvent()
         {
             var hierarchyName = HierarchyNames.National;
             var hierarchyClasses = CreateInforHierarchyClassesForDelete(
@@ -193,8 +192,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //set an error on the command data, to simulate an error when attempting to delete
             foreach (var hc in hierarchyClasses)
             {
-                hc.ErrorCode = ApplicationErrors.Codes.UnableToFindMatchingHierarchyClass;
-                hc.ErrorDetails = ApplicationErrors.Descriptions.UnableToFindMatchingHierarchyClassToDeleteMessage;
+                hc.ErrorCode = ApplicationErrors.Codes.DeleteHierarchyClassError;
+                hc.ErrorDetails = ApplicationErrors.Descriptions.DeleteHierarchyClassError;
             }
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);

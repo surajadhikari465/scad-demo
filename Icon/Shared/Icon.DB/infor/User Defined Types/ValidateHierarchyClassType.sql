@@ -1,5 +1,6 @@
 ﻿CREATE TYPE infor.ValidateHierarchyClassType AS TABLE
 (
+	ActionName NVARCHAR(20) NOT NULL,
 	HierarchyClassId INT NOT NULL,
 	HierarchyClassName NVARCHAR(255) NOT NULL,
 	HierarchyLevelName NVARCHAR(100) NOT NULL,

@@ -17,9 +17,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
     public class ValidateHierarchyClassesCommandHandler : ICommandHandler<ValidateHierarchyClassesCommand>
     {
         private IDbContextFactory<IconContext> contextFactory;
-        private HierarchyClassListenerSettings settings;
+        private IHierarchyClassListenerSettings settings;
 
-        public ValidateHierarchyClassesCommandHandler(IDbContextFactory<IconContext> contextFactory, HierarchyClassListenerSettings settings)
+        public ValidateHierarchyClassesCommandHandler(
+            IDbContextFactory<IconContext> contextFactory, 
+            IHierarchyClassListenerSettings settings)
         {
             this.contextFactory = contextFactory;
             this.settings = settings;

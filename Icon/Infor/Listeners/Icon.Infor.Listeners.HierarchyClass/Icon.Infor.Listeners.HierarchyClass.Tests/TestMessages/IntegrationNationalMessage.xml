@@ -6,9 +6,9 @@
     <hpt:itemsAttached>1</hpt:itemsAttached>
   </prototype>
   <class crf:Action="AddOrUpdate">
-    <hcl:id>124295</hcl:id>
+    <hcl:id>1000000001</hcl:id>
     <hcl:name>1.5 Box DELETE TEST</hcl:name>
-    <hcl:parentId>121692</hcl:parentId>
+    <hcl:parentId>1000000000</hcl:parentId>
     <hcl:traits>
       <crf:trait>
         <tra:code>NCC</tra:code>

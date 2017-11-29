@@ -1,4 +1,5 @@
-﻿using Icon.Framework;
+﻿using Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
     {
         public ValidateHierarchyClassModel(InforHierarchyClassModel hierarchyClass)
         {
+            ActionName = Enum.GetName(typeof(ActionEnum), hierarchyClass.Action);
             HierarchyClassId = hierarchyClass.HierarchyClassId;
             HierarchyClassName = hierarchyClass.HierarchyClassName;
             HierarchyLevelName = hierarchyClass.HierarchyLevelName;
@@ -25,6 +27,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Models
             SequenceId = hierarchyClass.SequenceId;
         }
 
+        public string ActionName { get; set; }
         public int HierarchyClassId { get; set; }
         public string HierarchyClassName { get; set; }
         public string HierarchyLevelName { get; set; }

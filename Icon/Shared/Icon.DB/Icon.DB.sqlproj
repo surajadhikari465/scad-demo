@@ -757,7 +757,8 @@
     <None Include="Scripts\PopulateData\Release\PBI21913_Add_HealthyEatingRating_of_None.sql" />
     <None Include="Scripts\PopulateData\Release\InsertInforHierarchySequenceIdError.sql" />
     <None Include="Scripts\PopulateData\Release\AddDeliverySystemValues.sql" />
-    <None Include="Scripts\Jobs\Icon.ReseedTables.sql" />
+    <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
+    <None Include="Scripts\PopulateData\Release\InsertHierarchyClassListenerDeleteErrors.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

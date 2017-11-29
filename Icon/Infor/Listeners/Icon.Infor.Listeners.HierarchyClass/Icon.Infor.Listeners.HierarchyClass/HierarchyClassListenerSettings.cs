@@ -1,9 +1,4 @@
 ﻿using Icon.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.HierarchyClass
 {
@@ -12,6 +7,8 @@ namespace Icon.Infor.Listeners.HierarchyClass
         public bool EnableNationalClassEventGeneration { get; set; }
         public bool ValidateSequenceId { get; set; }
         public bool EnableConfirmBods { get; set; }
+        public int MaxNumberOfRetries { get; set; }
+        public int RetryDelayInMilliseconds { get; set; }
 
         public static HierarchyClassListenerSettings CreateFromConfig()
         {
@@ -21,8 +18,12 @@ namespace Icon.Infor.Listeners.HierarchyClass
                     .GetBoolSetting(nameof(EnableNationalClassEventGeneration)),
                 ValidateSequenceId = AppSettingsAccessor
                     .GetBoolSetting(nameof(ValidateSequenceId)),
-                EnableConfirmBods= AppSettingsAccessor
-                    .GetBoolSetting(nameof(EnableConfirmBods))
+                EnableConfirmBods = AppSettingsAccessor
+                    .GetBoolSetting(nameof(EnableConfirmBods)),
+                MaxNumberOfRetries = AppSettingsAccessor
+                    .GetIntSetting(nameof(MaxNumberOfRetries)),
+                RetryDelayInMilliseconds = AppSettingsAccessor
+                    .GetIntSetting(nameof(RetryDelayInMilliseconds))
             };
         }
     }

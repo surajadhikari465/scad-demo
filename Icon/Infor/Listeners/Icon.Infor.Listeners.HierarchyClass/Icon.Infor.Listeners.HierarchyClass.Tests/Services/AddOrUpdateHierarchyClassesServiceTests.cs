@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Icon.Common.DataAccess;
+using Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.Framework;
+using Icon.Infor.Listeners.HierarchyClass.Commands;
+using Icon.Infor.Listeners.HierarchyClass.Constants;
+using Icon.Infor.Listeners.HierarchyClass.Models;
+using Icon.Infor.Listeners.HierarchyClass.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Icon.Common.DataAccess;
-using Icon.Infor.Listeners.HierarchyClass.Commands;
 using System.Collections.Generic;
-using Icon.Infor.Listeners.HierarchyClass.Models;
-using Icon.Esb.Schemas.Wfm.Contracts;
 using System.Linq;
-using Icon.Framework;
-using Icon.Common.Context;
-using System.Data.SqlClient;
-using Icon.Infor.Listeners.HierarchyClass.Constants;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
 {

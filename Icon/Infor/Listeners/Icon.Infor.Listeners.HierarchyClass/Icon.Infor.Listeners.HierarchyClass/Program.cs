@@ -13,6 +13,9 @@ using Icon.Esb.Schemas.Infor.ContractTypes;
 using Icon.Esb.Services.ConfirmationBod;
 using Icon.Esb.Subscriber;
 using Icon.Framework;
+using Icon.Infor.Listeners.HierarchyClass.Commands;
+using Icon.Infor.Listeners.HierarchyClass.Decorators;
+using Icon.Infor.Listeners.HierarchyClass.ErrorUtility;
 using Icon.Infor.Listeners.HierarchyClass.EsbService;
 using Icon.Infor.Listeners.HierarchyClass.Extensions;
 using Icon.Infor.Listeners.HierarchyClass.MessageBuilders;
@@ -82,6 +85,11 @@ namespace Icon.Infor.Listeners.HierarchyClass
             container.Register<IMessageBuilder<ConfirmationBodEsbRequest>, ConfirmationBodMessageBuilder>();
             container.Register<IEsbService<ConfirmationBodEsbRequest>>(() => GetConfirmationBodEsbService(container));
             container.Register<ISerializer<ConfirmBODType>, Serializer<ConfirmBODType>>();
+
+            container.RegisterDecorator<ICommandHandler<AddOrUpdateHierarchyClassesCommand>, RetryCommandHandlerDecorator<AddOrUpdateHierarchyClassesCommand>>();
+            container.RegisterDecorator<ICommandHandler<DeleteHierarchyClassesCommand>, RetryCommandHandlerDecorator<DeleteHierarchyClassesCommand>>();
+
+            container.Register<IErrorMapper, ErrorMapper>();
 
             var types = GetHierarchyClassServices();
 

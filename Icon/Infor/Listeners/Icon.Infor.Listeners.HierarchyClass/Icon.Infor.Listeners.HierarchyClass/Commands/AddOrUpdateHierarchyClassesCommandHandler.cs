@@ -1,16 +1,11 @@
 ﻿using Icon.Common;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
 using Icon.DbContextFactory;
 using Icon.Framework;
-using Icon.Infor.Listeners.HierarchyClass.Constants;
 using Icon.Infor.Listeners.HierarchyClass.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {
@@ -47,25 +42,13 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
             SqlParameter hierarchyClassTraits = dataAccessModels.ToTraitDataAccessModels().ToTvp("@hierarchyClassTraits", "infor.HierarchyClassTraitType");
             SqlParameter regionParameters = regions.Select(r => new { RegionCode = r }).ToTvp("@regions", "infor.RegionCodeList");
 
-            try
+            using (var context = contextFactory.CreateContext())
             {
-                using (var context = contextFactory.CreateContext())
-                {
-                    context.Database.ExecuteSqlCommand(
-                        "EXEC infor.HierarchyClassAddOrUpdate @hierarchyClasses, @hierarchyClassTraits, @regions",
-                        hierarchyClasses,
-                        hierarchyClassTraits,
-                        regionParameters);
-                }
-            }
-            catch (Exception ex)
-            {
-                string errorDetails = ApplicationErrors.Descriptions.AddOrUpdateHierarchyClassError + " Exception: " + ex.ToString();
-                foreach (var hierarchyClass in data.HierarchyClasses)
-                {
-                    hierarchyClass.ErrorCode = ApplicationErrors.Codes.AddOrUpdateHierarchyClassError;
-                    hierarchyClass.ErrorDetails = errorDetails;
-                }
+                context.Database.ExecuteSqlCommand(
+                    "EXEC infor.HierarchyClassAddOrUpdate @hierarchyClasses, @hierarchyClassTraits, @regions",
+                    hierarchyClasses,
+                    hierarchyClassTraits,
+                    regionParameters);
             }
         }
     }

@@ -20,6 +20,20 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
     [TestClass]
     public class HierarchyClassListenerTests
     {
+        TransactionScope transaction;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            transaction = new TransactionScope();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            transaction.Dispose();
+        }
+
         [TestMethod]
         public void HandleMessage_MerchandiseHierarchy_ShouldAddOrUpdateMerchandiseHierarchyClass()
         {
@@ -121,8 +135,16 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
         public void HandleMessage_NationalHierarchy_ShouldAddOrUpdateMerchandiseHierarchyClass()
         {
             //Given
+            using (IconContext context = new IconContext())
+            {
+                context.Database.ExecuteSqlCommand(
+                    "SET IDENTITY_INSERT dbo.HierarchyClass ON " +
+                    "INSERT INTO dbo.HierarchyClass(HierarchyClassID, hierarchyLevel, hierarchyID, hierarchyParentClassID, hierarchyClassName) " +
+                    $"VALUES (1000000000, {HierarchyLevels.NationalSubCategory}, {Hierarchies.National}, NULL, 'TEST') " +
+                    "SET IDENTITY_INSERT dbo.HierarchyClass OFF");
+            }
             var messageText = File.ReadAllText(@"TestMessages/IntegrationNationalMessage.xml");
-            var expectedHierarchyClassId = 124295;
+            var expectedHierarchyClassId = 1000000001;
             var expectedHierarchyClassName = "1.5 Box DELETE TEST";
             var expectedTraits = new Dictionary<int, string>
             {
@@ -146,23 +168,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
             };
 
             //When
-            RunHandleMessageTestForAddOrUpdates(messageText, expectedHierarchyClassId, expectedHierarchyClassName, expectedTraits,true, true);
-        }
-
-        [TestMethod]
-        public void HandleMessage_FailedInforNationalHierarchyMessage_ShouldAddOrUpdateNationalHierarchyClass()
-        {
-            //Given
-            var messageText = File.ReadAllText(@"TestMessages/FailedInforHierarchyMessage.xml");
-            var expectedHierarchyClassId = 4000000;
-            var expectedHierarchyClassName = "Scarfs For Infor";
-            var expectedTraits = new Dictionary<int, string>
-            {
-                { Traits.NationalClassCode, "4000000" }
-            };
-
-            //When
-            RunHandleMessageTestForAddOrUpdates(messageText, expectedHierarchyClassId, expectedHierarchyClassName, expectedTraits);
+            RunHandleMessageTestForAddOrUpdates(messageText, expectedHierarchyClassId, expectedHierarchyClassName, expectedTraits, true, true);
         }
 
         [TestMethod]
@@ -208,52 +214,49 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
         private void RunHandleMessageTestForAddOrUpdates(string messageText, int expectedHierarchyClassId, string expectedHierarchyClassName, Dictionary<int, string> expectedTraits, Boolean isfinancialHierarchy = false, Boolean commitData = false)
         {
             //Given
-            using (TransactionScope transaction = new TransactionScope())
+            var container = Program.CreateHierarchyClassListener();
+            container.Options.AllowOverridingRegistrations = true;
+            container.Register<IHierarchyClassListenerNotifier>(() => new Mock<IHierarchyClassListenerNotifier>().Object);
+
+            Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
+            mockMessage.SetupGet(m => m.MessageText)
+                .Returns(messageText);
+            mockMessage.Setup(m => m.GetProperty("IconMessageID")).Returns(Guid.NewGuid().ToString());
+
+            //When
+            var listener = container.GetInstance<IListenerApplication>() as HierarchyClassListener;
+            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+
+            //Then
+            using (IconContext context = new IconContext())
             {
-                using (IconContext context = new IconContext())
+                Framework.HierarchyClass hierarchyClass;
+
+                if (!isfinancialHierarchy)
                 {
-                    var container = Program.CreateHierarchyClassListener();
-                    container.Options.AllowOverridingRegistrations = true;
-                    container.Register<IHierarchyClassListenerNotifier>(() => new Mock<IHierarchyClassListenerNotifier>().Object);
+                    hierarchyClass = context.HierarchyClass.SingleOrDefault(hc => hc.hierarchyClassID == expectedHierarchyClassId);
+                    Assert.IsNotNull(hierarchyClass);
+                    Assert.AreEqual(expectedHierarchyClassName, hierarchyClass.hierarchyClassName);
+                }
+                else
+                {
+                    hierarchyClass = context.HierarchyClass.SingleOrDefault(hc => hc.hierarchyClassName == expectedHierarchyClassName);
+                }
 
-                    Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
-                    mockMessage.SetupGet(m => m.MessageText)
-                        .Returns(messageText);
-                    mockMessage.Setup(m => m.GetProperty("IconMessageID")).Returns(Guid.NewGuid().ToString());
+                foreach (var trait in expectedTraits)
+                {
+                    Assert.AreEqual(trait.Value, hierarchyClass.HierarchyClassTrait.First(hct => hct.traitID == trait.Key).traitValue);
+                }
 
-                    //When
-                    var listener = container.GetInstance<IListenerApplication>() as HierarchyClassListener;
-                    listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
-
-                    Framework.HierarchyClass hierarchyClass;
-
-                    //Then
-                    if (!isfinancialHierarchy)
-                    {
-                        hierarchyClass = context.HierarchyClass.SingleOrDefault(hc => hc.hierarchyClassID == expectedHierarchyClassId);
-                        Assert.IsNotNull(hierarchyClass);
-                        Assert.AreEqual(expectedHierarchyClassName, hierarchyClass.hierarchyClassName);
-                    }
-                    else
-                    {
-                        hierarchyClass = context.HierarchyClass.SingleOrDefault(hc => hc.hierarchyClassName == expectedHierarchyClassName);
-                    }
-
-                    foreach (var trait in expectedTraits)
-                    {
-                        Assert.AreEqual(trait.Value, hierarchyClass.HierarchyClassTrait.First(hct => hct.traitID == trait.Key).traitValue);
-                    }
-
-                    if (!isfinancialHierarchy)
-                    {
-                        var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == expectedHierarchyClassId);
-                        Assert.IsNotNull(messageHierarchyArchive);
-                    }
+                if (!isfinancialHierarchy)
+                {
+                    var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == expectedHierarchyClassId);
+                    Assert.IsNotNull(messageHierarchyArchive);
                 }
             }
         }
 
-        private void RunHandleMessageTestForDeletes(string messageText, int hierarchyClassId, int hierarchyId, string hierarchyClassName, int hierarchyClassLevel, int? hierarchyParentClassId, Dictionary<int, string> hierarchyClassTraits, Boolean isfinancialHierarchy = false,Boolean commitData = false)
+        private void RunHandleMessageTestForDeletes(string messageText, int hierarchyClassId, int hierarchyId, string hierarchyClassName, int hierarchyClassLevel, int? hierarchyParentClassId, Dictionary<int, string> hierarchyClassTraits, Boolean isfinancialHierarchy = false, Boolean commitData = false)
         {
             //Given
             int passedHierarchyClassId = hierarchyClassId;
@@ -286,7 +289,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                         hierarchyClass = context.HierarchyClass.First(hc => hc.hierarchyClassName == hierarchyClassName && hc.hierarchyID == Hierarchies.Financial);
                         hierarchyClassId = hierarchyClass.hierarchyClassID;
                     }
-                   
+
                     foreach (var trait in hierarchyClassTraits)
                     {
                         if (!hierarchyClass.HierarchyClassTrait.Any(hct => hct.hierarchyClassID == hierarchyClassId && hct.traitID == trait.Key))
@@ -321,7 +324,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                     //Then
                     Assert.IsFalse(context.HierarchyClass.Any(hc => hc.hierarchyClassID == hierarchyClassId));
                     Assert.IsFalse(context.HierarchyClassTrait.Any(hct => hct.hierarchyClassID == hierarchyClassId));
-                    if(!isfinancialHierarchy)
+                    if (!isfinancialHierarchy)
                     {
                         var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == hierarchyClassId);
                         Assert.IsNotNull(messageHierarchyArchive);

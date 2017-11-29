@@ -5,10 +5,8 @@ using Icon.Infor.Listeners.HierarchyClass.Commands;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using Icon.Infor.Listeners.HierarchyClass.Extensions;
 
-namespace Icon.Infor.Listeners.HierarchyClass
+namespace Icon.Infor.Listeners.HierarchyClass.Services
 {
     public class AddOrUpdateHierarchyClassesService : IHierarchyClassService
     {

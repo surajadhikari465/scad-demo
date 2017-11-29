@@ -1,27 +1,23 @@
-﻿using Icon.Esb.ListenerApplication;
+﻿using Esb.Core.EsbServices;
+using Icon.Common.DataAccess;
+using Icon.Common.Email;
+using Icon.Esb;
+using Icon.Esb.ListenerApplication;
+using Icon.Esb.MessageParsers;
+using Icon.Esb.Services.ConfirmationBod;
+using Icon.Esb.Subscriber;
+using Icon.Infor.Listeners.HierarchyClass.Commands;
+using Icon.Infor.Listeners.HierarchyClass.Constants;
+using Icon.Infor.Listeners.HierarchyClass.Extensions;
+using Icon.Infor.Listeners.HierarchyClass.Models;
+using Icon.Infor.Listeners.HierarchyClass.Notifier;
+using Icon.Infor.Listeners.HierarchyClass.Requests;
+using Icon.Infor.Listeners.HierarchyClass.Validators;
+using Icon.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Esb.Subscriber;
-using Icon.Esb;
-using Icon.Common.Email;
-using Icon.Logging;
-using Icon.Infor.Listeners.HierarchyClass.Models;
-using Icon.Esb.MessageParsers;
-using Icon.Infor.Listeners.HierarchyClass.Validators;
-using Icon.Infor.Listeners.HierarchyClass.Notifier;
-using Icon.Infor.Listeners.HierarchyClass.Commands;
-using Icon.Common.DataAccess;
-using Newtonsoft.Json;
-using Icon.Infor.Listeners.HierarchyClass.Constants;
-using Icon.Common.Context;
-using Icon.Framework;
-using Icon.Infor.Listeners.HierarchyClass.Extensions;
-using Icon.Infor.Listeners.HierarchyClass.EsbService;
 using System.Data.SqlClient;
-using Icon.Esb.Services.ConfirmationBod;
+using System.Linq;
 
 namespace Icon.Infor.Listeners.HierarchyClass
 {
@@ -29,7 +25,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
     {
         private IMessageParser<IEnumerable<InforHierarchyClassModel>> messageParser;
         private IEnumerable<IHierarchyClassService> services;
-        private HierarchyClassEsbService esbService;
+        private IEsbService<HierarchyClassEsbServiceRequest> esbService;
         private ICollectionValidator<InforHierarchyClassModel> validator;
         private IHierarchyClassListenerNotifier notifier;
         private ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler;
@@ -39,7 +35,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             IMessageParser<IEnumerable<InforHierarchyClassModel>> messageParser,
             ICollectionValidator<InforHierarchyClassModel> validator,
             IEnumerable<IHierarchyClassService> services,
-            HierarchyClassEsbService esbService,
+            IEsbService<HierarchyClassEsbServiceRequest> esbService,
             ICommandHandler<ArchiveHierarchyClassesCommand> archiveHierarchyClassesCommandHandler,
             ICommandHandler<ArchiveMessageCommand> archiveMessageCommandHandler,
             ListenerApplicationSettings listenerApplicationSettings,
@@ -125,7 +121,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
             }
             // 2627 is unique constraint key error and 547 is foreign key violation
             else if (ex.GetBaseException().GetType() == typeof(SqlException) &&
-                     ((SqlException)ex).Number == 2627 || ((SqlException)ex).Number == 547)
+                     (((SqlException)ex).Number == 2627 || ((SqlException)ex).Number == 547))
             {
                 errorType = ConfirmationBodEsbErrorTypes.DatabaseConstraint;
             }
