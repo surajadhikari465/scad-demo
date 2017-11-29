@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Price.Controller", "Mammoth.Price.Controller\Mammoth.Price.Controller.csproj", "{DF203112-650E-4794-8A76-5AA55FF8B775}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{650274EC-7476-425D-BE52-16656107B16F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Price.Controller.DataAccess", "Mammoth.Price.Controller.DataAccess\Mammoth.Price.Controller.DataAccess.csproj", "{4917BC52-8B44-4911-94DF-7277A89BDCF3}"
 EndProject
@@ -14,14 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Price.Controller.DataAccess.Tests", "Mammoth.Price.Controller.DataAccess.Tests\Mammoth.Price.Controller.DataAccess.Tests.csproj", "{CC2FBA98-E523-4E5E-9DB9-2108215D3854}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Price.Controller.Tests.Specs", "Mammoth.Price.Controller.Tests.Specs\Mammoth.Price.Controller.Tests.Specs.csproj", "{EB9E26AD-9AF2-4AFF-8E3F-F103BBAEBD02}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common", "..\Mammoth.Shared\Mammoth.Common\Mammoth.Common.csproj", "{563F0633-8364-4ED0-88FF-F55302117348}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Logging", "..\Mammoth.Shared\Mammoth.Logging\Mammoth.Logging.csproj", "{EED6C132-5E76-46E9-BD78-103AF9545AC7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common.DataAccess", "..\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj", "{82505A9B-2264-4428-9806-D5EF838109B3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common.ControllerApplication", "..\Mammoth.Shared\Mammoth.Common.ControllerApplication\Mammoth.Common.ControllerApplication.csproj", "{D7953C91-887D-4CA0-8497-E45D4B4897E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,46 +61,11 @@ Global
 		{EB9E26AD-9AF2-4AFF-8E3F-F103BBAEBD02}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EB9E26AD-9AF2-4AFF-8E3F-F103BBAEBD02}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{EB9E26AD-9AF2-4AFF-8E3F-F103BBAEBD02}.Test|Any CPU.Build.0 = Test|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.QA|Any CPU.ActiveCfg = QA|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.QA|Any CPU.Build.0 = QA|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Release|Any CPU.Build.0 = Release|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Test|Any CPU.Build.0 = Test|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.QA|Any CPU.ActiveCfg = QA|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.QA|Any CPU.Build.0 = QA|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Test|Any CPU.Build.0 = Test|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.ActiveCfg = QA|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.Build.0 = QA|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.Build.0 = Test|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.QA|Any CPU.ActiveCfg = QA|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.QA|Any CPU.Build.0 = QA|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{563F0633-8364-4ED0-88FF-F55302117348} = {650274EC-7476-425D-BE52-16656107B16F}
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7} = {650274EC-7476-425D-BE52-16656107B16F}
-		{82505A9B-2264-4428-9806-D5EF838109B3} = {650274EC-7476-425D-BE52-16656107B16F}
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8} = {650274EC-7476-425D-BE52-16656107B16F}
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5197B530-5970-4C2B-8360-6F24FC91855D}
 	EndGlobalSection
 EndGlobal

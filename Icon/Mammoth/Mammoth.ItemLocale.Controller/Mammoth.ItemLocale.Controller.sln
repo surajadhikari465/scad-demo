@@ -1,16 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{A6346E5A-9684-4FF2-AF43-78EFAACC1346}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common", "..\Mammoth.Shared\Mammoth.Common\Mammoth.Common.csproj", "{563F0633-8364-4ED0-88FF-F55302117348}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common.DataAccess", "..\Mammoth.Shared\Mammoth.Common.DataAccess\Mammoth.Common.DataAccess.csproj", "{82505A9B-2264-4428-9806-D5EF838109B3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Logging", "..\Mammoth.Shared\Mammoth.Logging\Mammoth.Logging.csproj", "{EED6C132-5E76-46E9-BD78-103AF9545AC7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.ItemLocale.Controller", "Mammoth.ItemLocale.Controller\Mammoth.ItemLocale.Controller.csproj", "{1C9EDF36-EDEE-49A8-A49E-87417936BE2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.ItemLocale.Controller.Tests", "Mammoth.ItemLocale.Controller.Tests\Mammoth.ItemLocale.Controller.Tests.csproj", "{7D28DA14-C47F-4154-B11B-D76E63C06CC3}"
@@ -21,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.ItemLocale.Controll
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.ItemLocale.Controller.Tests.Specs", "Mammoth.ItemLocale.Controller.Tests.Specs\Mammoth.ItemLocale.Controller.Tests.Specs.csproj", "{3541E7BE-991A-4A93-B378-B296E6D8AABB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common.ControllerApplication", "..\Mammoth.Shared\Mammoth.Common.ControllerApplication\Mammoth.Common.ControllerApplication.csproj", "{D7953C91-887D-4CA0-8497-E45D4B4897E8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,30 +21,6 @@ Global
 		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{563F0633-8364-4ED0-88FF-F55302117348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.QA|Any CPU.ActiveCfg = QA|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.QA|Any CPU.Build.0 = QA|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Release|Any CPU.Build.0 = Release|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{563F0633-8364-4ED0-88FF-F55302117348}.Test|Any CPU.Build.0 = Test|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.ActiveCfg = QA|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.Build.0 = QA|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{82505A9B-2264-4428-9806-D5EF838109B3}.Test|Any CPU.Build.0 = Test|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.QA|Any CPU.ActiveCfg = QA|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.QA|Any CPU.Build.0 = QA|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Test|Any CPU.Build.0 = Test|Any CPU
 		{1C9EDF36-EDEE-49A8-A49E-87417936BE2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C9EDF36-EDEE-49A8-A49E-87417936BE2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C9EDF36-EDEE-49A8-A49E-87417936BE2C}.QA|Any CPU.ActiveCfg = QA|Any CPU
@@ -95,59 +61,11 @@ Global
 		{3541E7BE-991A-4A93-B378-B296E6D8AABB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3541E7BE-991A-4A93-B378-B296E6D8AABB}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{3541E7BE-991A-4A93-B378-B296E6D8AABB}.Test|Any CPU.Build.0 = Test|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.QA|Any CPU.ActiveCfg = QA|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.QA|Any CPU.Build.0 = QA|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{563F0633-8364-4ED0-88FF-F55302117348} = {A6346E5A-9684-4FF2-AF43-78EFAACC1346}
-		{82505A9B-2264-4428-9806-D5EF838109B3} = {A6346E5A-9684-4FF2-AF43-78EFAACC1346}
-		{EED6C132-5E76-46E9-BD78-103AF9545AC7} = {A6346E5A-9684-4FF2-AF43-78EFAACC1346}
-		{D7953C91-887D-4CA0-8497-E45D4B4897E8} = {A6346E5A-9684-4FF2-AF43-78EFAACC1346}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 10
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\Mammoth.Shared\\Mammoth.Common\\Mammoth.Common.csproj
-		SccProjectTopLevelParentUniqueName1 = Mammoth.ItemLocale.Controller.sln
-		SccProjectName1 = ../Mammoth.Shared/Mammoth.Common
-		SccLocalPath1 = ..\\Mammoth.Shared\\Mammoth.Common
-		SccProjectUniqueName2 = ..\\Mammoth.Shared\\Mammoth.Common.DataAccess\\Mammoth.Common.DataAccess.csproj
-		SccProjectTopLevelParentUniqueName2 = Mammoth.ItemLocale.Controller.sln
-		SccProjectName2 = ../Mammoth.Shared/Mammoth.Common.DataAccess
-		SccLocalPath2 = ..\\Mammoth.Shared\\Mammoth.Common.DataAccess
-		SccProjectUniqueName3 = ..\\Mammoth.Shared\\Mammoth.Logging\\Mammoth.Logging.csproj
-		SccProjectTopLevelParentUniqueName3 = Mammoth.ItemLocale.Controller.sln
-		SccProjectName3 = ../Mammoth.Shared/Mammoth.Logging
-		SccLocalPath3 = ..\\Mammoth.Shared\\Mammoth.Logging
-		SccProjectUniqueName4 = Mammoth.ItemLocale.Controller\\Mammoth.ItemLocale.Controller.csproj
-		SccProjectName4 = Mammoth.ItemLocale.Controller
-		SccLocalPath4 = Mammoth.ItemLocale.Controller
-		SccProjectUniqueName5 = Mammoth.ItemLocale.Controller.Tests\\Mammoth.ItemLocale.Controller.Tests.csproj
-		SccProjectName5 = Mammoth.ItemLocale.Controller.Tests
-		SccLocalPath5 = Mammoth.ItemLocale.Controller.Tests
-		SccProjectUniqueName6 = Mammoth.ItemLocale.Controller.DataAccess\\Mammoth.ItemLocale.Controller.DataAccess.csproj
-		SccProjectName6 = Mammoth.ItemLocale.Controller.DataAccess
-		SccLocalPath6 = Mammoth.ItemLocale.Controller.DataAccess
-		SccProjectUniqueName7 = Mammoth.ItemLocale.Controller.DataAccess.Tests\\Mammoth.ItemLocale.Controller.DataAccess.Tests.csproj
-		SccProjectName7 = Mammoth.ItemLocale.Controller.DataAccess.Tests
-		SccLocalPath7 = Mammoth.ItemLocale.Controller.DataAccess.Tests
-		SccProjectUniqueName8 = Mammoth.ItemLocale.Controller.Tests.Specs\\Mammoth.ItemLocale.Controller.Tests.Specs.csproj
-		SccProjectName8 = Mammoth.ItemLocale.Controller.Tests.Specs
-		SccLocalPath8 = Mammoth.ItemLocale.Controller.Tests.Specs
-		SccProjectUniqueName9 = ..\\Mammoth.Shared\\Mammoth.Common.ControllerApplication\\Mammoth.Common.ControllerApplication.csproj
-		SccProjectTopLevelParentUniqueName9 = Mammoth.ItemLocale.Controller.sln
-		SccProjectName9 = ../Mammoth.Shared/Mammoth.Common.ControllerApplication
-		SccLocalPath9 = ..\\Mammoth.Shared\\Mammoth.Common.ControllerApplication
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {539BDB7A-02D1-499C-B778-D3EDF7E22F34}
 	EndGlobalSection
 EndGlobal
