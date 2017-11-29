@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Icon.Infor.Listeners.HierarchyClass</RootNamespace>
     <AssemblyName>Icon.Infor.Listeners.HierarchyClass</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <SccProjectName>SAK</SccProjectName>
@@ -189,7 +189,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Dev.config" />
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App.QA.config" />
     <None Include="App.Test.config" />
     <None Include="App.Release.config" />

@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Icon.Infor.Listeners.HierarchyClass.Tests</RootNamespace>
     <AssemblyName>Icon.Infor.Listeners.HierarchyClass.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -156,6 +156,7 @@
     <Compile Include="Commands\BaseHierarchyClassesCommandTest.cs" />
     <Compile Include="Commands\GenerateHierarchyClassMessagesCommandHandlerTests.cs" />
     <Compile Include="Commands\ValidateHierarchyClassesCommandHandlerTests.cs" />
+    <Compile Include="ErrorUtility\ErrorMapperTests.cs" />
     <Compile Include="HierarchyClassListenerTests.cs" />
     <Compile Include="Integration\HierarchyClassListenerTests.cs" />
     <Compile Include="EsbService\HierarchyClassEsbServiceTests.cs" />

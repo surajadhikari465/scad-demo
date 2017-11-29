@@ -12,27 +12,33 @@ namespace Icon.Infor.Listeners.HierarchyClass.ErrorUtility
     {
         public string GetAssociatedErrorCode(Type type)
         {
-            switch(type)
+            if(type == typeof(AddOrUpdateHierarchyClassesCommandHandler))
             {
-                case Type _ when type == typeof(AddOrUpdateHierarchyClassesCommandHandler):
-                    return ApplicationErrors.Codes.AddOrUpdateHierarchyClassError;
-                case Type _ when type == typeof(DeleteHierarchyClassesCommandHandler):
-                    return ApplicationErrors.Codes.DeleteHierarchyClassError;
-                default:
-                    return ApplicationErrors.Codes.UnexpectedError;
+                return ApplicationErrors.Codes.AddOrUpdateHierarchyClassError;
+            }
+            else if(type == typeof(DeleteHierarchyClassesCommandHandler))
+            {
+                return ApplicationErrors.Codes.DeleteHierarchyClassError;
+            }
+            else
+            {
+                return ApplicationErrors.Codes.UnexpectedError;
             }
         }
 
         public string GetFormattedErrorDetails(Type type, Exception exception)
         {
-            switch (type)
+            if (type == typeof(AddOrUpdateHierarchyClassesCommandHandler))
             {
-                case Type _ when type == typeof(AddOrUpdateHierarchyClassesCommandHandler):
-                    return $"{ApplicationErrors.Descriptions.AddOrUpdateHierarchyClassError} Exception Details: {exception.ToString()}";
-                case Type _ when type == typeof(DeleteHierarchyClassesCommandHandler):
-                    return $"{ApplicationErrors.Descriptions.DeleteHierarchyClassError} Exception Details: {exception.ToString()}";
-                default:
-                    return $"{ApplicationErrors.Descriptions.UnexpectedError} Exception Details: {exception.ToString()}";
+                return $"{ApplicationErrors.Descriptions.AddOrUpdateHierarchyClassError} Exception Details: {exception.ToString()}";
+            }
+            else if (type == typeof(DeleteHierarchyClassesCommandHandler))
+            {
+                return $"{ApplicationErrors.Descriptions.DeleteHierarchyClassError} Exception Details: {exception.ToString()}";
+            }
+            else
+            {
+                return $"{ApplicationErrors.Descriptions.UnexpectedError} Exception Details: {exception.ToString()}";
             }
         }
     }
