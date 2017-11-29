@@ -14,7 +14,7 @@ namespace Icon.Monitoring.Monitors
         private const string TLogConServiceNotRunningMessage = "TLog Controller Service stopped running.";
         private const string ItemMovementTableRowCountExceededMessage = "Item Movement table has more than ";
         private const string AppName = "TLog Controller";
-      
+
         private ITLogConJobMonitorSettings tLogConMonitorSettings;
         private readonly IPagerDutyTrigger pagerDutyTrigger;
         private IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler;
@@ -22,16 +22,14 @@ namespace Icon.Monitoring.Monitors
         private bool _alertSentForItemTableMovement = false;
         private int currentRowCount = 0;
         private DateTime lastLogDateTime;
-     
-        public TLogConJobMonitor
-            (
-             IMonitorSettings settings,
+
+        public TLogConJobMonitor(
+            IMonitorSettings settings,
             ITLogConJobMonitorSettings TLogConMonitorSettings,
-             IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler,
-                  IQueryHandler<GetItemMovementTableRowCountParameters, int> getItemMovementTableRowCountQueryHandler,
-             IPagerDutyTrigger pagerDutyTrigger,
-              ILogger logger
-            )
+            IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler,
+            IQueryHandler<GetItemMovementTableRowCountParameters, int> getItemMovementTableRowCountQueryHandler,
+            IPagerDutyTrigger pagerDutyTrigger,
+            ILogger logger)
         {
             this.settings = settings;
             this.tLogConMonitorSettings = TLogConMonitorSettings;
@@ -92,11 +90,12 @@ namespace Icon.Monitoring.Monitors
         // this method will check last log by tlog controller and compare it with app settings
         private bool HasTlogConLoggedSinceConfiguredAllowedMinutes(string appName)
         {
-            AppLog appLog = getLatestAppLogByAppNameQueryHandler.Search(new GetLatestAppLogByAppNameParameters(appName));
+            AppLog appLog = getLatestAppLogByAppNameQueryHandler.Search(
+                new GetLatestAppLogByAppNameParameters(appName));
 
-            if (appLog !=null)
+            if (appLog != null)
             {
-                lastLogDateTime =appLog.LogDate;
+                lastLogDateTime = appLog.LogDate;
                 TimeSpan span = DateTime.Now - lastLogDateTime;
                 if (span.TotalMinutes > tLogConMonitorSettings.MinutesAllowedSinceLastTLogCon)
                     return false;

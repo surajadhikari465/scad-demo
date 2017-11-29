@@ -18,14 +18,12 @@ namespace Icon.Monitoring.Monitors
         private IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler;
         private DateTime lastLogDateTime;
 
-        public VIMLocaleControllerMonitor
-            (
-             IMonitorSettings settings,
-             IVimLocaleConJobMonitorSettings vimLocaleConMonitorSettings,
-             IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler,
-             IPagerDutyTrigger pagerDutyTrigger,
-              ILogger logger
-            )
+        public VIMLocaleControllerMonitor(
+            IMonitorSettings settings,
+            IVimLocaleConJobMonitorSettings vimLocaleConMonitorSettings,
+            IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler,
+            IPagerDutyTrigger pagerDutyTrigger,
+            ILogger logger)
         {
             this.settings = settings;
             this.vimLocaleConMonitorSettings = vimLocaleConMonitorSettings;
@@ -42,7 +40,6 @@ namespace Icon.Monitoring.Monitors
                 {
                     logger.Info("VIM Locale Controller Monitor has detected that VIM Locale Controller service is not running.");
                     TriggerPagerDutyForVimLocaleConJob(VimLocaleConServiceNotRunningMessage, "Last Log Date Time: ", lastLogDateTime.ToString());
-
                 }
             }
         }
@@ -54,7 +51,8 @@ namespace Icon.Monitoring.Monitors
 
         private bool HasVimLocaleConLoggedSinceConfiguredAllowedMinutes(string appName)
         {
-            AppLog appLog = getLatestAppLogByAppNameQueryHandler.Search(new GetLatestAppLogByAppNameParameters(appName));
+            AppLog appLog = getLatestAppLogByAppNameQueryHandler.Search(
+                new GetLatestAppLogByAppNameParameters(appName));
 
             if (appLog != null)
             {

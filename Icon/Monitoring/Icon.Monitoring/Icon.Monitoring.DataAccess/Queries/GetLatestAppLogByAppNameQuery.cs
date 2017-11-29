@@ -17,9 +17,10 @@ namespace Icon.Monitoring.DataAccess.Queries
         }
 
         public AppLog Search(GetLatestAppLogByAppNameParameters parameters)
-        { // get the date and time last log was written by tlog controller
+        { 
+            // get the date and time last log was written by tlog controller
             string sql = @"SELECT TOP 1
-                         [AppLogID]
+                          [AppLogID]
                           ,[AppID]
                           ,[UserName]
                           ,[InsertDate]
@@ -30,10 +31,9 @@ namespace Icon.Monitoring.DataAccess.Queries
                           ,[MachineName]
                         FROM
                            app.AppLog
-                         
                         WHERE
                            AppID = (SELECT AppID from app.App a  where a.AppName = @AppName)
-                           ORDER BY AppLogID DESC";
+                           ORDER BY LogDate DESC";
 
             AppLog appLogEntry = this.db.Connection
                 .Query<AppLog>(
@@ -41,7 +41,6 @@ namespace Icon.Monitoring.DataAccess.Queries
                     new
                     {
                         AppName = parameters.AppName
-                       
                     },
                     this.db.Transaction)
                 .FirstOrDefault();

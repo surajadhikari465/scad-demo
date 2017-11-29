@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Icon.Monitoring.Common;
 using Icon.Monitoring.DataAccess.Model;
 using Icon.Monitoring.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,6 +17,7 @@ namespace Icon.Monitoring.DataAccess.Tests.Queries
         private GetLatestAppLogByAppNameParameters parameters;
         private const string AppName = "TLog Controller";
         DateTime curentDate = DateTime.Now;
+
         [TestInitialize]
         public void Initialize()
         {
