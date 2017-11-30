@@ -690,6 +690,7 @@
     <None Include="Jobs\MAMMOTH.ReseedTables.sql" />
     <Build Include="dbo\Stored Procedures\GetItemStorePriceAttributes.sql" />
     <Build Include="dbo\User Defined Types\ScanCodeBusinessUnitIdType.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

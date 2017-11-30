@@ -38,6 +38,17 @@ namespace Mammoth.Common.DataAccess
 		public const int SignRomanceShort = 24;
 		public const int SignRomanceLong = 25;
 		public const int RetailUnit = 26;
+		public const int CustomerFriendlyDescription = 27;
+		public const int FairTrade = 28;
+		public const int FlexibleText = 29;
+		public const int MadeWithOrganicGrapes = 30;
+		public const int MadeWithBiodynamicGrapes = 31;
+		public const int NutritionRequired = 32;
+		public const int PrimeBeef = 33;
+		public const int RainforestAlliance = 34;
+		public const int RefrigeratedOrShelfStable = 35;
+		public const int SmithsonianBirdFriendly = 36;
+		public const int Wic = 37;
 		
 		public class Descriptions
 		{
@@ -67,6 +78,17 @@ namespace Mammoth.Common.DataAccess
 			public const string SignRomanceShort = "Sign Romance Short";
 			public const string SignRomanceLong = "Sign Romance Long";
 			public const string RetailUnit = "Retail Unit";
+			public const string CustomerFriendlyDescription = "Customer Friendly Description";
+			public const string FairTrade = "Fair Trade";
+			public const string FlexibleText = "Flexible Text";
+			public const string MadeWithOrganicGrapes = "Made With Organic Grapes";
+			public const string MadeWithBiodynamicGrapes = "Made with Biodynamic Grapes";
+			public const string NutritionRequired = "Nutrition Required";
+			public const string PrimeBeef = "Prime Beef";
+			public const string RainforestAlliance = "Rainforest Alliance";
+			public const string RefrigeratedOrShelfStable = "Refrigerated or Shelf Stable";
+			public const string SmithsonianBirdFriendly = "Smithsonian Bird Friendly";
+			public const string Wic = "WIC";
 		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
@@ -95,7 +117,18 @@ namespace Mammoth.Common.DataAccess
 				{ "TMD", "TM Discount Eligible" },
 				{ "SHT", "Sign Romance Short" },
 				{ "LNG", "Sign Romance Long" },
-				{ "RTU", "Retail Unit" }
+				{ "RTU", "Retail Unit" },
+				{ "CFD", "Customer Friendly Description" },
+				{ "FT", "Fair Trade" },
+				{ "FXT", "Flexible Text" },
+				{ "MOG", "Made With Organic Grapes" },
+				{ "MBG", "Made with Biodynamic Grapes" },
+				{ "NR", "Nutrition Required" },
+				{ "PRB", "Prime Beef" },
+				{ "RFA", "Rainforest Alliance" },
+				{ "RFD", "Refrigerated or Shelf Stable" },
+				{ "SBF", "Smithsonian Bird Friendly" },
+				{ "WIC", "WIC" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -128,6 +161,17 @@ namespace Mammoth.Common.DataAccess
 			public const string SignRomanceShort = "SHT";
 			public const string SignRomanceLong = "LNG";
 			public const string RetailUnit = "RTU";
+			public const string CustomerFriendlyDescription = "CFD";
+			public const string FairTrade = "FT";
+			public const string FlexibleText = "FXT";
+			public const string MadeWithOrganicGrapes = "MOG";
+			public const string MadeWithBiodynamicGrapes = "MBG";
+			public const string NutritionRequired = "NR";
+			public const string PrimeBeef = "PRB";
+			public const string RainforestAlliance = "RFA";
+			public const string RefrigeratedOrShelfStable = "RFD";
+			public const string SmithsonianBirdFriendly = "SBF";
+			public const string Wic = "WIC";
 		}
 	}
 }

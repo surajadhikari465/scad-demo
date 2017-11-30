@@ -20,6 +20,7 @@ Post-Deployment Script Template
 :r AddJobSchedulerToAppTable.sql
 :r AddWebSupportToAppTable.sql
 :r AddGpmPriceTypes.sql
+:r AddEslAttributesToAttributesTable.sql
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql
