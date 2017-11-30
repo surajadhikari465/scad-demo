@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Mammoth.Common.DataAccess.DbProviders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Configuration;
 using System.Data.SqlClient;
 
 namespace MammothWebApi.Tests.DataAccess
@@ -17,9 +16,22 @@ namespace MammothWebApi.Tests.DataAccess
         {
             db = new SqlDbProvider();
             AddLookupDataToDatabase();
+            RebuildIndexOnItemTable();
             //AddEsbLookupDataToDatabase();
             //AddItemTypesToDatabase();
             //AddAttributesToDatabase();
+        }
+
+        private static void RebuildIndexOnItemTable()
+        {
+            using (db.Connection = new SqlConnection(connectionString))
+            {
+                db.Connection.Open();
+                string sql = @"ALTER TABLE dbo.Items NOCHECK CONSTRAINT ALL;
+                                ALTER INDEX ALL ON dbo.Items REBUILD;
+                                ALTER TABLE dbo.Items CHECK CONSTRAINT ALL;";
+                db.Connection.Execute(sql, transaction: db.Transaction);
+            }
         }
 
         private static void AddLookupDataToDatabase()

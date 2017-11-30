@@ -62,20 +62,13 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         {
             this.db.Connection.Execute($"DELETE FROM Locales_{this.region} WHERE BusinessUnitID = 1", this.db.Transaction);
             this.db.Connection.Execute("DELETE FROM stage.Price WHERE TransactionId = @TranId", new { TranId = this.transactionId }, this.db.Transaction);
-            this.db.Connection.Execute($@"SELECT ItemID
-                                        INTO #itemsToDelete
-                                        FROM Items
-                                        WHERE ItemID IN @ItemIDs
-    
-                                        DELETE p
-                                        FROM Price_{this.region} p
-                                        JOIN #itemsToDelete d on p.ItemID = d.ItemID
-                                        WHERE BusinessUnitID = @BuId
-
-                                        DELETE i
-                                        FROM Items i
-                                        JOIN #itemsToDelete d on i.ItemID = d.ItemID",
-                new { ItemIDs = this.items.Select(i => i.ItemID).ToList(), BuId = this.buId },
+            this.db.Connection.Execute($@"DELETE p
+                                        FROM dbo.Price_{this.region} p
+                                        WHERE p.BusinessUnitID = @BuId",
+                new { BuId = this.buId },
+                this.db.Transaction);
+            this.db.Connection.Execute($@"DELETE FROM Items WHERE ItemID IN @ItemIDs",
+                new { ItemIDs = this.items.Select(i => i.ItemID) },
                 this.db.Transaction);
 
             if (this.db.Transaction != null)
@@ -553,9 +546,9 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
             this.maxItemId = this.db.Connection.Query<int?>("SELECT MAX(ItemID) FROM Items", transaction: this.db.Transaction).FirstOrDefault();
             var newItems = new List<Item>();
 
-            for (int i = 0; i < numberOfItems; i++)
+            for (int i = 1; i < numberOfItems - 1; i++)
             {
-                newItems.Add(new TestItemBuilder().WithScanCode($"11111177{i.ToString()}").WithItemId((maxItemId ?? default(int)) + (i+1)).Build());
+                newItems.Add(new TestItemBuilder().WithScanCode($"11111177{i.ToString()}").WithItemId((maxItemId ?? default(int)) + (i)).Build());
             }
 
             return newItems;

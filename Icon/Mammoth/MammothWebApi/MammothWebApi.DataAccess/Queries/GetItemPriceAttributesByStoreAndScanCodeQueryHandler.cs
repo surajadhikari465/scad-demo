@@ -50,7 +50,9 @@ namespace MammothWebApi.DataAccess.Queries
                         else
                             return p;
                     });
-                    var activeTprs = priceGroup.Where(p => p.PriceType != "REG" && p.StartDate <= DateTime.Today && p.EndDate >= DateTime.Today);
+                    var activeTprs = priceGroup.Where(p => p.PriceType != "REG" 
+                                                        && p.StartDate <= parameters.EffectiveDate
+                                                        && p.EndDate >= parameters.EffectiveDate);
                     allPrices.Add(currentRegularPrice);
                     allPrices.AddRange(activeTprs);
 

@@ -629,6 +629,106 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
+        public void GetPricesGpmQuery_EffectiveDateIsInTheFuture_ReturnsPricesActiveDuringEffectiveDate()
+        {
+            // Given
+            DateTime effectiveDate = DateTime.Today.AddDays(10);
+            DateTime activeRegularStartDate = DateTime.Today.Date.AddDays(-3);
+            DateTime nonActiveTprStartDate = DateTime.Today.Date.AddDays(-2);
+            DateTime nonActiveTprEndDate = DateTime.Today.Date.AddDays(2); // still active as of today but not according to effective date
+            DateTime expiredRegStartDate = activeRegularStartDate.AddDays(-10);
+            DateTime effectiveDateTprStartDate = effectiveDate.AddDays(-2); // active according to effective date
+            DateTime effectiveDateTprEndDate = effectiveDate.AddDays(5); // active according to effective date
+
+            this.db.Connection.Execute(
+                insertPriceSql,
+                objectFactory.Build<PricesGpm>()
+                    .With(p => p.Region, expectedRegion)
+                    .With(p => p.ItemID, expectedItemId)
+                    .With(p => p.BusinessUnitID, expectedStoreBuId)
+                    .With(p => p.Price, 3.50m)
+                    .With(p => p.PriceType, "REG")
+                    .With(p => p.StartDate, activeRegularStartDate)
+                    .With(p => p.CurrencyCode, "USD")
+                    .With(p => p.GpmID, Guid.NewGuid())
+                    .With(p => p.SellableUOM, "EA")
+                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
+                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
+                this.db.Transaction);
+
+            this.db.Connection.Execute(
+                insertPriceSql,
+                objectFactory.Build<PricesGpm>()
+                    .With(p => p.Region, expectedRegion)
+                    .With(p => p.ItemID, expectedItemId)
+                    .With(p => p.BusinessUnitID, expectedStoreBuId)
+                    .With(p => p.Price, 1.50m)
+                    .With(p => p.PriceType, "TPR")
+                    .With(p => p.StartDate, nonActiveTprStartDate) // non active tpr according to effective date - is not expected to be returned
+                    .With(p => p.EndDate, nonActiveTprEndDate)
+                    .With(p => p.CurrencyCode, "USD")
+                    .With(p => p.GpmID, Guid.NewGuid())
+                    .With(p => p.SellableUOM, "EA")
+                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
+                    .With(p => p.PriceTypeAttribute, "SSAL").CreatedObject,
+                this.db.Transaction);
+
+            this.db.Connection.Execute(
+                insertPriceSql,
+                objectFactory.Build<PricesGpm>()
+                    .With(p => p.Region, expectedRegion)
+                    .With(p => p.ItemID, expectedItemId)
+                    .With(p => p.BusinessUnitID, expectedStoreBuId)
+                    .With(p => p.Price, 2.50m)
+                    .With(p => p.PriceType, "TPR")
+                    .With(p => p.StartDate, effectiveDateTprStartDate) // effective date tpr
+                    .With(p => p.EndDate, effectiveDateTprEndDate)
+                    .With(p => p.CurrencyCode, "USD")
+                    .With(p => p.GpmID, Guid.NewGuid())
+                    .With(p => p.SellableUOM, "EA")
+                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
+                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
+                this.db.Transaction);
+
+            this.db.Connection.Execute(
+                insertPriceSql,
+                objectFactory.Build<PricesGpm>()
+                    .With(p => p.Region, expectedRegion)
+                    .With(p => p.ItemID, expectedItemId)
+                    .With(p => p.BusinessUnitID, expectedStoreBuId)
+                    .With(p => p.Price, 4.49m)
+                    .With(p => p.PriceType, "REG")
+                    .With(p => p.StartDate, expiredRegStartDate) // expired REG
+                    .With(p => p.CurrencyCode, "USD")
+                    .With(p => p.GpmID, Guid.NewGuid())
+                    .With(p => p.SellableUOM, "EA")
+                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
+                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
+                this.db.Transaction);
+
+            this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
+            {
+                Region = expectedRegion,
+                EffectiveDate = effectiveDate,
+                IncludeFuturePrices = false,
+                StoreScanCodeCollection = new List<StoreScanCode>
+                {
+                    new StoreScanCode { BusinessUnitID = expectedStoreBuId, ScanCode = expectedItemScanCode }
+                }
+            };
+
+            // When
+            var prices = this.queryHandler.Search(this.query);
+
+            // Then
+            // Expect current and future prices
+            Assert.AreEqual(2, prices.Count(), "Price count is not correct.");
+            Assert.AreEqual(activeRegularStartDate, prices.First(p => p.PriceType == "REG").StartDate);
+            Assert.AreEqual(effectiveDateTprStartDate, prices.First(p => p.PriceType != "REG").StartDate);
+            Assert.AreEqual(effectiveDateTprEndDate, prices.First(p => p.PriceType != "REG").EndDate);
+        }
+
+        [TestMethod]
         public void GetPricesGpmQuery_EffectiveDateInTheFuture_ReturnsFutureRegularPriceInsteadOfCurrentRegularPrice()
         {
             // Given
