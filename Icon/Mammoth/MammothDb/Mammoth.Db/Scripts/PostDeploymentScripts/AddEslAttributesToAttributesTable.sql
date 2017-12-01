@@ -29,8 +29,8 @@ BEGIN
 		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'RFA','Rainforest Alliance',@Today);
 	IF NOT EXISTS (SELECT 1 FROM Attributes WHERE AttributeCode = 'RFD')
 		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'RFD','Refrigerated or Shelf Stable',@Today);
-	IF NOT EXISTS (SELECT 1 FROM Attributes WHERE AttributeCode = 'SBF')
-		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'SBF','Smithsonian Bird Friendly',@Today);
+	IF NOT EXISTS (SELECT 1 FROM Attributes WHERE AttributeCode = 'SMF')
+		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'SMF','Smithsonian Bird Friendly',@Today);
 	IF NOT EXISTS (SELECT 1 FROM Attributes WHERE AttributeCode = 'WIC')
 		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'WIC','WIC',@Today);
 

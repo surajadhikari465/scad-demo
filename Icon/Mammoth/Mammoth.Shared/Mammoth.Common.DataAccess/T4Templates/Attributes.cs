@@ -47,8 +47,8 @@ namespace Mammoth.Common.DataAccess
 		public const int PrimeBeef = 33;
 		public const int RainforestAlliance = 34;
 		public const int RefrigeratedOrShelfStable = 35;
-		public const int SmithsonianBirdFriendly = 36;
 		public const int Wic = 37;
+		public const int SmithsonianBirdFriendly = 38;
 		
 		public class Descriptions
 		{
@@ -87,8 +87,8 @@ namespace Mammoth.Common.DataAccess
 			public const string PrimeBeef = "Prime Beef";
 			public const string RainforestAlliance = "Rainforest Alliance";
 			public const string RefrigeratedOrShelfStable = "Refrigerated or Shelf Stable";
-			public const string SmithsonianBirdFriendly = "Smithsonian Bird Friendly";
 			public const string Wic = "WIC";
+			public const string SmithsonianBirdFriendly = "Smithsonian Bird Friendly";
 		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
@@ -127,8 +127,8 @@ namespace Mammoth.Common.DataAccess
 				{ "PRB", "Prime Beef" },
 				{ "RFA", "Rainforest Alliance" },
 				{ "RFD", "Refrigerated or Shelf Stable" },
-				{ "SBF", "Smithsonian Bird Friendly" },
-				{ "WIC", "WIC" }
+				{ "WIC", "WIC" },
+				{ "SMF", "Smithsonian Bird Friendly" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -170,8 +170,8 @@ namespace Mammoth.Common.DataAccess
 			public const string PrimeBeef = "PRB";
 			public const string RainforestAlliance = "RFA";
 			public const string RefrigeratedOrShelfStable = "RFD";
-			public const string SmithsonianBirdFriendly = "SBF";
 			public const string Wic = "WIC";
+			public const string SmithsonianBirdFriendly = "SMF";
 		}
 	}
 }
