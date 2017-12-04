@@ -10,6 +10,9 @@
     [Authorized]             BIT            DEFAULT ((0)) NOT NULL,
     [Discontinued]           BIT            DEFAULT ((0)) NOT NULL,
     [LocalItem]              BIT            DEFAULT ((0)) NOT NULL,
+    [ScaleItem]              BIT            DEFAULT ((0)) NOT NULL,
+    [OrderedByPredictix]     BIT            DEFAULT ((0)) NOT NULL,
+    [DefaultScanCode]        NVARCHAR  (13) NULL,
     [LabelTypeDesc]          NVARCHAR (255) NULL,
     [Product_Code]           NVARCHAR (255) NULL,
     [RetailUnit]             NVARCHAR (255) NULL,
@@ -17,11 +20,14 @@
     [Locality]               NVARCHAR (255) NULL,
     [Sign_RomanceText_Long]  NVARCHAR (MAX) NULL,
     [Sign_RomanceText_Short] NVARCHAR (255) NULL,
-	[MSRP]					 SMALLMONEY		DEFAULT ((0)) NOT NULL,
+    [AltRetailUOM]           NVARCHAR  (25) NULL,
+    [AltRetailSize]          NUMERIC  (9,4) NULL,
+    [MSRP]                   SMALLMONEY     DEFAULT ((0)) NOT NULL,
     [AddedDate]              DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]           DATETIME       NULL,
     CONSTRAINT [PK_ItemAttributes_Locale_RM] PRIMARY KEY CLUSTERED ([Region] ASC, [ItemAttributeLocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_RM],
-    CONSTRAINT [CK_ItemAttributes_Locale_RM_Restriction_Age] CHECK ([Restriction_Age]=(21) OR [Restriction_Age]=(18))
+    CONSTRAINT [CK_ItemAttributes_Locale_RM_Restriction_Age] CHECK ([Restriction_Age]=(21) OR [Restriction_Age]=(18)),
+    CONSTRAINT [CK_ItemAttributes_Locale_RM_Region] CHECK ([Region] = 'RM')
 ) TEXTIMAGE_ON [FG_RM];
 GO
 
