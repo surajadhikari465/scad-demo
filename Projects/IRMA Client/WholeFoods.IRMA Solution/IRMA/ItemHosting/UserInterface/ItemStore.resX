@@ -1701,7 +1701,7 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmbRetailUom.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>GroupBox_StoreRetailUOM</value>
   </data>
   <data name="&gt;&gt;cmbRetailUom.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -1731,7 +1731,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lbl365RetailUom.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>GroupBox_StoreRetailUOM</value>
   </data>
   <data name="&gt;&gt;lbl365RetailUom.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -2250,7 +2250,7 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmbScaleUom.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>GroupBox_StoreRetailUOM</value>
   </data>
   <data name="&gt;&gt;cmbScaleUom.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -2283,7 +2283,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblScaleUom.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>GroupBox_StoreRetailUOM</value>
   </data>
   <data name="&gt;&gt;lblScaleUom.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -2316,7 +2316,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblFixedWeight.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>GroupBox_StoreRetailUOM</value>
   </data>
   <data name="&gt;&gt;lblFixedWeight.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -2340,7 +2340,7 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;TextBox_FixedWeight.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>GroupBox_StoreRetailUOM</value>
   </data>
   <data name="&gt;&gt;TextBox_FixedWeight.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -2373,7 +2373,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblByCount.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>GroupBox_StoreRetailUOM</value>
   </data>
   <data name="&gt;&gt;lblByCount.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -2397,36 +2397,36 @@
     <value>Infragistics.Win.UltraWinEditors.UltraNumericEditor, Infragistics2.Win.UltraWinEditors.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb</value>
   </data>
   <data name="&gt;&gt;ByCountNumericEditor.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>GroupBox_StoreRetailUOM</value>
   </data>
   <data name="&gt;&gt;ByCountNumericEditor.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="GroupBox1.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="GroupBox_StoreRetailUOM.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
-  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="GroupBox_StoreRetailUOM.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 472</value>
   </data>
-  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="GroupBox_StoreRetailUOM.Size" type="System.Drawing.Size, System.Drawing">
     <value>353, 122</value>
   </data>
-  <data name="GroupBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="GroupBox_StoreRetailUOM.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="GroupBox1.Text" xml:space="preserve">
-    <value>365 UOMs</value>
+  <data name="GroupBox_StoreRetailUOM.Text" xml:space="preserve">
+    <value>Store Retail UOM</value>
   </data>
-  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
-    <value>GroupBox1</value>
+  <data name="&gt;&gt;GroupBox_StoreRetailUOM.Name" xml:space="preserve">
+    <value>GroupBox_StoreRetailUOM</value>
   </data>
-  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;GroupBox_StoreRetailUOM.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;GroupBox_StoreRetailUOM.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;GroupBox_StoreRetailUOM.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
