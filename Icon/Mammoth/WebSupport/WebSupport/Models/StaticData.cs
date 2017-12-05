@@ -19,6 +19,13 @@ namespace WebSupport.Models
             }
         }
 
-		public static string[] DownstreamSystems => DataConstants.DownstreamSystems;
-	}
+        public static string[] DownstreamSystems => DataConstants.DownstreamSystems;
+
+        public static string[] MammothEventTypes = new[]
+            {
+                EventConstants.ItemLocaleAddOrUpdateEvent,
+                EventConstants.ItemPriceEvent
+            };
+
+    }
 }

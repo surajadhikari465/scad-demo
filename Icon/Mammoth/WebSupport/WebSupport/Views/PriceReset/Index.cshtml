@@ -3,8 +3,10 @@
 @model WebSupport.ViewModels.PriceResetRequestViewModel
 
 @{
-    ViewBag.Title = "Price Reset";
+    ViewBag.Title = "Send GPM Price Reset Message";
 }
+<h3 class="text-center">@ViewBag.Title</h3>
+
 <div class="row container-fluid">
     @using (Html.BeginForm("Index", "PriceReset", null, FormMethod.Post, new { @class = "" }))
     {

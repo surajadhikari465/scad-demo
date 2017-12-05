@@ -2,68 +2,70 @@
 @using WebSupport.Models
 @model WebSupport.ViewModels.CheckPointRequestViewModel
 @{
-    ViewBag.Title = "Check Point Request";
+    ViewBag.Title = "Send Checkpoint Request to GPM";
 }
-<div class="row container-fluid">
-    @using (Html.BeginForm("Index", "CheckPointRequest", null, FormMethod.Post, new { @class = "" }))
-    {
-        <div class="form-group">
-            <div class="col-sm-offset-0 col-sm-2">
-                @Html.LabelFor(m => m.RegionIndex, new { @class = "control-label" })
-            </div>
-            <div class="col-sm-4">
-                @Html.DropDownListFor(m => m.RegionIndex, Model.OptionsForRegion, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RegionIndex, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<h3 class="text-center">@ViewBag.Title</h3>
 
-        <div class="form-group">
-            <div class="col-sm-offset-0 col-sm-2">
-                @Html.LabelFor(m => m.Store, new { @class = "control-label" })
-            </div>
-            <div class="col-sm-4">
-                <div id="storesDiv" class="hidden">
-                    <image src="@(Url.Content("~/Content/loading.gif"))" alt="Loading, please wait"></image>
-                </div>
-
-                @Html.DropDownListFor(m => m.Store, Model.OptionsForStores, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Store, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    
-        <div class="form-group">
-            <div class="col-sm-offset-0 col-sm-2">
-                @Html.LabelFor(m => m.ScanCode, new { @class = "control-label" })
-            </div>
-            <div class="col-sm-6"  style="margin-top:10px">
-
-                @Html.TextBoxFor(model => Model.ScanCode, new { style = "height:25px;" })
-                @Html.ValidationMessageFor(model => model.ScanCode, "", new { @class = "text-danger" })
-            </div>
-        </div>
-         <div class="form-group" >
-            <div class="col-sm-offset-7 col-sm-2">
-                <input type="submit" value="Send Request" class="btn btn-danger form-submit col-md-offset-7" id="search-button" />
-            </div>
-        </div>
-
-        <div class="row"></div>
-        if (ViewBag.Error != null)
+    <div class="row container-fluid">
+        @using (Html.BeginForm("Index", "CheckPointRequest", null, FormMethod.Post, new { @class = "" }))
         {
             <div class="form-group">
-                <div class="alert alert-danger alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <strong>@ViewBag.Error</strong>
+                <div class="col-sm-offset-0 col-sm-2">
+                    @Html.LabelFor(m => m.RegionIndex, new { @class = "control-label" })
+                </div>
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.RegionIndex, Model.OptionsForRegion, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.RegionIndex, "", new { @class = "text-danger" })
                 </div>
             </div>
-        }
-    }
-</div>
 
-@section Scripts {
-    <script type="text/javascript">
+            <div class="form-group">
+                <div class="col-sm-offset-0 col-sm-2">
+                    @Html.LabelFor(m => m.Store, new { @class = "control-label" })
+                </div>
+                <div class="col-sm-4">
+                    <div id="storesDiv" class="hidden">
+                        <image src="@(Url.Content("~/Content/loading.gif"))" alt="Loading, please wait"></image>
+                    </div>
+
+                    @Html.DropDownListFor(m => m.Store, Model.OptionsForStores, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Store, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-0 col-sm-2">
+                    @Html.LabelFor(m => m.ScanCode, new { @class = "control-label" })
+                </div>
+                <div class="col-sm-6" style="margin-top:10px">
+
+                    @Html.TextBoxFor(model => Model.ScanCode, new { style = "height:25px;" })
+                    @Html.ValidationMessageFor(model => model.ScanCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-7 col-sm-2">
+                    <input type="submit" value="Send Request" class="btn btn-danger form-submit col-md-offset-7" id="search-button" />
+                </div>
+            </div>
+
+            <div class="row"></div>
+            if (ViewBag.Error != null)
+            {
+                <div class="form-group">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>@ViewBag.Error</strong>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    @section Scripts {
+        <script type="text/javascript">
 
     var getStoresSuccessCallback = function (data, textStatus, xhr) {
         var storesControl = $("#Store");
@@ -113,5 +115,5 @@
         storesControl.removeClass("hidden");
         storesControl.fadeIn();
     });
-    </script>
-}
+        </script>
+    }

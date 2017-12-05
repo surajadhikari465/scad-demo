@@ -6,34 +6,20 @@
     using System.Linq;
     using System.Web.Mvc;
 
-    using DataAccess;
+    using WebSupport.Models;
 
     public class EventCreatorViewModel
     {
-        /// <summary>
-        /// Available regions abbreviations.
-        /// </summary>
-        private static string[] WholeFoodsRegions = new[]
-            {
-                "FL", "MA", "MW", "NA", "RM", "SO", "NC", "NE", "PN", "SP", "SW", "UK"
-            };
-
-        private static string[] MammothEventTypes = new[]
-            {
-                EventConstants.ItemLocaleAddOrUpdateEvent,
-                EventConstants.ItemPriceEvent
-            };
-
         [Required]
         [DataType(DataType.MultilineText)]
-        [RegularExpression(@"^[1-9][0-9]{0,12}(\r?\n[1-9][0-9]{0,12})*(\r?\n)*$", ErrorMessage = "Invalid scan code format.")]
+        [RegularExpression(ValidationConstants.RegExForValidScanCode, ErrorMessage = ValidationConstants.ErrorMsgForInvalidScanCode)]
         public string ScanCodesText { get; set; }
 
         public SelectList AvailableRegions
         {
             get
             {
-                return new SelectList(WholeFoodsRegions);
+                return new SelectList(StaticData.WholeFoodsRegions);
             }
         }
 
@@ -43,7 +29,7 @@
         {
             get
             {
-                return new SelectList(MammothEventTypes);
+                return new SelectList(StaticData.MammothEventTypes);
             }
         }
 

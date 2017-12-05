@@ -2,15 +2,15 @@
 @model WebSupport.ViewModels.EventCreatorViewModel
 
 @{
-    ViewBag.Title = "Event Creator";
+    ViewBag.Title = "Create Mammoth Events";
 }
+<h3 class="text-center">@ViewBag.Title</h3>
 
 <div id="searchOptions">
-    <div class="row" class="container-fluid">
+    <div class="row container-fluid">
         @using (Html.BeginForm("CreateEvents", "EventCreator", null, FormMethod.Post, new { @class = "begin-form col-md-12" }))
         {
             <fieldset>
-                <legend>Items</legend>
 
                 <div class="row">
                     @Html.Label("Region", new { @class = "form-label col-md-4" })
