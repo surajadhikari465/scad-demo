@@ -13,7 +13,7 @@ namespace Mammoth.Esb.ProductListener.Mappers
             this.cache = cache;
         }
 
-        public void PopulateHierarchyClassDatabaseIds(List<ProductModel> products)
+        public void PopulateHierarchyClassDatabaseIds(IEnumerable<GlobalAttributesModel> products)
         {
             var taxHierarchyClasses = cache.GetTaxDictionary();
 

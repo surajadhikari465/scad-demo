@@ -9,6 +9,6 @@ namespace Mammoth.Esb.ProductListener.Mappers
 {
     public interface IHierarchyClassIdMapper
     {
-        void PopulateHierarchyClassDatabaseIds(List<ProductModel> products);
+        void PopulateHierarchyClassDatabaseIds(IEnumerable<GlobalAttributesModel> products);
     }
 }

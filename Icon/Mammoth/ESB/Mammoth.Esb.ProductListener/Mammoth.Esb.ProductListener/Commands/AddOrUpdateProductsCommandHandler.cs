@@ -2,10 +2,10 @@
 using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.DbProviders;
-using System;
+using MoreLinq;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
+using System;
 
 namespace Mammoth.Esb.ProductListener.Commands
 {
@@ -20,68 +20,87 @@ namespace Mammoth.Esb.ProductListener.Commands
 
         public void Execute(AddOrUpdateProductsCommand data)
         {
-            var timeStamp = DateTime.Now;
-            Guid transactionId = Guid.NewGuid();
-            SetTimeStamp(data, timeStamp);
-            CopyToStaging(data, transactionId);
-            MergeIntoMammoth(data, transactionId);
-            DeleteItemsFromStaging(transactionId);
+            AddOrUpdateItems(data);
+            AddOrUpdateItemAttributesSign(data);
+            AddOrUpdateItemAttributesNutrition(data);
+            AddOrUpdateItemAttributesExtended(data);
         }
 
-        private void SetTimeStamp(AddOrUpdateProductsCommand data, DateTime timestamp)
+        private void AddOrUpdateItemAttributesNutrition(AddOrUpdateProductsCommand data)
         {
-            foreach (var product in data.Products)
-            {
-                product.Timestamp = timestamp;
-            }
+            string sql = @"dbo.AddOrUpdateItems";
+            int rowCount = this.db.Connection.Execute(
+                sql,
+                new
+                {
+                    globalAttributes = data.Items.Select(
+                        i => new
+                        {
+                            ItemID = i.GlobalAttributes.ItemID,
+                            ItemTypeID = i.GlobalAttributes.ItemTypeID,
+                            ScanCode = i.GlobalAttributes.ScanCode,
+                            SubBrickID = i.GlobalAttributes.SubBrickID,
+                            NationalClassID = i.GlobalAttributes.NationalClassID,
+                            BrandHCID = i.GlobalAttributes.BrandHCID,
+                            TaxClassHCID = i.GlobalAttributes.TaxClassHCID,
+                            Desc_Product = i.GlobalAttributes.Desc_Product,
+                            Desc_POS = i.GlobalAttributes.Desc_POS,
+                            PackageUnit = i.GlobalAttributes.PackageUnit,
+                            RetailSize = i.GlobalAttributes.RetailSize,
+                            RetailUOM = i.GlobalAttributes.RetailUOM,
+                            PSNumber = i.GlobalAttributes.PSNumber,
+                            FoodStampEligible = i.GlobalAttributes.FoodStampEligible,
+                            CustomerFriendlyDescription = i.GlobalAttributes.Desc_CustomerFriendly
+                        })
+                    .ToList()
+                    .ToDataTable()
+                },
+                transaction: this.db.Transaction,
+                commandType: CommandType.StoredProcedure);
         }
 
-        private void CopyToStaging(AddOrUpdateProductsCommand data, Guid transactionId)
+        private void AddOrUpdateItemAttributesSign(AddOrUpdateProductsCommand data)
         {
-            using (SqlBulkCopy bulkCopy = new SqlBulkCopy(
-                            db.Connection as SqlConnection,
-                            SqlBulkCopyOptions.Default,
-                            db.Transaction as SqlTransaction))
-            {
-                bulkCopy.DestinationTableName = "stage.Items";
-                DataTable dataTable = data.Products.Select(
-                    p => new
-                    {
-                        p.ItemID,
-                        p.ItemTypeID,
-                        p.ScanCode,
-                        p.SubBrickID,
-                        p.NationalClassID,
-                        p.BrandHCID,
-                        p.TaxClassHCID,
-                        p.Desc_Product,
-                        p.Desc_POS,
-                        p.PackageUnit,
-                        p.RetailSize,
-                        p.RetailUOM,
-                        p.PSNumber,
-                        p.FoodStampEligible,
-                        p.Timestamp,
-                        transactionId
-                    }).ToList().ToDataTable();
-
-                bulkCopy.WriteToServer(dataTable);
-            }
-        }
-
-        private void MergeIntoMammoth(AddOrUpdateProductsCommand data, Guid transactionId)
-        {
-            string sql = @"dbo.AddOrUpdateItems_FromStaging";
+            string sql = @"dbo.AddOrUpdateItemAttributesSign";
             int rowCount = this.db.Connection.Execute(sql,
-                new { transactionId = transactionId },
-                commandType: CommandType.StoredProcedure,
-                transaction: this.db.Transaction);
+                new { signAttributes = data.Items.Select(i => i.SignAttributes).ToDataTable() },
+                transaction: this.db.Transaction,
+                commandType: CommandType.StoredProcedure);
         }
 
-        private void DeleteItemsFromStaging(Guid transactionId)
+        private void AddOrUpdateItems(AddOrUpdateProductsCommand data)
         {
-            string sql = @"DELETE FROM stage.Items WHERE TransactionId = @transactionId";
-            db.Connection.Execute(sql, new { transactionId = transactionId }, db.Transaction);
+            if (data.Items.Any(i => i.NutritionAttributes != null))
+            {
+                string sql = @"dbo.AddOrUpdateItemAttributesNutrition";
+                int rowCount = this.db.Connection.Execute(sql,
+                    new { nutritionAttributes = data.Items.Select(i => i.NutritionAttributes).ToDataTable() },
+                    transaction: this.db.Transaction,
+                    commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        private void AddOrUpdateItemAttributesExtended(AddOrUpdateProductsCommand data)
+        {
+            string sql = @"dbo.AddOrUpdateItemAttributesExt";
+            int rowCount = this.db.Connection.Execute(sql,
+                new {
+                    extAttributes = data.Items.SelectMany(
+                        i => new[]
+                        {
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.FairTrade, AttributeValue = i.ExtendedAttributes.FairTrade },
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.FlexibleText, AttributeValue = i.ExtendedAttributes.FlexibleText },
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.MadeWithBiodynamicGrapes, AttributeValue = i.ExtendedAttributes.MadeWithBiodynamicGrapes },
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.MadeWithOrganicGrapes, AttributeValue = i.ExtendedAttributes.MadeWithOrganicGrapes },
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.NutritionRequired, AttributeValue = i.ExtendedAttributes.NutritionRequired },
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.PrimeBeef, AttributeValue = i.ExtendedAttributes.PrimeBeef },
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.RainforestAlliance, AttributeValue = i.ExtendedAttributes.RainforestAlliance },
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.RefrigeratedOrShelfStable, AttributeValue = i.ExtendedAttributes.RefrigeratedOrShelfStable },
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.SmithsonianBirdFriendly, AttributeValue = i.ExtendedAttributes.SmithsonianBirdFriendly },
+                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.Wic, AttributeValue = i.ExtendedAttributes.Wic }
+                        }).ToDataTable() },
+                transaction: this.db.Transaction,
+                commandType: CommandType.StoredProcedure);
         }
     }
 }

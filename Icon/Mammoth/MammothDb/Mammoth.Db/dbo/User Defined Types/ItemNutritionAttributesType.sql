@@ -1,6 +1,6 @@
-﻿CREATE TABLE [dbo].[ItemAttributes_Nutrition] (
-    [ItemAttributeID]          INT             IDENTITY (1, 1) NOT NULL,
-    [ItemID]                   VARCHAR (50)    NULL,
+﻿CREATE TYPE [dbo].ItemNutritionAttributesType AS TABLE
+(
+	[ItemID]                   VARCHAR (50)    NULL,
     [RecipeName]               NVARCHAR (100)  NULL,
     [Allergens]                NVARCHAR (510)  NULL,
     [Ingredients]              NVARCHAR (4000) NULL,
@@ -57,6 +57,7 @@
     [Zinc]                     SMALLINT        NULL,
     [Copper]                   SMALLINT        NULL,
     [TransFat]                 DECIMAL (10, 1) NULL,
+    [TransFatWeight]           DECIMAL (10, 1) NULL,
     [CaloriesFromTransFat]     INT             NULL,
     [Om6Fatty]                 DECIMAL (10, 1) NULL,
     [Om3Fatty]                 DECIMAL (10, 1) NULL,
@@ -66,13 +67,9 @@
     [VitaminK]                 SMALLINT        NULL,
     [Manganese]                SMALLINT        NULL,
     [Molybdenum]               SMALLINT        NULL,
-    [Selenium]                 SMALLINT        NULL,
-    [TransFatWeight]           DECIMAL (10, 1) NULL,
-    [AddedDate]                DATETIME        DEFAULT (getdate()) NOT NULL,
-    [ModifiedDate]             DATETIME        NULL,
-    CONSTRAINT [PK_ItemAttributes_Nutrition] PRIMARY KEY CLUSTERED ([ItemAttributeID] ASC) WITH (FILLFACTOR = 100)
-);
+    [Selenium]                 SMALLINT        NULL
+)
 GO
 
-GRANT SELECT, UPDATE, INSERT, DELETE ON dbo.ItemAttributes_Nutrition TO MammothRole
+GRANT EXEC ON type::dbo.ItemNutritionAttributesType TO MammothRole
 GO

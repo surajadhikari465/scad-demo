@@ -8,4 +8,7 @@
     CONSTRAINT [PK_ItemAttributes_Ext] PRIMARY KEY CLUSTERED ([ItemAttributeID] ASC) WITH (FILLFACTOR = 100),
     CONSTRAINT [FK_ItemAttributes_Ext_ItemID] FOREIGN KEY ([ItemID]) REFERENCES [dbo].[Items] ([ItemID])
 );
+GO
 
+GRANT SELECT, UPDATE, INSERT, DELETE ON dbo.ItemAttributes_Ext TO MammothRole
+GO

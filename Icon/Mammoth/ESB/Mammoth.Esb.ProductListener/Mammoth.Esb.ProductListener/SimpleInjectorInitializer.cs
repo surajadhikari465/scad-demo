@@ -3,7 +3,6 @@ using Icon.Esb;
 using Icon.Esb.ListenerApplication;
 using Icon.Esb.MessageParsers;
 using Icon.Esb.Subscriber;
-using Icon.Logging;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.ConnectionBuilders;
 using Mammoth.Common.DataAccess.DbProviders;
@@ -16,6 +15,7 @@ using Mammoth.Esb.ProductListener.Models;
 using Mammoth.Esb.ProductListener.Queries;
 using SimpleInjector;
 using System.Collections.Generic;
+using Icon.Logging;
 
 namespace Mammoth.Esb.ProductListener
 {
@@ -30,7 +30,7 @@ namespace Mammoth.Esb.ProductListener
             container.RegisterSingleton<EsbConnectionSettings>(() => EsbConnectionSettings.CreateSettingsFromConfig());
             container.RegisterSingleton<IEsbSubscriber>(() => new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromConfig()));
             container.RegisterSingleton<ILogger<ProductListener>, NLogLogger<ProductListener>>();
-            container.RegisterSingleton<IMessageParser<List<ProductModel>>, ProductMessageParser>();
+            container.RegisterSingleton<IMessageParser<List<ItemModel>>, ProductMessageParser>();
             container.RegisterSingleton<IEmailClient>(() => EmailClient.CreateFromConfig());
             container.RegisterSingleton<ICommandHandler<AddOrUpdateProductsCommand>, AddOrUpdateProductsCommandHandler>();
             container.RegisterSingleton<IQueryHandler<GetHierarchyClassesParameters, List<HierarchyClassModel>>, GetHierarchyClassesQueryHandler>();

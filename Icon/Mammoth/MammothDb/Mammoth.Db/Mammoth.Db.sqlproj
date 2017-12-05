@@ -704,6 +704,18 @@
     <Build Include="dbo\Tables\ItemLocale_Supplier_SO.sql" />
     <Build Include="dbo\Tables\ItemLocale_Supplier_SP.sql" />
     <Build Include="dbo\Tables\ItemLocale_Supplier_SW.sql" />
+    <Build Include="dbo\User Defined Types\ItemGlobalAttributesType.sql" />
+    <Build Include="dbo\User Defined Types\ItemSignAttributesType.sql" />
+    <Build Include="dbo\User Defined Types\ItemNutritionAttributesType.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateItems.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesSign.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesNutrition.sql" />
+    <Build Include="dbo\User Defined Types\ItemAttributesExtType.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesExt.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

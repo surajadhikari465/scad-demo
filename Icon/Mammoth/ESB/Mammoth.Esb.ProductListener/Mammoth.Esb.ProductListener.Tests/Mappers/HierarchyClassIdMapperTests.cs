@@ -32,11 +32,11 @@ namespace Mammoth.Esb.ProductListener.Tests.Mappers
                 { "1111112", 2 },
                 { "1111113", 3 }
             };
-            var testProducts = new List<ProductModel>()
+            var testProducts = new List<GlobalAttributesModel>()
             {
-                new ProductModel { MessageTaxClassHCID = taxDictionary.Keys.ElementAt(0) },
-                new ProductModel { MessageTaxClassHCID = taxDictionary.Keys.ElementAt(1) },
-                new ProductModel { MessageTaxClassHCID = taxDictionary.Keys.ElementAt(2) }
+                new GlobalAttributesModel { MessageTaxClassHCID = taxDictionary.Keys.ElementAt(0) },
+                new GlobalAttributesModel { MessageTaxClassHCID = taxDictionary.Keys.ElementAt(1) },
+                new GlobalAttributesModel { MessageTaxClassHCID = taxDictionary.Keys.ElementAt(2) }
             };
 
             mockCache.Setup(m => m.GetTaxDictionary())

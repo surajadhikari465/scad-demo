@@ -1,6 +1,6 @@
-﻿CREATE TABLE [dbo].[ItemAttributes_Sign] (
-    [ItemAttributeID]       INT            IDENTITY (1, 1) NOT NULL,
-    [ItemID]                INT            NOT NULL,
+﻿CREATE TYPE [dbo].ItemSignAttributesType AS TABLE
+(
+	[ItemID]                INT            NOT NULL,
     [CheeseMilkType]        NVARCHAR (255) NULL,
     [Agency_GlutenFree]     NVARCHAR (255) NULL,
     [Agency_Kosher]         NVARCHAR (255) NULL,
@@ -23,12 +23,5 @@
     [Rating_EcoScale]       NVARCHAR (255) NULL,
     [Rating_HealthyEating]  NVARCHAR (255) NULL,
     [Seafood_FreshOrFrozen] NVARCHAR (255) NULL,
-    [Seafood_CatchType]     NVARCHAR (255) NULL,
-    [AddedDate]             DATETIME       DEFAULT (getdate()) NOT NULL,
-    [ModifiedDate]          DATETIME       NULL,
-    CONSTRAINT [PK_ItemAttributes_Sign] PRIMARY KEY CLUSTERED ([ItemAttributeID] ASC) WITH (FILLFACTOR = 100)
-);
-GO
-
-GRANT SELECT, UPDATE, INSERT, DELETE ON dbo.ItemAttributes_Sign TO MammothRole
-GO
+    [Seafood_CatchType]     NVARCHAR (255) NULL
+)

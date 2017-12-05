@@ -1,0 +1,1266 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/29/2017 9:46:51 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="CECEN-4VC2N72"
+  DTS:CreatorName="WFM\Ben.Sims"
+  DTS:DTSID="{9B565BD8-3963-4B43-B311-499819C16E48}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.0800.60"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="LoadItemSignAttributes"
+  DTS:PackageType="5"
+  DTS:VersionBuild="5"
+  DTS:VersionGUID="{D1F0BC35-C8C6-41D6-A2D3-9551C4782CE6}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Data Flow Task"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{3235EF08-F10C-48C7-AF2E-A93FEB49D3DB}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Data Flow Task"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Data Flow Task\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Data Flow Task\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[AddedDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[AddedDate]"
+                      name="AddedDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[GETDATE]()</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">GETDATE()</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Data Flow Task\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\Get Icon ItemSignAttributes"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Get Icon ItemSignAttributes"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[ItemSignAttribute]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select
+		i.itemID							AS [ItemID],
+		aw.Description						AS [AnimalWelfareRating],
+		ia.[Biodynamic]						AS [Biodynamic],
+		cm.Description						AS [CheeseMilkType],
+		ia.[CheeseRaw]						AS [CheeseRaw],
+		es.Description						AS [EcoScaleRating],
+		ga.hierarchyClassName				AS [GlutenFreeAgency],
+		he.Description						AS [HealthyEatingRating],
+		ka.hierarchyClassName				AS [KosherAgency], 
+		ia.[Msc]							As [Msc],
+		na.hierarchyClassName				AS [NonGmoAgency],
+		oa.hierarchyClassName				AS [OrganicAgency],
+		ia.[PremiumBodyCare]				AS [PremiumBodyCare],
+		sff.Description						AS [SeafoodFreshOrFrozen],
+		sfc.Description						AS [SeafoodCatchType],
+		va.hierarchyClassName				AS [VeganAgency],
+		ia.[Vegetarian]						AS [Vegetarian],
+		ia.[WholeTrade]						AS [WholeTrade],
+		ia.[GrassFed]						AS [GrassFed],
+		ia.[PastureRaised]					AS [PastureRaised],
+		ia.[FreeRange]						AS [FreeRange],
+		ia.[DryAged]						AS [DryAged],
+		ia.[AirChilled]						AS [AirChilled],
+		ia.[MadeInHouse]					AS [MadeInHouse]
+	from 
+		Item							i
+		LEFT JOIN ItemSignAttribute		ia			ON	i.itemID					= ia.itemID
+		LEFT JOIN HierarchyClass		ga			ON	ia.GlutenFreeAgencyID		= ga.hierarchyClassID
+														
+		LEFT JOIN HierarchyClass		ka			ON	ia.KosherAgencyID			= ka.hierarchyClassID
+														
+		LEFT JOIN HierarchyClass		na			ON	ia.NonGmoAgencyID			= na.hierarchyClassID
+														
+		LEFT JOIN HierarchyClass		oa			ON	ia.OrganicAgencyID			= oa.hierarchyClassID
+														
+		LEFT JOIN HierarchyClass		va			ON	ia.VeganAgencyID			= va.hierarchyClassID
+
+		LEFT JOIN AnimalWelfareRating	aw			ON ia.AnimalWelfareRatingId		= aw.AnimalWelfareRatingId
+		LEFT JOIN MilkType				cm			ON ia.CheeseMilkTypeId			= cm.MilkTypeId
+		LEFT JOIN EcoScaleRating		es			ON ia.EcoScaleRatingID			= es.EcoScaleRatingID
+		LEFT JOIN HealthyEatingRating	he			ON ia.HealthyEatingRatingID		= he.HealthyEatingRatingID
+		LEFT JOIN SeafoodCatchType		sfc			ON ia.SeafoodCatchTypeID		= sfc.SeafoodCatchTypeID
+		LEFT JOIN SeafoodFreshOrFrozen	sff			ON ia.SeafoodFreshOrFrozenID	= sff.SeafoodFreshOrFrozenID</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Connections[OleDbConnection]"
+                  connectionManagerID="{6CDC2706-66E9-4FFB-A023-73E5F0CAAA88}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[Icon]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[Biodynamic]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[Biodynamic]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[Biodynamic]"
+                      name="Biodynamic"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[CheeseRaw]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[CheeseRaw]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[CheeseRaw]"
+                      name="CheeseRaw"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[Msc]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[Msc]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[Msc]"
+                      name="Msc"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[PremiumBodyCare]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[PremiumBodyCare]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[PremiumBodyCare]"
+                      name="PremiumBodyCare"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[Vegetarian]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[Vegetarian]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[Vegetarian]"
+                      name="Vegetarian"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[WholeTrade]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[WholeTrade]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[WholeTrade]"
+                      name="WholeTrade"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[GrassFed]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[GrassFed]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[GrassFed]"
+                      name="GrassFed"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[PastureRaised]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[PastureRaised]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[PastureRaised]"
+                      name="PastureRaised"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[FreeRange]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[FreeRange]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[FreeRange]"
+                      name="FreeRange"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[DryAged]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[DryAged]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[DryAged]"
+                      name="DryAged"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[AirChilled]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[AirChilled]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[AirChilled]"
+                      name="AirChilled"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[MadeInHouse]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[MadeInHouse]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[MadeInHouse]"
+                      name="MadeInHouse"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[AnimalWelfareRating]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[AnimalWelfareRating]"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[AnimalWelfareRating]"
+                      name="AnimalWelfareRating"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[CheeseMilkType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[CheeseMilkType]"
+                      length="100"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[CheeseMilkType]"
+                      name="CheeseMilkType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[EcoScaleRating]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[EcoScaleRating]"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[EcoScaleRating]"
+                      name="EcoScaleRating"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[GlutenFreeAgency]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[GlutenFreeAgency]"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[GlutenFreeAgency]"
+                      name="GlutenFreeAgency"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[HealthyEatingRating]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[HealthyEatingRating]"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[HealthyEatingRating]"
+                      name="HealthyEatingRating"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[KosherAgency]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[KosherAgency]"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[KosherAgency]"
+                      name="KosherAgency"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[NonGmoAgency]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[NonGmoAgency]"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[NonGmoAgency]"
+                      name="NonGmoAgency"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[OrganicAgency]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[OrganicAgency]"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[OrganicAgency]"
+                      name="OrganicAgency"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[SeafoodFreshOrFrozen]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[SeafoodFreshOrFrozen]"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[SeafoodFreshOrFrozen]"
+                      name="SeafoodFreshOrFrozen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[SeafoodCatchType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[SeafoodCatchType]"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[SeafoodCatchType]"
+                      name="SeafoodCatchType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[VeganAgency]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[VeganAgency]"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[VeganAgency]"
+                      name="VeganAgency"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[ItemID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[ItemID]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[ItemID]"
+                      name="ItemID"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[Biodynamic]"
+                      dataType="bool"
+                      name="Biodynamic" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[CheeseRaw]"
+                      dataType="bool"
+                      name="CheeseRaw" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[Msc]"
+                      dataType="bool"
+                      name="Msc" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[PremiumBodyCare]"
+                      dataType="bool"
+                      name="PremiumBodyCare" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[Vegetarian]"
+                      dataType="bool"
+                      name="Vegetarian" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[WholeTrade]"
+                      dataType="bool"
+                      name="WholeTrade" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[GrassFed]"
+                      dataType="bool"
+                      name="GrassFed" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[PastureRaised]"
+                      dataType="bool"
+                      name="PastureRaised" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[FreeRange]"
+                      dataType="bool"
+                      name="FreeRange" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[DryAged]"
+                      dataType="bool"
+                      name="DryAged" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[AirChilled]"
+                      dataType="bool"
+                      name="AirChilled" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[MadeInHouse]"
+                      dataType="bool"
+                      name="MadeInHouse" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[AnimalWelfareRating]"
+                      dataType="wstr"
+                      length="50"
+                      name="AnimalWelfareRating" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[CheeseMilkType]"
+                      dataType="wstr"
+                      length="100"
+                      name="CheeseMilkType" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[EcoScaleRating]"
+                      dataType="wstr"
+                      length="50"
+                      name="EcoScaleRating" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[GlutenFreeAgency]"
+                      dataType="wstr"
+                      length="255"
+                      name="GlutenFreeAgency" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[HealthyEatingRating]"
+                      dataType="wstr"
+                      length="50"
+                      name="HealthyEatingRating" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[KosherAgency]"
+                      dataType="wstr"
+                      length="255"
+                      name="KosherAgency" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[NonGmoAgency]"
+                      dataType="wstr"
+                      length="255"
+                      name="NonGmoAgency" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[OrganicAgency]"
+                      dataType="wstr"
+                      length="255"
+                      name="OrganicAgency" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[SeafoodFreshOrFrozen]"
+                      dataType="wstr"
+                      length="50"
+                      name="SeafoodFreshOrFrozen" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[SeafoodCatchType]"
+                      dataType="wstr"
+                      length="50"
+                      name="SeafoodCatchType" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[VeganAgency]"
+                      dataType="wstr"
+                      length="255"
+                      name="VeganAgency" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].ExternalColumns[ItemID]"
+                      dataType="i4"
+                      name="ItemID" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[ItemID]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[ItemID]"
+                      name="ItemID" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[AnimalWelfareRating]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[AnimalWelfareRating]"
+                      name="AnimalWelfareRating" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[Biodynamic]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[Biodynamic]"
+                      name="Biodynamic" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[CheeseMilkType]"
+                      dataType="wstr"
+                      length="100"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[CheeseMilkType]"
+                      name="CheeseMilkType" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[CheeseRaw]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[CheeseRaw]"
+                      name="CheeseRaw" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[EcoScaleRating]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[EcoScaleRating]"
+                      name="EcoScaleRating" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[GlutenFreeAgency]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[GlutenFreeAgency]"
+                      name="GlutenFreeAgency" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[HealthyEatingRating]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[HealthyEatingRating]"
+                      name="HealthyEatingRating" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[KosherAgency]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[KosherAgency]"
+                      name="KosherAgency" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[Msc]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[Msc]"
+                      name="Msc" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[NonGmoAgency]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[NonGmoAgency]"
+                      name="NonGmoAgency" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[OrganicAgency]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[OrganicAgency]"
+                      name="OrganicAgency" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[PremiumBodyCare]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[PremiumBodyCare]"
+                      name="PremiumBodyCare" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[SeafoodFreshOrFrozen]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[SeafoodFreshOrFrozen]"
+                      name="SeafoodFreshOrFrozen" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[SeafoodCatchType]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[SeafoodCatchType]"
+                      name="SeafoodCatchType" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[VeganAgency]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[VeganAgency]"
+                      name="VeganAgency" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[Vegetarian]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[Vegetarian]"
+                      name="Vegetarian" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[WholeTrade]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[WholeTrade]"
+                      name="WholeTrade" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[GrassFed]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[GrassFed]"
+                      name="GrassFed" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[PastureRaised]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[PastureRaised]"
+                      name="PastureRaised" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[FreeRange]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[FreeRange]"
+                      name="FreeRange" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[DryAged]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[DryAged]"
+                      name="DryAged" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[AirChilled]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[AirChilled]"
+                      name="AirChilled" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[MadeInHouse]"
+                      dataType="bool"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[MadeInHouse]"
+                      name="MadeInHouse" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[ItemAttributes_Sign]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">true</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS,ROWS_PER_BATCH = 50000</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{3650E3FB-39D4-4013-B154-8FD940D32A6B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[Mammoth]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CheeseMilkType]"
+                      cachedDataType="wstr"
+                      cachedLength="100"
+                      cachedName="CheeseMilkType"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CheeseMilkType]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[CheeseMilkType]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ItemID]"
+                      cachedDataType="i4"
+                      cachedName="ItemID"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[ItemID]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[GlutenFreeAgency]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="GlutenFreeAgency"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_GlutenFree]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[GlutenFreeAgency]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[KosherAgency]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="KosherAgency"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_Kosher]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[KosherAgency]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[NonGmoAgency]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="NonGmoAgency"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_NonGMO]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[NonGmoAgency]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[OrganicAgency]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="OrganicAgency"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_Organic]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[OrganicAgency]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[VeganAgency]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="VeganAgency"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_Vegan]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[VeganAgency]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[AirChilled]"
+                      cachedDataType="bool"
+                      cachedName="AirChilled"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsAirChilled]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[AirChilled]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Biodynamic]"
+                      cachedDataType="bool"
+                      cachedName="Biodynamic"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsBiodynamic]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[Biodynamic]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CheeseRaw]"
+                      cachedDataType="bool"
+                      cachedName="CheeseRaw"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsCheeseRaw]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[CheeseRaw]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DryAged]"
+                      cachedDataType="bool"
+                      cachedName="DryAged"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsDryAged]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[DryAged]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[FreeRange]"
+                      cachedDataType="bool"
+                      cachedName="FreeRange"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsFreeRange]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[FreeRange]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[MadeInHouse]"
+                      cachedDataType="bool"
+                      cachedName="MadeInHouse"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsMadeInHouse]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[MadeInHouse]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Msc]"
+                      cachedDataType="bool"
+                      cachedName="Msc"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsMsc]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[Msc]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[PastureRaised]"
+                      cachedDataType="bool"
+                      cachedName="PastureRaised"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsPastureRaised]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[PastureRaised]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[PremiumBodyCare]"
+                      cachedDataType="bool"
+                      cachedName="PremiumBodyCare"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsPremiumBodyCare]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[PremiumBodyCare]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Vegetarian]"
+                      cachedDataType="bool"
+                      cachedName="Vegetarian"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsVegetarian]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[Vegetarian]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[AnimalWelfareRating]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="AnimalWelfareRating"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Rating_AnimalWelfare]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[AnimalWelfareRating]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[EcoScaleRating]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="EcoScaleRating"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Rating_EcoScale]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[EcoScaleRating]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[HealthyEatingRating]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="HealthyEatingRating"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Rating_HealthyEating]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[HealthyEatingRating]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SeafoodFreshOrFrozen]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SeafoodFreshOrFrozen"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Seafood_FreshOrFrozen]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[SeafoodFreshOrFrozen]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SeafoodCatchType]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SeafoodCatchType"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Seafood_CatchType]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[SeafoodCatchType]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[GrassFed]"
+                      cachedDataType="bool"
+                      cachedName="GrassFed"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsGrassFed]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[GrassFed]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[WholeTrade]"
+                      cachedDataType="bool"
+                      cachedName="WholeTrade"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsWholeTrade]"
+                      lineageId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output].Columns[WholeTrade]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[AddedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="AddedDate"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[AddedDate]"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[AddedDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ItemAttributeID]"
+                      dataType="i4"
+                      name="ItemAttributeID" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
+                      dataType="i4"
+                      name="ItemID" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CheeseMilkType]"
+                      dataType="wstr"
+                      length="255"
+                      name="CheeseMilkType" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_GlutenFree]"
+                      dataType="wstr"
+                      length="255"
+                      name="Agency_GlutenFree" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_Kosher]"
+                      dataType="wstr"
+                      length="255"
+                      name="Agency_Kosher" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_NonGMO]"
+                      dataType="wstr"
+                      length="255"
+                      name="Agency_NonGMO" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_Organic]"
+                      dataType="wstr"
+                      length="255"
+                      name="Agency_Organic" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Agency_Vegan]"
+                      dataType="wstr"
+                      length="255"
+                      name="Agency_Vegan" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsAirChilled]"
+                      dataType="bool"
+                      name="IsAirChilled" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsBiodynamic]"
+                      dataType="bool"
+                      name="IsBiodynamic" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsCheeseRaw]"
+                      dataType="bool"
+                      name="IsCheeseRaw" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsDryAged]"
+                      dataType="bool"
+                      name="IsDryAged" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsFreeRange]"
+                      dataType="bool"
+                      name="IsFreeRange" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsGrassFed]"
+                      dataType="bool"
+                      name="IsGrassFed" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsMadeInHouse]"
+                      dataType="bool"
+                      name="IsMadeInHouse" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsMsc]"
+                      dataType="bool"
+                      name="IsMsc" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsPastureRaised]"
+                      dataType="bool"
+                      name="IsPastureRaised" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsPremiumBodyCare]"
+                      dataType="bool"
+                      name="IsPremiumBodyCare" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsVegetarian]"
+                      dataType="bool"
+                      name="IsVegetarian" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsWholeTrade]"
+                      dataType="bool"
+                      name="IsWholeTrade" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Rating_AnimalWelfare]"
+                      dataType="wstr"
+                      length="255"
+                      name="Rating_AnimalWelfare" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Rating_EcoScale]"
+                      dataType="wstr"
+                      length="255"
+                      name="Rating_EcoScale" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Rating_HealthyEating]"
+                      dataType="wstr"
+                      length="255"
+                      name="Rating_HealthyEating" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Seafood_FreshOrFrozen]"
+                      dataType="wstr"
+                      length="255"
+                      name="Seafood_FreshOrFrozen" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Seafood_CatchType]"
+                      dataType="wstr"
+                      length="255"
+                      name="Seafood_CatchType" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[AddedDate]"
+                      dataType="dbTimeStamp"
+                      name="AddedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      name="ModifiedDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Data Flow Task.Paths[Derived Column Output]"
+              endId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Data Flow Task.Paths[OLE DB Source Output]"
+              endId="Package\Data Flow Task\Derived Column.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\Data Flow Task\Get Icon ItemSignAttributes.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Mammoth ItemSign Attributes"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{DED4EFF7-7FF6-48BB-B6EF-A58D635954AC}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Mammoth ItemSign Attributes"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{3650E3FB-39D4-4013-B154-8FD940D32A6B}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE dbo.ItemAttributes_Sign" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{57D7A8C4-BAA6-4AE1-A038-99D1CA1A9630}"
+      DTS:From="Package\Truncate Mammoth ItemSign Attributes"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Data Flow Task" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="151.2,41.6"
+          Id="Package\Data Flow Task"
+          TopLeft="189,232" />
+        <NodeLayout
+          Size="265.6,41.6"
+          Id="Package\Truncate Mammoth ItemSign Attributes"
+          TopLeft="133,71" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="265.25,113">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,119"
+              Start="0,0"
+              End="0,111.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,111.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Data Flow Task">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="211.2,41.6"
+          Id="Package\Data Flow Task\Get Icon ItemSignAttributes"
+          TopLeft="247,88" />
+        <NodeLayout
+          Size="153.6,41.6"
+          Id="Package\Data Flow Task\Derived Column"
+          TopLeft="275,249" />
+        <NodeLayout
+          Size="170.4,41.6"
+          Id="Package\Data Flow Task\OLE DB Destination"
+          TopLeft="260,423" />
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[Derived Column Output]"
+          TopLeft="348.5,290.6">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,132.4"
+              Start="0,0"
+              End="0,124.9">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,124.9" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[OLE DB Source Output]"
+          TopLeft="352.25,130">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,119"
+              Start="0,0"
+              End="0,111.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,111.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Data Flow Task\Get Icon ItemSignAttributes">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Data Flow Task\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
