@@ -379,7 +379,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             var itemId = 20000000;
             InsertItemIntoDatabase(itemId);
             var itemModel = CreateItemModel(itemId);
-            itemModel.ExtendedAttributes = new ExtendedAttributesModel();
+            itemModel.ExtendedAttributes = new ExtendedAttributesModel { ItemId = 20000000 };
 
             //When
             commandHandler.Execute(
