@@ -92,9 +92,13 @@ BEGIN
 		NEWID() AS 'GUID'
 		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,CAST(p.Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,CAST(p.POSPrice AS DECIMAL(9, 2)) AS 'PRICE'
 		,p.Multiple AS 'MULTIPLE'
-		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) AS 'SELLING_UOM'
+		,CASE 
+		WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
+			THEN 'LB'
+		 ELSE 'EA' 
+		END AS 'SELLING_UOM'
 		,'REG' AS 'PRICE_TYPE_CODE'
 		,'REG' AS 'PRICE_ATTRIBUTE_CODE'
 		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
@@ -124,6 +128,7 @@ BEGIN
 			s.WFM_Store = 1
 			OR s.Mega_Store = 1
 			)
+		AND s.Internal = 1
 		AND si.Authorized = 1
 		AND ii.Default_Identifier = 1
 		AND NOT (
@@ -146,9 +151,13 @@ BEGIN
 		NEWID() AS 'GUID'
 		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,CAST(p.Sale_Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,CAST(p.POSSale_Price AS DECIMAL(9, 2)) AS 'PRICE'
 		,p.Multiple AS 'MULTIPLE'
-		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) AS 'SELLING_UOM'
+		,CASE 
+			WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
+				THEN 'LB'
+			ELSE 'EA' 
+	     END AS 'SELLING_UOM'
 		,'REG' AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
@@ -159,11 +168,11 @@ BEGIN
 		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
-				THEN p.Sale_End_Date
+				THEN DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1))
 			ELSE NULL
 		 END AS 'NEW_TAG_EXPIRATION_DATE'
 		,@today AS 'START_DATE'
-		,p.Sale_End_Date AS 'END_DATE'
+		,NULL AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code AS 'REGION_CODE'
 		,c.CurrencyCode AS 'CURRENCY_CODE'
@@ -190,6 +199,7 @@ BEGIN
 			s.WFM_Store = 1
 			OR s.Mega_Store = 1
 			)
+		AND s.Internal = 1
 		AND si.Authorized = 1
 		AND ii.Default_Identifier = 1
 		AND p.Sale_Price IS NOT NULL
@@ -211,9 +221,13 @@ BEGIN
 		NEWID() AS 'GUID'
 		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,CAST(p.Sale_Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,CAST(p.POSSale_Price AS DECIMAL(9, 2)) AS 'PRICE'
 		,p.Multiple AS 'MULTIPLE'
-		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) AS 'SELLING_UOM'
+		,CASE 
+		 WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
+			THEN 'LB'
+		 ELSE 'EA' 
+		 END AS 'SELLING_UOM'
 		,'TPR' AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'SAL'
@@ -225,8 +239,8 @@ BEGIN
 			ELSE pct.PriceChgTypeDesc
 			END AS 'PRICE_ATTRIBUTE_CODE'
 		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
-		,p.Sale_Start_Date AS 'START_DATE'
-		,p.Sale_End_Date AS 'END_DATE'
+		,@today AS 'START_DATE'
+		,DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1)) AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code AS 'REGION_CODE'
 		,c.CurrencyCode AS 'CURRENCY_CODE'
@@ -276,7 +290,11 @@ BEGIN
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
 		,CAST(pbd.Price AS DECIMAL(9, 2)) AS 'PRICE'
 		,pbd.Multiple AS 'MULTIPLE'
-		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) 'SELLING_UOM'
+		,CASE 
+		 WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
+			THEN 'LB'
+		 ELSE 'EA' 
+		 END AS 'SELLING_UOM'
 		,'REG' AS 'PRICE_TYPE_CODE'
 		,'REG' AS 'PRICE_ATTRIBUTE_CODE'
 		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
@@ -290,6 +308,7 @@ BEGIN
 	JOIN ItemIdentifier ii ON l.Item_Key = ii.Item_Key
 	JOIN PriceBatchDetail pbd ON l.PriceBatchDetailId = pbd.PriceBatchDetailID
 	JOIN PriceChgType pct ON pct.PriceChgTypeID = pbd.PriceChgTypeID
+	JOIN Price p ON p.Item_Key = l.Item_Key AND p.Store_No = l.Store_No
 	JOIN ItemUnit runit ON i.Retail_Unit_ID = runit.Unit_ID
 	JOIN ValidatedScanCode vsc ON vsc.ScanCode = ii.Identifier
 	JOIN Store s ON pbd.Store_No = s.Store_No
@@ -299,8 +318,9 @@ BEGIN
 	LEFT JOIN ItemUomOverride iuo ON iuo.Item_Key = l.Item_Key
 		AND iuo.Store_No = l.Store_No
 	LEFT JOIN ItemUnit rounit WITH (NOLOCK) ON iuo.Retail_Unit_ID = rounit.Unit_ID
-	WHERE pbd.Price IS NOT NULL
+	WHERE pbd.POSPrice IS NOT NULL
 		AND ii.Default_Identifier = 1
+		AND CAST(p.POSPrice AS DECIMAL(9, 2)) <> CAST(pbd.POSPrice AS DECIMAL(9, 2))
 		AND pct.PriceChgTypeDesc NOT IN (
 			'DIS'
 			,'CLR'
@@ -317,9 +337,13 @@ BEGIN
 		NEWID() AS 'GUID'
 		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,CAST(pbd.Sale_Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,CAST(pbd.POSSale_Price AS DECIMAL(9, 2)) AS 'PRICE'
 		,pbd.Multiple AS 'MULTIPLE'
-		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) 'SELLING_UOM'
+		,CASE 
+		 WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
+			THEN 'LB'
+		 ELSE 'EA' 
+	     END AS 'SELLING_UOM'
 		,'REG' AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
@@ -330,11 +354,11 @@ BEGIN
 		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
-				THEN pbd.Sale_End_Date
+				THEN DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, pbd.Sale_End_Date), 1))
 			ELSE NULL
 		 END AS 'NEW_TAG_EXPIRATION_DATE'
 		,pbd.StartDate AS 'START_DATE'
-		,pbd.Sale_End_Date AS 'END_DATE'
+		,NULL AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
@@ -343,6 +367,7 @@ BEGIN
 	JOIN ItemIdentifier ii ON l.Item_Key = ii.Item_Key
 	JOIN PriceBatchDetail pbd ON l.PriceBatchDetailId = pbd.PriceBatchDetailID
 	JOIN PriceChgType pct ON pct.PriceChgTypeID = pbd.PriceChgTypeID
+	JOIN Price p ON p.Item_Key = l.Item_Key AND p.Store_No = l.Store_No
 	JOIN ItemUnit runit ON i.Retail_Unit_ID = runit.Unit_ID
 	JOIN ValidatedScanCode vsc ON vsc.ScanCode = ii.Identifier
 	JOIN Store s ON pbd.Store_No = s.Store_No
@@ -352,8 +377,9 @@ BEGIN
 	LEFT JOIN ItemUomOverride iuo ON iuo.Item_Key = l.Item_Key
 		AND iuo.Store_No = l.Store_No
 	LEFT JOIN ItemUnit rounit ON iuo.Retail_Unit_ID = rounit.Unit_ID
-	WHERE pbd.Sale_Price IS NOT NULL
+	WHERE pbd.POSSale_Price IS NOT NULL
 		AND ii.Default_Identifier = 1
+		AND CAST(p.POSSale_Price AS DECIMAL(9, 2)) <> CAST(pbd.POSSale_Price AS DECIMAL(9, 2))
 		AND pct.PriceChgTypeDesc IN (
 			'DIS'
 			,'CLR'
@@ -370,9 +396,13 @@ BEGIN
 		NEWID() AS 'GUID'
 		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,CAST(pbd.Sale_Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,CAST(pbd.POSSale_Price AS DECIMAL(9, 2)) AS 'PRICE'
 		,pbd.Multiple AS 'MULTIPLE'
-		,COALESCE(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) 'SELLING_UOM'
+		,CASE 
+		 WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
+			THEN 'LB'
+		 ELSE 'EA' 
+		 END AS 'SELLING_UOM'
 		,pct.PriceChgTypeDesc AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'SAL'
@@ -385,7 +415,7 @@ BEGIN
 		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
 		,pbd.StartDate AS 'START_DATE'
-		,pbd.Sale_End_Date AS 'END_DATE'
+		,DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, pbd.Sale_End_Date), 1)) AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
@@ -403,7 +433,7 @@ BEGIN
 	LEFT JOIN ItemUomOverride iuo ON iuo.Item_Key = l.Item_Key
 		AND iuo.Store_No = l.Store_No
 	LEFT JOIN ItemUnit rounit ON iuo.Retail_Unit_ID = rounit.Unit_ID
-	WHERE pbd.Sale_Price IS NOT NULL
+	WHERE pbd.POSSale_Price IS NOT NULL
 		AND ii.Default_Identifier = 1
 		AND pct.PriceChgTypeDesc NOT IN (
 			'REG'
