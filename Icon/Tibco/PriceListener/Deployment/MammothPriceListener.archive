@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/PriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>44</versionProperty>
+        <versionProperty>45</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>MammothPriceListener</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\MammothPriceListener.ear</fileLocationProperty>
+        <fileLocationProperty>C:\VSTS\Source\Repos\Icon\Tibco\DeploymentFiles\MammothPriceListener.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
