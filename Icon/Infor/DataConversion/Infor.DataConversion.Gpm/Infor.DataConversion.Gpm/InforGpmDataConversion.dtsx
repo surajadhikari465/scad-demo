@@ -12,8 +12,8 @@
   DTS:ObjectName="InforGpmDataConversion"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="242"
-  DTS:VersionGUID="{883FAA9A-7DFA-442A-8F7C-846EC9E95368}">
+  DTS:VersionBuild="245"
+  DTS:VersionGUID="{0B2A9789-A435-4BF7-9826-10EEE26D268A}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -33,7 +33,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_ConvertedDataReport_20171120.csv">
+          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_ConvertedDataReport_20171129.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -41,7 +41,7 @@
               DTS:DataType="3"
               DTS:TextQualified="True"
               DTS:ObjectName="ITEM_ID"
-              DTS:DTSID="{C1FB7F49-398B-4B65-9C38-2B8EBF7A3F36}"
+              DTS:DTSID="{3A4EF556-5D69-468C-97B9-90CAD60C5311}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -49,7 +49,7 @@
               DTS:DataType="3"
               DTS:TextQualified="True"
               DTS:ObjectName="STORE_NUMBER"
-              DTS:DTSID="{9C1DD059-DC52-4D34-BF9D-6050AE16A492}"
+              DTS:DTSID="{6C8A601E-D5A5-4611-AE93-4A71BF8CB915}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -58,7 +58,7 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="IDENTIFIER"
-              DTS:DTSID="{35445D14-0510-47E1-ABFA-2EA276B9C675}"
+              DTS:DTSID="{B6C5CC02-53B8-4303-A326-5D92E00A9863}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -67,16 +67,17 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="STORE"
-              DTS:DTSID="{AB2C74DC-6E01-4276-9B18-01E30D2F378C}"
+              DTS:DTSID="{FB65FDFB-EAFD-4BB4-BCCF-99B28BB07DEB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x007C_"
               DTS:DataType="131"
-              DTS:DataPrecision="18"
+              DTS:DataPrecision="12"
+              DTS:DataScale="4"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE"
-              DTS:DTSID="{0263F492-1409-401F-8362-A663BE046A48}"
+              DTS:DTSID="{00B83C56-605D-422F-880D-3E24F78B9BD5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -84,7 +85,7 @@
               DTS:DataType="16"
               DTS:TextQualified="True"
               DTS:ObjectName="MULTIPLE"
-              DTS:DTSID="{B0F36D61-E9B0-464B-8F97-1E5C68A9B890}"
+              DTS:DTSID="{A1FA2F77-1F61-45DF-A04A-2FD42865E8A3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -93,7 +94,7 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="SELLING_UOM"
-              DTS:DTSID="{9473ACD5-D3A6-4AEA-AEAA-4EF6B018D1A1}"
+              DTS:DTSID="{28B8D2CC-2D0E-470A-8604-073114D671E1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -102,7 +103,7 @@
               DTS:DataType="130"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE_TYPE_CODE"
-              DTS:DTSID="{4EA2AB80-320B-4AD0-B64E-1B73630546CB}"
+              DTS:DTSID="{8C1EE18A-5D7B-4FA5-A938-8A4B41169A36}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -111,7 +112,7 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="PRICE_ATTRIBUTE_CODE"
-              DTS:DTSID="{42D3BC77-7152-4D66-8E90-D1922FDE3115}"
+              DTS:DTSID="{03EC42E6-ECAC-44CC-9E83-2603AE07428E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -119,7 +120,7 @@
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="NEW_TAG_EXPIRATION_DATE"
-              DTS:DTSID="{617A5C70-9118-4466-AA6A-7B0D46AE8CBB}"
+              DTS:DTSID="{061E96A6-7E2A-45A0-9614-60B15F484D16}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -127,7 +128,7 @@
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="START_DATE"
-              DTS:DTSID="{8155E7EA-06CD-4A1E-9BAA-CC962736B357}"
+              DTS:DTSID="{809783FA-3350-4695-AF0F-208A7EC25EDA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -135,7 +136,7 @@
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="END_DATE"
-              DTS:DTSID="{2BE73222-AFB4-49BF-8FED-875A4A7E3521}"
+              DTS:DTSID="{CB80B82A-E3F5-4E80-82E3-DF00850A4E1F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -143,7 +144,7 @@
               DTS:DataType="135"
               DTS:TextQualified="True"
               DTS:ObjectName="CREATED_DATE"
-              DTS:DTSID="{A23A95EA-CB98-4A83-A2C0-BAE8973FEFC8}"
+              DTS:DTSID="{9BE0D863-9847-4D31-A109-B155B24986F6}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -189,7 +190,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_Prices_20171120.csv">
+          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_Prices_20171129.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -388,7 +389,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ConvertedDataReportName">
       <DTS:VariableValue
-        DTS:DataType="8">FL_ConvertedDataReport_20171120.csv</DTS:VariableValue>
+        DTS:DataType="8">FL_ConvertedDataReport_20171129.csv</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -399,7 +400,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="NowDateTimeUtc">
       <DTS:VariableValue
-        DTS:DataType="7">11/20/2017 8:53:52 PM</DTS:VariableValue>
+        DTS:DataType="7">11/29/2017 7:27:04 PM</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -410,7 +411,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="PriceExtractFlatFileName">
       <DTS:VariableValue
-        DTS:DataType="8">FL_Prices_20171120.csv</DTS:VariableValue>
+        DTS:DataType="8">FL_Prices_20171129.csv</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -475,8 +476,8 @@
                       refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].Columns[PRICE]"
                       cachedDataType="numeric"
                       cachedName="PRICE"
-                      cachedPrecision="9"
-                      cachedScale="2"
+                      cachedPrecision="12"
+                      cachedScale="4"
                       externalMetadataColumnId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE]"
                       lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE]" />
                     <inputColumn
@@ -564,7 +565,8 @@
                       refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRICE]"
                       dataType="numeric"
                       name="PRICE"
-                      precision="18" />
+                      precision="12"
+                      scale="4" />
                     <externalMetadataColumn
                       refId="Package\Create Converted Data Report\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[MULTIPLE]"
                       dataType="i1"
@@ -714,8 +716,8 @@
                       externalMetadataColumnId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].ExternalColumns[PRICE]"
                       lineageId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[PRICE]"
                       name="PRICE"
-                      precision="9"
-                      scale="2"
+                      precision="12"
+                      scale="4"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Create Converted Data Report\Get Converted Price And UOM.Outputs[OLE DB Source Output].Columns[SELLING_UOM]"
@@ -2617,7 +2619,7 @@
     design-time-name="Package\Create Converted Data Report">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="222,42"
           Id="Package\Create Converted Data Report\Get Converted Price And UOM"
@@ -2657,9 +2659,7 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -2677,7 +2677,19 @@
     design-time-name="Package\Transfer Price">
     <LayoutInfo>
       <GraphLayout
-        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="179,42"
+          Id="Package\Transfer Price\Insert Into Mammoth"
+          TopLeft="95,240" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Transfer Price\Flat File Destination"
+          TopLeft="580.000009536743,242.705885784849" />
+        <NodeLayout
+          Size="219,42"
+          Id="Package\Transfer Price\REG, TPR, and InsertDateUtc"
+          TopLeft="296,92" />
         <NodeLayout
           Size="123,42"
           Id="Package\Transfer Price\Multicast"
@@ -2690,18 +2702,6 @@
           Size="210,42"
           Id="Package\Transfer Price\Convert varchar to nvarchar"
           TopLeft="297.1428570942,173.294117861553" />
-        <NodeLayout
-          Size="219,42"
-          Id="Package\Transfer Price\REG, TPR, and InsertDateUtc"
-          TopLeft="296,92" />
-        <NodeLayout
-          Size="179,42"
-          Id="Package\Transfer Price\Insert Into Mammoth"
-          TopLeft="95,240" />
-        <NodeLayout
-          Size="171,42"
-          Id="Package\Transfer Price\Flat File Destination"
-          TopLeft="580.000009536743,242.705885784849" />
         <EdgeLayout
           Id="Package\Transfer Price.Paths[Data Conversion Output]"
           TopLeft="404.9714285471,214.894117861553">
@@ -2721,7 +2721,9 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -2743,7 +2745,9 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -2765,7 +2769,9 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -2787,7 +2793,9 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -2809,20 +2817,14 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Transfer Price\Get IRMA Prices">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Transfer Price\Insert Into Mammoth">
     <Properties>
@@ -2833,6 +2835,14 @@
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transfer Price\Get IRMA Prices">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
