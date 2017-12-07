@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd"/>
@@ -15,6 +15,7 @@
                     <xsd:element ref="pfx2:MessageHeaders"/>
                     <xsd:element ref="pfx3:items"/>
                     <xsd:element name="MessageID" type="xsd:string"/>
+                    <xsd:element name="MammothMessageID" type="xsd:string" minOccurs="0"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -303,6 +304,7 @@ SELECT
                                 <xsd:element name="MessageID" type="xsd:string"/>
                                 <xsd:element ref="pfx2:MessageHeaders"/>
                                 <xsd:element ref="pfx:MammothPrice"/>
+                                <xsd:element name="MammothMessageID" type="xsd:string" minOccurs="0"/>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
@@ -322,6 +324,11 @@ SELECT
                         </MessageID>
                         <xsl:copy-of select="$Start/root/pfx2:MessageHeaders"/>
                         <xsl:copy-of select="$currentPrice/pfx:MammothPrice"/>
+                        <xsl:if test="$Start/root/MammothMessageID">
+                            <MammothMessageID>
+                                <xsl:value-of select="$Start/root/MammothMessageID"/>
+                            </MammothMessageID>
+                        </xsl:if>
                     </MessageDetail>
                 </ns0:ActivityInputClass>
             </pd:inputBindings>
