@@ -1,7 +1,8 @@
 ﻿CREATE TABLE gpm.ActivePriceSentArchive
 (
 	Region nvarchar(2),
-	PriceID bigint
+	PriceID bigint,
+	InsertDateUtc datetime2(7)
 )
 
 GO

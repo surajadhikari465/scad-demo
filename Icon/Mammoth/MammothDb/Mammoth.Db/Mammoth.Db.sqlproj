@@ -690,7 +690,7 @@
     <None Include="Jobs\MAMMOTH.ReseedTables.sql" />
     <Build Include="dbo\Stored Procedures\GetItemStorePriceAttributes.sql" />
     <Build Include="dbo\User Defined Types\ScanCodeBusinessUnitIdType.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />    
+    <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />
     <Build Include="dbo\Tables\ItemLocale_Supplier_FL.sql" />
     <Build Include="dbo\Tables\ItemLocale_Supplier_UK.sql" />
     <Build Include="dbo\Tables\ItemLocale_Supplier_TS.sql" />
@@ -733,7 +733,8 @@
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddErrorMonitorToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddJobSchedulerToAppTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddGpmPriceTypes.sql" />    
+    <None Include="Scripts\PostDeploymentScripts\AddGpmPriceTypes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddActivePriceSentArchiveToRetentionPolicy.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

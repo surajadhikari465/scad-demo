@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Password</name>
-			<value>sb1_cleUser</value>
+			<value>#!quJ4QUduROkPZUfuoFWvGCnhPiv1lJzh9ZanOLDySQg=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1510249939725</modTime>
+			<type>Password</type>
+			<modTime>1512619246545</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Url</name>
