@@ -782,4 +782,7 @@
   <data name="X" xml:space="preserve">
     <value>X</value>
   </data>
+  <data name="msg_confirm_CancelAllSalesForAllItems" xml:space="preserve">
+    <value>You are about to cancel all sales for all the items you entered and stores you selected, including stacked promotions.  Are you sure you want to proceed?</value>
+  </data>
 </root>

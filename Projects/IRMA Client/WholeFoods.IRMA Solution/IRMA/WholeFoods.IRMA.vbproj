@@ -727,6 +727,15 @@
     <Compile Include="Administration\UserAdmin\UserInterface\Form_RoleConflictReason.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CancelSalesMultipleItems\CancelSalesMultipleItems.Designer.vb">
+      <DependentUpon>CancelSalesMultipleItems.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CancelSalesMultipleItems\CancelSalesMultipleItems.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CancelSalesMultipleItems\DataAccess\CancelSalesMultipleItemsDAO.vb" />
+    <Compile Include="CancelSalesMultipleItems\Models\StoreItemInfoModel.vb" />
+    <Compile Include="CancelSalesMultipleItems\Models\ItemIdentifierKeyModel.vb" />
     <Compile Include="Common\BusinessLogic\InstanceDataOverrideStoreCountsBO.vb" />
     <Compile Include="Common\BusinessLogic\ItemKeyIdentifierModel.vb" />
     <Compile Include="Common\DataAccess\SlawApiConfigurationDAO.vb" />
@@ -3708,6 +3717,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Administration\UserAdmin\UserInterface\Form_RoleConflictReason.resx">
       <DependentUpon>Form_RoleConflictReason.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CancelSalesMultipleItems\CancelSalesMultipleItems.resx">
+      <DependentUpon>CancelSalesMultipleItems.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Common\FailedRequestsDialog.resx">

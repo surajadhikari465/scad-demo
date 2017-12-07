@@ -309,6 +309,7 @@
         Me.SlawItemLocaleMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SlawPriceMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuData_UnprocessedPushFiles = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuData_CancelAllSales = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdministration = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdministration_IRMAConfiguration = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdministration_IRMAConfiguration_ApplicationConfiguration = New System.Windows.Forms.ToolStripMenuItem()
@@ -1404,7 +1405,7 @@
         '
         'mnuData
         '
-        Me.mnuData.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuData_BatchRollback, Me.IconItemRefreshMenuItem, Me.R10ItemRefreshToolStripMenuItem, Me.mnuData_RestoreDeletedItem, Me.mnuData_ScalePOSPush, Me.SlawItemRefreshMenuItem, Me.mnuData_UnprocessedPushFiles})
+        Me.mnuData.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuData_BatchRollback, Me.mnuData_CancelAllSales, Me.IconItemRefreshMenuItem, Me.R10ItemRefreshToolStripMenuItem, Me.mnuData_RestoreDeletedItem, Me.mnuData_ScalePOSPush, Me.SlawItemRefreshMenuItem, Me.mnuData_UnprocessedPushFiles})
         Me.mnuData.Name = "mnuData"
         resources.ApplyResources(Me.mnuData, "mnuData")
         '
@@ -1453,6 +1454,11 @@
         '
         Me.mnuData_UnprocessedPushFiles.Name = "mnuData_UnprocessedPushFiles"
         resources.ApplyResources(Me.mnuData_UnprocessedPushFiles, "mnuData_UnprocessedPushFiles")
+        '
+        'mnuData_CancelAllSales
+        '
+        Me.mnuData_CancelAllSales.Name = "mnuData_CancelAllSales"
+        resources.ApplyResources(Me.mnuData_CancelAllSales, "mnuData_CancelAllSales")
         '
         'mnuAdministration
         '
@@ -2137,5 +2143,6 @@
     Friend WithEvents SlawItemLocaleMenuItem As ToolStripMenuItem
     Friend WithEvents SlawPriceMenuItem As ToolStripMenuItem
     Friend WithEvents mnuAdministration_SystemConfiguration_ManageRetentionPolicies As ToolStripMenuItem
+    Friend WithEvents mnuData_CancelAllSales As ToolStripMenuItem
 #End Region
 End Class
