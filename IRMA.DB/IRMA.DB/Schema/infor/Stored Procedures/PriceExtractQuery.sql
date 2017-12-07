@@ -124,13 +124,14 @@ BEGIN
 	LEFT JOIN ItemUnit rounit ON iuo.Retail_Unit_ID = rounit.Unit_ID
 	WHERE i.Deleted_Item = 0
 		AND i.Remove_Item = 0
+		AND ii.Deleted_Identifier = 0
+		AND ii.Remove_Identifier = 0
 		AND (
 			s.WFM_Store = 1
 			OR s.Mega_Store = 1
 			)
 		AND s.Internal = 1
 		AND si.Authorized = 1
-		AND ii.Default_Identifier = 1
 		AND NOT (
 			pct.PriceChgTypeDesc IN (
 				'DIS'
@@ -201,8 +202,7 @@ BEGIN
 			)
 		AND s.Internal = 1
 		AND si.Authorized = 1
-		AND ii.Default_Identifier = 1
-		AND p.Sale_Price IS NOT NULL
+		AND p.POSSale_Price IS NOT NULL
 		AND @today BETWEEN p.Sale_Start_Date
 			AND p.Sale_End_Date
 		AND pct.PriceChgTypeDesc IN (
@@ -267,9 +267,9 @@ BEGIN
 			s.WFM_Store = 1
 			OR s.Mega_Store = 1
 			)
+		AND s.Internal = 1
 		AND si.Authorized = 1
-		AND ii.Default_Identifier = 1
-		AND p.Sale_Price IS NOT NULL
+		AND p.POSSale_Price IS NOT NULL
 		AND @today BETWEEN p.Sale_Start_Date
 			AND p.Sale_End_Date
 		AND pct.PriceChgTypeDesc NOT IN (
@@ -288,7 +288,7 @@ BEGIN
 		NEWID() AS 'GUID'
 		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
-		,CAST(pbd.Price AS DECIMAL(9, 2)) AS 'PRICE'
+		,CAST(pbd.POSPrice AS DECIMAL(9, 2)) AS 'PRICE'
 		,pbd.Multiple AS 'MULTIPLE'
 		,CASE 
 		 WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
@@ -319,7 +319,10 @@ BEGIN
 		AND iuo.Store_No = l.Store_No
 	LEFT JOIN ItemUnit rounit WITH (NOLOCK) ON iuo.Retail_Unit_ID = rounit.Unit_ID
 	WHERE pbd.POSPrice IS NOT NULL
-		AND ii.Default_Identifier = 1
+	    AND i.Deleted_Item = 0
+		AND i.Remove_Item = 0
+		AND ii.Deleted_Identifier = 0
+		AND ii.Remove_Identifier = 0
 		AND CAST(p.POSPrice AS DECIMAL(9, 2)) <> CAST(pbd.POSPrice AS DECIMAL(9, 2))
 		AND pct.PriceChgTypeDesc NOT IN (
 			'DIS'
@@ -378,7 +381,6 @@ BEGIN
 		AND iuo.Store_No = l.Store_No
 	LEFT JOIN ItemUnit rounit ON iuo.Retail_Unit_ID = rounit.Unit_ID
 	WHERE pbd.POSSale_Price IS NOT NULL
-		AND ii.Default_Identifier = 1
 		AND CAST(p.POSSale_Price AS DECIMAL(9, 2)) <> CAST(pbd.POSSale_Price AS DECIMAL(9, 2))
 		AND pct.PriceChgTypeDesc IN (
 			'DIS'
@@ -434,7 +436,6 @@ BEGIN
 		AND iuo.Store_No = l.Store_No
 	LEFT JOIN ItemUnit rounit ON iuo.Retail_Unit_ID = rounit.Unit_ID
 	WHERE pbd.POSSale_Price IS NOT NULL
-		AND ii.Default_Identifier = 1
 		AND pct.PriceChgTypeDesc NOT IN (
 			'REG'
 			,'DIS'
