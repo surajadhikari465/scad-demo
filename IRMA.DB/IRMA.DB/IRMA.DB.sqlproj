@@ -3252,6 +3252,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs2\GetInstanceDataFlagOverrideStoreCounts.sql" />
     <Build Include="Schema\dbo\Views\IDF_OverrideStoreCountView.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs2\FlagHasNoStoreOverrides.sql" />
+    <None Include="Schema\infor\Stored Procedures\PriceExtractDataConversionReport.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\ValidateCancelAllSalesData.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21540 - PostDeploy Schema PopData - AddInstanceDataFlag - EnableCancelAllSales.sql" />
     <Build Include="Schema\dbo\User Defined Types\StoreNoItemIdentiferType.sql" />

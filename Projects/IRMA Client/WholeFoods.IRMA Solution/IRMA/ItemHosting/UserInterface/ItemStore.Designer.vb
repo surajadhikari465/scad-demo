@@ -141,7 +141,7 @@
         Me.lblFixedWeight = New System.Windows.Forms.Label()
         Me.TextBox_FixedWeight = New System.Windows.Forms.TextBox()
         Me.lblByCount = New System.Windows.Forms.Label()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox_StoreRetailUOM = New System.Windows.Forms.GroupBox()
         Me.ByCountNumericEditor = New Infragistics.Win.UltraWinEditors.UltraNumericEditor()
         Me.GroupBox_CommonPOS.SuspendLayout()
         Me.FreedomSystemGroupBox.SuspendLayout()
@@ -158,7 +158,7 @@
         Me.GroupBox_Authorization.SuspendLayout()
         Me.grpScanAudit.SuspendLayout()
         Me.GroupBox_Discontinue.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox_StoreRetailUOM.SuspendLayout()
         CType(Me.ByCountNumericEditor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -838,17 +838,17 @@
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.cmbRetailUom)
-        Me.GroupBox1.Controls.Add(Me.ByCountNumericEditor)
-        Me.GroupBox1.Controls.Add(Me.lbl365RetailUom)
-        Me.GroupBox1.Controls.Add(Me.lblByCount)
-        Me.GroupBox1.Controls.Add(Me.lblScaleUom)
-        Me.GroupBox1.Controls.Add(Me.cmbScaleUom)
-        Me.GroupBox1.Controls.Add(Me.TextBox_FixedWeight)
-        Me.GroupBox1.Controls.Add(Me.lblFixedWeight)
-        resources.ApplyResources(Me.GroupBox1, "GroupBox1")
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.TabStop = False
+        Me.GroupBox_StoreRetailUOM.Controls.Add(Me.cmbRetailUom)
+        Me.GroupBox_StoreRetailUOM.Controls.Add(Me.ByCountNumericEditor)
+        Me.GroupBox_StoreRetailUOM.Controls.Add(Me.lbl365RetailUom)
+        Me.GroupBox_StoreRetailUOM.Controls.Add(Me.lblByCount)
+        Me.GroupBox_StoreRetailUOM.Controls.Add(Me.lblScaleUom)
+        Me.GroupBox_StoreRetailUOM.Controls.Add(Me.cmbScaleUom)
+        Me.GroupBox_StoreRetailUOM.Controls.Add(Me.TextBox_FixedWeight)
+        Me.GroupBox_StoreRetailUOM.Controls.Add(Me.lblFixedWeight)
+        resources.ApplyResources(Me.GroupBox_StoreRetailUOM, "GroupBox_StoreRetailUOM")
+        Me.GroupBox_StoreRetailUOM.Name = "GroupBox_StoreRetailUOM"
+        Me.GroupBox_StoreRetailUOM.TabStop = False
         '
         'ByCountNumericEditor
         '
@@ -869,7 +869,7 @@
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.GroupBox_StoreRetailUOM)
         Me.Controls.Add(Me.GroupBox_Discontinue)
         Me.Controls.Add(Me.grpScanAudit)
         Me.Controls.Add(Me.GroupBox_Authorization)
@@ -907,8 +907,8 @@
         Me.grpScanAudit.PerformLayout()
         Me.GroupBox_Discontinue.ResumeLayout(False)
         Me.GroupBox_Discontinue.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        Me.GroupBox_StoreRetailUOM.ResumeLayout(False)
+        Me.GroupBox_StoreRetailUOM.PerformLayout()
         CType(Me.ByCountNumericEditor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -967,7 +967,7 @@
     Friend WithEvents lblFixedWeight As System.Windows.Forms.Label
     Friend WithEvents TextBox_FixedWeight As System.Windows.Forms.TextBox
     Friend WithEvents lblByCount As System.Windows.Forms.Label
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox_StoreRetailUOM As System.Windows.Forms.GroupBox
     Friend WithEvents ByCountNumericEditor As Infragistics.Win.UltraWinEditors.UltraNumericEditor
     Friend WithEvents cmbRetailUom As System.Windows.Forms.ComboBox
     Friend WithEvents cmbItemStatusCode As ComboBox
