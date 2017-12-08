@@ -1081,6 +1081,8 @@ me_exit:
         mnuData_RestoreDeletedItem.Enabled = (gbSuperUser Or gbDataAdministrator) And GetRegionalMenuAccess(ds, "mnuData_RestoreDeletedItem")
         mnuData_ScalePOSPush.Enabled = (gbSuperUser Or gbDataAdministrator) And GetRegionalMenuAccess(ds, "mnuData_ScalePOSPush")
         mnuData_UnprocessedPushFiles.Enabled = (gbSuperUser Or gbDataAdministrator) And GetRegionalMenuAccess(ds, "mnuData_ScalePOSPush")
+        mnuData_CancelAllSales.Enabled = (gbDataAdministrator) AndAlso InstanceDataDAO.IsFlagActive("EnableCancelAllSales")
+
         '######################
         ' Admin Menu access
         '######################
@@ -2461,5 +2463,12 @@ me_exit:
         Dim r10ItemRefreshWindow As New frmRetentionPolicyList()
         frmRetentionPolicyList.ShowDialog()
         logger.Debug("ManageRetentionPoliciesToolStripMenuItem_Click exit")
+    End Sub
+
+    Private Sub mnuData_CancelAllSales_Click(sender As Object, e As EventArgs) Handles mnuData_CancelAllSales.Click
+        logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click entry")
+        Dim r10ItemRefreshWindow As New CancelSalesMultipleItems()
+        CancelSalesMultipleItems.ShowDialog()
+        logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click exit")
     End Sub
 End Class

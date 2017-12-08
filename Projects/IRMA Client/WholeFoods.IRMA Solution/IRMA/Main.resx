@@ -290,43 +290,43 @@
     <value>Export</value>
   </data>
   <data name="tsbFile_Import_EIM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="tsbFile_Import_EIM.Text" xml:space="preserve">
     <value>Extended Item Maintenance</value>
   </data>
   <data name="tsbFile_Import_Order.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="tsbFile_Import_Order.Text" xml:space="preserve">
     <value>Import Order</value>
   </data>
   <data name="tsbFile_Import_ItemMaintenanceBulkLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="tsbFile_Import_ItemMaintenanceBulkLoad.Text" xml:space="preserve">
     <value>Item Maintenance Bulk Load</value>
   </data>
   <data name="tsbFile_Import_ItemStoreMaintenanceBulkLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="tsbFile_Import_ItemStoreMaintenanceBulkLoad.Text" xml:space="preserve">
     <value>Item Store Maintenance Bulk Load</value>
   </data>
   <data name="tsbFile_Import_ItemVendorMaintenanceBulkLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="tsbFile_Import_ItemVendorMaintenanceBulkLoad.Text" xml:space="preserve">
     <value>Item Vendor Maintenance Bulk Load</value>
   </data>
   <data name="tsbFile_Import_Planogram.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="tsbFile_Import_Planogram.Text" xml:space="preserve">
     <value>Planogram</value>
   </data>
   <data name="tsbFile_Import_RipeOrder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="tsbFile_Import_RipeOrder.Text" xml:space="preserve">
     <value>Ripe Order</value>
@@ -1033,19 +1033,19 @@
     <value>&amp;Export</value>
   </data>
   <data name="mnuFile_Import_ExtendedItemMaintenance.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="mnuFile_Import_ExtendedItemMaintenance.Text" xml:space="preserve">
     <value>Extended Item Maintenance</value>
   </data>
   <data name="mnuFile_Import_ImportOrder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="mnuFile_Import_ImportOrder.Text" xml:space="preserve">
     <value>Import Order</value>
   </data>
   <data name="mnuFile_Import_ItemMaintenanceBulkLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="mnuFile_Import_ItemMaintenanceBulkLoad.Text" xml:space="preserve">
     <value>Item Maintenance Bulk Load</value>
@@ -1054,25 +1054,25 @@
     <value>False</value>
   </data>
   <data name="mnuFile_Import_ItemStoreMaintenanceBulkLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="mnuFile_Import_ItemStoreMaintenanceBulkLoad.Text" xml:space="preserve">
     <value>Item Store Maintenance Bulk Load</value>
   </data>
   <data name="mnuFile_Import_ItemVendorMaintenanceBulkLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="mnuFile_Import_ItemVendorMaintenanceBulkLoad.Text" xml:space="preserve">
     <value>Item Vendor Maintenance Bulk Load</value>
   </data>
   <data name="mnuFile_Import_Planogram.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="mnuFile_Import_Planogram.Text" xml:space="preserve">
     <value>Planogram</value>
   </data>
   <data name="mnuFile_Import_RIPEOrder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 22</value>
+    <value>265, 22</value>
   </data>
   <data name="mnuFile_Import_RIPEOrder.Text" xml:space="preserve">
     <value>RIPE Order</value>
@@ -1124,31 +1124,31 @@
     <value>&amp;File</value>
   </data>
   <data name="mnuEdit_CompetitorStore_CompetitorPrices.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 22</value>
+    <value>217, 22</value>
   </data>
   <data name="mnuEdit_CompetitorStore_CompetitorPrices.Text" xml:space="preserve">
     <value>&amp;Competitor Prices</value>
   </data>
   <data name="mnuEdit_CompetitorStore_CompetitorTrend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 22</value>
+    <value>217, 22</value>
   </data>
   <data name="mnuEdit_CompetitorStore_CompetitorTrend.Text" xml:space="preserve">
     <value>Competitor &amp;Trend Report</value>
   </data>
   <data name="mnuEdit_CompetitorStore_ImportCompetitorPrices.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 22</value>
+    <value>217, 22</value>
   </data>
   <data name="mnuEdit_CompetitorStore_ImportCompetitorPrices.Text" xml:space="preserve">
     <value>&amp;Import Competitor Prices</value>
   </data>
   <data name="mnuEdit_CompetitorStore_CompetitorMarginImpact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 22</value>
+    <value>217, 22</value>
   </data>
   <data name="mnuEdit_CompetitorStore_CompetitorMarginImpact.Text" xml:space="preserve">
     <value>&amp;Margin Impact Report</value>
   </data>
   <data name="mnuEdit_CompetitorStore_NationalPurchasingValues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 22</value>
+    <value>217, 22</value>
   </data>
   <data name="mnuEdit_CompetitorStore_NationalPurchasingValues.Text" xml:space="preserve">
     <value>&amp;National Purchasing Values</value>
@@ -1202,13 +1202,13 @@
     <value>Alt+O</value>
   </data>
   <data name="mnuEdit_Orders_AddEdit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>215, 22</value>
   </data>
   <data name="mnuEdit_Orders_AddEdit.Text" xml:space="preserve">
     <value>&amp;Add/Edit</value>
   </data>
   <data name="mnuEdit_Orders_Search.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>215, 22</value>
   </data>
   <data name="mnuEdit_Orders_Search.Text" xml:space="preserve">
     <value>Search</value>
@@ -1217,13 +1217,13 @@
     <value>Alt+L</value>
   </data>
   <data name="mnuEdit_Orders_Allocate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>215, 22</value>
   </data>
   <data name="mnuEdit_Orders_Allocate.Text" xml:space="preserve">
     <value>A&amp;llocate</value>
   </data>
   <data name="mnuEdit_Orders_BatchReceiveClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>215, 22</value>
   </data>
   <data name="mnuEdit_Orders_BatchReceiveClose.Text" xml:space="preserve">
     <value>Batch Receive and Close</value>
@@ -1232,13 +1232,13 @@
     <value>Alt+E</value>
   </data>
   <data name="mnuEdit_Orders_EInvoicing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>215, 22</value>
   </data>
   <data name="mnuEdit_Orders_EInvoicing.Text" xml:space="preserve">
     <value>E-Invoicing</value>
   </data>
   <data name="mnuEdit_Orders_InvoiceEntry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>215, 22</value>
   </data>
   <data name="mnuEdit_Orders_InvoiceEntry.Text" xml:space="preserve">
     <value>I&amp;nvoice Entry</value>
@@ -1247,7 +1247,7 @@
     <value>Alt+D</value>
   </data>
   <data name="mnuEdit_Orders_SuspendedPOTool.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>215, 22</value>
   </data>
   <data name="mnuEdit_Orders_SuspendedPOTool.Text" xml:space="preserve">
     <value>Suspen&amp;ded PO Tool</value>
@@ -1256,7 +1256,7 @@
     <value>Alt+Q</value>
   </data>
   <data name="mnuEdit_Orders_ItemQueue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>215, 22</value>
   </data>
   <data name="mnuEdit_Orders_ItemQueue.Text" xml:space="preserve">
     <value>&amp;Item Queue</value>
@@ -1316,19 +1316,19 @@
     <value>&amp;Pricing</value>
   </data>
   <data name="mnuEdit_TaxHosting_TaxClassification.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 22</value>
+    <value>164, 22</value>
   </data>
   <data name="mnuEdit_TaxHosting_TaxClassification.Text" xml:space="preserve">
     <value>Tax &amp;Classification</value>
   </data>
   <data name="mnuEdit_TaxHosting_TaxFlag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 22</value>
+    <value>164, 22</value>
   </data>
   <data name="mnuEdit_TaxHosting_TaxFlag.Text" xml:space="preserve">
     <value>Tax &amp;Flag</value>
   </data>
   <data name="mnuEdit_TaxHosting_TaxJurisdiction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 22</value>
+    <value>164, 22</value>
   </data>
   <data name="mnuEdit_TaxHosting_TaxJurisdiction.Text" xml:space="preserve">
     <value>Tax &amp;Jurisdiction</value>
@@ -1448,7 +1448,7 @@
     <value>&amp;Accounting</value>
   </data>
   <data name="mnuReports_Audit_AVCIExceptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 22</value>
+    <value>158, 22</value>
   </data>
   <data name="mnuReports_Audit_AVCIExceptions.Text" xml:space="preserve">
     <value>&amp;AVCI Exceptions</value>
@@ -1460,43 +1460,43 @@
     <value>A&amp;udit</value>
   </data>
   <data name="mnuReports_Buyer_CostException.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 22</value>
+    <value>208, 22</value>
   </data>
   <data name="mnuReports_Buyer_CostException.Text" xml:space="preserve">
     <value>&amp;Cost Exception</value>
   </data>
   <data name="mnuReports_Buyer_InventoryBalance.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 22</value>
+    <value>208, 22</value>
   </data>
   <data name="mnuReports_Buyer_InventoryBalance.Text" xml:space="preserve">
     <value>Inventory &amp;Balance</value>
   </data>
   <data name="mnuReports_Buyer_Margin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 22</value>
+    <value>208, 22</value>
   </data>
   <data name="mnuReports_Buyer_Margin.Text" xml:space="preserve">
     <value>&amp;Margin</value>
   </data>
   <data name="mnuReports_Buyer_StoreOrdersTotalBySKU.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 22</value>
+    <value>208, 22</value>
   </data>
   <data name="mnuReports_Buyer_StoreOrdersTotalBySKU.Text" xml:space="preserve">
     <value>&amp;Store Orders Total by SKU</value>
   </data>
   <data name="mnuReports_Buyer_ZeroAverageCostItems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 22</value>
+    <value>208, 22</value>
   </data>
   <data name="mnuReports_Buyer_ZeroAverageCostItems.Text" xml:space="preserve">
     <value>Zero &amp;Average Cost Items</value>
   </data>
   <data name="mnuReports_Buyer_ZeroPriceItems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 22</value>
+    <value>208, 22</value>
   </data>
   <data name="mnuReports_Buyer_ZeroPriceItems.Text" xml:space="preserve">
     <value>&amp;Zero Price Items</value>
   </data>
   <data name="mnuReports_Buyer_WarehouseMovement.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 22</value>
+    <value>208, 22</value>
   </data>
   <data name="mnuReports_Buyer_WarehouseMovement.Text" xml:space="preserve">
     <value>&amp;Warehouse Movement</value>
@@ -1637,25 +1637,25 @@
     <value>I&amp;nventory</value>
   </data>
   <data name="mnuReports_Miscellaneous_CasesBySubTeam.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>204, 22</value>
   </data>
   <data name="mnuReports_Miscellaneous_CasesBySubTeam.Text" xml:space="preserve">
     <value>Cases By SubTeam</value>
   </data>
   <data name="mnuReports_Miscellaneous_CasesBySubTeamAudit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>204, 22</value>
   </data>
   <data name="mnuReports_Miscellaneous_CasesBySubTeamAudit.Text" xml:space="preserve">
     <value>Cases By SubTeam Audit</value>
   </data>
   <data name="mnuReports_Miscellaneous_LotNo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>204, 22</value>
   </data>
   <data name="mnuReports_Miscellaneous_LotNo.Text" xml:space="preserve">
     <value>Lot No</value>
   </data>
   <data name="mnuReports_Miscellaneous_VendorEfficiency.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>204, 22</value>
   </data>
   <data name="mnuReports_Miscellaneous_VendorEfficiency.Text" xml:space="preserve">
     <value>Vendor Efficiency</value>
@@ -1883,13 +1883,13 @@
     <value>R&amp;eport Manager</value>
   </data>
   <data name="mnuReports_Tax_NewItemTaxClass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
+    <value>199, 22</value>
   </data>
   <data name="mnuReports_Tax_NewItemTaxClass.Text" xml:space="preserve">
     <value>New Item Tax Class</value>
   </data>
   <data name="mnuReports_Tax_ModifiedItemTaxClass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
+    <value>199, 22</value>
   </data>
   <data name="mnuReports_Tax_ModifiedItemTaxClass.Text" xml:space="preserve">
     <value>Modified Item Tax Class</value>
@@ -1973,13 +1973,13 @@
     <value>&amp;Inventory</value>
   </data>
   <data name="mnuTools_TGM_LoadTGMView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 22</value>
+    <value>156, 22</value>
   </data>
   <data name="mnuTools_TGM_LoadTGMView.Text" xml:space="preserve">
     <value>&amp;Load TGM View</value>
   </data>
   <data name="mnuTools_TGM_NewTGMView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 22</value>
+    <value>156, 22</value>
   </data>
   <data name="mnuTools_TGM_NewTGMView.Text" xml:space="preserve">
     <value>&amp;New TGM View</value>
@@ -2006,7 +2006,7 @@
     <value>Unit Converter</value>
   </data>
   <data name="mnuTools.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
+    <value>47, 20</value>
   </data>
   <data name="mnuTools.Text" xml:space="preserve">
     <value>&amp;Tools</value>
@@ -2016,6 +2016,12 @@
   </data>
   <data name="mnuData_BatchRollback.Text" xml:space="preserve">
     <value>Batch Rollback</value>
+  </data>
+  <data name="mnuData_CancelAllSales.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 22</value>
+  </data>
+  <data name="mnuData_CancelAllSales.Text" xml:space="preserve">
+    <value>Cancel All Sales</value>
   </data>
   <data name="IconItemRefreshMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>197, 22</value>
@@ -2183,55 +2189,55 @@
     <value>Role Conflicts</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_EatBy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 22</value>
+    <value>188, 22</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_EatBy.Text" xml:space="preserve">
     <value>Eat By</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_ExtraText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 22</value>
+    <value>188, 22</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_ExtraText.Text" xml:space="preserve">
     <value>Extra Text</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_Grade.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 22</value>
+    <value>188, 22</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_Grade.Text" xml:space="preserve">
     <value>Grade</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_LabelFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 22</value>
+    <value>188, 22</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_LabelFormat.Text" xml:space="preserve">
     <value>Label Format</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_LabelStyle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 22</value>
+    <value>188, 22</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_LabelStyle.Text" xml:space="preserve">
     <value>Label Style</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_LabelType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 22</value>
+    <value>188, 22</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_LabelType.Text" xml:space="preserve">
     <value>Label Type</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_NutriFact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 22</value>
+    <value>188, 22</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_NutriFact.Text" xml:space="preserve">
     <value>NutriFact</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_RandomWeightType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 22</value>
+    <value>188, 22</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_RandomWeightType.Text" xml:space="preserve">
     <value>Random Weight Type</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_Tare.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 22</value>
+    <value>188, 22</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration_ApplicationConfiguration_ScaleMaintenance_Tare.Text" xml:space="preserve">
     <value>Tare</value>
@@ -2483,31 +2489,31 @@
     <value>Scheduled Jobs</value>
   </data>
   <data name="mnuAdministration_Stores_CreateStore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 22</value>
+    <value>228, 22</value>
   </data>
   <data name="mnuAdministration_Stores_CreateStore.Text" xml:space="preserve">
     <value>Create Store</value>
   </data>
   <data name="mnuAdministration_Stores_BuildPOSFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 22</value>
+    <value>228, 22</value>
   </data>
   <data name="mnuAdministration_Stores_BuildPOSFile.Text" xml:space="preserve">
     <value>Build POS File</value>
   </data>
   <data name="mnuAdministration_Stores_BuildScaleFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 22</value>
+    <value>228, 22</value>
   </data>
   <data name="mnuAdministration_Stores_BuildScaleFile.Text" xml:space="preserve">
     <value>Build Scale File</value>
   </data>
   <data name="mnuAdministration_Stores_BuildESTFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 22</value>
+    <value>228, 22</value>
   </data>
   <data name="mnuAdministration_Stores_BuildESTFile.Text" xml:space="preserve">
     <value>Build Electronic Shelf Tag File</value>
   </data>
   <data name="mnuAdministration_Stores_SendStoreToMammoth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 22</value>
+    <value>228, 22</value>
   </data>
   <data name="mnuAdministration_Stores_SendStoreToMammoth.Text" xml:space="preserve">
     <value>Send Store To Mammoth</value>
@@ -4536,6 +4542,12 @@
     <value>mnuData_UnprocessedPushFiles</value>
   </data>
   <data name="&gt;&gt;mnuData_UnprocessedPushFiles.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuData_CancelAllSales.Name" xml:space="preserve">
+    <value>mnuData_CancelAllSales</value>
+  </data>
+  <data name="&gt;&gt;mnuData_CancelAllSales.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;mnuAdministration.Name" xml:space="preserve">

@@ -76,7 +76,7 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             Try
                 ' setup parameters for stored proc
                 currentParam = New DBParam
-                currentParam.Name = "itemID"
+                currentParam.Name = "Item_Key"
                 currentParam.Value = itemID
                 currentParam.Type = DBParamType.Int
                 paramList.Add(currentParam)
