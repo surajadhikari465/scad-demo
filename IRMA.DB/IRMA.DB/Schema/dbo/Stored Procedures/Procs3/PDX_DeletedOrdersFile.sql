@@ -4,7 +4,10 @@ BEGIN
 SET NOCOUNT ON
 set transaction isolation level read uncommitted
 
+declare @yesterday as datetime
 declare @IncludedStores as table (Store_No int)
+
+set @yesterday = Convert(Date, getdate() - 1, 102)
 
 insert into @IncludedStores
 select store_no
@@ -28,6 +31,7 @@ left outer join ExternalOrderInformation eoi on dod.OrderHeader_ID = eoi.OrderHe
 where dod.Sent = 1
   and dod.OrderType_ID <> 3
   and dod.DeleteDate < Convert(Date, getdate(), 102) and dod.DeleteDate >= Convert(Date, getdate() - 1, 102)
+  and (dod.SentDate < @yesterday or eoi.ExternalOrder_Id is not NULL)
 END
 
 GO
