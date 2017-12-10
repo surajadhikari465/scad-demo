@@ -66,23 +66,6 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
             return itemModelCollection;
         }
 
-        private ExtendedAttributesModel ParseExtendedAttributes(Contracts.ItemType item, TraitType[] traits)
-        {
-            var extendedAttributes = new ExtendedAttributesModel();
-            extendedAttributes.ItemId = item.id;
-            extendedAttributes.FairTrade = GetTraitValue(Attributes.Codes.FairTrade, traits);
-            extendedAttributes.FlexibleText = GetTraitValue(Attributes.Codes.FlexibleText, traits);
-            extendedAttributes.MadeWithBiodynamicGrapes = GetTraitValue(Attributes.Codes.MadeWithBiodynamicGrapes, traits);
-            extendedAttributes.MadeWithOrganicGrapes = GetTraitValue(Attributes.Codes.MadeWithOrganicGrapes, traits);
-            extendedAttributes.NutritionRequired = GetTraitValue(Attributes.Codes.NutritionRequired, traits);
-            extendedAttributes.PrimeBeef = GetTraitValue(Attributes.Codes.PrimeBeef, traits);
-            extendedAttributes.RainforestAlliance = GetTraitValue(Attributes.Codes.RainforestAlliance, traits);
-            extendedAttributes.RefrigeratedOrShelfStable = GetTraitValue(Attributes.Codes.RefrigeratedOrShelfStable, traits);
-            extendedAttributes.SmithsonianBirdFriendly = GetTraitValue(Attributes.Codes.SmithsonianBirdFriendly, traits);
-            extendedAttributes.Wic = GetTraitValue(Attributes.Codes.Wic, traits);
-            return extendedAttributes;
-        }
-
         private SignAttributesModel ParseSignAttributes(Contracts.ItemType item, Contracts.TraitType[] traits)
         {
             var signAttributes = new SignAttributesModel();
@@ -194,6 +177,23 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 nutritionAttributes.Selenium = GetIntTraitValue(TraitCodes.Selenium, traits);
                 return nutritionAttributes;
             }
+        }
+
+        private ExtendedAttributesModel ParseExtendedAttributes(Contracts.ItemType item, TraitType[] traits)
+        {
+            var extendedAttributes = new ExtendedAttributesModel();
+            extendedAttributes.ItemId = item.id;
+            extendedAttributes.FairTrade = GetTraitValue(Attributes.Codes.FairTrade, traits);
+            extendedAttributes.FlexibleText = GetTraitValue(Attributes.Codes.FlexibleText, traits);
+            extendedAttributes.MadeWithBiodynamicGrapes = GetTraitValue(Attributes.Codes.MadeWithBiodynamicGrapes, traits);
+            extendedAttributes.MadeWithOrganicGrapes = GetTraitValue(Attributes.Codes.MadeWithOrganicGrapes, traits);
+            extendedAttributes.NutritionRequired = GetTraitValue(Attributes.Codes.NutritionRequired, traits);
+            extendedAttributes.PrimeBeef = GetTraitValue(Attributes.Codes.PrimeBeef, traits);
+            extendedAttributes.RainforestAlliance = GetTraitValue(Attributes.Codes.RainforestAlliance, traits);
+            extendedAttributes.RefrigeratedOrShelfStable = GetTraitValue(Attributes.Codes.RefrigeratedOrShelfStable, traits);
+            extendedAttributes.SmithsonianBirdFriendly = GetTraitValue(Attributes.Codes.SmithsonianBirdFriendly, traits);
+            extendedAttributes.Wic = GetTraitValue(Attributes.Codes.Wic, traits);
+            return extendedAttributes;
         }
 
         private int GetItemTypeId(Contracts.ItemType item)
@@ -321,7 +321,9 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
 
             if (trait != null)
             {
-                return trait.type.value.First().value;
+                var value = trait.type.value.First().value;
+                if (!string.IsNullOrWhiteSpace(value))
+                    return value;
             }
 
             return null;

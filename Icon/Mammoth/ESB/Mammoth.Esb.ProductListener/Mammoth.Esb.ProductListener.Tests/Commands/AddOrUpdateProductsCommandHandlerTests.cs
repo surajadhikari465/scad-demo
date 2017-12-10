@@ -217,6 +217,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
         [TestMethod]
         public void AddOrUpdateProducts_ProductDoesntExist_ShouldAddProduct()
         {
+            //Given
             var itemId = 20000000;
             var itemModel = CreateItemModel(itemId);
 
@@ -392,6 +393,158 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                 });
 
             //Then
+            var extAttributes = dbProvider.Connection.Query<dynamic>(
+                "SELECT * FROM dbo.ItemAttributes_Ext WHERE ItemID = @ItemId",
+                new { ItemId = itemId },
+                dbProvider.Transaction)
+                .ToList();
+            Assert.AreEqual(0, extAttributes.Count);
+        }
+
+        [TestMethod]
+        public void AddOrUpdateProducts_ProductHasNullAttributes_ShouldSetNullForAttributes()
+        {
+            //Given
+            var itemId = 20000000;
+            var itemModel = CreateItemModel(itemId);
+            itemModel.SignAttributes = new SignAttributesModel { ItemID = itemId };
+            itemModel.NutritionAttributes = new NutritionAttributesModel { ItemID = itemId };
+            itemModel.ExtendedAttributes = new ExtendedAttributesModel { ItemId = itemId };
+
+            //When
+            commandHandler.Execute(
+                new AddOrUpdateProductsCommand
+                {
+                    Items = new List<ItemModel>
+                    {
+                        itemModel
+                    }
+                });
+
+            //Then
+            var item = dbProvider.Connection.Query<dynamic>(
+                "SELECT * FROM dbo.Items WHERE ItemID = @ItemId",
+                new { ItemId = itemId },
+                dbProvider.Transaction)
+                .Single();
+            Assert.AreEqual(itemModel.GlobalAttributes.ItemTypeID, item.ItemTypeID);
+            Assert.AreEqual(testHierarchyHierarchyMerchandiseID, item.HierarchyMerchandiseID);
+            Assert.AreEqual(testHierarchyNationalClassID, item.HierarchyNationalClassID);
+            Assert.AreEqual(itemModel.GlobalAttributes.BrandHCID, item.BrandHCID);
+            Assert.AreEqual(itemModel.GlobalAttributes.TaxClassHCID, item.TaxClassHCID);
+            Assert.AreEqual(itemModel.GlobalAttributes.PSNumber, item.PSNumber);
+            Assert.AreEqual(itemModel.GlobalAttributes.Desc_Product, item.Desc_Product);
+            Assert.AreEqual(itemModel.GlobalAttributes.Desc_POS, item.Desc_POS);
+            Assert.AreEqual(itemModel.GlobalAttributes.PackageUnit, item.PackageUnit);
+            Assert.AreEqual(itemModel.GlobalAttributes.RetailSize, item.RetailSize);
+            Assert.AreEqual(itemModel.GlobalAttributes.RetailUOM, item.RetailUOM);
+            Assert.AreEqual(itemModel.GlobalAttributes.Desc_CustomerFriendly, item.Desc_CustomerFriendly);
+            Assert.IsNotNull(item.AddedDate);
+
+            var signAttributes = dbProvider.Connection.Query<dynamic>(
+                "SELECT * FROM dbo.ItemAttributes_Sign WHERE ItemID = @ItemId",
+                new { ItemId = itemId },
+                dbProvider.Transaction)
+                .Single();
+
+            Assert.IsNull(signAttributes.CheeseMilkType);
+            Assert.IsNull(signAttributes.Agency_GlutenFree);
+            Assert.IsNull(signAttributes.Agency_Kosher);
+            Assert.IsNull(signAttributes.Agency_NonGMO);
+            Assert.IsNull(signAttributes.Agency_Organic);
+            Assert.IsNull(signAttributes.Agency_Vegan);
+            Assert.IsNull(signAttributes.IsAirChilled);
+            Assert.IsNull(signAttributes.IsBiodynamic);
+            Assert.IsNull(signAttributes.IsCheeseRaw);
+            Assert.IsNull(signAttributes.IsDryAged);
+            Assert.IsNull(signAttributes.IsFreeRange);
+            Assert.IsNull(signAttributes.IsGrassFed);
+            Assert.IsNull(signAttributes.IsMadeInHouse);
+            Assert.IsNull(signAttributes.IsMsc);
+            Assert.IsNull(signAttributes.IsPastureRaised);
+            Assert.IsNull(signAttributes.IsPremiumBodyCare);
+            Assert.IsNull(signAttributes.IsVegetarian);
+            Assert.IsNull(signAttributes.IsWholeTrade);
+            Assert.IsNull(signAttributes.Rating_AnimalWelfare);
+            Assert.IsNull(signAttributes.Rating_EcoScale);
+            Assert.IsNull(signAttributes.Rating_HealthyEating);
+            Assert.IsNull(signAttributes.Seafood_FreshOrFrozen);
+            Assert.IsNull(signAttributes.Seafood_CatchType);
+
+            var nutritionAttributes = dbProvider.Connection.Query<dynamic>(
+                "SELECT * FROM dbo.ItemAttributes_Nutrition WHERE ItemID = @ItemId",
+                new { ItemId = itemId },
+                dbProvider.Transaction)
+                .Single();
+
+            Assert.IsNull(nutritionAttributes.RecipeName);
+            Assert.IsNull(nutritionAttributes.Allergens);
+            Assert.IsNull(nutritionAttributes.Ingredients);
+            Assert.IsNull(nutritionAttributes.ServingsPerPortion);
+            Assert.IsNull(nutritionAttributes.ServingSizeDesc);
+            Assert.IsNull(nutritionAttributes.ServingPerContainer);
+            Assert.IsNull(nutritionAttributes.HshRating);
+            Assert.IsNull(nutritionAttributes.ServingUnits);
+            Assert.IsNull(nutritionAttributes.SizeWeight);
+            Assert.IsNull(nutritionAttributes.Calories);
+            Assert.IsNull(nutritionAttributes.CaloriesFat);
+            Assert.IsNull(nutritionAttributes.CaloriesSaturatedFat);
+            Assert.IsNull(nutritionAttributes.TotalFatWeight);
+            Assert.IsNull(nutritionAttributes.TotalFatPercentage);
+            Assert.IsNull(nutritionAttributes.SaturatedFatWeight);
+            Assert.IsNull(nutritionAttributes.SaturatedFatPercent);
+            Assert.IsNull(nutritionAttributes.PolyunsaturatedFat);
+            Assert.IsNull(nutritionAttributes.MonounsaturatedFat);
+            Assert.IsNull(nutritionAttributes.CholesterolWeight);
+            Assert.IsNull(nutritionAttributes.CholesterolPercent);
+            Assert.IsNull(nutritionAttributes.SodiumWeight);
+            Assert.IsNull(nutritionAttributes.SodiumPercent);
+            Assert.IsNull(nutritionAttributes.PotassiumWeight);
+            Assert.IsNull(nutritionAttributes.PotassiumPercent);
+            Assert.IsNull(nutritionAttributes.TotalCarbohydrateWeight);
+            Assert.IsNull(nutritionAttributes.TotalCarbohydratePercent);
+            Assert.IsNull(nutritionAttributes.DietaryFiberWeight);
+            Assert.IsNull(nutritionAttributes.DietaryFiberPercent);
+            Assert.IsNull(nutritionAttributes.SolubleFiber);
+            Assert.IsNull(nutritionAttributes.InsolubleFiber);
+            Assert.IsNull(nutritionAttributes.Sugar);
+            Assert.IsNull(nutritionAttributes.SugarAlcohol);
+            Assert.IsNull(nutritionAttributes.OtherCarbohydrates);
+            Assert.IsNull(nutritionAttributes.ProteinWeight);
+            Assert.IsNull(nutritionAttributes.ProteinPercent);
+            Assert.IsNull(nutritionAttributes.VitaminA);
+            Assert.IsNull(nutritionAttributes.Betacarotene);
+            Assert.IsNull(nutritionAttributes.VitaminC);
+            Assert.IsNull(nutritionAttributes.Calcium);
+            Assert.IsNull(nutritionAttributes.Iron);
+            Assert.IsNull(nutritionAttributes.VitaminD);
+            Assert.IsNull(nutritionAttributes.VitaminE);
+            Assert.IsNull(nutritionAttributes.Thiamin);
+            Assert.IsNull(nutritionAttributes.Riboflavin);
+            Assert.IsNull(nutritionAttributes.Niacin);
+            Assert.IsNull(nutritionAttributes.VitaminB6);
+            Assert.IsNull(nutritionAttributes.Folate);
+            Assert.IsNull(nutritionAttributes.VitaminB12);
+            Assert.IsNull(nutritionAttributes.Biotin);
+            Assert.IsNull(nutritionAttributes.PantothenicAcid);
+            Assert.IsNull(nutritionAttributes.Phosphorous);
+            Assert.IsNull(nutritionAttributes.Iodine);
+            Assert.IsNull(nutritionAttributes.Magnesium);
+            Assert.IsNull(nutritionAttributes.Zinc);
+            Assert.IsNull(nutritionAttributes.Copper);
+            Assert.IsNull(nutritionAttributes.TransFat);
+            Assert.IsNull(nutritionAttributes.TransFatWeight);
+            Assert.IsNull(nutritionAttributes.CaloriesFromTransFat);
+            Assert.IsNull(nutritionAttributes.Om6Fatty);
+            Assert.IsNull(nutritionAttributes.Om3Fatty);
+            Assert.IsNull(nutritionAttributes.Starch);
+            Assert.IsNull(nutritionAttributes.Chloride);
+            Assert.IsNull(nutritionAttributes.Chromium);
+            Assert.IsNull(nutritionAttributes.VitaminK);
+            Assert.IsNull(nutritionAttributes.Manganese);
+            Assert.IsNull(nutritionAttributes.Molybdenum);
+            Assert.IsNull(nutritionAttributes.Selenium);
+
             var extAttributes = dbProvider.Connection.Query<dynamic>(
                 "SELECT * FROM dbo.ItemAttributes_Ext WHERE ItemID = @ItemId",
                 new { ItemId = itemId },
