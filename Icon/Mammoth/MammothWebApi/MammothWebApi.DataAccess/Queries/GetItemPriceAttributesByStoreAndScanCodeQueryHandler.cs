@@ -37,15 +37,16 @@ namespace MammothWebApi.DataAccess.Queries
             var allPrices = new List<ItemStorePriceModel>();
             if (prices.Any())
             {
-                foreach (var priceGroup in prices.GroupBy(p => p.BusinessUnitID))
+                foreach (var priceGroup in prices.GroupBy(p => new { p.BusinessUnitID, p.ItemId }))
                 {
                     // Get current regular price to filter out any expired regular prices that might still be in the database
+                    // Compare each element to the next to get the correct REG price
                     var currentRegularPrice = priceGroup.Aggregate((p, next) =>
                     {
                         if (p.PriceType != "REG" && next.PriceType == "REG")
                             return next;
                         else if (p.PriceType == "REG" && next.PriceType == "REG"
-                            && next.StartDate > p.StartDate && next.StartDate <= parameters.EffectiveDate)
+                                && next.StartDate > p.StartDate && next.StartDate <= parameters.EffectiveDate)
                             return next;
                         else
                             return p;
