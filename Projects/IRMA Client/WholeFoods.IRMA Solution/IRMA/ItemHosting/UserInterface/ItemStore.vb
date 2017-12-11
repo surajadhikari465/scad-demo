@@ -59,8 +59,6 @@ Friend Class frmItemStore
         LoadOtherData()
         ' update access to the form controls based on the user's role
         SetPermissionsByRole()
-        ' update the visible property of the ECommerce checkbox based on the config key ECommerce
-        SetECommerceFlag()
         ' set the zone and state combo box selections
         SetCombos()
         LoadStates()
@@ -242,9 +240,9 @@ Friend Class frmItemStore
         ItemDAO.GetItemStoreData(_itemStore)
         ' pre-fill the UI with the ItemStoreBO values
         CheckBox_AuthorizedItem.Checked = _itemStore.Authorized
-        CheckBox_ECommerce.Checked = _itemStore.ECommerce
         CheckBox_Discontinue.Checked = _itemStore.Discontinue
         CheckBox_CompetitiveItem.Checked = _itemStore.CompetitiveItem
+        CheckBox_OrderedByPredictix.Checked = _itemStore.OrderedByPredictix.GetValueOrDefault(False)
         CheckBox_GrillPrint.Checked = _itemStore.GrillPrint
         CheckBox_LineDiscount.Checked = _itemStore.LineDiscount
         CheckBox_RestrictedHours.Checked = _itemStore.RestrictedHours
@@ -448,7 +446,6 @@ Friend Class frmItemStore
         'set data into business object container
         _itemStore.ItemKey = glItemID
         _itemStore.Authorized = CheckBox_AuthorizedItem.Checked
-        _itemStore.ECommerce = CheckBox_ECommerce.Checked
         _itemStore.Discontinue = CheckBox_Discontinue.Checked
         _itemStore.CompetitiveItem = CheckBox_CompetitiveItem.Checked
         _itemStore.LineDiscount = CheckBox_LineDiscount.Checked
@@ -469,6 +466,7 @@ Friend Class frmItemStore
         _itemStore.Discountable = CheckBox_EmployeeDiscount.Checked
         _itemStore.RefreshPOSInfo = CheckBox_RefreshPOSInfo.Checked
         _itemStore.LocalItem = CheckBox_LocalItem.Checked
+        _itemStore.OrderedByPredictix = CheckBox_OrderedByPredictix.Checked
         If String.IsNullOrWhiteSpace(cmbItemStatusCode.SelectedItem) Then
             _itemStore.ItemStatusCode = Nothing
         Else
@@ -1063,13 +1061,6 @@ Friend Class frmItemStore
     End Sub
     ' for bug 5442: end
 
-    Private Sub SetECommerceFlag()
-        If CBool(ConfigurationServices.AppSettings("ECommerce").ToString) Then
-            CheckBox_ECommerce.Visible = True
-        Else
-            CheckBox_ECommerce.Visible = False
-        End If
-    End Sub
     Private Sub SetFieldsStates()
         If InstanceDataDAO.IsFlagActive("UKIPS", glStoreID) Then
             Me.ComboBox_SubTeam.Enabled = False

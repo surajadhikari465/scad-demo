@@ -112,7 +112,7 @@
         Me.CheckBox_SeniorCitizen = New System.Windows.Forms.CheckBox()
         Me.CheckBox_VisualVerify = New System.Windows.Forms.CheckBox()
         Me.CheckBox_Discontinue = New System.Windows.Forms.CheckBox()
-        Me.CheckBox_ECommerce = New System.Windows.Forms.CheckBox()
+        Me.CheckBox_OrderedByPredictix = New System.Windows.Forms.CheckBox()
         Me.cmbRetailUom = New System.Windows.Forms.ComboBox()
         Me.lbl365RetailUom = New System.Windows.Forms.Label()
         Me._Frame1_1 = New System.Windows.Forms.GroupBox()
@@ -540,12 +540,12 @@
         Me.ToolTip1.SetToolTip(Me.CheckBox_Discontinue, resources.GetString("CheckBox_Discontinue.ToolTip"))
         Me.CheckBox_Discontinue.UseVisualStyleBackColor = True
         '
-        'CheckBox_ECommerce
+        'CheckBox_OrderedByPredictix
         '
-        resources.ApplyResources(Me.CheckBox_ECommerce, "CheckBox_ECommerce")
-        Me.CheckBox_ECommerce.Name = "CheckBox_ECommerce"
-        Me.ToolTip1.SetToolTip(Me.CheckBox_ECommerce, resources.GetString("CheckBox_ECommerce.ToolTip"))
-        Me.CheckBox_ECommerce.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.CheckBox_OrderedByPredictix, "CheckBox_OrderedByPredictix")
+        Me.CheckBox_OrderedByPredictix.Name = "CheckBox_OrderedByPredictix"
+        Me.ToolTip1.SetToolTip(Me.CheckBox_OrderedByPredictix, resources.GetString("CheckBox_OrderedByPredictix.ToolTip"))
+        Me.CheckBox_OrderedByPredictix.UseVisualStyleBackColor = True
         '
         'cmbRetailUom
         '
@@ -762,7 +762,7 @@
         '
         'GroupBox_Authorization
         '
-        Me.GroupBox_Authorization.Controls.Add(Me.CheckBox_ECommerce)
+        Me.GroupBox_Authorization.Controls.Add(Me.CheckBox_OrderedByPredictix)
         Me.GroupBox_Authorization.Controls.Add(Me.CheckBox_AuthorizedItem)
         resources.ApplyResources(Me.GroupBox_Authorization, "GroupBox_Authorization")
         Me.GroupBox_Authorization.ForeColor = System.Drawing.Color.Black
@@ -836,7 +836,7 @@
         resources.ApplyResources(Me.lblByCount, "lblByCount")
         Me.lblByCount.Name = "lblByCount"
         '
-        'GroupBox1
+        'GroupBox_StoreRetailUOM
         '
         Me.GroupBox_StoreRetailUOM.Controls.Add(Me.cmbRetailUom)
         Me.GroupBox_StoreRetailUOM.Controls.Add(Me.ByCountNumericEditor)
@@ -959,7 +959,7 @@
     Public WithEvents CheckBox_ElectronicShelfTag As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox_Discontinue As System.Windows.Forms.GroupBox
     Friend WithEvents CheckBox_Discontinue As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox_ECommerce As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBox_OrderedByPredictix As CheckBox
     Friend WithEvents ComboBox_AgeCode As System.Windows.Forms.ComboBox
     Friend WithEvents lbl365RetailUom As System.Windows.Forms.Label
     Friend WithEvents cmbScaleUom As System.Windows.Forms.ComboBox

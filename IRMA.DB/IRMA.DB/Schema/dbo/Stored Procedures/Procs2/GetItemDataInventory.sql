@@ -3,7 +3,6 @@
     @Store_No int
 AS 
 
-
 -- **************************************************************************************************
 -- Procedure: GetItemDataInventory
 --    Author: N/A
@@ -20,7 +19,8 @@ AS
 --								level and not just the Store level, which is the 4.8 requirement
 -- 10/22/2013	DN		13402	Added ECommerce field in the result.
 -- 1/14/2016	MZ/MU	13104	Added Item UOM Override fields.
--- **************************************************************************************************
+-- 12/07/2017	EM		22438	Added OrderedByPredictix column from StoreItemExtended table
+--**************************************************************************************************
 
 BEGIN
 	SET NOCOUNT ON
@@ -65,7 +65,8 @@ BEGIN
 		iuo.Scale_ScaleUomUnit_ID,
 		iuo.Scale_FixedWeight,
 		iuo.Scale_ByCount,
-		sie.ItemStatusCode
+		sie.ItemStatusCode,
+		sie.OrderedByPredictix
 	FROM 
 		Price				(nolock) p
 		INNER JOIN Item		(nolock) i				ON	p.Item_Key		= i.Item_Key

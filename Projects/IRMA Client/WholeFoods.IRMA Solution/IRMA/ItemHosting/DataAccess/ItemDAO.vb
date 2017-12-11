@@ -249,6 +249,9 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                     If (Not results.IsDBNull(results.GetOrdinal("ItemStatusCode"))) Then
                         itemStore.ItemStatusCode = results.GetInt32(results.GetOrdinal("ItemStatusCode"))
                     End If
+                    If (Not results.IsDBNull(results.GetOrdinal("OrderedByPredictix"))) Then
+                        itemStore.OrderedByPredictix = results.GetBoolean(results.GetOrdinal("OrderedByPredictix"))
+                    End If
                 End While
             Finally
                 If results IsNot Nothing Then
@@ -745,6 +748,12 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                 currentParam.Value = itemStore.ItemStatusCode
             End If
             currentParam.Type = DBParamType.Int
+            paramList.Add(currentParam)
+
+            currentParam = New DBParam
+            currentParam.Name = "OrderedByPredictix"
+            currentParam.Value = itemStore.OrderedByPredictix
+            currentParam.Type = DBParamType.Bit
             paramList.Add(currentParam)
 
             ' Execute Stored Procedure to update the data
