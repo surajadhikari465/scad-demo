@@ -167,6 +167,18 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                         Not Me.Key.ToLower().Equals(EIM_Constants.ITEM_IS_DEFAULT_JURISDICTION_ATTR_KEY)))
             End If
 
+            If localIsAllowedForRegion Then
+
+                Dim isAttributeScaleAllergensOrIngredients As Boolean =
+                    Me.Key.ToLower().Equals(EIM_Constants.SCALE_ALLERGEN_ALLERGENS) OrElse
+                    Me.Key.ToLower().Equals(EIM_Constants.SCALE_INGREDIENT_INGREDIENTS)
+                Dim enableAllergenAndIngredientIntegration As Boolean = InstanceDataDAO.IsFlagActiveCached("EnableAllergenAndIngredientIntegration")
+
+                localIsAllowedForRegion =
+                    Not isAttributeScaleAllergensOrIngredients OrElse Not enableAllergenAndIngredientIntegration
+
+            End If
+
             Return localIsAllowedForRegion
 
         End Function

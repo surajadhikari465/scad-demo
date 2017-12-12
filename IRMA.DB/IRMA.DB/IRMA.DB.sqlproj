@@ -136,6 +136,7 @@
     <Folder Include="Scripts\22441-DesignUserExport" />
     <Folder Include="Scripts\20620 - AddAppConfigForOrderingBannerStore" />
     <Folder Include="Scripts\22981-AddInstanceDataFlagForExtraTextLineFeed" />
+    <Folder Include="Scripts\23005-AddAllergensAndIngredientsToEIM" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3256,6 +3257,8 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs3\ValidateCancelAllSalesData.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21540 - PostDeploy Schema PopData - AddInstanceDataFlag - EnableCancelAllSales.sql" />
     <Build Include="Schema\dbo\User Defined Types\StoreNoItemIdentiferType.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_InsertUpdateAllergen.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_InsertUpdateIngredient.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
@@ -3268,6 +3271,8 @@
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI21974 - PostDeploy Schema PopData - AddInstanceDataFlag - TagUom - ChiBaby.sql" />
     <None Include="Scripts\22981-AddInstanceDataFlagForExtraTextLineFeed\AddInstanceDataFlageForExtraTextAndStorageDataLineFeed.sql" />
     <None Include="Scripts\22981-AddInstanceDataFlagForExtraTextLineFeed\AddInstanceDataFlageForExtraTextAndStorageDataLineFeed.RollBack.sql" />
+    <None Include="Scripts\23005-AddAllergensAndIngredientsToEIM\AddAllergensAndIngredientsToEIM.sql" />
+    <None Include="Scripts\23005-AddAllergensAndIngredientsToEIM\AddAllergensAndIngredientsToEIM.RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

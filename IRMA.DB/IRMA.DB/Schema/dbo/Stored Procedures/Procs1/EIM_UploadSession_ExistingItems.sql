@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[EIM_UploadSession_ExistingItems]
+﻿CREATE PROCEDURE [dbo].[EIM_UploadSession_ExistingItems]
 	@UploadSession_ID			integer,
 	@UploadRow_ID				int,
 	@RetryCount					int,
@@ -146,6 +145,10 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 		@New_Scale_ExtraText_ID int,
 		@Scale_StorageData_ID int,
 		@New_Scale_StorageData_ID int,
+		@Scale_Allergen_ID int,
+		@New_Scale_Allergen_ID int,
+		@Scale_Ingredient_ID int,
+		@New_Scale_Ingredient_ID int,
 		@Scale_Tare_ID int,
 		@Scale_Alternate_Tare_ID int,
 		@Scale_LabelStyle_ID int,
@@ -172,6 +175,16 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 		-- Storage data
 		@StorageDescription varchar(50),
 		@StorageData varchar(1024),
+
+		-- Scale Allergens
+		@ScaleAllergen_LabelType_ID int,
+		@ScaleAllergenDescription varchar(50),
+		@ScaleAllergen varchar(4200),
+
+		-- Scale Ingredients
+		@ScaleIngredient_LabelType_ID int,
+		@ScaleIngredientDescription varchar(50),
+		@ScaleIngredient varchar(4200),
 
 		-- pos data
 		@Food_Stamps bit,
@@ -453,6 +466,8 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 				@Nutrifact_ID = Nutrifact_ID,
 				@Scale_ExtraText_ID = Scale_ExtraText_ID,
 				@Scale_StorageData_ID = Scale_StorageData_ID,
+				@Scale_Allergen_ID = Scale_Allergen_ID,
+				@Scale_Ingredient_ID = Scale_Ingredient_ID,
 				@Scale_Tare_ID = Scale_Tare_ID,
 				@Scale_Alternate_Tare_ID = Scale_Alternate_Tare_ID,
 				@Scale_LabelStyle_ID = Scale_LabelStyle_ID,
@@ -474,7 +489,6 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 				@ScaleDesc3 = Scale_Description3,
 				@ScaleDesc4 = Scale_Description4,
 				@ShelfLife_Length = ShelfLife_Length
-			
 			FROM 
 				ItemScale (NOLOCK)
 			WHERE
@@ -482,7 +496,6 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 					
 			IF @Scale_ExtraText_ID IS NOT NULL
 			BEGIN
-				
 				SELECT @ExtraTextDescription = Description
 				FROM dbo.Scale_ExtraText (NOLOCK)
 				WHERE Scale_ExtraText_ID = @Scale_ExtraText_ID	
@@ -490,10 +503,23 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 
 			IF @Scale_StorageData_ID IS NOT NULL
 			BEGIN
-				
 				SELECT @StorageDescription = Description
 				FROM dbo.Scale_StorageData (NOLOCK)
 				WHERE Scale_StorageData_ID = @Scale_StorageData_ID	
+			END
+
+			IF @Scale_Allergen_ID IS NOT NULL
+			BEGIN
+				SELECT @ScaleAllergenDescription = Description
+				FROM dbo.Scale_Allergen (NOLOCK)
+				WHERE Scale_Allergen_ID = @Scale_Allergen_ID	
+			END
+
+			IF @Scale_Ingredient_ID IS NOT NULL
+			BEGIN
+				SELECT @ScaleIngredientDescription = Description
+				FROM dbo.Scale_Ingredient (NOLOCK)
+				WHERE Scale_Ingredient_ID = @Scale_Ingredient_ID	
 			END
 		END
 		
@@ -910,6 +936,10 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 					SELECT  @Scale_ExtraText_ID = CAST(@ColumnValue AS int)
 				ELSE IF @ColumnName = LOWER('Scale_StorageData_ID')
 					SELECT  @Scale_StorageData_ID = CAST(@ColumnValue AS int)
+				ELSE IF @ColumnName = LOWER('Scale_Allergen_ID')
+					SELECT  @Scale_Allergen_ID = CAST(@ColumnValue AS int)
+				ELSE IF @ColumnName = LOWER('Scale_Ingredient_ID')
+					SELECT  @Scale_Ingredient_ID = CAST(@ColumnValue AS int)
 				ELSE IF @ColumnName = LOWER('Scale_Tare_ID')
 					SELECT  @Scale_Tare_ID = CAST(@ColumnValue AS int)
 				ELSE IF @ColumnName = LOWER('Scale_Alternate_Tare_ID')
@@ -972,6 +1002,24 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 				-- *new* item scale storage data
 				IF @ColumnName = LOWER('StorageData')
 					SELECT  @StorageData = CAST(@ColumnValue AS varchar(1024))
+
+			END
+			ELSE
+			IF @TableName = 'scale_allergen'
+			BEGIN
+
+				-- *new* item scale allergen data
+				IF @ColumnName = LOWER('Allergens')
+					SELECT  @ScaleAllergen = CAST(@ColumnValue AS varchar(4200))
+
+			END
+			ELSE
+			IF @TableName = 'scale_ingredient'
+			BEGIN
+
+				-- *new* item scale allergen data
+				IF @ColumnName = LOWER('Ingredients')
+					SELECT  @ScaleIngredient = CAST(@ColumnValue AS varchar(4200))
 
 			END
 			ELSE
@@ -1150,6 +1198,92 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 					-- to be used below when inserting/updating the scale data
 					If @Scale_StorageData_ID = 0
 						SET @Scale_StorageData_ID = @New_Scale_StorageData_ID
+			END
+
+			-- create new allergen data
+			-- only if there isn't any
+			IF @ScaleAllergen IS NOT NULL
+			BEGIN
+			
+				SET @ScaleAllergen_LabelType_ID = ISNULL(@ScaleAllergen_LabelType_ID, 0)
+
+				IF @ScaleAllergenDescription IS NULL
+				BEGIN
+					-- default new allergen descriptions
+					-- to the item's default identifier
+					SELECT @ScaleAllergenDescription = Identifier
+					FROM ItemIdentifier (NOLOCK)
+					WHERE Item_Key = @Item_Key
+						AND Default_Identifier = 1
+						AND Deleted_Identifier = 0
+				END
+				
+					SET @Scale_Allergen_ID = IsNull(@Scale_Allergen_ID, 0)
+
+					BEGIN TRY
+
+						EXEC dbo.Scale_InsertUpdateAllergen
+							@Scale_Allergen_ID,
+							@ScaleAllergenDescription,
+							@ScaleAllergen_LabelType_ID,
+							@ScaleAllergen,
+							@New_Scale_Allergen_ID OUTPUT
+						
+						EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1.1 Update Existing Item - [Scale_InsertUpdateAllergen]'
+						
+					END TRY
+					BEGIN CATCH
+
+							EXEC dbo.EIM_LogAndRethrowException @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1.1 Update Existing Item - [Scale_InsertUpdateAllergen]'
+					END CATCH
+
+					-- move the newly inserted id into the orig id var
+					-- to be used below when inserting/updating the scale data
+					If @Scale_Allergen_ID = 0
+						SET @Scale_Allergen_ID = @New_Scale_Allergen_ID
+			END
+
+			-- create new ingredient data
+			-- only if there isn't any
+			IF @ScaleIngredient IS NOT NULL
+			BEGIN
+			
+				SET @ScaleIngredient_LabelType_ID = ISNULL(@ScaleIngredient_LabelType_ID, 0)
+			
+				IF @ScaleIngredientDescription IS NULL
+				BEGIN
+					-- default new ingredient descriptions
+					-- to the item's default identifier
+					SELECT @ScaleIngredientDescription = Identifier
+					FROM ItemIdentifier (NOLOCK)
+					WHERE Item_Key = @Item_Key
+						AND Default_Identifier = 1
+						AND Deleted_Identifier = 0
+				END
+				
+					SET @Scale_Ingredient_ID = IsNull(@Scale_Ingredient_ID, 0)
+
+					BEGIN TRY
+
+						EXEC dbo.Scale_InsertUpdateIngredient
+							@Scale_Ingredient_ID,
+							@ScaleIngredientDescription,
+							@ScaleIngredient_LabelType_ID,
+							@ScaleIngredient,
+							@New_Scale_Ingredient_ID OUTPUT
+						
+						EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1.1 Update Existing Item - [Scale_InsertUpdateIngredient]'
+						
+					END TRY
+					BEGIN CATCH
+
+							EXEC dbo.EIM_LogAndRethrowException @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.1.1 Update Existing Item - [Scale_InsertUpdateIngredient]'
+					END CATCH
+
+					-- move the newly inserted id into the orig id var
+					-- to be used below when inserting/updating the scale data
+					If @Scale_Ingredient_ID = 0
+						SET @Scale_Ingredient_ID = @New_Scale_Ingredient_ID
 			END
 		END
 				
@@ -1431,7 +1565,9 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 						@ShelfLife_Length,
 						@User_ID,
 						@User_ID_Date,
-						@Scale_StorageData_ID = @Scale_StorageData_ID
+						@Scale_StorageData_ID = @Scale_StorageData_ID,
+						@Scale_Allergen_ID = @Scale_Allergen_ID,
+						@Scale_Ingredient_ID = @Scale_Ingredient_ID
 					
 
 					EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.7 Update Existing Item - [Scale_InsertUpdateItemScaleDetails]'

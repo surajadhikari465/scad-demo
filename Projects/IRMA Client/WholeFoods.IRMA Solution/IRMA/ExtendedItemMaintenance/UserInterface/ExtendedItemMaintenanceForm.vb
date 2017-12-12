@@ -1377,7 +1377,7 @@ Public Class ExtendedItemMaintenanceForm
                     If doUpload Then
                         Me.Cursor = Cursors.WaitCursor
 
-                        ' hold on to the rows that are not invalid
+                        ' hold on to the rows that are valid
                         ' as they will be successfully uploaded and
                         ' will have to be removed from the session,
                         ' which is made new, after the upload

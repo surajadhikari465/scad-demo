@@ -28,7 +28,9 @@
 	@User_ID_Date varchar(255),
 	@CustomerFacingScaleDepartment bit = null,
 	@SendToScale bit = null,
-	@Scale_StorageData_ID int = null
+	@Scale_StorageData_ID int = null,
+	@Scale_Allergen_ID int = null,
+	@Scale_Ingredient_ID int = null
 AS
 
 BEGIN
@@ -59,6 +61,8 @@ BEGIN
 				Nutrifact_ID = @Nutrifact_ID,
 				Scale_ExtraText_ID = @Scale_ExtraText_ID,
 				Scale_StorageData_ID = ISNULL(@Scale_StorageData_ID, Scale_StorageData_ID),
+				Scale_Allergen_ID = ISNULL(@Scale_Allergen_ID, Scale_Allergen_ID),
+				Scale_Ingredient_ID = ISNULL(@Scale_Ingredient_ID, Scale_Ingredient_ID),
 				Scale_Tare_ID = @Scale_Tare_ID,
 				Scale_Alternate_Tare_ID = @Scale_Alternate_Tare_ID,
 				Scale_LabelStyle_ID = @Scale_LabelStyle_ID,
@@ -85,42 +89,64 @@ BEGIN
 		END
 	ELSE
 		BEGIN
-			INSERT INTO  
-				ItemScale
-				(Item_Key, Nutrifact_ID, Scale_ExtraText_ID, Scale_StorageData_ID, Scale_Tare_ID, Scale_Alternate_Tare_ID, 
-				Scale_LabelStyle_ID, Scale_EatBy_ID, Scale_Grade_ID, 
-				Scale_RandomWeightType_ID, Scale_ScaleUOMUnit_ID,
-				Scale_FixedWeight, Scale_ByCount, ForceTare, PrintBlankShelfLife,
-				PrintBlankEatBy, PrintBlankPackDate, PrintBlankWeight, PrintBlankUnitPrice,
-				PrintBlankTotalPrice, Scale_Description1, Scale_Description2, Scale_Description3,
-				Scale_Description4, ShelfLife_Length )
-			VALUES
-				(@Item_Key,
-				@Nutrifact_ID,
-				@Scale_ExtraText_ID,
-				@Scale_StorageData_ID,
-				@Scale_Tare_ID,
-				@Scale_Alternate_Tare_ID,
-				@Scale_LabelStyle_ID,
-				@Scale_EatBy_ID,
-				@Scale_Grade_ID,	
-				@Scale_RandomWeightType_ID,
-				@Scale_ScaleUOMUnit_ID,
-				@Scale_FixedWeight,
-				@Scale_ByCount,
-				@ForceTare,
-				@PrintBlankShelfLife,	
-				@PrintBlankEatBy,
-				@PrintBlankPackDate,
-				@PrintBlankWeight,
-				@PrintBlankUnitPrice,
-				@PrintBlankTotalPrice,
-				@Scale_Description1,
-				@Scale_Description2,
-				@Scale_Description3,
-				@Scale_Description4,
-				@ShelfLife_Length 
-			)
+			INSERT INTO ItemScale (
+				Item_Key
+				,Nutrifact_ID
+				,Scale_ExtraText_ID
+				,Scale_StorageData_ID
+				,Scale_Allergen_ID
+				,Scale_Ingredient_ID
+				,Scale_Tare_ID
+				,Scale_Alternate_Tare_ID
+				,Scale_LabelStyle_ID
+				,Scale_EatBy_ID
+				,Scale_Grade_ID
+				,Scale_RandomWeightType_ID
+				,Scale_ScaleUOMUnit_ID
+				,Scale_FixedWeight
+				,Scale_ByCount
+				,ForceTare
+				,PrintBlankShelfLife
+				,PrintBlankEatBy
+				,PrintBlankPackDate
+				,PrintBlankWeight
+				,PrintBlankUnitPrice
+				,PrintBlankTotalPrice
+				,Scale_Description1
+				,Scale_Description2
+				,Scale_Description3
+				,Scale_Description4
+				,ShelfLife_Length
+				)
+			VALUES (
+				@Item_Key
+				,@Nutrifact_ID
+				,@Scale_ExtraText_ID
+				,@Scale_StorageData_ID
+				,@Scale_Allergen_ID
+				,@Scale_Ingredient_ID
+				,@Scale_Tare_ID
+				,@Scale_Alternate_Tare_ID
+				,@Scale_LabelStyle_ID
+				,@Scale_EatBy_ID
+				,@Scale_Grade_ID
+				,@Scale_RandomWeightType_ID
+				,@Scale_ScaleUOMUnit_ID
+				,@Scale_FixedWeight
+				,@Scale_ByCount
+				,@ForceTare
+				,@PrintBlankShelfLife
+				,@PrintBlankEatBy
+				,@PrintBlankPackDate
+				,@PrintBlankWeight
+				,@PrintBlankUnitPrice
+				,@PrintBlankTotalPrice
+				,@Scale_Description1
+				,@Scale_Description2
+				,@Scale_Description3
+				,@Scale_Description4
+				,@ShelfLife_Length
+				)
 		END
 		
 	UPDATE Item SET LastModifiedUser_ID = @User_ID, LastModifiedDate = @User_ID_Date WHERE Item_Key = @Item_Key

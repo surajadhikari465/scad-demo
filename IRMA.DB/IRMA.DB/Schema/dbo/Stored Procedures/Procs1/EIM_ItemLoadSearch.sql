@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[EIM_ItemLoadSearch]
+﻿CREATE PROCEDURE [dbo].[EIM_ItemLoadSearch]
 	@Identifier				varchar(13),
 	@Item_Description		varchar(200),
 	@Vendor_ID				integer,
@@ -266,6 +265,12 @@ BEGIN
 					LEFT JOIN 
 						Scale_StorageData_TableName (nolock)
 						ON ItemScale_TableName.Scale_StorageData_ID = Scale_StorageData_TableName.Scale_StorageData_ID
+					LEFT JOIN
+						Scale_Allergen_TableName (nolock)
+						ON ItemScale_TableName.Scale_Allergen_ID = Scale_Allergen_TableName.Scale_Allergen_ID
+					LEFT JOIN
+						Scale_Ingredient_TableName (nolock)
+						ON ItemScale_TableName.Scale_Ingredient_ID = Scale_Ingredient_TableName.Scale_Ingredient_ID
 					INNER JOIN
 						ItemIdentifier_TableName  (nolock)
 						ON Item_TableName.Item_Key = ItemIdentifier_TableName.Item_Key
@@ -462,6 +467,8 @@ BEGIN
 		SELECT @SQL = REPLACE(@SQL, 'ItemAttribute_TableName', 'ItemAttribute')
 		SELECT @SQL = REPLACE(@SQL, 'Scale_ExtraText_TableName', 'Scale_ExtraText')
 		SELECT @SQL = REPLACE(@SQL, 'Scale_StorageData_TableName', 'Scale_StorageData')
+		SELECT @SQL = REPLACE(@SQL, 'Scale_Allergen_TableName', 'Scale_Allergen')
+		SELECT @SQL = REPLACE(@SQL, 'Scale_Ingredient_TableName', 'Scale_Ingredient')
 		SELECT @SQL = REPLACE(@SQL, 'Price_TableName', 'Price')
 		SELECT @SQL = REPLACE(@SQL, 'VendorCostHistory_TableName', 'VendorCostHistory')
 		SELECT @SQL = REPLACE(@SQL, 'StoreItemVendor_TableName', 'StoreItemVendor')
@@ -500,4 +507,5 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[EIM_ItemLoadSearch] TO [IRMAClientRole]
     AS [dbo];
+GO
 

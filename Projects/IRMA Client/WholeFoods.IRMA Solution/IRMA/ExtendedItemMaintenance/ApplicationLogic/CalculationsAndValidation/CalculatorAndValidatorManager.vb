@@ -1269,6 +1269,8 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                             GridUtilities.EnableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEMSCALE_PRINTBLANKTOTALPRICE_ATTR_KEY)
                             GridUtilities.EnableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_EXTRATEXT_EXTRATEXT)
                             GridUtilities.EnableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_STORAGEDATA_STORAGEDATA)
+                            GridUtilities.EnableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_ALLERGEN_ALLERGENS)
+                            GridUtilities.EnableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_INGREDIENT_INGREDIENTS)
                         Else
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_SCALEDESC1_ATTR_KEY)
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_SCALEDESC2_ATTR_KEY)
@@ -1296,6 +1298,8 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEMSCALE_PRINTBLANKTOTALPRICE_ATTR_KEY)
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_EXTRATEXT_EXTRATEXT)
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_STORAGEDATA_STORAGEDATA)
+                            GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_ALLERGEN_ALLERGENS)
+                            GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.SCALE_INGREDIENT_INGREDIENTS)
                         End If
 
                         Dim enforceCanonicalFieldLocking As Boolean = ItemIdentifierDAO.Instance.IsValidatedItemInIcon(theUploadRow.ItemKey)

@@ -103,6 +103,8 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
         Public Const ITEMSCALE_PRINTBLANKTOTALPRICE_ATTR_KEY As String = "itemscale_printblanktotalprice"
         Public Const SCALE_EXTRATEXT_EXTRATEXT As String = "scale_extratext_extratext"
         Public Const SCALE_STORAGEDATA_STORAGEDATA As String = "scale_storagedata_storagedata"
+        Public Const SCALE_ALLERGEN_ALLERGENS As String = "scale_allergen_allergens"
+        Public Const SCALE_INGREDIENT_INGREDIENTS As String = "scale_ingredient_ingredients"
 
         ' These are the item and item scale attributes with jurisdictional overrides.
         ' Updated to include new 4.8 override values.
