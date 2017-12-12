@@ -405,7 +405,7 @@ BEGIN
 			THEN 'LB'
 		 ELSE 'EA' 
 		 END AS 'SELLING_UOM'
-		,pct.PriceChgTypeDesc AS 'PRICE_TYPE_CODE'
+		,'TPR' AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'SAL'
 				THEN 'MSAL'
