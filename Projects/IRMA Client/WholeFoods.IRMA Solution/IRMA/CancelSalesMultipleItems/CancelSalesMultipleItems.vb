@@ -112,6 +112,8 @@ Public Class CancelSalesMultipleItems
         If result = Windows.Forms.DialogResult.Yes Then
             'save data. Call cancel all sales to save data
             CancelSales(storeItemInfoModelList.Where(Function(si) String.IsNullOrEmpty(si.ErrorDetails)).ToList())
+        Else
+            Return
         End If
 
         If (storeItemInfoModelList.Where(Function(si) Not String.IsNullOrEmpty(si.ErrorDetails)).Count > 0) Then
