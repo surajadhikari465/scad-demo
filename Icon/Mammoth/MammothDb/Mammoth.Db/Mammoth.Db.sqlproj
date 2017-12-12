@@ -716,6 +716,7 @@
     <Build Include="dbo\User Defined Types\ItemAttributesExtType.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesExt.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />
+    <Build Include="stage\Tables\ItemStoreKeysEsl.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
