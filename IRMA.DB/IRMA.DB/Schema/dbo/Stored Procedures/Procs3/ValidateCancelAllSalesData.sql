@@ -26,7 +26,8 @@ FROM  @StoreNoItemIdentiferData
 	SET [ItemKey] = ii.Item_Key
 	FROM  #StoreNoItemIdentiferErrorTable siet
 	JOIN  ItemIdentifier ii ON siet.[ItemIdentifier] = ii.Identifier
-	WHERE  ii.Remove_Identifier = 0 AND ii.Deleted_Identifier = 0
+	WHERE  ii.Remove_Identifier = 0 
+		   AND ii.Deleted_Identifier = 0
 
 	UPDATE #StoreNoItemIdentiferErrorTable
 	SET ErrorDetails ='Identifier does not exist in IRMA as entered'
@@ -39,9 +40,10 @@ FROM  @StoreNoItemIdentiferData
 	JOIN  item i ON siet.[ItemKey] = i.Item_Key 
 	JOIN  ItemIdentifier ii ON siet.[ItemIdentifier] = ii.Identifier AND i.Item_Key =ii.Item_Key
 	WHERE ( Deleted_Item = 1
-		   OR Remove_Item = 1
-		   OR  ii.Remove_Identifier = 1
-		   OR ii.Deleted_Identifier = 1)
+		    OR Remove_Item = 1
+		    OR  ii.Remove_Identifier = 1
+		    OR ii.Deleted_Identifier = 1
+		  )
 		   AND ErrorDetails IS NULL
 
 	UPDATE siet
