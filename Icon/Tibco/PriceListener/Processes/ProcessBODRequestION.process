@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schema.infor.com/InforOAGIS/2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schema.infor.com/InforOAGIS/2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/PriceChangeMaster.xsd">
     <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
     <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd" schemaLocation="/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/PriceChangeMaster.xsd" schemaLocation="/SharedResources/Schemas/Infor/PriceSchemas/derivative/PriceChangeMaster.xsd"/>
     <pd:name>Processes/ProcessBODRequestION.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -119,7 +120,7 @@
         <pd:activity name="Send to Process BOD Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>317</pd:x>
+            <pd:x>318</pd:x>
             <pd:y>88</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
@@ -136,7 +137,7 @@
                 </ConfigurableHeaders>
                 <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
                 <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
-                <InDataxsdString ref="pfx5:PriceChangeMaster"/>
+                <InDataxsdString ref="pfx6:PriceChangeMaster"/>
             </config>
             <pd:inputBindings>
                 <ns0:ActivityInput>
