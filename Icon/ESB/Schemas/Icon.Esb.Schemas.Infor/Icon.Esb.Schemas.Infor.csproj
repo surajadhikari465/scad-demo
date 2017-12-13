@@ -58,19 +58,7 @@
     <None Include="Schemas\Meta.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Schemas\ProcessBOD\AttributeValueType.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schemas\ProcessBOD\AuditInfo.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schemas\ProcessBOD\PriceChangePatch.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schemas\ProcessBOD\ProcessPriceChangePatchMaster.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schemas\ProcessBOD\UUID.xsd">
+    <None Include="Schemas\ProcessBOD\PriceChangeMaster.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
