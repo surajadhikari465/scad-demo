@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schema.infor.com/InforOAGIS/2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schema.infor.com/InforOAGIS/2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1">
     <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
-    <xsd:import namespace="http://schema.infor.com/InforOAGIS/2" schemaLocation="/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd" schemaLocation="/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd"/>
     <pd:name>Processes/ProcessBODRequestION.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -136,20 +136,26 @@
                 </ConfigurableHeaders>
                 <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
                 <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
-                <InDataxsdString ref="pfx4:ProcessPriceChangePatchMaster"/>
+                <InDataxsdString ref="pfx5:PriceChangeMaster"/>
             </config>
             <pd:inputBindings>
                 <ns0:ActivityInput>
                     <OtherProperties>
-                        <TransactionID>
-                            <xsl:value-of select="$Start/Input/MessageID"/>
-                        </TransactionID>
-                        <CorrelationID>
-                            <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                        </CorrelationID>
-                        <SequenceID>
-                            <xsl:value-of select="$Start/Input/SequenceID"/>
-                        </SequenceID>
+                        <xsl:if test="$Start/Input/MessageID">
+                            <TransactionID>
+                                <xsl:value-of select="$Start/Input/MessageID"/>
+                            </TransactionID>
+                        </xsl:if>
+                        <xsl:if test="$Start/Input/PatchFamilyID">
+                            <CorrelationID>
+                                <xsl:value-of select="$Start/Input/PatchFamilyID"/>
+                            </CorrelationID>
+                        </xsl:if>
+                        <xsl:if test="$Start/Input/SequenceID">
+                            <SequenceID>
+                                <xsl:value-of select="$Start/Input/SequenceID"/>
+                            </SequenceID>
+                        </xsl:if>
                         <xsl:if test="$Start/Input/ResetFlag">
                             <ResetFlag>
                                 <xsl:value-of select="$Start/Input/ResetFlag"/>
@@ -167,47 +173,25 @@
                         </xsl:if>
                     </OtherProperties>
                     <Body>
-                        <pfx4:ProcessPriceChangePatchMaster>
-                            <xsl:attribute name="releaseID">
-                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ProcessBODVersionID"/>
-                            </xsl:attribute>
-                            <pfx4:ApplicationArea>
-                                <pfx4:Sender>
-                                    <pfx4:LogicalID>
-                                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ProcessBODLogicalID"/>
-                                    </pfx4:LogicalID>
-                                </pfx4:Sender>
-                                <pfx4:CreationDateTime>
+                        <PriceChangeMaster>
+                            <BusinessKey>
+                                <xsl:attribute name="variationID">
+                                    <xsl:value-of select="0"/>
+                                </xsl:attribute>
+                                <xsl:value-of select="&quot;00000000-0000-4000-8000-000000000000&quot;"/>
+                            </BusinessKey>
+                            <PriceChangeHeader>
+                                <PatchFamilyID>
+                                    <xsl:value-of select="$Start/Input/PatchFamilyID"/>
+                                </PatchFamilyID>
+                                <PatchNum>
+                                    <xsl:value-of select="$Start/Input/LastProcessedGpmSequenceId + 1"/>
+                                </PatchNum>
+                                <TimeStamp>
                                     <xsl:value-of select="current-dateTime()"/>
-                                </pfx4:CreationDateTime>
-                            </pfx4:ApplicationArea>
-                            <pfx4:DataArea>
-                                <pfx4:Process>
-                                    <pfx4:TenantID>
-                                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ProcessBODTenantID"/>
-                                    </pfx4:TenantID>
-                                </pfx4:Process>
-                                <pfx4:PriceChangePatchMaster>
-                                    <pfx4:BusinessKey>
-                                        <xsl:attribute name="variationID">
-                                            <xsl:value-of select="0"/>
-                                        </xsl:attribute>
-                                        <xsl:value-of select="&quot;00000000-0000-4000-8000-000000000000&quot;"/>
-                                    </pfx4:BusinessKey>
-                                    <pfx4:PriceChangePatchHeader>
-                                        <pfx4:PatchFamilyID>
-                                            <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                                        </pfx4:PatchFamilyID>
-                                        <pfx4:PatchNum>
-                                            <xsl:value-of select="$Start/Input/LastProcessedGpmSequenceId + 1"/>
-                                        </pfx4:PatchNum>
-                                        <pfx4:TimeStamp>
-                                            <xsl:value-of select="current-dateTime()"/>
-                                        </pfx4:TimeStamp>
-                                    </pfx4:PriceChangePatchHeader>
-                                </pfx4:PriceChangePatchMaster>
-                            </pfx4:DataArea>
-                        </pfx4:ProcessPriceChangePatchMaster>
+                                </TimeStamp>
+                            </PriceChangeHeader>
+                        </PriceChangeMaster>
                     </Body>
                 </ns0:ActivityInput>
             </pd:inputBindings>
