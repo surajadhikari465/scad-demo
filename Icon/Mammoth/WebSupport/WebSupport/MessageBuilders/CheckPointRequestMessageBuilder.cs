@@ -9,46 +9,39 @@ namespace WebSupport.MessageBuilders
     public class CheckPointRequestMessageBuilder : IMessageBuilder<CheckPointRequestBuilderModel>
     {
         private const string DateTimeFormat = "yyyy-MM-ddTHH:mm:ss";
-        private ISerializer<Contracts.ProcessPriceChangePatchType> serializer;
+        private ISerializer<Contracts.PriceChangeMasterType> serializer;
 
-        public CheckPointRequestMessageBuilder(ISerializer<Contracts.ProcessPriceChangePatchType> serializer)
+        public CheckPointRequestMessageBuilder(ISerializer<Contracts.PriceChangeMasterType> serializer)
         {
             this.serializer = serializer;
         }
 
         public string BuildMessage(CheckPointRequestBuilderModel request)
         {
-            Contracts.ProcessPriceChangePatchType processPriceChangePatchType = new Contracts.ProcessPriceChangePatchType
+            Contracts.PriceChangeMasterType priceChangeMasterType = new Contracts.PriceChangeMasterType
             {
-                DataArea = new Contracts.ProcessPriceChangePatchDataAreaType
+                BusinessKey = new Contracts.PriceChangeMasterTypeBusinessKey
                 {
-                    Process = new Contracts.ProcessType
-                    {
-                        TenantID = new Contracts.MetaIdentifierType
-                        {
-                            Value = "WFM"
-                        }
-                    },
-                    PriceChangePatchMaster = new Contracts.PriceChangePatchMaster[]
-                    {
-                        new Contracts.PriceChangePatchMaster
-                        {
-                            isCheckPoint = true,
-                            PriceChangePatchHeader = new Contracts.PriceChangePatchType[]
-                            {
-                                  new Contracts.PriceChangePatchType
-                                    {
-                                      PatchFamilyID = request.getCurrentPriceInfo.PatchFamilyId,
-                                      PatchNum = request.getCurrentPriceInfo.SequenceId.ToString(),
-                                      TimeStamp = Convert.ToDateTime(DateTime.Now.ToString(DateTimeFormat))
-                                    }
-                            }
-                        }
-                    }
-                }
+                    Value = "00000000 - 0000 - 4000 - 8000 - 000000000000",
+                    variationID = "0"
+                },
+                isCheckPoint = true,
+                isCheckPointSpecified = true,
+                PriceChangeHeader = new Contracts.PriceChangeType[]
+                {
+                   new Contracts.PriceChangeType
+                     {
+                       isCheckPointSpecified = true,
+                       isCheckPoint = true,
+                       PatchFamilyID = request.getCurrentPriceInfo.PatchFamilyId,
+                       PatchNum = request.getCurrentPriceInfo.SequenceId.ToString(),
+                       TimeStampSpecified = true,
+                       TimeStamp = Convert.ToDateTime(DateTime.Now.ToString(DateTimeFormat))
+                     }
+              }
             };
 
-            return serializer.Serialize(processPriceChangePatchType, new Utf8StringWriter());
+            return serializer.Serialize(priceChangeMasterType, new Utf8StringWriter());
         }
     }
 }
