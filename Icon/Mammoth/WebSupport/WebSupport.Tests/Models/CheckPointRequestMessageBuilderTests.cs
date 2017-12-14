@@ -16,13 +16,13 @@ namespace WebSupport.Tests.Models
     public class CheckPointRequestMessageBuilderTests
     {
         private CheckPointRequestMessageBuilder checkPointRequestMessageBuilder;
-        private SerializerWithoutNamepaceAliases<Contracts.ProcessPriceChangePatchType> serializer;
+        private SerializerWithoutNamepaceAliases<Contracts.PriceChangeMasterType> serializer;
         private CheckPointRequestBuilderModel request;
 
         [TestInitialize]
         public void Initialize()
         {
-            serializer = new SerializerWithoutNamepaceAliases<Contracts.ProcessPriceChangePatchType>();
+            serializer = new SerializerWithoutNamepaceAliases<Contracts.PriceChangeMasterType>();
             checkPointRequestMessageBuilder = new CheckPointRequestMessageBuilder(serializer);
             request = new CheckPointRequestBuilderModel();
         }
@@ -50,17 +50,17 @@ namespace WebSupport.Tests.Models
             var message = checkPointRequestMessageBuilder.BuildMessage(request);
 
             //Then
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Contracts.ProcessPriceChangePatchType));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Contracts.PriceChangeMasterType));
             MemoryStream stream = new MemoryStream();
             XDocument document = XDocument.Parse(message);
             document.Save(stream);
             stream.Position = 0;
-            Contracts.ProcessPriceChangePatchType processPriceChangePatchType = xmlSerializer.Deserialize(stream) as Contracts.ProcessPriceChangePatchType;
+            Contracts.PriceChangeMasterType priceChangeMasterType = xmlSerializer.Deserialize(stream) as Contracts.PriceChangeMasterType;
 
-            Assert.IsNotNull(processPriceChangePatchType);
-            Assert.AreEqual(processPriceChangePatchType.DataArea.PriceChangePatchMaster[0].PriceChangePatchHeader[0].PatchFamilyID, request.getCurrentPriceInfo.PatchFamilyId);
-            Assert.AreEqual(processPriceChangePatchType.DataArea.PriceChangePatchMaster[0].PriceChangePatchHeader[0].PatchNum, request.getCurrentPriceInfo.SequenceId.ToString());
-            Assert.AreEqual(processPriceChangePatchType.DataArea.PriceChangePatchMaster[0].isCheckPoint, true);
+            Assert.IsNotNull(priceChangeMasterType);
+            Assert.AreEqual(priceChangeMasterType.PriceChangeHeader[0].PatchFamilyID, request.getCurrentPriceInfo.PatchFamilyId);
+            Assert.AreEqual(priceChangeMasterType.PriceChangeHeader[0].PatchNum, request.getCurrentPriceInfo.SequenceId.ToString());
+            Assert.AreEqual(priceChangeMasterType.PriceChangeHeader[0].isCheckPoint, true);
         }
     }
 }
