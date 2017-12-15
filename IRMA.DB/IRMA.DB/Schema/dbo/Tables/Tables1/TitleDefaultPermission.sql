@@ -32,6 +32,7 @@
     [POEditor]                         BIT DEFAULT ((0)) NOT NULL,
     [DeletePO]                         BIT DEFAULT ((0)) NOT NULL,
     [TaxAdministrator]                 BIT DEFAULT ((0)) NOT NULL,
+	[CancelAllSales]				   BIT DEFAULT ((0)) NOT NULL,
     FOREIGN KEY ([TitleId]) REFERENCES [dbo].[Title] ([Title_ID])
 );
 

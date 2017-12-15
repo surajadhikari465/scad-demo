@@ -23,6 +23,7 @@
     [Title]                      VARCHAR (60) NULL,
     [RecvLog_Store_Limit]        INT          NULL,
     [Warehouse]                  BIT          NOT NULL,
+	[CancelAllSales]			 BIT          DEFAULT ((0)) NOT NULL,
     [Effective_Date]             DATETIME     CONSTRAINT [DF__UsersHist__Effec__22ECB487] DEFAULT (getdate()) NOT NULL,
     [HOST_NAME]                  VARCHAR (20) CONSTRAINT [DF__UsersHist__HOST___23E0D8C0] DEFAULT (host_name()) NOT NULL,
     [PriceBatchProcessor]        BIT          CONSTRAINT [DF__UsersHist__Price__1EB20F4F] DEFAULT ((0)) NOT NULL,

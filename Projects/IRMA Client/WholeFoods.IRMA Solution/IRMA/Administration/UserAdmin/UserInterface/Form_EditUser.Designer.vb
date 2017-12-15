@@ -21,10 +21,10 @@ Partial Class Form_EditUser
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form_EditUser))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Facilites")
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Teams")
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("All Facility Teams")
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Facility/Team Associations")
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Facilites")
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Teams")
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("All Facility Teams")
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Facility/Team Associations")
         Me.Button_Save = New System.Windows.Forms.Button()
         Me.Button_Cancel = New System.Windows.Forms.Button()
         Me.GroupBox_UserProperties = New System.Windows.Forms.GroupBox()
@@ -127,6 +127,7 @@ Partial Class Form_EditUser
         Me.CheckBox_AcctEnabled = New System.Windows.Forms.CheckBox()
         Me.Label_ChangesHappenImmediately = New System.Windows.Forms.Label()
         Me.ttRoleDescription = New System.Windows.Forms.ToolTip(Me.components)
+        Me.CheckBox_Role_CancelAllSales = New System.Windows.Forms.CheckBox()
         Me.GroupBox_UserProperties.SuspendLayout()
         Me.GroupBox_RolesIRMA.SuspendLayout()
         Me.TabControl_SecuritySettings.SuspendLayout()
@@ -384,6 +385,7 @@ Partial Class Form_EditUser
         '
         'GroupBox_RolesIRMA
         '
+        Me.GroupBox_RolesIRMA.Controls.Add(Me.CheckBox_Role_CancelAllSales)
         Me.GroupBox_RolesIRMA.Controls.Add(Me.CheckBox_Role_TaxAdministrator)
         Me.GroupBox_RolesIRMA.Controls.Add(Me.CheckBox_Role_DeletePO)
         Me.GroupBox_RolesIRMA.Controls.Add(Me.CheckBox_Role_POEditor)
@@ -420,7 +422,7 @@ Partial Class Form_EditUser
         Me.CheckBox_Role_TaxAdministrator.AutoSize = True
         Me.CheckBox_Role_TaxAdministrator.Location = New System.Drawing.Point(406, 88)
         Me.CheckBox_Role_TaxAdministrator.Name = "CheckBox_Role_TaxAdministrator"
-        Me.CheckBox_Role_TaxAdministrator.Size = New System.Drawing.Size(115, 17)
+        Me.CheckBox_Role_TaxAdministrator.Size = New System.Drawing.Size(114, 17)
         Me.CheckBox_Role_TaxAdministrator.TabIndex = 32
         Me.CheckBox_Role_TaxAdministrator.Text = "Tax Administrator"
         Me.CheckBox_Role_TaxAdministrator.UseVisualStyleBackColor = True
@@ -501,7 +503,7 @@ Partial Class Form_EditUser
         Me.CheckBox_Role_VendorCostDiscrepancyAdmin.AutoSize = True
         Me.CheckBox_Role_VendorCostDiscrepancyAdmin.Location = New System.Drawing.Point(406, 134)
         Me.CheckBox_Role_VendorCostDiscrepancyAdmin.Name = "CheckBox_Role_VendorCostDiscrepancyAdmin"
-        Me.CheckBox_Role_VendorCostDiscrepancyAdmin.Size = New System.Drawing.Size(190, 17)
+        Me.CheckBox_Role_VendorCostDiscrepancyAdmin.Size = New System.Drawing.Size(189, 17)
         Me.CheckBox_Role_VendorCostDiscrepancyAdmin.TabIndex = 21
         Me.CheckBox_Role_VendorCostDiscrepancyAdmin.Text = "Vendor Cost Discrepancy Admin"
         Me.CheckBox_Role_VendorCostDiscrepancyAdmin.UseVisualStyleBackColor = True
@@ -571,7 +573,7 @@ Partial Class Form_EditUser
         Me.CheckBox_Role_VendorAdmin.AutoSize = True
         Me.CheckBox_Role_VendorAdmin.Location = New System.Drawing.Point(406, 111)
         Me.CheckBox_Role_VendorAdmin.Name = "CheckBox_Role_VendorAdmin"
-        Me.CheckBox_Role_VendorAdmin.Size = New System.Drawing.Size(137, 17)
+        Me.CheckBox_Role_VendorAdmin.Size = New System.Drawing.Size(136, 17)
         Me.CheckBox_Role_VendorAdmin.TabIndex = 19
         Me.CheckBox_Role_VendorAdmin.Text = "Vendor Administrator"
         Me.CheckBox_Role_VendorAdmin.UseVisualStyleBackColor = True
@@ -787,7 +789,7 @@ Partial Class Form_EditUser
         Me.CheckBox_Role_DataAdministrator.Size = New System.Drawing.Size(123, 17)
         Me.CheckBox_Role_DataAdministrator.TabIndex = 1
         Me.CheckBox_Role_DataAdministrator.Text = "Data Administrator"
-        Me.ttRoleDescription.SetToolTip(Me.CheckBox_Role_DataAdministrator, "Data Administrator can access the following Admin screens:" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "     - Batch Rollback" & _
+        Me.ttRoleDescription.SetToolTip(Me.CheckBox_Role_DataAdministrator, "Data Administrator can access the following Admin screens:" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "     - Batch Rollback" &
         "" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "     - Restore Deleted Item" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "     - Scale/POS Push")
         Me.CheckBox_Role_DataAdministrator.UseVisualStyleBackColor = True
         '
@@ -845,7 +847,7 @@ Partial Class Form_EditUser
         Me.CheckBox_RoleSLIMSecureQuery.AutoSize = True
         Me.CheckBox_RoleSLIMSecureQuery.Location = New System.Drawing.Point(292, 42)
         Me.CheckBox_RoleSLIMSecureQuery.Name = "CheckBox_RoleSLIMSecureQuery"
-        Me.CheckBox_RoleSLIMSecureQuery.Size = New System.Drawing.Size(121, 17)
+        Me.CheckBox_RoleSLIMSecureQuery.Size = New System.Drawing.Size(120, 17)
         Me.CheckBox_RoleSLIMSecureQuery.TabIndex = 7
         Me.CheckBox_RoleSLIMSecureQuery.Text = "Secure Web Query"
         Me.CheckBox_RoleSLIMSecureQuery.UseVisualStyleBackColor = True
@@ -895,7 +897,7 @@ Partial Class Form_EditUser
         Me.CheckBox_RoleSLIMVendorRequest.AutoSize = True
         Me.CheckBox_RoleSLIMVendorRequest.Location = New System.Drawing.Point(15, 42)
         Me.CheckBox_RoleSLIMVendorRequest.Name = "CheckBox_RoleSLIMVendorRequest"
-        Me.CheckBox_RoleSLIMVendorRequest.Size = New System.Drawing.Size(109, 17)
+        Me.CheckBox_RoleSLIMVendorRequest.Size = New System.Drawing.Size(108, 17)
         Me.CheckBox_RoleSLIMVendorRequest.TabIndex = 1
         Me.CheckBox_RoleSLIMVendorRequest.Text = "Vendor Request"
         Me.CheckBox_RoleSLIMVendorRequest.UseVisualStyleBackColor = True
@@ -1036,7 +1038,7 @@ Partial Class Form_EditUser
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(294, 19)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(131, 13)
+        Me.Label2.Size = New System.Drawing.Size(130, 13)
         Me.Label2.TabIndex = 23
         Me.Label2.Text = "User's Facilities && Teams"
         '
@@ -1045,7 +1047,7 @@ Partial Class Form_EditUser
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(6, 19)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(146, 13)
+        Me.Label1.Size = New System.Drawing.Size(145, 13)
         Me.Label1.TabIndex = 22
         Me.Label1.Text = "Available Facilities && Teams"
         '
@@ -1054,11 +1056,11 @@ Partial Class Form_EditUser
         Me.TreeView_DataTree.HideSelection = False
         Me.TreeView_DataTree.Location = New System.Drawing.Point(6, 35)
         Me.TreeView_DataTree.Name = "TreeView_DataTree"
-        TreeNode1.Name = "_node0"
-        TreeNode1.Text = "Facilites"
-        TreeNode2.Name = "_node1"
-        TreeNode2.Text = "Teams"
-        Me.TreeView_DataTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        TreeNode5.Name = "_node0"
+        TreeNode5.Text = "Facilites"
+        TreeNode6.Name = "_node1"
+        TreeNode6.Text = "Teams"
+        Me.TreeView_DataTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5, TreeNode6})
         Me.TreeView_DataTree.Size = New System.Drawing.Size(239, 283)
         Me.TreeView_DataTree.TabIndex = 21
         '
@@ -1066,11 +1068,11 @@ Partial Class Form_EditUser
         '
         Me.TreeView_Locations.Location = New System.Drawing.Point(297, 35)
         Me.TreeView_Locations.Name = "TreeView_Locations"
-        TreeNode3.Name = "_node3"
-        TreeNode3.Text = "All Facility Teams"
-        TreeNode4.Name = "_node4"
-        TreeNode4.Text = "Facility/Team Associations"
-        Me.TreeView_Locations.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode4})
+        TreeNode7.Name = "_node3"
+        TreeNode7.Text = "All Facility Teams"
+        TreeNode8.Name = "_node4"
+        TreeNode8.Text = "Facility/Team Associations"
+        Me.TreeView_Locations.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode7, TreeNode8})
         Me.TreeView_Locations.Size = New System.Drawing.Size(236, 283)
         Me.TreeView_Locations.TabIndex = 20
         '
@@ -1146,7 +1148,7 @@ Partial Class Form_EditUser
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(6, 15)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(59, 13)
+        Me.Label4.Size = New System.Drawing.Size(58, 13)
         Me.Label4.TabIndex = 16
         Me.Label4.Text = "Sub Team:"
         '
@@ -1222,6 +1224,16 @@ Partial Class Form_EditUser
         Me.ttRoleDescription.InitialDelay = 500
         Me.ttRoleDescription.IsBalloon = True
         Me.ttRoleDescription.ReshowDelay = 0
+        '
+        'CheckBox_Role_CancelAllSales
+        '
+        Me.CheckBox_Role_CancelAllSales.AutoSize = True
+        Me.CheckBox_Role_CancelAllSales.Location = New System.Drawing.Point(407, 180)
+        Me.CheckBox_Role_CancelAllSales.Name = "CheckBox_Role_CancelAllSales"
+        Me.CheckBox_Role_CancelAllSales.Size = New System.Drawing.Size(105, 17)
+        Me.CheckBox_Role_CancelAllSales.TabIndex = 33
+        Me.CheckBox_Role_CancelAllSales.Text = "Cancel All Sales"
+        Me.CheckBox_Role_CancelAllSales.UseVisualStyleBackColor = True
         '
         'Form_EditUser
         '
@@ -1368,5 +1380,5 @@ Partial Class Form_EditUser
     Friend WithEvents CheckBox_Role_DeletePO As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox_Role_TaxAdministrator As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox_RoleSLIMECommerce As System.Windows.Forms.CheckBox
-
+    Friend WithEvents CheckBox_Role_CancelAllSales As CheckBox
 End Class

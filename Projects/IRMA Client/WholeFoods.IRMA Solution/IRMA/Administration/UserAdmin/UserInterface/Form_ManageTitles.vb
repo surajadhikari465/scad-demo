@@ -135,16 +135,16 @@ Public Class Form_ManageTitles
             End If
 
             If frm.ConflictRiskAccepted Then
-                TitleDAO.SaveTitlePermissions(ComboBox_Titles.SelectedValue, CheckBox_Accountant.Checked, CheckBox_BatchBuildOnly.Checked, _
-                                              CheckBox_Buyer.Checked, CheckBox_Coordinator.Checked, CheckBox_CostAdmin.Checked, _
-                                              CheckBox_FacilityCreditProcessor.Checked, CheckBox_DCAdmin.Checked, CheckBox_DeletePO.Checked, CheckBox_Einvoicing.Checked, _
-                                              CheckBox_InventoryAdmin.Checked, CheckBox_ItemAdmin.Checked, CheckBox_LockAdmin.Checked, _
-                                              CheckBox_POAccountant.Checked, CheckBox_POApprovalAdmin.Checked, CheckBox_POEditor.Checked, _
-                                              CheckBox_PriceBatchProcessor.Checked, CheckBox_Receiver.Checked, CheckBox_VendorAdmin.Checked, _
-                                              CheckBox_VendorCostDiscrepancyAdmin.Checked, CheckBox_Warehouse.Checked, _
-                                              CheckBox_AppConfigAdmin.Checked, CheckBox_DataAdministrator.Checked, _
-                                              CheckBox_POSInterfaceAdministrator.Checked, CheckBox_JobAdministrator.Checked, _
-                                              CheckBox_StoreAdministrator.Checked, CheckBox_UserMaintenance.Checked, CheckBox_Shrink.Checked, CheckBox_ShrinkAdmin.Checked, _
+                TitleDAO.SaveTitlePermissions(ComboBox_Titles.SelectedValue, CheckBox_Accountant.Checked, CheckBox_BatchBuildOnly.Checked,
+                                              CheckBox_Buyer.Checked, CheckBox_Coordinator.Checked, CheckBox_CostAdmin.Checked,
+                                              CheckBox_FacilityCreditProcessor.Checked, CheckBox_DCAdmin.Checked, CheckBox_DeletePO.Checked, CheckBox_Einvoicing.Checked,
+                                              CheckBox_InventoryAdmin.Checked, CheckBox_ItemAdmin.Checked, CheckBox_LockAdmin.Checked,
+                                              CheckBox_POAccountant.Checked, CheckBox_POApprovalAdmin.Checked, CheckBox_POEditor.Checked,
+                                              CheckBox_PriceBatchProcessor.Checked, CheckBox_Receiver.Checked, CheckBox_VendorAdmin.Checked,
+                                              CheckBox_VendorCostDiscrepancyAdmin.Checked, CheckBox_Warehouse.Checked,
+                                              CheckBox_CancelAllSales.Checked, CheckBox_AppConfigAdmin.Checked, CheckBox_DataAdministrator.Checked,
+                                              CheckBox_POSInterfaceAdministrator.Checked, CheckBox_JobAdministrator.Checked,
+                                              CheckBox_StoreAdministrator.Checked, CheckBox_UserMaintenance.Checked, CheckBox_Shrink.Checked, CheckBox_ShrinkAdmin.Checked,
                                               CheckBox_TaxAdministrator.Checked)
 
 
@@ -227,6 +227,7 @@ Public Class Form_ManageTitles
                 CheckBox_VendorAdmin.Checked = CBool(dr.Item("VendorAdministrator"))
                 CheckBox_VendorCostDiscrepancyAdmin.Checked = CBool(dr.Item("VendorCostDiscrepancyAdmin"))
                 CheckBox_Warehouse.Checked = CBool(dr.Item("Warehouse"))
+                CheckBox_CancelAllSales.Checked = CBool(dr.Item("CancelAllSales"))
                 CheckBox_AppConfigAdmin.Checked = CBool(dr.Item("ApplicationConfigAdmin"))
                 CheckBox_DataAdministrator.Checked = CBool(dr.Item("DataAdministrator"))
                 CheckBox_JobAdministrator.Checked = CBool(dr.Item("JobAdministrator"))
@@ -240,16 +241,16 @@ Public Class Form_ManageTitles
         End If
     End Sub
 
-    Private Sub EnableSave(ByVal sender As Object, ByVal e As System.EventArgs) Handles CheckBox_Accountant.CheckStateChanged, CheckBox_BatchBuildOnly.CheckStateChanged, _
-                                                                                        CheckBox_Buyer.CheckStateChanged, CheckBox_Coordinator.CheckStateChanged, CheckBox_CostAdmin.CheckStateChanged, _
-                                                                                        CheckBox_FacilityCreditProcessor.CheckStateChanged, CheckBox_DCAdmin.CheckStateChanged, CheckBox_DeletePO.CheckStateChanged, _
-                                                                                        CheckBox_Einvoicing.CheckStateChanged, CheckBox_InventoryAdmin.CheckStateChanged, CheckBox_ItemAdmin.CheckStateChanged, CheckBox_LockAdmin.CheckStateChanged, _
-                                                                                        CheckBox_POAccountant.CheckStateChanged, CheckBox_POApprovalAdmin.CheckStateChanged, CheckBox_POEditor.CheckStateChanged, _
-                                                                                        CheckBox_PriceBatchProcessor.CheckStateChanged, CheckBox_Receiver.CheckStateChanged, CheckBox_VendorAdmin.CheckStateChanged, _
-                                                                                        CheckBox_VendorCostDiscrepancyAdmin.CheckStateChanged, CheckBox_Warehouse.CheckStateChanged, CheckBox_AppConfigAdmin.CheckStateChanged, _
-                                                                                        CheckBox_DataAdministrator.CheckStateChanged, CheckBox_JobAdministrator.CheckStateChanged, CheckBox_POSInterfaceAdministrator.CheckStateChanged, _
-                                                                                        CheckBox_StoreAdministrator.CheckStateChanged, CheckBox_UserMaintenance.CheckStateChanged, CheckBox_Shrink.CheckStateChanged, CheckBox_ShrinkAdmin.CheckStateChanged, _
-                                                                                        CheckBox_TaxAdministrator.CheckStateChanged
+    Private Sub EnableSave(ByVal sender As Object, ByVal e As System.EventArgs) Handles CheckBox_Accountant.CheckStateChanged, CheckBox_BatchBuildOnly.CheckStateChanged,
+                                                                                        CheckBox_Buyer.CheckStateChanged, CheckBox_Coordinator.CheckStateChanged, CheckBox_CostAdmin.CheckStateChanged,
+                                                                                        CheckBox_FacilityCreditProcessor.CheckStateChanged, CheckBox_DCAdmin.CheckStateChanged, CheckBox_DeletePO.CheckStateChanged,
+                                                                                        CheckBox_Einvoicing.CheckStateChanged, CheckBox_InventoryAdmin.CheckStateChanged, CheckBox_ItemAdmin.CheckStateChanged, CheckBox_LockAdmin.CheckStateChanged,
+                                                                                        CheckBox_POAccountant.CheckStateChanged, CheckBox_POApprovalAdmin.CheckStateChanged, CheckBox_POEditor.CheckStateChanged,
+                                                                                        CheckBox_PriceBatchProcessor.CheckStateChanged, CheckBox_Receiver.CheckStateChanged, CheckBox_VendorAdmin.CheckStateChanged,
+                                                                                        CheckBox_VendorCostDiscrepancyAdmin.CheckStateChanged, CheckBox_Warehouse.CheckStateChanged, CheckBox_AppConfigAdmin.CheckStateChanged,
+                                                                                        CheckBox_DataAdministrator.CheckStateChanged, CheckBox_JobAdministrator.CheckStateChanged, CheckBox_POSInterfaceAdministrator.CheckStateChanged,
+                                                                                        CheckBox_StoreAdministrator.CheckStateChanged, CheckBox_UserMaintenance.CheckStateChanged, CheckBox_Shrink.CheckStateChanged, CheckBox_ShrinkAdmin.CheckStateChanged,
+                                                                                        CheckBox_TaxAdministrator.CheckStateChanged, CheckBox_CancelAllSales.CheckStateChanged
         If ComboBox_Titles.SelectedIndex <> -1 Then
             Button_Save.Enabled = True
         Else

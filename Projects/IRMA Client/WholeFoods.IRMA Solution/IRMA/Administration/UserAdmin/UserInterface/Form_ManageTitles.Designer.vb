@@ -61,6 +61,7 @@ Partial Class Form_ManageTitles
         Me.Button_Edit = New System.Windows.Forms.Button()
         Me.ttRoleDescription = New System.Windows.Forms.ToolTip(Me.components)
         Me.Button_ViewRoleConflicts = New System.Windows.Forms.Button()
+        Me.CheckBox_CancelAllSales = New System.Windows.Forms.CheckBox()
         Me.GroupBox_IRMARoles.SuspendLayout()
         Me.GroupBox_AdminRoles.SuspendLayout()
         Me.SuspendLayout()
@@ -87,6 +88,7 @@ Partial Class Form_ManageTitles
         '
         'GroupBox_IRMARoles
         '
+        Me.GroupBox_IRMARoles.Controls.Add(Me.CheckBox_CancelAllSales)
         Me.GroupBox_IRMARoles.Controls.Add(Me.CheckBox_TaxAdministrator)
         Me.GroupBox_IRMARoles.Controls.Add(Me.CheckBox_DeletePO)
         Me.GroupBox_IRMARoles.Controls.Add(Me.CheckBox_POEditor)
@@ -122,7 +124,7 @@ Partial Class Form_ManageTitles
         Me.CheckBox_TaxAdministrator.AutoSize = True
         Me.CheckBox_TaxAdministrator.Location = New System.Drawing.Point(416, 88)
         Me.CheckBox_TaxAdministrator.Name = "CheckBox_TaxAdministrator"
-        Me.CheckBox_TaxAdministrator.Size = New System.Drawing.Size(115, 17)
+        Me.CheckBox_TaxAdministrator.Size = New System.Drawing.Size(114, 17)
         Me.CheckBox_TaxAdministrator.TabIndex = 22
         Me.CheckBox_TaxAdministrator.Text = "Tax Administrator"
         Me.CheckBox_TaxAdministrator.UseVisualStyleBackColor = True
@@ -192,7 +194,7 @@ Partial Class Form_ManageTitles
         Me.CheckBox_VendorCostDiscrepancyAdmin.AutoSize = True
         Me.CheckBox_VendorCostDiscrepancyAdmin.Location = New System.Drawing.Point(416, 134)
         Me.CheckBox_VendorCostDiscrepancyAdmin.Name = "CheckBox_VendorCostDiscrepancyAdmin"
-        Me.CheckBox_VendorCostDiscrepancyAdmin.Size = New System.Drawing.Size(190, 17)
+        Me.CheckBox_VendorCostDiscrepancyAdmin.Size = New System.Drawing.Size(189, 17)
         Me.CheckBox_VendorCostDiscrepancyAdmin.TabIndex = 18
         Me.CheckBox_VendorCostDiscrepancyAdmin.Text = "Vendor Cost Discrepancy Admin"
         Me.CheckBox_VendorCostDiscrepancyAdmin.UseVisualStyleBackColor = True
@@ -262,7 +264,7 @@ Partial Class Form_ManageTitles
         Me.CheckBox_VendorAdmin.AutoSize = True
         Me.CheckBox_VendorAdmin.Location = New System.Drawing.Point(416, 111)
         Me.CheckBox_VendorAdmin.Name = "CheckBox_VendorAdmin"
-        Me.CheckBox_VendorAdmin.Size = New System.Drawing.Size(137, 17)
+        Me.CheckBox_VendorAdmin.Size = New System.Drawing.Size(136, 17)
         Me.CheckBox_VendorAdmin.TabIndex = 17
         Me.CheckBox_VendorAdmin.Text = "Vendor Administrator"
         Me.CheckBox_VendorAdmin.UseVisualStyleBackColor = True
@@ -367,7 +369,7 @@ Partial Class Form_ManageTitles
         Me.CheckBox_POSInterfaceAdministrator.AutoSize = True
         Me.CheckBox_POSInterfaceAdministrator.Location = New System.Drawing.Point(210, 25)
         Me.CheckBox_POSInterfaceAdministrator.Name = "CheckBox_POSInterfaceAdministrator"
-        Me.CheckBox_POSInterfaceAdministrator.Size = New System.Drawing.Size(156, 17)
+        Me.CheckBox_POSInterfaceAdministrator.Size = New System.Drawing.Size(168, 17)
         Me.CheckBox_POSInterfaceAdministrator.TabIndex = 3
         Me.CheckBox_POSInterfaceAdministrator.Text = "POS Interface Administrator"
         Me.CheckBox_POSInterfaceAdministrator.UseVisualStyleBackColor = True
@@ -377,7 +379,7 @@ Partial Class Form_ManageTitles
         Me.CheckBox_UserMaintenance.AutoSize = True
         Me.CheckBox_UserMaintenance.Location = New System.Drawing.Point(211, 71)
         Me.CheckBox_UserMaintenance.Name = "CheckBox_UserMaintenance"
-        Me.CheckBox_UserMaintenance.Size = New System.Drawing.Size(113, 17)
+        Me.CheckBox_UserMaintenance.Size = New System.Drawing.Size(119, 17)
         Me.CheckBox_UserMaintenance.TabIndex = 5
         Me.CheckBox_UserMaintenance.Text = "User Maintenance"
         Me.CheckBox_UserMaintenance.UseVisualStyleBackColor = True
@@ -387,7 +389,7 @@ Partial Class Form_ManageTitles
         Me.CheckBox_JobAdministrator.AutoSize = True
         Me.CheckBox_JobAdministrator.Location = New System.Drawing.Point(8, 71)
         Me.CheckBox_JobAdministrator.Name = "CheckBox_JobAdministrator"
-        Me.CheckBox_JobAdministrator.Size = New System.Drawing.Size(106, 17)
+        Me.CheckBox_JobAdministrator.Size = New System.Drawing.Size(117, 17)
         Me.CheckBox_JobAdministrator.TabIndex = 2
         Me.CheckBox_JobAdministrator.Text = "Job Administrator"
         Me.CheckBox_JobAdministrator.UseVisualStyleBackColor = True
@@ -397,7 +399,7 @@ Partial Class Form_ManageTitles
         Me.CheckBox_AppConfigAdmin.AutoSize = True
         Me.CheckBox_AppConfigAdmin.Location = New System.Drawing.Point(8, 25)
         Me.CheckBox_AppConfigAdmin.Name = "CheckBox_AppConfigAdmin"
-        Me.CheckBox_AppConfigAdmin.Size = New System.Drawing.Size(175, 17)
+        Me.CheckBox_AppConfigAdmin.Size = New System.Drawing.Size(197, 17)
         Me.CheckBox_AppConfigAdmin.TabIndex = 0
         Me.CheckBox_AppConfigAdmin.Text = "Application Configuration Admin"
         Me.CheckBox_AppConfigAdmin.UseVisualStyleBackColor = True
@@ -407,7 +409,7 @@ Partial Class Form_ManageTitles
         Me.CheckBox_StoreAdministrator.AutoSize = True
         Me.CheckBox_StoreAdministrator.Location = New System.Drawing.Point(210, 48)
         Me.CheckBox_StoreAdministrator.Name = "CheckBox_StoreAdministrator"
-        Me.CheckBox_StoreAdministrator.Size = New System.Drawing.Size(114, 17)
+        Me.CheckBox_StoreAdministrator.Size = New System.Drawing.Size(126, 17)
         Me.CheckBox_StoreAdministrator.TabIndex = 4
         Me.CheckBox_StoreAdministrator.Text = "Store Administrator"
         Me.CheckBox_StoreAdministrator.UseVisualStyleBackColor = True
@@ -417,7 +419,7 @@ Partial Class Form_ManageTitles
         Me.CheckBox_DataAdministrator.AutoSize = True
         Me.CheckBox_DataAdministrator.Location = New System.Drawing.Point(7, 48)
         Me.CheckBox_DataAdministrator.Name = "CheckBox_DataAdministrator"
-        Me.CheckBox_DataAdministrator.Size = New System.Drawing.Size(112, 17)
+        Me.CheckBox_DataAdministrator.Size = New System.Drawing.Size(123, 17)
         Me.CheckBox_DataAdministrator.TabIndex = 1
         Me.CheckBox_DataAdministrator.Text = "Data Administrator"
         Me.CheckBox_DataAdministrator.UseVisualStyleBackColor = True
@@ -485,6 +487,16 @@ Partial Class Form_ManageTitles
         Me.Button_ViewRoleConflicts.Size = New System.Drawing.Size(33, 31)
         Me.Button_ViewRoleConflicts.TabIndex = 4
         Me.Button_ViewRoleConflicts.UseVisualStyleBackColor = True
+        '
+        'CheckBox_CancelAllSales
+        '
+        Me.CheckBox_CancelAllSales.AutoSize = True
+        Me.CheckBox_CancelAllSales.Location = New System.Drawing.Point(416, 180)
+        Me.CheckBox_CancelAllSales.Name = "CheckBox_CancelAllSales"
+        Me.CheckBox_CancelAllSales.Size = New System.Drawing.Size(105, 17)
+        Me.CheckBox_CancelAllSales.TabIndex = 23
+        Me.CheckBox_CancelAllSales.Text = "Cancel All Sales"
+        Me.CheckBox_CancelAllSales.UseVisualStyleBackColor = True
         '
         'Form_ManageTitles
         '
@@ -554,5 +566,5 @@ Partial Class Form_ManageTitles
     Friend WithEvents CheckBox_POEditor As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox_DeletePO As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox_TaxAdministrator As System.Windows.Forms.CheckBox
-
+    Friend WithEvents CheckBox_CancelAllSales As CheckBox
 End Class

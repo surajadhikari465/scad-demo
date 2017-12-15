@@ -234,14 +234,14 @@ Public Class TitleDAO
         End Try
     End Function
 
-    Public Shared Function SaveTitlePermissions(ByVal iTitleId As Integer, ByVal blnAccountant As Boolean, ByVal blnBatchBuildOnly As Boolean, ByVal blnBuyer As Boolean, _
-                                                ByVal blnCoordinator As Boolean, ByVal blnCostAdmin As Boolean, ByVal blnFacilityCreditProcessor As Boolean, ByVal blnDCAdmin As Boolean, _
-                                                ByVal blnDeletePO As Boolean, ByVal blnEInvoicingAdministrator As Boolean, ByVal blnInventoryAdministrator As Boolean, ByVal blnItemAdministrator As Boolean, _
-                                                ByVal blnLockAdministrator As Boolean, ByVal blnPOAccountant As Boolean, ByVal blnPOApprovalAdmin As Boolean, _
-                                                ByVal blnPOEditor As Boolean, ByVal blnPriceBatchProcessor As Boolean, ByVal blnDistributor As Boolean, ByVal blnVendorAdministrator As Boolean, _
-                                                ByVal blnVendorCostDiscrepancyAdmin As Boolean, ByVal blnWarehouse As Boolean, ByVal blnApplicationConfigAdmin As Boolean, _
-                                                ByVal blnDataAdministrator As Boolean, ByVal blnPOSInterfaceAdministrator As Boolean, ByVal blnJobAdministrator As Boolean, _
-                                                ByVal blnStoreAdministrator As Boolean, ByVal blnUserMaintenance As Boolean, ByVal blnShrink As Boolean, ByVal blnShrinkAdmin As Boolean, _
+    Public Shared Function SaveTitlePermissions(ByVal iTitleId As Integer, ByVal blnAccountant As Boolean, ByVal blnBatchBuildOnly As Boolean, ByVal blnBuyer As Boolean,
+                                                ByVal blnCoordinator As Boolean, ByVal blnCostAdmin As Boolean, ByVal blnFacilityCreditProcessor As Boolean, ByVal blnDCAdmin As Boolean,
+                                                ByVal blnDeletePO As Boolean, ByVal blnEInvoicingAdministrator As Boolean, ByVal blnInventoryAdministrator As Boolean, ByVal blnItemAdministrator As Boolean,
+                                                ByVal blnLockAdministrator As Boolean, ByVal blnPOAccountant As Boolean, ByVal blnPOApprovalAdmin As Boolean,
+                                                ByVal blnPOEditor As Boolean, ByVal blnPriceBatchProcessor As Boolean, ByVal blnDistributor As Boolean, ByVal blnVendorAdministrator As Boolean,
+                                                ByVal blnVendorCostDiscrepancyAdmin As Boolean, ByVal blnWarehouse As Boolean, ByVal blnCancelAllSales As Boolean, ByVal blnApplicationConfigAdmin As Boolean,
+                                                ByVal blnDataAdministrator As Boolean, ByVal blnPOSInterfaceAdministrator As Boolean, ByVal blnJobAdministrator As Boolean,
+                                                ByVal blnStoreAdministrator As Boolean, ByVal blnUserMaintenance As Boolean, ByVal blnShrink As Boolean, ByVal blnShrinkAdmin As Boolean,
                                                 ByVal blnTaxAdministrator As Boolean) As Boolean
 
         Dim factory As New DataFactory(DataFactory.ItemCatalog)
@@ -377,6 +377,12 @@ Public Class TitleDAO
         currentParam = New DBParam
         currentParam.Name = "@Warehouse"
         currentParam.Value = blnWarehouse
+        currentParam.Type = DBParamType.Bit
+        paramList.Add(currentParam)
+
+        currentParam = New DBParam
+        currentParam.Name = "@CancelAllSales"
+        currentParam.Value = blnCancelAllSales
         currentParam.Type = DBParamType.Bit
         paramList.Add(currentParam)
 
@@ -897,7 +903,9 @@ Public Class TitleDAO
                          "   Tools   -> TGM -> Load TGM View" & vbCrLf & _
                          "   Tools   -> TGM -> New TGM View" & vbCrLf & _
                          "   Tools   -> Vendor List"
-
+            Case "CANCEL ALL SALES"
+                sText = "Cancel All Sales can access the following screens:" & vbCrLf &
+                        " Data -> Cancel All Sales"
             Case "APPLICATION CONFIGURATION ADMIN"
                 sText = "Application Configuration Admin can access the following screens:" & vbCrLf & _
                          "   File -> IRMA Process Monitor" & vbCrLf & _

@@ -1,6 +1,4 @@
-﻿
-
--- 8.25.08 V3.2 Robert Shurbet
+﻿-- 8.25.08 V3.2 Robert Shurbet
 -- Added second insert statement to support SLIM access flags
 
 CREATE PROCEDURE [dbo].[Administration_UserAdmin_InsertUser]
@@ -52,6 +50,7 @@ CREATE PROCEDURE [dbo].[Administration_UserAdmin_InsertUser]
 	@Vendor_Administrator bit,
 	@VendorCostDiscrepancyAdmin bit,
 	@Warehouse bit,
+	@CancelAllSales bit = NULL,
 		
 	@Authorizations bit,
 	@IRMAPush bit,
@@ -114,7 +113,8 @@ AS
 					[UserMaintenance],
 					[Vendor_Administrator],
 					[VendorCostDiscrepancyAdmin],
-					[Warehouse]
+					[Warehouse],
+					[CancelAllSales]
 				   )
 			 VALUES
 				   (@AccountEnabled,
@@ -162,7 +162,8 @@ AS
 					@UserMaintenance,
 					@Vendor_Administrator,
 					@VendorCostDiscrepancyAdmin,
-					@Warehouse
+					@Warehouse,
+					ISNULL(@CancelAllSales, 0)
 					)
 					
 		-- get the new User_ID from Users for the SlimAccess insert			

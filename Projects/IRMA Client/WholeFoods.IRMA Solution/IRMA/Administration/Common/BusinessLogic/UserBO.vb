@@ -35,6 +35,7 @@ Namespace WholeFoods.IRMA.Administration.Common.BusinessLogic
         Private _vendorAdministrator As Boolean
         Private _lockAdministrator As Boolean
         Private _warehouse As Boolean
+        Private _cancelAllSales As Boolean
         Private _priceBatchProcessor As Boolean
         Private _inventoryAdministrator As Boolean
         Private _batchBuildOnly As Boolean
@@ -203,6 +204,7 @@ Namespace WholeFoods.IRMA.Administration.Common.BusinessLogic
                     _costAdmin = dt.Rows(0).Item("CostAdmin")
                     _shrink = dt.Rows(0).Item("Shrink")
                     _shrinkAdmin = dt.Rows(0).Item("ShrinkAdmin")
+                    _cancelAllSales = dt.Rows(0).Item("CancelAllSales")
 
                     If dt.Rows(0).Item("DCAdmin") IsNot DBNull.Value Then
                         _dcAdmin = dt.Rows(0).Item("DCAdmin")
@@ -332,6 +334,9 @@ Namespace WholeFoods.IRMA.Administration.Common.BusinessLogic
             End If
             If selectedRow.Cells("Warehouse").Value IsNot DBNull.Value Then
                 _warehouse = CType(selectedRow.Cells("Warehouse").Value, Boolean)
+            End If
+            If selectedRow.Cells("CancelAllSales").Value IsNot DBNull.Value Then
+                _cancelAllSales = CType(selectedRow.Cells("CancelAllSales").Value, Boolean)
             End If
             If selectedRow.Cells("PriceBatchProcessor").Value IsNot DBNull.Value Then
                 _priceBatchProcessor = CType(selectedRow.Cells("PriceBatchProcessor").Value, Boolean)
@@ -639,6 +644,14 @@ Namespace WholeFoods.IRMA.Administration.Common.BusinessLogic
             End Set
         End Property
 
+        Public Property CancellAllSales() As Boolean
+            Get
+                Return _cancelAllSales
+            End Get
+            Set(ByVal value As Boolean)
+                _cancelAllSales = value
+            End Set
+        End Property
         Public Property PriceBatchProcessor() As Boolean
             Get
                 Return _priceBatchProcessor

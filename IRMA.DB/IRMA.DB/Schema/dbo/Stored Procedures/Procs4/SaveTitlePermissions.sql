@@ -20,6 +20,7 @@
 		@VendorAdministrator bit,		
 		@VendorCostDiscrepancyAdmin bit,
 		@Warehouse bit,
+		@CancelAllSales Bit = NULL,
 		@ApplicationConfigAdmin bit,
 		@DataAdministrator bit,
 		@JobAdministrator bit,
@@ -58,6 +59,7 @@ AS
 				VendorAdministrator = @VendorAdministrator,
 				VendorCostDiscrepancyAdmin = @VendorCostDiscrepancyAdmin,
 				Warehouse = @Warehouse,
+				CancelAllSales = ISNULL(@CancelAllSales, CancelAllSales),
 				ApplicationConfigAdmin = @ApplicationConfigAdmin,
 				DataAdministrator = @DataAdministrator,
 				JobAdministrator = @JobAdministrator,
@@ -77,13 +79,13 @@ AS
 										DataAdministrator, DCAdmin, Distributor, DeletePO, EInvoicing, InventoryAdministrator, ItemAdministrator, 
 										JobAdministrator, LockAdministrator, POAccountant, POApprovalAdministrator, POEditor, POSInterfaceAdministrator, 
 										PriceBatchProcessor, Shrink, ShrinkAdmin, StoreAdministrator, TaxAdministrator, UserMaintenance, VendorAdministrator, 
-										VendorCostDiscrepancyAdmin, Warehouse)
+										VendorCostDiscrepancyAdmin, Warehouse, CancelAllSales)
 			VALUES
 				(@TitleId, @Accountant, @ApplicationConfigAdmin, @BatchBuildOnly, @Buyer, @Coordinator, @CostAdministrator, @FacilityCreditProcessor, 
 				 @DataAdministrator, @DCAdmin, @Distributor, @DeletePO, @EInvoicing, @InventoryAdministrator, @ItemAdministrator,
 				 @JobAdministrator, @LockAdministrator, @POAccountant, @POApprovalAdministrator, @POEditor, @POSInterfaceAdministrator,
 				 @PriceBatchProcessor, @Shrink, @ShrinkAdmin, @StoreAdministrator, @TaxAdministrator, @UserMaintenance, @VendorAdministrator, 
-				 @VendorCostDiscrepancyAdmin, @Warehouse
+				 @VendorCostDiscrepancyAdmin, @Warehouse , ISNULL(@CancelAllSales, 0)
 				 )
 		END
 		
@@ -109,6 +111,7 @@ AS
 				Vendor_Administrator = @VendorAdministrator,
 				VendorCostDiscrepancyAdmin = @VendorCostDiscrepancyAdmin,
 				Warehouse = @Warehouse,
+				CancelAllSales = ISNULL(@CancelAllSales,CancelAllSales),
 				ApplicationConfigAdmin = @ApplicationConfigAdmin,
 				DataAdministrator = @DataAdministrator,
 				JobAdministrator = @JobAdministrator,

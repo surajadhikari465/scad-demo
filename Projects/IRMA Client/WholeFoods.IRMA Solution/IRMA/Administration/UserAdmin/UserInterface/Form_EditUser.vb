@@ -195,6 +195,7 @@ Public Class Form_EditUser
         CheckBox_Role_Shrink.Checked = _userConfig.Shrink
         CheckBox_Role_ShrinkAdmin.Checked = _userConfig.ShrinkAdmin
         CheckBox_Role_TaxAdministrator.Checked = _userConfig.TaxAdministrator
+        CheckBox_Role_CancelAllSales.Checked = _userConfig.CancellAllSales
 
         ' Admin Access attributes
         CheckBox_Role_AppConfigAdmin.Checked = _userConfig.ApplicationConfigAdmin
@@ -486,6 +487,7 @@ Public Class Form_EditUser
                 _userConfig.VendorAdministrator = CheckBox_Role_VendorAdmin.Checked
                 _userConfig.VendorCostDiscrepancyAdmin = CheckBox_Role_VendorCostDiscrepancyAdmin.Checked
                 _userConfig.Warehouse = CheckBox_Role_Warehouse.Checked
+                _userConfig.CancellAllSales = CheckBox_Role_CancelAllSales.Checked
 
                 ' Admin Access attributes
                 _userConfig.ApplicationConfigAdmin = CheckBox_Role_AppConfigAdmin.Checked
@@ -955,6 +957,12 @@ Public Class Form_EditUser
         End If
     End Sub
 
+    Private Sub CheckBox_Role_CancelAllSales_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox_Role_CancelAllSales.CheckedChanged
+        If Not Me._initializing Then
+            RaiseEvent FormDataChanged()
+        End If
+    End Sub
+
     Private Sub ComboBox_HomeLocation_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBox_HomeLocation.SelectedIndexChanged
         If Not Me._initializing Then
             RaiseEvent FormDataChanged()
@@ -1326,6 +1334,7 @@ Public Class Form_EditUser
                 CheckBox_Role_Shrink.Checked = CBool(dr.Item("Shrink"))
                 CheckBox_Role_ShrinkAdmin.Checked = CBool(dr.Item("ShrinkAdmin"))
                 CheckBox_Role_TaxAdministrator.Checked = CBool(dr.Item("TaxAdministrator"))
+                CheckBox_Role_CancelAllSales.Checked = CBool(dr.Item("CancelAllSales"))
 
                 'The following roles don't get assigned a value based on the title setup since these roles can only be toggled via ECC (for SOX reasons)
                 'TFS5330 -  Security Admin role can grant System Config and Super User
@@ -1367,6 +1376,7 @@ Public Class Form_EditUser
         CheckBox_Role_Shrink.Checked = False
         CheckBox_Role_ShrinkAdmin.Checked = False
         CheckBox_Role_TaxAdministrator.Checked = False
+        CheckBox_Role_CancelAllSales.Checked = False
 
         'The following roles don't get cleared since these roles can only be toggled via ECC (for SOX reasons)
         'TFS5330 -  Security Admin role can grant System Config and Super User
@@ -1406,6 +1416,7 @@ Public Class Form_EditUser
         CheckBox_Role_Shrink.Enabled = blnSecurityAdmin
         CheckBox_Role_ShrinkAdmin.Enabled = blnSecurityAdmin
         CheckBox_Role_TaxAdministrator.Enabled = blnSecurityAdmin
+        CheckBox_Role_CancelAllSales.Enabled = blnSecurityAdmin
 
         'The following roles will never be enabled since these roles can only be toggled via ECC (for SOX reasons)
         'TFS5330 -  Security Admin role can grant System Config and Super User

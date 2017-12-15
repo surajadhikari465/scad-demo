@@ -1,6 +1,4 @@
-﻿
-
--- 08.25.08 V3.2 Robert Shurbet
+﻿-- 08.25.08 V3.2 Robert Shurbet
 -- Added new SlimAccess join for SLIM access attributes.
 
 CREATE PROCEDURE dbo.GetUser
@@ -39,6 +37,7 @@ BEGIN
 		Phone_Number,
 		ISNULL(Title, -1) As Title,
 		Warehouse,
+		CancelAllSales,
 		BatchBuildOnly,
 		DCAdmin,
 		PromoAccessLevel,

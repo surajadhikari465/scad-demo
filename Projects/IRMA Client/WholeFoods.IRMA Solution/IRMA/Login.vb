@@ -138,6 +138,7 @@ Friend Class frmLogin
                 gbStoreAdministrator = gbSuperUser Or CBool(gRSRecordset.Fields("StoreAdministrator").Value)
                 gbSystemConfigurationAdministrator = gbSuperUser Or CBool(gRSRecordset.Fields("SystemConfigurationAdministrator").Value)
                 gbUserMaintenance = gbSuperUser Or CBool(gRSRecordset.Fields("UserMaintenance").Value)
+                gbCancelAllSales = gbSuperUser Or CBool(gRSRecordset.Fields("CancelAllSales").Value)
 
                 'Permissions that are based on other permissions
                 gbAccountant = gbSuperUser Or gbPOAccountant Or CBool(gRSRecordset.Fields("Accountant").Value)
