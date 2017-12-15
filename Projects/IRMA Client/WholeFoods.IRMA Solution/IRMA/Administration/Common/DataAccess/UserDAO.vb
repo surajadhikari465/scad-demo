@@ -461,6 +461,12 @@ Namespace WholeFoods.IRMA.Administration.Common.DataAccess
             paramList.Add(currentParam)
 
             currentParam = New DBParam
+            currentParam.Name = "@CancelAllSales"
+            currentParam.Value = currentUser.CancellAllSales
+            currentParam.Type = DBParamType.Bit
+            paramList.Add(currentParam)
+
+            currentParam = New DBParam
             currentParam.Name = "@PriceBatchProcessor"
             currentParam.Value = currentUser.PriceBatchProcessor
             currentParam.Type = DBParamType.Bit

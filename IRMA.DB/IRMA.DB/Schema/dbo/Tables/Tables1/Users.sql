@@ -45,6 +45,7 @@
     [POEditor]                         BIT          DEFAULT ((0)) NOT NULL,
     [DeletePO]                         BIT          DEFAULT ((0)) NOT NULL,
     [TaxAdministrator]                 BIT          DEFAULT ((0)) NOT NULL,
+	[CancelAllSales]				   BIT          DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_Users_UserID] PRIMARY KEY CLUSTERED ([User_ID] ASC) WITH (FILLFACTOR = 80),
     CONSTRAINT [FK_Users_AccessLevel] FOREIGN KEY ([PromoAccessLevel]) REFERENCES [dbo].[UserAccess] ([UserAccessLevel_ID]),
     CONSTRAINT [FK_Users_Store1] FOREIGN KEY ([Telxon_Store_Limit]) REFERENCES [dbo].[Store] ([Store_No]),
@@ -74,12 +75,12 @@ BEGIN
     INSERT INTO UsersHistory ([User_ID], UserName, FullName, Printer, CoverPage, EMail, Pager_Email, Fax_Number,  AccountEnabled, SuperUser, 
 							  PO_Accountant, Accountant, Distributor, FacilityCreditProcessor, Buyer, Coordinator, Item_Administrator, 
 							  Vendor_Administrator, Lock_Administrator, Telxon_Store_Limit, Phone_Number, Title, RecvLog_Store_Limit, 
-							  Warehouse,  PriceBatchProcessor, Inventory_Administrator,	BatchBuildOnly, DCAdmin, PromoAccessLevel, 
+							  Warehouse, CancelAllSales, PriceBatchProcessor, Inventory_Administrator,	BatchBuildOnly, DCAdmin, PromoAccessLevel, 
 							  CostAdmin, VendorCostDiscrepancyAdmin, POApprovalAdmin)
     SELECT [User_ID], UserName, FullName, Printer, CoverPage, EMail, Pager_Email, Fax_Number,  AccountEnabled, SuperUser, 
 		   PO_Accountant, Accountant, Distributor, FacilityCreditProcessor, Buyer, Coordinator, Item_Administrator, 
 		   Vendor_Administrator, Lock_Administrator, Telxon_Store_Limit, Phone_Number, Title, RecvLog_Store_Limit,  
-		   Warehouse, PriceBatchProcessor, Inventory_Administrator, BatchBuildOnly, DCAdmin, PromoAccessLevel, 
+		   Warehouse, CancelAllSales, PriceBatchProcessor, Inventory_Administrator, BatchBuildOnly, DCAdmin, PromoAccessLevel, 
 		   CostAdmin, VendorCostDiscrepancyAdmin, POApprovalAdmin
     FROM Inserted
 

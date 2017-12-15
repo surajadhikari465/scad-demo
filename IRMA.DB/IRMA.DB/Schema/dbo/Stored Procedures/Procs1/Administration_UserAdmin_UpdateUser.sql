@@ -48,6 +48,7 @@
 	@Vendor_Administrator bit,
 	@VendorCostDiscrepancyAdmin bit,
 	@Warehouse bit,
+	@CancelAllSales bit = NULL,
 
 	--SLIM --optional paramters for user audit Export
 	@Authorizations bit = Null,
@@ -113,7 +114,8 @@ AS
 			  [UserMaintenance] = @UserMaintenance,
 			  [Vendor_Administrator] = @Vendor_Administrator,
 			  [VendorCostDiscrepancyAdmin] = @VendorCostDiscrepancyAdmin,
-			  [Warehouse] = @Warehouse
+			  [Warehouse] = @Warehouse,
+			  [CancelAllSales] = ISNULL(@CancelAllSales, CancelAllSales)
 		 	  
 		 WHERE  User_ID = @User_Id
 
@@ -308,6 +310,9 @@ END
 		
 	IF (SELECT Warehouse FROM TitleDefaultPermission WHERE TitleId = @Title) <> @Warehouse
 		INSERT INTO TitlePermissionOverride (UserId, PermissionName, PermissionValue) VALUES (@User_Id, 'Warehouse', @Warehouse)
+
+	IF (@CancelAllSales IS NOT NULL AND (SELECT CancelAllSales FROM TitleDefaultPermission WHERE TitleId = @Title) <> @CancelAllSales)
+		INSERT INTO TitlePermissionOverride (UserId, PermissionName, PermissionValue) VALUES (@User_Id, 'CancelAllSales', @CancelAllSales)
 
 GO
 GRANT EXECUTE

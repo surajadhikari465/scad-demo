@@ -628,6 +628,7 @@ Module Global_Renamed
     Public gbVendorCostDiscrepancyAdmin As Boolean
     Public gbWarehouse As Boolean
     Public gbReceiver As Boolean
+    Public gbCancelAllSales As Boolean
 
     Public gbApplicationConfigurationAdministrator As Boolean
     Public gbDataAdministrator As Boolean

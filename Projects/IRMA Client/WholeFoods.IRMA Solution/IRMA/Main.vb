@@ -1081,7 +1081,7 @@ me_exit:
         mnuData_RestoreDeletedItem.Enabled = (gbSuperUser Or gbDataAdministrator) And GetRegionalMenuAccess(ds, "mnuData_RestoreDeletedItem")
         mnuData_ScalePOSPush.Enabled = (gbSuperUser Or gbDataAdministrator) And GetRegionalMenuAccess(ds, "mnuData_ScalePOSPush")
         mnuData_UnprocessedPushFiles.Enabled = (gbSuperUser Or gbDataAdministrator) And GetRegionalMenuAccess(ds, "mnuData_ScalePOSPush")
-        mnuData_CancelAllSales.Enabled = (gbDataAdministrator) AndAlso InstanceDataDAO.IsFlagActive("EnableCancelAllSales")
+        mnuData_CancelAllSales.Enabled = (gbCancelAllSales) AndAlso InstanceDataDAO.IsFlagActive("EnableCancelAllSales")
 
         '######################
         ' Admin Menu access
