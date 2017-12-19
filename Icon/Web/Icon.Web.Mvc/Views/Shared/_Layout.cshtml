@@ -14,7 +14,7 @@
     @RenderSection("headerScripts", required: false)
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-static-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -95,6 +95,7 @@
                                 <li>@Html.ActionLink("Failed Price Messages", "Index", "FailedPriceMessage")</li>
                                 <li>@Html.ActionLink("Failed Product Messages", "Index", "FailedProductMessage")</li>
                                 <li>@Html.ActionLink("Failed Product Selection Group Messages", "Index", "FailedProductSelectionGroupMessage")</li>
+                                <li>@Html.ActionLink("Delete Hierarchy Class", "ChooseHierarchyClass", "Support")</li>
                                 <li>@Html.ActionLink("Configuration", "Index", "Configuration")</li>
                             </ul>
                         </li>

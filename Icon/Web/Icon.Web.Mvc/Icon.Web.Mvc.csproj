@@ -258,6 +258,7 @@
     <Compile Include="Controllers\BulkCertificationAgencyImportController.cs" />
     <Compile Include="Controllers\CertificationAgencyController.cs" />
     <Compile Include="Controllers\EwicController.cs" />
+    <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\PluRequestController.cs" />
     <Compile Include="Controllers\MerchTaxMappingController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
@@ -854,6 +855,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Views\Support\ChooseHierarchyClass.cshtml" />
+    <Content Include="Views\Support\Index.cshtml" />
+    <Content Include="Views\Support\DeleteHierarchyClass.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

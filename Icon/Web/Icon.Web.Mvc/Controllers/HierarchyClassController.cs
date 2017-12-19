@@ -283,9 +283,9 @@ namespace Icon.Web.Controllers
 			HierarchySearchViewModel hierarchySearchViewModel = new HierarchySearchViewModel { SelectedHierarchyId = viewModel.HierarchyId };
 			return RedirectToAction("Index", "Hierarchy", new { @HierarchySearchViewModel = hierarchySearchViewModel });
 		}
-
-		// GET: /HierarchyClass/Delete/{HierarchyClassID}
-		[HttpGet]
+        
+        // GET: /HierarchyClass/Delete/{HierarchyClassID}
+        [HttpGet]
         public ActionResult Delete(int hierarchyClassId)
 		{
 			if (hierarchyClassId < 1)

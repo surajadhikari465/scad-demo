@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "iCON Support Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listItemBootstrapClasses = "list-group-item list-group-item-action col-sm-4 col-md-3";
+}
+
+<div class="container">
+    <div class="panel panel-info">
+        <div class="panel-heading" id="actions-heading" role="tab">
+            <h3 class="panel-title">
+                <a aria-expanded="true" aria-controls="actions-panel" href="#actions-panel" data-toggle="collapse">
+                    iCON Support Actions
+                </a> @*<span class="badge">3</span>*@
+            </h3>
+        </div>
+        <div class="panel-collapse collapse in container" id="actions-panel" role="tabpanel" aria-expanded="true" aria-labelledby="actions-heading">
+            <div class="list-group row">
+                @Html.ActionLink("Refresh Items", "Items", "RefreshData", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Refresh Brands", "Brands", "RefreshData", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Refresh Locales", "Locales", "RefreshData", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Refresh Merchandise", "Merchandise", "RefreshData", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Global Events", "Index", "GlobalEvent", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Global POS Push", "Index", "GlobalPOSPush", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Regional Events", "Index", "RegionalEvent", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Regional POS Push", "Index", "RegionalPosPush", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Message History", "Index", "MessageHistory", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Product Selection Groups", "Index", "ProductSelectionGroup", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Failed Hierarchy Messages", "Index", "FailedHierarchyMessage", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Failed Item Locale Messages",  "Index", "FailedItemLocaleMessage", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Failed Locale Messages", "Index", "FailedLocaleMessage", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Failed Price Messages", "Index", "FailedPriceMessage", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Failed Product Messages", "Index", "FailedProductMessage", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Failed PSG Messages", "Index", "FailedProductSelectionGroupMessage", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Delete Hierarchy Class", "ChooseHierarchyClass", "Support", new { @class = listItemBootstrapClasses })
+                @Html.ActionLink("Configuration", "Index", "Configuration", new { @class = listItemBootstrapClasses })
+            </div>
+        </div>
+    </div>
+</div>

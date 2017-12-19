@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Html.RenderPartial("_HeaderPartial", "Choose Hierarchy Class ID to Delete");
+}
+
+<div class="page-section">
+    @using (Html.BeginForm("DeleteHierarchyClass", "Support", FormMethod.Get, new { @class = "begin-form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <label class="col-md-2 form-label">Hierarchy Class ID</label>
+            <div>
+                <input class="col-md-6 form-input" id="HierarchyClassId" name="HierarchyClassId" type="text" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-offset-2 col-md-6">
+                <input type="submit" value="Review for Deletion" class="btn btn-default form-submit" />
+            </div>
+        </div>
+    }
+</div>
