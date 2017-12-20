@@ -435,3 +435,7 @@ GRANT SELECT
     ON OBJECT::[dbo].[Vendor] TO [IRMAPDXExtractRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[Vendor] TO [MammothRole]
+    AS [dbo];

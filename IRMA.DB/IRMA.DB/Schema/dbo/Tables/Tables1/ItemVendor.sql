@@ -334,3 +334,7 @@ GRANT VIEW CHANGE TRACKING
     ON OBJECT::[dbo].[ItemVendor] TO [iCONReportingRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[ItemVendor] TO [MammothRole]
+    AS [dbo];
