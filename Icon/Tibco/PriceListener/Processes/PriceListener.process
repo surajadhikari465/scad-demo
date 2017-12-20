@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns9="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns5="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns10="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns7="http://schema.infor.com/InforOAGIS/2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx8="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx7="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns9="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns5="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns10="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns7="http://schema.infor.com/InforOAGIS/2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx8="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx7="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
@@ -12,7 +12,7 @@
     <pd:starter name="PriceMessageReceiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>81</pd:x>
+        <pd:x>82</pd:x>
         <pd:y>174</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
@@ -33,8 +33,8 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>893</pd:endX>
-    <pd:endY>516</pd:endY>
+    <pd:endX>890</pd:endX>
+    <pd:endY>514</pd:endY>
     <pd:errorSchemas>
         <OutOfSequence ref="pfx3:Error"/>
     </pd:errorSchemas>
@@ -94,8 +94,8 @@
     <pd:activity name="Confirm on Success">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>592</pd:x>
-        <pd:y>174</pd:y>
+        <pd:x>577</pd:x>
+        <pd:y>180</pd:y>
         <config>
             <ConfirmEvent>PriceMessageReceiver</ConfirmEvent>
         </config>
@@ -310,8 +310,8 @@
     <pd:activity name="HandleEmergencyPrices">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>886</pd:x>
-        <pd:y>177</pd:y>
+        <pd:x>876</pd:x>
+        <pd:y>178</pd:y>
         <config>
             <processName>/Processes/HandleEmergencyPrices.process</processName>
         </config>
@@ -453,8 +453,8 @@
     <pd:activity name="Archive Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>888</pd:x>
-        <pd:y>278</pd:y>
+        <pd:x>882</pd:x>
+        <pd:y>308</pd:y>
         <config>
             <processName>/Processes/ArchiveMessage.process</processName>
             <spawn>true</spawn>
@@ -482,8 +482,8 @@
     <pd:activity name="Log Info">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>890</pd:x>
-        <pd:y>377</pd:y>
+        <pd:x>888</pd:x>
+        <pd:y>410</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -664,8 +664,8 @@
     <pd:activity name="Archive Message Redelivery">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>634</pd:x>
-        <pd:y>382</pd:y>
+        <pd:x>631</pd:x>
+        <pd:y>391</pd:y>
         <config>
             <processName>/Processes/ArchiveMessage.process</processName>
             <spawn>true</spawn>
@@ -778,7 +778,7 @@
         <pd:to>SendToRealTimeESBQueue</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
+        <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Parse Message</pd:from>
@@ -817,12 +817,14 @@
         <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>(not(exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount))
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="false"
+and
+((not(exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount))
 and ($Call-Message-Sequence-Validation/root/IsInSequence="false")
 or
 (exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount)
 and ($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &lt;= $_globalVariables/ns1:GlobalVariables/Application/MaxRedeliveryCount)
-and $Call-Message-Sequence-Validation/root/IsInSequence="false"))</pd:xpath>
+and $Call-Message-Sequence-Validation/root/IsInSequence="false")))</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Catch</pd:from>
@@ -851,7 +853,7 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Message-Sequence-Validation/root/IsInSequence="true" or $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag = "true"</pd:xpath>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="false" and ($Call-Message-Sequence-Validation/root/IsInSequence="true" or $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag = "true")</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>HandleEmergencyPrices</pd:from>
@@ -967,5 +969,14 @@ $_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariab
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm on Success</pd:from>
+        <pd:to>Archive Message</pd:to>
+        <pd:xpathDescription>Already Processed</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true"</pd:xpath>
     </pd:transition>
 </pd:ProcessDefinition>
