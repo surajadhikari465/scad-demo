@@ -66,5 +66,5 @@ AS
 	WHERE Authorized =1
 GO
 
-GRANT SELECT ON [dbo].[ItemsByAuthorizedStores] TO dds_esl_role
+GRANT SELECT ON [esl].[ItemsByAuthorizedStores] TO dds_esl_role
 GO
