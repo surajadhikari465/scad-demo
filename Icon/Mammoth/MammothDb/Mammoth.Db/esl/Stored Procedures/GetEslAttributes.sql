@@ -5,7 +5,6 @@
 AS
 BEGIN
 
-PRINT 'Start Time: ' + CONVERT(nvarchar, GETDATE(), 121);
 -- Set Attribute IDs
 DECLARE @flexTextId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'FXT');
 DECLARE @fairTradeId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'FT');
@@ -88,11 +87,68 @@ CREATE TABLE #itemExtended
 	Ingredients nvarchar(4000) NULL,
 	ServingsPerPortion float NULL,
 	ServingSizeDesc nvarchar(50) NULL,
+	ServingPerContainer nvarchar(50) NULL,
+	HshRating int NULL,
+	ServingUnits tinyint NULL,
+	SizeWeight int NULL,
 	Calories int NULL,
+	CaloriesFat int NULL,
 	CaloriesSaturatedFat int NULL,
 	TotalFatWeight decimal(10, 1) NULL,
+	TotalFatPercentage smallint NULL,
+	SaturatedFatWeight decimal(10, 1) NULL,
+	SaturatedFatPercent smallint NULL,
+	PolyunsaturatedFat decimal(10, 1) NULL,
+	MonounsaturatedFat decimal(10, 1) NULL,
+	CholesterolWeight decimal(10, 1) NULL,
+	CholesterolPercent smallint NULL,
 	SodiumWeight decimal(10, 1) NULL,
-	Sugar decimal(10, 1) NULL
+	SodiumPercent smallint NULL,
+	PotassiumWeight decimal(10, 1) NULL,
+	PotassiumPercent smallint NULL,
+	TotalCarbohydrateWeight decimal(10, 1) NULL,
+	TotalCarbohydratePercent smallint NULL,
+	DietaryFiberWeight decimal(10, 1) NULL,
+	DietaryFiberPercent smallint NULL,
+	SolubleFiber decimal(10, 1) NULL,
+	InsolubleFiber decimal(10, 1) NULL,
+	Sugar decimal(10, 1) NULL,
+	SugarAlcohol decimal(10, 1) NULL,
+	OtherCarbohydrates decimal(10, 1) NULL,
+	ProteinWeight decimal(10, 1) NULL,
+	ProteinPercent smallint NULL,
+	VitaminA smallint NULL,
+	Betacarotene smallint NULL,
+	VitaminC smallint NULL,
+	Calcium smallint NULL,
+	Iron smallint NULL,
+	VitaminD smallint NULL,
+	VitaminE smallint NULL,
+	Thiamin smallint NULL,
+	Riboflavin smallint NULL,
+	Niacin smallint NULL,
+	VitaminB6 smallint NULL,
+	Folate smallint NULL,
+	VitaminB12 smallint NULL,
+	Biotin smallint NULL,
+	PantothenicAcid smallint NULL,
+	Phosphorous smallint NULL,
+	Iodine smallint NULL,
+	Magnesium smallint NULL,
+	Zinc smallint NULL,
+	Copper smallint NULL,
+	Transfat decimal(10, 1) NULL,
+	CaloriesFromTransFat int NULL,
+	Om6Fatty decimal(10, 1) NULL,
+	Om3Fatty decimal(10, 1) NULL,
+	Starch decimal(10, 1) NULL,
+	Chloride smallint NULL,
+	Chromium smallint NULL,
+	VitaminK smallint NULL,
+	Manganese smallint NULL,
+	Molybdenum smallint NULL,
+	Selenium smallint NULL,
+	TransFatWeight decimal(10, 1) NULL
 )
 
 -- Pull ItemStore Keys from the staging table while also deleting at the same time
@@ -202,10 +258,68 @@ SET
 	Ingredients = n.Ingredients,
 	ServingsPerPortion = n.ServingsPerPortion,
 	ServingSizeDesc = n.ServingSizeDesc,
+	ServingPerContainer = n.ServingPerContainer,
+	HshRating = n.HshRating,
+	ServingUnits = n.ServingUnits,
+	SizeWeight = n.SizeWeight,
 	Calories = n.Calories,
+	CaloriesFat = n.CaloriesFat,
+	CaloriesSaturatedFat = n.CaloriesSaturatedFat,
 	TotalFatWeight = n.TotalFatWeight,
+	TotalFatPercentage = n.TotalFatPercentage,
+	SaturatedFatWeight = n.SaturatedFatWeight,
+	SaturatedFatPercent = n.SaturatedFatPercent,
+	PolyunsaturatedFat = n.PolyunsaturatedFat,
+	MonounsaturatedFat = n.MonounsaturatedFat,
+	CholesterolWeight = n.CholesterolWeight,
+	CholesterolPercent = n.CholesterolPercent,
 	SodiumWeight = n.SodiumWeight,
-	Sugar = n.Sugar
+	SodiumPercent = n.SodiumPercent,
+	PotassiumWeight = n.PotassiumWeight,
+	PotassiumPercent = n.PotassiumPercent,
+	TotalCarbohydrateWeight = n.TotalCarbohydrateWeight,
+	TotalCarbohydratePercent = n.TotalCarbohydratePercent,
+	DietaryFiberWeight = n.DietaryFiberWeight,
+	DietaryFiberPercent = n.DietaryFiberPercent,
+	SolubleFiber = n.SolubleFiber,
+	InsolubleFiber = n.InsolubleFiber,
+	Sugar = n.Sugar,
+	SugarAlcohol = n.SugarAlcohol,
+	OtherCarbohydrates = n.OtherCarbohydrates,
+	ProteinWeight = n.ProteinWeight,
+	ProteinPercent = n.ProteinPercent,
+	VitaminA = n.VitaminA,
+	Betacarotene = n.Betacarotene,
+	VitaminC = n.VitaminC,
+	Calcium = n.Calcium,
+	Iron = n.Iron,
+	VitaminD = n.VitaminD,
+	VitaminE = n.VitaminE,
+	Thiamin = n.Thiamin,
+	Riboflavin = n.Riboflavin,
+	Niacin = n.Niacin,
+	VitaminB6 = n.VitaminB6,
+	Folate = n.Folate,
+	VitaminB12 = n.VitaminB12,
+	Biotin = n.Biotin,
+	PantothenicAcid = n.PantothenicAcid,
+	Phosphorous = n.Phosphorous,
+	Iodine = n.Iodine,
+	Magnesium = n.Magnesium,
+	Zinc = n.Zinc,
+	Copper = n.Copper,
+	Transfat = n.Transfat,
+	CaloriesFromTransFat = n.CaloriesFromTransFat,
+	Om6Fatty = n.Om6Fatty,
+	Om3Fatty = n.Om3Fatty,
+	Starch = n.Starch,
+	Chloride = n.Chloride,
+	Chromium = n.Chromium,
+	VitaminK = n.VitaminK,
+	Manganese = n.Manganese,
+	Molybdenum = n.Molybdenum,
+	Selenium = n.Selenium,
+	TransFatWeight = n.TransFatWeight
 FROM #itemExtended ist
 JOIN dbo.ItemAttributes_Nutrition n on ist.ItemID = n.ItemID
 
@@ -262,10 +376,68 @@ SELECT
     ist.Ingredients,
     ist.ServingsPerPortion,
     ist.ServingSizeDesc,
+    ist.ServingPerContainer,
+    ist.HshRating,
+    ist.ServingUnits,
+    ist.SizeWeight,
     ist.Calories,
+    ist.CaloriesFat,
+    ist.CaloriesSaturatedFat,
     ist.TotalFatWeight,
+    ist.TotalFatPercentage,
+    ist.SaturatedFatWeight,
+    ist.SaturatedFatPercent,
+    ist.PolyunsaturatedFat,
+    ist.MonounsaturatedFat,
+    ist.CholesterolWeight,
+    ist.CholesterolPercent,
     ist.SodiumWeight,
-    ist.Sugar
+    ist.SodiumPercent,
+    ist.PotassiumWeight,
+    ist.PotassiumPercent,
+    ist.TotalCarbohydrateWeight,
+    ist.TotalCarbohydratePercent,
+    ist.DietaryFiberWeight,
+    ist.DietaryFiberPercent,
+    ist.SolubleFiber,
+    ist.InsolubleFiber,
+    ist.Sugar,
+    ist.SugarAlcohol,
+    ist.OtherCarbohydrates,
+    ist.ProteinWeight,
+    ist.ProteinPercent,
+    ist.VitaminA,
+    ist.Betacarotene,
+    ist.VitaminC,
+    ist.Calcium,
+    ist.Iron,
+    ist.VitaminD,
+    ist.VitaminE,
+    ist.Thiamin,
+    ist.Riboflavin,
+    ist.Niacin,
+    ist.VitaminB6,
+    ist.Folate,
+    ist.VitaminB12,
+    ist.Biotin,
+    ist.PantothenicAcid,
+    ist.Phosphorous,
+    ist.Iodine,
+    ist.Magnesium,
+    ist.Zinc,
+    ist.Copper,
+    ist.Transfat,
+    ist.CaloriesFromTransFat,
+    ist.Om6Fatty,
+    ist.Om3Fatty,
+    ist.Starch,
+    ist.Chloride,
+    ist.Chromium,
+    ist.VitaminK,
+    ist.Manganese,
+    ist.Molybdenum,
+    ist.Selenium,
+    ist.TransFatWeight
 INTO #globalItem
 FROM #itemExtended			ist
 INNER JOIN dbo.Items				i	on ist.ItemID = i.ItemID
@@ -275,11 +447,9 @@ INNER JOIN dbo.HierarchyClass		b	on i.BrandHCID = b.HierarchyClassID
 INNER JOIN dbo.Hierarchy_Merchandise m	on i.HierarchyMerchandiseID = m.HierarchyMerchandiseID
 INNER JOIN dbo.HierarchyClass		sb	on m.SubBrickHCID = m.SubBrickHCID
 
-PRINT 'Start Global Item Index: ' + CONVERT(nvarchar, GETDATE(), 121);;
 CREATE NONCLUSTERED INDEX IX_#globalItem_ItemID ON #globalItem (ItemID ASC, BusinessUnitID ASC)
 
 -- ItemLocale specific data
-PRINT 'Start ItemLocale Query: ' + CONVERT(nvarchar, GETDATE(), 121);
 UPDATE ist
 SET ColorAdded = ia.AttributeValue
 FROM #itemExtended		ist
@@ -454,10 +624,8 @@ AND il.Region = @Region
 AND v.Region = @Region
 OPTION (RECOMPILE)
 
-PRINT 'Start ItemLocale Index: ' + CONVERT(nvarchar, GETDATE(), 121);;
 CREATE NONCLUSTERED INDEX IX_#itemLocale_ItemID_BusinessUnitID ON #itemLocale (ItemID ASC, BusinessUnitID ASC)
 
-PRINT 'Start Price Query: ' + CONVERT(nvarchar, GETDATE(), 121);;
 -- Gather Price Data
 -- Regular Prices
 SELECT
@@ -577,7 +745,6 @@ INNER JOIN gpm.Prices   sal    ON	sr.Region = sal.Region
 WHERE sal.Region = @Region
 OPTION (RECOMPILE)
 
-PRINT 'Start Price Index: ' + CONVERT(nvarchar, GETDATE(), 121);
 CREATE NONCLUSTERED INDEX IX_#prices_ItemID_BusinessUnitID ON #prices (ItemID ASC, BusinessUnitID ASC)
 	INCLUDE
 	(
@@ -595,8 +762,6 @@ CREATE NONCLUSTERED INDEX IX_#prices_ItemID_BusinessUnitID ON #prices (ItemID AS
 		TprStartDate,
 		TprEndDate
 	);
-
-PRINT 'Start Final Query: ' + CONVERT(nvarchar, GETDATE(), 121);
 
 -- Bring it all together
 SELECT
@@ -654,10 +819,68 @@ SELECT
     g.Ingredients,
     g.ServingsPerPortion,
     g.ServingSizeDesc,
+    g.ServingPerContainer,
+    g.HshRating,
+    g.ServingUnits,
+    g.SizeWeight,
     g.Calories,
+    g.CaloriesFat,
+    g.CaloriesSaturatedFat,
     g.TotalFatWeight,
+    g.TotalFatPercentage,
+    g.SaturatedFatWeight,
+    g.SaturatedFatPercent,
+    g.PolyunsaturatedFat,
+    g.MonounsaturatedFat,
+    g.CholesterolWeight,
+    g.CholesterolPercent,
     g.SodiumWeight,
+    g.SodiumPercent,
+    g.PotassiumWeight,
+    g.PotassiumPercent,
+    g.TotalCarbohydrateWeight,
+    g.TotalCarbohydratePercent,
+    g.DietaryFiberWeight,
+    g.DietaryFiberPercent,
+    g.SolubleFiber,
+    g.InsolubleFiber,
     g.Sugar,
+    g.SugarAlcohol,
+    g.OtherCarbohydrates,
+    g.ProteinWeight,
+    g.ProteinPercent,
+    g.VitaminA,
+    g.Betacarotene,
+    g.VitaminC,
+    g.Calcium,
+    g.Iron,
+    g.VitaminD,
+    g.VitaminE,
+    g.Thiamin,
+    g.Riboflavin,
+    g.Niacin,
+    g.VitaminB6,
+    g.Folate,
+    g.VitaminB12,
+    g.Biotin,
+    g.PantothenicAcid,
+    g.Phosphorous,
+    g.Iodine,
+    g.Magnesium,
+    g.Zinc,
+    g.Copper,
+    g.Transfat,
+    g.CaloriesFromTransFat,
+    g.Om6Fatty,
+    g.Om3Fatty,
+    g.Starch,
+    g.Chloride,
+    g.Chromium,
+    g.VitaminK,
+    g.Manganese,
+    g.Molybdenum,
+    g.Selenium,
+    g.TransFatWeight,
 	il.SupplierItemID			AS VendorItemID,
 	il.SupplierName				AS VendorName,
 	il.IrmaVendorKey			AS VendorKey,
@@ -717,5 +940,5 @@ DROP TABLE #prices
 END
 GO
 
-GRANT EXEC ON [dbo].[GetEslAttributes] TO dds_esl_role
+GRANT EXEC ON [esl].[GetEslAttributes] TO dds_esl_role
 GO
