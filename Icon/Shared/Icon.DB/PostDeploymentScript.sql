@@ -12,3 +12,5 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\Release\__YOUR__SCRIPT__NAME.sql
 */
 
+:r .\Scripts\PopulateData\Release\AddCustomerFriendlyDescriptionTraitCode.sql
+:r .\Scripts\PopulateData\Release\UpdateCustomerFriendlyDescriptionTraitPattern.sql

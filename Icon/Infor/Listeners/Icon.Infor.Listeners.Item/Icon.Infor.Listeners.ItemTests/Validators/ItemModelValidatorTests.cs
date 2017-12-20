@@ -1422,7 +1422,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         public void ValidateCollection_CustomerFriendlyDescriptionIsValid_NoError()
         {
             //Given
-            testItem.CustomerFriendlyDescription = "abcd";
+            testItem.CustomerFriendlyDescription = "!@#$%^&*()_+=-[]{}\\|':'aeionvcxv;198118341~`";
             PerformValidateCollectionWhenAndThenSteps(null, null);
         }
 

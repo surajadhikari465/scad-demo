@@ -759,6 +759,7 @@
     <None Include="Scripts\PopulateData\Release\AddDeliverySystemValues.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
     <None Include="Scripts\PopulateData\Release\InsertHierarchyClassListenerDeleteErrors.sql" />
+    <None Include="Scripts\PopulateData\Release\UpdateCustomerFriendlyDescriptionTraitPattern.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
