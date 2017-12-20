@@ -1413,11 +1413,12 @@ me_err:
         grpManageBy.Visible = InstanceDataDAO.IsFlagActive("ShowManagedBy")
     End Sub
 
-    Private Sub SetGpmFieldsAvailability(ByVal pricesAreGloballyManaged As Boolean)
-        ' only allow users to edit default retail size and default UOM for an item if the whole region is Not on GPM
+    Private Sub SetGpmFieldsAvailability(ByVal pricesAreGloballyManaged As Boolean, ByVal isProduceSubteam As Boolean, ByVal isValidated As Boolean)
+        ' only allow users to edit default retail size and default UOM for an item if the item is either not validated, or if the item is validated, and no stores from the 
+        ' region is on GPM, and the item is from Produce subteam.
         _txtField_Pack.Enabled = Not pricesAreGloballyManaged
-        _txtField_RetailPackSize.Enabled = Not pricesAreGloballyManaged
-        _cmbField_RetailPackUOM.Enabled = Not pricesAreGloballyManaged
+        _txtField_RetailPackSize.Enabled = Not isValidated Or (isValidated And isProduceSubteam And Not pricesAreGloballyManaged)
+        _cmbField_RetailPackUOM.Enabled = Not isValidated Or (isValidated And isProduceSubteam And Not pricesAreGloballyManaged)
     End Sub
 
     Private Sub RefreshDataSource(ByRef lRecord As Integer)
@@ -1431,6 +1432,7 @@ me_err:
         Dim bIsSubTeamEXEDistributed As Boolean
         Dim bDisableBrandAdditions As Boolean = ConfigurationServices.AppSettings("DisableBrandAdditions")
         Dim bIsIngredientItem As Boolean
+        Dim isProduceSubteam As Boolean = False
 
         sUserName = String.Empty
 
@@ -1524,6 +1526,10 @@ me_err:
                     Me.HierarchySelector1.cmbSubTeam.SelectedIndex = -1
                 End If
                 Me.HierarchySelector1.SelectedSubTeamId = plSubTeam_No
+
+                If Not rsItem.Fields("SubTeam_Name").Value.Equals(DBNull.Value) And rsItem.Fields("SubTeam_Name").Value.ToString().ToLower() = "produce" Then
+                    isProduceSubteam = True
+                End If
 
                 System.Windows.Forms.Application.DoEvents() 'To make sure the categories get loaded in this user control before setting the category value
 
@@ -2000,9 +2006,10 @@ me_err:
 
             SetFieldsStates(plSubTeam_No, chkField(iItemRetail_Sale).Checked, bIsIngredientItem, _itemData.IsValidated)
 
-            ' if any store in the region is on GPM, disable default jurisdiction Size/UOM controls
+            ' if any store in the region is on GPM, disable default jurisdiction Size/UOM controls if the item is validated
             Dim anyStoreInRegionIsOnGpm As Boolean = InstanceDataDAO.FlagIsOnForAnyStore("GlobalPriceManagement")
-            SetGpmFieldsAvailability(anyStoreInRegionIsOnGpm)
+
+            SetGpmFieldsAvailability(anyStoreInRegionIsOnGpm, isProduceSubteam, _itemData.IsValidated)
 
         Catch ex As Exception
             logger.Error(ex.Message)

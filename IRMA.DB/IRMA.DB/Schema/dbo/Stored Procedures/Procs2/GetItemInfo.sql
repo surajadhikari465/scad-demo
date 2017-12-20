@@ -20,6 +20,7 @@ DN		2014-10-08	15447	Add function dbo.fn_ValidatedScanCodeExists to assign to Is
 MZ      2015-08-20  16352 (10976) Add check to see if the item has any primary or alternate identifiers 
                                   that are reserved identifiers for non-retail ingredient items
 JA		2016-08-19	20599 (17483) Added Not available for 365 field 
+MZ      2017-12-14  23567   Added Subteam Name to the query.
 ***********************************************************************************************/
 
 BEGIN
@@ -34,6 +35,7 @@ BEGIN
 		Item_Description,
 		Sign_Description,
 		i.SubTeam_No,
+		st.SubTeam_Name,
 		Sales_Account,
 		Package_Desc1,
 		Package_Desc2, 
