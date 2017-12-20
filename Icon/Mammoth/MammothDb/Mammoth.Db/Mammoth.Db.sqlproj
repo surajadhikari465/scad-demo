@@ -166,6 +166,10 @@
     <Folder Include="gpm\Views" />
     <Folder Include="gpm\User Defined Types" />
     <Folder Include="dbo\User Defined Types" />
+    <Folder Include="esl" />
+    <Folder Include="Schemas" />
+    <Folder Include="esl\Stored Procedures" />
+    <Folder Include="esl\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -472,7 +476,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="Security\app.sql" />
     <Build Include="dbo\Stored Procedures\DeleteHierarchyClass_FromStaging.sql" />
     <Build Include="dbo\Stored Procedures\DeleteMerchandiseHierarchy_FromStaging.sql" />
     <Build Include="dbo\Tables\Hierarchy.sql">
@@ -542,7 +545,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="Security\esb.sql" />
     <Build Include="dbo\Tables\ItemAttributes_Sign.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -591,7 +593,6 @@
     <None Include="Storage\FG_TS.sql" />
     <Build Include="esb\Tables\MessageQueuePriceArchive.sql" />
     <Build Include="esb\Tables\MessageQueueItemLocaleArchive.sql" />
-    <Build Include="Security\stage.sql" />
     <Build Include="stage\Tables\Price.sql" />
     <Build Include="app\Tables\PostDeploymentScriptHistory.sql" />
     <None Include="Scripts\PopulateScripts\SeedNonGreeFieldScript.sql" />
@@ -606,7 +607,6 @@
     <Build Include="esb\Stored Procedures\MarkMessageQueueItemLocaleEntriesAsInProcess.sql" />
     <Build Include="esb\Stored Procedures\MarkMessageQueuePriceEntriesAsInProcess.sql" />
     <Build Include="app\Stored Procedures\PurgeMessageQueues.sql" />
-    <Build Include="Security\gpm.sql" />
     <Build Include="gpm\Tables\Price_FL.sql">
       <AnsiNulls>On</AnsiNulls>
     </Build>
@@ -717,6 +717,17 @@
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesExt.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />
     <Build Include="stage\Tables\ItemStoreKeysEsl.sql" />
+    <Build Include="dbo\Views\ItemLocaleAttributes.sql" />
+    <Build Include="dbo\Views\ItemLocaleAttributesExt.sql" />
+    <Build Include="dbo\Views\ItemLocaleSupplier.sql" />
+    <Build Include="Schemas\app.sql" />
+    <Build Include="Schemas\esb.sql" />
+    <Build Include="Schemas\gpm.sql" />
+    <Build Include="Schemas\stage.sql" />
+    <Build Include="Schemas\esl.sql" />
+    <Build Include="esl\Stored Procedures\GetEslAttributes.sql" />
+    <Build Include="esl\Views\ItemsByAuthorizedStores.sql" />
+    <Build Include="esl\Views\ItemStoresByBrandID.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -736,6 +747,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddJobSchedulerToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddGpmPriceTypes.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddActivePriceSentArchiveToRetentionPolicy.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddGlobalPricingProgramToAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
