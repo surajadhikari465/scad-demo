@@ -36,3 +36,4 @@ ELSE
 BEGIN
 	print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Pop-data already applied: ' + @scriptKey
 END
+go
