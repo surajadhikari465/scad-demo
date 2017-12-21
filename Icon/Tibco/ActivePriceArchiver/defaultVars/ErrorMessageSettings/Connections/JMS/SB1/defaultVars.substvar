@@ -3,28 +3,28 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!u0qip0uFr5cg21lkpOn6vQ==</value>
-			<deploymentSettable>false</deploymentSettable>
+			<value>#!LYatJDSC5J/TnbQjZdU2s8ZXLx+l0LqPKosIohWRiACOHEzdLTe1AAJYqZUTSyykkKY1WKYxeD4=</value>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
 			<constraint></constraint>
-			<modTime>1510864760528</modTime>
+			<modTime>1513378389491</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Url</name>
-			<value>tcp://localhost:7222</value>
-			<deploymentSettable>false</deploymentSettable>
+			<value>ssl://cerd1616.wfm.pvt:7233</value>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510864760597</modTime>
+			<modTime>1513378389560</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
-			<value></value>
-			<deploymentSettable>false</deploymentSettable>
+			<value>sb1_mammothPriceUser</value>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510864760663</modTime>
+			<modTime>1513378389628</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
