@@ -4,9 +4,11 @@
     [BusinessUnitID] INT            NOT NULL,
     [StoreName]      NVARCHAR (255) NOT NULL,
     [StoreAbbrev]    NVARCHAR (5)   NOT NULL,
+	[PhoneNumber]	 NVARCHAR (255) NULL,
     [AddedDate]      DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]   DATETIME       NULL,
-    CONSTRAINT [PK_Locales_SO] PRIMARY KEY CLUSTERED ([Region] ASC, [LocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_SO]
+    CONSTRAINT [PK_Locales_SO] PRIMARY KEY CLUSTERED ([Region] ASC, [LocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_SO],
+    CONSTRAINT [CK_Locales_SO_Region] CHECK ([Region] = 'SO')
 );
 
 GO

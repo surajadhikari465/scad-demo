@@ -717,6 +717,7 @@
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesExt.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />
     <Build Include="stage\Tables\ItemStoreKeysEsl.sql" />
+    <Build Include="dbo\Tables\StoreAddress.sql" />
     <Build Include="dbo\Views\ItemLocaleAttributes.sql" />
     <Build Include="dbo\Views\ItemLocaleAttributesExt.sql" />
     <Build Include="dbo\Views\ItemLocaleSupplier.sql" />

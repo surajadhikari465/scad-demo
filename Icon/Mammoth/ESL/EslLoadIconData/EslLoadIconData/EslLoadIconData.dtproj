@@ -26,12 +26,13 @@
           <SSIS:Property SSIS:Name="CreatorComputerName">CECEN-4VC2N72</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAnOloLygdlU6h8pcDkuQN6wAAAAACAAAAAAADZgAAwAAAABAAAADOOg2aE0QtErj/x7GY4dtQAAAAAASAAACgAAAAEAAAAK8+Xen+BshFxfH5m330N5yIAAAAOPMqBbVBMNOzm5DQ/MlEf9QC/T5plZS85mR0LcKtgbc422Kd6aQBWUdvR3bkPsppDI8vb3ijRS4S5LLHxEB5tLAbtXOzH+1Gnq8NATONCPMjUBftEWlgv6X90+s9HUTQEo8ttBkIZuGYWchcGH6/msZjy5PBZIhaQ45fBEyILH5KeE1skBX+ORQAAACJG9fqz4ce/86fvjXe9kf0QNPm4w==</SSIS:Property>
+          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAnOloLygdlU6h8pcDkuQN6wAAAAACAAAAAAADZgAAwAAAABAAAABMB+zVU06+LASXIYjw4oIXAAAAAASAAACgAAAAEAAAAMom9UHM+qxdLNxQzY/zpeeIAAAA32Jv5FPTLa63zP1JC9G3WGi2oXB/xnWpDdVY6oURuzZJVHgFwB+x5joSW7jv1yIilrsRXn6tdlSJCuTfXwOx/SV25F8uPZuWBOmMz2VP0DfR7h2v71PEnxeorHSoAwBVskyv6ncMlKflvyRHk5t2IIHKg9YWXDeL92buDgZmVFSdnAuEgkngeRQAAACL7Ccdv0RncL4deUei8dIOTu/1bA==</SSIS:Property>
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
           <SSIS:Package SSIS:Name="LoadNutrition.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="LoadItemSignAttributes.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="LoadStoreData.dtsx" SSIS:EntryPoint="1" />
         </SSIS:Packages>
         <SSIS:ConnectionManagers>
           <SSIS:ConnectionManager SSIS:Name="Icon.conmgr" />
@@ -244,6 +245,23 @@
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionGUID">{AE87594B-E480-4572-8A8F-7670BFA8CDC5}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="LoadStoreData.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{649593CB-1B62-497E-9114-316FD5A2821A}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">LoadStoreData</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">6</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{DF50264F-D667-425E-A076-3E8F16D54FE1}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>

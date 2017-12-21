@@ -11,6 +11,8 @@ namespace Mammoth.Esb.LocaleListener.MessageParsers
 {
     public class LocaleMessageParser : IMessageParser<List<LocaleModel>>
     {
+        private const string PhoneNumberTraitCode = "PHN";
+        private const string StoreAbbreviationTraitCode = "SAB";
         private Dictionary<string, string> regionNameToCodeDictionary;
         private XmlSerializer serializer;
         private TextReader textReader;
@@ -77,13 +79,35 @@ namespace Mammoth.Esb.LocaleListener.MessageParsers
 
         private LocaleModel ParseStore(LocaleType region, LocaleType store)
         {
+            var address = store.addresses[0].type.Item as PhysicalAddressType;
+
             return new LocaleModel
             {
                 Region = regionNameToCodeDictionary[region.name],
                 StoreName = store.name,
                 BusinessUnitID = int.Parse(store.id),
-                StoreAbbrev = store.traits.First(t => t.code == "SAB").type.value[0].value
+                StoreAbbrev = GetTraitValue(store, StoreAbbreviationTraitCode),
+                PhoneNumber = GetTraitValue(store, PhoneNumberTraitCode),
+                Address1 = address.addressLine1,
+                Address2 = address.addressLine2,
+                Address3 = address.addressLine3,
+                City = address.cityType.name,
+                Country = address.country.name,
+                CountryAbbrev = address.country.code,
+                PostalCode = address.postalCode,
+                Territory = address.territoryType.name,
+                TerritoryAbbrev = address.territoryType.code,
+                Timezone = address.timezone.code
             };
+        }
+
+        private static string GetTraitValue(LocaleType store, string traitCode)
+        {
+            var trait = store.traits.FirstOrDefault(t => t.code == traitCode);
+            if (trait != null)
+                return trait.type.value[0].value;
+            else
+                return null;
         }
     }
 }

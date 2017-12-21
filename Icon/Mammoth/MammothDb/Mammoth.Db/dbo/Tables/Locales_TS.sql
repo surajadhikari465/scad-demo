@@ -4,11 +4,12 @@ CREATE TABLE [dbo].[Locales_TS](
 	[BusinessUnitID]	[int]							NOT NULL,
 	[StoreName]			[nvarchar](255)					NOT NULL,
 	[StoreAbbrev]		[nvarchar](5)					NOT NULL,
+	[PhoneNumber]		[nvarchar](255)					NULL,
 	[AddedDate]			[datetime]	DEFAULT (getdate()) NOT NULL,
 	[ModifiedDate]		[datetime]						NULL,
-CONSTRAINT [PK_Locales_TS] PRIMARY KEY CLUSTERED ([Region] ASC,	[LocaleID] ASC)
-WITH (FILLFACTOR = 100) ON [FG_RM]) ON [FG_RM]
-GO
+	CONSTRAINT [PK_Locales_TS] PRIMARY KEY CLUSTERED ([Region] ASC,	[LocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_RM],
+    CONSTRAINT [CK_Locales_TS_Region] CHECK ([Region] = 'TS')
+);
 
 GO
 

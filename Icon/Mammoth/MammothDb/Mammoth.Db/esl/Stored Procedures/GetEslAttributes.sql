@@ -769,7 +769,7 @@ SELECT
 	g.ItemID,
 	il.BusinessUnitID,
 	il.StoreName,
-	'TX' AS GeographicalState, -- Need to update once this value is available in the Locales_XX table
+	sa.TerritoryAbbrev			AS GeographicalState,
 	g.ScanCode,
 	g.itemTypeDesc				AS ItemType,
 	g.BrandName,
@@ -927,6 +927,7 @@ INNER JOIN #itemLocale	il	on g.ItemID = il.ItemID
 							AND g.BusinessUnitID = il.BusinessUnitID
 INNER JOIN #prices		p	on g.ItemID = p.ItemID
 							AND g.BusinessUnitID = p.BusinessUnitID
+INNER JOIN StoreAddress	sa	on g.BusinessUnitID = sa.BusinessUnitID
 
 PRINT 'End Final Query: ' + CONVERT(nvarchar, GETDATE(), 121);
 

@@ -6,5 +6,6 @@
     [StoreAbbrev]    NVARCHAR (5)   NOT NULL,
     [AddedDate]      DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]   DATETIME       NULL,
-    CONSTRAINT [PK_Locales_UK] PRIMARY KEY CLUSTERED ([Region] ASC, [LocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_UK]
+    CONSTRAINT [PK_Locales_UK] PRIMARY KEY CLUSTERED ([Region] ASC, [LocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_UK],
+    CONSTRAINT [CK_Locales_UK_Region] CHECK ([Region] = 'UK')
 );

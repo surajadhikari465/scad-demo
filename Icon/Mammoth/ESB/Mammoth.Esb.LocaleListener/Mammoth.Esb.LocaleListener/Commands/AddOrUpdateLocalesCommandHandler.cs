@@ -19,16 +19,74 @@ namespace Mammoth.Esb.LocaleListener.Commands
 	                    SELECT
                             @BusinessUnitID AS BusinessUnitID,
 		                    @StoreName AS StoreName,
-		                    @StoreAbbrev AS StoreAbbrev
+		                    @StoreAbbrev AS StoreAbbrev,
+                            @PhoneNumber AS PhoneNumber
                     ) AS s
                     ON l.BusinessUnitID = s.BusinessUnitId
                     WHEN MATCHED THEN
 	                    UPDATE SET StoreName = s.StoreName,
                                     StoreAbbrev = s.StoreAbbrev,
+                                    PhoneNumber = s.PhoneNumber,
                                     ModifiedDate = GETDATE()
                     WHEN NOT MATCHED THEN
-	                    INSERT (BusinessUnitID, StoreName, StoreAbbrev)
-                        VALUES (s.BusinessUnitID, s.StoreName, s.StoreAbbrev);";
+	                    INSERT (BusinessUnitID, StoreName, StoreAbbrev, PhoneNumber)
+                        VALUES (s.BusinessUnitID, s.StoreName, s.StoreAbbrev, s.PhoneNumber);
+
+                    MERGE dbo.StoreAddress AS sa
+                    USING
+                    (
+                        SELECT
+                            @BusinessUnitID AS BusinessUnitID,
+                            @Address1 AS Address1,
+                            @Address2 AS Address2,
+                            @Address3 AS Address3,
+                            @City AS City,
+                            @Territory AS Territory,
+                            @TerritoryAbbrev AS TerritoryAbbrev,
+                            @PostalCode AS PostalCode,
+                            @Country AS Country,
+                            @CountryAbbrev AS CountryAbbrev,
+                            @Timezone AS Timezone
+                    ) AS a
+                    ON sa.BusinessUnitID = a.BusinessUnitID
+                    WHEN MATCHED THEN
+                        UPDATE SET 
+                                Address1 = a.Address1,
+                                Address2 = a.Address2,
+                                Address3 = a.Address3,
+                                City = a.City,
+                                Territory = a.Territory,
+                                TerritoryAbbrev = a.TerritoryAbbrev,
+                                PostalCode = a.PostalCode,
+                                Country = a.Country,
+                                CountryAbbrev = a.CountryAbbrev,
+                                Timezone = a.Timezone,
+                                ModifiedDate = GETDATE()
+                    WHEN NOT MATCHED THEN
+                        INSERT (BusinessUnitID,
+                                Address1,
+                                Address2,
+                                Address3,
+                                City,
+                                Territory,
+                                TerritoryAbbrev,
+                                PostalCode,
+                                Country,
+                                CountryAbbrev,
+                                Timezone,
+                                AddedDate)
+                        VALUES (a.BusinessUnitID,
+                                a.Address1,
+                                a.Address2,
+                                a.Address3,
+                                a.City,
+                                a.Territory,
+                                a.TerritoryAbbrev,
+                                a.PostalCode,
+                                a.Country,
+                                a.CountryAbbrev,
+                                a.Timezone,
+                                GETDATE());";
         }
 
         public void Execute(AddOrUpdateLocalesCommand data)
@@ -38,7 +96,8 @@ namespace Mammoth.Esb.LocaleListener.Commands
             {
                 string formattedSql = string.Format(sql, localeGroup.Key);
 
-                dbProvider.Connection.Execute(formattedSql,
+                dbProvider.Connection.Execute(
+                    formattedSql,
                     localeGroup,
                     dbProvider.Transaction);
             }
