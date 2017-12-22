@@ -137,6 +137,7 @@
     <Folder Include="Scripts\20620 - AddAppConfigForOrderingBannerStore" />
     <Folder Include="Scripts\22981-AddInstanceDataFlagForExtraTextLineFeed" />
     <Folder Include="Scripts\23005-AddAllergensAndIngredientsToEIM" />
+    <Folder Include="Scripts\22440 - AddOrderedByInforToEIM" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3259,6 +3260,7 @@
     <Build Include="Schema\dbo\User Defined Types\StoreNoItemIdentiferType.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_InsertUpdateAllergen.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_InsertUpdateIngredient.sql" />
+    <None Include="Scripts\22440 - AddOrderedByInforToEIM\22440 - AddOrderedByInforToEIM.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
@@ -3273,6 +3275,7 @@
     <None Include="Scripts\22981-AddInstanceDataFlagForExtraTextLineFeed\AddInstanceDataFlageForExtraTextAndStorageDataLineFeed.RollBack.sql" />
     <None Include="Scripts\23005-AddAllergensAndIngredientsToEIM\AddAllergensAndIngredientsToEIM.sql" />
     <None Include="Scripts\23005-AddAllergensAndIngredientsToEIM\AddAllergensAndIngredientsToEIM.RollBack.sql" />
+    <None Include="Scripts\22440 - AddOrderedByInforToEIM\22440 - AddOrderedByInforToEIM.RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">
@@ -3286,5 +3289,8 @@
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeploy.Main.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="IRMA.DB.refactorlog" />
   </ItemGroup>
 </Project>

@@ -26,7 +26,7 @@
 	@ItemSurcharge int,
 	@ECommerce bit = 0,
 	@ItemStatusCode int,
-	@OrderedByPredictix bit = 0
+	@OrderedByInfor bit = 0
 AS 
 
 
@@ -39,7 +39,7 @@ AS
 -- Modification History:
 -- Date       	Init  	TFS   	Comment
 -- 10/22/2013	DN		13402	SP creation. Use by IRMA client only with the additional ECommerce field
--- 12/07/2017	EM		22438	Add OrderedByPredictix parameter
+-- 12/07/2017	EM		22438	Add OrderedByInfor parameter
 -- **************************************************************************************************
 
 BEGIN
@@ -74,12 +74,12 @@ BEGIN
     WHERE Item_Key = @Item_Key AND Store_No = @Store_No
 
 	IF NOT EXISTS (SELECT 1 FROM StoreItemExtended WHERE Store_No = @Store_No AND Item_Key = @Item_Key)
-		INSERT INTO StoreItemExtended (Store_No, Item_Key, ItemStatusCode, OrderedByPredictix)
-		VALUES (@Store_No, @Item_Key, @ItemStatusCode, @OrderedByPredictix)
+		INSERT INTO StoreItemExtended (Store_No, Item_Key, ItemStatusCode, OrderedByInfor)
+		VALUES (@Store_No, @Item_Key, @ItemStatusCode, @OrderedByInfor)
 	ELSE
 		UPDATE StoreItemExtended
 		SET ItemStatusCode = @ItemStatusCode,
-			OrderedByPredictix = @OrderedByPredictix
+			OrderedByInfor = @OrderedByInfor
 		WHERE Store_No = @Store_No	
 			AND Item_Key = @Item_Key
     

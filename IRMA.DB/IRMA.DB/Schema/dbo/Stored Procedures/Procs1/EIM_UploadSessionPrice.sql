@@ -24,6 +24,7 @@ AS
 --                                      @ToUpload_DiscontinueItem rather than @DiscontinueItem
 -- 2017-08-04   Min Zhao        22494   Added ItemStatusCode store/item attribute to EIM Price upload.
 -- 2017-10-21   Min Zhao        20173   Stop generating PBD records for GPM stores thru EIM Price Data update
+-- 2017-12-20   Min Zhao        22440   Added OrderedByInfor store/item attribute to EIM Price upload.
 -- **************************************************************************
 	set nocount on
 	
@@ -91,6 +92,7 @@ AS
 		@ItemSurcharge int,
 		@DiscontinueItem bit,
 		@ItemStatusCode int,
+		@OrderedByInfor bit,
 
 		-- These are used to indicate whether specific attribute
 		-- have been uploaded by the user.
@@ -132,8 +134,9 @@ AS
 		@HasValue_ItemSurcharge bit,
 		@HasValue_DiscontinueItem bit,
 		@HasValue_ItemStatusCode bit,
-
+		@HasValue_OrderedByInfor bit,
 		@ValueChanged_ItemStatusCode bit,
+		@ValueChanged_OrderedByInfor bit,
 
 		-- These hold the current db values for a given item and store
 		-- and are used when the corresponding attribute is not in the uploaded data.
@@ -172,6 +175,7 @@ AS
 		@FromDB_ItemSurcharge int,
 		@FromDB_DiscontinueItem bit,
 		@FromDB_ItemStatusCode int,
+		@FromDB_OrderedByInfor bit,
 
 		-- These hold the actual value being updated or inserted
 		-- into the database and are either set to the value of the
@@ -247,6 +251,7 @@ AS
 	SET @HasValue_ItemSurcharge = 0
 	SET @HasValue_DiscontinueItem = 0
 	SET @HasValue_ItemStatusCode = 0
+	SET @HasValue_OrderedByInfor = 0
 			
 	EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '5.0 Price Change - [Begin]'
 	
@@ -490,10 +495,15 @@ AS
 		END
 		ELSE IF @TableName = 'storeitemextended'
 		BEGIN				
-			if @ColumnName = 'ItemStatusCode'
+			IF @ColumnName = 'ItemStatusCode'
 			BEGIN
-				select @ItemStatusCode = CAST(@ColumnValue AS INT)
+				SELECT @ItemStatusCode = CAST(@ColumnValue AS INT)
 				SET @HasValue_ItemStatusCode = 1
+			END
+			ELSE IF @ColumnName = 'OrderedByInfor'
+			BEGIN
+				SELECT @OrderedByInfor = CAST(@ColumnValue AS bit)
+				SET @HasValue_OrderedByInfor = 1
 			END
 		END
 		ELSE IF @TableName = 'calculated'
@@ -635,7 +645,8 @@ AS
 			AND siv.Store_No = @Store_No
 		
 		SELECT
-			@FromDB_ItemStatusCode = sie.ItemStatusCode
+			@FromDB_ItemStatusCode = sie.ItemStatusCode,
+			@FromDB_OrderedByInfor = sie.OrderedByInfor
 		FROM
 			dbo.StoreItemExtended sie (NOLOCK)
 		WHERE
@@ -686,6 +697,7 @@ AS
 		SET @ToUpload_DiscontinueItem = CASE WHEN @HasValue_DiscontinueItem = 1 THEN @DiscontinueItem ELSE @FromDB_DiscontinueItem END
 
 		SET @ValueChanged_ItemStatusCode = CASE WHEN @HasValue_ItemStatusCode = 1 and ISNULL(@ItemStatusCode, -1) <> ISNULL(@FromDB_ItemStatusCode, -1) THEN 1 ELSE 0 END
+		SET @ValueChanged_OrderedByInfor = CASE WHEN @HasValue_OrderedByInfor = 1 and ISNULL(@OrderedByInfor, 0) <> ISNULL(@FromDB_OrderedByInfor, 0) THEN 1 ELSE 0 END
 
 		-- is the price change attribute not part
 		-- of the upload
@@ -927,16 +939,25 @@ AS
 
 			END CATCH
 
-			IF @ValueChanged_ItemStatusCode = 1
+			IF @ValueChanged_ItemStatusCode = 1 OR @ValueChanged_OrderedByInfor = 1
 			BEGIN
 				BEGIN TRY
 					-- update non-price Item Status Code value
 					IF NOT EXISTS (SELECT 1 FROM StoreItemExtended WHERE Store_No = @Store_No AND Item_Key = @Item_Key)
- 						INSERT INTO StoreItemExtended (Store_No, Item_Key, ItemStatusCode)
- 						VALUES (@Store_No, @Item_Key, @ItemStatusCode)
+ 						INSERT INTO StoreItemExtended (Store_No, Item_Key, ItemStatusCode, OrderedByInfor)
+ 						VALUES (@Store_No, @Item_Key, @ItemStatusCode, @OrderedByInfor)
  					ELSE
  						UPDATE StoreItemExtended
- 						SET ItemStatusCode = @ItemStatusCode
+ 						SET ItemStatusCode = CASE 
+												WHEN @ValueChanged_ItemStatusCode = 1 
+													THEN @ItemStatusCode 
+												ELSE ItemStatusCode 
+											END,
+							OrderedByInfor = CASE 
+														WHEN @ValueChanged_OrderedByInfor = 1 
+															THEN @OrderedByInfor
+														ELSE OrderedByInfor
+													END
  						WHERE Store_No = @Store_No	
  							AND Item_Key = @Item_Key
 

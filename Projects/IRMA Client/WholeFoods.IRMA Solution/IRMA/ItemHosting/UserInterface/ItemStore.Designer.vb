@@ -112,7 +112,7 @@
         Me.CheckBox_SeniorCitizen = New System.Windows.Forms.CheckBox()
         Me.CheckBox_VisualVerify = New System.Windows.Forms.CheckBox()
         Me.CheckBox_Discontinue = New System.Windows.Forms.CheckBox()
-        Me.CheckBox_OrderedByPredictix = New System.Windows.Forms.CheckBox()
+        Me.CheckBox_OrderedByInfor = New System.Windows.Forms.CheckBox()
         Me.cmbRetailUom = New System.Windows.Forms.ComboBox()
         Me.lbl365RetailUom = New System.Windows.Forms.Label()
         Me._Frame1_1 = New System.Windows.Forms.GroupBox()
@@ -540,12 +540,12 @@
         Me.ToolTip1.SetToolTip(Me.CheckBox_Discontinue, resources.GetString("CheckBox_Discontinue.ToolTip"))
         Me.CheckBox_Discontinue.UseVisualStyleBackColor = True
         '
-        'CheckBox_OrderedByPredictix
+        'CheckBox_OrderedByInfor
         '
-        resources.ApplyResources(Me.CheckBox_OrderedByPredictix, "CheckBox_OrderedByPredictix")
-        Me.CheckBox_OrderedByPredictix.Name = "CheckBox_OrderedByPredictix"
-        Me.ToolTip1.SetToolTip(Me.CheckBox_OrderedByPredictix, resources.GetString("CheckBox_OrderedByPredictix.ToolTip"))
-        Me.CheckBox_OrderedByPredictix.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.CheckBox_OrderedByInfor, "CheckBox_OrderedByInfor")
+        Me.CheckBox_OrderedByInfor.Name = "CheckBox_OrderedByInfor"
+        Me.ToolTip1.SetToolTip(Me.CheckBox_OrderedByInfor, resources.GetString("CheckBox_OrderedByInfor.ToolTip"))
+        Me.CheckBox_OrderedByInfor.UseVisualStyleBackColor = True
         '
         'cmbRetailUom
         '
@@ -762,7 +762,7 @@
         '
         'GroupBox_Authorization
         '
-        Me.GroupBox_Authorization.Controls.Add(Me.CheckBox_OrderedByPredictix)
+        Me.GroupBox_Authorization.Controls.Add(Me.CheckBox_OrderedByInfor)
         Me.GroupBox_Authorization.Controls.Add(Me.CheckBox_AuthorizedItem)
         resources.ApplyResources(Me.GroupBox_Authorization, "GroupBox_Authorization")
         Me.GroupBox_Authorization.ForeColor = System.Drawing.Color.Black
@@ -959,7 +959,7 @@
     Public WithEvents CheckBox_ElectronicShelfTag As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox_Discontinue As System.Windows.Forms.GroupBox
     Friend WithEvents CheckBox_Discontinue As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox_OrderedByPredictix As CheckBox
+    Friend WithEvents CheckBox_OrderedByInfor As CheckBox
     Friend WithEvents ComboBox_AgeCode As System.Windows.Forms.ComboBox
     Friend WithEvents lbl365RetailUom As System.Windows.Forms.Label
     Friend WithEvents cmbScaleUom As System.Windows.Forms.ComboBox

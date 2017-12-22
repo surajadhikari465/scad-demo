@@ -242,7 +242,7 @@ Friend Class frmItemStore
         CheckBox_AuthorizedItem.Checked = _itemStore.Authorized
         CheckBox_Discontinue.Checked = _itemStore.Discontinue
         CheckBox_CompetitiveItem.Checked = _itemStore.CompetitiveItem
-        CheckBox_OrderedByPredictix.Checked = _itemStore.OrderedByPredictix.GetValueOrDefault(False)
+        CheckBox_OrderedByInfor.Checked = _itemStore.OrderedByInfor.GetValueOrDefault(False)
         CheckBox_GrillPrint.Checked = _itemStore.GrillPrint
         CheckBox_LineDiscount.Checked = _itemStore.LineDiscount
         CheckBox_RestrictedHours.Checked = _itemStore.RestrictedHours
@@ -466,7 +466,7 @@ Friend Class frmItemStore
         _itemStore.Discountable = CheckBox_EmployeeDiscount.Checked
         _itemStore.RefreshPOSInfo = CheckBox_RefreshPOSInfo.Checked
         _itemStore.LocalItem = CheckBox_LocalItem.Checked
-        _itemStore.OrderedByPredictix = CheckBox_OrderedByPredictix.Checked
+        _itemStore.OrderedByInfor = CheckBox_OrderedByInfor.Checked
         If String.IsNullOrWhiteSpace(cmbItemStatusCode.SelectedItem) Then
             _itemStore.ItemStatusCode = Nothing
         Else

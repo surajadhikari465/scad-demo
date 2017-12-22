@@ -249,8 +249,8 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                     If (Not results.IsDBNull(results.GetOrdinal("ItemStatusCode"))) Then
                         itemStore.ItemStatusCode = results.GetInt32(results.GetOrdinal("ItemStatusCode"))
                     End If
-                    If (Not results.IsDBNull(results.GetOrdinal("OrderedByPredictix"))) Then
-                        itemStore.OrderedByPredictix = results.GetBoolean(results.GetOrdinal("OrderedByPredictix"))
+                    If (Not results.IsDBNull(results.GetOrdinal("OrderedByInfor"))) Then
+                        itemStore.OrderedByInfor = results.GetBoolean(results.GetOrdinal("OrderedByInfor"))
                     End If
                 End While
             Finally
@@ -751,8 +751,8 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             paramList.Add(currentParam)
 
             currentParam = New DBParam
-            currentParam.Name = "OrderedByPredictix"
-            currentParam.Value = itemStore.OrderedByPredictix
+            currentParam.Name = "OrderedByInfor"
+            currentParam.Value = itemStore.OrderedByInfor
             currentParam.Type = DBParamType.Bit
             paramList.Add(currentParam)
 

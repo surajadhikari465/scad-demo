@@ -50,7 +50,7 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
         Private _fixedWeight As String
         Private _byCount As Integer
         Private _itemStatusCode As Integer?
-        Private _orderedByPredictix As Boolean?
+        Private _orderedByInfor As Boolean?
 
 #Region "Property Access Methods"
         Public Property ItemKey() As Integer
@@ -491,12 +491,12 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
             End Set
         End Property
 
-        Public Property OrderedByPredictix() As Boolean?
+        Public Property OrderedByInfor() As Boolean?
             Get
-                Return _orderedByPredictix
+                Return _orderedByInfor
             End Get
             Set(ByVal value As Boolean?)
-                _orderedByPredictix = value
+                _orderedByInfor = value
             End Set
         End Property
 
