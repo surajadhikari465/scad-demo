@@ -197,6 +197,7 @@
     <Compile Include="App_Start\SimpleInjectorInitializer.cs" />
     <Compile Include="Controllers\CheckPointRequestController.cs" />
     <Compile Include="Controllers\ManageJobsController.cs" />
+    <Compile Include="Controllers\PriceRefreshController.cs" />
     <Compile Include="Controllers\PriceResetController.cs" />
     <Compile Include="Controllers\EventCreatorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -302,6 +303,7 @@
     <Content Include="Views\ManageJobs\Create.cshtml" />
     <Content Include="Views\CheckPointRequest\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\JobScheduleViewModel.cshtml" />
+    <Content Include="Views\PriceRefresh\Index.cshtml" />
     <None Include="Web.Dev.Config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
