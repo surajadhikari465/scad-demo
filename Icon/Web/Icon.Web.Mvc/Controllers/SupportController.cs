@@ -2,7 +2,6 @@
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
-using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Queries;
@@ -16,13 +15,12 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Controllers
 {
-    [Authorize(Roles = "WFM\\IRMA.Applications, WFM\\IRMA.Developers")]
     public class SupportController : Controller
     {
         private ILogger logger;
         private IQueryHandler<GetHierarchyParameters, List<Hierarchy>> hierarchyQuery;
         private IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> hierarchyClassQuery;
-        private IManagerHandler<DeleteHierarchyClassManager> deleteHierarchyClass;
+        private IManagerHandler<DeleteHierarchyClassManager> deleteClassManagerHandler;
 
         public SupportController(ILogger logger,
             IQueryHandler<GetHierarchyParameters, List<Hierarchy>> hierarchyQuery,
@@ -32,34 +30,50 @@ namespace Icon.Web.Controllers
             this.logger = logger;
             this.hierarchyQuery = hierarchyQuery;
             this.hierarchyClassQuery = hierarchyClassQuery;
-            this.deleteHierarchyClass = deleteHierarchyClass;
+            this.deleteClassManagerHandler = deleteHierarchyClass;
         }
 
         //
         // GET: /Support/
+        [SupportAccessAuthorize]
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
+        [SupportAccessAuthorize]
         public ActionResult ChooseHierarchyClass()
         {
             return View();
         }
 
         [HttpGet]
+        [SupportAccessAuthorize]
         public ActionResult DeleteHierarchyClass(int? hierarchyClassId)
         {
+            //validate parameter for positive value
             if (hierarchyClassId.GetValueOrDefault(0) < 1)
             {
+                ViewData["ErrorMessage"] = "Error: invalid Hierarchy Class ID parameter submitted (" +
+                    (hierarchyClassId.HasValue ? hierarchyClassId.Value.ToString() : "null") + ")";
                 return RedirectToAction("ChooseHierarchyClass");
             }
 
-            GetHierarchyClassByIdParameters hierarchyClassParameters = 
-                new GetHierarchyClassByIdParameters { HierarchyClassId = hierarchyClassId.Value };
-            HierarchyClass hierarchyClass = hierarchyClassQuery.Search(hierarchyClassParameters);
+            //query for hierarchyClass object using parameter
+            var hierarchyClassParameters = new GetHierarchyClassByIdParameters { HierarchyClassId = hierarchyClassId.Value };
+            var hierarchyClass = hierarchyClassQuery.Search(hierarchyClassParameters);
 
+            // verify that the query found good data
+            if (hierarchyClass?.hierarchyClassID < 1)
+            {
+                ViewData["ErrorMessage"] = "Error: The requested Hierarchy Class ID could not be found (ID: " +
+                    hierarchyClassId.Value.ToString() + "). " +
+                    "Be sure to use the internal Icon database ID, not the infor class code";
+                return RedirectToAction("ChooseHierarchyClass");
+            }
+
+            // transmute data object into view model
             HierarchyClassViewModel viewModel = new HierarchyClassViewModel()
             {
                 HierarchyId = hierarchyClass.Hierarchy.hierarchyID,
@@ -77,11 +91,18 @@ namespace Icon.Web.Controllers
                 NonMerchandiseTrait = HierarchyClassAccessor.GetNonMerchandiseTrait(hierarchyClass)
             };
 
+            // populate subteams for selected hierarchy class 
             if (!String.IsNullOrEmpty(viewModel.SubTeam))
             {
-                var financialHierarchy = hierarchyQuery.Search(new GetHierarchyParameters { HierarchyName = "Financial" });
-                viewModel.SelectedSubTeam = financialHierarchy.Single().HierarchyClass.FirstOrDefault(hc => hc.hierarchyClassName == viewModel.SubTeam).hierarchyClassID;
-                viewModel.SubTeamList = CreateSubTeamDropDown();
+                var financialHierarchy = hierarchyQuery
+                    .Search(new GetHierarchyParameters { HierarchyName = HierarchyNames.Financial })
+                    .Single();
+                var subTeamHierarchyClassCollection = financialHierarchy.HierarchyClass;
+                var selectedSubteamHierarchyClass = subTeamHierarchyClassCollection
+                    .FirstOrDefault(hc => hc.hierarchyClassName == viewModel.SubTeam);
+
+                viewModel.SelectedSubTeam = selectedSubteamHierarchyClass.hierarchyClassID;
+                viewModel.SubTeamList = CreateSubteamSelectList(subTeamHierarchyClassCollection);
             }
 
             return View(viewModel);
@@ -90,7 +111,7 @@ namespace Icon.Web.Controllers
         // POST: /HierarchyClass/Delete/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [WriteAccessAuthorize]
+        [SupportAccessAuthorize]
         public ActionResult DeleteHierarchyClass(HierarchyClassViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -115,14 +136,14 @@ namespace Icon.Web.Controllers
                 return View(viewModel);
             }
 
-            var command = new DeleteHierarchyClassManager
+            var cmdManagerData = new DeleteHierarchyClassManager
             {
                 DeletedHierarchyClass = deletedHierarchyClass
             };
 
             try
             {
-                deleteHierarchyClass.Execute(command);
+                this.deleteClassManagerHandler.Execute(cmdManagerData);
             }
             catch (CommandException exception)
             {
@@ -132,22 +153,20 @@ namespace Icon.Web.Controllers
                 return View(viewModel);
             }
 
-            HierarchySearchViewModel hierarchySearchViewModel = new HierarchySearchViewModel() { SelectedHierarchyId = viewModel.HierarchyId };
-
-            return RedirectToAction("Index", hierarchySearchViewModel);
+            return RedirectToAction(actionName: "ChooseHierarchyClass");
         }
-        
-        private IEnumerable<SelectListItem> CreateSubTeamDropDown()
+
+        private IEnumerable<SelectListItem> CreateSubteamSelectList(IEnumerable<HierarchyClass> hierarchyClasses)
         {
-            var financialHierarchy = hierarchyQuery.Search(new GetHierarchyParameters { HierarchyName = HierarchyNames.Financial });
-            var subTeams = financialHierarchy.Single().HierarchyClass.Select(hc => new SelectListItem
-            {
-                Value = hc.hierarchyClassID.ToString(),
-                Text = hc.hierarchyClassName
-            }).ToList();
-
-            return subTeams.OrderBy(st => st.Text);
+            var subTeams = hierarchyClasses
+                .Select(hc => new SelectListItem
+                {
+                    Value = hc.hierarchyClassID.ToString(),
+                    Text = hc.hierarchyClassName
+                })
+                .ToList()
+                .OrderBy(st => st.Text);
+            return subTeams;
         }
-
     }
 }

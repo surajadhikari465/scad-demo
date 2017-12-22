@@ -94,6 +94,7 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateSubTeamMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<AddHierarchyClassCommand>), typeof(AddHierarchyClassMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<DeleteHierarchyClassCommand>), typeof(DeleteHierarchyClassMammothEventDecorator));
+            container.RegisterDecorator(typeof(ICommandHandler<DeleteHierarchyClassCommand>), typeof(DeleteHierarchyClassIconEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassCommand>), typeof(UpdateHierarchyClassMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<AddBrandCommand>), typeof(AddBrandMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<UpdateBrandCommand>), typeof(UpdateBrandMammothEventDecorator));

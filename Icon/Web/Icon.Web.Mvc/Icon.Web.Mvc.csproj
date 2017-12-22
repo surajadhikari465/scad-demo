@@ -27,6 +27,7 @@
     <SccProvider>SAK</SccProvider>
     <UseGlobalApplicationHostFile />
     <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -252,6 +253,7 @@
     <Compile Include="Attributes\PosScaleTareAttribute.cs" />
     <Compile Include="Attributes\ValueRequiredAttribute.cs" />
     <Compile Include="Attributes\PluAttribute.cs" />
+    <Compile Include="Attributes\SupportAccessAuthorizeAttribute.cs" />
     <Compile Include="Attributes\WriteAccessAuthorizeAttribute.cs" />
     <Compile Include="AutoMapperConverters\IconItemChangeQueueToFailedRegionalItemUpdateViewModelConverter.cs" />
     <Compile Include="AutoMapperConverters\LocaleToMessageQueueLocaleConverter.cs" />

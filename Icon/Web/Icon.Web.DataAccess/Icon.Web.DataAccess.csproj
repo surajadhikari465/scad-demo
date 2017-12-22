@@ -261,6 +261,7 @@
     </Compile>
     <Compile Include="Decorators\BulkImportBrandMammothEventDecorator.cs" />
     <Compile Include="Decorators\CachingQueryHandlerDecorator.cs" />
+    <Compile Include="Decorators\DeleteHierarchyClassIconEventDecorator.cs" />
     <Compile Include="Decorators\DeleteHierarchyClassMammothEventDecorator.cs" />
     <Compile Include="Decorators\TransactionCommandHandlerDecorator.cs" />
     <Compile Include="Decorators\TransactionManagerHandlerDecorator.cs" />

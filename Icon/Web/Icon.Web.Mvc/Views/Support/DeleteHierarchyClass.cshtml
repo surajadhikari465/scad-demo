@@ -6,7 +6,7 @@
 }
 
 <div class="page-section">
-    @using (Html.BeginForm("Delete", "HierarchyClass", FormMethod.Post, new { @class = "begin-form" }))
+    @using (Html.BeginForm("DeleteHierarchyClass", "Support", FormMethod.Post, new { @class = "begin-form" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
@@ -49,12 +49,11 @@
             </div>
 
             <div class="row">
-                @Html.LabelFor(model => model.HierarchyClassName, "Class Name to Delete", new { @class = "col-md-2 form-label" })
+                @Html.LabelFor(model => model.HierarchyClassName, "Class Name", new { @class = "col-md-2 form-label" })
                 <div>
                     @Html.TextBoxFor(model => model.HierarchyClassName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
                 </div>
             </div>
-            <br />
             @* Display Appropriate Hierarchy Class Traits where available *@
             @if (!String.IsNullOrEmpty(Model.TaxAbbreviation))
             {
@@ -114,5 +113,5 @@
 </div>
 
 <div class="form-footer">
-    @Html.ActionLink("Back to Admin Home", "Index")
+    @Html.ActionLink("Choose another Hierarchy Class to Delete", "ChooseHierarchyClass")
 </div>

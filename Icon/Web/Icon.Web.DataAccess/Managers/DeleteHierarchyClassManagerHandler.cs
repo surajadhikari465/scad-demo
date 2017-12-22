@@ -39,15 +39,15 @@ namespace Icon.Web.DataAccess.Managers
 
                 try
                 {
-                        //Creating the message first because when removing an entity from the context some of the nullable properties will be wiped
-                        AddHierarchyClassMessageCommand addHierarchyClassMessageCommand = new AddHierarchyClassMessageCommand
-                        {
-                            ClassNameChange = true,
-                            DeleteMessage = true,
-                            HierarchyClass = deleteHierarchyClassCommand.DeletedHierarchyClass
-                        };
-                        addHierarchyClassMessageHandler.Execute(addHierarchyClassMessageCommand);
-                    
+                    //Creating the message first because when removing an entity from the context some of the nullable properties will be wiped
+                    AddHierarchyClassMessageCommand addHierarchyClassMessageCommand = new AddHierarchyClassMessageCommand
+                    {
+                        ClassNameChange = true,
+                        DeleteMessage = true,
+                        HierarchyClass = deleteHierarchyClassCommand.DeletedHierarchyClass
+                    };
+                    addHierarchyClassMessageHandler.Execute(addHierarchyClassMessageCommand);
+
                     deleteHierarchyClassHandler.Execute(deleteHierarchyClassCommand);
                     removeHierarchyClassFromIrmaItemsCommandHandler.Execute(
                         new RemoveHierarchyClassFromIrmaItemsCommand
