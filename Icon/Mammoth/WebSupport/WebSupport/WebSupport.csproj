@@ -201,6 +201,9 @@
     <Compile Include="Controllers\PriceResetController.cs" />
     <Compile Include="Controllers\EventCreatorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="EsbProducerFactory\IPriceRefreshEsbProducerFactory.cs" />
+    <Compile Include="EsbProducerFactory\NonJndiEsbProducer.cs" />
+    <Compile Include="EsbProducerFactory\PriceRefreshEsbProducerFactory.cs" />
     <Compile Include="Filters\ErrorLogActionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -209,6 +212,9 @@
     <Compile Include="Helpers\SelectListHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
     <Compile Include="MessageBuilders\CheckPointRequestMessageBuilder.cs" />
+    <Compile Include="MessageBuilders\IPriceRefreshMessageBuilderFactory.cs" />
+    <Compile Include="MessageBuilders\PriceRefreshMessageBuilder.cs" />
+    <Compile Include="MessageBuilders\PriceRefreshMessageBuilderFactory.cs" />
     <Compile Include="Models\CheckPointRequestBuilderModel.cs" />
     <Compile Include="Models\ErrorConstants.cs" />
     <Compile Include="Models\EsbConstants.cs" />
@@ -217,12 +223,16 @@
     <Compile Include="MessageBuilders\PriceResetMessageBuilder.cs" />
     <Compile Include="Models\PriceResetMessageBuilderModel.cs" />
     <Compile Include="Models\ValidationConstants.cs" />
+    <Compile Include="Services\IRefreshPriceService.cs" />
+    <Compile Include="Services\RefreshPriceResponse.cs" />
+    <Compile Include="Services\RefreshPriceService.cs" />
     <Compile Include="Services\WebSupportPriceMessageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\WebSupportCheckPointRequestMessageService.cs" />
     <Compile Include="Services\WebSupportJobScheduleMessageService.cs" />
     <Compile Include="ViewModels\CheckPointRequestViewModel.cs" />
     <Compile Include="ViewModels\JobScheduleViewModel.cs" />
+    <Compile Include="ViewModels\PriceRefreshViewModel.cs" />
     <Compile Include="ViewModels\PriceResetRequestViewModel.cs" />
     <Compile Include="ViewModels\EventCreatorViewModel.cs" />
     <Compile Include="ViewModels\StoreViewModel.cs" />

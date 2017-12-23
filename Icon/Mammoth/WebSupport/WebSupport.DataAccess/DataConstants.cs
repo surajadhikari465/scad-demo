@@ -18,7 +18,16 @@
 				PriceResetConstants.Spice,
 				PriceResetConstants.SLAW
 			};
-	}
+
+        /// <summary>
+        /// Available external systems which may need to receive a price refresh
+        /// </summary>
+        public static string[] JustInTimeDownstreamSystems = new[]
+            {
+                PriceRefreshConstants.R10,
+                PriceRefreshConstants.IRMA
+            };
+    }
 
 	public static class EventConstants
     {
@@ -31,4 +40,10 @@
 		public const string Spice = "Spice";
 		public const string SLAW = "SLAW";
 	}
+
+    public static class PriceRefreshConstants
+    {
+        public const string R10 = "R10";
+        public const string IRMA = "IRMA";
+    }
 }

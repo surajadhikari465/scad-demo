@@ -1,24 +1,38 @@
-﻿using System;
+﻿using Icon.Common.DataAccess;
+using Icon.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using WebSupport.DataAccess.Queries;
+using WebSupport.DataAccess.TransferObjects;
+using WebSupport.Models;
+using WebSupport.Services;
+using WebSupport.ViewModels;
 
 namespace WebSupport.Controllers
 {
     public class PriceRefreshController : Controller
     {
+        private ILogger logger;
+        private IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>> queryForStores;
         private IRefreshPriceService refreshPriceService;
 
-        public PriceRefreshController(IRefreshPriceService refreshPriceService)
+        public PriceRefreshController(
+            ILogger logger,
+            IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>> queryForStores,
+            IRefreshPriceService refreshPriceService)
         {
+            this.logger = logger;
+            this.queryForStores = queryForStores;
             this.refreshPriceService = refreshPriceService;
         }
 
-        // GET: PriceRefresh
+        [HttpGet]
         public ActionResult Index()
         {
             PriceRefreshViewModel viewModel = new PriceRefreshViewModel();
+            viewModel.SetRegionAndSystemOptions(StaticData.WholeFoodsRegions, StaticData.JustInTimeDownstreamSystems);
             if(TempData["Errors"] != null)
             {
                 viewModel.Errors = TempData["Errors"] as List<string>;
@@ -27,19 +41,29 @@ namespace WebSupport.Controllers
             {
                 viewModel.Success = TempData["Success"] as bool?;
             }
-            return View();
+            return View(viewModel);
         }
 
-        public ActionResult RefreshPrices(RefreshPricesRequest request)
+        [HttpPost]
+        public ActionResult Index(PriceRefreshViewModel viewModel)
         {
-            List<SystemViewModel> systems = request.Systems;
-            List<StoreViewModel> stores = request.Stores;
-            List<ScanCodeViewModel> scanCodes = request.ScanCodes;
+            string region = StaticData.WholeFoodsRegions.ElementAt(viewModel.RegionIndex);
+            List<string> systems = StaticData
+                .JustInTimeDownstreamSystems
+                .Where((s, i) => viewModel.DownstreamSystems.Contains(i))
+                .ToList();
+            List<string> stores = viewModel.Stores.ToList();
+            List<string> scanCodes = viewModel
+                .Items
+                .Split()
+                .Where(s => !String.IsNullOrWhiteSpace(s))
+                .ToList();
 
             var response = refreshPriceService.RefreshPrices(
-                systems.Select(s => s.Name).ToList(),
-                stores.Select(s => s.BusinessUnit).ToList(),
-                scanCodes.Select(s => s.ScanCode).ToList());
+                region,
+                systems,
+                stores,
+                scanCodes);
 
             if(response.Errors != null && response.Errors.Count > 0)
             {
@@ -52,48 +76,26 @@ namespace WebSupport.Controllers
             return RedirectToAction("Index");
         }
 
-        public class RefreshPricesRequest
+        [HttpGet]
+        public JsonResult Stores(int regionCode)
         {
-            public List<SystemViewModel> Systems { get; set; }
-            public List<ScanCodeViewModel> ScanCodes { get; set; }
-            public List<StoreViewModel> Stores { get; set; }
-        }
-
-        public class SystemViewModel
-        {
-            public string Name { get; set; }
-        }
-
-        public class ScanCodeViewModel
-        {
-            public string ScanCode { get; set; }
-        }
-
-        public class StoreViewModel
-        {
-            public string Name { get; set; }
-            public string BusinessUnit { get; set; }
-        }
-
-        public class PriceRefreshViewModel
-        {
-            public PriceRefreshViewModel()
+            if (StaticData.WholeFoodsRegions.Length > 0 && regionCode < StaticData.WholeFoodsRegions.Length)
             {
-                Errors = new List<string>();
+                var chosenRegion = StaticData.WholeFoodsRegions.ElementAt(regionCode);
+                if (String.IsNullOrWhiteSpace(chosenRegion))
+                {
+                    throw new ArgumentException($"invalid region '{chosenRegion ?? "null"}'", nameof(chosenRegion));
+                }
+                else
+                {
+                    var stores = queryForStores.Search(new GetStoresForRegionParameters { Region = chosenRegion });
+                    return Json(stores, JsonRequestBehavior.AllowGet);
+                }
             }
-
-            public List<string> Errors { get; set; }
-            public bool? Success { get; set; }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(regionCode), $"invalid region code {regionCode}");
+            }
         }
-    }
-
-    public interface IRefreshPriceService
-    {
-        RefreshPriceResponse RefreshPrices(List<string> systems, List<string> stores, List<string> scanCodes);
-    }
-
-    public class RefreshPriceResponse
-    {
-        public List<string> Errors { get; set; }
     }
 }
