@@ -488,9 +488,9 @@ DECLARE
 			IF @OldStoreNo > 0
 				BEGIN
 					INSERT INTO [dbo].[StoreItemVendor]
-							([Store_No], [Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation])
+							([Store_No], [Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation], [DiscontinueItem])
 					SELECT
-							@NewStoreNo, SIV.[Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation]
+							@NewStoreNo, SIV.[Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation], DiscontinueItem
 					FROM [StoreItemVendor] SIV (NOLOCK)
 							INNER JOIN [Price] P (NOLOCK) ON P.Item_Key = SIV.Item_Key AND P.Store_No = @NewStoreNo
 							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = P.Item_Key
@@ -510,9 +510,9 @@ DECLARE
         SELECT @CodeLocation = 'INSERT INTO [StoreItemVendor]... alt store-subteams'
                 
 					INSERT INTO [dbo].[StoreItemVendor]
-					([Store_No], [Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation])
+					([Store_No], [Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation], [DiscontinueItem])
 					SELECT
-							@NewStoreNo, SIV.[Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation]
+							@NewStoreNo, SIV.[Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation], [DiscontinueItem]
 					FROM [StoreItemVendor] SIV (NOLOCK)
 							INNER JOIN [Price] P (NOLOCK) ON P.Item_Key = SIV.Item_Key AND P.Store_No = @NewStoreNo
 							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = P.Item_Key
