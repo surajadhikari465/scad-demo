@@ -1,0 +1,160 @@
+﻿@using WebSupport.Helpers
+@using WebSupport.Models
+@model WebSupport.ViewModels.PriceRefreshViewModel
+
+@{
+    ViewBag.Title = "Send GPM Price Refresh Message";
+}
+<h3 class="text-center">@ViewBag.Title</h3>
+
+<div class="row container-fluid">
+    @using (Html.BeginForm("Index", "PriceRefresh", null, FormMethod.Post, new { @class = "" }))
+    {
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-2">
+                @Html.LabelFor(m => m.RegionIndex, new { @class = "control-label" })
+            </div>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.RegionIndex, Model.OptionsForRegion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RegionIndex, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-2">
+                @Html.LabelFor(m => m.DownstreamSystems, new { @class = "control-label" })
+            </div>
+            <div class="col-sm-4">
+                @Html.ListBoxFor(m => m.DownstreamSystems, Model.OptionsForDestinationSystem, new { @class = "form-control", size = Model.OptionsForDestinationSystem.Count() })
+                @Html.ValidationMessageFor(model => model.DownstreamSystems, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-2">
+                @Html.LabelFor(m => m.Stores, new { @class = "control-label" })
+            </div>
+            <div class="col-sm-4">
+                <div id="storesDiv" class="hidden">
+                    <image src="@(Url.Content("~/Content/loading.gif"))" alt="Loading, please wait"></image>
+                </div>
+                @{
+                    int storeBoxSize = 20;
+                    if (Model.OptionsForStores != null && Model.OptionsForStores.Count() > 1)
+                    {
+                        storeBoxSize = (Model.OptionsForStores.Count() <= 40) ? Model.OptionsForStores.Count() : 40;
+                    }
+                }
+                @Html.ListBoxFor(m => m.Stores, Model.OptionsForStores, new { @class = "form-control", size = storeBoxSize })
+                @Html.ValidationMessageFor(model => model.Stores, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-2">
+                @Html.LabelFor(m => m.Items, new { @class = "control-label" })
+            </div>
+            <div class="col-sm-4">
+                @{
+                    int itemBoxSize = 20;
+                    if (Model.Items != null && Model.Items.Count() > 20)
+                    {
+                        itemBoxSize = (Model.Items.Count() <= 40) ? Model.Items.Count() : 40;
+                    }
+                }
+                @Html.TextAreaFor(model => Model.Items, itemBoxSize, 20, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Items, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row"></div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-2">
+                <input type="submit" value="Send Messages" class="btn btn-danger form-submit col-md-offset-4" id="search-button" />
+            </div>
+        </div>
+
+        <div class="row"></div>
+                    if (Model.Errors != null && Model.Errors.Count > 0)
+                    {
+                        <div class="form-group">
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <strong>@string.Join("|", Model.Errors)</strong>
+                            </div>
+                        </div>
+                    }
+                    if (Model.Success.HasValue && Model.Success.Value)
+                    {
+                        <div class="form-group">
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <strong>All prices successfully sent.</strong>
+                            </div>
+                        </div>
+                        }
+                    }
+
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+    var getStoresSuccessCallback = function (data, textStatus, xhr) {
+        var storesControl = $("#Stores");
+        storesControl.empty();
+        $.each(data,
+            function (index, store) {
+                storesControl.append(
+                    $("<option />",
+                        {
+                            value: store.BusinessUnit,
+                            text: store.BusinessUnit + ": " + store.Name
+                        }))
+            });
+        //set stores select box height
+        if (data) {
+            var size = data.length > 1 && data.length < 41 ? data.length : 40;
+            $(storesControl).attr("size", size);
+        }
+    }
+
+    var getStoresErrorCallback = function (xhr, textStatus, errorThrown) {
+        responseHTML = $.parseHTML(xhr.responseText);
+
+        var errorInfo = "Error attempting to load store data for region.\n"
+            + "url: \"@(Url.Action("Stores", "PriceReset"))\"\n"
+            + "data: \"" + $("#RegionIndex :selected").text() + "\" (" + $("#RegionIndex").val() + ")\n"
+            + "call state: \"" + xhr.state() + "\".\n"
+            + "response: \"" + errorThrown + "\" (" + xhr.status + ")\n"
+            + "server error: \"" + $(responseHTML).find('h2').text() + "\"\n";
+        console.log(errorInfo);
+        console.log(xhr.responseText);
+        alert(errorInfo)
+
+        $("#Stores").empty();
+    }
+
+    $("#RegionIndex").change(function () {
+        var url = "@(Url.Action("Stores", "PriceReset"))";
+        var data = { regionCode: $(this).val() };
+
+        var storesControl = $("#Stores");
+        var loadingDiv = $("#storesDiv");
+
+        storesControl.fadeOut();
+        storesControl.addClass("hidden");
+        loadingDiv.removeClass("hidden");
+
+        $.getJSON(url, data, getStoresSuccessCallback)
+            .fail(getStoresErrorCallback);
+
+        loadingDiv.addClass("hidden");
+        storesControl.removeClass("hidden");
+        storesControl.fadeIn();
+    });
+    </script>
+}

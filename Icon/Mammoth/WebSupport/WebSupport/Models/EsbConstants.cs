@@ -20,5 +20,6 @@ namespace WebSupport.Models
         public const string PriceResetKey = "PriceReset";
         public const string PriceTransactionTypeValue = "Price";
         public const string PriceResetTrueValue = "1";
+        public const string PriceResetFalseValue = "0";
     }
 }
