@@ -1082,6 +1082,8 @@ me_exit:
         mnuData_ScalePOSPush.Enabled = (gbSuperUser Or gbDataAdministrator) And GetRegionalMenuAccess(ds, "mnuData_ScalePOSPush")
         mnuData_UnprocessedPushFiles.Enabled = (gbSuperUser Or gbDataAdministrator) And GetRegionalMenuAccess(ds, "mnuData_ScalePOSPush")
         mnuData_CancelAllSales.Enabled = (gbCancelAllSales) AndAlso InstanceDataDAO.IsFlagActive("EnableCancelAllSales")
+        R10ItemRefreshToolStripMenuItem.Enabled = gbItemAdministrator
+        IconItemRefreshMenuItem.Enabled = gbItemAdministrator
 
         '######################
         ' Admin Menu access
