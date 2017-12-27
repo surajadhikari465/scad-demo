@@ -16,8 +16,12 @@ namespace MammothWebApi.Service.Services
         private ILogger logger;
         private ICommandHandler<StagingItemLocaleCommand> itemLocaleStagingHandler;
         private ICommandHandler<StagingItemLocaleExtendedCommand> itemLocaleExtendedStagingHandler;
+        private ICommandHandler<StagingItemLocaleSupplierCommand> itemLocaleSupplierStagingHandler;
+        private ICommandHandler<StagingItemLocaleSupplierDeleteCommand> itemLocaleSupplierDeleteStagingHandler;
         private ICommandHandler<AddOrUpdateItemLocaleCommand> addUpdateItemLocaleHandler;
         private ICommandHandler<AddOrUpdateItemLocaleExtendedCommand> addUpdateItemLocaleExtendedHandler;
+        private ICommandHandler<AddOrUpdateItemLocaleSupplierCommand> addUpdateItemLocaleSupplierHandler;
+        private ICommandHandler<DeleteItemLocaleSupplierCommand> deleteItemLocaleSupplierHandler;
         private ICommandHandler<AddEsbMessageQueueItemLocaleCommand> addToMessageQueueItemLocaleHandler;
         private ICommandHandler<DeleteStagingCommand> deleteStagingHandler;
 
@@ -25,16 +29,24 @@ namespace MammothWebApi.Service.Services
             ILogger logger,
             ICommandHandler<StagingItemLocaleCommand> itemLocaleStagingHandler,
             ICommandHandler<StagingItemLocaleExtendedCommand> itemLocaleExtendedStagingHandler,
+            ICommandHandler<StagingItemLocaleSupplierCommand> itemLocaleSupplierStagingHandler,
+            ICommandHandler<StagingItemLocaleSupplierDeleteCommand> itemLocaleSupplierDeleteStagingHandler,
             ICommandHandler<AddOrUpdateItemLocaleCommand> addUpdateItemLocaleHandler,
             ICommandHandler<AddOrUpdateItemLocaleExtendedCommand> addUpdateItemLocaleExtendedHandler,
+            ICommandHandler<AddOrUpdateItemLocaleSupplierCommand> addUpdateItemLocaleSupplierHandler,
+            ICommandHandler<DeleteItemLocaleSupplierCommand> deleteItemLocaleSupplierHandler,
             ICommandHandler<AddEsbMessageQueueItemLocaleCommand> addToMessageQueueItemLocaleHandler,
             ICommandHandler<DeleteStagingCommand> deleteStagingHandler)
         {
             this.logger = logger;
             this.itemLocaleStagingHandler = itemLocaleStagingHandler;
             this.itemLocaleExtendedStagingHandler = itemLocaleExtendedStagingHandler;
+            this.itemLocaleSupplierStagingHandler = itemLocaleSupplierStagingHandler;
+            this.itemLocaleSupplierDeleteStagingHandler = itemLocaleSupplierDeleteStagingHandler;
             this.addUpdateItemLocaleHandler = addUpdateItemLocaleHandler;
             this.addUpdateItemLocaleExtendedHandler = addUpdateItemLocaleExtendedHandler;
+            this.addUpdateItemLocaleSupplierHandler = addUpdateItemLocaleSupplierHandler;
+            this.deleteItemLocaleSupplierHandler = deleteItemLocaleSupplierHandler;
             this.addToMessageQueueItemLocaleHandler = addToMessageQueueItemLocaleHandler;
             this.deleteStagingHandler = deleteStagingHandler;
         }
@@ -62,6 +74,20 @@ namespace MammothWebApi.Service.Services
             insertExtendedStagingParameter.ItemLocalesExtended = distinctData.ToStagingItemLocaleExtendedModel(timestamp: now, transactionId: transactionId);
             this.itemLocaleExtendedStagingHandler.Execute(insertExtendedStagingParameter);
 
+            // Add to ItemLocaleSupplier staging table
+            var insertItemLocaleSupplierStagingParameter = new StagingItemLocaleSupplierCommand();
+            insertItemLocaleSupplierStagingParameter.ItemLocaleSuppliers = distinctData
+                .Where(il => !string.IsNullOrWhiteSpace(il.SupplierName))
+                .ToStagingItemLocaleSupplierModel(timestamp: now, transactionId: transactionId);
+            this.itemLocaleSupplierStagingHandler.Execute(insertItemLocaleSupplierStagingParameter);
+
+            // Add to ItemLocaleSupplier delete staging table
+            var insertItemLocaleSupplierDeleteStagingParameter = new StagingItemLocaleSupplierDeleteCommand();
+            insertItemLocaleSupplierDeleteStagingParameter.ItemLocaleSupplierDeletes = distinctData
+                .Where(il => string.IsNullOrWhiteSpace(il.SupplierName))
+                .ToStagingItemLocaleSupplierDeleteModel(timestamp: now, transactionId: transactionId);
+            this.itemLocaleSupplierDeleteStagingHandler.Execute(insertItemLocaleSupplierDeleteStagingParameter);
+
             try
             {
                 // Run Add/Update for core attributes for each region
@@ -88,6 +114,26 @@ namespace MammothWebApi.Service.Services
 
                     this.addUpdateItemLocaleExtendedHandler.Execute(addUpdateExtendedParameters);
 
+                    // Add/Update Supplier attributes on ItemLocale_Supplier_XX
+                    var addUpdateSupplierParameters = new AddOrUpdateItemLocaleSupplierCommand
+                    {
+                        Region = region,
+                        Timestamp = now,
+                        TransactionId = transactionId
+                    };
+
+                    this.addUpdateItemLocaleSupplierHandler.Execute(addUpdateSupplierParameters);
+
+                    // Delete Supplier attributes from ItemLocale_Supplier_XX
+                    var deleteItemLocaleSupplierCommand = new DeleteItemLocaleSupplierCommand
+                    {
+                        Region = region,
+                        Timestamp = now,
+                        TransactionId = transactionId
+                    };
+
+                    this.deleteItemLocaleSupplierHandler.Execute(deleteItemLocaleSupplierCommand);
+                    
                     // Write messages to the MessageQueue table.
                     var addToMessageQueueItemLocaleParameters = new AddEsbMessageQueueItemLocaleCommand
                     {
@@ -124,6 +170,22 @@ namespace MammothWebApi.Service.Services
             {
                 TransactionId = transactionId,
                 StagingTableName = StagingTableNames.ItemLocaleExtended
+            };
+
+            deleteStagingHandler.Execute(deleteStagingParameter);
+
+            deleteStagingParameter = new DeleteStagingCommand
+            {
+                TransactionId = transactionId,
+                StagingTableName = StagingTableNames.ItemLocaleSupplier
+            };
+
+            deleteStagingHandler.Execute(deleteStagingParameter);
+
+            deleteStagingParameter = new DeleteStagingCommand
+            {
+                TransactionId = transactionId,
+                StagingTableName = StagingTableNames.ItemLocaleSupplierDelete
             };
 
             deleteStagingHandler.Execute(deleteStagingParameter);

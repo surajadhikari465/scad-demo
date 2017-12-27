@@ -29,6 +29,16 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Models
         public string SignDescription { get; set; }
         public bool? TmDiscount { get; set; }
         public double Msrp { get; set; }
+        public bool? OrderedByInfor { get; set; }
+        public string AltRetailUOM { get; set; }
+        public decimal? AltRetailSize { get; set; }
+        public string DefaultScanCode { get; set; }
+
+        //Vendor Attributes
+        public string VendorItemId { get; set; }
+        public decimal? VendorCaseSize { get; set; }
+        public string VendorKey { get; set; }
+        public string VendorCompanyName { get; set; }
 
         // Extended Attributes (are not required)
         /// <summary>

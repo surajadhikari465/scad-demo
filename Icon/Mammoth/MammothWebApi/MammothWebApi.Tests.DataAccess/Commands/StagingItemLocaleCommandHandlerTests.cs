@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Transactions;
 
 namespace MammothWebApi.Tests.DataAccess.CommandTests
 {
@@ -21,10 +22,13 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         private StagingItemLocaleCommandHandler handler;
         private DateTime now;
         private Guid transactionId;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeTests()
         {
+            transaction = new TransactionScope();
+
             this.now = new DateTime().AddYears(2016).AddMonths(7).AddDays(11).AddHours(3).AddMinutes(3).AddSeconds(3);
             this.transactionId = Guid.NewGuid();
 
@@ -40,9 +44,8 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         [TestCleanup]
         public void CleanupTests()
         {
-            this.db.Connection.Execute("DELETE FROM Staging.dbo.ItemLocale WHERE Timestamp = @Timestamp",
-                new { Timestamp = this.now });
             this.db.Connection.Dispose();
+            transaction.Dispose();
         }
 
         [TestMethod]
@@ -83,6 +86,11 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                 Assert.AreEqual(expected[i].Sign_Desc, actual[i].Sign_Desc);
                 Assert.AreEqual(expected[i].Sign_RomanceText_Long, actual[i].Sign_RomanceText_Long);
                 Assert.AreEqual(expected[i].Sign_RomanceText_Short, actual[i].Sign_RomanceText_Short);
+                Assert.AreEqual(expected[i].Msrp, actual[i].Msrp);
+                Assert.AreEqual(expected[i].OrderedByInfor, actual[i].OrderedByInfor);
+                Assert.AreEqual(expected[i].AltRetailSize, actual[i].AltRetailSize);
+                Assert.AreEqual(expected[i].AltRetailUOM, actual[i].AltRetailUOM);
+                Assert.AreEqual(expected[i].DefaultScanCode, actual[i].DefaultScanCode);
                 Assert.AreEqual(expected[i].Timestamp.ToString("dd-MM-yyyy hh:mm:ss"), actual[i].Timestamp.ToString("dd-MM-yyyy hh:mm:ss"),
                     String.Format("actual: {0}, expected: {1}", actual[i].Timestamp.ToString("dd-MM-yyyy hh:mm:ss"),
                         expected[i].Timestamp.ToString("dd-MM-yyyy hh:mm:ss")));

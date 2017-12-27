@@ -289,7 +289,10 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             // Given
             var storeNo = 834792;
             var subTeamNo = this.GetFirstFromTable<SubTeam>().SubTeam_No;
-            var vendorId = this.GetFirstFromTable<Vendor>().Vendor_ID;
+            var vendor = this.GetFirstFromTable<Vendor>();
+            var vendorId = vendor.Vendor_ID;
+            var costUnitId = this.GetFirstFromTable<ItemUnit>().Unit_ID;
+            var freightUnitId = costUnitId;
             var expectedRetailUnit = this.GetFirstFromTable<ItemUnit>();
             var expectedOrigin = this.GetFirstFromTable<ItemOrigin>();
             var expectedLabelType = this.GetFirstFromTable<LabelType>();
@@ -321,6 +324,14 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedScaleExtraText = "Test Scale Extra Text";
             var expectedTagUom = 23;
             var expectedEventTypeid = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedVendorItemId = "123456789789456";
+            var expectedVendorCaseSize = 12;
+            var expectedVendorKey = vendor.Vendor_Key;
+            var expectedVendorCompanyName = vendor.CompanyName;
+            var expectedOrderedByInfor = true;
+            var expectedDefaultScanCode = "1234561728";
+            decimal? expectedAltRetailSize = null;
+            string expectedAltRetailUOM = null;
 
             // Insert New Item
             var itemKey = this.dbProvider.Insert(
@@ -343,6 +354,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                         .With(x => x.Item_Key, itemKey)
                         .With(x => x.Identifier, expectedIdentifier)
                         .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
+                        .With(x => x.Default_Identifier, (byte)0)
                         .ToObject(),
                     x => x.Identifier_ID));
 
@@ -389,10 +401,11 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 IrmaTestObjectFactory.Build<ItemVendor>()
                     .With(x => x.Item_Key, itemKey)
                     .With(x => x.Vendor_ID, vendorId)
+                    .With(x => x.Item_ID, expectedVendorItemId)
                     .ToObject());
 
             // Insert StoreItemVendor
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
+            var storeItemVendorId = this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
                 IrmaTestObjectFactory.Build<StoreItemVendor>()
                     .With(x => x.Vendor_ID, vendorId)
                     .With(x => x.Store_No, storeNo)
@@ -402,6 +415,16 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .With(x => x.LastCostRefreshedDate, DateTime.Now)
                     .ToObject(),
                 x => x.StoreItemVendorID));
+
+            // Insert VendorCostHistory
+            this.dbProvider.Insert(new IrmaQueryParams<VendorCostHistory, int>(
+                IrmaTestObjectFactory.BuildVendorCostHistory()
+                    .With(x => x.CostUnit_ID, costUnitId)
+                    .With(x => x.FreightUnit_ID, freightUnitId)
+                    .With(x => x.Package_Desc1, expectedVendorCaseSize)
+                    .With(x => x.StoreItemVendorID, storeItemVendorId)
+                    .ToObject(),
+                x => x.VendorCostHistoryID));
 
             // Insert StoreItem
             this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
@@ -441,6 +464,24 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .With(x => x.Scale_ExtraText_ID, scaleExtraTextId)
                     .ToObject(),
                 x => x.ItemScale_ID));
+
+            // Insert StoreItemExtended
+            this.dbProvider.Insert(new IrmaQueryParams<StoreItemExtended, int>(
+                IrmaTestObjectFactory.Build<StoreItemExtended>()
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.Store_No, storeNo)
+                    .With(x => x.OrderedByInfor, expectedOrderedByInfor)
+                    .ToObject(),
+                x => x.StoreItemExtendedID));
+
+            // Insert Default Scan Code
+            this.dbProvider.Insert(new IrmaQueryParams<ItemIdentifier, int>(
+                IrmaTestObjectFactory.BuildItemIdentifier()
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.Default_Identifier, (byte)1)
+                    .With(x => x.Identifier, expectedDefaultScanCode)
+                    .ToObject(),
+                x => x.Identifier_ID));
 
             var expectedQueueId = this.dbProvider.Insert(
                 new IrmaQueryParams<TestQueueModel, int>(
@@ -495,6 +536,300 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             Assert.AreEqual(expectedSignRomanceShort, actual.SignRomanceShort, "The expected SignRomanceShort did not match the actual.");
             Assert.AreEqual(expectedTagUom.ToString(), actual.TagUom, "The expected TagUom did not match the actual.");
             Assert.AreEqual(Convert.ToDouble(expectedMsrp), actual.Msrp, "The expected Msrp did not match the actual.");
+            Assert.AreEqual(expectedVendorItemId, actual.VendorItemId, "The expected VendorItemId did not match the actual.");
+            Assert.AreEqual(expectedVendorCaseSize, actual.VendorCaseSize, "The expected VendorCaseSize did not match the actual.");
+            Assert.AreEqual(expectedVendorKey, actual.VendorKey, "The expected VendorKey did not match the actual.");
+            Assert.AreEqual(expectedVendorCompanyName, actual.VendorCompanyName, "The expected VendorCompanyName did not match the actual.");
+            Assert.AreEqual(expectedOrderedByInfor, actual.OrderedByInfor, "The expected OrderedByInfor did not match the actual.");
+            Assert.AreEqual(expectedDefaultScanCode, actual.DefaultScanCode, "The expected DefaultScanCode did not match the actual.");
+            Assert.AreEqual(expectedAltRetailSize, actual.AltRetailSize, "The expected AltRetailSize did not match the actual.");
+            Assert.AreEqual(expectedAltRetailUOM, actual.AltRetailUOM, "The expected AltRetailUOM did not match the actual.");
+            Assert.IsTrue(string.IsNullOrEmpty(actual.ErrorMessage));
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_AddUpdateEventsExistsWithItemOverride_ShouldReturnEventsWithAltSizeAndAltUOM()
+        {
+            // Given
+            var storeNo = 834792;
+            var subTeamNo = this.GetFirstFromTable<SubTeam>().SubTeam_No;
+            var vendor = this.GetFirstFromTable<Vendor>();
+            var vendorId = vendor.Vendor_ID;
+            var costUnitId = this.GetFirstFromTable<ItemUnit>().Unit_ID;
+            var freightUnitId = costUnitId;
+            var expectedRetailUnit = this.GetFirstFromTable<ItemUnit>();
+            var expectedOrigin = this.GetFirstFromTable<ItemOrigin>();
+            var expectedLabelType = this.GetFirstFromTable<LabelType>();
+            var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
+            var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
+            var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
+            var expectedRegion = "FL";
+            var expectedIdentifier = "22222242";
+            var expectedBusinessUnitId = 83472;
+            var expectedAgeRestrictionId = 2;
+            var expectedAgeRestriction = 21;
+            var expectedAuthorized = true;
+            var expectedCaseDiscount = true;
+            var expectedDiscontinued = false;
+            var expectedLocalItem = true;
+            var expectedLocality = "Test Locality";
+            var expectedProductCode = "TestProductCode";
+            var expectedRestrictedHours = true;
+            var expectedSignRomanceLong = "Test Sign Romance Long";
+            var expectedSignRomanceShort = "Test Sign Romance Short";
+            var expectedSignDescription = "Test Override Sign_Description";
+            var expectedTmDiscount = true;
+            var expectedMsrp = 2000m;
+            var expectedChicagoBaby = "Test Baby";
+            var expectedColorAdd = true;
+            var expectedElectronicShelfTag = true;
+            var expectedExclusive = DateTime.Today;
+            var expectedNumberOfDigitsSentToScale = 123;
+            var expectedScaleExtraText = "Test Scale Extra Text";
+            var expectedTagUom = 23;
+            var expectedEventTypeid = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedVendorItemId = "123456789789456";
+            var expectedVendorCaseSize = 12;
+            var expectedVendorKey = vendor.Vendor_Key;
+            var expectedVendorCompanyName = vendor.CompanyName;
+            var expectedOrderedByInfor = true;
+            var expectedDefaultScanCode = "1234561728";
+            var expectedAltRetailSize = 9.8m;
+            var expectedAltRetailUOM = this.GetFirstFromTable<ItemUnit>();
+            var testItemUnitId = this.GetFirstFromTable<ItemUnit>().Unit_ID;
+
+            // Insert new Store Jurisdiction
+            var storeJurisdictionID = this.dbProvider.Insert(
+                new IrmaQueryParams<StoreJurisdiction, int>(
+                IrmaTestObjectFactory.Build<StoreJurisdiction>()
+                    .With(x => x.CurrencyID, 1)
+                    .With(x => x.StoreJurisdictionDesc, "Test")
+                    .ToObject(),
+                x => x.StoreJurisdictionID));
+
+            // Insert New Item
+            var itemKey = this.dbProvider.Insert(
+                new IrmaQueryParams<Item, int>(
+                    IrmaTestObjectFactory.BuildItem()
+                        .With(x => x.SubTeam_No, subTeamNo)
+                        .With(x => x.Sign_Description, expectedSignDescription)
+                        .With(x => x.Product_Code, expectedProductCode)
+                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
+                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
+                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
+                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
+                        .ToObject(),
+                x => x.Item_Key));
+
+            // Insert New Item Identifier
+            this.dbProvider.Insert(
+                new IrmaQueryParams<ItemIdentifier, int>(
+                    IrmaTestObjectFactory.BuildItemIdentifier()
+                        .With(x => x.Item_Key, itemKey)
+                        .With(x => x.Identifier, expectedIdentifier)
+                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
+                        .With(x => x.Default_Identifier, (byte)0)
+                        .ToObject(),
+                    x => x.Identifier_ID));
+
+            // Insert New Store
+            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
+                .With(x => x.Store_No, storeNo)
+                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
+                .With(x => x.StoreJurisdictionID, storeJurisdictionID)
+                .With(x => x.WFM_Store, true)
+                .ToObject());
+
+            // Insert New Store Region Mapping
+            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
+                .With(x => x.Store_No, storeNo)
+                .With(x => x.Region_Code, expectedRegion)
+                .ToObject());
+
+            // Insert New Price
+            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
+                IrmaTestObjectFactory.Build<Price>()
+                    .With(x => x.IBM_Discount, expectedCaseDiscount)
+                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
+                    .With(x => x.LocalItem, expectedLocalItem)
+                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
+                    .With(x => x.Discountable, expectedTmDiscount)
+                    .With(x => x.MSRPPrice, expectedMsrp)
+                    .With(x => x.Store_No, storeNo)
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.AgeCode, expectedAgeRestrictionId)
+                    .With(x => x.LinkedItem, expectedLinkedItemKey)
+                    .ToObject(),
+                null,
+                new Dictionary<string, string> { { "Price1", "Price" } }));
+
+            // Insert New Validated Scan Code
+            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
+                IrmaTestObjectFactory.BuildValidatedScanCode()
+                    .With(x => x.ScanCode, expectedIdentifier)
+                    .ToObject(),
+                x => x.Id));
+
+            // Insert Item Vendor
+            this.dbProvider.Insert(
+                IrmaTestObjectFactory.Build<ItemVendor>()
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.Vendor_ID, vendorId)
+                    .With(x => x.Item_ID, expectedVendorItemId)
+                    .ToObject());
+
+            // Insert StoreItemVendor
+            var storeItemVendorId = this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
+                IrmaTestObjectFactory.Build<StoreItemVendor>()
+                    .With(x => x.Vendor_ID, vendorId)
+                    .With(x => x.Store_No, storeNo)
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.DiscontinueItem, expectedDiscontinued)
+                    .With(x => x.PrimaryVendor, true)
+                    .With(x => x.LastCostRefreshedDate, DateTime.Now)
+                    .ToObject(),
+                x => x.StoreItemVendorID));
+
+            // Insert VendorCostHistory
+            this.dbProvider.Insert(new IrmaQueryParams<VendorCostHistory, int>(
+                IrmaTestObjectFactory.BuildVendorCostHistory()
+                    .With(x => x.CostUnit_ID, costUnitId)
+                    .With(x => x.FreightUnit_ID, freightUnitId)
+                    .With(x => x.Package_Desc1, expectedVendorCaseSize)
+                    .With(x => x.StoreItemVendorID, storeItemVendorId)
+                    .ToObject(),
+                x => x.VendorCostHistoryID));
+
+            // Insert StoreItem
+            this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
+                IrmaTestObjectFactory.Build<StoreItem>()
+                    .With(x => x.Store_No, storeNo)
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.Authorized, expectedAuthorized)
+                    .ToObject(),
+                x => x.StoreItemAuthorizationID));
+
+            // Insert Sign Attributes
+            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
+                IrmaTestObjectFactory.Build<ItemSignAttribute>()
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
+                    .With(x => x.ColorAdded, expectedColorAdd)
+                    .With(x => x.Locality, expectedLocality)
+                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
+                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
+                    .With(x => x.UomRegulationTagUom, expectedTagUom)
+                    .With(x => x.Exclusive, expectedExclusive)
+                    .ToObject(),
+                x => x.ItemSignAttributeID));
+
+            // Insert Scale Extra Text
+            var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
+                IrmaTestObjectFactory.Build<Scale_ExtraText>()
+                    .With(x => x.ExtraText, expectedScaleExtraText)
+                    .With(x => x.Description, "Dummy")
+                    .ToObject(),
+                x => x.Scale_ExtraText_ID));
+
+            // Insert Item Scale
+            this.dbProvider.Insert(new IrmaQueryParams<ItemScale, int>(
+                IrmaTestObjectFactory.Build<ItemScale>()
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.Scale_ExtraText_ID, scaleExtraTextId)
+                    .ToObject(),
+                x => x.ItemScale_ID));
+
+            // Insert StoreItemExtended
+            this.dbProvider.Insert(new IrmaQueryParams<StoreItemExtended, int>(
+                IrmaTestObjectFactory.Build<StoreItemExtended>()
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.Store_No, storeNo)
+                    .With(x => x.OrderedByInfor, expectedOrderedByInfor)
+                    .ToObject(),
+                x => x.StoreItemExtendedID));
+
+            // Insert Default Scan Code
+            this.dbProvider.Insert(new IrmaQueryParams<ItemIdentifier, int>(
+                IrmaTestObjectFactory.BuildItemIdentifier()
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.Default_Identifier, (byte)1)
+                    .With(x => x.Identifier, expectedDefaultScanCode)
+                    .ToObject(),
+                x => x.Identifier_ID));
+
+            // Insert ItemOverride
+            this.dbProvider.Insert(
+                IrmaTestObjectFactory.BuildItemOverride()
+                    .With(x => x.Item_Key, itemKey)
+                    .With(x => x.Package_Desc2, expectedAltRetailSize)
+                    .With(x => x.Package_Unit_ID, expectedAltRetailUOM.Unit_ID)
+                    .With(x => x.StoreJurisdictionID, storeJurisdictionID)
+                    .With(x => x.Distribution_Unit_ID, testItemUnitId)
+                    .With(x => x.Retail_Unit_ID, testItemUnitId)
+                    .With(x => x.Vendor_Unit_ID, testItemUnitId)
+                    .ToObject());
+
+            var expectedQueueId = this.dbProvider.Insert(
+                new IrmaQueryParams<TestQueueModel, int>(
+                    new TestQueueModel
+                    {
+                        ItemKey = itemKey,
+                        StoreNo = storeNo,
+                        Identifier = expectedIdentifier,
+                        EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate,
+                        InsertDate = DateTime.Now,
+                        InProcessBy = this.parameters.Instance
+                    },
+                    null,
+                    new Dictionary<string, string>
+                    {
+                        { "ItemKey", "Item_Key" },
+                        { "StoreNo", "Store_No" },
+                    },
+                    "mammoth.ItemLocaleChangeQueue",
+                    true));
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.AreEqual(expectedQueueId, actual.QueueId, "The expected QueueID did not match the actual.");
+            Assert.AreEqual(expectedEventTypeid, actual.EventTypeId, "The expected EventTypeId did not match the actual.");
+            Assert.AreEqual(expectedAgeRestriction, actual.AgeRestriction, "The expected AgeCode did not match the actual.");
+            Assert.AreEqual(expectedAuthorized, actual.Authorized, "The expected AuthorizedForSale did not match the actual.");
+            Assert.AreEqual(expectedBusinessUnitId, actual.BusinessUnitId, "The expected BusinessUnit did not match the actual.");
+            Assert.AreEqual(expectedCaseDiscount, actual.CaseDiscount, "The expected CaseDiscountEligible did not match the actual.");
+            Assert.AreEqual(expectedRestrictedHours, actual.RestrictedHours, "The expected RestrictedHours did not match the actual.");
+            Assert.AreEqual(expectedIdentifier, actual.ScanCode, "The expected ScanCode did not match the actual.");
+            Assert.AreEqual(expectedChicagoBaby, actual.ChicagoBaby, "The expected ChicagoBaby did not match the actual.");
+            Assert.AreEqual(expectedColorAdd, actual.ColorAdded, "The expected ColorAdded did not match the actual.");
+            Assert.AreEqual(expectedOrigin.Origin_Name, actual.CountryOfProcessing, "The expected CountryOfProcessing did not match the actual.");
+            Assert.AreEqual(expectedDiscontinued, actual.Discontinued, "The expected Discontinued did not match the actual.");
+            Assert.AreEqual(expectedElectronicShelfTag, actual.ElectronicShelfTag, "The expected ElectronicShelfTag did not match the actual.");
+            Assert.AreEqual(expectedExclusive, actual.Exclusive, "The expected Exclusive did not match the actual.");
+            Assert.AreEqual(expectedLabelType.LabelTypeDesc, actual.LabelTypeDescription, "The expected LabelTypeDescription did not match the actual.");
+            Assert.AreEqual(expectedLinkedIdentifier, actual.LinkedItem, "The expected LinkedItem did not match the actual.");
+            Assert.AreEqual(expectedLocalItem, actual.LocalItem, "The expected LocalItem did not match the actual.");
+            Assert.AreEqual(expectedLocality, actual.Locality, "The expected Locality did not match the actual.");
+            Assert.AreEqual(expectedNumberOfDigitsSentToScale, actual.NumberOfDigitsSentToScale, "The expected NumberOfDigitsSentToScale did not match the actual.");
+            Assert.AreEqual(expectedOrigin.Origin_Name, actual.Origin, "The expected Origin did not match the actual.");
+            Assert.AreEqual(expectedProductCode, actual.ProductCode, "The expected ProductCode did not match the actual.");
+            Assert.AreEqual(expectedRegion, actual.Region, "The expected Region did not match the actual.");
+            Assert.AreEqual(expectedRetailUnit.Unit_Name, actual.RetailUnit, "The expected RetailUnit did not match the actual.");
+            Assert.AreEqual(expectedScaleExtraText, actual.ScaleExtraText, "The expected ScaleExtraText did not match the actual.");
+            Assert.AreEqual(expectedSignDescription, actual.SignDescription, "The expected SignDescription did not match the actual.");
+            Assert.AreEqual(expectedSignRomanceLong, actual.SignRomanceLong, "The expected SignRomanceLong did not match the actual.");
+            Assert.AreEqual(expectedSignRomanceShort, actual.SignRomanceShort, "The expected SignRomanceShort did not match the actual.");
+            Assert.AreEqual(expectedTagUom.ToString(), actual.TagUom, "The expected TagUom did not match the actual.");
+            Assert.AreEqual(Convert.ToDouble(expectedMsrp), actual.Msrp, "The expected Msrp did not match the actual.");
+            Assert.AreEqual(expectedVendorItemId, actual.VendorItemId, "The expected VendorItemId did not match the actual.");
+            Assert.AreEqual(expectedVendorCaseSize, actual.VendorCaseSize, "The expected VendorCaseSize did not match the actual.");
+            Assert.AreEqual(expectedVendorKey, actual.VendorKey, "The expected VendorKey did not match the actual.");
+            Assert.AreEqual(expectedVendorCompanyName, actual.VendorCompanyName, "The expected VendorCompanyName did not match the actual.");
+            Assert.AreEqual(expectedOrderedByInfor, actual.OrderedByInfor, "The expected OrderedByInfor did not match the actual.");
+            Assert.AreEqual(expectedDefaultScanCode, actual.DefaultScanCode, "The expected DefaultScanCode did not match the actual.");
+            Assert.AreEqual(expectedAltRetailSize, actual.AltRetailSize, "The expected AltRetailSize did not match the actual.");
+            Assert.AreEqual(expectedAltRetailUOM.Unit_Abbreviation, actual.AltRetailUOM, "The expected AltRetailUOM did not match the actual.");
             Assert.IsTrue(string.IsNullOrEmpty(actual.ErrorMessage));
         }
 

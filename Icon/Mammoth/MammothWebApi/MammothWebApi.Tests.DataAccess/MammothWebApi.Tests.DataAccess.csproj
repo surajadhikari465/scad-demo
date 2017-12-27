@@ -97,6 +97,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Testing.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -120,8 +121,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Commands\AddEsbMessageQueuePriceCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddOrUpdateItemLocaleSupplierCommandHandlerTests.cs" />
+    <Compile Include="Commands\DeleteItemLocaleSupplierCommandHandlerTests.cs" />
     <Compile Include="Commands\StagingItemLocaleCommandHandlerTests.cs" />
     <Compile Include="Commands\AddOrUpdateItemLocaleCommandHandlerTests.cs" />
+    <Compile Include="Commands\StagingItemLocaleSupplierCommandHandlerTests.cs" />
+    <Compile Include="Commands\StagingItemLocaleSupplierDeleteCommandHandlerTests.cs" />
     <Compile Include="Commands\StagingPriceCommandHandlerTests.cs" />
     <Compile Include="Commands\AddOrUpdatePricesCommandHandlerTests.cs" />
     <Compile Include="Commands\DeletePricesCommandHandlerTests.cs" />
@@ -133,8 +138,10 @@
     <Compile Include="LocalesBuilderTemplate.cs" />
     <Compile Include="ModelBuilders\TestItemBuilder.cs" />
     <Compile Include="ModelBuilders\TestItemAttributeLocaleBuilder.cs" />
+    <Compile Include="ModelBuilders\TestItemLocale_SupplierBuilder.cs" />
     <Compile Include="ModelBuilders\TestStagingExtendedItemLocaleModelBuilder.cs" />
     <Compile Include="ModelBuilders\TestStagingItemLocaleModelBuilder.cs" />
+    <Compile Include="ModelBuilders\TestStagingItemLocaleSupplierModelBuilder.cs" />
     <Compile Include="ModelBuilders\TestStagingPriceModelBuilder.cs" />
     <Compile Include="PriceModelBuilderTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

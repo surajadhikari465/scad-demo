@@ -100,6 +100,10 @@
     <Compile Include="Commands\AddEsbMessageQueueItemLocaleCommandHandler.cs" />
     <Compile Include="Commands\AddOrUpdatePricesCommand.cs" />
     <Compile Include="Commands\AddOrUpdatePricesCommandHandler.cs" />
+    <Compile Include="Commands\AddOrUpdateItemLocaleSupplierCommand.cs" />
+    <Compile Include="Commands\AddOrUpdateItemLocaleSupplierCommandHandler.cs" />
+    <Compile Include="Commands\DeleteItemLocaleSupplierCommand.cs" />
+    <Compile Include="Commands\DeleteItemLocaleSupplierCommandHandler.cs" />
     <Compile Include="Commands\DeletePricesCommand.cs" />
     <Compile Include="Commands\DeletePricesCommandHandler.cs" />
     <Compile Include="Commands\DeleteStagingCommand.cs" />
@@ -108,6 +112,10 @@
     <Compile Include="Commands\StagingItemLocaleCommand.cs" />
     <Compile Include="Commands\StagingItemLocaleExtendedCommandHandler.cs" />
     <Compile Include="Commands\StagingItemLocaleCommandHandler.cs" />
+    <Compile Include="Commands\StagingItemLocaleSupplierCommand.cs" />
+    <Compile Include="Commands\StagingItemLocaleSupplierCommandHandler.cs" />
+    <Compile Include="Commands\StagingItemLocaleSupplierDeleteCommand.cs" />
+    <Compile Include="Commands\StagingItemLocaleSupplierDeleteCommandHandler.cs" />
     <Compile Include="Commands\StagingPriceCommand.cs" />
     <Compile Include="Commands\StagingPriceCommandHandler.cs" />
     <Compile Include="Models\App.cs" />
@@ -117,6 +125,9 @@
     <Compile Include="Models\AttributeMetaData.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Financial_SubTeam.cs" />
+    <Compile Include="Models\ItemLocale_Supplier.cs" />
+    <Compile Include="Models\StagingItemLocaleSupplierDeleteModel.cs" />
+    <Compile Include="Models\StagingItemLocaleSupplierModel.cs" />
     <Compile Include="Models\StoreScanCode.cs" />
     <Compile Include="Models\ItemStorePriceModel.cs" />
     <Compile Include="Models\Hierarchy.cs" />

@@ -36,6 +36,10 @@ namespace MammothWebApi.Service.Extensions
                     Sign_RomanceText_Long = itemLocale.SignRomanceLong,
                     Sign_RomanceText_Short = itemLocale.SignRomanceShort,
                     Msrp = itemLocale.Msrp,
+                    OrderedByInfor = itemLocale.OrderedByInfor.HasValue ? itemLocale.OrderedByInfor.Value : false,
+                    AltRetailSize = itemLocale.AltRetailSize,
+                    AltRetailUOM = itemLocale.AltRetailUOM,
+                    DefaultScanCode = itemLocale.DefaultScanCode,
                     Timestamp = timestamp,
                     TransactionId = transactionId
                 };
@@ -202,6 +206,52 @@ namespace MammothWebApi.Service.Extensions
                 il.TransactionId = transactionId;
             });
             return itemLocalesExtended;
+        }
+
+        public static List<StagingItemLocaleSupplierModel> ToStagingItemLocaleSupplierModel(this IEnumerable<ItemLocaleServiceModel> itemLocales, DateTime timestamp, Guid transactionId)
+        {
+            var staging = new List<StagingItemLocaleSupplierModel>();
+
+            foreach (var itemLocale in itemLocales)
+            {
+                var row = new StagingItemLocaleSupplierModel
+                {
+                    Region = itemLocale.Region,
+                    ScanCode = itemLocale.ScanCode,
+                    BusinessUnitID = itemLocale.BusinessUnitId,
+                    IrmaVendorKey = itemLocale.IrmaVendorKey,
+                    SupplierCaseSize = itemLocale.SupplierCaseSize,
+                    SupplierItemId = itemLocale.SupplierItemId,
+                    SupplierName = itemLocale.SupplierName,
+                    Timestamp = timestamp,
+                    TransactionId = transactionId
+                };
+
+                staging.Add(row);
+            }
+
+            return staging;
+        }
+
+        public static List<StagingItemLocaleSupplierDeleteModel> ToStagingItemLocaleSupplierDeleteModel(this IEnumerable<ItemLocaleServiceModel> itemLocales, DateTime timestamp, Guid transactionId)
+        {
+            var staging = new List<StagingItemLocaleSupplierDeleteModel>();
+
+            foreach (var itemLocale in itemLocales)
+            {
+                var row = new StagingItemLocaleSupplierDeleteModel
+                {
+                    Region = itemLocale.Region,
+                    ScanCode = itemLocale.ScanCode,
+                    BusinessUnitID = itemLocale.BusinessUnitId,
+                    Timestamp = timestamp,
+                    TransactionId = transactionId
+                };
+
+                staging.Add(row);
+            }
+
+            return staging;
         }
 
         /// <summary>

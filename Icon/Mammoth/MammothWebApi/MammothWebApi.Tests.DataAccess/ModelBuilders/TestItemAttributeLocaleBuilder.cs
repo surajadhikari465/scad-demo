@@ -26,6 +26,9 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         private string romanceLong;
         private string romanceShort;
         private string locality;
+        private decimal altRetailSize;
+        private string altRetailUom;
+        private string defaultScanCode;
         private DateTime addedDate;
 
         internal TestItemAttributeLocaleBuilder()
@@ -44,6 +47,9 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             this.retailUnit = "EACH";
             this.signDescription = "Test Sign Description";
             this.locality = "Dallas";
+            this.altRetailSize = 82.89m;
+            this.altRetailUom = "LB";
+            this.defaultScanCode = "837393722";
             this.addedDate = DateTime.Now;
         }
 
@@ -155,6 +161,24 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
+        internal TestItemAttributeLocaleBuilder WithAltRetailSize(decimal altRetailSize)
+        {
+            this.altRetailSize = altRetailSize;
+            return this;
+        }
+
+        internal TestItemAttributeLocaleBuilder WithAltRetailUom(string altRetailUom)
+        {
+            this.altRetailUom = altRetailUom;
+            return this;
+        }
+
+        internal TestItemAttributeLocaleBuilder WithDefaultScanCode(string defaultScanCode)
+        {
+            this.defaultScanCode = defaultScanCode;
+            return this;
+        }
+
         internal ItemAttributes_Locale Build()
         {
             ItemAttributes_Locale itemLocale = new ItemAttributes_Locale
@@ -176,6 +200,9 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
                 Sign_Desc = this.signDescription,
                 Sign_RomanceText_Long = this.romanceLong,
                 Sign_RomanceText_Short = this.romanceShort,
+                AltRetailSize = altRetailSize,
+                AltRetailUOM = altRetailUom,
+                DefaultScanCode = defaultScanCode,
                 AddedDate = this.addedDate
             };
 

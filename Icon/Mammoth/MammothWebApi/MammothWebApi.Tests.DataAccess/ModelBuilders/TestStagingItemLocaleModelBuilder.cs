@@ -23,6 +23,10 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         private string romanceShort;
         private string locality;
         private decimal msrp;
+        private bool OrderedByInfor;
+        private decimal altRetailSize;
+        private string altRetailUom;
+        private string defaultScanCode;
         private DateTime timestamp;
         private Guid transactionId;
 
@@ -45,6 +49,10 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             romanceLong = "Sign Romance Long";
             romanceShort = "Sign Romance Short";
             msrp = 5.99M;
+            OrderedByInfor = true;
+            altRetailSize = 9.8m;
+            altRetailUom = "EA";
+            defaultScanCode = "123456123";
             timestamp = DateTime.Now;
             transactionId = Guid.NewGuid();
         }
@@ -157,6 +165,30 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
+        internal TestStagingItemLocaleModelBuilder WithOrderedByInfor(bool OrderedByInfor)
+        {
+            this.OrderedByInfor = OrderedByInfor;
+            return this;
+        }
+
+        internal TestStagingItemLocaleModelBuilder WithAltRetailSize(decimal altRetailSize)
+        {
+            this.altRetailSize = altRetailSize;
+            return this;
+        }
+
+        internal TestStagingItemLocaleModelBuilder WithAltRetailUom(string altRetailUom)
+        {
+            this.altRetailUom = altRetailUom;
+            return this;
+        }
+
+        internal TestStagingItemLocaleModelBuilder WithDefaultScanCode(string defaultScanCode)
+        {
+            this.defaultScanCode = defaultScanCode;
+            return this;
+        }
+
         internal TestStagingItemLocaleModelBuilder WithTransactionId(Guid transactionId)
         {
             this.transactionId = transactionId;
@@ -185,6 +217,10 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
                 ScanCode = scanCode,
                 Sign_Desc = signDescription,
                 Msrp = msrp,
+                OrderedByInfor = OrderedByInfor,
+                AltRetailSize = altRetailSize,
+                AltRetailUOM = altRetailUom,
+                DefaultScanCode = defaultScanCode,
                 Timestamp = timestamp,
                 TransactionId = transactionId
             };

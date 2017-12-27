@@ -41,7 +41,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         [TestCleanup]
         public void CleanupTests()
         {
-            this.db.Connection.Execute("DELETE FROM Staging.dbo.ItemLocaleExtended WHERE Timestamp = @Timestamp",
+            this.db.Connection.Execute("DELETE FROM stage.ItemLocaleExtended WHERE Timestamp = @Timestamp",
                 new { Timestamp = this.now });
             this.db.Connection.Dispose();
         }

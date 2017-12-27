@@ -15,6 +15,9 @@ namespace MammothWebApi.DataAccess.Models
         public bool Authorized { get; set; }
         public bool Discontinued { get; set; }
         public bool LocalItem { get; set; }
+        public bool ScaleItem { get; set; }
+        public bool OrderedByInfor { get; set; }
+        public string DefaultScanCode { get; set; }
         public string LabelTypeDesc { get; set; }
         public string Product_Code { get; set; }
         public string RetailUnit { get; set; }
@@ -22,6 +25,8 @@ namespace MammothWebApi.DataAccess.Models
         public string Locality { get; set; }
         public string Sign_RomanceText_Long { get; set; }
         public string Sign_RomanceText_Short { get; set; }
+        public string AltRetailUOM { get; set; }
+        public decimal AltRetailSize { get; set; }
         public decimal Msrp { get; set; }
         public System.DateTime AddedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }

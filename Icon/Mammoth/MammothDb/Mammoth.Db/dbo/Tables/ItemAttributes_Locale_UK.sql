@@ -11,7 +11,7 @@
     [Discontinued]           BIT            DEFAULT ((0)) NOT NULL,
     [LocalItem]              BIT            DEFAULT ((0)) NOT NULL,
     [ScaleItem]              BIT            DEFAULT ((0)) NOT NULL,
-    [OrderedByPredictix]     BIT            DEFAULT ((0)) NOT NULL,
+    [OrderedByInfor]     BIT            DEFAULT ((0)) NOT NULL,
     [DefaultScanCode]        NVARCHAR  (13) NULL,
     [LabelTypeDesc]          NVARCHAR (255) NULL,
     [Product_Code]           NVARCHAR (255) NULL,

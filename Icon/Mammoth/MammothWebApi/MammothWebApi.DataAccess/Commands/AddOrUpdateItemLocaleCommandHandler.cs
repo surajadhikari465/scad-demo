@@ -31,6 +31,7 @@ namespace MammothWebApi.DataAccess.Commands
         [Discontinued]           BIT              NULL,
         [LabelTypeDesc]          NVARCHAR (4)     NULL,
         [LocalItem]              BIT              NULL,
+        [OrderedByInfor]     BIT              NULL,
         [Product_Code]           NVARCHAR (15)    NULL,
         [RetailUnit]             NVARCHAR (25)    NULL,
         [Sign_Desc]              NVARCHAR (60)    NULL,
@@ -38,6 +39,9 @@ namespace MammothWebApi.DataAccess.Commands
         [Sign_RomanceText_Long]  NVARCHAR (300)   NULL,
         [Sign_RomanceText_Short] NVARCHAR (255)   NULL,
         [Msrp]                   SMALLMONEY       NOT NULL,
+        [AltRetailUOM]			 NVARCHAR(25)	  NULL,
+        [AltRetailSize]			 NUMERIC(9,4)	  NULL,
+        [DefaultScanCode]		 NVARCHAR(13)	  NULL,
         [InsertOrUpdate]		 CHAR			  NOT NULL,
         PRIMARY KEY ([Region], [ItemID], [BusinessUnitID])
     )
@@ -56,6 +60,7 @@ namespace MammothWebApi.DataAccess.Commands
 	    stage.[Discontinued],
 	    stage.[LabelTypeDesc],
 	    stage.[LocalItem],  
+        stage.[OrderedByInfor],
 	    stage.[Product_Code],
 	    stage.[RetailUnit],
 	    stage.[Sign_Desc],
@@ -63,6 +68,9 @@ namespace MammothWebApi.DataAccess.Commands
 	    stage.[Sign_RomanceText_Long],
 	    stage.[Sign_RomanceText_Short],
         stage.[Msrp],
+        stage.[AltRetailUOM],
+        stage.[AltRetailSize],	
+        stage.[DefaultScanCode],
 	    CASE WHEN att.[ItemAttributeLocaleID] is null THEN 'I' ELSE 'U' END As [InsertOrUpdate]
     FROM 
 	    [stage].[ItemLocale]	        AS stage
@@ -93,6 +101,7 @@ namespace MammothWebApi.DataAccess.Commands
 			    [Authorized]				= tmp.[Authorized],
 			    [Discontinued]			    = tmp.[Discontinued],
 			    [LocalItem]				    = tmp.[LocalItem],
+                [OrderedByInfor]        = tmp.[OrderedByInfor],
 			    [LabelTypeDesc]			    = tmp.[LabelTypeDesc],
 			    [Product_Code]			    = tmp.[Product_Code],
 			    [RetailUnit]				= tmp.[RetailUnit],
@@ -101,6 +110,9 @@ namespace MammothWebApi.DataAccess.Commands
 			    [Sign_RomanceText_Long]	    = tmp.[Sign_RomanceText_Long],
 			    [Sign_RomanceText_Short]    = tmp.[Sign_RomanceText_Short],
                 [MSRP]                      = tmp.[Msrp],
+                [AltRetailUOM]	            = tmp.[AltRetailUOM],
+                [AltRetailSize]	            = tmp.[AltRetailSize],
+                [DefaultScanCode]           = tmp.[DefaultScanCode],
 			    [ModifiedDate]              = @Timestamp
 	        FROM
 		       [dbo].[ItemAttributes_Locale_{0}] att
@@ -125,6 +137,7 @@ namespace MammothWebApi.DataAccess.Commands
 				[Authorized],
 				[Discontinued],
 				[LocalItem],
+                [OrderedByInfor],
 				[LabelTypeDesc],
 				[Product_Code],
 				[RetailUnit],
@@ -133,6 +146,9 @@ namespace MammothWebApi.DataAccess.Commands
 				[Sign_RomanceText_Long],
 				[Sign_RomanceText_Short],
 				[MSRP],
+                [AltRetailUOM],
+                [AltRetailSize],
+                [DefaultScanCode],
 				[AddedDate]
             )
 			SELECT 
@@ -146,6 +162,7 @@ namespace MammothWebApi.DataAccess.Commands
 				tmp.[Authorized],
 				tmp.[Discontinued],
 				tmp.[LocalItem],
+                tmp.[OrderedByInfor],
 				tmp.[LabelTypeDesc],
 				tmp.[Product_Code],
 				tmp.[RetailUnit],
@@ -154,6 +171,9 @@ namespace MammothWebApi.DataAccess.Commands
 				tmp.[Sign_RomanceText_Long],
 				tmp.[Sign_RomanceText_Short],
 				tmp.[MSRP],
+                tmp.[AltRetailUOM],
+                tmp.[AltRetailSize],
+                tmp.[DefaultScanCode],
 				@Timestamp
 			FROM #tmpStagedItemLocale tmp
 			WHERE tmp.[InsertOrUpdate] = 'I'
@@ -165,9 +185,7 @@ namespace MammothWebApi.DataAccess.Commands
 	    ROLLBACK TRAN;
         IF OBJECT_ID('tempdb..#tmpStagedItemLocale') IS NOT NULL DROP TABLE #tmpStagedItemLocale;
         THROW
-    END CATCH
-            ";
-	
+    END CATCH";
 
             int affectedRows = this.db.Connection.Execute(String.Format(sql, data.Region),
                 new { Region = new DbString { Value = data.Region, Length = 2 }, Timestamp = data.Timestamp, TransactionId = data.TransactionId },

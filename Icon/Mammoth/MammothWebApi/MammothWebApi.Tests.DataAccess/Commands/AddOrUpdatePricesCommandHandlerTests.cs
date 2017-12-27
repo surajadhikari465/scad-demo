@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-
+using System.Transactions;
 
 namespace MammothWebApi.Tests.DataAccess.CommandTests
 {
@@ -27,10 +27,12 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         private Guid transactionId;
         private int? maxItemId;
         private int numberOfItemsTested;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void InitializeTests()
         {
+            transaction = new TransactionScope();
             this.numberOfItemsTested = 100;
             this.timestamp = DateTime.Now;
             this.transactionId = Guid.NewGuid();
@@ -60,24 +62,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
         [TestCleanup]
         public void CleanupTest()
         {
-            this.db.Connection.Execute($"DELETE FROM Locales_{this.region} WHERE BusinessUnitID = 1", this.db.Transaction);
-            this.db.Connection.Execute("DELETE FROM stage.Price WHERE TransactionId = @TranId", new { TranId = this.transactionId }, this.db.Transaction);
-            this.db.Connection.Execute($@"DELETE p
-                                        FROM dbo.Price_{this.region} p
-                                        WHERE p.BusinessUnitID = @BuId",
-                new { BuId = this.buId },
-                this.db.Transaction);
-            this.db.Connection.Execute($@"DELETE FROM Items WHERE ItemID IN @ItemIDs",
-                new { ItemIDs = this.items.Select(i => i.ItemID) },
-                this.db.Transaction);
-
-            if (this.db.Transaction != null)
-            {
-                this.db.Transaction.Rollback();
-                this.db.Transaction.Dispose();
-            }
-            this.db.Connection.Close();
-            this.db.Connection.Dispose();
+            transaction.Dispose();
         }
 
         [TestMethod]

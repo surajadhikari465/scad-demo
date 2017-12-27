@@ -1,6 +1,5 @@
-﻿using Mammoth.Common.DataAccess.DbProviders;
-using Dapper;
-using Mammoth.Common.DataAccess;
+﻿using Dapper;
+using Mammoth.Common.DataAccess.DbProviders;
 using MammothWebApi.DataAccess.Commands;
 using MammothWebApi.DataAccess.Models;
 using MammothWebApi.Tests.DataAccess.ModelBuilders;
@@ -9,8 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Data.SqlTypes;
+using System.Linq;
 
 namespace MammothWebApi.Tests.DataAccess.CommandTests
 {
@@ -134,7 +133,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                 itemLocales.Add( new TestItemAttributeLocaleBuilder()
                     .WithRegion(this.region)
                     .WithBusinessUnit(this.bizUnitID)
-                    .WithItemId(existingItems[1].ItemID)
+                    .WithItemId(existingItems[i].ItemID)
                     .WithAddedDate(addedDate)
                     .Build());
             }
@@ -438,6 +437,10 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 	                            Sign_RomanceText_Long,
 	                            Sign_RomanceText_Short,
                                 Msrp,
+                                OrderedByInfor,
+                                AltRetailSize,
+                                AltRetailUOM,
+                                DefaultScanCode,
 	                            Timestamp,
                                 TransactionId
                             )
@@ -461,6 +464,10 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 	                            @Sign_RomanceText_Long,
 	                            @Sign_RomanceText_Short,
                                 @Msrp,
+                                @OrderedByInfor,
+                                @AltRetailSize,
+                                @AltRetailUOM,
+                                @DefaultScanCode,
 	                            @Timestamp,
                                 @TransactionId
                             )";
@@ -508,6 +515,9 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 	                            Sign_RomanceText_Long,
 	                            Sign_RomanceText_Short,
                                 MSRP,
+                                AltRetailSize,
+                                AltRetailUOM,
+                                DefaultScanCode,
 	                            AddedDate
                             )
                             VALUES
@@ -530,6 +540,9 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 	                            @Sign_RomanceText_Long,
 	                            @Sign_RomanceText_Short,
                                 @MSRP,
+                                @AltRetailSize,
+                                @AltRetailUOM,
+                                @DefaultScanCode,
 	                            @AddedDate
                             )", region);
 
@@ -558,6 +571,9 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
             Assert.AreEqual(expected.Sign_RomanceText_Long, actual.Sign_RomanceText_Long, "Sign_RomanceText_Long value did not match expected.");
             Assert.AreEqual(expected.Sign_RomanceText_Short, actual.Sign_RomanceText_Short, "Sign_RomanceText_Short value did not match expected.");
             Assert.AreEqual(expected.Msrp, actual.Msrp, "Msrp value did not match expected.");
+            Assert.AreEqual(expected.AltRetailSize, actual.AltRetailSize, "AltRetailSize did not match expected");
+            Assert.AreEqual(expected.AltRetailUOM, actual.AltRetailUOM, "AltRetailUOM did not match expected");
+            Assert.AreEqual(expected.DefaultScanCode, actual.DefaultScanCode, "DefaultScanCode did not match expected");
             Assert.AreEqual(expected.ItemID, actual.ItemID, $"The actual ItemID did not match the expected value: {expected.ItemID}.");
         }
 
@@ -584,6 +600,10 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
             Assert.AreEqual(expected.Sign_RomanceText_Long, actual.Sign_RomanceText_Long, "Sign_RomanceText_Long value did not match expected.");
             Assert.AreEqual(expected.Sign_RomanceText_Short, actual.Sign_RomanceText_Short, "Sign_RomanceText_Short value did not match expected.");
             Assert.AreEqual(expected.Msrp, actual.Msrp, "Msrp value did not match expected.");
+            Assert.AreEqual(expected.OrderedByInfor, actual.OrderedByInfor, "OrderedByInfor did not match expected");
+            Assert.AreEqual(expected.AltRetailSize, actual.AltRetailSize, "AltRetailSize did not match expected");
+            Assert.AreEqual(expected.AltRetailUOM, actual.AltRetailUOM, "AltRetailUOM did not match expected");
+            Assert.AreEqual(expected.DefaultScanCode, actual.DefaultScanCode, "DefaultScanCode did not match expected");
             Assert.IsNotNull(actual.AddedDate, "The AddedDate is NULL.");
         }
     }

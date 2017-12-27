@@ -42,6 +42,10 @@ namespace MammothWebApi.DataAccess.Commands
                         nameof(StagingItemLocaleModel.Sign_RomanceText_Long),
                         nameof(StagingItemLocaleModel.Sign_RomanceText_Short),
                         nameof(StagingItemLocaleModel.Msrp),
+                        nameof(StagingItemLocaleModel.OrderedByInfor),
+                        nameof(StagingItemLocaleModel.AltRetailSize),
+                        nameof(StagingItemLocaleModel.AltRetailUOM),
+                        nameof(StagingItemLocaleModel.DefaultScanCode),
                         nameof(StagingItemLocaleModel.Timestamp),
                         nameof(StagingItemLocaleModel.TransactionId)))
                     {

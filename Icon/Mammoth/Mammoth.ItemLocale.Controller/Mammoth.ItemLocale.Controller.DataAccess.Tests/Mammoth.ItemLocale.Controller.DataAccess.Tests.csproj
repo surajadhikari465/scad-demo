@@ -144,10 +144,13 @@
     <Compile Include="Queries\GetItemLocaleEventsQueryTests.cs" />
     <Compile Include="Scale_ExtraText.cs" />
     <Compile Include="StoreItem.cs" />
+    <Compile Include="StoreItemExtended.cs" />
     <Compile Include="StoreItemVendor.cs" />
+    <Compile Include="StoreJurisdiction.cs" />
     <Compile Include="StoreRegionMapping.cs" />
     <Compile Include="TestInfrastructure\TestQueueModel.cs" />
     <Compile Include="Vendor.cs" />
+    <Compile Include="VendorCostHistory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -26,6 +26,10 @@ namespace MammothWebApi.DataAccess.Models
         public string Sign_RomanceText_Long { get; set; }
         public string Sign_RomanceText_Short { get; set; }
         public decimal Msrp { get; set; }
+        public bool OrderedByInfor { get; set; }
+        public decimal? AltRetailSize { get; set; }
+        public string AltRetailUOM { get; set; }
+        public string DefaultScanCode { get; set; }
         public DateTime Timestamp { get; set; }
         public Guid TransactionId { get; set; }
     }

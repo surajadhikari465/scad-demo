@@ -21,8 +21,12 @@ namespace MammothWebApi.Tests.Services
         private Mock<ILogger> mockLogger;
         private Mock<ICommandHandler<StagingItemLocaleCommand>> mockItemLocaleStagingHandler;
         private Mock<ICommandHandler<StagingItemLocaleExtendedCommand>> mockItemLocaleExtendedStagingHandler;
+        private Mock<ICommandHandler<StagingItemLocaleSupplierCommand>> mockItemLocaleSupplierStagingHandler;
+        private Mock<ICommandHandler<StagingItemLocaleSupplierDeleteCommand>> mockItemLocaleSupplierDeleteStagingHandler;
         private Mock<ICommandHandler<AddOrUpdateItemLocaleCommand>> mockAddUpdateItemLocaleHandler;
         private Mock<ICommandHandler<AddOrUpdateItemLocaleExtendedCommand>> mockAddUpdateItemLocaleExtendedHandler;
+        private Mock<ICommandHandler<AddOrUpdateItemLocaleSupplierCommand>> mockAddUpdateItemLocaleSupplierHandler;
+        private Mock<ICommandHandler<DeleteItemLocaleSupplierCommand>> mockDeleteItemLocaleSupplierHandler;
         private Mock<ICommandHandler<AddEsbMessageQueueItemLocaleCommand>> mockAddToMessageQueueItemLocaleHandler;
         private Mock<ICommandHandler<DeleteStagingCommand>> mockDeleteStagingHandler;
 
@@ -36,8 +40,12 @@ namespace MammothWebApi.Tests.Services
             this.mockLogger = new Mock<ILogger>();
             this.mockItemLocaleStagingHandler = new Mock<ICommandHandler<StagingItemLocaleCommand>>();
             this.mockItemLocaleExtendedStagingHandler = new Mock<ICommandHandler<StagingItemLocaleExtendedCommand>>();
+            this.mockItemLocaleSupplierStagingHandler = new Mock<ICommandHandler<StagingItemLocaleSupplierCommand>>();
+            this.mockItemLocaleSupplierDeleteStagingHandler = new Mock<ICommandHandler<StagingItemLocaleSupplierDeleteCommand>>();
             this.mockAddUpdateItemLocaleHandler = new Mock<ICommandHandler<AddOrUpdateItemLocaleCommand>>();
             this.mockAddUpdateItemLocaleExtendedHandler = new Mock<ICommandHandler<AddOrUpdateItemLocaleExtendedCommand>>();
+            this.mockAddUpdateItemLocaleSupplierHandler = new Mock<ICommandHandler<AddOrUpdateItemLocaleSupplierCommand>>();
+            this.mockDeleteItemLocaleSupplierHandler = new Mock<ICommandHandler<DeleteItemLocaleSupplierCommand>>();
             this.mockAddToMessageQueueItemLocaleHandler = new Mock<ICommandHandler<AddEsbMessageQueueItemLocaleCommand>>();
             this.mockDeleteStagingHandler = new Mock<ICommandHandler<DeleteStagingCommand>>();
 
@@ -45,8 +53,12 @@ namespace MammothWebApi.Tests.Services
                 this.mockLogger.Object,
                 this.mockItemLocaleStagingHandler.Object,
                 this.mockItemLocaleExtendedStagingHandler.Object,
+                this.mockItemLocaleSupplierStagingHandler.Object,
+                this.mockItemLocaleSupplierDeleteStagingHandler.Object,
                 this.mockAddUpdateItemLocaleHandler.Object,
                 this.mockAddUpdateItemLocaleExtendedHandler.Object,
+                this.mockAddUpdateItemLocaleSupplierHandler.Object,
+                this.mockDeleteItemLocaleSupplierHandler.Object,
                 this.mockAddToMessageQueueItemLocaleHandler.Object,
                 this.mockDeleteStagingHandler.Object);
 
@@ -123,6 +135,9 @@ namespace MammothWebApi.Tests.Services
             this.mockItemLocaleExtendedStagingHandler
                 .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
                     c.ItemLocalesExtended.Where(il => il.AttributeId == Attributes.TagUom).Count() == 3)), Times.Once);
+
+            this.mockItemLocaleSupplierStagingHandler
+                .Verify(s => s.Execute(It.IsAny<StagingItemLocaleSupplierCommand>()), Times.Once);
         }
 
         [TestMethod]
@@ -138,6 +153,8 @@ namespace MammothWebApi.Tests.Services
                 .Verify(s => s.Execute(It.Is<DeleteStagingCommand>(d => d.StagingTableName == StagingTableNames.ItemLocale)), Times.Once);
             this.mockDeleteStagingHandler
                 .Verify(s => s.Execute(It.Is<DeleteStagingCommand>(d => d.StagingTableName == StagingTableNames.ItemLocaleExtended)), Times.Once);
+            this.mockDeleteStagingHandler
+                .Verify(s => s.Execute(It.Is<DeleteStagingCommand>(d => d.StagingTableName == StagingTableNames.ItemLocaleSupplier)), Times.Once);
         }
 
         [TestMethod]
@@ -159,6 +176,8 @@ namespace MammothWebApi.Tests.Services
                 .Verify(s => s.Execute(It.Is<AddOrUpdateItemLocaleCommand>(c => c.Region == "SW" && c.Timestamp >= now)), Times.Once);
             this.mockAddUpdateItemLocaleExtendedHandler
                 .Verify(s => s.Execute(It.Is<AddOrUpdateItemLocaleExtendedCommand>(c => c.Region == "SW" && c.Timestamp >= now)), Times.Once);
+            this.mockAddUpdateItemLocaleSupplierHandler
+                .Verify(s => s.Execute(It.Is<AddOrUpdateItemLocaleSupplierCommand>(c => c.Region == "SW" && c.Timestamp >= now)), Times.Once);
         }
 
         [TestMethod]
@@ -187,6 +206,14 @@ namespace MammothWebApi.Tests.Services
             {
                 this.mockAddUpdateItemLocaleExtendedHandler
                     .Verify(s => s.Execute(It.Is<AddOrUpdateItemLocaleExtendedCommand>(c => c.Region == item.Region && c.Timestamp >= now)), Times.Once);
+            }
+
+            this.mockAddUpdateItemLocaleSupplierHandler.Verify(s => s.Execute(It.IsAny<AddOrUpdateItemLocaleSupplierCommand>()), Times.Exactly(3));
+
+            foreach (var item in this.serviceData.ItemLocales)
+            {
+                this.mockAddUpdateItemLocaleSupplierHandler
+                    .Verify(s => s.Execute(It.Is<AddOrUpdateItemLocaleSupplierCommand>(c => c.Region == item.Region && c.Timestamp >= now)), Times.Once);
             }
         }
 
@@ -244,6 +271,7 @@ namespace MammothWebApi.Tests.Services
                 {
                     this.mockDeleteStagingHandler.Verify(s => s.Execute(It.Is<DeleteStagingCommand>(c => c.StagingTableName == StagingTableNames.ItemLocale)), Times.Once);
                     this.mockDeleteStagingHandler.Verify(s => s.Execute(It.Is<DeleteStagingCommand>(c => c.StagingTableName == StagingTableNames.ItemLocaleExtended)), Times.Once);
+                    this.mockDeleteStagingHandler.Verify(s => s.Execute(It.Is<DeleteStagingCommand>(c => c.StagingTableName == StagingTableNames.ItemLocaleSupplier)), Times.Once);
                 }
             }
         }

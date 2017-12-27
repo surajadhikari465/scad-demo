@@ -44,6 +44,16 @@ namespace MammothWebApi.Models
         public string SignRomanceShort { get; set; }
 
         public decimal MSRP { get; set; }
+        public bool? OrderedByInfor { get; set; }
+        public string AltRetailUOM { get; set; }
+        public decimal? AltRetailSize { get; set; }
+        public string DefaultScanCode { get; set; }
+
+        //Vendor Attributes
+        public string VendorItemId { get; set; }
+        public decimal? VendorCaseSize { get; set; }
+        public string VendorKey { get; set; }
+        public string VendorCompanyName { get; set; }
 
         // 'Extended' Attributes
         public bool? ColorAdded { get; set; }

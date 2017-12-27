@@ -718,6 +718,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />
     <Build Include="stage\Tables\ItemStoreKeysEsl.sql" />
     <Build Include="dbo\Tables\StoreAddress.sql" />
+    <Build Include="stage\Tables\ItemLocaleSupplier.sql" />
     <Build Include="dbo\Views\ItemLocaleAttributes.sql" />
     <Build Include="dbo\Views\ItemLocaleAttributesExt.sql" />
     <Build Include="dbo\Views\ItemLocaleSupplier.sql" />
@@ -729,6 +730,7 @@
     <Build Include="esl\Stored Procedures\GetEslAttributes.sql" />
     <Build Include="esl\Views\ItemsByAuthorizedStores.sql" />
     <Build Include="esl\Views\ItemStoresByBrandID.sql" />
+    <Build Include="stage\Tables\ItemLocaleSupplierDelete.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -748,6 +750,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddJobSchedulerToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddGpmPriceTypes.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddActivePriceSentArchiveToRetentionPolicy.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddOrderedByPredictixToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddGlobalPricingProgramToAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>

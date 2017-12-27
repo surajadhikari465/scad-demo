@@ -6,7 +6,7 @@
     BusinessUnitID          INT             NOT NULL,
     SupplierName            NVARCHAR(255)   NOT NULL,
     SupplierItemID          NVARCHAR(20)    NULL,
-    SupplierCaseSize        INT             NULL,
+    SupplierCaseSize		DECIMAL(9,4)	NULL,
     IrmaVendorKey           NVARCHAR(10)    NULL,
     AddedDateUtc            DATETIME2(7)    DEFAULT SYSUTCDATETIME() NOT NULL,
     ModifiedDateUtc         DATETIME2(7)    NULL,

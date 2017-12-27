@@ -44,7 +44,15 @@ namespace MammothWebApi.Extensions
                     SignRomanceShort = itemLocale.SignRomanceShort,
                     TagUom = itemLocale.TagUom,
                     TMDiscount = itemLocale.TmDiscount.HasValue ? itemLocale.TmDiscount.Value : false,
-                    Msrp = itemLocale.MSRP
+                    Msrp = itemLocale.MSRP,
+                    OrderedByInfor = itemLocale.OrderedByInfor,
+                    AltRetailSize = itemLocale.AltRetailSize,
+                    AltRetailUOM = itemLocale.AltRetailUOM,
+                    DefaultScanCode = itemLocale.DefaultScanCode,
+                    SupplierName = itemLocale.VendorCompanyName,
+                    SupplierItemId = itemLocale.VendorItemId,
+                    SupplierCaseSize = itemLocale.VendorCaseSize,
+                    IrmaVendorKey = itemLocale.VendorKey
                 };
                 itemLocaleServiceModels.Add(serviceModel);
             }

@@ -1,6 +1,7 @@
 ﻿namespace Irma.Testing
 {
     using Irma.Framework;
+    using Mammoth.ItemLocale.Controller.DataAccess.Tests;
     using System;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -66,6 +67,27 @@
                 .With(x => x.SubTeam_No, 777)
                 .With(x => x.Target_Margin, 0);
         }
+
+        public static IrmaObjectBuilder<VendorCostHistory> BuildVendorCostHistory()
+        {
+            return Build<VendorCostHistory>()
+                .With(x => x.EndDate, DateTime.Now.AddDays(100))
+                .With(x => x.FromVendor, false)
+                .With(x => x.InsertDate, DateTime.Now)
+                .With(x => x.MSRP, 1)
+                .With(x => x.StartDate, DateTime.Now.AddDays(-5))
+                .With(x => x.UnitCost, 1)
+                .With(x => x.UnitFreight, 1);
+        }
+
+        public static IrmaObjectBuilder<ItemOverride> BuildItemOverride()
+        {
+            return Build<ItemOverride>()
+                .With(x => x.Average_Unit_Weight, 1)
+                .With(x => x.Item_Description, "Test Override Item_Description")
+                .With(x => x.Sign_Description, "Test Override Sign_Description")
+                .With(x => x.POS_Description, "Test Override POS_Des");
+        }
     }
 
     public class IrmaObjectBuilder<T> where T : class
@@ -93,9 +115,18 @@
         private static string GetPropertyName<TPropertyType>(Expression<Func<T, TPropertyType>> propertyExpression)
         {
             var memberExpression = propertyExpression.Body as MemberExpression;
-            var property = memberExpression.Member as PropertyInfo;
-            var getMethod = property.GetGetMethod(true);
-            return property.Name;
+            if (memberExpression != null)
+            {
+                var property = memberExpression.Member as PropertyInfo;
+                var getMethod = property.GetGetMethod(true);
+                return property.Name;
+            }
+            else
+            {
+                var unaryExpression = propertyExpression.Body as UnaryExpression;
+                var property = unaryExpression.Operand as MemberExpression;
+                return property.Member.Name;
+            }
         }
     }
 }

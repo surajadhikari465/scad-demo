@@ -13,5 +13,7 @@ namespace MammothWebApi.DataAccess.Models
         public const string ItemLocale = "ItemLocale";
         public const string Price = "Price";
         public const string ItemLocaleExtended = "ItemLocaleExtended";
+        public const string ItemLocaleSupplier = "ItemLocaleSupplier";
+        public const string ItemLocaleSupplierDelete = "ItemLocaleSupplierDelete";
     }
 }
