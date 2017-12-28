@@ -779,7 +779,7 @@ SELECT
 	g.RetailSize,
 	g.RetailUOM,
 	g.PackageUnit,
-	g.MerchandiseSubBrick,
+	g.MerchandiseSubBrickName	AS MerchandiseSubBrick,
 	g.Desc_CustomerFriendly		AS CustomerFriendlyDescription,
 	g.FairTrade,
 	g.FlexibleText,
