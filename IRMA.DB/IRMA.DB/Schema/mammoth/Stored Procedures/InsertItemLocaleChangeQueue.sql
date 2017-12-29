@@ -90,8 +90,7 @@ SET NOCOUNT ON
 							FROM mammoth.ItemLocaleChangeQueue q (nolock)
 							WHERE q.Item_Key = @Item_Key 
 								AND q.Store_No = s.Store_No
-								AND q.Identifier = @Identifier 
-								AND q.EventTypeID = @eventTypeId
+								AND q.Identifier = @Identifier
 								AND q.InProcessBy IS NULL
 								AND q.ProcessFailedDate IS NULL)
 	END
@@ -126,7 +125,6 @@ SET NOCOUNT ON
 							WHERE q.Item_Key = @Item_Key 
 								AND q.Store_No = s.Store_No
 								AND q.Identifier = ii.Identifier
-								AND q.EventTypeID = @eventTypeId
 								AND q.InProcessBy IS NULL
 								AND q.ProcessFailedDate IS NULL)
 	END

@@ -160,6 +160,7 @@ BEGIN
 			END			
 		END    
 	END
+
 	--MD 07/01/2009: Added update to SIV for P2P process	
 	IF @Error_No = 0
 	BEGIN
@@ -169,6 +170,7 @@ BEGIN
 			INNER JOIN Inserted INS ON SIV.StoreItemVendorID = INS.StoreItemVendorID    
 		SELECT @Error_No = @@ERROR
 	END
+
     IF @error_No <> 0
     BEGIN
         ROLLBACK TRAN
