@@ -6,4 +6,4 @@
 
 GO
 GRANT EXECUTE
-    ON TYPE::[dbo].[IntType] TO [IRMAClientRole];
+    ON TYPE::[dbo].[ItemKeyAndStoreNoType] TO [IRMAClientRole];
