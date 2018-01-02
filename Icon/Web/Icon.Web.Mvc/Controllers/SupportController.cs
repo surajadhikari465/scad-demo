@@ -55,7 +55,7 @@ namespace Icon.Web.Controllers
             //validate parameter for positive value
             if (hierarchyClassId.GetValueOrDefault(0) < 1)
             {
-                ViewData["ErrorMessage"] = "Error: invalid Hierarchy Class ID parameter submitted (" +
+                TempData["ErrorMessage"] = "Error: invalid Hierarchy Class ID parameter submitted (" +
                     (hierarchyClassId.HasValue ? hierarchyClassId.Value.ToString() : "null") + ")";
                 return RedirectToAction("ChooseHierarchyClass");
             }
@@ -65,9 +65,9 @@ namespace Icon.Web.Controllers
             var hierarchyClass = hierarchyClassQuery.Search(hierarchyClassParameters);
 
             // verify that the query found good data
-            if (hierarchyClass?.hierarchyClassID < 1)
+            if (hierarchyClass?.hierarchyClassID == null )
             {
-                ViewData["ErrorMessage"] = "Error: The requested Hierarchy Class ID could not be found (ID: " +
+                TempData["ErrorMessage"] = "Error: The requested Hierarchy Class ID could not be found (ID: " +
                     hierarchyClassId.Value.ToString() + "). " +
                     "Be sure to use the internal Icon database ID, not the infor class code";
                 return RedirectToAction("ChooseHierarchyClass");

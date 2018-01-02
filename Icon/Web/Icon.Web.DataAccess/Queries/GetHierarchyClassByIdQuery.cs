@@ -21,7 +21,7 @@ namespace Icon.Web.DataAccess.Queries
                 .Include(hc => hc.HierarchyPrototype)
                 .Include(hc => hc.HierarchyClass2)
                 .Include(hc => hc.HierarchyClassTrait.Select(hct => hct.Trait))
-                .Single(hc => hc.hierarchyClassID == parameters.HierarchyClassId);
+                .SingleOrDefault(hc => hc.hierarchyClassID == parameters.HierarchyClassId);
 
             return hierarchyClass;
         }
