@@ -16,7 +16,7 @@
         <versionProperty>8</versionProperty>
         <authorProperty>2096654</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
-        <name>JobSchedulerServiceDeployment</name>
+        <name>JobSchedulerService</name>
         <designer>
             <lockedProperties/>
             <fixedChildren/>

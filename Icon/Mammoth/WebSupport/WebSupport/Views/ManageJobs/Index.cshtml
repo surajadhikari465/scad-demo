@@ -21,14 +21,23 @@
             <th data-toggle="tooltip" data-placement="top" data-container="body" title="StartDateTimeUtc">
                 @Html.DisplayNameFor(model => model.StartDateTimeUtc)
             </th>
-            <th data-toggle="tooltip" data-placement="top" data-container="body" title="LastRunDateTimeUtc">
-                @Html.DisplayNameFor(model => model.LastRunDateTimeUtc)
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="LastScheduledDateTimeUtc">
+                @Html.DisplayNameFor(model => model.LastScheduledDateTimeUtc)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="LastRunEndDateTimeUtc">
+                @Html.DisplayNameFor(model => model.LastRunEndDateTimeUtc)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="NextScheduledDateTimeUtc">
+                @Html.DisplayNameFor(model => model.NextScheduledDateTimeUtc)
             </th>
             <th data-toggle="tooltip" data-placement="top" data-container="body" title="IntervalInSeconds">
                 @Html.DisplayNameFor(model => model.IntervalInSeconds)
             </th>
             <th data-toggle="tooltip" data-placement="top" data-container="body" title="Enabled">
                 @Html.DisplayNameFor(model => model.Enabled)
+            </th>
+            <th data-toggle="tooltip" data-placement="top" data-container="body" title="Status">
+                @Html.DisplayNameFor(model => model.Status)
             </th>
             <th data-toggle="tooltip" data-placement="top" data-container="body" title="XmlObject">
                 @Html.DisplayNameFor(model => model.XmlObject)
@@ -40,9 +49,18 @@
         @foreach (var item in Model)
         {
             <tr>
+                @if (item.Status == "ready")
+                { 
                 <td>
                     @Html.ActionLink("Start", "Start", new { id = item.JobScheduleId }, new { @class = "btn btn-success", data_toggle = "tooltip", data_placement = "bottom", data_container = "body", title = "Start " + item.JobName })
                 </td>
+                }
+                else
+                {
+                <td>
+                    @Html.ActionLink("Start", "Start", new { id = item.JobScheduleId }, new { @class = "btn btn-success.disabled", data_toggle = "tooltip", data_placement = "bottom", data_container = "body", title = "Start " + item.JobName, onclick = "javascript:return false;" })
+                </td>
+                }
                 <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="JobName">
                     @Html.DisplayFor(modelItem => item.JobName)
                 </td>
@@ -55,14 +73,23 @@
                 <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="StartDateTimeUtc">
                     @Html.DisplayFor(modelItem => item.StartDateTimeUtc)
                 </td>
-                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastRunDateTimeUtc">
-                    @Html.DisplayFor(modelItem => item.LastRunDateTimeUtc)
+                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastScheduledDateTimeUtc">
+                    @Html.DisplayFor(modelItem => item.LastScheduledDateTimeUtc)
+                </td>
+                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastRunEndDateTimeUtc">
+                    @Html.DisplayFor(modelItem => item.LastRunEndDateTimeUtc)
+                </td>
+                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="NextScheduledDateTimeUtc">
+                    @Html.DisplayFor(modelItem => item.NextScheduledDateTimeUtc)
                 </td>
                 <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="IntervalInSeconds">
                     @Html.DisplayFor(modelItem => item.IntervalInSeconds)
                 </td>
                 <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Enabled">
                     @Html.DisplayFor(modelItem => item.Enabled)
+                </td>
+                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Status">
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="XmlObject">
                     @Html.DisplayFor(modelItem => item.XmlObject)

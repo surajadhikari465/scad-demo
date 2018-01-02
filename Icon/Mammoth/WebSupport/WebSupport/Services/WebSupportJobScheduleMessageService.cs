@@ -76,7 +76,10 @@ namespace WebSupport.Services
                 IntervalInSeconds = request.IntervalInSeconds,
                 JobName = request.JobName,
                 JobScheduleId = request.JobScheduleId,
-                LastRunDateTimeUtc = request.LastRunDateTimeUtc.HasValue ? request.LastRunDateTimeUtc.Value.ToString("O") : null,
+                LastScheduledDateTimeUtc = request.LastScheduledDateTimeUtc.HasValue ? request.LastScheduledDateTimeUtc.Value.ToString("O") : null,
+                LastRunEndDateTimeUtc = request.LastRunEndDateTimeUtc.HasValue ? request.LastRunEndDateTimeUtc.Value.ToString("O") : null,
+                NextScheduledDateTimeUtc = request.NextScheduledDateTimeUtc.ToString("O"),
+                Status = request.Status,
                 Region = request.Region,
                 StartDateTimeUtc = request.StartDateTimeUtc.ToString("O"),
                 XmlObject = request.XmlObject

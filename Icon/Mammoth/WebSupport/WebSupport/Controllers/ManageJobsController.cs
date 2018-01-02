@@ -47,7 +47,7 @@ namespace WebSupport.Controllers
         public ActionResult Index()
         {
             List<JobSchedule> jobSchedules = getJobSchedulesQueryHandler.Search(new GetJobSchedulesParameters());
-            var jobScheduleViewModels = jobSchedules.Select(m=> JobScheduleViewModel.FromDataAccessModel(m));
+            var jobScheduleViewModels = jobSchedules.Select(m => JobScheduleViewModel.FromDataAccessModel(m));
 
             return View(jobScheduleViewModels);
         }
@@ -117,23 +117,32 @@ namespace WebSupport.Controllers
         }
 
         [HttpGet]
-        public ActionResult Start(JobScheduleViewModel jobSchedule)
+        public ActionResult Start(int id)
         {
+            var jobSchedule = getJobScheduleQueryHandler.Search(new GetJobScheduleParameters
+            {
+                JobScheduleId = id
+            });
+            var jobScheduleViewModel = JobScheduleViewModel.FromDataAccessModel(jobSchedule);
+
+            JobScheduleModel model = new JobScheduleModel
+            {
+                JobScheduleId = jobScheduleViewModel.JobScheduleId,
+                DestinationQueueName = jobScheduleViewModel.DestinationQueueName,
+                Enabled = jobScheduleViewModel.Enabled,
+                IntervalInSeconds = jobScheduleViewModel.IntervalInSeconds,
+                JobName = jobScheduleViewModel.JobName,
+                LastScheduledDateTimeUtc = jobScheduleViewModel.LastScheduledDateTimeUtc,
+                LastRunEndDateTimeUtc = jobScheduleViewModel.LastRunEndDateTimeUtc,
+                NextScheduledDateTimeUtc = jobScheduleViewModel.NextScheduledDateTimeUtc,
+                Status = jobScheduleViewModel.Status,
+                Region = jobScheduleViewModel.Region,
+                StartDateTimeUtc = jobScheduleViewModel.StartDateTimeUtc,
+                XmlObject = jobScheduleViewModel.XmlObject
+            };
+
             if (ModelState.IsValid)
             {
-                JobScheduleModel model = new JobScheduleModel
-                {
-                    JobScheduleId = jobSchedule.JobScheduleId,
-                    DestinationQueueName = jobSchedule.DestinationQueueName,
-                    Enabled = jobSchedule.Enabled,
-                    IntervalInSeconds = jobSchedule.IntervalInSeconds,
-                    JobName = jobSchedule.JobName,
-                    LastRunDateTimeUtc = jobSchedule.LastRunDateTimeUtc,
-                    Region = jobSchedule.Region,
-                    StartDateTimeUtc = jobSchedule.StartDateTimeUtc,
-                    XmlObject = jobSchedule.XmlObject
-                };
-
                 var response = startJobService.Send(model);
                 if (response.Status == EsbServiceResponseStatus.Failed)
                 {
@@ -143,6 +152,20 @@ namespace WebSupport.Controllers
                 else
                 {
                     LogJobScheduleChange("Start", jobSchedule);
+
+                    //update next scheduled run datetime if the job scheduler gets stuck, and an adhoc run is kicked off
+                    if (DateTime.UtcNow > jobSchedule.NextScheduledDateTimeUtc)
+                    {
+                        var secondsInDifference = Math.Ceiling((DateTime.UtcNow - jobSchedule.NextScheduledDateTimeUtc).TotalSeconds / jobSchedule.IntervalInSeconds) * jobSchedule.IntervalInSeconds;
+                        jobSchedule.NextScheduledDateTimeUtc = jobSchedule.NextScheduledDateTimeUtc.AddSeconds(secondsInDifference);
+
+                        updateJobScheduleCommandHandler.Execute(new UpdateJobScheduleCommand
+                        {
+                            JobSchedule = jobSchedule
+                        });
+
+                        LogJobScheduleChange("Update", jobSchedule);
+                    }
                 }
             }
 

@@ -26,16 +26,20 @@ namespace WebSupport.DataAccess.Commands
                            ,[Region]
                            ,[DestinationQueueName]
                            ,[StartDateTimeUtc]
+                           ,[NextScheduledDateTimeUtc]
                            ,[IntervalInSeconds]
                            ,[Enabled]
+                           ,[Status]
                            ,[XmlObject])
                      VALUES
                            (@JobName
                            ,@Region
                            ,@DestinationQueueName
                            ,@StartDateTimeUtc
+                           ,@NextScheduledDateTimeUtc
                            ,@IntervalInSeconds
                            ,@Enabled
+                           ,'ready'
                            ,@XmlObject)",
                 data.JobSchedule);
         }

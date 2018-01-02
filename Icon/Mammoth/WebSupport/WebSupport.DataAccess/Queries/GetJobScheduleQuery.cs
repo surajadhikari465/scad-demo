@@ -23,9 +23,12 @@ namespace WebSupport.DataAccess.Queries
                           ,[Region]
                           ,[DestinationQueueName]
                           ,[StartDateTimeUtc]
-                          ,[LastRunDateTimeUtc]
+                          ,[LastScheduledDateTimeUtc]
+                          ,[LastRunEndDateTimeUtc]
+                          ,[NextScheduledDateTimeUtc]
                           ,[IntervalInSeconds]
                           ,[Enabled]
+                          ,[Status]
                           ,[XmlObject]
                       FROM [app].[JobSchedule]
                       WHERE JobScheduleId = @JobScheduleId",

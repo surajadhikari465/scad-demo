@@ -68,7 +68,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Mammoth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2017.10.9.1\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2017.12.27.2\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2017.11.22.3\lib\net45\Icon.Esb.Schemas.Wfm.dll</HintPath>

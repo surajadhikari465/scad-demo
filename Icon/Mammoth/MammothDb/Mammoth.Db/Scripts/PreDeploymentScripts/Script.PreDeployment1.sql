@@ -12,3 +12,4 @@
 
 --:r .\SubTeamCleanUp_PreDeployment.sql
 :r .\TruncateRetentionPolicyTable.sql
+:r .\DropJobScheduleTable.sql

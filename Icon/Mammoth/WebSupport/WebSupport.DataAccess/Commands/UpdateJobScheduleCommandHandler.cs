@@ -26,8 +26,10 @@ namespace WebSupport.DataAccess.Commands
                       ,[Region] = @Region
                       ,[DestinationQueueName] = @DestinationQueueName
                       ,[StartDateTimeUtc] = @StartDateTimeUtc
+                      ,[NextScheduledDateTimeUtc] = @NextScheduledDateTimeUtc
                       ,[IntervalInSeconds] = @IntervalInSeconds
                       ,[Enabled] = @Enabled
+                      ,[Status] = @Status
                       ,[XmlObject] = @XmlObject
                 WHERE JobScheduleId = @JobScheduleId",
                 data.JobSchedule);

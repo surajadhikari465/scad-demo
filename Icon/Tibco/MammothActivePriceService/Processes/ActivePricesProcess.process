@@ -11,8 +11,8 @@
     <pd:starter name="Publisher Queue Receiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>68</pd:x>
-        <pd:y>81</pd:y>
+        <pd:x>65</pd:x>
+        <pd:y>77</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -41,8 +41,8 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>1134</pd:x>
-        <pd:y>262</pd:y>
+        <pd:x>1143</pd:x>
+        <pd:y>407</pd:y>
         <config>
             <ConfirmEvent>Publisher Queue Receiver</ConfirmEvent>
         </config>
@@ -51,8 +51,8 @@
     <pd:activity name="Parse XML">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>68</pd:x>
-        <pd:y>267</pd:y>
+        <pd:x>69</pd:x>
+        <pd:y>193</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -133,8 +133,8 @@
     <pd:activity name="MapProcessStartDateTime">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>169</pd:x>
-        <pd:y>268</pd:y>
+        <pd:x>183</pd:x>
+        <pd:y>309</pd:y>
         <config>
             <element>
                 <xsd:element name="currentDateTime" type="xsd:string"/>
@@ -200,8 +200,8 @@
         <pd:activity name="GetActivePrices">
             <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-            <pd:x>470</pd:x>
-            <pd:y>110</pd:y>
+            <pd:x>529</pd:x>
+            <pd:y>112</pd:y>
             <config>
                 <timeout>120</timeout>
                 <commit>false</commit>
@@ -352,8 +352,8 @@ WHERE p.Region = ?
         <pd:group name="BatchAndSendActivePrices">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>372</pd:x>
-            <pd:y>225</pd:y>
+            <pd:x>395</pd:x>
+            <pd:y>224</pd:y>
             <pd:width>497</pd:width>
             <pd:height>250</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -416,8 +416,8 @@ WHERE p.Region = ?
             <pd:activity name="Map Data">
                 <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
                 <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-                <pd:x>423</pd:x>
-                <pd:y>297</pd:y>
+                <pd:x>445</pd:x>
+                <pd:y>296</pd:y>
                 <config>
                     <element ref="pfx3:MammothPrices"/>
                 </config>
@@ -493,8 +493,8 @@ WHERE p.Region = ?
             <pd:activity name="InfoLogPublisher">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>712</pd:x>
-                <pd:y>297</pd:y>
+                <pd:x>734</pd:x>
+                <pd:y>296</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/LogPublisher.process</processName>
                     <spawn>true</spawn>
@@ -525,8 +525,8 @@ WHERE p.Region = ?
             <pd:activity name="Catch">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>433</pd:x>
-                <pd:y>397</pd:y>
+                <pd:x>455</pd:x>
+                <pd:y>396</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <catchAll>true</catchAll>
@@ -536,8 +536,8 @@ WHERE p.Region = ?
             <pd:activity name="RowByRowProcessingActivePrice">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>600</pd:x>
-                <pd:y>400</pd:y>
+                <pd:x>622</pd:x>
+                <pd:y>399</pd:y>
                 <config>
                     <processName>/Processes/RowByRowProcessorForActivePrice.process</processName>
                 </config>
@@ -624,8 +624,8 @@ WHERE p.Region = ?
             <pd:activity name="Send PriceToTopic">
                 <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
-                <pd:x>563</pd:x>
-                <pd:y>299</pd:y>
+                <pd:x>585</pd:x>
+                <pd:y>298</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -679,7 +679,7 @@ WHERE p.Region = ?
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>280</pd:x>
-        <pd:y>268</pd:y>
+        <pd:y>310</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -767,16 +767,66 @@ WHERE p.Region = ?
             </pfx5:ErrorMessage>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Update Status To Running">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>66</pd:x>
+        <pd:y>317</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>update [app].[JobSchedule]
+set status = 'running'
+where JobScheduleId  = ?</statement>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>JobScheduledID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <JobScheduledID>
+                    <xsl:value-of select="$Parse-XML/pfx4:JobSchedule/pfx4:JobScheduleId"/>
+                </JobScheduledID>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Update Status To Ready">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>1131</pd:x>
+        <pd:y>285</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>update [app].[JobSchedule]
+set status = 'ready',
+      LastRunEndDateTimeUtc = GETUTCDATE()
+where JobScheduleId  = ?</statement>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>JobScheduledID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <JobScheduledID>
+                    <xsl:value-of select="$Parse-XML/pfx4:JobSchedule/pfx4:JobScheduleId"/>
+                </JobScheduledID>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Confirm</pd:from>
         <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Publisher Queue Receiver</pd:from>
-        <pd:to>Parse XML</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -803,13 +853,6 @@ WHERE p.Region = ?
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Parse XML</pd:from>
-        <pd:to>MapProcessStartDateTime</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>MapProcessStartDateTime</pd:from>
         <pd:to>Log Start</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -818,7 +861,7 @@ WHERE p.Region = ?
     </pd:transition>
     <pd:transition>
         <pd:from>ProcessActivePriceSubsets</pd:from>
-        <pd:to>Confirm</pd:to>
+        <pd:to>Update Status To Ready</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -833,6 +876,34 @@ WHERE p.Region = ?
     <pd:transition>
         <pd:from>Publish Error Message</pd:from>
         <pd:to>Confirm-ToBeReplacedByDLQ</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Publisher Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update Status To Running</pd:from>
+        <pd:to>MapProcessStartDateTime</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Update Status To Running</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update Status To Ready</pd:from>
+        <pd:to>Confirm</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

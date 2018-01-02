@@ -28,9 +28,12 @@ namespace WebSupport.ViewModels
                 Region = dataModel.Region,
                 DestinationQueueName = dataModel.DestinationQueueName,
                 StartDateTimeUtc = dataModel.StartDateTimeUtc,
-                LastRunDateTimeUtc = dataModel.LastRunDateTimeUtc,
+                LastScheduledDateTimeUtc = dataModel.LastScheduledDateTimeUtc,
+                LastRunEndDateTimeUtc = dataModel.LastRunEndDateTimeUtc,
+                NextScheduledDateTimeUtc = dataModel.NextScheduledDateTimeUtc,
                 IntervalInSeconds = dataModel.IntervalInSeconds,
                 Enabled = dataModel.Enabled,
+                Status = dataModel.Status,
                 XmlObject = dataModel.XmlObject
             };
         }
@@ -62,16 +65,30 @@ namespace WebSupport.ViewModels
         [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
         public object StartDateTimeUtc;
 
-        [Display(Name = "Last Run DateTime UTC")]
+        [Display(Name = "Last Scheduled DateTime UTC")]
         [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
-        public object LastRunDateTimeUtc;
+        public object LastScheduledDateTimeUtc;
+
+        [Display(Name = "Last Run End DateTime UTC")]
+        [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
+        public object LastRunEndDateTimeUtc;
+
+        [Required]
+        [Display(Name = "Next Scheduled DateTime UTC")]
+        [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
+        public object NextScheduledDateTimeUtc;
 
         [Display(Name = "Interval (In Seconds)")]
         [Range(0, Int32.MaxValue)]
         public object IntervalInSeconds;
 
+        [Required]
         [Display(Name = "Enabled?")]
         public object Enabled;
+
+        [Required]
+        [Display(Name = "Status")]
+        public object Status;
 
         [Display(Name = "Xml Object (Parameter)")]
         [AllowHtml]

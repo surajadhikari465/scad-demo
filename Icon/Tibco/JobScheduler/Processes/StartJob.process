@@ -116,7 +116,7 @@
         <pd:activity name="Send to Job Queue">
             <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
             <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>399</pd:x>
+            <pd:x>401</pd:x>
             <pd:y>85</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>

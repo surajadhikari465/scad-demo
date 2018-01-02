@@ -19,11 +19,18 @@ namespace WebSupport.Models
         [DisplayFormat(DataFormatString = "{0:"+ ValidationConstants.XmlDateTimeFormat + "}", ApplyFormatInEditMode = true)]
         public DateTime StartDateTimeUtc { get; set; }
         [XmlElement]
-        public DateTime? LastRunDateTimeUtc { get; set; }
+        public DateTime? LastScheduledDateTimeUtc { get; set; }
+        [XmlElement]
+        public DateTime? LastRunEndDateTimeUtc { get; set; }
+        [XmlElement]
+        [DisplayFormat(DataFormatString = "{0:" + ValidationConstants.XmlDateTimeFormat + "}", ApplyFormatInEditMode = true)]
+        public DateTime NextScheduledDateTimeUtc { get; set; }
         [XmlElement]
         public int IntervalInSeconds { get; set; }
         [XmlElement]
         public bool Enabled { get; set; }
+        [XmlElement]
+        public string Status { get; set; }
         [XmlElement]
         public string XmlObject { get; set; }
     }

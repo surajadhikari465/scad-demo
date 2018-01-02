@@ -27,8 +27,8 @@
     <pd:activity name="Get Job Schedules">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>181</pd:x>
-        <pd:y>102</pd:y>
+        <pd:x>248</pd:x>
+        <pd:y>99</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -39,18 +39,29 @@
 	  	 Region,
 	 	 DestinationQueueName,
 	 	 StartDateTimeUtc,
-	  	 LastRunDateTimeUtc,
+		 LastScheduledDateTimeUtc,
+	  	 LastRunEndDateTimeUtc,
+		 NextScheduledDateTimeUtc,
 	  	 IntervalInSeconds,
 	   	 Enabled,
+		 Status,
 	  	 XmlObject
-	   FROM [app].[JobSchedule]
-	   WHERE ISNULL( DATEDIFF( second, LastRunDateTimeUtc,SYSUTCDATETIME())
-							 ,IntervalInSeconds) &gt;= IntervalInSeconds
-           AND StartDateTimeUtc &lt;=SYSUTCDATETIME()
-            AND Enabled = 1
-	   AND JobName = ?
+  FROM [app].[JobSchedule]
+ WHERE StartDateTimeUtc &lt;=SYSUTCDATETIME()
+   AND NextScheduledDateTimeUtc &lt;=SYSUTCDATETIME()
+   AND NextScheduledDateTimeUtc &gt; LastRunEndDateTimeUtc
+   AND Enabled = 1
+   AND Status = 'ready'
+   AND JobName = ?
 </statement>
             <wizardData/>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>JobName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
             <oraObjects/>
             <oraTables/>
             <QueryOutputCachedSchemaColumns>JobScheduleId</QueryOutputCachedSchemaColumns>
@@ -73,10 +84,18 @@
             <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>LastRunDateTimeUtc</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaColumns>LastScheduledDateTimeUtc</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LastRunEndDateTimeUtc</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NextScheduledDateTimeUtc</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>IntervalInSeconds</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
@@ -85,17 +104,14 @@
             <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Status</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>XmlObject</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>JobName</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
         </config>
         <pd:inputBindings>
             <jdbcQueryActivityInput>
@@ -170,15 +186,24 @@
                     <ns5:StartDateTimeUtc>
                         <xsl:value-of select="$JobSchedule/Record/StartDateTimeUtc"/>
                     </ns5:StartDateTimeUtc>
-                    <ns5:LastRunDateTimeUtc>
-                        <xsl:value-of select="$JobSchedule/Record/LastRunDateTimeUtc"/>
-                    </ns5:LastRunDateTimeUtc>
+                    <ns5:LastScheduledDateTimeUtc>
+                        <xsl:value-of select="$JobSchedule/Record/LastScheduledDateTimeUtc"/>
+                    </ns5:LastScheduledDateTimeUtc>
+                    <ns5:LastRunEndDateTimeUtc>
+                        <xsl:value-of select="$JobSchedule/Record/LastRunEndDateTimeUtc"/>
+                    </ns5:LastRunEndDateTimeUtc>
+                    <ns5:NextScheduledDateTimeUtc>
+                        <xsl:value-of select="$JobSchedule/Record/NextScheduledDateTimeUtc"/>
+                    </ns5:NextScheduledDateTimeUtc>
                     <ns5:IntervalInSeconds>
                         <xsl:value-of select="$JobSchedule/Record/IntervalInSeconds"/>
                     </ns5:IntervalInSeconds>
                     <ns5:Enabled>
                         <xsl:value-of select="$JobSchedule/Record/Enabled"/>
                     </ns5:Enabled>
+                    <ns5:Status>
+                        <xsl:value-of select="$JobSchedule/Record/Status"/>
+                    </ns5:Status>
                     <ns5:XmlObject>
                         <xsl:value-of select="$JobSchedule/Record/XmlObject"/>
                     </ns5:XmlObject>
@@ -198,7 +223,8 @@
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <statement>	UPDATE  [app].[JobSchedule]
-	SET LastRunDateTimeUtc = SYSUTCDATETIME()
+	SET LastScheduledDateTimeUtc = NextScheduledDateTimeUtc
+		,NextScheduledDateTimeUtc = DATEADD(ss, CEILING(CAST(DATEDIFF(ss, NextScheduledDateTimeUtc, SYSUTCDATETIME()) as FLOAT) / IntervalInSeconds) * IntervalInSeconds, NextScheduledDateTimeUtc)
 	WHERE JobScheduleID = ?</statement>
                 <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
                 <Prepared_Param_DataType>
