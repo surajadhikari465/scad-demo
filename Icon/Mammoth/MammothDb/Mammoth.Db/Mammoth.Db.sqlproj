@@ -732,6 +732,7 @@
     <Build Include="esl\Views\ItemStoresByBrandID.sql" />
     <None Include="Scripts\PreDeploymentScripts\TruncateJobScheduleTable.sql" />
     <Build Include="stage\Tables\ItemLocaleSupplierDelete.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddScaleItemAttributes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
