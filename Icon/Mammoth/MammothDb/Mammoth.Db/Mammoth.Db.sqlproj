@@ -730,7 +730,7 @@
     <Build Include="esl\Stored Procedures\GetEslAttributes.sql" />
     <Build Include="esl\Views\ItemsByAuthorizedStores.sql" />
     <Build Include="esl\Views\ItemStoresByBrandID.sql" />
-    <None Include="Scripts\PreDeploymentScripts\DropJobScheduleTable.sql" />
+    <None Include="Scripts\PreDeploymentScripts\TruncateJobScheduleTable.sql" />
     <Build Include="stage\Tables\ItemLocaleSupplierDelete.sql" />
   </ItemGroup>
   <ItemGroup>
