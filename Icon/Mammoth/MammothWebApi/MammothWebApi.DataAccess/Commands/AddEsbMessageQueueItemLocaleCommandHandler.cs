@@ -67,13 +67,22 @@ namespace MammothWebApi.DataAccess.Commands
                                     [ScaleExtraText] = sce.AttributeValue,
                                     [Msrp] = s.Msrp,
                                     [InProcessBy] = null,
-                                    [ProcessedDate] = null
+                                    [ProcessedDate] = null,
+                                    [SupplierName] = ils.SupplierName,
+                                    [IrmaVendorKey] = ils.IrmaVendorKey ,
+                                    [SupplierItemID] = ils.SupplierItemID ,
+                                    [SupplierCaseSize] = ils.SupplierCaseSize, 
+                                    [OrderedByInfor] = s.OrderedByInfor
                                 from
 	                                stage.ItemLocale s
 	                                join dbo.Items i on s.ScanCode = i.ScanCode
 	                                join dbo.ItemTypes it on i.ItemTypeID = it.ItemTypeID
 	                                join dbo.Locales_{0} l on s.BusinessUnitID = l.BusinessUnitID
-	
+
+	                                join stage.ItemLocaleSupplier ils  on ils.BusinessUnitID = l.BusinessUnitID
+                                                                          AND ils.ScanCode = i.ScanCode
+                                                                          AND ils.TransactionId = @TransactionId
+
 	                                left join stage.ItemLocaleExtended ca	on  i.ScanCode = ca.ScanCode
 												                                AND l.BusinessUnitID = ca.BusinessUnitId
 												                                AND ca.AttributeID = @ColorAddedId
