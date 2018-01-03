@@ -174,6 +174,39 @@ Namespace WholeFoods.IRMA.ModelLayer.DataAccess
             Return retailSale
 
         End Function
+
+        Public Function GetItemSubTeamName(ByVal itemKey As Integer) As String
+
+            Dim sSubTeam As String = String.Empty
+
+            If Not IsNothing(itemKey) Then
+
+                Dim factory As New DataFactory(DataFactory.ItemCatalog)
+                Dim paramList As New ArrayList()
+                Dim currentParam As DBParam
+                Dim theOutputList As New ArrayList
+
+                currentParam = New DBParam
+                currentParam.Name = "ItemKey"
+                currentParam.Type = DBParamType.Int
+                currentParam.Value = itemKey
+                paramList.Add(currentParam)
+
+                ' output param
+                currentParam = New DBParam
+                currentParam.Name = "SubTeamName"
+                currentParam.Type = DBParamType.String
+                paramList.Add(currentParam)
+
+                ' Execute the stored procedure 
+                theOutputList = factory.ExecuteStoredProcedure("GetItemSubTeamName", paramList)
+
+                sSubTeam = theOutputList(0)
+            End If
+
+            Return sSubTeam
+
+        End Function
 #End Region
 
     End Class

@@ -46,6 +46,10 @@ MU/MZ   2016-03-22  TFS18729
 						PBI14651    Disallow Organic field to be updated for validated items
 MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign Romance Short and Sign Romance Long 
                                     to EIM
+MZ      2017-12-18  PBI22360        Added logic to only allow Retail Size and Retail UOM update for non-validated items, 
+                                    or validated produce items if the region doesn't have any stores on GPM. 
+									If a region has a store on GPM, the Retail Size and Retail UOM update will be blocked
+									after the item is validated.
 ***********************************************************************************************/
 	
 	SET NOCOUNT ON
@@ -75,6 +79,7 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 		@Package_Unit_ID int,     
 		@Retail_Unit_ID int, 
 		@SubTeam_No int, 
+		@SubTeam_Name varchar(100),
 		@Brand_ID int, 
 		@Category_ID int, 
 		@Origin_ID int, 
@@ -460,6 +465,15 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 			WHERE 
 				Item_Key = @Item_Key
 			
+			SELECT 
+			   @SubTeam_Name = st.SubTeam_Name
+			FROM 
+				Item i (NOLOCK)
+			INNER JOIN 
+				SubTeam st (NOLOCK) ON i.SubTeam_No = st.SubTeam_No
+			WHERE 
+				Item_Key = @Item_Key
+
 			-- prepopulate scale data			
 			SELECT
 				@Existing_ItemScale_ID = ItemScale_ID,
@@ -549,6 +563,22 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 		DECLARE @BlockCanonicalFieldUpdate bit
 		EXEC dbo.IsValidatedItemInIcon @Item_key, @BlockCanonicalFieldUpdate OUTPUT
 
+		DECLARE @RegionalFlagValue bit, @NumStoresWithOverrides int, @NumStoresTotal int, @pricesAreGloballyManaged bit
+		 SELECT 
+			@RegionalFlagValue = RegionalFlagValue,
+			@NumStoresWithOverrides = NumStoresWithOverrides,
+			@NumStoresTotal = NumStoresTotal
+		 FROM dbo.IDF_OverrideStoreCountView 
+		WHERE FlagKey = 'GlobalPriceManagement'
+
+		IF @RegionalFlagValue = 1 AND @NumStoresWithOverrides < @NumStoresTotal
+			SET @pricesAreGloballyManaged = 1
+		ELSE IF @RegionalFlagValue = 0 AND @NumStoresWithOverrides > 0
+			SET @pricesAreGloballyManaged = 1
+		ELSE 
+			SET @pricesAreGloballyManaged = 0
+
+       
 		-- Figuring out whether to do subteam/category locking requires taking several different values into account.
 
 		-- 1. Determine if the region is subteam-aligned.
@@ -740,9 +770,23 @@ MZ      2017-07-21  PBI22360        Added two alternate jurisdiction fields Sign
 				ELSE IF @ColumnName = LOWER('Package_Desc1')
 					SELECT  @Package_Desc1 = CASE WHEN @BlockCanonicalFieldUpdate = 0 THEN CAST(@ColumnValue AS decimal(9,4)) ELSE @Package_Desc1 END
 				ELSE IF @ColumnName = LOWER('Package_Desc2') 
-					SELECT  @Package_Desc2 = CAST(@ColumnValue AS decimal(9,4))
+					SELECT  @Package_Desc2 = CASE 
+												WHEN @UseStoreJurisdictions = 1 AND @IsDefaultJurisdiction = 0 -- Pack Size update is not blocked for alternate jurisdiction 
+													THEN CAST(@ColumnValue AS decimal(9,4))
+												WHEN @BlockCanonicalFieldUpdate = 0
+													THEN CAST(@ColumnValue AS decimal(9,4)) 
+												WHEN @BlockCanonicalFieldUpdate = 1 AND @pricesAreGloballyManaged = 0 AND LOWER(@SubTeam_Name) = 'produce' 
+													THEN CAST(@ColumnValue AS decimal(9,4))
+												ELSE @Package_Desc2 END
 				ELSE IF @ColumnName = LOWER('Package_Unit_ID') 
-					SELECT  @Package_Unit_ID = CAST(@ColumnValue AS int)
+					SELECT  @Package_Unit_ID = CASE
+												WHEN @UseStoreJurisdictions = 1 AND @IsDefaultJurisdiction = 0 -- Pack UOM update is not blocked for alternate jurisdiction 
+													THEN CAST(@ColumnValue AS int)
+												WHEN @BlockCanonicalFieldUpdate = 0 
+													THEN CAST(@ColumnValue AS int) 
+												WHEN @BlockCanonicalFieldUpdate = 1 AND @pricesAreGloballyManaged = 0 AND LOWER(@SubTeam_Name) = 'produce'
+													THEN CAST(@ColumnValue AS int)
+												ELSE @Package_Unit_ID END
 				ELSE IF @ColumnName = LOWER('Retail_Unit_ID') 
 					SELECT  @Retail_Unit_ID = CAST(@ColumnValue AS int)
 				ELSE IF @ColumnName = LOWER('SubTeam_No')

@@ -1158,6 +1158,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Dim theUploadRow As UploadRow = inUploadRowHolder.UploadRow
             Dim theItemIdentifierGridCell As UltraGridCell
             Dim theIdentifier As String = ""
+            Dim isDefaultJurisdiction As Boolean = True
 
             ' only validate the identifier when we need to
             ' this flag is false only in the beginning or if
@@ -1171,6 +1172,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                     theItemIdentifierGridCell = theGridAndDataRowHolder.GridRow.Cells(EIM_Constants.ITEMIDENTIFIER_IDENTIFIER_ATTR_KEY)
                     theIdentifier = GetItemIdentifier(theGridAndDataRowHolder.GridRow)
+                    isDefaultJurisdiction = IsForDefaultJurisdiction(theGridAndDataRowHolder.GridRow)
 
                     ' only clear a previous error if the error is not one from basic validation
                     ' those errors have the attribute's key value as the validation error key
@@ -1303,6 +1305,8 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                         End If
 
                         Dim enforceCanonicalFieldLocking As Boolean = ItemIdentifierDAO.Instance.IsValidatedItemInIcon(theUploadRow.ItemKey)
+                        Dim anyStoreInRegionIsOnGpm As Boolean = InstanceDataDAO.FlagIsOnForAnyStore("GlobalPriceManagement")
+                        Dim itemSubteam As String = ItemIdentifierDAO.Instance.GetItemSubTeamName(theUploadRow.ItemKey)
 
                         If enforceCanonicalFieldLocking Then
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_ITEM_DESCRIPTION_ATTR_KEY)
@@ -1312,9 +1316,13 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_BRAND_ID_ATTR_KEY)
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_TAXCLASS_ID_ATTR_KEY)
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_ORGANIC_ATTR_KEY)
+                            If isDefaultJurisdiction And (anyStoreInRegionIsOnGpm Or (Not anyStoreInRegionIsOnGpm And itemSubteam.ToLower() <> "produce")) Then
+                                GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_PACKAGE_DESC2_ATTR_KEY)
+                                GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_PACKAGE_UNIT_ID_ATTR_KEY)
+                            End If
                         End If
 
-                        Dim enforceSubteamLocking As Boolean = InstanceDataDAO.IsFlagActive("UKIPS")
+                            Dim enforceSubteamLocking As Boolean = InstanceDataDAO.IsFlagActive("UKIPS")
                         Dim itemHasAlignedSubteam As Boolean = ItemIdentifierDAO.Instance.HasAlignedSubteam(theUploadRow.ItemKey)
                         Dim retailSale As UploadValue = theUploadRow.FindUploadValueByAttributeKey(EIM_Constants.ITEM_RETAIL_SALE)
                         Dim itemIsRetailSale As Boolean
@@ -3338,6 +3346,18 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Dim theIdentifier As String = GridUtilities.GetGridCellStringValue(EIM_Constants.ITEMIDENTIFIER_IDENTIFIER_ATTR_KEY, inGridRow)
 
             Return theIdentifier
+        End Function
+
+        Private Function IsForDefaultJurisdiction(ByRef inGridRow As UltraGridRow) As Boolean
+
+            Dim defaultJurisdiction As String = GridUtilities.GetGridCellStringValue(EIM_Constants.ITEM_IS_DEFAULT_JURISDICTION_ATTR_KEY, inGridRow)
+            Dim isDefaultJurisdiction As Boolean = True
+
+            If defaultJurisdiction.ToLower() = "false" Then
+                isDefaultJurisdiction = False
+            End If
+
+            Return isDefaultJurisdiction
         End Function
 
         ''' <summary>
