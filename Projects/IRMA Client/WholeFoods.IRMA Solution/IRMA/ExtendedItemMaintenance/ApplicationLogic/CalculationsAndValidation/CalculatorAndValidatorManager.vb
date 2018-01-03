@@ -127,7 +127,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
         ''' <param name="inUploadRowHolder"></param>
         ''' <remarks></remarks>
         Private Sub RefreshItemMaintenanceGridRows(ByRef inUploadRowHolder As UploadRowHolder)
-            Dim theUploadRowHoldersForSameItemList As ArrayList = _
+            Dim theUploadRowHoldersForSameItemList As ArrayList =
                             Me.EIMManager.CurrentUploadRowHolderCollecton.GetUploadRowHolderListForIdentifier(inUploadRowHolder.UploadRow.Identifier)
             Dim theGridAndDataRowHolder As GridAndDataRowHolder
 
@@ -143,7 +143,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
         End Sub
 
-        Public Sub ValidateGridRow(ByRef inUploadRowHolder As UploadRowHolder, ByVal inValidationType As ValidationTypes, _
+        Public Sub ValidateGridRow(ByRef inUploadRowHolder As UploadRowHolder, ByVal inValidationType As ValidationTypes,
                 ByVal inJustStores As Boolean)
 
             InternalValidateGridRow(inUploadRowHolder, inValidationType, inJustStores)
@@ -213,7 +213,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Dim hasNetDiscount As Boolean = False
             Dim theDataRowArray As DataRow()
 
-            hasPriceChangeType = _
+            hasPriceChangeType =
                 FindIntegerValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.PRICE_CHANGE_TYPE_ATTR_KEY, thePriceChangeId)
 
             If hasPriceChangeType Then
@@ -230,25 +230,25 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                 ' find the price, cost, and multiple values from whichever grids they may be in
                 ' we are relying on the values being synced across the grids by now
-                hasPrice = _
+                hasPrice =
                     FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, thePriceKey, thePrice)
 
-                hasBaseCost = _
+                hasBaseCost =
                     FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.COST_PKG_COST_ATTR_KEY, theBaseCost)
 
-                hasNetCost = _
+                hasNetCost =
                     FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.COST_NET_COST_ATTR_KEY, theNetCost)
 
-                hasUnitFreight = _
+                hasUnitFreight =
                     FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.COST_UNIT_FREIGHT_ATTR_KEY, theUnitFreight)
 
-                hasNetDiscount = _
+                hasNetDiscount =
                     FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.COST_DISCOUNT_ATTR_KEY, theNetDiscount)
 
-                hasVendorPackageCount = _
+                hasVendorPackageCount =
                     FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.COST_VEND_PKG_DSCR_ATTR_KEY, theVendorPackageCount)
 
-                hasMultiple = _
+                hasMultiple =
                     FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, theMultipleKey, theMultiple)
 
 
@@ -274,7 +274,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     End If
                 Next
 
-                If hasPrice And hasBaseCost And hasNetCost And hasNetDiscount And _
+                If hasPrice And hasBaseCost And hasNetCost And hasNetDiscount And
                         hasUnitFreight And hasVendorPackageCount And hasMultiple Then
 
                     ' calculate the net cost
@@ -333,7 +333,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Dim hasMultiple As Boolean = False
             Dim theDataRowArray As DataRow()
 
-            hasPriceChangeType = _
+            hasPriceChangeType =
                 FindIntegerValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.PRICE_CHANGE_TYPE_ATTR_KEY, thePriceChangeId)
 
             If hasPriceChangeType Then
@@ -350,16 +350,16 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                 ' find the price, cost, and multiple values from whichever grids they may be in
                 ' we are relying on the values being synced across the grids by now
-                hasMargin = _
+                hasMargin =
                     FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.PRICE_MARGIN_ATTR_KEY, theMargin)
 
-                hasNetCost = _
+                hasNetCost =
                     FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.COST_NET_COST_ATTR_KEY, theNetCost)
 
-                hasVendorPackageCount = _
+                hasVendorPackageCount =
                    FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, EIM_Constants.COST_VEND_PKG_DSCR_ATTR_KEY, theVendorPackageCount)
 
-                hasMultiple = _
+                hasMultiple =
                      FindDecimalValueInDataSetForUploadRow(inDataSet, theUploadRowId, theMultipleKey, theMultiple)
 
                 For Each theDataTable As DataTable In inDataSet.Tables
@@ -414,7 +414,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Dim theCastValue As Object = Nothing
 
             If Not String.IsNullOrEmpty(inValueString) And Not IsNothing(inValueString) Then
-                If theDbDataTypeName.ToLower().Equals("char") Or _
+                If theDbDataTypeName.ToLower().Equals("char") Or
                         theDbDataTypeName.ToLower().Equals("varchar") Then
                     theCastValue = inValueString
                 ElseIf theDbDataTypeName.ToLower().Equals("smalldatetime") Then
@@ -426,7 +426,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                         Dim theEarliestValidSmallDateTime As Date = Date.Parse("01/01/1900")
                         Dim theLatestValidSmallDateTime As Date = Date.Parse("06/06/2079")
 
-                        If Not theThrowAwayDate.CompareTo(theEarliestValidSmallDateTime) < 0 And _
+                        If Not theThrowAwayDate.CompareTo(theEarliestValidSmallDateTime) < 0 And
                                 Not theThrowAwayDate.CompareTo(theLatestValidSmallDateTime) > 0 Then
                             theCastValue = theThrowAwayDate
                         End If
@@ -441,15 +441,15 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     If Boolean.TryParse(inValueString, theThrowAwayBoolean) Then
                         theCastValue = theThrowAwayBoolean
                     End If
-                ElseIf theDbDataTypeName.ToLower().Equals("int") Or _
-                        theDbDataTypeName.ToLower().Equals("smallint") Or _
+                ElseIf theDbDataTypeName.ToLower().Equals("int") Or
+                        theDbDataTypeName.ToLower().Equals("smallint") Or
                         theDbDataTypeName.ToLower().Equals("tinyint") Then
                     Dim theThrowAwayInteger As Integer
                     If Integer.TryParse(inValueString, theThrowAwayInteger) Then
                         theCastValue = theThrowAwayInteger
                     End If
-                ElseIf theDbDataTypeName.ToLower().Equals("decimal") Or _
-                        theDbDataTypeName.ToLower().Equals("smallmoney") Or _
+                ElseIf theDbDataTypeName.ToLower().Equals("decimal") Or
+                        theDbDataTypeName.ToLower().Equals("smallmoney") Or
                         theDbDataTypeName.ToLower().Equals("money") Then
                     Dim theThrowAwayDouble As Double
                     If Double.TryParse(inValueString, theThrowAwayDouble) Then
@@ -468,17 +468,17 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Dim theCastValue As Object = CalculatorAndValidatorManager.SafeCastByDbDataType(inValueString, inDbDataTypeName)
             Dim theCastCompareToValue As Object = CalculatorAndValidatorManager.SafeCastByDbDataType(inCompareToValueString, inDbDataTypeName)
 
-            If Not (IsNothing(theCastValue) Or _
+            If Not (IsNothing(theCastValue) Or
                     IsNothing(theCastCompareToValue)) Then
 
-                If inDbDataTypeName.ToLower().Equals("smalldatetime") Or _
+                If inDbDataTypeName.ToLower().Equals("smalldatetime") Or
                         inDbDataTypeName.ToLower().Equals("datetime") Then
                     theComparisonResult = CDate(theCastValue).CompareTo(CDate(inCompareToValueString))
-                ElseIf inDbDataTypeName.ToLower().Equals("int") Or _
+                ElseIf inDbDataTypeName.ToLower().Equals("int") Or
                         inDbDataTypeName.ToLower().Equals("tinyint") Then
                     theComparisonResult = CInt(theCastValue).CompareTo(CInt(inCompareToValueString))
-                ElseIf inDbDataTypeName.ToLower().Equals("decimal") Or _
-                        inDbDataTypeName.ToLower().Equals("smallmoney") Or _
+                ElseIf inDbDataTypeName.ToLower().Equals("decimal") Or
+                        inDbDataTypeName.ToLower().Equals("smallmoney") Or
                         inDbDataTypeName.ToLower().Equals("money") Then
                     theComparisonResult = CDec(theCastValue).CompareTo(CDec(inCompareToValueString))
                 End If
@@ -495,7 +495,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
 #Region "Top-level Validation Methods"
 
-        Private Sub InternalValidateGridRow(ByRef inUploadRowHolder As UploadRowHolder, ByVal inValidationType As ValidationTypes, _
+        Private Sub InternalValidateGridRow(ByRef inUploadRowHolder As UploadRowHolder, ByVal inValidationType As ValidationTypes,
                 ByVal inJustStores As Boolean)
 
             Dim FourLevelHierarchyFlag As Boolean = InstanceDataDAO.IsFlagActiveCached("FourLevelHierarchy")
@@ -525,9 +525,9 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     If Not inJustStores Or (inJustStores And theUploadValue.Key.Equals(EIM_Constants.STORE_NO_ATTR_KEY)) Then
 
                         ' do not validate level 3 or 4 if the region doesn't use 4 levels
-                        If (FourLevelHierarchyFlag) Or _
-                                (Not FourLevelHierarchyFlag And _
-                                Not theUploadValue.Key.Equals(EIM_Constants.ITEM_LEVEL_3_ATTR_KEY) And _
+                        If (FourLevelHierarchyFlag) Or
+                                (Not FourLevelHierarchyFlag And
+                                Not theUploadValue.Key.Equals(EIM_Constants.ITEM_LEVEL_3_ATTR_KEY) And
                                 Not theUploadValue.Key.Equals(EIM_Constants.ITEM_LEVEL_4_ATTR_KEY)) Then
 
                             ValidateBasic(theUploadValue, inUploadRowHolder, inValidationType)
@@ -581,7 +581,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     ' because the validation that runs to determine if the identifier values
                     ' exist in IRMA only run when the values are first loaded or when they are
                     ' changed through data entry
-                    If (inUploadValue.Key.Equals(EIM_Constants.ITEMIDENTIFIER_IDENTIFIER_ATTR_KEY) AndAlso inUploadRowHolder.ContainsValidationKey("Identifier")) Or _
+                    If (inUploadValue.Key.Equals(EIM_Constants.ITEMIDENTIFIER_IDENTIFIER_ATTR_KEY) AndAlso inUploadRowHolder.ContainsValidationKey("Identifier")) Or
                         (inUploadValue.Key.Equals(EIM_Constants.PRICE_LINKED_ITEM_IDENTIFIER_ATTR_KEY) AndAlso inUploadRowHolder.ContainsValidationKey("LinkedItemIdentifier")) Then
 
                         clearCellStyle = False
@@ -769,7 +769,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
         End Function
 
-        Private Function ValidateValueForValueList(ByRef inValidationMessage As String, ByVal inValue As String, ByRef inUploadValue As UploadValue, _
+        Private Function ValidateValueForValueList(ByRef inValidationMessage As String, ByVal inValue As String, ByRef inUploadValue As UploadValue,
                 ByRef inGridCell As UltraGridCell) As Boolean
 
             Dim isValid As Boolean = True
@@ -782,7 +782,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                 ' or an empty string
                 If Not IsNothing(inValue) AndAlso Not String.IsNullOrEmpty(inValue) Then
 
-                    Dim theValueListData As BusinessObjectCollection = _
+                    Dim theValueListData As BusinessObjectCollection =
                             CType(Me.EIMManager.ValueListDataByKeyCollection.Item(inUploadValue.Key), BusinessObjectCollection)
 
                     If Not IsNothing(theValueListData) Then
@@ -851,7 +851,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Next
         End Sub
 
-        Private Sub HandlePriceChangeAttributes(ByVal inIsPriceChange As Boolean, _
+        Private Sub HandlePriceChangeAttributes(ByVal inIsPriceChange As Boolean,
                  ByVal inPriceChangeId As Integer, ByVal inGridRow As UltraGridRow)
 
             Dim theGridCell As UltraGridCell = Nothing
@@ -983,7 +983,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     If isDefaultJurisdiction Then
                         EnableAllCells(theGridAndDataRowHolder.UploadTypeCode, theGridAndDataRowHolder)
                     Else
-                        DisableItemGridCellsExcept(theGridAndDataRowHolder, _
+                        DisableItemGridCellsExcept(theGridAndDataRowHolder,
                             EIM_Constants.JURISDICTION_ATTR_KEY_ARRAY)
                     End If
                 End If
@@ -1008,7 +1008,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                 Dim isPriceChange As Boolean = True
 
                 ' get the is price change flag value
-                If GridUtilities.TryGetGridCell(EIM_Constants.STORE_NO_ATTR_KEY, theGridAndDataRowHolder.GridRow, theStoreCell) And _
+                If GridUtilities.TryGetGridCell(EIM_Constants.STORE_NO_ATTR_KEY, theGridAndDataRowHolder.GridRow, theStoreCell) And
                         GridUtilities.TryGetGridCell(EIM_Constants.COST_VENDOR_ATTR_KEY, theGridAndDataRowHolder.GridRow, theVendorCell) Then
                     If Not IsNothing(theStoreCell.Value) And Not IsNothing(theVendorCell.Value) Then
                         If Not Object.Equals(theStoreCell.Value, DBNull.Value) And Not Object.Equals(theVendorCell.Value, DBNull.Value) Then
@@ -1077,19 +1077,19 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                             End If
                         Else ' no vendor and or case cost in cost grid
                             ' disable the promo planner cells
-                            GridUtilities.DisableCellWithToolTip(thePriceGridRow, EIM_Constants.PROMO_PLANNER_IS_FOR_PROMO_PLANNER_ATTR_KEY, _
+                            GridUtilities.DisableCellWithToolTip(thePriceGridRow, EIM_Constants.PROMO_PLANNER_IS_FOR_PROMO_PLANNER_ATTR_KEY,
                                     "The Vendor and Case Cost must be in the Cost Grid row when uploading to the Promo Planner.")
                             enablePromoPlannerCells = False
                         End If
                     Else ' no price change
 
                         ' warn the user there is no price change
-                        GridUtilities.DisableCellWithToolTip(thePriceGridRow, EIM_Constants.PROMO_PLANNER_IS_FOR_PROMO_PLANNER_ATTR_KEY, _
+                        GridUtilities.DisableCellWithToolTip(thePriceGridRow, EIM_Constants.PROMO_PLANNER_IS_FOR_PROMO_PLANNER_ATTR_KEY,
                                                 "A price change is required when uploading to the Promo Planner.")
                     End If
                 Else ' no cost grid data
                     ' disable the promo planner cells
-                    GridUtilities.DisableCellWithToolTip(thePriceGridRow, EIM_Constants.PROMO_PLANNER_IS_FOR_PROMO_PLANNER_ATTR_KEY, _
+                    GridUtilities.DisableCellWithToolTip(thePriceGridRow, EIM_Constants.PROMO_PLANNER_IS_FOR_PROMO_PLANNER_ATTR_KEY,
                             "The Vendor and Case Cost must be in the Cost Grid row when uploading to the Promo Planner.")
                     enablePromoPlannerCells = False
                 End If
@@ -1117,7 +1117,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
             For Each theGridAndDataRowHolder As GridAndDataRowHolder In inUploadRowHolder.GridAndDataRowList
 
-                If GridUtilities.TryGetGridCell(EIM_Constants.ITEMSCALE_SCALE_SCALEUOMUNIT_ID_ATTR_KEY, theGridAndDataRowHolder.GridRow, theScaleUOMGridCell) AndAlso _
+                If GridUtilities.TryGetGridCell(EIM_Constants.ITEMSCALE_SCALE_SCALEUOMUNIT_ID_ATTR_KEY, theGridAndDataRowHolder.GridRow, theScaleUOMGridCell) AndAlso
                         theScaleUOMGridCell.Activation = Activation.AllowEdit Then
 
                     Dim index As Integer
@@ -1176,7 +1176,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                     ' only clear a previous error if the error is not one from basic validation
                     ' those errors have the attribute's key value as the validation error key
-                    Dim clearPreviousError As Boolean = _
+                    Dim clearPreviousError As Boolean =
                             Not inUploadRowHolder.ContainsValidationKey(EIM_Constants.ITEMIDENTIFIER_IDENTIFIER_ATTR_KEY)
 
                     GridUtilities.SetCellStyle(theItemIdentifierGridCell, "", EIM_Constants.ValidationLevels.Valid, clearPreviousError)
@@ -1224,7 +1224,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                             If Not CInt(dr.Item(0)) = 0 And CInt(dr.Item(1)) = 0 Then
                                 isValid = False
                                 theValidationMessage = dr.Item(2).ToString
-                            ElseIf Not CInt(dr.Item(0)) = 0 And CBool(dr.Item(1)) = True And _
+                            ElseIf Not CInt(dr.Item(0)) = 0 And CBool(dr.Item(1)) = True And
                             isValid = True Then
                                 isWarning = True
                                 theValidationMessage = dr.Item(2).ToString
@@ -1322,7 +1322,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                             End If
                         End If
 
-                            Dim enforceSubteamLocking As Boolean = InstanceDataDAO.IsFlagActive("UKIPS")
+                        Dim enforceSubteamLocking As Boolean = InstanceDataDAO.IsFlagActive("UKIPS")
                         Dim itemHasAlignedSubteam As Boolean = ItemIdentifierDAO.Instance.HasAlignedSubteam(theUploadRow.ItemKey)
                         Dim retailSale As UploadValue = theUploadRow.FindUploadValueByAttributeKey(EIM_Constants.ITEM_RETAIL_SALE)
                         Dim itemIsRetailSale As Boolean
@@ -1364,7 +1364,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                         ' only clear a previous error if the error is not one from basic validation
                         ' those errors have the attribute's key value as the validation error key
-                        Dim clearPreviousError As Boolean = _
+                        Dim clearPreviousError As Boolean =
                                 Not inUploadRowHolder.ContainsValidationKey(EIM_Constants.PRICE_LINKED_ITEM_IDENTIFIER_ATTR_KEY)
 
                         GridUtilities.SetCellStyle(theLinkedItemIdentifierGridCell, "", EIM_Constants.ValidationLevels.Valid, clearPreviousError)
@@ -1448,7 +1448,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                 thePriceGridRow = theGridAndDataRowHolder.GridRow
 
-                If GridUtilities.TryGetGridCell(EIM_Constants.PRICE_CHANGE_TYPE_ATTR_KEY, thePriceGridRow, thePriceChangeTypeCell) AndAlso _
+                If GridUtilities.TryGetGridCell(EIM_Constants.PRICE_CHANGE_TYPE_ATTR_KEY, thePriceGridRow, thePriceChangeTypeCell) AndAlso
                            Integer.TryParse(GridUtilities.GetGridCellStringValue(thePriceChangeTypeCell), thePriceChangeId) AndAlso thePriceChangeId > 0 Then
 
                     ' get the is price change flag value
@@ -1517,7 +1517,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                             ' if the price change type is promo
 
                             ' make sure the required columns are present for a promo price type change
-                            If IsNothing(thePromoPriceCell) Or IsNothing(thePromoStartDateCell) Or _
+                            If IsNothing(thePromoPriceCell) Or IsNothing(thePromoStartDateCell) Or
                                     IsNothing(thePromoEndDateCell) Then
 
                                 theValidationLevel = EIM_Constants.ValidationLevels.Invalid
@@ -1668,7 +1668,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     End If
 
                     If theValidationLevel <> EIM_Constants.ValidationLevels.Invalid Then
-                        If Not isPromoStartDateValid Or Not isPriceValid Or _
+                        If Not isPromoStartDateValid Or Not isPriceValid Or
                                 Not isPriceMultipleValid Or Not isPromoEndDateValid Or Not isPromoPriceValid Or Not isPromoPriceMultipleValid Then
                             theValidationLevel = EIM_Constants.ValidationLevels.Invalid
                         Else
@@ -1703,14 +1703,14 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                 theItemGridRow = theGridAndDataRowHolder.GridRow
 
-                If GridUtilities.TryGetGridCell(EIM_Constants.ITEM_CHAINS_ATTR_KEY, theItemGridRow, theChainsCell) AndAlso _
+                If GridUtilities.TryGetGridCell(EIM_Constants.ITEM_CHAINS_ATTR_KEY, theItemGridRow, theChainsCell) AndAlso
                            theChainsCell.Activation = Activation.AllowEdit Then
 
                     Dim theChains As String = Nothing
 
                     theChains = GridUtilities.GetGridCellStringValue(theChainsCell)
 
-                    If Not IsNothing(theChains) AndAlso _
+                    If Not IsNothing(theChains) AndAlso
                            theChains.IndexOf("-1") > -1 Then
 
                         theCellToolTipText = "One or more imported chain names cannot be found."
@@ -1753,8 +1753,8 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                     theItemGridRow = theGridAndDataRowHolder.GridRow
 
-                    If GridUtilities.TryGetGridCell(EIM_Constants.ITEMIDENTIFIER_IS_SCALE_IDENT_ATTR_KEY, theItemGridRow, theIsScaleIdentCell) AndAlso _
-                            theIsScaleIdentCell.Activation = Activation.AllowEdit AndAlso _
+                    If GridUtilities.TryGetGridCell(EIM_Constants.ITEMIDENTIFIER_IS_SCALE_IDENT_ATTR_KEY, theItemGridRow, theIsScaleIdentCell) AndAlso
+                            theIsScaleIdentCell.Activation = Activation.AllowEdit AndAlso
                             GridUtilities.TryGetGridCell(EIM_Constants.ITEMIDENTIFIER_IDENTIFIERTYPE_ATTR_KEY, theItemGridRow, theIdentifierTypeCell) Then
 
                         Dim theNumDigits As Integer = 0
@@ -1842,7 +1842,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                 If isCostChange Then
 
-                    If GridUtilities.TryGetGridCell(EIM_Constants.COST_START_DATE_ATTR_KEY, theCostGridRow, theStartDateCell) And _
+                    If GridUtilities.TryGetGridCell(EIM_Constants.COST_START_DATE_ATTR_KEY, theCostGridRow, theStartDateCell) And
                             GridUtilities.TryGetGridCell(EIM_Constants.COST_END_DATE_ATTR_KEY, theCostGridRow, theEndDateCell) Then
 
                         ' validate the cost start date
@@ -1939,16 +1939,16 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                 theCostGridRow = theGridAndDataRowHolder.GridRow
 
-                If GridUtilities.TryGetGridCell(EIM_Constants.DISCOUNT_AMOUNT_ATTR_KEY, theCostGridRow, theAmountCell) AndAlso _
-                         Not IsNothing(theAmountCell.Value) AndAlso Not theAmountCell.Value.Equals(DBNull.Value) AndAlso Not String.IsNullOrEmpty(CStr(theAmountCell.Value)) AndAlso _
+                If GridUtilities.TryGetGridCell(EIM_Constants.DISCOUNT_AMOUNT_ATTR_KEY, theCostGridRow, theAmountCell) AndAlso
+                         Not IsNothing(theAmountCell.Value) AndAlso Not theAmountCell.Value.Equals(DBNull.Value) AndAlso Not String.IsNullOrEmpty(CStr(theAmountCell.Value)) AndAlso
                          CDec(theAmountCell.Value) > 0 Then
 
-                    If GridUtilities.TryGetGridCell(EIM_Constants.DISCOUNT_START_DATE_ATTR_KEY, theCostGridRow, theStartDateCell) And _
+                    If GridUtilities.TryGetGridCell(EIM_Constants.DISCOUNT_START_DATE_ATTR_KEY, theCostGridRow, theStartDateCell) And
                         GridUtilities.TryGetGridCell(EIM_Constants.DISCOUNT_END_DATE_ATTR_KEY, theCostGridRow, theEndDateCell) Then
 
                         If theStartDateCell.Activation = Activation.AllowEdit Then
                             ' validate the Discount start date
-                            If theStartDateCell.Activation = Activation.AllowEdit And _
+                            If theStartDateCell.Activation = Activation.AllowEdit And
                                     DateTime.TryParse(GridUtilities.GetGridCellStringValue(theStartDateCell), theStartDate) Then
                                 If Not theStartDate.CompareTo(DateTime.Today) >= 0 Then
                                     isStartDateValid = False
@@ -2030,11 +2030,11 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                 theCostGridRow = theGridAndDataRowHolder.GridRow
 
-                If GridUtilities.TryGetGridCell(EIM_Constants.ALLOWANCE_AMOUNT_ATTR_KEY, theCostGridRow, theAmountCell) AndAlso _
-                         Not IsNothing(theAmountCell.Value) AndAlso Not theAmountCell.Value.Equals(DBNull.Value) AndAlso Not String.IsNullOrEmpty(CStr(theAmountCell.Value)) AndAlso _
+                If GridUtilities.TryGetGridCell(EIM_Constants.ALLOWANCE_AMOUNT_ATTR_KEY, theCostGridRow, theAmountCell) AndAlso
+                         Not IsNothing(theAmountCell.Value) AndAlso Not theAmountCell.Value.Equals(DBNull.Value) AndAlso Not String.IsNullOrEmpty(CStr(theAmountCell.Value)) AndAlso
                          CDec(theAmountCell.Value) > 0 Then
 
-                    If GridUtilities.TryGetGridCell(EIM_Constants.ALLOWANCE_START_DATE_ATTR_KEY, theCostGridRow, theStartDateCell) And _
+                    If GridUtilities.TryGetGridCell(EIM_Constants.ALLOWANCE_START_DATE_ATTR_KEY, theCostGridRow, theStartDateCell) And
                     GridUtilities.TryGetGridCell(EIM_Constants.ALLOWANCE_END_DATE_ATTR_KEY, theCostGridRow, theEndDateCell) Then
 
                         If theStartDateCell.Activation = Activation.AllowEdit Then
@@ -2532,7 +2532,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                                         AndAlso theUploadValueForPriceChgType_INNER.Value.Equals(theUploadValueForPriceChgType_OUTER.Value) Then
 
                                         'grab the appropriate start date based on the price change type - reg start or promo start
-                                        If Not IsNothing(theUploadValueForPriceChgType_INNER.Value) AndAlso _
+                                        If Not IsNothing(theUploadValueForPriceChgType_INNER.Value) AndAlso
                                             PriceChgType.IsPromoPriceChgType(CType(theUploadValueForPriceChgType_INNER.Value, Integer)) Then
                                             'grab promo start date
                                             theUploadValueForStartDate_INNER = otherUploadRowHolder.UploadRow.FindUploadValueByAttributeKey(EIM_Constants.PRICE_SALE_START_DATE_ATTR_KEY)
@@ -2658,7 +2658,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                     If Not IsNothing(gridAndDataRowHolder) Then
 
-                        If Not GridUtilities.TryGetGridCell(EIM_Constants.ITEM_IS_DEFAULT_JURISDICTION_ATTR_KEY, gridAndDataRowHolder.GridRow, theIsDefaultJurisdictionGridCell) Or _
+                        If Not GridUtilities.TryGetGridCell(EIM_Constants.ITEM_IS_DEFAULT_JURISDICTION_ATTR_KEY, gridAndDataRowHolder.GridRow, theIsDefaultJurisdictionGridCell) Or
                             Not GridUtilities.TryGetGridCell(EIM_Constants.ITEM_JURISDICTION_ID_ATTR_KEY, gridAndDataRowHolder.GridRow, theStoreJurisdictionIdGridCell) Then
                             Exit For
                         End If
@@ -2689,7 +2689,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                                 AndAlso theItemIdentifier_INNER.Equals(theItemIdentifier_OUTER) Then
 
                                 'check for items that have their default jurisdiction set to more than one value
-                                If theIsDefaultJurisdiction_OUTER = True AndAlso theIsDefaultJurisdiction_INNER = True AndAlso _
+                                If theIsDefaultJurisdiction_OUTER = True AndAlso theIsDefaultJurisdiction_INNER = True AndAlso
                                     Not theStoreJurisdictionId_OUTER.Equals(theStoreJurisdictionId_INNER) Then
 
                                     itemDefaultJurisdictionSetMoreThanOnce = True
@@ -2698,7 +2698,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                                 End If
 
                                 'check for items that have the same jurisdiction set to both the default and alternate
-                                If theIsDefaultJurisdiction_OUTER <> theIsDefaultJurisdiction_INNER AndAlso _
+                                If theIsDefaultJurisdiction_OUTER <> theIsDefaultJurisdiction_INNER AndAlso
                                     theStoreJurisdictionId_OUTER.Equals(theStoreJurisdictionId_INNER) Then
 
                                     itemDefaultJurisdictionSetMoreThanOnce = True
@@ -3149,19 +3149,19 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     ' there's got to be a store!
                     If Not IsNothing(theStoreListForItem) Or Not String.IsNullOrEmpty(inStoreList) Then
 
-                        ReturnErrorMessage = EIMUtilityDAO.Instance.ValidateForPriceUploadCollision(Item_Key, _
-                                                            Identifier, _
-                                                            theStoreListForItem, _
-                                                            PriceChgTypeID.Value, _
-                                                            PriceStartDateValue, _
-                                                            Sale_Start_DateValue, _
-                                                            Sale_End_DateValue, _
-                                                            MultipleValue, _
-                                                            POSPriceValue, _
-                                                            MSRPPriceValue, _
-                                                            MSRPMultipleValue, _
-                                                            POSSale_PriceValue, _
-                                                            Sale_MultipleValue, _
+                        ReturnErrorMessage = EIMUtilityDAO.Instance.ValidateForPriceUploadCollision(Item_Key,
+                                                            Identifier,
+                                                            theStoreListForItem,
+                                                            PriceChgTypeID.Value,
+                                                            PriceStartDateValue,
+                                                            Sale_Start_DateValue,
+                                                            Sale_End_DateValue,
+                                                            MultipleValue,
+                                                            POSPriceValue,
+                                                            MSRPPriceValue,
+                                                            MSRPMultipleValue,
+                                                            POSSale_PriceValue,
+                                                            Sale_MultipleValue,
                                                             isPriceChangeValue)
 
 
@@ -3191,8 +3191,8 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
 
 
-        Private Function InternalValidatePriceChanges(ByRef inUploadRowHolder As UploadRowHolder, _
-                 ByVal inStoreList As String, _
+        Private Function InternalValidatePriceChanges(ByRef inUploadRowHolder As UploadRowHolder,
+                 ByVal inStoreList As String,
                  ByVal useItemsStoreInRow As Boolean) As Integer
 
             Dim isValid As Boolean = True
@@ -3206,10 +3206,10 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Dim hasPrimaryVendorSetInUpload As Boolean = False
             Dim isNoPrimaryVendorError As Boolean = False
 
-            Dim thePricesGridAndDataRowHolder As GridAndDataRowHolder = _
+            Dim thePricesGridAndDataRowHolder As GridAndDataRowHolder =
                  inUploadRowHolder.GetGridAndDataRowByUploadType(EIM_Constants.PRICE_UPLOAD_CODE)
 
-            Dim theCostsGridAndDataRowHolder As GridAndDataRowHolder = _
+            Dim theCostsGridAndDataRowHolder As GridAndDataRowHolder =
                 inUploadRowHolder.GetGridAndDataRowByUploadType(EIM_Constants.COST_UPLOAD_CODE)
 
             If Not IsNothing(thePricesGridAndDataRowHolder) Then
@@ -3217,36 +3217,36 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                 Dim thePriceChangeTypeGridCell As UltraGridCell = Nothing
                 Dim thePrimaryVendorGridCell As UltraGridCell = Nothing
 
-                If Not IsNothing(theCostsGridAndDataRowHolder) AndAlso _
-                        GridUtilities.TryGetGridCell(EIM_Constants.COST_PRIMARY_VENDOR, _
+                If Not IsNothing(theCostsGridAndDataRowHolder) AndAlso
+                        GridUtilities.TryGetGridCell(EIM_Constants.COST_PRIMARY_VENDOR,
                         theCostsGridAndDataRowHolder.GridRow, thePrimaryVendorGridCell) Then
 
                     hasPrimaryVendorSetInUpload = CBool(thePrimaryVendorGridCell.Value)
                 End If
 
-                If GridUtilities.TryGetGridCell(EIM_Constants.PRICE_CHANGE_TYPE_ATTR_KEY, _
+                If GridUtilities.TryGetGridCell(EIM_Constants.PRICE_CHANGE_TYPE_ATTR_KEY,
                         thePricesGridAndDataRowHolder.GridRow, thePriceChangeTypeGridCell) Then
 
                     ' clear any existing error
                     GridUtilities.SetCellStyle(thePriceChangeTypeGridCell, "", EIM_Constants.ValidationLevels.Valid, False)
                     inUploadRowHolder.ClearValidationKey("PriceChange")
 
-                    Dim theOutputList As ArrayList = EIMUtilityDAO.Instance.ValidatePriceChange(inUploadRowHolder.UploadRow, _
+                    Dim theOutputList As ArrayList = EIMUtilityDAO.Instance.ValidatePriceChange(inUploadRowHolder.UploadRow,
                             inStoreList, theValidationErrorCode, theValidationErrorMessage)
 
                     Dim theValidationLevelValue As Integer = CInt(theOutputList(0))
                     Dim inOutValidationCode As Integer = CInt(theOutputList(1))
                     Dim inOutValidationMessage As String = CStr(theOutputList(2))
 
-                    Dim theValidationLevel As EIM_Constants.ValidationLevels = _
+                    Dim theValidationLevel As EIM_Constants.ValidationLevels =
                             CType([Enum].Parse(GetType(EIM_Constants.ValidationLevels), theValidationLevelValue.ToString()), EIM_Constants.ValidationLevels)
 
                     If theValidationLevelValue > 0 Then
 
-                        isNoPrimaryVendorError = theValidationErrorCode = EIM_Constants.REG_PRICE_VALIDATION_CODE_NO_PRIMARY_VENDOR Or _
+                        isNoPrimaryVendorError = theValidationErrorCode = EIM_Constants.REG_PRICE_VALIDATION_CODE_NO_PRIMARY_VENDOR Or
                                 theValidationErrorCode = EIM_Constants.PROMO_PRICE_VALIDATION_CODE_NO_PRIMARY_VENDOR
 
-                        If Not isNoPrimaryVendorError Or _
+                        If Not isNoPrimaryVendorError Or
                             (isNoPrimaryVendorError And Not hasPrimaryVendorSetInUpload) Then
 
                             theErrorCount = theErrorCount + 1
@@ -3278,7 +3278,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Dim theValidationErrorCode As Integer = 0
             Dim theValidationErrorMessage As String = ""
 
-            Dim theItemGridAndDataRowHolder As GridAndDataRowHolder = _
+            Dim theItemGridAndDataRowHolder As GridAndDataRowHolder =
                  inUploadRowHolder.GetGridAndDataRowByUploadType(EIM_Constants.ITEM_MAINTENANCE_CODE)
 
             If Not IsNothing(theItemGridAndDataRowHolder) Then
@@ -3290,20 +3290,20 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                 Dim isDefaultJurisdiction As Boolean
 
                 ' the jurisdiction column must be in the item grid to do any validation!
-                If GridUtilities.TryGetGridCell(EIM_Constants.ITEM_JURISDICTION_ID_ATTR_KEY, _
+                If GridUtilities.TryGetGridCell(EIM_Constants.ITEM_JURISDICTION_ID_ATTR_KEY,
                         theItemGridAndDataRowHolder.GridRow, theJurisdictionIdGridCell) Then
 
                     ' clear any previous error
                     inUploadRowHolder.ClearValidationKey("ExistingJurisdiction")
-                    GridUtilities.SetCellStyle(theIsDefaultJurisdictionGridCell, "", _
+                    GridUtilities.SetCellStyle(theIsDefaultJurisdictionGridCell, "",
                         EIM_Constants.ValidationLevels.Valid, False)
-                    GridUtilities.SetCellStyle(theJurisdictionIdGridCell, "", _
+                    GridUtilities.SetCellStyle(theJurisdictionIdGridCell, "",
                         EIM_Constants.ValidationLevels.Valid, False)
 
                     theJurisdictionId = GridUtilities.GetGridCellIntegerValue(theJurisdictionIdGridCell)
 
                     ' try to get the default jurisdiction flag value
-                    If GridUtilities.TryGetGridCell(EIM_Constants.ITEM_IS_DEFAULT_JURISDICTION_ATTR_KEY, _
+                    If GridUtilities.TryGetGridCell(EIM_Constants.ITEM_IS_DEFAULT_JURISDICTION_ATTR_KEY,
                             theItemGridAndDataRowHolder.GridRow, theIsDefaultJurisdictionGridCell) Then
 
                         isDefaultJurisdiction = GridUtilities.GetGridCellBooleanValue(theIsDefaultJurisdictionGridCell)
@@ -3313,17 +3313,17 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                         isDefaultJurisdiction = True
                     End If
 
-                    If isDefaultJurisdiction AndAlso EIMUtilityDAO.Instance.ValidateJurisdiction(inUploadRowHolder.UploadRow.ItemKey, _
+                    If isDefaultJurisdiction AndAlso EIMUtilityDAO.Instance.ValidateJurisdiction(inUploadRowHolder.UploadRow.ItemKey,
                             isDefaultJurisdiction, theJurisdictionId) = EIM_Constants.ValidationLevels.Invalid Then
 
                         theErrorCount = theErrorCount + 1
 
                         theValidationErrorMessage = "You cannot change the default of an item."
 
-                        GridUtilities.SetCellStyle(theIsDefaultJurisdictionGridCell, theValidationErrorMessage, _
+                        GridUtilities.SetCellStyle(theIsDefaultJurisdictionGridCell, theValidationErrorMessage,
                             EIM_Constants.ValidationLevels.Invalid)
 
-                        GridUtilities.SetCellStyle(theJurisdictionIdGridCell, theValidationErrorMessage, _
+                        GridUtilities.SetCellStyle(theJurisdictionIdGridCell, theValidationErrorMessage,
                             EIM_Constants.ValidationLevels.Invalid)
 
                         inUploadRowHolder.AddValidationKey("ExistingJurisdiction", "Invalid Jurisdiction Assignment", EIM_Constants.ValidationLevels.Invalid)
@@ -3353,8 +3353,10 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Dim defaultJurisdiction As String = GridUtilities.GetGridCellStringValue(EIM_Constants.ITEM_IS_DEFAULT_JURISDICTION_ATTR_KEY, inGridRow)
             Dim isDefaultJurisdiction As Boolean = True
 
-            If defaultJurisdiction.ToLower() = "false" Then
-                isDefaultJurisdiction = False
+            If Not IsNothing(defaultJurisdiction) Then
+                If defaultJurisdiction.ToLower() = "false" Then
+                    isDefaultJurisdiction = False
+                End If
             End If
 
             Return isDefaultJurisdiction
@@ -3377,10 +3379,10 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
         End Function
 
-        Private Sub EnableAllCells(ByVal inUploadTypeCode As String, _
+        Private Sub EnableAllCells(ByVal inUploadTypeCode As String,
                 ByRef inGridAndDataRowHolder As GridAndDataRowHolder)
 
-            Dim theUploadRow As UploadRow = Me.EIMManager.CurrentUploadRowHolderCollecton. _
+            Dim theUploadRow As UploadRow = Me.EIMManager.CurrentUploadRowHolderCollecton.
                     GetUploadRowHolderForUploadRowId(inGridAndDataRowHolder.UploadRowId).UploadRow
 
             Dim theUploadTypeAttribute As UploadTypeAttribute = Nothing
@@ -3391,9 +3393,9 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                 ' only enable cells configured to be not read-only
                 If Not IsNothing(theUploadTypeAttribute) Then
-                    If theUploadTypeAttribute.GroupName.Equals(EIM_Constants.GROUP_HIERARCHY_DATA_KEY) OrElse _
-                          theGridCell.Column.Key.Equals(EIM_Constants.ITEM_CHAINS_ATTR_KEY) OrElse _
-                           theGridCell.Column.Key.Equals(EIM_Constants.COST_DISCOUNT_ATTR_KEY) OrElse _
+                    If theUploadTypeAttribute.GroupName.Equals(EIM_Constants.GROUP_HIERARCHY_DATA_KEY) OrElse
+                          theGridCell.Column.Key.Equals(EIM_Constants.ITEM_CHAINS_ATTR_KEY) OrElse
+                           theGridCell.Column.Key.Equals(EIM_Constants.COST_DISCOUNT_ATTR_KEY) OrElse
                            theUploadTypeAttribute.UploadAttribute.Size > EIM_Constants.LONG_TEXT_SIZE Then
 
                         theGridCell.Appearance.BackColor = EIM_Constants.GRID_CELL_BACKGROUND_COLOR_CUSTOMPOPUP
@@ -3414,10 +3416,10 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
         End Sub
 
-        Private Sub DisableItemGridCellsExcept(ByRef inGridAndDataRowHolder As GridAndDataRowHolder, _
+        Private Sub DisableItemGridCellsExcept(ByRef inGridAndDataRowHolder As GridAndDataRowHolder,
         ByVal inAttributeKeys As String())
 
-            Dim theUploadRow As UploadRow = Me.EIMManager.CurrentUploadRowHolderCollecton. _
+            Dim theUploadRow As UploadRow = Me.EIMManager.CurrentUploadRowHolderCollecton.
                     GetUploadRowHolderForUploadRowId(inGridAndDataRowHolder.UploadRowId).UploadRow
 
             Dim doDisable As Boolean
@@ -3508,7 +3510,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                 ' only escalate the validation level from warning to error
                 ' but not the other direction unless we explicity want to reset
                 ' the validation level
-                If Not theGridAndDataRowHolder.DataRow.RowState = DataRowState.Deleted And _
+                If Not theGridAndDataRowHolder.DataRow.RowState = DataRowState.Deleted And
                     Not theGridAndDataRowHolder.DataRow.RowState = DataRowState.Detached Then
                     theRowsExistingValidationLevel = CInt(theGridAndDataRowHolder.DataRow.Item(EIM_Constants.VALIDATION_LEVEL_COLUMN_NAME))
 
@@ -3525,7 +3527,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                         theValidationLevelGridCell.ToolTipText = "This item has the following validation issues: "
 
                         If inUploadRowHolder.ValidationWarnings.Count > 0 Then
-                            theValidationLevelGridCell.ToolTipText = theValidationLevelGridCell.ToolTipText + Environment.NewLine + _
+                            theValidationLevelGridCell.ToolTipText = theValidationLevelGridCell.ToolTipText + Environment.NewLine +
                                 Environment.NewLine + "Warnings:" + Environment.NewLine + "--------------"
                         End If
 
@@ -3534,7 +3536,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                         Next
 
                         If inUploadRowHolder.ValidationErrors.Count > 0 Then
-                            theValidationLevelGridCell.ToolTipText = theValidationLevelGridCell.ToolTipText + Environment.NewLine + _
+                            theValidationLevelGridCell.ToolTipText = theValidationLevelGridCell.ToolTipText + Environment.NewLine +
                                 Environment.NewLine + "Errors:" + Environment.NewLine + "--------------"
                         End If
 
@@ -3550,7 +3552,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
         End Sub
 
-        Private Function FindIntegerValueInDataSetForUploadRow(ByRef inDataSet As DataSet, ByVal inUploadRowId As Integer, _
+        Private Function FindIntegerValueInDataSetForUploadRow(ByRef inDataSet As DataSet, ByVal inUploadRowId As Integer,
                  ByVal inAttributeKey As String, ByRef inOutValue As Integer) As Boolean
 
             Dim theValue As Object = FindValueInDataSetForUploadRow(inDataSet, inUploadRowId, inAttributeKey)
@@ -3565,7 +3567,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
         End Function
 
-        Private Function FindDecimalValueInDataSetForUploadRow(ByRef inDataSet As DataSet, ByVal inUploadRowId As Integer, _
+        Private Function FindDecimalValueInDataSetForUploadRow(ByRef inDataSet As DataSet, ByVal inUploadRowId As Integer,
                 ByVal inAttributeKey As String, ByRef inOutValue As Decimal) As Boolean
 
             Dim theValue As Object = FindValueInDataSetForUploadRow(inDataSet, inUploadRowId, inAttributeKey)
@@ -3580,7 +3582,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
         End Function
 
-        Private Function FindValueInDataSetForUploadRow(ByRef inDataSet As DataSet, ByVal inUploadRowId As Integer, _
+        Private Function FindValueInDataSetForUploadRow(ByRef inDataSet As DataSet, ByVal inUploadRowId As Integer,
                 ByVal inAttributeKey As String) As Object
 
             Dim theValue As Object = Nothing
