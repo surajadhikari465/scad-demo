@@ -21,6 +21,7 @@ Post-Deployment Script Template
 :r AddWebSupportToAppTable.sql
 :r AddGpmPriceTypes.sql
 :r AddEslAttributesToAttributesTable.sql
+:r AddScaleItemAttributes.sql
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql
