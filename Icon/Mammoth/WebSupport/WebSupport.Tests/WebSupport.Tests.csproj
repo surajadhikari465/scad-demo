@@ -156,10 +156,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CheckPointRequestControllerTest.cs" />
+    <Compile Include="Controllers\PriceRefreshControllerTests.cs" />
     <Compile Include="Controllers\PriceResetControllerTest.cs" />
+    <Compile Include="EsbProducerFactory\PriceRefreshEsbProducerFactoryTests.cs" />
     <Compile Include="Helpers\ItemPriceTypes.cs" />
     <Compile Include="Helpers\SelectListHelperTest.cs" />
     <Compile Include="Helpers\ValidationHelperTest.cs" />
+    <Compile Include="MessageBuilders\PriceRefreshMessageBuilderFactoryTests.cs" />
+    <Compile Include="MessageBuilders\PriceRefreshMessageBuilderTests.cs" />
     <Compile Include="Models\CheckPointRequestMessageBuilderTests.cs" />
     <Compile Include="Models\PriceResetMessageBuilderTests.cs" />
     <Compile Include="Models\WebSupportPriceMessageServiceTests.cs" />
@@ -167,11 +171,15 @@
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="RouteTests\MvcRoutingTestHelper.cs" />
     <Compile Include="RouteTests\WebSupportRouteTest.cs" />
+    <Compile Include="Services\RefreshPriceServiceTests.cs" />
     <Compile Include="TestData\PriceResetTestData.cs" />
     <Compile Include="ViewModels\ViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
+    <Content Include="TestMessages\PriceRefreshMessage.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

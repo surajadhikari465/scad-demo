@@ -8,11 +8,11 @@ using WebSupport.DataAccess.Models;
 
 namespace WebSupport.DataAccess.Queries
 {
-    public class GetGpmPricesQueryHandler : IQueryHandler<GetGpmPricesParameters, List<GpmPrice>>
+    public class GetGpmPricesQuery : IQueryHandler<GetGpmPricesParameters, List<GpmPrice>>
     {
         private IDbConnection connection;
 
-        public GetGpmPricesQueryHandler(IDbConnection connection)
+        public GetGpmPricesQuery(IDbConnection connection)
         {
             this.connection = connection;
         }
@@ -44,26 +44,22 @@ namespace WebSupport.DataAccess.Queries
                       FROM gpm.Price_{parameters.Region} p
                       JOIN dbo.Items i ON p.ItemID = i.ItemID
                       JOIN dbo.ItemTypes it ON i.itemTypeID = it.ItemTypeID
-                      JOIN dbo.Locale l ON p.BusinessUnitID = l.BusinessUnitID
-                      JOIN gpm.MessageSequence ms ON i.ItemID = ms.ItemID
+                      JOIN dbo.Locales_{parameters.Region} l ON p.BusinessUnitID = l.BusinessUnitID
+                      LEFT JOIN gpm.MessageSequence ms ON i.ItemID = ms.ItemID
                         AND l.BusinessUnitID = ms.BusinessUnitID
                       WHERE l.BusinessUnitID = @BusinessUnitId
                         AND i.ScanCode = @ScanCode",
                       parameters)
-                      .Where(p => p.StartDate < DateTime.Now)
+                      .Where(p => p.StartDate <= DateTime.Today && (!p.EndDate.HasValue || p.EndDate >= DateTime.Today) )
                       .ToList();
 
-            var activeReg = prices.Where(p => p.PriceType == "REG").OrderBy(p => p.StartDate).LastOrDefault();
-            var activeTpr = prices.Where(p => p.PriceType == "TPR").OrderBy(p => p.StartDate).LastOrDefault();
-
             var activePrices = new List<GpmPrice>();
-            if(activeReg != null)
+
+            var priceGroups = prices.GroupBy(p => p.PriceType);
+            foreach (var priceGroup in priceGroups)
             {
-                activePrices.Add(activeReg);
-            }
-            if(activeTpr != null)
-            {
-                activePrices.Add(activeTpr);
+                var activePrice = priceGroup.OrderBy(p => p.StartDate).Last();
+                activePrices.Add(activePrice);
             }
 
             return activePrices;

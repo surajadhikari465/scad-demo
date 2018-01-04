@@ -1,10 +1,10 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Esb.Producer;
 using Icon.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using WebSupport.DataAccess;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
@@ -151,13 +151,7 @@ namespace WebSupport.Services
             {
                 var messageBuilder = priceRefreshMessageBuilderFactory.CreateMessageBuilder(system);
                 var message = messageBuilder.BuildMessage(prices);
-
-                using (IEsbProducer esbProducer = priceRefreshEsbProducerFactory.CreateEsbProducer(system, region))
-                {
-                    esbProducer.OpenConnection();
-                    esbProducer.Send(
-                        message,
-                        new Dictionary<string, string>
+                Dictionary<string, string> messageProperties = new Dictionary<string, string>
                             {
                                 { EsbConstants.TransactionTypeKey, EsbConstants.PriceTransactionTypeValue },
                                 { EsbConstants.TransactionIdKey, Guid.NewGuid().ToString() },
@@ -166,8 +160,24 @@ namespace WebSupport.Services
                                 { EsbConstants.SourceKey, EsbConstants.MammothSourceValueName },
                                 { EsbConstants.NonReceivingSystemsKey, GetNonReceivingSystems(system) },
                                 { EsbConstants.PriceResetKey, EsbConstants.PriceResetFalseValue }
-                            });
+                            };
+                using (IEsbProducer esbProducer = priceRefreshEsbProducerFactory.CreateEsbProducer(system, region))
+                {
+                    esbProducer.OpenConnection();
+                    esbProducer.Send(
+                        message,
+                        messageProperties);
                 }
+                logger.Info(JsonConvert.SerializeObject(
+                    new
+                    {
+                        Action = "RefreshPrice",
+                        Region = region,
+                        System = system,
+                        Prices = prices,
+                        MessageProperties = messageProperties,
+                        Message = message
+                    }));
             }
         }
 
