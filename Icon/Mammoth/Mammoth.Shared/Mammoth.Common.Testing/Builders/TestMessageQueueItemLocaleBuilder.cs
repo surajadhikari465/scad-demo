@@ -346,21 +346,25 @@ namespace Mammoth.Common.Testing.Builders
             this.supplierName = supplierName;
             return this;
         }
+
         public TestMessageQueueItemLocaleBuilder WithSupplierItemID(string supplierItemID)
         {
             this.supplierItemID = supplierItemID;
             return this;
         }
+
         public TestMessageQueueItemLocaleBuilder WithIrmaVendorKey(string irmaVendorKey)
         {
             this.irmaVendorKey = irmaVendorKey;
             return this;
         }
+
         public TestMessageQueueItemLocaleBuilder WithSupplierCaseSize(decimal? supplierCaseSize)
         {
             this.supplierCaseSize = supplierCaseSize;
             return this;
         }
+
         public TestMessageQueueItemLocaleBuilder WithOrderedByInfor(bool? orderedByInfor)
         {
             this.orderedByInfor = orderedByInfor;
