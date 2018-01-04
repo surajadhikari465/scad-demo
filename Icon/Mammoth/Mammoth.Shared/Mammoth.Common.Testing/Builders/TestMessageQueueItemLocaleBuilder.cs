@@ -46,6 +46,11 @@ namespace Mammoth.Common.Testing.Builders
         private decimal? msrp;
         private int? inProcessBy;
         private DateTime? processedDate;
+        private string supplierName;
+        private string irmaVendorKey;
+        private string supplierItemID;
+        private decimal? supplierCaseSize;
+        private bool? orderedByInfor;
 
         public TestMessageQueueItemLocaleBuilder()
         {
@@ -89,7 +94,12 @@ namespace Mammoth.Common.Testing.Builders
             this.msrp = null;
             this.inProcessBy = null;
             this.processedDate = null;
-        }
+            this.supplierName = null;
+            this.supplierItemID = null;
+            this.irmaVendorKey = null;
+            this.supplierCaseSize = null;
+            this.orderedByInfor = null;
+        }   
 
         public TestMessageQueueItemLocaleBuilder WithMessageQueueId(int messageQueueId)
         {
@@ -331,6 +341,32 @@ namespace Mammoth.Common.Testing.Builders
             return this;
         }
 
+        public TestMessageQueueItemLocaleBuilder WithSupplierName(string supplierName)
+        {
+            this.supplierName = supplierName;
+            return this;
+        }
+        public TestMessageQueueItemLocaleBuilder WithSupplierItemID(string supplierItemID)
+        {
+            this.supplierItemID = supplierItemID;
+            return this;
+        }
+        public TestMessageQueueItemLocaleBuilder WithIrmaVendorKey(string irmaVendorKey)
+        {
+            this.irmaVendorKey = irmaVendorKey;
+            return this;
+        }
+        public TestMessageQueueItemLocaleBuilder WithSupplierCaseSize(decimal? supplierCaseSize)
+        {
+            this.supplierCaseSize = supplierCaseSize;
+            return this;
+        }
+        public TestMessageQueueItemLocaleBuilder WithOrderedByInfor(bool? orderedByInfor)
+        {
+            this.orderedByInfor = orderedByInfor;
+            return this;
+        }
+
         public TestMessageQueueItemLocaleBuilder PopulateAllAttributes()
         {
             this.messageQueueId = 0;
@@ -372,6 +408,11 @@ namespace Mammoth.Common.Testing.Builders
             this.scaleExtraText = "test ScaleExtraText";
             this.inProcessBy = null;
             this.processedDate = null;
+            this.supplierName = "Test Supplier";
+            this.supplierItemID = "Test Supplier";
+            this.irmaVendorKey = "VendorKey";
+            this.supplierCaseSize = 1;
+            this.orderedByInfor = false;
 
             return this;
         }
@@ -420,6 +461,11 @@ namespace Mammoth.Common.Testing.Builders
             messageQueueItemLocale.Msrp = this.msrp;
             messageQueueItemLocale.InProcessBy = this.inProcessBy;
             messageQueueItemLocale.ProcessedDate = this.processedDate;
+            messageQueueItemLocale.SupplierName = this.supplierName;
+            messageQueueItemLocale.SupplierItemID = this.supplierItemID;
+            messageQueueItemLocale.SupplierCaseSize = this.supplierCaseSize;
+            messageQueueItemLocale.IrmaVendorKey = this.irmaVendorKey;
+            messageQueueItemLocale.OrderedByInfor = this.orderedByInfor;
 
             return messageQueueItemLocale;
         }
