@@ -59,7 +59,7 @@ namespace Mammoth.Common.DataAccess
 		public const int PrimaryVendorName = 45;
 		public const int PrimaryVendorItemId = 46;
 		public const int PrimaryIrmaVendorKey = 47;
-		public const int OrderedByPredictix = 48;
+		public const int OrderedByInfor = 48;
 		
 		public class Descriptions
 		{
@@ -110,7 +110,7 @@ namespace Mammoth.Common.DataAccess
 			public const string PrimaryVendorName = "Primary Vendor Name";
 			public const string PrimaryVendorItemId = "Primary Vendor Item ID";
 			public const string PrimaryIrmaVendorKey = "Primary IRMA Vendor Key";
-			public const string OrderedByPredictix = "Ordered By Predictix";
+			public const string OrderedByInfor = "Ordered By Infor";
 		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
@@ -161,7 +161,7 @@ namespace Mammoth.Common.DataAccess
 				{ "VND", "Primary Vendor Name" },
 				{ "VIN", "Primary Vendor Item ID" },
 				{ "VNK", "Primary IRMA Vendor Key" },
-				{ "OBP", "Ordered By Predictix" }
+				{ "OBI", "Ordered By Infor" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -215,7 +215,7 @@ namespace Mammoth.Common.DataAccess
 			public const string PrimaryVendorName = "VND";
 			public const string PrimaryVendorItemId = "VIN";
 			public const string PrimaryIrmaVendorKey = "VNK";
-			public const string OrderedByPredictix = "OBP";
+			public const string OrderedByInfor = "OBI";
 		}
 	}
 }
