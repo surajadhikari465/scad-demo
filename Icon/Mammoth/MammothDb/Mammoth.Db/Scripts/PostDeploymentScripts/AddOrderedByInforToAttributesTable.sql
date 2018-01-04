@@ -9,8 +9,8 @@ BEGIN
 	DECLARE @Today DATETIME;
 	SET @Today = GETDATE();
 
-	IF NOT EXISTS (SELECT 1 FROM Attributes WHERE AttributeCode = 'OBP')
-		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'OBP','Ordered By Predictix',@Today);
+	IF NOT EXISTS (SELECT 1 FROM Attributes WHERE AttributeCode = 'OBI')
+		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'OBI','Ordered By Infor',@Today);
 
 	INSERT INTO app.PostDeploymentScriptHistory VALUES(@scriptKey, getdate())
 

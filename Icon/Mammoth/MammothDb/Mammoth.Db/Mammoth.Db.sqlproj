@@ -730,9 +730,9 @@
     <Build Include="esl\Stored Procedures\GetEslAttributes.sql" />
     <Build Include="esl\Views\ItemsByAuthorizedStores.sql" />
     <Build Include="esl\Views\ItemStoresByBrandID.sql" />
-    <None Include="Scripts\PreDeploymentScripts\TruncateJobScheduleTable.sql" />
+    <None Include="Scripts\PreDeploymentScripts\DropJobScheduleTable.sql" />
     <Build Include="stage\Tables\ItemLocaleSupplierDelete.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddScaleItemAttributes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddVendorRelatedCodesToAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -752,7 +752,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddJobSchedulerToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddGpmPriceTypes.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddActivePriceSentArchiveToRetentionPolicy.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddOrderedByPredictixToAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddOrderedByInforToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddGlobalPricingProgramToAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
