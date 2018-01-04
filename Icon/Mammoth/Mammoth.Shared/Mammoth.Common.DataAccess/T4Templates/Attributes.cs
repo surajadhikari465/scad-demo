@@ -55,6 +55,11 @@ namespace Mammoth.Common.DataAccess
 		public const int WrappedTareWeight = 41;
 		public const int UseByEab = 42;
 		public const int CfsSendToScale = 43;
+		public const int VendorCaseSize = 44;
+		public const int VendorName = 45;
+		public const int VendorItemId = 46;
+		public const int IrmaVendorKey = 47;
+		public const int OrderedByInfor = 48;
 		
 		public class Descriptions
 		{
@@ -101,6 +106,11 @@ namespace Mammoth.Common.DataAccess
 			public const string WrappedTareWeight = "Wrapped Tare Weight";
 			public const string UseByEab = "Use By EAB";
 			public const string CfsSendToScale = "CFS Send to Scale";
+			public const string VendorCaseSize = "Vendor Case Size";
+			public const string VendorName = "Vendor Name";
+			public const string VendorItemId = "Vendor Item ID";
+			public const string IrmaVendorKey = "IRMA Vendor Key";
+			public const string OrderedByInfor = "Ordered By Infor";
 		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
@@ -146,7 +156,12 @@ namespace Mammoth.Common.DataAccess
 				{ "UTA", "Unwrapped Tare Weight" },
 				{ "WTA", "Wrapped Tare Weight" },
 				{ "EAB", "Use By EAB" },
-				{ "CFS", "CFS Send to Scale" }
+				{ "CFS", "CFS Send to Scale" },
+				{ "VCS", "Vendor Case Size" },
+				{ "VND", "Vendor Name" },
+				{ "VIN", "Vendor Item ID" },
+				{ "VNK", "IRMA Vendor Key" },
+				{ "OBI", "Ordered By Infor" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -196,6 +211,11 @@ namespace Mammoth.Common.DataAccess
 			public const string WrappedTareWeight = "WTA";
 			public const string UseByEab = "EAB";
 			public const string CfsSendToScale = "CFS";
+			public const string VendorCaseSize = "VCS";
+			public const string VendorName = "VND";
+			public const string VendorItemId = "VIN";
+			public const string IrmaVendorKey = "VNK";
+			public const string OrderedByInfor = "OBI";
 		}
 	}
 }
