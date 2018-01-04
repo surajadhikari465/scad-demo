@@ -92,7 +92,8 @@
       <HintPath>..\packages\Mammoth.Common.2017.11.28.3\lib\net461\Mammoth.Common.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2017.11.28.6\lib\net461\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.1.4.1\lib\net461\Mammoth.Common.DataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Framework.2017.11.28.4\lib\net461\Mammoth.Framework.dll</HintPath>
