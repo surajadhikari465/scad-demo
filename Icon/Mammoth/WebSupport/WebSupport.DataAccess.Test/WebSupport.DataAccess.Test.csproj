@@ -123,8 +123,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetCheckPointMessageQueryTest.cs" />
     <Compile Include="Queries\GetExistingScanCodesQueryTests.cs" />
+    <Compile Include="Queries\GetGpmPricesQueryTests.cs" />
     <Compile Include="Queries\GetPriceResetPricesQueryTests.cs" />
     <Compile Include="Queries\GetStoresForRegionQueryTests.cs" />
+    <Compile Include="Queries\DoesScanCodeExistQueryTests.cs" />
+    <Compile Include="Queries\DoesStoreExistQueryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebSupport.DataAccess\WebSupport.DataAccess.csproj">

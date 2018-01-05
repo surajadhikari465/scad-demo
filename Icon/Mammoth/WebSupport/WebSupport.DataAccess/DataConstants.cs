@@ -46,4 +46,13 @@
         public const string R10 = "R10";
         public const string IRMA = "IRMA";
     }
+
+    public static class PriceTypes
+    {
+        public static class Codes
+        {
+            public const string Reg = "REG";
+            public const string Tpr = "TPR";
+        }
+    }
 }

@@ -90,6 +90,16 @@ namespace Mammoth.Framework
 
         public DateTime? ProcessedDate { get; set; }
 
+        public string SupplierName { get; set; }
+
+        public string IrmaVendorKey { get; set; }
+
+        public string SupplierItemID { get; set; }
+
+        public decimal? SupplierCaseSize { get; set; }
+
+        public bool? OrderedByInfor { get; set; }
+
         public virtual MessageAction MessageAction { get; set; }
 
         public virtual MessageHistory MessageHistory { get; set; }

@@ -130,7 +130,7 @@
     <Compile Include="Queries\GetExistingScanCodesParameters.cs" />
     <Compile Include="Queries\GetExistingScanCodesQuery.cs" />
     <Compile Include="Queries\GetGpmPricesParameters.cs" />
-    <Compile Include="Queries\GetGpmPricesQueryHandler.cs" />
+    <Compile Include="Queries\GetGpmPricesQuery.cs" />
     <Compile Include="Queries\GetJobScheduleParameters.cs" />
     <Compile Include="Queries\GetJobScheduleQuery.cs" />
     <Compile Include="Queries\GetJobSchedulesParameters.cs" />

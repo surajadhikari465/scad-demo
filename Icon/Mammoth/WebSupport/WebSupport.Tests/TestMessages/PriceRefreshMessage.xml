@@ -1,0 +1,20 @@
+﻿<MammothPrices xmlns="http://schemas.wfm.com/Mammoth/MammothPrices.xsd">
+  <MammothPrice>
+    <Region>FL</Region>
+    <BusinessUnit>123</BusinessUnit>
+    <ItemId>1</ItemId>
+    <GpmId>fc7cfdf1-e934-4f01-baaf-2e0e1d038219</GpmId>
+    <Multiple>1</Multiple>
+    <Price>1</Price>
+    <StartDate>2018-01-03T16:33:46.6366771-06:00</StartDate>
+    <EndDate>2018-01-03T16:33:46.6246444-06:00</EndDate>
+    <PriceType>TPR</PriceType>
+    <PriceTypeAttribute>REG</PriceTypeAttribute>
+    <SellableUom>EA</SellableUom>
+    <CurrencyCode>USD</CurrencyCode>
+    <Action>AddOrUpdate</Action>
+    <ItemTypeCode>Test</ItemTypeCode>
+    <StoreName>SBV</StoreName>
+    <ScanCode>4011</ScanCode>
+  </MammothPrice>
+</MammothPrices>

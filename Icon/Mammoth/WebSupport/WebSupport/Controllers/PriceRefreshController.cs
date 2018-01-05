@@ -1,5 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,31 +48,47 @@ namespace WebSupport.Controllers
         [HttpPost]
         public ActionResult Index(PriceRefreshViewModel viewModel)
         {
-            string region = StaticData.WholeFoodsRegions.ElementAt(viewModel.RegionIndex);
-            List<string> systems = StaticData
-                .JustInTimeDownstreamSystems
-                .Where((s, i) => viewModel.DownstreamSystems.Contains(i))
-                .ToList();
-            List<string> stores = viewModel.Stores.ToList();
-            List<string> scanCodes = viewModel
-                .Items
-                .Split()
-                .Where(s => !String.IsNullOrWhiteSpace(s))
-                .ToList();
-
-            var response = refreshPriceService.RefreshPrices(
-                region,
-                systems,
-                stores,
-                scanCodes);
-
-            if(response.Errors != null && response.Errors.Count > 0)
+            try
             {
-                TempData["Errors"] = response.Errors;
+                string region = StaticData.WholeFoodsRegions.ElementAt(viewModel.RegionIndex);
+                List<string> systems = StaticData
+                    .JustInTimeDownstreamSystems
+                    .Where((s, i) => viewModel.DownstreamSystems.Contains(i))
+                    .ToList();
+                List<string> stores = viewModel.Stores.ToList();
+                List<string> scanCodes = viewModel
+                    .Items
+                    .Split()
+                    .Where(s => !String.IsNullOrWhiteSpace(s))
+                    .ToList();
+
+                var response = refreshPriceService.RefreshPrices(
+                    region,
+                    systems,
+                    stores,
+                    scanCodes);
+
+                if (response.Errors != null && response.Errors.Count > 0)
+                {
+                    TempData["Errors"] = response.Errors;
+                }
+                else
+                {
+                    TempData["Success"] = true;
+                }
+
+                logger.Info(JsonConvert.SerializeObject(new
+                {
+                    PriceRefreshResponse = response
+                }));
             }
-            else
+            catch (Exception ex)
             {
-                TempData["Success"] = true;
+                TempData["Errors"] = $"Unexpected error occurred, check logs for more details. Error:{ex.Message}";
+                logger.Error(JsonConvert.SerializeObject(new
+                {
+                    Error = ex
+                }));
             }
             return RedirectToAction("Index");
         }
