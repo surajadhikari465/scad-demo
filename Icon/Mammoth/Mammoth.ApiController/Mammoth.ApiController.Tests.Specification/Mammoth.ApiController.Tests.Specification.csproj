@@ -82,7 +82,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Mammoth.Common.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.Testing.2017.11.29.1\lib\net461\Mammoth.Common.Testing.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.Testing.2018.1.5.5\lib\net461\Mammoth.Common.Testing.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Framework.2018.1.4.1\lib\net461\Mammoth.Framework.dll</HintPath>
