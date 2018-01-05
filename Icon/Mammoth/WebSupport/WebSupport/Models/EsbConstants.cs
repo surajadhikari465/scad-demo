@@ -17,7 +17,7 @@ namespace WebSupport.Models
         public const string NewTagExpirationTraitCode = "NTE";
         public const string NewTagExpirationTraitDescription = "New Tag Expiration";
         public const string CheckPointRequest = "CheckPointRequest";
-        public const string PriceResetKey = "PriceReset";
+        public const string PriceResetKey = "ResetFlag";
         public const string PriceTransactionTypeValue = "Price";
         public const string PriceResetTrueValue = "1";
         public const string PriceResetFalseValue = "0";

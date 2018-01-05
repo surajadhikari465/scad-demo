@@ -66,7 +66,7 @@
         </div>
 
         <div class="row"></div>
-
+        <br />
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
                 <input type="submit" value="Send Messages" class="btn btn-danger form-submit col-md-offset-4" id="search-button" />
@@ -74,29 +74,30 @@
         </div>
 
         <div class="row"></div>
-                    if (Model.Errors != null && Model.Errors.Count > 0)
-                    {
-                        <div class="form-group">
-                            <div class="alert alert-danger alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <strong>@string.Join("|", Model.Errors)</strong>
-                            </div>
-                        </div>
-                    }
-                    if (Model.Success.HasValue && Model.Success.Value)
-                    {
-                        <div class="form-group">
-                            <div class="alert alert-success alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <strong>All prices successfully sent.</strong>
-                            </div>
-                        </div>
-                        }
-                    }
+        <br />
+        if (Model.Errors != null && Model.Errors.Count > 0)
+        {
+            <div class="form-group">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>@string.Join("|", Model.Errors)</strong>
+                </div>
+            </div>
+        }
+        if (Model.Success.HasValue && Model.Success.Value)
+        {
+            <div class="form-group">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>All prices successfully sent.</strong>
+                </div>
+            </div>
+            }
+        }
 
 </div>
 
