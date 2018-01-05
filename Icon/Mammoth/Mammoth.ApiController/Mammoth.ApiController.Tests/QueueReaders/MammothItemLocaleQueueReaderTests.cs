@@ -251,7 +251,7 @@ namespace Mammoth.ApiController.Tests.QueueReaders
 
         private void AssertTraitValuesAreEqual(decimal? messageQueueValue, string attributeCode, Contracts.TraitType[] itemTraits)
         {
-            AssertTraitValuesAreEqual(messageQueueValue?.ToString(), attributeCode, itemTraits);
+            AssertTraitValuesAreEqual(messageQueueValue?.ToString("0.00"), attributeCode, itemTraits);
         }
 
         private void AssertTraitValuesAreEqual(bool? messageQueueValue, string attributeCode, Contracts.TraitType[] itemTraits)
