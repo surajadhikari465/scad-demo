@@ -24,188 +24,20 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>62</pd:startX>
-    <pd:startY>151</pd:startY>
+    <pd:startX>49</pd:startX>
+    <pd:startY>222</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>657</pd:endX>
-    <pd:endY>151</pd:endY>
+    <pd:endX>766</pd:endX>
+    <pd:endY>248</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1499349598177</pd:targetNamespace>
-    <pd:group name="Group">
-        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
-        <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>170</pd:x>
-        <pd:y>9</pd:y>
-        <pd:width>379</pd:width>
-        <pd:height>269</pd:height>
-        <pd:collapsedWidth>57</pd:collapsedWidth>
-        <pd:collapsedHeight>70</pd:collapsedHeight>
-        <pd:groupVariables/>
-        <pd:joinToggle>inherit</pd:joinToggle>
-        <config>
-            <pd:groupType>errorLoop</pd:groupType>
-            <pd:serializable>false</pd:serializable>
-            <pd:indexSlot>retryCountIndex</pd:indexSlot>
-            <pd:errorCondition>$retryCountIndex = $_globalVariables/ns:GlobalVariables/Application/MaxSendMessageRetryCount</pd:errorCondition>
-            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
-        </config>
-        <pd:inputBindings/>
-        <pd:expanded>true</pd:expanded>
-        <pd:transition>
-            <pd:from>start</pd:from>
-            <pd:to>Send to Process BOD Queue</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Send to Process BOD Queue</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Sleep</pd:from>
-            <pd:to>Generate Error</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Send to Process BOD Queue</pd:from>
-            <pd:to>Sleep</pd:to>
-            <pd:xpathDescription>Error</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-52429</pd:lineColor>
-            <pd:conditionType>error</pd:conditionType>
-        </pd:transition>
-        <pd:activity name="Generate Error">
-            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
-            <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>460</pd:x>
-            <pd:y>201</pd:y>
-            <config>
-                <faultName/>
-            </config>
-            <pd:inputBindings>
-                <ns12:ActivityInput>
-                    <message>
-                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
-                    </message>
-                    <xsl:if test="$_error/ns2:ErrorReport/MsgCode">
-                        <messageCode>
-                            <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
-                        </messageCode>
-                    </xsl:if>
-                </ns12:ActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="Sleep">
-            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
-            <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>320</pd:x>
-            <pd:y>200</pd:y>
-            <config/>
-            <pd:inputBindings>
-                <ns1:SleepInputSchema>
-                    <IntervalInMillisec>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/SendMessageRetrySleepInMilliseconds"/>
-                    </IntervalInMillisec>
-                </ns1:SleepInputSchema>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="Send to Process BOD Queue">
-            <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
-            <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>318</pd:x>
-            <pd:y>87</pd:y>
-            <config>
-                <PermittedMessageType>XML Text</PermittedMessageType>
-                <SessionAttributes>
-                    <transacted>false</transacted>
-                    <acknowledgeMode>1</acknowledgeMode>
-                    <maxSessions>1</maxSessions>
-                    <destination>%%Application/BODRequestQueue%%</destination>
-                </SessionAttributes>
-                <ConfigurableHeaders>
-                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
-                    <JMSExpiration/>
-                    <JMSPriority>0</JMSPriority>
-                </ConfigurableHeaders>
-                <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
-                <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
-                <InDataxsdString ref="pfx6:PriceChangeMaster"/>
-            </config>
-            <pd:inputBindings>
-                <ns0:ActivityInput>
-                    <OtherProperties>
-                        <xsl:if test="$Start/Input/MessageID">
-                            <TransactionID>
-                                <xsl:value-of select="$Start/Input/MessageID"/>
-                            </TransactionID>
-                        </xsl:if>
-                        <xsl:if test="$Start/Input/PatchFamilyID">
-                            <CorrelationID>
-                                <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                            </CorrelationID>
-                        </xsl:if>
-                        <xsl:if test="$Start/Input/SequenceID">
-                            <SequenceID>
-                                <xsl:value-of select="$Start/Input/SequenceID"/>
-                            </SequenceID>
-                        </xsl:if>
-                        <xsl:if test="$Start/Input/ResetFlag">
-                            <ResetFlag>
-                                <xsl:value-of select="$Start/Input/ResetFlag"/>
-                            </ResetFlag>
-                        </xsl:if>
-                        <xsl:if test="$Start/Input/TransactionType">
-                            <TransactionType>
-                                <xsl:value-of select="$Start/Input/TransactionType"/>
-                            </TransactionType>
-                        </xsl:if>
-                        <xsl:if test="$Start/Input/Source">
-                            <Source>
-                                <xsl:value-of select="$Start/Input/Source"/>
-                            </Source>
-                        </xsl:if>
-                    </OtherProperties>
-                    <Body>
-                        <PriceChangeMaster>
-                            <xsl:attribute name="isCheckPoint">
-                                <xsl:value-of select="false()"/>
-                            </xsl:attribute>
-                            <BusinessKey>
-                                <xsl:attribute name="variationID">
-                                    <xsl:value-of select="0"/>
-                                </xsl:attribute>
-                                <xsl:value-of select="&quot;00000000-0000-4000-8000-000000000000&quot;"/>
-                            </BusinessKey>
-                            <PriceChangeHeader>
-                                <PatchFamilyID>
-                                    <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                                </PatchFamilyID>
-                                <PatchNum>
-                                    <xsl:value-of select="$Start/Input/LastProcessedGpmSequenceId + 1"/>
-                                </PatchNum>
-                                <TimeStamp>
-                                    <xsl:value-of select="current-dateTime()"/>
-                                </TimeStamp>
-                            </PriceChangeHeader>
-                        </PriceChangeMaster>
-                    </Body>
-                </ns0:ActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-    </pd:group>
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>388</pd:x>
-        <pd:y>350</pd:y>
+        <pd:x>230</pd:x>
+        <pd:y>468</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -215,8 +47,8 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>512</pd:x>
-        <pd:y>348</pd:y>
+        <pd:x>610</pd:x>
+        <pd:y>468</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -231,20 +63,210 @@
             </pfx:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:transition>
-        <pd:from>Start</pd:from>
-        <pd:to>Group</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Group</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
+    <pd:group name="Repeat">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>183</pd:x>
+        <pd:y>41</pd:y>
+        <pd:width>402</pd:width>
+        <pd:height>373</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>sequenceIndex</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$sequenceIndex = $Start/Input/SequenceID - $Start/Input/LastProcessedGpmSequenceId</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Group</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Group</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Group">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>206</pd:x>
+            <pd:y>79</pd:y>
+            <pd:width>339</pd:width>
+            <pd:height>302</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>errorLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:indexSlot>retryCountIndex</pd:indexSlot>
+                <pd:errorCondition>$retryCountIndex = $_globalVariables/ns:GlobalVariables/Application/MaxSendMessageRetryCount</pd:errorCondition>
+                <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Send to Process BOD Queue</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Send to Process BOD Queue</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Sleep</pd:from>
+                <pd:to>Generate Error</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Send to Process BOD Queue</pd:from>
+                <pd:to>Sleep</pd:to>
+                <pd:xpathDescription>Error</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-52429</pd:lineColor>
+                <pd:conditionType>error</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Generate Error">
+                <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+                <pd:resourceType>ae.activities.throw</pd:resourceType>
+                <pd:x>452</pd:x>
+                <pd:y>271</pd:y>
+                <config>
+                    <faultName/>
+                </config>
+                <pd:inputBindings>
+                    <ns12:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                        </message>
+                        <xsl:if test="$_error/ns2:ErrorReport/MsgCode">
+                            <messageCode>
+                                <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                            </messageCode>
+                        </xsl:if>
+                    </ns12:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Sleep">
+                <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+                <pd:resourceType>ae.activities.sleep</pd:resourceType>
+                <pd:x>312</pd:x>
+                <pd:y>270</pd:y>
+                <config/>
+                <pd:inputBindings>
+                    <ns1:SleepInputSchema>
+                        <IntervalInMillisec>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/SendMessageRetrySleepInMilliseconds"/>
+                        </IntervalInMillisec>
+                    </ns1:SleepInputSchema>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Send to Process BOD Queue">
+                <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+                <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+                <pd:x>310</pd:x>
+                <pd:y>157</pd:y>
+                <config>
+                    <PermittedMessageType>XML Text</PermittedMessageType>
+                    <SessionAttributes>
+                        <transacted>false</transacted>
+                        <acknowledgeMode>1</acknowledgeMode>
+                        <maxSessions>1</maxSessions>
+                        <destination>%%Application/BODRequestQueue%%</destination>
+                    </SessionAttributes>
+                    <ConfigurableHeaders>
+                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                        <JMSExpiration/>
+                        <JMSPriority>0</JMSPriority>
+                    </ConfigurableHeaders>
+                    <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+                    <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
+                    <InDataxsdString ref="pfx6:PriceChangeMaster"/>
+                </config>
+                <pd:inputBindings>
+                    <ns0:ActivityInput>
+                        <OtherProperties>
+                            <xsl:if test="$Start/Input/MessageID">
+                                <TransactionID>
+                                    <xsl:value-of select="$Start/Input/MessageID"/>
+                                </TransactionID>
+                            </xsl:if>
+                            <xsl:if test="$Start/Input/PatchFamilyID">
+                                <CorrelationID>
+                                    <xsl:value-of select="$Start/Input/PatchFamilyID"/>
+                                </CorrelationID>
+                            </xsl:if>
+                            <xsl:if test="$Start/Input/SequenceID">
+                                <SequenceID>
+                                    <xsl:value-of select="$Start/Input/SequenceID"/>
+                                </SequenceID>
+                            </xsl:if>
+                            <xsl:if test="$Start/Input/ResetFlag">
+                                <ResetFlag>
+                                    <xsl:value-of select="$Start/Input/ResetFlag"/>
+                                </ResetFlag>
+                            </xsl:if>
+                            <xsl:if test="$Start/Input/TransactionType">
+                                <TransactionType>
+                                    <xsl:value-of select="$Start/Input/TransactionType"/>
+                                </TransactionType>
+                            </xsl:if>
+                            <xsl:if test="$Start/Input/Source">
+                                <Source>
+                                    <xsl:value-of select="$Start/Input/Source"/>
+                                </Source>
+                            </xsl:if>
+                        </OtherProperties>
+                        <Body>
+                            <PriceChangeMaster>
+                                <xsl:attribute name="isCheckPoint">
+                                    <xsl:value-of select="false()"/>
+                                </xsl:attribute>
+                                <BusinessKey>
+                                    <xsl:attribute name="variationID">
+                                        <xsl:value-of select="0"/>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="&quot;00000000-0000-4000-8000-000000000000&quot;"/>
+                                </BusinessKey>
+                                <PriceChangeHeader>
+                                    <PatchFamilyID>
+                                        <xsl:value-of select="$Start/Input/PatchFamilyID"/>
+                                    </PatchFamilyID>
+                                    <PatchNum>
+                                        <xsl:value-of select="$Start/Input/LastProcessedGpmSequenceId + $sequenceIndex"/>
+                                    </PatchNum>
+                                    <TimeStamp>
+                                        <xsl:value-of select="current-dateTime()"/>
+                                    </TimeStamp>
+                                </PriceChangeHeader>
+                            </PriceChangeMaster>
+                        </Body>
+                    </ns0:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
     <pd:transition>
         <pd:from>Catch</pd:from>
         <pd:to>Log</pd:to>
@@ -254,6 +276,20 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Repeat</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Repeat</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
