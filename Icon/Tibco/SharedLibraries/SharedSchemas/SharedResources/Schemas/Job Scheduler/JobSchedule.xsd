@@ -9,16 +9,16 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="JobName" type="xs:string"/>
-				<xs:element name="Region" type="xs:string"/>
-				<xs:element name="DestinationQueueName" type="xs:string"/>
+				<xs:element name="Region" type="xs:string" minOccurs="0"/>
+				<xs:element name="DestinationQueueName" type="xs:string" minOccurs="0"/>
 				<xs:element name="StartDateTimeUtc" type="xs:string"/>
-				<xs:element name="LastScheduledDateTimeUtc" type="xs:string"/>
-				<xs:element name="LastRunEndDateTimeUtc" type="xs:string"/>
-				<xs:element name="NextScheduledDateTimeUtc"  type="xs:string"/>
+				<xs:element name="LastScheduledDateTimeUtc" type="xs:string" minOccurs="0"/>
+				<xs:element name="LastRunEndDateTimeUtc" type="xs:string" minOccurs="0"/>
+				<xs:element name="NextScheduledDateTimeUtc" type="xs:string" minOccurs="0"/>
 				<xs:element name="IntervalInSeconds" type="xs:int"/>
 				<xs:element name="Enabled" type="xs:boolean"/>
 				<xs:element name="Status" type="xs:string"/>
-				<xs:element name="XmlObject" type="xs:string"/>
+				<xs:element name="XmlObject" type="xs:string" minOccurs="0"/>
 				<xs:element name="JobScheduleId" type="xs:int"/>
 			</xs:sequence>
 		</xs:complexType>
