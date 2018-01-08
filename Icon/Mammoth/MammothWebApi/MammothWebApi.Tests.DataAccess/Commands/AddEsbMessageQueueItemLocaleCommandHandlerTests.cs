@@ -209,11 +209,12 @@ namespace MammothWebApi.Tests.DataAccess.Commands
         {
             testStagingItemLocaleData = new List<StagingItemLocaleModel>
             {
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[0])
+                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[0]).WithOrderedByInfor(true)
                     .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[1])
+                    
+                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[1]).WithOrderedByInfor(true)
                     .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2])
+                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2]).WithOrderedByInfor(true)
                     .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build()
             };
 
@@ -238,7 +239,8 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 	                            Sign_RomanceText_Short,
                                 Msrp,
 	                            Timestamp,
-                                TransactionId
+                                TransactionId,
+                                OrderedByInfor
                             )
                             VALUES
                             (
@@ -261,7 +263,8 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 	                            @Sign_RomanceText_Short,
                                 @Msrp,
 	                            @Timestamp,
-                                @TransactionId
+                                @TransactionId,
+                                @OrderedByInfor
                             )";
 
             db.Connection.Execute(sql, testStagingItemLocaleData, transaction: db.Transaction);
@@ -481,6 +484,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                 Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Long, queuedMessages[i].SignRomanceLong);
                 Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Short, queuedMessages[i].SignRomanceShort);
                 Assert.AreEqual(testStagingItemLocaleData[i].Msrp, queuedMessages[i].Msrp);
+                Assert.AreEqual(testStagingItemLocaleData[i].OrderedByInfor, queuedMessages[i].OrderedByInfor);
                 Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierName, queuedMessages[i].SupplierName);
                 Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierItemId, queuedMessages[i].SupplierItemID);
                 Assert.AreEqual(testStagingItemLocaleSupplierModel[i].IrmaVendorKey, queuedMessages[i].IrmaVendorKey);
@@ -554,6 +558,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                 Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Long, queuedMessages[i].SignRomanceLong);
                 Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Short, queuedMessages[i].SignRomanceShort);
                 Assert.AreEqual(testStagingItemLocaleData[i].Msrp, queuedMessages[i].Msrp);
+                Assert.AreEqual(testStagingItemLocaleData[i].OrderedByInfor, queuedMessages[i].OrderedByInfor);
                 Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierName, queuedMessages[i].SupplierName);
                 Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierItemId, queuedMessages[i].SupplierItemID);
                 Assert.AreEqual(testStagingItemLocaleSupplierModel[i].IrmaVendorKey, queuedMessages[i].IrmaVendorKey);
@@ -648,6 +653,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             // Given.
             StageDataWithSignRomanceLong("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
             StageExtendedItemLocaleData();
+            StageItemLocaleSupplierData();
 
             var command = new AddEsbMessageQueueItemLocaleCommand
             {
