@@ -26,11 +26,14 @@ namespace MammothWebApi.Tests.DataAccess.Commands
         private Guid transactionId;
         private List<StagingItemLocaleModel> testStagingItemLocaleData;
         private List<List<StagingItemLocaleExtendedModel>> testStagingExtendedItemLocaleData;
+        private List<StagingItemLocaleSupplierModel> testStagingItemLocaleSupplierModel;
         private List<Item> testItems;
         private List<string> testScanCodes;
         private Locales testLocale;
         private int testBusinessUnitId;
         private int itemTypeId;
+        private string testSupplierName;
+        private string testSupplierItemId;
 
         [TestInitialize]
         public void Initialize()
@@ -39,6 +42,8 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             transactionId = Guid.NewGuid();
             testRegion = "SW";
             testBusinessUnitId = 44444;
+            testSupplierName = "Test Supplier";
+            testSupplierItemId = "Test Suppplier";
 
             string connectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
 
@@ -157,15 +162,59 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             db.Connection.Execute(sql, testItems, transaction: db.Transaction);
         }
 
+        private void StageItemLocaleSupplierData()
+        {
+            testStagingItemLocaleSupplierModel = new List<StagingItemLocaleSupplierModel>
+            {
+           new TestStagingItemLocaleSupplierModelBuilder().WithBusinessUnit(testBusinessUnitId).WithScanCode(testScanCodes[0])
+                .WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId)
+                .WithSupplierName(testSupplierName).WithSupplierItemId(testSupplierItemId).Build(),
+           new TestStagingItemLocaleSupplierModelBuilder().WithBusinessUnit(testBusinessUnitId).WithScanCode(testScanCodes[1])
+                .WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId)
+                .WithSupplierName(testSupplierName).WithSupplierItemId(testSupplierItemId).Build(),
+           new TestStagingItemLocaleSupplierModelBuilder().WithBusinessUnit(testBusinessUnitId).WithScanCode(testScanCodes[2])
+                .WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId)
+                .WithSupplierName(testSupplierName).WithSupplierItemId(testSupplierItemId).Build(),
+            };
+
+            string sql = @"INSERT INTO stage.ItemLocaleSupplier
+                            (
+	                            Region,
+                                ScanCode,
+	                            BusinessUnitID,
+	                            SupplierName,
+	                            SupplierItemId,
+	                            SupplierCaseSize,
+	                            IrmaVendorKey,
+	                            Timestamp,
+                                TransactionId
+                            )
+                            VALUES
+                            (
+	                            @Region,
+                                @ScanCode,
+	                            @BusinessUnitID,
+	                            @SupplierName,
+	                            @SupplierItemId,
+	                            @SupplierCaseSize,
+	                            @IrmaVendorKey,
+	                            @Timestamp,
+                                @TransactionId
+                            )";
+
+            db.Connection.Execute(sql, testStagingItemLocaleSupplierModel, transaction: db.Transaction);
+        }
+
         private void StageCoreItemLocaleData()
         {
             testStagingItemLocaleData = new List<StagingItemLocaleModel>
             {
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[0])
+                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[0]).WithOrderedByInfor(true)
                     .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[1])
+                    
+                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[1]).WithOrderedByInfor(true)
                     .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2])
+                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2]).WithOrderedByInfor(true)
                     .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build()
             };
 
@@ -190,7 +239,8 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 	                            Sign_RomanceText_Short,
                                 Msrp,
 	                            Timestamp,
-                                TransactionId
+                                TransactionId,
+                                OrderedByInfor
                             )
                             VALUES
                             (
@@ -213,7 +263,8 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 	                            @Sign_RomanceText_Short,
                                 @Msrp,
 	                            @Timestamp,
-                                @TransactionId
+                                @TransactionId,
+                                @OrderedByInfor
                             )";
 
             db.Connection.Execute(sql, testStagingItemLocaleData, transaction: db.Transaction);
@@ -385,6 +436,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
         {
             // Given.
             StageCoreItemLocaleData();
+            StageItemLocaleSupplierData();
 
             var command = new AddEsbMessageQueueItemLocaleCommand
             {
@@ -432,6 +484,11 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                 Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Long, queuedMessages[i].SignRomanceLong);
                 Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Short, queuedMessages[i].SignRomanceShort);
                 Assert.AreEqual(testStagingItemLocaleData[i].Msrp, queuedMessages[i].Msrp);
+                Assert.AreEqual(testStagingItemLocaleData[i].OrderedByInfor, queuedMessages[i].OrderedByInfor);
+                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierName, queuedMessages[i].SupplierName);
+                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierItemId, queuedMessages[i].SupplierItemID);
+                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].IrmaVendorKey, queuedMessages[i].IrmaVendorKey);
+                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierCaseSize, queuedMessages[i].SupplierCaseSize);
                 Assert.IsNull(queuedMessages[i].ColorAdded);
                 Assert.IsNull(queuedMessages[i].CountryOfProcessing);
                 Assert.IsNull(queuedMessages[i].Origin);
@@ -452,6 +509,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
         {
             // Given.
             StageCoreItemLocaleData();
+            StageItemLocaleSupplierData();
             StageExtendedItemLocaleData();
 
             var command = new AddEsbMessageQueueItemLocaleCommand
@@ -500,6 +558,11 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                 Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Long, queuedMessages[i].SignRomanceLong);
                 Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Short, queuedMessages[i].SignRomanceShort);
                 Assert.AreEqual(testStagingItemLocaleData[i].Msrp, queuedMessages[i].Msrp);
+                Assert.AreEqual(testStagingItemLocaleData[i].OrderedByInfor, queuedMessages[i].OrderedByInfor);
+                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierName, queuedMessages[i].SupplierName);
+                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierItemId, queuedMessages[i].SupplierItemID);
+                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].IrmaVendorKey, queuedMessages[i].IrmaVendorKey);
+                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierCaseSize, queuedMessages[i].SupplierCaseSize);
                 Assert.AreEqual(!testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ColorAdded).AttributeValue.Equals("0"), queuedMessages[i].ColorAdded);
                 Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.CountryOfProcessing).AttributeValue, queuedMessages[i].CountryOfProcessing);
                 Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.Origin).AttributeValue, queuedMessages[i].Origin);
@@ -590,6 +653,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             // Given.
             StageDataWithSignRomanceLong("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
             StageExtendedItemLocaleData();
+            StageItemLocaleSupplierData();
 
             var command = new AddEsbMessageQueueItemLocaleCommand
             {

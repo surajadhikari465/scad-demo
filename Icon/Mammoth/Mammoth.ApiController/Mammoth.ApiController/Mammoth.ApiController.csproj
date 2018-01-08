@@ -96,7 +96,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Framework.2017.11.28.4\lib\net461\Mammoth.Framework.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Framework.2018.1.4.1\lib\net461\Mammoth.Framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MoreLinq, Version=2.8.21218.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.2.8.0\lib\net40\MoreLinq.dll</HintPath>

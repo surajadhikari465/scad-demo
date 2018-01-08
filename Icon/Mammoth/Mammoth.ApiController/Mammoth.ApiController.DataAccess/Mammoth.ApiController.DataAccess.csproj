@@ -78,7 +78,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Framework.2017.11.28.4\lib\net461\Mammoth.Framework.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Framework.2018.1.4.1\lib\net461\Mammoth.Framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

@@ -237,6 +237,11 @@ namespace Mammoth.ApiController.Tests.QueueReaders
             AssertTraitValuesAreEqual(messageQueue.TagUom, Attributes.Codes.TagUom, itemTraits);
             AssertTraitValuesAreEqual(messageQueue.ScaleExtraText, Attributes.Codes.ScaleExtraText, itemTraits);
             AssertTraitValuesAreEqual(messageQueue.Msrp, Attributes.Codes.Msrp, itemTraits);
+            AssertTraitValuesAreEqual(messageQueue.IrmaVendorKey, Attributes.Codes.IrmaVendorKey, itemTraits);
+            AssertTraitValuesAreEqual(messageQueue.SupplierName, Attributes.Codes.VendorName, itemTraits);
+            AssertTraitValuesAreEqual(messageQueue.SupplierItemID, Attributes.Codes.VendorItemId, itemTraits);
+            AssertTraitValuesAreEqual(messageQueue.SupplierCaseSize, Attributes.Codes.VendorCaseSize, itemTraits);
+            AssertTraitValuesAreEqual(messageQueue.OrderedByInfor, Attributes.Codes.OrderedByInfor, itemTraits);
         }
 
         private void AssertTraitValuesAreEqual(DateTime? messageQueueValue, string attributeCode, Contracts.TraitType[] itemTraits)
@@ -246,7 +251,7 @@ namespace Mammoth.ApiController.Tests.QueueReaders
 
         private void AssertTraitValuesAreEqual(decimal? messageQueueValue, string attributeCode, Contracts.TraitType[] itemTraits)
         {
-            AssertTraitValuesAreEqual(messageQueueValue?.ToString(), attributeCode, itemTraits);
+            AssertTraitValuesAreEqual(messageQueueValue?.ToString("0.00"), attributeCode, itemTraits);
         }
 
         private void AssertTraitValuesAreEqual(bool? messageQueueValue, string attributeCode, Contracts.TraitType[] itemTraits)

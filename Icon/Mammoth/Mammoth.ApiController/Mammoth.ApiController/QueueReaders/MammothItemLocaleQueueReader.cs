@@ -87,7 +87,7 @@ namespace Mammoth.ApiController.QueueReaders
 
         private void ValidateItemLocaleMessage(MessageQueueItemLocale message)
         {
-            if(!string.IsNullOrWhiteSpace(message.ScaleExtraText))
+            if (!string.IsNullOrWhiteSpace(message.ScaleExtraText))
                 XmlConvert.VerifyXmlChars(message.ScaleExtraText);
         }
 
@@ -154,7 +154,13 @@ namespace Mammoth.ApiController.QueueReaders
                                 CreateTrait(message.TagUom, Attributes.Codes.TagUom),
                                 CreateTrait(message.ScaleExtraText, Attributes.Codes.ScaleExtraText),
                                 CreateTrait(message.LinkedItem, Attributes.Codes.LinkedScanCode),
-                                CreateTrait(message.Msrp, Attributes.Codes.Msrp)
+                                CreateTrait(message.Msrp, Attributes.Codes.Msrp),
+                                CreateTrait(message.SupplierName, Attributes.Codes.VendorName),
+                                CreateTrait(message.SupplierItemID, Attributes.Codes.VendorItemId),
+                                CreateTrait(message.SupplierCaseSize, Attributes.Codes.VendorCaseSize),
+                                CreateTrait(message.IrmaVendorKey, Attributes.Codes.IrmaVendorKey),
+                                CreateTrait(message.OrderedByInfor, Attributes.Codes.OrderedByInfor),
+
                             }
                         }
                     }

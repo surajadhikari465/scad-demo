@@ -40,6 +40,11 @@
     [Msrp]						 SMALLMONEY		NULL, 
     [InProcessBy]                INT            NULL,
     [ProcessedDate]              DATETIME2 (7)  NULL,
+	[SupplierName]				 NVARCHAR(255)  NULL,
+	[IrmaVendorKey]				 NVARCHAR(10)   NULL,
+    [SupplierItemID]			 NVARCHAR(20)   NULL,
+	[SupplierCaseSize]			 DECIMAL(9,4)	NULL,
+	[OrderedByInfor]			 BIT            NULL,
 );
 go
 
