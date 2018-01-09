@@ -64,7 +64,7 @@ namespace WebSupport.App_Start
             container.Register<IMessageBuilder<CheckPointRequestBuilderModel>, CheckPointRequestMessageBuilder>(Lifestyle.Scoped);
             container.Register<ISerializer<Icon.Esb.Schemas.Mammoth.ContractTypes.JobSchedule>, Serializer<Icon.Esb.Schemas.Mammoth.ContractTypes.JobSchedule>>(Lifestyle.Scoped);
             container.Register<ISerializer<items>, Serializer<items>>(Lifestyle.Scoped);
-            container.Register<ISerializer<Icon.Esb.Schemas.Infor.ContractTypes.PriceChangeMasterType>, SerializerWithoutNamepaceAliases<Icon.Esb.Schemas.Infor.ContractTypes.PriceChangeMasterType>>(Lifestyle.Scoped);
+            container.Register<ISerializer<Icon.Esb.Schemas.Infor.ContractTypes.PriceChangeMaster>, SerializerWithoutNamepaceAliases<Icon.Esb.Schemas.Infor.ContractTypes.PriceChangeMaster>>(Lifestyle.Scoped);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString), Lifestyle.Scoped);
             container.Register<IRefreshPriceService, RefreshPriceService>();
             container.Register<IPriceRefreshEsbProducerFactory, PriceRefreshEsbProducerFactory>();
