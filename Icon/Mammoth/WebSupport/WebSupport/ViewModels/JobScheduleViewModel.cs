@@ -14,6 +14,11 @@ namespace WebSupport.ViewModels
     [MetadataType(metadataClassType: typeof(JobScheduleMetaData))]
     public partial class JobScheduleViewModel : JobSchedule
     {
+        public DateTime NextScheduledDateTime { get; set; }
+        public DateTime StartDateTime { get; set; }
+        public DateTime?  LastScheduledDateTime { get; set; }
+        public DateTime? LastRunEndDateTime { get; set; }
+
         public static JobScheduleViewModel FromDataAccessModel(JobSchedule dataModel)
         {
             if (dataModel == null)
@@ -28,8 +33,12 @@ namespace WebSupport.ViewModels
                 Region = dataModel.Region,
                 DestinationQueueName = dataModel.DestinationQueueName,
                 StartDateTimeUtc = dataModel.StartDateTimeUtc,
+                StartDateTime = dataModel.StartDateTimeUtc.ToLocalTime(),
                 LastScheduledDateTimeUtc = dataModel.LastScheduledDateTimeUtc,
+                LastScheduledDateTime = dataModel.LastScheduledDateTimeUtc.HasValue ? dataModel.LastScheduledDateTimeUtc.Value.ToLocalTime(): dataModel.LastScheduledDateTimeUtc,
                 LastRunEndDateTimeUtc = dataModel.LastRunEndDateTimeUtc,
+                LastRunEndDateTime = dataModel.LastRunEndDateTimeUtc.HasValue ? dataModel.LastRunEndDateTimeUtc.Value.ToLocalTime(): dataModel.LastRunEndDateTimeUtc,
+                NextScheduledDateTime = dataModel.NextScheduledDateTimeUtc.ToLocalTime(),
                 NextScheduledDateTimeUtc = dataModel.NextScheduledDateTimeUtc,
                 IntervalInSeconds = dataModel.IntervalInSeconds,
                 Enabled = dataModel.Enabled,
@@ -65,18 +74,31 @@ namespace WebSupport.ViewModels
         [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
         public object StartDateTimeUtc;
 
+        [Required]
+        [Display(Name = "Start DateTime")]
+        public object StartDateTime;
+
         [Display(Name = "Last Scheduled DateTime UTC")]
         [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
         public object LastScheduledDateTimeUtc;
 
+        [Display(Name = "Last Scheduled DateTime")]
+        public object LastScheduledDateTime;
+
         [Display(Name = "Last Run End DateTime UTC")]
-        [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
         public object LastRunEndDateTimeUtc;
+
+        [Display(Name = "Last Run End DateTime")]
+        public object LastRunEndDateTime;
 
         [Required]
         [Display(Name = "Next Scheduled DateTime UTC")]
         [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
         public object NextScheduledDateTimeUtc;
+
+        [Required]
+        [Display(Name = "Next Scheduled DateTime")]
+        public object NextScheduledDateTime;
 
         [Display(Name = "Interval (In Seconds)")]
         [Range(0, Int32.MaxValue)]
