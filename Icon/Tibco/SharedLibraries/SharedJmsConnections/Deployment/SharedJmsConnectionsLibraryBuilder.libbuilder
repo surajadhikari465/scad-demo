@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <name name="SharedJmsConnectionsLibraryBuilder">
-        <version>16</version>
+        <version>17</version>
         <author>2130356</author>
-        <fileLocation>C:\dev\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedJmsConnections.projlib</fileLocation>
+        <fileLocation>C:\VSTS\Source\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedJmsConnections.projlib</fileLocation>
         <resources>/SharedResources/Connections/ESB.sharedjmscon,/SharedResources/Connections/SB1.sharedjmscon,/SharedResources/Properties/JMS Application Properties.sharedjmsapp</resources>
     </name>
 </Repository:repository>

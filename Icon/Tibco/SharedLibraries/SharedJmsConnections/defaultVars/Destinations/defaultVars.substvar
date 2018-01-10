@@ -34,6 +34,14 @@
 			<modTime>1510179419666</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>InactiveTprPriceStarterQueue</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTime.InactiveTprPriceStarter.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1515622385985</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>MammothErrorMessageQueue</name>
 			<value>WFMSB1.Mammoth.Retail.Errors.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
