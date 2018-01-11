@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <pd:name>Processes/MainReceiver.process</pd:name>
     <pd:startName>Inactive Tpr Price Starter Queue Receiver</pd:startName>
@@ -54,7 +54,7 @@
     <pd:activity name="Call Inactive Tpr Service">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>523</pd:x>
+        <pd:x>524</pd:x>
         <pd:y>88</pd:y>
         <config>
             <processName>/Processes/RunInactiveTprService.process</processName>
