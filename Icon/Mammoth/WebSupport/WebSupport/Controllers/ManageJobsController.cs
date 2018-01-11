@@ -67,7 +67,7 @@ namespace WebSupport.Controllers
         [HttpPost]
         public ActionResult Edit(JobScheduleViewModel jobSchedule)
         {
-            populateUtcDates(jobSchedule);
+            PopulateUtcDates(jobSchedule);
             updateJobScheduleCommandHandler.Execute(new UpdateJobScheduleCommand
             {
                 JobSchedule = jobSchedule
@@ -108,7 +108,7 @@ namespace WebSupport.Controllers
         [HttpPost]
         public ActionResult Create(JobScheduleViewModel jobSchedule)
         {
-            populateUtcDates(jobSchedule);
+            PopulateUtcDates(jobSchedule);
             createJobScheduleCommandHandler.Execute(new CreateJobScheduleCommand
             {
                 JobSchedule = jobSchedule
@@ -119,7 +119,7 @@ namespace WebSupport.Controllers
             return RedirectToAction("Index");
         }
 
-        private void populateUtcDates(JobScheduleViewModel jobSchedule)
+        private void PopulateUtcDates(JobScheduleViewModel jobSchedule)
         {
             jobSchedule.NextScheduledDateTimeUtc = jobSchedule.NextScheduledDateTime.ToUniversalTime();
             jobSchedule.StartDateTimeUtc = jobSchedule.StartDateTime.ToUniversalTime();
