@@ -13,3 +13,7 @@ GO
 CREATE ROLE [dds_esl_role]
 	AUTHORIZATION [dbo];
 GO
+
+CREATE ROLE [dds_eplum_role]
+	AUTHORIZATION [dbo];
+GO
