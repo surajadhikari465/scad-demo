@@ -163,6 +163,8 @@ namespace Icon.Framework
         public const int Paleo = 149;
         public const int LocalLoanProducer = 150;
         public const int CustomerFriendlyDescription = 151;
+        public const int GlobalPricingProgram = 154;
+        public const int PercentageTareWeight = 155;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -316,7 +318,9 @@ namespace Icon.Framework
 				{ "PFT", 148 },
 				{ "PLO", 149 },
 				{ "LLP", 150 },
-				{ "CFD", 151 }
+				{ "CFD", 151 },
+				{ "GPP", 154 },
+				{ "PTA", 155 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -473,6 +477,8 @@ namespace Icon.Framework
 			public const string Paleo = "Paleo";
 			public const string LocalLoanProducer = "Local Loan Producer";
 			public const string CustomerFriendlyDescription = "Customer Friendly Description";
+			public const string GlobalPricingProgram = "Global Pricing Program";
+			public const string PercentageTareWeight = "Percentage Tare Weight";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -626,7 +632,9 @@ namespace Icon.Framework
 				{ 148, "Product Flavor/Type" },
 				{ 149, "Paleo" },
 				{ 150, "Local Loan Producer" },
-				{ 151, "Customer Friendly Description" }
+				{ 151, "Customer Friendly Description" },
+				{ 154, "Global Pricing Program" },
+				{ 155, "Percentage Tare Weight" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -784,6 +792,8 @@ namespace Icon.Framework
 			public const string Paleo = "PLO";
 			public const string LocalLoanProducer = "LLP";
 			public const string CustomerFriendlyDescription = "CFD";
+			public const string GlobalPricingProgram = "GPP";
+			public const string PercentageTareWeight = "PTA";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -937,7 +947,9 @@ namespace Icon.Framework
 				{ 148, "PFT" },
 				{ 149, "PLO" },
 				{ 150, "LLP" },
-				{ 151, "CFD" }
+				{ 151, "CFD" },
+				{ 154, "GPP" },
+				{ 155, "PTA" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}
