@@ -87,6 +87,8 @@ namespace Icon.Framework
         public string MadeInHouse { get; set; }
         public string CustomerFriendlyDescription { get; set; }
         public string NutritionRequired { get; set; }
+        public string GlobalPricingProgram { get; set; }
+        public string PercentageTareWeight { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
