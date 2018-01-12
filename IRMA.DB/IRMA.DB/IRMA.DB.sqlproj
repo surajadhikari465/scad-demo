@@ -3293,7 +3293,4 @@
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeploy.Main.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="IRMA.DB.refactorlog" />
-  </ItemGroup>
 </Project>
