@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/RunInactiveTprService.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx:JobSchedule"/>
-    <pd:startX>64</pd:startX>
-    <pd:startY>82</pd:startY>
+    <pd:startX>27</pd:startX>
+    <pd:startY>296</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>1245</pd:endX>
@@ -17,8 +17,8 @@
     <pd:activity name="Update Job Status">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>177</pd:x>
-        <pd:y>84</pd:y>
+        <pd:x>179</pd:x>
+        <pd:y>292</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -49,9 +49,10 @@ where JobScheduleId  = ?</statement>
         <pd:y>1</pd:y>
         <pd:width>814</pd:width>
         <pd:height>637</pd:height>
-        <pd:collapsedWidth>62</pd:collapsedWidth>
-        <pd:collapsedHeight>69</pd:collapsedHeight>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
         <config>
             <pd:groupType>repeat</pd:groupType>
             <pd:serializable>false</pd:serializable>
@@ -95,8 +96,8 @@ where JobScheduleId  = ?</statement>
         <pd:activity name="GetExpiringTprs">
             <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-            <pd:x>466</pd:x>
-            <pd:y>75</pd:y>
+            <pd:x>464</pd:x>
+            <pd:y>76</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -118,8 +119,16 @@ where JobScheduleId  = ?</statement>
 	t_end.Multiple,
 	t_end.NewTagExpiration,
 	t_end.InsertDateUtc,
-	t_end.ModifiedDateUtc
+	t_end.ModifiedDateUtc,
+	it.itemTypeCode as itemTypeCode,
+	Items.ScanCode as ScanCode,
+	lc.StoreName as StoreName
+
 FROM gpm.Prices t_end
+INNER JOIN Items on Items.ItemID = t_end.ItemID
+INNER JOIN ItemTypes it on Items.ItemTypeID = it.itemTypeID
+INNER JOIN Locale lc on t_end.BusinessUnitID = lc.BusinessUnitID
+
 WHERE t_end.Region = ?
 AND t_end.PriceType = 'TPR'
 AND t_end.EndDate = CAST(DATEADD(s, -1, CAST(CAST(SYSDATETIME() AS DATE) AS datetime2)) as datetime2)
@@ -211,6 +220,18 @@ AND NOT EXISTS
                 <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>itemTypeCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ScanCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>StoreName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
                 <jdbcQueryActivityInput>
@@ -243,8 +264,8 @@ AND NOT EXISTS
         <pd:group name="BatchAndSendExpiringTprs">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>425</pd:x>
-            <pd:y>309</pd:y>
+            <pd:x>426</pd:x>
+            <pd:y>312</pd:y>
             <pd:width>581</pd:width>
             <pd:height>255</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -270,6 +291,13 @@ AND NOT EXISTS
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
+                <pd:from>RowByRowProcess</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
                 <pd:from>LogBatchSuccess</pd:from>
                 <pd:to>end</pd:to>
                 <pd:lineType>Default</pd:lineType>
@@ -277,21 +305,14 @@ AND NOT EXISTS
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>DoSomething</pd:from>
-                <pd:to>end</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
                 <pd:from>Map Data</pd:from>
-                <pd:to>JMS Queue Sender</pd:to>
+                <pd:to>Send Expiring Tprs to Queue</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>JMS Queue Sender</pd:from>
+                <pd:from>Send Expiring Tprs to Queue</pd:from>
                 <pd:to>LogBatchSuccess</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
@@ -299,7 +320,7 @@ AND NOT EXISTS
             </pd:transition>
             <pd:transition>
                 <pd:from>Catch</pd:from>
-                <pd:to>DoSomething</pd:to>
+                <pd:to>RowByRowProcess</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
@@ -308,14 +329,14 @@ AND NOT EXISTS
                 <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
                 <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
                 <pd:x>519</pd:x>
-                <pd:y>391</pd:y>
+                <pd:y>392</pd:y>
                 <config>
                     <element ref="pfx2:MammothPrices"/>
                 </config>
                 <pd:inputBindings>
                     <pfx2:MammothPrices>
-                        <xsl:variable name="startPosition" select="($Counter - 1)*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize"/>
-                        <xsl:variable name="endPosition" select="($Counter )*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize"/>
+                        <xsl:variable name="startPosition" select="($Counter - 1)*$_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize"/>
+                        <xsl:variable name="endPosition" select="($Counter )*$_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize"/>
                         <xsl:for-each select="$GetExpiringTprs/resultSet/Record[position()>$startPosition&#xA;and position() &lt;=$endPosition]">
                             <pfx2:MammothPrice>
                                 <pfx2:Region>
@@ -381,64 +402,173 @@ AND NOT EXISTS
                     </pfx2:MammothPrices>
                 </pd:inputBindings>
             </pd:activity>
-            <pd:activity name="JMS Queue Sender">
+            <pd:activity name="Send Expiring Tprs to Queue">
                 <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-                <pd:x>683</pd:x>
-                <pd:y>391</pd:y>
+                <pd:x>682</pd:x>
+                <pd:y>392</pd:y>
                 <config>
-                    <PermittedMessageType>Text</PermittedMessageType>
+                    <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
                         <transacted>false</transacted>
                         <acknowledgeMode>1</acknowledgeMode>
                         <maxSessions>1</maxSessions>
+                        <destination>%%Destinations/MammothPsgQueue%%</destination>
                     </SessionAttributes>
                     <ConfigurableHeaders>
                         <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
                         <JMSExpiration>0</JMSExpiration>
                         <JMSPriority>4</JMSPriority>
                     </ConfigurableHeaders>
+                    <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+                    <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+                    <InDataxsdString ref="pfx2:MammothPrices"/>
                 </config>
                 <pd:inputBindings>
-                    <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms"/>
+                    <ns0:ActivityInput>
+                        <OtherProperties>
+                            <ResetFlag>
+                                <xsl:value-of select="false()"/>
+                            </ResetFlag>
+                            <TransactionType>
+                                <xsl:value-of select="&quot;Expirng Tprs&quot;"/>
+                            </TransactionType>
+                            <xsl:if test="$Start/pfx:JobSchedule/pfx:Region">
+                                <RegionCode>
+                                    <xsl:value-of select="$Start/pfx:JobSchedule/pfx:Region"/>
+                                </RegionCode>
+                            </xsl:if>
+                        </OtherProperties>
+                        <Body>
+                            <xsl:copy-of select="$Map-Data/pfx2:MammothPrices"/>
+                        </Body>
+                    </ns0:ActivityInput>
                 </pd:inputBindings>
             </pd:activity>
             <pd:activity name="LogBatchSuccess">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>896</pd:x>
-                <pd:y>390</pd:y>
+                <pd:x>895</pd:x>
+                <pd:y>391</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/LogPublisher.process</processName>
                     <spawn>true</spawn>
                 </config>
                 <pd:inputBindings>
-                    <ns0:AppLog xmlns:ns0="http://schemas.wfm.com/Mammoth/AppLog.xsd">
-                        <ns0:AppId>
+                    <ns02:AppLog>
+                        <ns02:AppId>
                             <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationID"/>
-                        </ns0:AppId>
-                        <ns0:LogDate>
+                        </ns02:AppId>
+                        <ns02:Level>
+                            <xsl:value-of select="&quot;Info&quot;"/>
+                        </ns02:Level>
+                        <ns02:Logger>
+                            <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
+                        </ns02:Logger>
+                        <ns02:MachineName>
+                            <xsl:value-of select="BW:getHostName()"/>
+                        </ns02:MachineName>
+                        <ns02:LogDate>
                             <xsl:value-of select="current-dateTime()"/>
-                        </ns0:LogDate>
-                    </ns0:AppLog>
+                        </ns02:LogDate>
+                        <ns02:Message>
+                            <xsl:value-of select="concat(&quot;Number of expiring Tpr Records Send to EMS:&quot;, $_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize)"/>
+                        </ns02:Message>
+                    </ns02:AppLog>
                 </pd:inputBindings>
             </pd:activity>
             <pd:activity name="Catch">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>543</pd:x>
-                <pd:y>487</pd:y>
+                <pd:x>542</pd:x>
+                <pd:y>488</pd:y>
                 <pd:handler>true</pd:handler>
-                <config/>
+                <config>
+                    <catchAll>true</catchAll>
+                </config>
                 <pd:inputBindings/>
             </pd:activity>
-            <pd:activity name="DoSomething">
+            <pd:activity name="RowByRowProcess">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
                 <pd:x>716</pd:x>
-                <pd:y>486</pd:y>
-                <config/>
-                <pd:inputBindings/>
+                <pd:y>483</pd:y>
+                <config>
+                    <processName>/Processes/ProcessRowByRow.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <Input>
+                        <pfx2:MammothPrices>
+                            <xsl:variable name="var" select="($Counter - 1)*$_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize&#xA;"/>
+                            <xsl:variable name="var2" select="($Counter )*$_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize"/>
+                            <xsl:for-each select="$GetExpiringTprs/resultSet/Record[position()>$var&#xA;and position() &lt;=$var2]">
+                                <pfx2:MammothPrice>
+                                    <pfx2:Region>
+                                        <xsl:value-of select="Region"/>
+                                    </pfx2:Region>
+                                    <pfx2:PriceID>
+                                        <xsl:value-of select="PriceID"/>
+                                    </pfx2:PriceID>
+                                    <pfx2:BusinessUnit>
+                                        <xsl:value-of select="BusinessUnitID"/>
+                                    </pfx2:BusinessUnit>
+                                    <pfx2:ItemId>
+                                        <xsl:value-of select="ItemID"/>
+                                    </pfx2:ItemId>
+                                    <pfx2:GpmId>
+                                        <xsl:value-of select="GpmID"/>
+                                    </pfx2:GpmId>
+                                    <pfx2:Multiple>
+                                        <xsl:value-of select="Multiple"/>
+                                    </pfx2:Multiple>
+                                    <pfx2:Price>
+                                        <xsl:value-of select="Price"/>
+                                    </pfx2:Price>
+                                    <pfx2:StartDate>
+                                        <xsl:value-of select="StartDate"/>
+                                    </pfx2:StartDate>
+                                    <xsl:if test="EndDate">
+                                        <pfx2:EndDate>
+                                            <xsl:value-of select="EndDate"/>
+                                        </pfx2:EndDate>
+                                    </xsl:if>
+                                    <pfx2:PriceType>
+                                        <xsl:value-of select="PriceType"/>
+                                    </pfx2:PriceType>
+                                    <pfx2:PriceTypeAttribute>
+                                        <xsl:value-of select="PriceTypeAttribute"/>
+                                    </pfx2:PriceTypeAttribute>
+                                    <pfx2:SellableUom>
+                                        <xsl:value-of select="SellableUOM"/>
+                                    </pfx2:SellableUom>
+                                    <pfx2:CurrencyCode>
+                                        <xsl:value-of select="CurrencyCode"/>
+                                    </pfx2:CurrencyCode>
+                                    <xsl:if test="NewTagExpiration">
+                                        <pfx2:NewTagExpiration>
+                                            <xsl:value-of select="NewTagExpiration"/>
+                                        </pfx2:NewTagExpiration>
+                                    </xsl:if>
+                                    <pfx2:Action>
+                                        <xsl:value-of select="&quot;Row By Row Processing Epxpiring Tpr&quot;"/>
+                                    </pfx2:Action>
+                                    <pfx2:ItemTypeCode>
+                                        <xsl:value-of select="itemTypeCode"/>
+                                    </pfx2:ItemTypeCode>
+                                    <pfx2:StoreName>
+                                        <xsl:value-of select="StoreName"/>
+                                    </pfx2:StoreName>
+                                    <pfx2:ScanCode>
+                                        <xsl:value-of select="ScanCode"/>
+                                    </pfx2:ScanCode>
+                                </pfx2:MammothPrice>
+                            </xsl:for-each>
+                        </pfx2:MammothPrices>
+                        <RegionCode>
+                            <xsl:value-of select="$Start/pfx:JobSchedule/pfx:Region"/>
+                        </RegionCode>
+                    </Input>
+                </pd:inputBindings>
             </pd:activity>
         </pd:group>
     </pd:group>

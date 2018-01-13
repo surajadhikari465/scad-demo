@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd">
+<pd:ProcessDefinition xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <pd:name>Processes/MainReceiver.process</pd:name>
     <pd:startName>Inactive Tpr Price Starter Queue Receiver</pd:startName>
@@ -9,8 +9,8 @@
     <pd:starter name="Inactive Tpr Price Starter Queue Receiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>82</pd:x>
-        <pd:y>88</pd:y>
+        <pd:x>84</pd:x>
+        <pd:y>90</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -54,8 +54,8 @@
     <pd:activity name="Call Inactive Tpr Service">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>524</pd:x>
-        <pd:y>88</pd:y>
+        <pd:x>521</pd:x>
+        <pd:y>86</pd:y>
         <config>
             <processName>/Processes/RunInactiveTprService.process</processName>
         </config>
@@ -86,9 +86,11 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>368</pd:x>
-        <pd:y>192</pd:y>
-        <config/>
+        <pd:x>367</pd:x>
+        <pd:y>193</pd:y>
+        <config>
+            <ConfirmEvent>Inactive Tpr Price Starter Queue Receiver</ConfirmEvent>
+        </config>
         <pd:inputBindings/>
     </pd:activity>
     <pd:activity name="LogNoExecution">
@@ -114,9 +116,11 @@
     <pd:activity name="Confirm-1">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>694</pd:x>
-        <pd:y>80</pd:y>
-        <config/>
+        <pd:x>678</pd:x>
+        <pd:y>85</pd:y>
+        <config>
+            <ConfirmEvent>Inactive Tpr Price Starter Queue Receiver</ConfirmEvent>
+        </config>
         <pd:inputBindings/>
     </pd:activity>
     <pd:transition>
