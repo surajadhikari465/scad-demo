@@ -13,4 +13,6 @@
 --:r .\SubTeamCleanUp_PreDeployment.sql
 :r .\TruncateRetentionPolicyTable.sql
 :r .\TruncateJobScheduleTable.sql
-:r .\UpdateDefaulltScanCodeToNotNull.sql
+-- This script (UpdateDefaulltScanCodeToNotNull.sql) is temporarily removed because the schema discrepancy in TEST, QA and PROD. 
+-- It'll be needed when the DefaultScanCode is deployed to PROD.
+--:r .\UpdateDefaulltScanCodeToNotNull.sql 
