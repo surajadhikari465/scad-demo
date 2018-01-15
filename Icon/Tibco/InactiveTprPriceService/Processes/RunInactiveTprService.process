@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/RunInactiveTprService.process</pd:name>
@@ -17,8 +17,8 @@
     <pd:activity name="Update Job Status">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>179</pd:x>
-        <pd:y>292</pd:y>
+        <pd:x>144</pd:x>
+        <pd:y>293</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -45,10 +45,10 @@ where JobScheduleId  = ?</statement>
     <pd:group name="ExpiringTprSubsets">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>339</pd:x>
-        <pd:y>1</pd:y>
-        <pd:width>814</pd:width>
-        <pd:height>637</pd:height>
+        <pd:x>231</pd:x>
+        <pd:y>38</pd:y>
+        <pd:width>769</pd:width>
+        <pd:height>528</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -96,8 +96,8 @@ where JobScheduleId  = ?</statement>
         <pd:activity name="GetExpiringTprs">
             <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-            <pd:x>464</pd:x>
-            <pd:y>76</pd:y>
+            <pd:x>356</pd:x>
+            <pd:y>102</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -264,8 +264,8 @@ AND NOT EXISTS
         <pd:group name="BatchAndSendExpiringTprs">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>426</pd:x>
-            <pd:y>312</pd:y>
+            <pd:x>282</pd:x>
+            <pd:y>269</pd:y>
             <pd:width>581</pd:width>
             <pd:height>255</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -328,8 +328,8 @@ AND NOT EXISTS
             <pd:activity name="Map Data">
                 <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
                 <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-                <pd:x>519</pd:x>
-                <pd:y>392</pd:y>
+                <pd:x>374</pd:x>
+                <pd:y>348</pd:y>
                 <config>
                     <element ref="pfx2:MammothPrices"/>
                 </config>
@@ -405,8 +405,8 @@ AND NOT EXISTS
             <pd:activity name="Send Expiring Tprs to Queue">
                 <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-                <pd:x>682</pd:x>
-                <pd:y>392</pd:y>
+                <pd:x>537</pd:x>
+                <pd:y>348</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -448,8 +448,8 @@ AND NOT EXISTS
             <pd:activity name="LogBatchSuccess">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>895</pd:x>
-                <pd:y>391</pd:y>
+                <pd:x>750</pd:x>
+                <pd:y>347</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/LogPublisher.process</processName>
                     <spawn>true</spawn>
@@ -480,8 +480,8 @@ AND NOT EXISTS
             <pd:activity name="Catch">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>542</pd:x>
-                <pd:y>488</pd:y>
+                <pd:x>397</pd:x>
+                <pd:y>444</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <catchAll>true</catchAll>
@@ -491,8 +491,8 @@ AND NOT EXISTS
             <pd:activity name="RowByRowProcess">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>716</pd:x>
-                <pd:y>483</pd:y>
+                <pd:x>571</pd:x>
+                <pd:y>439</pd:y>
                 <config>
                     <processName>/Processes/ProcessRowByRow.process</processName>
                 </config>
@@ -575,8 +575,8 @@ AND NOT EXISTS
     <pd:activity name="Update-Job-Status-1">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>1254</pd:x>
-        <pd:y>159</pd:y>
+        <pd:x>1116</pd:x>
+        <pd:y>313</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
