@@ -732,12 +732,13 @@
     <Build Include="esl\Stored Procedures\GetEslAttributes.sql" />
     <Build Include="esl\Views\ItemsByAuthorizedStores.sql" />
     <Build Include="esl\Views\ItemStoresByBrandID.sql" />
-    <None Include="Scripts\PreDeploymentScripts\DropJobScheduleTable.sql" />
     <Build Include="stage\Tables\ItemLocaleSupplierDelete.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddVendorRelatedCodesToAttributesTable.sql" />
     <Build Include="Schemas\eplum.sql" />
     <Build Include="eplum\Stored Procedures\GetEPlumAttributes.sql" />
     <Build Include="stage\Tables\ItemStoreKeysEPlum.sql" />
+    <None Include="Scripts\PreDeploymentScripts\TruncateJobScheduleTable.sql" />
+    <None Include="Scripts\PreDeploymentScripts\UpdateDefaulltScanCodeToNotNull.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

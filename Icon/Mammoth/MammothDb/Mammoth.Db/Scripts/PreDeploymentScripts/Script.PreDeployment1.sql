@@ -13,3 +13,4 @@
 --:r .\SubTeamCleanUp_PreDeployment.sql
 :r .\TruncateRetentionPolicyTable.sql
 :r .\TruncateJobScheduleTable.sql
+:r .\UpdateDefaulltScanCodeToNotNull.sql
