@@ -331,6 +331,7 @@ SELECT
 	t.itemTypeDesc,
 	b.HierarchyClassName	AS BrandName,
 	st.Name					AS SubTeamName,
+	st.PSNumber				AS SubTeamNumber,
 	i.Desc_Product,
 	i.Desc_POS,
 	i.Desc_CustomerFriendly,
@@ -598,6 +599,7 @@ SELECT
 	il.AltRetailSize,
 	il.AltRetailUOM,
 	il.OrderedByInfor,
+	il.ScaleItem,
 	ist.ColorAdded,
 	ist.ChicagoBaby,
 	ist.CountryOfProcessing,
@@ -613,12 +615,12 @@ INTO #itemLocale
 FROM #itemExtended				ist
 JOIN dbo.Locale					l	on	ist.BusinessUnitID = l.BusinessUnitID
 JOIN dbo.ItemLocaleAttributes	il	on	ist.Region = il.Region
-									AND ist.ItemID = il.ItemID
-									AND ist.BusinessUnitID = il.BusinessUnitID
-									AND il.Authorized = 1
+	AND ist.ItemID = il.ItemID
+	AND ist.BusinessUnitID = il.BusinessUnitID
+	AND il.Authorized = 1
 JOIN dbo.ItemLocaleSupplier		v	on	ist.Region = v.Region
-									AND ist.ItemID = v.ItemID
-									AND ist.BusinessUnitID = v.BusinessUnitID
+	AND ist.ItemID = v.ItemID
+	AND ist.BusinessUnitID = v.BusinessUnitID
 WHERE l.Region = @Region
 AND il.Region = @Region
 AND v.Region = @Region
@@ -747,7 +749,11 @@ CREATE TABLE #prices
     TprEndDate DATETIME2,
 	RewardPrice DECIMAL(9, 2) NULL,
 	RewardPriceType NVARCHAR(3) NULL,
+	RewardPriceTypeAttribute NVARCHAR(10) NULL,
 	RewardPriceMultiple TINYINT NULL,
+	RewardPriceSellableUOM NVARCHAR(3) NULL,
+	RewardPriceStartDate DATETIME2,
+	RewardPriceEndDate DATETIME2,
 	LinkedScanCodePrice DECIMAL(9, 2) NULL,
 )
 
@@ -771,15 +777,19 @@ SELECT
        null                     AS TprEndDate,
 	   null						AS RewardPrice,
 	   null						AS RewardPriceType,
+	   null						AS RewardPriceTypeAttribute,
 	   null						AS RewardPriceMultiple,
+	   null						AS RewardPriceSellableUOM,
+	   null						AS RewardPriceStartDate,
+	   null						AS RewardPriceEndDate,
 	   null						AS LinkedScanCodePrice
 
 FROM #regularPriceKeys    pr
 JOIN gpm.Prices	          reg    ON	pr.Region = reg.Region
-                                    AND pr.ItemID = reg.ItemID
-                                    AND pr.BusinessUnitID = reg.BusinessUnitID
-                                    AND pr.StartDate = reg.StartDate
-                                    AND pr.PriceType = reg.PriceType
+    AND pr.ItemID = reg.ItemID
+    AND pr.BusinessUnitID = reg.BusinessUnitID
+    AND pr.StartDate = reg.StartDate
+    AND pr.PriceType = reg.PriceType
 WHERE reg.Region = @Region
 OPTION (RECOMPILE)
 
@@ -795,10 +805,10 @@ SET
 	TprEndDate = sal.EndDate
 FROM #salePriceKeys sr     
 INNER JOIN gpm.Prices   sal    ON	sr.Region = sal.Region
-                                    AND sr.ItemID = sal.ItemID
-									AND sr.BusinessUnitID = sal.BusinessUnitID
-									AND sr.StartDate = sal.StartDate
-									AND sr.PriceType = sal.PriceType
+    AND sr.ItemID = sal.ItemID
+	AND sr.BusinessUnitID = sal.BusinessUnitID
+	AND sr.StartDate = sal.StartDate
+	AND sr.PriceType = sal.PriceType
 WHERE sal.Region = @Region
 OPTION (RECOMPILE)
 
@@ -807,13 +817,17 @@ UPDATE #prices
 SET
 	RewardPrice = rwd.Price,
 	RewardPriceType = rwd.PriceType,
-	RewardPriceMultiple = rwd.Multiple
+	RewardPriceTypeAttribute = rwd.PriceTypeAttribute,
+	RewardPriceMultiple = rwd.Multiple,
+	RewardPriceSellableUOM = rwd.SellableUOM,
+	RewardPriceStartDate = rwd.StartDate,
+	RewardPriceEndDAte = rwd.EndDate
 FROM #rewardPriceKeys	rp     
 INNER JOIN gpm.Prices   rwd    ON	rp.Region = rwd.Region
-                                    AND rp.ItemID = rwd.ItemID
-									AND rp.BusinessUnitID = rwd.BusinessUnitID
-									AND rp.StartDate = rwd.StartDate
-									AND rp.PriceType = rwd.PriceType
+    AND rp.ItemID = rwd.ItemID
+	AND rp.BusinessUnitID = rwd.BusinessUnitID
+	AND rp.StartDate = rwd.StartDate
+	AND rp.PriceType = rwd.PriceType
 WHERE rwd.Region = @Region
 OPTION (RECOMPILE)
 
@@ -822,10 +836,10 @@ UPDATE #prices
 SET LinkedScanCodePrice = p.Price
 FROM #linkedScanCodePriceKeys lp
 INNER JOIN gpm.Prices	p   ON	lp.Region = p.Region
-								AND lp.ItemID = p.ItemID
-								AND lp.BusinessUnitID = p.BusinessUnitID
-								AND lp.StartDate = p.StartDate
-								AND lp.PriceType = p.PriceType
+	AND lp.ItemID = p.ItemID
+	AND lp.BusinessUnitID = p.BusinessUnitID
+	AND lp.StartDate = p.StartDate
+	AND lp.PriceType = p.PriceType
 WHERE p.Region = @Region
 OPTION (RECOMPILE)
 
@@ -847,13 +861,17 @@ CREATE NONCLUSTERED INDEX IX_#prices_ItemID_BusinessUnitID ON #prices (ItemID AS
 		TprEndDate,
 		RewardPrice,
 		RewardPriceType,
+		RewardPriceTypeAttribute,
 		RewardPriceMultiple,
+		RewardPriceSellableUOM,
+		RewardPriceStartDate,
+		RewardPriceEndDate,
 		LinkedScanCodePrice
 	);
 
 -- Bring it all together
 SELECT
-	il.Region,
+	il.Region					AS RegionAbbrev,
 	g.ItemID,
 	il.BusinessUnitID,
 	il.StoreName,
@@ -862,6 +880,7 @@ SELECT
 	g.itemTypeDesc				AS ItemType,
 	g.BrandName,
 	g.SubTeamName,
+	g.SubTeamNumber,
 	g.Desc_Product				AS ItemDescription,
 	g.Desc_POS					AS PosDescription,
 	g.RetailSize,
@@ -996,6 +1015,7 @@ SELECT
 	il.Origin,
 	il.ScaleExtraText			AS ExtraText,
 	il.TagUOM					AS UomRegulationTagUom,
+	il.NumberOfDigitsSentToScale	AS ScalePLUDigits,
     p.RegularPriceMultiple,
     p.RegularPrice,
     p.RegularStartDate,
@@ -1006,13 +1026,17 @@ SELECT
     p.TprMultiple,
     p.TprPrice,
     p.TprPriceType,
-    p.TprPriceTypeAttribute		AS SalePriceReason,
+    p.TprPriceTypeAttribute		AS TprPriceReason,
     p.TprSellableUOM,
     p.TprStartDate,
     p.TprEndDate,
 	p.RewardPrice,
 	p.RewardPriceType,
+	p.RewardPriceTypeAttribute	AS RewardPriceReason,
 	p.RewardPriceMultiple,
+	p.RewardPriceSellableUOM,
+	p.RewardPriceStartDate,
+	p.RewardPriceEndDate,
 	p.LinkedScanCodePrice
 FROM #globalItem		g
 INNER JOIN #itemLocale	il	on g.ItemID = il.ItemID

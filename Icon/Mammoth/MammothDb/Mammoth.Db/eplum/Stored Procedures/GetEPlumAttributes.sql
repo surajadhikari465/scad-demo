@@ -8,6 +8,8 @@ BEGIN
 DECLARE @today DATETIME = CAST(CAST(GETDATE() AS DATE) AS DATETIME);
 
 -- Set Attribute IDs
+DECLARE @nutritionRequiredId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'NR');
+DECLARE @refrigerateId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'RFD');
 DECLARE @linkedScanCodeId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'LSC');
 DECLARE @forceTareId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'FTA');
 DECLARE @shelfLifeId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'SHL');
@@ -18,6 +20,9 @@ DECLARE @cfsSendToScaleId INT = (SELECT AttributeID FROM dbo.Attributes WHERE At
 DECLARE @percentageTareWeightId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'PTA');
 DECLARE @scaleExtraTextId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'SET');
 DECLARE @numberOfDigitsSentToScale INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'NDS');
+DECLARE @colorAddedId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'CLA');
+DECLARE @countryOfProcessingId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'COP');
+DECLARE @originId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'ORN');
 
 -- Other local variables
 DECLARE @Region NVARCHAR(2) = (SELECT Region FROM Locale WHERE BusinessUnitID = @BusinessUnitID);
@@ -29,6 +34,8 @@ CREATE TABLE #itemExtended
 	Region NCHAR(2) NOT NULL,
 	ItemID INT NOT NULL,
 	BusinessUnitID INT NOT NULL,
+	NutritionRequired NVARCHAR(255) NULL,
+	Refrigerated NVARCHAR(255) NULL,
 	LinkedScanCode NVARCHAR(13) NULL,
 	LinkedScanCodeBrand NVARCHAR(255) NULL,
 	ForceTare NVARCHAR(255) NULL,
@@ -39,10 +46,19 @@ CREATE TABLE #itemExtended
 	CfsSendToScale NVARCHAR(255) NULL,
 	PercentageTareWeight NVARCHAR(255) NULL,
 	ScaleExtraText NVARCHAR(MAX) NULL,
+	ColorAdded NVARCHAR(MAX) NULL,
+	CountryOfProcessing NVARCHAR(MAX) NULL,
 	NumberOfDigitsSentToScale NVARCHAR(255) NULL,
+	Origin NVARCHAR(MAX) NULL,
 	Agency_NonGMO NVARCHAR(255) NULL,
 	Agency_Organic NVARCHAR(255) NULL,
 	Agency_Vegan NVARCHAR(255) NULL,
+	IsCheeseRaw bit NULL,
+	IsMsc bit NULL,
+	IsVegetarian bit NULL,
+	Rating_AnimalWelfare NVARCHAR(255) NULL,
+	Rating_HealthyEating NVARCHAR(255) NULL,
+	Seafood_FreshOrFrozen NVARCHAR(255) NULL,
 	RecipeName nvarchar(100) NULL,
 	Allergens nvarchar(510) NULL,
 	Ingredients nvarchar(4000) NULL,
@@ -124,12 +140,31 @@ WHERE BusinessUnitID = @BusinessUnitID
 
 CREATE NONCLUSTERED INDEX IX_#itemStores_Region_ItemID_BusinessUnitID ON #ItemExtended (Region ASC, ItemID ASC, BusinessUnitID ASC);
 
+--Update Global Extended Attributes
+UPDATE ist
+SET NutritionRequired = AttributeValue
+FROM #itemExtended ist
+JOIN ItemAttributes_Ext ia	on ist.ItemID = ia.ItemID
+							AND ia.AttributeID = @nutritionRequiredId
+
+UPDATE ist
+SET Refrigerated = AttributeValue
+FROM #itemExtended ist
+JOIN ItemAttributes_Ext ia	on ist.ItemID = ia.ItemID
+							AND ia.AttributeID = @refrigerateId
+
 --Update Sign Attributes
 UPDATE ist
 SET 
 	Agency_NonGMO = sgn.Agency_NonGMO,
 	Agency_Organic = sgn.Agency_Organic,
-	Agency_Vegan = sgn.Agency_Vegan
+	Agency_Vegan = sgn.Agency_Vegan,
+	IsCheeseRaw = sgn.IsCheeseRaw,
+	IsMsc = sgn.IsMsc,
+	IsVegetarian = sgn.IsVegetarian,
+	Rating_AnimalWelfare = sgn.Rating_AnimalWelfare,
+	Rating_HealthyEating = sgn.Rating_HealthyEating,
+	Seafood_FreshOrFrozen = sgn.Seafood_FreshOrFrozen
 FROM #itemExtended ist
 JOIN dbo.ItemAttributes_Sign sgn on ist.ItemID = sgn.ItemID
 
@@ -215,9 +250,18 @@ SELECT
 	i.RetailSize,
 	i.RetailUOM,
 	i.PSNumber,
+	sb.HierarchyClassName	AS MerchandiseSubBrickName,
+	ist.NutritionRequired,
+	ist.Refrigerated,
 	ist.Agency_NonGMO,
 	ist.Agency_Organic,
 	ist.Agency_Vegan,
+	ist.IsCheeseRaw,
+	ist.IsMsc,
+	ist.IsVegetarian,
+	ist.Rating_AnimalWelfare,
+	ist.Rating_HealthyEating,
+	ist.Seafood_FreshOrFrozen,
 	ist.RecipeName,
     ist.Allergens,
     ist.Ingredients,
@@ -286,8 +330,10 @@ SELECT
     ist.Selenium,
     ist.TransFatWeight
 INTO #globalItem
-FROM #itemExtended			ist
-INNER JOIN dbo.Items		i	on ist.ItemID = i.ItemID
+FROM #itemExtended ist
+INNER JOIN dbo.Items i on ist.ItemID = i.ItemID
+INNER JOIN dbo.Hierarchy_Merchandise m	on i.HierarchyMerchandiseID = m.HierarchyMerchandiseID
+INNER JOIN dbo.HierarchyClass s	on m.SubBrickHCID = sb.HierarchyClassID
 
 CREATE NONCLUSTERED INDEX IX_#globalItem_ItemID ON #globalItem (ItemID ASC, BusinessUnitID ASC)
 
@@ -297,9 +343,9 @@ SET ForceTare = ia.AttributeValue
 FROM #itemExtended		ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
-										AND ist.ItemID = ia.ItemID
-										AND l.LocaleID = ia.LocaleID
-										AND ia.AttributeID = @forceTareId
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @forceTareId
 WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
@@ -309,9 +355,9 @@ SET ShelfLife = ia.AttributeValue
 FROM #itemExtended		ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
-										AND ist.ItemID = ia.ItemID
-										AND l.LocaleID = ia.LocaleID
-										AND ia.AttributeID = @shelfLifeId
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @shelfLifeId
 WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
@@ -321,9 +367,9 @@ SET UnwrappedTareWeight = ia.AttributeValue
 FROM #itemExtended		ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
-										AND ist.ItemID = ia.ItemID
-										AND l.LocaleID = ia.LocaleID
-										AND ia.AttributeID = @unwrappedTareWeightId
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @unwrappedTareWeightId
 WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
@@ -333,9 +379,9 @@ SET WrappedTareWeight = ia.AttributeValue
 FROM #itemExtended		ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
-										AND ist.ItemID = ia.ItemID
-										AND l.LocaleID = ia.LocaleID
-										AND ia.AttributeID = @wrappedTareWeightId
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @wrappedTareWeightId
 WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
@@ -347,9 +393,9 @@ SET
 FROM #itemExtended		ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on ist.Region = ia.Region
-									AND ist.ItemID = ia.ItemID
-									AND l.LocaleID = ia.LocaleID
-									AND ia.AttributeID = @linkedScanCodeId
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @linkedScanCodeId
 JOIN Items						i	on ia.AttributeValue = i.ScanCode
 JOIN HierarchyClass				hc	on i.BrandHCID = hc.HierarchyClassID
 WHERE ia.Region = @Region
@@ -361,9 +407,9 @@ SET UseByEab = ia.AttributeValue
 FROM #itemExtended		ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
-										AND ist.ItemID = ia.ItemID
-										AND l.LocaleID = ia.LocaleID
-										AND ia.AttributeID = @useByEabId
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @useByEabId
 WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
@@ -373,9 +419,9 @@ SET CfsSendToScale = ia.AttributeValue
 FROM #itemExtended				ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
-										AND ist.ItemID = ia.ItemID
-										AND l.LocaleID = ia.LocaleID
-										AND ia.AttributeID = @cfsSendToScaleId
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @cfsSendToScaleId
 WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
@@ -385,9 +431,9 @@ SET PercentageTareWeight = ia.AttributeValue
 FROM #itemExtended				ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
-										AND ist.ItemID = ia.ItemID
-										AND l.LocaleID = ia.LocaleID
-										AND ia.AttributeID = @percentageTareWeightId
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @percentageTareWeightId
 WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
@@ -397,9 +443,9 @@ SET ScaleExtraText = ia.AttributeValue
 FROM #itemExtended				ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
-										AND ist.ItemID = ia.ItemID
-										AND l.LocaleID = ia.LocaleID
-										AND ia.AttributeID = @scaleExtraTextId
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @scaleExtraTextId
 WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
@@ -409,9 +455,45 @@ SET NumberOfDigitsSentToScale = ia.AttributeValue
 FROM #itemExtended				ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
-										AND ist.ItemID = ia.ItemID
-										AND l.LocaleID = ia.LocaleID
-										AND ia.AttributeID = @numberOfDigitsSentToScale
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @numberOfDigitsSentToScale
+WHERE ia.Region = @Region
+AND l.Region = @Region
+OPTION (RECOMPILE)
+
+UPDATE ist
+SET ColorAdded = ia.AttributeValue
+FROM #itemExtended		ist
+JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
+JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @colorAddedId
+WHERE ia.Region = @Region
+AND l.Region = @Region
+OPTION (RECOMPILE)
+
+UPDATE ist
+SET CountryOfProcessing = ia.AttributeValue
+FROM #itemExtended		ist
+JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
+JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @countryOfProcessingId
+WHERE ia.Region = @Region
+AND l.Region = @Region
+OPTION (RECOMPILE)
+
+UPDATE ist
+SET Origin = ia.AttributeValue
+FROM #itemExtended				ist
+JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
+JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
+	AND ist.ItemID = ia.ItemID
+	AND l.LocaleID = ia.LocaleID
+	AND ia.AttributeID = @originId
 WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
@@ -431,14 +513,21 @@ SELECT
 	ist.UnwrappedTareWeight,
 	ist.CfsSendToScale,
 	ist.WrappedTareWeight,
+	ist.ColorAdded,
+	ist.CountryOfProcessing,
 	ist.NumberOfDigitsSentToScale,
+	ist.Origin,
 	il.DefaultScanCode,
-	il.ScaleItem
+	il.ScaleItem,
+	il.RetailUnit
 INTO #itemLocale
 FROM #itemExtended	ist
 JOIN dbo.ItemLocaleAttributes	il	on	ist.Region = il.Region
-									AND ist.ItemID = il.ItemID
-									AND ist.BusinessUnitID = il.BusinessUnitID
+	AND ist.ItemID = il.ItemID
+	AND ist.BusinessUnitID = il.BusinessUnitID
+JOIN dbo.ItemLocaleSupplier		v	on	ist.Region = v.Region
+	AND ist.ItemID = v.ItemID
+	AND ist.BusinessUnitID = v.BusinessUnitID
 WHERE il.Region = @Region
 OPTION (RECOMPILE)
 
@@ -564,7 +653,11 @@ CREATE TABLE #prices
     TprEndDate DATETIME2 NULL,
 	RewardPrice DECIMAL(9, 2) NULL,
 	RewardPriceType NVARCHAR(3) NULL,
+	RewardPriceTypeAttribute NVARCHAR(10) NULL,
 	RewardPriceMultiple TINYINT NULL,
+	RewardPriceSellableUOM NVARCHAR(3) NULL,
+	RewardPriceStartDate DATETIME2,
+	RewardPriceEndDate DATETIME2,
 	LinkedScanCodePrice DECIMAL(9, 2) NULL,
 )
 
@@ -587,14 +680,18 @@ SELECT
        null                     AS TprEndDate,
 	   null						AS RewardPrice,
 	   null						AS RewardPriceType,
+	   null						AS RewardPriceTypeAttribute,
 	   null						AS RewardPriceMultiple,
+	   null						AS RewardPriceSellableUOM,
+	   null						AS RewardPriceStartDate,
+	   null						AS RewardPriceEndDate,
 	   null						AS LinkedScanCodePrice
 FROM #regularPriceKeys    pr
 JOIN gpm.Prices	          reg    ON	pr.Region = reg.Region
-                                    AND pr.ItemID = reg.ItemID
-                                    AND pr.BusinessUnitID = reg.BusinessUnitID
-                                    AND pr.StartDate = reg.StartDate
-                                    AND pr.PriceType = reg.PriceType
+    AND pr.ItemID = reg.ItemID
+    AND pr.BusinessUnitID = reg.BusinessUnitID
+    AND pr.StartDate = reg.StartDate
+    AND pr.PriceType = reg.PriceType
 WHERE reg.Region = @Region
 OPTION (RECOMPILE)
 
@@ -611,10 +708,10 @@ SET
 	TprEndDate = sal.EndDate
 FROM #salePriceKeys sr     
 INNER JOIN gpm.Prices   sal    ON	sr.Region = sal.Region
-                                    AND sr.ItemID = sal.ItemID
-									AND sr.BusinessUnitID = sal.BusinessUnitID
-									AND sr.StartDate = sal.StartDate
-									AND sr.PriceType = sal.PriceType
+    AND sr.ItemID = sal.ItemID
+	AND sr.BusinessUnitID = sal.BusinessUnitID
+	AND sr.StartDate = sal.StartDate
+	AND sr.PriceType = sal.PriceType
 WHERE sal.Region = @Region
 OPTION (RECOMPILE)
 
@@ -623,13 +720,17 @@ UPDATE #prices
 SET
 	RewardPrice = rwd.Price,
 	RewardPriceType = rwd.PriceType,
-	RewardPriceMultiple = rwd.Multiple
+	RewardPriceTypeAttribute = rwd.PriceTypeAttribute,
+	RewardPriceMultiple = rwd.Multiple,
+	RewardPriceSellableUOM = rwd.SellableUOM,
+	RewardPriceStartDate = rwd.StartDate,
+	RewardPriceEndDAte = rwd.EndDate
 FROM #rewardPriceKeys	rp     
 INNER JOIN gpm.Prices   rwd    ON	rp.Region = rwd.Region
-                                    AND rp.ItemID = rwd.ItemID
-									AND rp.BusinessUnitID = rwd.BusinessUnitID
-									AND rp.StartDate = rwd.StartDate
-									AND rp.PriceType = rwd.PriceType
+    AND rp.ItemID = rwd.ItemID
+	AND rp.BusinessUnitID = rwd.BusinessUnitID
+	AND rp.StartDate = rwd.StartDate
+	AND rp.PriceType = rwd.PriceType
 WHERE rwd.Region = @Region
 OPTION (RECOMPILE)
 
@@ -638,10 +739,10 @@ UPDATE #prices
 SET LinkedScanCodePrice = p.Price
 FROM #linkedScanCodePriceKeys lp
 INNER JOIN gpm.Prices	p   ON	lp.Region = p.Region
-								AND lp.ItemID = p.ItemID
-								AND lp.BusinessUnitID = p.BusinessUnitID
-								AND lp.StartDate = p.StartDate
-								AND lp.PriceType = p.PriceType
+	AND lp.ItemID = p.ItemID
+	AND lp.BusinessUnitID = p.BusinessUnitID
+	AND lp.StartDate = p.StartDate
+	AND lp.PriceType = p.PriceType
 WHERE p.Region = @Region
 OPTION (RECOMPILE)
 
@@ -662,7 +763,11 @@ CREATE NONCLUSTERED INDEX IX_#prices_ItemID_BusinessUnitID ON #prices (ItemID AS
 		TprEndDate,
 		RewardPrice,
 		RewardPriceType,
+		RewardPriceTypeAttribute,
 		RewardPriceMultiple,
+		RewardPriceSellableUOM,
+		RewardPriceStartDate,
+		RewardPriceEndDate,
 		LinkedScanCodePrice
 	);
 
@@ -672,13 +777,22 @@ SELECT
 	g.ItemID,
 	il.BusinessUnitID,
 	g.ScanCode,
-	g.PSNumber						AS SubTeamNo,
+	g.PSNumber						AS SubTeamNumber,
 	g.RetailSize,
 	g.RetailUOM,
 	g.Desc_CustomerFriendly			AS CustomerFriendlyDescription,
+	g.MerchandiseSubBrickName		AS MerchandiseSubBrick,
+	g.NutritionRequired,
+	g.Refrigerated,
 	g.Agency_NonGMO					AS NonGmoAgency,
 	g.Agency_Organic				AS OrganicAgency,
 	g.Agency_Vegan					AS VeganAgency,
+	g.IsCheeseRaw,
+	g.IsMsc,
+	g.IsVegetarian,
+	g.Rating_AnimalWelfare			AS AnimalWelfareRating,
+	g.Rating_HealthyEating			AS HealthyEatingRating,
+	g.Seafood_FreshOrFrozen			AS FreshOrFrozenSeafood,
     g.RecipeName,
     g.Allergens,
     g.Ingredients,
@@ -757,25 +871,38 @@ SELECT
 	il.WrappedTareWeight,
 	il.ScaleExtraText				AS ExtraText,
 	il.DefaultScanCode,
+	il.ColorAdded,
+	il.CountryOfProcessing,
 	il.NumberOfDigitsSentToScale	AS ScalePLUDigits,
+	il.Origin,
+	il.ScaleItem,
+	il.RetailUnit,
     p.RegularPriceMultiple,
     p.RegularPrice,
     p.RegularPriceType,
     p.RegularPriceTypeAttribute		AS RegularPriceReason,
+	p.RegularStartDate,
     p.RegularSellableUOM,
     p.TprMultiple,
     p.TprPrice,
     p.TprPriceType,
+	p.TprPriceTypeAttribute			AS TprPriceReason,
     p.TprSellableUOM,
+	p.TprStartDate,
+	p.TprEndDate,
 	p.RewardPrice,
 	p.RewardPriceType,
+	p.RewardPriceTypeAttribute		AS RewardPriceReason,
 	p.RewardPriceMultiple,
+	p.RewardPriceSellableUOM,
+	p.RewardPriceStartDate,
+	p.RewardPriceEndDate,
 	p.LinkedScanCodePrice
 FROM #globalItem		g
 INNER JOIN #itemLocale	il	on g.ItemID = il.ItemID
-							AND g.BusinessUnitID = il.BusinessUnitID
+	AND g.BusinessUnitID = il.BusinessUnitID
 INNER JOIN #prices		p	on g.ItemID = p.ItemID
-							AND g.BusinessUnitID = p.BusinessUnitID
+	AND g.BusinessUnitID = p.BusinessUnitID
 WHERE il.ScaleItem = 1
 
 DROP TABLE #regularPriceKeys
