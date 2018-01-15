@@ -10,14 +10,6 @@
 			<modTime>1510933135177</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>JobName</name>
-			<value>JustInTimePricePush</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1510613345537</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>PublisherTimerInMilliseconds</name>
 			<value>3000</value>
 			<deploymentSettable>true</deploymentSettable>
