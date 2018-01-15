@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/RunInactiveTprService.process</pd:name>
@@ -264,8 +264,8 @@ AND NOT EXISTS
         <pd:group name="BatchAndSendExpiringTprs">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>282</pd:x>
-            <pd:y>269</pd:y>
+            <pd:x>284</pd:x>
+            <pd:y>270</pd:y>
             <pd:width>581</pd:width>
             <pd:height>255</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -278,7 +278,7 @@ AND NOT EXISTS
                 <pd:indexSlot>Counter</pd:indexSlot>
                 <pd:outSlot>ExpiringTprPrices</pd:outSlot>
                 <pd:activityOutputName>Map Data</pd:activityOutputName>
-                <pd:whileCondition>$Counter&lt;=ceiling((count($GetExpiringTprs/resultSet/Record) div $_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize))</pd:whileCondition>
+                <pd:whileCondition>$Counter&lt;=ceiling((count($GetExpiringTprs/resultSet/Record) div $_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize))</pd:whileCondition>
                 <pd:accumulateOutput>true</pd:accumulateOutput>
             </config>
             <pd:inputBindings/>
@@ -328,7 +328,7 @@ AND NOT EXISTS
             <pd:activity name="Map Data">
                 <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
                 <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-                <pd:x>374</pd:x>
+                <pd:x>375</pd:x>
                 <pd:y>348</pd:y>
                 <config>
                     <element ref="pfx2:MammothPrices"/>
@@ -405,7 +405,7 @@ AND NOT EXISTS
             <pd:activity name="Send Expiring Tprs to Queue">
                 <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-                <pd:x>537</pd:x>
+                <pd:x>538</pd:x>
                 <pd:y>348</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
@@ -448,7 +448,7 @@ AND NOT EXISTS
             <pd:activity name="LogBatchSuccess">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>750</pd:x>
+                <pd:x>751</pd:x>
                 <pd:y>347</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -480,7 +480,7 @@ AND NOT EXISTS
             <pd:activity name="Catch">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>397</pd:x>
+                <pd:x>398</pd:x>
                 <pd:y>444</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
@@ -491,7 +491,7 @@ AND NOT EXISTS
             <pd:activity name="RowByRowProcess">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>571</pd:x>
+                <pd:x>572</pd:x>
                 <pd:y>439</pd:y>
                 <config>
                     <processName>/Processes/ProcessRowByRow.process</processName>
