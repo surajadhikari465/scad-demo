@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>ActionAddOrUpdate</name>
+			<value>AddOrUpdate</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1516055022037</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ActionDelete</name>
+			<value>Delete</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1516055021933</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ApplicationID</name>
+			<value>20</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1516053176248</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ConsumablePsgType</name>
+			<value>Consumable</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1516054848885</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>PrimeAffinityPsg</name>
+			<value>PrimeAffinity</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1516054848809</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

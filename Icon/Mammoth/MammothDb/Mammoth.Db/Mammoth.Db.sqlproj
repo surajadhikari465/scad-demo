@@ -760,6 +760,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddActivePriceSentArchiveToRetentionPolicy.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddOrderedByInforToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddGlobalPricingProgramToAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddPrimeAffinityListenerToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

@@ -22,6 +22,7 @@ Post-Deployment Script Template
 :r AddGpmPriceTypes.sql
 :r AddEslAttributesToAttributesTable.sql
 :r AddScaleItemAttributes.sql
+:r AddPrimeAffinityListenerToAppTable.sql
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql
