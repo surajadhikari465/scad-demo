@@ -5,6 +5,8 @@
 AS
 BEGIN
 
+SET NOCOUNT ON;
+
 DECLARE @today DATETIME = CAST(CAST(GETDATE() AS DATE) AS DATETIME);
 
 -- Set Attribute IDs
@@ -333,7 +335,7 @@ INTO #globalItem
 FROM #itemExtended ist
 INNER JOIN dbo.Items i on ist.ItemID = i.ItemID
 INNER JOIN dbo.Hierarchy_Merchandise m	on i.HierarchyMerchandiseID = m.HierarchyMerchandiseID
-INNER JOIN dbo.HierarchyClass s	on m.SubBrickHCID = sb.HierarchyClassID
+INNER JOIN dbo.HierarchyClass sb		on m.SubBrickHCID = sb.HierarchyClassID
 
 CREATE NONCLUSTERED INDEX IX_#globalItem_ItemID ON #globalItem (ItemID ASC, BusinessUnitID ASC)
 

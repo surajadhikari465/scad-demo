@@ -5,6 +5,8 @@
 AS
 BEGIN
 
+SET NOCOUNT ON;
+
 -- Set Attribute IDs
 DECLARE @flexTextId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'FXT');
 DECLARE @fairTradeId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'FT');
@@ -55,7 +57,7 @@ CREATE TABLE #itemExtended
 	Exclusive NVARCHAR(MAX) NULL,
 	LinkedScanCode NVARCHAR(MAX) NULL,
 	LinkedScanCodeBrand NVARCHAR(255) NULL,
-	NumberOfDigitsScale NVARCHAR(MAX) NULL,
+	NumberOfDigitsSentToScale NVARCHAR(MAX) NULL,
 	Origin NVARCHAR(MAX) NULL,
 	ScaleExtraText NVARCHAR(MAX) NULL,
 	TagUOM NVARCHAR(MAX) NULL,
@@ -528,7 +530,7 @@ AND l.Region = @Region
 OPTION (RECOMPILE)
 
 UPDATE ist
-SET NumberOfDigitsScale = ia.AttributeValue
+SET NumberOfDigitsSentToScale = ia.AttributeValue
 FROM #itemExtended		ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
@@ -607,7 +609,7 @@ SELECT
 	ist.Exclusive,
 	ist.LinkedScanCode,
 	ist.LinkedScanCodeBrand,
-	ist.NumberOfDigitsScale,
+	ist.NumberOfDigitsSentToScale,
 	ist.Origin,
 	ist.ScaleExtraText,
 	ist.TagUOM
@@ -1015,7 +1017,7 @@ SELECT
 	il.Origin,
 	il.ScaleExtraText			AS ExtraText,
 	il.TagUOM					AS UomRegulationTagUom,
-	il.NumberOfDigitsSentToScale	AS ScalePLUDigits,
+	il.NumberOfDigitsSentToScale AS ScalePLUDigits,
     p.RegularPriceMultiple,
     p.RegularPrice,
     p.RegularStartDate,
@@ -1044,8 +1046,6 @@ INNER JOIN #itemLocale	il	on g.ItemID = il.ItemID
 INNER JOIN #prices		p	on g.ItemID = p.ItemID
 							AND g.BusinessUnitID = p.BusinessUnitID
 INNER JOIN StoreAddress	sa	on g.BusinessUnitID = sa.BusinessUnitID
-
-PRINT 'End Final Query: ' + CONVERT(nvarchar, GETDATE(), 121);
 
 DROP TABLE #regularPriceKeys
 DROP TABLE #salePriceKeys
