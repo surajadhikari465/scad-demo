@@ -32,44 +32,44 @@
 </div>
 
 <div class="form-group">
-    @Html.LabelFor(model => model.StartDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-2" })
+    @Html.LabelFor(model => model.StartDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
     <div class="col-md-10">
         @* We are using a bootstrap-datetimepicker here, which depends on Moment.js as well as Bootstrap
             so make sure those are already included & available to the view. There must also be a javascript
             method to launch the datepicker as in $('#StartDateTimeUtc').datetimepicker(); *@
-        @Html.EditorFor(model => model.StartDateTimeUtc, new { @class = "form-control datepicker" })
-        @Html.ValidationMessageFor(model => model.StartDateTimeUtc, "", new { @class = "text-danger" })
+        @Html.EditorFor(model => model.StartDateTime, new { @class = "form-control datepicker" })
+        @Html.ValidationMessageFor(model => model.StartDateTime, "", new { @class = "text-danger" })
     </div>
 </div>
 
-@if (Model.LastScheduledDateTimeUtc.HasValue)
+@if (Model.LastScheduledDateTime.HasValue)
 {
     <div class="form-group">
-        @Html.LabelFor(model => model.LastScheduledDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.NextScheduledDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.LastScheduledDateTimeUtc, new { @class = "form-control" })
+            @Html.DisplayFor(model => model.NextScheduledDateTime, new { @class = "form-control" })
         </div>
     </div>
 }
 
-@if (Model.LastRunEndDateTimeUtc.HasValue)
+@if (Model.LastRunEndDateTime.HasValue)
 {
 <div class="form-group">
-    @Html.LabelFor(model => model.LastRunEndDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-2" })
+    @Html.LabelFor(model => model.LastRunEndDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
     <div class="col-md-10">
-        @Html.DisplayFor(model => model.LastRunEndDateTimeUtc, new { @class = "form-control" })
+        @Html.DisplayFor(model => model.LastRunEndDateTime, new { @class = "form-control" })
     </div>
 </div>
 }
 
 <div class="form-group">
-    @Html.LabelFor(model => model.NextScheduledDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-2" })
+    @Html.LabelFor(model => model.NextScheduledDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
     <div class="col-md-10">
         @* We are using a bootstrap-datetimepicker here, which depends on Moment.js as well as Bootstrap
             so make sure those are already included & available to the view. There must also be a javascript
             method to launch the datepicker as in $('#StartDateTimeUtc').datetimepicker(); *@
-        @Html.EditorFor(model => model.NextScheduledDateTimeUtc, new { @class = "form-control datepicker" })
-        @Html.ValidationMessageFor(model => model.NextScheduledDateTimeUtc, "", new { @class = "text-danger" })
+        @Html.EditorFor(model => model.NextScheduledDateTime, new { @class = "form-control datepicker" })
+        @Html.ValidationMessageFor(model => model.NextScheduledDateTime, "", new { @class = "text-danger" })
     </div>
 </div>
 

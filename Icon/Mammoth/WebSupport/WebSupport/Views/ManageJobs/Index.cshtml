@@ -19,16 +19,16 @@
                 @Html.DisplayNameFor(model => model.DestinationQueueName)
             </th>
             <th data-toggle="tooltip" data-placement="top" data-container="body" title="StartDateTimeUtc">
-                @Html.DisplayNameFor(model => model.StartDateTimeUtc)
+                @Html.DisplayNameFor(model => model.StartDateTime)
             </th>
             <th data-toggle="tooltip" data-placement="top" data-container="body" title="LastScheduledDateTimeUtc">
-                @Html.DisplayNameFor(model => model.LastScheduledDateTimeUtc)
+                @Html.DisplayNameFor(model => model.LastScheduledDateTime)
             </th>
             <th data-toggle="tooltip" data-placement="top" data-container="body" title="LastRunEndDateTimeUtc">
-                @Html.DisplayNameFor(model => model.LastRunEndDateTimeUtc)
+                @Html.DisplayNameFor(model => model.LastRunEndDateTime)
             </th>
             <th data-toggle="tooltip" data-placement="top" data-container="body" title="NextScheduledDateTimeUtc">
-                @Html.DisplayNameFor(model => model.NextScheduledDateTimeUtc)
+                @Html.DisplayNameFor(model => model.NextScheduledDateTime)
             </th>
             <th data-toggle="tooltip" data-placement="top" data-container="body" title="IntervalInSeconds">
                 @Html.DisplayNameFor(model => model.IntervalInSeconds)
@@ -70,17 +70,17 @@
                 <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="DestinationQueueName">
                     @Html.DisplayFor(modelItem => item.DestinationQueueName)
                 </td>
-                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="StartDateTimeUtc">
-                    @Html.DisplayFor(modelItem => item.StartDateTimeUtc)
+                <td  data-toggle="tooltip" data-placement="bottom" data-container="body" title="StartDateTime">
+                    @Html.DisplayFor(modelItem => item.StartDateTime)
                 </td>
-                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastScheduledDateTimeUtc">
-                    @Html.DisplayFor(modelItem => item.LastScheduledDateTimeUtc)
+                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastScheduledDateTime">
+                    @Html.DisplayFor(modelItem => item.LastScheduledDateTime)
                 </td>
-                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastRunEndDateTimeUtc">
-                    @Html.DisplayFor(modelItem => item.LastRunEndDateTimeUtc)
+                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastRunEndDateTime">
+                    @Html.DisplayFor(modelItem => item.LastRunEndDateTime)
                 </td>
-                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="NextScheduledDateTimeUtc">
-                    @Html.DisplayFor(modelItem => item.NextScheduledDateTimeUtc)
+                <td  data-toggle="tooltip" data-placement="bottom" data-container="body" title="NextScheduledDateTime">
+                    @Html.DisplayFor(modelItem => item.NextScheduledDateTime)
                 </td>
                 <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="IntervalInSeconds">
                     @Html.DisplayFor(modelItem => item.IntervalInSeconds)

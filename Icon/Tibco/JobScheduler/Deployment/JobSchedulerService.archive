@@ -13,7 +13,7 @@
             <authorProperty>2096654</authorProperty>
             <processProperty>/Processes/JobSchedulerService.process</processProperty>
         </processArchive>
-        <versionProperty>9</versionProperty>
+        <versionProperty>12</versionProperty>
         <authorProperty>2096654</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>JobSchedulerService</name>

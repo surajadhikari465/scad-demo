@@ -1,0 +1,1016 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/10/2018 12:19:30 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="CECEN0400"
+  DTS:CreatorName="WFM\Min.Zhao"
+  DTS:DelayValidation="True"
+  DTS:DTSID="{410EA082-10FB-4A89-A911-5BD042CC5E8D}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.0600.250"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="InforItemLocaleUpdate"
+  DTS:PackageType="5"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="53"
+  DTS:VersionGUID="{52B573F3-5F7C-4D47-9FCF-D0593D93D00D}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[IRMA.Db]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{8359F0A7-F6C8-4D88-96C1-15CB5527403B}"
+      DTS:ObjectName="IRMA.Db">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Provider=SQLNCLI11.1;Data Source=" + @[User::IRMADataSource] + ";Initial Catalog=" + @[User::IRMAInitialCatalog]  + ";Integrated Security=SSPI;Auto Translate=False;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=IDD-RM\RMD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Mammoth.Db]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+      DTS:ObjectName="Mammoth.Db">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Provider=SQLNCLI11.1;Data Source=" + @[User::MammothDataSource] + ";Initial Catalog=" + @[User::MammothInitialCatalog]  + ";Integrated Security=SSPI;Auto Translate=False;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Retain="True"
+          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=MAMMOTH_DEV;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A398A176-0069-4CF2-99FB-468A262DF601}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; || UPPER(@[$Project::Environment])  == &quot;TST&quot; ? &quot;ID&quot; + (UPPER(@[$Project::RegionCode]) == &quot;NC&quot; || UPPER(@[$Project::RegionCode]) == &quot;NE&quot; || UPPER(@[$Project::RegionCode]) == &quot;PN&quot; || UPPER(@[$Project::RegionCode]) == &quot;SP&quot; || UPPER(@[$Project::RegionCode]) == &quot;SW&quot; || UPPER(@[$Project::RegionCode]) == &quot;UK&quot; ? &quot;T&quot; : &quot;D&quot;)    + &quot;-&quot; + (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  +&quot;\\&quot; +  (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  + (UPPER(@[$Project::RegionCode]) == &quot;NC&quot; || UPPER(@[$Project::RegionCode]) == &quot;NE&quot; || UPPER(@[$Project::RegionCode]) == &quot;PN&quot; || UPPER(@[$Project::RegionCode]) == &quot;SP&quot; || UPPER(@[$Project::RegionCode]) == &quot;SW&quot; || UPPER(@[$Project::RegionCode]) == &quot;UK&quot; ? &quot;T&quot; : &quot;D&quot;) :UPPER(@[$Project::Environment])  == &quot;QA&quot; ? &quot;IDQ-&quot; +   (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  +&quot;\\&quot; +  (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  + &quot;Q&quot;: &quot;IDP-&quot; +   (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  +&quot;\\&quot; +  (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  + &quot;P&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IRMADataSource">
+      <DTS:VariableValue
+        DTS:DataType="8">IDD-RM\RMD</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A5A88238-E0C1-4CAC-9001-57C7DEE977F4}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ? &quot;ItemCatalog_Test&quot; : &quot;ItemCatalog&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IRMAInitialCatalog">
+      <DTS:VariableValue
+        DTS:DataType="8">ItemCatalog_Test</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{71EB7390-4E31-4FA9-B80F-78CED476F6D9}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ?&quot;MAMMOTH-DB01-DEV&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;:UPPER(@[$Project::Environment])  == &quot;TST&quot; ?&quot;MAMMOTH-DB01-DEV&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;:UPPER(@[$Project::Environment])  == &quot;QA&quot; ?&quot;MAMMOTH-DB01-QA&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;:&quot;MAMMOTH-DB01-PRD&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MammothDataSource">
+      <DTS:VariableValue
+        DTS:DataType="8">MAMMOTH-DB01-DEV\MAMMOTH</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3938FFA6-205B-4266-B761-73E9607402D0}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ?&quot;MAMMOTH_DEV&quot;:&quot;MAMMOTH&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MammothInitialCatalog">
+      <DTS:VariableValue
+        DTS:DataType="8">MAMMOTH_DEV</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B4D5EFB1-6608-4C1B-8941-8C53F1DEADE9}"
+      DTS:EvaluateAsExpression="True"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="TempTableName">
+      <DTS:VariableValue
+        DTS:DataType="8">##tmpItemLocaleLoad</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create Temp Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{EA848277-3FDA-4A04-B913-9DBE7E6E7833}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Temp Table"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+          SQLTask:SqlStatementSource="IF OBJECT_ID('tempdb..##tmpItemLocaleLoad') IS NOT NULL&#xA;    DROP TABLE ##tmpItemLocaleLoad&#xA;&#xA;CREATE TABLE ##tmpItemLocaleLoad&#xA;    (&#xA;        [Region] nchar(2) not null,&#xA;&#x9;&#x9;[ItemID] int not null,&#xA;&#x9;&#x9;[BusinessUnitID] int not null,&#xA;&#x9;&#x9;[DefaultScanCode] bit not null,&#xA;&#x9;&#x9;[OrderedByInfor] bit not null,&#xA;&#x9;&#x9;[AltRetailUOM] nvarchar(25) null,&#xA;        [AltRetailSize] numeric(9,4) null&#xA;    )&#xA;&#xA;CREATE NONCLUSTERED INDEX [IX_tmpItemLocaleLoad_ItemID_BusinessUnitID_Region] ON ##tmpItemLocaleLoad&#xA;(&#xA;&#x9;[ItemID] ASC,&#xA;&#x9;[BusinessUnitID] ASC,&#xA;&#x9;[Region] ASC&#xA;)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100) ON [PRIMARY]&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Drop Temp Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{4C4D1E64-3A5A-4562-8C67-855654739AE4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Drop Temp Table"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+          SQLTask:SqlStatementSource="IF OBJECT_ID('tempdb..##tmpItemLocaleLoad') IS NOT NULL&#xA;    DROP TABLE ##tmpItemLocaleLoad&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Transfter Item Locale Attributes"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{AF0B6515-930F-4478-BF8D-2B92A080FECC}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Transfter Item Locale Attributes"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Convert varchar to nvarchar"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[RegionCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="4"
+                      cachedName="RegionCode"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[RegionCode]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[AltUnit]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="25"
+                      cachedName="AltUnit"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[AltUnit]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted RegionCode]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="2"
+                      lineageId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted RegionCode]"
+                      name="Converted RegionCode"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[RegionCode]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted AltUnit]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="25"
+                      lineageId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted AltUnit]"
+                      name="Converted AltUnit"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[AltUnit]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Get IRMA Item Locale Attributes"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select  srm.Region_Code as RegionCode, InforItemId, ScanCode, s.businessUnit_Id, ii.Default_Identifier, ISNULL(OrderedByInfor, 0) as OrderedByInfor, ior.Package_Desc2 as AltSize, iu.Unit_Name as AltUnit
+from ValidatedScanCode vsc
+join ItemIdentifier ii on vsc.ScanCode = ii.Identifier
+join Item i on i.Item_key = ii.Item_key
+join StoreItem si on si.Item_Key = i.Item_Key
+join Store s on s.Store_No = si.Store_No
+join StoreRegionMapping srm on srm.Store_No = s.Store_no
+left join StoreItemExtended sie on sie.Item_key = i.Item_key
+		and sie.Store_No = s.Store_No
+left join ItemOverride ior on i.Item_key = ior.Item_key
+left join ItemUnit iu on iu.Unit_Id = ior.Package_Unit_ID
+where i.Deleted_Item = 0 and i.Remove_Item = 0
+and ii.Deleted_Identifier = 0 and ii.Remove_Identifier = 0
+and (s.Mega_Store = 1 or s.WFM_Store = 1)
+and s.Internal = 1
+and srm.Region_Code = ?</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"RegionCode:Input",{4F89D234-8691-40B3-AC4C-A260DDF26DCB};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[IRMA.Db]"
+                  connectionManagerRefId="Package.ConnectionManagers[IRMA.Db]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[InforItemId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[InforItemId]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[InforItemId]"
+                      name="InforItemId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[ScanCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[ScanCode]"
+                      length="13"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[ScanCode]"
+                      name="ScanCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[businessUnit_Id]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[businessUnit_Id]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[businessUnit_Id]"
+                      name="businessUnit_Id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[Default_Identifier]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[Default_Identifier]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[Default_Identifier]"
+                      name="Default_Identifier"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[OrderedByInfor]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[OrderedByInfor]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[OrderedByInfor]"
+                      name="OrderedByInfor"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[AltSize]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[AltSize]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[AltSize]"
+                      name="AltSize"
+                      precision="9"
+                      scale="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[AltUnit]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[AltUnit]"
+                      length="25"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[AltUnit]"
+                      name="AltUnit"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[RegionCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[RegionCode]"
+                      length="4"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[RegionCode]"
+                      name="RegionCode"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[InforItemId]"
+                      dataType="i4"
+                      name="InforItemId" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[ScanCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      name="ScanCode" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[businessUnit_Id]"
+                      dataType="i4"
+                      name="businessUnit_Id" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[Default_Identifier]"
+                      dataType="ui1"
+                      name="Default_Identifier" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[OrderedByInfor]"
+                      dataType="bool"
+                      name="OrderedByInfor" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[AltSize]"
+                      dataType="numeric"
+                      name="AltSize"
+                      precision="9"
+                      scale="4" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[AltUnit]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="AltUnit" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[RegionCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="RegionCode" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[RegionCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[RegionCode]"
+                      name="RegionCode" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[InforItemId]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[InforItemId]"
+                      name="InforItemId" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[ScanCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[ScanCode]"
+                      name="ScanCode" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[businessUnit_Id]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[businessUnit_Id]"
+                      name="businessUnit_Id" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[Default_Identifier]"
+                      dataType="ui1"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[Default_Identifier]"
+                      name="Default_Identifier" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[OrderedByInfor]"
+                      dataType="bool"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[OrderedByInfor]"
+                      name="OrderedByInfor" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[AltSize]"
+                      dataType="numeric"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[AltSize]"
+                      name="AltSize"
+                      precision="9"
+                      scale="4" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[AltUnit]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[AltUnit]"
+                      name="AltUnit" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Load Into Mammoth Temp Table"
+              usesDispositions="true"
+              validateExternalMetadata="False"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable">User::TempTableName</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">IF OBJECT_ID('tempdb..#tmpItemLocaleLoad') IS NOT NULL
+    DROP TABLE #tmpItemLocaleLoad
+
+CREATE TABLE #tmpItemLocaleLoad
+    (
+        [Region] nchar(2) not null,
+       [ItemID] int not null,
+       [BusinessUnitID] int not null,
+		[DefaultScanCode] bit not null,
+		[OrderedByInfor] bit not null,
+		[AltRetailUOM] nvarchar(25) null,
+        [AltRetailSize] numeric(9,4) null
+    )</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Mammoth.Db]"
+                  connectionManagerRefId="Package.ConnectionManagers[Mammoth.Db]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[OrderedByInfor]"
+                      cachedDataType="bool"
+                      cachedName="OrderedByInfor"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[OrderedByInfor]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[OrderedByInfor]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[InforItemId]"
+                      cachedDataType="i4"
+                      cachedName="InforItemId"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[InforItemId]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[businessUnit_Id]"
+                      cachedDataType="i4"
+                      cachedName="businessUnit_Id"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitID]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[businessUnit_Id]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[Default_Identifier]"
+                      cachedDataType="ui1"
+                      cachedName="Default_Identifier"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[DefaultScanCode]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[Default_Identifier]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[AltSize]"
+                      cachedDataType="numeric"
+                      cachedName="AltSize"
+                      cachedPrecision="9"
+                      cachedScale="4"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[AltRetailSize]"
+                      lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].Columns[AltSize]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[Converted AltUnit]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Converted AltUnit"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[AltRetailUOM]"
+                      lineageId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted AltUnit]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[Converted RegionCode]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="Converted RegionCode"
+                      externalMetadataColumnId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
+                      lineageId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted RegionCode]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
+                      dataType="wstr"
+                      length="2"
+                      name="Region" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
+                      dataType="i4"
+                      name="ItemID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitID]"
+                      dataType="i4"
+                      name="BusinessUnitID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[DefaultScanCode]"
+                      dataType="bool"
+                      name="DefaultScanCode" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[OrderedByInfor]"
+                      dataType="bool"
+                      name="OrderedByInfor" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[AltRetailUOM]"
+                      dataType="wstr"
+                      length="25"
+                      name="AltRetailUOM" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[AltRetailSize]"
+                      dataType="numeric"
+                      name="AltRetailSize"
+                      precision="9"
+                      scale="4" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Transfter Item Locale Attributes.Paths[Data Conversion Output]"
+              endId="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Transfter Item Locale Attributes.Paths[OLE DB Source Output]"
+              endId="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input]"
+              name="OLE DB Source Output"
+              startId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update Mammoth ItemLocale Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{5FA2B7E6-B67F-4082-8D76-567AC207CF4D}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update Mammoth ItemLocale Table"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"update ial
+set ial.DefaultScanCode = ill.DefaultScanCode,
+	ial.OrderedByInfor = ill.OrderedByInfor,
+	ial.AltRetailUOM = ill.AltRetailUOM,
+	ial.AltRetailSize = ill.AltRetailSize
+from dbo.ItemAttributes_Locale_" + @[$Project::RegionCode] + " ial
+join ##tmpItemLocaleLoad ill on ial.ItemID = ill.ItemID
+and ial.BusinessUnitID = ill.BusinessUnitID
+and ial.Region = ill.Region"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+          SQLTask:SqlStatementSource="update ial&#xA;set ial.DefaultScanCode = ill.DefaultScanCode,&#xA;&#x9;ial.OrderedByInfor = ill.OrderedByInfor,&#xA;&#x9;ial.AltRetailUOM = ill.AltRetailUOM,&#xA;&#x9;ial.AltRetailSize = ill.AltRetailSize&#xA;from dbo.ItemAttributes_Locale_RM ial&#xA;join ##tmpItemLocaleLoad ill on ial.ItemID = ill.ItemID&#xA;and ial.BusinessUnitID = ill.BusinessUnitID&#xA;and ial.Region = ill.Region" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{1430E7F0-B41B-43DE-96FA-EE1950B97FA3}"
+      DTS:From="Package\Create Temp Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Transfter Item Locale Attributes" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{58163254-FCC6-4E4A-BB71-01AD05C4A0E6}"
+      DTS:From="Package\Transfter Item Locale Attributes"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Update Mammoth ItemLocale Table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{D10BA4A4-6EB0-4284-AC75-CC35616DCC19}"
+      DTS:From="Package\Update Mammoth ItemLocale Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Drop Temp Table" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql12">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Create Temp Table"
+          TopLeft="76,75" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Drop Temp Table"
+          TopLeft="80,256" />
+        <NodeLayout
+          Size="231,42"
+          Id="Package\Transfter Item Locale Attributes"
+          TopLeft="74,160" />
+        <NodeLayout
+          Size="249,42"
+          Id="Package\Update Mammoth ItemLocale Table"
+          TopLeft="381,157" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="161.5,117">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="28,43"
+              Start="0,0"
+              End="28,35.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17.5"
+                    Point2="0,21.5"
+                    Point3="4,21.5" />
+                  <mssgle:LineSegment
+                    End="24,21.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="24,21.5"
+                    Point2="28,21.5"
+                    Point3="28,25.5" />
+                  <mssgle:LineSegment
+                    End="28,35.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="305,179.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="76,0"
+              Start="0,0"
+              End="68.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="68.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="505.5,199">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-344,57"
+              Start="0,0"
+              End="-344,49.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,24.5"
+                    Point2="0,28.5"
+                    Point3="-4,28.5" />
+                  <mssgle:LineSegment
+                    End="-340,28.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-340,28.5"
+                    Point2="-344,28.5"
+                    Point3="-344,32.5" />
+                  <mssgle:LineSegment
+                    End="-344,49.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Transfter Item Locale Attributes">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="236,42"
+          Id="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table"
+          TopLeft="217,231" />
+        <NodeLayout
+          Size="233,42"
+          Id="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes"
+          TopLeft="214,32" />
+        <NodeLayout
+          Size="213,42"
+          Id="Package\Transfter Item Locale Attributes\Convert varchar to nvarchar"
+          TopLeft="212,126" />
+        <EdgeLayout
+          Id="Package\Transfter Item Locale Attributes.Paths[OLE DB Source Output]"
+          TopLeft="330.5,74">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-12,52"
+              Start="0,0"
+              End="-12,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22"
+                    Point2="0,26"
+                    Point3="-4,26" />
+                  <mssgle:LineSegment
+                    End="-8,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-8,26"
+                    Point2="-12,26"
+                    Point3="-12,30" />
+                  <mssgle:LineSegment
+                    End="-12,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Transfter Item Locale Attributes.Paths[Data Conversion Output]"
+          TopLeft="318.5,168">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="16.5,63"
+              Start="0,0"
+              End="16.5,55.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27.5"
+                    Point2="0,31.5"
+                    Point3="4,31.5" />
+                  <mssgle:LineSegment
+                    End="12.5,31.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="12.5,31.5"
+                    Point2="16.5,31.5"
+                    Point3="16.5,35.5" />
+                  <mssgle:LineSegment
+                    End="16.5,55.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transfter Item Locale Attributes\Load Into Mammoth Temp Table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

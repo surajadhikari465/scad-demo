@@ -162,5 +162,7 @@ namespace Icon.Framework
         public const string Paleo = @"0|1";
         public const string LocalLoanProducer = @"0|1";
         public const string CustomerFriendlyDescription = @"^.{0,60}$";
+        public const string GlobalPricingProgram = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$";
+        public const string PercentageTareWeight = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$";
 	}
 }

@@ -170,6 +170,8 @@
     <Folder Include="Schemas" />
     <Folder Include="esl\Stored Procedures" />
     <Folder Include="esl\Views" />
+    <Folder Include="eplum" />
+    <Folder Include="eplum\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -730,9 +732,12 @@
     <Build Include="esl\Stored Procedures\GetEslAttributes.sql" />
     <Build Include="esl\Views\ItemsByAuthorizedStores.sql" />
     <Build Include="esl\Views\ItemStoresByBrandID.sql" />
-    <None Include="Scripts\PreDeploymentScripts\DropJobScheduleTable.sql" />
     <Build Include="stage\Tables\ItemLocaleSupplierDelete.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddVendorRelatedCodesToAttributesTable.sql" />
+    <Build Include="Schemas\eplum.sql" />
+    <Build Include="eplum\Stored Procedures\GetEPlumAttributes.sql" />
+    <Build Include="stage\Tables\ItemStoreKeysEPlum.sql" />
+    <None Include="Scripts\PreDeploymentScripts\UpdateDefaulltScanCodeToNotNull.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>

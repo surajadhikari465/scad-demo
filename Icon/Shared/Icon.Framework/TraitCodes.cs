@@ -162,5 +162,7 @@ namespace Icon.Framework
         public const string Paleo = "PLO";
         public const string LocalLoanProducer = "LLP";
         public const string CustomerFriendlyDescription = "CFD";
+        public const string GlobalPricingProgram = "GPP";
+        public const string PercentageTareWeight = "PTA";
 	}
 }

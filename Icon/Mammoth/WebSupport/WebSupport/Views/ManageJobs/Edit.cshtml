@@ -1,4 +1,4 @@
-﻿@model WebSupport.DataAccess.Models.JobSchedule
+﻿@model WebSupport.ViewModels.JobScheduleViewModel
 
 @{
     ViewBag.Title = "Edit " + @Model.JobName + " Job Schedule";
@@ -30,8 +30,8 @@
 <script type="text/javascript">
 $(document).ready(function () {
     @* must init bootstrap/moment.js datetimepicker*@
-    $('#StartDateTimeUtc').datetimepicker({
-        defaultDate: '@Model.StartDateTimeUtc',
+    $('#StartDateTime').datetimepicker({
+        defaultDate: '@Model.StartDateTime',
         format: '@WebSupport.Models.ValidationConstants.JavascriptDateTimePickerFormat'
     });
     @* must enable bootstrap tooltips in js *@
