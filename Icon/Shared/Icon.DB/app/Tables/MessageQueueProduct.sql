@@ -66,7 +66,9 @@
 	[AirChilled] [nvarchar](1) NULL,
 	[MadeInHouse] [nvarchar](1) NULL,
 	[CustomerFriendlyDescription] NVARCHAR (60) NULL,
-	[NutritionRequired] NVARCHAR(255) NULL
+	[NutritionRequired] NVARCHAR(255) NULL,
+	[GlobalPricingProgram] NVARCHAR(255) NULL,
+	[PercentageTareWeight] NVARCHAR(255) NULL
     CONSTRAINT [PK_MessageQueueProduct] PRIMARY KEY CLUSTERED ([MessageQueueId] ASC) WITH (FILLFACTOR = 80),
     CONSTRAINT [FK_MessageQueueProduct_MessageHistoryId] FOREIGN KEY ([MessageHistoryId]) REFERENCES [app].[MessageHistory] ([MessageHistoryId]) ON DELETE CASCADE,
     CONSTRAINT [FK_MessageQueueProduct_MessageStatusId] FOREIGN KEY ([MessageStatusId]) REFERENCES [app].[MessageStatus] ([MessageStatusId]),

@@ -5,6 +5,7 @@ using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
+using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Testing.Builders;
@@ -788,6 +789,65 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsNotNull(groups);
             Assert.AreEqual("5", hshTrait.type.value[0].value);
             Assert.IsNull(hazardousMaterialTypeCode);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithGlobalPricingProgramTrait_ShouldBeParsed()
+        {
+            // Given.
+            var fakeMessage = TestHelpers
+                .GetFakeMessageQueueProductWithNutritionalData(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.GlobalPricingProgram = "GlobalPricingProgramTest";
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            var itemTraits = (miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType).traits;
+            TraitType trait = itemTraits.SingleOrDefault(it => it.code == TraitCodes.GlobalPricingProgram);
+            Assert.IsNotNull(trait, "product message should have had GlobalPricingProgram trait");
+            Assert.AreEqual("GPP", trait.code);
+            Assert.IsNotNull(trait.type);
+            Assert.AreEqual("Global Pricing Program", trait.type.description);
+            Assert.IsNotNull(trait.type.value);
+            Assert.AreEqual(1, trait.type.value.Length);
+            TraitValueType traitValue = trait.type.value[0];
+            Assert.IsNotNull(traitValue.value);
+            Assert.AreEqual("GlobalPricingProgramTest", traitValue.value);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithPercentageTareWeightTrait_ShouldBeParsed()
+        {
+            // Given.
+            MessageQueueProduct fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.PercentageTareWeight = "PercentageTareWeightTest";
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            var itemTraits = (miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType).traits;
+            TraitType trait = itemTraits.SingleOrDefault(it => it.code == TraitCodes.PercentageTareWeight);
+            Assert.IsNotNull(trait, "product message should have had PercentageTareWeight trait");
+            Assert.AreEqual("PTA", trait.code);
+            Assert.IsNotNull(trait.type);
+            Assert.AreEqual("Percentage Tare Weight", trait.type.description);
+            Assert.IsNotNull(trait.type.value);
+            Assert.AreEqual(1, trait.type.value.Length);
+            TraitValueType traitValue = trait.type.value[0];
+            Assert.IsNotNull(traitValue.value);
+            Assert.AreEqual("PercentageTareWeightTest", traitValue.value);
         }
     }
 }

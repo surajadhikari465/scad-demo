@@ -84,7 +84,9 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 ContainesDuplicateNationalClass = ContainsDuplicateHierarchyClass(enterpriseAttributes, HierarchyNames.National),
                 MessageParseTime = messageParseTime,
                 SequenceId = sequenceId,
-                CustomerFriendlyDescription = GetTraitValue(enterpriseAttributes, TraitCodes.CustomerFriendlyDescription)
+                CustomerFriendlyDescription = GetTraitValue(enterpriseAttributes, TraitCodes.CustomerFriendlyDescription),
+                GlobalPricingProgram = GetTraitValue(enterpriseAttributes, TraitCodes.GlobalPricingProgram),
+                PercentageTareWeight = GetTraitValue(enterpriseAttributes, TraitCodes.PercentageTareWeight)
             };
         }
 

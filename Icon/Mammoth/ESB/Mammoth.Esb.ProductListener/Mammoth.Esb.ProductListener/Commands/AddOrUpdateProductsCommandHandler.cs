@@ -84,21 +84,49 @@ namespace Mammoth.Esb.ProductListener.Commands
         {
             string sql = @"dbo.AddOrUpdateItemAttributesExt";
             int rowCount = this.db.Connection.Execute(sql,
-                new {
+                new
+                {
                     extAttributes = data.Items.SelectMany(
                         i => new[]
                         {
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.FairTrade, AttributeValue = i.ExtendedAttributes.FairTrade },
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.FlexibleText, AttributeValue = i.ExtendedAttributes.FlexibleText },
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.MadeWithBiodynamicGrapes, AttributeValue = i.ExtendedAttributes.MadeWithBiodynamicGrapes },
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.MadeWithOrganicGrapes, AttributeValue = i.ExtendedAttributes.MadeWithOrganicGrapes },
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.NutritionRequired, AttributeValue = i.ExtendedAttributes.NutritionRequired },
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.PrimeBeef, AttributeValue = i.ExtendedAttributes.PrimeBeef },
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.RainforestAlliance, AttributeValue = i.ExtendedAttributes.RainforestAlliance },
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.RefrigeratedOrShelfStable, AttributeValue = i.ExtendedAttributes.RefrigeratedOrShelfStable },
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.SmithsonianBirdFriendly, AttributeValue = i.ExtendedAttributes.SmithsonianBirdFriendly },
-                            new { ItemID = i.ExtendedAttributes.ItemId, AttributeCode = Attributes.Codes.Wic, AttributeValue = i.ExtendedAttributes.Wic }
-                        }).ToDataTable() },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.FairTrade,
+                                AttributeValue = i.ExtendedAttributes.FairTrade },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.FlexibleText,
+                                AttributeValue = i.ExtendedAttributes.FlexibleText },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.GlobalPricingProgram,
+                                AttributeValue = i.ExtendedAttributes.FlexibleText },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.MadeWithBiodynamicGrapes,
+                                AttributeValue = i.ExtendedAttributes.MadeWithBiodynamicGrapes },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.MadeWithOrganicGrapes,
+                                AttributeValue = i.ExtendedAttributes.MadeWithOrganicGrapes },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.NutritionRequired,
+                                AttributeValue = i.ExtendedAttributes.NutritionRequired },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.PercentageTareWeight,
+                                AttributeValue = i.ExtendedAttributes.FlexibleText },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.PrimeBeef,
+                                AttributeValue = i.ExtendedAttributes.PrimeBeef },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.RainforestAlliance,
+                                AttributeValue = i.ExtendedAttributes.RainforestAlliance },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.RefrigeratedOrShelfStable,
+                                AttributeValue = i.ExtendedAttributes.RefrigeratedOrShelfStable },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.SmithsonianBirdFriendly,
+                                AttributeValue = i.ExtendedAttributes.SmithsonianBirdFriendly },
+                            new { ItemID = i.ExtendedAttributes.ItemId,
+                                AttributeCode = Attributes.Codes.Wic,
+                                AttributeValue = i.ExtendedAttributes.Wic }
+                        }).ToDataTable()
+                },
                 transaction: this.db.Transaction,
                 commandType: CommandType.StoredProcedure);
         }

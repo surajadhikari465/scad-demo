@@ -34,7 +34,9 @@ BEGIN
 		@couponItemTypeId int,
 		@nonRetailItemTypeId int,
 		@customerFriendlyDescriptionTraitID int,
-		@nutritionRequired int
+		@nutritionRequired int,
+		@globalPricingProgramTraitID int,
+		@percentageTareWeightTraitID int
 
 	declare @distinctProductMessageIDs table (MessageQueueId int, scancode varchar(13));
 
@@ -62,6 +64,8 @@ BEGIN
 	SET @nonRetailItemTypeId		= (SELECT tp.itemTypeID FROM ItemType tp WHERE tp.itemTypeCode = 'NRT')
 	SET @customerFriendlyDescriptionTraitID	= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'CFD')
 	SET @nutritionRequired          = (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'NR')
+	SET @globalPricingProgramTraitID= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'GPP')
+	SET @percentageTareWeightTraitID= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'PTA')
 
 	insert into 
 		app.MessageQueueProduct
@@ -143,7 +147,9 @@ BEGIN
 		ia.[MadeInHouse]					AS [MadeInHouse],
 		CASE WHEN ISNULL(ia.CustomerFriendlyDescription,'') = '' THEN prd.traitValue	
 		            ELSE ia.CustomerFriendlyDescription END AS CustomerFriendlyDescription,
-		nr.traitValue						AS NutritionRequired    
+		nr.traitValue						AS NutritionRequired,
+		gpp.traitValue						AS GlobalPricingProgram,
+		pta.traitValue						AS PercentageTareWeight
 	from 
 		@updatedItemIDs					ui
 		JOIN Item						i			ON	ui.itemID					= i.itemID
@@ -205,7 +211,13 @@ BEGIN
 		LEFT JOIN SeafoodFreshOrFrozen	sff			ON ia.SeafoodFreshOrFrozenID	= sff.SeafoodFreshOrFrozenID
 		LEFT JOIN ItemTrait				nr			ON	i.itemID					= nr.itemID
 														AND nr.traitID				= @nutritionRequired
-														AND nr.localeID				= @localeID												
+														AND nr.localeID				= @localeID
+		LEFT JOIN ItemTrait				gpp			ON	i.itemID					= nr.itemID
+														AND gpp.traitID				= @globalPricingProgramTraitID
+														AND gpp.localeID			= @localeID
+		LEFT JOIN ItemTrait				pta			ON	i.itemID					= nr.itemID
+														AND pta.traitID				= @percentageTareWeightTraitID
+														AND pta.localeID			= @localeID												
 	where
 		it.itemTypeID <> @couponItemTypeId
 

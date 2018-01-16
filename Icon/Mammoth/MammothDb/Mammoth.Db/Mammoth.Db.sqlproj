@@ -739,6 +739,8 @@
     <Build Include="stage\Tables\ItemStoreKeysEPlum.sql" />
     <None Include="Scripts\PreDeploymentScripts\UpdateDefaulltScanCodeToNotNull.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddScaleItemAttributes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddPercentageTareWeightToAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

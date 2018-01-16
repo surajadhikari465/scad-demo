@@ -73,5 +73,7 @@ namespace Icon.Infor.Listeners.Item.Models
         public DateTime MessageParseTime { get; set; }
         public decimal? SequenceId { get; set; }
         public string CustomerFriendlyDescription { get; set; }
+        public string GlobalPricingProgram { get; set; }
+        public string PercentageTareWeight { get; set; }
     }
 }

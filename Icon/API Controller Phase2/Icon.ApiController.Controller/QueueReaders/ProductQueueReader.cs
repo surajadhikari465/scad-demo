@@ -478,6 +478,36 @@ namespace Icon.ApiController.Controller.QueueReaders
                             }
                         }
                     }
+                },
+                new Contracts.TraitType
+                {
+                    code = TraitCodes.GlobalPricingProgram,
+                    type = new Contracts.TraitTypeType
+                    {
+                        description = TraitDescriptions.GlobalPricingProgram,
+                        value = new Contracts.TraitValueType[]
+                        {
+                            new Contracts.TraitValueType
+                            {
+                                value = message.GlobalPricingProgram
+                            }
+                        }
+                    }
+                },
+                new Contracts.TraitType
+                {
+                    code = TraitCodes.PercentageTareWeight,
+                    type = new Contracts.TraitTypeType
+                    {
+                        description = TraitDescriptions.PercentageTareWeight,
+                        value = new Contracts.TraitValueType[]
+                        {
+                            new Contracts.TraitValueType
+                            {
+                                value = message.PercentageTareWeight
+                            }
+                        }
+                    }
                 }
             };
                         

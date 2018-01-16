@@ -23,6 +23,7 @@ Post-Deployment Script Template
 :r AddEslAttributesToAttributesTable.sql
 :r AddScaleItemAttributes.sql
 :r AddPrimeAffinityListenerToAppTable.sql
+:r AddPercentageTareWeightToAttributesTable.sql
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql

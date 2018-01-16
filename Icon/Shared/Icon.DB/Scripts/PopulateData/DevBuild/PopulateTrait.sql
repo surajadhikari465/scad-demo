@@ -281,5 +281,9 @@ INSERT [dbo].[Trait] ([traitID], [traitCode], [traitPattern], [traitDesc], [trai
 GO
 INSERT [dbo].[Trait] ([traitID], [traitCode], [traitPattern], [traitDesc], [traitGroupID]) VALUES (151, N'CFD', N'^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,60}$', N'Customer Friendly Description', 1)
 GO
+INSERT [dbo].[Trait] ([traitID], [traitCode], [traitPattern], [traitDesc], [traitGroupID]) VALUES (154, N'GPP', N'[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$', N'Global Pricing Program', 1)
+GO
+INSERT [dbo].[Trait] ([traitID], [traitCode], [traitPattern], [traitDesc], [traitGroupID]) VALUES (155, N'PTA', N'[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$', N'Percentage Tare Weight', 1)
+GO
 SET IDENTITY_INSERT [dbo].[Trait] OFF
 GO
