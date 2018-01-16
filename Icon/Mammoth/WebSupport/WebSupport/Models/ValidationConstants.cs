@@ -19,6 +19,6 @@ namespace WebSupport.Models
         public const string XmlDateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'";
 
 
-        public const string JavascriptDateTimePickerFormat = "DD/MM/YYYY hh:mm:ss A";
+        public const string JavascriptDateTimePickerFormat = "MM/DD/YYYY hh:mm:ss A";
     }
 }
