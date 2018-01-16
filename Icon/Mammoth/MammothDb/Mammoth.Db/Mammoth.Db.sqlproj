@@ -733,6 +733,7 @@
     <None Include="Scripts\PreDeploymentScripts\DropJobScheduleTable.sql" />
     <Build Include="stage\Tables\ItemLocaleSupplierDelete.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddVendorRelatedCodesToAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

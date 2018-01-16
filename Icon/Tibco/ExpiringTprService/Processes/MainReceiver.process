@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <pd:name>Processes/MainReceiver.process</pd:name>
     <pd:startName>Inactive Tpr Price Starter Queue Receiver</pd:startName>
@@ -66,7 +66,7 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>376</pd:x>
+        <pd:x>377</pd:x>
         <pd:y>79</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -77,9 +77,18 @@
                 <ns2:AppId>
                     <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
                 </ns2:AppId>
+                <ns2:Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </ns2:Level>
+                <ns2:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns3:ProcessContext/ProcessId)"/>
+                </ns2:Logger>
                 <ns2:LogDate>
                     <xsl:value-of select="current-dateTime()"/>
                 </ns2:LogDate>
+                <ns2:Message>
+                    <xsl:value-of select="&quot; Tpr Service Will start reading  expiring Tprs now.&quot;"/>
+                </ns2:Message>
             </ns2:AppLog>
         </pd:inputBindings>
     </pd:activity>
@@ -107,9 +116,18 @@
                 <ns2:AppId>
                     <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
                 </ns2:AppId>
+                <ns2:Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </ns2:Level>
+                <ns2:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns3:ProcessContext/ProcessId)"/>
+                </ns2:Logger>
                 <ns2:LogDate>
                     <xsl:value-of select="current-dateTime()"/>
                 </ns2:LogDate>
+                <ns2:Message>
+                    <xsl:value-of select="&quot;Tpr Service Already running So Service will not run.&quot;"/>
+                </ns2:Message>
             </ns2:AppLog>
         </pd:inputBindings>
     </pd:activity>
@@ -126,8 +144,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>199</pd:x>
-        <pd:y>309</pd:y>
+        <pd:x>78</pd:x>
+        <pd:y>301</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -137,8 +155,8 @@
     <pd:activity name="Log Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>337</pd:x>
-        <pd:y>311</pd:y>
+        <pd:x>230</pd:x>
+        <pd:y>300</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -181,12 +199,101 @@
     <pd:activity name="Confirm-Error">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>521</pd:x>
-        <pd:y>312</pd:y>
+        <pd:x>512</pd:x>
+        <pd:y>309</pd:y>
         <config>
             <ConfirmEvent>Inactive Tpr Price Starter Queue Receiver</ConfirmEvent>
         </config>
         <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Publish Error Message">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>403</pd:x>
+        <pd:y>313</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:ErrorMessage>
+                <ns12:Application>
+                    <xsl:value-of select="$_processContext/ns3:ProcessContext/ProjectName"/>
+                </ns12:Application>
+                <ns12:MessageID>
+                    <xsl:value-of select="$Parse-XML/pfx:JobSchedule/pfx:JobScheduleId"/>
+                </ns12:MessageID>
+                <ns12:MessageProperties>
+                    <ns12:NameValuePair>
+                        <xsl:attribute name="name">
+                            <xsl:value-of select="&quot;Region&quot;"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="$Parse-XML/pfx:JobSchedule/pfx:Region"/>
+                        </xsl:attribute>
+                    </ns12:NameValuePair>
+                </ns12:MessageProperties>
+                <ns12:Message>
+                    <xsl:value-of select="$Inactive-Tpr-Price-Starter-Queue-Receiver/ns:ActivityOutput/Body"/>
+                </ns12:Message>
+                <ns12:ErrorCode>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                </ns12:ErrorCode>
+                <ns12:ErrorDetails>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                </ns12:ErrorDetails>
+                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:when test="contains($_error/ns3:ErrorReport/Msg, &quot;Connection is closed&quot;)">
+                        <ns12:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </ns12:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="contains($_error/ns3:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException: Invalid object name&quot;)">
+                        <ns12:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </ns12:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="contains($_error/ns3:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException: Cannot open database&quot;)">
+                        <ns12:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </ns12:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns12:ErrorSeverity>
+                            <xsl:value-of select="&quot;Error&quot;"/>
+                        </ns12:ErrorSeverity>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </ns12:ErrorMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Update-Job-Status-1">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>659</pd:x>
+        <pd:y>303</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <statement>update [app].[JobSchedule]
+set status = 'ready'
+where JobScheduleId  = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>JobScheduleId</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <JobScheduleId>
+                    <xsl:value-of select="$Parse-XML/pfx:JobSchedule/pfx:JobScheduleId"/>
+                </JobScheduleId>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
     </pd:activity>
     <pd:transition>
         <pd:from>Inactive Tpr Price Starter Queue Receiver</pd:from>
@@ -256,6 +363,13 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Log Error</pd:from>
+        <pd:to>Publish Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Publish Error Message</pd:from>
         <pd:to>Confirm-Error</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -263,6 +377,13 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Confirm-Error</pd:from>
+        <pd:to>Update-Job-Status-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update-Job-Status-1</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

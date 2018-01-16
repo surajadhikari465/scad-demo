@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:WFM.UID="java://UID" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/RunInactiveTprService.process</pd:name>
@@ -45,8 +45,8 @@ where JobScheduleId  = ?</statement>
     <pd:group name="ExpiringTprSubsets">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>232</pd:x>
-        <pd:y>34</pd:y>
+        <pd:x>249</pd:x>
+        <pd:y>111</pd:y>
         <pd:width>769</pd:width>
         <pd:height>528</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -96,8 +96,8 @@ where JobScheduleId  = ?</statement>
         <pd:activity name="GetExpiringTprs">
             <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-            <pd:x>356</pd:x>
-            <pd:y>98</pd:y>
+            <pd:x>370</pd:x>
+            <pd:y>173</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -256,7 +256,7 @@ AND NOT EXISTS
                         </xsl:choose>
                     </Region2>
                     <subsetSize>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize"/>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/QueryExpiringTprSubsetSize"/>
                     </subsetSize>
                 </jdbcQueryActivityInput>
             </pd:inputBindings>
@@ -264,8 +264,8 @@ AND NOT EXISTS
         <pd:group name="BatchAndSendExpiringTprs">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>285</pd:x>
-            <pd:y>267</pd:y>
+            <pd:x>303</pd:x>
+            <pd:y>302</pd:y>
             <pd:width>581</pd:width>
             <pd:height>255</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -278,7 +278,7 @@ AND NOT EXISTS
                 <pd:indexSlot>Counter</pd:indexSlot>
                 <pd:outSlot>ExpiringTprPrices</pd:outSlot>
                 <pd:activityOutputName>Map Data</pd:activityOutputName>
-                <pd:whileCondition>$Counter&lt;=ceiling((count($GetExpiringTprs/resultSet/Record) div $_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize))</pd:whileCondition>
+                <pd:whileCondition>$Counter&lt;=ceiling((count($GetExpiringTprs/resultSet/Record) div $_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize))</pd:whileCondition>
                 <pd:accumulateOutput>true</pd:accumulateOutput>
             </config>
             <pd:inputBindings/>
@@ -328,15 +328,15 @@ AND NOT EXISTS
             <pd:activity name="Map Data">
                 <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
                 <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-                <pd:x>375</pd:x>
-                <pd:y>344</pd:y>
+                <pd:x>371</pd:x>
+                <pd:y>380</pd:y>
                 <config>
                     <element ref="pfx2:MammothPrices"/>
                 </config>
                 <pd:inputBindings>
                     <pfx2:MammothPrices>
-                        <xsl:variable name="startPosition" select="($Counter - 1)*$_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize"/>
-                        <xsl:variable name="endPosition" select="($Counter )*$_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize"/>
+                        <xsl:variable name="startPosition" select="($Counter - 1)*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize"/>
+                        <xsl:variable name="endPosition" select="($Counter )*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize"/>
                         <xsl:for-each select="$GetExpiringTprs/resultSet/Record[position()>$startPosition&#xA;and position() &lt;=$endPosition]">
                             <pfx2:MammothPrice>
                                 <pfx2:Region>
@@ -405,8 +405,8 @@ AND NOT EXISTS
             <pd:activity name="Send Expiring Tprs to Queue">
                 <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-                <pd:x>538</pd:x>
-                <pd:y>344</pd:y>
+                <pd:x>555</pd:x>
+                <pd:y>376</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -427,12 +427,18 @@ AND NOT EXISTS
                 <pd:inputBindings>
                     <ns0:ActivityInput>
                         <OtherProperties>
+                            <TransactionID>
+                                <xsl:value-of select="WFM.UID:UID()"/>
+                            </TransactionID>
                             <ResetFlag>
                                 <xsl:value-of select="false()"/>
                             </ResetFlag>
                             <TransactionType>
                                 <xsl:value-of select="&quot;Expirng Tprs&quot;"/>
                             </TransactionType>
+                            <Source>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Source"/>
+                            </Source>
                             <xsl:if test="$Start/pfx:JobSchedule/pfx:Region">
                                 <RegionCode>
                                     <xsl:value-of select="$Start/pfx:JobSchedule/pfx:Region"/>
@@ -448,8 +454,8 @@ AND NOT EXISTS
             <pd:activity name="LogBatchSuccess">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>751</pd:x>
-                <pd:y>343</pd:y>
+                <pd:x>766</pd:x>
+                <pd:y>376</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/LogPublisher.process</processName>
                     <spawn>true</spawn>
@@ -472,7 +478,7 @@ AND NOT EXISTS
                             <xsl:value-of select="current-dateTime()"/>
                         </ns02:LogDate>
                         <ns02:Message>
-                            <xsl:value-of select="concat(&quot;Number of expiring Tpr Records Send to EMS:&quot;, $_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize)"/>
+                            <xsl:value-of select="concat(&quot;Number of expiring Tpr Records Send to EMS:&quot;, $_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize)"/>
                         </ns02:Message>
                     </ns02:AppLog>
                 </pd:inputBindings>
@@ -480,8 +486,8 @@ AND NOT EXISTS
             <pd:activity name="Catch">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>398</pd:x>
-                <pd:y>440</pd:y>
+                <pd:x>414</pd:x>
+                <pd:y>473</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <catchAll>true</catchAll>
@@ -491,16 +497,16 @@ AND NOT EXISTS
             <pd:activity name="RowByRowProcess">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>572</pd:x>
-                <pd:y>435</pd:y>
+                <pd:x>588</pd:x>
+                <pd:y>468</pd:y>
                 <config>
                     <processName>/Processes/ProcessRowByRow.process</processName>
                 </config>
                 <pd:inputBindings>
                     <Input>
                         <pfx2:MammothPrices>
-                            <xsl:variable name="var" select="($Counter - 1)*$_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize&#xA;"/>
-                            <xsl:variable name="var2" select="($Counter )*$_globalVariables/ns:GlobalVariables/Application/QueryInatciveTprSubsetSize"/>
+                            <xsl:variable name="var" select="($Counter - 1)*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize&#xA;"/>
+                            <xsl:variable name="var2" select="($Counter )*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize"/>
                             <xsl:for-each select="$GetExpiringTprs/resultSet/Record[position()>$var&#xA;and position() &lt;=$var2]">
                                 <pfx2:MammothPrice>
                                     <pfx2:Region>
@@ -575,15 +581,15 @@ AND NOT EXISTS
     <pd:activity name="Update-Job-Status-1">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>1116</pd:x>
-        <pd:y>313</pd:y>
+        <pd:x>1113</pd:x>
+        <pd:y>312</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
             <statement>update [app].[JobSchedule]
-set status = 'running'
+set status = 'ready'
 where JobScheduleId  = ?</statement>
             <Prepared_Param_DataType>
                 <parameter>
@@ -595,7 +601,7 @@ where JobScheduleId  = ?</statement>
         <pd:inputBindings>
             <jdbcUpdateActivityInput>
                 <JobScheduleId>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/pfx:JobSchedule/pfx:JobScheduleId"/>
+                    <xsl:value-of select="$Start/pfx:JobSchedule/pfx:JobScheduleId"/>
                 </JobScheduleId>
             </jdbcUpdateActivityInput>
         </pd:inputBindings>
