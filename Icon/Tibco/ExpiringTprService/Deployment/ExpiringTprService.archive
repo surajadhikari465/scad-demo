@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <enterpriseArchive>
-        <sharedArchive name="InactiveTprPriceService Shared Archive">
+        <sharedArchive name="ExpiringTprService Shared Archive">
             <resourceType>shared.archive.resource</resourceType>
             <authorProperty>2130356</authorProperty>
             <sharedResources/>
             <sharedFiles/>
             <sharedJarFiles/>
         </sharedArchive>
-        <processArchive name="InactiveTprPriceService Process Archive">
+        <processArchive name="ExpiringTprService Process Archive">
             <resourceType>process.archive.resource</resourceType>
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/MainReceiver.process</processProperty>
         </processArchive>
-        <versionProperty>13</versionProperty>
+        <versionProperty>15</versionProperty>
         <authorProperty>Amit Uppal</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
-        <name>InactiveTprPriceService</name>
+        <name>ExpiringTprService</name>
         <designer>
             <lockedProperties/>
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\InActiveTprPriceService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\ExpiringTprService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
