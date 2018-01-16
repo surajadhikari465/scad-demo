@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:WFM.UID="java://UID" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
+    <pd:name>Processes/RunInactiveTprService.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:JobSchedule"/>
+    <pd:startX>27</pd:startX>
+    <pd:startY>296</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1245</pd:endX>
+    <pd:endY>311</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1515623787184</pd:targetNamespace>
+    <pd:activity name="Update Job Status">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>144</pd:x>
+        <pd:y>293</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <statement>update [app].[JobSchedule]
+set status = 'running'
+where JobScheduleId  = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>JobScheduleId</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <JobScheduleId>
+                    <xsl:value-of select="$Start/pfx:JobSchedule/pfx:JobScheduleId"/>
+                </JobScheduleId>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="ExpiringTprSubsets">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>249</pd:x>
+        <pd:y>111</pd:y>
+        <pd:width>769</pd:width>
+        <pd:height>528</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>ExpiringTprIndex</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$GetExpiringTprs/resultSet/lastSubset = "true"</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetExpiringTprs</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetExpiringTprs</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>BatchAndSendExpiringTprs</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetExpiringTprs</pd:from>
+            <pd:to>BatchAndSendExpiringTprs</pd:to>
+            <pd:xpathDescription>Count &gt; 0</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>count($GetExpiringTprs/resultSet/Record)&gt; 0</pd:xpath>
+        </pd:transition>
+        <pd:activity name="GetExpiringTprs">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>370</pd:x>
+            <pd:y>173</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>10000000</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <statement>SELECT
+	CAST(t_end.Region AS NVARCHAR(2)) AS Region,
+	t_end.PriceID,
+	t_end.GpmID,
+	t_end.ItemID,
+	t_end.BusinessUnitID,
+	t_end.StartDate,
+	t_end.EndDate,
+	t_end.Price,
+	t_end.PriceType,
+	t_end.PriceTypeAttribute,
+	t_end.SellableUOM,
+	t_end.CurrencyCode,
+	t_end.Multiple,
+	t_end.NewTagExpiration,
+	t_end.InsertDateUtc,
+	t_end.ModifiedDateUtc,
+	it.itemTypeCode as itemTypeCode,
+	Items.ScanCode as ScanCode,
+	lc.StoreName as StoreName
+
+FROM gpm.Prices t_end
+INNER JOIN Items on Items.ItemID = t_end.ItemID
+INNER JOIN ItemTypes it on Items.ItemTypeID = it.itemTypeID
+INNER JOIN Locale lc on t_end.BusinessUnitID = lc.BusinessUnitID
+
+WHERE t_end.Region = ?
+AND t_end.PriceType = 'TPR'
+AND t_end.EndDate = CAST(DATEADD(s, -1, CAST(CAST(SYSDATETIME() AS DATE) AS datetime2)) as datetime2)
+AND NOT EXISTS
+	(SELECT 1
+	FROM gpm.Prices t_on 
+	WHERE t_on.Region = ?
+		AND t_on.StartDate = CAST(CAST(SYSDATETIME() AS DATE) AS datetime2)
+		AND t_on.PriceType = 'TPR'
+		AND t_end.Region = t_on.Region
+		AND t_end.ItemID = t_on.ItemID
+		AND t_end.BusinessUnitID = t_on.BusinessUnitID
+		AND t_end.PriceType = t_on.PriceType)</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>Region1</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Region2</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <processInSubsets>true</processInSubsets>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>Region</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-15</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PriceID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>GpmID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ItemID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>BusinessUnitID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>StartDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>EndDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Price</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PriceType</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PriceTypeAttribute</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SellableUOM</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>CurrencyCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Multiple</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>NewTagExpiration</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>InsertDateUtc</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ModifiedDateUtc</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>itemTypeCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ScanCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>StoreName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <Region1>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx:JobSchedule/pfx:Region)">
+                                <xsl:value-of select="$Start/pfx:JobSchedule/pfx:Region"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </Region1>
+                    <Region2>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx:JobSchedule/pfx:Region)">
+                                <xsl:value-of select="$Start/pfx:JobSchedule/pfx:Region"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </Region2>
+                    <subsetSize>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/QueryExpiringTprSubsetSize"/>
+                    </subsetSize>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:group name="BatchAndSendExpiringTprs">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>303</pd:x>
+            <pd:y>302</pd:y>
+            <pd:width>581</pd:width>
+            <pd:height>255</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>while</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:indexSlot>Counter</pd:indexSlot>
+                <pd:outSlot>ExpiringTprPrices</pd:outSlot>
+                <pd:activityOutputName>Map Data</pd:activityOutputName>
+                <pd:whileCondition>$Counter&lt;=ceiling((count($GetExpiringTprs/resultSet/Record) div $_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize))</pd:whileCondition>
+                <pd:accumulateOutput>true</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Map Data</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>RowByRowProcess</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>LogBatchSuccess</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Map Data</pd:from>
+                <pd:to>Send Expiring Tprs to Queue</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Send Expiring Tprs to Queue</pd:from>
+                <pd:to>LogBatchSuccess</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Catch</pd:from>
+                <pd:to>RowByRowProcess</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Map Data">
+                <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+                <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+                <pd:x>371</pd:x>
+                <pd:y>380</pd:y>
+                <config>
+                    <element ref="pfx2:MammothPrices"/>
+                </config>
+                <pd:inputBindings>
+                    <pfx2:MammothPrices>
+                        <xsl:variable name="startPosition" select="($Counter - 1)*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize"/>
+                        <xsl:variable name="endPosition" select="($Counter )*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize"/>
+                        <xsl:for-each select="$GetExpiringTprs/resultSet/Record[position()>$startPosition&#xA;and position() &lt;=$endPosition]">
+                            <pfx2:MammothPrice>
+                                <pfx2:Region>
+                                    <xsl:value-of select="Region"/>
+                                </pfx2:Region>
+                                <pfx2:PriceID>
+                                    <xsl:value-of select="PriceID"/>
+                                </pfx2:PriceID>
+                                <pfx2:BusinessUnit>
+                                    <xsl:value-of select="BusinessUnitID"/>
+                                </pfx2:BusinessUnit>
+                                <pfx2:ItemId>
+                                    <xsl:value-of select="ItemID"/>
+                                </pfx2:ItemId>
+                                <pfx2:GpmId>
+                                    <xsl:value-of select="GpmID"/>
+                                </pfx2:GpmId>
+                                <pfx2:Multiple>
+                                    <xsl:value-of select="Multiple"/>
+                                </pfx2:Multiple>
+                                <pfx2:Price>
+                                    <xsl:value-of select="Price"/>
+                                </pfx2:Price>
+                                <pfx2:StartDate>
+                                    <xsl:value-of select="StartDate"/>
+                                </pfx2:StartDate>
+                                <xsl:if test="EndDate">
+                                    <pfx2:EndDate>
+                                        <xsl:value-of select="EndDate"/>
+                                    </pfx2:EndDate>
+                                </xsl:if>
+                                <pfx2:PriceType>
+                                    <xsl:value-of select="PriceType"/>
+                                </pfx2:PriceType>
+                                <pfx2:PriceTypeAttribute>
+                                    <xsl:value-of select="PriceTypeAttribute"/>
+                                </pfx2:PriceTypeAttribute>
+                                <pfx2:SellableUom>
+                                    <xsl:value-of select="SellableUOM"/>
+                                </pfx2:SellableUom>
+                                <pfx2:CurrencyCode>
+                                    <xsl:value-of select="CurrencyCode"/>
+                                </pfx2:CurrencyCode>
+                                <xsl:if test="NewTagExpiration">
+                                    <pfx2:NewTagExpiration>
+                                        <xsl:value-of select="NewTagExpiration"/>
+                                    </pfx2:NewTagExpiration>
+                                </xsl:if>
+                                <pfx2:Action>
+                                    <xsl:value-of select="&quot;Expiring&quot;"/>
+                                </pfx2:Action>
+                                <pfx2:ItemTypeCode>
+                                    <xsl:value-of select="itemTypeCode"/>
+                                </pfx2:ItemTypeCode>
+                                <pfx2:StoreName>
+                                    <xsl:value-of select="StoreName"/>
+                                </pfx2:StoreName>
+                                <pfx2:ScanCode>
+                                    <xsl:value-of select="ScanCode"/>
+                                </pfx2:ScanCode>
+                            </pfx2:MammothPrice>
+                        </xsl:for-each>
+                    </pfx2:MammothPrices>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Send Expiring Tprs to Queue">
+                <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+                <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+                <pd:x>555</pd:x>
+                <pd:y>376</pd:y>
+                <config>
+                    <PermittedMessageType>XML Text</PermittedMessageType>
+                    <SessionAttributes>
+                        <transacted>false</transacted>
+                        <acknowledgeMode>1</acknowledgeMode>
+                        <maxSessions>1</maxSessions>
+                        <destination>%%Destinations/MammothPsgQueue%%</destination>
+                    </SessionAttributes>
+                    <ConfigurableHeaders>
+                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                        <JMSExpiration>0</JMSExpiration>
+                        <JMSPriority>4</JMSPriority>
+                    </ConfigurableHeaders>
+                    <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+                    <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+                    <InDataxsdString ref="pfx2:MammothPrices"/>
+                </config>
+                <pd:inputBindings>
+                    <ns0:ActivityInput>
+                        <OtherProperties>
+                            <TransactionID>
+                                <xsl:value-of select="WFM.UID:UID()"/>
+                            </TransactionID>
+                            <ResetFlag>
+                                <xsl:value-of select="false()"/>
+                            </ResetFlag>
+                            <TransactionType>
+                                <xsl:value-of select="&quot;Expirng Tprs&quot;"/>
+                            </TransactionType>
+                            <Source>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Source"/>
+                            </Source>
+                            <xsl:if test="$Start/pfx:JobSchedule/pfx:Region">
+                                <RegionCode>
+                                    <xsl:value-of select="$Start/pfx:JobSchedule/pfx:Region"/>
+                                </RegionCode>
+                            </xsl:if>
+                        </OtherProperties>
+                        <Body>
+                            <xsl:copy-of select="$Map-Data/pfx2:MammothPrices"/>
+                        </Body>
+                    </ns0:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="LogBatchSuccess">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>766</pd:x>
+                <pd:y>376</pd:y>
+                <config>
+                    <processName>/SharedResources/Processes/LogPublisher.process</processName>
+                    <spawn>true</spawn>
+                </config>
+                <pd:inputBindings>
+                    <ns02:AppLog>
+                        <ns02:AppId>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationID"/>
+                        </ns02:AppId>
+                        <ns02:Level>
+                            <xsl:value-of select="&quot;Info&quot;"/>
+                        </ns02:Level>
+                        <ns02:Logger>
+                            <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
+                        </ns02:Logger>
+                        <ns02:MachineName>
+                            <xsl:value-of select="BW:getHostName()"/>
+                        </ns02:MachineName>
+                        <ns02:LogDate>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns02:LogDate>
+                        <ns02:Message>
+                            <xsl:value-of select="concat(&quot;Number of expiring Tpr Records Send to EMS:&quot;, $_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize)"/>
+                        </ns02:Message>
+                    </ns02:AppLog>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Catch">
+                <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+                <pd:resourceType>ae.activities.catch</pd:resourceType>
+                <pd:x>414</pd:x>
+                <pd:y>473</pd:y>
+                <pd:handler>true</pd:handler>
+                <config>
+                    <catchAll>true</catchAll>
+                </config>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="RowByRowProcess">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>588</pd:x>
+                <pd:y>468</pd:y>
+                <config>
+                    <processName>/Processes/ProcessRowByRow.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <Input>
+                        <pfx2:MammothPrices>
+                            <xsl:variable name="var" select="($Counter - 1)*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize&#xA;"/>
+                            <xsl:variable name="var2" select="($Counter )*$_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize"/>
+                            <xsl:for-each select="$GetExpiringTprs/resultSet/Record[position()>$var&#xA;and position() &lt;=$var2]">
+                                <pfx2:MammothPrice>
+                                    <pfx2:Region>
+                                        <xsl:value-of select="Region"/>
+                                    </pfx2:Region>
+                                    <pfx2:PriceID>
+                                        <xsl:value-of select="PriceID"/>
+                                    </pfx2:PriceID>
+                                    <pfx2:BusinessUnit>
+                                        <xsl:value-of select="BusinessUnitID"/>
+                                    </pfx2:BusinessUnit>
+                                    <pfx2:ItemId>
+                                        <xsl:value-of select="ItemID"/>
+                                    </pfx2:ItemId>
+                                    <pfx2:GpmId>
+                                        <xsl:value-of select="GpmID"/>
+                                    </pfx2:GpmId>
+                                    <pfx2:Multiple>
+                                        <xsl:value-of select="Multiple"/>
+                                    </pfx2:Multiple>
+                                    <pfx2:Price>
+                                        <xsl:value-of select="Price"/>
+                                    </pfx2:Price>
+                                    <pfx2:StartDate>
+                                        <xsl:value-of select="StartDate"/>
+                                    </pfx2:StartDate>
+                                    <xsl:if test="EndDate">
+                                        <pfx2:EndDate>
+                                            <xsl:value-of select="EndDate"/>
+                                        </pfx2:EndDate>
+                                    </xsl:if>
+                                    <pfx2:PriceType>
+                                        <xsl:value-of select="PriceType"/>
+                                    </pfx2:PriceType>
+                                    <pfx2:PriceTypeAttribute>
+                                        <xsl:value-of select="PriceTypeAttribute"/>
+                                    </pfx2:PriceTypeAttribute>
+                                    <pfx2:SellableUom>
+                                        <xsl:value-of select="SellableUOM"/>
+                                    </pfx2:SellableUom>
+                                    <pfx2:CurrencyCode>
+                                        <xsl:value-of select="CurrencyCode"/>
+                                    </pfx2:CurrencyCode>
+                                    <xsl:if test="NewTagExpiration">
+                                        <pfx2:NewTagExpiration>
+                                            <xsl:value-of select="NewTagExpiration"/>
+                                        </pfx2:NewTagExpiration>
+                                    </xsl:if>
+                                    <pfx2:Action>
+                                        <xsl:value-of select="&quot;Row By Row Processing Epxpiring Tpr&quot;"/>
+                                    </pfx2:Action>
+                                    <pfx2:ItemTypeCode>
+                                        <xsl:value-of select="itemTypeCode"/>
+                                    </pfx2:ItemTypeCode>
+                                    <pfx2:StoreName>
+                                        <xsl:value-of select="StoreName"/>
+                                    </pfx2:StoreName>
+                                    <pfx2:ScanCode>
+                                        <xsl:value-of select="ScanCode"/>
+                                    </pfx2:ScanCode>
+                                </pfx2:MammothPrice>
+                            </xsl:for-each>
+                        </pfx2:MammothPrices>
+                        <RegionCode>
+                            <xsl:value-of select="$Start/pfx:JobSchedule/pfx:Region"/>
+                        </RegionCode>
+                    </Input>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:activity name="Update-Job-Status-1">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>1113</pd:x>
+        <pd:y>312</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <statement>update [app].[JobSchedule]
+set status = 'ready'
+where JobScheduleId  = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>JobScheduleId</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <JobScheduleId>
+                    <xsl:value-of select="$Start/pfx:JobSchedule/pfx:JobScheduleId"/>
+                </JobScheduleId>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Update Job Status</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update Job Status</pd:from>
+        <pd:to>ExpiringTprSubsets</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExpiringTprSubsets</pd:from>
+        <pd:to>Update-Job-Status-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update-Job-Status-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

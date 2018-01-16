@@ -493,7 +493,7 @@ WHERE p.Region = ?
             <pd:activity name="InfoLogPublisher">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>734</pd:x>
+                <pd:x>733</pd:x>
                 <pd:y>296</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -624,7 +624,7 @@ WHERE p.Region = ?
             <pd:activity name="Send PriceToTopic">
                 <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
-                <pd:x>585</pd:x>
+                <pd:x>591</pd:x>
                 <pd:y>298</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>

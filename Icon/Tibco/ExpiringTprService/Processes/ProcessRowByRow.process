@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:WFM.UID="java://UID">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:WFM.UID="java://UID">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
-    <pd:name>Processes/RowByRowProcessorForActivePrice.process</pd:name>
+    <pd:name>Processes/ProcessRowByRow.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
         <xsd:element name="Input">
@@ -9,26 +9,24 @@
                 <xsd:sequence>
                     <xsd:element ref="pfx:MammothPrices"/>
                     <xsd:element name="RegionCode" type="xsd:string"/>
-                    <xsd:element name="MessageId" type="xsd:string"/>
-                    <xsd:element name="ProcessStartDateTime" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>28</pd:startX>
-    <pd:startY>201</pd:startY>
+    <pd:startX>31</pd:startX>
+    <pd:startY>157</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>813</pd:endX>
-    <pd:endY>201</pd:endY>
+    <pd:endX>847</pd:endX>
+    <pd:endY>153</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:targetNamespace>http://xmlns.example.com/1509551253976</pd:targetNamespace>
+    <pd:targetNamespace>http://xmlns.example.com/1515626272805</pd:targetNamespace>
     <pd:activity name="InfoLogPublisher">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>140</pd:x>
-        <pd:y>199</pd:y>
+        <pd:x>186</pd:x>
+        <pd:y>161</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -42,7 +40,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns12:Level>
                 <ns12:Logger>
-                    <xsl:value-of select="(BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId))"/>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
                 </ns12:Logger>
                 <ns12:MachineName>
                     <xsl:value-of select="BW:getHostName()"/>
@@ -51,7 +49,7 @@
                     <xsl:value-of select="current-dateTime()"/>
                 </ns12:LogDate>
                 <ns12:Message>
-                    <xsl:value-of select="concat(&quot;Process Start time:&quot;,$Start/Input/ProcessStartDateTime ,&quot; Started row by row processing for Message ID:&quot;,$Start/Input/MessageId,&quot; for Region:&quot;,$Start/Input/RegionCode)"/>
+                    <xsl:value-of select="concat( &quot;Started sending Row By Row Expiring Tprs&quot;,&quot;for Region:&quot;,$Start/Input/RegionCode)"/>
                 </ns12:Message>
             </ns12:AppLog>
         </pd:inputBindings>
@@ -59,10 +57,10 @@
     <pd:group name="Iterate">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>277</pd:x>
-        <pd:y>49</pd:y>
-        <pd:width>292</pd:width>
-        <pd:height>277</pd:height>
+        <pd:x>321</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>294</pd:width>
+        <pd:height>278</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -71,8 +69,8 @@
             <pd:groupType>inputLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
             <pd:over>$Start/Input/pfx:MammothPrices/pfx:MammothPrice</pd:over>
-            <pd:iterationElementSlot>CurrentPrice</pd:iterationElementSlot>
-            <pd:indexSlot>ActivePrice</pd:indexSlot>
+            <pd:iterationElementSlot>CurrentExpiringTpr</pd:iterationElementSlot>
+            <pd:indexSlot>ExpiringTpr</pd:indexSlot>
             <pd:activityOutputName/>
             <pd:accumulateOutput>false</pd:accumulateOutput>
         </config>
@@ -93,7 +91,7 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send PriceToTopic</pd:from>
+            <pd:from>Send Expiring Tprs to Queue</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -108,7 +106,7 @@
         </pd:transition>
         <pd:transition>
             <pd:from>Map Data</pd:from>
-            <pd:to>Send PriceToTopic</pd:to>
+            <pd:to>Send Expiring Tprs to Queue</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -116,22 +114,20 @@
         <pd:activity name="Map Data">
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>337</pd:x>
-            <pd:y>116</pd:y>
+            <pd:x>381</pd:x>
+            <pd:y>69</pd:y>
             <config>
-                <element ref="pfx:MammothPrices"/>
+                <element ref="pfx:MammothPrice"/>
             </config>
             <pd:inputBindings>
-                <pfx:MammothPrices>
-                    <xsl:copy-of select="$CurrentPrice/pfx:MammothPrice"/>
-                </pfx:MammothPrices>
+                <xsl:copy-of select="$CurrentExpiringTpr/pfx:MammothPrice"/>
             </pd:inputBindings>
         </pd:activity>
         <pd:activity name="Catch">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>324</pd:x>
-            <pd:y>247</pd:y>
+            <pd:x>368</pd:x>
+            <pd:y>200</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <catchAll>true</catchAll>
@@ -141,8 +137,8 @@
         <pd:activity name="ErrorLogPublisher">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>461</pd:x>
-            <pd:y>250</pd:y>
+            <pd:x>502</pd:x>
+            <pd:y>203</pd:y>
             <config>
                 <processName>/SharedResources/Processes/LogPublisher.process</processName>
                 <spawn>true</spawn>
@@ -156,7 +152,7 @@
                         <xsl:value-of select="&quot;Error&quot;"/>
                     </ns12:Level>
                     <ns12:Logger>
-                        <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                        <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
                     </ns12:Logger>
                     <ns12:MachineName>
                         <xsl:value-of select="BW:getHostName()"/>
@@ -165,33 +161,33 @@
                         <xsl:value-of select="current-dateTime()"/>
                     </ns12:LogDate>
                     <ns12:Message>
-                        <xsl:value-of select="concat(&quot;Error while processing record with Item ID:&quot;,  $CurrentPrice/pfx:MammothPrice/pfx:ItemId,&quot; Business Unit ID:&quot;,$CurrentPrice/pfx:MammothPrice/pfx:BusinessUnit ,&quot; Error is:&quot;, $_error/ns2:ErrorReport/Msg)"/>
+                        <xsl:value-of select="concat(&quot;Error while sending expiring Tpr for Item ID:&quot;,$CurrentExpiringTpr/pfx:MammothPrice/pfx:ItemId  ,&quot; Business Unit ID:&quot;,$CurrentExpiringTpr/pfx:MammothPrice/pfx:BusinessUnit ,&quot; Error is:&quot;, $_error/ns1:ErrorReport/Msg)"/>
                     </ns12:Message>
-                    <xsl:if test="$_error/ns2:ErrorReport/MsgCode">
+                    <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
                         <ns12:Exception>
-                            <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
                         </ns12:Exception>
                     </xsl:if>
-                    <xsl:if test="$_error/ns2:ErrorReport/ProcessStack">
+                    <xsl:if test="$_error/ns1:ErrorReport/ProcessStack">
                         <ns12:StackTrace>
-                            <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
                         </ns12:StackTrace>
                     </xsl:if>
                 </ns12:AppLog>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Send PriceToTopic">
-            <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
-            <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
-            <pd:x>470</pd:x>
-            <pd:y>112</pd:y>
+        <pd:activity name="Send Expiring Tprs to Queue">
+            <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+            <pd:x>501</pd:x>
+            <pd:y>77</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
                 <SessionAttributes>
                     <transacted>false</transacted>
                     <acknowledgeMode>1</acknowledgeMode>
                     <maxSessions>1</maxSessions>
-                    <destination>%%Destinations/PriceMammothTopic%%</destination>
+                    <destination>%%Destinations/MammothPsgQueue%%</destination>
                 </SessionAttributes>
                 <ConfigurableHeaders>
                     <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
@@ -200,35 +196,31 @@
                 </ConfigurableHeaders>
                 <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
                 <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
-                <InDataxsdString ref="pfx:MammothPrices"/>
+                <InDataxsdString ref="pfx:MammothPrice"/>
             </config>
             <pd:inputBindings>
-                <ns1:ActivityInput>
+                <ns0:ActivityInput>
                     <OtherProperties>
                         <TransactionID>
                             <xsl:value-of select="WFM.UID:UID()"/>
                         </TransactionID>
-                        <xsl:if test="$Start/Input/ProcessStartDateTime">
-                            <CorrelationID>
-                                <xsl:value-of select="$Start/Input/ProcessStartDateTime"/>
-                            </CorrelationID>
-                        </xsl:if>
+                        <ResetFlag>
+                            <xsl:value-of select="false()"/>
+                        </ResetFlag>
                         <TransactionType>
-                            <xsl:value-of select="&quot;Price&quot;"/>
+                            <xsl:value-of select="&quot;Expirng Tprs&quot;"/>
                         </TransactionType>
                         <Source>
                             <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Source"/>
                         </Source>
-                        <xsl:if test="$Start/Input/RegionCode">
-                            <RegionCode>
-                                <xsl:value-of select="$Start/Input/RegionCode"/>
-                            </RegionCode>
-                        </xsl:if>
+                        <RegionCode>
+                            <xsl:value-of select="$Start/Input/RegionCode"/>
+                        </RegionCode>
                     </OtherProperties>
                     <Body>
-                        <xsl:copy-of select="$Map-Data/pfx:MammothPrices"/>
+                        <xsl:copy-of select="$CurrentExpiringTpr/pfx:MammothPrice"/>
                     </Body>
-                </ns1:ActivityInput>
+                </ns0:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>

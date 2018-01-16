@@ -2,28 +2,28 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>Password</name>
-			<value>#!AVkWlao5LP5Ls9JbLSbIKarEQjTl2Ci9UTk+fu+sEKUCHUzjuTQjYQmOPSyczyNlze2EW7zy7Fs=</value>
+			<name>ApplicationID</name>
+			<value>19</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1510557191413</modTime>
+			<type>Integer</type>
+			<modTime>1516132875711</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Url</name>
-			<value>ssl://cerd1616.wfm.pvt:7233</value>
+			<name>EMSPriceBatchsize</name>
+			<value>2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1515621478449</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>QueryExpiringTprSubsetSize</name>
+			<value>1000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510557191442</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>Username</name>
-			<value>sb1_mammothPriceUser</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1510557191468</modTime>
+			<modTime>1516131904768</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

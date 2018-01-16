@@ -738,6 +738,7 @@
     <Build Include="eplum\Stored Procedures\GetEPlumAttributes.sql" />
     <Build Include="stage\Tables\ItemStoreKeysEPlum.sql" />
     <None Include="Scripts\PreDeploymentScripts\UpdateDefaulltScanCodeToNotNull.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
