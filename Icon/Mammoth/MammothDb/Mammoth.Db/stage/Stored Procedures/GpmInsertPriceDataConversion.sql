@@ -84,3 +84,7 @@ END
 
 CLOSE db_cursor   
 DEALLOCATE db_cursor
+GO
+
+GRANT EXECUTE on [stage].[GpmInsertPriceDataConversion] to [MammothRole]
+GO

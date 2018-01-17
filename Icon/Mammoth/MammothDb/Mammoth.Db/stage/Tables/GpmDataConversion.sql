@@ -37,3 +37,6 @@ CREATE NONCLUSTERED INDEX [CIX_StageGpmDataConversion]
 		InsertDateUtc
 	) WITH (FILLFACTOR = 100);
 GO
+
+GRANT SELECT, INSERT on [stage].[GpmDataConversion] to [MammothRole]
+GO
