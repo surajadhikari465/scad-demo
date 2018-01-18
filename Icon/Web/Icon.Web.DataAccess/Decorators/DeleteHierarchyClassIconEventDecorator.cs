@@ -37,6 +37,7 @@ namespace Icon.Web.DataAccess.Decorators
         {
             // log that an icon hierarchy class is being deleted
             var deletedClass = command.DeletedHierarchyClass;
+            this.commandHandler.Execute(command);
             logger.Info($"Deleting iCON Hierarchy Class. ID = {deletedClass.hierarchyClassID}, Name = '{deletedClass.hierarchyClassName}'");
         }
     }
