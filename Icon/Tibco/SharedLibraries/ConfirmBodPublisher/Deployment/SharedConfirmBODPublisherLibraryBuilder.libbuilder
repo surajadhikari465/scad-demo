@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <name name="SharedConfirmBODPublisherLibraryBuilder">
-        <version>6</version>
+        <version>7</version>
         <author>Ben.Sims</author>
-        <fileLocation>C:\dev\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedConfirmBODPublisher.projlib</fileLocation>
+        <fileLocation>C:\VSTS\Source\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedConfirmBODPublisher.projlib</fileLocation>
         <resources>/SharedResources/Processes/Confirm BOD.process</resources>
     </name>
 </Repository:repository>

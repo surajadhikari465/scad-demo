@@ -10,7 +10,7 @@
             <authorProperty>2130356</authorProperty>
             <processProperty>/Processes/ErrorMessagesListener.process</processProperty>
         </processArchive>
-        <versionProperty>7</versionProperty>
+        <versionProperty>8</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>ErrorMessagesListener</name>
@@ -19,6 +19,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\ErrorMessagesListener.ear</fileLocationProperty>
+        <fileLocationProperty>C:\VSTS\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\ErrorMessagesListener.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
