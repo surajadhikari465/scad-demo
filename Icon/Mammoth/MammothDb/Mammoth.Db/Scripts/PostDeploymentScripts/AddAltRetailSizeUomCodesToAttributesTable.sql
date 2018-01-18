@@ -13,7 +13,7 @@ BEGIN
 		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'ASZ','Alt Retail Size',@Today);
 
 	IF NOT EXISTS (SELECT 1 FROM Attributes WHERE AttributeCode = 'AUM')
-		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'AUM','AltRetail Uom',@Today);
+		INSERT INTO Attributes (AttributeGroupID,AttributeCode,AttributeDesc,AddedDate) VALUES (1,'AUM','Alt Retail Uom',@Today);
 
 	INSERT INTO app.PostDeploymentScriptHistory VALUES(@scriptKey, getdate())
 
