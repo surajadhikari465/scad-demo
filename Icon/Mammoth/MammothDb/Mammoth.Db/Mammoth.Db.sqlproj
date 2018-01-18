@@ -741,6 +741,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddScaleItemAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddPercentageTareWeightToAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddAltRetailSizeUomCodesToAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
