@@ -63,7 +63,7 @@ namespace Mammoth.Common.DataAccess
 		public const int GlobalPricingProgram = 49;
 		public const int PercentageTareWeight = 50;
 		public const int AltRetailSize = 51;
-		public const int AltretailUom = 52;
+		public const int AltRetailUom = 52;
 		
 		public class Descriptions
 		{
@@ -118,7 +118,7 @@ namespace Mammoth.Common.DataAccess
 			public const string GlobalPricingProgram = "Global Pricing Program";
 			public const string PercentageTareWeight = "Percentage Tare Weight";
 			public const string AltRetailSize = "Alt Retail Size";
-			public const string AltretailUom = "AltRetail Uom";
+			public const string AltRetailUom = "Alt Retail Uom";
 		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
@@ -173,7 +173,7 @@ namespace Mammoth.Common.DataAccess
 				{ "GPP", "Global Pricing Program" },
 				{ "PTA", "Percentage Tare Weight" },
 				{ "ASZ", "Alt Retail Size" },
-				{ "AUM", "AltRetail Uom" }
+				{ "AUM", "Alt Retail Uom" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -231,7 +231,7 @@ namespace Mammoth.Common.DataAccess
 			public const string GlobalPricingProgram = "GPP";
 			public const string PercentageTareWeight = "PTA";
 			public const string AltRetailSize = "ASZ";
-			public const string AltretailUom = "AUM";
+			public const string AltRetailUom = "AUM";
 		}
 	}
 }
