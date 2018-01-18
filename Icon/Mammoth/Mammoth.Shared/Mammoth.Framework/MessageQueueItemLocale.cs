@@ -100,6 +100,10 @@ namespace Mammoth.Framework
 
         public bool? OrderedByInfor { get; set; }
 
+        public string AltRetailUOM { get; set; }
+
+        public decimal? AltRetailSize { get; set; }
+
         public virtual MessageAction MessageAction { get; set; }
 
         public virtual MessageHistory MessageHistory { get; set; }
