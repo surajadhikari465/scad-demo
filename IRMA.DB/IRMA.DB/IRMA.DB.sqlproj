@@ -3264,6 +3264,8 @@
     <None Include="Scripts\22440 - AddOrderedByInforToEIM\22440 - AddOrderedByInforToEIM.sql" />
     <Build Include="Schema\dbo\User Defined Types\ItemKeyAndStoreNoType.sql" />
     <Build Include="Schema\mammoth\Stored Procedures\GenerateEventsByItemKeyAndStoreNoType.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI25179 - PostDeploy Schema PopData - Add OrderExportQueue and OrderExportDeletedQueue To RetentionPolicy Table.rollback.sql" />
+    <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI25179 - PostDeploy Schema PopData - Add OrderExportQueue and OrderExportDeletedQueue To RetentionPolicy Table.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

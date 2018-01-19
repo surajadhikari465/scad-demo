@@ -21,6 +21,7 @@ AS
 --                          to be purged), the order purge process will start all over by checking the records with the smallest OrderHeader_ID. 
 --                          Hopefully in the next round of the order purge, some of the OrderHeader and OrderItem rows can be deleted after the 
 --                          corresponding ItemHistory and or ItemHistoryQueue records were deleted.
+--                   25179  Added Disable TRIGGER [dbo].[OrderHeaderDel] ON [dbo].[OrderHeader] when deleting OrderHeader records. 
 --****************************************************************************************************************************************************
 BEGIN
 	DECLARE @RunTime INT
@@ -414,6 +415,12 @@ BEGIN
 			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 
 			-- Purge OrderHeader data
+
+			SELECT @LogMsg = 'Disabling trigger [dbo].[OrderHeaderDel] and delete [dbo].[OrderHeader] records ...'
+			SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+
+			;DISABLE TRIGGER [dbo].[OrderHeaderDel] ON [dbo].[OrderHeader]
+
 			SELECT @RecordDeletedCount = 0
 		
 			DELETE oh
@@ -422,8 +429,10 @@ BEGIN
 				JOIN #OrderHeaderId ohi ON oh.OrderHeader_ID = ohi.OrderHeaderID 
 		
 			SELECT @RecordDeletedCount = @@rowcount
+
+			;ENABLE TRIGGER [dbo].[OrderHeaderDel] ON [dbo].[OrderHeader]
 		
-			SELECT @CodeLocation = 'OrderHeader Purging Ends... '; SELECT @LogMsg = @CodeLocation + ' OrderHeader records deleted: ' + CAST(@RecordDeletedCount AS VARCHAR);
+			SELECT @CodeLocation = 'Trigger [dbo].[OrderHeaderDel] re-enabled. OrderHeader Purging Ends... '; SELECT @LogMsg = @CodeLocation + ' OrderHeader records deleted: ' + CAST(@RecordDeletedCount AS VARCHAR);
 			SELECT @now = getdate(); 
 			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 
