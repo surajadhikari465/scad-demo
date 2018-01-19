@@ -45,7 +45,7 @@
     [SupplierItemID]			 NVARCHAR(20)   NULL,
 	[SupplierCaseSize]			 DECIMAL(9,4)	NULL,
 	[OrderedByInfor]			 BIT            NULL,
+	[AltRetailSize]              NUMERIC(9, 4)  NULL,
+    [AltRetailUOM]               NVARCHAR(25)   NULL,
 );
 go
-
-

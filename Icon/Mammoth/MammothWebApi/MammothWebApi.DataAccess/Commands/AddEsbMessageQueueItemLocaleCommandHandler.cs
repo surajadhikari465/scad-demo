@@ -72,7 +72,9 @@ namespace MammothWebApi.DataAccess.Commands
                                     [IrmaVendorKey] = ils.IrmaVendorKey ,
                                     [SupplierItemID] = ils.SupplierItemID ,
                                     [SupplierCaseSize] = ils.SupplierCaseSize, 
-                                    [OrderedByInfor] = s.OrderedByInfor
+                                    [OrderedByInfor] = s.OrderedByInfor,
+                                    [AltRetailSize] = s.AltRetailSize,
+                                    [AltRetailUOM]  = s.AltRetailUOM
                                 from
 	                                stage.ItemLocale s
 	                                join dbo.Items i on s.ScanCode = i.ScanCode
