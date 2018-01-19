@@ -163,25 +163,25 @@ BEGIN
 		END
 	END
 
-	IF @Error_No = 0
-	BEGIN
-		DECLARE @mammothUpdates dbo.ItemKeyAndStoreNoType
+	--IF @Error_No = 0
+	--BEGIN
+	--	DECLARE @mammothUpdates dbo.ItemKeyAndStoreNoType
 
-		INSERT INTO @mammothUpdates(
-			Item_Key, 
-			Store_No)
-		SELECT 
-			i.Item_Key, 
-			i.Store_No
-		FROM inserted i
-		JOIN deleted d on i.Vendor_ID = d.Vendor_ID
-		WHERE i.PrimaryVendor <> d.PrimaryVendor
+	--	INSERT INTO @mammothUpdates(
+	--		Item_Key, 
+	--		Store_No)
+	--	SELECT 
+	--		i.Item_Key, 
+	--		i.Store_No
+	--	FROM inserted i
+	--	JOIN deleted d on i.Vendor_ID = d.Vendor_ID
+	--	WHERE i.PrimaryVendor <> d.PrimaryVendor
 
-		IF EXISTS (SELECT TOP 1 1 FROM @mammothUpdates)
-			EXEC mammoth.GenerateEventsByItemKeyAndStoreNoType @mammothUpdates, 'ItemLocaleAddOrUpdate'
+	--	IF EXISTS (SELECT TOP 1 1 FROM @mammothUpdates)
+	--		EXEC mammoth.GenerateEventsByItemKeyAndStoreNoType @mammothUpdates, 'ItemLocaleAddOrUpdate'
 
-		SELECT @Error_No = @@ERROR
-	END
+	--	SELECT @Error_No = @@ERROR
+	--END
 		
     IF @Error_No <> 0
     BEGIN
