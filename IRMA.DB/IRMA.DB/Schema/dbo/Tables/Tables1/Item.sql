@@ -695,6 +695,13 @@ BEGIN
 						(ISNULL(inserted.LastModifiedUser_ID, 0) <> ISNULL(@IconControllerUserId, 0)) 
 						  -- ... icon is doing the update and it's a subteam update (then do create maintenance)... 
 						OR (ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND inserted.SubTeam_No <> deleted.SubTeam_No)
+						  -- ... or if icon is doing the update and it's a package unit update
+						  -- ...but only if it's a package unit update for a store not under GPM
+						OR ( ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND 
+							(inserted.Package_Desc1 <> deleted.Package_Desc1 
+							OR inserted.Package_Desc2 <> deleted.Package_Desc2 
+							OR inserted.Package_Unit_ID <> deleted.Package_Unit_ID) AND
+							ISNULL(dbo.fn_InstanceDataValue('GlobalPriceManagement', Store.Store_No), 0)= 0 )
 					)
 				AND (
 						INSERTED.Item_Description <> DELETED.Item_Description
