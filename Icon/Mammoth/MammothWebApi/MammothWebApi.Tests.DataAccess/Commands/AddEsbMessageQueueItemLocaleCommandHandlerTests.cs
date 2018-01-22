@@ -209,12 +209,11 @@ namespace MammothWebApi.Tests.DataAccess.Commands
         {
             testStagingItemLocaleData = new List<StagingItemLocaleModel>
             {
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[0]).WithOrderedByInfor(true)
+                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[0]).WithOrderedByInfor(true).WithAltRetailSize(9.8m).WithAltRetailUom("EA")
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),                 
+                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[1]).WithOrderedByInfor(true).WithAltRetailSize(9.8m).WithAltRetailUom("EA")
                     .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
-                    
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[1]).WithOrderedByInfor(true)
-                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2]).WithOrderedByInfor(true)
+                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2]).WithOrderedByInfor(true).WithAltRetailSize(9.8m).WithAltRetailUom("EA")
                     .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build()
             };
 
@@ -240,7 +239,9 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                                 Msrp,
 	                            Timestamp,
                                 TransactionId,
-                                OrderedByInfor
+                                OrderedByInfor,
+                                AltRetailSize,
+                                AltRetailUOM
                             )
                             VALUES
                             (
@@ -264,7 +265,9 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                                 @Msrp,
 	                            @Timestamp,
                                 @TransactionId,
-                                @OrderedByInfor
+                                @OrderedByInfor,
+                                @AltRetailSize,
+                                @AltRetailUOM
                             )";
 
             db.Connection.Execute(sql, testStagingItemLocaleData, transaction: db.Transaction);
@@ -468,6 +471,8 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                 Assert.AreEqual(ItemTypes.Descriptions.RetailSale, queuedMessages[i].ItemTypeDesc);
                 Assert.AreEqual(testLocale.StoreName, queuedMessages[i].LocaleName);
                 Assert.AreEqual(testScanCodes[i], queuedMessages[i].ScanCode);
+                Assert.AreEqual(testStagingItemLocaleData[i].AltRetailUOM, queuedMessages[i].AltRetailUOM);
+                Assert.AreEqual(testStagingItemLocaleData[i].AltRetailSize, queuedMessages[i].AltRetailSize);
                 Assert.AreEqual(testStagingItemLocaleData[i].Discount_Case, queuedMessages[i].CaseDiscount);
                 Assert.AreEqual(testStagingItemLocaleData[i].Discount_TM, queuedMessages[i].TmDiscount);
                 Assert.AreEqual(testStagingItemLocaleData[i].Restriction_Age, queuedMessages[i].AgeRestriction);

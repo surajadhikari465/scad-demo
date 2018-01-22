@@ -242,6 +242,8 @@ namespace Mammoth.ApiController.Tests.QueueReaders
             AssertTraitValuesAreEqual(messageQueue.SupplierItemID, Attributes.Codes.VendorItemId, itemTraits);
             AssertTraitValuesAreEqual(messageQueue.SupplierCaseSize, Attributes.Codes.VendorCaseSize, itemTraits);
             AssertTraitValuesAreEqual(messageQueue.OrderedByInfor, Attributes.Codes.OrderedByInfor, itemTraits);
+            AssertTraitValuesAreEqual(messageQueue.AltRetailSize, Attributes.Codes.AltRetailSize, itemTraits);
+            AssertTraitValuesAreEqual(messageQueue.AltRetailUOM, Attributes.Codes.AltRetailUom, itemTraits);
         }
 
         private void AssertTraitValuesAreEqual(DateTime? messageQueueValue, string attributeCode, Contracts.TraitType[] itemTraits)
