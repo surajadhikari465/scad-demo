@@ -3267,6 +3267,7 @@
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI25179 - PostDeploy Schema PopData - Add OrderExportQueue and OrderExportDeletedQueue To RetentionPolicy Table.rollback.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI25179 - PostDeploy Schema PopData - Add OrderExportQueue and OrderExportDeletedQueue To RetentionPolicy Table.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI25134 - PostDeploly Schema PopData - Update And Repopulate Date Table.sql" />
+    <Build Include="Schema\dbo\Functions\fn_DoesStoreHaveConfiguredFileWriter.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
