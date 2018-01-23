@@ -499,6 +499,7 @@ Friend Class frmShrinkCorrections
         Dim todayFW As Integer
         Dim todayFY As Integer
         Dim todayDayOfYear As Integer
+        Dim todayDM As Integer
 
         Dim dtToday As DataTable
         Dim dtShrink As DataTable
@@ -529,6 +530,7 @@ Friend Class frmShrinkCorrections
                 todayFW = drToday("FiscalWeek")
                 todayFY = drToday("FiscalYear")
                 todayDayOfYear = drToday("Day_Of_Year")
+                todayDM = drToday("Day_Of_Month")
             End If
 
         Catch ex As Exception
@@ -536,10 +538,10 @@ Friend Class frmShrinkCorrections
         End Try
 
         ' If Today's Date and the Shrink Date are in the same Fiscal Period, then Shrink can be edited
-        ' If Today's Date is still Monday, Week 1 of the Fiscal Period following the Shrink date, then Shrink can be edited
+        ' If Today's Date is first day of the month/period, Shrink in the previous period can be edited
         ' Account for situations where fiscal data did not return valid values from DB and make sure it can't be edited (e.g. 0 or Nothing)
         ' Also handle first day of the fiscal year so that shrink from the previous FP can be edited.
-        If (todayFY - shrinkFY = 1) And todayDayOfYear = 1 And shrinkFP = 13 Then
+        If (todayFY - shrinkFY = 1) And todayDayOfYear = 1 And shrinkFP = 12 Then
             editRow = True
 
         ElseIf (todayFY = shrinkFY) And (todayFY <> 0 Or todayFY <> Nothing Or shrinkFY <> 0 Or shrinkFY <> Nothing) Then
@@ -547,7 +549,7 @@ Friend Class frmShrinkCorrections
                 editRow = True
 
             ElseIf (todayFP - shrinkFP) = 1 Then
-                If today.DayOfWeek = DayOfWeek.Monday And todayFW = 1 Then
+                If todayDM = 1 Then
                     editRow = True
                 End If
 
