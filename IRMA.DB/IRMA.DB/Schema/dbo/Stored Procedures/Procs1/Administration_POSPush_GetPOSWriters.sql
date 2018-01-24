@@ -28,7 +28,7 @@ BEGIN
 		AND ((@FileWriterType IS NOT NULL AND FileWriterType = @FileWriterType) OR (@FileWriterType IS NULL))
 		-- IF @ScaleWriterType IS NULL THEN SELECT ALL SCALE WRITER TYPES
 		AND ((@ScaleWriterTypeDesc1 IS NOT NULL AND (ScaleWriterTypeDesc = @ScaleWriterTypeDesc1 OR ScaleWriterTypeDesc = @ScaleWriterTypeDesc2)) OR (@ScaleWriterTypeDesc1 IS NULL))
-	ORDER BY FileWriterType, POSFileWriterCode, POSFileWriterClass
+	ORDER BY FileWriterType, POSFileWriterCode DESC, POSFileWriterClass
 
 END
 GO

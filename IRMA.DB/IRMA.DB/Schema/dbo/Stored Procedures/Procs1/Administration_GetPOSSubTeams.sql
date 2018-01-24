@@ -19,9 +19,12 @@ BEGIN
 			INNER JOIN dbo.store s (NOLOCK) ON  si.Store_No = s.Store_No
 			INNER JOIN dbo.StorePOSConfig spc (nolock) ON s.Store_No = spc.Store_No
 			INNER JOIN dbo.SubTeam st (nolock) ON st.SubTeam_No = i.SubTeam_No
+			INNER JOIN dbo.StoreItemVendor siv (nolock) on siv.Store_No = s.Store_No AND siv.Item_Key = i.Item_Key
 		WHERE si.authorized = 1
 			AND spc.PosFileWriterKey = @POSFileWriterKey
-			AND (Mega_Store = 1 OR WFM_Store = 1) and i.Deleted_Item = 0 and dbo.fn_GetDiscontinueStatus(i.Item_Key, s.Store_No, NULL) = 0
+			AND	siv.DeleteDate IS NULL
+			AND siv.DiscontinueItem = 0
+			AND (Mega_Store = 1 OR WFM_Store = 1) and i.Deleted_Item = 0 
 		GROUP BY i.SubTeam_No, st.SubTeam_Name
 		ORDER BY i.SubTeam_No, st.SubTeam_Name
     SET NOCOUNT OFF
