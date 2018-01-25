@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [mammoth].[InsertItemLocaleChangeQueueAndPriceChangeQueueByStore]
+﻿CREATE PROCEDURE [mammoth].[InsertItemLocaleChangeQueueAndPriceChangeQueueByStore]
 	@Store_No int
 AS
 BEGIN	
@@ -38,7 +37,7 @@ begin try
 				set @priceConfigValue = (select dbo.fn_GetAppConfigValue('MammothPriceChanges','IRMA Client'));
 				set @globalPriceManagementEnabled = (select dbo.fn_InstanceDataValue('GlobalPriceManagement', @Store_No))
 
-				if @priceConfigValue != 1 and @globalPriceManagementEnabled = 0
+				if @priceConfigValue != 1 or @globalPriceManagementEnabled = 1
 				begin
 					set @successCode = 1
 					set @message = @message + ' Mammoth Price changes are disabled. '
