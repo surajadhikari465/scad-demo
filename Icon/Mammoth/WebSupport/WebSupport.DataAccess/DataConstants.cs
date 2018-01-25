@@ -7,7 +7,7 @@
 		/// </summary>
 		public static string[] WholeFoodsRegions = new[]
 			{
-				"FL", "MA", "MW", "NA", "RM", "SO", "NC", "NE", "PN", "SP", "SW", "UK"
+				"FL", "MA", "MW", "NA", "RM", "SO", "NC", "NE", "PN", "SP", "SW", "UK", "TS"
 			};
 
 		/// <summary>
