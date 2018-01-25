@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[GetPLUMCorpChg]
+﻿CREATE PROCEDURE [dbo].[GetPLUMCorpChg]
 (
 	@ActionCode char(1),
 	@Date		datetime,
@@ -51,6 +50,7 @@ AS
 -- 2016-08-22   MZ              20586 (17474)  Added Default_Identifier to the result set.
 -- 2017-04-13   MZ              23765 (20859)   Move Allergens before Ingredients in the concatenation. Correct the order of the Ingredients field
 --												Allergens + Ingredients + ExtraText
+-- 2018-01-25   BJ              23898	Filtered out Removed and Deleted Items and Identifiers
 -- **************************************************************************
 
 BEGIN  
@@ -586,8 +586,12 @@ BEGIN
 				INNER JOIN #Identifiers II
 					ON II.Item_Key = QT.Item_Key  
 					AND II.Scale_Identifier = 1 --ONLY INSERT SCALE IDENTIFIERS THAT ARE MEANT TO BE SENT TO SCALES
+					AND II.Remove_Identifier = 0
+					AND II.Deleted_Identifier = 0
 				INNER JOIN Item (nolock)
 					ON Item.Item_Key = QT.Item_Key
+					AND Item.Remove_Item = 0
+					AND Item.Deleted_Item = 0
 				INNER JOIN ItemScale (nolock)
 					ON ItemScale.Item_Key = QT.Item_Key
 				LEFT JOIN ItemCustomerFacingScale (nolock) icfs
@@ -716,8 +720,12 @@ BEGIN
 				INNER JOIN #Identifiers II
 					ON II.Item_Key = QT.Item_Key 					
 					AND II.Scale_Identifier = 1 --ONLY INSERT SCALE IDENTIFIERS THAT ARE MEANT TO BE SENT TO SCALES
+					AND II.Remove_Identifier = 0
+					AND II.Deleted_Identifier = 0
 				INNER JOIN Item (nolock)
 					ON Item.Item_Key = QT.Item_Key
+					AND Item.Remove_Item = 0
+					AND Item.Deleted_Item = 0
 				LEFT JOIN SubTeam ST (nolock)
 					ON Item.SubTeam_No = ST.SubTeam_No
 				LEFT JOIN ItemUnit RU (NOLOCK)
@@ -1006,8 +1014,12 @@ BEGIN
 					INNER JOIN #Identifiers II
 						ON II.Item_Key = QT.Item_Key  
 						AND II.Scale_Identifier = 1 --ONLY INSERT SCALE IDENTIFIERS THAT ARE MEANT TO BE SENT TO SCALES
+						AND II.Remove_Identifier = 0
+						AND II.Deleted_Identifier = 0
 					INNER JOIN Item (nolock)
 						ON Item.Item_Key = QT.Item_Key
+						AND Item.Remove_Item = 0
+						AND Item.Deleted_Item = 0
 					LEFT JOIN SubTeam ST (nolock)
 						ON Item.SubTeam_No = ST.SubTeam_No
 					INNER JOIN @CurrentNewItemBatch NIB 
@@ -1337,8 +1349,12 @@ BEGIN
 					INNER JOIN #Identifiers II
 						ON II.Item_Key = QT.Item_Key  
 						AND II.Scale_Identifier = 1 --ONLY INSERT SCALE IDENTIFIERS THAT ARE MEANT TO BE SENT TO SCALES
+						AND II.Remove_Identifier = 0
+						AND II.Deleted_Identifier = 0
 					INNER JOIN Item (nolock)
 						ON Item.Item_Key = QT.Item_Key
+						AND Item.Remove_Item = 0
+						AND Item.Deleted_Item = 0
 					LEFT JOIN SubTeam ST (nolock)
 						ON Item.SubTeam_No = ST.SubTeam_No
 					-- Join the Price, Store, and ItemScale tables to send zone pricing records with corporate records	
