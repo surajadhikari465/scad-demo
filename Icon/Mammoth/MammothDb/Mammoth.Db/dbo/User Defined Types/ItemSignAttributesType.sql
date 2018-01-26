@@ -25,3 +25,7 @@
     [Seafood_FreshOrFrozen] NVARCHAR (255) NULL,
     [Seafood_CatchType]     NVARCHAR (255) NULL
 )
+GO
+
+GRANT EXEC ON type::dbo.ItemSignAttributesType TO MammothRole
+GO
