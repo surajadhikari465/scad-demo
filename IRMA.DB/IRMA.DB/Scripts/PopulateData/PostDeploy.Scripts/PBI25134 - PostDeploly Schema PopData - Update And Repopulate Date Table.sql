@@ -1,3 +1,13 @@
+--Backup the date records to be updated/repopulated
+IF OBJECT_ID(N'dbo.Date_Backup', N'U') IS NOT NULL
+BEGIN
+  drop table dbo.Date_Backup
+END
+
+select * into Date_Backup from date where Date_Key > '2017-09-24' 
+
+GO
+
 delete Date
 where Date_key > '2017-12-31'
 
@@ -22,5 +32,3 @@ BEGIN
     DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,@DATE), 0))+ 1, DATENAME(weekday, @date), DATEPART(weekday,@date), DATEPART(DAY,@date), DATEPART(dayofyear, @date)
 	set @date = DATEADD(d, 1, @date)
 END 
-
-

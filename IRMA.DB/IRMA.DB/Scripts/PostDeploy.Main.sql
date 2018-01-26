@@ -9,3 +9,4 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
+:r ".\PostDeploy.Scripts.PBI25134 - PostDeploly Schema PopData - Update And Repopulate Date Table.sql"
