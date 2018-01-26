@@ -1,0 +1,1298 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/23/2018 3:26:47 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="CECEN0400"
+  DTS:CreatorName="WFM\Min.Zhao"
+  DTS:DTSID="{31712CAD-C3CD-42EF-851A-40800A58E37B}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.0600.250"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="InforItemScaleUpdate"
+  DTS:PackageType="5"
+  DTS:VersionBuild="47"
+  DTS:VersionGUID="{10B99F1D-2995-4C4D-B09F-96D2CB14D31E}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[IRMA.Db]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{8359F0A7-F6C8-4D88-96C1-15CB5527403B}"
+      DTS:ObjectName="IRMA.Db">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Provider=SQLNCLI11.1;Data Source=" + @[User::IRMADataSource] + ";Initial Catalog=" + @[User::IRMAInitialCatalog]  + ";Integrated Security=SSPI;Auto Translate=False;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=IDD-RM\RMD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Mammoth.Db]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+      DTS:ObjectName="Mammoth.Db">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Provider=SQLNCLI11.1;Data Source=" + @[User::MammothDataSource] + ";Initial Catalog=" + @[User::MammothInitialCatalog]  + ";Integrated Security=SSPI;Auto Translate=False;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Retain="True"
+          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=MAMMOTH_DEV;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F880C7D1-544B-425E-AD1A-A0906B82BFD0}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; || UPPER(@[$Project::Environment])  == &quot;TST&quot; ? &quot;ID&quot; + (UPPER(@[$Project::RegionCode]) == &quot;NC&quot; || UPPER(@[$Project::RegionCode]) == &quot;NE&quot; || UPPER(@[$Project::RegionCode]) == &quot;PN&quot; || UPPER(@[$Project::RegionCode]) == &quot;SP&quot; || UPPER(@[$Project::RegionCode]) == &quot;SW&quot; || UPPER(@[$Project::RegionCode]) == &quot;UK&quot; ? &quot;T&quot; : &quot;D&quot;)    + &quot;-&quot; + (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  +&quot;\\&quot; +  (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  + (UPPER(@[$Project::RegionCode]) == &quot;NC&quot; || UPPER(@[$Project::RegionCode]) == &quot;NE&quot; || UPPER(@[$Project::RegionCode]) == &quot;PN&quot; || UPPER(@[$Project::RegionCode]) == &quot;SP&quot; || UPPER(@[$Project::RegionCode]) == &quot;SW&quot; || UPPER(@[$Project::RegionCode]) == &quot;UK&quot; ? &quot;T&quot; : &quot;D&quot;) :UPPER(@[$Project::Environment])  == &quot;QA&quot; ? &quot;IDQ-&quot; +   (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  +&quot;\\&quot; +  (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  + &quot;Q&quot;: &quot;IDP-&quot; +   (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  +&quot;\\&quot; +  (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  + &quot;P&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IRMADataSource">
+      <DTS:VariableValue
+        DTS:DataType="8">IDD-RM\RMD</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{73BCCD9F-685A-4419-ABD2-B583B181454B}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ? &quot;ItemCatalog_Test&quot; : &quot;ItemCatalog&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IRMAInitialCatalog">
+      <DTS:VariableValue
+        DTS:DataType="8">ItemCatalog_Test</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{87460818-1371-4B9F-B31A-B8775095AB42}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ?&quot;MAMMOTH-DB01-DEV&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;:UPPER(@[$Project::Environment])  == &quot;TST&quot; ?&quot;MAMMOTH-DB01-DEV&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;:UPPER(@[$Project::Environment])  == &quot;QA&quot; ?&quot;MAMMOTH-DB01-QA&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;:&quot;MAMMOTH-DB01-PRD&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MammothDataSource">
+      <DTS:VariableValue
+        DTS:DataType="8">MAMMOTH-DB01-DEV\MAMMOTH</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DF85E82E-9643-4462-B9D8-D6AC1BD18DA4}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ?&quot;MAMMOTH_DEV&quot;:&quot;MAMMOTH&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MammothInitialCatalog">
+      <DTS:VariableValue
+        DTS:DataType="8">MAMMOTH_DEV</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DC978B3E-87A5-4940-984E-D31D2C6F7772}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="TempTableName">
+      <DTS:VariableValue
+        DTS:DataType="8">##tmpItemScaleLoad</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create Temp Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{e97e263f-43a8-4742-b6eb-59a5a9520115}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Temp Table"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+          SQLTask:SqlStatementSource="IF OBJECT_ID('tempdb..##tmpItemScaleLoad') IS NOT NULL&#xA;    DROP TABLE ##tmpItemScaleLoad&#xA;&#xA;CREATE TABLE ##tmpItemScaleLoad&#xA;    (&#xA;&#x9;&#x9;[Region] nchar(2) not null,&#xA;&#x9;&#x9;[BusinessUnitID] int not null,&#xA;&#x9;&#x9;[ItemID] int not null,&#xA;&#x9;&#x9;[ScaleItem] bit null,&#xA;&#x9;&#x9;[ShelfLife] varchar(255) null,&#xA;&#x9;&#x9;[UnwrappedTareWeight] nvarchar(255) null,&#xA;&#x9;&#x9;[WrappedTareWeight] nvarchar(255) null,&#xA;        [UsedBy] nvarchar(255) null,&#xA;&#x9;&#x9;[SendToCFS] nvarchar(255) null,&#xA;&#x9;&#x9;[ForcedTare] nvarchar(255) null&#xA;    )&#xA;&#xA;CREATE NONCLUSTERED INDEX [IX_tmpItemScaleLoad_ItemID_BusinessUnitID_Region] ON ##tmpItemScaleLoad&#xA;(&#xA;&#x9;[ItemID] ASC,&#xA;&#x9;[BusinessUnitID] ASC,&#xA;&#x9;[Region] ASC&#xA;)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100) ON [PRIMARY]&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Drop Temp Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{69ccccce-ba4b-42ef-a982-1b68aadf0a44}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Drop Temp Table"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+          SQLTask:SqlStatementSource="IF OBJECT_ID('tempdb.##tmpItemScaleLoad') IS NOT NULL&#xA;    DROP TABLE ##tmpItemScaleLoad&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Transfter Item Scale Attributes"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{947796de-582d-4b1f-a038-f2b4d1a054a6}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Transfter Item Scale Attributes"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Convert varchar to nvarchar"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[RegionCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="4"
+                      cachedName="RegionCode"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[RegionCode]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[UnwrappedTareWeight]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="UnwrappedTareWeight"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[UnwrappedTareWeight]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[WrappedTareWeight]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="WrappedTareWeight"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[WrappedTareWeight]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[UsedBy]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="UsedBy"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[UsedBy]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted RegionCode]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="2"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted RegionCode]"
+                      name="Converted RegionCode"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[RegionCode]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted UnwrappedTareWeight]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted UnwrappedTareWeight]"
+                      name="Converted UnwrappedTareWeight"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[UnwrappedTareWeight]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted WrappedTareWeight]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted WrappedTareWeight]"
+                      name="Converted WrappedTareWeight"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[WrappedTareWeight]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted UsedBy]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted UsedBy]"
+                      name="Converted UsedBy"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[UsedBy]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Get IRMA Item Scale Attributes"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select  srm.Region_Code as RegionCode, s.businessUnit_Id, InforItemId, ii.Scale_Identifier as ScaleItem, isc.ShelfLife_Length, wta.Description as WrappedTareWeight,
+		uta.Description as UnwrappedTareWeight, sub.Description as UsedBy, isc.ForceTare, icf.SendToScale
+from ValidatedScanCode vsc
+join ItemIdentifier ii on vsc.ScanCode = ii.Identifier
+join Item i on i.Item_key = ii.Item_key
+join StoreItem si on si.Item_Key = i.Item_Key
+join Store s on s.Store_No = si.Store_No
+join StoreRegionMapping srm on srm.Store_No = s.Store_no
+left join (select max(ItemScale_ID) as ItemScale_ID, Item_Key from ItemScale group by Item_Key) isci on isci.Item_Key = i.Item_Key
+left join ItemScale isc on isc.ItemScale_ID = isci.ItemScale_ID
+left join Scale_Tare wta on isc.Scale_Tare_ID = wta.Scale_Tare_ID
+left join Scale_Tare uta on isc.Scale_Alternate_Tare_ID = uta.Scale_Tare_ID
+left join Scale_EatBy sub on sub.Scale_EatBy_ID = isc.Scale_EatBy_ID
+left join  ItemCustomerFacingScale icf on icf.Item_key = i.Item_key
+where i.Deleted_Item = 0 and i.Remove_Item = 0
+and ii.Deleted_Identifier = 0 and ii.Remove_Identifier = 0
+and ii.Scale_Identifier = 1
+and (s.Mega_Store = 1 or s.WFM_Store = 1)
+and s.Internal = 1
+and srm.Region_Code = ?</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"RegionCode:Input",{AC8B6DBB-D0DB-41C2-BF38-C65BA202246A};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[IRMA.Db]"
+                  connectionManagerRefId="Package.ConnectionManagers[IRMA.Db]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[InforItemId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[InforItemId]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[InforItemId]"
+                      name="InforItemId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[businessUnit_Id]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[businessUnit_Id]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[businessUnit_Id]"
+                      name="businessUnit_Id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[RegionCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[RegionCode]"
+                      length="4"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[RegionCode]"
+                      name="RegionCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[ScaleItem]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[ScaleItem]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[ScaleItem]"
+                      name="ScaleItem"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[ShelfLife_Length]"
+                      dataType="i2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[ShelfLife_Length]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[ShelfLife_Length]"
+                      name="ShelfLife_Length"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[WrappedTareWeight]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[WrappedTareWeight]"
+                      length="50"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[WrappedTareWeight]"
+                      name="WrappedTareWeight"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[UnwrappedTareWeight]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[UnwrappedTareWeight]"
+                      length="50"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[UnwrappedTareWeight]"
+                      name="UnwrappedTareWeight"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[UsedBy]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[UsedBy]"
+                      length="50"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[UsedBy]"
+                      name="UsedBy"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[ForceTare]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[ForceTare]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[ForceTare]"
+                      name="ForceTare"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[SendToScale]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[SendToScale]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[SendToScale]"
+                      name="SendToScale"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[InforItemId]"
+                      dataType="i4"
+                      name="InforItemId" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[businessUnit_Id]"
+                      dataType="i4"
+                      name="businessUnit_Id" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[RegionCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="RegionCode" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[ScaleItem]"
+                      dataType="bool"
+                      name="ScaleItem" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[ShelfLife_Length]"
+                      dataType="i2"
+                      name="ShelfLife_Length" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[WrappedTareWeight]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="WrappedTareWeight" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[UnwrappedTareWeight]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="UnwrappedTareWeight" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[UsedBy]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="UsedBy" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[ForceTare]"
+                      dataType="bool"
+                      name="ForceTare" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].ExternalColumns[SendToScale]"
+                      dataType="bool"
+                      name="SendToScale" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[RegionCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[RegionCode]"
+                      name="RegionCode" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[InforItemId]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[InforItemId]"
+                      name="InforItemId" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[businessUnit_Id]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[businessUnit_Id]"
+                      name="businessUnit_Id" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ScaleItem]"
+                      dataType="bool"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ScaleItem]"
+                      name="ScaleItem" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ShelfLife_Length]"
+                      dataType="i2"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ShelfLife_Length]"
+                      name="ShelfLife_Length" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[WrappedTareWeight]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[WrappedTareWeight]"
+                      name="WrappedTareWeight" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[UnwrappedTareWeight]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[UnwrappedTareWeight]"
+                      name="UnwrappedTareWeight" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[UsedBy]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[UsedBy]"
+                      name="UsedBy" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ForceTare]"
+                      dataType="bool"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ForceTare]"
+                      name="ForceTare" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[SendToScale]"
+                      dataType="bool"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[SendToScale]"
+                      name="SendToScale" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Load Into Mammoth Temp Table"
+              usesDispositions="true"
+              validateExternalMetadata="False"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable">User::TempTableName</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">IF OBJECT_ID('tempdb..#tmpItemLocaleLoad') IS NOT NULL
+    DROP TABLE #tmpItemLocaleLoad
+
+CREATE TABLE #tmpItemLocaleLoad
+    (
+        [Region] nchar(2) not null,
+       [ItemID] int not null,
+       [BusinessUnitID] int not null,
+		[DefaultScanCode] bit not null,
+		[OrderedByInfor] bit not null,
+		[AltRetailUOM] nvarchar(25) null,
+        [AltRetailSize] numeric(9,4) null
+    )</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Mammoth.Db]"
+                  connectionManagerRefId="Package.ConnectionManagers[Mammoth.Db]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[InforItemId]"
+                      cachedDataType="i4"
+                      cachedName="InforItemId"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[InforItemId]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[businessUnit_Id]"
+                      cachedDataType="i4"
+                      cachedName="businessUnit_Id"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitID]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[businessUnit_Id]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[ShelfLife_Length]"
+                      cachedDataType="i2"
+                      cachedName="ShelfLife_Length"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ShelfLife]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[ShelfLife_Length]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[SendToScale]"
+                      cachedDataType="bool"
+                      cachedName="SendToScale"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[SendToCFS]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[SendToScale]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[ForceTare]"
+                      cachedDataType="bool"
+                      cachedName="ForceTare"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ForcedTare]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[ForceTare]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[Converted RegionCode]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="Converted RegionCode"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted RegionCode]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[Converted UnwrappedTareWeight]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Converted UnwrappedTareWeight"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[UnwrappedTareWeight]"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted UnwrappedTareWeight]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[Converted WrappedTareWeight]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Converted WrappedTareWeight"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[WrappedTareWeight]"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted WrappedTareWeight]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[Converted UsedBy]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Converted UsedBy"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[UsedBy]"
+                      lineageId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted UsedBy]" />
+                    <inputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].Columns[ScaleItem]"
+                      cachedDataType="bool"
+                      cachedName="ScaleItem"
+                      externalMetadataColumnId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ScaleItem]"
+                      lineageId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output].Columns[ScaleItem]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
+                      dataType="wstr"
+                      length="2"
+                      name="Region" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
+                      dataType="i4"
+                      name="ItemID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitID]"
+                      dataType="i4"
+                      name="BusinessUnitID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ScaleItem]"
+                      dataType="bool"
+                      name="ScaleItem" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ShelfLife]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      name="ShelfLife" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[UnwrappedTareWeight]"
+                      dataType="wstr"
+                      length="255"
+                      name="UnwrappedTareWeight" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[WrappedTareWeight]"
+                      dataType="wstr"
+                      length="255"
+                      name="WrappedTareWeight" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[UsedBy]"
+                      dataType="wstr"
+                      length="255"
+                      name="UsedBy" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[SendToCFS]"
+                      dataType="wstr"
+                      length="255"
+                      name="SendToCFS" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input].ExternalColumns[ForcedTare]"
+                      dataType="wstr"
+                      length="255"
+                      name="ForcedTare" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Transfter Item Scale Attributes.Paths[Data Conversion Output]"
+              endId="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Transfter Item Scale Attributes.Paths[OLE DB Source Output]"
+              endId="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar.Inputs[Data Conversion Input]"
+              name="OLE DB Source Output"
+              startId="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update Mammoth ItemLocale Extended Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{1a4b0e7b-2274-4315-95c2-75ade1ea3eb7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update Mammoth ItemLocale Extended Table"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"
+declare @ShelfLifeAttributeID as int, @UnwrappedTareWeightID as int, @WrappedTareWeightID as int, @UseByEABID as int, @SendtoCFSID as int, @ForceTareID as int
+select @ShelfLifeAttributeID = AttributeID from dbo.Attributes where AttributeDesc = 'Shelf Life'
+select @UnwrappedTareWeightID = AttributeID from dbo.Attributes where AttributeDesc = 'Unwrapped Tare Weight'
+select @WrappedTareWeightID = AttributeID from dbo.Attributes where AttributeDesc = 'Wrapped Tare Weight'
+select @UseByEABID = AttributeID from dbo.Attributes where AttributeDesc = 'Use By EAB'
+select @SendtoCFSID = AttributeID from dbo.Attributes where AttributeDesc = 'CFS Send to Scale'
+select @ForceTareID = AttributeID from dbo.Attributes where AttributeDesc = 'Force Tare'
+
+delete ile
+from dbo.ItemAttributes_Locale_" + @[$Project::RegionCode] + "_Ext ile
+join dbo.Locales_" + @[$Project::RegionCode] + " l on ile.Region = l.Region
+					 and ile.LocaleID = l.LocaleID 
+join ##tmpItemScaleLoad  tis on ile.Region = tis.Region
+							and ile.ItemID = tis.ItemID
+							and l.BusinessUnitID = tis.BusinessUnitID
+							and ile.AttributeID in (@ShelfLifeAttributeID, @UnwrappedTareWeightID, @WrappedTareWeightID, @UseByEABID, @SendtoCFSID, @ForceTareID)
+
+insert into dbo.ItemAttributes_Locale_" + @[$Project::RegionCode] + "_Ext
+           ([Region]
+           ,[ItemID]
+           ,[LocaleID]
+           ,[AttributeID]
+           ,[AttributeValue]
+           ,[AddedDate])
+ select		t.Region,
+			t.ItemID,
+			l.LocaleID,
+			@ShelfLifeAttributeID,
+			t.ShelfLife,
+			getdate()
+   from		##tmpItemScaleLoad t
+   join     dbo.Items i on t.ItemID = i.ItemID
+   join		dbo.Locales_" + @[$Project::RegionCode] + " l on t.Region = l.Region
+							and t.BusinessUnitID = l.BusinessUnitID
+  where		t.ShelfLife is not null
+
+insert into [dbo].[ItemAttributes_Locale_" + @[$Project::RegionCode] + "_Ext]
+           ([Region]
+           ,[ItemID]
+           ,[LocaleID]
+           ,[AttributeID]
+           ,[AttributeValue]
+           ,[AddedDate])
+ select		t.Region,
+			t.ItemID,
+			l.LocaleID,
+			@UnwrappedTareWeightID,
+			t.UnwrappedTareWeight,
+			getdate()
+   from		##tmpItemScaleLoad t
+   join     dbo.Items i on t.ItemID = i.ItemID
+   join		dbo.Locales_" + @[$Project::RegionCode] + " l on t.Region = l.Region
+							and t.BusinessUnitID = l.BusinessUnitID
+  where     t.UnwrappedTareWeight is not null
+
+ insert into dbo.ItemAttributes_Locale_" + @[$Project::RegionCode] + "_Ext
+			([Region]
+			,[ItemID]
+			,[LocaleID]
+			,[AttributeID]
+			,[AttributeValue]
+			,[AddedDate])
+  select	t.Region,
+			t.ItemID,
+			l.LocaleID,
+			@WrappedTareWeightID,
+			t.WrappedTareWeight,
+			getdate()
+	from	##tmpItemScaleLoad t
+	join    dbo.Items i on t.ItemID = i.ItemID
+	join	dbo.Locales_" + @[$Project::RegionCode] + " l on t.Region = l.Region
+							and t.BusinessUnitID = l.BusinessUnitID
+   where	t.WrappedTareWeight is not null
+
+ insert into dbo.ItemAttributes_Locale_" + @[$Project::RegionCode] + "_Ext
+			([Region]
+			,[ItemID]
+			,[LocaleID]
+			,[AttributeID]
+			,[AttributeValue]
+			,[AddedDate])
+  select	t.Region,
+			t.ItemID,
+			l.LocaleID,
+			@UseByEABID,
+			t.UsedBy,
+			getdate()
+	from	##tmpItemScaleLoad t
+	join    dbo.Items i on t.ItemID = i.ItemID
+	join	dbo.Locales_" + @[$Project::RegionCode] + " l on t.Region = l.Region
+							and t.BusinessUnitID = l.BusinessUnitID
+   where    t.UsedBy is not null
+
+ insert into [dbo].[ItemAttributes_Locale_" + @[$Project::RegionCode] + "_Ext]
+			([Region]
+			,[ItemID]
+			,[LocaleID]
+			,[AttributeID]
+			,[AttributeValue]
+			,[AddedDate])
+  select	t.Region,
+			t.ItemID,
+			l.LocaleID,
+			@SendtoCFSID,
+			t.SendToCFS,
+			getdate()
+	from	##tmpItemScaleLoad t
+	join    dbo.Items i on t.ItemID = i.ItemID
+	join	dbo.Locales_" + @[$Project::RegionCode] + " l on t.Region = l.Region
+							and t.BusinessUnitID = l.BusinessUnitID
+   where    t.SendToCFS is not null
+
+ insert into dbo.ItemAttributes_Locale_" + @[$Project::RegionCode] + "_Ext
+			([Region]
+			,[ItemID]
+			,[LocaleID]
+			,[AttributeID]
+			,[AttributeValue]
+			,[AddedDate])
+  select	t.Region,
+			t.ItemID,
+			l.LocaleID,
+			@ForceTareID,
+			t.ForcedTare,
+			getdate()
+	from	##tmpItemScaleLoad t
+	join    dbo.Items i on t.ItemID = i.ItemID
+	join	dbo.Locales_" + @[$Project::RegionCode] + " l on t.Region = l.Region
+							and t.BusinessUnitID = l.BusinessUnitID
+   where    t.ForcedTare is not null"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+          SQLTask:SqlStatementSource="&#xA;declare @ShelfLifeAttributeID as int, @UnwrappedTareWeightID as int, @WrappedTareWeightID as int, @UseByEABID as int, @SendtoCFSID as int, @ForceTareID as int&#xA;select @ShelfLifeAttributeID = AttributeID from dbo.Attributes where AttributeDesc = 'Shelf Life'&#xA;select @UnwrappedTareWeightID = AttributeID from dbo.Attributes where AttributeDesc = 'Unwrapped Tare Weight'&#xA;select @WrappedTareWeightID = AttributeID from dbo.Attributes where AttributeDesc = 'Wrapped Tare Weight'&#xA;select @UseByEABID = AttributeID from dbo.Attributes where AttributeDesc = 'Use By EAB'&#xA;select @SendtoCFSID = AttributeID from dbo.Attributes where AttributeDesc = 'CFS Send to Scale'&#xA;select @ForceTareID = AttributeID from dbo.Attributes where AttributeDesc = 'Force Tare'&#xA;&#xA;delete ile&#xA;from dbo.ItemAttributes_Locale_RM_Ext ile&#xA;join dbo.Locales_RM l on ile.Region = l.Region&#xA;&#x9;&#x9;&#x9;&#x9;&#x9; and ile.LocaleID = l.LocaleID &#xA;join ##tmpItemScaleLoad  tis on ile.Region = tis.Region&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and ile.ItemID = tis.ItemID&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and l.BusinessUnitID = tis.BusinessUnitID&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and ile.AttributeID in (@ShelfLifeAttributeID, @UnwrappedTareWeightID, @WrappedTareWeightID, @UseByEABID, @SendtoCFSID, @ForceTareID)&#xA;&#xA;insert into dbo.ItemAttributes_Locale_RM_Ext&#xA;           ([Region]&#xA;           ,[ItemID]&#xA;           ,[LocaleID]&#xA;           ,[AttributeID]&#xA;           ,[AttributeValue]&#xA;           ,[AddedDate])&#xA; select&#x9;&#x9;t.Region,&#xA;&#x9;&#x9;&#x9;t.ItemID,&#xA;&#x9;&#x9;&#x9;l.LocaleID,&#xA;&#x9;&#x9;&#x9;@ShelfLifeAttributeID,&#xA;&#x9;&#x9;&#x9;t.ShelfLife,&#xA;&#x9;&#x9;&#x9;getdate()&#xA;   from&#x9;&#x9;##tmpItemScaleLoad t&#xA;   join     dbo.Items i on t.ItemID = i.ItemID&#xA;   join&#x9;&#x9;dbo.Locales_RM l on t.Region = l.Region&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and t.BusinessUnitID = l.BusinessUnitID&#xA;  where&#x9;&#x9;t.ShelfLife is not null&#xA;&#xA;insert into [dbo].[ItemAttributes_Locale_RM_Ext]&#xA;           ([Region]&#xA;           ,[ItemID]&#xA;           ,[LocaleID]&#xA;           ,[AttributeID]&#xA;           ,[AttributeValue]&#xA;           ,[AddedDate])&#xA; select&#x9;&#x9;t.Region,&#xA;&#x9;&#x9;&#x9;t.ItemID,&#xA;&#x9;&#x9;&#x9;l.LocaleID,&#xA;&#x9;&#x9;&#x9;@UnwrappedTareWeightID,&#xA;&#x9;&#x9;&#x9;t.UnwrappedTareWeight,&#xA;&#x9;&#x9;&#x9;getdate()&#xA;   from&#x9;&#x9;##tmpItemScaleLoad t&#xA;   join     dbo.Items i on t.ItemID = i.ItemID&#xA;   join&#x9;&#x9;dbo.Locales_RM l on t.Region = l.Region&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and t.BusinessUnitID = l.BusinessUnitID&#xA;  where     t.UnwrappedTareWeight is not null&#xA;&#xA; insert into dbo.ItemAttributes_Locale_RM_Ext&#xA;&#x9;&#x9;&#x9;([Region]&#xA;&#x9;&#x9;&#x9;,[ItemID]&#xA;&#x9;&#x9;&#x9;,[LocaleID]&#xA;&#x9;&#x9;&#x9;,[AttributeID]&#xA;&#x9;&#x9;&#x9;,[AttributeValue]&#xA;&#x9;&#x9;&#x9;,[AddedDate])&#xA;  select&#x9;t.Region,&#xA;&#x9;&#x9;&#x9;t.ItemID,&#xA;&#x9;&#x9;&#x9;l.LocaleID,&#xA;&#x9;&#x9;&#x9;@WrappedTareWeightID,&#xA;&#x9;&#x9;&#x9;t.WrappedTareWeight,&#xA;&#x9;&#x9;&#x9;getdate()&#xA;&#x9;from&#x9;##tmpItemScaleLoad t&#xA;&#x9;join    dbo.Items i on t.ItemID = i.ItemID&#xA;&#x9;join&#x9;dbo.Locales_RM l on t.Region = l.Region&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and t.BusinessUnitID = l.BusinessUnitID&#xA;   where&#x9;t.WrappedTareWeight is not null&#xA;&#xA; insert into dbo.ItemAttributes_Locale_RM_Ext&#xA;&#x9;&#x9;&#x9;([Region]&#xA;&#x9;&#x9;&#x9;,[ItemID]&#xA;&#x9;&#x9;&#x9;,[LocaleID]&#xA;&#x9;&#x9;&#x9;,[AttributeID]&#xA;&#x9;&#x9;&#x9;,[AttributeValue]&#xA;&#x9;&#x9;&#x9;,[AddedDate])&#xA;  select&#x9;t.Region,&#xA;&#x9;&#x9;&#x9;t.ItemID,&#xA;&#x9;&#x9;&#x9;l.LocaleID,&#xA;&#x9;&#x9;&#x9;@UseByEABID,&#xA;&#x9;&#x9;&#x9;t.UsedBy,&#xA;&#x9;&#x9;&#x9;getdate()&#xA;&#x9;from&#x9;##tmpItemScaleLoad t&#xA;&#x9;join    dbo.Items i on t.ItemID = i.ItemID&#xA;&#x9;join&#x9;dbo.Locales_RM l on t.Region = l.Region&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and t.BusinessUnitID = l.BusinessUnitID&#xA;   where    t.UsedBy is not null&#xA;&#xA; insert into [dbo].[ItemAttributes_Locale_RM_Ext]&#xA;&#x9;&#x9;&#x9;([Region]&#xA;&#x9;&#x9;&#x9;,[ItemID]&#xA;&#x9;&#x9;&#x9;,[LocaleID]&#xA;&#x9;&#x9;&#x9;,[AttributeID]&#xA;&#x9;&#x9;&#x9;,[AttributeValue]&#xA;&#x9;&#x9;&#x9;,[AddedDate])&#xA;  select&#x9;t.Region,&#xA;&#x9;&#x9;&#x9;t.ItemID,&#xA;&#x9;&#x9;&#x9;l.LocaleID,&#xA;&#x9;&#x9;&#x9;@SendtoCFSID,&#xA;&#x9;&#x9;&#x9;t.SendToCFS,&#xA;&#x9;&#x9;&#x9;getdate()&#xA;&#x9;from&#x9;##tmpItemScaleLoad t&#xA;&#x9;join    dbo.Items i on t.ItemID = i.ItemID&#xA;&#x9;join&#x9;dbo.Locales_RM l on t.Region = l.Region&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and t.BusinessUnitID = l.BusinessUnitID&#xA;   where    t.SendToCFS is not null&#xA;&#xA; insert into dbo.ItemAttributes_Locale_RM_Ext&#xA;&#x9;&#x9;&#x9;([Region]&#xA;&#x9;&#x9;&#x9;,[ItemID]&#xA;&#x9;&#x9;&#x9;,[LocaleID]&#xA;&#x9;&#x9;&#x9;,[AttributeID]&#xA;&#x9;&#x9;&#x9;,[AttributeValue]&#xA;&#x9;&#x9;&#x9;,[AddedDate])&#xA;  select&#x9;t.Region,&#xA;&#x9;&#x9;&#x9;t.ItemID,&#xA;&#x9;&#x9;&#x9;l.LocaleID,&#xA;&#x9;&#x9;&#x9;@ForceTareID,&#xA;&#x9;&#x9;&#x9;t.ForcedTare,&#xA;&#x9;&#x9;&#x9;getdate()&#xA;&#x9;from&#x9;##tmpItemScaleLoad t&#xA;&#x9;join    dbo.Items i on t.ItemID = i.ItemID&#xA;&#x9;join&#x9;dbo.Locales_RM l on t.Region = l.Region&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and t.BusinessUnitID = l.BusinessUnitID&#xA;   where    t.ForcedTare is not null" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update Mammoth ItemLocale Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{2ad45032-1ffb-4bac-93fd-e00715b5b5c3}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update Mammoth ItemLocale Table"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"update ial
+set ial.ScaleItem = ill.ScaleItem
+from dbo.ItemAttributes_Locale_" + @[$Project::RegionCode] + " ial
+join ##tmpItemScaleLoad ill on ial.ItemID = ill.ItemID
+and ial.BusinessUnitID = ill.BusinessUnitID
+and ial.Region = ill.Region"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+          SQLTask:SqlStatementSource="update ial&#xA;set ial.ScaleItem = ill.ScaleItem&#xA;from dbo.ItemAttributes_Locale_RM ial&#xA;join ##tmpItemScaleLoad ill on ial.ItemID = ill.ItemID&#xA;and ial.BusinessUnitID = ill.BusinessUnitID&#xA;and ial.Region = ill.Region" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{c70fd7e7-80f4-419f-9e6a-5447c5fdf7a8}"
+      DTS:From="Package\Create Temp Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Transfter Item Scale Attributes" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{6F285000-1C60-4CA4-B8F5-C2387360D581}"
+      DTS:From="Package\Transfter Item Scale Attributes"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Update Mammoth ItemLocale Table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{3F521E66-8675-480F-B122-AA48EF32E6A5}"
+      DTS:From="Package\Update Mammoth ItemLocale Extended Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Drop Temp Table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{360ACA35-DC6B-422A-911B-0F0287CEDEF9}"
+      DTS:From="Package\Update Mammoth ItemLocale Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Update Mammoth ItemLocale Extended Table" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql12">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Create Temp Table"
+          TopLeft="126,67" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Drop Temp Table"
+          TopLeft="130,249" />
+        <NodeLayout
+          Size="226,42"
+          Id="Package\Transfter Item Scale Attributes"
+          TopLeft="428,65" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="297,87">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="131,0"
+              Start="0,0"
+              End="123.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="123.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="296,42"
+          Id="Package\Update Mammoth ItemLocale Extended Table"
+          TopLeft="429,156" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="577,198">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-365.5,51"
+              Start="0,0"
+              End="-365.5,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.5"
+                    Point2="0,25.5"
+                    Point3="-4,25.5" />
+                  <mssgle:LineSegment
+                    End="-361.5,25.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-361.5,25.5"
+                    Point2="-365.5,25.5"
+                    Point3="-365.5,29.5" />
+                  <mssgle:LineSegment
+                    End="-365.5,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="249,42"
+          Id="Package\Update Mammoth ItemLocale Table"
+          TopLeft="126,156" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="541,107">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-290.5,49"
+              Start="0,0"
+              End="-290.5,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.5"
+                    Point2="0,24.5"
+                    Point3="-4,24.5" />
+                  <mssgle:LineSegment
+                    End="-286.5,24.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-286.5,24.5"
+                    Point2="-290.5,24.5"
+                    Point3="-290.5,28.5" />
+                  <mssgle:LineSegment
+                    End="-290.5,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="375,177">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="54,0"
+              Start="0,0"
+              End="46.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="46.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Transfter Item Scale Attributes">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="236,42"
+          Id="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table"
+          TopLeft="213,218" />
+        <NodeLayout
+          Size="228,42"
+          Id="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes"
+          TopLeft="214,32" />
+        <NodeLayout
+          Size="213,42"
+          Id="Package\Transfter Item Scale Attributes\Convert varchar to nvarchar"
+          TopLeft="225,124" />
+        <EdgeLayout
+          Id="Package\Transfter Item Scale Attributes.Paths[OLE DB Source Output]"
+          TopLeft="329.75,74">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,50"
+              Start="0,0"
+              End="0,42.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Transfter Item Scale Attributes.Paths[Data Conversion Output]"
+          TopLeft="331.25,166">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52"
+              Start="0,0"
+              End="0,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transfter Item Scale Attributes\Load Into Mammoth Temp Table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transfter Item Scale Attributes\Get IRMA Item Scale Attributes">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

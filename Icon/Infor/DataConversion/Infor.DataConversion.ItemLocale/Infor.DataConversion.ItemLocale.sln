@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "Infor.DataConversion.ItemLocale", "Infor.DataConversion.ItemLocale.dtproj", "{43B8F394-6898-4418-8783-7F551E0D7DB7}"
 EndProject
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "Infor.DataConversion.ItemScale", "..\Infor.DataConversion.ItemScale\Infor.DataConversion.ItemScale.dtproj", "{58B5D0D4-D7DD-4F7A-83F0-72BBBDD0AA16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Development|Default = Development|Default
@@ -12,6 +14,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{43B8F394-6898-4418-8783-7F551E0D7DB7}.Development|Default.ActiveCfg = Development
 		{43B8F394-6898-4418-8783-7F551E0D7DB7}.Development|Default.Build.0 = Development
+		{58B5D0D4-D7DD-4F7A-83F0-72BBBDD0AA16}.Development|Default.ActiveCfg = Development
+		{58B5D0D4-D7DD-4F7A-83F0-72BBBDD0AA16}.Development|Default.Build.0 = Development
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
