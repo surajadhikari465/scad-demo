@@ -26,7 +26,7 @@ namespace Mammoth.Esb.ProductListener.Commands
             AddOrUpdateItemAttributesExtended(data);
         }
 
-        private void AddOrUpdateItemAttributesNutrition(AddOrUpdateProductsCommand data)
+        private void AddOrUpdateItems(AddOrUpdateProductsCommand data)
         {
             string sql = @"dbo.AddOrUpdateItems";
             int rowCount = this.db.Connection.Execute(
@@ -68,13 +68,17 @@ namespace Mammoth.Esb.ProductListener.Commands
                 commandType: CommandType.StoredProcedure);
         }
 
-        private void AddOrUpdateItems(AddOrUpdateProductsCommand data)
+        private void AddOrUpdateItemAttributesNutrition(AddOrUpdateProductsCommand data)
         {
-            if (data.Items.Any(i => i.NutritionAttributes != null))
+            var nutritionAttributes = data.Items
+                .Where(i => i.NutritionAttributes != null)
+                .Select(i => i.NutritionAttributes);
+
+            if (nutritionAttributes.Any())
             {
                 string sql = @"dbo.AddOrUpdateItemAttributesNutrition";
                 int rowCount = this.db.Connection.Execute(sql,
-                    new { nutritionAttributes = data.Items.Select(i => i.NutritionAttributes).ToDataTable() },
+                    new { nutritionAttributes = nutritionAttributes.ToDataTable() },
                     transaction: this.db.Transaction,
                     commandType: CommandType.StoredProcedure);
             }

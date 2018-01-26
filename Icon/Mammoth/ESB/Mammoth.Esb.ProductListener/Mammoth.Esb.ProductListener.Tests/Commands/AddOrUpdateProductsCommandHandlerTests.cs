@@ -282,6 +282,30 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             Assert.AreEqual(0, extAttributes.Count);
         }
 
+        [TestMethod]
+        public void AddOrUpdateProducts_2ProductsAndOneHasNullNutritionAttributes_ShouldNotThrowAnError()
+        {
+            //Given
+            var itemModel1 = CreateItemModelForAttributeTest(999999999);
+            var itemModel2 = CreateItemModelForAttributeTest(999999998);
+            itemModel2.NutritionAttributes = null;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                    {
+                        itemModel1,
+                        itemModel2
+                    }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            //Then
+            //No Error means the test passes
+        }
+
         private ItemModel CreateItemModelForAttributeTest(int itemId)
         {
             return new ItemModel
