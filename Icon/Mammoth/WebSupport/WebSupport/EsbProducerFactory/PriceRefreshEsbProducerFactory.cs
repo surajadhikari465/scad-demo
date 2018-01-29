@@ -16,6 +16,13 @@ namespace WebSupport.EsbProducerFactory
             else if(system == PriceRefreshConstants.IRMA)
             {
                 var settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("IRMA");
+
+               // all the 365 stores are stores in RM region in IRMA.
+                if (region == RegionNameConstants.TS)
+                {
+                    region = RegionNameConstants.RM;
+                }
+
                 settings.QueueName = settings.QueueName.Replace("XX", region);
                 return new NonJndiEsbProducer(settings);
             }

@@ -7,7 +7,19 @@
 		/// </summary>
 		public static string[] WholeFoodsRegions = new[]
 			{
-				"FL", "MA", "MW", "NA", "RM", "SO", "NC", "NE", "PN", "SP", "SW", "UK", "TS"
+                RegionNameConstants.FL,
+                RegionNameConstants.MA,
+                RegionNameConstants.MW,
+                RegionNameConstants.NA,
+                RegionNameConstants.RM,
+                RegionNameConstants.SO,
+                RegionNameConstants.NC,
+                RegionNameConstants.NE,
+                RegionNameConstants.PN,
+                RegionNameConstants.SP,
+                RegionNameConstants.SW,
+                RegionNameConstants.UK,
+                RegionNameConstants.TS
 			};
 
 		/// <summary>
@@ -40,6 +52,23 @@
 		public const string Spice = "Spice";
 		public const string SLAW = "SLAW";
 	}
+
+    public static class RegionNameConstants
+    {
+        public const string FL = "FL";
+        public const string MA = "MA";
+        public const string MW = "MW";
+        public const string NA = "NA";
+        public const string RM = "RM";
+        public const string SO = "SO";
+        public const string NC = "NC";
+        public const string NE = "NE";
+        public const string PN = "PN";
+        public const string SP = "SP";
+        public const string SW = "SW";
+        public const string UK = "UK";
+        public const string TS = "TS";
+    }
 
     public static class PriceRefreshConstants
     {
