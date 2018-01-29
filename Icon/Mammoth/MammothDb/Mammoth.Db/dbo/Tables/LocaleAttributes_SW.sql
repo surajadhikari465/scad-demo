@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [dbo].[LocaleAttributes_SW] (
     [Region]            NCHAR (2)      DEFAULT ('SW') NOT NULL,
     [LocaleAttributeID] INT            IDENTITY (1, 1) NOT NULL,
+	[LocaleID]          INT            NOT NULL,
     [AttributeID]       INT            NULL,
     [AttributeValue]    NVARCHAR (255) NULL,
     [AddedDate]         DATETIME       DEFAULT (getdate()) NOT NULL,
