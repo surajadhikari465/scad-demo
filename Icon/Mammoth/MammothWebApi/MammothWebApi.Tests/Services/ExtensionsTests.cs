@@ -7,6 +7,7 @@ using MammothWebApi.Service.Extensions;
 using MammothWebApi.DataAccess.Models;
 using System.Linq;
 using Mammoth.Common.DataAccess;
+using MammothWebApi.Tests.Helpers;
 
 namespace MammothWebApi.Tests.Services
 {
@@ -62,6 +63,8 @@ namespace MammothWebApi.Tests.Services
         public void ToItemLocaleExtendedModelStaging_ListItemLocaleServiceModel_PropertiesMappedToCorrectItemLocaleModelStaging()
         {
             // Given
+            // we each item-store object/data row will have a set number of extended attributes
+            int numberOfExtendedAttributesPerItemLocale = ItemLocaleTestData.NumberOfExtendedAttributesPerItemLocale;
             List<ItemLocaleServiceModel> itemLocales = new List<ItemLocaleServiceModel>();
             itemLocales.Add(new TestItemLocaleServiceModelBuilder().WithScanCode("12345").WithRegion("SW").WithBusinessUnit(11111)
                 .WithColorAdded(true)
@@ -74,6 +77,13 @@ namespace MammothWebApi.Tests.Services
                 .WithTagUom("test tag uom")
                 .WithLinkedItem("101010101")
                 .WithScaleExtraText("extra text for scale item")
+                .WithForceTare(true)
+                .WithCfsSendToScale(true)
+                .WithWrappedTareWeight("wrapped tare weight")
+                .WithUnwrappedTareWeight("UNwrapped tare weight")
+                .WithScaleItem(true)
+                .WithUseBy("use by next week")
+                .WithShelfLife(13)
                 .Build());
             itemLocales.Add(new TestItemLocaleServiceModelBuilder().WithScanCode("12346").WithRegion("SW").WithBusinessUnit(11111)
                 .WithColorAdded(true)
@@ -86,6 +96,13 @@ namespace MammothWebApi.Tests.Services
                 .WithTagUom("test tag uom")
                 .WithLinkedItem("101010101")
                 .WithScaleExtraText("extra text for scale item")
+                .WithForceTare(false)
+                .WithCfsSendToScale(false)
+                .WithWrappedTareWeight("wrapped tare weight")
+                .WithUnwrappedTareWeight("UNwrapped tare weight")
+                .WithScaleItem(false)
+                .WithUseBy("use by xmas 2034")
+                .WithShelfLife(5)
                 .Build());
 
             DateTime now = DateTime.Now;
@@ -95,65 +112,172 @@ namespace MammothWebApi.Tests.Services
             List<StagingItemLocaleExtendedModel> itemLocaleExtendedStaging = itemLocales.ToStagingItemLocaleExtendedModel(now, transactionId);
 
             // Then
-            var expected = itemLocales.OrderBy(il => il.ScanCode).ToList();
-            var actual = itemLocaleExtendedStaging.OrderBy(ile => ile.ScanCode).ToList();
+            var expectedList = itemLocales.OrderBy(il => il.ScanCode).ToList();
+            var actualList = itemLocaleExtendedStaging.OrderBy(ile => ile.ScanCode).ToList();
 
-            Assert.AreEqual(expected.Count * 10, actual.Count); // 10 more rows per item-store row (one for each extended attribute)
-            for (int i = 0; i < itemLocaleExtendedStaging.Count; i++)
+            // multiply the number of item-store rows by the number of expected ext. attributes to get the expected count
+            Assert.AreEqual(expectedList.Count * numberOfExtendedAttributesPerItemLocale, actualList.Count);
+
+            for (int testModelIndex = 0; testModelIndex < expectedList.Count; testModelIndex++)
             {
-                Assert.IsNotNull(actual[i].AttributeValue); // Verify that none of the extended attributes added are not null
-                Assert.AreEqual("SW", actual[i].Region);
-                Assert.AreEqual(11111, actual[i].BusinessUnitId);
+                var testModel = expectedList[testModelIndex];
+
+                for (int actualAttributeIndex = 0; actualAttributeIndex < numberOfExtendedAttributesPerItemLocale; actualAttributeIndex++)
+                {
+                    Assert.AreEqual("SW", actualList[actualAttributeIndex].Region);
+                    Assert.AreEqual(11111, actualList[actualAttributeIndex].BusinessUnitId);
+                    Assert.AreEqual(transactionId, actualList[actualAttributeIndex].TransactionId);
+                }
+
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.ColorAdded,
+                    testModel.ColorAdded?.BoolToString(),
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode,
+                    Attributes.ColorAdded)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.CountryOfProcessing,
+                    testModel.CountryOfProcessing,
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode
+                    , Attributes.CountryOfProcessing)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.Origin,
+                    testModel.Origin,
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode,
+                    Attributes.Origin)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.ElectronicShelfTag,
+                    testModel.ElectronicShelfTag?.BoolToString(),
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.ElectronicShelfTag)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.Exclusive,
+                    testModel.Exclusive?.ToString("o"),
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.Exclusive)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.NumberOfDigitsSentToScale,
+                    testModel.NumberOfDigitsSentToScale.ToString(),
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.NumberOfDigitsSentToScale)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.ChicagoBaby,
+                    testModel.ChicagoBaby,
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.ChicagoBaby)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.TagUom,
+                    testModel.TagUom,
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.TagUom)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.LinkedScanCode,
+                    testModel.LinkedItem,
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.LinkedScanCode)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.ScaleExtraText,
+                    testModel.ScaleExtraText,
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.ScaleExtraText)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.ForceTare,
+                    testModel.ForceTare?.ToString(),
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.ForceTare)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.CfsSendToScale,
+                    testModel.SendtoCFS?.ToString(),
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.CfsSendToScale)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.WrappedTareWeight,
+                    testModel.WrappedTareWeight,
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.WrappedTareWeight)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.UnwrappedTareWeight,
+                    testModel.UnwrappedTareWeight,
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.UnwrappedTareWeight)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.UseByEab,
+                    testModel.UseBy,
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.UseByEab)));
+                AssertStagedItemLocaleExtendedAttributeAsExpected(
+                    Attributes.ShelfLife,
+                    testModel.ShelfLife?.ToString(),
+                    actualList.SingleOrDefault(attr => MatchAttribute(attr, testModel.ScanCode, Attributes.ShelfLife)));
             }
+        }
 
-            Assert.AreEqual(itemLocales[0].ColorAdded?.BoolToString(), actual[0].AttributeValue, "Color added attribute value did not get set.");
-            Assert.AreEqual(itemLocales[0].CountryOfProcessing, actual[1].AttributeValue, "CountryOfProcessing attribute value did not get set.");
-            Assert.AreEqual(itemLocales[0].Origin, actual[2].AttributeValue, "Origin attribute value did not get set.");
-            Assert.AreEqual(itemLocales[0].ElectronicShelfTag?.BoolToString(), actual[3].AttributeValue, "ElectronicShelfTag attribute value did not get set.");
-            Assert.AreEqual(itemLocales[0].Exclusive?.ToString("o"), actual[4].AttributeValue, "Exclusive attribute value did not get set.");
-            Assert.AreEqual(itemLocales[0].NumberOfDigitsSentToScale.ToString(), actual[5].AttributeValue, "NumberOfDigitsSentToScale attribute value did not get set.");
-            Assert.AreEqual(itemLocales[0].ChicagoBaby, actual[6].AttributeValue, "ChicagoBaby attribute value did not get set.");
-            Assert.AreEqual(itemLocales[0].TagUom, actual[7].AttributeValue, "TagUom attribute value did not get set.");
-            Assert.AreEqual(itemLocales[0].LinkedItem, actual[8].AttributeValue, "LinkedItem attribute value did not get set.");
-            Assert.AreEqual(itemLocales[0].ScaleExtraText, actual[9].AttributeValue, "ScaleExtraText attribute value did not get set.");
+        protected static Func<StagingItemLocaleExtendedModel, string, int, bool> MatchAttribute =
+            (model, scanCode, attributeId) => model.ScanCode==scanCode && model.AttributeId == attributeId;
 
-            Assert.AreEqual(Attributes.ColorAdded, actual[0].AttributeId, "Color added attribute id did not get set.");
-            Assert.AreEqual(Attributes.CountryOfProcessing, actual[1].AttributeId, "CountryOfProcessing attribute id did not get set.");
-            Assert.AreEqual(Attributes.Origin, actual[2].AttributeId, "Origin attribute id did not get set.");
-            Assert.AreEqual(Attributes.ElectronicShelfTag, actual[3].AttributeId, "ElectronicShelfTag attribute id did not get set.");
-            Assert.AreEqual(Attributes.Exclusive, actual[4].AttributeId, "Exclusive attribute id did not get set.");
-            Assert.AreEqual(Attributes.NumberOfDigitsSentToScale, actual[5].AttributeId, "NumberOfDigitsSentToScale attribute id did not get set.");
-            Assert.AreEqual(Attributes.ChicagoBaby, actual[6].AttributeId, "ChicagoBaby attribute id did not get set.");
-            Assert.AreEqual(Attributes.TagUom, actual[7].AttributeId, "TagUom attribute id did not get set.");
-            Assert.AreEqual(Attributes.LinkedScanCode, actual[8].AttributeId, "LinkedScanCode attribute id did not get set.");
-            Assert.AreEqual(Attributes.ScaleExtraText, actual[9].AttributeId, "ScaleExtraText attribute id did not get set.");
 
-            Assert.AreEqual(itemLocales[1].ColorAdded?.BoolToString(), actual[10].AttributeValue, "Color added attribute value did not get set.");
-            Assert.AreEqual(itemLocales[1].CountryOfProcessing, actual[11].AttributeValue, "CountryOfProcessing attribute value did not get set.");
-            Assert.AreEqual(itemLocales[1].Origin, actual[12].AttributeValue, "Origin attribute value did not get set.");
-            Assert.AreEqual(itemLocales[1].ElectronicShelfTag?.BoolToString(), actual[13].AttributeValue, "ElectronicShelfTag attribute value did not get set.");
-            Assert.AreEqual(itemLocales[1].Exclusive?.ToString("o"), actual[14].AttributeValue, "Exclusive attribute value did not get set.");
-            Assert.AreEqual(itemLocales[1].NumberOfDigitsSentToScale.ToString(), actual[15].AttributeValue, "NumberOfDigitsSentToScale attribute value did not get set.");
-            Assert.AreEqual(itemLocales[1].ChicagoBaby, actual[16].AttributeValue, "ChicagoBaby attribute value did not get set.");
-            Assert.AreEqual(itemLocales[1].TagUom, actual[17].AttributeValue, "TagUom attribute value did not get set.");
-            Assert.AreEqual(itemLocales[1].LinkedItem, actual[18].AttributeValue, "LinkedItem attribute value did not get set.");
-            Assert.AreEqual(itemLocales[1].ScaleExtraText, actual[19].AttributeValue, "ScaleExtraText attribute value did not get set.");
-
-            Assert.AreEqual(Attributes.ColorAdded, actual[10].AttributeId, "Color added attribute id did not get set.");
-            Assert.AreEqual(Attributes.CountryOfProcessing, actual[11].AttributeId, "CountryOfProcessing attribute id did not get set.");
-            Assert.AreEqual(Attributes.Origin, actual[12].AttributeId, "Origin attribute id did not get set.");
-            Assert.AreEqual(Attributes.ElectronicShelfTag, actual[13].AttributeId, "ElectronicShelfTag attribute id did not get set.");
-            Assert.AreEqual(Attributes.Exclusive, actual[14].AttributeId, "Exclusive attribute id did not get set.");
-            Assert.AreEqual(Attributes.NumberOfDigitsSentToScale, actual[15].AttributeId, "NumberOfDigitsSentToScale attribute id did not get set.");
-            Assert.AreEqual(Attributes.ChicagoBaby, actual[16].AttributeId, "ChicagoBaby attribute id did not get set.");
-            Assert.AreEqual(Attributes.TagUom, actual[17].AttributeId, "TagUom attribute id did not get set.");
-            Assert.AreEqual(Attributes.LinkedScanCode, actual[18].AttributeId, "LinkedScanCode attribute id did not get set.");
-            Assert.AreEqual(Attributes.ScaleExtraText, actual[19].AttributeId, "ScaleExtraText attribute id did not get set.");
-
-            for (int i = 0; i < actual.Count; i++)
+        protected void AssertStagedItemLocaleExtendedAttributeAsExpected( int attributeId,
+            string expectedValueAsString, StagingItemLocaleExtendedModel actualAttribute)
+        {
+            var attributeCode = GetCodeForAttribute(attributeId);
+            Assert.AreEqual(attributeId, actualAttribute.AttributeId,
+                $"{attributeCode} attribute ({attributeId}) id did not get set.");
+            if (expectedValueAsString != null)
             {
-                Assert.AreEqual(transactionId, actual[i].TransactionId);
+                Assert.IsNotNull(actualAttribute.AttributeValue);
             }
+            Assert.AreEqual(expectedValueAsString, actualAttribute.AttributeValue,
+                $"{attributeCode} ({attributeId}) value did not get set. Expected '{expectedValueAsString}' Actual '{actualAttribute.AttributeValue}'");
+        }
+
+        protected static string GetCodeForAttribute(int attributeId)
+        {
+            switch (attributeId)
+            {
+                case Attributes.AgeRestrict: return Attributes.Codes.AgeRestrict;
+                case Attributes.MadeWithOrganicGrapes: return Attributes.Codes.MadeWithOrganicGrapes;
+                case Attributes.MadeWithBiodynamicGrapes: return Attributes.Codes.MadeWithBiodynamicGrapes;
+                case Attributes.NutritionRequired: return Attributes.Codes.NutritionRequired;
+                case Attributes.PrimeBeef: return Attributes.Codes.PrimeBeef;
+                case Attributes.RainforestAlliance: return Attributes.Codes.RainforestAlliance;
+                case Attributes.RefrigeratedOrShelfStable: return Attributes.Codes.RefrigeratedOrShelfStable;
+                case Attributes.SmithsonianBirdFriendly: return Attributes.Codes.SmithsonianBirdFriendly;
+                case Attributes.Wic: return Attributes.Codes.Wic;
+                case Attributes.ForceTare: return Attributes.Codes.ForceTare;
+                case Attributes.ShelfLife: return Attributes.Codes.ShelfLife;
+                case Attributes.UnwrappedTareWeight: return Attributes.Codes.UnwrappedTareWeight;
+                case Attributes.WrappedTareWeight: return Attributes.Codes.WrappedTareWeight;
+                case Attributes.UseByEab: return Attributes.Codes.UseByEab;
+                case Attributes.CfsSendToScale: return Attributes.Codes.CfsSendToScale;
+                case Attributes.VendorCaseSize: return Attributes.Codes.VendorCaseSize;
+                case Attributes.VendorName: return Attributes.Codes.VendorName;
+                case Attributes.VendorItemId: return Attributes.Codes.VendorItemId;
+                case Attributes.IrmaVendorKey: return Attributes.Codes.IrmaVendorKey;
+                case Attributes.OrderedByInfor: return Attributes.Codes.OrderedByInfor;
+                case Attributes.GlobalPricingProgram: return Attributes.Codes.GlobalPricingProgram;
+                case Attributes.PercentageTareWeight: return Attributes.Codes.PercentageTareWeight;
+                case Attributes.AltRetailSize: return Attributes.Codes.AltRetailSize;
+                case Attributes.AltRetailUom: return Attributes.Codes.AltRetailUom;
+                case Attributes.FlexibleText : return Attributes.Codes.FlexibleText;
+                case Attributes.FairTrade: return Attributes.Codes.FairTrade;
+                case Attributes.CustomerFriendlyDescription: return Attributes.Codes.CustomerFriendlyDescription;
+                case Attributes.RetailUnit: return Attributes.Codes.RetailUnit;
+                case Attributes.AuthorizedForSale: return Attributes.Codes.AuthorizedForSale;
+                case Attributes.CaseDiscountEligible: return Attributes.Codes.CaseDiscountEligible;
+                case Attributes.ChicagoBaby: return Attributes.Codes.ChicagoBaby;
+                case Attributes.ColorAdded: return Attributes.Codes.ColorAdded;
+                case Attributes.CountryOfProcessing: return Attributes.Codes.CountryOfProcessing;
+                case Attributes.Discontinued: return Attributes.Codes.Discontinued;
+                case Attributes.ElectronicShelfTag: return Attributes.Codes.ElectronicShelfTag;
+                case Attributes.Exclusive: return Attributes.Codes.Exclusive;
+                case Attributes.LabelTypeDesc: return Attributes.Codes.LabelTypeDesc;
+                case Attributes.LinkedScanCode: return Attributes.Codes.LinkedScanCode;
+                case Attributes.LocalItem: return Attributes.Codes.LocalItem;
+                case Attributes.Locality: return Attributes.Codes.Locality;
+                case Attributes.NumberOfDigitsSentToScale: return Attributes.Codes.NumberOfDigitsSentToScale;
+                case Attributes.Origin: return Attributes.Codes.Origin;
+                case Attributes.ProductCode: return Attributes.Codes.ProductCode;
+                case Attributes.RestrictedHours: return Attributes.Codes.RestrictedHours;
+                case Attributes.ScaleExtraText: return Attributes.Codes.ScaleExtraText;
+                case Attributes.SignCaption: return Attributes.Codes.SignCaption;
+                case Attributes.SoldByWeight: return Attributes.Codes.SoldByWeight;
+                case Attributes.TagUom: return Attributes.Codes.TagUom;
+                case Attributes.TmDiscountEligible: return Attributes.Codes.TmDiscountEligible;
+                case Attributes.SignRomanceShort: return Attributes.Codes.SignRomanceShort;
+                case Attributes.SignRomanceLong: return Attributes.Codes.SignRomanceLong;
+                case Attributes.Msrp: return Attributes.Codes.Msrp;
+
+                default:
+                    break;
+            }
+            return null;
         }
     }
 }

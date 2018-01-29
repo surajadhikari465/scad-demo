@@ -79,6 +79,14 @@ SELECT q.QueueID AS QueueId
 	,vch.Package_Desc1 AS VendorCaseSize
 	,v.Vendor_Key AS VendorKey
 	,v.CompanyName AS VendorCompanyName
+    ,sc.ForceTare as ForceTare
+    ,icf.SendToScale as SendtoCFS
+    ,sct.Description as WrappedTareWeight
+    ,utw.Description as UnWrappedTareWeight
+    ,ii.Scale_Identifier as ScaleItem
+    ,seb.Description as UseBy
+    ,sc.ShelfLife_Length as ShelfLife
+
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key
@@ -106,6 +114,9 @@ LEFT JOIN ItemOrigin co ON i.CountryProc_ID = co.Origin_ID -- country of process
 LEFT JOIN ItemOrigin oo ON i.Origin_ID = oo.Origin_ID -- origin
 LEFT JOIN LabelType lt ON i.LabelType_ID = lt.LabelType_ID
 LEFT JOIN ItemScale sc ON i.Item_Key = sc.Item_Key
+LEFT JOIN dbo.Scale_Tare sct ON sct.Scale_Tare_ID = sc.Scale_Tare_ID
+LEFT JOIN dbo.Scale_Tare utw ON utw.Scale_Tare_ID = sc.Scale_Alternate_Tare_ID
+LEFT JOIN dbo.Scale_EatBy seb ON seb.Scale_EatBy_ID = sc.Scale_EatBy_ID
 LEFT JOIN Scale_ExtraText sce ON sc.Scale_ExtraText_ID = sce.Scale_ExtraText_ID -- scale extra text
 LEFT JOIN ItemOverride iov ON i.Item_Key = iov.Item_Key
 	AND iov.StoreJurisdictionID = s.StoreJurisdictionID
@@ -128,6 +139,7 @@ LEFT JOIN StoreItemExtended sie ON i.Item_Key = sie.Item_Key
 	AND s.Store_No = sie.Store_No
 LEFT JOIN ItemIdentifier dii ON i.Item_Key = dii.Item_Key
     AND dii.Default_Identifier = 1
+LEFT JOIN dbo.itemCustomerFacingScale icf ON i.Item_Key = icf.Item_Key
 WHERE q.InProcessBy = @JobInstance
 	AND q.Store_No IS NOT NULL
 
@@ -184,6 +196,13 @@ SELECT q.QueueID AS QueueId
 	,vch.Package_Desc1 AS VendorCaseSize
 	,v.Vendor_Key AS VendorKey
 	,v.CompanyName AS VendorCompanyName
+    ,sc.ForceTare as ForceTare
+    ,icf.SendToScale as SendtoCFS
+    ,sct.Description as WrappedTareWeight
+    ,utw.Description as UnWrappedTareWeight
+    ,ii.Scale_Identifier as ScaleItem
+    ,seb.Description as UseBy
+    ,sc.ShelfLife_Length as ShelfLife
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key
@@ -210,6 +229,9 @@ LEFT JOIN ItemOrigin co ON i.CountryProc_ID = co.Origin_ID -- country of process
 LEFT JOIN ItemOrigin oo ON i.Origin_ID = oo.Origin_ID -- origin
 LEFT JOIN LabelType lt ON i.LabelType_ID = lt.LabelType_ID
 LEFT JOIN ItemScale sc ON i.Item_Key = sc.Item_Key
+LEFT JOIN dbo.Scale_Tare sct ON sct.Scale_Tare_ID = sc.Scale_Tare_ID
+LEFT JOIN dbo.Scale_Tare utw ON utw.Scale_Tare_ID = sc.Scale_Alternate_Tare_ID
+LEFT JOIN dbo.Scale_EatBy seb ON seb.Scale_EatBy_ID = sc.Scale_EatBy_ID
 LEFT JOIN Scale_ExtraText sce ON sc.Scale_ExtraText_ID = sce.Scale_ExtraText_ID -- scale extra text
 LEFT JOIN ItemOverride iov ON i.Item_Key = iov.Item_Key
 	AND iov.StoreJurisdictionID = s.StoreJurisdictionID
@@ -232,6 +254,7 @@ LEFT JOIN StoreItemExtended sie ON i.Item_Key = sie.Item_Key
 	AND s.Store_No = sie.Store_No
 LEFT JOIN ItemIdentifier dii ON i.Item_Key = dii.Item_Key
     AND dii.Default_Identifier = 1
+LEFT JOIN dbo.itemCustomerFacingScale icf ON i.Item_Key = icf.Item_Key
 WHERE q.InProcessBy = @JobInstance
 	AND (
 		s.WFM_Store = 1

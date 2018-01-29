@@ -34,6 +34,16 @@ namespace MammothWebApi.Service.Models
         public decimal? SupplierCaseSize { get; set; }
         public string IrmaVendorKey { get; set; }
 
+
+        //Scale Attributes
+        public bool? ForceTare { get; set; }
+        public bool? SendtoCFS { get; set; }
+        public string WrappedTareWeight { get; set; }
+        public string UnwrappedTareWeight { get; set; }
+        public bool? ScaleItem { get; set; }
+        public string UseBy { get; set; }
+        public int? ShelfLife { get; set; }
+
         // 'Extended' Attributes
 
         /// <summary>

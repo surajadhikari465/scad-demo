@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MammothWebApi.Tests</RootNamespace>
     <AssemblyName>MammothWebApi.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <IsCodedUITest>False</IsCodedUITest>
@@ -67,13 +67,13 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Mammoth.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.2017.1.5.1\lib\net451\Mammoth.Common.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.2017.11.28.3\lib\net461\Mammoth.Common.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2017.6.15.2\lib\net451\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.1.18.1\lib\net461\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Logging.2017.11.15.10\lib\net46\Mammoth.Logging.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Logging.2017.11.28.5\lib\net461\Mammoth.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
@@ -95,6 +95,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlClient, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.4.0\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -111,6 +114,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ItemLocaleControllerTests.cs" />
     <Compile Include="Controllers\PriceControllerTests.cs" />
+    <Compile Include="Helpers\ItemLocaleTestData.cs" />
     <Compile Include="Helpers\PriceTestData.cs" />
     <Compile Include="Helpers\ViewModelValidationHelper.cs" />
     <Compile Include="Models\PriceRequestModelUnitTests.cs" />
@@ -130,6 +134,14 @@
     <Compile Include="ServiceModelMappingExtensionsTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MammothWebApi.Common\MammothWebApi.Common.csproj">
       <Project>{75837b38-43f8-4598-addb-075f580887e0}</Project>
       <Name>MammothWebApi.Common</Name>
@@ -143,15 +155,9 @@
       <Name>MammothWebApi.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\MammothWebApi\MammothWebApi.csproj">
-      <Project>{A3691B1D-2A5F-42B4-A388-C21BDD5F2FD3}</Project>
+      <Project>{a3691b1d-2a5f-42b4-a388-c21bdd5f2fd3}</Project>
       <Name>MammothWebApi</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

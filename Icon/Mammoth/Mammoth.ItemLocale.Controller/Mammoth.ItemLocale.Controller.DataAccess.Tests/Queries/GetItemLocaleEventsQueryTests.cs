@@ -332,6 +332,13 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedDefaultScanCode = "1234561728";
             decimal? expectedAltRetailSize = null;
             string expectedAltRetailUOM = null;
+            bool? expectedForceTare = true;
+            bool? expectedSendtoCFS = null;
+            string expectedWrappedTareWeight = "9999";
+            string expectedUnwrappedTareWeight = "9998";
+            bool? expectedScaleItem = null;
+            string expectedUseBy = "Test";
+            int? expectedShelfLife = null;
 
             // Insert New Item
             var itemKey = this.dbProvider.Insert(
@@ -449,6 +456,26 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.ItemSignAttributeID));
 
+            // Insert WrappedTareWeight
+            var wrappedTareWeight = this.dbProvider.Insert(new IrmaQueryParams<Scale_Tare, int>(
+                IrmaTestObjectFactory.Build<Scale_Tare>()
+                    .With(x => x.Description, expectedWrappedTareWeight)
+                    .ToObject(),
+                x => x.Scale_Tare_ID));
+
+            // Insert UnwrappedTareWeight
+            var unwrappedTareWeight = this.dbProvider.Insert(new IrmaQueryParams<Scale_Tare, int>(
+                IrmaTestObjectFactory.Build<Scale_Tare>()
+                    .With(x => x.Description, expectedUnwrappedTareWeight)
+                    .ToObject(),
+                x => x.Scale_Tare_ID));
+
+            var scale_EatBy_ID = this.dbProvider.Insert(new IrmaQueryParams<Scale_EatBy, int>(
+               IrmaTestObjectFactory.Build<Scale_EatBy>()
+                   .With(x => x.Description, expectedUseBy)
+                   .ToObject(),
+               x => x.Scale_EatBy_ID));
+
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
                 IrmaTestObjectFactory.Build<Scale_ExtraText>()
@@ -462,6 +489,11 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 IrmaTestObjectFactory.Build<ItemScale>()
                     .With(x => x.Item_Key, itemKey)
                     .With(x => x.Scale_ExtraText_ID, scaleExtraTextId)
+                    .With(x=>x.ForceTare,expectedForceTare)
+                    .With(x => x.ShelfLife_Length, expectedShelfLife)
+                    .With(x => x.Scale_Tare_ID, wrappedTareWeight)
+                    .With(x => x.Scale_Alternate_Tare_ID, unwrappedTareWeight)
+                    .With(x=>x.Scale_EatBy_ID, scale_EatBy_ID)
                     .ToObject(),
                 x => x.ItemScale_ID));
 
@@ -545,6 +577,13 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             Assert.AreEqual(expectedAltRetailSize, actual.AltRetailSize, "The expected AltRetailSize did not match the actual.");
             Assert.AreEqual(expectedAltRetailUOM, actual.AltRetailUOM, "The expected AltRetailUOM did not match the actual.");
             Assert.IsTrue(string.IsNullOrEmpty(actual.ErrorMessage));
+            Assert.AreEqual(expectedForceTare, actual.ForceTare, "The expected ForceTare did not match the actual.");
+            Assert.AreEqual(expectedWrappedTareWeight, actual.WrappedTareWeight, "The expected WrappedTareWeight did not match the actual.");
+            Assert.AreEqual(expectedUnwrappedTareWeight, actual.UnwrappedTareWeight, "The expected UnWrappedTareWeight did not match the actual.");
+            Assert.AreEqual(expectedScaleItem, actual.ScaleItem, "The expected ScaleItem did not match the actual.");
+            Assert.AreEqual(expectedUseBy, actual.UseBy, "The expected UseBy did not match the actual.");
+            Assert.AreEqual(expectedShelfLife, actual.ShelfLife, "The expected ShelfLife did not match the actual.");
+            Assert.AreEqual(expectedSendtoCFS, actual.SendtoCFS, "The expected SendtoCFS did not match the actual.");
         }
 
         [TestMethod]

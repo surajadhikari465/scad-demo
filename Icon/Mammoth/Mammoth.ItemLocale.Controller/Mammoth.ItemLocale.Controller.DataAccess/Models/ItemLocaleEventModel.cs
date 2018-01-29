@@ -40,6 +40,15 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Models
         public string VendorKey { get; set; }
         public string VendorCompanyName { get; set; }
 
+        // for one plum
+        public bool? ForceTare { get; set; }
+        public bool? SendtoCFS { get; set; }
+        public string WrappedTareWeight { get; set; }
+        public string UnwrappedTareWeight { get; set; }
+        public bool? ScaleItem { get; set; }
+        public string UseBy { get; set; }
+        public int? ShelfLife { get; set; }
+
         // Extended Attributes (are not required)
         /// <summary>
         /// Extended Attributes

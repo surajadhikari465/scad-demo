@@ -40,8 +40,9 @@ namespace MammothWebApi.Service.Extensions
                     AltRetailSize = itemLocale.AltRetailSize,
                     AltRetailUOM = itemLocale.AltRetailUOM,
                     DefaultScanCode = itemLocale.DefaultScanCode,
+                    ScaleItem = itemLocale.ScaleItem.GetValueOrDefault(false),
                     Timestamp = timestamp,
-                    TransactionId = transactionId
+                    TransactionId = transactionId,
                 };
 
                 staging.Add(row);
@@ -192,6 +193,66 @@ namespace MammothWebApi.Service.Extensions
                 {
                     AttributeId = Attributes.ScaleExtraText,
                     AttributeValue = itemLocale.ScaleExtraText,
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.CfsSendToScale,
+                    AttributeValue = itemLocale.SendtoCFS?.ToString(),
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.ShelfLife,
+                    AttributeValue = itemLocale.ShelfLife?.ToString(),
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.UseByEab,
+                    AttributeValue = itemLocale.UseBy,
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.ForceTare,
+                    AttributeValue = itemLocale.ForceTare?.ToString(),
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.WrappedTareWeight,
+                    AttributeValue = itemLocale.WrappedTareWeight,
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.UnwrappedTareWeight,
+                    AttributeValue = itemLocale.UnwrappedTareWeight,
                     Region = itemLocale.Region,
                     BusinessUnitId = itemLocale.BusinessUnitId,
                     ScanCode = itemLocale.ScanCode

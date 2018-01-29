@@ -36,6 +36,13 @@ namespace MammothWebApi.Tests.ModelBuilders
         private string origin;
         private string scaleExtraText;
         private string tagUom;
+        private bool? forceTare;
+        private bool? sendtoCFS;
+        private string wrappedTareWeight;
+        private string unwrappedTareWeight;
+        private bool? scaleItem;
+        private string useBy;
+        private int? shelfLife;
 
         internal TestItemLocaleServiceModelBuilder()
         {
@@ -63,7 +70,14 @@ namespace MammothWebApi.Tests.ModelBuilders
             this.origin = null;
             this.scaleExtraText = null;
             this.tagUom = null;
-        }
+            this.forceTare = null;
+            this.sendtoCFS = null;
+            this.wrappedTareWeight = null;
+            this.unwrappedTareWeight = null;
+            this.scaleItem = null;
+            this.useBy = null;
+            this.shelfLife = null;
+    }
 
         internal TestItemLocaleServiceModelBuilder WithRegion(string region)
         {
@@ -221,6 +235,48 @@ namespace MammothWebApi.Tests.ModelBuilders
             return this;
         }
 
+        internal TestItemLocaleServiceModelBuilder WithForceTare(bool? forceTare)
+        {
+            this.forceTare = forceTare;
+            return this;
+        }
+
+        internal TestItemLocaleServiceModelBuilder WithCfsSendToScale(bool? cfsSendToScale)
+        {
+            this.sendtoCFS = cfsSendToScale;
+            return this;
+        }
+
+        internal TestItemLocaleServiceModelBuilder WithWrappedTareWeight(string wrappedTareWeight)
+        {
+            this.wrappedTareWeight = wrappedTareWeight;
+            return this;
+        }
+
+        internal TestItemLocaleServiceModelBuilder WithUnwrappedTareWeight(string unwrappedTareWeight)
+        {
+            this.unwrappedTareWeight = unwrappedTareWeight;
+            return this;
+        }
+
+        internal TestItemLocaleServiceModelBuilder WithScaleItem(bool? isScaleItem)
+        {
+            this.scaleItem = isScaleItem;
+            return this;
+        }
+
+        internal TestItemLocaleServiceModelBuilder WithUseBy(string useBy)
+        {
+            this.useBy = useBy;
+            return this;
+        }
+
+        internal TestItemLocaleServiceModelBuilder WithShelfLife(int? shelfLife)
+        {
+            this.shelfLife = shelfLife;
+            return this;
+        }
+
         internal ItemLocaleServiceModel Build()
         {
             var itemLocaleStaging = new ItemLocaleServiceModel
@@ -251,7 +307,14 @@ namespace MammothWebApi.Tests.ModelBuilders
                 NumberOfDigitsSentToScale = this.numberOfDigitsSentToScale,
                 Origin = this.origin,
                 ScaleExtraText = this.scaleExtraText,
-                TagUom = this.tagUom
+                TagUom = this.tagUom,
+                ForceTare = this.forceTare,
+                SendtoCFS = this.sendtoCFS,
+                WrappedTareWeight = this.wrappedTareWeight,
+                UnwrappedTareWeight = this.unwrappedTareWeight,
+                ScaleItem = this.scaleItem,
+                UseBy = this.useBy,
+                ShelfLife = this.shelfLife,
             };
 
             return itemLocaleStaging;

@@ -52,7 +52,14 @@ namespace MammothWebApi.Extensions
                     SupplierName = itemLocale.VendorCompanyName,
                     SupplierItemId = itemLocale.VendorItemId,
                     SupplierCaseSize = itemLocale.VendorCaseSize,
-                    IrmaVendorKey = itemLocale.VendorKey
+                    IrmaVendorKey = itemLocale.VendorKey,
+                    ForceTare = itemLocale.ForceTare,
+                    SendtoCFS = itemLocale.SendtoCFS,
+                    WrappedTareWeight = itemLocale.WrappedTareWeight,
+                    UnwrappedTareWeight = itemLocale.UnwrappedTareWeight,
+                    ScaleItem = itemLocale.ScaleItem,
+                    UseBy = itemLocale.UseBy,
+                    ShelfLife = itemLocale.ShelfLife,
                 };
                 itemLocaleServiceModels.Add(serviceModel);
             }

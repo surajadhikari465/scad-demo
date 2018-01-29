@@ -5,6 +5,7 @@ using MammothWebApi.DataAccess.Commands;
 using MammothWebApi.DataAccess.Models;
 using MammothWebApi.Service.Models;
 using MammothWebApi.Service.Services;
+using MammothWebApi.Tests.Helpers;
 using MammothWebApi.Tests.ModelBuilders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -98,8 +99,13 @@ namespace MammothWebApi.Tests.Services
                     && c.ItemLocales[i].BusinessUnitID == this.itemLocales[i].BusinessUnitId)), Times.Once);
             }
 
-            int expectedCount = this.itemLocales.Count * 10;
+            int expectedCount = this.itemLocales.Count * ItemLocaleTestData.NumberOfExtendedAttributesPerItemLocale;
 
+            this.mockItemLocaleExtendedStagingHandler
+                .Verify(s => s.Execute(It.IsAny<StagingItemLocaleExtendedCommand>()), Times.Once);
+            this.mockItemLocaleExtendedStagingHandler
+                .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
+                    c.ItemLocalesExtended.Count == expectedCount)), Times.Once);
             this.mockItemLocaleExtendedStagingHandler
                 .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
                     c.ItemLocalesExtended.Count == expectedCount)), Times.Once);
@@ -135,6 +141,24 @@ namespace MammothWebApi.Tests.Services
             this.mockItemLocaleExtendedStagingHandler
                 .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
                     c.ItemLocalesExtended.Where(il => il.AttributeId == Attributes.TagUom).Count() == 3)), Times.Once);
+            this.mockItemLocaleExtendedStagingHandler
+                .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
+                    c.ItemLocalesExtended.Where(il => il.AttributeId == Attributes.ForceTare).Count() == 3)), Times.Once);
+            this.mockItemLocaleExtendedStagingHandler
+                .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
+                    c.ItemLocalesExtended.Where(il => il.AttributeId == Attributes.CfsSendToScale).Count() == 3)), Times.Once);
+            this.mockItemLocaleExtendedStagingHandler
+                .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
+                    c.ItemLocalesExtended.Where(il => il.AttributeId == Attributes.WrappedTareWeight).Count() == 3)), Times.Once);
+            this.mockItemLocaleExtendedStagingHandler
+                .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
+                    c.ItemLocalesExtended.Where(il => il.AttributeId == Attributes.UnwrappedTareWeight).Count() == 3)), Times.Once);
+            this.mockItemLocaleExtendedStagingHandler
+                .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
+                    c.ItemLocalesExtended.Where(il => il.AttributeId == Attributes.UseByEab).Count() == 3)), Times.Once);
+            this.mockItemLocaleExtendedStagingHandler
+                .Verify(s => s.Execute(It.Is<StagingItemLocaleExtendedCommand>(c =>
+                    c.ItemLocalesExtended.Where(il => il.AttributeId == Attributes.ShelfLife).Count() == 3)), Times.Once);
 
             this.mockItemLocaleSupplierStagingHandler
                 .Verify(s => s.Execute(It.IsAny<StagingItemLocaleSupplierCommand>()), Times.Once);
