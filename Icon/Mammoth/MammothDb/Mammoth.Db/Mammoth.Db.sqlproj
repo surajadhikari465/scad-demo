@@ -742,7 +742,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddScaleItemAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddPercentageTareWeightToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddAltRetailSizeUomCodesToAttributesTable.sql" />
-    <Build Include="Scripts\PostDeploymentScripts\Delete365StoresFromLocaleTablesOtherThanTSRegion.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Delete365StoresFromLocaleTablesOtherThanTSRegion.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
