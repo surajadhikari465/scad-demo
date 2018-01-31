@@ -8,9 +8,8 @@ Post-Deployment Script Template
  Example:      :setvar TableName MyTable							
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
+Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 EXAMPLE (showing Icon-DB scripts path):
-:r .\Scripts\PopulateData\Release\__YOUR__SCRIPT__NAME.sql
+:r .\Scripts\PopulateData\Release\__YOUR__SCRIPT__NAME.sql -- 2018.01.01
 */
 
-:r .\Scripts\PopulateData\Release\AddCustomerFriendlyDescriptionTraitCode.sql
-:r .\Scripts\PopulateData\Release\UpdateCustomerFriendlyDescriptionTraitPattern.sql

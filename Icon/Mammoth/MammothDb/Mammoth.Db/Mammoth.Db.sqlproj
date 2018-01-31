@@ -172,6 +172,8 @@
     <Folder Include="esl\Views" />
     <Folder Include="eplum" />
     <Folder Include="eplum\Stored Procedures" />
+    <Folder Include="Scripts\PreDeploymentScripts\Archive" />
+    <Folder Include="Scripts\PostDeploymentScripts\Archive" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -604,7 +606,6 @@
     <None Include="Scripts\Templates\StartDataTransformation.sql" />
     <Build Include="stage\Tables\Items.sql" />
     <Build Include="stage\Tables\HierarchyClass.sql" />
-    <None Include="Scripts\PostDeploymentScripts\PopulateRetentionPolicyForStagingTables.sql" />
     <Build Include="stage\Tables\MessageQueue.sql" />
     <Build Include="esb\Stored Procedures\MarkMessageQueueItemLocaleEntriesAsInProcess.sql" />
     <Build Include="esb\Stored Procedures\MarkMessageQueuePriceEntriesAsInProcess.sql" />
@@ -678,21 +679,16 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <None Include="Scripts\PreDeploymentScripts\DropPriceTables.sql" />
     <Build Include="gpm\Tables\MessageArchivePrice.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddAppsToAppTable.sql" />
     <Build Include="gpm\Tables\MessageArchivePriceR10.sql" />
     <Build Include="esb\Tables\MessageArchive.sql" />
     <None Include="Jobs\MAMMOTH . Data History Purge.sql" />
-    <None Include="Scripts\PreDeploymentScripts\TruncateRetentionPolicyTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddWebSupportToAppTable.sql" />
     <Build Include="gpm\Stored Procedures\GetCheckPointMessageData.sql" />
     <Build Include="gpm\Tables\ErrorMessages.sql" />
     <Build Include="gpm\Stored Procedures\DeleteAllPricesForItemIdBusinessUnitId.sql" />
     <None Include="Jobs\MAMMOTH.ReseedTables.sql" />
     <Build Include="dbo\Stored Procedures\GetItemStorePriceAttributes.sql" />
     <Build Include="dbo\User Defined Types\ScanCodeBusinessUnitIdType.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />
     <Build Include="dbo\Tables\ItemLocale_Supplier_FL.sql" />
     <Build Include="dbo\Tables\ItemLocale_Supplier_UK.sql" />
     <Build Include="dbo\Tables\ItemLocale_Supplier_TS.sql" />
@@ -717,7 +713,6 @@
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesNutrition.sql" />
     <Build Include="dbo\User Defined Types\ItemAttributesExtType.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesExt.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddEslAttributesToAttributesTable.sql" />
     <Build Include="stage\Tables\ItemStoreKeysEsl.sql" />
     <Build Include="dbo\Tables\StoreAddress.sql" />
     <Build Include="stage\Tables\ItemLocaleSupplier.sql" />
@@ -733,16 +728,31 @@
     <Build Include="esl\Views\ItemsByAuthorizedStores.sql" />
     <Build Include="esl\Views\ItemStoresByBrandID.sql" />
     <Build Include="stage\Tables\ItemLocaleSupplierDelete.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddVendorRelatedCodesToAttributesTable.sql" />
     <Build Include="Schemas\eplum.sql" />
     <Build Include="eplum\Stored Procedures\GetEPlumAttributes.sql" />
     <Build Include="stage\Tables\ItemStoreKeysEPlum.sql" />
     <None Include="Scripts\PreDeploymentScripts\UpdateDefaulltScanCodeToNotNull.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddScaleItemAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddPercentageTareWeightToAttributesTable.sql" />
+    <None Include="Scripts\PreDeploymentScripts\Archive\SubTeamCleanUp_PreDeployment.sql" />
+    <None Include="Scripts\PreDeploymentScripts\Archive\DropPriceTables.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddActivePriceSentArchiveToRetentionPolicy.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddAppsToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddErrorMonitorToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddEslAttributesToAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddGlobalPricingProgramToAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddGpmPriceTypes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddJobSchedulerToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddMaintFlagRowToDbStatusTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddOrderedByInforToAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddWebSupportToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\Currency_RemoveTrailingSpaces_PostDeployment.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\Delete365StoresFromLocaleTablesOtherThanTSRegion.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\PopulateRetentionPolicyForStagingTables.sql" />
+    <None Include="Scripts\PreDeploymentScripts\Archive\TruncateRetentionPolicyTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddVendorRelatedCodesToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddAltRetailSizeUomCodesToAttributesTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\Delete365StoresFromLocaleTablesOtherThanTSRegion.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -752,18 +762,9 @@
     <Build Include="dbo\Tables\Uom.sql" />
     <None Include="Scripts\PopulateScripts\DevBuild\PopulateLocales.sql" />
     <None Include="Scripts\PopulateScripts\DevBuild\PopulateItems.sql" />
-    <None Include="Scripts\PreDeploymentScripts\SubTeamCleanUp_PreDeployment.sql" />
-    <None Include="Scripts\PostDeploymentScripts\Currency_RemoveTrailingSpaces_PostDeployment.sql" />
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddMaintFlagRowToDbStatusTable.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddErrorMonitorToAppTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddJobSchedulerToAppTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddGpmPriceTypes.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddActivePriceSentArchiveToRetentionPolicy.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddOrderedByInforToAttributesTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddGlobalPricingProgramToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddPrimeAffinityListenerToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
