@@ -339,17 +339,15 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
         Private Function BuildPeopleSoftGLHeaderRow(ByRef currentGLRecord As GLBO) As String
             logger.Debug("BuildPeopleSoftHeaderRow entry: currentGLRecord.BusinessUnitID=" + currentGLRecord.BusinessUnitId.ToString())
 
-            Dim dLastSunday As Date = Now.AddDays(-(Now.DayOfWeek))
+            Dim yesterday As Date = Now.AddDays(-1)
             Dim currentLine As New StringBuilder()
 
             currentLine.Append("H")                                                                         'Record Type
             currentLine.Append(_regionalBusinessUnit.ToString.PadRight(5, " "))                             'Regional Business Unit
             currentLine.Append("NEXT".PadRight(10, " "))                                                    'Journal ID
 
-            'currentLine.Append(CDate(currentGLRecord.JournalDate).ToString("MMddyyyy").PadRight(8, " "))   'Journal Date
-
-            'TFS 12058, Faisal Ahmed, 05/21/2013 - Make last Sunday as journal date 
-            currentLine.Append(dLastSunday.ToString("MMddyyyy").PadRight(8, " "))                           'Journal Date
+            'PBI 25066  02/02/2018 Make yesterday as journal date
+            currentLine.Append(yesterday.ToString("MMddyyyy").PadRight(8, " "))                           'Journal Date
 
             currentLine.Append("GLBOOK".PadRight(10, " "))                                                  'Ledger Group
             currentLine.Append("N")                                                                         'Reversal Code

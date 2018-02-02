@@ -15,28 +15,37 @@ AS
 -- 03/28/2013   FA      11384   Added Currency column in the SELECT
 -- 04/05/2013	FA		11838	Modified the SQL to do grouping only for in-store transfers
 -- 03/07/2016   FA      14545   Added region parameter to filter transfers by region as RM database now hosts both RM and TS regions
+-- 02/01/2018   MZ      25066   Due to the fiscal calendar change, PS transfer upload job is updated to run daily. Hence the date
+--                              limit for the orders processed by the job changed.
 -- **************************************************************************
 BEGIN
 	SET NOCOUNT ON
     
-    DECLARE		@TransferBookedDate DateTime
 	DECLARE		@StartDate			DateTime
 	DECLARE		@EndDate			DateTime
 
 	IF @CurrDate is null
 		SELECT	@CurrDate = GETDATE()
-
-	SELECT	 @TransferBookedDate = @CurrDate
  
- 	-- previous monday through Sunday  
-	SELECT
-		@StartDate = CONVERT ( datetime,CONVERT ( varchar(255),DATEADD ( day , 1 - DATEPART ( dw , ISNULL ( @CurrDate , GETDATE ( ) ) ) - 6 , ISNULL ( @CurrDate , GETDATE ( ) ) ),101 ) ) ,
-		@EndDate = CONVERT ( datetime,CONVERT ( varchar(255),DATEADD ( day , 2 - DATEPART ( dw , ISNULL ( @CurrDate , GETDATE ( ) ) ) , ISNULL ( @CurrDate , GETDATE ( ) ) ),101 ) )
-		
-    --select @startDate, @EndDate
-
-    --SELECT @StartDate = '01/01/2011'
-    --SELECT @EndDate = '03/28/2013'
+ 	-- If the current date is the 1st of a month, retrieve all closed transfer orders that are not uploaded in the whole last month; 
+	-- Otherwise, only retrieve such orders in the current month
+	-- If the current date is the 1st day of a year, retrieve all closed transfer orders that are not uploaded in the whole December of last year.
+	IF MONTH(@CurrDate) = 1 AND DATEPART(DAY,@CurrDate) = 1
+		BEGIN
+			SELECT @StartDate = CONVERT ( datetime, CONVERT(VARCHAR(4), YEAR(@CurrDate)-1) + '-12-01') ,
+				   @EndDate = CONVERT ( datetime, CONVERT( varchar(255), @CurrDate, 101))
+		END
+	ELSE
+	IF DATEPART(DAY,@CurrDate) = 1
+		BEGIN
+			SELECT @StartDate = CONVERT ( datetime, CONVERT(VARCHAR(4), YEAR(@CurrDate)) + '-' + CONVERT(VARCHAR(2), MONTH(@CurrDate)-1) + '-01') ,
+				   @EndDate = CONVERT ( datetime, CONVERT( varchar(255), @CurrDate, 101))
+		END	
+	ELSE
+		BEGIN
+			SELECT @StartDate = CONVERT ( datetime, CONVERT(VARCHAR(4), YEAR(@CurrDate)) + '-' + CONVERT(VARCHAR(2), MONTH(@CurrDate)) + '-01') ,
+				   @EndDate = CONVERT ( datetime, CONVERT( varchar(255), @CurrDate, 101))
+		END
      
 	DECLARE @Orders TABLE ( OrderHeader_ID int PRIMARY KEY )
 
