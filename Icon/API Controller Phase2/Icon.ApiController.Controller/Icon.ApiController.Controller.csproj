@@ -89,7 +89,7 @@
       <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2017.3.14.1\lib\net45\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\Mammoth\Mammoth.ApiController\packages\Icon.Framework.2018.1.18.1\lib\net45\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.1.18.1\lib\net45\Icon.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">

@@ -489,7 +489,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                         {
                             new Contracts.TraitValueType
                             {
-                                value = message.GlobalPricingProgram
+                                value = message.GlobalPricingProgram == null ? string.Empty : message.GlobalPricingProgram
                             }
                         }
                     }
@@ -504,7 +504,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                         {
                             new Contracts.TraitValueType
                             {
-                                value = message.PercentageTareWeight
+                                value = message.PercentageTareWeight == null ? string.Empty : message.PercentageTareWeight
                             }
                         }
                     }
