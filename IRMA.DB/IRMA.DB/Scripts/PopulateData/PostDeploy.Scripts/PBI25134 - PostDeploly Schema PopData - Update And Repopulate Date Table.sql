@@ -24,7 +24,10 @@ set [Year] = YEAR(Date_Key),
 	[Period] = MONTH(Date_Key), 
 	[Week] = DATEPART(WEEK, Date_Key) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,Date_Key), 0))+ 1,
 	[Day_Name] = DATENAME(weekday, Date_Key), 
-	[Day_Of_Week] = DATEPART(weekday,Date_Key),
+	[Day_Of_Week] = CASE DATEPART(weekday,Date_Key)
+					WHEN 1 THEN 7
+					ELSE DATEPART(weekday,Date_Key) - 1
+					END,
 	[Day_Of_Month] = DATEPART(DAY,Date_Key),
 	[Day_Of_Year] = DATEPART(dayofyear, Date_Key)
 where Date_Key >= '2018-01-01'
