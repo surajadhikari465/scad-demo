@@ -64,7 +64,6 @@ namespace WebSupport.ViewModels
         [MaxLength(2)]
         public object Region;
 
-        [Required]
         [Display(Name = "Destination Queue Name")]
         [DataType(DataType.MultilineText)]
         public object DestinationQueueName;

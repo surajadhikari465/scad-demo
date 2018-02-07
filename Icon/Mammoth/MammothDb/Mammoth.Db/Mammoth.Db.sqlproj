@@ -753,6 +753,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddVendorRelatedCodesToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddAltRetailSizeUomCodesToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
+    <Build Include="esb\Tables\MessageArchivePrimeAffinity.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -766,6 +767,9 @@
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddPrimeAffinityListenerToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddPrimeAffinityControllerToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddPrimePsgMessageType.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddMessageArchiveDetailPrimePsgToRetentionPolicy.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

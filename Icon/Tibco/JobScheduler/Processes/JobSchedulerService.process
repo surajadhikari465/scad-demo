@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:ns4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns3="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns0="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns5="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:pfx="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:ns3="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns0="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns5="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:pfx="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd">
     <pd:name>Processes/JobSchedulerService.process</pd:name>
     <pd:startName>Timer</pd:startName>
     <pd:startX>0</pd:startX>
@@ -8,8 +8,8 @@
     <pd:starter name="Timer">
         <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
         <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>63</pd:x>
-        <pd:y>103</pd:y>
+        <pd:x>64</pd:x>
+        <pd:y>99</pd:y>
         <config>
             <StartTime>1510827960000</StartTime>
             <Frequency>false</Frequency>
@@ -34,23 +34,25 @@
             <commit>false</commit>
             <maxRows>100</maxRows>
             <emptyStrAsNil>false</emptyStrAsNil>
-            <statement>SELECT JobScheduleId ,
-		JobName,
-	  	 Region,
-	 	 DestinationQueueName,
-	 	 StartDateTimeUtc,
-		 LastScheduledDateTimeUtc,
-	  	 LastRunEndDateTimeUtc,
-		 NextScheduledDateTimeUtc,
-	  	 IntervalInSeconds,
-	   	 Enabled,
-		 Status,
-	  	 XmlObject
-  FROM [app].[JobSchedule]
- WHERE StartDateTimeUtc &lt;=SYSUTCDATETIME()
-   AND NextScheduledDateTimeUtc &lt;=SYSUTCDATETIME()
-   AND Enabled = 1
-   AND Status = 'ready'
+            <statement>SELECT
+	JobScheduleId ,
+	JobName,
+	Region,
+	DestinationQueueName,
+	StartDateTimeUtc,
+	LastScheduledDateTimeUtc,
+	LastRunEndDateTimeUtc,
+	NextScheduledDateTimeUtc,
+	IntervalInSeconds,
+	Enabled,
+	Status,
+	XmlObject
+FROM [app].[JobSchedule]
+WHERE StartDateTimeUtc &lt;=SYSUTCDATETIME()
+	AND NextScheduledDateTimeUtc &lt;=SYSUTCDATETIME()
+	AND Enabled = 1
+	AND Status = 'ready'
+	AND ISNULL(DestinationQueueName, '') &lt;&gt; ''
 </statement>
             <wizardData/>
             <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
