@@ -199,6 +199,11 @@ Public Class ShrinkScan
             Exit Sub
         End If
 
+        If CDbl(txtQty.Text) = 0 Then
+            MsgBox(Messages.QUANTITY_ZERO_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            Exit Sub
+        End If
+
         ' Prompt for confirmation if the chosen quantity is 99 or greater.
         If CDbl(txtQty.Text) >= 99 Then
             If MsgBox("You have entered a shrink quantity of " + txtQty.Text + ".  Is this correct?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, Me.Text) = MsgBoxResult.No Then

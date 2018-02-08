@@ -116,8 +116,19 @@ Public Class UpdateShrink
     Private Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
         _qty = Trim(txtQty.Text)
 
-        If _qty > 999 Then
+        If (lblQty.Text = "New Weight: ") And _qty > 999 Then
+            MsgBox(Messages.WEIGHT_AMT_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            Exit Sub
+        ElseIf _qty > 999 Then
             MsgBox(Messages.QUANTITY_AMT_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            Exit Sub
+        End If
+
+        If (lblQty.Text = "New Weight: ") And _qty = 0 Then
+            MsgBox(Messages.WEIGHT_ZERO_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            Exit Sub
+        ElseIf _qty = 0 Then
+            MsgBox(Messages.QUANTITY_ZERO_ERROR, MsgBoxStyle.OkOnly, Me.Text)
             Exit Sub
         End If
 
