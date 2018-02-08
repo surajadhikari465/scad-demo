@@ -44,6 +44,7 @@ Partial Public Class ShrinkScan
         Me.cmdSearch = New System.Windows.Forms.Button
         Me.lblRetailUnit = New System.Windows.Forms.Label
         Me.chkSkipConfirm = New System.Windows.Forms.CheckBox
+        Me.MenuItem2 = New System.Windows.Forms.MenuItem
         Me.SuspendLayout()
         '
         'mainMenu1
@@ -57,6 +58,7 @@ Partial Public Class ShrinkScan
         Me.mnuMenu.MenuItems.Add(Me.MenuItem1)
         Me.mnuMenu.MenuItems.Add(Me.mnuMenu_ExitIRMA)
         Me.mnuMenu.MenuItems.Add(Me.mnuMenu_ExitShrink)
+        Me.mnuMenu.MenuItems.Add(Me.MenuItem2)
         Me.mnuMenu.Text = "Menu"
         '
         'mnuMenu_ClearSession
@@ -111,9 +113,9 @@ Partial Public Class ShrinkScan
         '
         'frmStatus
         '
-        Me.frmStatus.Location = New System.Drawing.Point(0, 246)
+        Me.frmStatus.Location = New System.Drawing.Point(0, 242)
         Me.frmStatus.Name = "frmStatus"
-        Me.frmStatus.Size = New System.Drawing.Size(240, 22)
+        Me.frmStatus.Size = New System.Drawing.Size(240, 26)
         Me.frmStatus.Text = "StatusBar1"
         '
         'Label2
@@ -142,7 +144,7 @@ Partial Public Class ShrinkScan
         '
         Me.txtQty.Location = New System.Drawing.Point(61, 122)
         Me.txtQty.Name = "txtQty"
-        Me.txtQty.Size = New System.Drawing.Size(51, 21)
+        Me.txtQty.Size = New System.Drawing.Size(51, 25)
         Me.txtQty.TabIndex = 1
         Me.txtQty.Text = "1"
         '
@@ -157,7 +159,7 @@ Partial Public Class ShrinkScan
         '
         Me.txtUpc.Location = New System.Drawing.Point(61, 54)
         Me.txtUpc.Name = "txtUpc"
-        Me.txtUpc.Size = New System.Drawing.Size(133, 21)
+        Me.txtUpc.Size = New System.Drawing.Size(133, 25)
         Me.txtUpc.TabIndex = 5
         '
         'Label4
@@ -208,6 +210,10 @@ Partial Public Class ShrinkScan
         Me.chkSkipConfirm.Size = New System.Drawing.Size(109, 20)
         Me.chkSkipConfirm.TabIndex = 23
         Me.chkSkipConfirm.Text = "Skip Confirm"
+        '
+        'MenuItem2
+        '
+        Me.MenuItem2.Text = "Change SubType"
         '
         'ShrinkScan
         '
@@ -262,4 +268,5 @@ Partial Public Class ShrinkScan
     Friend WithEvents lblRetailUnit As System.Windows.Forms.Label
     Friend WithEvents chkSkipConfirm As System.Windows.Forms.CheckBox
     Friend WithEvents MenuItem1 As System.Windows.Forms.MenuItem
+    Friend WithEvents MenuItem2 As System.Windows.Forms.MenuItem
 End Class

@@ -11,6 +11,7 @@ Public Class UpdateShrink
     Public store As String
     Public formName As String
 
+    Private mySession As Session
     Private _lastQtyRecorded As String = String.Empty
     Private _upc As String = String.Empty
     Private _uom As String = String.Empty
@@ -18,12 +19,38 @@ Public Class UpdateShrink
     Private _cbw As Boolean = False
     Private _qty As String = String.Empty
     Private _vendorCost As String = String.Empty
+    Private _shrinkSubType As String = String.Empty
+    Private _shrinkSubTypeId As String = String.Empty
 
     Public ReadOnly Property ShrinkQuantity() As String
         Get
             Return _qty
         End Get
 
+    End Property
+
+    Public ReadOnly Property GetShrinkSubTypeId() As String
+        Get
+            Return _shrinkSubTypeId
+        End Get
+    End Property
+
+    Public WriteOnly Property ShrinkSubTypeId() As String
+        Set(ByVal value As String)
+            _shrinkSubTypeId = value
+        End Set
+    End Property
+
+    Public ReadOnly Property GetShrinkSubType() As String
+        Get
+            Return _shrinkSubType
+        End Get
+    End Property
+
+    Public WriteOnly Property ShrinkSubType() As String
+        Set(ByVal value As String)
+            _shrinkSubType = value
+        End Set
     End Property
 
     Public WriteOnly Property CostedByWeight() As Boolean
@@ -67,7 +94,7 @@ Public Class UpdateShrink
 
 #Region " Constructors"
 
-    Public Sub New(ByVal frmName As String)
+    Public Sub New(ByVal frmName As String, Optional ByVal session As Session = Nothing)
 
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
@@ -76,6 +103,7 @@ Public Class UpdateShrink
         Me.KeyPreview = True
         formName = frmName
         AlignText()
+        Me.mySession = session
 
     End Sub
 
@@ -87,6 +115,17 @@ Public Class UpdateShrink
 
     Private Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
         _qty = Trim(txtQty.Text)
+
+        If _qty > 999 Then
+            MsgBox(Messages.QUANTITY_AMT_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            Exit Sub
+        End If
+
+        If (Me.mySession IsNot Nothing) Then
+            ShrinkSubTypeId = cmbSubType.SelectedValue
+            ShrinkSubType = cmbSubType.Text
+        End If
+
         Me.DialogResult = Windows.Forms.DialogResult.OK
     End Sub
 
@@ -148,6 +187,32 @@ Public Class UpdateShrink
         txtQty.Text = _lastQtyRecorded
 
         lblUOMValue.Text = _uom
+
+        If (Me.mySession Is Nothing) Then
+            cmbSubType.Visible = False
+            lblSubType.Visible = False
+        Else
+            Dim dtsTypes As DataTable
+            Dim dr As DataRow
+
+            dtsTypes = New DataTable
+            dtsTypes.Columns.Add(New DataColumn("DisplayMember"))
+            dtsTypes.Columns.Add(New DataColumn("ValueMember"))
+
+            For Each shrinkType In mySession.ShrinkSubTypes
+                dr = dtsTypes.NewRow()
+                dr.Item("DisplayMember") = shrinkType.ShrinkSubType1
+                dr.Item("ValueMember") = shrinkType.ShrinkSubTypeID
+                dtsTypes.Rows.Add(dr)
+            Next
+
+            Me.cmbSubType.DataSource = dtsTypes
+            Me.cmbSubType.DisplayMember = "DisplayMember"
+            Me.cmbSubType.ValueMember = "ValueMember"
+
+            Me.cmbSubType.SelectedValue = Me.GetShrinkSubTypeId
+        End If
+
     End Sub
 
     Private Sub AlignText()

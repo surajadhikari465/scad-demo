@@ -15,6 +15,7 @@
         Private _orderItemID As Integer
         Private _inventoryAdjustmentCodeAbbreviation As String
         Private _username As String
+        Private _shrinkSubTypeId As String
 
         <DataMember()> _
         Public Property UserName() As String
@@ -53,6 +54,16 @@
             End Get
             Set(ByVal value As Decimal)
                 _quantity = value
+            End Set
+        End Property
+
+        <DataMember()>
+        Public Property ShrinkSubTypeId() As Integer
+            Get
+                Return _shrinkSubTypeId
+            End Get
+            Set(ByVal value As Integer)
+                _shrinkSubTypeId = value
             End Set
         End Property
 

@@ -38,9 +38,13 @@ Public Class ShrinkReview
         _result.Tables("results").Columns.Add("UPC")
         _result.Tables("results").Columns.Add("Desc")
         _result.Tables("results").Columns.Add("Qty")
+        _result.Tables("results").Columns.Add("SubType")
 
         _result.Tables("results").Columns.Add("UOM")
         _result.Tables("results").Columns.Add("CBW")
+        _result.Tables("results").Columns.Add("ShrinkSubTypeId")
+        _result.Tables("results").Columns.Add("ShrinkAdjId")
+        _result.Tables("results").Columns.Add("ShrinkTypeId")
 
         Dim tmp As String
 
@@ -56,6 +60,14 @@ Public Class ShrinkReview
             newRow("UOM") = tmp
             tmp = item.Attribute("COSTED_BY_WEIGHT")
             newRow("CBW") = tmp
+            tmp = item.Attribute("SHRINK_SUB_TYPE")
+            newRow("SubType") = tmp
+            tmp = item.Attribute("SHRINK_SUB_TYPE_ID")
+            newRow("ShrinkSubTypeId") = tmp
+            tmp = item.Attribute("SHRINK_ADJ_ID")
+            newRow("ShrinkAdjId") = tmp
+            tmp = item.Attribute("SHRINK_TYPE_ID")
+            newRow("ShrinkTypeId") = tmp
 
             _result.Tables("results").Rows.Add(newRow)
         Next
@@ -75,10 +87,14 @@ Public Class ShrinkReview
         Me.DataGrid1.TableStyles("results").GridColumnStyles("UPC").Width = 140
         Me.DataGrid1.TableStyles("results").GridColumnStyles("DESC").Width = 214
         Me.DataGrid1.TableStyles("results").GridColumnStyles("QTY").Width = 57
+        Me.DataGrid1.TableStyles("results").GridColumnStyles("SubType").Width = 220
 
         'Hide the columns
         Me.DataGrid1.TableStyles("results").GridColumnStyles("UOM").Width = 0
         Me.DataGrid1.TableStyles("results").GridColumnStyles("CBW").Width = 0
+        Me.DataGrid1.TableStyles("results").GridColumnStyles("ShrinkSubTypeId").Width = 0
+        Me.DataGrid1.TableStyles("results").GridColumnStyles("ShrinkAdjId").Width = 0
+        Me.DataGrid1.TableStyles("results").GridColumnStyles("ShrinkTypeId").Width = 0
 
         Cursor.Current = Cursors.Default
     End Sub
@@ -89,21 +105,28 @@ Public Class ShrinkReview
         Dim fileWriter As ShrinkFileWriter = New ShrinkFileWriter(Me.mySession)
         Dim cCell As DataGridCell = Me.DataGrid1.CurrentCell
         Dim upcSelected As Integer = cCell.RowNumber
-        Dim upc As String = Me.DataGrid1.Item(upcSelected, 0).ToString()
-        Dim style = MsgBoxStyle.YesNo Or MsgBoxStyle.DefaultButton2 Or _
-            MsgBoxStyle.Question
-        Dim response = MsgBox("Do you want to remove the selected UPC?", style, "Alert")
 
-        If (response = MsgBoxResult.Yes) Then
-            Cursor.Current = Cursors.WaitCursor
-            fileWriter.deleteItem(Me.mySession.SessionName, upc)
-
-            'update datagrid
-            updateBatch(fileWriter)
+        If (Me.DataGrid1.VisibleRowCount = 0) Then
+            MsgBox("There are no shrink items to remove.", MsgBoxStyle.OkOnly, Me.Text)
             Cursor.Current = Cursors.Default
+            Exit Sub
         Else
-            'unselect item
-            Me.DataGrid1.UnSelect(upcSelected)
+            Dim upc As String = Me.DataGrid1.Item(upcSelected, 0).ToString()
+            Dim style = MsgBoxStyle.YesNo Or MsgBoxStyle.DefaultButton2 Or _
+                MsgBoxStyle.Question
+            Dim response = MsgBox("Do you want to remove the selected UPC?", style, "Alert")
+
+            If (response = MsgBoxResult.Yes) Then
+                Cursor.Current = Cursors.WaitCursor
+                fileWriter.DeleteItem(Me.mySession.SessionName, upc)
+
+                'update datagrid
+                updateBatch(fileWriter)
+                Cursor.Current = Cursors.Default
+            Else
+                'unselect item
+                Me.DataGrid1.UnSelect(upcSelected)
+            End If
         End If
 
         Cursor.Current = Cursors.Default
@@ -142,11 +165,13 @@ Public Class ShrinkReview
             shrink.UserName = sndSession.UserName
             shrink.CreatedByUserID = sndSession.UserID
             shrink.CreatedByUserIDSpecified = True
-            shrink.InventoryAdjustmentCodeAbbreviation = sndSession.ShrinkTypeId
+            shrink.InventoryAdjustmentCodeAbbreviation = item.Attribute("SHRINK_TYPE_ID")
             shrink.StoreNo = sndSession.StoreNo
             shrink.StoreNoSpecified = True
             shrink.SubteamNo = sndSession.SubteamKey
             shrink.SubteamNoSpecified = True
+            shrink.ShrinkSubTypeId = item.Attribute("SHRINK_SUB_TYPE_ID")
+            shrink.ShrinkSubTypeIdSpecified = True
 
             cbw = item.Attribute("COSTED_BY_WEIGHT")
 
@@ -162,9 +187,9 @@ Public Class ShrinkReview
 
             shrink.ItemKey = item.Attribute("ITEM_KEY")
             shrink.ItemKeySpecified = True
-            shrink.AdjustmentID = sndSession.ShrinkAdjId
+            shrink.AdjustmentID = item.Attribute("SHRINK_ADJ_ID")
             shrink.AdjustmentIDSpecified = True
-            shrink.AdjustmentReason = sndSession.ShrinkType
+            shrink.AdjustmentReason = item.Attribute("SHRINK_TYPE")
 
             Try
                 uploaded = Me.mySession.WebProxyClient.AddShrinkAdjustment(shrink)
@@ -227,45 +252,79 @@ Public Class ShrinkReview
         Dim fileWriter As ShrinkFileWriter = New ShrinkFileWriter(Me.mySession)
         Dim cCell As DataGridCell = Me.DataGrid1.CurrentCell
         Dim upcSelected As Integer = cCell.RowNumber
-        Dim upc As String = Me.DataGrid1.Item(upcSelected, 0).ToString()
-        Dim uom As String = Me.DataGrid1.Item(upcSelected, 3).ToString()
-        Dim qty As String = Me.DataGrid1.Item(upcSelected, 2).ToString()
-        Dim desc As String = Me.DataGrid1.Item(upcSelected, 1).ToString()
-        Dim cbw As Boolean = Me.DataGrid1.Item(upcSelected, 4)
-        Dim style = MsgBoxStyle.YesNo Or MsgBoxStyle.DefaultButton2 Or MsgBoxStyle.Critical
-        Dim msgText As String
 
-        If cbw Then
-            msgText = "Do you want to update the weight for the selected UPC?"
+        If (Me.DataGrid1.VisibleRowCount = 0) Then
+            MsgBox("There are no shrink items to update.", MsgBoxStyle.OkOnly, Me.Text)
+            Exit Sub
         Else
-            msgText = "Do you want to update the quantity for the selected UPC?"
-        End If
+            Dim upc As String = Me.DataGrid1.Item(upcSelected, 0).ToString()
+            Dim uom As String = Me.DataGrid1.Item(upcSelected, 4).ToString()
+            Dim qty As String = Me.DataGrid1.Item(upcSelected, 2).ToString()
+            Dim desc As String = Me.DataGrid1.Item(upcSelected, 1).ToString()
+            Dim shrinkType As String = Me.DataGrid1.Item(upcSelected, 3).ToString()
+            Dim cbw As Boolean = Me.DataGrid1.Item(upcSelected, 5)
+            Dim shrinkSubTypeId As String = Me.DataGrid1.Item(upcSelected, 6)
+            Dim style = MsgBoxStyle.YesNo Or MsgBoxStyle.DefaultButton2 Or MsgBoxStyle.Critical
+            Dim msgText As String
 
-        Dim response = MsgBox(msgText, MsgBoxStyle.YesNo + MsgBoxStyle.Question, Me.Text)
-        If (response = MsgBoxResult.Yes) Then
-            Dim frmUpdate As UpdateShrink = New UpdateShrink("Update Shrink")
-            frmUpdate.CostedByWeight = cbw
-            frmUpdate.UOM = uom
-            frmUpdate.UPC = upc
-            frmUpdate.Desc = desc
-            frmUpdate.LastQtyRecorded = qty
-            frmUpdate.ShowDialog()
-
-            If frmUpdate.ShrinkQuantity <> String.Empty Then
-                fileWriter.ReplaceQuantity(upc, frmUpdate.ShrinkQuantity)
-
-                'update datagrid
-                updateBatch(fileWriter)
+            If cbw Then
+                msgText = "Do you want to update the Weight/Subtype for the selected UPC?"
+            Else
+                msgText = "Do you want to update the Quantity/Subtype for the selected UPC?"
             End If
 
-            frmUpdate.Close()
-            frmUpdate.Dispose()
-        Else
-            'unselect item
-            Me.DataGrid1.UnSelect(upcSelected)
-        End If
+            Dim response = MsgBox(msgText, MsgBoxStyle.YesNo + MsgBoxStyle.Question, Me.Text)
 
-        Cursor.Current = Cursors.Default
+            If (response = MsgBoxResult.Yes) Then
+                Dim frmUpdate As UpdateShrink = New UpdateShrink("Update Shrink", mySession)
+                Dim oldShrinkSubTypeId As Integer = shrinkSubTypeId
+                frmUpdate.CostedByWeight = cbw
+                frmUpdate.UOM = uom
+                frmUpdate.UPC = upc
+                frmUpdate.Desc = desc
+
+                frmUpdate.LastQtyRecorded = qty
+                frmUpdate.ShrinkSubType = shrinkType
+                frmUpdate.ShrinkSubTypeId = shrinkSubTypeId
+                frmUpdate.ShowDialog()
+
+                If frmUpdate.ShrinkQuantity <> String.Empty Then
+
+                    Dim shrinkAdjId As Integer
+                    Dim shrinkTypeId As String
+                    Dim newShrinkType As String
+
+                    For Each shrinkSubType In mySession.ShrinkSubTypes
+                        If (shrinkSubType.ShrinkSubTypeID = frmUpdate.GetShrinkSubTypeId) Then
+                            shrinkTypeId = shrinkSubType.Abbreviation
+                            newShrinkType = shrinkSubType.ShrinkType
+
+                            Dim expr As String = "DisplayMember='" & newShrinkType & "'"
+                            Dim dr As DataRow() = mySession.ShrinkAdjustmentIds.Select(expr)
+                            shrinkAdjId = dr(0).Item("ValueMember")
+                            fileWriter.ReplaceShrinkSubType(upc, frmUpdate.GetShrinkSubType, shrinkAdjId, shrinkTypeId, newShrinkType, oldShrinkSubTypeId.ToString)
+
+                        End If
+                    Next
+
+                    fileWriter.ReplaceQuantityBasedOnType(upc, frmUpdate.ShrinkQuantity, oldShrinkSubTypeId.ToString)
+                    fileWriter.ReplaceShrinkSubTypeId(upc, frmUpdate.GetShrinkSubTypeId, oldShrinkSubTypeId.ToString)
+
+
+
+                    'update datagrid
+                    updateBatch(fileWriter)
+                End If
+
+                frmUpdate.Close()
+                frmUpdate.Dispose()
+            Else
+                'unselect item
+                Me.DataGrid1.UnSelect(upcSelected)
+            End If
+
+            Cursor.Current = Cursors.Default
+        End If
     End Sub
 
 End Class

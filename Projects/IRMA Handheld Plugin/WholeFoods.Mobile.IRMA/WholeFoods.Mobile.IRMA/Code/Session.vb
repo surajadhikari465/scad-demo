@@ -16,10 +16,14 @@ Public Class Session
     Public Subteams As DataTable
     Public Stores As DataTable
     Public ShrinkTypes As DataTable
+    Public ShrinkSubTypes As ShrinkSubType()
     Public ShrinkAdjustmentIds As DataTable
     Public ShrinkType As String
     Public ShrinkTypeId As String
     Public ShrinkAdjId As String
+    Public ShrinkSubTypeID As Integer
+    Public ShrinkSubType As String
+    Public InventoryAdjustmentCodeID As Integer
     Public ShrinkList As List(Of XNode)
     Public MyScanner As HandheldHardware.HandheldScanner
     Public WebProxyClient As GatewayClient
@@ -48,6 +52,8 @@ Public Class Session
     Public DSDInvoice As String
     Public UOMID As String
     Public StoreVendorID As Integer
+    Public hasSubTypeUpdated As Boolean = False
+
 
     Public Enum CurrentScreenType
         MainForm = 0
@@ -220,6 +226,22 @@ Public Class Session
             Me.ShrinkAdjId = dr(0).Item("ValueMember")
 
         End If
+    End Sub
+
+    Public Sub SetHasSubTypeUpdated(ByVal sessionUpdated As Boolean)
+        Me.hasSubTypeUpdated = sessionUpdated
+    End Sub
+
+    Public Sub SetShrinkSubTypeId(ByVal id As Integer)
+        Me.ShrinkSubTypeID = id
+    End Sub
+
+    Public Sub SetShrinkSubType(ByVal shrinkSubType As String)
+        Me.ShrinkSubType = shrinkSubType
+    End Sub
+
+    Public Sub SetInventoryAdjustmentCodeId(ByVal id As Integer)
+        Me.InventoryAdjustmentCodeID = id
     End Sub
 
     Public Sub SetShrinkType(ByVal sType As String)

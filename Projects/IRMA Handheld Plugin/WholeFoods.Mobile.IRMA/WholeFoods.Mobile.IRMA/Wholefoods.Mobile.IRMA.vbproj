@@ -109,6 +109,12 @@
     <Compile Include="Forms\AddRefusedItem.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\ShrinkType.Designer.vb">
+      <DependentUpon>ShrinkType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ShrinkType.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\dlgQuestion.Designer.vb">
       <DependentUpon>dlgQuestion.vb</DependentUpon>
     </Compile>
@@ -303,6 +309,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddRefusedItem.resx">
       <DependentUpon>AddRefusedItem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShrinkType.resx">
+      <DependentUpon>ShrinkType.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\dlgQuestion.resx">
       <DependentUpon>dlgQuestion.vb</DependentUpon>

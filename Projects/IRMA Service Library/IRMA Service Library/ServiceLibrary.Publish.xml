@@ -1,0 +1,11 @@
+<publishData>
+  <publishTarget publishUrl="C:\Publish\">
+    <file relUrl="bin/IRMA_Service_Library.xml" publishTime="02/02/2018 13:53:16" />
+    <file relUrl="bin/log4net.dll" publishTime="10/11/2017 15:20:54" />
+    <file relUrl="bin/WholeFoods.ServiceLibrary.dll.config" publishTime="02/02/2018 12:54:40" />
+    <file relUrl="Web.config" publishTime="02/02/2018 12:54:40" />
+    <file relUrl="bin/WholeFoods.ServiceLibrary.dll" publishTime="02/02/2018 13:53:16" />
+    <file relUrl="bin/WholeFoods.ServiceLibrary.pdb" publishTime="02/02/2018 13:53:16" />
+    <file relUrl="bin/Log4net.config" publishTime="10/11/2017 15:20:59" />
+  </publishTarget>
+</publishData>

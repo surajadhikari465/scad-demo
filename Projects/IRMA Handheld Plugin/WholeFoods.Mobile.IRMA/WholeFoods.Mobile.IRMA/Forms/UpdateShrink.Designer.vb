@@ -32,6 +32,8 @@ Partial Public Class UpdateShrink
         Me.lblOldQtyValue = New System.Windows.Forms.Label
         Me.lblUPCVal = New System.Windows.Forms.Label
         Me.lblName = New System.Windows.Forms.Label
+        Me.lblSubType = New System.Windows.Forms.Label
+        Me.cmbSubType = New System.Windows.Forms.ComboBox
         Me.SuspendLayout()
         '
         'lblDescription
@@ -42,7 +44,7 @@ Partial Public Class UpdateShrink
         '
         'cmdCancel
         '
-        Me.cmdCancel.Location = New System.Drawing.Point(3, 213)
+        Me.cmdCancel.Location = New System.Drawing.Point(3, 251)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.Size = New System.Drawing.Size(109, 27)
         Me.cmdCancel.TabIndex = 4
@@ -66,7 +68,7 @@ Partial Public Class UpdateShrink
         '
         'cmdUpdate
         '
-        Me.cmdUpdate.Location = New System.Drawing.Point(123, 213)
+        Me.cmdUpdate.Location = New System.Drawing.Point(128, 251)
         Me.cmdUpdate.Name = "cmdUpdate"
         Me.cmdUpdate.Size = New System.Drawing.Size(109, 27)
         Me.cmdUpdate.TabIndex = 3
@@ -76,7 +78,7 @@ Partial Public Class UpdateShrink
         '
         Me.txtQty.Location = New System.Drawing.Point(139, 137)
         Me.txtQty.Name = "txtQty"
-        Me.txtQty.Size = New System.Drawing.Size(51, 21)
+        Me.txtQty.Size = New System.Drawing.Size(51, 25)
         Me.txtQty.TabIndex = 1
         Me.txtQty.Text = "1"
         '
@@ -131,6 +133,21 @@ Partial Public Class UpdateShrink
         Me.lblName.Name = "lblName"
         Me.lblName.Size = New System.Drawing.Size(141, 34)
         '
+        'lblSubType
+        '
+        Me.lblSubType.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.lblSubType.Location = New System.Drawing.Point(7, 213)
+        Me.lblSubType.Name = "lblSubType"
+        Me.lblSubType.Size = New System.Drawing.Size(79, 20)
+        Me.lblSubType.Text = "Sub Type:"
+        '
+        'cmbSubType
+        '
+        Me.cmbSubType.Location = New System.Drawing.Point(92, 213)
+        Me.cmbSubType.Name = "cmbSubType"
+        Me.cmbSubType.Size = New System.Drawing.Size(140, 26)
+        Me.cmbSubType.TabIndex = 12
+        '
         'UpdateShrink
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -138,6 +155,8 @@ Partial Public Class UpdateShrink
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(240, 294)
         Me.ControlBox = False
+        Me.Controls.Add(Me.cmbSubType)
+        Me.Controls.Add(Me.lblSubType)
         Me.Controls.Add(Me.lblName)
         Me.Controls.Add(Me.lblUPCVal)
         Me.Controls.Add(Me.lblOldQtyValue)
@@ -168,4 +187,6 @@ Partial Public Class UpdateShrink
     Friend WithEvents lblOldQtyValue As System.Windows.Forms.Label
     Friend WithEvents lblUPCVal As System.Windows.Forms.Label
     Friend WithEvents lblName As System.Windows.Forms.Label
+    Friend WithEvents lblSubType As System.Windows.Forms.Label
+    Friend WithEvents cmbSubType As System.Windows.Forms.ComboBox
 End Class

@@ -27,18 +27,25 @@ Public Class ShrinkFileWriter
     ''' <param name="CostedByWeight"></param>
     ''' <param name="createFile"></param>
     ''' <remarks></remarks>
-    Public Sub SaveItem(ByVal sessionName As String, ByVal upc As String, ByVal itemKey As String, ByVal qty As String, ByVal uom As String, ByVal desc As String, ByVal CostedByWeight As Boolean, ByVal createFile As Boolean)
+    Public Sub SaveItem(ByVal sessionName As String, ByVal upc As String, ByVal itemKey As String, ByVal qty As String, ByVal uom As String, ByVal desc As String, ByVal CostedByWeight As Boolean, _
+                        ByVal createFile As Boolean, ByVal shrinkSubTypeID As Integer, ByVal shrinkSubType As String, _
+                        ByVal shrinkAdjId As Integer, ByVal shrinkTypeId As String, ByVal shrinkType As String)
         ' cbw is a new field <=> CostedByWeight. 
         If ((sessionUtility.IsEmpty(sessionName) = False) And createFile = False) Then
             'get file and save listbox contents and update xml file
-            UpdateTempXmlFile(sessionName, upc, itemKey, qty, uom, desc, CostedByWeight)
+            If (session.hasSubTypeUpdated) Then
+                ReplaceShrinkInfo(upc, session.ShrinkTypeId, session.ShrinkType, session.ShrinkAdjId, session.InventoryAdjustmentCodeID, shrinkSubTypeID, shrinkSubType)
+                session.hasSubTypeUpdated = False
+
+            End If
+
+            UpdateTempXmlFile(sessionName, upc, itemKey, qty, uom, desc, CostedByWeight, shrinkSubTypeID, shrinkSubType, shrinkAdjId, shrinkTypeId, ShrinkType, Nothing)
+            ' ReplaceShrinkInfo(upc,session.ShrinkTypeId,session.ShrinkType,session.ShrinkAdjId,
 
         Else
             WriteTempXmlFile(sessionName)
-            UpdateTempXmlFile(sessionName, upc, itemKey, qty, uom, desc, CostedByWeight)
-
+            UpdateTempXmlFile(sessionName, upc, itemKey, qty, uom, desc, CostedByWeight, shrinkSubTypeID, shrinkSubType, shrinkAdjId, shrinkTypeId, ShrinkType, Nothing)
         End If
-
     End Sub
 
     ''' <summary>
@@ -51,7 +58,10 @@ Public Class ShrinkFileWriter
     ''' <param name="uom"></param>
     ''' <param name="desc"></param>
     ''' <remarks></remarks>
-    Public Sub UpdateTempXmlFile(ByVal sessionName As String, ByVal upc As String, ByVal itemKey As String, ByVal qty As Double, ByVal uom As String, ByVal desc As String, ByVal cbw As Boolean)
+    Public Sub UpdateTempXmlFile(ByVal sessionName As String, ByVal upc As String, ByVal itemKey As String, ByVal qty As Double, _
+                                 ByVal uom As String, ByVal desc As String, ByVal cbw As Boolean, ByVal shrinkSubTypeID As Integer, _
+                                 ByVal shrinkSubType As String, ByVal shrinkAdjId As Integer, _
+                                 ByVal shrinkTypeId As String, ByVal shrinkType As String, ByVal inventoryAdjustmentCodeID As Integer)
 
         'load the XML file
         Dim docXML As XDocument = New XDocument()
@@ -62,7 +72,7 @@ Public Class ShrinkFileWriter
 
         Dim xmlTree As XElement = _
                <Items><%= From el As XElement In docXML.Elements().<Items>.<Item> _
-                          Where el.Name.LocalName() = "Item" And el.Attribute("UPC") <> upc _
+                          Where el.Name.LocalName() = "Item" And (el.Attribute("UPC") <> upc Or (el.Attribute("UPC") = upc And el.Attribute("SHRINK_SUB_TYPE_ID") <> shrinkSubTypeID.ToString)) _
                           Select el %>
                </Items>
 
@@ -73,9 +83,12 @@ Public Class ShrinkFileWriter
             New XAttribute("QTY", qty), _
             New XAttribute("UOM", uom), _
             New XAttribute("DESC", desc), _
-            New XAttribute("COSTED_BY_WEIGHT", cbw))
-
-
+            New XAttribute("COSTED_BY_WEIGHT", cbw), _
+            New XAttribute("SHRINK_SUB_TYPE", shrinkSubType), _
+            New XAttribute("SHRINK_SUB_TYPE_ID", shrinkSubTypeID), _
+            New XAttribute("SHRINK_ADJ_ID", shrinkAdjId), _
+            New XAttribute("SHRINK_TYPE_ID", shrinkTypeId), _
+            New XAttribute("SHRINK_TYPE", shrinkType))
         xmlTree.Add(item)
 
         shrink.Element("Items").Remove()
@@ -85,6 +98,174 @@ Public Class ShrinkFileWriter
 
     End Sub
 
+    Public Sub ReplaceShrinkSubTypeId(ByVal upc As String, ByVal shrinkSubTypeId As String, ByVal oldShrinkSubTypeId As String)
+
+        'load the XML file
+        Dim docXML As XDocument = New XDocument()
+        docXML = XDocument.Load(MakeFilePath(session.SessionName))
+        Dim shrink As XElement = docXML.Root
+
+        Dim isUpdating As Boolean = False
+
+        Dim xmlTreeRemainingItems As XElement = _
+        <Items><%= From el As XElement In docXML.Elements().<Items>.<Item> _
+                   Where el.Name.LocalName() = "Item" And (el.Attribute("UPC") <> upc Or (el.Attribute("UPC") = upc And el.Attribute("SHRINK_SUB_TYPE_ID") <> oldShrinkSubTypeId)) _
+                   Select el %>
+        </Items>
+
+        Dim xmlTree As XElement = _
+               <Items><%= From el As XElement In docXML.Elements().<Items>.<Item> _
+                          Where el.Name.LocalName() = "Item" And el.Attribute("UPC") = upc And el.Attribute("SHRINK_SUB_TYPE_ID") = oldShrinkSubTypeId _
+                          Select el %>
+               </Items>
+
+        If xmlTree.Elements.Count > 0 Then
+            If xmlTree.Element("Item").Attribute("UPC").Value = upc Then
+                xmlTree.Element("Item").Attribute("SHRINK_SUB_TYPE_ID").SetValue(shrinkSubTypeId)
+                isUpdating = True
+            End If
+        End If
+        If isUpdating Then
+            Dim updatedItem As XElement = xmlTree.Element("Item")
+            xmlTreeRemainingItems.Add(updatedItem)
+
+            shrink.Element("Items").Remove()
+            shrink.Add(xmlTreeRemainingItems)
+
+            docXML.Save(MakeFilePath(session.SessionName))
+        End If
+    End Sub
+
+    Public Sub ReplaceShrinkInfo(ByVal upc As String, ByVal shrinkTypeId As String, ByVal shrinkType As String, ByVal shrinkTypeAdjId As Integer, _
+                                 ByVal inventoryAdjustmentCodeID As Integer, ByVal shrinkSubTypeId As Integer, ByVal shrinkSubType As String)
+
+        Dim docXML As XDocument = New XDocument()
+
+        docXML = XDocument.Load(MakeFilePath(session.SessionName))
+        Dim shrink As XElement = docXML.Root
+
+        Dim shrinkSubTypeIdFromXml As XElement = shrink.Elements("ShrinkSubTypeID").First
+        Dim shrinkSubTypeFromXml As XElement = shrink.Elements("ShrinkSubType").First
+        Dim inventoryAdjustmentCodeIDFromXml As XElement = shrink.Elements("InventoryAdjustmentCodeID").First
+        Dim shrinkTypeAdjIdFromXml As XElement = shrink.Elements("ShrinkTypeAdjId").First
+        Dim shrinkTypeIdFromXml As XElement = shrink.Elements("ShrinkTypeId").First
+        Dim shrinkTypeFromXml As XElement = shrink.Elements("ShrinkType").First
+
+        shrinkSubTypeIdFromXml.Value = shrinkSubTypeId
+        shrink.Elements("ShrinkSubTypeID").Remove()
+        shrink.Add(shrinkSubTypeIdFromXml)
+
+        shrinkSubTypeFromXml.Value = shrinkSubType
+        shrink.Elements("ShrinkSubType").Remove()
+        shrink.Add(shrinkSubTypeFromXml)
+
+        inventoryAdjustmentCodeIDFromXml.Value = inventoryAdjustmentCodeID
+        shrink.Elements("InventoryAdjustmentCodeID").Remove()
+        shrink.Add(inventoryAdjustmentCodeIDFromXml)
+
+        shrinkTypeAdjIdFromXml.Value = shrinkTypeAdjId
+        shrink.Elements("ShrinkTypeAdjId").Remove()
+        shrink.Add(shrinkTypeAdjIdFromXml)
+
+        shrinkTypeIdFromXml.Value = shrinkTypeId
+        shrink.Elements("ShrinkTypeId").Remove()
+        shrink.Add(shrinkTypeIdFromXml)
+
+        shrinkTypeFromXml.Value = shrinkType
+        shrink.Elements("ShrinkType").Remove()
+        shrink.Add(shrinkTypeFromXml)
+
+        docXML.Save(MakeFilePath(session.SessionName))
+
+    End Sub
+
+    Public Sub ReplaceShrinkSubType(ByVal upc As String, ByVal shrinkSubType As String, _
+                                    ByVal shrinkAdjId As Integer, ByVal shrinkTypeId As String, ByVal shrinkType As String, ByVal shrinkSubtypeId As String)
+
+        'load the XML file
+        Dim docXML As XDocument = New XDocument()
+        docXML = XDocument.Load(MakeFilePath(session.SessionName))
+        Dim shrink As XElement = docXML.Root
+
+        Dim isUpdating As Boolean = False
+
+        Dim xmlTreeRemainingItems As XElement = _
+        <Items><%= From el As XElement In docXML.Elements().<Items>.<Item> _
+                   Where el.Name.LocalName() = "Item" And (el.Attribute("UPC") <> upc Or (el.Attribute("UPC") = upc And el.Attribute("SHRINK_SUB_TYPE_ID") <> shrinkSubtypeId)) _
+                   Select el %>
+        </Items>
+
+        Dim xmlTree As XElement = _
+               <Items><%= From el As XElement In docXML.Elements().<Items>.<Item> _
+                          Where el.Name.LocalName() = "Item" And el.Attribute("UPC") = upc And el.Attribute("SHRINK_SUB_TYPE_ID") = shrinkSubtypeId _
+                          Select el %>
+               </Items>
+
+        If xmlTree.Elements.Count > 0 Then
+            If xmlTree.Element("Item").Attribute("UPC").Value = upc Then
+                xmlTree.Element("Item").Attribute("SHRINK_SUB_TYPE").SetValue(shrinkSubType)
+                xmlTree.Element("Item").Attribute("SHRINK_ADJ_ID").SetValue(shrinkAdjId)
+                xmlTree.Element("Item").Attribute("SHRINK_TYPE_ID").SetValue(shrinkTypeId)
+                xmlTree.Element("Item").Attribute("SHRINK_TYPE").SetValue(shrinkType)
+                isUpdating = True
+            End If
+        End If
+        If isUpdating Then
+
+            Dim updatedItem As XElement = xmlTree.Element("Item")
+            xmlTreeRemainingItems.Add(updatedItem)
+
+            shrink.Element("Items").Remove()
+            shrink.Add(xmlTreeRemainingItems)
+
+            docXML.Save(MakeFilePath(session.SessionName))
+        End If
+
+    End Sub
+
+
+    Public Sub ReplaceQuantityBasedOnType(ByVal upc As String, ByVal qty As String, ByVal oldShrinkSubTypeId As String)
+
+        'load the XML file
+        Dim docXML As XDocument = New XDocument()
+        docXML = XDocument.Load(MakeFilePath(session.SessionName))
+        Dim shrink As XElement = docXML.Root
+
+        Dim isUpdating As Boolean = False
+
+        Dim xmlTreeRemainingItems As XElement = _
+        <Items><%= From el As XElement In docXML.Elements().<Items>.<Item> _
+                   Where el.Name.LocalName() = "Item" And (el.Attribute("UPC") <> upc Or (el.Attribute("UPC") = upc And el.Attribute("SHRINK_SUB_TYPE_ID") <> oldShrinkSubTypeId)) _
+                   Select el %>
+        </Items>
+
+        Dim xmlTree As XElement = _
+               <Items><%= From el As XElement In docXML.Elements().<Items>.<Item> _
+                          Where el.Name.LocalName() = "Item" And el.Attribute("UPC") = upc And el.Attribute("SHRINK_SUB_TYPE_ID") = oldShrinkSubTypeId _
+                          Select el %>
+               </Items>
+
+        If xmlTree.Elements.Count > 0 Then
+            If xmlTree.Element("Item").Attribute("UPC").Value = upc Then
+                Dim sDiscountType As String = CStr(xmlTree.Element("Item").Attribute("DISCOUNT_TYPE"))
+                If Not sDiscountType Is Nothing Then
+                    If xmlTree.Element("Item").Attribute("DISCOUNT_TYPE").Value = 3 Then xmlTree.Element("Item").Attribute("DISCOUNT_AMOUNT").SetValue(qty)
+                End If
+                xmlTree.Element("Item").Attribute("QTY").SetValue(qty)
+                isUpdating = True
+            End If
+        End If
+
+        If isUpdating Then
+            Dim updatedItem As XElement = xmlTree.Element("Item")
+            xmlTreeRemainingItems.Add(updatedItem)
+
+            shrink.Element("Items").Remove()
+            shrink.Add(xmlTreeRemainingItems)
+
+            docXML.Save(MakeFilePath(session.SessionName))
+        End If
+    End Sub
 
     Public Sub ReplaceQuantity(ByVal upc As String, ByVal qty As String)
 
@@ -153,6 +334,9 @@ Public Class ShrinkFileWriter
                 New XElement("ShrinkType", session.ShrinkType), _
                 New XElement("ShrinkTypeId", session.ShrinkTypeId), _
                 New XElement("ShrinkTypeAdjId", session.ShrinkAdjId), _
+                New XElement("ShrinkSubTypeID", session.ShrinkSubTypeID), _
+                New XElement("InventoryAdjustmentCodeID", session.InventoryAdjustmentCodeID), _
+                New XElement("ShrinkSubType", session.ShrinkSubType), _
                 New XElement("Items"))
 
         Dim shrinkSession As XDocument = New XDocument(New XDeclaration("1.0", "UTF-8", "yes"), shrink)
@@ -185,7 +369,7 @@ Public Class ShrinkFileWriter
         Dim filename As String
         filename = session.SessionName.Replace("/"c, "_"c)                     'TFS 6606, 06/26/2012, Faisal Ahmed
         Dim path As String = GetDirectoryPath() & "\" & filename & ".txt"
-        Return Path
+        Return path
 
     End Function
 
@@ -196,7 +380,7 @@ Public Class ShrinkFileWriter
     End Function
 
     ''' <summary>
-    ''' Creates the session shrink file name
+    ''' GenerateSessionName
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
@@ -204,7 +388,6 @@ Public Class ShrinkFileWriter
 
         Dim myName As String = Me.session.StoreName.Trim & "_" & _
                                 Me.session.Subteam.Replace("/", "").Replace("\", "").Trim & "_" & _
-                                Me.session.ShrinkType.Trim & "_" & _
                                 Me.session.UserName.Replace(".", "").Trim
 
         Return myName
@@ -219,7 +402,7 @@ Public Class ShrinkFileWriter
     ''' <remarks></remarks>
     Public Sub DeleteItem(ByVal sessionName As String, ByVal upc As String)
 
-        deleteItemFromXmlFile(sessionName, upc)
+        DeleteItemFromXmlFile(sessionName, upc)
 
     End Sub
 
@@ -311,8 +494,8 @@ Public Class ShrinkFileWriter
                                                     Select el
 
         For Each el As XElement In childList
-
             str = el.Name.LocalName()
+
             If (str.Equals("Store")) Then
                 session.StoreNo = el.Value
             ElseIf (str.Equals("StoreName")) Then
@@ -333,12 +516,17 @@ Public Class ShrinkFileWriter
                 session.ShrinkAdjId = el.Value
             ElseIf (str.Equals("SessionId")) Then
                 session.SessionName = el.Value
-            End If
+            ElseIf (str.Equals("InventoryAdjustmentCodeID")) Then
+                session.InventoryAdjustmentCodeID = el.Value
+            ElseIf (str.Equals("ShrinkSubType")) Then
+                session.ShrinkSubType = el.Value
+            ElseIf (str.Equals("ShrinkSubTypeID")) Then
+                session.ShrinkSubTypeID = el.Value
+                End If
 
         Next
 
         Return session
-
     End Function
 
     ''' <summary>
@@ -426,7 +614,30 @@ Public Class ShrinkFileWriter
 
     End Function
 
+    Public Function isPreviouslyScanned(ByVal upc As String, ByVal shrinkSubTypeID As String) As Boolean
 
+        'load the XML file
+        Dim docXML As XDocument = New XDocument()
+        docXML = XDocument.Load(MakeFilePath(session.SessionName))
+        Dim shrink As XElement = docXML.Root
+
+        Dim xmlTree As XElement = _
+               <Items><%= From el As XElement In docXML.Elements().<Items>.<Item> _
+                          Where el.Name.LocalName() = "Item" And el.Attribute("UPC") = upc And el.Attribute("SHRINK_SUB_TYPE_ID") = shrinkSubTypeID _
+                          Select el %>
+               </Items>
+
+        If xmlTree.Elements.Count > 0 Then
+            If xmlTree.Element("Item").Attribute("UPC").Value = upc Then
+                Return True
+            Else
+                Return False
+            End If
+        Else
+            Return False
+        End If
+
+    End Function
     Public Function isPreviouslyScanned(ByVal upc As String) As Boolean
 
         'load the XML file
