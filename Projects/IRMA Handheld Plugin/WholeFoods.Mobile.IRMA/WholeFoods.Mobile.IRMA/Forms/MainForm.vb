@@ -102,11 +102,13 @@ Public Class MainForm
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
-        ' Add any initialization after the InitializeComponent() call.
-        ' TEST PURPOSES ONLY:
-        'Me.ServiceURI = "http://iat-sp/IRMAService/IRMA.svc/basic"
-        'Me.UserName = "ahmedfa"
-        'Me.RegionCode = "SP"
+        '' Add any initialization after the InitializeComponent() call.
+        '' TEST PURPOSES ONLY:
+        'Me.ServiceURI = "http://cewd6589.wfm.pvt:8081/Irma.svc/basic"
+
+        ''Me.ServiceURI = "http://iat-ma/IRMAService/IRMA.svc/basic"
+        'Me.UserName = "2096654"
+        'Me.RegionCode = "RM"
         'Me.UserAuthenticated = True
 
     End Sub
@@ -295,7 +297,7 @@ Public Class MainForm
             mySession.SetSubteamKey(Me.SubteamComboBox.SelectedValue & "," & Me.SubteamComboBox.Text)
             mySession.SetStore(Me.StoreComboBox.SelectedValue & "," & Me.StoreComboBox.Text)
 
-            Dim main As ShrinkMain = New ShrinkMain(Me.mySession)
+            Dim main As ShrinkType = New ShrinkType(Me.mySession)
 
             If main.ShowDialog() = Windows.Forms.DialogResult.Abort Then
                 Me.DialogResult = Windows.Forms.DialogResult.OK
@@ -803,6 +805,10 @@ Public Class MainForm
         Dim dtsTypesAdj As DataTable
         Dim dr As DataRow
 
+        '----Sub Types----'
+        Dim shrinkSubTypeResult As ShrinkSubType() = Me.mySession.WebProxyClient.GetShrinkSubTypes()
+
+        mySession.ShrinkSubTypes = shrinkSubTypeResult
 
         '----STORES----
         Dim storeResult As ListsStore() = Me.mySession.WebProxyClient.GetStores(False)

@@ -8,7 +8,8 @@
     @CreatedBy int, 
     @SubTeam_No int,
 	@InventoryAdjustmentCode varchar(3),
-	@Username varchar(25)
+	@Username varchar(25),
+	@ShrinkSubTypeId Int = Null
 AS 
 -- **************************************************************************
 -- Procedure: InsertItemHistoryShrink()
@@ -91,9 +92,14 @@ BEGIN
                     @Price, @Adjustment_ID, @AdjustmentReason, @CreatedBy, @SubTeam_No, null, @InventoryAdjustmentCode_ID)
     
             SELECT @error_no = @@ERROR, @ItemHistoryId = SCOPE_IDENTITY()
-        END        
-       
 
+			IF(@ShrinkSubTypeId IS NOT NULL)
+		    BEGIN
+				INSERT INTO [ItemHistoryShrinkSubType]([ShrinkSubType_ID], [ItemHistoryID], [AddedDate])
+				VALUES(@ShrinkSubTypeId, @ItemHistoryId, GETDATE())
+			END
+
+        END        
     END
 
     SET NOCOUNT OFF
@@ -131,4 +137,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[InsertItemHistoryShrink] TO [IRMAReportsRole]
     AS [dbo];
-

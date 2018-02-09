@@ -45,6 +45,13 @@
         Function GetShrinkAdjustmentReasons() As List(Of Lists.ShrinkAdjustmentReason)
 
         ''' <summary>
+        ''' Contract for retrieving a list of Shrink Types
+        ''' </summary>
+        ''' <returns></returns>
+        <OperationContract()>
+        Function GetShrinkSubTypes() As List(Of ShrinkSubType)
+
+        ''' <summary>
         ''' Contract for retrieving a list of Item Information from the database.
         ''' </summary>
         ''' <param name="Item_Key">ItemKey, this can be null</param>

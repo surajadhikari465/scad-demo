@@ -47,6 +47,11 @@ Public Class Messages
     Public Shared COMM_EXCEPTION As String = "Service communication failed in method: "
     Public Shared TIMEOUT_EXCEPTION As String = "Service timeout occurred in method: "
     Public Shared PLEASE_RETRY As String = "Please retry your request.  If the problem persists, please contact support."
+    Public Shared QUANTITY_AMT_ERROR As String = "Quantity cannot be greater than 999."
+    Public Shared WEIGHT_AMT_ERROR As String = "Weight cannot be greater than 999."
+    Public Shared QUANTITY_ZERO_ERROR As String = "Quantity cannot be 0."
+    Public Shared WEIGHT_ZERO_ERROR As String = "Weight cannot be 0."
+
 
     Public Sub exceptionMessage(ByVal message As String)
         MessageBox.Show(message + "occurred.  Please contact support.", Messages.MERROR, MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1)

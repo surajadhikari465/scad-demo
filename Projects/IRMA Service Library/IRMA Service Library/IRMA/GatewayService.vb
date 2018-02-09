@@ -130,6 +130,38 @@ Namespace IRMA
             Return InvAdjReasonslist
         End Function
 
+        Public Function GetShrinkSubTypes() As List(Of ShrinkSubType) Implements IGateway.GetShrinkSubTypes
+            logger.Info("ShrinkSubType - Enter")
+
+            Dim factory As New DataFactory(DataFactory.IRMAServiceLibrary)
+            Dim ShrinkSubTypesList As New List(Of ShrinkSubType)
+            Dim dt As DataTable
+
+            Try
+                dt = factory.GetStoredProcedureDataTable("GetShrinkSubTypes")
+
+                For Each dr As DataRow In dt.Rows
+                    Dim ShrinkSubType As New ShrinkSubType
+                    ShrinkSubType.ShrinkSubTypeID = dr.Item("ShrinkSubTypeID")
+                    ShrinkSubType.ShrinkType = dr.Item("ShrinkType")
+                    ShrinkSubType.ShrinkSubType = dr.Item("ShrinkSubType")
+                    ShrinkSubType.ReasonCode = dr.Item("ReasonCode")
+                    ShrinkSubType.LastUpdateUserId = dr.Item("LastUpdateUserId")
+                    ShrinkSubType.LastUpdateDateTime = dr.Item("LastUpdateDateTime")
+                    ShrinkSubType.Abbreviation = dr.Item("Abbreviation")
+                    ShrinkSubType.InventoryAdjustmentCodeID = dr.Item("InventoryAdjustmentCodeID")
+                    ShrinkSubTypesList.Add(ShrinkSubType)
+                Next
+
+            Catch e As Exception
+                Throw
+            Finally
+                connectionCleanup(factory)
+            End Try
+
+            Return ShrinkSubTypesList
+        End Function
+
         Public Function GetCostAdjustmentsReasonCodes() As List(Of Lists.ReasonCode) Implements IGateway.GetDiscountReasonCodes
             logger.Info("GetCostAdjustmentsReasonCodes() - Enter")
 
@@ -813,6 +845,12 @@ Namespace IRMA
             currentParam.Name = "UserName"
             currentParam.Value = Adjustment.UserName
             currentParam.Type = DBParamType.String
+            paramList.Add(currentParam)
+
+            currentParam = New DBParam
+            currentParam.Name = "ShrinkSubTypeId"
+            currentParam.Value = Adjustment.ShrinkSubTypeId
+            currentParam.Type = DBParamType.Int
             paramList.Add(currentParam)
 
             Try

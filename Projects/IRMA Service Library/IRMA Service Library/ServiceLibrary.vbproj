@@ -97,6 +97,7 @@
     <Compile Include="IRMA\DataFactory\ODBCErrorLog.vb" />
     <Compile Include="IRMA\Debug\Debug.vb" />
     <Compile Include="IRMA\Inventory\CycleCount.vb" />
+    <Compile Include="IRMA\Lists\ShrinkSubType.vb" />
     <Compile Include="IRMA\Lists\DSDVendor.vb" />
     <Compile Include="IRMA\Lists\ExternalOrder.vb" />
     <Compile Include="IRMA\Lists\GetItem.vb" />

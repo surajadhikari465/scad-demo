@@ -58,7 +58,7 @@ Public Class ShrinkScan
 
     Private Sub ScanShrink_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-        Me.IrmaShrinkLabel.Text = "IRMA Shrink: " + mySession.ShrinkType
+        Me.IrmaShrinkLabel.Text = "IRMA Shrink: " + mySession.ShrinkSubType
         Me.StoreTeamLabel.Text = mySession.StoreName + " " + mySession.Subteam
 
         Me.frmStatus.Visible = False
@@ -154,7 +154,8 @@ Public Class ShrinkScan
         Dim cont As Boolean = True
 
         Try
-            SaveItem(txtUpc.Text, myItemKey, txtQty.Text, lblUOM.Text, lblDescription.Text, True)
+            SaveItem(txtUpc.Text, myItemKey, txtQty.Text, lblUOM.Text, lblDescription.Text, True, mySession.ShrinkSubTypeID, _
+                     mySession.ShrinkSubType, mySession.ShrinkAdjId, mySession.ShrinkTypeId, mySession.ShrinkType)
 
         Catch ex As NullReferenceException
             Dim resp As MsgBoxResult = Messages.NullItem()
@@ -193,6 +194,16 @@ Public Class ShrinkScan
             Exit Sub
         End If
 
+        If CDbl(txtQty.Text) > 999 Then
+            MsgBox(Messages.QUANTITY_AMT_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            Exit Sub
+        End If
+
+        If CDbl(txtQty.Text) = 0 Then
+            MsgBox(Messages.QUANTITY_ZERO_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            Exit Sub
+        End If
+
         ' Prompt for confirmation if the chosen quantity is 99 or greater.
         If CDbl(txtQty.Text) >= 99 Then
             If MsgBox("You have entered a shrink quantity of " + txtQty.Text + ".  Is this correct?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, Me.Text) = MsgBoxResult.No Then
@@ -200,8 +211,14 @@ Public Class ShrinkScan
             End If
         End If
 
+        If (String.IsNullOrEmpty(txtUpc.Text)) Then
+            MsgBox("Please scan item.", MsgBoxStyle.OkOnly, Me.Text)
+            Exit Sub
+        End If
+
         Try
-            SaveItem(txtUpc.Text, myItemKey, txtQty.Text, lblUOM.Text, lblDescription.Text, True)
+            SaveItem(txtUpc.Text, myItemKey, txtQty.Text, lblUOM.Text, lblDescription.Text, True, mySession.ShrinkSubTypeID, mySession.ShrinkSubType, _
+                     mySession.ShrinkAdjId, mySession.ShrinkTypeId, mySession.ShrinkType)
 
         Catch ex As NullReferenceException
             Messages.EmptyItem()
@@ -344,7 +361,9 @@ Public Class ShrinkScan
 
 #Region " Private Methods"
 
-    Private Sub SaveItem(ByVal upc As String, ByVal itemKey As String, ByVal qty As Double, ByVal uom As String, ByVal desc As String, ByVal replaceQty As Boolean)
+    Private Sub SaveItem(ByVal upc As String, ByVal itemKey As String, ByVal qty As Double, ByVal uom As String, ByVal desc As String, ByVal replaceQty As Boolean, _
+                         ByVal shrinkSubTypeID As Integer, ByVal shrinkSubType As String, _
+                         ByVal shrinkAdjId As Integer, ByVal shrinkTypeId As String, ByVal shrinkType As String)
 
         Try
             'check UPC and DESC are not empty
@@ -383,9 +402,9 @@ Public Class ShrinkScan
                 End If
 
                 If Not fileWriter.SessionFileExists() Then
-                    fileWriter.SaveItem(mySession.GetSessionName(), upc, itemKey, qty, uom, desc, myItem.CostedByWeight, True) '//file does not exist yet
+                    fileWriter.SaveItem(mySession.GetSessionName(), upc, itemKey, qty, uom, desc, myItem.CostedByWeight, True, shrinkSubTypeID, shrinkSubType, shrinkAdjId, shrinkTypeId, shrinkType) '//file does not exist yet
                 Else
-                    If fileWriter.isPreviouslyScanned(upc) Then
+                    If fileWriter.isPreviouslyScanned(upc, shrinkSubTypeID.ToString) Then
                         Dim sMsgBoxQty As String = String.Empty
 
                         'parse file to get value for msgbox below
@@ -411,13 +430,13 @@ Public Class ShrinkScan
                         End If
 
                         If dlgResult <> "C" Then
-                            fileWriter.SaveItem(mySession.SessionName, upc, itemKey, qty, uom, desc, myItem.CostedByWeight, False)
+                            fileWriter.SaveItem(mySession.SessionName, upc, itemKey, qty, uom, desc, myItem.CostedByWeight, False, shrinkSubTypeID, shrinkSubType, shrinkAdjId, shrinkTypeId, shrinkType)
                         Else
                             bScan = False
                         End If
 
                     Else
-                        fileWriter.SaveItem(mySession.SessionName, upc, itemKey, qty, uom, desc, myItem.CostedByWeight, False)
+                        fileWriter.SaveItem(mySession.SessionName, upc, itemKey, qty, uom, desc, myItem.CostedByWeight, False, shrinkSubTypeID, shrinkSubType, shrinkAdjId, shrinkTypeId, shrinkType)
                     End If
                 End If
 
@@ -492,7 +511,7 @@ Public Class ShrinkScan
                 err.DisplayErrorMessage(ex.Message, "Search")
                 serviceCallSuccess = False
             End Try
-            
+
             If Not serviceCallSuccess Then
                 ' The call to GetStoreItem failed.  Return control to the user and allow the user to retry.
                 Cursor.Current = Cursors.Default
@@ -636,6 +655,10 @@ Public Class ShrinkScan
         Label2.TextAlign = ContentAlignment.TopRight
         Label3.TextAlign = ContentAlignment.TopRight
         Label4.TextAlign = ContentAlignment.TopRight
+    End Sub
+
+    Private Sub MenuItem2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MenuItem2.Click
+        Me.Close()
     End Sub
 
 End Class
