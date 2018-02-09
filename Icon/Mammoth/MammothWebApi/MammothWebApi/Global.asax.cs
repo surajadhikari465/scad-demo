@@ -1,7 +1,15 @@
-﻿using Mammoth.Common.DataAccess.CommandQuery;
+﻿using Esb.Core.MessageBuilders;
+using Esb.Core.Serializer;
+using Icon.Esb;
+using Icon.Esb.Factory;
+using Icon.Esb.Schemas.Wfm.Contracts;
+using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.DbProviders;
 using Mammoth.Common.Email;
 using Mammoth.Logging;
+using Mammoth.PrimeAffinity.Library.Commands;
+using Mammoth.PrimeAffinity.Library.MessageBuilders;
+using Mammoth.PrimeAffinity.Library.Processors;
 using MammothWebApi.Common;
 using MammothWebApi.DataAccess.Models;
 using MammothWebApi.DataAccess.Queries;
@@ -10,7 +18,11 @@ using MammothWebApi.Service.Decorators;
 using MammothWebApi.Service.Services;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
+using SimpleInjector.Lifestyles;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Reflection;
 using System.Web.Http;
 
@@ -22,13 +34,17 @@ namespace MammothWebApi
         {
             // Simple Injector Registration
             var container = new Container();
-            container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
             // Cross-cutting concerns
             container.RegisterSingleton<ILogger>(() => new NLogLogger(typeof(NLogLogger)));
+            container.Register(typeof(Icon.Logging.ILogger<>), typeof(Icon.Logging.NLogLogger<>));
             container.RegisterSingleton<IServiceSettings>(() => ServiceSettings.CreateFromConfig());
             container.RegisterSingleton<IEmailClient>(() => EmailClient.CreateFromConfig());
-            container.RegisterWebApiRequest<IDbProvider, SqlDbProvider>();
+            container.Register<IDbProvider, SqlDbProvider>(Lifestyle.Scoped);
+            container.Register<IPrimeAffinityPsgSettings, PrimeAffinityPsgSettings>(Lifestyle.Scoped);
+            container.Register(() => PrimeAffinityPsgProcessorSettings.Load());
+            container.Register(() => PrimeAffinityMessageBuilderSettings.Load());
 
             // Services
             container.Register(typeof(IUpdateService<>), new[] { typeof(IUpdateService<>).Assembly }, Lifestyle.Scoped);
@@ -39,11 +55,21 @@ namespace MammothWebApi
 
             // Data Access
             var dataAccessAssembly = Assembly.Load("MammothWebApi.DataAccess");
-            container.Register(typeof(ICommandHandler<>), new[] { dataAccessAssembly }, Lifestyle.Scoped);
+            var primeAffinityLibraryAssembly = Assembly.GetAssembly(typeof(ArchivePrimeAffinityMessageCommandHandler));
+            container.Register(typeof(ICommandHandler<>), new[] { dataAccessAssembly, primeAffinityLibraryAssembly }, Lifestyle.Scoped);
             container.Register(typeof(IQueryHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Scoped);
+
+            //PrimeAffinity
+            container.Register<IMessageBuilder<PrimeAffinityMessageBuilderParameters>, PrimeAffinityMessageBuilder>();
+            container.Register<IPrimeAffinityPsgProcessor<PrimeAffinityPsgProcessorParameters>, PrimeAffinityPsgProcessor>();
+            container.Register<IEsbConnectionFactory>(() => new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10") });
+            container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString), Lifestyle.Scoped);
+            container.Register<ISerializer<items>, Serializer<items>>();
 
             // Decorators
             container.RegisterDecorator(typeof(IUpdateService<AddUpdatePrice>), typeof(CancelAllSalesAddUpdatePriceServiceDecorator));
+            container.RegisterDecorator(typeof(IUpdateService<AddUpdatePrice>), typeof(PrimeAffinityPsgAddPriceServiceDecorator));
+            container.RegisterDecorator(typeof(IUpdateService<DeletePrice>), typeof(PrimeAffinityPsgDeletePriceServiceDecorator));
             container.RegisterDecorator(typeof(IUpdateService<>), typeof(DbConnectionServiceDecorator<>));
             container.RegisterDecorator<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>, DbConnectionQueryHandlerDecorator<GetAllBusinessUnitsQuery, List<int>>>();
             container.RegisterDecorator<IQueryHandler<GetLocalesByBusinessUnitsQuery, IEnumerable<Locales>>,

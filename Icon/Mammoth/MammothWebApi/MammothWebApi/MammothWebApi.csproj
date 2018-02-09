@@ -18,7 +18,7 @@
     <IISExpressSSLPort>
     </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <NuGetPackageImportStamp>838eb79a</NuGetPackageImportStamp>
     <ApplicationInsightsResourceId>/subscriptions/0d698c22-f9fa-44b4-91bc-e1bb50f61554/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/MammothWebApi</ApplicationInsightsResourceId>
@@ -48,40 +48,93 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Esb.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Esb.Core.2017.10.18.1\lib\net46\Esb.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FastMember, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.2.0\lib\net45\FastMember.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.2017.10.9.1\lib\net45\Icon.Esb.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Infor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Infor.2017.12.13.1\lib\net46\Icon.Esb.Schemas.Infor.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Mammoth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2017.12.27.2\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2017.11.22.3\lib\net45\Icon.Esb.Schemas.Wfm.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Framework.2018.1.18.1\lib\net45\Icon.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
+    </Reference>
     <Reference Include="Mammoth.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Common.2017.11.28.3\lib\net461\Mammoth.Common.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.1.18.1\lib\net461\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.2.7.2\lib\net461\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Logging.2017.11.15.10\lib\net46\Mammoth.Logging.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Logging.2017.11.28.5\lib\net461\Mammoth.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.2.7.2\lib\net461\Mammoth.PrimeAffinity.Library.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoreLinq, Version=2.10.21623.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.10.0\lib\net40\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleInjector, Version=3.2.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\SimpleInjector.3.2.0\lib\net45\SimpleInjector.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleInjector.Extensions.ExecutionContextScoping, Version=3.2.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\SimpleInjector.Extensions.ExecutionContextScoping.3.2.0\lib\net45\SimpleInjector.Extensions.ExecutionContextScoping.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SimpleInjector, Version=4.0.12.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.0.12\lib\net45\SimpleInjector.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleInjector.Integration.WebApi, Version=3.2.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\SimpleInjector.Integration.WebApi.3.2.0\lib\net45\SimpleInjector.Integration.WebApi.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SimpleInjector.Extensions.ExecutionContextScoping, Version=4.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Extensions.ExecutionContextScoping.4.0.0\lib\net45\SimpleInjector.Extensions.ExecutionContextScoping.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.WebApi, Version=4.0.12.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Integration.WebApi.4.0.12\lib\net45\SimpleInjector.Integration.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.SqlClient, Version=4.2.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.4.2\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -105,6 +158,10 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="TIBCO.EMS, Version=1.0.800.9, Culture=neutral, PublicKeyToken=5b83db8ff05c64ba, processorArchitecture=MSIL">
+      <HintPath>..\packages\TIBCO.EMS.2016.10.21.1\lib\TIBCO.EMS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodeAssassin.ConfigTransform.Readme.txt" />
@@ -112,6 +169,9 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web.Dev.config">
       <SubType>Designer</SubType>
       <DependentUpon>Web.config</DependentUpon>
@@ -144,9 +204,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\PublishProfiles\MammothDev.pubxml" />
     <None Include="Properties\PublishProfiles\MammothTest.pubxml" />
     <None Include="Web.Debug.config">

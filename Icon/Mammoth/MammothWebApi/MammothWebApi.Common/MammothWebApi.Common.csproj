@@ -69,7 +69,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPrimeAffinityPsgSettings.cs" />
     <Compile Include="IServiceSettings.cs" />
+    <Compile Include="PrimeAffinityPsgSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceSettings.cs" />
   </ItemGroup>
