@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[InsertItemHistoryShrinkUpdate] 
+﻿CREATE PROCEDURE dbo.InsertItemHistoryShrinkUpdate 
     @Store_No int, 
     @Item_Key int, 
     @DateStamp datetime, 
@@ -7,12 +7,14 @@
     @InventoryAdjustmentCode_Id int, 
     @CreatedBy int, 
     @SubTeam_No int,
-    @PackSize decimal(9,4)
+    @PackSize decimal(9,4),
+    @ShrinkSubtype_Id int
 AS 
 
    -- Modification History:
    -- Date			Init		Comment
    -- 10/03/2012	AlexB		Removed all references to ItemCaseHistory
+   --  2/05/2018    EM          Added ShrinkSubtype_Id parameter
 BEGIN
     SET NOCOUNT ON
 
@@ -72,9 +74,7 @@ BEGIN
             VALUES (@Store_No, @Item_Key, @DateStamp, @Quantity, @Weight, @AvgCost, @Price, @Adjustment_ID, @AdjustmentReason, @CreatedBy, @SubTeam_No, @InventoryAdjustmentCode_Id, 1)
         
 			SELECT @error_no = @@ERROR, @ItemHistoryId = SCOPE_IDENTITY()
-        END    
-       
-        
+        END
     END
 
 	If (@Abbreviation <> 'SP' and @Abbreviation <> 'SM' and @Abbreviation <> 'FB')
@@ -82,6 +82,14 @@ BEGIN
 		INSERT INTO ItemHistoryUpload (ItemHistoryId, AccountingUploadDate)
 		VALUES (@ItemHistoryId, NULL)
 	END
+
+	-- if a shrink subtype is specified in addition to the main Adjustment Code, record it
+	IF (@error_no = 0 AND @ItemHistoryId > 0 AND @ShrinkSubtype_Id > 0) 
+	BEGIN
+		INSERT INTO dbo.ItemHistoryShrinkSubType (ShrinkSubType_ID, ItemHistoryID, AddedDate)
+			VALUES ( @ShrinkSubtype_Id, @ItemHistoryId, GETDATE())
+		SELECT @error_no = @@ERROR
+	END 
 
     SET NOCOUNT OFF
 
@@ -98,18 +106,18 @@ BEGIN
 END
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[InsertItemHistoryShrinkUpdate] TO [IRMAClientRole]
-    AS [dbo];
+    ON OBJECT::dbo.InsertItemHistoryShrinkUpdate TO IRMAClientRole
+    AS dbo;
 
 
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[InsertItemHistoryShrinkUpdate] TO [IRMASchedJobsRole]
-    AS [dbo];
+    ON OBJECT::dbo.InsertItemHistoryShrinkUpdate TO IRMASchedJobsRole
+    AS dbo;
 
 
 GO
 GRANT EXECUTE
-    ON OBJECT::[dbo].[InsertItemHistoryShrinkUpdate] TO [IRMAReportsRole]
-    AS [dbo];
+    ON OBJECT::dbo.InsertItemHistoryShrinkUpdate TO IRMAReportsRole
+    AS dbo;
 

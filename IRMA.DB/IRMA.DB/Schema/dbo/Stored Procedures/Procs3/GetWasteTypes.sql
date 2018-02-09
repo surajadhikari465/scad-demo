@@ -2,6 +2,9 @@
 -- Author:		Faisal Ahmed
 -- Create date: 10/23/2009
 -- Description:	Returns the waste types
+--
+-- Modifications:
+--  2/05/2018    EM		Included InventoryAdjustmentCode_ID column
 -- =============================================
 CREATE PROCEDURE dbo.GetWasteTypes
 AS
@@ -10,7 +13,8 @@ BEGIN
     
 	SELECT 
 		Abbreviation AS Waste_Type, 
-		AdjustmentDescription AS Description
+		AdjustmentDescription AS 'Description',
+		InventoryAdjustmentCode_ID As InventoryAdjustmentCode_ID
 	FROM InventoryAdjustmentCode
 	WHERE Abbreviation in ('SM', 'SP', 'FB')
     

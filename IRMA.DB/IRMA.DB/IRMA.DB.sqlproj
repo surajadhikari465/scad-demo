@@ -3283,6 +3283,7 @@
     <None Include="Scripts\PostDeploy\Archive\22981-AddInstanceDataFlagForExtraTextLineFeed\AddInstanceDataFlageForExtraTextAndStorageDataLineFeed.sql" />
     <None Include="Scripts\PostDeploy\Archive\23005-AddAllergensAndIngredientsToEIM\AddAllergensAndIngredientsToEIM.RollBack.sql" />
     <None Include="Scripts\PostDeploy\Archive\23005-AddAllergensAndIngredientsToEIM\AddAllergensAndIngredientsToEIM.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs2\GetShrinkSubtypesOnly.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

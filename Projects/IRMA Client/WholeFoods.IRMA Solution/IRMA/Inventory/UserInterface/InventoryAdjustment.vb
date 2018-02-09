@@ -28,6 +28,11 @@ Friend Class frmInventoryAdjustment
     Private _isSoldAsEachCostedByWeightItem As Boolean = False
     Private _itemIdentifier As String = ""
 
+    Dim dtShrinkSubtypes As New System.Data.DataTable
+    Const col_ShrinkSubtype_ID As String = "ShrinkSubtype_ID"
+    Const col_ShrinkReasonCode As String = "ReasonCodeDescription"
+    Const col_InvAdjCode_Id As String = "InventoryAdjustmentCode_ID"
+
     Private Sub frmInventoryAdjustment_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
 
         glItemID = -1
@@ -57,6 +62,8 @@ Friend Class frmInventoryAdjustment
         LoadAllSubTeams(cmbSubTeam)
         cmbSubTeam.SelectedIndex = -1
 
+        LoadShrinkSubtypesComboBox(cmbShrinkSubtype)
+
         If glStore_Limit > 0 Then
             SetActive(cmbStore, False)
             SetCombo(cmbStore, glStore_Limit)
@@ -64,6 +71,21 @@ Friend Class frmInventoryAdjustment
             cmbStore.SelectedIndex = 0
         End If
     End Sub
+
+
+    Private Sub LoadShrinkSubtypesComboBox(ByRef comboBox As ComboBox)
+
+        ' read the shrink types from the database
+        dtShrinkSubtypes = ShrinkCorrectionsDAO.GetShrinkSubTypesOnly()
+
+        ' set the combo box data source & member properties
+        comboBox.DataSource = dtShrinkSubtypes
+        comboBox.ValueMember = col_ShrinkSubtype_ID
+        comboBox.DisplayMember = col_ShrinkReasonCode
+        comboBox.SelectedIndex = -1
+
+    End Sub
+
 
     Private Sub cmdItemSearch_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdItemSearch.Click
 
@@ -250,7 +272,9 @@ Friend Class frmInventoryAdjustment
             _weight = _weight * -1
         End If
 
-        Dim _sql As String = "EXEC InsertItemHistory3 " & VB6.GetItemData(cmbStore, cmbStore.SelectedIndex) & ", " & glItemID & ", '" & VB6.Format(SystemDateTime, "MM/DD/YYYY HH:MM:SS") & "','" & _quantity & "','" & _weight & "'," & VB6.GetItemData(cmbReason, cmbReason.SelectedIndex) & "," & giUserID & ", " & sSubTeam_No & "," & Me._selectedPackSize
+        Dim shrinkSubtypeId As Integer = cmbShrinkSubtype.SelectedValue
+
+        Dim _sql As String = "EXEC InsertItemHistory3 " & VB6.GetItemData(cmbStore, cmbStore.SelectedIndex) & ", " & glItemID & ", '" & VB6.Format(SystemDateTime, "MM/DD/YYYY HH:MM:SS") & "','" & _quantity & "','" & _weight & "'," & VB6.GetItemData(cmbReason, cmbReason.SelectedIndex) & "," & giUserID & ", " & sSubTeam_No & "," & Me._selectedPackSize & "," & shrinkSubtypeId.ToString
 
         SQLExecute(_sql, DAO.RecordsetOptionEnum.dbSQLPassThrough)
 

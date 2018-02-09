@@ -1,9 +1,9 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmShrinkCorrections
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class frmShrinkCorrections
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShrinkCorrections))
@@ -35,10 +35,13 @@ Partial Class frmShrinkCorrections
         Dim UltraGridColumn7 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("SubTeam_No")
         Dim UltraGridColumn8 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("Qty")
         Dim UltraGridColumn9 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("wType")
-        Dim UltraGridColumn10 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("UserName")
+        Dim UltraGridColumn10 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("UserName", -1, Nothing, 0, Infragistics.Win.UltraWinGrid.SortIndicator.Ascending, False)
         Dim UltraGridColumn11 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("CostedbyWeight")
         Dim UltraGridColumn12 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("Cost")
         Dim UltraGridColumn13 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("OriginalDateStamp")
+        Dim UltraGridColumn14 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("ShrinkSubtype_ID")
+        Dim UltraGridColumn15 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("InventoryAdjustment_ID")
+        Dim UltraGridColumn16 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("ShrinkSubtype_Desc")
         Dim Appearance1 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
         Dim ColScrollRegion1 As Infragistics.Win.UltraWinGrid.ColScrollRegion = New Infragistics.Win.UltraWinGrid.ColScrollRegion(983)
         Dim ColScrollRegion2 As Infragistics.Win.UltraWinGrid.ColScrollRegion = New Infragistics.Win.UltraWinGrid.ColScrollRegion(-7)
@@ -54,12 +57,15 @@ Partial Class frmShrinkCorrections
         Dim Appearance23 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
         Dim Appearance24 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
         Me.searchGroupBox = New System.Windows.Forms.GroupBox()
+        Me.lblDateDash = New System.Windows.Forms.Label()
+        Me.lblShrinkSubtype = New System.Windows.Forms.Label()
+        Me.cmbShrinkSubtype = New System.Windows.Forms.ComboBox()
         Me.lblSpoilageType = New System.Windows.Forms.Label()
-        Me.cmbType = New System.Windows.Forms.ComboBox()
+        Me.cmbShrinkType = New System.Windows.Forms.ComboBox()
         Me.cmdSearch = New System.Windows.Forms.Button()
         Me.mskEndDate = New System.Windows.Forms.DateTimePicker()
         Me.mskStartDate = New System.Windows.Forms.DateTimePicker()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblDates = New System.Windows.Forms.Label()
         Me.cmbStore = New System.Windows.Forms.ComboBox()
         Me.cmbSubTeam = New System.Windows.Forms.ComboBox()
         Me.lblStore = New System.Windows.Forms.Label()
@@ -77,12 +83,15 @@ Partial Class frmShrinkCorrections
         '
         'searchGroupBox
         '
+        Me.searchGroupBox.Controls.Add(Me.lblDateDash)
+        Me.searchGroupBox.Controls.Add(Me.lblShrinkSubtype)
+        Me.searchGroupBox.Controls.Add(Me.cmbShrinkSubtype)
         Me.searchGroupBox.Controls.Add(Me.lblSpoilageType)
-        Me.searchGroupBox.Controls.Add(Me.cmbType)
+        Me.searchGroupBox.Controls.Add(Me.cmbShrinkType)
         Me.searchGroupBox.Controls.Add(Me.cmdSearch)
         Me.searchGroupBox.Controls.Add(Me.mskEndDate)
         Me.searchGroupBox.Controls.Add(Me.mskStartDate)
-        Me.searchGroupBox.Controls.Add(Me.Label1)
+        Me.searchGroupBox.Controls.Add(Me.lblDates)
         Me.searchGroupBox.Controls.Add(Me.cmbStore)
         Me.searchGroupBox.Controls.Add(Me.cmbSubTeam)
         Me.searchGroupBox.Controls.Add(Me.lblStore)
@@ -95,6 +104,52 @@ Partial Class frmShrinkCorrections
         Me.searchGroupBox.TabStop = False
         Me.searchGroupBox.Text = "Search Criteria"
         '
+        'lblDateDash
+        '
+        Me.lblDateDash.BackColor = System.Drawing.Color.Transparent
+        Me.lblDateDash.Cursor = System.Windows.Forms.Cursors.Default
+        Me.lblDateDash.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDateDash.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblDateDash.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblDateDash.Location = New System.Drawing.Point(803, 49)
+        Me.lblDateDash.Name = "lblDateDash"
+        Me.lblDateDash.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lblDateDash.Size = New System.Drawing.Size(10, 17)
+        Me.lblDateDash.TabIndex = 20
+        Me.lblDateDash.Text = "-"
+        Me.lblDateDash.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'lblShrinkSubtype
+        '
+        Me.lblShrinkSubtype.BackColor = System.Drawing.Color.Transparent
+        Me.lblShrinkSubtype.Cursor = System.Windows.Forms.Cursors.Default
+        Me.lblShrinkSubtype.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblShrinkSubtype.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblShrinkSubtype.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblShrinkSubtype.Location = New System.Drawing.Point(305, 71)
+        Me.lblShrinkSubtype.Name = "lblShrinkSubtype"
+        Me.lblShrinkSubtype.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lblShrinkSubtype.Size = New System.Drawing.Size(98, 17)
+        Me.lblShrinkSubtype.TabIndex = 19
+        Me.lblShrinkSubtype.Text = "Shrink Subtype :"
+        Me.lblShrinkSubtype.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'cmbShrinkSubtype
+        '
+        Me.cmbShrinkSubtype.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append
+        Me.cmbShrinkSubtype.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cmbShrinkSubtype.BackColor = System.Drawing.SystemColors.Window
+        Me.cmbShrinkSubtype.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cmbShrinkSubtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbShrinkSubtype.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.cmbShrinkSubtype.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.cmbShrinkSubtype.Location = New System.Drawing.Point(404, 68)
+        Me.cmbShrinkSubtype.Name = "cmbShrinkSubtype"
+        Me.cmbShrinkSubtype.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.cmbShrinkSubtype.Size = New System.Drawing.Size(210, 24)
+        Me.cmbShrinkSubtype.Sorted = True
+        Me.cmbShrinkSubtype.TabIndex = 18
+        '
         'lblSpoilageType
         '
         Me.lblSpoilageType.BackColor = System.Drawing.Color.Transparent
@@ -102,30 +157,30 @@ Partial Class frmShrinkCorrections
         Me.lblSpoilageType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSpoilageType.ForeColor = System.Drawing.SystemColors.ControlText
         Me.lblSpoilageType.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblSpoilageType.Location = New System.Drawing.Point(344, 27)
+        Me.lblSpoilageType.Location = New System.Drawing.Point(305, 27)
         Me.lblSpoilageType.Name = "lblSpoilageType"
         Me.lblSpoilageType.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.lblSpoilageType.Size = New System.Drawing.Size(128, 17)
+        Me.lblSpoilageType.Size = New System.Drawing.Size(95, 17)
         Me.lblSpoilageType.TabIndex = 17
-        Me.lblSpoilageType.Text = "Spoilage/Shrink Type :"
+        Me.lblSpoilageType.Text = "Shrink Type :"
         Me.lblSpoilageType.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'cmbType
+        'cmbShrinkType
         '
-        Me.cmbType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append
-        Me.cmbType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.cmbType.BackColor = System.Drawing.SystemColors.Window
-        Me.cmbType.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbType.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.cmbType.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cmbType.Items.AddRange(New Object() {"ALL", "Foodbank", "Sampling", "Spoilage"})
-        Me.cmbType.Location = New System.Drawing.Point(476, 24)
-        Me.cmbType.Name = "cmbType"
-        Me.cmbType.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmbType.Size = New System.Drawing.Size(210, 22)
-        Me.cmbType.Sorted = True
-        Me.cmbType.TabIndex = 16
+        Me.cmbShrinkType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append
+        Me.cmbShrinkType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cmbShrinkType.BackColor = System.Drawing.SystemColors.Window
+        Me.cmbShrinkType.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cmbShrinkType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbShrinkType.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.cmbShrinkType.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.cmbShrinkType.Items.AddRange(New Object() {"ALL", "Foodbank", "Sampling", "Spoilage"})
+        Me.cmbShrinkType.Location = New System.Drawing.Point(404, 24)
+        Me.cmbShrinkType.Name = "cmbShrinkType"
+        Me.cmbShrinkType.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.cmbShrinkType.Size = New System.Drawing.Size(210, 24)
+        Me.cmbShrinkType.Sorted = True
+        Me.cmbShrinkType.TabIndex = 16
         '
         'cmdSearch
         '
@@ -149,34 +204,34 @@ Partial Class frmShrinkCorrections
         '
         Me.mskEndDate.Checked = False
         Me.mskEndDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.mskEndDate.Location = New System.Drawing.Point(596, 65)
+        Me.mskEndDate.Location = New System.Drawing.Point(817, 46)
         Me.mskEndDate.MinDate = New Date(1977, 1, 1, 0, 0, 0, 0)
         Me.mskEndDate.Name = "mskEndDate"
-        Me.mskEndDate.Size = New System.Drawing.Size(89, 22)
+        Me.mskEndDate.Size = New System.Drawing.Size(89, 26)
         Me.mskEndDate.TabIndex = 14
         '
         'mskStartDate
         '
         Me.mskStartDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.mskStartDate.Location = New System.Drawing.Point(476, 65)
+        Me.mskStartDate.Location = New System.Drawing.Point(709, 46)
         Me.mskStartDate.Name = "mskStartDate"
-        Me.mskStartDate.Size = New System.Drawing.Size(90, 22)
+        Me.mskStartDate.Size = New System.Drawing.Size(90, 26)
         Me.mskStartDate.TabIndex = 13
         '
-        'Label1
+        'lblDates
         '
-        Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label1.Location = New System.Drawing.Point(407, 66)
-        Me.Label1.Name = "Label1"
-        Me.Label1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label1.Size = New System.Drawing.Size(65, 17)
-        Me.Label1.TabIndex = 12
-        Me.Label1.Text = "Dates : "
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblDates.BackColor = System.Drawing.Color.Transparent
+        Me.lblDates.Cursor = System.Windows.Forms.Cursors.Default
+        Me.lblDates.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDates.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblDates.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblDates.Location = New System.Drawing.Point(638, 49)
+        Me.lblDates.Name = "lblDates"
+        Me.lblDates.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lblDates.Size = New System.Drawing.Size(65, 17)
+        Me.lblDates.TabIndex = 12
+        Me.lblDates.Text = "Dates : "
+        Me.lblDates.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'cmbStore
         '
@@ -190,7 +245,7 @@ Partial Class frmShrinkCorrections
         Me.cmbStore.Location = New System.Drawing.Point(92, 24)
         Me.cmbStore.Name = "cmbStore"
         Me.cmbStore.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmbStore.Size = New System.Drawing.Size(201, 22)
+        Me.cmbStore.Size = New System.Drawing.Size(201, 24)
         Me.cmbStore.Sorted = True
         Me.cmbStore.TabIndex = 9
         '
@@ -203,10 +258,10 @@ Partial Class frmShrinkCorrections
         Me.cmbSubTeam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbSubTeam.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.cmbSubTeam.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cmbSubTeam.Location = New System.Drawing.Point(91, 63)
+        Me.cmbSubTeam.Location = New System.Drawing.Point(92, 68)
         Me.cmbSubTeam.Name = "cmbSubTeam"
         Me.cmbSubTeam.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmbSubTeam.Size = New System.Drawing.Size(202, 22)
+        Me.cmbSubTeam.Size = New System.Drawing.Size(201, 24)
         Me.cmbSubTeam.Sorted = True
         Me.cmbSubTeam.TabIndex = 11
         '
@@ -232,7 +287,7 @@ Partial Class frmShrinkCorrections
         Me._lblSubTeam_2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._lblSubTeam_2.ForeColor = System.Drawing.SystemColors.ControlText
         Me._lblSubTeam_2.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me._lblSubTeam_2.Location = New System.Drawing.Point(16, 66)
+        Me._lblSubTeam_2.Location = New System.Drawing.Point(16, 71)
         Me._lblSubTeam_2.Name = "_lblSubTeam_2"
         Me._lblSubTeam_2.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._lblSubTeam_2.Size = New System.Drawing.Size(70, 17)
@@ -243,8 +298,8 @@ Partial Class frmShrinkCorrections
         'gridShrink
         '
         Me.gridShrink.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Appearance2.BackColor = System.Drawing.SystemColors.Window
         Appearance2.BorderColor = System.Drawing.SystemColors.InactiveCaption
         Appearance2.TextHAlignAsString = "Center"
@@ -252,44 +307,56 @@ Partial Class frmShrinkCorrections
         Me.gridShrink.DisplayLayout.AutoFitStyle = Infragistics.Win.UltraWinGrid.AutoFitStyle.ResizeAllColumns
         UltraGridBand1.ColHeaderLines = 2
         UltraGridColumn1.Header.VisiblePosition = 0
-        UltraGridColumn1.Width = 14
-        UltraGridColumn2.Header.Caption = "Item Description"
+        UltraGridColumn1.Width = 68
+        UltraGridColumn2.Header.Caption = "Item" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Description"
         UltraGridColumn2.Header.VisiblePosition = 1
-        UltraGridColumn2.Width = 98
-        UltraGridColumn3.Header.Caption = "Item Subteam"
+        UltraGridColumn2.Width = 152
+        UltraGridColumn3.Header.Caption = "Item" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Subteam"
         UltraGridColumn3.Header.VisiblePosition = 2
-        UltraGridColumn3.Width = 155
-        UltraGridColumn4.Header.Caption = "Category Name"
+        UltraGridColumn3.Width = 62
+        UltraGridColumn4.Header.Caption = "Category" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Name"
         UltraGridColumn4.Header.VisiblePosition = 3
-        UltraGridColumn4.Width = 80
-        UltraGridColumn5.Header.Caption = "Brand Name"
+        UltraGridColumn4.Width = 82
+        UltraGridColumn5.Header.Caption = "Brand" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Name"
         UltraGridColumn5.Header.VisiblePosition = 4
-        UltraGridColumn5.Width = 84
-        UltraGridColumn6.Header.Caption = "Date Stamp"
+        UltraGridColumn5.Width = 82
+        UltraGridColumn6.Header.Caption = "Date" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Stamp"
         UltraGridColumn6.Header.VisiblePosition = 5
-        UltraGridColumn6.Width = 90
-        UltraGridColumn7.Header.Caption = "Shrink SubTeam No"
+        UltraGridColumn6.Width = 124
+        UltraGridColumn7.Header.Caption = "Shrink" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "SubTeam"
         UltraGridColumn7.Header.VisiblePosition = 6
-        UltraGridColumn7.Width = 108
-        UltraGridColumn8.Header.Caption = "Quantity"
+        UltraGridColumn7.Width = 62
+        UltraGridColumn8.Header.Caption = "Qty."
         UltraGridColumn8.Header.VisiblePosition = 7
-        UltraGridColumn8.Width = 78
-        UltraGridColumn9.Header.Caption = "Shrink Type"
+        UltraGridColumn8.Width = 40
+        UltraGridColumn9.Header.Caption = "Shrink" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Type"
         UltraGridColumn9.Header.VisiblePosition = 9
-        UltraGridColumn9.Width = 78
-        UltraGridColumn10.Header.Caption = "Created By"
-        UltraGridColumn10.Header.VisiblePosition = 10
-        UltraGridColumn10.Width = 78
+        UltraGridColumn9.Width = 40
+        UltraGridColumn10.Header.Caption = "Created" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "By"
+        UltraGridColumn10.Header.VisiblePosition = 11
+        UltraGridColumn10.Width = 104
         UltraGridColumn11.Header.Caption = "Costed by Weight"
-        UltraGridColumn11.Header.VisiblePosition = 11
+        UltraGridColumn11.Header.VisiblePosition = 13
         UltraGridColumn11.Hidden = True
-        UltraGridColumn11.Width = 94
+        UltraGridColumn11.Width = 40
         UltraGridColumn12.Header.VisiblePosition = 8
-        UltraGridColumn12.Width = 87
-        UltraGridColumn13.Header.Caption = "Original Date Stamp"
+        UltraGridColumn12.Width = 82
+        UltraGridColumn13.Header.Caption = "Original" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Date Stamp"
         UltraGridColumn13.Header.VisiblePosition = 12
-        UltraGridColumn13.Width = 14
-        UltraGridBand1.Columns.AddRange(New Object() {UltraGridColumn1, UltraGridColumn2, UltraGridColumn3, UltraGridColumn4, UltraGridColumn5, UltraGridColumn6, UltraGridColumn7, UltraGridColumn8, UltraGridColumn9, UltraGridColumn10, UltraGridColumn11, UltraGridColumn12, UltraGridColumn13})
+        UltraGridColumn13.Hidden = True
+        UltraGridColumn13.Width = 40
+        UltraGridColumn14.Header.Caption = "Shrink" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Subtype"
+        UltraGridColumn14.Header.VisiblePosition = 10
+        UltraGridColumn14.Style = Infragistics.Win.UltraWinGrid.ColumnStyle.DropDownValidate
+        UltraGridColumn14.Width = 66
+        UltraGridColumn15.Header.VisiblePosition = 14
+        UltraGridColumn15.Hidden = True
+        UltraGridColumn15.Style = Infragistics.Win.UltraWinGrid.ColumnStyle.DropDownList
+        UltraGridColumn15.Width = 14
+        UltraGridColumn16.Header.VisiblePosition = 15
+        UltraGridColumn16.Hidden = True
+        UltraGridColumn16.Width = 14
+        UltraGridBand1.Columns.AddRange(New Object() {UltraGridColumn1, UltraGridColumn2, UltraGridColumn3, UltraGridColumn4, UltraGridColumn5, UltraGridColumn6, UltraGridColumn7, UltraGridColumn8, UltraGridColumn9, UltraGridColumn10, UltraGridColumn11, UltraGridColumn12, UltraGridColumn13, UltraGridColumn14, UltraGridColumn15, UltraGridColumn16})
         Appearance1.TextHAlignAsString = "Center"
         UltraGridBand1.Header.Appearance = Appearance1
         UltraGridBand1.Header.TextOrientation = New Infragistics.Win.TextOrientationInfo(0, Infragistics.Win.TextFlowDirection.Horizontal)
@@ -428,7 +495,7 @@ Partial Class frmShrinkCorrections
         'frmShrinkCorrections
         '
         Me.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 19.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1016, 585)
         Me.Controls.Add(Me.cmdExcelExport)
@@ -452,7 +519,7 @@ Partial Class frmShrinkCorrections
     Friend WithEvents searchGroupBox As System.Windows.Forms.GroupBox
     Friend WithEvents mskEndDate As System.Windows.Forms.DateTimePicker
     Friend WithEvents mskStartDate As System.Windows.Forms.DateTimePicker
-    Public WithEvents Label1 As System.Windows.Forms.Label
+    Public WithEvents lblDates As System.Windows.Forms.Label
     Public WithEvents cmbStore As System.Windows.Forms.ComboBox
     Public WithEvents cmbSubTeam As System.Windows.Forms.ComboBox
     Public WithEvents lblStore As System.Windows.Forms.Label
@@ -462,9 +529,12 @@ Partial Class frmShrinkCorrections
     Public WithEvents cmdExit As System.Windows.Forms.Button
     Public WithEvents cmdSave As System.Windows.Forms.Button
     Public WithEvents lblSpoilageType As System.Windows.Forms.Label
-    Public WithEvents cmbType As System.Windows.Forms.ComboBox
+    Public WithEvents cmbShrinkType As System.Windows.Forms.ComboBox
     Public WithEvents cmdDelete As System.Windows.Forms.Button
     Public WithEvents cmdExcelExport As System.Windows.Forms.Button
     Friend WithEvents UltraGridExcelExporter1 As Infragistics.Win.UltraWinGrid.ExcelExport.UltraGridExcelExporter
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
+    Public WithEvents lblShrinkSubtype As Label
+    Public WithEvents cmbShrinkSubtype As ComboBox
+    Public WithEvents lblDateDash As Label
 End Class

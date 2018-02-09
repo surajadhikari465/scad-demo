@@ -201,7 +201,13 @@ Public Class ShrinkCorrectionsDAO
 
     End Function
 
-    Public Shared Function GetShrinkCorrectionsDetails(ByVal StoreNo As Int32, ByVal SubTeamNo As Int32, ByVal StartDate As DateTime, ByVal EndDate As DateTime, ByVal WasteType As String) As DataSet
+    Public Shared Function GetShrinkCorrectionsDetails(
+        ByVal StoreNo As Int32,
+        ByVal SubTeamNo As Int32,
+        ByVal StartDate As DateTime,
+        ByVal EndDate As DateTime,
+        ByVal ShrinkSubtype As Integer,
+        ByVal InventoryAdjustmentCode As Integer) As DataSet
 
         Dim factory As New DataFactory(DataFactory.ItemCatalog)
         Dim results As DataSet = Nothing
@@ -238,9 +244,15 @@ Public Class ShrinkCorrectionsDAO
             paramList.Add(currentParam)
 
             currentParam = New DBParam
-            currentParam.Name = "WasteType"
-            currentParam.Value = WasteType
-            currentParam.Type = DBParamType.String
+            currentParam.Name = "InventoryAdjustmentCode_ID"
+            currentParam.Value = InventoryAdjustmentCode
+            currentParam.Type = DBParamType.Int
+            paramList.Add(currentParam)
+
+            currentParam = New DBParam
+            currentParam.Name = "ShrinkSubtype_ID"
+            currentParam.Value = ShrinkSubtype
+            currentParam.Type = DBParamType.Int
             paramList.Add(currentParam)
 
             results = New DataSet
@@ -310,14 +322,15 @@ Public Class ShrinkCorrectionsDAO
 
     End Function
 
-    Public Shared Function GetShrinkTypes() As DataTable
+    Public Shared Function GetInventoryAdjustmentWasteCodes() As DataTable
 
         Dim factory As New DataFactory(DataFactory.ItemCatalog)
         Dim results As DataSet = Nothing
 
         Try
             ' Execute the stored procedure 
-            logger.Debug("GetShrinkTypes entry")
+            logger.Debug("GetInventoryAdjustmentWasteCodes entry")
+            logger.Debug($"{NameOf(GetInventoryAdjustmentWasteCodes)} entry")
 
             results = New DataSet
 
@@ -329,7 +342,8 @@ Public Class ShrinkCorrectionsDAO
             End If
         End Try
 
-        logger.Debug("GetShrinkTypes Exit")
+        logger.Debug("GetInventoryAdjustmentWasteCodes Exit")
+        logger.Debug($"{NameOf(GetInventoryAdjustmentWasteCodes)} Exit")
 
         Return results.Tables(0)
 
@@ -456,6 +470,31 @@ Public Class ShrinkCorrectionsDAO
         Return results
 
         logger.Debug("GetFiscalCalendarInfo exit")
+
+    End Function
+
+    Public Shared Function GetShrinkSubTypesOnly() As DataTable
+
+        Dim factory As New DataFactory(DataFactory.ItemCatalog)
+        Dim results As DataSet = Nothing
+
+        Try
+            ' Execute the stored procedure 
+            logger.Debug("GetShrinkSubTypes entry")
+
+            results = New DataSet
+
+            results = factory.GetStoredProcedureDataSet("dbo.GetShrinkSubtypesOnly")
+
+        Finally
+            If results IsNot Nothing Then
+                results.Dispose()
+            End If
+        End Try
+
+        logger.Debug("GetShrinkSubTypes Exit")
+
+        Return results.Tables(0)
 
     End Function
 

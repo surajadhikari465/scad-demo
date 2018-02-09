@@ -5,18 +5,41 @@ Imports WholeFoods.Utility
 Imports WholeFoods.Utility.DataAccess
 Imports WholeFoods.IRMA.Common.DataAccess
 Imports Infragistics.Win.UltraWinGrid
-Imports WholeFoods.IRMA.ItemHosting.DataAccess.ItemDAO
 Imports log4net
 Imports System.Windows.Forms
+Imports System.Linq
 
 Friend Class frmShrinkCorrections
 
     Dim daItemCatalog As New System.Data.SqlClient.SqlDataAdapter
     Dim dtShrink As New System.Data.DataTable
     Dim dtShrinkDetails As New System.Data.DataSet
-    Dim dtShrinkTypes As New System.Data.DataTable
+    Dim dtWasteTypes As New System.Data.DataTable
+    Dim dtShrinkSubtypes As New System.Data.DataTable
     Dim dtSubTeams As New System.Data.DataTable
-    Dim dtShrinkTypeCodes As New System.Data.DataTable
+    Dim dtGridWasteTypes As New System.Data.DataTable
+    Dim dtGridShrinkSubtypes As New System.Data.DataTable
+
+    ' constants for the shrink types ('wType') combo box - from GetInventoryAdjustmentWasteCodes
+    Const col_InvAdjCode_Id As String = "InventoryAdjustmentCode_ID"
+    Const col_InvAdjCode_WasteType As String = "Waste_type"
+    Const col_InvAdjCode_Description As String = "Description"
+    ' constants for the shrink subtypes combo box - from GetShrinkSubtypesOnly
+    Const col_ShrinkSubtypes_Id As String = "ShrinkSubType_ID"
+    Const col_ShrinkSubtypes_Descr As String = "ReasonCodeDescription"
+    Const col_ShrinkSubtypes_InvAdjCode_Id As String = "InventoryAdjustmentCode_ID"
+    '  constants for the results grid  - from GetShrinkCorrections
+    Const col_Grid_ShrinkType As String = "wType"
+    Const col_Grid_ShrinkSubtype As String = "ShrinkSubtype_ID"
+    Const col_Grid_InvAdjCode_Id As String = "InventoryAdjustment_ID"
+    Const col_Grid_ShrinkSubtype_Desc As String = "ShrinkSubtype_Desc"
+    ' constants for change-tracking columns - added programmatically
+    Const col_GridOld_WasteType As String = "OLD_Waste_type"
+    Const col_GridOld_InvAdjCodeId As String = "OLD_inventoryAdjustmentCode_ID"
+    Const col_GridOld_ShrinkSubtypeId As String = "OLD_shrinkSubtype_ID"
+    'keep track of shrink type/subtypes for validation of changes
+    Dim validShrinkTypeIds As List(Of Integer)
+    Dim validShrinkSubTypeIds As List(Of Integer)
 
     ' Define the log4net logger for this class.
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
@@ -27,24 +50,74 @@ Friend Class frmShrinkCorrections
         ' Load Store and SubTeam combo boxes
         LoadStores(cmbStore)
         LoadSubTeam(cmbSubTeam)
-
         ' Set the Store combobox to the Store Limit for the user if there is one.
         If glStore_Limit > 0 Then
             SetCombo(cmbStore, glStore_Limit)
             SetActive(cmbStore, False)
         End If
 
-        cmbType.SelectedIndex = 0
+        ' Load Shrink combo boxes
+        LoadShrinkTypesComboBox(cmbShrinkType)
+        LoadShrinkSubtypesComboBox(cmbShrinkSubtype)
 
         If InstanceDataDAO.IsFlagActive("SplitWasteCategory") = False Then
-            cmbType.Enabled = False
+            cmbShrinkType.Enabled = False
         End If
 
-        gridShrink.DisplayLayout.Bands(0).Columns("SubTeam_No").Header.Caption = "Shrink" & ControlChars.CrLf & "SubTeam No"
         gridShrink.DisplayLayout.Override.HeaderAppearance.TextHAlign = Infragistics.Win.HAlign.Center
         gridShrink.DisplayLayout.Bands(0).Override.ColumnAutoSizeMode = ColumnAutoSizeMode.AllRowsInBand
 
-        logger.Debug("frmShrinkCorrections_Load Entry")
+        logger.Debug("frmShrinkCorrections_Load Exit")
+
+
+    End Sub
+
+    Private Sub LoadShrinkTypesComboBox(ByRef comboBox As ComboBox)
+
+        ' read the shrink types from the database
+        dtWasteTypes = ShrinkCorrectionsDAO.GetInventoryAdjustmentWasteCodes()
+
+        validShrinkTypeIds = dtWasteTypes.AsEnumerable _
+                .Where(Function(x) x(col_InvAdjCode_Id) > 0) _
+                .Select(Function(x) Int32.Parse(x(col_InvAdjCode_Id).ToString)).ToList()
+
+        ' add row for the "All" options
+        Dim allTypesRow As DataRow = dtWasteTypes.NewRow()
+        allTypesRow(col_InvAdjCode_Id) = 0
+        allTypesRow(col_InvAdjCode_WasteType) = "All"
+        allTypesRow(col_InvAdjCode_Description) = "All Waste Types"
+        dtWasteTypes.Rows.InsertAt(allTypesRow, 0)
+
+        ' set the combo box data source & member properties
+        comboBox.DataSource = dtWasteTypes
+        comboBox.ValueMember = col_InvAdjCode_Id
+        comboBox.DisplayMember = col_InvAdjCode_Description
+        comboBox.SelectedIndex = -1
+
+    End Sub
+
+    Private Sub LoadShrinkSubtypesComboBox(ByRef comboBox As ComboBox)
+
+        ' read the shrink types from the database
+        dtShrinkSubtypes = ShrinkCorrectionsDAO.GetShrinkSubTypesOnly()
+
+        validShrinkSubTypeIds = dtShrinkSubtypes.AsEnumerable _
+                .Where(Function(x) x(col_ShrinkSubtypes_Id) > 0) _
+                .Select(Function(x) Int32.Parse(x(col_ShrinkSubtypes_Id).ToString)).ToList()
+
+        ' add row for the "All" options
+        Dim allTypesRow As DataRow = dtShrinkSubtypes.NewRow()
+        allTypesRow(col_ShrinkSubtypes_Id) = 0
+        allTypesRow(col_ShrinkSubtypes_Descr) = "All Subtypes"
+        allTypesRow(col_InvAdjCode_Id) = 0
+        dtShrinkSubtypes.Rows.InsertAt(allTypesRow, 0)
+
+        ' set the combo box data source & member properties
+        comboBox.DataSource = dtShrinkSubtypes
+        comboBox.ValueMember = col_ShrinkSubtypes_Id
+        comboBox.DisplayMember = col_ShrinkSubtypes_Descr
+        comboBox.SelectedIndex = -1
+
     End Sub
 
     Private Sub cmdSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSearch.Click
@@ -53,7 +126,8 @@ Friend Class frmShrinkCorrections
         Dim SubTeamNo As Int32
         Dim StartDate As DateTime
         Dim EndDate As DateTime
-        Dim ShrinkType As String
+        Dim InventoryAdjustmentCode As Int32
+        Dim ShrinkSubtype As Int32
 
         Try
             gridShrink.DataSource = Nothing
@@ -95,21 +169,24 @@ Friend Class frmShrinkCorrections
                 EndDate = EndDate.AddSeconds(59)
             End If
 
-            ShrinkType = String.Empty
-            Select Case (cmbType.SelectedItem)
-                Case "ALL"
-                    ShrinkType = "ALL"
-                Case "Spoilage"
-                    ShrinkType = "SP"
-                Case "Foodbank"
-                    ShrinkType = "FB"
-                Case "Sampling"
-                    ShrinkType = "SM"
-            End Select
+            If cmbShrinkType.SelectedIndex >= 0 Then
+                Dim wasteTypeSelection As DataRowView = TryCast(cmbShrinkType.SelectedItem, DataRowView)
+                If (wasteTypeSelection IsNot Nothing) Then
+                    InventoryAdjustmentCode = Convert.ToInt32(wasteTypeSelection.Item(col_InvAdjCode_Id))
+                End If
+            End If
+
+            If cmbShrinkSubtype.SelectedIndex >= 0 Then
+                Dim subtypeSelection As DataRowView = TryCast(cmbShrinkSubtype.SelectedItem, DataRowView)
+                If (subtypeSelection IsNot Nothing) Then
+                    ShrinkSubtype = Convert.ToInt32(subtypeSelection.Item(col_ShrinkSubtypes_Id))
+                    'InventoryAdjustmentCode = Convert.ToInt32(subtypeSelection.Item(col_InvAdjCode_Id))
+                End If
+            End If
 
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
 
-            dtShrinkDetails = ShrinkCorrectionsDAO.GetShrinkCorrectionsDetails(StoreNo, SubTeamNo, StartDate, EndDate, ShrinkType)
+            dtShrinkDetails = ShrinkCorrectionsDAO.GetShrinkCorrectionsDetails(StoreNo, SubTeamNo, StartDate, EndDate, ShrinkSubtype, InventoryAdjustmentCode)
             gridShrink.DataSource = dtShrinkDetails
 
             If gridShrink.Rows.Count > 0 Then
@@ -118,7 +195,6 @@ Friend Class frmShrinkCorrections
                 cmdExcelExport.Enabled = True
             End If
 
-            gridShrink.DisplayLayout.Bands(0).Columns("SubTeam_No").Header.Caption = "Shrink" & ControlChars.CrLf & "SubTeam No"
             gridShrink.DisplayLayout.Override.HeaderAppearance.TextHAlign = Infragistics.Win.HAlign.Center
             gridShrink.DisplayLayout.Bands(0).Override.ColumnAutoSizeMode = ColumnAutoSizeMode.AllRowsInBand
 
@@ -158,12 +234,30 @@ Friend Class frmShrinkCorrections
                     msg = msg + "Qty  =" + (NewQty - OldQty).ToString + " "
                 End If
 
-                Dim OldType As String = gridShrink.Rows(i).Cells("OldType").Value.ToString
-                Dim NewType As String = gridShrink.Rows(i).Cells("wType").Value.ToString
+                Dim oldInventoryAdjustmentCodeId As Integer = 0
+                Dim newInventoryAdjustmentCodeId As Integer = 0
+                Dim oldShrinkSubtypeId As Integer = 0
+                Dim newShrinkSubtypeId As Integer = 0
+                If gridShrink.Rows(i).Cells(col_GridOld_InvAdjCodeId).Value IsNot Nothing Then
+                    oldInventoryAdjustmentCodeId = gridShrink.Rows(i).Cells(col_GridOld_InvAdjCodeId).Value
+                End If
+                If gridShrink.Rows(i).Cells(col_Grid_InvAdjCode_Id).Value IsNot Nothing Then
+                    newInventoryAdjustmentCodeId = gridShrink.Rows(i).Cells(col_Grid_InvAdjCode_Id).Value
+                End If
+                If gridShrink.Rows(i).Cells(col_GridOld_ShrinkSubtypeId).Value IsNot Nothing Then
+                    oldShrinkSubtypeId = gridShrink.Rows(i).Cells(col_GridOld_ShrinkSubtypeId).Value
+                End If
+                If gridShrink.Rows(i).Cells(col_GridOld_ShrinkSubtypeId).Value IsNot Nothing Then
+                    newShrinkSubtypeId = gridShrink.Rows(i).Cells(col_Grid_ShrinkSubtype).Value
+                End If
 
-                If NewType <> OldType Then
+                If oldInventoryAdjustmentCodeId <> newInventoryAdjustmentCodeId Then
                     changed = True
-                    msg = msg + "Type  =" + NewType + " "
+                    msg = msg + "Type  =" + newInventoryAdjustmentCodeId.ToString() + " "
+                End If
+                If oldShrinkSubtypeId <> newShrinkSubtypeId Then
+                    changed = True
+                    msg = msg + "SubType  =" + newShrinkSubtypeId.ToString() + " "
                 End If
 
                 Dim OldSubTeam As String = gridShrink.Rows(i).Cells("OldSubTeam_No").Value.ToString
@@ -205,10 +299,11 @@ Friend Class frmShrinkCorrections
                             & gridShrink.Rows(i).Cells("OriginalDateStamp").Text & "','" _
                             & CStr(deleteQuantity) & "','" _
                             & CStr(deleteWeight) & "'," _
-                            & ShrinkCorrectionsDAO.GetInventoryAdjustmentCodeID(OldType) & "," _
+                            & oldInventoryAdjustmentCodeId.ToString() & "," _
                             & ShrinkCorrectionsDAO.GetUserID(username) & ", " _
                             & OldSubTeam & "," _
-                            & "0"
+                            & "0," _
+                            & oldShrinkSubtypeId.ToString()
 
                     SQLExecute(deleteSQLString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
 
@@ -219,10 +314,11 @@ Friend Class frmShrinkCorrections
                             & gridShrink.Rows(i).Cells("OriginalDateStamp").Text & "','" _
                             & CStr(NewQty) & "','" _
                             & CStr(NewWeight) & "'," _
-                            & ShrinkCorrectionsDAO.GetInventoryAdjustmentCodeID(NewType) & "," _
+                            & newInventoryAdjustmentCodeId.ToString() & "," _
                             & ShrinkCorrectionsDAO.GetUserID(gsUserName) & ", " _
                             & NewSubTeam & "," _
-                            & "0"
+                            & "0," _
+                            & newShrinkSubtypeId.ToString()
 
                     SQLExecute(insertSQLString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
                 End If
@@ -258,6 +354,9 @@ Friend Class frmShrinkCorrections
         gridShrink.DisplayLayout.Bands(0).Columns("OriginalDateStamp").Hidden = True
         gridShrink.DisplayLayout.Bands(0).Columns("UnitCost").Hidden = True
 
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_InvAdjCode_Id).Hidden = True
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkSubtype_Desc).Hidden = True
+
         gridShrink.DisplayLayout.Bands(0).Columns.Add("AllowEdit")
         gridShrink.DisplayLayout.Bands(0).Columns("AllowEdit").Hidden = True
         gridShrink.DisplayLayout.Bands(0).Columns("AllowEdit").DataType = GetType(Boolean)
@@ -267,15 +366,25 @@ Friend Class frmShrinkCorrections
         gridShrink.DisplayLayout.Bands(0).Columns("OldQty").DataType = GetType(Double)
         gridShrink.DisplayLayout.Bands(0).Columns("OldQty").DefaultCellValue = 0
 
-        gridShrink.DisplayLayout.Bands(0).Columns.Add("OldType")
-        gridShrink.DisplayLayout.Bands(0).Columns("OldType").Hidden = True
-        gridShrink.DisplayLayout.Bands(0).Columns("OldType").DataType = GetType(String)
-        gridShrink.DisplayLayout.Bands(0).Columns("OldType").DefaultCellValue = String.Empty
+        gridShrink.DisplayLayout.Bands(0).Columns.Add(col_GridOld_WasteType)
+        gridShrink.DisplayLayout.Bands(0).Columns(col_GridOld_WasteType).Hidden = True
+        gridShrink.DisplayLayout.Bands(0).Columns(col_GridOld_WasteType).DataType = GetType(String)
+        gridShrink.DisplayLayout.Bands(0).Columns(col_GridOld_WasteType).DefaultCellValue = String.Empty
 
         gridShrink.DisplayLayout.Bands(0).Columns.Add("OldSubTeam_No")
         gridShrink.DisplayLayout.Bands(0).Columns("OldSubTeam_No").Hidden = True
         gridShrink.DisplayLayout.Bands(0).Columns("OldSubTeam_No").DataType = GetType(String)
         gridShrink.DisplayLayout.Bands(0).Columns("OldSubTeam_No").DefaultCellValue = String.Empty
+
+        gridShrink.DisplayLayout.Bands(0).Columns.Add(col_GridOld_InvAdjCodeId)
+        gridShrink.DisplayLayout.Bands(0).Columns(col_GridOld_InvAdjCodeId).Hidden = True
+        gridShrink.DisplayLayout.Bands(0).Columns(col_GridOld_InvAdjCodeId).DataType = GetType(Integer)
+        gridShrink.DisplayLayout.Bands(0).Columns(col_GridOld_InvAdjCodeId).DefaultCellValue = 0
+
+        gridShrink.DisplayLayout.Bands(0).Columns.Add(col_GridOld_ShrinkSubtypeId)
+        gridShrink.DisplayLayout.Bands(0).Columns(col_GridOld_ShrinkSubtypeId).Hidden = True
+        gridShrink.DisplayLayout.Bands(0).Columns(col_GridOld_ShrinkSubtypeId).DataType = GetType(Integer)
+        gridShrink.DisplayLayout.Bands(0).Columns(col_GridOld_ShrinkSubtypeId).DefaultCellValue = 0
 
         gridShrink.DisplayLayout.Bands(0).Columns.Add("Cost")
         gridShrink.DisplayLayout.Bands(0).Columns("Cost").Hidden = False
@@ -299,17 +408,34 @@ Friend Class frmShrinkCorrections
         subteamsDropDown.DisplayMember = "SubTeam_No"
         gridShrink.DisplayLayout.Bands(0).Columns("SubTeam_No").ValueList = subteamsDropDown
 
-        If InstanceDataDAO.IsFlagActive("SplitWasteCategory") = False Then
-            gridShrink.DisplayLayout.Bands(0).Columns("wType").Hidden = True
-        End If
+        'Initilize dropdown for waste type column
+        dtGridWasteTypes = ShrinkCorrectionsDAO.GetInventoryAdjustmentWasteCodes()
+        Dim wasteTypesGridDropdown As New UltraDropDown
+        wasteTypesGridDropdown.ValueMember = col_InvAdjCode_Id
+        wasteTypesGridDropdown.DisplayMember = col_InvAdjCode_WasteType
+        wasteTypesGridDropdown.DataSource = dtGridWasteTypes
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkType).ValueList = wasteTypesGridDropdown
+        wasteTypesGridDropdown.DisplayLayout.Bands(0).Columns(col_InvAdjCode_Id).Hidden = True
+        wasteTypesGridDropdown.DisplayLayout.Bands(0).Columns(col_InvAdjCode_WasteType).Hidden = True
+        wasteTypesGridDropdown.DisplayLayout.Bands(0).Columns(col_InvAdjCode_Description).Header.Caption = "Shrink Type"
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkType).Style = Infragistics.Win.UltraWinGrid.ColumnStyle.DropDownList
 
-        'Initilize dropdown for shrink type column
-        Dim shrinkTypesDropDown As New UltraDropDown
-        dtShrinkTypeCodes = ShrinkCorrectionsDAO.GetShrinkTypes()
-        shrinkTypesDropDown.DataSource = dtShrinkTypeCodes
-        shrinkTypesDropDown.ValueMember = "Waste_Type"
-        shrinkTypesDropDown.DisplayMember = "Description"
-        gridShrink.DisplayLayout.Bands(0).Columns("wType").ValueList = shrinkTypesDropDown
+        'Initilize dropdown for shrink subtype column
+        dtGridShrinkSubtypes = ShrinkCorrectionsDAO.GetShrinkSubTypesOnly()
+        Dim shrinkSubtypesGridDropdown As New UltraDropDown
+        shrinkSubtypesGridDropdown.ValueMember = col_ShrinkSubtypes_Id
+        shrinkSubtypesGridDropdown.DisplayMember = col_ShrinkSubtypes_Descr
+        shrinkSubtypesGridDropdown.DataSource = dtGridShrinkSubtypes
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkSubtype).ValueList = shrinkSubtypesGridDropdown
+        shrinkSubtypesGridDropdown.DisplayLayout.Bands(0).Columns(col_ShrinkSubtypes_Id).Hidden = True
+        shrinkSubtypesGridDropdown.DisplayLayout.Bands(0).Columns(col_ShrinkSubtypes_InvAdjCode_Id).Hidden = True
+        shrinkSubtypesGridDropdown.DisplayLayout.Bands(0).Columns(col_ShrinkSubtypes_Descr).Header.Caption = "Shrink Subtype"
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkSubtype).Style = Infragistics.Win.UltraWinGrid.ColumnStyle.DropDownList
+
+        If InstanceDataDAO.IsFlagActive("SplitWasteCategory") = False Then
+            gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkType).Hidden = True
+            gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkSubtype).Hidden = True
+        End If
 
         'Enable/Disable the columns
         Dim i As Integer
@@ -319,22 +445,35 @@ Friend Class frmShrinkCorrections
         gridShrink.DisplayLayout.Bands(0).Columns("wType").CellActivation = Infragistics.Win.UltraWinGrid.Activation.AllowEdit
         gridShrink.DisplayLayout.Bands(0).Columns("Qty").CellActivation = Infragistics.Win.UltraWinGrid.Activation.AllowEdit
         gridShrink.DisplayLayout.Bands(0).Columns("SubTeam_No").CellActivation = Infragistics.Win.UltraWinGrid.Activation.AllowEdit
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkSubtype).CellActivation = Infragistics.Win.UltraWinGrid.Activation.AllowEdit
 
         gridShrink.DisplayLayout.Bands(0).Columns("Qty").CellAppearance.TextHAlign = Infragistics.Win.HAlign.Right
 
         'Column captions
-        gridShrink.DisplayLayout.Bands(0).Columns("SubTeam_No").Header.Caption = "Shrink" & ControlChars.CrLf & "SubTeam No"
-        gridShrink.DisplayLayout.Bands(0).Columns("wType").Header.Caption = "Shrink Type"
-        gridShrink.DisplayLayout.Bands(0).Columns("UserName").Header.Caption = "Created By"
-        gridShrink.DisplayLayout.Bands(0).Columns("Item_Description").Header.Caption = "Item Description"
-        gridShrink.DisplayLayout.Bands(0).Columns("Qty").Header.Caption = "Quantity"
-        gridShrink.DisplayLayout.Bands(0).Columns("Category_Name").Header.Caption = "Category Name"
-        gridShrink.DisplayLayout.Bands(0).Columns("Brand_Name").Header.Caption = "Brand Name"
-        gridShrink.DisplayLayout.Bands(0).Columns("ItemSubTeam").Header.Caption = "Item SubTeam"
-        gridShrink.DisplayLayout.Bands(0).Columns("DateStamp").Header.Caption = "Date Stamp"
+        gridShrink.DisplayLayout.Bands(0).Columns("SubTeam_No").Header.Caption = "Shrink" & Environment.NewLine & "Subteam"
+        gridShrink.DisplayLayout.Bands(0).Columns("wType").Header.Caption = "Shrink" & Environment.NewLine & "Type"
+        gridShrink.DisplayLayout.Bands(0).Columns("UserName").Header.Caption = "Created" & Environment.NewLine & "By"
+        gridShrink.DisplayLayout.Bands(0).Columns("Item_Description").Header.Caption = "Item" & Environment.NewLine & "Description"
+        gridShrink.DisplayLayout.Bands(0).Columns("Qty").Header.Caption = "Qty"
+        gridShrink.DisplayLayout.Bands(0).Columns("Category_Name").Header.Caption = "Category" & Environment.NewLine & "Name"
+        gridShrink.DisplayLayout.Bands(0).Columns("Brand_Name").Header.Caption = "Brand" & Environment.NewLine & "Name"
+        gridShrink.DisplayLayout.Bands(0).Columns("ItemSubTeam").Header.Caption = "Item" & Environment.NewLine & "SubTeam"
+        gridShrink.DisplayLayout.Bands(0).Columns("DateStamp").Header.Caption = "Date" & Environment.NewLine & "Stamp"
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkSubtype).Header.Caption = "Shrink" & Environment.NewLine & "Subtype"
 
-        gridShrink.DisplayLayout.Bands(0).Columns("DateStamp").Width = 150
-        gridShrink.DisplayLayout.Bands(0).Columns("Item_Description").Width = 200
+        're-weight the column widths for a nice display
+        gridShrink.DisplayLayout.Bands(0).Columns("Identifier").Width = 60
+        gridShrink.DisplayLayout.Bands(0).Columns("Item_Description").Width = 140
+        gridShrink.DisplayLayout.Bands(0).Columns("ItemSubTeam").Width = 60
+        gridShrink.DisplayLayout.Bands(0).Columns("Category_Name").Width = 80
+        gridShrink.DisplayLayout.Bands(0).Columns("Brand_Name").Width = 80
+        gridShrink.DisplayLayout.Bands(0).Columns("DateStamp").Width = 120
+        gridShrink.DisplayLayout.Bands(0).Columns("SubTeam_No").Width = 60
+        gridShrink.DisplayLayout.Bands(0).Columns("Cost").Width = 40
+        gridShrink.DisplayLayout.Bands(0).Columns("Qty").Width = 40
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkType).Width = 40
+        gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkSubtype).Width = 64
+        gridShrink.DisplayLayout.Bands(0).Columns("UserName").Width = 90
 
         gridShrink.DisplayLayout.Bands(0).ColHeaderLines = 2
         gridShrink.DisplayLayout.Bands(0).Override.ColumnAutoSizeMode = ColumnAutoSizeMode.AllRowsInBand
@@ -343,12 +482,12 @@ Friend Class frmShrinkCorrections
         If (gridShrink.DisplayLayout.Bands.Count > 1) Then
             gridShrink.DisplayLayout.Bands(1).Override.CellClickAction = CellClickAction.RowSelect
             gridShrink.DisplayLayout.Bands(1).Override.RowAppearance.BackColor = Color.LightSteelBlue
+            gridShrink.DisplayLayout.Bands(1).Override.RowAppearance.ForeColor = Color.Black
 
             gridShrink.DisplayLayout.Bands(1).Override.RowSelectors = Infragistics.Win.DefaultableBoolean.False
             gridShrink.DisplayLayout.Bands(1).Override.AllowUpdate = Infragistics.Win.DefaultableBoolean.False
 
             gridShrink.DisplayLayout.Bands(1).Columns("DateStamp").Hidden = True
-
             gridShrink.DisplayLayout.Bands(1).Columns("Identifier").Hidden = True
             gridShrink.DisplayLayout.Bands(1).Columns("Item_Description").Hidden = True
             gridShrink.DisplayLayout.Bands(1).Columns("WasteType").Hidden = True
@@ -368,6 +507,8 @@ Friend Class frmShrinkCorrections
         Else
             MsgBox("No shrink records found...", MsgBoxStyle.Information, "Shrink Corrections")
         End If
+
+        gridShrink.DisplayLayout.AutoFitStyle = AutoFitStyle.ResizeAllColumns
     End Sub
 
     Private Sub gridShrink_InitializeRow(ByVal sender As System.Object, ByVal e As Infragistics.Win.UltraWinGrid.InitializeRowEventArgs) Handles gridShrink.InitializeRow
@@ -399,16 +540,23 @@ Friend Class frmShrinkCorrections
         If Not enabledFlag Then
             e.Row.Cells("AllowEdit").Value = False
             e.Row.Appearance.BackColor = Color.LightGreen
+            e.Row.Appearance.ForeColor = Color.Black
             e.Row.Appearance.AlphaLevel = 75
         Else
             e.Row.Cells("AllowEdit").Value = True
         End If
 
-        If e.Row.Cells("OldType").Value = String.Empty Then
-            e.Row.Cells("OldType").Value = e.Row.Cells("wType").Value
-            e.Row.Cells("OldQty").Value = CDbl(e.Row.Cells("Qty").Value)
-            e.Row.Cells("OldSubTeam_No").Value = e.Row.Cells("SubTeam_No").Value
+        e.Row.Cells(col_GridOld_InvAdjCodeId).Value = e.Row.Cells(col_Grid_InvAdjCode_Id).Value
+        e.Row.Cells(col_GridOld_WasteType).Value = e.Row.Cells(col_Grid_ShrinkType).Value
+        If Not e.Row.Cells(col_Grid_ShrinkSubtype).Value.Equals(DBNull.Value) Then
+            e.Row.Cells(col_GridOld_ShrinkSubtypeId).Value = e.Row.Cells(col_Grid_ShrinkSubtype).Value
         End If
+
+        e.Row.Cells("OldQty").Value = CDbl(e.Row.Cells("Qty").Value)
+        e.Row.Cells("OldSubTeam_No").Value = e.Row.Cells("SubTeam_No").Value
+
+        e.Row.Cells("OldQty").Value = CDbl(e.Row.Cells("Qty").Value)
+        e.Row.Cells("OldSubTeam_No").Value = e.Row.Cells("SubTeam_No").Value
 
         If IsDBNull(e.Row.Cells("UnitCost").Value) Then
             e.Row.Appearance.BackColor = Color.LightGoldenrodYellow
@@ -442,6 +590,8 @@ Friend Class frmShrinkCorrections
         Dim i As Integer = gridShrink.Selected.Rows(0).Index
         Dim quantity As Decimal
         Dim weight As Decimal
+        Dim oldInventoryAdjustmentCodeId As Integer = 0
+        Dim oldShrinkSubtypeId As Integer = 0
 
         If gridShrink.Rows(i).Cells("AllowEdit").Value = True Then
             If (MsgBox("Do you want to delete?", MsgBoxStyle.YesNo, "Shrink Corrections") = MsgBoxResult.No) Then
@@ -449,9 +599,13 @@ Friend Class frmShrinkCorrections
             End If
 
             Dim OldQty As Decimal = CDbl(gridShrink.Rows(i).Cells("OldQty").Value)
-            Dim OldType As String = gridShrink.Rows(i).Cells("OldType").Value.ToString
+            If gridShrink.Rows(i).Cells(col_GridOld_InvAdjCodeId).Value IsNot Nothing Then
+                oldInventoryAdjustmentCodeId = gridShrink.Rows(i).Cells(col_GridOld_InvAdjCodeId).Value
+            End If
             Dim OldSubTeam As String = gridShrink.Rows(i).Cells("OldSubTeam_No").Value.ToString
-
+            If gridShrink.Rows(i).Cells(col_GridOld_ShrinkSubtypeId).Value IsNot Nothing Then
+                oldShrinkSubtypeId = gridShrink.Rows(i).Cells(col_GridOld_ShrinkSubtypeId).Value
+            End If
             Dim identifier As String = gridShrink.Rows(i).Cells("Identifier").Value.ToString
             Dim username As String = gridShrink.Rows(i).Cells("UserName").Value.ToString
 
@@ -473,10 +627,11 @@ Friend Class frmShrinkCorrections
                     & gridShrink.Rows(i).Cells("OriginalDateStamp").Text & "','" _
                     & CStr(quantity) & "','" _
                     & CStr(weight) & "'," _
-                    & ShrinkCorrectionsDAO.GetInventoryAdjustmentCodeID(OldType) & "," _
+                    & oldInventoryAdjustmentCodeId.ToString() & "," _
                     & ShrinkCorrectionsDAO.GetUserID(username) & ", " _
                     & OldSubTeam & "," _
-                    & "0"
+                    & "0," _
+                    & oldShrinkSubtypeId.ToString()
 
             SQLExecute(deleteSQLString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
         End If
@@ -613,10 +768,19 @@ Friend Class frmShrinkCorrections
                 MsgBox("Invalid SubTeam No [" + CStr(subteam_no) + "]", MsgBoxStyle.Exclamation, "Shrink Corrections")
                 e.Cancel = True
             End If
-        ElseIf e.Cell.Column.Key = "wType" Then
-            Dim shrink_type As String = e.NewValue.ToString
-            If shrink_type <> "SP" And shrink_type <> "FB" And shrink_type <> "SM" Then
+        ElseIf e.Cell.Column.Key = col_Grid_ShrinkType Then
+            Dim shrink_type_id As Integer = e.NewValue
+
+            'If shrink_type <> "SP" And shrink_type <> "FB" And shrink_type <> "SM" Then
+            If Not validShrinkTypeIds.Contains(shrink_type_id) Then
                 MsgBox("Invalid Shrink Type", MsgBoxStyle.Exclamation, "Shrink Corrections")
+                e.Cancel = True
+            End If
+        ElseIf e.Cell.Column.Key = col_Grid_ShrinkSubtype Then
+            Dim shrink_subtype_id As Integer = e.NewValue
+
+            If Not validShrinkSubTypeIds.Contains(shrink_subtype_id) Then
+                MsgBox("Invalid Shrink SubType", MsgBoxStyle.Exclamation, "Shrink Corrections")
                 e.Cancel = True
             End If
         End If
@@ -634,7 +798,7 @@ Friend Class frmShrinkCorrections
     Private Sub cmdExcelExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdExcelExport.Click
         Dim exportFile As String = ""
         Dim fileDlg As New SaveFileDialog
-        Dim typeText As String = Me.cmbType.SelectedItem.ToString.Trim()
+        Dim typeText As String = Me.cmbShrinkType.SelectedItem.ToString.Trim()
         Dim storeText As String = Me.cmbStore.SelectedItem.ToString.Trim()
         Dim subTeamText As String = Me.cmbSubTeam.SelectedItem.ToString.Trim()
         Dim startDate As String = Me.mskStartDate.Text.Replace("/", "_")
@@ -652,5 +816,10 @@ Friend Class frmShrinkCorrections
             Me.UltraGridExcelExporter1.Export(gridShrink, exportFile)
         End If
 
+    End Sub
+
+    Private Sub gridShrink_Resize(sender As Object, e As EventArgs) Handles gridShrink.Resize
+        gridShrink.DisplayLayout.AutoFitStyle = AutoFitStyle.ResizeAllColumns
+        'gridShrink.DisplayLayout.PerformAutoResizeColumns(False, False)
     End Sub
 End Class

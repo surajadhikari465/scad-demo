@@ -44,7 +44,7 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmInventoryAdjustment))
         Dim UltraGridBand1 As Infragistics.Win.UltraWinGrid.UltraGridBand = New Infragistics.Win.UltraWinGrid.UltraGridBand("Band 0", -1)
         Dim UltraGridColumn1 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("TTL Quantity")
@@ -54,38 +54,40 @@
         Dim UltraGridColumn4 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("Units")
         Dim UltraGridColumn5 As Infragistics.Win.UltraWinGrid.UltraGridColumn = New Infragistics.Win.UltraWinGrid.UltraGridColumn("Pack")
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.cmdExit = New System.Windows.Forms.Button
-        Me.cmdAdd = New System.Windows.Forms.Button
-        Me.cmdItemSearch = New System.Windows.Forms.Button
-        Me.cmbSubTeam = New System.Windows.Forms.ComboBox
-        Me.Frame1 = New System.Windows.Forms.GroupBox
-        Me.optSubtract = New System.Windows.Forms.RadioButton
-        Me.optReset = New System.Windows.Forms.RadioButton
-        Me.optAdd = New System.Windows.Forms.RadioButton
-        Me.txtIdentifier = New System.Windows.Forms.TextBox
-        Me.txtItemDesc = New System.Windows.Forms.TextBox
-        Me.cmbStore = New System.Windows.Forms.ComboBox
-        Me._lblLabel_5 = New System.Windows.Forms.Label
-        Me._lblLabel_3 = New System.Windows.Forms.Label
-        Me._lblLabel_1 = New System.Windows.Forms.Label
-        Me._lblLabel_0 = New System.Windows.Forms.Label
-        Me._lblLabel_6 = New System.Windows.Forms.Label
+        Me.cmdExit = New System.Windows.Forms.Button()
+        Me.cmdAdd = New System.Windows.Forms.Button()
+        Me.cmdItemSearch = New System.Windows.Forms.Button()
+        Me.cmbSubTeam = New System.Windows.Forms.ComboBox()
+        Me.Frame1 = New System.Windows.Forms.GroupBox()
+        Me.optSubtract = New System.Windows.Forms.RadioButton()
+        Me.optReset = New System.Windows.Forms.RadioButton()
+        Me.optAdd = New System.Windows.Forms.RadioButton()
+        Me.txtIdentifier = New System.Windows.Forms.TextBox()
+        Me.txtItemDesc = New System.Windows.Forms.TextBox()
+        Me.cmbStore = New System.Windows.Forms.ComboBox()
+        Me._lblLabel_5 = New System.Windows.Forms.Label()
+        Me._lblLabel_3 = New System.Windows.Forms.Label()
+        Me._lblLabel_1 = New System.Windows.Forms.Label()
+        Me._lblLabel_0 = New System.Windows.Forms.Label()
+        Me._lblLabel_6 = New System.Windows.Forms.Label()
         Me.lblLabel = New Microsoft.VisualBasic.Compatibility.VB6.LabelArray(Me.components)
-        Me.cmbPack = New System.Windows.Forms.ComboBox
-        Me.gridOnHand = New Infragistics.Win.UltraWinGrid.UltraGrid
-        Me.groupAdjustment = New System.Windows.Forms.GroupBox
-        Me.txtQuantity = New Infragistics.Win.UltraWinEditors.UltraNumericEditor
-        Me.frameUnits = New System.Windows.Forms.GroupBox
-        Me.optPounds = New System.Windows.Forms.RadioButton
-        Me.optUnits = New System.Windows.Forms.RadioButton
-        Me.optCases = New System.Windows.Forms.RadioButton
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.lblPackAdjustment = New System.Windows.Forms.Label
-        Me.lblAdjustmentUOM = New System.Windows.Forms.Label
-        Me.cmbReason = New System.Windows.Forms.ComboBox
-        Me.groupResults = New System.Windows.Forms.GroupBox
-        Me.txtResultUnits = New System.Windows.Forms.TextBox
-        Me.lblResultUnits = New System.Windows.Forms.Label
+        Me.cmbPack = New System.Windows.Forms.ComboBox()
+        Me.gridOnHand = New Infragistics.Win.UltraWinGrid.UltraGrid()
+        Me.groupAdjustment = New System.Windows.Forms.GroupBox()
+        Me.cmbShrinkSubtype = New System.Windows.Forms.ComboBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtQuantity = New Infragistics.Win.UltraWinEditors.UltraNumericEditor()
+        Me.frameUnits = New System.Windows.Forms.GroupBox()
+        Me.optPounds = New System.Windows.Forms.RadioButton()
+        Me.optUnits = New System.Windows.Forms.RadioButton()
+        Me.optCases = New System.Windows.Forms.RadioButton()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblPackAdjustment = New System.Windows.Forms.Label()
+        Me.lblAdjustmentUOM = New System.Windows.Forms.Label()
+        Me.cmbReason = New System.Windows.Forms.ComboBox()
+        Me.groupResults = New System.Windows.Forms.GroupBox()
+        Me.txtResultUnits = New System.Windows.Forms.TextBox()
+        Me.lblResultUnits = New System.Windows.Forms.Label()
         Me.Frame1.SuspendLayout()
         CType(Me.lblLabel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gridOnHand, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -295,12 +297,12 @@
         Me._lblLabel_3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._lblLabel_3.ForeColor = System.Drawing.SystemColors.ControlText
         Me.lblLabel.SetIndex(Me._lblLabel_3, CType(3, Short))
-        Me._lblLabel_3.Location = New System.Drawing.Point(10, 92)
+        Me._lblLabel_3.Location = New System.Drawing.Point(119, 89)
         Me._lblLabel_3.Name = "_lblLabel_3"
         Me._lblLabel_3.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._lblLabel_3.Size = New System.Drawing.Size(54, 14)
+        Me._lblLabel_3.Size = New System.Drawing.Size(75, 14)
         Me._lblLabel_3.TabIndex = 24
-        Me._lblLabel_3.Text = "Reason :"
+        Me._lblLabel_3.Text = "Shrink Type:"
         Me._lblLabel_3.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         '_lblLabel_1
@@ -361,16 +363,16 @@
         '
         Me.gridOnHand.DisplayLayout.AutoFitStyle = Infragistics.Win.UltraWinGrid.AutoFitStyle.ResizeAllColumns
         UltraGridColumn1.Header.VisiblePosition = 0
-        UltraGridColumn1.Width = 74
+        UltraGridColumn1.Width = 69
         UltraGridColumn2.Header.VisiblePosition = 1
-        UltraGridColumn2.Width = 89
+        UltraGridColumn2.Width = 94
         UltraGridColumn3.Header.VisiblePosition = 2
         UltraGridBand1.Columns.AddRange(New Object() {UltraGridColumn1, UltraGridColumn2, UltraGridColumn3})
         UltraGridBand1.Header.Caption = "Current On-hand Amounts"
         UltraGridColumn4.Header.VisiblePosition = 0
-        UltraGridColumn4.Width = 74
+        UltraGridColumn4.Width = 69
         UltraGridColumn5.Header.VisiblePosition = 1
-        UltraGridColumn5.Width = 70
+        UltraGridColumn5.Width = 75
         UltraGridBand2.Columns.AddRange(New Object() {UltraGridColumn4, UltraGridColumn5})
         UltraGridBand2.Header.Caption = "On-hand by Pack Size"
         Me.gridOnHand.DisplayLayout.BandsSerializer.Add(UltraGridBand1)
@@ -394,6 +396,8 @@
         '
         'groupAdjustment
         '
+        Me.groupAdjustment.Controls.Add(Me.cmbShrinkSubtype)
+        Me.groupAdjustment.Controls.Add(Me.Label2)
         Me.groupAdjustment.Controls.Add(Me.txtQuantity)
         Me.groupAdjustment.Controls.Add(Me.frameUnits)
         Me.groupAdjustment.Controls.Add(Me.Label1)
@@ -407,10 +411,33 @@
         Me.groupAdjustment.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.groupAdjustment.Location = New System.Drawing.Point(11, 106)
         Me.groupAdjustment.Name = "groupAdjustment"
-        Me.groupAdjustment.Size = New System.Drawing.Size(422, 125)
+        Me.groupAdjustment.Size = New System.Drawing.Size(422, 151)
         Me.groupAdjustment.TabIndex = 31
         Me.groupAdjustment.TabStop = False
         Me.groupAdjustment.Text = "Adjustment Detail"
+        '
+        'cmbShrinkSubtype
+        '
+        Me.cmbShrinkSubtype.FormattingEnabled = True
+        Me.cmbShrinkSubtype.Location = New System.Drawing.Point(199, 117)
+        Me.cmbShrinkSubtype.Name = "cmbShrinkSubtype"
+        Me.cmbShrinkSubtype.Size = New System.Drawing.Size(217, 22)
+        Me.cmbShrinkSubtype.TabIndex = 37
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Cursor = System.Windows.Forms.Cursors.Default
+        Me.Label2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Label2.Location = New System.Drawing.Point(97, 120)
+        Me.Label2.Name = "Label2"
+        Me.Label2.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.Label2.Size = New System.Drawing.Size(97, 14)
+        Me.Label2.TabIndex = 36
+        Me.Label2.Text = "Shrink Subtype :"
+        Me.Label2.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'txtQuantity
         '
@@ -525,9 +552,9 @@
         '
         Me.cmbReason.Enabled = False
         Me.cmbReason.FormattingEnabled = True
-        Me.cmbReason.Location = New System.Drawing.Point(70, 89)
+        Me.cmbReason.Location = New System.Drawing.Point(199, 86)
         Me.cmbReason.Name = "cmbReason"
-        Me.cmbReason.Size = New System.Drawing.Size(218, 22)
+        Me.cmbReason.Size = New System.Drawing.Size(217, 22)
         Me.cmbReason.TabIndex = 29
         '
         'groupResults
@@ -630,5 +657,7 @@
     Friend WithEvents cmbReason As System.Windows.Forms.ComboBox
     Friend WithEvents lblAdjustmentUOM As System.Windows.Forms.Label
     Friend WithEvents txtQuantity As Infragistics.Win.UltraWinEditors.UltraNumericEditor
+    Friend WithEvents cmbShrinkSubtype As ComboBox
+    Public WithEvents Label2 As Label
 #End Region
 End Class
