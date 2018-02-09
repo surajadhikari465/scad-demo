@@ -22,7 +22,19 @@ update Date
 set [Year] = YEAR(Date_Key),
 	[Quarter] = DATEPART(QUARTER, Date_Key),
 	[Period] = MONTH(Date_Key), 
-	[Week] = DATEPART(WEEK, Date_Key) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,Date_Key), 0))+ 1,
+	[Week] = CASE DATEPART(weekday,DATEADD(MM, DATEDIFF(MM,0,Date_Key), 0))
+				WHEN 1 -- 1st day of the month is Sunday
+					THEN CASE DATEPART(weekday,Date_Key)
+							WHEN 1 --Sunday
+							THEN DATEPART(WEEK, Date_Key) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,Date_Key), 0)) + 1
+						ELSE DATEPART(WEEK, Date_Key) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,Date_Key), 0)) + 2
+						END
+					ELSE CASE DATEPART(weekday,Date_Key)
+							WHEN 1 
+							THEN DATEPART(WEEK, Date_Key) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,Date_Key), 0)) 
+							ELSE DATEPART(WEEK, Date_Key) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,Date_Key), 0)) + 1
+						END
+			END,
 	[Day_Name] = DATENAME(weekday, Date_Key), 
 	[Day_Of_Week] = CASE DATEPART(weekday,Date_Key)
 					WHEN 1 THEN 7
@@ -52,9 +64,24 @@ BEGIN
 			YEAR(@date), 
 			DATEPART(QUARTER, @date), 
 			MONTH(@date), 
-			DATEPART(WEEK, @DATE) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,@DATE), 0))+ 1, 
+			CASE DATEPART(weekday,DATEADD(MM, DATEDIFF(MM,0,@date), 0))
+				WHEN 1 -- 1st day of the month is Sunday
+					THEN CASE DATEPART(weekday,@date)
+							WHEN 1 --Sunday
+							THEN DATEPART(WEEK, @date) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,@date), 0)) + 1
+						ELSE DATEPART(WEEK, @date) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,@date), 0)) + 2
+						END
+					ELSE CASE DATEPART(weekday,@date)
+							WHEN 1 
+							THEN DATEPART(WEEK, @date) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,@date), 0)) 
+							ELSE DATEPART(WEEK, @date) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM,0,@date), 0)) + 1
+						END
+			END,
 			DATENAME(weekday, @date), 
-			DATEPART(weekday,@date), 
+			CASE DATEPART(weekday,@date)
+				WHEN 1 THEN 7
+				ELSE DATEPART(weekday,@date) - 1
+			END,
 			DATEPART(DAY,@date), 
 			DATEPART(dayofyear, @date)
 
