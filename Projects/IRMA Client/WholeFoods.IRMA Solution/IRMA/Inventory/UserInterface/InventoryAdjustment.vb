@@ -72,21 +72,6 @@ Friend Class frmInventoryAdjustment
         End If
     End Sub
 
-
-    Private Sub LoadShrinkSubtypesComboBox(ByRef comboBox As ComboBox)
-
-        ' read the shrink types from the database
-        dtShrinkSubtypes = ShrinkCorrectionsDAO.GetShrinkSubTypesOnly()
-
-        ' set the combo box data source & member properties
-        comboBox.DataSource = dtShrinkSubtypes
-        comboBox.ValueMember = col_ShrinkSubtype_ID
-        comboBox.DisplayMember = col_ShrinkReasonCode
-        comboBox.SelectedIndex = -1
-
-    End Sub
-
-
     Private Sub cmdItemSearch_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdItemSearch.Click
 
         If Not cmbSubTeam.SelectedIndex = -1 Then
@@ -144,6 +129,7 @@ Friend Class frmInventoryAdjustment
 
             LoadInvAdjReason(cmbReason, _isDistributionCenter, _isStore)
             SetActive(cmbReason, True)
+            cmbShrinkSubtype.SelectedIndex = -1
 
             'optReset.Checked = False
             optSubtract.Checked = False
@@ -574,6 +560,13 @@ Friend Class frmInventoryAdjustment
             End If
         End If
 
+        ' en/dis-able the shrink subtype combo box based on the main adjustment type
+        If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank") Then
+            Me.cmbShrinkSubtype.Enabled = True
+        Else
+            Me.cmbShrinkSubtype.SelectedIndex = -1
+            Me.cmbShrinkSubtype.Enabled = False
+        End If
     End Sub
 
     Private Sub DisallowAdjustment()
@@ -779,6 +772,42 @@ Friend Class frmInventoryAdjustment
         txtQuantity.Enabled = True
         lblAdjustmentUOM.Enabled = True
         Me.RecalculateAdjustment()
+    End Sub
+
+    Private Sub LoadShrinkSubtypesComboBox(ByRef comboBox As ComboBox)
+        ' read the shrink subtypes from the database
+        dtShrinkSubtypes = ShrinkCorrectionsDAO.GetShrinkSubTypesOnly()
+
+        ' set the combo box data source & member properties
+        comboBox.DataSource = dtShrinkSubtypes
+        comboBox.ValueMember = col_ShrinkSubtype_ID
+        comboBox.DisplayMember = col_ShrinkReasonCode
+        comboBox.SelectedIndex = -1
+
+    End Sub
+
+    ' if a shrink subtype has been selected, make sure the main shrink type (inventory adjustment code) fits
+    Private Sub cmbShrinkSubtype_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbShrinkSubtype.SelectedIndexChanged
+        If IsInitializing Or IsLoading Or glItemID = -1 Or cmbShrinkSubtype.SelectedIndex < 0 Then Exit Sub
+
+        ' find the indices in the target control
+        Dim idxFoodBank As Integer = cmbReason.FindString("FB-Food Bank")
+        Dim idxSamples As Integer = cmbReason.FindString("SM-Samples")
+        Dim idxSpoilage As Integer = cmbReason.FindString("SP-Spoilage")
+
+        ' the subtype control was bound with a data table having the same schema as the dbo.ShrinkSubtype table
+        ' so read the subtype description (ShrinkSubtype_ID & InventoryAdjustmentCode_ID are the other fields) 
+        Dim selectedSubtypeRow As DataRowView = cmbShrinkSubtype.SelectedItem
+        Dim shrinkSubtype_Desc As String = selectedSubtypeRow.Item("ReasonCodeDescription").Trim()
+
+        ' switch the reason combo box (shrink type) to a type which corresponds with the chosen shrink subtype
+        If (shrinkSubtype_Desc).StartsWith("Donation", StringComparison.CurrentCultureIgnoreCase) Then
+            cmbReason.SelectedIndex = idxFoodBank
+        ElseIf (shrinkSubtype_Desc).StartsWith("Sampling", StringComparison.CurrentCultureIgnoreCase) Then
+            cmbReason.SelectedIndex = idxSamples
+        Else
+            cmbReason.SelectedIndex = idxSpoilage
+        End If
     End Sub
 
 End Class
