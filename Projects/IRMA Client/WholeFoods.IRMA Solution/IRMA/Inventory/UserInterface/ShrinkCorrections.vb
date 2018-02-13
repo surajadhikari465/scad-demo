@@ -70,7 +70,6 @@ Friend Class frmShrinkCorrections
 
         logger.Debug("frmShrinkCorrections_Load Exit")
 
-
     End Sub
 
     Private Sub LoadShrinkTypesComboBox(ByRef comboBox As ComboBox)
@@ -239,16 +238,20 @@ Friend Class frmShrinkCorrections
                 Dim newInventoryAdjustmentCodeId As Integer = 0
                 Dim oldShrinkSubtypeId As Integer = 0
                 Dim newShrinkSubtypeId As Integer = 0
-                If gridShrink.Rows(i).Cells(col_Grid_InventoryAdjustment_ID).Value IsNot Nothing Then
+                If gridShrink.Rows(i).Cells(col_Grid_InventoryAdjustment_ID).Value IsNot Nothing _
+                    And Not IsDBNull(gridShrink.Rows(i).Cells(col_Grid_InventoryAdjustment_ID).Value) Then
                     newInventoryAdjustmentCodeId = gridShrink.Rows(i).Cells(col_Grid_InventoryAdjustment_ID).Value
                 End If
-                If gridShrink.Rows(i).Cells(col_Grid_ShrinkSubtype_ID).Value IsNot Nothing Then
+                If gridShrink.Rows(i).Cells(col_Grid_ShrinkSubtype_ID).Value IsNot Nothing _
+                    And Not IsDBNull(gridShrink.Rows(i).Cells(col_Grid_ShrinkSubtype_ID).Value) Then
                     newShrinkSubtypeId = gridShrink.Rows(i).Cells(col_Grid_ShrinkSubtype_ID).Value
                 End If
-                If gridShrink.Rows(i).Cells(col_Grid_OldInventoryAdjustment_ID).Value IsNot Nothing Then
+                If gridShrink.Rows(i).Cells(col_Grid_OldInventoryAdjustment_ID).Value IsNot Nothing _
+                    And Not IsDBNull(gridShrink.Rows(i).Cells(col_Grid_OldInventoryAdjustment_ID).Value) Then
                     oldInventoryAdjustmentCodeId = gridShrink.Rows(i).Cells(col_Grid_OldInventoryAdjustment_ID).Value
                 End If
-                If gridShrink.Rows(i).Cells(col_Grid_OldShrinkSubtype_ID).Value IsNot Nothing Then
+                If gridShrink.Rows(i).Cells(col_Grid_OldShrinkSubtype_ID).Value IsNot Nothing _
+                    And Not IsDBNull(gridShrink.Rows(i).Cells(col_Grid_OldShrinkSubtype_ID).Value) Then
                     oldShrinkSubtypeId = gridShrink.Rows(i).Cells(col_Grid_OldShrinkSubtype_ID).Value
                 End If
 
@@ -420,7 +423,9 @@ Friend Class frmShrinkCorrections
         wasteTypesGridDropdown.DataSource = dtGridWasteTypes
         wasteTypesGridDropdown.ValueMember = col_InvAdjCode_Id
         wasteTypesGridDropdown.DisplayMember = col_InvAdjCode_Description
-        'wasteTypesGridDropdown.DisplayLayout.Bands(0).Columns(col_InvAdjCode_Id).Header.Caption = "Shrink Type"
+        wasteTypesGridDropdown.DisplayLayout.Bands(0).Columns(col_InvAdjCode_Id).Hidden = True
+        wasteTypesGridDropdown.DisplayLayout.Bands(0).Columns(col_InvAdjCode_WasteType).Hidden = True
+        wasteTypesGridDropdown.DisplayLayout.Bands(0).Columns(col_InvAdjCode_Description).Header.Caption = "Shrink Type"
         gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_InventoryAdjustment_ID).ValueList = wasteTypesGridDropdown
         gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_InventoryAdjustment_ID).Style = Infragistics.Win.UltraWinGrid.ColumnStyle.DropDownList
 
@@ -430,7 +435,9 @@ Friend Class frmShrinkCorrections
         shrinkSubtypesGridDropdown.DataSource = dtGridShrinkSubtypes
         shrinkSubtypesGridDropdown.ValueMember = col_ShrinkSubtypes_Id
         shrinkSubtypesGridDropdown.DisplayMember = col_ShrinkSubtypes_Descr
-        'shrinkSubtypesGridDropdown.DisplayLayout.Bands(0).Columns(col_ShrinkSubtypes_Id).Header.Caption = "Shrink Subtype"
+        shrinkSubtypesGridDropdown.DisplayLayout.Bands(0).Columns(col_ShrinkSubtypes_Id).Hidden = True
+        shrinkSubtypesGridDropdown.DisplayLayout.Bands(0).Columns(col_ShrinkSubtypes_InvAdjCode_Id).Hidden = True
+        shrinkSubtypesGridDropdown.DisplayLayout.Bands(0).Columns(col_ShrinkSubtypes_Descr).Header.Caption = "Shrink Subtype"
         gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkSubtype_ID).ValueList = shrinkSubtypesGridDropdown
         gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_ShrinkSubtype_ID).Style = Infragistics.Win.UltraWinGrid.ColumnStyle.DropDownList
 
