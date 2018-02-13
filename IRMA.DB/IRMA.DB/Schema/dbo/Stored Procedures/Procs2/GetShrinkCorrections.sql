@@ -20,9 +20,8 @@
 --                      11496
 -- 03/24/2017   EM      23481   Fixed divide by zero bug when lacking Average_Unit_Weight
 --                              Added 'AND IsNull(i.Average_Unit_Weight,0)>0' to Qty CASE statement 
--- 02/01/2018   EM      22815   'wType' changed to show ShrinkSubtype reason instead of Inventory-
---                              AdjustmentCode description when present, added explicit return columns
---                              for ShrinkSubtype_ID and InventoryAdjustmentCode_ID
+-- 02/01/2018   EM      22815   Retrieving inventory adjustment code ID in addition to 'wType' description.
+--                              Also added shrink subtype id and description to query
 -- ***********************************************************************************************
 
 CREATE Procedure dbo.GetShrinkCorrections
@@ -69,7 +68,7 @@ SELECT
     , InventoryAdjustment_ID = iac.InventoryAdjustmentCode_ID
     , ShrinkSubtype_ID       = sst.ShrinkSubType_ID
     , ShrinkSubtype_Desc	 = sst.ReasonCodeDescription
-    ,UserName                = u.UserName
+    , UserName                = u.UserName
 FROM 
     dbo.ItemHistory ih
     INNER JOIN dbo.Item i                       ON i.Item_Key = ih.Item_Key
@@ -85,7 +84,8 @@ FROM
 WHERE 
     ih.Store_No    = @Store_No 
     AND ih.SubTeam_No  = @SubTeam_No
-    AND ih.DateStamp BETWEEN @StartDate AND @EndDate
+    -- filter by local timezone for the provided dates using the regional time zone offset (datestamps stored as central time0
+    AND ih.DateStamp BETWEEN DATEADD(HOUR, -1 * @CentralTimeZoneOffset, @StartDate) AND DATEADD(HOUR, -1 * @CentralTimeZoneOffset, @EndDate)
     AND ih.Adjustment_ID = 1
     AND (	--both type & subtype are not specified, OR the subtype matches, OR the subtype is not specified & the type matches
 		(ISNULL(@ShrinkSubtype_Id, 0 )<1 AND ISNULL(@InventoryAdjustmentCode_Id, 0 )<1)
