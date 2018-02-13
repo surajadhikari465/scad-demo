@@ -149,12 +149,13 @@ namespace PrimeAffinityController
 
         private void SendAddPsgs(string region)
         {
-            var primeAffinityPsgPriceModels = getPrimeAffinityDeletePsgsFromPricesQuery.Search(new GetPrimeAffinityDeletePsgsFromPricesParameters
+            var primeAffinityPsgPriceModels = getPrimeAffinityAddPsgsFromPricesQuery.Search(new GetPrimeAffinityAddPsgsFromPricesParameters
             {
                 Region = region,
                 ExcludedPSNumbers = settings.ExcludedPSNumbers,
                 PriceTypes = settings.PriceTypes
             });
+            
             primeAffinityPsgProcessor.SendPsgs(new PrimeAffinityPsgProcessorParameters
             {
                 Region = region,
@@ -167,12 +168,13 @@ namespace PrimeAffinityController
 
         private void SendDeletePsgs(string region)
         {
-            var primeAffinityPsgPriceModels = getPrimeAffinityAddPsgsFromPricesQuery.Search(new GetPrimeAffinityAddPsgsFromPricesParameters
+            var primeAffinityPsgPriceModels = getPrimeAffinityDeletePsgsFromPricesQuery.Search(new GetPrimeAffinityDeletePsgsFromPricesParameters
             {
                 Region = region,
                 ExcludedPSNumbers = settings.ExcludedPSNumbers,
                 PriceTypes = settings.PriceTypes
             });
+
             primeAffinityPsgProcessor.SendPsgs(new PrimeAffinityPsgProcessorParameters
             {
                 Region = region,

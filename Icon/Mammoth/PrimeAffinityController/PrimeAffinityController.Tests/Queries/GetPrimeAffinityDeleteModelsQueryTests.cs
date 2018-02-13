@@ -72,7 +72,7 @@ namespace PrimeAffinityController.Tests.Queries
             {
                 foreach (var businessUnitId in testBusinessUnitIds)
                 {
-                    prices.Add(InsertTestPrices(itemId, businessUnitId, DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[0]));
+                    prices.Add(InsertTestPrices(itemId, businessUnitId, DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
                 }
             }
 
@@ -80,7 +80,36 @@ namespace PrimeAffinityController.Tests.Queries
             var results = query.Search(parameters);
 
             //Then
-            Assert.AreEqual(9, results.Count());
+            Assert.AreEqual(9, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_SalesAreEndingEndOfYesterdayAndBeginningOfToday_ShouldReturnSales()
+        {
+            //Given
+            var addSeconds = DateTime.Today.AddMilliseconds(-3);
+            var addMilliseconds = DateTime.Today.AddMilliseconds(-3);
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[1], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[2], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[1], DateTime.Today.AddDays(-10), DateTime.Today, testPriceTypes[0]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(4, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
             foreach (var result in results)
             {
                 var price = prices.First(p => p.PriceID == result.PriceID);
@@ -130,7 +159,7 @@ namespace PrimeAffinityController.Tests.Queries
             var results = query.Search(parameters);
 
             //Then
-            Assert.AreEqual(0, results.Count());
+            Assert.AreEqual(0, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
         }
 
         [TestMethod]
@@ -138,16 +167,16 @@ namespace PrimeAffinityController.Tests.Queries
         {
             //Given
             List<dynamic> prices = new List<dynamic>();
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[1]));
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), "TS3"));
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), "TS4"));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[1]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), "TS3"));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), "TS4"));
 
             //When
             var results = query.Search(parameters);
 
             //Then
-            Assert.AreEqual(2, results.Count());
+            Assert.AreEqual(2, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
             foreach (var result in results)
             {
                 var price = prices.First(p => p.PriceID == result.PriceID);
@@ -170,16 +199,16 @@ namespace PrimeAffinityController.Tests.Queries
             InsertTestItem(invalidItemId2, testExcludedPSNumbers[1]);
 
             List<dynamic> prices = new List<dynamic>();
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[1]));
-            prices.Add(InsertTestPrices(invalidItemId, testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(invalidItemId2, testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[1]));
+            prices.Add(InsertTestPrices(invalidItemId, testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(invalidItemId2, testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
 
             //When
             var results = query.Search(parameters);
 
             //Then
-            Assert.AreEqual(2, results.Count());
+            Assert.AreEqual(2, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
             Assert.IsFalse(results.Any(p => p.ItemID == invalidItemId && p.ItemID == invalidItemId2));
             foreach (var result in results)
             {
@@ -198,16 +227,16 @@ namespace PrimeAffinityController.Tests.Queries
         {
             //Given
             List<dynamic> prices = new List<dynamic>();
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
             prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(testItemIds[1], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(testItemIds[2], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddSeconds(-1), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[1], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[2], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
 
             //When
             var results = query.Search(parameters);
 
             //Then
-            Assert.AreEqual(2, results.Count());
+            Assert.AreEqual(2, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
             foreach (var result in results)
             {
                 var price = prices.First(p => p.PriceID == result.PriceID);
@@ -236,7 +265,7 @@ namespace PrimeAffinityController.Tests.Queries
             var results = query.Search(parameters);
 
             //Then
-            Assert.AreEqual(3, results.Count());
+            Assert.AreEqual(3, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
             foreach (var result in results)
             {
                 var price = prices.First(p => p.PriceID == result.PriceID);

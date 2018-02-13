@@ -42,7 +42,7 @@ namespace PrimeAffinityController.Queries
                     JOIN dbo.ItemTypes it ON i.itemTypeID = it.itemTypeID
                     JOIN dbo.Locales_{parameters.Region} l ON p.BusinessUnitID = l.BusinessUnitID
                     WHERE PriceType IN @PriceTypes 
-                        AND EndDate BETWEEN @Yesterday AND @Today
+                        AND (EndDate = @Today OR EndDate = @EndOfYesterday)
                         AND i.PSNumber NOT IN @ExcludedPSNumbers
                         AND NOT EXISTS 
                         (
@@ -85,7 +85,7 @@ namespace PrimeAffinityController.Queries
                 {
                     ExcludedPSNumbers = parameters.ExcludedPSNumbers,
                     PriceTypes = parameters.PriceTypes,
-                    Yesterday = DateTime.Today.AddDays(-1),
+                    EndOfYesterday = DateTime.Today.AddMilliseconds(-3),
                     Today = DateTime.Today
                 },
                 buffered: false);
