@@ -90,7 +90,7 @@
       <HintPath>..\packages\Mammoth.Framework.2018.1.18.8\lib\net461\Mammoth.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.2.7.2\lib\net461\Mammoth.PrimeAffinity.Library.dll</HintPath>
+      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.2.14.1\lib\net461\Mammoth.PrimeAffinity.Library.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

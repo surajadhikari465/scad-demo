@@ -114,7 +114,7 @@
       <HintPath>..\packages\Mammoth.Logging.2017.11.28.5\lib\net461\Mammoth.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.2.7.2\lib\net461\Mammoth.PrimeAffinity.Library.dll</HintPath>
+      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.2.14.1\lib\net461\Mammoth.PrimeAffinity.Library.dll</HintPath>
     </Reference>
     <Reference Include="MoreLinq, Version=2.10.21623.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.2.10.0\lib\net40\MoreLinq.dll</HintPath>

@@ -8,8 +8,10 @@ namespace Mammoth.PrimeAffinity.Library.MessageBuilders
 {
     public class PrimeAffinityMessageBuilder : IMessageBuilder<PrimeAffinityMessageBuilderParameters>
     {
-        private PrimeAffinityMessageBuilderSettings settings;
+        private const string BusinessUnitTraitCode = "BU";
+        private string BusinessUnitTraitDescription = "PS Business Unit ID";
 
+        private PrimeAffinityMessageBuilderSettings settings;
         private ISerializer<items> serializer;
 
         public PrimeAffinityMessageBuilder(
@@ -67,6 +69,24 @@ namespace Mammoth.PrimeAffinity.Library.MessageBuilders
                                                 id = settings.PrimeAffinityPsgName,
                                                 name = settings.PrimeAffinityPsgName,
                                                 type = settings.PrimeAffinityPsgType
+                                            }
+                                        }
+                                    }
+                                },
+                                traits = new TraitType[]
+                                {
+                                    new TraitType
+                                    {
+                                        code = BusinessUnitTraitCode,
+                                        type = new TraitTypeType
+                                        {
+                                            description = BusinessUnitTraitDescription,
+                                            value = new TraitValueType[]
+                                            {
+                                                new TraitValueType
+                                                {
+                                                    value = p.BusinessUnitID.ToString()
+                                                }
                                             }
                                         }
                                     }
