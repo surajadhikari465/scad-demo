@@ -1,10 +1,7 @@
-﻿using Icon.Common.DataAccess;
-using Icon.Common.Email;
+﻿using Icon.Common.Email;
 using Icon.Logging;
-using Icon.Monitoring.Common;
 using Icon.Monitoring.Common.PagerDuty;
 using Icon.Monitoring.Common.Settings;
-using Icon.Monitoring.DataAccess;
 using Icon.Monitoring.DataAccess.Queries;
 using Icon.Monitoring.Monitors;
 using Icon.Monitoring.Service;
@@ -12,17 +9,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NodaTime;
 using NodaTime.Testing;
-using ServiceStack.Text;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Threading;
 
 namespace Icon.Monitoring.Tests.Monitors
 {
     [TestClass]
-    public class MonitorServiceTest
+    public class MonitorServiceTests
     {
         private Mock<IMonitorSettings> mockSettings;
         private MonitorService monitorService;
@@ -33,6 +26,7 @@ namespace Icon.Monitoring.Tests.Monitors
         private Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageQueueIdParameters, int>> mockMessageQueueQuery;
         private Mock<Icon.Common.DataAccess.IQueryHandler<GetApiMessageUnprocessedRowCountParameters, int>> mockMessageUnprocessedRowCountQuery;
         private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<ILogger> logger;
 
         [TestInitialize]
         public void Initialize()
@@ -44,6 +38,7 @@ namespace Icon.Monitoring.Tests.Monitors
             this.dateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
             this.mockSettings = new Mock<IMonitorSettings>();
             this.mockEmailClient = new Mock<IEmailClient>();
+            this.logger = new Mock<ILogger>();
 
             mockSettings.SetupGet(m => m.MaintenanceStartTime).Returns(new LocalTime(1, 0, 0));
             mockSettings.SetupGet(m => m.MaintenanceEndTime).Returns(new LocalTime(23, 59, 59));
@@ -64,7 +59,8 @@ namespace Icon.Monitoring.Tests.Monitors
                 mockSettings.Object,
                 mockEmailClient.Object,
                 dateTimeZoneProvider,
-                fakeClock
+                fakeClock,
+                logger.Object
                );
         }
 

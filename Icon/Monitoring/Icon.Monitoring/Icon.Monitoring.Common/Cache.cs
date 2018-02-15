@@ -1,6 +1,7 @@
 ﻿using Icon.Monitoring.Common.Enums;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Caching;
 
 namespace Icon.Monitoring.Common
 {
@@ -84,6 +85,4 @@ namespace Icon.Monitoring.Common
             { IrmaRegions.UK, new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } }
         };
     }
-
-
 }

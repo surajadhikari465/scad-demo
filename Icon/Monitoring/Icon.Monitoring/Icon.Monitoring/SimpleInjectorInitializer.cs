@@ -16,6 +16,11 @@
     using SimpleInjector;
     using NodaTime;
     using Common.IO;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Configuration;
+    using Icon.Monitoring.Common;
 
     public class SimpleInjectorInitializer
     {
@@ -32,10 +37,6 @@
             container.RegisterSingleton<IDateTimeZoneProvider>(() => DateTimeZoneProviders.Tzdb);
             container.RegisterSingleton<IClock>(() => SystemClock.Instance);
 
-            container.RegisterSingleton<IMonitorService, MonitorService>();
-            container.RegisterSingleton<IMonitorSettings>(() => MonitorSettings.CreateFromConfig());
-            container.RegisterCollection(typeof(IMonitor), new[] { typeof(SimpleInjectorInitializer).Assembly });
-
             container.Register(typeof(ICommandHandler<>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
             container.Register(typeof(IQueryHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
             container.Register(typeof(IQueryByRegionHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
@@ -51,9 +52,31 @@
 
             container.RegisterSingleton<ITLogConJobMonitorSettings, TLogConJobMonitorSettings>();
             container.RegisterSingleton<IVimLocaleConJobMonitorSettings, VimLocaleConJobMonitorSettings>();
+            container.RegisterSingleton<IMammothPrimeAffinityControllerMonitorSettings, MammothPrimeAffinityControllerMonitorSettings>();
+            container.RegisterSingleton<IMonitorCache, MonitorCache>();
+
+            container.RegisterSingleton<IMonitorService, MonitorService>();
+            container.RegisterSingleton<IMonitorSettings>(() => MonitorSettings.CreateFromConfig());
+            var monitors = GetMonitorsRegisteredInAppConfig();
+            container.RegisterCollection(typeof(IMonitor), monitors);
 
             container.Verify();
             return container;
+        }
+
+        private static IEnumerable<Type> GetMonitorsRegisteredInAppConfig()
+        {
+            var monitorNamesInAppConfig = ConfigurationManager.AppSettings.AllKeys
+                .Where(k => k.EndsWith("Timer"))
+                .Select(k => k.Replace("Timer", ""))
+                .ToList();
+
+            return Assembly
+                .GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => t.BaseType == typeof(TimedControllerMonitor)
+                    && monitorNamesInAppConfig.Contains(t.Name))
+                .ToList();
         }
     }
 }

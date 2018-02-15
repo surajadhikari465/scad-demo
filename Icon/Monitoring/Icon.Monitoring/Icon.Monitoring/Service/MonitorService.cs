@@ -6,6 +6,7 @@
     using System.Timers;
 
     using Icon.Common.Email;
+    using Icon.Logging;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.Monitors;
     using NodaTime;
@@ -19,13 +20,15 @@
         private IClock clock;
         private const string TimeZone = "America/Chicago";
         private IDateTimeZoneProvider dateTimeZoneProvider;
+        private ILogger logger;
 
         public MonitorService(
             IEnumerable<IMonitor> monitors,
             IMonitorSettings settings,
             IEmailClient emailClient,
             IDateTimeZoneProvider dateTimeZoneProvider,
-            IClock clock)
+            IClock clock,
+            ILogger logger)
 
         {
             this.monitors = monitors.ToList();
@@ -34,17 +37,30 @@
             this.monitorServiceTimer = new Timer(settings.MonitorServiceTimer);
             this.dateTimeZoneProvider = dateTimeZoneProvider;
             this.clock = clock;
+            this.logger = logger;
         }
 
         public void Start()
         {
-            this.monitorServiceTimer.Start();
-            this.monitorServiceTimer.Elapsed += (s, e) =>
+            this.monitorServiceTimer.Elapsed += MonitorServiceTimer_Elapsed;
+            MonitorServiceTimer_Elapsed(null, null);
+        }
+
+        private void MonitorServiceTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            this.monitorServiceTimer.Stop();
+            try
             {
-                this.monitorServiceTimer.Stop();
                 this.RunService();
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex.ToString());
+            }
+            finally
+            {
                 this.monitorServiceTimer.Start();
-            };
+            }
         }
 
         public void Stop()

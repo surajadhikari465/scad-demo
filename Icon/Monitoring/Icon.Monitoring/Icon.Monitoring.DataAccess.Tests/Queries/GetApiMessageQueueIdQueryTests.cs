@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Icon.Monitoring.DataAccess.Tests.Queries
 {
-    [TestClass()]
+    [TestClass]
     public class GetApiMessageQueueIdQueryTests
     {
         private SqlDbProvider provider;
