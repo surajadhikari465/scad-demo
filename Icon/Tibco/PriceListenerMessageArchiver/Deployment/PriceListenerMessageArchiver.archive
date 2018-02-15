@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/PriceMessageArchiveQueueReceiver.process</processProperty>
         </processArchive>
-        <versionProperty>19</versionProperty>
+        <versionProperty>21</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PriceListenerMessageArchiver</name>
