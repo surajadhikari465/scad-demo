@@ -13,7 +13,7 @@ BEGIN
 		  sst.LastUpdateDateTime AS LastUpdateDateTime
 	  FROM [dbo].[ShrinkSubType] sst
 	  INNER JOIN [dbo].[InventoryAdjustmentCode] iac ON iac.InventoryAdjustmentCode_ID = sst.InventoryAdjustmentCode_ID 
-	  ORDER BY ReasonCodeDescription ASC
+	  ORDER BY iac.InventoryAdjustmentCode_ID,ReasonCodeDescription ASC
 
 END
 

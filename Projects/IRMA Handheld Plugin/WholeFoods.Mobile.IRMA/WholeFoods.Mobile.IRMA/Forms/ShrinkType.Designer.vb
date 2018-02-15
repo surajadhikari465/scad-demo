@@ -39,6 +39,7 @@ Partial Public Class ShrinkType
         Me.StoreTeamLabel2 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
         Me.StoreTeamLabel = New System.Windows.Forms.Label
+        Me.btnReasonCode14 = New System.Windows.Forms.Button
         Me.SuspendLayout()
         '
         'mainMenu1
@@ -51,118 +52,118 @@ Partial Public Class ShrinkType
         '
         'btnReasonCode1
         '
-        Me.btnReasonCode1.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode1.Location = New System.Drawing.Point(3, 237)
+        Me.btnReasonCode1.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode1.Location = New System.Drawing.Point(3, 113)
         Me.btnReasonCode1.Name = "btnReasonCode1"
-        Me.btnReasonCode1.Size = New System.Drawing.Size(105, 25)
+        Me.btnReasonCode1.Size = New System.Drawing.Size(114, 25)
         Me.btnReasonCode1.TabIndex = 13
         Me.btnReasonCode1.Text = "Reason Code"
         '
         'btnReasonCode2
         '
-        Me.btnReasonCode2.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode2.Location = New System.Drawing.Point(3, 53)
+        Me.btnReasonCode2.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode2.Location = New System.Drawing.Point(3, 51)
         Me.btnReasonCode2.Name = "btnReasonCode2"
-        Me.btnReasonCode2.Size = New System.Drawing.Size(105, 25)
+        Me.btnReasonCode2.Size = New System.Drawing.Size(114, 25)
         Me.btnReasonCode2.TabIndex = 1
         Me.btnReasonCode2.Text = "Reason Code"
         '
         'btnReasonCode4
         '
-        Me.btnReasonCode4.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode4.Location = New System.Drawing.Point(3, 113)
+        Me.btnReasonCode4.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode4.Location = New System.Drawing.Point(3, 175)
         Me.btnReasonCode4.Name = "btnReasonCode4"
-        Me.btnReasonCode4.Size = New System.Drawing.Size(105, 25)
+        Me.btnReasonCode4.Size = New System.Drawing.Size(114, 25)
         Me.btnReasonCode4.TabIndex = 5
         Me.btnReasonCode4.Text = "Reason Code"
         '
         'btnReasonCode6
         '
-        Me.btnReasonCode6.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode6.Location = New System.Drawing.Point(3, 175)
+        Me.btnReasonCode6.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode6.Location = New System.Drawing.Point(3, 206)
         Me.btnReasonCode6.Name = "btnReasonCode6"
-        Me.btnReasonCode6.Size = New System.Drawing.Size(105, 25)
+        Me.btnReasonCode6.Size = New System.Drawing.Size(114, 25)
         Me.btnReasonCode6.TabIndex = 9
         Me.btnReasonCode6.Text = "Reason Code"
         '
         'btnReasonCode3
         '
-        Me.btnReasonCode3.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode3.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
         Me.btnReasonCode3.Location = New System.Drawing.Point(3, 82)
         Me.btnReasonCode3.Name = "btnReasonCode3"
-        Me.btnReasonCode3.Size = New System.Drawing.Size(105, 25)
+        Me.btnReasonCode3.Size = New System.Drawing.Size(114, 25)
         Me.btnReasonCode3.TabIndex = 3
         Me.btnReasonCode3.Text = "Reason Code"
         '
         'btnReasonCode8
         '
-        Me.btnReasonCode8.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode8.Location = New System.Drawing.Point(122, 53)
+        Me.btnReasonCode8.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode8.Location = New System.Drawing.Point(122, 175)
         Me.btnReasonCode8.Name = "btnReasonCode8"
-        Me.btnReasonCode8.Size = New System.Drawing.Size(113, 25)
+        Me.btnReasonCode8.Size = New System.Drawing.Size(112, 25)
         Me.btnReasonCode8.TabIndex = 2
         Me.btnReasonCode8.Text = "Reason Code"
         '
         'btnReasonCode5
         '
-        Me.btnReasonCode5.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode5.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
         Me.btnReasonCode5.Location = New System.Drawing.Point(3, 144)
         Me.btnReasonCode5.Name = "btnReasonCode5"
-        Me.btnReasonCode5.Size = New System.Drawing.Size(105, 25)
+        Me.btnReasonCode5.Size = New System.Drawing.Size(114, 25)
         Me.btnReasonCode5.TabIndex = 7
         Me.btnReasonCode5.Text = "Reason Code"
         '
         'btnReasonCode7
         '
-        Me.btnReasonCode7.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode7.Location = New System.Drawing.Point(3, 206)
+        Me.btnReasonCode7.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode7.Location = New System.Drawing.Point(3, 237)
         Me.btnReasonCode7.Name = "btnReasonCode7"
-        Me.btnReasonCode7.Size = New System.Drawing.Size(105, 25)
+        Me.btnReasonCode7.Size = New System.Drawing.Size(114, 25)
         Me.btnReasonCode7.TabIndex = 11
         Me.btnReasonCode7.Text = "Reason Code"
         '
         'btnReasonCode11
         '
-        Me.btnReasonCode11.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode11.Location = New System.Drawing.Point(122, 144)
+        Me.btnReasonCode11.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode11.Location = New System.Drawing.Point(121, 82)
         Me.btnReasonCode11.Name = "btnReasonCode11"
-        Me.btnReasonCode11.Size = New System.Drawing.Size(113, 25)
+        Me.btnReasonCode11.Size = New System.Drawing.Size(112, 25)
         Me.btnReasonCode11.TabIndex = 8
         Me.btnReasonCode11.Text = "Reason Code"
         '
         'btnReasonCode12
         '
-        Me.btnReasonCode12.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode12.Location = New System.Drawing.Point(122, 175)
+        Me.btnReasonCode12.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode12.Location = New System.Drawing.Point(122, 113)
         Me.btnReasonCode12.Name = "btnReasonCode12"
-        Me.btnReasonCode12.Size = New System.Drawing.Size(113, 25)
+        Me.btnReasonCode12.Size = New System.Drawing.Size(112, 25)
         Me.btnReasonCode12.TabIndex = 12
         Me.btnReasonCode12.Text = "Reason Code"
         '
         'btnReasonCode13
         '
-        Me.btnReasonCode13.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode13.Location = New System.Drawing.Point(122, 206)
+        Me.btnReasonCode13.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode13.Location = New System.Drawing.Point(122, 144)
         Me.btnReasonCode13.Name = "btnReasonCode13"
-        Me.btnReasonCode13.Size = New System.Drawing.Size(113, 25)
+        Me.btnReasonCode13.Size = New System.Drawing.Size(112, 25)
         Me.btnReasonCode13.TabIndex = 10
         Me.btnReasonCode13.Text = "Reason Code"
         '
         'btnReasonCode9
         '
-        Me.btnReasonCode9.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode9.Location = New System.Drawing.Point(122, 82)
+        Me.btnReasonCode9.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode9.Location = New System.Drawing.Point(122, 51)
         Me.btnReasonCode9.Name = "btnReasonCode9"
-        Me.btnReasonCode9.Size = New System.Drawing.Size(113, 25)
+        Me.btnReasonCode9.Size = New System.Drawing.Size(112, 25)
         Me.btnReasonCode9.TabIndex = 4
         Me.btnReasonCode9.Text = "Reason Code"
         '
         'btnReasonCode10
         '
-        Me.btnReasonCode10.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode10.Location = New System.Drawing.Point(122, 113)
+        Me.btnReasonCode10.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode10.Location = New System.Drawing.Point(122, 206)
         Me.btnReasonCode10.Name = "btnReasonCode10"
-        Me.btnReasonCode10.Size = New System.Drawing.Size(113, 25)
+        Me.btnReasonCode10.Size = New System.Drawing.Size(112, 25)
         Me.btnReasonCode10.TabIndex = 6
         Me.btnReasonCode10.Text = "Reason Code"
         '
@@ -196,12 +197,22 @@ Partial Public Class ShrinkType
         Me.StoreTeamLabel.Size = New System.Drawing.Size(120, 20)
         Me.StoreTeamLabel.Text = "SubTeamLabel"
         '
+        'btnReasonCode14
+        '
+        Me.btnReasonCode14.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode14.Location = New System.Drawing.Point(122, 237)
+        Me.btnReasonCode14.Name = "btnReasonCode14"
+        Me.btnReasonCode14.Size = New System.Drawing.Size(112, 25)
+        Me.btnReasonCode14.TabIndex = 14
+        Me.btnReasonCode14.Text = "Reason Code"
+        '
         'ShrinkType
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(240, 268)
+        Me.Controls.Add(Me.btnReasonCode14)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.StoreTeamLabel)
         Me.Controls.Add(Me.Label1)
@@ -243,4 +254,5 @@ Partial Public Class ShrinkType
     Friend WithEvents StoreTeamLabel2 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents StoreTeamLabel As System.Windows.Forms.Label
+    Friend WithEvents btnReasonCode14 As System.Windows.Forms.Button
 End Class

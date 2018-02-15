@@ -16,7 +16,7 @@ BEGIN
 	SET @UserId = (SELECT User_Id FROM dbo.Users WHERE UserName= 'System')
 
 	INSERT INTO [dbo].[ShrinkSubType] (InventoryAdjustmentCode_ID, ReasonCodeDescription, [LastUpdateUser_Id], [LastUpdateDateTime])
-	                   VALUES(@FoodBankInventoryAdjustmentCodeID,'Donation',@UserId , GETDATE())
+	                   VALUES(@FoodBankInventoryAdjustmentCodeID,'Donation Out of Date',@UserId , GETDATE())
 
 	INSERT INTO [dbo].[ShrinkSubType] (InventoryAdjustmentCode_ID, ReasonCodeDescription, [LastUpdateUser_Id], [LastUpdateDateTime])
 	                   VALUES(@FoodBankInventoryAdjustmentCodeID,'Donation Mispick',@UserId , GETDATE())
@@ -52,5 +52,8 @@ BEGIN
 	                   VALUES(@SpoilageInventoryAdjustmentCodeID,'Recall',@UserId , GETDATE())
 
     INSERT INTO [dbo].[ShrinkSubType] (InventoryAdjustmentCode_ID, ReasonCodeDescription, [LastUpdateUser_Id], [LastUpdateDateTime])
-	                   VALUES(@SpoilageInventoryAdjustmentCodeID,'Discontinued Item',@UserId , GETDATE())
+	                   VALUES(@SpoilageInventoryAdjustmentCodeID,'Spoilage Discontinued',@UserId , GETDATE())
+				   
+	INSERT INTO [dbo].[ShrinkSubType] (InventoryAdjustmentCode_ID, ReasonCodeDescription, [LastUpdateUser_Id], [LastUpdateDateTime])
+	                   VALUES(@FoodBankInventoryAdjustmentCodeID,'Donation Discontinued',@UserId , GETDATE())
 END

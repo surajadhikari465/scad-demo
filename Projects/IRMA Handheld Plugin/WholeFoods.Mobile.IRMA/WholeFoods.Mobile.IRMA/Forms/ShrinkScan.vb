@@ -127,15 +127,19 @@ Public Class ShrinkScan
             Dim resp As MsgBoxResult = Messages.DeleteSession()
 
             If (resp = MsgBoxResult.Yes) Then
-                Dim fileWriter As ShrinkFileWriter = New ShrinkFileWriter(Me.mySession)
 
-                fileWriter.DeleteFile(fileWriter.MakeFilePath(Me.mySession.SessionName))
-                If (Not Me.mySession.SessionName = Nothing) Then
-                    Me.mySession.SessionName = Nothing
+                If (Me.mySession.SessionName = Nothing) Then
+                    MessageBox.Show("No session exists.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
+                Else
+                    Dim fileWriter As ShrinkFileWriter = New ShrinkFileWriter(Me.mySession)
+                    fileWriter.DeleteFile(fileWriter.MakeFilePath(Me.mySession.SessionName))
+                    If (Not Me.mySession.SessionName = Nothing) Then
+                        Me.mySession.SessionName = Nothing
+                    End If
+                    Me.DialogResult = Windows.Forms.DialogResult.OK
                 End If
-                Me.DialogResult = Windows.Forms.DialogResult.OK
-            End If
 
+            End If
         Catch ex As Exception
 
             MsgBox("An error occurred while clearing the session: " + ex.Message, MsgBoxStyle.Exclamation, "Error")
@@ -149,8 +153,24 @@ Public Class ShrinkScan
 
     Private Sub mnuReview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuReview.Click
 
-        Cursor.Current = Cursors.WaitCursor
+        If CDbl(txtQty.Text) > 999 Then
+            MessageBox.Show(Messages.QUANTITY_AMT_ERROR, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
+            Exit Sub
+        End If
 
+        If CDbl(txtQty.Text) = 0 Then
+            MessageBox.Show(Messages.QUANTITY_ZERO_ERROR, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
+            Exit Sub
+        End If
+
+        ' Prompt for confirmation if the chosen quantity is 99 or greater.
+        If CDbl(txtQty.Text) >= 99 Then
+            If MsgBox("You have entered a shrink quantity of " + txtQty.Text + ".  Is this correct?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, Me.Text) = MsgBoxResult.No Then
+                Exit Sub
+            End If
+        End If
+
+        Cursor.Current = Cursors.WaitCursor
         Dim cont As Boolean = True
 
         Try
@@ -190,17 +210,17 @@ Public Class ShrinkScan
 
         ' Check that txtQty is numeric.
         If Not IsNumeric(txtQty.Text) Then
-            MsgBox("Please enter a numeric value for the quantity.", MsgBoxStyle.Information, Me.Text)
+            MessageBox.Show("Please enter a numeric value for the quantity.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Exit Sub
         End If
 
         If CDbl(txtQty.Text) > 999 Then
-            MsgBox(Messages.QUANTITY_AMT_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            MessageBox.Show(Messages.QUANTITY_AMT_ERROR, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Exit Sub
         End If
 
         If CDbl(txtQty.Text) = 0 Then
-            MsgBox(Messages.QUANTITY_ZERO_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            MessageBox.Show(Messages.QUANTITY_ZERO_ERROR, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Exit Sub
         End If
 
@@ -212,7 +232,7 @@ Public Class ShrinkScan
         End If
 
         If (String.IsNullOrEmpty(txtUpc.Text)) Then
-            MsgBox("Please scan item.", MsgBoxStyle.OkOnly, Me.Text)
+            MessageBox.Show("Please scan item.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Exit Sub
         End If
 
@@ -222,6 +242,7 @@ Public Class ShrinkScan
 
         Catch ex As NullReferenceException
             Messages.EmptyItem()
+
 
         End Try
 
@@ -657,7 +678,7 @@ Public Class ShrinkScan
         Label4.TextAlign = ContentAlignment.TopRight
     End Sub
 
-    Private Sub MenuItem2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MenuItem2.Click
+    Private Sub MenuItem2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMenu_ChangesubType.Click
         Me.Close()
     End Sub
 
