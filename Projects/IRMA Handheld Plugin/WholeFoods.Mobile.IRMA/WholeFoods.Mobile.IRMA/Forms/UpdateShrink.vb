@@ -117,18 +117,18 @@ Public Class UpdateShrink
         _qty = Trim(txtQty.Text)
 
         If (lblQty.Text = "New Weight: ") And _qty > 999 Then
-            MsgBox(Messages.WEIGHT_AMT_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            MessageBox.Show(Messages.WEIGHT_AMT_ERROR, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Exit Sub
         ElseIf _qty > 999 Then
-            MsgBox(Messages.QUANTITY_AMT_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            MessageBox.Show(Messages.QUANTITY_AMT_ERROR, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Exit Sub
         End If
 
         If (lblQty.Text = "New Weight: ") And _qty = 0 Then
-            MsgBox(Messages.WEIGHT_ZERO_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            MessageBox.Show(Messages.WEIGHT_ZERO_ERROR, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Exit Sub
         ElseIf _qty = 0 Then
-            MsgBox(Messages.QUANTITY_ZERO_ERROR, MsgBoxStyle.OkOnly, Me.Text)
+            MessageBox.Show(Messages.QUANTITY_ZERO_ERROR, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Exit Sub
         End If
 

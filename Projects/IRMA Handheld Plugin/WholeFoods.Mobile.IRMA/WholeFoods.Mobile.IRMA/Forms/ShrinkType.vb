@@ -23,7 +23,7 @@ Public Class ShrinkType
         Dim count As Integer = 1
 
         For Each shrinkSubType In mySession.ShrinkSubTypes
-            If (count <= 13) Then
+            If (count <= 14) Then
                 Dim control As Control = getControlByName(btnName + CType(count, String))
                 If (control IsNot Nothing) Then
                     CType(control, Button).Text = shrinkSubType.ShrinkSubType1
@@ -177,4 +177,7 @@ Public Class ShrinkType
 
     End Sub
     
+    Private Sub btnReasonCode14_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReasonCode14.Click
+        goToNextScreen(btnReasonCode13.Text, btnReasonCode13.Tag.ToString())
+    End Sub
 End Class
