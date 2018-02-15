@@ -224,29 +224,29 @@ BEGIN
         SELECT @Error_No = @@ERROR
     END
 
-	--IF @Error_No = 0
-	--BEGIN
-	--	DECLARE @mammothUpdates dbo.ItemKeyAndStoreNoType
+	IF @Error_No = 0
+	BEGIN
+		DECLARE @mammothUpdates dbo.ItemKeyAndStoreNoType
 
-	--	INSERT INTO @mammothUpdates(
-	--		Item_Key, 
-	--		Store_No)
-	--	SELECT 
-	--		siv.Item_Key, 
-	--		siv.Store_no
-	--	FROM inserted i
-	--	JOIN deleted d on i.Vendor_ID = d.Vendor_ID
-	--	JOIN StoreItemVendor siv ON i.Vendor_ID = siv.Vendor_ID
-	--	WHERE (i.CompanyName <> d.CompanyName
-	--		OR i.Vendor_Key <> d.Vendor_Key)
-	--		AND siv.PrimaryVendor = 1
-	--		AND siv.DeleteDate IS NULL
+		INSERT INTO @mammothUpdates(
+			Item_Key, 
+			Store_No)
+		SELECT 
+			siv.Item_Key, 
+			siv.Store_no
+		FROM inserted i
+		JOIN deleted d on i.Vendor_ID = d.Vendor_ID
+		JOIN StoreItemVendor siv ON i.Vendor_ID = siv.Vendor_ID
+		WHERE (i.CompanyName <> d.CompanyName
+			OR i.Vendor_Key <> d.Vendor_Key)
+			AND siv.PrimaryVendor = 1
+			AND siv.DeleteDate IS NULL
 
-	--	IF EXISTS (SELECT TOP 1 1 FROM @mammothUpdates)
-	--		EXEC mammoth.GenerateEventsByItemKeyAndStoreNoType @mammothUpdates, 'ItemLocaleAddOrUpdate'
+		IF EXISTS (SELECT TOP 1 1 FROM @mammothUpdates)
+			EXEC mammoth.GenerateEventsByItemKeyAndStoreNoType @mammothUpdates, 'ItemLocaleAddOrUpdate'
 
-	--	SELECT @Error_No = @@ERROR
-	--END
+		SELECT @Error_No = @@ERROR
+	END
 
     IF @Error_No <> 0
     BEGIN
@@ -462,4 +462,14 @@ GRANT SELECT
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[Vendor] TO [MammothRole]
+    AS [dbo];
+
+GO
+GRANT ALTER
+    ON OBJECT::[dbo].[Vendor] TO [IRMAAdminRole]
+    AS [dbo];
+
+GO
+GRANT ALTER
+    ON OBJECT::[dbo].[Vendor] TO [IRMAClientRole]
     AS [dbo];
