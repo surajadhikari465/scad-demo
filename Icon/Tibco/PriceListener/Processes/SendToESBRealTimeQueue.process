@@ -13,7 +13,7 @@
                     <xsd:element name="TransactionID" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="CorrelationID" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="TransactionType" type="xsd:string" minOccurs="0"/>
-                    <xsd:element name="ResetFlag" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="ResetFlag" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="SequenceID" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="Source" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="nonReceivingSysName" type="xsd:string" minOccurs="0"/>

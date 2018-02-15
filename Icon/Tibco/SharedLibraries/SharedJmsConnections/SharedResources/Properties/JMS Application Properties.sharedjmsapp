@@ -21,7 +21,7 @@
             </row>
             <row>
                 <PropertyName>ResetFlag</PropertyName>
-                <Type>boolean</Type>
+                <Type>string</Type>
                 <Cardinality>optional</Cardinality>
             </row>
             <row>
