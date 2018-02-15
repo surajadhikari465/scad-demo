@@ -91,16 +91,16 @@ Partial Public Class ItemScan
         '
         'frmStatus
         '
-        Me.frmStatus.Location = New System.Drawing.Point(0, 530)
+        Me.frmStatus.Location = New System.Drawing.Point(0, 537)
         Me.frmStatus.Name = "frmStatus"
-        Me.frmStatus.Size = New System.Drawing.Size(480, 38)
+        Me.frmStatus.Size = New System.Drawing.Size(480, 46)
         Me.frmStatus.Text = "StatusBar1"
         '
         'txtQty
         '
         Me.txtQty.Location = New System.Drawing.Point(112, 440)
         Me.txtQty.Name = "txtQty"
-        Me.txtQty.Size = New System.Drawing.Size(100, 41)
+        Me.txtQty.Size = New System.Drawing.Size(100, 49)
         Me.txtQty.TabIndex = 1
         Me.txtQty.Visible = False
         '
@@ -116,7 +116,7 @@ Partial Public Class ItemScan
         '
         Me.txtUpc.Location = New System.Drawing.Point(112, 488)
         Me.txtUpc.Name = "txtUpc"
-        Me.txtUpc.Size = New System.Drawing.Size(286, 41)
+        Me.txtUpc.Size = New System.Drawing.Size(286, 49)
         Me.txtUpc.TabIndex = 5
         '
         'lblUpc
@@ -182,7 +182,7 @@ Partial Public Class ItemScan
         'lblDescriptionVal
         '
         Me.lblDescriptionVal.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Bold)
-        Me.lblDescriptionVal.Location = New System.Drawing.Point(6, 40)
+        Me.lblDescriptionVal.Location = New System.Drawing.Point(12, 31)
         Me.lblDescriptionVal.Name = "lblDescriptionVal"
         Me.lblDescriptionVal.Size = New System.Drawing.Size(468, 72)
         Me.lblDescriptionVal.Text = "..."

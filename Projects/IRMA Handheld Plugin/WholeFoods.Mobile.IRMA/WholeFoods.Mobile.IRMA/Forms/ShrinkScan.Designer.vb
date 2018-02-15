@@ -26,6 +26,7 @@ Partial Public Class ShrinkScan
         Me.MenuItem1 = New System.Windows.Forms.MenuItem
         Me.mnuMenu_ExitIRMA = New System.Windows.Forms.MenuItem
         Me.mnuMenu_ExitShrink = New System.Windows.Forms.MenuItem
+        Me.mnuMenu_ChangesubType = New System.Windows.Forms.MenuItem
         Me.mnuReview = New System.Windows.Forms.MenuItem
         Me.lblDescription = New System.Windows.Forms.Label
         Me.cmdClear = New System.Windows.Forms.Button
@@ -44,7 +45,6 @@ Partial Public Class ShrinkScan
         Me.cmdSearch = New System.Windows.Forms.Button
         Me.lblRetailUnit = New System.Windows.Forms.Label
         Me.chkSkipConfirm = New System.Windows.Forms.CheckBox
-        Me.MenuItem2 = New System.Windows.Forms.MenuItem
         Me.SuspendLayout()
         '
         'mainMenu1
@@ -58,7 +58,7 @@ Partial Public Class ShrinkScan
         Me.mnuMenu.MenuItems.Add(Me.MenuItem1)
         Me.mnuMenu.MenuItems.Add(Me.mnuMenu_ExitIRMA)
         Me.mnuMenu.MenuItems.Add(Me.mnuMenu_ExitShrink)
-        Me.mnuMenu.MenuItems.Add(Me.MenuItem2)
+        Me.mnuMenu.MenuItems.Add(Me.mnuMenu_ChangesubType)
         Me.mnuMenu.Text = "Menu"
         '
         'mnuMenu_ClearSession
@@ -76,6 +76,10 @@ Partial Public Class ShrinkScan
         'mnuMenu_ExitShrink
         '
         Me.mnuMenu_ExitShrink.Text = "Exit Shrink"
+        '
+        'mnuMenu_ChangesubType
+        '
+        Me.mnuMenu_ChangesubType.Text = "Change SubType"
         '
         'mnuReview
         '
@@ -211,10 +215,6 @@ Partial Public Class ShrinkScan
         Me.chkSkipConfirm.TabIndex = 23
         Me.chkSkipConfirm.Text = "Skip Confirm"
         '
-        'MenuItem2
-        '
-        Me.MenuItem2.Text = "Change SubType"
-        '
         'ShrinkScan
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -268,5 +268,5 @@ Partial Public Class ShrinkScan
     Friend WithEvents lblRetailUnit As System.Windows.Forms.Label
     Friend WithEvents chkSkipConfirm As System.Windows.Forms.CheckBox
     Friend WithEvents MenuItem1 As System.Windows.Forms.MenuItem
-    Friend WithEvents MenuItem2 As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuMenu_ChangesubType As System.Windows.Forms.MenuItem
 End Class

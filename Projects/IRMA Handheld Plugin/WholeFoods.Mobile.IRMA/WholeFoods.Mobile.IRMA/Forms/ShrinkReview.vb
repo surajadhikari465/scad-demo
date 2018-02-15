@@ -23,7 +23,6 @@ Public Class ShrinkReview
         Dim fileWriter As ShrinkFileWriter = New ShrinkFileWriter(Me.mySession)
 
         updateBatch(fileWriter)
-        Me.IrmaShrinkLabel.Text = "IRMA Shrink: " + mySession.ShrinkType
         Me.StoreTeamLabel.Text = mySession.StoreName + " / " + mySession.Subteam
     End Sub
 
@@ -107,7 +106,7 @@ Public Class ShrinkReview
         Dim upcSelected As Integer = cCell.RowNumber
 
         If (Me.DataGrid1.VisibleRowCount = 0) Then
-            MsgBox("There are no shrink items to remove.", MsgBoxStyle.OkOnly, Me.Text)
+            MessageBox.Show("There are no shrink items to remove.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Cursor.Current = Cursors.Default
             Exit Sub
         Else
@@ -254,7 +253,7 @@ Public Class ShrinkReview
         Dim upcSelected As Integer = cCell.RowNumber
 
         If (Me.DataGrid1.VisibleRowCount = 0) Then
-            MsgBox("There are no shrink items to update.", MsgBoxStyle.OkOnly, Me.Text)
+            MessageBox.Show("There are no shrink items to update.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Exit Sub
         Else
             Dim upc As String = Me.DataGrid1.Item(upcSelected, 0).ToString()

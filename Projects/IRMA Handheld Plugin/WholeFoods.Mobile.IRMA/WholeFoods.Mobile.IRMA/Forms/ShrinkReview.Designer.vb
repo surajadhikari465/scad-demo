@@ -25,7 +25,6 @@ Partial Public Class ShrinkReview
         Me.UploadMenuItem = New System.Windows.Forms.MenuItem
         Me.DataGrid1 = New System.Windows.Forms.DataGrid
         Me.DeleteButton = New System.Windows.Forms.Button
-        Me.IrmaShrinkLabel = New System.Windows.Forms.Label
         Me.StoreTeamLabel = New System.Windows.Forms.Label
         Me.UpdateButton = New System.Windows.Forms.Button
         Me.SuspendLayout()
@@ -46,9 +45,9 @@ Partial Public Class ShrinkReview
         'DataGrid1
         '
         Me.DataGrid1.BackgroundColor = System.Drawing.Color.Silver
-        Me.DataGrid1.Location = New System.Drawing.Point(3, 54)
+        Me.DataGrid1.Location = New System.Drawing.Point(4, 30)
         Me.DataGrid1.Name = "DataGrid1"
-        Me.DataGrid1.Size = New System.Drawing.Size(233, 172)
+        Me.DataGrid1.Size = New System.Drawing.Size(233, 185)
         Me.DataGrid1.TabIndex = 0
         '
         'DeleteButton
@@ -59,21 +58,13 @@ Partial Public Class ShrinkReview
         Me.DeleteButton.TabIndex = 1
         Me.DeleteButton.Text = "Remove"
         '
-        'IrmaShrinkLabel
-        '
-        Me.IrmaShrinkLabel.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.IrmaShrinkLabel.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Bold)
-        Me.IrmaShrinkLabel.Location = New System.Drawing.Point(0, 0)
-        Me.IrmaShrinkLabel.Name = "IrmaShrinkLabel"
-        Me.IrmaShrinkLabel.Size = New System.Drawing.Size(240, 20)
-        '
         'StoreTeamLabel
         '
         Me.StoreTeamLabel.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.StoreTeamLabel.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
-        Me.StoreTeamLabel.Location = New System.Drawing.Point(0, 20)
+        Me.StoreTeamLabel.Font = New System.Drawing.Font("Tahoma", 8.0!, System.Drawing.FontStyle.Bold)
+        Me.StoreTeamLabel.Location = New System.Drawing.Point(0, 0)
         Me.StoreTeamLabel.Name = "StoreTeamLabel"
-        Me.StoreTeamLabel.Size = New System.Drawing.Size(240, 31)
+        Me.StoreTeamLabel.Size = New System.Drawing.Size(240, 26)
         '
         'UpdateButton
         '
@@ -92,7 +83,6 @@ Partial Public Class ShrinkReview
         Me.ControlBox = False
         Me.Controls.Add(Me.UpdateButton)
         Me.Controls.Add(Me.StoreTeamLabel)
-        Me.Controls.Add(Me.IrmaShrinkLabel)
         Me.Controls.Add(Me.DeleteButton)
         Me.Controls.Add(Me.DataGrid1)
         Me.Menu = Me.mainMenu1
@@ -105,7 +95,6 @@ Partial Public Class ShrinkReview
     Friend WithEvents BackMenuItem As System.Windows.Forms.MenuItem
     Friend WithEvents UploadMenuItem As System.Windows.Forms.MenuItem
     Friend WithEvents DeleteButton As System.Windows.Forms.Button
-    Friend WithEvents IrmaShrinkLabel As System.Windows.Forms.Label
     Friend WithEvents StoreTeamLabel As System.Windows.Forms.Label
     Friend WithEvents UpdateButton As System.Windows.Forms.Button
 End Class

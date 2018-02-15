@@ -4,10 +4,10 @@ CREATE FUNCTION [dbo].[fn_GetAppConfigValue]
 	@ConfigurationKeyName varchar(150),
 	@ApplicationName varchar(20)
 )
-RETURNS varchar(100)
+RETURNS varchar(350)
 AS
 BEGIN
-	DECLARE @configurationValue varchar(100)
+	DECLARE @configurationValue varchar(350)
 
 	SELECT  
 		@configurationValue = acv.Value
