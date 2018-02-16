@@ -17,6 +17,7 @@ Friend Class frmPricingBatch
     Private mdt As DataTable
     Private mdv As DataView
     Private noTagItemsExcluded As Boolean
+    Private allItemsExcludedByNoTag As Boolean
 
     Dim dtStores As DataTable = Nothing
     Dim mrsBatch As ADODB.Recordset
@@ -671,6 +672,7 @@ ExitSub:
                 logger.Info("Processing Ready for Stores command")
 
                 noTagItemsExcluded = False
+                allItemsExcludedByNoTag = False
 
                 ' -- SET PRICE BATCH STATUS = READY
                 nTotalSelRows = ugrdList.Selected.Rows.Count
@@ -784,7 +786,12 @@ ExitSub:
                     MsgBox(ResourcesPricing.GetString("BatchesWrongStatus"), MsgBoxStyle.Information, Me.Text)
                     _operationSucceededWhileIgnoringNoTagLogic = False
                 ElseIf noTagItemsExcluded Then
-                    MsgBox("Print batch requests were not sent to SLAW for all items in these batches.  Please check the no-tag exclusion report for more detail.", MsgBoxStyle.Information, Me.Text)
+                    If Me.allItemsExcludedByNoTag Then
+                        MsgBox("All items removed by NoTag Exclusions, Print batch requests were not sent to SLAW .  Please check the no-tag exclusion report for more detail.", MsgBoxStyle.Information, Me.Text)
+                        logger.Info("All items removed by NoTag Exclusions, Print batch requests were not sent to SLAW.")
+                    Else
+                        MsgBox("Print batch requests were not sent to SLAW for all items in these batches.  Please check the no-tag exclusion report for more detail.", MsgBoxStyle.Information, Me.Text)
+                    End If
                 End If
 
             Case 6 'Package
@@ -981,7 +988,12 @@ ExitSub:
                             logger.Info(String.Format("Failed print requests: {0}", failedPrintRequests))
                             FailedRequestsDialog.HandleError("The following print requests failed to process.  This information has also been written to the local IRMA client log file.", failedPrintRequests, frmPricingPrintSignInfo.SlawApiErrorMessage)
                         ElseIf noTagItemsExcluded Then
-                            MsgBox("Print batch requests were not sent to SLAW for all items in these batches.  Please check the no-tag exclusion report for more detail.", MsgBoxStyle.Information, Me.Text)
+                            If Me.allItemsExcludedByNoTag Then
+                                MsgBox("All items removed by NoTag Exclusions, Print batch requests were not sent to SLAW .  Please check the no-tag exclusion report for more detail.", MsgBoxStyle.Information, Me.Text)
+                                logger.Info("All items removed by NoTag Exclusions, Print batch requests were not sent to SLAW.")
+                            Else
+                                MsgBox("Print batch requests were not sent to SLAW for all items in these batches.  Please check the no-tag exclusion report for more detail.", MsgBoxStyle.Information, Me.Text)
+                            End If
                         Else
                             MessageBox.Show("The print requests have been submitted successfully.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             _operationSucceededWhileIgnoringNoTagLogic = True
@@ -1521,6 +1533,7 @@ ExitSub:
 
         If frmPricingBatchDetail.NoTagItemsExcluded Then
             Me.noTagItemsExcluded = True
+            Me.allItemsExcludedByNoTag = frmPricingBatchDetail.AllItemsExcludedByNoTag
         End If
 
         frmPricingBatchDetail.Dispose()

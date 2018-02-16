@@ -57,6 +57,14 @@ Friend Class frmPricingBatchDetail
         End Get
     End Property
 
+    Dim _allItemsExcludedByNoTag As Boolean
+    ' flag to signal caller whether all batches were removed due to No-Tag logic
+    Public ReadOnly Property AllItemsExcludedByNoTag() As Boolean
+        Get
+            Return _allItemsExcludedByNoTag
+        End Get
+    End Property
+
     ' parameter which can be used to skip No-Tag logic when processing batches.
     ' value corresponds to the [disabled] checkbox shown in the GUI
     Public Property IgnoreNoTagLogic() As Boolean
@@ -342,7 +350,12 @@ ExitSub:
 
         ' If the region does manual tag printing and no-tag exclusions do exist...
         If isAutoSelectAllItems = False And isHideChildForm = False And Me.NoTagItemsExcluded Then
-            MsgBox("Print batch requests were not sent to SLAW for all items in your selection.  Please check the no-tag exclusion report for more detail.", MsgBoxStyle.Information, Me.Text)
+            If Me.AllItemsExcludedByNoTag Then
+                MsgBox("All items removed by NoTag Exclusions, Print batch requests were not sent to SLAW .  Please check the no-tag exclusion report for more detail.", MsgBoxStyle.Information, Me.Text)
+                logger.Info("All items removed by NoTag Exclusions, Print batch requests were not sent to SLAW.")
+            Else
+                MsgBox("Print batch requests were not sent to SLAW for all items in your selection.  Please check the no-tag exclusion report for more detail.", MsgBoxStyle.Information, Me.Text)
+            End If
         End If
 
         If lItem_Key.Length > 0 Then
@@ -389,6 +402,7 @@ ExitSub:
         Me._noTagLogicWasIgnored = byPassNoTagRules
         Me._noTagItemsExcluded = noTagLogic.ItemsExcluded
         lItem_Key = lItem_Key.Where(Function(i) Not noTagLogic.ExcludedItems.Contains(i)).ToArray()
+        Me._allItemsExcludedByNoTag = Not lItem_Key.Any()
     End Sub
 
     Private Sub frmPricingBatchDetail_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
