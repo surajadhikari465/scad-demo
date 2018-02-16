@@ -135,6 +135,12 @@ DECLARE
         ,@LogExceptionMsg varchar(2000)
 		,@now datetime
 
+		-- Disable triggers on vendor tables
+		ALTER TABLE [dbo].[Vendor] DISABLE TRIGGER ALL
+		ALTER TABLE [dbo].[ItemVendor] DISABLE TRIGGER ALL
+		ALTER TABLE [dbo].[StoreItemVendor] DISABLE TRIGGER ALL
+
+
 		SELECT
 			@LogSystemName = 'IRMA CLIENT'
 			,@LogAppName = 'InsertCloneStore'
@@ -1065,7 +1071,11 @@ DECLARE
 		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
-
+		--Enable all Triggers on vendor tables
+		ALTER TABLE [dbo].[Vendor] ENABLE TRIGGER ALL
+		ALTER TABLE [dbo].[ItemVendor] ENABLE TRIGGER ALL
+		ALTER TABLE [dbo].[StoreItemVendor] ENABLE TRIGGER ALL
+		
         ----------------------------------------------
         -- Commit the transaction
         ----------------------------------------------
@@ -1129,4 +1139,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[InsertCloneStore] TO [IRMAClientRole]
     AS [dbo];
-
