@@ -34,6 +34,7 @@ BEGIN
 			s.WFM_Store = 1
 			OR s.Mega_Store = 1
 			)
+		AND s.StoreJurisdictionID = 1
 		AND si.Authorized = 1
 		AND pbd.StartDate <= @today
 		AND (
@@ -131,12 +132,14 @@ BEGIN
 			OR s.Mega_Store = 1
 			)
 		AND s.Internal = 1
+		AND s.StoreJurisdictionID = 1
 		AND si.Authorized = 1
 		AND NOT (
 			pct.PriceChgTypeDesc IN (
 				'DIS'
 				,'CLR'
 				,'CMP'
+				,'FRC'
 				,'GSP'
 				,'EDV'
 				,'NEW'
@@ -163,8 +166,8 @@ BEGIN
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
 				THEN 'REG'
-			WHEN pct.PriceChgTypeDesc = 'GSP'
-				THEN 'EDV'
+			WHEN pct.PriceChgTypeDesc = 'FRC'
+				THEN 'CMP'
 			ELSE pct.PriceChgTypeDesc
 		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,CASE 
@@ -201,6 +204,7 @@ BEGIN
 			OR s.Mega_Store = 1
 			)
 		AND s.Internal = 1
+		AND s.StoreJurisdictionID = 1
 		AND si.Authorized = 1
 		AND p.POSSale_Price IS NOT NULL
 		AND @today BETWEEN p.Sale_Start_Date
@@ -209,6 +213,7 @@ BEGIN
 			'DIS'
 			,'CLR'
 			,'CMP'
+			,'FRC'
 			,'GSP'
 			,'EDV'
 			,'NEW'
@@ -231,9 +236,7 @@ BEGIN
 		,'TPR' AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'SAL'
-				THEN 'MSAL'
-			WHEN pct.PriceChgTypeDesc = 'FRC'
-				THEN 'MSAL'
+				THEN 'SSAL'
 			WHEN pct.PriceChgTypeDesc = 'FRZ'
 				THEN 'MSAL'
 			ELSE pct.PriceChgTypeDesc
@@ -268,6 +271,7 @@ BEGIN
 			OR s.Mega_Store = 1
 			)
 		AND s.Internal = 1
+		AND s.StoreJurisdictionID = 1
 		AND si.Authorized = 1
 		AND p.POSSale_Price IS NOT NULL
 		AND @today BETWEEN p.Sale_Start_Date
@@ -276,6 +280,7 @@ BEGIN
 			'DIS'
 			,'CLR'
 			,'CMP'
+			,'FRC'
 			,'GSP'
 			,'EDV'
 			,'NEW'
@@ -328,6 +333,7 @@ BEGIN
 			'DIS'
 			,'CLR'
 			,'CMP'
+			,'FRC'
 			,'GSP'
 			,'EDV'
 			,'NEW'
@@ -351,8 +357,8 @@ BEGIN
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
 				THEN 'REG'
-			WHEN pct.PriceChgTypeDesc = 'GSP'
-				THEN 'EDV'
+			WHEN pct.PriceChgTypeDesc = 'FRC'
+				THEN 'CMP'
 			ELSE pct.PriceChgTypeDesc
 		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,CASE 
@@ -386,6 +392,7 @@ BEGIN
 			'DIS'
 			,'CLR'
 			,'CMP'
+			,'FRC'
 			,'GSP'
 			,'EDV'
 			,'NEW'
@@ -408,9 +415,7 @@ BEGIN
 		,'TPR' AS 'PRICE_TYPE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'SAL'
-				THEN 'MSAL'
-			WHEN pct.PriceChgTypeDesc = 'FRC'
-				THEN 'MSAL'
+				THEN 'SSAL'
 			WHEN pct.PriceChgTypeDesc = 'FRZ'
 				THEN 'MSAL'
 			ELSE pct.PriceChgTypeDesc
@@ -441,6 +446,7 @@ BEGIN
 			,'DIS'
 			,'CLR'
 			,'CMP'
+			,'FRC'
 			,'GSP'
 			,'EDV'
 			,'NEW'
@@ -453,6 +459,7 @@ BEGIN
 					,'DIS'
 					,'CLR'
 					,'CMP'
+					,'FRC'
 					,'GSP'
 					,'EDV'
 					,'NEW'
