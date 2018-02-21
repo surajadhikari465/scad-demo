@@ -40,13 +40,7 @@ namespace Mammoth.ApiController.QueueProcessors
                   markQueuedEntriesAsInProcessCommandHandler,
                   producer)
         {
-            this.settings = settings;
-            esbMessageProperties = new Dictionary<string, string>
-            {
-                { "IconMessageID", "" },
-                { "Source", settings.Source },
-                { "nonReceivingSysName", settings.NonReceivingSystemsAll }
-            };
+            this.settings = settings;   
         }
 
         protected override MessageHistory BuildXmlMessage(string xml)

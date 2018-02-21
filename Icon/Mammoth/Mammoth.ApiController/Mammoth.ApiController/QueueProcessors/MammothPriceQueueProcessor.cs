@@ -43,6 +43,12 @@ namespace Mammoth.ApiController.QueueProcessors
                   settings)
         {
             messageTypeId = MessageTypes.Price;
+            esbMessageProperties = new Dictionary<string, string>
+            {
+                { "IconMessageID", "" },
+                { "Source", settings.Source },
+                { "nonReceivingSysName", settings.NonReceivingSystemsPrice }
+            };
         }
 
         protected override List<MessageQueuePrice> GetMessagesReadyToSerialize(List<MessageQueuePrice> messagesReadyForMiniBulk, Contracts.items miniBulk)
