@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns9="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns5="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns10="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns7="http://schema.infor.com/InforOAGIS/2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns8="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx8="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx7="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx8="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx7="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns5="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns7="http://schema.infor.com/InforOAGIS/2" xmlns:ns10="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns11="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:ns8="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Schemas/Application/Error.xsd"/>
+    <xsd:import namespace="http://schema.infor.com/InforOAGIS/2" schemaLocation="/SharedResources/Schemas/Infor/ConfirmBOD.xsd"/>
     <pd:name>Processes/PriceListener.process</pd:name>
     <pd:startName>PriceMessageReceiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -33,8 +34,8 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>890</pd:endX>
-    <pd:endY>514</pd:endY>
+    <pd:endX>897</pd:endX>
+    <pd:endY>538</pd:endY>
     <pd:errorSchemas>
         <OutOfSequence ref="pfx3:Error"/>
     </pd:errorSchemas>
@@ -104,8 +105,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>87</pd:x>
-        <pd:y>400</pd:y>
+        <pd:x>46</pd:x>
+        <pd:y>557</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -115,8 +116,8 @@
     <pd:activity name="Confirm on Error">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>233</pd:x>
-        <pd:y>510</pd:y>
+        <pd:x>318</pd:x>
+        <pd:y>559</pd:y>
         <config>
             <ConfirmEvent>PriceMessageReceiver</ConfirmEvent>
         </config>
@@ -156,8 +157,8 @@
     <pd:activity name="ProcessBODRequestION">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>85</pd:x>
-        <pd:y>560</pd:y>
+        <pd:x>157</pd:x>
+        <pd:y>422</pd:y>
         <config>
             <processName>/Processes/ProcessBODRequestION.process</processName>
             <spawn>true</spawn>
@@ -357,96 +358,14 @@
     <pd:activity name="Confirm BOD">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>312</pd:x>
-        <pd:y>370</pd:y>
+        <pd:x>210</pd:x>
+        <pd:y>686</pd:y>
         <config>
             <processName>/SharedResources/Processes/Confirm BOD.process</processName>
         </config>
         <pd:inputBindings>
             <Input>
-                <ns7:ConfirmBOD>
-                    <xsl:attribute name="releaseID">
-                        <xsl:value-of select="9.2"/>
-                    </xsl:attribute>
-                    <ns7:ApplicationArea>
-                        <ns7:CreationDateTime>
-                            <xsl:value-of select="current-dateTime()"/>
-                        </ns7:CreationDateTime>
-                    </ns7:ApplicationArea>
-                    <ns7:DataArea>
-                        <ns7:Confirm>
-                            <ns7:TenantID>
-                                <xsl:value-of select="&quot;Price Listener&quot;"/>
-                            </ns7:TenantID>
-                        </ns7:Confirm>
-                        <ns7:BOD>
-                            <xsl:if test="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message">
-                                <ns7:Description>
-                                    <xsl:value-of select="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message"/>
-                                </ns7:Description>
-                            </xsl:if>
-                            <ns7:BODFailureMessage>
-                                <xsl:choose>
-                                    <xsl:when test="exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)&#xA;and &#xA;$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ActionNotSupplied">
-                                        <ns7:ErrorProcessMessage>
-                                            <ns7:Type>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/DatabaseConstraint"/>
-                                            </ns7:Type>
-                                            <ns7:ReasonCode>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DatabaseError"/>
-                                            </ns7:ReasonCode>
-                                        </ns7:ErrorProcessMessage>
-                                    </xsl:when>
-                                    <xsl:when test="exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)">
-                                        <ns7:ErrorProcessMessage>
-                                            <ns7:Type>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/Schema"/>
-                                            </ns7:Type>
-                                            <ns7:ReasonCode>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/MappingError"/>
-                                            </ns7:ReasonCode>
-                                        </ns7:ErrorProcessMessage>
-                                    </xsl:when>
-                                    <xsl:when test="exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)">
-                                        <ns7:ErrorProcessMessage>
-                                            <ns7:Type>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/Schema"/>
-                                            </ns7:Type>
-                                            <ns7:ReasonCode>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/MappingError"/>
-                                            </ns7:ReasonCode>
-                                        </ns7:ErrorProcessMessage>
-                                    </xsl:when>
-                                    <xsl:when test="exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)&#xA;and &#xA;$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode =$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted">
-                                        <ns7:ErrorProcessMessage>
-                                            <ns7:Type>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/Data"/>
-                                            </ns7:Type>
-                                            <ns7:ReasonCode>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted"/>
-                                            </ns7:ReasonCode>
-                                        </ns7:ErrorProcessMessage>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <ns7:ErrorProcessMessage>
-                                            <ns7:Type>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/DatabaseConstraint"/>
-                                            </ns7:Type>
-                                            <ns7:ReasonCode>
-                                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DataError"/>
-                                            </ns7:ReasonCode>
-                                        </ns7:ErrorProcessMessage>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </ns7:BODFailureMessage>
-                            <ns7:OriginalBOD>
-                                <ns7:MessageContent>
-                                    <xsl:value-of select="concat(concat(&quot;&lt;[CDATA[&quot;,tib:string-to-base64( $PriceMessageReceiver/ns:ActivityOutput/Body)),&quot;]]>&quot;)"/>
-                                </ns7:MessageContent>
-                            </ns7:OriginalBOD>
-                        </ns7:BOD>
-                    </ns7:DataArea>
-                </ns7:ConfirmBOD>
+                <xsl:copy-of select="$Map-Confirm-BOD-Data/ns7:ConfirmBOD"/>
             </Input>
         </pd:inputBindings>
     </pd:activity>
@@ -483,7 +402,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>888</pd:x>
-        <pd:y>410</pd:y>
+        <pd:y>409</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -523,16 +442,16 @@
     <pd:activity name="Null">
         <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
         <pd:resourceType>ae.activities.null</pd:resourceType>
-        <pd:x>427</pd:x>
-        <pd:y>510</pd:y>
+        <pd:x>462</pd:x>
+        <pd:y>549</pd:y>
         <config/>
         <pd:inputBindings/>
     </pd:activity>
     <pd:activity name="Log Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>532</pd:x>
-        <pd:y>512</pd:y>
+        <pd:x>565</pd:x>
+        <pd:y>529</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -625,8 +544,8 @@
     <pd:activity name="Archive Message With Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>751</pd:x>
-        <pd:y>520</pd:y>
+        <pd:x>784</pd:x>
+        <pd:y>540</pd:y>
         <config>
             <processName>/Processes/ArchiveMessage.process</processName>
             <spawn>true</spawn>
@@ -699,8 +618,8 @@
     <pd:activity name="Publish Error Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>637</pd:x>
-        <pd:y>520</pd:y>
+        <pd:x>670</pd:x>
+        <pd:y>539</pd:y>
         <config>
             <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
             <spawn>true</spawn>
@@ -757,6 +676,242 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </pfx8:ErrorMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="LogProcessBODSent">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>310</pd:x>
+        <pd:y>425</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx7:AppLog>
+                <pfx7:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                </pfx7:AppId>
+                <pfx7:Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </pfx7:Level>
+                <pfx7:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:Logger>
+                <pfx7:UserName>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx7:UserName>
+                <pfx7:MachineName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </pfx7:MachineName>
+                <pfx7:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx7:LogDate>
+                <pfx7:Thread>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProcessId"/>
+                </pfx7:Thread>
+                <pfx7:Message>
+                    <xsl:value-of select="concat(&quot;Successfully sent Process BOD Request for MessageID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID,&#xA;&quot;.  PatchFamilyID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID,&#xA;&quot;. SequenceID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID,&#xA;&quot;. LastProcessedGpmSequenceID: &quot;, $Call-Message-Sequence-Validation/root/LastProcessedGpmSequenceID)"/>
+                </pfx7:Message>
+                <pfx7:CallSite>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:CallSite>
+            </pfx7:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="LogConfirmBODSent">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>461</pd:x>
+        <pd:y>689</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx7:AppLog>
+                <pfx7:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                </pfx7:AppId>
+                <pfx7:Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </pfx7:Level>
+                <pfx7:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:Logger>
+                <pfx7:UserName>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx7:UserName>
+                <pfx7:MachineName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </pfx7:MachineName>
+                <pfx7:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx7:LogDate>
+                <pfx7:Thread>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProcessId"/>
+                </pfx7:Thread>
+                <pfx7:Message>
+                    <xsl:value-of select="concat(&quot;Successfully sent Confirm BOD Request for MessageID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID,&#xA;&quot;.  PatchFamilyID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID,&#xA;&quot;. SequenceID: &quot;, $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID,&#xA;&quot;. Error.&quot;,$_error/pfx4:ErrorReport/Msg)"/>
+                </pfx7:Message>
+                <pfx7:CallSite>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/pfx4:ProcessContext/ProcessId)"/>
+                </pfx7:CallSite>
+            </pfx7:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Confirm BOD Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>77</pd:x>
+        <pd:y>695</pd:y>
+        <config>
+            <element ref="ns7:ConfirmBOD"/>
+        </config>
+        <pd:inputBindings>
+            <ns7:ConfirmBOD>
+                <xsl:attribute name="releaseID">
+                    <xsl:value-of select="9.2"/>
+                </xsl:attribute>
+                <ns7:ApplicationArea>
+                    <ns7:CreationDateTime>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns7:CreationDateTime>
+                </ns7:ApplicationArea>
+                <ns7:DataArea>
+                    <ns7:Confirm>
+                        <ns7:TenantID>
+                            <xsl:value-of select="&quot;Price Listener&quot;"/>
+                        </ns7:TenantID>
+                    </ns7:Confirm>
+                    <ns7:BOD>
+                        <xsl:if test="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message">
+                            <ns7:Description>
+                                <xsl:value-of select="$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ns8:Header/ns8:Message"/>
+                            </ns7:Description>
+                        </xsl:if>
+                        <ns7:BODFailureMessage>
+                            <xsl:choose>
+                                <xsl:when test="exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)&#xA;and &#xA;$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ActionNotSupplied">
+                                    <ns7:ErrorProcessMessage>
+                                        <ns7:Type>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/DatabaseConstraint"/>
+                                        </ns7:Type>
+                                        <ns7:ReasonCode>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DatabaseError"/>
+                                        </ns7:ReasonCode>
+                                    </ns7:ErrorProcessMessage>
+                                </xsl:when>
+                                <xsl:when test="exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)">
+                                    <ns7:ErrorProcessMessage>
+                                        <ns7:Type>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/Schema"/>
+                                        </ns7:Type>
+                                        <ns7:ReasonCode>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/MappingError"/>
+                                        </ns7:ReasonCode>
+                                    </ns7:ErrorProcessMessage>
+                                </xsl:when>
+                                <xsl:when test="exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)">
+                                    <ns7:ErrorProcessMessage>
+                                        <ns7:Type>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/Schema"/>
+                                        </ns7:Type>
+                                        <ns7:ReasonCode>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/MappingError"/>
+                                        </ns7:ReasonCode>
+                                    </ns7:ErrorProcessMessage>
+                                </xsl:when>
+                                <xsl:when test="exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)&#xA;and &#xA;$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode =$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted">
+                                    <ns7:ErrorProcessMessage>
+                                        <ns7:Type>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/Data"/>
+                                        </ns7:Type>
+                                        <ns7:ReasonCode>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted"/>
+                                        </ns7:ReasonCode>
+                                    </ns7:ErrorProcessMessage>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <ns7:ErrorProcessMessage>
+                                        <ns7:Type>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorTypes/DatabaseConstraint"/>
+                                        </ns7:Type>
+                                        <ns7:ReasonCode>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DataError"/>
+                                        </ns7:ReasonCode>
+                                    </ns7:ErrorProcessMessage>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </ns7:BODFailureMessage>
+                        <ns7:OriginalBOD>
+                            <ns7:MessageContent>
+                                <xsl:value-of select="concat(concat(&quot;&lt;[CDATA[&quot;,tib:string-to-base64( $PriceMessageReceiver/ns:ActivityOutput/Body)),&quot;]]>&quot;)"/>
+                            </ns7:MessageContent>
+                        </ns7:OriginalBOD>
+                    </ns7:BOD>
+                </ns7:DataArea>
+            </ns7:ConfirmBOD>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ArchiveConfirmBODMessage">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>326</pd:x>
+        <pd:y>689</pd:y>
+        <config>
+            <processName>/Processes/SaveToMammothMessageArchiveTable.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <Body>
+                    <xsl:value-of select="tib:render-xml($Map-Confirm-BOD-Data/ns7:ConfirmBOD, 1)"/>
+                </Body>
+                <ns11:MessageHeaders>
+                    <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID">
+                        <ns11:TransactionID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                        </ns11:TransactionID>
+                    </xsl:if>
+                    <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID">
+                        <ns11:CorrelationID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                        </ns11:CorrelationID>
+                    </xsl:if>
+                    <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID">
+                        <ns11:SequenceID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
+                        </ns11:SequenceID>
+                    </xsl:if>
+                    <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType">
+                        <ns11:TransactionType>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType"/>
+                        </ns11:TransactionType>
+                    </xsl:if>
+                    <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source">
+                        <ns11:Source>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source"/>
+                        </ns11:Source>
+                    </xsl:if>
+                    <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName">
+                        <ns11:nonReceivingSysName>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName"/>
+                        </ns11:nonReceivingSysName>
+                    </xsl:if>
+                    <xsl:if test="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag">
+                        <ns11:ResetFlag>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag"/>
+                        </ns11:ResetFlag>
+                    </xsl:if>
+                </ns11:MessageHeaders>
+                <MessageID>
+                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                </MessageID>
+                <MessageTypeName>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/MessageTypeNames/ConfirmBOD"/>
+                </MessageTypeName>
+            </Input>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -863,47 +1018,11 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>ProcessBODRequestION</pd:from>
-        <pd:to>Confirm on Error</pd:to>
-        <pd:lineType>Straight</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Catch</pd:from>
         <pd:to>Confirm on Error</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Confirm on Error</pd:from>
-        <pd:to>Confirm BOD</pd:to>
-        <pd:xpathDescription>Data Or DB Errors</pd:xpathDescription>
-        <pd:lineType>Straight</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)
-or
-(
-exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)
-and (
-$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode =$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted
-or
-$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DataError
-or
-$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DatabaseError
-or
-$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ActionNotSupplied 
-)
-)</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Confirm BOD</pd:from>
-        <pd:to>Null</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Archive Message</pd:from>
@@ -978,5 +1097,69 @@ $_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariab
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ProcessBODRequestION</pd:from>
+        <pd:to>LogProcessBODSent</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogProcessBODSent</pd:from>
+        <pd:to>Confirm on Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogConfirmBODSent</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm on Error</pd:from>
+        <pd:to>Map Confirm BOD Data</pd:to>
+        <pd:xpathDescription>Data Or DB Errors </pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)
+or
+(
+exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)
+and (
+$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode =$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted
+or
+$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DataError
+or
+$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DatabaseError
+or
+$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ActionNotSupplied 
+)
+)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Confirm BOD Data</pd:from>
+        <pd:to>Confirm BOD</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm BOD</pd:from>
+        <pd:to>ArchiveConfirmBODMessage</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ArchiveConfirmBODMessage</pd:from>
+        <pd:to>LogConfirmBODSent</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

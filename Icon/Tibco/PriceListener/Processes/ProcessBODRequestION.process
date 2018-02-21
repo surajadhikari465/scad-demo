@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schema.infor.com/InforOAGIS/2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/PriceChangeMaster.xsd">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/ProcessPriceChangePatchMaster.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schema.infor.com/InforOAGIS/2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx8="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Infor/PriceSchemas/derivative/PriceChangeMaster.xsd">
     <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
@@ -24,20 +24,20 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>49</pd:startX>
-    <pd:startY>222</pd:startY>
+    <pd:startX>36</pd:startX>
+    <pd:startY>360</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>766</pd:endX>
-    <pd:endY>248</pd:endY>
+    <pd:endX>801</pd:endX>
+    <pd:endY>374</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1499349598177</pd:targetNamespace>
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>230</pd:x>
-        <pd:y>468</pd:y>
+        <pd:x>444</pd:x>
+        <pd:y>678</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -47,8 +47,8 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>610</pd:x>
-        <pd:y>468</pd:y>
+        <pd:x>808</pd:x>
+        <pd:y>682</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -66,10 +66,10 @@
     <pd:group name="Loop">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>183</pd:x>
-        <pd:y>41</pd:y>
-        <pd:width>402</pd:width>
-        <pd:height>373</pd:height>
+        <pd:x>180</pd:x>
+        <pd:y>98</pd:y>
+        <pd:width>552</pd:width>
+        <pd:height>535</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -92,8 +92,15 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Group</pd:from>
+            <pd:from>ArchiveProcessBODMessage</pd:from>
             <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Group</pd:from>
+            <pd:to>ArchiveProcessBODMessage</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -101,10 +108,10 @@
         <pd:group name="Group">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>219</pd:x>
-            <pd:y>81</pd:y>
+            <pd:x>237</pd:x>
+            <pd:y>130</pd:y>
             <pd:width>339</pd:width>
-            <pd:height>302</pd:height>
+            <pd:height>476</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
             <pd:collapsedHeight>70</pd:collapsedHeight>
             <pd:groupVariables/>
@@ -120,7 +127,7 @@
             <pd:expanded>true</pd:expanded>
             <pd:transition>
                 <pd:from>start</pd:from>
-                <pd:to>Send to Process BOD Queue</pd:to>
+                <pd:to>Map PriceChangeMaster</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
@@ -147,11 +154,18 @@
                 <pd:lineColor>-52429</pd:lineColor>
                 <pd:conditionType>error</pd:conditionType>
             </pd:transition>
+            <pd:transition>
+                <pd:from>Map PriceChangeMaster</pd:from>
+                <pd:to>Send to Process BOD Queue</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
             <pd:activity name="Generate Error">
                 <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
                 <pd:resourceType>ae.activities.throw</pd:resourceType>
-                <pd:x>464</pd:x>
-                <pd:y>273</pd:y>
+                <pd:x>497</pd:x>
+                <pd:y>507</pd:y>
                 <config>
                     <faultName/>
                 </config>
@@ -171,8 +185,8 @@
             <pd:activity name="Sleep">
                 <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
                 <pd:resourceType>ae.activities.sleep</pd:resourceType>
-                <pd:x>324</pd:x>
-                <pd:y>272</pd:y>
+                <pd:x>377</pd:x>
+                <pd:y>510</pd:y>
                 <config/>
                 <pd:inputBindings>
                     <ns1:SleepInputSchema>
@@ -185,8 +199,8 @@
             <pd:activity name="Send to Process BOD Queue">
                 <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-                <pd:x>322</pd:x>
-                <pd:y>159</pd:y>
+                <pd:x>379</pd:x>
+                <pd:y>382</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -239,33 +253,100 @@
                             </xsl:if>
                         </OtherProperties>
                         <Body>
-                            <PriceChangeMaster>
-                                <xsl:attribute name="isCheckPoint">
-                                    <xsl:value-of select="false()"/>
-                                </xsl:attribute>
-                                <BusinessKey>
-                                    <xsl:attribute name="variationID">
-                                        <xsl:value-of select="0"/>
-                                    </xsl:attribute>
-                                    <xsl:value-of select="&quot;00000000-0000-4000-8000-000000000000&quot;"/>
-                                </BusinessKey>
-                                <PriceChangeHeader>
-                                    <PatchFamilyID>
-                                        <xsl:value-of select="$Start/Input/PatchFamilyID"/>
-                                    </PatchFamilyID>
-                                    <PatchNum>
-                                        <xsl:value-of select="$Start/Input/LastProcessedGpmSequenceId + $sequenceIndex"/>
-                                    </PatchNum>
-                                    <TimeStamp>
-                                        <xsl:value-of select="current-dateTime()"/>
-                                    </TimeStamp>
-                                </PriceChangeHeader>
-                            </PriceChangeMaster>
+                            <xsl:copy-of select="$Map-PriceChangeMaster/PriceChangeMaster"/>
                         </Body>
                     </ns0:ActivityInput>
                 </pd:inputBindings>
             </pd:activity>
+            <pd:activity name="Map PriceChangeMaster">
+                <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+                <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+                <pd:x>385</pd:x>
+                <pd:y>204</pd:y>
+                <config>
+                    <element ref="pfx6:PriceChangeMaster"/>
+                </config>
+                <pd:inputBindings>
+                    <PriceChangeMaster>
+                        <xsl:attribute name="isCheckPoint">
+                            <xsl:value-of select="false()"/>
+                        </xsl:attribute>
+                        <BusinessKey>
+                            <xsl:attribute name="variationID">
+                                <xsl:value-of select="0"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="&quot;00000000-0000-4000-8000-000000000000&quot;"/>
+                        </BusinessKey>
+                        <PriceChangeHeader>
+                            <PatchFamilyID>
+                                <xsl:value-of select="$Start/Input/PatchFamilyID"/>
+                            </PatchFamilyID>
+                            <PatchNum>
+                                <xsl:value-of select="$Start/Input/LastProcessedGpmSequenceId + $sequenceIndex"/>
+                            </PatchNum>
+                            <TimeStamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </TimeStamp>
+                        </PriceChangeHeader>
+                    </PriceChangeMaster>
+                </pd:inputBindings>
+            </pd:activity>
         </pd:group>
+        <pd:activity name="ArchiveProcessBODMessage">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>643</pd:x>
+            <pd:y>375</pd:y>
+            <config>
+                <spawn>true</spawn>
+                <processName>/Processes/SaveToMammothMessageArchiveTable.process</processName>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <Body>
+                        <xsl:value-of select="tib:render-xml($Map-PriceChangeMaster/PriceChangeMaster,1)"/>
+                    </Body>
+                    <ns3:MessageHeaders>
+                        <xsl:if test="$Start/Input/MessageID">
+                            <ns3:TransactionID>
+                                <xsl:value-of select="$Start/Input/MessageID"/>
+                            </ns3:TransactionID>
+                        </xsl:if>
+                        <xsl:if test="$Start/Input/PatchFamilyID">
+                            <ns3:CorrelationID>
+                                <xsl:value-of select="$Start/Input/PatchFamilyID"/>
+                            </ns3:CorrelationID>
+                        </xsl:if>
+                        <xsl:if test="$Start/Input/SequenceID">
+                            <ns3:SequenceID>
+                                <xsl:value-of select="$Start/Input/SequenceID"/>
+                            </ns3:SequenceID>
+                        </xsl:if>
+                        <xsl:if test="$Start/Input/TransactionType">
+                            <ns3:TransactionType>
+                                <xsl:value-of select="$Start/Input/TransactionType"/>
+                            </ns3:TransactionType>
+                        </xsl:if>
+                        <xsl:if test="$Start/Input/Source">
+                            <ns3:Source>
+                                <xsl:value-of select="$Start/Input/Source"/>
+                            </ns3:Source>
+                        </xsl:if>
+                        <xsl:if test="$Start/Input/ResetFlag">
+                            <ns3:ResetFlag>
+                                <xsl:value-of select="$Start/Input/ResetFlag"/>
+                            </ns3:ResetFlag>
+                        </xsl:if>
+                    </ns3:MessageHeaders>
+                    <MessageID>
+                        <xsl:value-of select="$Start/Input/MessageID"/>
+                    </MessageID>
+                    <MessageTypeName>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/MessageTypeNames/ProcessBod"/>
+                    </MessageTypeName>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
     </pd:group>
     <pd:transition>
         <pd:from>Catch</pd:from>
