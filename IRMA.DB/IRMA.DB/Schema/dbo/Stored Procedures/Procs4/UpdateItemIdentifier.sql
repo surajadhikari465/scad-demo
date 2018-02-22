@@ -12,6 +12,7 @@ AS
 	DECLARE @NumPluDigitsSentToScaleUpdated bit = 0
 	DECLARE @Scale_IdentifierUpdated bit
 	DECLARE @Identifier varchar(50)
+	DECLARE @DefaultIdentifierUpdated bit
 
 	SELECT	@NumPluDigitsSentToScaleUpdated = CASE WHEN @NumPluDigitsSentToScale IS NOT NULL AND NumPluDigitsSentToScale IS NOT NULL AND NumPluDigitsSentToScale <> @NumPluDigitsSentToScaleUpdated
 														 THEN 1
@@ -23,7 +24,12 @@ AS
 											WHEN (@Scale_Identifier IS NULL AND  @Scale_Identifier IS NOT NULL) OR (@Scale_Identifier IS NOT NULL AND  @Scale_Identifier IS NULL) THEN 1
 											ELSE 0
 										END,
-			 @Identifier = Identifier
+			 @Identifier = Identifier,
+			 @DefaultIdentifierUpdated = CASE 
+											 WHEN Default_Identifier<>@DefaultID AND Identifier_ID = @Identifier_ID
+												THEN 1
+												ELSE 0
+										 END
 	FROM ItemIdentifier
 	WHERE
 		Item_Key = @Item_Key and Identifier_ID = @Identifier_ID
@@ -54,7 +60,7 @@ AS
 
 
 	--
-	IF @NumPluDigitsSentToScaleUpdated  = 1 or @Scale_IdentifierUpdated = 1
+	IF @NumPluDigitsSentToScaleUpdated  = 1 or @Scale_IdentifierUpdated = 1 or @DefaultIdentifierUpdated = 1
 	BEGIN
 		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemLocaleAddOrUpdate', @Identifier, NULL
 	END
