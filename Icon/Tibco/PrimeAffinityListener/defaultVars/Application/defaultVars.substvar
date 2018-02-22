@@ -34,6 +34,14 @@
 			<modTime>1516054848885</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>ExcludedSubTeamNumbers</name>
+			<value>2100,2200,2220</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1518725789182</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>PrimeAffinityPsg</name>
 			<value>PrimeAffinity</value>
 			<deploymentSettable>true</deploymentSettable>

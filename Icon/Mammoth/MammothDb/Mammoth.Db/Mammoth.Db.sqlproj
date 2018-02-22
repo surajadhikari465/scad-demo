@@ -753,8 +753,8 @@
     <None Include="Scripts\PostDeploymentScripts\AddVendorRelatedCodesToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddAltRetailSizeUomCodesToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
-    <Build Include="esb\Tables\MessageArchivePrimeAffinity.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddProcessBODConfirmBODMessageType.sql" />
+    <Build Include="esb\Tables\MessageArchiveDetailPrimePsg.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

@@ -141,8 +141,8 @@
         <pd:activity name="ErrorLogPublisher">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>461</pd:x>
-            <pd:y>250</pd:y>
+            <pd:x>480</pd:x>
+            <pd:y>248</pd:y>
             <config>
                 <processName>/SharedResources/Processes/LogPublisher.process</processName>
                 <spawn>true</spawn>
@@ -184,7 +184,7 @@
             <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
             <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
             <pd:x>467</pd:x>
-            <pd:y>119</pd:y>
+            <pd:y>118</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
                 <SessionAttributes>

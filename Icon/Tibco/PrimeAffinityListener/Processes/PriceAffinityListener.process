@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns5="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:pfx="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns8="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx6="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns9="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:ns5="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:pfx="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns8="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx6="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Item/Item.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Item/ItemAttributesStore.xsd"/>
@@ -19,7 +19,7 @@
                 <transacted>false</transacted>
                 <acknowledgeMode>1</acknowledgeMode>
                 <maxSessions>1</maxSessions>
-                <destination>%%Destinations/PriceMammothTopic%%</destination>
+                <destination>%%Destinations/MammothPsgQueue%%</destination>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
@@ -32,8 +32,8 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>960</pd:endX>
-    <pd:endY>281</pd:endY>
+    <pd:endX>1171</pd:endX>
+    <pd:endY>352</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1516052169663</pd:targetNamespace>
@@ -70,7 +70,7 @@
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
         <pd:x>276</pd:x>
-        <pd:y>54</pd:y>
+        <pd:y>53</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -86,14 +86,14 @@
     <pd:activity name="Map Mammoth Schema to WFM Schema">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>548</pd:x>
+        <pd:x>760</pd:x>
         <pd:y>67</pd:y>
         <config>
             <element ref="pfx3:items"/>
         </config>
         <pd:inputBindings>
             <pfx3:items>
-                <xsl:for-each select="$Filter-Prices-To-TPRs/pfx2:MammothPrices/pfx2:MammothPrice">
+                <xsl:for-each select="$Filter-Prices-By-Excluded-SubTeams/pfx2:MammothPrices/pfx2:MammothPrice">
                     <pfx3:item>
                         <xsl:attribute name="ns4:Action">
                             <xsl:value-of select="pfx2:Action"/>
@@ -164,10 +164,10 @@
             </pfx3:items>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="JMS Queue Sender">
+    <pd:activity name="Send Prices to R10">
         <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
         <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-        <pd:x>818</pd:x>
+        <pd:x>1030</pd:x>
         <pd:y>61</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
@@ -175,7 +175,7 @@
                 <transacted>false</transacted>
                 <acknowledgeMode>1</acknowledgeMode>
                 <maxSessions>1</maxSessions>
-                <destination>%%Destinations/PriceR10Queue%%</destination>
+                <destination>WFMESB.Commerce.Retail.ItemMgmt.Item.Queue.V2</destination>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
@@ -197,7 +197,7 @@
     <pd:activity name="Log PSG Sent">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>957</pd:x>
+        <pd:x>1169</pd:x>
         <pd:y>67</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -226,8 +226,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>67</pd:x>
-        <pd:y>273</pd:y>
+        <pd:x>57</pd:x>
+        <pd:y>344</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -237,8 +237,8 @@
     <pd:activity name="Log Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>265</pd:x>
-        <pd:y>274</pd:y>
+        <pd:x>255</pd:x>
+        <pd:y>345</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -263,8 +263,8 @@
     <pd:activity name="Publish Error Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>406</pd:x>
-        <pd:y>283</pd:y>
+        <pd:x>396</pd:x>
+        <pd:y>354</pd:y>
         <config>
             <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
             <spawn>true</spawn>
@@ -326,7 +326,7 @@
     <pd:activity name="Render XML">
         <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
         <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
-        <pd:x>680</pd:x>
+        <pd:x>892</pd:x>
         <pd:y>62</pd:y>
         <config>
             <renderAsText>text</renderAsText>
@@ -343,7 +343,7 @@
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
         <pd:x>396</pd:x>
-        <pd:y>67</pd:y>
+        <pd:y>64</pd:y>
         <config>
             <element ref="pfx2:MammothPrices"/>
         </config>
@@ -411,6 +411,11 @@
                         <pfx2:ScanCode>
                             <xsl:value-of select="pfx2:ScanCode"/>
                         </pfx2:ScanCode>
+                        <xsl:if test="pfx2:SubTeamNumber">
+                            <pfx2:SubTeamNumber>
+                                <xsl:value-of select="pfx2:SubTeamNumber"/>
+                            </pfx2:SubTeamNumber>
+                        </xsl:if>
                     </pfx2:MammothPrice>
                 </xsl:for-each>
             </pfx2:MammothPrices>
@@ -419,8 +424,8 @@
     <pd:activity name="Log No TPRs Found">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>397</pd:x>
-        <pd:y>186</pd:y>
+        <pd:x>398</pd:x>
+        <pd:y>256</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -445,22 +450,110 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>959</pd:x>
-        <pd:y>190</pd:y>
+        <pd:x>1168</pd:x>
+        <pd:y>206</pd:y>
         <config>
             <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
         </config>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:activity name="Confirm Error">
-        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
-        <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>868</pd:x>
-        <pd:y>279</pd:y>
+    <pd:activity name="Log No Prices after SubTeam Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>562</pd:x>
+        <pd:y>189</pd:y>
         <config>
-            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
         </config>
-        <pd:inputBindings/>
+        <pd:inputBindings>
+            <ns:AppLog>
+                <ns:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                </ns:AppId>
+                <ns:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns:LogDate>
+                <ns:Message>
+                    <xsl:value-of select="concat('{',&#xA;&#x9;concat('&quot;LogMessage&quot;:', '&quot;No TPRs found in Price Message not associated to Excluded SubTeams [', $_globalVariables/ns1:GlobalVariables/Application/ExcludedSubTeamNumbers, '] so no PSGs sent to R10.&quot;,'),&#xA;&#x9;concat('&quot;TransactionID&quot;:', '&quot;',$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionID, '&quot;'),&#xA;&#x9;'}')"/>
+                </ns:Message>
+            </ns:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Filter Prices By Excluded SubTeams">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>560</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <processName>/Processes/FilterPricesByExcludedSubTeams.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Filter-Prices-To-TPRs/pfx2:MammothPrices"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Archive Sent Messages">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1307</pd:x>
+        <pd:y>282</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/Processes/ArchiveSentMessage.process</processName>
+        </config>
+        <pd:inputBindings>
+            <MessageData>
+                <MessageID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionID"/>
+                </MessageID>
+                <MessageBody>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </MessageBody>
+                <ns9:MessageHeaders>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionID">
+                        <ns9:TransactionID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionID"/>
+                        </ns9:TransactionID>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionID">
+                        <ns9:MammothMessageID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionID"/>
+                        </ns9:MammothMessageID>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/CorrelationID">
+                        <ns9:CorrelationID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/CorrelationID"/>
+                        </ns9:CorrelationID>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/SequenceID">
+                        <ns9:SequenceID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/SequenceID"/>
+                        </ns9:SequenceID>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionType">
+                        <ns9:TransactionType>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionType"/>
+                        </ns9:TransactionType>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/Source">
+                        <ns9:Source>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/Source"/>
+                        </ns9:Source>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/nonReceivingSysName">
+                        <ns9:nonReceivingSysName>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/nonReceivingSysName"/>
+                        </ns9:nonReceivingSysName>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/ResetFlag">
+                        <ns9:ResetFlag>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/ResetFlag"/>
+                        </ns9:ResetFlag>
+                    </xsl:if>
+                </ns9:MessageHeaders>
+                <xsl:copy-of select="$Filter-Prices-By-Excluded-SubTeams/pfx2:MammothPrices"/>
+            </MessageData>
+        </pd:inputBindings>
     </pd:activity>
     <pd:transition>
         <pd:from>JMS Queue Receiver</pd:from>
@@ -477,7 +570,7 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>JMS Queue Sender</pd:from>
+        <pd:from>Send Prices to R10</pd:from>
         <pd:to>Log PSG Sent</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -505,13 +598,6 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Publish Error Message</pd:from>
-        <pd:to>Confirm Error</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Map Mammoth Schema to WFM Schema</pd:from>
         <pd:to>Render XML</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -520,7 +606,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Render XML</pd:from>
-        <pd:to>JMS Queue Sender</pd:to>
+        <pd:to>Send Prices to R10</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -531,13 +617,6 @@
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Filter Prices To TPRs</pd:from>
-        <pd:to>Map Mammoth Schema to WFM Schema</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Filter Prices To TPRs</pd:from>
@@ -556,7 +635,44 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Confirm Error</pd:from>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log No Prices after SubTeam Filter</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Filter Prices To TPRs</pd:from>
+        <pd:to>Filter Prices By Excluded SubTeams</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Filter Prices By Excluded SubTeams</pd:from>
+        <pd:to>Log No Prices after SubTeam Filter</pd:to>
+        <pd:xpathDescription>No Prices</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>not(exists($Filter-Prices-By-Excluded-SubTeams/pfx2:MammothPrices/pfx2:MammothPrice))</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Filter Prices By Excluded SubTeams</pd:from>
+        <pd:to>Map Mammoth Schema to WFM Schema</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Publish Error Message</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -564,6 +680,15 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Confirm</pd:from>
+        <pd:to>Archive Sent Messages</pd:to>
+        <pd:xpathDescription>Prices Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Filter-Prices-By-Excluded-SubTeams/pfx2:MammothPrices/pfx2:MammothPrice)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Archive Sent Messages</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>JndiPassword</name>
+			<value>#!SkAyGM7eLNwPvBELfIlQiAhyd4bTSLoYkzQAwlxuuY3Tv1IphARIMA==</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1518792574279</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>JndiUsername</name>
+			<value>jndiIconUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1518792574380</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>#!1j/c+rAhzWTEYJKTPAJ1rTI0SetEfzKUFym0Dxiq+3r4ftEERZMnGQ==</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1518792574472</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Username</name>
+			<value>iconUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1518792574564</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

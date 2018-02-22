@@ -26,3 +26,6 @@ GRANT EXECUTE on [esb].[MarkMessageQueueItemLocaleEntriesAsInProcess]	to [Mammot
 GRANT SELECT on SCHEMA::[app] to [WFM\IRMA.Developers]
 GRANT SELECT on SCHEMA::[dbo] to [WFM\IRMA.Developers]
 GRANT SELECT on SCHEMA::[esb] to [WFM\IRMA.Developers]
+
+-- TIBCO Role
+GRANT SELECT, UPDATE, INSERT, DELETE on SCHEMA::[esb]	to [TibcoRole];

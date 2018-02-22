@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:Mammoth="java://WfmSharedFunctions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/JMS Message/MessageHeaders.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
+    <pd:name>Processes/ArchiveSentMessage.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="MessageData">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MessageID" type="xsd:string"/>
+                    <xsd:element name="MessageBody" type="xsd:string"/>
+                    <xsd:element ref="pfx:MessageHeaders"/>
+                    <xsd:element ref="pfx2:MammothPrices"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>129</pd:startX>
+    <pd:startY>102</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>968</pd:endX>
+    <pd:endY>109</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1519259419400</pd:targetNamespace>
+    <pd:activity name="Insert Message Details">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>771</pd:x>
+        <pd:y>112</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <batchUpdate>true</batchUpdate>
+            <statement>INSERT INTO esb.MessageArchiveDetailPrimePsg(
+	MessageAction
+	,Region
+	,ItemID
+	,BusinessUnitID
+	,MessageID
+	,JsonObject)
+VALUES(?, ?, ?, ?, ?, ?)</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MessageAction</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Region</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ItemID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>BusinessUnitID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>JsonObject</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <xsl:for-each select="$MammothPrices/AccumulatedOutput/MammothPrices/pfx2:MammothPrice">
+                    <Record>
+                        <xsl:choose>
+                            <xsl:when test="tib:compare-date(current()/pfx2:EndDate, current-date()) = -1">
+                                <MessageAction>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ActionDelete"/>
+                                </MessageAction>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <MessageAction>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ActionAddOrUpdate"/>
+                                </MessageAction>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <Region>
+                            <xsl:value-of select="pfx2:Region"/>
+                        </Region>
+                        <ItemID>
+                            <xsl:value-of select="pfx2:ItemId"/>
+                        </ItemID>
+                        <BusinessUnitID>
+                            <xsl:value-of select="pfx2:BusinessUnit"/>
+                        </BusinessUnitID>
+                        <MessageID>
+                            <xsl:value-of select="$Start/MessageData/MessageID"/>
+                        </MessageID>
+                        <JsonObject>
+                            <xsl:value-of select="../MammothPriceJson"/>
+                        </JsonObject>
+                    </Record>
+                </xsl:for-each>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Archive Message">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>638</pd:x>
+        <pd:y>282</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            <statement>INSERT INTO esb.MessageArchive(
+	MessageID
+	,MessageTypeID
+	,MessageStatusID
+	,MessageHeadersJson
+	,MessageBody)
+SELECT 
+?,
+(SELECT MessageTypeId FROM esb.MessageType WHERE MessageTypeName = 'Price') as MessageTypeID,
+(SELECT MessageStatusId FROM esb.MessageStatus WHERE MessageStatusName = 'Sent') as MessageStatusID,
+?,
+?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MessageID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageHeadersJson</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageBody</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <MessageID>
+                    <xsl:value-of select="$Start/MessageData/MessageID"/>
+                </MessageID>
+                <MessageHeadersJson>
+                    <xsl:value-of select="$Render-Message-Headers-JSON/ns:ActivityOutputClass/jsonString"/>
+                </MessageHeadersJson>
+                <MessageBody>
+                    <xsl:value-of select="Mammoth:replace($Start/MessageData/MessageBody, 'UTF-8', 'UTF-16')"/>
+                </MessageBody>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Message Headers JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>374</pd:x>
+        <pd:y>291</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx:MessageHeaders"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:copy-of select="$Start/MessageData/pfx:MessageHeaders"/>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Iterate Prices">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>333</pd:x>
+        <pd:y>16</pd:y>
+        <pd:width>348</pd:width>
+        <pd:height>155</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/MessageData/pfx2:MammothPrices/pfx2:MammothPrice</pd:over>
+            <pd:iterationElementSlot>MammothPrice</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>MammothPrices</pd:outSlot>
+            <pd:activityOutputName>Associate Mammoth Price to JSON</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Render Mammoth Price JSON</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Associate Mammoth Price to JSON</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Render Mammoth Price JSON</pd:from>
+            <pd:to>Associate Mammoth Price to JSON</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Render Mammoth Price JSON">
+            <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+            <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+            <pd:x>430</pd:x>
+            <pd:y>93</pd:y>
+            <config>
+                <SchemaType>xsdType</SchemaType>
+                <BadgerfishCheck>false</BadgerfishCheck>
+                <ActivityInputEditor ref="pfx2:MammothPrice"/>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInputClass>
+                    <xsl:copy-of select="$MammothPrice/pfx2:MammothPrice"/>
+                </ns:ActivityInputClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Associate Mammoth Price to JSON">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>580</pd:x>
+            <pd:y>96</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="MammothPrices">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx2:MammothPrice"/>
+                                <xsd:element name="MammothPriceJson" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <MammothPrices>
+                    <xsl:copy-of select="$MammothPrice/pfx2:MammothPrice"/>
+                    <MammothPriceJson>
+                        <xsl:value-of select="$Render-Mammoth-Price-JSON/ns:ActivityOutputClass/jsonString"/>
+                    </MammothPriceJson>
+                </MammothPrices>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Archive Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert Message Details</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Message Headers JSON</pd:from>
+        <pd:to>Archive Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Iterate Prices</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Iterate Prices</pd:from>
+        <pd:to>Insert Message Details</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Render Message Headers JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

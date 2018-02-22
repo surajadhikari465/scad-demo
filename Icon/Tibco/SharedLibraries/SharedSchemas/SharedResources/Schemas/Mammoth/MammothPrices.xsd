@@ -32,6 +32,7 @@
 			<xs:element name="ItemTypeCode" type="xs:string"/>
 			<xs:element name="StoreName" type="xs:string"/>
 			<xs:element name="ScanCode" type="xs:string"/>
+			<xs:element name="SubTeamNumber" type="xs:int" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

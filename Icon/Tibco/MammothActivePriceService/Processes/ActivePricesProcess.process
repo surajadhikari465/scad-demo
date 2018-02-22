@@ -227,7 +227,8 @@
 	ModifiedDateUtc,
 	it.itemTypeCode as itemTypeCode,
 	Items.ScanCode as ScanCode,
-	lc.StoreName as StoreName
+	lc.StoreName as StoreName,
+	PSNumber as SubTeamNumber
 FROM gpm.Prices p
 INNER JOIN Items on Items.ItemID = p.ItemID
 INNER JOIN ItemTypes it on Items.ItemTypeID = it.itemTypeID
@@ -334,6 +335,10 @@ WHERE p.Region = ?
                 <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SubTeamNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
                 <jdbcQueryActivityInput>
@@ -485,6 +490,9 @@ WHERE p.Region = ?
                                 <pfx3:ScanCode>
                                     <xsl:value-of select="ScanCode"/>
                                 </pfx3:ScanCode>
+                                <pfx3:SubTeamNumber>
+                                    <xsl:value-of select="SubTeamNumber"/>
+                                </pfx3:SubTeamNumber>
                             </pfx3:MammothPrice>
                         </xsl:for-each>
                     </pfx3:MammothPrices>
@@ -606,6 +614,9 @@ WHERE p.Region = ?
                                     <pfx3:ScanCode>
                                         <xsl:value-of select="ScanCode"/>
                                     </pfx3:ScanCode>
+                                    <pfx3:SubTeamNumber>
+                                        <xsl:value-of select="SubTeamNumber"/>
+                                    </pfx3:SubTeamNumber>
                                 </pfx3:MammothPrice>
                             </xsl:for-each>
                         </pfx3:MammothPrices>

@@ -1,6 +1,6 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Wed Feb 14 13:24:40 CST 2018
+#Wed Feb 21 17:57:30 CST 2018
 5=SharedJmsConnections.projlib1\=
 4=SharedLogPublisher.projlib1\=
 3=SharedErrorPublisher.projlib1\=

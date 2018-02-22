@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/PriceMessageArchive.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MessageArchive.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/PriceMessageArchive.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MessageArchive.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageArchive.xsd" schemaLocation="/Schemas/Application/MessageArchive.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/PriceMessageArchive.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/PriceMessageArchive.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Item/Item.xsd"/>
@@ -57,7 +57,7 @@
     <pd:activity name="JDBC Update">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>502</pd:x>
+        <pd:x>504</pd:x>
         <pd:y>74</pd:y>
         <config>
             <timeout>10</timeout>

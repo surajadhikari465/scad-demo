@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:WFM.UID="java://UID" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:WFM.UID="java://UID">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/RunInactiveTprService.process</pd:name>
@@ -122,8 +122,8 @@ where JobScheduleId  = ?</statement>
 	t_end.ModifiedDateUtc,
 	it.itemTypeCode as itemTypeCode,
 	Items.ScanCode as ScanCode,
-	lc.StoreName as StoreName
-
+	lc.StoreName as StoreName,
+	PSNumber as SubTeamNumber
 FROM gpm.Prices t_end
 INNER JOIN Items on Items.ItemID = t_end.ItemID
 INNER JOIN ItemTypes it on Items.ItemTypeID = it.itemTypeID
@@ -157,9 +157,9 @@ AND NOT EXISTS
                 <oraObjects/>
                 <oraTables/>
                 <QueryOutputCachedSchemaColumns>Region</QueryOutputCachedSchemaColumns>
-                <QueryOutputCachedSchemaDataTypes>-15</QueryOutputCachedSchemaDataTypes>
-                <QueryOutputCachedSchemaDataTypesName>nchar</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>PriceID</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
@@ -232,6 +232,10 @@ AND NOT EXISTS
                 <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SubTeamNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
                 <jdbcQueryActivityInput>
@@ -328,8 +332,8 @@ AND NOT EXISTS
             <pd:activity name="Map Data">
                 <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
                 <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-                <pd:x>371</pd:x>
-                <pd:y>380</pd:y>
+                <pd:x>375</pd:x>
+                <pd:y>378</pd:y>
                 <config>
                     <element ref="pfx2:MammothPrices"/>
                 </config>
@@ -397,6 +401,9 @@ AND NOT EXISTS
                                 <pfx2:ScanCode>
                                     <xsl:value-of select="ScanCode"/>
                                 </pfx2:ScanCode>
+                                <pfx2:SubTeamNumber>
+                                    <xsl:value-of select="SubTeamNumber"/>
+                                </pfx2:SubTeamNumber>
                             </pfx2:MammothPrice>
                         </xsl:for-each>
                     </pfx2:MammothPrices>
@@ -406,7 +413,7 @@ AND NOT EXISTS
                 <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
                 <pd:x>555</pd:x>
-                <pd:y>376</pd:y>
+                <pd:y>386</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -486,8 +493,8 @@ AND NOT EXISTS
             <pd:activity name="Catch">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>414</pd:x>
-                <pd:y>473</pd:y>
+                <pd:x>416</pd:x>
+                <pd:y>477</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <catchAll>true</catchAll>
@@ -498,7 +505,7 @@ AND NOT EXISTS
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
                 <pd:x>588</pd:x>
-                <pd:y>468</pd:y>
+                <pd:y>478</pd:y>
                 <config>
                     <processName>/Processes/ProcessRowByRow.process</processName>
                 </config>
