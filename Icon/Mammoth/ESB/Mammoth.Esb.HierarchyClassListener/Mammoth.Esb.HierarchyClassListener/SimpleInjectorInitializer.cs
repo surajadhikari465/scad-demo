@@ -35,16 +35,21 @@ namespace Mammoth.Esb.HierarchyClassListener
             container.RegisterSingleton<IMessageParser<List<HierarchyClassModel>>, HierarchyClassMessageParser>();
             container.Register<IHierarchyClassService<AddOrUpdateHierarchyClassRequest>, AddOrUpdateHierarchyClassService>();
             container.Register<IHierarchyClassService<DeleteBrandRequest>, DeleteBrandService>();
+            container.Register<IHierarchyClassService<DeleteMerchandiseClassRequest>, DeleteMerchandiseClassService>();
+
             container.Register<ICommandHandler<AddOrUpdateHierarchyClassesCommand>, AddOrUpdateHierarchyClassesCommandHandler>();
             container.Register<ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand>, AddOrUpdateMerchandiseHierarchyLineageCommandHandler>();
             container.Register<ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand>, AddOrUpdateFinancialHierarchyClassCommandHandler>();
-            container.Register<ICommandHandler<DeleteBrandsCommand>, DeleteBrandsCommandHandler>();
-            container.Register<IQueryHandler<GetItemsByBrandIdQuery, IEnumerable<Item>>, GetItemsByBrandIdQueryHandler>();
+            container.Register<ICommandHandler<DeleteBrandsParameter>, DeleteBrandsCommandHandler>();
+            container.Register<ICommandHandler<DeleteMerchandiseClassParameter>, DeleteMerchandiseClassCommandHandler>();
+            container.Register<IQueryHandler<GetItemsByBrandIdParameter, IEnumerable<Item>>, GetItemsByBrandIdQueryHandler>();
+            container.Register<IQueryHandler<GetItemsByMerchandiseHierarchyIdParameter, IEnumerable<Item>>, GetItemsByMerchandiseClassIdQueryHandler>();
             container.RegisterSingleton<IDbProvider, SqlDbProvider>();
             container.RegisterSingleton<IConnectionBuilder>(() => new ConnectionBuilder("Mammoth"));
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(DbProviderCommandHandlerDecorator<>));
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(DbProviderQueryHandlerDecorator<,>));
-            container.RegisterDecorator(typeof(IHierarchyClassService<DeleteBrandRequest>), typeof(ValidateItemAssociationDeleteBrandServiceDecorator));
+            container.RegisterDecorator(typeof(IHierarchyClassService<IHierarchyClassRequest>), typeof(ValidateItemAssociationForDeleteBrandDecorator));
+            container.RegisterDecorator(typeof(IHierarchyClassService<IHierarchyClassRequest>), typeof(ValidateItemAssociationForDeleteMerchandiseHierarchyDecorator));
 
             container.Verify();
             return container;

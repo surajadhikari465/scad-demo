@@ -9,9 +9,9 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
 {
     public class DeleteBrandService : IHierarchyClassService<DeleteBrandRequest>
     {
-        private ICommandHandler<DeleteBrandsCommand> deleteBrandsCommandHandler;
+        private ICommandHandler<DeleteBrandsParameter> deleteBrandsCommandHandler;
 
-        public DeleteBrandService(ICommandHandler<DeleteBrandsCommand> deleteBrandsCommand)
+        public DeleteBrandService(ICommandHandler<DeleteBrandsParameter> deleteBrandsCommand)
         {
             this.deleteBrandsCommandHandler = deleteBrandsCommand;
         }
@@ -24,7 +24,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
 
             if (brands.Any())
             {
-                DeleteBrandsCommand command = new DeleteBrandsCommand { Brands = brands };
+                var command = new DeleteBrandsParameter { Brands = brands };
                 this.deleteBrandsCommandHandler.Execute(command);
             }
         }

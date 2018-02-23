@@ -4,24 +4,22 @@ using Icon.Shared.DataAccess.Dapper.DbProviders;
 using Mammoth.Common.DataAccess;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Mammoth.Esb.HierarchyClassListener.Models;
 
 namespace Mammoth.Esb.HierarchyClassListener.Commands
 {
-    public class DeleteBrandsCommandHandler
+    public class DeleteMerchandiseClassCommandHandler
         : DeleteHierarchyClassesGenericCommandHandler<DeleteHierarchyClassesParameter>,
-        ICommandHandler<DeleteBrandsParameter>
+        ICommandHandler<DeleteMerchandiseClassParameter>
     {
-        private const int brandHierarchyId = Hierarchies.Brands;
+        private const int brandHierarchyId = Hierarchies.Merchandise;
         protected override int hierarchyId { get => brandHierarchyId; }
 
-        public DeleteBrandsCommandHandler(IDbProvider dbProvider)
+        public DeleteMerchandiseClassCommandHandler(IDbProvider dbProvider)
             : base(dbProvider) { }
 
-        public void Execute(DeleteBrandsParameter data)
+
+        public void Execute(DeleteMerchandiseClassParameter data)
         {
             base.Execute(data);
         }

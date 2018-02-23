@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace Mammoth.Esb.HierarchyClassListener.Queries
 {
-    public class GetItemsByBrandIdQueryHandler : IQueryHandler<GetItemsByBrandIdParameter, IEnumerable<Item>>
+    public class GetItemsByMerchandiseClassIdQueryHandler : IQueryHandler<GetItemsByMerchandiseHierarchyIdParameter, IEnumerable<Item>>
     {
         private IDbProvider db;
 
-        public GetItemsByBrandIdQueryHandler(IDbProvider db)
+        public GetItemsByMerchandiseClassIdQueryHandler(IDbProvider db)
         {
             this.db = db;
         }
 
-        public IEnumerable<Item> Search(GetItemsByBrandIdParameter parameters)
+        public IEnumerable<Item> Search(GetItemsByMerchandiseHierarchyIdParameter parameters)
         {
             var dbParameters = new
             {
-                BrandIDs = parameters.BrandIds
+                HierarchyMerchandiseIDs = parameters.MerchandiseHierarchyIDs
             };
             string sql = @" SELECT 
                                 ItemID,
@@ -43,7 +43,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Queries
                                 AddedDate,
                                 ModifiedDate
                             FROM Items" +
-                           $" WHERE BrandHCID IN @{nameof(dbParameters.BrandIDs)} ";
+                           $" WHERE HierarchyMerchandiseID IN @{nameof(dbParameters.HierarchyMerchandiseIDs)} ";
             var items = this.db.Connection.Query<Item>(sql, dbParameters, this.db.Transaction);
             return items;
         }

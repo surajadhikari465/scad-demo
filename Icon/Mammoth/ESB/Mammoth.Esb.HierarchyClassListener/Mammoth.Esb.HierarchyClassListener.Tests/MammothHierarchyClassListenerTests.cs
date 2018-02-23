@@ -26,6 +26,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
         private Mock<IEmailClient> mockEmailClient;
         private Mock<IHierarchyClassService<AddOrUpdateHierarchyClassRequest>> mockHierarchyClassService;
         private Mock<IHierarchyClassService<DeleteBrandRequest>> mockDeleteBrandService;
+        private Mock<IHierarchyClassService<DeleteMerchandiseClassRequest>> mockDeleteMerchService;
         private Mock<ILogger<MammothHierarchyClassListener>> mockLogger;
         private Mock<IMessageParser<List<HierarchyClassModel>>> mockMessageParser;
         private Mock<IEsbSubscriber> mockSubscriber;
@@ -40,6 +41,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
             mockEmailClient = new Mock<IEmailClient>();
             mockHierarchyClassService = new Mock<IHierarchyClassService<AddOrUpdateHierarchyClassRequest>>();
             mockDeleteBrandService = new Mock<IHierarchyClassService<DeleteBrandRequest>>();
+            mockDeleteMerchService = new Mock<IHierarchyClassService<DeleteMerchandiseClassRequest>>();
             mockLogger = new Mock<ILogger<MammothHierarchyClassListener>>();
             mockMessageParser = new Mock<IMessageParser<List<HierarchyClassModel>>>();
             mockSubscriber = new Mock<IEsbSubscriber>();
@@ -51,7 +53,8 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 mockLogger.Object,
                 mockMessageParser.Object,
                 mockHierarchyClassService.Object,
-                mockDeleteBrandService.Object);
+                mockDeleteBrandService.Object,
+                mockDeleteMerchService.Object);
 
             mockEsbMessage = new Mock<IEsbMessage>();
             eventArgs = new EsbMessageEventArgs { Message = mockEsbMessage.Object };
@@ -182,6 +185,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
 
             // Then
             mockDeleteBrandService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<DeleteBrandRequest>()), Times.Never);
+            mockDeleteMerchService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<DeleteMerchandiseClassRequest>()), Times.Never);
             mockHierarchyClassService.Verify(s => s.ProcessHierarchyClasses(It.Is<AddOrUpdateHierarchyClassRequest>(r =>
                 r.HierarchyClasses[0].Action == brands[0].Action
                 && r.HierarchyClasses[0].HierarchyClassId == brands[0].HierarchyClassId

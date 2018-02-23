@@ -16,14 +16,14 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
     public class DeleteBrandsServiceTests
     {
         private DeleteBrandService deleteBrandService;
-        private Mock<ICommandHandler<DeleteBrandsCommand>> mockDeleteBrandsCommandHandler;
+        private Mock<ICommandHandler<DeleteBrandsParameter>> mockDeleteBrandsCommandHandler;
         private List<HierarchyClassModel> hierarchyClasses;
         private DeleteBrandRequest deleteBrandRequest;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            this.mockDeleteBrandsCommandHandler = new Mock<ICommandHandler<DeleteBrandsCommand>>();
+            this.mockDeleteBrandsCommandHandler = new Mock<ICommandHandler<DeleteBrandsParameter>>();
             this.deleteBrandService = new DeleteBrandService(this.mockDeleteBrandsCommandHandler.Object);
             this.hierarchyClasses = new List<HierarchyClassModel>();
 
@@ -55,7 +55,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
             this.deleteBrandService.ProcessHierarchyClasses(this.deleteBrandRequest);
 
             // Then
-            this.mockDeleteBrandsCommandHandler.Verify(h => h.Execute(It.IsAny<DeleteBrandsCommand>()), Times.Never);
+            this.mockDeleteBrandsCommandHandler.Verify(h => h.Execute(It.IsAny<DeleteBrandsParameter>()), Times.Never);
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
             for (int i = 0; i < this.hierarchyClasses.Count; i++)
             {
                 this.mockDeleteBrandsCommandHandler.Verify(h =>
-                    h.Execute(It.Is<DeleteBrandsCommand>(c =>
+                    h.Execute(It.Is<DeleteBrandsParameter>(c =>
                         c.Brands[i].HierarchyClassId == this.hierarchyClasses[i].HierarchyClassId
                         && c.Brands[i].HierarchyClassName == this.hierarchyClasses[i].HierarchyClassName
                         && c.Brands[i].HierarchyId == this.hierarchyClasses[i].HierarchyId)), Times.Once);
@@ -89,7 +89,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
             this.deleteBrandService.ProcessHierarchyClasses(this.deleteBrandRequest);
 
             // Then
-            this.mockDeleteBrandsCommandHandler.Verify(dc => dc.Execute(It.IsAny<DeleteBrandsCommand>()), Times.Never);
+            this.mockDeleteBrandsCommandHandler.Verify(dc => dc.Execute(It.IsAny<DeleteBrandsParameter>()), Times.Never);
         }
 
         [TestMethod]
@@ -104,7 +104,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
 
             // Then
             this.mockDeleteBrandsCommandHandler.Verify(h =>
-                h.Execute(It.Is<DeleteBrandsCommand>(c =>
+                h.Execute(It.Is<DeleteBrandsParameter>(c =>
                     c.Brands.Count == 2
                     && c.Brands[0].HierarchyClassId == this.hierarchyClasses[1].HierarchyClassId
                     && c.Brands[1].HierarchyClassId == this.hierarchyClasses[2].HierarchyClassId)), Times.Once);

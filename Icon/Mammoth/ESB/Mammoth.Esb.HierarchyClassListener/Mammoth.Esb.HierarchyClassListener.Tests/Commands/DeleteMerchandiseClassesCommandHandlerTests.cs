@@ -15,15 +15,15 @@ using Testing.Core;
 namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
 {
     [TestClass]
-    public class DeleteBrandsCommandHandlerTests
+    public class DeleteMerchandiseClassesCommandHandlerTests
     {
-        private DeleteBrandsCommandHandler commandHandler;
-        private DeleteBrandsParameter command;
+        private DeleteMerchandiseClassCommandHandler commandHandler;
+        private DeleteMerchandiseClassParameter command;
         private SqlDbProvider dbProvider;
         private DapperSqlFactory dapperSqlFactory;
         private ObjectBuilderFactory objectBuilderFactory;
-        private int brandHierarchyId;
-        private int? maxBrandId;
+        private int merchandiseHierarchyId;
+        private int? maxMerchandiseId;
 
         [TestInitialize]
         public void InitializeTest()
@@ -33,25 +33,25 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             dbProvider.Connection.Open();
             dbProvider.Transaction = dbProvider.Connection.BeginTransaction();
 
-            commandHandler = new DeleteBrandsCommandHandler(dbProvider);
-            command = new DeleteBrandsParameter { Brands = new List<HierarchyClassModel>() };
+            commandHandler = new DeleteMerchandiseClassCommandHandler(dbProvider);
+            command = new DeleteMerchandiseClassParameter { MerchandiseClasses = new List<HierarchyClassModel>() };
 
             var assembly = Assembly.GetExecutingAssembly();
             dapperSqlFactory = new DapperSqlFactory(assembly);
             objectBuilderFactory = new ObjectBuilderFactory(assembly);
 
-            brandHierarchyId = dbProvider.Connection
-                .Query<int>("SELECT HierarchyID FROM Hierarchy WHERE HierarchyName = 'Brands'", transaction: this.dbProvider.Transaction)
+            merchandiseHierarchyId = dbProvider.Connection
+                .Query<int>("SELECT HierarchyID FROM Hierarchy WHERE HierarchyName = 'Merchandise'", transaction: this.dbProvider.Transaction)
                 .First();
 
-            maxBrandId = dbProvider.Connection
+            maxMerchandiseId = dbProvider.Connection
                 .Query<int?>(@"
-                    SELECT MAX(HierarchyClassID) FROM HierarchyClass hc WHERE hc.HierarchyID = @BrandHierarchyID",
-                    new { BrandHierarchyID = brandHierarchyId },
+                    SELECT MAX(HierarchyClassID) FROM HierarchyClass hc WHERE hc.HierarchyID = @MerchandiseHierarchyID",
+                    new { MerchandiseHierarchyID = merchandiseHierarchyId },
                     transaction: dbProvider.Transaction)
                 .FirstOrDefault();
 
-            maxBrandId = maxBrandId == null ? 1 : maxBrandId;
+            maxMerchandiseId = maxMerchandiseId == null ? 1 : maxMerchandiseId;
         }
 
         [TestCleanup]
@@ -63,7 +63,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
         }
 
         [TestMethod]
-        public void DeleteBrandsCommand_ReceiveBrandToDeleteAndBrandExistsInDb_DeletesBrandFromHierarchyClassTable()
+        public void DeleteMerchandiseClassesCommand_ReceiveMerchandiseClassToDeleteAndExistsInDb_DeletesFromHierarchyClassTable()
         {
             // Given
             List<HierarchyClass> existingHierarchyClasses = new List<HierarchyClass>();
@@ -71,30 +71,30 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             {
                 HierarchyClass hierarchyClass = objectBuilderFactory
                     .Build<HierarchyClass>()
-                    .With(m => m.HierarchyClassID, maxBrandId.GetValueOrDefault() + i + 1)
+                    .With(m => m.HierarchyClassID, maxMerchandiseId.GetValueOrDefault() + i + 1)
                     .With(m => m.AddedDate, DateTime.Now)
-                    .With(m => m.HierarchyClassName, $"TestBrand{i} To Be Deleted")
-                    .With(m => m.HierarchyID, brandHierarchyId);
+                    .With(m => m.HierarchyClassName, $"TestMerchandiseClass{i} To Be Deleted")
+                    .With(m => m.HierarchyID, merchandiseHierarchyId);
 
                 existingHierarchyClasses.Add(hierarchyClass);
             }
             var sql = dapperSqlFactory.BuildInsertSql<HierarchyClass>(includeScopeIdentity: false);
             int affectedRowCount = dbProvider.Connection.Execute(sql, existingHierarchyClasses, dbProvider.Transaction);
 
-            this.command.Brands.AddRange(existingHierarchyClasses.Select(ehc => MapDbHierarchyClassToHierarchyClassModel(ehc)).ToList());
+            this.command.MerchandiseClasses.AddRange(existingHierarchyClasses.Select(ehc => MapDbHierarchyClassToHierarchyClassModel(ehc)).ToList());
 
             // When
             this.commandHandler.Execute(this.command);
 
             // Then
-            List<HierarchyClass> actualBrands = dbProvider.Connection
+            List<HierarchyClass> actualMerchandiseClasses = dbProvider.Connection
                 .Query<HierarchyClass>(@"
-                    SELECT * FROM HierarchyClass WHERE HierarchyClassID IN @BrandIDs",
-                    new { BrandIDs = this.command.Brands.Select(b => b.HierarchyClassId) },
+                    SELECT * FROM HierarchyClass WHERE HierarchyClassID IN @MerchandiseClassIDs",
+                    new { MerchandiseClassIDs = this.command.MerchandiseClasses.Select(b => b.HierarchyClassId) },
                     dbProvider.Transaction)
                 .ToList();
 
-            Assert.AreEqual(0, actualBrands.Count, "All brands to be deleted were not deleted.");
+            Assert.AreEqual(0, actualMerchandiseClasses.Count, "All merchandise classes to be deleted were not deleted.");
         }
 
         private HierarchyClassModel MapDbHierarchyClassToHierarchyClassModel(HierarchyClass dbHierarchyClass)

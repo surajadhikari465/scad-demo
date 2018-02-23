@@ -16,12 +16,12 @@ using System.Linq;
 namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
 {
     [TestClass]
-    public class ValidateItemAssociationDeleteBrandServiceDecoratorTests
+    public class ValidateItemAssociationForDeleteBrandDecoratorTests
     {
-        private Mock<IHierarchyClassService<DeleteBrandRequest>> mockService;
-        private ValidateItemAssociationDeleteBrandServiceDecorator decorator;
+        private Mock<IHierarchyClassService<IHierarchyClassRequest>> mockService;
+        private ValidateItemAssociationForDeleteBrandDecorator decorator;
         private DeleteBrandRequest request;
-        private Mock<IQueryHandler<GetItemsByBrandIdQuery, IEnumerable<Item>>> mockGetItemsByBrandQuery;
+        private Mock<IQueryHandler<IGetAssociatedItemsParameter, IEnumerable<Item>>> mockGetItemsByBrandQuery;
         private ListenerApplicationSettings settings;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<ILogger<MammothHierarchyClassListener>> mockLogger;
@@ -34,9 +34,9 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
             this.mockLogger = new Mock<ILogger<MammothHierarchyClassListener>>();
             this.settings = new ListenerApplicationSettings();
             this.mockEmailClient = new Mock<IEmailClient>();
-            this.mockGetItemsByBrandQuery = new Mock<IQueryHandler<GetItemsByBrandIdQuery, IEnumerable<Item>>>();
-            this.mockService = new Mock<IHierarchyClassService<DeleteBrandRequest>>();
-            this.decorator = new ValidateItemAssociationDeleteBrandServiceDecorator(
+            this.mockGetItemsByBrandQuery = new Mock<IQueryHandler<IGetAssociatedItemsParameter, IEnumerable<Item>>>();
+            this.mockService = new Mock<IHierarchyClassService<IHierarchyClassRequest>>();
+            this.decorator = new ValidateItemAssociationForDeleteBrandDecorator(
                 this.mockService.Object,
                 this.mockGetItemsByBrandQuery.Object,
                 this.settings,
@@ -97,7 +97,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
         {
             // Given
             this.mockGetItemsByBrandQuery
-                .Setup(q => q.Search(It.IsAny<GetItemsByBrandIdQuery>()))
+                .Setup(q => q.Search(It.IsAny<GetItemsByBrandIdParameter>()))
                 .Returns(this.itemsAssociatedToBrand);
 
             // When
@@ -120,7 +120,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
         {
             // Given
             this.mockGetItemsByBrandQuery
-                .Setup(q => q.Search(It.IsAny<GetItemsByBrandIdQuery>()))
+                .Setup(q => q.Search(It.IsAny<GetItemsByBrandIdParameter>()))
                 .Returns(this.itemsAssociatedToBrand);
 
             // When
@@ -129,7 +129,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
             // Then
             this.mockLogger
                 .Verify(l => l.Error(It.Is<string>(s => 
-                    s == "The following brands have items associated to them and will not be deleted: Brand With Item Associations")),
+                    s == "The following Brands have items associated to them and will not be deleted: Brand With Item Associations")),
                     Times.Once);
 
             this.mockEmailClient
@@ -147,7 +147,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
         {
             // Given
             this.mockGetItemsByBrandQuery
-                .Setup(q => q.Search(It.IsAny<GetItemsByBrandIdQuery>()))
+                .Setup(q => q.Search(It.IsAny<GetItemsByBrandIdParameter>()))
                 .Returns(new List<Item>());
 
             // When
@@ -172,7 +172,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
         {
             // Given
             this.mockGetItemsByBrandQuery
-                .Setup(q => q.Search(It.IsAny<GetItemsByBrandIdQuery>()))
+                .Setup(q => q.Search(It.IsAny<GetItemsByBrandIdParameter>()))
                 .Returns(new List<Item>());
 
             // When

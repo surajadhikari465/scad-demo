@@ -54,7 +54,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Queries
         {
             // Given
             AddItems(numberOfItems: 3, associateToAddedBrand: true);
-            GetItemsByBrandIdQuery queryParameters = new GetItemsByBrandIdQuery();
+            GetItemsByBrandIdParameter queryParameters = new GetItemsByBrandIdParameter();
             queryParameters.BrandIds = new List<int> { this.brand.HierarchyClassID };
 
             // When
@@ -88,7 +88,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Queries
         {
             // Given
             AddItems(numberOfItems: 3, associateToAddedBrand: false);
-            GetItemsByBrandIdQuery queryParameters = new GetItemsByBrandIdQuery();
+            GetItemsByBrandIdParameter queryParameters = new GetItemsByBrandIdParameter();
             queryParameters.BrandIds = new List<int> { this.brand.HierarchyClassID };
 
             // When

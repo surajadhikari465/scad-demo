@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Mammoth.Esb.HierarchyClassListener.Queries
 {
-    public class GetItemsByBrandIdQuery : IQuery<IEnumerable<Item>>
+    public interface IGetAssociatedItemsParameter : IQuery<IEnumerable<Item>>
     {
-        public List<int> BrandIds { get; set; }
+        IList<int> HierarchyClassIDs { get; set; }
     }
 }

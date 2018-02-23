@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Mammoth.Esb.HierarchyClassListener.Commands
 {
-    public class DeleteBrandsCommand
+    public interface IHierarchyClassesParameter
     {
-        public List<HierarchyClassModel> Brands { get; set; }
+        List<HierarchyClassModel> HierarchyClasses { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Icon.Esb.ListenerApplication;
 using Icon.Esb.MessageParsers;
 using Icon.Esb.Subscriber;
 using Icon.Logging;
+using Mammoth.Common.DataAccess;
 using Mammoth.Esb.HierarchyClassListener.Models;
 using Mammoth.Esb.HierarchyClassListener.Services;
 using System;
@@ -17,6 +18,7 @@ namespace Mammoth.Esb.HierarchyClassListener
         private IMessageParser<List<HierarchyClassModel>> messageParser;
         private IHierarchyClassService<AddOrUpdateHierarchyClassRequest> hierarchyClassService;
         private IHierarchyClassService<DeleteBrandRequest> deleteBrandsService;
+        private IHierarchyClassService<DeleteMerchandiseClassRequest> deleteMerchandiseService;
 
         public MammothHierarchyClassListener(ListenerApplicationSettings listenerApplicationSettings,
             EsbConnectionSettings esbConnectionSettings,
@@ -25,7 +27,8 @@ namespace Mammoth.Esb.HierarchyClassListener
             ILogger<MammothHierarchyClassListener> logger,
             IMessageParser<List<HierarchyClassModel>> messageParser,
             IHierarchyClassService<AddOrUpdateHierarchyClassRequest> hierarchyClassService,
-            IHierarchyClassService<DeleteBrandRequest> deleteBrandsService)
+            IHierarchyClassService<DeleteBrandRequest> deleteBrandsService,
+            IHierarchyClassService<DeleteMerchandiseClassRequest> deleteMerchandiseService)
             : base(listenerApplicationSettings,
                   esbConnectionSettings,
                   subscriber,
@@ -35,6 +38,7 @@ namespace Mammoth.Esb.HierarchyClassListener
             this.messageParser = messageParser;
             this.hierarchyClassService = hierarchyClassService;
             this.deleteBrandsService = deleteBrandsService;
+            this.deleteMerchandiseService = deleteMerchandiseService;
         }
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
@@ -59,7 +63,28 @@ namespace Mammoth.Esb.HierarchyClassListener
                             hierarchyClassService.ProcessHierarchyClasses(new AddOrUpdateHierarchyClassRequest { HierarchyClasses = hierarchyClasses });
                             break;
                         case Icon.Esb.Schemas.Wfm.Contracts.ActionEnum.Delete:
-                            deleteBrandsService.ProcessHierarchyClasses(new DeleteBrandRequest { HierarchyClasses = hierarchyClasses });
+                            switch (hierarchyClasses.First().HierarchyId)
+                            {
+                                case Hierarchies.Brands:
+                                    deleteBrandsService.ProcessHierarchyClasses(new DeleteBrandRequest { HierarchyClasses = hierarchyClasses });
+                                    break;
+                                case Hierarchies.Merchandise:
+                                    deleteMerchandiseService.ProcessHierarchyClasses(new DeleteMerchandiseClassRequest { HierarchyClasses = hierarchyClasses });
+                                    break;
+                                case Hierarchies.Tax:
+                                    throw new ArgumentException($"No handler specified for Delete {Hierarchies.Names.Tax} Hierarchy.");
+                                case Hierarchies.Browsing:
+                                    throw new ArgumentException($"No handler specified for Delete {Hierarchies.Names.Browsing} Hierarchy.");
+                                case Hierarchies.Financial:
+                                    throw new ArgumentException($"No handler specified for Delete {Hierarchies.Names.Financial} Hierarchy.");
+                                case Hierarchies.National:
+                                    throw new ArgumentException($"No handler specified for Delete {Hierarchies.Names.National} Hierarchy.");
+                                case Hierarchies.CertificationAgencyManagement:
+                                    throw new ArgumentException($"No handler specified for Delete {Hierarchies.Names.CertificationAgencyManagement} Hierarchy.");
+                                default:
+                                    throw new ArgumentException($"No handler specified for Delete unknown hierarchy ID {hierarchyClasses.First().HierarchyClassId}.");
+                            }
+
                             break;
                         default:
                             throw new ArgumentException($"No handler specified for Action {hierarchyClasses.First().Action}");

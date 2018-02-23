@@ -33,10 +33,20 @@ namespace Icon.Web.DataAccess.Commands
                 context.HierarchyClass.Remove(deletedHierarchyClass);
                 context.SaveChanges();
 
-                if (deletedHierarchyClass.hierarchyID == Hierarchies.Brands)
-                    eventName = "Brand Delete";
-                else if (deletedHierarchyClass.hierarchyID == Hierarchies.National)
-                    eventName = "National Class Delete";
+                switch (deletedHierarchyClass.hierarchyID)
+                {
+                    case Hierarchies.Brands:
+                        eventName = EventTypeNames.BrandDelete;
+                        break;
+                    case Hierarchies.National:
+                        eventName = EventTypeNames.NationalClassDelete;
+                        break;
+                    case Hierarchies.Merchandise:
+                        eventName = "Hierarchy Class Delete";
+                        break;
+                    default:
+                        break;
+                }
 
                 if (!String.IsNullOrEmpty(eventName))
                 {
