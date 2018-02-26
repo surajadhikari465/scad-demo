@@ -18,9 +18,18 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
         private const int brandHierarchyId = Hierarchies.Brands;
         private const string brandHierarchyName = "Brand";
         private const string brandHierarchyNamePluralized = "Brands";
-        protected override int HierarchyId { get => brandHierarchyId; }
-        protected override string HierarchyName { get => brandHierarchyName; }
-        protected override string HierarchyNamePluralized { get => brandHierarchyNamePluralized; }
+        protected override int HierarchyId
+        {
+            get { return brandHierarchyId; }
+        }
+        protected override string HierarchyName
+        {
+            get { return brandHierarchyName; }
+        }
+        protected override string HierarchyNamePluralized
+        {
+            get { return brandHierarchyNamePluralized; }
+        }
 
         public ValidateItemAssociationForDeleteBrandDecorator(
             IHierarchyClassService<IHierarchyClassRequest> deleteBrandService,

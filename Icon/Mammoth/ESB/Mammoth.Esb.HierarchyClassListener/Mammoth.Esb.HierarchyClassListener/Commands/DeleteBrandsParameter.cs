@@ -11,8 +11,8 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
     {
         public List<HierarchyClassModel> Brands
         {
-            get => base.HierarchyClasses;
-            set => base.HierarchyClasses = value;
+            get { return base.HierarchyClasses; }
+            set { base.HierarchyClasses = value; }
         }
     }
 }

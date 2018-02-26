@@ -13,8 +13,8 @@ namespace Mammoth.Esb.HierarchyClassListener.Queries
         public IList<int> HierarchyClassIDs { get; set; }
         public IList<int> MerchandiseHierarchyIDs
         {
-            get => HierarchyClassIDs;
-            set => HierarchyClassIDs = value;
+            get { return HierarchyClassIDs; }
+            set { HierarchyClassIDs = value; }
         }
 }
 }

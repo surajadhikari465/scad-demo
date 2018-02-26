@@ -66,7 +66,7 @@
       <HintPath>..\packages\Moq.4.7.145\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
@@ -82,7 +82,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TIBCO.EMS, Version=1.0.800.9, Culture=neutral, PublicKeyToken=5b83db8ff05c64ba, processorArchitecture=MSIL">
       <HintPath>..\packages\TIBCO.EMS.2016.10.21.1\lib\TIBCO.EMS.dll</HintPath>
-      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Choose>

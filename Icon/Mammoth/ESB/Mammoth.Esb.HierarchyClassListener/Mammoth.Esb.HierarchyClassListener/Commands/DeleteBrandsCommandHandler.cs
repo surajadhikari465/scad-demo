@@ -16,7 +16,10 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
         ICommandHandler<DeleteBrandsParameter>
     {
         private const int brandHierarchyId = Hierarchies.Brands;
-        protected override int hierarchyId { get => brandHierarchyId; }
+        protected override int hierarchyId
+        {
+            get { return brandHierarchyId; }
+        }
 
         public DeleteBrandsCommandHandler(IDbProvider dbProvider)
             : base(dbProvider) { }
