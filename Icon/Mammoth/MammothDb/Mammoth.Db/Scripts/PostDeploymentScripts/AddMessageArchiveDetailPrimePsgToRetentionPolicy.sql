@@ -8,7 +8,7 @@ BEGIN
 
 	IF NOT EXISTS (SELECT * FROM app.RetentionPolicy WHERE [Table] = 'MessageArchiveDetailPrimePsg')
 		INSERT INTO app.RetentionPolicy([Schema], [Table], ReferenceColumn, DaysToKeep, TimeToStart, TimeToEnd, IncludedInDailyPurge, DailyPurgeCompleted, PurgeJobName)
-		VALUES ('esb', 'MessageArchiveDetailPrimePsg', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge')
+		VALUES ('esb', 'MessageArchiveDetailPrimePsg', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge')
 
 	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@scriptKey ,GETDATE())
 END

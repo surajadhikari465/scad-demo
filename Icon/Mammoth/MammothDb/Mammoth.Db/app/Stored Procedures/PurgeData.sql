@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [app].[PurgeData] 
-@batchVolume	 INT
+	@batchVolume	 INT = 20000
 AS
 BEGIN
 	UPDATE app.RetentionPolicy
@@ -9,7 +9,7 @@ BEGIN
 	AND DailyPurgeCompleted = 1
 
 	-- Execute Delete commands based on RetentionPolicy table.
-	IF OBJECT_ID('tempdb..#DeteleCommands') IS NOT NULL
+	IF OBJECT_ID('tempdb..#DeleteCommands') IS NOT NULL
 		BEGIN
 			DROP TABLE #DeleteCommands
 		END

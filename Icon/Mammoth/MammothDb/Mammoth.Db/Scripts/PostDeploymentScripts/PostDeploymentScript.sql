@@ -22,6 +22,7 @@ Post-Deployment Script Template
 :r AddPrimePsgMessageType.sql
 :r AddPrimeAffinityControllerToAppTable.sql
 :r AddMessageArchiveDetailPrimePsgToRetentionPolicy.sql
+:r UpdateActivePriceSentArchiveInRetentionPolicy.sql
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql
