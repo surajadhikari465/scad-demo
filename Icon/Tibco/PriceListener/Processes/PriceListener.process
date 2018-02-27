@@ -963,7 +963,7 @@
         <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Message-Sequence-Validation/root/IsInSequence="true" or $Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true" or $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag = "1"</pd:xpath>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsInSequence="true" or $Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true" or $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag = $_globalVariables/ns1:GlobalVariables/Application/ResetFlagTrueValue</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Call Message Sequence Validation</pd:from>
@@ -1008,7 +1008,7 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="false" and ($Call-Message-Sequence-Validation/root/IsInSequence="true" or $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag = "1")</pd:xpath>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="false" and ($Call-Message-Sequence-Validation/root/IsInSequence="true" or $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag = $_globalVariables/ns1:GlobalVariables/Application/ResetFlagTrueValue)</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>HandleEmergencyPrices</pd:from>

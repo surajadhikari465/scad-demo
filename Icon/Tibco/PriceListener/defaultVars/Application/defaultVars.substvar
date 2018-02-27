@@ -76,6 +76,22 @@
 			<modTime>1510694324523</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>ResetFlagFalseValue</name>
+			<value>0</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1519416278928</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ResetFlagTrueValue</name>
+			<value>1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1519416278845</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>SendMessageRetrySleepInMilliseconds</name>
 			<value>3000</value>
 			<deploymentSettable>true</deploymentSettable>
