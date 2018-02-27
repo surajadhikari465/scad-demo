@@ -18,10 +18,10 @@
 	[Sign_RomanceText_Long]		NVARCHAR(300)	NULL,
 	[Sign_RomanceText_Short]	NVARCHAR(140)	NULL,
 	[Msrp]						SMALLMONEY		NOT NULL,
-	[OrderedByInfor]		BIT				NULL,
+	[OrderedByInfor]			BIT				NULL,
     [AltRetailSize]				NUMERIC(9,4)	NULL,
     [AltRetailUOM]				NVARCHAR(25)	NULL,
-    [DefaultScanCode]			NVARCHAR(13)	NULL,
+    [DefaultScanCode]			BIT				NULL,
 	[Timestamp]					DATETIME		NOT NULL,
 	[TransactionId]				UNIQUEIDENTIFIER NOT NULL
 )

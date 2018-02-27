@@ -206,7 +206,8 @@ namespace MammothWebApi.Tests.Controllers
                     SignRomanceLong = String.Format("Test Long Sign Romance Text {0}", i),
                     SignRomanceShort = String.Format("Test Short Sign Romance Text {0}", i),
                     TagUom = null,
-                    TmDiscount = true
+                    TmDiscount = true,
+                    DefaultScanCode = false
                 };
 
                 itemLocaleList.Add(itemLocale);

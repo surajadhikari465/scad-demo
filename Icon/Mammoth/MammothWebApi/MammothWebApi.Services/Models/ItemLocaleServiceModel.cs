@@ -26,7 +26,7 @@ namespace MammothWebApi.Service.Models
         public bool? OrderedByInfor { get; set; }
         public decimal? AltRetailSize { get; set; }
         public string AltRetailUOM { get; set; }
-        public string DefaultScanCode { get; set; }
+        public bool DefaultScanCode { get; set; }
 
         // Supplier Attributes
         public string SupplierName { get; set; }

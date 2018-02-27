@@ -771,6 +771,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddPrimeAffinityControllerToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddPrimePsgMessageType.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddMessageArchiveDetailPrimePsgToRetentionPolicy.sql" />
+    <None Include="Scripts\PreDeploymentScripts\TruncateItemLocaleStagingTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

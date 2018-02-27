@@ -17,7 +17,7 @@ namespace MammothWebApi.DataAccess.Models
         public bool LocalItem { get; set; }
         public bool ScaleItem { get; set; }
         public bool OrderedByInfor { get; set; }
-        public string DefaultScanCode { get; set; }
+        public bool DefaultScanCode { get; set; }
         public string LabelTypeDesc { get; set; }
         public string Product_Code { get; set; }
         public string RetailUnit { get; set; }

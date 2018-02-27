@@ -41,7 +41,7 @@ namespace MammothWebApi.DataAccess.Commands
         [Msrp]                   SMALLMONEY       NOT NULL,
         [AltRetailUOM]			 NVARCHAR(25)	  NULL,
         [AltRetailSize]			 NUMERIC(9,4)	  NULL,
-        [DefaultScanCode]		 NVARCHAR(13)	  NULL,
+        [DefaultScanCode]		 BIT        	  NULL,
         [InsertOrUpdate]		 CHAR			  NOT NULL,
         PRIMARY KEY ([Region], [ItemID], [BusinessUnitID])
     )

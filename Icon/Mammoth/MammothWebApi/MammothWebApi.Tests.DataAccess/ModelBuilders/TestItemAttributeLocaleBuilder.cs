@@ -28,7 +28,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         private string locality;
         private decimal altRetailSize;
         private string altRetailUom;
-        private string defaultScanCode;
+        private bool defaultScanCode;
         private DateTime addedDate;
 
         internal TestItemAttributeLocaleBuilder()
@@ -49,7 +49,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             this.locality = "Dallas";
             this.altRetailSize = 82.89m;
             this.altRetailUom = "LB";
-            this.defaultScanCode = "837393722";
+            this.defaultScanCode = true;
             this.addedDate = DateTime.Now;
         }
 
@@ -173,7 +173,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
-        internal TestItemAttributeLocaleBuilder WithDefaultScanCode(string defaultScanCode)
+        internal TestItemAttributeLocaleBuilder WithDefaultScanCode(bool defaultScanCode)
         {
             this.defaultScanCode = defaultScanCode;
             return this;

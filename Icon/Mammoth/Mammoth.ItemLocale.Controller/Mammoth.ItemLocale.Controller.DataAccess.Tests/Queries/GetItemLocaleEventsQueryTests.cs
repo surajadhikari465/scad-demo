@@ -92,6 +92,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedScaleExtraText = "Test Item Nutrition Extra Text";
             var expectedTagUom = 23;
             var expectedEventTypeid = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedDefaultScanCode = false;
 
             // Insert New Item
             var itemKey = this.dbProvider.Insert(
@@ -114,6 +115,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                         .With(x => x.Item_Key, itemKey)
                         .With(x => x.Identifier, expectedIdentifier)
                         .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
+                        .With(x => x.Default_Identifier, expectedDefaultScanCode ? (byte)1 : (byte)0)
                         .ToObject(),
                     x => x.Identifier_ID));
 
@@ -280,6 +282,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             Assert.AreEqual(expectedSignRomanceShort, actual.SignRomanceShort, "The expected SignRomanceShort did not match the actual.");
             Assert.AreEqual(expectedTagUom.ToString(), actual.TagUom, "The expected TagUom did not match the actual.");
             Assert.AreEqual(Convert.ToDouble(expectedMsrp), actual.Msrp, "The expected Msrp did not match the actual.");
+            Assert.AreEqual(expectedDefaultScanCode, actual.DefaultScanCode, "The expected DefaultScanCode did not match the actual.");
             Assert.IsTrue(string.IsNullOrEmpty(actual.ErrorMessage));
         }
 
@@ -329,7 +332,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedVendorKey = vendor.Vendor_Key;
             var expectedVendorCompanyName = vendor.CompanyName;
             var expectedOrderedByInfor = true;
-            var expectedDefaultScanCode = "1234561728";
+            var expectedDefaultScanCode = true;
             decimal? expectedAltRetailSize = null;
             string expectedAltRetailUOM = null;
             bool? expectedForceTare = true;
@@ -361,7 +364,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                         .With(x => x.Item_Key, itemKey)
                         .With(x => x.Identifier, expectedIdentifier)
                         .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .With(x => x.Default_Identifier, (byte)0)
+                        .With(x => x.Default_Identifier, expectedDefaultScanCode ? (byte)1 : (byte)0)
                         .ToObject(),
                     x => x.Identifier_ID));
 
@@ -506,15 +509,6 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.StoreItemExtendedID));
 
-            // Insert Default Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ItemIdentifier, int>(
-                IrmaTestObjectFactory.BuildItemIdentifier()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Default_Identifier, (byte)1)
-                    .With(x => x.Identifier, expectedDefaultScanCode)
-                    .ToObject(),
-                x => x.Identifier_ID));
-
             var expectedQueueId = this.dbProvider.Insert(
                 new IrmaQueryParams<TestQueueModel, int>(
                     new TestQueueModel
@@ -632,7 +626,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedVendorKey = vendor.Vendor_Key;
             var expectedVendorCompanyName = vendor.CompanyName;
             var expectedOrderedByInfor = true;
-            var expectedDefaultScanCode = "1234561728";
+            var expectedDefaultScanCode = false;
             var expectedAltRetailSize = 9.8m;
             var expectedAltRetailUOM = this.GetFirstFromTable<ItemUnit>();
             var testItemUnitId = this.GetFirstFromTable<ItemUnit>().Unit_ID;
@@ -667,7 +661,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                         .With(x => x.Item_Key, itemKey)
                         .With(x => x.Identifier, expectedIdentifier)
                         .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .With(x => x.Default_Identifier, (byte)0)
+                        .With(x => x.Default_Identifier, expectedDefaultScanCode ? (byte)1 : (byte)0)
                         .ToObject(),
                     x => x.Identifier_ID));
 
@@ -786,15 +780,6 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .With(x => x.OrderedByInfor, expectedOrderedByInfor)
                     .ToObject(),
                 x => x.StoreItemExtendedID));
-
-            // Insert Default Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ItemIdentifier, int>(
-                IrmaTestObjectFactory.BuildItemIdentifier()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Default_Identifier, (byte)1)
-                    .With(x => x.Identifier, expectedDefaultScanCode)
-                    .ToObject(),
-                x => x.Identifier_ID));
 
             // Insert ItemOverride
             this.dbProvider.Insert(

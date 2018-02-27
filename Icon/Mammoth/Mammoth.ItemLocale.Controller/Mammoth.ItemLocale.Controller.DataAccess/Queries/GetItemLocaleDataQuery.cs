@@ -74,7 +74,7 @@ SELECT q.QueueID AS QueueId
 	,sie.OrderedByInfor AS OrderedByInfor
     ,iov.Package_Desc2 AS AltRetailSize
     ,ovu2.Unit_Abbreviation AS AltRetailUOM
-    ,dii.Identifier AS DefaultScanCode
+    ,CAST(ii.Default_Identifier AS BIT) AS DefaultScanCode
 	,iv.Item_ID AS VendorItemId
 	,vch.Package_Desc1 AS VendorCaseSize
 	,v.Vendor_Key AS VendorKey
@@ -137,8 +137,6 @@ LEFT JOIN ItemUomOverride iuo ON iuo.Item_Key = i.Item_Key
 LEFT JOIN ItemUnit uiu ON iuo.Retail_Unit_ID = uiu.Unit_ID
 LEFT JOIN StoreItemExtended sie ON i.Item_Key = sie.Item_Key
 	AND s.Store_No = sie.Store_No
-LEFT JOIN ItemIdentifier dii ON i.Item_Key = dii.Item_Key
-    AND dii.Default_Identifier = 1
 LEFT JOIN dbo.itemCustomerFacingScale icf ON i.Item_Key = icf.Item_Key
 WHERE q.InProcessBy = @JobInstance
 	AND q.Store_No IS NOT NULL
@@ -191,7 +189,7 @@ SELECT q.QueueID AS QueueId
 	,sie.OrderedByInfor AS OrderedByInfor
     ,iov.Package_Desc2 AS AltRetailSize
     ,ovu2.Unit_Abbreviation AS AltRetailUOM
-    ,dii.Identifier AS DefaultScanCode
+    ,CAST(ii.Default_Identifier AS BIT) AS DefaultScanCode
 	,iv.Item_ID AS VendorItemId
 	,vch.Package_Desc1 AS VendorCaseSize
 	,v.Vendor_Key AS VendorKey
@@ -252,8 +250,6 @@ LEFT JOIN ItemUomOverride iuo ON iuo.Item_Key = i.Item_Key
 LEFT JOIN ItemUnit uiu ON iuo.Retail_Unit_ID = uiu.Unit_ID
 LEFT JOIN StoreItemExtended sie ON i.Item_Key = sie.Item_Key
 	AND s.Store_No = sie.Store_No
-LEFT JOIN ItemIdentifier dii ON i.Item_Key = dii.Item_Key
-    AND dii.Default_Identifier = 1
 LEFT JOIN dbo.itemCustomerFacingScale icf ON i.Item_Key = icf.Item_Key
 WHERE q.InProcessBy = @JobInstance
 	AND (

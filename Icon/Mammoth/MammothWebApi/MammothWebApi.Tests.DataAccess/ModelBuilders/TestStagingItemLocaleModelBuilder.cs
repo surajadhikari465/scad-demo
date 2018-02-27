@@ -26,7 +26,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         private bool OrderedByInfor;
         private decimal altRetailSize;
         private string altRetailUom;
-        private string defaultScanCode;
+        private bool defaultScanCode;
         private DateTime timestamp;
         private Guid transactionId;
 
@@ -52,7 +52,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             OrderedByInfor = true;
             altRetailSize = 9.8m;
             altRetailUom = "EA";
-            defaultScanCode = "123456123";
+            defaultScanCode = true;
             timestamp = DateTime.Now;
             transactionId = Guid.NewGuid();
         }
@@ -183,7 +183,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
-        internal TestStagingItemLocaleModelBuilder WithDefaultScanCode(string defaultScanCode)
+        internal TestStagingItemLocaleModelBuilder WithDefaultScanCode(bool defaultScanCode)
         {
             this.defaultScanCode = defaultScanCode;
             return this;
