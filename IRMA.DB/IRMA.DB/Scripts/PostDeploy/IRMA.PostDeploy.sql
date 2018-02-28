@@ -14,4 +14,7 @@ Post-Deployment Script Template
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 
-:r "PBI25134 - PostDeploy Schema PopData - Update And Repopulate Date Table.sql" -- 2018.01.23
+
+
+-- *This is a permanent entry (keep at bottom).
+:r VersionUpdates.sql -- 2018.02.28
