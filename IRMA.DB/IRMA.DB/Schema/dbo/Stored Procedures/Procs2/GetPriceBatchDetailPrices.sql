@@ -21,6 +21,8 @@
 -- 2016-10-24	Jamali	PBI18686	Added the @LegacyStoresOnly parameter, to have the ability to get the data for the legacy stores only
 -- 2017-04-13   MZ      23765(20859)Move Allergens before Ingredients in the concatenation. Correct the order of the Ingredients field
 --									Allergens + Ingredients + ExtraText
+-- 2018-02-22	BJ		20171		Modified Scale_FixedWeight, PlumUnitAbbr, and Scale_ByCount to return EPlum values based on
+--									whether the store is on GPM
 --****************************************************************************************************************************************************************************
 
 CREATE PROCEDURE [dbo].[GetPriceBatchDetailPrices]
@@ -41,6 +43,7 @@ SET TRANSACTION ISOLATION LEVEL SNAPSHOT
 
 -- Maximum length for Ingredients column
 DECLARE @MaxWidthForIngredients AS INT = (SELECT character_maximum_length FROM information_schema.columns WHERE table_name = 'Scale_ExtraText' and column_name = 'ExtraText')
+DECLARE @GlobalPriceManagementIdfKey nvarchar(21) = 'GlobalPriceManagement'
 
 IF OBJECT_ID('tempdb..#CurrentPushPriceBatchHeader') IS NOT NULL
 BEGIN
@@ -1141,11 +1144,24 @@ FROM (
 				ELSE 'N'
 			END AS ScaleForcedTare,
 			ISNULL(ISO.ShelfLife_Length, ItemScale.ShelfLife_Length) AS ShelfLife_Length,
-			COALESCE(IUO.Scale_FixedWeight, ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight) AS Scale_FixedWeight,
-			COALESCE(IUO.Scale_ByCount, ISO.Scale_ByCount, ItemScale.Scale_ByCount) AS Scale_ByCount,
+			dbo.fn_GetEplumFixedWeight(
+				COALESCE(IUO.Scale_FixedWeight, ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight), 
+				gpmSellingUnit.Unit_Abbreviation,
+				inforRetailUom.Unit_Abbreviation,
+				Item.Package_Desc2,
+				idf.FlagValue) AS Scale_FixedWeight,
+			dbo.fn_GetEplumByCount(
+				COALESCE(IUO.Scale_ByCount, ISO.Scale_ByCount, ItemScale.Scale_ByCount), 
+				gpmSellingUnit.Unit_Abbreviation,
+				inforRetailUom.Unit_Abbreviation,
+				idf.FlagValue) AS Scale_ByCount,
 			SUBSTRING(RTRIM(LTRIM(ISNULL(Scale_Allergen.Allergens, '') + ' ' + ISNULL(Scale_Ingredient.Ingredients, '') + ' ' + ISNULL(Scale_ExtraText.ExtraText, ''))), 1, @MaxWidthForIngredients) As Ingredients, 				
 			ScaleUOM.Unit_Abbreviation AS ScaleUnitOfMeasure,
-			ScaleUOM.PlumUnitAbbr,
+			dbo.fn_GetEplumUnitOfMeasure(
+				ScaleUOM.PlumUnitAbbr,
+				gpmSellingUnit.Unit_Abbreviation,
+				inforRetailUom.Unit_Abbreviation,
+				idf.FlagValue) AS PlumUnitAbbr,
 			Scale_Grade.Zone1 AS Grade,
 			Item.SubTeam_No As DefaultSubteam, -- retrieved for scale subteam data
 			CAST(Scale_LabelStyle.Description AS VARCHAR(5)) + ',' + CAST(Scale_LabelStyle.Description AS VARCHAR(5)) + ','+ CAST(Scale_LabelStyle.Description AS VARCHAR(5)) AS Digi_LNU,
@@ -1188,6 +1204,9 @@ FROM (
 			LEFT JOIN -- If the PriceChgTypeID for the PBD record is NULL, the value in the Price table is used to determine the PriceChgType data
 				PriceChgType PCT_Current ON PCT_Current.PriceChgTypeID = Price.PriceChgTypeID
 			LEFT JOIN Scale_StorageData ssd (nolock) ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
+			LEFT JOIN ItemUnit gpmSellingUnit ON iUO.Retail_Unit_ID = gpmSellingUnit.Unit_ID
+			LEFT JOIN ItemUnit inforRetailUom ON Item.Package_Unit_ID = inforRetailUom.Unit_ID
+			LEFT JOIN dbo.fn_GetInstanceDataFlagStoreValues(@GlobalPriceManagementIdfKey) idf ON Store.Store_No = idf.Store_No
 		WHERE 
 			D.Expired = 0
 	) PBD	  

@@ -1,5 +1,4 @@
-﻿
-CREATE  PROCEDURE [dbo].[Dynamic_POSSearchForNonBatchedChanges]
+﻿CREATE  PROCEDURE [dbo].[Dynamic_POSSearchForNonBatchedChanges]
   
 -- INPUT PARAMETERS USED WITHIN THE SELECT STMT
 @NewItemVal					bit = 0,		-- sets the return value for the new item flag

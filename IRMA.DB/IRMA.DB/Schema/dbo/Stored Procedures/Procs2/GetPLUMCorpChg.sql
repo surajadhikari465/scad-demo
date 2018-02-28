@@ -51,6 +51,8 @@ AS
 -- 2017-04-13   MZ              23765 (20859)   Move Allergens before Ingredients in the concatenation. Correct the order of the Ingredients field
 --												Allergens + Ingredients + ExtraText
 -- 2018-01-25   BJ              23898	Filtered out Removed and Deleted Items and Identifiers
+-- 2018-02-22	BJ				20171	Modified Scale_FixedWeight, PlumUnitAbbr, and Scale_ByCount to return EPlum values based on
+--										whether the store is on GPM
 -- **************************************************************************
 
 BEGIN  
@@ -87,6 +89,8 @@ BEGIN
 		begin
 			set @CustomerFacingScaleDepartmentPrefix = ''
 		end
+	
+	DECLARE @GlobalPriceManagementIdfKey nvarchar(21) = 'GlobalPriceManagement'
 
 	-- Create a temporary table to hold validated item identifiers (scan codes)
 	IF OBJECT_ID('tempdb..#Identifiers') IS NOT NULL
@@ -406,7 +410,11 @@ BEGIN
 					WHEN 'LB' THEN 'LB'
 					WHEN 'EA' THEN 'BC'
 					END AS UnitOfMeasure,
-				ScaleUOM.PlumUnitAbbr AS PlumUnitAbbr,	
+				dbo.fn_GetEplumUnitOfMeasure(
+					ScaleUOM.PlumUnitAbbr,
+					gpmSellingUnit.Unit_Abbreviation,
+					RU.Unit_Abbreviation,
+					idf.FlagValue) AS PlumUnitAbbr,	
 				ScaleUOM.Unit_Abbreviation AS ScaleUnitOfMeasure,
 				CASE 
 					WHEN ISNULL(RU.Unit_Abbreviation, '') = 'UNIT' 
@@ -492,8 +500,17 @@ BEGIN
 					ELSE 'N'
 					END AS ScaleForcedTare,
 				ItemScale.ShelfLife_Length,
-				ItemScale.Scale_FixedWeight,
-				ItemScale.Scale_ByCount,
+				dbo.fn_GetEplumFixedWeight(
+					ItemScale.Scale_FixedWeight, 
+					gpmSellingUnit.Unit_Abbreviation,
+					RU.Unit_Abbreviation,
+					Item.Package_Desc2,
+					idf.FlagValue) AS Scale_FixedWeight,
+				dbo.fn_GetEplumByCount(
+					ItemScale.Scale_ByCount, 
+					gpmSellingUnit.Unit_Abbreviation,
+					RU.Unit_Abbreviation,
+					idf.FlagValue) AS Scale_ByCount,
 				Scale_Grade.Zone1 AS Grade,
 				CONVERT(VARCHAR, ISNULL(Scale_Grade.Zone1,0))+','+
 				CONVERT(VARCHAR, ISNULL(Scale_Grade.Zone2,0))+','+
@@ -625,6 +642,13 @@ BEGIN
 					ON ScaleUOM.Unit_ID = ItemScale.Scale_ScaleUOMUnit_ID
 				LEFT JOIN Scale_StorageData ssd (nolock)
 					ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
+				LEFT JOIN ItemUomOverride iuo (nolock)
+					ON QT.Item_Key = iuo.Item_Key
+					AND QT.Store_No = iuo.Store_No
+				LEFT JOIN ItemUnit gpmSellingUnit (nolock) 
+					ON iuo.Retail_Unit_ID = gpmSellingUnit.Unit_ID
+				LEFT JOIN dbo.fn_GetInstanceDataFlagStoreValues(@GlobalPriceManagementIdfKey) idf 
+					ON QT.Store_No = idf.Store_No
 			WHERE 
 				(@ActionCode <> 'A' AND ActionCode = @ActionCode) OR
 				(@ActionCode  = 'A' AND (ActionCode = 'A' OR ActionCode = 'S')) -- add records include authorizations
@@ -680,7 +704,11 @@ BEGIN
 					WHEN 'LB' THEN 'LB'
 					WHEN 'EA' THEN 'BC'
 					END AS UnitOfMeasure,
-				ScaleUOM.PlumUnitAbbr AS PlumUnitAbbr,
+				dbo.fn_GetEplumUnitOfMeasure(
+					ScaleUOM.PlumUnitAbbr,
+					gpmSellingUnit.Unit_Abbreviation,
+					RU.Unit_Abbreviation,
+					idf.FlagValue) AS PlumUnitAbbr,
 				ScaleUOM.Unit_Abbreviation AS ScaleUnitOfMeasure,
 				CAST(Scale_Tare.Zone1 AS int) AS ScaleTare_Int,
 				CAST(Alt_Scale_Tare.Zone1 AS int) AS AltScaleTare_Int,
@@ -710,8 +738,17 @@ BEGIN
 					ELSE 'N'
 					END AS ScaleForcedTare,
 				ItemScale.ShelfLife_Length,
-				ItemScale.Scale_FixedWeight,
-				ItemScale.Scale_ByCount,
+				dbo.fn_GetEplumFixedWeight(
+					ItemScale.Scale_FixedWeight, 
+					gpmSellingUnit.Unit_Abbreviation,
+					RU.Unit_Abbreviation,
+					Item.Package_Desc2,
+					idf.FlagValue) AS Scale_FixedWeight,
+				dbo.fn_GetEplumByCount(
+					ItemScale.Scale_ByCount, 
+					gpmSellingUnit.Unit_Abbreviation,
+					RU.Unit_Abbreviation,
+					idf.FlagValue) AS Scale_ByCount,
 				Scale_Grade.Zone1 AS Grade,
 				CAST(Scale_LabelStyle.Description AS VARCHAR(5)) + ',' + CAST(Scale_LabelStyle.Description AS VARCHAR(5)) + ','+ CAST(Scale_LabelStyle.Description AS VARCHAR(5)) AS [Digi_LNU],
 				Item.Retail_Sale,
@@ -754,6 +791,13 @@ BEGIN
 					   SI.Store_No = Store.Store_No
 				LEFT JOIN Scale_StorageData ssd (nolock)
 					ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
+				LEFT JOIN ItemUomOverride iuo (nolock)
+					ON QT.Item_Key = iuo.Item_Key
+					AND QT.Store_No = iuo.Store_No
+				LEFT JOIN ItemUnit gpmSellingUnit (nolock) 
+					ON iuo.Retail_Unit_ID = gpmSellingUnit.Unit_ID
+				LEFT JOIN dbo.fn_GetInstanceDataFlagStoreValues(@GlobalPriceManagementIdfKey) idf 
+					ON Store.Store_No = idf.Store_No
 			WHERE ((@ActionCode <> 'A' AND ActionCode = @ActionCode) OR
 				   (@ActionCode  = 'A' AND (ActionCode = 'A' OR ActionCode = 'S')))  -- add records include authorizations
 				AND ((@ActionCode <> 'F') OR
@@ -848,7 +892,11 @@ BEGIN
 						WHEN 'LB' THEN 'LB'
 						WHEN 'EA' THEN 'BC'
 						END AS UnitOfMeasure,
-					ISNULL(ScaleUOM_Override.PlumUnitAbbr, ScaleUOM.PlumUnitAbbr) AS PlumUnitAbbr,
+					dbo.fn_GetEplumUnitOfMeasure(
+						ISNULL(ScaleUOM_Override.PlumUnitAbbr, ScaleUOM.PlumUnitAbbr),
+						gpmSellingUnit.Unit_Abbreviation,
+						RU.Unit_Abbreviation,
+						idf.FlagValue) AS PlumUnitAbbr,
 					ISNULL(ScaleUOM_Override.Unit_Abbreviation, ScaleUOM.Unit_Abbreviation) AS ScaleUnitOfMeasure,
 					CASE 
 						WHEN ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') = 'UNIT' 
@@ -919,8 +967,17 @@ BEGIN
 						ELSE 'N'
 						END AS ScaleForcedTare,
 					ISNULL(ISO.ShelfLife_Length, ItemScale.ShelfLife_Length) AS ShelfLife_Length,
-					ISNULL(ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight) AS Scale_FixedWeight,
-					ISNULL(ISO.Scale_ByCount, ItemScale.Scale_ByCount) AS Scale_ByCount,
+					dbo.fn_GetEplumFixedWeight(
+						ISNULL(ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight), 
+						gpmSellingUnit.Unit_Abbreviation,
+						RU.Unit_Abbreviation,
+						Item.Package_Desc2,
+						idf.FlagValue) AS Scale_FixedWeight,
+					dbo.fn_GetEplumByCount(
+						ISNULL(ISO.Scale_ByCount, ItemScale.Scale_ByCount), 
+						gpmSellingUnit.Unit_Abbreviation,
+						RU.Unit_Abbreviation,
+						idf.FlagValue) AS Scale_ByCount,
 					Scale_Grade.Zone1 AS Grade,
 					CONVERT(VARCHAR, ISNULL(Scale_Grade.Zone1,0))+','+
 					CONVERT(VARCHAR, ISNULL(Scale_Grade.Zone2,0))+','+
@@ -1097,6 +1154,13 @@ BEGIN
 						ON PU_Override.Unit_ID = ItemOverride.Package_Unit_ID
 					LEFT JOIN Scale_StorageData ssd (nolock)
 						ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
+					LEFT JOIN ItemUomOverride iuo (nolock)
+						ON QT.Item_Key = iuo.Item_Key
+						AND QT.Store_No = iuo.Store_No
+					LEFT JOIN ItemUnit gpmSellingUnit (nolock) 
+						ON iuo.Retail_Unit_ID = gpmSellingUnit.Unit_ID
+					LEFT JOIN dbo.fn_GetInstanceDataFlagStoreValues(@GlobalPriceManagementIdfKey) idf 
+						ON QT.Store_No = idf.Store_No
 				WHERE 
 					(ActionCode = 'A' OR ActionCode = 'S') -- adds include authorizations
 					AND QT.Store_No = NIB.Store_No
@@ -1184,7 +1248,11 @@ BEGIN
 						WHEN 'LB' THEN 'LB'
 						WHEN 'EA' THEN 'BC'
 						END AS UnitOfMeasure,
-					ISNULL(ScaleUOM_Override.PlumUnitAbbr, ScaleUOM.PlumUnitAbbr) AS PlumUnitAbbr,
+					dbo.fn_GetEplumUnitOfMeasure(
+						ISNULL(ScaleUOM_Override.PlumUnitAbbr, ScaleUOM.PlumUnitAbbr),
+						gpmSellingUnit.Unit_Abbreviation,
+						RU.Unit_Abbreviation,
+						idf.FlagValue) AS PlumUnitAbbr,
 					ISNULL(ScaleUOM_Override.Unit_Abbreviation, ScaleUOM.Unit_Abbreviation) AS ScaleUnitOfMeasure,
 					CASE 
 						WHEN ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') = 'UNIT' 
@@ -1255,8 +1323,17 @@ BEGIN
 						ELSE 'N'
 						END AS ScaleForcedTare,
 					ISNULL(ISO.ShelfLife_Length, ItemScale.ShelfLife_Length) AS ShelfLife_Length,
-					ISNULL(ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight) AS Scale_FixedWeight,
-					ISNULL(ISO.Scale_ByCount, ItemScale.Scale_ByCount) AS Scale_ByCount,
+					dbo.fn_GetEplumFixedWeight(
+						ISNULL(ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight), 
+						gpmSellingUnit.Unit_Abbreviation,
+						RU.Unit_Abbreviation,
+						Item.Package_Desc2,
+						idf.FlagValue) AS Scale_FixedWeight,
+					dbo.fn_GetEplumByCount(
+						ISNULL(ISO.Scale_ByCount, ItemScale.Scale_ByCount), 
+						gpmSellingUnit.Unit_Abbreviation,
+						RU.Unit_Abbreviation,
+						idf.FlagValue) AS Scale_ByCount,
 					Scale_Grade.Zone1 AS Grade,
 					CONVERT(VARCHAR, ISNULL(Scale_Grade.Zone1,0))+','+
 					CONVERT(VARCHAR, ISNULL(Scale_Grade.Zone2,0))+','+
@@ -1433,6 +1510,13 @@ BEGIN
 						ON PU_Override.Unit_ID = ItemOverride.Package_Unit_ID
 					LEFT JOIN Scale_StorageData ssd (nolock)
 						ON ItemScale.Scale_StorageData_ID = ssd.Scale_StorageData_ID
+					LEFT JOIN ItemUomOverride iuo (nolock)
+						ON QT.Item_Key = iuo.Item_Key
+						AND QT.Store_No = iuo.Store_No
+					LEFT JOIN ItemUnit gpmSellingUnit (nolock) 
+						ON iuo.Retail_Unit_ID = gpmSellingUnit.Unit_ID
+					LEFT JOIN dbo.fn_GetInstanceDataFlagStoreValues(@GlobalPriceManagementIdfKey) idf 
+						ON QT.Store_No = idf.Store_No
 				WHERE 
 					((@ActionCode <> 'A' AND ActionCode = @ActionCode) OR
 					(@ActionCode  = 'A' AND (ActionCode = 'A' OR ActionCode = 'S'))) -- adds include authorizations

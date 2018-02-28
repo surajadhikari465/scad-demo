@@ -3291,6 +3291,9 @@
     <Build Include="Schema\dbo\Tables\Tables1\ItemHistoryShrinkSubType.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.rollback.sql" />
     <None Include="Scripts\PopulateData\PostDeploy.Scripts\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.sql" />
+    <Build Include="Schema\dbo\Functions\fn_GetEplumFixedWeight.sql" />
+    <Build Include="Schema\dbo\Functions\fn_GetEplumUnitOfMeasure.sql" />
+    <Build Include="Schema\dbo\Functions\fn_GetEplumByCount.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

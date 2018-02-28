@@ -1,6 +1,4 @@
-﻿
-
-CREATE FUNCTION [dbo].[fn_GetPriceBatchDetailPrices] 
+﻿CREATE FUNCTION [dbo].[fn_GetPriceBatchDetailPrices] 
 (
     @Date					datetime,
 	@Deletes				bit,
