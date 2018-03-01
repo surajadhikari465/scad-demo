@@ -210,7 +210,8 @@
     [NewRegPrice]                                                           MONEY          NULL,
     [RegPriceChanging]                                                      BIT            CONSTRAINT [DF_RegPriceChanging] DEFAULT ((0)) NOT NULL,
     [PriceBatchDetailID]                                                    INT            NULL,
-    [StorageText]                                                           VARCHAR (1024) NULL
+    [StorageText]                                                           VARCHAR (1024) NULL,
+	[Default_Identifier]													TINYINT		   NULL
 );
 
 

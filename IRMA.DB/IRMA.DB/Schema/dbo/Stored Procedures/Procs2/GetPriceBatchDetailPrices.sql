@@ -23,6 +23,8 @@
 --									Allergens + Ingredients + ExtraText
 -- 2018-02-22	BJ		20171		Modified Scale_FixedWeight, PlumUnitAbbr, and Scale_ByCount to return EPlum values based on
 --									whether the store is on GPM
+-- 2018-02-22	BJ		25327		Allowed sending Default_Identifier flag in Scale Push price changes for 365 items and 
+--									made it so we only send CFS to 365 stores for price changes
 --****************************************************************************************************************************************************************************
 
 CREATE PROCEDURE [dbo].[GetPriceBatchDetailPrices]
@@ -592,7 +594,8 @@ INSERT INTO PosPushStagingPriceBatchDetail
 	[Scale_LabelStyle_Desc],
 	[NewRegPrice],
 	[RegPriceChanging],
-	[StorageText]
+	[StorageText],
+	[Default_Identifier]
 )
 
 --------------------------------------------------------------------------------------------------------------
@@ -1025,7 +1028,8 @@ SELECT
 	PBD.Scale_LabelStyle_Desc,
 	CASE WHEN (dbo.fn_OnSale(ISNULL(PBH.PriceChgTypeID, PBD.PriceChgTypeID)) = 1 AND PBD.NewRegPrice IS NOT NULL) THEN PBD.NewRegPrice ELSE NULL END AS NewRegPrice,
 	CASE WHEN PBD.NewRegPrice IS NULL THEN 0 ELSE 1 END AS RegPriceChanging,
-	PBD.StorageText
+	PBD.StorageText,
+	II.Default_Identifier
 FROM (
 		--THIS QUERY RETURNS DATA FROM PRICE BATCH DETAIL;  THESE RECORDS ARE THE REGULAR BATCHED UP ITEM RECORDS W/ NO 
 		--SPECIAL FILTER ON THE RESULT SET
@@ -1235,7 +1239,9 @@ WHERE
 			OR (@IsScaleZoneData = 1 
 				AND ((@Deletes = 0 AND PBD.PriceChgTypeID IS NOT NULL) OR (@Deletes = 1 AND PBD.ItemChgTypeID = 3))
 				AND II.Scale_Identifier = 1
-				AND (PBD.SendToScale = 1 or PBD.SendToScale IS NULL)))
+				--Only send items if they are Non-CFS items (PBD.SendToScale IS NULL) or if we are sending a CFS PLU
+				--to a 365 Store ((Store.Mega_Store = 1 AND PBD.SendToScale = 1 AND dbo.fn_IsPosPlu(II.Identifier) = 1))
+				AND (PBD.SendToScale IS NULL or (Store.Mega_Store = 1 AND PBD.SendToScale = 1 AND dbo.fn_IsPosPlu(II.Identifier) = 1))))
 
 	AND (@ExcludeSKUIdentifiers = 0 OR (@ExcludeSKUIdentifiers = 1 AND II.IdentifierType <> 'S'))
 
