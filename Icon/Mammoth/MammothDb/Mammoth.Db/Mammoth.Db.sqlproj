@@ -756,6 +756,8 @@
     <None Include="Scripts\PostDeploymentScripts\AddProcessBODConfirmBODMessageType.sql" />
     <Build Include="esb\Tables\MessageArchiveDetailPrimePsg.sql" />
     <None Include="Scripts\PostDeploymentScripts\UpdateActivePriceSentArchiveInRetentionPolicy.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddRegionsToRegionGpmStatusTable.sql" />
+    <Build Include="dbo\Tables\RegionGpmStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
