@@ -189,6 +189,10 @@ Friend Class frmShrinkCorrections
             dtShrinkDetails = ShrinkCorrectionsDAO.GetShrinkCorrectionsDetails(StoreNo, SubTeamNo, StartDate, EndDate, ShrinkSubtype, InventoryAdjustmentCode)
             gridShrink.DataSource = dtShrinkDetails
 
+            Dim shrinkType As UltraGridColumn = gridShrink.DisplayLayout.Bands(0).Columns(col_Grid_InventoryAdjustment_ID)
+            shrinkType.CellActivation = Activation.NoEdit
+            shrinkType.CellClickAction = CellClickAction.CellSelect
+
             If gridShrink.Rows.Count > 0 Then
                 gridShrink.Rows(0).Selected = True
 
