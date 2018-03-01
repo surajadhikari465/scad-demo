@@ -28,6 +28,8 @@ BEGIN
 
 	BEGIN TRAN
 
+	SET @InventoryAdjustmentCode_Id = (SELECT TOP 1 InventoryAdjustmentCode_Id FROM shrinkSubType WHERE ShrinkSubtype_Id = @ShrinkSubtype_Id)
+
 	SELECT @Adjustment_Id = Adjustment_Id,
 		@Abbreviation = Abbreviation,
 		@AdjustmentReason = AdjustmentDescription

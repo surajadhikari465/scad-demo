@@ -126,7 +126,7 @@ Partial Class frmShrinkCorrections
         Me.lblShrinkSubtype.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblShrinkSubtype.ForeColor = System.Drawing.SystemColors.ControlText
         Me.lblShrinkSubtype.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblShrinkSubtype.Location = New System.Drawing.Point(305, 71)
+        Me.lblShrinkSubtype.Location = New System.Drawing.Point(305, 30)
         Me.lblShrinkSubtype.Name = "lblShrinkSubtype"
         Me.lblShrinkSubtype.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.lblShrinkSubtype.Size = New System.Drawing.Size(98, 17)
@@ -143,7 +143,7 @@ Partial Class frmShrinkCorrections
         Me.cmbShrinkSubtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbShrinkSubtype.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.cmbShrinkSubtype.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cmbShrinkSubtype.Location = New System.Drawing.Point(404, 68)
+        Me.cmbShrinkSubtype.Location = New System.Drawing.Point(404, 25)
         Me.cmbShrinkSubtype.Name = "cmbShrinkSubtype"
         Me.cmbShrinkSubtype.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmbShrinkSubtype.Size = New System.Drawing.Size(210, 24)
@@ -157,7 +157,7 @@ Partial Class frmShrinkCorrections
         Me.lblSpoilageType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSpoilageType.ForeColor = System.Drawing.SystemColors.ControlText
         Me.lblSpoilageType.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblSpoilageType.Location = New System.Drawing.Point(305, 27)
+        Me.lblSpoilageType.Location = New System.Drawing.Point(305, 70)
         Me.lblSpoilageType.Name = "lblSpoilageType"
         Me.lblSpoilageType.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.lblSpoilageType.Size = New System.Drawing.Size(95, 17)
@@ -175,7 +175,7 @@ Partial Class frmShrinkCorrections
         Me.cmbShrinkType.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold)
         Me.cmbShrinkType.ForeColor = System.Drawing.SystemColors.WindowText
         Me.cmbShrinkType.Items.AddRange(New Object() {"ALL", "Foodbank", "Sampling", "Spoilage"})
-        Me.cmbShrinkType.Location = New System.Drawing.Point(404, 24)
+        Me.cmbShrinkType.Location = New System.Drawing.Point(404, 67)
         Me.cmbShrinkType.Name = "cmbShrinkType"
         Me.cmbShrinkType.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmbShrinkType.Size = New System.Drawing.Size(210, 24)
@@ -307,10 +307,10 @@ Partial Class frmShrinkCorrections
         Me.gridShrink.DisplayLayout.AutoFitStyle = Infragistics.Win.UltraWinGrid.AutoFitStyle.ResizeAllColumns
         UltraGridBand1.ColHeaderLines = 2
         UltraGridColumn1.Header.VisiblePosition = 0
-        UltraGridColumn1.Width = 40
+        UltraGridColumn1.Width = 33
         UltraGridColumn2.Header.Caption = "Item" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Description"
         UltraGridColumn2.Header.VisiblePosition = 1
-        UltraGridColumn2.Width = 166
+        UltraGridColumn2.Width = 173
         UltraGridColumn3.Header.Caption = "Item" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Subteam"
         UltraGridColumn3.Header.VisiblePosition = 2
         UltraGridColumn3.Width = 66
@@ -329,7 +329,6 @@ Partial Class frmShrinkCorrections
         UltraGridColumn8.Header.Caption = "Qty."
         UltraGridColumn8.Header.VisiblePosition = 7
         UltraGridColumn8.Width = 39
-        UltraGridColumn9.Header.Caption = "wType"
         UltraGridColumn9.Header.VisiblePosition = 14
         UltraGridColumn9.Hidden = True
         UltraGridColumn9.Width = 14
