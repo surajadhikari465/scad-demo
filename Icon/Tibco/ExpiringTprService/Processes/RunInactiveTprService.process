@@ -390,7 +390,7 @@ AND NOT EXISTS
                                     </pfx2:NewTagExpiration>
                                 </xsl:if>
                                 <pfx2:Action>
-                                    <xsl:value-of select="&quot;Expiring&quot;"/>
+                                    <xsl:value-of select="&quot;Delete&quot;"/>
                                 </pfx2:Action>
                                 <pfx2:ItemTypeCode>
                                     <xsl:value-of select="itemTypeCode"/>
@@ -412,8 +412,8 @@ AND NOT EXISTS
             <pd:activity name="Send Expiring Tprs to Queue">
                 <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-                <pd:x>555</pd:x>
-                <pd:y>386</pd:y>
+                <pd:x>556</pd:x>
+                <pd:y>385</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
