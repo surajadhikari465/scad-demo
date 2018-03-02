@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.ServiceProcess;
+using System.Threading;
 
 namespace Mammoth.Esb.ProductListener.Service
 {
