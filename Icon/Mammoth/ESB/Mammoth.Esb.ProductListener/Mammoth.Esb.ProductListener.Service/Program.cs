@@ -1,5 +1,4 @@
-﻿using System.ServiceProcess;
-using System.Threading;
+﻿using System.Threading;
 
 namespace Mammoth.Esb.ProductListener.Service
 {
@@ -11,7 +10,11 @@ namespace Mammoth.Esb.ProductListener.Service
         static void Main()
         {
 #if DEBUG
-            SimpleInjectorInitializer.InitializeContainer().GetInstance<ProductListener>().Run();
+            var container = SimpleInjectorInitializer.InitializeContainer();
+            container.Verify();
+            var listener = container.GetInstance<ProductListener>();
+            listener.Run();
+
             System.Console.ReadLine();
 
             while (true)

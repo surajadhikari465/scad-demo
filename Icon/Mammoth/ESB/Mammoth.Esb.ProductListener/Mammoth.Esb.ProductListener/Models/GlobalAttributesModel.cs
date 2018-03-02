@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Mammoth.Esb.ProductListener.Models
+﻿namespace Mammoth.Esb.ProductListener.Models
 {
     public class GlobalAttributesModel
     {

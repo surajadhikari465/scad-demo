@@ -3,12 +3,7 @@ using Mammoth.Common.DataAccess;
 using Mammoth.Esb.ProductListener.MessageParsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 {

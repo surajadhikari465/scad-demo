@@ -5,7 +5,6 @@ using Mammoth.Common.DataAccess.DbProviders;
 using MoreLinq;
 using System.Data;
 using System.Linq;
-using System;
 
 namespace Mammoth.Esb.ProductListener.Commands
 {

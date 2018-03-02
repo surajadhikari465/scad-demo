@@ -38,4 +38,4 @@ CREATE INDEX [IX_ItemAttributesLocale_PN_ItemID_BusinessUnitID_Region_ItemAttrib
 	[Region] ASC,
 	[ItemAttributeLocaleID] ASC
 )
-INCLUDE ([AddedDate]) ON [PRIMARY]
+INCLUDE ([AddedDate], [Authorized]) ON [PRIMARY]

@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Mammoth.Esb.ProductListener.Cache;
 using Mammoth.Esb.ProductListener.Mappers;
-using Mammoth.Esb.ProductListener.Cache;
-using Moq;
 using Mammoth.Esb.ProductListener.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Collections.Generic;
 using System.Linq;
 

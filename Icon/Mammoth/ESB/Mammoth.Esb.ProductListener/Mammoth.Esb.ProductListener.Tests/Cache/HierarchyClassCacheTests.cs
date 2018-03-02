@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Esb.ProductListener.Cache;
-using Moq;
-using Mammoth.Esb.ProductListener.Queries;
 using Mammoth.Esb.ProductListener.Models;
+using Mammoth.Esb.ProductListener.Queries;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Collections.Generic;
-using Mammoth.Common.DataAccess.CommandQuery;
 
 namespace Mammoth.Esb.ProductListener.Tests.Cache
 {

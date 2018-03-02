@@ -4,7 +4,6 @@ using Mammoth.Common.DataAccess.DbProviders;
 using Mammoth.Esb.ProductListener.Commands;
 using Mammoth.Esb.ProductListener.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
