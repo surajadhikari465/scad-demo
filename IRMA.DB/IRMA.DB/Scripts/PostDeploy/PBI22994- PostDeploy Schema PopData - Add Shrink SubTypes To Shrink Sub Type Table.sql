@@ -57,3 +57,4 @@ BEGIN
 	INSERT INTO [dbo].[ShrinkSubType] (InventoryAdjustmentCode_ID, ReasonCodeDescription, [LastUpdateUser_Id], [LastUpdateDateTime])
 	                   VALUES(@FoodBankInventoryAdjustmentCodeID,'Donation Discontinued',@UserId , GETDATE())
 END
+go
