@@ -19,7 +19,6 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
         public void Execute(AddOrUpdateMerchandiseHierarchyLineageCommand data)
         {
             string levelName = data.HierarchyClasses[0].HierarchyLevelName;
-            List<MerchandiseHierarchyModel> models = new List<MerchandiseHierarchyModel>();
 
             switch (levelName)
             {
@@ -41,63 +40,79 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
             }
         }
 
+
         private void UpdateSegments(AddOrUpdateMerchandiseHierarchyLineageCommand data)
         {
+            var merchModels = data.HierarchyClasses
+                .Select(hc => new MerchandiseHierarchyModel { SegmentHcid = hc.HierarchyClassId });
+
             dbProvider.Connection.Execute(
-                @"CREATE TABLE #SegmentIds (SegmentHCID int)", null, dbProvider.Transaction);
-            dbProvider.Connection.Execute(
-                @"INSERT INTO #SegmentIds VALUES (@SegmentHcid)",
-                data.HierarchyClasses.Select(hc => new MerchandiseHierarchyModel { SegmentHcid = hc.HierarchyClassId }),
-                dbProvider.Transaction);
-            dbProvider.Connection.Execute(
-                @"INSERT INTO dbo.Hierarchy_Merchandise(SegmentHCID)
-                  SELECT SegmentHCID 
-                  FROM #SegmentIds
-                  WHERE SegmentHCID NOT IN
-                  (
-                      SELECT SegmentHCID FROM dbo.Hierarchy_Merchandise
-                  )",
-                null,
-                dbProvider.Transaction);
-            dbProvider.Connection.Execute(
-                @"DROP TABLE #SegmentIds", null, dbProvider.Transaction);
+                sql: @"CREATE TABLE #SegmentIds (SegmentHCID int)",
+                param: null,
+                transaction: dbProvider.Transaction);
+            var tempInsertResult = dbProvider.Connection.Execute(
+                sql: @"INSERT INTO #SegmentIds VALUES (@SegmentHcid)",
+                param: merchModels,
+                transaction: dbProvider.Transaction);
+            if (tempInsertResult > 0)
+            {
+                var result = dbProvider.Connection.Execute(
+                   sql: @"INSERT INTO dbo.Hierarchy_Merchandise (SegmentHCID)
+                          SELECT SegmentHCID 
+                          FROM #SegmentIds temp
+                          WHERE NOT EXISTS
+                          (SELECT * FROM dbo.Hierarchy_Merchandise WHERE SegmentHCID = temp.SegmentHCID)",
+                   param: null,
+                   transaction: dbProvider.Transaction);
+            }
+
+            dbProvider.Connection.Execute(sql: @"DROP TABLE #SegmentIds", param: null, transaction: dbProvider.Transaction);
         }
 
         private void UpdateFamilies(AddOrUpdateMerchandiseHierarchyLineageCommand data)
         {
             dbProvider.Connection.Execute(
-                @"CREATE TABLE #TempMerchandiseHierarchy
+                sql: @"CREATE TABLE #TempMerchandiseHierarchy
                   (
                       SegmentHCID int null,
-                      FamilyHCID int null,
-                      ClassHCID int null,
-                      BrickHCID int null,
-                      SubBrickHCID int null
-                  )", null, dbProvider.Transaction);
-            dbProvider.Connection.Execute(
-                  @"INSERT INTO #TempMerchandiseHierarchy 
-                  VALUES (@SegmentHcid, @FamilyHcid, @ClassHcid, @BrickHcid, @SubBrickHcid)",
-                    data.HierarchyClasses.Select(hc => new MerchandiseHierarchyModel
+                      FamilyHCID int null
+                  )",
+                param: null,
+                transaction: dbProvider.Transaction);
+            var tempInsertResult = dbProvider.Connection.Execute(
+                  sql: @"INSERT INTO #TempMerchandiseHierarchy 
+                        VALUES (@SegmentHcid, @FamilyHcid)",
+                   param: data.HierarchyClasses.Select(hc => new MerchandiseHierarchyModel
                     {
                         SegmentHcid = hc.HierarchyClassParentId,
                         FamilyHcid = hc.HierarchyClassId
-                    }), dbProvider.Transaction);
+                    }),
+                   transaction: dbProvider.Transaction);
+            if (tempInsertResult > 0)
+            {
+                var updateResult = dbProvider.Connection.Execute(
+                    sql: @"UPDATE hm
+                        SET FamilyHCID = temp.FamilyHCID, ModifiedDate = GETDATE()
+                        FROM dbo.Hierarchy_Merchandise hm
+                        JOIN #TempMerchandiseHierarchy temp 
+                            ON hm.SegmentHCID = temp.SegmentHCID AND hm.FamilyHCID IS NULL",
+                    param: null,
+                    transaction: dbProvider.Transaction);
+                if (tempInsertResult > updateResult)
+                {
+                    var insertResult = dbProvider.Connection.Execute(
+                        sql: @"INSERT INTO dbo.Hierarchy_Merchandise
+                                (SegmentHCID, FamilyHCID)
+                            SELECT *
+                            FROM #TempMerchandiseHierarchy temp
+                            WHERE NOT EXISTS
+                            (SELECT * FROM dbo.Hierarchy_Merchandise WHERE FamilyHCID = temp.FamilyHCID)",
+                        param: null,
+                        transaction: dbProvider.Transaction);
+                }
+            }
             dbProvider.Connection.Execute(
-                  @"UPDATE hm
-                      SET FamilyHCID = temp.FamilyHCID
-                  FROM dbo.Hierarchy_Merchandise hm
-                  JOIN #TempMerchandiseHierarchy temp ON hm.SegmentHCID = temp.SegmentHCID
-                      AND hm.FamilyHCID IS NULL", null, dbProvider.Transaction);
-            dbProvider.Connection.Execute(
-                  @"INSERT INTO dbo.Hierarchy_Merchandise(SegmentHCID, FamilyHCID, ClassHCID, BrickHCID, SubBrickHCID)
-                  SELECT *
-                  FROM #TempMerchandiseHierarchy temp
-                  WHERE temp.FamilyHCID NOT IN
-                  (
-                      SELECT FamilyHCID FROM dbo.Hierarchy_Merchandise
-                  )", null, dbProvider.Transaction);
-            dbProvider.Connection.Execute(
-                @"DROP TABLE #TempMerchandiseHierarchy", null, dbProvider.Transaction);
+                sql: @"DROP TABLE #TempMerchandiseHierarchy", param: null, transaction: dbProvider.Transaction);
         }
 
         private void UpdateClasses(AddOrUpdateMerchandiseHierarchyLineageCommand data)

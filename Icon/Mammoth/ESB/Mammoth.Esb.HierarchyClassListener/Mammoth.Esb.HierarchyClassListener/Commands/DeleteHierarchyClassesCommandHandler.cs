@@ -14,35 +14,35 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
     public abstract class DeleteHierarchyClassesGenericCommandHandler<T>
         : ICommandHandler<T> where T : IHierarchyClassesParameter
     {
-        protected IDbProvider dbProvider;
-        protected abstract int hierarchyId { get; }
+        protected IDbProvider DbProvider { get; set; }
+        protected abstract int HierarchyId { get; }
 
         public DeleteHierarchyClassesGenericCommandHandler(IDbProvider dbProvider)
         {
-            this.dbProvider = dbProvider;
+            this.DbProvider = dbProvider;
         }
 
         public void Execute(T data)
         {
-            var dbParameters = new
-            {
-                HierarchyClassIds = data.HierarchyClasses.Select(b => b.HierarchyClassId),
-                HierarchyId = hierarchyId
-            };
-            var lineageDeleteSql = "DELETE FROM dbo.Hierarchy_Merchandise" +
-                $" WHERE SegmentHCID IN @{nameof(dbParameters.HierarchyClassIds)}" +
-                $" OR FamilyHCID IN @{nameof(dbParameters.HierarchyClassIds)}" +
-                $" OR ClassHCID IN @{nameof(dbParameters.HierarchyClassIds)}" +
-                $" OR BrickHCID IN @{nameof(dbParameters.HierarchyClassIds)}" +
-                $" OR SubBrickHCID IN @{nameof(dbParameters.HierarchyClassIds)}";
-            var hierarchyClassDeleteSql = "DELETE FROM dbo.HierarchyClass " +
-                     $"WHERE HierarchyClassID IN @{nameof(dbParameters.HierarchyClassIds)} " +
-                     $"AND HierarchyID = @{nameof(dbParameters.HierarchyId)}";
+            const string tempTable = "#tempDeleteHierarchyClass";
+            string sqlToExecute = String.Empty;
 
-            int affectedCountForLineage= dbProvider.Connection
-                .Execute(lineageDeleteSql, dbParameters, dbProvider.Transaction);
-            int affectedCount = dbProvider.Connection
-                .Execute(hierarchyClassDeleteSql, dbParameters, dbProvider.Transaction);
+            sqlToExecute = $"CREATE TABLE {tempTable} (HierarchyClassID int);";
+            DbProvider.Connection.Execute(
+                sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
+
+            var tempInsertParams = data.HierarchyClasses
+                .Select(hc => new HierarchyClassModel { HierarchyClassId = hc.HierarchyClassId });
+            sqlToExecute = $"INSERT INTO {tempTable} VALUES (@HierarchyClassId);";
+            var insertTempResult = DbProvider.Connection.Execute(
+                sql: sqlToExecute, param: tempInsertParams, transaction: DbProvider.Transaction);
+            
+            sqlToExecute = $@"
+                DELETE FROM dbo.HierarchyClass
+                WHERE HierarchyID = {HierarchyId}
+                    AND HierarchyClassID IN (SELECT HierarchyClassID FROM {tempTable});";
+            var deleteHierarchyClassResult = DbProvider.Connection.Execute(
+                sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
         }
     }
 }

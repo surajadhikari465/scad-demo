@@ -13,7 +13,7 @@ using System.Linq;
 namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
 {
     [TestClass]
-    public class DeleteMerchandiseClassesServiceTests
+    public class DeleteMerchandiseClassesServiceUnitTests
     {
         private DeleteMerchandiseClassService deleteMerchandiseClassesService;
         private Mock<ICommandHandler<DeleteMerchandiseClassParameter>> mockDeleteMerchandiseClassesCommandHandler;
@@ -45,7 +45,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
         }
 
         [TestMethod]
-        public void DeleteMerchandiseClassesService_RequestHasNoMerchandiseClasses_DoesNotCallDeleteCommandHandler()
+        public void DeleteMerchandiseClassesService_RequestHasNoMerchandiseClasses_DeleteCommandHandlerNotCalled()
         {
             // Given
             this.hierarchyClasses.ForEach(hc => hc.HierarchyId = Hierarchies.Financial);
@@ -59,7 +59,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
         }
 
         [TestMethod]
-        public void DeleteMerchandiseClassesService_RequestHasValidMerchandiseClasses_CallsDeleteCommandHandler()
+        public void DeleteMerchandiseClassesService_RequestHasValidMerchandiseClasses_DeleteCommandHandlerIsCalled()
         {
             // Given
             this.deleteMerchandiseClassesRequest = new DeleteMerchandiseClassRequest { HierarchyClasses = this.hierarchyClasses };
@@ -79,7 +79,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
         }
 
         [TestMethod]
-        public void DeleteMerchandiseClassesService_RequestLacksDeleteAction_DeleteCommandHandlerNotCalled()
+        public void DeleteMerchandiseClassesService_RequestHasNoDeleteAction_DeleteCommandHandlerNotCalled()
         {
             // Given
             this.hierarchyClasses.ForEach(hc => hc.Action = ActionEnum.Add);

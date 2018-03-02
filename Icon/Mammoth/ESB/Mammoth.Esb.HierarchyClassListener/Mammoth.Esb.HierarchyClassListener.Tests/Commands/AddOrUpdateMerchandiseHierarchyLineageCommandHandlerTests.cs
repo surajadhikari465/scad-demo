@@ -140,7 +140,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             Assert.AreEqual(testMerchandiseHierarchy.BrickHcid, merchandiseHierarchy.BrickHcid);
             Assert.AreEqual(testMerchandiseHierarchy.SubBrickHcid, merchandiseHierarchy.SubBrickHcid);
             Assert.IsNotNull(merchandiseHierarchy.AddedDate);
-            Assert.IsNull(merchandiseHierarchy.ModifiedDate);
+            Assert.IsNotNull(merchandiseHierarchy.ModifiedDate);
         }
 
         [TestMethod]
@@ -177,7 +177,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
         }
 
         [TestMethod]
-        public void AddOrUpdateMerchandiseHierarchyLineage_GivenMultipleFamiliesWithSameSegment_ShouldAddFamily()
+        public void AddOrUpdateMerchandiseHierarchyLineage_GivenMultipleFamiliesWithSameSegment_ShouldAddSingleFamily()
         {
             //Given
             var testMerchandiseHierarchy = new MerchandiseHierarchyModel
@@ -218,6 +218,75 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 .Single();
 
             AssertMerchandiseHierarchiesAreEqual(testMerchandiseHierarchy, merchandiseHierarchy);
+        }
+
+        [TestMethod]
+        public void AddOrUpdateMerchandiseHierarchyLineage_GivenMultipleFamiliesWithSameSegment_ShouldUpdateExistingAndAddNew()
+        {
+            //Given
+            const int segment_ID = 54;
+            const int existingFamily_ID = 57;
+            const int newFamily_ID1 = 56;
+            const int newFamily_ID2 = 55;
+            var existingMerchHierarchyA = new MerchandiseHierarchyModel
+            {
+                SegmentHcid = segment_ID,
+                FamilyHcid = null
+            };
+            var existingMerchHierarchyB = new MerchandiseHierarchyModel
+            {
+                SegmentHcid = segment_ID,
+                FamilyHcid = existingFamily_ID
+            };
+            InsertTestMerchandiseHierarchy(existingMerchHierarchyA);
+            InsertTestMerchandiseHierarchy(existingMerchHierarchyB);
+
+            var updatedMerchHierarchyA = new MerchandiseHierarchyModel
+            {
+                SegmentHcid = segment_ID,
+                FamilyHcid = newFamily_ID1
+            };
+            var newMerchHierarchyC = new MerchandiseHierarchyModel
+            {
+                SegmentHcid = segment_ID,
+                FamilyHcid = newFamily_ID2
+            };
+            command.HierarchyClasses.Add(new HierarchyClassModel
+            {
+                HierarchyClassId = newFamily_ID1,
+                HierarchyClassName = "Test Family 1",
+                HierarchyClassParentId = segment_ID,
+                HierarchyLevelName = Constants.Merchandise.HierarchyLevels.Family,
+                HierarchyId = Hierarchies.Merchandise
+            });
+            command.HierarchyClasses.Add(new HierarchyClassModel
+            {
+                HierarchyClassId = newFamily_ID2,
+                HierarchyClassName = "Test Family 2",
+                HierarchyClassParentId = segment_ID,
+                HierarchyLevelName = Constants.Merchandise.HierarchyLevels.Family,
+                HierarchyId = Hierarchies.Merchandise
+            });
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var actualFamily2Lineage = dbProvider.Connection.Query<MerchandiseHierarchyModel>(
+                @"SELECT * FROM dbo.Hierarchy_Merchandise WHERE FamilyHCID = @Id",
+                new { Id = newFamily_ID2 },
+                dbProvider.Transaction)
+                .Single();
+            AssertMerchandiseHierarchiesAreEqual(newMerchHierarchyC, actualFamily2Lineage, false);
+
+            var actualFamily1Lineage = dbProvider.Connection.Query<MerchandiseHierarchyModel>(
+                @"SELECT * FROM dbo.Hierarchy_Merchandise WHERE FamilyHCID = @Id",
+                new { Id = newFamily_ID1 },
+                dbProvider.Transaction)
+                .Single();
+            Assert.IsNotNull(actualFamily1Lineage.ModifiedDate);
+            AssertMerchandiseHierarchiesAreEqual(updatedMerchHierarchyA, actualFamily1Lineage, true);
+            Assert.IsTrue(actualFamily1Lineage.ModifiedDate > actualFamily1Lineage.AddedDate);
         }
 
         [TestMethod]
@@ -583,7 +652,8 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                             dbProvider.Transaction);
         }
 
-        private static void AssertMerchandiseHierarchiesAreEqual(MerchandiseHierarchyModel testMerchandiseHierarchy, MerchandiseHierarchyModel merchandiseHierarchy)
+        private static void AssertMerchandiseHierarchiesAreEqual(MerchandiseHierarchyModel testMerchandiseHierarchy,
+            MerchandiseHierarchyModel merchandiseHierarchy, bool expectToBeModified = false)
         {
             Assert.AreEqual(testMerchandiseHierarchy.SegmentHcid, merchandiseHierarchy.SegmentHcid);
             Assert.AreEqual(testMerchandiseHierarchy.FamilyHcid, merchandiseHierarchy.FamilyHcid);
@@ -591,7 +661,14 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             Assert.AreEqual(testMerchandiseHierarchy.BrickHcid, merchandiseHierarchy.BrickHcid);
             Assert.AreEqual(testMerchandiseHierarchy.SubBrickHcid, merchandiseHierarchy.SubBrickHcid);
             Assert.IsNotNull(merchandiseHierarchy.AddedDate);
-            Assert.IsNull(merchandiseHierarchy.ModifiedDate);
+            if (expectToBeModified)
+            {
+                Assert.IsNotNull(merchandiseHierarchy.ModifiedDate);
+            }
+            else
+            {
+                Assert.IsNull(merchandiseHierarchy.ModifiedDate);
+            }
         }
     }
 }

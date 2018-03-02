@@ -129,7 +129,8 @@
     <Compile Include="MammothHierarchyClassListenerTests.cs" />
     <Compile Include="MessageParsers\HierarchyClassMessageParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DeleteMerchandiseClassesServiceTests.cs" />
+    <Compile Include="Services\DeleteMerchandiseClassesServiceIntegrationTests.cs" />
+    <Compile Include="Services\DeleteMerchandiseClassesServiceUnitTests.cs" />
     <Compile Include="Services\DeleteBrandsServiceTests.cs" />
     <Compile Include="Services\ValidateItemAssociationForDeleteBrandDecoratorTests.cs" />
     <Compile Include="Services\ValidateItemAssociationForDeleteMerchandiseHierarchyDecoratorTests.cs" />

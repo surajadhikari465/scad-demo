@@ -18,7 +18,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
     public class DeleteMerchandiseClassesCommandHandlerTests
     {
         private DeleteMerchandiseClassCommandHandler commandHandler;
-        private DeleteMerchandiseClassParameter command;
+        private DeleteMerchandiseClassParameter cmdParams;
         private SqlDbProvider dbProvider;
         private DapperSqlFactory dapperSqlFactory;
         private ObjectBuilderFactory objectBuilderFactory;
@@ -34,7 +34,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             dbProvider.Transaction = dbProvider.Connection.BeginTransaction();
 
             commandHandler = new DeleteMerchandiseClassCommandHandler(dbProvider);
-            command = new DeleteMerchandiseClassParameter { MerchandiseClasses = new List<HierarchyClassModel>() };
+            cmdParams = new DeleteMerchandiseClassParameter { MerchandiseClasses = new List<HierarchyClassModel>() };
 
             var assembly = Assembly.GetExecutingAssembly();
             dapperSqlFactory = new DapperSqlFactory(assembly);
@@ -49,9 +49,8 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                     SELECT MAX(HierarchyClassID) FROM HierarchyClass hc WHERE hc.HierarchyID = @MerchandiseHierarchyID",
                     new { MerchandiseHierarchyID = merchandiseHierarchyId },
                     transaction: dbProvider.Transaction)
-                .FirstOrDefault();
-
-            maxMerchandiseId = maxMerchandiseId == null ? 1 : maxMerchandiseId;
+                .FirstOrDefault()
+                 ?? 1;
         }
 
         [TestCleanup]
@@ -81,16 +80,16 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             var sql = dapperSqlFactory.BuildInsertSql<HierarchyClass>(includeScopeIdentity: false);
             int affectedRowCount = dbProvider.Connection.Execute(sql, existingHierarchyClasses, dbProvider.Transaction);
 
-            this.command.MerchandiseClasses.AddRange(existingHierarchyClasses.Select(ehc => MapDbHierarchyClassToHierarchyClassModel(ehc)).ToList());
+            this.cmdParams.MerchandiseClasses.AddRange(existingHierarchyClasses.Select(ehc => MapDbHierarchyClassToHierarchyClassModel(ehc)).ToList());
 
             // When
-            this.commandHandler.Execute(this.command);
+            this.commandHandler.Execute(this.cmdParams);
 
             // Then
             List<HierarchyClass> actualMerchandiseClasses = dbProvider.Connection
                 .Query<HierarchyClass>(@"
                     SELECT * FROM HierarchyClass WHERE HierarchyClassID IN @MerchandiseClassIDs",
-                    new { MerchandiseClassIDs = this.command.MerchandiseClasses.Select(b => b.HierarchyClassId) },
+                    new { MerchandiseClassIDs = this.cmdParams.MerchandiseClasses.Select(b => b.HierarchyClassId) },
                     dbProvider.Transaction)
                 .ToList();
 
