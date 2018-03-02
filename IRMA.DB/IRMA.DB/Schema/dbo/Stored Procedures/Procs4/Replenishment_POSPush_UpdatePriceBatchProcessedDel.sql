@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE  [dbo].[Replenishment_POSPush_UpdatePriceBatchProcessedDel]
+﻿CREATE PROCEDURE  [dbo].[Replenishment_POSPush_UpdatePriceBatchProcessedDel]
 	@PriceBatchHeaderIds BatchIdsType READONLY
 AS
 
@@ -29,6 +28,8 @@ MJS				09/19/2016				PBI 8814			Removing identifiers from validated scan codes.
 Jamali			11/1/2016				PBI 18900			Removed the PriceBatchHeaderId and POSBatchId parameters and changed the datatype for 
 															@PriceBatchHeaderIds to BatchIdsType data type
 Jamali			11/15/2016				PBI 19144			Added the code to check the nutrition data in all the tables before deleting it
+BLJ				03/02/2018				PBI 21600			Updated the procedure to only null out Brand_ID and Category_ID when Icon integration
+															enabled so that the non integrated UK region won't have their reports broken
 ***********************************************************************************************************************************************/
 SET NOCOUNT ON
 
@@ -64,12 +65,22 @@ CREATE TABLE #Nutrifacts
 	NutrifactId INT
 )
 
+DECLARE @EnablePLUIRMAIConFlow BIT = (SELECT CAST(dbo.fn_GetAppConfigValue('EnablePLUIRMAIConFlow', 'IRMA Client') AS BIT))
+	,@EnableUPCIRMAToIConFlow BIT = (SELECT CAST(dbo.fn_GetAppConfigValue('EnableUPCIRMAToIConFlow', 'IRMA Client') AS BIT))
+	,@EnableUPCIConToIRMAFlow BIT = (SELECT CAST(dbo.fn_GetAppConfigValue('EnableUPCIConToIRMAFlow', 'IRMA Client') AS BIT))
+DECLARE @DeleteBrandIDAndCategoryID BIT = CASE 
+		WHEN @EnablePLUIRMAIConFlow = 1
+			AND @EnableUPCIRMAToIConFlow = 1
+			AND @EnableUPCIConToIRMAFlow = 1
+			THEN 1
+		ELSE 0
+		END
+
 --Put the incoming data into the temp table for better performance
 INSERT INTO #PriceBatchHeaders
 SELECT PriceBatchHeaderId, BatchId FROM @PriceBatchHeaderIds 
 
 BEGIN TRANSACTION
-
 
 BEGIN TRY
 	--UPDATE THE PRICE BATCH HEADER   
@@ -103,17 +114,14 @@ BEGIN TRY
 	INNER JOIN dbo.StoreItemVendor SIV  ON SIV.StoreItemVendorID = VDH.StoreItemVendorID
     INNER JOIN #Item_Keys ik ON SIV.Item_Key = ik.Item_Key
 	
-	
 	DELETE VendorCostHistory
 	FROM dbo.VendorCostHistory VCH
 	INNER JOIN dbo.StoreItemVendor SIV  ON SIV.StoreItemVendorID = VCH.StoreItemVendorID
     INNER JOIN #Item_Keys ik ON SIV.Item_Key = ik.Item_Key
     
-	
 	DELETE dbo.StoreItemVendor 
 	FROM dbo.StoreItemVendor SIV
     INNER JOIN #Item_Keys ik ON SIV.Item_Key = ik.Item_Key
-    
 	
 	DELETE dbo.ItemVendor 
 	FROM dbo.ItemVendor IV 
@@ -142,13 +150,13 @@ BEGIN TRY
 	SET Deleted_Item = 1, 
 		Remove_Item = 0, 
 		Not_Available = 0,
-		Brand_ID = NULL,   -- Wipe out Brand form the deleted item
-		Category_ID = NULL -- Allows categories to be deleted
+		Brand_ID = CASE WHEN @DeleteBrandIDAndCategoryID = 1 THEN NULL ELSE Brand_ID END,   -- Wipe out Brand form the deleted item
+		Category_ID = CASE WHEN @DeleteBrandIDAndCategoryID = 1 THEN NULL ELSE Category_ID END -- Allows categories to be deleted
 	FROM dbo.Item i
 	INNER JOIN #Item_Keys ik ON i.Item_Key = ik.Item_Key
 
 	UPDATE dbo.ItemOverride 
-	SET Brand_ID = NULL   -- Wipe out Brand form the deleted item
+	SET Brand_ID = CASE WHEN @DeleteBrandIDAndCategoryID = 1 THEN NULL ELSE Brand_ID END   -- Wipe out Brand form the deleted item
 	FROM dbo.ItemOverride ior
 	INNER JOIN #Item_Keys ik ON ior.Item_Key = ik.Item_Key
 
@@ -170,7 +178,6 @@ BEGIN TRY
 	FROM ItemScaleOverride iso
 	INNER JOIN #Item_Keys ik ON iso.Nutrifact_ID = ik.Nutrifact_Id
 
-	
 	--delete the nutrifact record from the nutrifact table only 
 	-- also checking to see that the Nutrifact data is not present in any other table
 	DELETE dbo.NutriFacts

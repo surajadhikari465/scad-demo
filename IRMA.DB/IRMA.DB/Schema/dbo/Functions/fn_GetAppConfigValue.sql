@@ -1,5 +1,4 @@
-﻿
-CREATE FUNCTION [dbo].[fn_GetAppConfigValue] 
+﻿CREATE FUNCTION [dbo].[fn_GetAppConfigValue] 
 (
 	@ConfigurationKeyName varchar(150),
 	@ApplicationName varchar(20)
