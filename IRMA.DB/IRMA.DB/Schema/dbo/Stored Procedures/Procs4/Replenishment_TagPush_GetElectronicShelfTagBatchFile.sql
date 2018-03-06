@@ -183,7 +183,7 @@ BEGIN
 			IA.Check_Box_17, 
 			IA.Check_Box_18,
 			IA.Check_Box_19, 
-			IA.Check_Box_20, 
+			SIE.OrderedByInfor as Ordered_By_Infor, 
 			IA.Text_1, 
 			IA.Text_2,
 			IA.Text_3, 
@@ -267,6 +267,7 @@ BEGIN
 			INNER JOIN dbo.StoreElectronicShelfTagConfig EST ON EST.Store_No = S.Store_No
 			INNER JOIN dbo.Item I ON I.Item_Key = PBD.Item_Key -- 
 			INNER JOIN dbo.StoreItem SI  ON SI.Store_No = S.Store_No AND SI.Item_Key = I.Item_Key AND SI.Authorized = 1
+			INNER JOIN dbo.StoreItemExtended SIE ON SIE.Store_No = SI.Store_No AND SIE.Item_Key = SI.Item_Key
 			INNER JOIN dbo.SubTeam ST  ON ST.SubTeam_No = PBD.SubTeam_No
 			INNER JOIN dbo.ItemUnit IU  ON IU.Unit_ID = I.Package_Unit_ID
 			CROSS APPLY -- 2009-04-30: decision was made to use the most common PS mapping since AccessVia template assigment is based on PS subteam

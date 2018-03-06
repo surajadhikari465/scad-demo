@@ -1,0 +1,1 @@
+﻿DELETE FROM [POSDataElement] WHERE DataElement = 'Ordered_By_Infor'

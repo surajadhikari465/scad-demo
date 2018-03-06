@@ -3293,6 +3293,8 @@
     <None Include="Scripts\PostDeploy\VersionUpdates.sql" />
     <None Include="Scripts\PostDeploy\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.rollback.sql" />
     <None Include="Scripts\PostDeploy\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.sql" />
+    <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
+    <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.rollback.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
