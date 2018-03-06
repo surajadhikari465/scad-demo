@@ -1084,6 +1084,7 @@ me_exit:
         mnuData_CancelAllSales.Enabled = (gbCancelAllSales) AndAlso InstanceDataDAO.IsFlagActive("EnableCancelAllSales")
         R10ItemRefreshToolStripMenuItem.Enabled = gbItemAdministrator
         IconItemRefreshMenuItem.Enabled = gbItemAdministrator
+        SupportRestoreDeleteItemToolStripMenuItem.Enabled = gbSupportUser
 
         '######################
         ' Admin Menu access
@@ -2462,15 +2463,20 @@ me_exit:
 
     Private Sub ManageRetentionPoliciesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuAdministration_SystemConfiguration_ManageRetentionPolicies.Click
         logger.Debug("ManageRetentionPoliciesToolStripMenuItem_Click entry")
-        Dim r10ItemRefreshWindow As New frmRetentionPolicyList()
         frmRetentionPolicyList.ShowDialog()
         logger.Debug("ManageRetentionPoliciesToolStripMenuItem_Click exit")
     End Sub
 
     Private Sub mnuData_CancelAllSales_Click(sender As Object, e As EventArgs) Handles mnuData_CancelAllSales.Click
         logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click entry")
-        Dim r10ItemRefreshWindow As New CancelSalesMultipleItems()
         CancelSalesMultipleItems.ShowDialog()
         logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click exit")
+    End Sub
+
+    Private Sub SupportRestoreDeleteItemToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SupportRestoreDeleteItemToolStripMenuItem.Click
+        logger.Debug("SupportRestoreDeleteItemToolStripMenuItem_Click entry")
+        Dim window As New SupportRestoreDeletedItems()
+        window.ShowDialog()
+        logger.Debug("SupportRestoreDeleteItemToolStripMenuItem_Click exit")
     End Sub
 End Class

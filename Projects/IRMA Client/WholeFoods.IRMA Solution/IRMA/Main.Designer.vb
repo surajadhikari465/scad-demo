@@ -301,6 +301,7 @@
         Me.mnuTools_UnitConverter = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuData = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuData_BatchRollback = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuData_CancelAllSales = New System.Windows.Forms.ToolStripMenuItem()
         Me.IconItemRefreshMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.R10ItemRefreshToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuData_RestoreDeletedItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -309,7 +310,6 @@
         Me.SlawItemLocaleMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SlawPriceMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuData_UnprocessedPushFiles = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuData_CancelAllSales = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdministration = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdministration_IRMAConfiguration = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdministration_IRMAConfiguration_ApplicationConfiguration = New System.Windows.Forms.ToolStripMenuItem()
@@ -395,6 +395,7 @@
         Me.ToolStripStatusLabel_Environment = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel_Version = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabelRegionalSetting = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.SupportRestoreDeleteItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripContainer1.ContentPanel.SuspendLayout()
         Me.ToolStripContainer1.TopToolStripPanel.SuspendLayout()
         Me.ToolStripContainer1.SuspendLayout()
@@ -442,6 +443,7 @@
         Me.ToolStrip_MenuItems.BackColor = System.Drawing.Color.Transparent
         Me.ToolStrip_MenuItems.CanOverflow = False
         Me.ToolStrip_MenuItems.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.ToolStrip_MenuItems.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.ToolStrip_MenuItems.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbFile_Export, Me.tsbFile_Import, Me.tsbEdit_Item_AddNewItem, Me.tsbEdit_Item_EditExistingItem, Me.tsbEdit_Orders_AddEdit, Me.tsbEdit_OrderSearch, Me.tsbEdit_Item_InventoryLevel, Me.tsbEdit_Pricing_Batches, Me.tsbEdit_Pricing_ReprintSigns, Me.tsbEdit_Pricing_PromotionalOffers, Me.tsbReports_ReportManager, Me.tsbEdit_SearchText, Me.tsbEdit_Search, Me.tsbOrchard})
         Me.ToolStrip_MenuItems.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
         Me.ToolStrip_MenuItems.Name = "ToolStrip_MenuItems"
@@ -593,6 +595,7 @@
         '
         resources.ApplyResources(Me.ToolStrip_Inventory, "ToolStrip_Inventory")
         Me.ToolStrip_Inventory.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.ToolStrip_Inventory.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.ToolStrip_Inventory.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbInventory_InventoryAdjustment})
         Me.ToolStrip_Inventory.Name = "ToolStrip_Inventory"
         '
@@ -604,6 +607,7 @@
         '
         'MainMenu1
         '
+        Me.MainMenu1.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFile, Me.mnuEdit, Me.mnuReports, Me.mnuInventory, Me.mnuTools, Me.mnuData, Me.mnuAdministration, Me.mnuHelp})
         Me.MainMenu1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         resources.ApplyResources(Me.MainMenu1, "MainMenu1")
@@ -1405,7 +1409,7 @@
         '
         'mnuData
         '
-        Me.mnuData.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuData_BatchRollback, Me.mnuData_CancelAllSales, Me.IconItemRefreshMenuItem, Me.R10ItemRefreshToolStripMenuItem, Me.mnuData_RestoreDeletedItem, Me.mnuData_ScalePOSPush, Me.SlawItemRefreshMenuItem, Me.mnuData_UnprocessedPushFiles})
+        Me.mnuData.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuData_BatchRollback, Me.mnuData_CancelAllSales, Me.IconItemRefreshMenuItem, Me.R10ItemRefreshToolStripMenuItem, Me.mnuData_RestoreDeletedItem, Me.mnuData_ScalePOSPush, Me.SlawItemRefreshMenuItem, Me.SupportRestoreDeleteItemToolStripMenuItem, Me.mnuData_UnprocessedPushFiles})
         Me.mnuData.Name = "mnuData"
         resources.ApplyResources(Me.mnuData, "mnuData")
         '
@@ -1413,6 +1417,11 @@
         '
         Me.mnuData_BatchRollback.Name = "mnuData_BatchRollback"
         resources.ApplyResources(Me.mnuData_BatchRollback, "mnuData_BatchRollback")
+        '
+        'mnuData_CancelAllSales
+        '
+        Me.mnuData_CancelAllSales.Name = "mnuData_CancelAllSales"
+        resources.ApplyResources(Me.mnuData_CancelAllSales, "mnuData_CancelAllSales")
         '
         'IconItemRefreshMenuItem
         '
@@ -1454,11 +1463,6 @@
         '
         Me.mnuData_UnprocessedPushFiles.Name = "mnuData_UnprocessedPushFiles"
         resources.ApplyResources(Me.mnuData_UnprocessedPushFiles, "mnuData_UnprocessedPushFiles")
-        '
-        'mnuData_CancelAllSales
-        '
-        Me.mnuData_CancelAllSales.Name = "mnuData_CancelAllSales"
-        resources.ApplyResources(Me.mnuData_CancelAllSales, "mnuData_CancelAllSales")
         '
         'mnuAdministration
         '
@@ -1897,6 +1901,7 @@
         '
         'StatusStrip1
         '
+        Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel_Region, Me.ToolStripStatusLabel_Environment, Me.ToolStripStatusLabel_Version, Me.ToolStripStatusLabelRegionalSetting})
         resources.ApplyResources(Me.StatusStrip1, "StatusStrip1")
         Me.StatusStrip1.Name = "StatusStrip1"
@@ -1920,6 +1925,11 @@
         '
         Me.ToolStripStatusLabelRegionalSetting.Name = "ToolStripStatusLabelRegionalSetting"
         resources.ApplyResources(Me.ToolStripStatusLabelRegionalSetting, "ToolStripStatusLabelRegionalSetting")
+        '
+        'SupportRestoreDeleteItemToolStripMenuItem
+        '
+        Me.SupportRestoreDeleteItemToolStripMenuItem.Name = "SupportRestoreDeleteItemToolStripMenuItem"
+        resources.ApplyResources(Me.SupportRestoreDeleteItemToolStripMenuItem, "SupportRestoreDeleteItemToolStripMenuItem")
         '
         'frmMain
         '
@@ -2144,5 +2154,6 @@
     Friend WithEvents SlawPriceMenuItem As ToolStripMenuItem
     Friend WithEvents mnuAdministration_SystemConfiguration_ManageRetentionPolicies As ToolStripMenuItem
     Friend WithEvents mnuData_CancelAllSales As ToolStripMenuItem
+    Friend WithEvents SupportRestoreDeleteItemToolStripMenuItem As ToolStripMenuItem
 #End Region
 End Class

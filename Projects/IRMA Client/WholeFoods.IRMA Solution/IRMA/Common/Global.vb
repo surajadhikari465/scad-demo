@@ -640,6 +640,7 @@ Module Global_Renamed
     Public gbUserMaintenance As Boolean
     Public gbSuperUser As Boolean
     Public gb365Administrator As Boolean
+    Public gbSupportUser As Boolean
 
     Public gsUserName As String
     Public giUserID As Integer

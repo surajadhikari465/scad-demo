@@ -159,6 +159,11 @@ Friend Class frmLogin
                     gb365Administrator = gsTitleDescription.Contains("365")
                 End If
 
+                'Support Team
+                If Not String.IsNullOrEmpty(gsTitleDescription) Then
+                    gbSupportUser = gsTitleDescription.Equals("CEN - IRMA Developer") OrElse gsTitleDescription.Equals("CEN - IRMA Business Analyst")
+                End If
+
                 gRSRecordset.Close()
                 gRSRecordset = Nothing
             End If

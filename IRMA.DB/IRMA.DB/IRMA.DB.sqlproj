@@ -3293,6 +3293,9 @@
     <None Include="Scripts\PostDeploy\VersionUpdates.sql" />
     <None Include="Scripts\PostDeploy\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.rollback.sql" />
     <None Include="Scripts\PostDeploy\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs4\SupportRestoreDeletedItems.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs4\SupportRestoreDeletedItemsValidate.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\SupportRestoreDeletedItemsItemKeys.sql" />
     <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
     <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.rollback.sql" />
   </ItemGroup>
