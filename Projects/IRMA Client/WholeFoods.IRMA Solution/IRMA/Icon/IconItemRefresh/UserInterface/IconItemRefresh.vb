@@ -1,5 +1,4 @@
 ﻿Imports System.Linq
-Imports System.Threading.Tasks
 
 Public Class IconItemRefresh
     Private iconItemRefreshService As ItemIdentifierRefreshService

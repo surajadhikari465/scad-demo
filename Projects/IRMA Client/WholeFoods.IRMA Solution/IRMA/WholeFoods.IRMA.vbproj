@@ -826,7 +826,13 @@
     </Compile>
     <Compile Include="ItemHosting\BusinessLogic\ItemIdentifierBO.vb" />
     <Compile Include="ItemHosting\BusinessLogic\StorageDataBO.vb" />
+    <Compile Include="ItemHosting\BusinessLogic\SupportRestoreDeletedItemsManager.vb" />
+    <Compile Include="ItemHosting\BusinessLogic\SupportRestoreDeletedItemBO.vb" />
+    <Compile Include="ItemHosting\BusinessLogic\SupportRestoreDeletedItemsRestoreRequestBO.vb" />
+    <Compile Include="ItemHosting\BusinessLogic\SupportRestoreDeletedItemsValidateRequestBO.vb" />
+    <Compile Include="ItemHosting\BusinessLogic\SupportRestoreDeletedItemsValidateResponseBO.vb" />
     <Compile Include="ItemHosting\DataAccess\ScaleStorageDataDAO.vb" />
+    <Compile Include="ItemHosting\DataAccess\SupportRestoreDeletedItemsDAO.vb" />
     <Compile Include="ItemHosting\UserInterface\Form_ItemScaleDetails365.Designer.vb">
       <DependentUpon>Form_ItemScaleDetails365.vb</DependentUpon>
     </Compile>
@@ -910,6 +916,18 @@
       <DependentUpon>ManageDefaultAttributes.vb</DependentUpon>
     </Compile>
     <Compile Include="ItemHosting\UserInterface\ManageDefaultAttributes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemHosting\UserInterface\SupportRestoreDeletedItems.Designer.vb">
+      <DependentUpon>SupportRestoreDeletedItems.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ItemHosting\UserInterface\SupportRestoreDeletedItems.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemHosting\UserInterface\SupportRestoreDeletedItemsErrors.Designer.vb">
+      <DependentUpon>SupportRestoreDeletedItemsErrors.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ItemHosting\UserInterface\SupportRestoreDeletedItemsErrors.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ItemHosting\UserInterface\SuspededPOResolutionCode.Designer.vb">
@@ -3809,6 +3827,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ItemHosting\UserInterface\ManageDefaultAttributes.resx">
       <DependentUpon>ManageDefaultAttributes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemHosting\UserInterface\SupportRestoreDeletedItems.resx">
+      <DependentUpon>SupportRestoreDeletedItems.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemHosting\UserInterface\SupportRestoreDeletedItemsErrors.resx">
+      <DependentUpon>SupportRestoreDeletedItemsErrors.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ItemHosting\UserInterface\SuspededPOResolutionCode.resx">
       <DependentUpon>SuspededPOResolutionCode.vb</DependentUpon>

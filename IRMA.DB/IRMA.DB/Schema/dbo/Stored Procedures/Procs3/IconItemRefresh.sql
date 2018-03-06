@@ -14,9 +14,9 @@ begin
 	join ItemIdentifier ii on list.Key_Value = ii.Identifier
 	where ii.Remove_Identifier = 0
 		and ii.Deleted_Identifier = 0
-end
 
 print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Finish: [IconItemRefresh.sql]'
+end
 
 GO
 GRANT EXECUTE
