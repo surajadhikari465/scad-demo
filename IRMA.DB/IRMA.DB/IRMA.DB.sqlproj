@@ -3296,6 +3296,8 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SupportRestoreDeletedItems.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SupportRestoreDeletedItemsValidate.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\SupportRestoreDeletedItemsItemKeys.sql" />
+    <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
+    <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.rollback.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

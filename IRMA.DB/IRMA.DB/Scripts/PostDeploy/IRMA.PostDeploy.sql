@@ -15,6 +15,6 @@ Post-Deployment Script Template
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 
 :r "PBI22994- PostDeploy SCHEMA PopData - ADD Shrink SubTypes TO Shrink Sub TYPE TABLE.SQL" -- 2018.02.09
-
+:r "PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.SQL" -- 2018.03.06
 -- *This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
