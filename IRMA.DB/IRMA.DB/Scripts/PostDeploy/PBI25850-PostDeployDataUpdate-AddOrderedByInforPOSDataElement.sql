@@ -10,7 +10,7 @@ INSERT INTO [dbo].[POSDataElement]
            ,[Description]
            ,[IsBoolean])
      VALUES
-           (13,
+           (@POSDataTypeKey,
            'Ordered_By_Infor',
            'Ordered by Infor',
            1)
