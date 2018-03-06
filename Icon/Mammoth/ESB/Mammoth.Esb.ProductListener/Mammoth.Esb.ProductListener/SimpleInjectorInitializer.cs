@@ -40,7 +40,7 @@ namespace Mammoth.Esb.ProductListener
             container.Register(() => ProductListenerSettings.Load());
             container.Register<ListenerApplicationSettings>(() => ListenerApplicationSettings.CreateDefaultSettings("Mammoth Product Listener"));
             container.Register<EsbConnectionSettings>(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ESB"));
-            container.Register<IEsbSubscriber>(() => new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromConfig()));
+            container.Register<IEsbSubscriber>(() => new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ESB")));
             container.Register<ILogger<ProductListener>, NLogLogger<ProductListener>>();
             container.Register<IMessageParser<List<ItemModel>>, ProductMessageParser>();
             container.Register<IEmailClient>(() => EmailClient.CreateFromConfig());
