@@ -198,6 +198,7 @@
     <Compile Include="App_Start\SimpleInjectorInitializer.cs" />
     <Compile Include="Controllers\CheckPointRequestController.cs" />
     <Compile Include="Controllers\ManageJobsController.cs" />
+    <Compile Include="Controllers\EPlumESLLoadController.cs" />
     <Compile Include="Controllers\PriceRefreshController.cs" />
     <Compile Include="Controllers\PriceResetController.cs" />
     <Compile Include="Controllers\EventCreatorController.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Services\WebSupportJobScheduleMessageService.cs" />
     <Compile Include="ViewModels\CheckPointRequestViewModel.cs" />
     <Compile Include="ViewModels\JobScheduleViewModel.cs" />
+    <Compile Include="ViewModels\EPlumESLLoadViewModel.cs" />
     <Compile Include="ViewModels\PriceRefreshViewModel.cs" />
     <Compile Include="ViewModels\PriceResetRequestViewModel.cs" />
     <Compile Include="ViewModels\EventCreatorViewModel.cs" />
@@ -302,7 +304,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -315,6 +319,7 @@
     <Content Include="Views\CheckPointRequest\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\JobScheduleViewModel.cshtml" />
     <Content Include="Views\PriceRefresh\Index.cshtml" />
+    <Content Include="Views\EPlumESLLoad\Index.cshtml" />
     <None Include="Web.Dev.Config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -760,6 +760,8 @@
     <Build Include="dbo\Tables\RegionGpmStatus.sql" />
     <Build Include="dbo\User Defined Types\ItemIdBusinessUnitIdType.sql" />
     <Build Include="dbo\User Defined Types\IntListType.sql" />
+    <Build Include="stage\Stored Procedures\MassInsertToItemStoreKeysEPlum.sql" />
+    <Build Include="stage\Stored Procedures\MassInsertToItemStoreKeysEsl.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

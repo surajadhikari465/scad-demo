@@ -39,6 +39,15 @@
                 PriceRefreshConstants.R10,
                 PriceRefreshConstants.IRMA
             };
+
+        /// <summary>
+        /// External systems which needs a full load process to populate data from Mammoth
+        /// </summary>
+        public static string[] EPlumESLSystems = new[]
+            {
+                EPlumESLConstants.EPlum,
+                EPlumESLConstants.ESL
+            };
     }
 
 	public static class EventConstants
@@ -83,5 +92,11 @@
             public const string Reg = "REG";
             public const string Tpr = "TPR";
         }
+    }
+
+    public static class EPlumESLConstants
+    {
+        public const string EPlum = "EPlum";
+        public const string ESL = "ESL";
     }
 }

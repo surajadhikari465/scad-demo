@@ -21,6 +21,7 @@ namespace WebSupport.Models
 
         public static string[] DownstreamSystems => DataConstants.DownstreamSystems;
         public static string[] JustInTimeDownstreamSystems => DataConstants.JustInTimeDownstreamSystems;
+        public static string[] EPlumESLSystems => DataConstants.EPlumESLSystems;
 
         public static string[] MammothEventTypes = new[]
             {
