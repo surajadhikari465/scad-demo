@@ -9,8 +9,8 @@ Connections/JDBC/Mammoth/Username=Mammoth.tibco.qa
 Connections/JDBC/Mammoth/Password=#!wuEyIMdg8VvyItjGyEI1BMHkUO5WqrENDHy6mYa3f9l2uE9zDPxbuQ==
 
 Connections/JMS/SB1/Url=ssl://odrd1602.wfm.pvt:27263
-Connections/JMS/SB1/Username=sb1_mammothPriceUser
-Connections/JMS/SB1/Password=#!R90iR26UxllJAkBezovzOmDMs3SBV5WsaES01phvnMw=
+Connections/JMS/SB1/Username=sb1_mammothPriceArchiveUser
+Connections/JMS/SB1/Password=#!qwYNdOzWkkCPbmFp9n4AziU0/xQvqzovaYPa9XjdLqQ=
 
 ErrorMessageSettings/Connections/JMS/SB1/Url=ssl://odrd1602.wfm.pvt:27263
 ErrorMessageSettings/Connections/JMS/SB1/Username=sb1_mammothPriceUser
