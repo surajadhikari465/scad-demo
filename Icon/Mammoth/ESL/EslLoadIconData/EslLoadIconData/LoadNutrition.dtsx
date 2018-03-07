@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="LoadNutrition"
   DTS:PackageType="5"
-  DTS:VersionBuild="15"
-  DTS:VersionGUID="{F95C6E4B-F054-40B5-90DC-8249D4467CD0}">
+  DTS:VersionBuild="16"
+  DTS:VersionGUID="{9C33D8F9-6F65-4E50-A2DF-C0B393406F7C}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -1022,7 +1022,8 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">/****** Get rows with Vaild Plu's ******/
+SELECT 
        [Plu]
       ,[RecipeName]
       ,[Allergens]
