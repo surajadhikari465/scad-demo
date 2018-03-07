@@ -58,14 +58,16 @@ namespace Mammoth.Esb.ProductListener.Managers
 
             if (itemsChangingToExcludedSubTeam.Count > 0)
             {
+                var action = ActionEnum.Delete;
+
                 var primeAffinityItemStoreModels = getPrimeAffinityItemStoreModelsQueryHandler
                     .Search(new GetPrimeAffinityItemStoreModelsParameters
                     {
                         ItemIds = itemsChangingToExcludedSubTeam
                             .Select(i => i.NewItem.GlobalAttributes.ItemID)
                     });
-                IEnumerable<PrimeAffinityMessageModel> primeAffinityMessageModels = CreateMessageModels(primeAffinityItemStoreModels, ActionEnum.Delete);
-                SendPsgs(primeAffinityMessageModels, ActionEnum.Delete);
+                IEnumerable<PrimeAffinityMessageModel> primeAffinityMessageModels = CreateMessageModels(primeAffinityItemStoreModels, action);
+                SendPsgs(primeAffinityMessageModels, action);
             }
 
             if (itemsChangingToNonExcludedSubTeam.Count > 0)
@@ -78,8 +80,10 @@ namespace Mammoth.Esb.ProductListener.Managers
                     });
                 if (primeAffinityItemStoreModels.Count > 0)
                 {
-                    IEnumerable<PrimeAffinityMessageModel> primeAffinityMessageModels = CreateMessageModels(primeAffinityItemStoreModels, ActionEnum.Delete);
-                    SendPsgs(primeAffinityMessageModels, ActionEnum.AddOrUpdate);
+                    var action = ActionEnum.AddOrUpdate;
+
+                    IEnumerable<PrimeAffinityMessageModel> primeAffinityMessageModels = CreateMessageModels(primeAffinityItemStoreModels, action);
+                    SendPsgs(primeAffinityMessageModels, action);
                 }
             }
         }
