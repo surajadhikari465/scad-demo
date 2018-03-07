@@ -16,8 +16,8 @@
 
 GO
 
-ALTER TABLE [app].[JobSchedule] ADD CONSTRAINT CK_JobSchedule_Status
-    CHECK (Status IN ('ready', 'running', 'failed'))
+ALTER TABLE [app].[JobSchedule] WITH CHECK ADD CONSTRAINT [CK_JobSchedule_Status]
+	CHECK (([Status]='failed' OR [Status]='running' OR [Status]='ready'))
 GO
 
 GRANT SELECT,UPDATE on [app].[JobSchedule] to [TibcoRole]
