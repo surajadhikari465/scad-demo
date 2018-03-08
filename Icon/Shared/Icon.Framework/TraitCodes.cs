@@ -164,5 +164,14 @@ namespace Icon.Framework
         public const string CustomerFriendlyDescription = "CFD";
         public const string GlobalPricingProgram = "GPP";
         public const string PercentageTareWeight = "PTA";
+        public const string FlexibleText = "FXT";
+        public const string MadeWithOrganicGrapes = "MOG";
+        public const string Primebeef = "PRB";
+        public const string RainforestAlliance = "RFA";
+        public const string Refrigerated = "RFD";
+        public const string SmithsonianBirdFriendly = "SMF";
+        public const string WicEligible = "WIC";
+        public const string ShelfLife = "SLF";
+        public const string SelfCheckoutItemTareGroup = "ITG";
 	}
 }

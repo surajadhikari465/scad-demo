@@ -162,7 +162,16 @@ namespace Icon.Framework
         public const string Paleo = @"0|1";
         public const string LocalLoanProducer = @"0|1";
         public const string CustomerFriendlyDescription = @"^.{0,60}$";
-        public const string GlobalPricingProgram = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$";
-        public const string PercentageTareWeight = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$";
+        public const string GlobalPricingProgram = @"0|1";
+        public const string PercentageTareWeight = @"^\d{1,9}$";
+        public const string FlexibleText = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,300}$";
+        public const string MadeWithOrganicGrapes = @"0|1";
+        public const string Primebeef = @"0|1";
+        public const string RainforestAlliance = @"0|1";
+        public const string Refrigerated = @"0|1";
+        public const string SmithsonianBirdFriendly = @"0|1";
+        public const string WicEligible = @"0|1";
+        public const string ShelfLife = @"^\d{1,3}$";
+        public const string SelfCheckoutItemTareGroup = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,60}$";
 	}
 }

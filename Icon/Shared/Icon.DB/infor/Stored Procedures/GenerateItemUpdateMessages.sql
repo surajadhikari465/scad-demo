@@ -33,10 +33,20 @@ BEGIN
 		@retailUomID int,
 		@couponItemTypeId int,
 		@nonRetailItemTypeId int,
-		@customerFriendlyDescriptionTraitID int,
-		@nutritionRequired int,
-		@globalPricingProgramTraitID int,
-		@percentageTareWeightTraitID int
+		@cfdTraitId int,
+		@nrTraitId int,
+		@gppTraitId int,
+		@ptaTraitId int,
+		@ftcTraitId int,
+		@fxtTraitId int,
+		@mogTraitId int,
+		@prbTraitId int,
+		@rfaTraitId int,
+        @rfdTraitId int,
+        @sbfTraitId int,
+        @wicTraitId int,
+        @shelfLife int,
+        @itgTraitId int
 
 	declare @distinctProductMessageIDs table (MessageQueueId int, scancode varchar(13));
 
@@ -62,10 +72,20 @@ BEGIN
 	SET @retailUomID				= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'RUM')
 	SET @couponItemTypeId			= (SELECT tp.itemTypeID FROM ItemType tp WHERE tp.itemTypeCode = 'CPN')
 	SET @nonRetailItemTypeId		= (SELECT tp.itemTypeID FROM ItemType tp WHERE tp.itemTypeCode = 'NRT')
-	SET @customerFriendlyDescriptionTraitID	= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'CFD')
-	SET @nutritionRequired          = (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'NR')
-	SET @globalPricingProgramTraitID= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'GPP')
-	SET @percentageTareWeightTraitID= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'PTA')
+	SET @cfdTraitId					= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'CFD')
+	SET @nrTraitId					= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'NR')
+	SET @gppTraitId					= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'GPP')
+	SET @ptaTraitId					= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'PTA')
+	SET	@ftcTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'FTC')
+    SET @fxtTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'FXT')
+    SET @mogTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'MOG')
+    SET @prbTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PRB')
+    SET @rfaTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'RFA')
+    SET @rfdTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'RFD')
+    SET @sbfTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'SBF')
+    SET @wicTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'WIC')
+    SET @shelfLife				    = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'SLF')
+    SET @itgTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'ITG')
 
 	insert into 
 		app.MessageQueueProduct
@@ -149,7 +169,17 @@ BEGIN
 		            ELSE ia.CustomerFriendlyDescription END AS CustomerFriendlyDescription,
 		nr.traitValue						AS NutritionRequired,
 		gpp.traitValue						AS GlobalPricingProgram,
-		pta.traitValue						AS PercentageTareWeight
+		pta.traitValue						AS PercentageTareWeight,
+		itg.traitValue						AS ItemGroup,
+		fxt.traitValue						AS FlexibleText,
+		slf.traitValue						AS ShelfLife,
+		ft.traitValue						AS FairTradeCertified,
+		mog.traitValue						AS MadeWithOrganicGrapes,
+		prb.traitValue						AS PrimeBeef,
+		rfa.traitValue						AS RainforestAlliance,
+		rfd.traitValue						AS Refigerated,
+		sbf.traitValue						AS SmithsonianBirdFriendly,
+		wic.traitValue						AS WicEligible
 	from 
 		@updatedItemIDs					ui
 		JOIN Item						i			ON	ui.itemID					= i.itemID
@@ -209,15 +239,19 @@ BEGIN
 		LEFT JOIN HealthyEatingRating	he			ON ia.HealthyEatingRatingID		= he.HealthyEatingRatingID
 		LEFT JOIN SeafoodCatchType		sfc			ON ia.SeafoodCatchTypeID		= sfc.SeafoodCatchTypeID
 		LEFT JOIN SeafoodFreshOrFrozen	sff			ON ia.SeafoodFreshOrFrozenID	= sff.SeafoodFreshOrFrozenID
-		LEFT JOIN ItemTrait				nr			ON	i.itemID					= nr.itemID
-														AND nr.traitID				= @nutritionRequired
-														AND nr.localeID				= @localeID
-		LEFT JOIN ItemTrait				gpp			ON	i.itemID					= nr.itemID
-														AND gpp.traitID				= @globalPricingProgramTraitID
-														AND gpp.localeID			= @localeID
-		LEFT JOIN ItemTrait				pta			ON	i.itemID					= nr.itemID
-														AND pta.traitID				= @percentageTareWeightTraitID
-														AND pta.localeID			= @localeID												
+		LEFT JOIN ItemTrait				nr			ON nr.traitID					= @nrTraitId  AND nr.itemID = i.itemID  AND nr.localeID = @localeID
+		LEFT JOIN ItemTrait				gpp			ON gpp.traitID					= @gppTraitId AND gpp.itemID = i.itemID AND gpp.localeID = @localeID
+		LEFT JOIN ItemTrait				pta			ON pta.traitID					= @ptaTraitId AND pta.itemID = i.itemID AND pta.localeID = @localeID
+		LEFT JOIN ItemTrait				ftc			ON ftc.traitID					= @ftcTraitId AND ftc.itemID = i.itemID AND ftc.localeID = @localeID
+		LEFT JOIN ItemTrait				fxt			ON fxt.traitID					= @fxtTraitId AND fxt.itemID = i.itemID AND fxt.localeID = @localeID
+		LEFT JOIN ItemTrait				mog			ON mog.traitID					= @mogTraitId AND mog.itemID = i.itemID AND mog.localeID = @localeID
+		LEFT JOIN ItemTrait				prb			ON prb.traitID					= @prbTraitId AND prb.itemID = i.itemID AND prb.localeID = @localeID							
+		LEFT JOIN ItemTrait				rfa			ON rfa.traitID					= @rfaTraitId AND rfa.itemID = i.itemID AND rfa.localeID = @localeID
+		LEFT JOIN ItemTrait				rfd			ON rfd.traitID					= @rfdTraitId AND rfd.itemID = i.itemID AND rfd.itemID.localeID = @localeID
+		LEFT JOIN ItemTrait				sbf			ON sbf.traitID					= @sbfTraitId AND sbf.itemID = i.itemID AND sbf.localeID = @localeID
+		LEFT JOIN ItemTrait				wic			ON wic.traitID					= @wicTraitId AND wic.itemID = i.itemID AND wic.localeID = @localeID
+		LEFT JOIN ItemTrait				slf			ON slf.traitID					= @shelfLife  AND slf.itemID = i.itemID AND slf.localeID = @localeID
+		LEFT JOIN ItemTrait				itg			ON itg.traitID					= @itgTraitId AND itg.itemID = i.itemID AND itg.localeID = @localeID	
 	where
 		it.itemTypeID <> @couponItemTypeId
 

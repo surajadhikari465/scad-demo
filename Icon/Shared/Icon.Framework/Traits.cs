@@ -165,6 +165,15 @@ namespace Icon.Framework
         public const int CustomerFriendlyDescription = 151;
         public const int GlobalPricingProgram = 154;
         public const int PercentageTareWeight = 155;
+        public const int FlexibleText = 157;
+        public const int MadeWithOrganicGrapes = 158;
+        public const int Primebeef = 159;
+        public const int RainforestAlliance = 160;
+        public const int Refrigerated = 161;
+        public const int SmithsonianBirdFriendly = 162;
+        public const int WicEligible = 163;
+        public const int ShelfLife = 164;
+        public const int SelfCheckoutItemTareGroup = 165;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -320,7 +329,16 @@ namespace Icon.Framework
 				{ "LLP", 150 },
 				{ "CFD", 151 },
 				{ "GPP", 154 },
-				{ "PTA", 155 }
+				{ "PTA", 155 },
+				{ "FXT", 157 },
+				{ "MOG", 158 },
+				{ "PRB", 159 },
+				{ "RFA", 160 },
+				{ "RFD", 161 },
+				{ "SMF", 162 },
+				{ "WIC", 163 },
+				{ "SLF", 164 },
+				{ "ITG", 165 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -479,6 +497,15 @@ namespace Icon.Framework
 			public const string CustomerFriendlyDescription = "Customer Friendly Description";
 			public const string GlobalPricingProgram = "Global Pricing Program";
 			public const string PercentageTareWeight = "Percentage Tare Weight";
+			public const string FlexibleText = "Flexible Text";
+			public const string MadeWithOrganicGrapes = "Made with Organic Grapes";
+			public const string Primebeef = "PrimeBeef";
+			public const string RainforestAlliance = "Rainforest Alliance";
+			public const string Refrigerated = "Refrigerated";
+			public const string SmithsonianBirdFriendly = "Smithsonian Bird Friendly";
+			public const string WicEligible = "WIC Eligible";
+			public const string ShelfLife = "Shelf Life";
+			public const string SelfCheckoutItemTareGroup = "Self CheckOut Item Tare Group";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -634,7 +661,16 @@ namespace Icon.Framework
 				{ 150, "Local Loan Producer" },
 				{ 151, "Customer Friendly Description" },
 				{ 154, "Global Pricing Program" },
-				{ 155, "Percentage Tare Weight" }
+				{ 155, "Percentage Tare Weight" },
+				{ 157, "Flexible Text" },
+				{ 158, "Made with Organic Grapes" },
+				{ 159, "PrimeBeef" },
+				{ 160, "Rainforest Alliance" },
+				{ 161, "Refrigerated" },
+				{ 162, "Smithsonian Bird Friendly" },
+				{ 163, "WIC Eligible" },
+				{ 164, "Shelf Life" },
+				{ 165, "Self CheckOut Item Tare Group" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -794,6 +830,15 @@ namespace Icon.Framework
 			public const string CustomerFriendlyDescription = "CFD";
 			public const string GlobalPricingProgram = "GPP";
 			public const string PercentageTareWeight = "PTA";
+			public const string FlexibleText = "FXT";
+			public const string MadeWithOrganicGrapes = "MOG";
+			public const string Primebeef = "PRB";
+			public const string RainforestAlliance = "RFA";
+			public const string Refrigerated = "RFD";
+			public const string SmithsonianBirdFriendly = "SMF";
+			public const string WicEligible = "WIC";
+			public const string ShelfLife = "SLF";
+			public const string SelfCheckoutItemTareGroup = "ITG";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -949,7 +994,16 @@ namespace Icon.Framework
 				{ 150, "LLP" },
 				{ 151, "CFD" },
 				{ 154, "GPP" },
-				{ 155, "PTA" }
+				{ 155, "PTA" },
+				{ 157, "FXT" },
+				{ 158, "MOG" },
+				{ 159, "PRB" },
+				{ 160, "RFA" },
+				{ 161, "RFD" },
+				{ 162, "SMF" },
+				{ 163, "WIC" },
+				{ 164, "SLF" },
+				{ 165, "ITG" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

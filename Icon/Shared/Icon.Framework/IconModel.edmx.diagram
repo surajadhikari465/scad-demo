@@ -131,9 +131,9 @@
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageStatus" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageType" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_ProductSelectionGroupType" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.R10MessageResponse" Width="1.5" PointX="25" PointY="14.75" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.R10MessageResponse" Width="1.5" PointX="24.625" PointY="14.75" />
         <AssociationConnector Association="Icon.Framework.Model.FK_R10MessageResponse_MessageHistory" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MessageResendStatus" Width="1.5" PointX="25" PointY="11.75" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MessageResendStatus" Width="1.5" PointX="24.5" PointY="11.75" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" />
         <EntityTypeShape EntityType="Icon.Framework.Model.PLUCategory" Width="1.5" PointX="17.375" PointY="15.75" />
         <EntityTypeShape EntityType="Icon.Framework.Model.ItemMovement" Width="1.5" PointX="0.75" PointY="17.125" />
@@ -157,7 +157,7 @@
         <EntityTypeShape EntityType="Icon.Framework.Model.AnimalWelfareRating" Width="1.5" PointX="19.375" PointY="40.75" />
         <EntityTypeShape EntityType="Icon.Framework.Model.EcoScaleRating" Width="1.5" PointX="19.375" PointY="43.125" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MilkType" Width="1.5" PointX="19.375" PointY="38.125" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.ItemNutrition" Width="1.5" PointX="25.375" PointY="18.75" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.ItemNutrition" Width="1.5" PointX="25.375" PointY="19.75" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MammothEventQueue" Width="1.5" PointX="29.625" PointY="24" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MammothEventType" Width="1.5" PointX="27.375" PointY="24.5" />
         <AssociationConnector Association="Icon.Framework.Model.FK_EventQueue_EventType1" />

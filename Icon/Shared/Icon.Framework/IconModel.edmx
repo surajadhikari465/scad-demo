@@ -496,6 +496,16 @@
           <Property Name="NutritionRequired" Type="nvarchar" MaxLength="255" />
           <Property Name="GlobalPricingProgram" Type="nvarchar" MaxLength="255" />
           <Property Name="PercentageTareWeight" Type="nvarchar" MaxLength="255" />
+          <Property Name="FairTradeCertified" Type="bit" />
+          <Property Name="FlexibleText" Type="nvarchar" MaxLength="300" />
+          <Property Name="SelfCheckOutItemTareGroup" Type="nvarchar" MaxLength="60" />
+          <Property Name="ShelfLife" Type="int" />
+          <Property Name="MadeWithOrganicGrapes" Type="bit" />
+          <Property Name="PrimeBeef" Type="bit" />
+          <Property Name="RainforestAlliance" Type="bit" />
+          <Property Name="Refrigerated" Type="bit" />
+          <Property Name="SmithsonianBirdFriendly" Type="bit" />
+          <Property Name="WicEligible" Type="bit" />
         </EntityType>
         <EntityType Name="MessageQueueProductSelectionGroup">
           <Key>
@@ -5002,6 +5012,16 @@
           <Property Name="NutritionRequired" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="GlobalPricingProgram" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="PercentageTareWeight" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FairTradeCertified" Type="Boolean" />
+          <Property Name="FlexibleText" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="SelfCheckOutItemTareGroup" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="ShelfLife" Type="Int32" />
+          <Property Name="MadeWithOrganicGrapes" Type="Boolean" />
+          <Property Name="PrimeBeef" Type="Boolean" />
+          <Property Name="RainforestAlliance" Type="Boolean" />
+          <Property Name="Refrigerated" Type="Boolean" />
+          <Property Name="SmithsonianBirdFriendly" Type="Boolean" />
+          <Property Name="WicEligible" Type="Boolean" />
         </EntityType>
         <Association Name="FK_MessageQueueProduct_MessageHistoryId">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
@@ -6906,6 +6926,16 @@
           <EntitySetMapping Name="MessageQueueProduct">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueProduct">
               <MappingFragment StoreEntitySet="MessageQueueProduct">
+                <ScalarProperty Name="WicEligible" ColumnName="WicEligible" />
+                <ScalarProperty Name="SmithsonianBirdFriendly" ColumnName="SmithsonianBirdFriendly" />
+                <ScalarProperty Name="Refrigerated" ColumnName="Refrigerated" />
+                <ScalarProperty Name="RainforestAlliance" ColumnName="RainforestAlliance" />
+                <ScalarProperty Name="PrimeBeef" ColumnName="PrimeBeef" />
+                <ScalarProperty Name="MadeWithOrganicGrapes" ColumnName="MadeWithOrganicGrapes" />
+                <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
+                <ScalarProperty Name="SelfCheckOutItemTareGroup" ColumnName="SelfCheckOutItemTareGroup" />
+                <ScalarProperty Name="FlexibleText" ColumnName="FlexibleText" />
+                <ScalarProperty Name="FairTradeCertified" ColumnName="FairTradeCertified" />
                 <ScalarProperty Name="PercentageTareWeight" ColumnName="PercentageTareWeight" />
                 <ScalarProperty Name="GlobalPricingProgram" ColumnName="GlobalPricingProgram" />
                 <ScalarProperty Name="NutritionRequired" ColumnName="NutritionRequired" />

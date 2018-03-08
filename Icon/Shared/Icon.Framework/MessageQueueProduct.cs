@@ -89,6 +89,16 @@ namespace Icon.Framework
         public string NutritionRequired { get; set; }
         public string GlobalPricingProgram { get; set; }
         public string PercentageTareWeight { get; set; }
+        public Nullable<bool> FairTradeCertified { get; set; }
+        public string FlexibleText { get; set; }
+        public string SelfCheckOutItemTareGroup { get; set; }
+        public Nullable<int> ShelfLife { get; set; }
+        public Nullable<bool> MadeWithOrganicGrapes { get; set; }
+        public Nullable<bool> PrimeBeef { get; set; }
+        public Nullable<bool> RainforestAlliance { get; set; }
+        public Nullable<bool> Refrigerated { get; set; }
+        public Nullable<bool> SmithsonianBirdFriendly { get; set; }
+        public Nullable<bool> WicEligible { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }

@@ -675,6 +675,7 @@
     <None Include="Scripts\PopulateData\Archive\SeedNonGreenFieldScripts.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdateCustomerFriendlyDescriptionTraitPattern.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdatePOSScaleTare.sql" />
+    <None Include="Scripts\PopulateData\AddEslAndOnePlumTraitCodes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
