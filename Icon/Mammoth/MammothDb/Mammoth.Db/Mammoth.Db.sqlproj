@@ -731,9 +731,6 @@
     <Build Include="Schemas\eplum.sql" />
     <Build Include="eplum\Stored Procedures\GetEPlumAttributes.sql" />
     <Build Include="stage\Tables\ItemStoreKeysEPlum.sql" />
-    <None Include="Scripts\PreDeploymentScripts\UpdateDefaulltScanCodeToNotNull.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddScaleItemAttributes.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddPercentageTareWeightToAttributesTable.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\SubTeamCleanUp_PreDeployment.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\DropPriceTables.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddActivePriceSentArchiveToRetentionPolicy.sql" />
@@ -750,12 +747,16 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\Delete365StoresFromLocaleTablesOtherThanTSRegion.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateRetentionPolicyForStagingTables.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\TruncateRetentionPolicyTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddVendorRelatedCodesToAttributesTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddAltRetailSizeUomCodesToAttributesTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddExpiringTprServiceToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddProcessBODConfirmBODMessageType.sql" />
     <Build Include="esb\Tables\MessageArchiveDetailPrimePsg.sql" />
     <None Include="Scripts\PostDeploymentScripts\UpdateActivePriceSentArchiveInRetentionPolicy.sql" />
+    <None Include="Scripts\PreDeploymentScripts\Archive\UpdateDefaulltScanCodeToNotNull.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddScaleItemAttributes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddVendorRelatedCodesToAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddPrimeAffinityListenerToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddPercentageTareWeightToAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddExpiringTprServiceToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddAltRetailSizeUomCodesToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddRegionsToRegionGpmStatusTable.sql" />
     <Build Include="dbo\Tables\RegionGpmStatus.sql" />
     <Build Include="dbo\User Defined Types\ItemIdBusinessUnitIdType.sql" />
@@ -774,7 +775,6 @@
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddPrimeAffinityListenerToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddPrimeAffinityControllerToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddPrimePsgMessageType.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddMessageArchiveDetailPrimePsgToRetentionPolicy.sql" />

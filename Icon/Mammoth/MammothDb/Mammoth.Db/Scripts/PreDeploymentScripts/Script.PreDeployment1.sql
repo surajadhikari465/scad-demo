@@ -12,7 +12,4 @@
 
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
--- This script (UpdateDefaulltScanCodeToNotNull.sql) is temporarily removed because the schema discrepancy in TEST, QA and PROD. 
--- It'll be needed when the DefaultScanCode is deployed to PROD.
-:r .\UpdateDefaulltScanCodeToNotNull.sql -- 2018.01.15
-:r .\TruncateItemLocaleStagingTable.sql
+:r .\TruncateItemLocaleStagingTable.sql -- 2018.02.27

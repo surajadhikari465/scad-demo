@@ -10,19 +10,13 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
--- Normal deployments start here.
---:r Currency_RemoveTrailingSpaces_PostDeployment.sql
+-- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
-:r AddScaleItemAttributes.sql -- 2018.01.03
-:r AddVendorRelatedCodesToAttributesTable.sql -- 2018.01.04
-:r AddPrimeAffinityListenerToAppTable.sql -- 2018.01.16
-:r AddPercentageTareWeightToAttributesTable.sql -- 2018.01.16
-:r AddExpiringTprServiceToAppTable.sql -- 2018.01.16
-:r AddAltRetailSizeUomCodesToAttributesTable.sql -- 2018.01.18
-:r AddPrimePsgMessageType.sql
-:r AddPrimeAffinityControllerToAppTable.sql
-:r AddMessageArchiveDetailPrimePsgToRetentionPolicy.sql
-:r UpdateActivePriceSentArchiveInRetentionPolicy.sql
+:r AddPrimePsgMessageType.sql --2018.02.07
+:r AddPrimeAffinityControllerToAppTable.sql --2018.02.07
+:r AddProcessBODConfirmBODMessageType.sql --2018.02.21
+:r AddMessageArchiveDetailPrimePsgToRetentionPolicy.sql --2018.02.27
+:r UpdateActivePriceSentArchiveInRetentionPolicy.sql --2018.02.27
 :r AddRegionsToRegionGpmStatusTable.sql
 
 -- Run every time
