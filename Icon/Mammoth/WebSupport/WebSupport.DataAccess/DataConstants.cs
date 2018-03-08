@@ -28,8 +28,9 @@
 		public static string[] DownstreamSystems = new[]
 			{
 				PriceResetConstants.Spice,
-				PriceResetConstants.SLAW
-			};
+				PriceResetConstants.SLAW,
+                PriceResetConstants.DataWareHouse
+            };
 
         /// <summary>
         /// Available external systems which may need to receive a price refresh
@@ -60,7 +61,8 @@
 	{
 		public const string Spice = "Spice";
 		public const string SLAW = "SLAW";
-	}
+        public const string DataWareHouse = "DW";
+    }
 
     public static class RegionNameConstants
     {
