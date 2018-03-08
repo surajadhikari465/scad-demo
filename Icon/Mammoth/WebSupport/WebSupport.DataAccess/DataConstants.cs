@@ -29,7 +29,7 @@
 			{
 				PriceResetConstants.Spice,
 				PriceResetConstants.SLAW,
-                PriceResetConstants.DataWareHouse
+                PriceResetConstants.DataWarehouse
             };
 
         /// <summary>
@@ -61,7 +61,7 @@
 	{
 		public const string Spice = "Spice";
 		public const string SLAW = "SLAW";
-        public const string DataWareHouse = "DW";
+        public const string DataWarehouse = "DW";
     }
 
     public static class RegionNameConstants
