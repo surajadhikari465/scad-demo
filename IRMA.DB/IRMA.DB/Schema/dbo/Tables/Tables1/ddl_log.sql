@@ -36,3 +36,7 @@ GRANT SELECT
     ON OBJECT::[dbo].[ddl_log] TO [IRMAReportsRole]
     AS [dbo];
 
+GO
+GRANT INSERT
+		 ON OBJECT::[dbo].[ddl_log] TO [IRMAClientRole]
+		 AS [dbo];
