@@ -18,6 +18,7 @@ namespace WebSupport.DataAccess.Commands
         public MassInsertToESLQueueCommandHandler(MammothContext context)
         {
             this.context = context;
+            this.context.Database.CommandTimeout = 300;
         }
 
         public void Execute(MassInsertToESLQueueCommand data)
