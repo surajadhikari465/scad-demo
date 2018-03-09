@@ -86,7 +86,17 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 SequenceId = sequenceId,
                 CustomerFriendlyDescription = GetTraitValue(enterpriseAttributes, TraitCodes.CustomerFriendlyDescription),
                 GlobalPricingProgram = GetTraitValue(enterpriseAttributes, TraitCodes.GlobalPricingProgram),
-                PercentageTareWeight = GetTraitValue(enterpriseAttributes, TraitCodes.PercentageTareWeight)
+                PercentageTareWeight = GetTraitValue(enterpriseAttributes, TraitCodes.PercentageTareWeight),
+                FlexibleText = GetTraitValue(enterpriseAttributes, TraitCodes.FlexibleText),
+                MadeWithOrganicGrapes = GetTraitValue(enterpriseAttributes, TraitCodes.MadeWithOrganicGrapes),
+                PrimeBeef = GetTraitValue(enterpriseAttributes, TraitCodes.Primebeef),
+                RainforestAlliance = GetTraitValue(enterpriseAttributes, TraitCodes.RainforestAlliance),
+                Refrigerated = GetTraitValue(enterpriseAttributes, TraitCodes.Refrigerated),
+                SmithsonianBirdFriendly = GetTraitValue(enterpriseAttributes, TraitCodes.SmithsonianBirdFriendly),
+                WicEligible = GetTraitValue(enterpriseAttributes, TraitCodes.WicEligible),
+                ShelfLife = GetTraitValue(enterpriseAttributes, TraitCodes.ShelfLife),
+                SelfCheckoutItemTareGroup = GetTraitValue(enterpriseAttributes, TraitCodes.SelfCheckoutItemTareGroup),
+
             };
         }
 

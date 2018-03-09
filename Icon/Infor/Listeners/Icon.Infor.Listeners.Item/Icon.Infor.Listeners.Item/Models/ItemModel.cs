@@ -8,6 +8,8 @@ namespace Icon.Infor.Listeners.Item.Models
 {
     public class ItemModel
     {
+        public string ErrorCode { get; set; }
+        public string ErrorDetails { get; set; }
         public int ItemId { get; set; }
         public string ItemTypeCode { get; set; }
         public string ScanCode { get; set; }
@@ -66,8 +68,6 @@ namespace Icon.Infor.Listeners.Item.Models
         public string ModifiedDate { get; set; }
         public string ModifiedUser { get; set; }
         public Guid InforMessageId { get; set; }
-        public string ErrorCode { get; set; }
-        public string ErrorDetails { get; set; }
         public bool ContainesDuplicateMerchandiseClass { get; set; }
         public bool ContainesDuplicateNationalClass { get; set; }
         public DateTime MessageParseTime { get; set; }
@@ -75,5 +75,15 @@ namespace Icon.Infor.Listeners.Item.Models
         public string CustomerFriendlyDescription { get; set; }
         public string GlobalPricingProgram { get; set; }
         public string PercentageTareWeight { get; set; }
+        
+        public string FlexibleText { get; set; }
+        public string MadeWithOrganicGrapes { get; set; }
+        public string PrimeBeef { get; set; }
+        public string RainforestAlliance { get; set; }
+        public string Refrigerated { get; set; }
+        public string SmithsonianBirdFriendly { get; set; }
+        public string WicEligible { get; set; }
+        public string ShelfLife { get; set; }
+        public string SelfCheckoutItemTareGroup { get; set; }
     }
 }

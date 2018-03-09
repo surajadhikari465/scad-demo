@@ -170,10 +170,61 @@ BEGIN
 		nr.traitValue						AS NutritionRequired,
 		gpp.traitValue						AS GlobalPricingProgram,
 		pta.traitValue						AS PercentageTareWeight,
-		itg.traitValue						AS ItemGroup,
+		CASE 
+			WHEN LCL_TYPE.localeTypeCode = 'RG' THEN 
+				CASE 
+					WHEN LCL.localeName='Florida' THEN 'FL'
+					WHEN LCL.localeName='Mid Atlantic' THEN 'MA'
+					WHEN LCL.localeName='Mid West' THEN 'MW'
+					WHEN LCL.localeName='North Atlantic' THEN 'NA'
+					WHEN LCL.localeName='Northern California' THEN 'NC'
+					WHEN LCL.localeName='North East' THEN 'NE'
+					WHEN LCL.localeName='Pacific Northwest' THEN 'PN'
+					WHEN LCL.localeName='Rocky Mountain' THEN 'RM'
+					WHEN LCL.localeName='South' THEN 'SO'
+					WHEN LCL.localeName='Southern Pacific' THEN 'SP'
+					WHEN LCL.localeName='Southwest' THEN 'SW'
+					WHEN LCL.localeName='United Kingdom' THEN 'UK'
+					WHEN LCL.localeName like '365%' THEN 'TS'
+				END
+			WHEN PRNT_TYPE.localeTypeCode = 'RG' THEN 
+				CASE 
+					WHEN PRNT_LCL.localeName='Florida' THEN 'FL'
+					WHEN PRNT_LCL.localeName='Mid Atlantic' THEN 'MA'
+					WHEN PRNT_LCL.localeName='Mid West' THEN 'MW'
+					WHEN PRNT_LCL.localeName='North Atlantic' THEN 'NA'
+					WHEN PRNT_LCL.localeName='Northern California' THEN 'NC'
+					WHEN PRNT_LCL.localeName='North East' THEN 'NE'
+					WHEN PRNT_LCL.localeName='Pacific Northwest' THEN 'PN'
+					WHEN PRNT_LCL.localeName='Rocky Mountain' THEN 'RM'
+					WHEN PRNT_LCL.localeName='South' THEN 'SO'
+					WHEN PRNT_LCL.localeName='Southern Pacific' THEN 'SP'
+					WHEN PRNT_LCL.localeName='Southwest' THEN 'SW'
+					WHEN PRNT_LCL.localeName='United Kingdom' THEN 'UK'
+					WHEN PRNT_LCL.localeName like '365%' THEN 'TS'
+				END
+			WHEN GPRNT_TYPE.localeTypeCode = 'RG' THEN 
+				CASE 
+					WHEN GPRNT_LCL.localeName='Florida' THEN 'FL'
+					WHEN GPRNT_LCL.localeName='Mid Atlantic' THEN 'MA'
+					WHEN GPRNT_LCL.localeName='Mid West' THEN 'MW'
+					WHEN GPRNT_LCL.localeName='North Atlantic' THEN 'NA'
+					WHEN GPRNT_LCL.localeName='Northern California' THEN 'NC'
+					WHEN GPRNT_LCL.localeName='North East' THEN 'NE'
+					WHEN GPRNT_LCL.localeName='Pacific Northwest' THEN 'PN'
+					WHEN GPRNT_LCL.localeName='Rocky Mountain' THEN 'RM'
+					WHEN GPRNT_LCL.localeName='South' THEN 'SO'
+					WHEN GPRNT_LCL.localeName='Southern Pacific' THEN 'SP'
+					WHEN GPRNT_LCL.localeName='Southwest' THEN 'SW'
+					WHEN GPRNT_LCL.localeName='United Kingdom' THEN 'UK'
+					WHEN GPRNT_LCL.localeName like '365%' THEN 'TS'
+				END
+		END						AS RegionAbbrev,
+		LCL_TERR.territoryCode 		AS GeographicalState,
+		ftc.traitValue						AS FairTradeCertified,
 		fxt.traitValue						AS FlexibleText,
+		itg.traitValue						AS SelfCheckoutItemTareGroup,
 		slf.traitValue						AS ShelfLife,
-		ft.traitValue						AS FairTradeCertified,
 		mog.traitValue						AS MadeWithOrganicGrapes,
 		prb.traitValue						AS PrimeBeef,
 		rfa.traitValue						AS RainforestAlliance,
@@ -186,6 +237,15 @@ BEGIN
 		JOIN ItemType					it			ON	i.itemTypeID				= it.itemTypeID
 		JOIN ScanCode					sc			ON	i.itemID					= sc.itemID
 		JOIN ScanCodeType				sct			ON	sc.scanCodeTypeID			= sct.scanCodeTypeID
+		JOIN dbo.Locale					LCL			ON  LCL.localeID			    = @localeID
+		JOIN dbo.LocaleType				LCL_TYPE	ON  LCL_TYPE.localeTypeID		= LCL.localeTypeID
+		LEFT JOIN dbo.LocaleAddress		LCL_ADDR	ON  LCL_ADDR.localeID			= LCL.localeID
+		LEFT JOIN dbo.PhysicalAddress	LCL_PHYS	ON  LCL_PHYS.addressID			= LCL_ADDR.addressID
+		LEFT JOIN dbo.Territory			LCL_TERR	ON  LCL_TERR.territoryID		= LCL_PHYS.territoryID
+		LEFT JOIN dbo.Locale			PRNT_LCL	ON  PRNT_LCL.localeID			= LCL.parentLocaleID
+		LEFT JOIN dbo.LocaleType		PRNT_TYPE	ON  PRNT_TYPE.localeTypeID		= PRNT_LCL.localeTypeID
+		LEFT JOIN dbo.Locale			GPRNT_LCL	ON  GPRNT_LCL.localeID			= PRNT_LCL.parentLocaleID
+		LEFT JOIN dbo.LocaleType		GPRNT_TYPE	ON  GPRNT_TYPE.localeTypeID		= GPRNT_LCL.localeTypeID
 		JOIN ItemTrait					val			ON	i.itemID					= val.itemID
 														AND val.traitID				= @validationDateTraitID
 														AND val.localeID			= @localeID
@@ -247,7 +307,7 @@ BEGIN
 		LEFT JOIN ItemTrait				mog			ON mog.traitID					= @mogTraitId AND mog.itemID = i.itemID AND mog.localeID = @localeID
 		LEFT JOIN ItemTrait				prb			ON prb.traitID					= @prbTraitId AND prb.itemID = i.itemID AND prb.localeID = @localeID							
 		LEFT JOIN ItemTrait				rfa			ON rfa.traitID					= @rfaTraitId AND rfa.itemID = i.itemID AND rfa.localeID = @localeID
-		LEFT JOIN ItemTrait				rfd			ON rfd.traitID					= @rfdTraitId AND rfd.itemID = i.itemID AND rfd.itemID.localeID = @localeID
+		LEFT JOIN ItemTrait				rfd			ON rfd.traitID					= @rfdTraitId AND rfd.itemID = i.itemID AND rfd.localeID = @localeID
 		LEFT JOIN ItemTrait				sbf			ON sbf.traitID					= @sbfTraitId AND sbf.itemID = i.itemID AND sbf.localeID = @localeID
 		LEFT JOIN ItemTrait				wic			ON wic.traitID					= @wicTraitId AND wic.itemID = i.itemID AND wic.localeID = @localeID
 		LEFT JOIN ItemTrait				slf			ON slf.traitID					= @shelfLife  AND slf.itemID = i.itemID AND slf.localeID = @localeID

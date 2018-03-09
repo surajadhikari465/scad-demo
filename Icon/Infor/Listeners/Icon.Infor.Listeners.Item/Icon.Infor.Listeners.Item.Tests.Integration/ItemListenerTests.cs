@@ -59,7 +59,6 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             using (var transaction = new TransactionScope())
             {
                 ItemListener il = CreateItemListenerForTest();
-
                 Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
                 mockMessage.SetupGet(m => m.MessageText)
                     .Returns(File.ReadAllText(@"TestMessages/ProductMessageFromInfor.xml"));
@@ -86,7 +85,6 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             }
         }
 
-
         [TestMethod]
         public void HandleMessage_ProductMessageFromInforWithItemThatHasOrganicTrait_SavesItemSignAttributeAsOrganic()
         {
@@ -94,7 +92,6 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             using (var transaction = new TransactionScope())
             {
                 ItemListener il = CreateItemListenerForTest();
-
                 Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
 
                 //load the test message as an xml doc
@@ -123,6 +120,56 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
 
                     Assert.IsNotNull(itemSignAttribute, "Item was not successfully saved to the database.");
                     Assert.AreEqual(organicAgencyName, itemSignAttribute.OrganicAgencyName);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void HandleMessage_ProductMessageFromInforWithItemThatHasEslTraits_SavesAsExpected()
+        {
+            //Given
+            using (var transaction = new TransactionScope())
+            {
+                ItemListener il = CreateItemListenerForTest();
+
+                Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
+
+                //load the test message as an xml doc
+                var xmlTestData = XDocument.Load(@"TestMessages/ProductMessageFromInfor2.xml");
+                const string expected_FXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure etc...";
+                const string expected_MOG = "1";
+                const string expected_PRB = "0";
+                const string expected_RFA = "1";
+                const string expected_RFD = "0";
+                const string expected_SMF = "1";
+                const string expected_WIC = "1";
+                const string expected_SLF = "600";
+                const string expected_ITG = "Self Checkout item tare group has a maximum of sixty chars!";
+                mockMessage.SetupGet(m => m.MessageText)
+                    .Returns(xmlTestData.ToString());
+                mockMessage.Setup(m => m.GetProperty("IconMessageID"))
+                    .Returns("ec339683-14e6-4142-8de9-7b5c00960d62");
+
+                //When
+                il.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+
+                //Then
+                using (var context = new IconContext())
+                {
+                    Framework.Item item = context.ScanCode.AsNoTracking()
+                        .FirstOrDefault(sc => sc.scanCode == "77206234" && sc.itemID == 170477)
+                        .Item;
+
+                    Assert.IsNotNull(item, "Item was not successfully saved to the database.");
+                    Assert.AreEqual(expected_FXT, item.ItemTrait.Single(t => t.Trait.traitCode == "FXT").traitValue);
+                    Assert.AreEqual(expected_MOG, item.ItemTrait.Single(t => t.Trait.traitCode == "MOG").traitValue);
+                    Assert.AreEqual(expected_PRB, item.ItemTrait.Single(t => t.Trait.traitCode == "PRB").traitValue);
+                    Assert.AreEqual(expected_RFA, item.ItemTrait.Single(t => t.Trait.traitCode == "RFA").traitValue);
+                    Assert.AreEqual(expected_RFD, item.ItemTrait.Single(t => t.Trait.traitCode == "RFD").traitValue);
+                    Assert.AreEqual(expected_SMF, item.ItemTrait.Single(t => t.Trait.traitCode == "SMF").traitValue);
+                    Assert.AreEqual(expected_WIC, item.ItemTrait.Single(t => t.Trait.traitCode == "WIC").traitValue);
+                    Assert.AreEqual(expected_SLF, item.ItemTrait.Single(t => t.Trait.traitCode == "SLF").traitValue);
+                    Assert.AreEqual(expected_ITG, item.ItemTrait.Single(t => t.Trait.traitCode == "ITG").traitValue);
                 }
             }
         }

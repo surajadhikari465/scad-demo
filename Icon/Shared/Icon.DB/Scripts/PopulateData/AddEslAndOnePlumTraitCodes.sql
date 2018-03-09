@@ -28,7 +28,7 @@ BEGIN
 	SET @traitID+=1;
 	IF NOT EXISTS (SELECT 1 FROM dbo.Trait WHERE traitCode= 'PRB')
 	INSERT dbo.Trait (traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
-			VALUES  (@TraitID, @TraitGroupID, N'PRB', N'PrimeBeef', @regExOneOrZero);
+			VALUES  (@TraitID, @TraitGroupID, N'PRB', N'Prime Beef', @regExOneOrZero);
 
 	SET @traitID+=1;
 	IF NOT EXISTS (SELECT 1 FROM dbo.Trait WHERE traitCode= 'RFA')
@@ -58,7 +58,7 @@ BEGIN
 	SET @traitID+=1;
 	IF NOT EXISTS (SELECT 1 FROM dbo.Trait WHERE traitCode= 'ITG')
 	INSERT dbo.Trait (traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
-			VALUES  (@TraitID, @TraitGroupID, N'ITG', N'Self CheckOut Item Tare Group', @regExStdString60);
+			VALUES  (@TraitID, @TraitGroupID, N'ITG', N'Self Checkout Item Tare Group', @regExStdString60);
 
 
 	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@scriptKey, GETDATE())

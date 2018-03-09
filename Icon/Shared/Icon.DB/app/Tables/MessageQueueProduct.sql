@@ -71,7 +71,7 @@
 	[PercentageTareWeight] NVARCHAR(255) NULL,
 	RegionAbbrev			 NVARCHAR(2) NULL,
 	GeographicalState		 NVARCHAR(5) NULL,
-	SelfCheckOutItemTareGroup NVARCHAR(60) NULL,
+	SelfCheckoutItemTareGroup NVARCHAR(60) NULL,
 	FlexibleText			 NVARCHAR(300) NULL,
 	ShelfLife				 INT NULL,
 	FairTradeCertified		 BIT NULL,

@@ -21,44 +21,44 @@ BEGIN
 			WHERE AppName = 'Infor Item Listener'
 			)
 	DECLARE @brandHierarchyId INT = (
-			SELECT HIERARCHYID
-			FROM Hierarchy
+			SELECT [hierarchyId]
+			FROM dbo.Hierarchy
 			WHERE hierarchyName = 'Brands'
 			)
 		,@financialHierarchyId INT = (
-			SELECT HIERARCHYID
-			FROM Hierarchy
+			SELECT [hierarchyId]
+			FROM dbo.Hierarchy
 			WHERE hierarchyName = 'Financial'
 			)
 		,@merchandiseHierarchyId INT = (
-			SELECT HIERARCHYID
-			FROM Hierarchy
+			SELECT [hierarchyId]
+			FROM dbo.Hierarchy
 			WHERE hierarchyName = 'Merchandise'
 			)
 		,@nationalHierarchyId INT = (
-			SELECT HIERARCHYID
-			FROM Hierarchy
+			SELECT [hierarchyId]
+			FROM dbo.Hierarchy
 			WHERE hierarchyName = 'National'
 			)
 		,@taxHierarchyId INT = (
-			SELECT HIERARCHYID
+			SELECT [hierarchyId]
 			FROM Hierarchy
 			WHERE hierarchyName = 'Tax'
 			)
 	DECLARE @nationalClassLevel INT = (
 			SELECT hierarchyLevel
-			FROM HierarchyPrototype
+			FROM dbo.HierarchyPrototype
 			WHERE hierarchyLevelName = 'National Class'
 			)
 		,@subBrickLevel INT = (
 			SELECT hierarchyLevel
-			FROM HierarchyPrototype
+			FROM dbo.HierarchyPrototype
 			WHERE hierarchyLevelName = 'Sub Brick'
 			)
 	DECLARE @modifiedDateTraitId INT = (
 			SELECT traitID
-			FROM Trait t
-			WHERE t.traitCode = 'MOD'
+			FROM dbo.Trait
+			WHERE traitCode = 'MOD'
 			)
 	DECLARE @nonExistentBrandErrorCode NVARCHAR(50) = 'NonExistentBrand'
 		,@nonExistentSubTeamErrorCode NVARCHAR(50) = 'NonExistentSubTeam'
@@ -77,19 +77,19 @@ BEGIN
 		modifiedDate.traitValue AS ModifiedDate,
 		seq.SequenceID AS SequenceId
 	FROM #tempItems i
-	LEFT JOIN HierarchyClass brands ON i.BrandHierarchyClassId = brands.hierarchyClassID
-		AND brands.HIERARCHYID = @brandHierarchyId
-	LEFT JOIN HierarchyClass financial ON infor.GetHierarchyClassIdFromInfor(@financialHierarchyId, i.FinancialHierarchyClassId) = financial.hierarchyClassID
-		AND financial.HIERARCHYID = @financialHierarchyId
-	LEFT JOIN HierarchyClass merchandise ON i.MerchandiseHierarchyClassId = merchandise.hierarchyClassID
-		AND merchandise.HIERARCHYID = @merchandiseHierarchyId
+	LEFT JOIN dbo.HierarchyClass brands ON i.BrandHierarchyClassId = brands.hierarchyClassID
+		AND brands.[hierarchyId] = @brandHierarchyId
+	LEFT JOIN dbo.HierarchyClass financial ON infor.GetHierarchyClassIdFromInfor(@financialHierarchyId, i.FinancialHierarchyClassId) = financial.hierarchyClassID
+		AND financial.[hierarchyId] = @financialHierarchyId
+	LEFT JOIN dbo.HierarchyClass merchandise ON i.MerchandiseHierarchyClassId = merchandise.hierarchyClassID
+		AND merchandise.[hierarchyId] = @merchandiseHierarchyId
 		AND merchandise.hierarchyLevel = @subBrickLevel
-	LEFT JOIN HierarchyClass nat ON i.NationalHierarchyClassId = nat.hierarchyClassID
-		AND nat.HIERARCHYID = @nationalHierarchyId
+	LEFT JOIN dbo.HierarchyClass nat ON i.NationalHierarchyClassId = nat.hierarchyClassID
+		AND nat.[hierarchyId] = @nationalHierarchyId
 		AND nat.hierarchyLevel = @nationalClassLevel
-	LEFT JOIN HierarchyClass tax ON infor.GetHierarchyClassIdFromInfor(@taxHierarchyId, i.TaxHierarchyClassId) = tax.hierarchyClassID
-		AND tax.HIERARCHYID = @taxHierarchyId
-	LEFT JOIN ItemTrait modifiedDate ON i.ItemId = modifiedDate.itemID
+	LEFT JOIN dbo.HierarchyClass tax ON infor.GetHierarchyClassIdFromInfor(@taxHierarchyId, i.TaxHierarchyClassId) = tax.hierarchyClassID
+		AND tax.[hierarchyId] = @taxHierarchyId
+	LEFT JOIN dbo.ItemTrait modifiedDate ON i.ItemId = modifiedDate.itemID
 		AND modifiedDate.traitID = @modifiedDateTraitId
 	LEFT JOIN infor.ItemSequence seq ON i.ItemId = seq.ItemID
 END

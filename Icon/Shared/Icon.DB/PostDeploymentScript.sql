@@ -13,4 +13,4 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\Release\__YOUR__SCRIPT__NAME.sql -- 2018.01.01
 */
 
-:r .\Scripts\PopulateData\Release\AddEslAndOnePlumTraitCodes.sql -- 2018.03.08 PBI 25777
+:r .\Scripts\PopulateData\AddEslAndOnePlumTraitCodes.sql -- 2018.03.08 PBI 25777
