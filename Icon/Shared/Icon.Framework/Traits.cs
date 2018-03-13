@@ -165,15 +165,15 @@ namespace Icon.Framework
         public const int CustomerFriendlyDescription = 151;
         public const int GlobalPricingProgram = 154;
         public const int PercentageTareWeight = 155;
-        public const int FlexibleText = 157;
-        public const int MadeWithOrganicGrapes = 158;
-        public const int Primebeef = 159;
-        public const int RainforestAlliance = 160;
-        public const int Refrigerated = 161;
-        public const int SmithsonianBirdFriendly = 162;
-        public const int WicEligible = 163;
-        public const int ShelfLife = 164;
-        public const int SelfCheckoutItemTareGroup = 165;
+        public const int FlexibleText = 158;
+        public const int MadeWithOrganicGrapes = 159;
+        public const int PrimeBeef = 160;
+        public const int RainforestAlliance = 161;
+        public const int Refrigerated = 162;
+        public const int SmithsonianBirdFriendly = 163;
+        public const int WicEligible = 164;
+        public const int ShelfLife = 165;
+        public const int SelfCheckoutItemTareGroup = 166;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -330,15 +330,15 @@ namespace Icon.Framework
 				{ "CFD", 151 },
 				{ "GPP", 154 },
 				{ "PTA", 155 },
-				{ "FXT", 157 },
-				{ "MOG", 158 },
-				{ "PRB", 159 },
-				{ "RFA", 160 },
-				{ "RFD", 161 },
-				{ "SMF", 162 },
-				{ "WIC", 163 },
-				{ "SLF", 164 },
-				{ "ITG", 165 }
+				{ "FXT", 158 },
+				{ "MOG", 159 },
+				{ "PRB", 160 },
+				{ "RFA", 161 },
+				{ "RFD", 162 },
+				{ "SMF", 163 },
+				{ "WIC", 164 },
+				{ "SLF", 165 },
+				{ "ITG", 166 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -499,13 +499,13 @@ namespace Icon.Framework
 			public const string PercentageTareWeight = "Percentage Tare Weight";
 			public const string FlexibleText = "Flexible Text";
 			public const string MadeWithOrganicGrapes = "Made with Organic Grapes";
-			public const string Primebeef = "PrimeBeef";
+			public const string PrimeBeef = "Prime Beef";
 			public const string RainforestAlliance = "Rainforest Alliance";
 			public const string Refrigerated = "Refrigerated";
 			public const string SmithsonianBirdFriendly = "Smithsonian Bird Friendly";
 			public const string WicEligible = "WIC Eligible";
 			public const string ShelfLife = "Shelf Life";
-			public const string SelfCheckoutItemTareGroup = "Self CheckOut Item Tare Group";
+			public const string SelfCheckoutItemTareGroup = "Self Checkout Item Tare Group";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -662,15 +662,15 @@ namespace Icon.Framework
 				{ 151, "Customer Friendly Description" },
 				{ 154, "Global Pricing Program" },
 				{ 155, "Percentage Tare Weight" },
-				{ 157, "Flexible Text" },
-				{ 158, "Made with Organic Grapes" },
-				{ 159, "PrimeBeef" },
-				{ 160, "Rainforest Alliance" },
-				{ 161, "Refrigerated" },
-				{ 162, "Smithsonian Bird Friendly" },
-				{ 163, "WIC Eligible" },
-				{ 164, "Shelf Life" },
-				{ 165, "Self CheckOut Item Tare Group" }
+				{ 158, "Flexible Text" },
+				{ 159, "Made with Organic Grapes" },
+				{ 160, "Prime Beef" },
+				{ 161, "Rainforest Alliance" },
+				{ 162, "Refrigerated" },
+				{ 163, "Smithsonian Bird Friendly" },
+				{ 164, "WIC Eligible" },
+				{ 165, "Shelf Life" },
+				{ 166, "Self Checkout Item Tare Group" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -832,7 +832,7 @@ namespace Icon.Framework
 			public const string PercentageTareWeight = "PTA";
 			public const string FlexibleText = "FXT";
 			public const string MadeWithOrganicGrapes = "MOG";
-			public const string Primebeef = "PRB";
+			public const string PrimeBeef = "PRB";
 			public const string RainforestAlliance = "RFA";
 			public const string Refrigerated = "RFD";
 			public const string SmithsonianBirdFriendly = "SMF";
@@ -995,15 +995,15 @@ namespace Icon.Framework
 				{ 151, "CFD" },
 				{ 154, "GPP" },
 				{ 155, "PTA" },
-				{ 157, "FXT" },
-				{ 158, "MOG" },
-				{ 159, "PRB" },
-				{ 160, "RFA" },
-				{ 161, "RFD" },
-				{ 162, "SMF" },
-				{ 163, "WIC" },
-				{ 164, "SLF" },
-				{ 165, "ITG" }
+				{ 158, "FXT" },
+				{ 159, "MOG" },
+				{ 160, "PRB" },
+				{ 161, "RFA" },
+				{ 162, "RFD" },
+				{ 163, "SMF" },
+				{ 164, "WIC" },
+				{ 165, "SLF" },
+				{ 166, "ITG" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

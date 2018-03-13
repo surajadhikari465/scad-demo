@@ -166,7 +166,7 @@ namespace Icon.Framework
         public const string PercentageTareWeight = "PTA";
         public const string FlexibleText = "FXT";
         public const string MadeWithOrganicGrapes = "MOG";
-        public const string Primebeef = "PRB";
+        public const string PrimeBeef = "PRB";
         public const string RainforestAlliance = "RFA";
         public const string Refrigerated = "RFD";
         public const string SmithsonianBirdFriendly = "SMF";

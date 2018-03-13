@@ -166,12 +166,12 @@ namespace Icon.Framework
         public const string PercentageTareWeight = "Percentage Tare Weight";
         public const string FlexibleText = "Flexible Text";
         public const string MadeWithOrganicGrapes = "Made with Organic Grapes";
-        public const string Primebeef = "PrimeBeef";
+        public const string PrimeBeef = "Prime Beef";
         public const string RainforestAlliance = "Rainforest Alliance";
         public const string Refrigerated = "Refrigerated";
         public const string SmithsonianBirdFriendly = "Smithsonian Bird Friendly";
         public const string WicEligible = "WIC Eligible";
         public const string ShelfLife = "Shelf Life";
-        public const string SelfCheckoutItemTareGroup = "Self CheckOut Item Tare Group";
+        public const string SelfCheckoutItemTareGroup = "Self Checkout Item Tare Group";
 	}
 }

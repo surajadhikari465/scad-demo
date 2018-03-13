@@ -150,7 +150,7 @@ namespace Icon.Framework
         public const string TransfatWeight = @"";
         public const string DeliverySystem = @"^[a-zA-z ]+$";
         public const string CaseinFree = @"0|1";
-        public const string FairTradeCertified = @"Fair Trade USA|Fair Trade International|IMO USA|Rainforest Alliance|Whole Foods Market";
+        public const string FairTradeCertified = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$";
         public const string Hemp = @"0|1";
         public const string OrganicPersonalCare = @"0|1";
         public const string NutritionRequired = @"0|1";
@@ -164,9 +164,9 @@ namespace Icon.Framework
         public const string CustomerFriendlyDescription = @"^.{0,60}$";
         public const string GlobalPricingProgram = @"0|1";
         public const string PercentageTareWeight = @"^\d{1,9}$";
-        public const string FlexibleText = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,300}$";
+        public const string FlexibleText = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$";
         public const string MadeWithOrganicGrapes = @"0|1";
-        public const string Primebeef = @"0|1";
+        public const string PrimeBeef = @"0|1";
         public const string RainforestAlliance = @"0|1";
         public const string Refrigerated = @"0|1";
         public const string SmithsonianBirdFriendly = @"0|1";

@@ -60,6 +60,8 @@ BEGIN
 	INSERT dbo.Trait (traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
 			VALUES  (@TraitID, @TraitGroupID, N'ITG', N'Self Checkout Item Tare Group', @regExStdString60);
 
+	--remove enum-like validation pattern for FairTradeCertified (FTC)
+	UPDATE dbo.Trait SET traitPattern = @regExStdString WHERE traitCode = 'FTC'
 
 	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@scriptKey, GETDATE())
 	SET IDENTITY_INSERT dbo.Trait OFF
