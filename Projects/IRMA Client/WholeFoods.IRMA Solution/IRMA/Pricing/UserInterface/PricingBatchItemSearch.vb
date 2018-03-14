@@ -53,7 +53,8 @@ Friend Class frmPricingBatchItemSearch
         CenterForm(Me)
 
         If Not editExistingBatch Then
-            InitializeComboBoxes(Not _globalPriceManagementBO.IsGlobalPriceManagementEnabled)
+            '' include ALL in price type dropdown except when GPM flag is 1 and store exceptions are there.
+            InitializeComboBoxes((Not _globalPriceManagementBO.IsGlobalPriceManagementEnabled) Or (_globalPriceManagementBO.AreAllStoresGpm))
 
             If cmbSubTeam.Items.Count > 0 Then cmbSubTeam.SelectedIndex = 0 'Sub-Team is required
 
