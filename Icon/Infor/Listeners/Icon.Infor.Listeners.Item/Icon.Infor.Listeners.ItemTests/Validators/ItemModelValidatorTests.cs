@@ -96,6 +96,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             {
                 testItem
             };
+
             testItemValidationPropertiesResultModel = new GetItemValidationPropertiesResultModel
             {
                 BrandId = 1,
@@ -107,6 +108,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
                 TaxClassId = 1,
                 SequenceId = 10
             };
+
             settings = new ItemListenerSettings { ValidateSequenceId = true };
             mockValidateItemsCommandHandler = new Mock<IQueryHandler<GetItemValidationPropertiesParameters, List<GetItemValidationPropertiesResultModel>>>();
             mockValidateItemsCommandHandler.Setup(m => m.Search(It.IsAny<GetItemValidationPropertiesParameters>()))
@@ -124,7 +126,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //When
             validator.ValidateCollection(testItems);
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -134,7 +136,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.AirChilled = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.AirChilled = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -144,7 +150,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.AirChilled = " ";
             testItems.Add(CopyTestItem(i => i.AirChilled = "asdf"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidAirChilled,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.AirChilled),
@@ -157,7 +167,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             // Given
             testItem.AirChilled = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -170,7 +184,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.AlcoholByVolume = "99.0"));
             testItems.Add(CopyTestItem(i => i.AlcoholByVolume = "99.01"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -186,7 +204,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.AlcoholByVolume = "-1"));
             testItems.Add(CopyTestItem(i => i.AlcoholByVolume = "abc"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidAlcoholByVolume,
                 ValidationErrors.Messages.InvalidAlcoholByVolume,
                 nameof(testItem.AlcoholByVolume),
@@ -199,7 +221,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             // Given
             testItem.AlcoholByVolume = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -212,7 +238,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.AnimalWelfareRating = AnimalWelfareRatings.Descriptions.NoStep;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -221,7 +247,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.AnimalWelfareRating = "Invalid value";
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidAnimalWelfareRating,
                 ValidationErrors.Messages.InvalidAnimalWelfareRating,
                 nameof(testItem.AnimalWelfareRating),
@@ -234,7 +264,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.AnimalWelfareRating = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -244,7 +278,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.Biodynamic = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem((i) => i.Biodynamic = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -253,7 +291,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Biodynamic = "Invalid value";
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(
                 ValidationErrors.Codes.InvalidBiodynamic,
                 ValidationErrors.Messages.InvalidBooleanString.GetFormattedValidationMessage(nameof(testItem.Biodynamic), testItem.Biodynamic));
         }
@@ -264,7 +306,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Biodynamic = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(
                 null,
                 null);
         }
@@ -277,7 +323,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem((i) => i.BrandsHierarchyClassId = int.MaxValue.ToString()));
             testItems.Add(CopyTestItem((i) => i.BrandsHierarchyClassId = "3281291030"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -289,7 +339,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem((i) => i.BrandsHierarchyClassId = "01234"));
             testItems.Add(CopyTestItem((i) => i.BrandsHierarchyClassId = "-12340"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidBrand,
                 ValidationErrors.Messages.InvalidBrand, 
                 nameof(testItem.BrandsHierarchyClassId),
@@ -302,7 +356,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.BrandsHierarchyClassId = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(
                 ValidationErrors.Codes.InvalidBrand,
                 ValidationErrors.Messages.InvalidBrand.GetFormattedValidationMessage(nameof(testItem.BrandsHierarchyClassId), testItem.BrandsHierarchyClassId));
         }
@@ -314,7 +372,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.CaseinFree = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem((i) => i.CaseinFree = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -326,7 +388,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem((i) => i.CaseinFree = "11"));
             testItems.Add(CopyTestItem((i) => i.CaseinFree = "320912-9%"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidCaseinFree,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.CaseinFree),
@@ -339,7 +405,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.CaseinFree = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -352,7 +422,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.CheeseMilkType = MilkTypes.Descriptions.AsArray[0];
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -362,7 +436,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.CheeseMilkType = "Invalid value";
             testItems.Add(CopyTestItem((i) => i.CheeseMilkType = "789456123"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidCheeseMilkType,
                 ValidationErrors.Messages.InvalidCheeseMilkType,
                 nameof(testItem.CheeseMilkType),
@@ -375,7 +453,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.CheeseMilkType = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -385,7 +467,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.CheeseRaw = ItemValues.FalseBooleanValue;
             testItem.CheeseRaw = ItemValues.TrueBooleanValue;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -395,7 +481,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.CheeseRaw = "Invalid value";
             testItems.Add(CopyTestItem((i) => i.CheeseRaw = "789456123"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidCheeseRaw,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.CheeseRaw),
@@ -408,7 +498,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.CheeseRaw = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -417,7 +511,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.ContainesDuplicateMerchandiseClass = false;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -426,7 +520,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.ContainesDuplicateMerchandiseClass = true;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(
                 ValidationErrors.Codes.DuplicateMerchandiseHierarchyClass,
                 ValidationErrors.Messages.DuplicateMerchandiseHierarchyClass);
         }
@@ -437,7 +535,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.ContainesDuplicateNationalClass = false;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -446,7 +548,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.ContainesDuplicateNationalClass = true;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(
                 ValidationErrors.Codes.DuplicateNationalHierarchyClass, 
                 ValidationErrors.Messages.DuplicateNationalHierarchyClass);
         }
@@ -461,7 +567,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.DeliverySystem = DeliverySystems.Descriptions.AsArray[0];
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -471,7 +581,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.DeliverySystem = "Invalid value";
             testItems.Add(CopyTestItem((i) => i.DeliverySystem = "789456123"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidDeliverySystem,
                 ValidationErrors.Messages.InvalidDeliverySystem,
                 nameof(testItem.DeliverySystem),
@@ -484,7 +598,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.DeliverySystem = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -496,7 +614,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.DrainedWeight = "0.1234"));
             testItems.Add(CopyTestItem(i => i.DrainedWeight = "123456789.1234"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -511,8 +633,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.DrainedWeight = "."));
             testItems.Add(CopyTestItem(i => i.DrainedWeight = "798.445."));
 
+            //When
+            validator.ValidateCollection(testItems);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidDrainedWeight,
                 ValidationErrors.Messages.InvalidDrainedWeight,
                 nameof(testItem.DrainedWeight),
@@ -525,7 +650,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.DrainedWeight = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -535,7 +664,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.DrainedWeightUom = DrainedWeightUoms.Ml;
             testItems.Add(CopyTestItem(i => i.DrainedWeightUom = DrainedWeightUoms.Oz));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -549,7 +682,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.DrainedWeightUom = "A"));
             testItems.Add(CopyTestItem(i => i.DrainedWeightUom = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidDrainedWeightUom,
                 ValidationErrors.Messages.InvalidDrainedWeightUom,
                 nameof(testItem.DrainedWeightUom),
@@ -562,7 +699,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.DrainedWeightUom = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -572,7 +713,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.DryAged = ItemValues.FalseBooleanValue;
             testItems.Add(CopyTestItem(i => i.DryAged = ItemValues.TrueBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -586,7 +727,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.DryAged = "A"));
             testItems.Add(CopyTestItem(i => i.DryAged = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidDryAged,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.DryAged),
@@ -599,7 +744,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.DryAged = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -612,7 +761,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.EcoScaleRating = EcoScaleRatings.Descriptions.AsArray[0];
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -626,7 +779,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.EcoScaleRating = "A"));
             testItems.Add(CopyTestItem(i => i.EcoScaleRating = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidEcoScaleRating,
                 ValidationErrors.Messages.InvalidEcoScaleRating,
                 nameof(testItem.EcoScaleRating),
@@ -639,7 +796,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.EcoScaleRating = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -652,13 +813,18 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.FairTradeCertified = FairTradeCertifiedValues.AsArray[0];
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
-        public void ValidateCollection_FairTradeCertifiedIsInvalid_InvalidFairTradeCertifiedError()
+        public void ValidateCollection_FairTradeCertified_DoesNotRestrictValuesToOldEnumeration()
         {
             //Given
+            // this used to be restricted to "Fair Trade USA|Fair Trade International|IMO USA|Rainforest Alliance|Whole Foods Market"
             testItem.FairTradeCertified = "Invalid value";
             testItems.Add(CopyTestItem(i => i.FairTradeCertified = " "));
             testItems.Add(CopyTestItem(i => i.FairTradeCertified = "789"));
@@ -666,11 +832,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.FairTradeCertified = "A"));
             testItems.Add(CopyTestItem(i => i.FairTradeCertified = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
-                ValidationErrors.Codes.InvalidFairTradeCertified,
-                ValidationErrors.Messages.InvalidFairTradeCertified,
-                nameof(testItem.FairTradeCertified),
-                (i) => i.FairTradeCertified);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -679,7 +845,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.FairTradeCertified = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -692,7 +862,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.FinancialHierarchyClassId = "6200"));
             testItems.Add(CopyTestItem(i => i.FinancialHierarchyClassId = "3700"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -706,7 +880,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.FinancialHierarchyClassId = "A"));
             testItems.Add(CopyTestItem(i => i.FinancialHierarchyClassId = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidFinancialHierarchyClassId,
                 ValidationErrors.Messages.InvalidFinancialHierarchyClassId,
                 nameof(testItem.FinancialHierarchyClassId),
@@ -719,7 +897,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.FinancialHierarchyClassId = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(
                 ValidationErrors.Codes.InvalidFinancialHierarchyClassId,
                 ValidationErrors.Messages.InvalidFinancialHierarchyClassId.GetFormattedValidationMessage(nameof(testItem.FinancialHierarchyClassId), testItem.FinancialHierarchyClassId));
         }
@@ -731,7 +913,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.FoodStampEligible = ItemValues.FalseBooleanValue;
             testItems.Add(CopyTestItem(i => i.FoodStampEligible = ItemValues.TrueBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -745,7 +931,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.FoodStampEligible = "A"));
             testItems.Add(CopyTestItem(i => i.FoodStampEligible = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidFoodStampEligible,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.FoodStampEligible),
@@ -758,7 +948,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.FoodStampEligible = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(
                 ValidationErrors.Codes.InvalidFoodStampEligible,
                 ValidationErrors.Messages.InvalidBooleanString.GetFormattedValidationMessage(nameof(testItem.FoodStampEligible), testItem.FoodStampEligible));
         }
@@ -770,7 +964,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.FreeRange = ItemValues.FalseBooleanValue;
             testItems.Add(CopyTestItem(i => i.FreeRange = ItemValues.TrueBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -784,7 +982,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.FreeRange = "A"));
             testItems.Add(CopyTestItem(i => i.FreeRange = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidFreeRange,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.FreeRange),
@@ -797,7 +999,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.FreeRange = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -810,7 +1016,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.FreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.AsArray[0];
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -824,7 +1034,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.FreshOrFrozen = "A"));
             testItems.Add(CopyTestItem(i => i.FreshOrFrozen = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidFreshOrFrozen,
                 ValidationErrors.Messages.InvalidFreshOrFrozen,
                 nameof(testItem.FreshOrFrozen),
@@ -837,7 +1051,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.FreshOrFrozen = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -846,7 +1064,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.GlutenFree = "Valid value";
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -855,7 +1077,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.GlutenFree = new string('a', ItemValues.MaxPropertyStringLength + 1);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidGlutenFree,
                 ValidationErrors.Messages.InvalidCertificationAgency,
                 nameof(testItem.GlutenFree),
@@ -868,7 +1094,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.GlutenFree = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -878,7 +1108,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.GrassFed = ItemValues.FalseBooleanValue;
             testItems.Add(CopyTestItem(i => i.GrassFed = ItemValues.TrueBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -891,7 +1125,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.GrassFed = "."));
             testItems.Add(CopyTestItem(i => i.GrassFed = " "));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidGrassFed,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.GrassFed),
@@ -904,7 +1142,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.GrassFed = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -914,7 +1156,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.Hemp = ItemValues.FalseBooleanValue;
             testItems.Add(CopyTestItem(i => i.Hemp = ItemValues.TrueBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -927,7 +1169,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.Hemp = "."));
             testItems.Add(CopyTestItem(i => i.Hemp = " "));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidHemp,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.Hemp),
@@ -940,7 +1186,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Hemp = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -950,7 +1200,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.HiddenItem = ItemValues.FalseBooleanValue;
             testItems.Add(CopyTestItem(i => i.HiddenItem = ItemValues.TrueBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -963,7 +1217,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.HiddenItem = "."));
             testItems.Add(CopyTestItem(i => i.HiddenItem = " "));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidHiddenItem,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.HiddenItem),
@@ -976,7 +1234,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.HiddenItem = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -985,7 +1247,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.InforMessageId = Guid.NewGuid();
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -994,7 +1260,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.InforMessageId = Guid.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidInforMessageId,
                 ValidationErrors.Messages.InvalidInforMessageId,
                 nameof(testItem.InforMessageId),
@@ -1007,7 +1277,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.InforMessageId = Guid.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidInforMessageId,
                 ValidationErrors.Messages.InvalidInforMessageId,
                 nameof(testItem.InforMessageId),
@@ -1022,7 +1296,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.ItemId = 1234));
             testItems.Add(CopyTestItem(i => i.ItemId = int.MaxValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1031,7 +1309,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.ItemId = -1;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidItemId,
                 ValidationErrors.Messages.InvalidItemId,
                 nameof(testItem.ItemId),
@@ -1048,7 +1330,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.ItemTypeCode = ItemTypes.Codes.RetailSale;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1058,7 +1344,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.ItemTypeCode = 0.ToString();
             testItems.Add(CopyTestItem(i => i.ItemTypeCode = 123.ToString()));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidItemTypeCode,
                 ValidationErrors.Messages.InvalidItemTypeCode,
                 nameof(testItem.ItemTypeCode),
@@ -1072,7 +1362,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.Kosher = "Valid value";
             testItems.Add(CopyTestItem(i => i.Kosher = new string('a', 255)));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1081,7 +1371,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Kosher = new string('a', 256);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidKosher,
                 ValidationErrors.Messages.InvalidCertificationAgency,
                 nameof(testItem.Kosher),
@@ -1094,7 +1388,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Kosher = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1104,7 +1402,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.LocalLoanProducer = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.LocalLoanProducer = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1117,7 +1419,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.LocalLoanProducer = " "));
             testItems.Add(CopyTestItem(i => i.LocalLoanProducer = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidLocalLoanProducer,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.LocalLoanProducer),
@@ -1130,7 +1436,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.LocalLoanProducer = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1140,7 +1450,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.MadeInHouse = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.MadeInHouse = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1153,8 +1467,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.MadeInHouse = " "));
             testItems.Add(CopyTestItem(i => i.MadeInHouse = "."));
 
+            //When
+            validator.ValidateCollection(testItems);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidMadeInHouse,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.MadeInHouse),
@@ -1167,7 +1484,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.MadeInHouse = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1179,7 +1500,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.MainProductName = "1234"));
             testItems.Add(CopyTestItem(i => i.MainProductName = "dssdf.d1123032!@"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1188,7 +1513,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.MainProductName = new string('a', ItemValues.MaxPropertyStringLength + 1);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidMainProductName,
                 ValidationErrors.Messages.InvalidMainProductName,
                 nameof(testItem.MainProductName),
@@ -1201,7 +1530,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.MainProductName = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1211,7 +1544,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.MerchandiseHierarchyClassId = "1234567890";
             testItems.Add(CopyTestItem(i => i.MerchandiseHierarchyClassId = "1234"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1223,7 +1560,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.MerchandiseHierarchyClassId = " "));
             testItems.Add(CopyTestItem(i => i.MerchandiseHierarchyClassId = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidMerchandiseHierarchyClassId,
                 ValidationErrors.Messages.InvalidMerchandiseHierarchyClassId,
                 nameof(testItem.MerchandiseHierarchyClassId),
@@ -1236,7 +1577,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.MerchandiseHierarchyClassId = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(
                 ValidationErrors.Codes.InvalidMerchandiseHierarchyClassId,
                 ValidationErrors.Messages.InvalidMerchandiseHierarchyClassId.GetFormattedValidationMessage(nameof(testItem.MerchandiseHierarchyClassId), testItem.MerchandiseHierarchyClassId));
         }
@@ -1248,7 +1593,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.Msc = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.Msc = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1260,7 +1609,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.Msc = " "));
             testItems.Add(CopyTestItem(i => i.Msc = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidMsc,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.Msc),
@@ -1273,7 +1626,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Msc = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1283,7 +1640,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.NationalHierarchyClassId = "1234567890"; ;
             testItems.Add(CopyTestItem(i => i.NationalHierarchyClassId = "123456"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1297,7 +1658,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.NationalHierarchyClassId = "0"));
             testItems.Add(CopyTestItem(i => i.NationalHierarchyClassId = "01234"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidNationalHierarchyClassId,
                 ValidationErrors.Messages.InvalidNationalHierarchyClassId,
                 nameof(testItem.NationalHierarchyClassId),
@@ -1310,7 +1675,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.NationalHierarchyClassId = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidNationalHierarchyClassId,
                 ValidationErrors.Messages.InvalidNationalHierarchyClassId,
                 nameof(testItem.NationalHierarchyClassId),
@@ -1324,7 +1693,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.NonGmo = "Valid value"; ;
             testItems.Add(CopyTestItem(i => i.NonGmo = new string('a', ItemValues.MaxPropertyStringLength)));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1333,7 +1706,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.NonGmo = new string('a', ItemValues.MaxPropertyStringLength + 1);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidNonGmo,
                 ValidationErrors.Messages.InvalidCertificationAgency,
                 nameof(testItem.NonGmo),
@@ -1346,7 +1723,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.NonGmo = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1356,7 +1737,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.Notes = "Valid value"; ;
             testItems.Add(CopyTestItem(i => i.Notes = new string('a', ItemValues.MaxPropertyStringLength)));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1365,7 +1750,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Notes = new string('a', ItemValues.MaxPropertyStringLength + 1);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidNotes,
                 ValidationErrors.Messages.InvalidNotes,
                 nameof(testItem.Notes),
@@ -1378,7 +1767,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Notes = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1388,7 +1781,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.NutritionRequired = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.NutritionRequired = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1401,8 +1798,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.NutritionRequired = " "));
             testItems.Add(CopyTestItem(i => i.NutritionRequired = "."));
 
+            //When
+            validator.ValidateCollection(testItems);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidNutritionRequired,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.NutritionRequired),
@@ -1415,7 +1815,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.NutritionRequired = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1423,7 +1827,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         {
             //Given
             testItem.CustomerFriendlyDescription = "!@#$%^&*()_+=-[]{}\\|':'aeionvcxv;198118341~`";
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1432,7 +1841,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.CustomerFriendlyDescription = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1440,8 +1849,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         {
             //Given
             testItem.CustomerFriendlyDescription = "123456789123456789123456789123456789123456789123456789123456789";
-          
-            PerformValidateCollectionWhenAndThenSteps(
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidCustomerFriendlyDescription,
                 ValidationErrors.Messages.InvalidCustomerFriendlyDescription,
                 nameof(testItem.CustomerFriendlyDescription),
@@ -1455,7 +1868,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.Organic = "Valid value"; ;
             testItems.Add(CopyTestItem(i => i.Organic = new string('a', ItemValues.MaxPropertyStringLength)));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1464,7 +1881,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Organic = new string('a', ItemValues.MaxPropertyStringLength + 1);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidOrganic,
                 ValidationErrors.Messages.InvalidCertificationAgency,
                 nameof(testItem.Organic),
@@ -1477,7 +1898,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Organic = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1487,7 +1912,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.OrganicPersonalCare = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.OrganicPersonalCare = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1500,8 +1929,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.OrganicPersonalCare = " "));
             testItems.Add(CopyTestItem(i => i.OrganicPersonalCare = "."));
 
+            //When
+            validator.ValidateCollection(testItems);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidOrganicPersonalCare,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.OrganicPersonalCare),
@@ -1514,7 +1946,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.OrganicPersonalCare = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1529,7 +1965,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.PackageUnit = "123"));
             testItems.Add(CopyTestItem(i => i.PackageUnit = "180"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1546,7 +1986,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.PackageUnit = "000"));
             testItems.Add(CopyTestItem(i => i.PackageUnit = "001"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidPackageUnit,
                 ValidationErrors.Messages.InvalidPackageUnit,
                 nameof(testItem.PackageUnit),
@@ -1559,7 +2003,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.PackageUnit = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidPackageUnit,
                 ValidationErrors.Messages.InvalidPackageUnit,
                 nameof(testItem.PackageUnit),
@@ -1573,7 +2021,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.Paleo = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.Paleo = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1586,8 +2038,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.Paleo = " "));
             testItems.Add(CopyTestItem(i => i.Paleo = "."));
 
+            //When
+            validator.ValidateCollection(testItems);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidPaleo,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.Paleo),
@@ -1600,7 +2055,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Paleo = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1610,7 +2069,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.PastureRaised = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.PastureRaised = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1623,8 +2086,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.PastureRaised = " "));
             testItems.Add(CopyTestItem(i => i.PastureRaised = "."));
 
+            //When
+            validator.ValidateCollection(testItems);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidPastureRaised,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.PastureRaised),
@@ -1637,7 +2103,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.PastureRaised = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1648,7 +2118,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.PosDescription = new string('a', ItemValues.PosDescriptionMaxLength)));
             testItems.Add(CopyTestItem(i => i.PosDescription = "abc123%!@"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1658,7 +2128,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.PosDescription = new string('a', ItemValues.PosDescriptionMaxLength + 1);
             testItems.Add(CopyTestItem(i => i.PosDescription = "+"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidPosDescription,
                 ValidationErrors.Messages.InvalidPosDescription,
                 nameof(testItem.PosDescription),
@@ -1671,7 +2145,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.PosDescription = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidPosDescription,
                 ValidationErrors.Messages.InvalidPosDescription,
                 nameof(testItem.PosDescription),
@@ -1694,7 +2172,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.PosScaleTare = "9.999"));
             testItems.Add(CopyTestItem(i => i.PosScaleTare = "9.9999"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1710,7 +2192,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.PosScaleTare = "9.99999"));
             testItems.Add(CopyTestItem(i => i.PosScaleTare = "0.00000"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidPosScaleTare,
                 ValidationErrors.Messages.InvalidPosScaleTare,
                 nameof(testItem.PosScaleTare),
@@ -1723,7 +2209,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.PosScaleTare = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidPosScaleTare,
                 ValidationErrors.Messages.InvalidPosScaleTare,
                 nameof(testItem.PosScaleTare),
@@ -1737,7 +2227,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.PremiumBodyCare = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.PremiumBodyCare = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1750,8 +2244,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.PremiumBodyCare = " "));
             testItems.Add(CopyTestItem(i => i.PremiumBodyCare = "."));
 
+            //When
+            validator.ValidateCollection(testItems);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidPremiumBodyCare,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.PremiumBodyCare),
@@ -1764,7 +2261,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.PremiumBodyCare = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1775,7 +2276,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.ProductDescription = new string('a', ItemValues.ProductDescriptionMaxLength)));
             testItems.Add(CopyTestItem(i => i.ProductDescription = "abc123%!@"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1785,7 +2290,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.ProductDescription = new string('a', ItemValues.ProductDescriptionMaxLength + 1);
             testItems.Add(CopyTestItem(i => i.ProductDescription = "+"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidProductDescription,
                 ValidationErrors.Messages.InvalidProductDescription,
                 nameof(testItem.ProductDescription),
@@ -1798,7 +2307,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.ProductDescription = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidProductDescription,
                 ValidationErrors.Messages.InvalidProductDescription,
                 nameof(testItem.ProductDescription),
@@ -1813,7 +2326,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.ProductFlavorType = new string('a', ItemValues.MaxPropertyStringLength)));
             testItems.Add(CopyTestItem(i => i.ProductFlavorType = "abc123%!@"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1823,7 +2340,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.ProductFlavorType = new string('a', ItemValues.MaxPropertyStringLength + 1);
             testItems.Add(CopyTestItem(i => i.ProductFlavorType = "+"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidProductFlavorType,
                 ValidationErrors.Messages.InvalidProductFlavorType,
                 nameof(testItem.ProductFlavorType),
@@ -1836,7 +2357,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.ProductFlavorType = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1846,7 +2371,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.ProhibitDiscount = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.ProhibitDiscount = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1859,7 +2388,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.ProhibitDiscount = " "));
             testItems.Add(CopyTestItem(i => i.ProhibitDiscount = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidProhibitDiscount,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.ProhibitDiscount),
@@ -1872,7 +2405,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.ProhibitDiscount = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidProhibitDiscount,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.ProhibitDiscount),
@@ -1889,7 +2426,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.RetailSize = "7896"));
             testItems.Add(CopyTestItem(i => i.RetailSize = "0.24"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1905,7 +2446,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.RetailSize = " "));
             testItems.Add(CopyTestItem(i => i.RetailSize = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidRetailSize,
                 ValidationErrors.Messages.InvalidRetailSize,
                 nameof(testItem.RetailSize),
@@ -1918,7 +2463,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.RetailSize = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidRetailSize,
                 ValidationErrors.Messages.InvalidRetailSize,
                 nameof(testItem.RetailSize),
@@ -1935,7 +2484,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.RetailUom = UomCodes.Each;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1945,7 +2498,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.RetailUom = "Invalid value";
             testItems.Add(CopyTestItem((i) => i.RetailUom = "789456123"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidRetailUom,
                 ValidationErrors.Messages.InvalidRetailUom,
                 nameof(testItem.RetailUom),
@@ -1958,7 +2515,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.RetailUom = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidRetailUom,
                 ValidationErrors.Messages.InvalidRetailUom,
                 nameof(testItem.RetailUom),
@@ -1973,7 +2534,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.ScanCode = new string('1', ItemValues.ScanCodeMaxLength)));
             testItems.Add(CopyTestItem(i => i.ScanCode = "100000000"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -1985,7 +2550,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.ScanCode = "01234"));
             testItems.Add(CopyTestItem(i => i.ScanCode = " "));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidScanCode,
                 ValidationErrors.Messages.InvalidScanCode,
                 nameof(testItem.ScanCode),
@@ -1998,7 +2567,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.ScanCode = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidScanCode,
                 ValidationErrors.Messages.InvalidScanCode,
                 nameof(testItem.ScanCode),
@@ -2015,7 +2588,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.ScanCodeType = ScanCodeTypes.Descriptions.PosPlu;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2025,7 +2602,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.ScanCodeType = (-1).ToString();
             testItems.Add(CopyTestItem(i => i.ScanCodeType = 10.ToString()));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidScanCodeType,
                 ValidationErrors.Messages.InvalidScanCodeType,
                 nameof(testItem.ScanCodeType),
@@ -2042,7 +2623,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
             testItem.SeafoodCatchType = SeafoodCatchTypes.Descriptions.AsArray[0];
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2052,7 +2637,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.SeafoodCatchType = "Invalid value";
             testItems.Add(CopyTestItem((i) => i.SeafoodCatchType = "789456123"));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidSeafoodCatchType,
                 ValidationErrors.Messages.InvalidSeafoodCatchType,
                 nameof(testItem.SeafoodCatchType),
@@ -2065,7 +2654,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.SeafoodCatchType = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2077,7 +2670,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.SequenceId = 12));
             testItems.Add(CopyTestItem(i => i.SequenceId = 100));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2086,7 +2683,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.SequenceId = 9;
 
-            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode,
                 ValidationErrors.Messages.OutOfSyncItemUpdateSequenceIdErrorCode,
                 testItem.SequenceId.ToString(),
@@ -2100,7 +2701,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             settings.ValidateSequenceId = false;
             testItem.SequenceId = 9;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2113,7 +2718,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.TaxHierarchyClassId = "0101010"));
             testItems.Add(CopyTestItem(i => i.TaxHierarchyClassId = "1023401"));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2127,7 +2736,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.TaxHierarchyClassId = "A"));
             testItems.Add(CopyTestItem(i => i.TaxHierarchyClassId = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidTaxHierarchyClassId,
                 ValidationErrors.Messages.InvalidTaxHierarchyClassId,
                 nameof(testItem.TaxHierarchyClassId),
@@ -2140,7 +2753,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.TaxHierarchyClassId = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(
                 ValidationErrors.Codes.InvalidTaxHierarchyClassId,
                 ValidationErrors.Messages.InvalidTaxHierarchyClassId.GetFormattedValidationMessage(nameof(testItem.TaxHierarchyClassId), testItem.TaxHierarchyClassId));
         }
@@ -2152,7 +2769,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.Vegan = "Valid value";
             testItems.Add(CopyTestItem(i => i.Vegan = new string('a', ItemValues.MaxPropertyStringLength)));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2161,7 +2782,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Vegan = new string('a', ItemValues.MaxPropertyStringLength + 1);
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidVegan,
                 ValidationErrors.Messages.InvalidCertificationAgency,
                 nameof(testItem.Vegan),
@@ -2174,7 +2799,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Vegan = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2184,7 +2813,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.Vegetarian = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.Vegetarian = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2197,7 +2830,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.Vegetarian = " "));
             testItems.Add(CopyTestItem(i => i.Vegetarian = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidVegetarian,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.Vegetarian),
@@ -2210,7 +2847,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.Vegetarian = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2220,7 +2861,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.WholeTrade = ItemValues.TrueBooleanValue;
             testItems.Add(CopyTestItem(i => i.WholeTrade = ItemValues.FalseBooleanValue));
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2233,7 +2878,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItems.Add(CopyTestItem(i => i.WholeTrade = " "));
             testItems.Add(CopyTestItem(i => i.WholeTrade = "."));
 
-            PerformValidateCollectionWhenAndThenSteps(
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.InvalidWholeTrade,
                 ValidationErrors.Messages.InvalidBooleanString,
                 nameof(testItem.WholeTrade),
@@ -2246,7 +2895,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItem.WholeTrade = string.Empty;
 
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2255,8 +2908,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItemValidationPropertiesResultModel.BrandId = null;
 
+            //When
+            validator.ValidateCollection(testItems);
+
             //Then
-            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.NonExistentBrand,
                 ValidationErrors.Messages.NonExistentBrand,
                 testItem.BrandsHierarchyClassId);
@@ -2268,8 +2924,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItemValidationPropertiesResultModel.SubTeamId = null;
 
+            //When
+            validator.ValidateCollection(testItems);
+
             //Then
-            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.NonExistentSubTeam,
                 ValidationErrors.Messages.NonExistentSubTeam,
                 testItem.FinancialHierarchyClassId);
@@ -2281,8 +2940,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItemValidationPropertiesResultModel.SubBrickId = null;
 
+            //When
+            validator.ValidateCollection(testItems);
+
             //Then
-            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.NonExistentSubBrick,
                 ValidationErrors.Messages.NonExistentSubBrick,
                 testItem.MerchandiseHierarchyClassId);
@@ -2294,8 +2956,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItemValidationPropertiesResultModel.NationalClassId = null;
 
+            //When
+            validator.ValidateCollection(testItems);
+
             //Then
-            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.NonExistentNationalClass,
                 ValidationErrors.Messages.NonExistentNationalClass,
                 testItem.NationalHierarchyClassId);
@@ -2307,8 +2972,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItemValidationPropertiesResultModel.TaxClassId = null;
 
+            //When
+            validator.ValidateCollection(testItems);
+
             //Then
-            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.NonExistentTax,
                 ValidationErrors.Messages.NonExistentTax,
                 testItem.TaxHierarchyClassId);
@@ -2320,8 +2988,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             //Given
             testItemValidationPropertiesResultModel.ModifiedDate = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
+            //When
+            validator.ValidateCollection(testItems);
+
             //Then
-            PerformValidateCollectionWhenAndThenStepsWithStringFormat(
+            AssertExpectedErrorsWithFormattedValidationMessage(
                 ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode,
                 ValidationErrors.Messages.OutOfSyncItemUpdateErrorCode,
                 testItem.ModifiedDate,
@@ -2336,8 +3007,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.ModifiedDate = testModifiedDate.AddTicks(-testModifiedDate.Ticks % TimeSpan.TicksPerMillisecond).ToString();
             testItemValidationPropertiesResultModel.ModifiedDate = testModifiedDate.ToString();
 
+            //When
+            validator.ValidateCollection(testItems);
+
             //Then
-            PerformValidateCollectionWhenAndThenSteps(null, null);
+            AssertExpectedErrors(null, null);
         }
 
         [TestMethod]
@@ -2347,15 +3021,142 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             testItem.ModifiedDate = "2015-04-14T10:05:06.661Z";
             testItemValidationPropertiesResultModel.ModifiedDate = "2015-04-14 10:05:06.6613621";
 
-            //Then
-            PerformValidateCollectionWhenAndThenSteps(null, null);
-        }
-
-        private void PerformValidateCollectionWhenAndThenSteps(string expectedErrorCode, string expectedErrorDetails)
-        {
             //When
             validator.ValidateCollection(testItems);
 
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_FlexibleTextIsValid_NoError()
+        {
+            //Given
+            testItem.FlexibleText = "Flexible text is wonderful!";
+            testItems.Add(CopyTestItem(i => i.FlexibleText = @"The Flexible Text field should allow most any character 1234567890 `~!@#$%^&*()_+-=[]{};':"",./<>? fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT fLeXiBlEtExT"));
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_MadeWithOrganicGrapesIsValid_NoError()
+        {
+            //Given
+            testItem.MadeWithOrganicGrapes = ItemValues.FalseBooleanValue;
+            testItems.Add(CopyTestItem(i => i.MadeWithOrganicGrapes = ItemValues.TrueBooleanValue));
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_PrimeBeefIsValid_NoError()
+        {
+            //Given
+            testItem.PrimeBeef = ItemValues.FalseBooleanValue;
+            testItems.Add(CopyTestItem(i => i.PrimeBeef = ItemValues.TrueBooleanValue));
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_RainforestAllianceIsValid_NoError()
+        {
+            //Given
+            testItem.RainforestAlliance = ItemValues.FalseBooleanValue;
+            testItems.Add(CopyTestItem(i => i.RainforestAlliance = ItemValues.TrueBooleanValue));
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_RefrigeratedIsValid_NoError()
+        {
+            //Given
+            testItem.Refrigerated = ItemValues.FalseBooleanValue;
+            testItems.Add(CopyTestItem(i => i.Refrigerated = ItemValues.TrueBooleanValue));
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_SmithsonianBirdFriendlyIsValid_NoError()
+        {
+            //Given
+            testItem.SmithsonianBirdFriendly = ItemValues.FalseBooleanValue;
+            testItems.Add(CopyTestItem(i => i.SmithsonianBirdFriendly = ItemValues.TrueBooleanValue));
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_WicEligibleIsValid_NoError()
+        {
+            //Given
+            testItem.WicEligible = ItemValues.FalseBooleanValue;
+            testItems.Add(CopyTestItem(i => i.WicEligible = ItemValues.TrueBooleanValue));
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_ShelfLifeIsValid_NoError()
+        {
+            //Given
+            testItem.ShelfLife = "180";
+            testItems.Add(CopyTestItem(i => i.ShelfLife = "3"));
+            testItems.Add(CopyTestItem(i => i.ShelfLife = "999"));
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_SCOItemTareGroupIsValid_NoError()
+        {
+            //Given
+            testItem.SelfCheckoutItemTareGroup = "$elf-checkout item tare group";
+            testItems.Add(CopyTestItem(i => i.SelfCheckoutItemTareGroup = @"most text is OK 1234567890  `~!@#$%^&*()_+-=[]{};':"",./<>?"));
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        private void AssertExpectedErrors(string expectedErrorCode, string expectedErrorDetails)
+        {
             //Then
             foreach (var item in testItems)
             {
@@ -2364,32 +3165,28 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
             }
         }
 
-        private void PerformValidateCollectionWhenAndThenSteps(string expectedErrorCode, string expectedErrorDetails, string propertyName, Func<ItemModel, string> getValueForErrorDetails)
+        private void AssertExpectedErrorsWithFormattedValidationMessage(string expectedErrorCode, string expectedErrorDetails,
+            string propertyName, Func<ItemModel, string> getValueForErrorDetails)
         {
-            //When
-            validator.ValidateCollection(testItems);
-
-            //Then
             foreach (var item in testItems)
             {
                 Assert.AreEqual(expectedErrorCode, item.ErrorCode);
 
-                var expectedErrorDetailsWithFormattedValues = expectedErrorDetails.GetFormattedValidationMessage(propertyName, getValueForErrorDetails(item));
+                var expectedErrorDetailsWithFormattedValues = expectedErrorDetails
+                    .GetFormattedValidationMessage(propertyName, getValueForErrorDetails(item));
                 Assert.AreEqual(expectedErrorDetailsWithFormattedValues, item.ErrorDetails);
             }
         }
 
-        private void PerformValidateCollectionWhenAndThenStepsWithStringFormat(string expectedErrorCode, string expectedErrorDetails, params string[] propertyValues)
+        private void AssertExpectedErrorsWithFormattedValidationMessage(string expectedErrorCode, string expectedErrorDetails,
+            params string[] propertyValues)
         {
-            //When
-            validator.ValidateCollection(testItems);
-
-            //Then
             foreach (var item in testItems)
             {
                 Assert.AreEqual(expectedErrorCode, item.ErrorCode);
 
-                var expectedErrorDetailsWithFormattedValues = expectedErrorDetails.GetFormattedValidationMessageWithStringFormat(propertyValues);
+                var expectedErrorDetailsWithFormattedValues = expectedErrorDetails
+                    .GetFormattedValidationMessageWithStringFormat(propertyValues);
                 Assert.AreEqual(expectedErrorDetailsWithFormattedValues, item.ErrorDetails);
             }
         }

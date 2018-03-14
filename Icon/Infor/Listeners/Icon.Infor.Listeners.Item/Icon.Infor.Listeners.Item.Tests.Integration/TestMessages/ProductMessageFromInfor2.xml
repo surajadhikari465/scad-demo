@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <v1:items xmlns:v1="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns="http://schema.infor.com/InforOAGIS/2" xmlns:pst="http://schemas.wfm.com/Enterprise/AddressMgmt/PostalCode/V2" xmlns:itp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ltr="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleTrait/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sgt="http://schemas.wfm.com/Enterprise/StoreMgmt/StoreGroupType/V1" xmlns:ltp="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ftf="http://schemas.wfm.com/Enterprise/FinancialMgmt/CommonRefTypes/V1" xmlns:fst="http://schemas.wfm.com/Enterprise/FinancialMgmt/FinancialTransactionAccount/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ntp="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:tzf="http://schemas.wfm.com/Enterprise/TimezoneMgmt/CommonRefTypes/V1" xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" xmlns:cty="http://schemas.wfm.com/Enterprise/AddressMgmt/City/V2" xmlns:hpt="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyPrototype/V1" xmlns:iea="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:gst="http://schemas.wfm.com/Enterprise/FinancialMgmt/Gainshare/V1" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:sbf="http://schemas.wfm.com/Enterprise/Subteam/CommonRefTypes/V1" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:art="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2" xmlns:urf="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/CommonRefType/V2" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:sgr="http://schemas.wfm.com/Enterprise/StoreMgmt/StoreGroup/V1" xmlns:str="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:try="http://schemas.wfm.com/Enterprise/AddressMgmt/Territory/V2" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:adr="http://schemas.wfm.com/Enterprise/AddressMgmt/Address/V2" xmlns:amf="http://schemas.wfm.com/Enterprise/AmountMgmt/CommonRefTypes/V1" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:lrf="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" xmlns:tgr="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:tcf="http://schemas.wfm.com/Enterprise/TraitMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ici="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:drf="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:srf="http://schemas.wfm.com/Enterprise/StoreMgmt/CommonRefTypes/V1" xmlns:pad="http://schemas.wfm.com/Enterprise/AddressMgmt/PhysicalAddress/V1" xmlns:hrf="http://schemas.wfm.com/Enterprise/HierarchyMgmt/CommonRefTypes/V1" xmlns:tph="http://schemas.wfm.com/Enterprise/AddressMgmt/PhoneAddress/V1" xmlns:fsb="http://schemas.wfm.com/Enterprise/FinancialMgmt/Subteam/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:cry="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2" xmlns:grf="http://schemas.wfm.com/Enterprise/GainshareMgmt/CommonRefTypes/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:prf="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ira="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesRegional/V2" xmlns:aug="http://schemas.wfm.com/Enterprise/AddressMgmt/AddressUsage/V2" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2">
   <v1:item crf:Action="AddOrUpdate">
-    <v1:id>170477</v1:id>
+    <v1:id>999999999</v1:id>
     <v1:base>
       <ibi:type>
         <itp:code>RTL</itp:code>
@@ -18,7 +18,7 @@
       <lcl:enterpriseItemAttributes>
         <iea:scanCodes>
           <sis:scanCode>
-            <sis:code>77206234</sis:code>
+            <sis:code>888888888</sis:code>
             <sis:typeDescription>UPC</sis:typeDescription>
           </sis:scanCode>
         </iea:scanCodes>
@@ -320,7 +320,7 @@
             <tra:type>
               <trt:description>Vegan</trt:description>
               <trt:value>
-                <trv:value/>
+                <trv:value>1</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -491,7 +491,7 @@
             <tra:type>
               <trt:description>Biodynamic</trt:description>
               <trt:value>
-                <trv:value/>
+                <trv:value>1</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -563,7 +563,7 @@
             <tra:type>
               <trt:description>Shelf Life</trt:description>
               <trt:value>
-                <trv:value>600</trv:value>
+                <trv:value>180</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>

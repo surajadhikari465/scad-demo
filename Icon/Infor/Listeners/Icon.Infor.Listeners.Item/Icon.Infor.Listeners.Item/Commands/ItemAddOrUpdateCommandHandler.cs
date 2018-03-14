@@ -91,7 +91,7 @@ namespace Icon.Infor.Listeners.Item.Commands
                 new ItemTraitModel(i.ItemId, Traits.DeliverySystem, i.DeliverySystem, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.FlexibleText, i.FlexibleText, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.MadeWithOrganicGrapes, i.MadeWithOrganicGrapes, Locales.WholeFoods),
-                new ItemTraitModel(i.ItemId, Traits.Primebeef, i.PrimeBeef, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.PrimeBeef, i.PrimeBeef, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.RainforestAlliance, i.RainforestAlliance, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.Refrigerated, i.Refrigerated, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.SmithsonianBirdFriendly, i.SmithsonianBirdFriendly, Locales.WholeFoods),

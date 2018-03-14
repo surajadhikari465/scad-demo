@@ -82,7 +82,7 @@ BEGIN
     SET @prbTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PRB')
     SET @rfaTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'RFA')
     SET @rfdTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'RFD')
-    SET @sbfTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'SBF')
+    SET @sbfTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'SMF')
     SET @wicTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'WIC')
     SET @shelfLife				    = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'SLF')
     SET @itgTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'ITG')
@@ -219,12 +219,12 @@ BEGIN
 					WHEN GPRNT_LCL.localeName='United Kingdom' THEN 'UK'
 					WHEN GPRNT_LCL.localeName like '365%' THEN 'TS'
 				END
-		END						AS RegionAbbrev,
-		LCL_TERR.territoryCode 		AS GeographicalState,
-		ftc.traitValue						AS FairTradeCertified,
-		fxt.traitValue						AS FlexibleText,
+		END									AS RegionAbbrev,
+		LCL_TERR.territoryCode 				AS GeographicalState,
 		itg.traitValue						AS SelfCheckoutItemTareGroup,
+		fxt.traitValue						AS FlexibleText,
 		slf.traitValue						AS ShelfLife,
+		ftc.traitValue						AS FairTradeCertified,
 		mog.traitValue						AS MadeWithOrganicGrapes,
 		prb.traitValue						AS PrimeBeef,
 		rfa.traitValue						AS RainforestAlliance,

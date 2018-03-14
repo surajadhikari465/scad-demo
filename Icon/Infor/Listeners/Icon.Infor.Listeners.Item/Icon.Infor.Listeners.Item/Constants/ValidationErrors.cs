@@ -76,6 +76,15 @@ namespace Icon.Infor.Listeners.Item.Constants
             public const string NonExistentTax = "NonExistentTax";
             public const string OutOfSyncItemUpdateErrorCode = "OutOfSyncItemUpdateErrorCode";
             public const string InvalidCustomerFriendlyDescription = "InvalidCustomerFriendlyDescription";
+            public const string InvalidWicEligible = "InvalidWicEligible";
+            public const string InvalidSmithsonianBirdFriendly = "InvalidSmithsonianBirdFriendly";
+            public const string InvalidRefrigerated = "InvalidRefrigerated";
+            public const string InvalidRainforestAlliance = "InvalidRainforestAlliance";
+            public const string InvalidPrimeBeef = "InvalidPrimeBeef";
+            public const string InvalidMadeWithOrganicGrapes = "InvalidMadeWithOrganicGrapes";
+            public const string InvalidFlexibleText = "InvalidFlexibleText";
+            public const string InvalidShelfLife = "InvalidShelfLife";
+            public const string InvalidSelfCheckoutItemTareGroup = "InvalidSelfCheckoutItemTareGroup";
         }
 
         public static class Messages
@@ -141,6 +150,13 @@ namespace Icon.Infor.Listeners.Item.Constants
             public const string OutOfSyncItemUpdateSequenceIdErrorCode = "Item update rejected: message Sequence ID was '{0}' but the item has a larger Sequence ID of '{1}'.";
             public static readonly string InvalidCustomerFriendlyDescription = InvalidValueMessage +
                 " {PropertyName} must be less than " + ItemValues.CustomerFriendlyDescriptionLength + " characters and can contain any character following the regular expression: " + TraitPatterns.CustomerFriendlyDescription;
+            public static readonly string InvalidFlexibleText = InvalidValueMessage +
+                " {PropertyName} must be less than " + ItemValues.FlexibleTextMaxLength + " characters and can contain any character following the regular expression: " + TraitPatterns.FlexibleText;
+            public static readonly string InvalidShelfLife = InvalidValueMessage +
+               " {PropertyName} must be less than " + ItemValues.ShelfLifeMaxDays;
+            public static readonly string InvalidSelfCheckoutItemTareGroup = InvalidValueMessage +
+                           " {PropertyName} must be less than " + ItemValues.SelfCheckoutItemTareGroupMaxLength + " characters and can contain any character following the regular expression: " + TraitPatterns.SelfCheckoutItemTareGroup;
+
             private static string BuildInvalidPropertyMessageForCollection(IEnumerable<string> collection, bool isRequired = false)
             {
                 if(isRequired)

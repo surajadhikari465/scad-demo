@@ -323,6 +323,42 @@ namespace Icon.Infor.Listeners.Item.Validators
                 .Matches(CustomRegexPatterns.BooleanValue)
                 .WithErrorCode(ValidationErrors.Codes.InvalidWholeTrade)
                 .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+            RuleFor(i => i.WicEligible)
+                .Matches(CustomRegexPatterns.BooleanValue)
+                .WithErrorCode(ValidationErrors.Codes.InvalidWicEligible)
+                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+            RuleFor(i => i.SmithsonianBirdFriendly)
+                .Matches(CustomRegexPatterns.BooleanValue)
+                .WithErrorCode(ValidationErrors.Codes.InvalidSmithsonianBirdFriendly)
+                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+            RuleFor(i => i.Refrigerated)
+                .Matches(CustomRegexPatterns.BooleanValue)
+                .WithErrorCode(ValidationErrors.Codes.InvalidRefrigerated)
+                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+            RuleFor(i => i.RainforestAlliance)
+                .Matches(CustomRegexPatterns.BooleanValue)
+                .WithErrorCode(ValidationErrors.Codes.InvalidRainforestAlliance)
+                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+            RuleFor(i => i.PrimeBeef)
+                .Matches(CustomRegexPatterns.BooleanValue)
+                .WithErrorCode(ValidationErrors.Codes.InvalidPrimeBeef)
+                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+            RuleFor(i => i.MadeWithOrganicGrapes)
+                .Matches(CustomRegexPatterns.BooleanValue)
+                .WithErrorCode(ValidationErrors.Codes.InvalidMadeWithOrganicGrapes)
+                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+            RuleFor(i => i.ShelfLife)
+                .Matches(TraitPatterns.ShelfLife)
+                .WithErrorCode(ValidationErrors.Codes.InvalidShelfLife)
+                .WithMessage(ValidationErrors.Messages.InvalidShelfLife);
+            RuleFor(i => i.FlexibleText)
+                .Matches(TraitPatterns.FlexibleText)
+                .WithErrorCode(ValidationErrors.Codes.InvalidFlexibleText)
+                .WithMessage(ValidationErrors.Messages.InvalidFlexibleText);
+            RuleFor(i => i.FlexibleText)
+                .Matches(TraitPatterns.SelfCheckoutItemTareGroup)
+                .WithErrorCode(ValidationErrors.Codes.InvalidSelfCheckoutItemTareGroup)
+                .WithMessage(ValidationErrors.Messages.InvalidSelfCheckoutItemTareGroup);
 
             this.settings = settings;
             this.getItemValidationPropertiesQueryHandler = getItemValidationPropertiesQueryHandler;

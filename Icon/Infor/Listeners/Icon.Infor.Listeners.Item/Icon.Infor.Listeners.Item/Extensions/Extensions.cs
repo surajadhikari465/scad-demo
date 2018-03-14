@@ -89,7 +89,7 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 PercentageTareWeight = GetTraitValue(enterpriseAttributes, TraitCodes.PercentageTareWeight),
                 FlexibleText = GetTraitValue(enterpriseAttributes, TraitCodes.FlexibleText),
                 MadeWithOrganicGrapes = GetTraitValue(enterpriseAttributes, TraitCodes.MadeWithOrganicGrapes),
-                PrimeBeef = GetTraitValue(enterpriseAttributes, TraitCodes.Primebeef),
+                PrimeBeef = GetTraitValue(enterpriseAttributes, TraitCodes.PrimeBeef),
                 RainforestAlliance = GetTraitValue(enterpriseAttributes, TraitCodes.RainforestAlliance),
                 Refrigerated = GetTraitValue(enterpriseAttributes, TraitCodes.Refrigerated),
                 SmithsonianBirdFriendly = GetTraitValue(enterpriseAttributes, TraitCodes.SmithsonianBirdFriendly),

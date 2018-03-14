@@ -286,7 +286,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 BuildTrait(TraitCodes.FairTradeCertified, TraitDescriptions.FairTradeCertified, message.FairTradeCertified),
                 BuildTrait(TraitCodes.FlexibleText, TraitDescriptions.FlexibleText, message.FlexibleText),
                 BuildTrait(TraitCodes.MadeWithOrganicGrapes, TraitDescriptions.MadeWithOrganicGrapes, message.MadeWithOrganicGrapes),
-                BuildTrait(TraitCodes.Primebeef, TraitDescriptions.Primebeef, message.PrimeBeef),
+                BuildTrait(TraitCodes.PrimeBeef, TraitDescriptions.PrimeBeef, message.PrimeBeef),
                 BuildTrait(TraitCodes.RainforestAlliance, TraitDescriptions.RainforestAlliance, message.RainforestAlliance),
                 BuildTrait(TraitCodes.Refrigerated, TraitDescriptions.Refrigerated, message.Refrigerated),
                 BuildTrait(TraitCodes.SmithsonianBirdFriendly, TraitDescriptions.SmithsonianBirdFriendly, message.SmithsonianBirdFriendly),

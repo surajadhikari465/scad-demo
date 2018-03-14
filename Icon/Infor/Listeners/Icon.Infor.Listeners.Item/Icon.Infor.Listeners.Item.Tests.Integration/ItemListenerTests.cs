@@ -20,64 +20,87 @@ using Icon.Infor.Listeners.Item.Queries;
 using System.Transactions;
 using Esb.Core.EsbServices;
 using Icon.Esb.Services.ConfirmationBod;
+using System.Collections.Generic;
 
 namespace Icon.Infor.Listeners.Item.Tests.Integration
 {
     [TestClass]
     public class ItemListenerTests
     {
-        protected ItemListener CreateItemListenerForTest()
-        {
-            IconDbContextFactory contextFactory = new IconDbContextFactory();
-            ItemListenerSettings settings = ItemListenerSettings.CreateFromConfig();
+        protected const string xmlFilePath = @"TestMessages/ProductMessageFromInfor2.xml";
+        protected IconDbContextFactory contextFactory = new IconDbContextFactory();
+        protected ItemListenerSettings settings = ItemListenerSettings.CreateFromConfig();
+        protected ItemListenerTestData testData = new ItemListenerTestData();
+        protected ItemListener itemListener;
 
-            ItemListener il = new ItemListener(
-                              new ItemMessageParser(settings, new NLogLogger<ItemMessageParser>()),
-                              new ItemModelValidator(settings, new GetItemValidationPropertiesQuery(contextFactory)),
-                              new ItemService(
-                                      new ItemAddOrUpdateCommandHandler(contextFactory),
-                                      new GenerateItemMessagesCommandHandler(contextFactory),
-                                      new ArchiveItemsCommandHandler(contextFactory),
-                                      new ArchiveMessageCommandHandler(contextFactory)
-                                  ),
-                                  ListenerApplicationSettings.CreateDefaultSettings("Infor Item Listener"),
-                                  EsbConnectionSettings.CreateSettingsFromConfig(),
-                                  new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromConfig()),
-                                  EmailClient.CreateFromConfig(),
-                                  new ItemListenerNotifier(
-                                      EmailClient.CreateFromConfig(), 
-                                      settings,
-                                      new Mock<IEsbService<ConfirmationBodEsbRequest>>().Object),
-                                  new NLogLogger<ItemListener>());
-            return il;
+        [TestInitialize]
+        public void Initialize()
+        {
+            itemListener = new ItemListener(
+                new ItemMessageParser(settings, new NLogLogger<ItemMessageParser>()),
+                new ItemModelValidator(settings, new GetItemValidationPropertiesQuery(contextFactory)),
+                new ItemService(
+                        new ItemAddOrUpdateCommandHandler(contextFactory),
+                        new GenerateItemMessagesCommandHandler(contextFactory),
+                        new ArchiveItemsCommandHandler(contextFactory),
+                        new ArchiveMessageCommandHandler(contextFactory)
+                    ),
+                    ListenerApplicationSettings.CreateDefaultSettings("Infor Item Listener"),
+                    EsbConnectionSettings.CreateSettingsFromConfig(),
+                    new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromConfig()),
+                    EmailClient.CreateFromConfig(),
+                    new ItemListenerNotifier(
+                        EmailClient.CreateFromConfig(),
+                        settings,
+                        new Mock<IEsbService<ConfirmationBodEsbRequest>>().Object),
+                    new NLogLogger<ItemListener>());
+        }
+
+        protected void SetTraitValueInXmlData(IEnumerable<XElement> traitElements, string traitCode, string traitValue)
+        {
+            traitElements.Where(trait => trait.Value.ToString() == traitCode).First()
+                    .ElementsAfterSelf().First().Descendants().Last().Value = traitValue;
         }
 
         [TestMethod]
-        public void HandleMessage_GivenAProductMessageFromInforWithASingleItem_ShouldSaveItemToDatabase()
+        public void HandleMessage_ProductMessageFromInforForSingleItem_SavesItem()
         {
             //Given
             using (var transaction = new TransactionScope())
             {
-                ItemListener il = CreateItemListenerForTest();
-                Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
-                mockMessage.SetupGet(m => m.MessageText)
-                    .Returns(File.ReadAllText(@"TestMessages/ProductMessageFromInfor.xml"));
-                mockMessage.Setup(m => m.GetProperty("IconMessageID"))
-                    .Returns("ec339683-14e6-4142-8de9-7b5c00960d62");
+                var xmlData = File.ReadAllText(xmlFilePath);
+                var mockMessageObj = testData.GetMockEsbMessage(xmlData);
 
                 //When
-                il.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+                itemListener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessageObj });
 
                 //Then
                 using (var context = new IconContext())
                 {
                     var item = context.ScanCode.AsNoTracking()
-                        .FirstOrDefault(sc => sc.scanCode == "888888888" && sc.itemID == 999999999)
+                        .FirstOrDefault(sc => sc.scanCode == testData.Item_A_ScanCode && sc.itemID == testData.Item_A_ItemID)
                         .Item;
-
                     Assert.IsNotNull(item, "Item was not successfully saved to the database.");
+                }
+            }
+        }
 
-                    var messageArchiveProduct = context.MessageArchiveProduct.FirstOrDefault(p => p.ItemId == 999999999);
+        [TestMethod]
+        public void HandleMessage_ProductMessageFromInforForSingleItem_ArchivesMessage()
+        {
+            //Given
+            using (var transaction = new TransactionScope())
+            {
+                var xmlData = File.ReadAllText(xmlFilePath);
+                var mockMessageObj = testData.GetMockEsbMessage(xmlData);
+
+                //When
+                itemListener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessageObj });
+
+                //Then
+                using (var context = new IconContext())
+                {
+                    var messageArchiveProduct = context.MessageArchiveProduct.FirstOrDefault(p => p.ItemId == testData.Item_A_ItemID);
 
                     Assert.IsNotNull(messageArchiveProduct, "Item update was not successfully archived to the database.");
                     Assert.IsNull(messageArchiveProduct.ErrorCode, "Item update was not successfully archived to the database.");
@@ -86,90 +109,185 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
         }
 
         [TestMethod]
-        public void HandleMessage_ProductMessageFromInforWithItemThatHasOrganicTrait_SavesItemSignAttributeAsOrganic()
+        public void HandleMessage_ProductMessageFromInforForItemWithTraitOrganic_SavesTrait()
         {
             //Given
+            var expectedOrganicAgencyName = testData.Attribs.OrganicAgency;
             using (var transaction = new TransactionScope())
             {
-                ItemListener il = CreateItemListenerForTest();
-                Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
-
                 //load the test message as an xml doc
-                var xmlTestData = XDocument.Load(@"TestMessages/ProductMessageFromInfor.xml");
+                var xmlData = XDocument.Load(xmlFilePath);
                 // set the "OG" element's <trt:value> element to have our desired value
-                const string organicAgencyName = "xyz123";
-                xmlTestData.Root.Descendants().Where(trait => trait.Value.ToString() == "OG").First()
-                    .ElementsAfterSelf().First().Descendants().Last().Value = organicAgencyName;
-
-                mockMessage.SetupGet(m => m.MessageText)
-                    .Returns(xmlTestData.ToString());
-                mockMessage.Setup(m => m.GetProperty("IconMessageID"))
-                    .Returns("ec339683-14e6-4142-8de9-7b5c00960d62");
+                SetTraitValueInXmlData(xmlData.Root.Descendants(), "OG", expectedOrganicAgencyName);
+                var mockMessageObj = testData.GetMockEsbMessage(xmlData.ToString());
 
                 //When
-                il.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+                itemListener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessageObj });
 
                 //Then
                 using (var context = new IconContext())
                 {
                     var itemSignAttribute = context.ScanCode.AsNoTracking()
-                        .FirstOrDefault(sc => sc.scanCode == "888888888" && sc.itemID == 999999999)
+                        .FirstOrDefault(sc => sc.scanCode == testData.Item_A_ScanCode && sc.itemID == testData.Item_A_ItemID)
                         .Item
                         .ItemSignAttribute
                         .FirstOrDefault();
 
                     Assert.IsNotNull(itemSignAttribute, "Item was not successfully saved to the database.");
-                    Assert.AreEqual(organicAgencyName, itemSignAttribute.OrganicAgencyName);
+                    Assert.AreEqual(expectedOrganicAgencyName, itemSignAttribute.OrganicAgencyName);
                 }
             }
         }
-
+        
         [TestMethod]
-        public void HandleMessage_ProductMessageFromInforWithItemThatHasEslTraits_SavesAsExpected()
+        public void HandleMessage_ProductMessageFromInforForItemWithGpmTraitsForSlaw_SavesTraits()
         {
             //Given
             using (var transaction = new TransactionScope())
             {
-                ItemListener il = CreateItemListenerForTest();
-
-                Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
-
                 //load the test message as an xml doc
-                var xmlTestData = XDocument.Load(@"TestMessages/ProductMessageFromInfor2.xml");
-                const string expected_FXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure etc...";
-                const string expected_MOG = "1";
-                const string expected_PRB = "0";
-                const string expected_RFA = "1";
-                const string expected_RFD = "0";
-                const string expected_SMF = "1";
-                const string expected_WIC = "1";
-                const string expected_SLF = "600";
-                const string expected_ITG = "Self Checkout item tare group has a maximum of sixty chars!";
-                mockMessage.SetupGet(m => m.MessageText)
-                    .Returns(xmlTestData.ToString());
-                mockMessage.Setup(m => m.GetProperty("IconMessageID"))
-                    .Returns("ec339683-14e6-4142-8de9-7b5c00960d62");
+                var xmlData = XDocument.Load(xmlFilePath);
+                var mockMessageObj = testData.GetMockEsbMessage(xmlData.ToString());
+                string traitValue = String.Empty;
 
                 //When
-                il.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+                itemListener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessageObj });
 
                 //Then
                 using (var context = new IconContext())
                 {
                     Framework.Item item = context.ScanCode.AsNoTracking()
-                        .FirstOrDefault(sc => sc.scanCode == "77206234" && sc.itemID == 170477)
+                        .FirstOrDefault(sc => sc.scanCode == testData.Item_A_ScanCode && sc.itemID == testData.Item_A_ItemID)
                         .Item;
 
                     Assert.IsNotNull(item, "Item was not successfully saved to the database.");
-                    Assert.AreEqual(expected_FXT, item.ItemTrait.Single(t => t.Trait.traitCode == "FXT").traitValue);
-                    Assert.AreEqual(expected_MOG, item.ItemTrait.Single(t => t.Trait.traitCode == "MOG").traitValue);
-                    Assert.AreEqual(expected_PRB, item.ItemTrait.Single(t => t.Trait.traitCode == "PRB").traitValue);
-                    Assert.AreEqual(expected_RFA, item.ItemTrait.Single(t => t.Trait.traitCode == "RFA").traitValue);
-                    Assert.AreEqual(expected_RFD, item.ItemTrait.Single(t => t.Trait.traitCode == "RFD").traitValue);
-                    Assert.AreEqual(expected_SMF, item.ItemTrait.Single(t => t.Trait.traitCode == "SMF").traitValue);
-                    Assert.AreEqual(expected_WIC, item.ItemTrait.Single(t => t.Trait.traitCode == "WIC").traitValue);
-                    Assert.AreEqual(expected_SLF, item.ItemTrait.Single(t => t.Trait.traitCode == "SLF").traitValue);
-                    Assert.AreEqual(expected_ITG, item.ItemTrait.Single(t => t.Trait.traitCode == "ITG").traitValue);
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "FXT").traitValue;
+                    Assert.AreEqual(testData.Attribs.FlexibleText, traitValue,
+                        $"Actual {nameof(testData.Attribs.FlexibleText)} value ({traitValue}) did not match expected ({testData.Attribs.FlexibleText})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "MOG").traitValue;
+                    Assert.AreEqual( testData.Attribs.MadeWithOrganicGrapes, traitValue,
+                        $"Actual {nameof(testData.Attribs.MadeWithOrganicGrapes)} value ({traitValue}) did not match expected ({testData.Attribs.MadeWithOrganicGrapes})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "PRB").traitValue;
+                    Assert.AreEqual( testData.Attribs.PrimeBeef, traitValue,
+                        $"Actual {nameof(testData.Attribs.PrimeBeef)} value ({traitValue}) did not match expected ({testData.Attribs.PrimeBeef})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "RFA").traitValue;
+                    Assert.AreEqual( testData.Attribs.RainforestAlliance, traitValue,
+                        $"Actual {nameof(testData.Attribs.RainforestAlliance)}  value({traitValue}) did not match expected ({testData.Attribs.RainforestAlliance})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "RFD").traitValue;
+                    Assert.AreEqual( testData.Attribs.Refrigerated, traitValue,
+                        $"Actual {nameof(testData.Attribs.Refrigerated)} value ({traitValue}) did not match expected ({testData.Attribs.Refrigerated})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "SMF").traitValue;
+                    Assert.AreEqual( testData.Attribs.SmithsonianBirdFriendly, traitValue,
+                        $"Actual {nameof(testData.Attribs.SmithsonianBirdFriendly)}  value({traitValue}) did not match expected ({testData.Attribs.SmithsonianBirdFriendly})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "WIC").traitValue;
+                    Assert.AreEqual( testData.Attribs.WIC, traitValue,
+                        $"Actual {nameof(testData.Attribs.WIC)} ({traitValue}) value did not match expected ({testData.Attribs.WIC})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "ITG").traitValue;
+                    Assert.AreEqual( testData.Attribs.SelfCheckoutItemTareGroup, traitValue,
+                        $"Actual {nameof(testData.Attribs.SelfCheckoutItemTareGroup)} value ({traitValue}) did not match expected ({testData.Attribs.SelfCheckoutItemTareGroup})");
+                }
+            }
+        }
+
+        [TestMethod]
+        public void HandleMessage_ProductMessageFromInforForItemWithTraitsForEsl_SavesTraits()
+        {
+            //Given
+            using (var transaction = new TransactionScope())
+            {
+                //load the test message as an xml doc
+                var xmlData = XDocument.Load(xmlFilePath);
+                var mockMessageObj = testData.GetMockEsbMessage(xmlData.ToString());
+                string traitValue = String.Empty;
+
+                //When
+                itemListener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessageObj });
+
+                //Then
+                using (var context = new IconContext())
+                {
+                    Framework.Item item = context.ScanCode.AsNoTracking()
+                        .FirstOrDefault(sc => sc.scanCode == testData.Item_A_ScanCode && sc.itemID == testData.Item_A_ItemID)
+                        .Item;
+
+                    Assert.IsNotNull(item, "Item was not successfully saved to the database.");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "FXT").traitValue;
+                    Assert.AreEqual(testData.Attribs.FlexibleText, traitValue,
+                        $"Actual {nameof(testData.Attribs.FlexibleText)} value ({traitValue}) did not match expected ({testData.Attribs.FlexibleText})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "MOG").traitValue;
+                    Assert.AreEqual(testData.Attribs.MadeWithOrganicGrapes, traitValue,
+                        $"Actual {nameof(testData.Attribs.MadeWithOrganicGrapes)} value ({traitValue}) did not match expected ({testData.Attribs.MadeWithOrganicGrapes})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "PRB").traitValue;
+                    Assert.AreEqual(testData.Attribs.PrimeBeef, traitValue,
+                        $"Actual {nameof(testData.Attribs.PrimeBeef)} value ({traitValue}) did not match expected ({testData.Attribs.PrimeBeef})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "RFA").traitValue;
+                    Assert.AreEqual(testData.Attribs.RainforestAlliance, traitValue,
+                        $"Actual {nameof(testData.Attribs.RainforestAlliance)}  value({traitValue}) did not match expected ({testData.Attribs.RainforestAlliance})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "RFD").traitValue;
+                    Assert.AreEqual(testData.Attribs.Refrigerated, traitValue,
+                        $"Actual {nameof(testData.Attribs.Refrigerated)} value ({traitValue}) did not match expected ({testData.Attribs.Refrigerated})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "SMF").traitValue;
+                    Assert.AreEqual(testData.Attribs.SmithsonianBirdFriendly, traitValue,
+                        $"Actual {nameof(testData.Attribs.SmithsonianBirdFriendly)}  value({traitValue}) did not match expected ({testData.Attribs.SmithsonianBirdFriendly})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "WIC").traitValue;
+                    Assert.AreEqual(testData.Attribs.WIC, traitValue,
+                        $"Actual {nameof(testData.Attribs.WIC)} ({traitValue}) value did not match expected ({testData.Attribs.WIC})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "ITG").traitValue;
+                    Assert.AreEqual(testData.Attribs.SelfCheckoutItemTareGroup, traitValue,
+                        $"Actual {nameof(testData.Attribs.SelfCheckoutItemTareGroup)} value ({traitValue}) did not match expected ({testData.Attribs.SelfCheckoutItemTareGroup})");
+
+                }
+            }
+        }
+
+        [TestMethod]
+        public void HandleMessage_ProductMessageFromInforForItemWithTraitsForOnePlum_SavesTraits()
+        {
+            //Given
+            using (var transaction = new TransactionScope())
+            {
+                //load the test message as an xml doc
+                var xmlData = XDocument.Load(xmlFilePath);
+                var mockMessageObj = testData.GetMockEsbMessage(xmlData.ToString());
+                string traitValue = String.Empty;
+
+                //When
+                itemListener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessageObj });
+
+                //Then
+                using (var context = new IconContext())
+                {
+                    Framework.Item item = context.ScanCode.AsNoTracking()
+                        .FirstOrDefault(sc => sc.scanCode == testData.Item_A_ScanCode && sc.itemID == testData.Item_A_ItemID)
+                        .Item;
+
+                    Assert.IsNotNull(item, "Item was not successfully saved to the database.");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "RFD").traitValue;
+                    Assert.AreEqual(testData.Attribs.Refrigerated, traitValue,
+                        $"Actual {nameof(testData.Attribs.Refrigerated)} value ({traitValue}) did not match expected ({testData.Attribs.Refrigerated})");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "SLF").traitValue;
+                    Assert.AreEqual(testData.Attribs.ShelfLife, traitValue,
+                        $"Actual {nameof(testData.Attribs.ShelfLife)} ({traitValue}) value did not match expected ({testData.Attribs.ShelfLife})");
+
+
                 }
             }
         }

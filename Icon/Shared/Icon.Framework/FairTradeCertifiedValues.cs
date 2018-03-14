@@ -6,40 +6,24 @@ using System.Collections.Generic;
 namespace Icon.Framework
 {
     /// <summary>
-    /// dbo.Trait auto generated Ids
+    /// Auto-generated validation class for the FairTradeCertified Trait (FTC)
+	/// (reads regular expression patterns from the dbo.Trait table)
     /// </summary>
-
     [GeneratedCode("TextTemplatingFileGenerator", "10")]
-    public static class FairTradeCertifiedValues
+    public static class FairTradeCertifiedTraitValidation
     {
-        public const string FairTradeUsa = "Fair Trade USA";
-        public const string FairTradeInternational = "Fair Trade International";
-        public const string ImoUsa = "IMO USA";
-        public const string RainforestAlliance = "Rainforest Alliance";
-        public const string WholeFoodsMarket = "Whole Foods Market";
+        public const string ValidRegExPattern1 = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$";
+		private static string[] traitValidationPatterns = new string[]
+		{
+		      ValidRegExPattern1,
+		};
+		public static string[] AsArray { get { return traitValidationPatterns; } }
 
-		private static string[] descriptions = new string[]
-				{
-					"Fair Trade USA",
-					"Fair Trade International",
-					"IMO USA",
-					"Rainforest Alliance",
-					"Whole Foods Market"
-				};
-		public static string[] AsArray { get { return descriptions; } }
-
-		public static IEnumerable<string> Values
+		public static IList<string> Values
 		{
 			get
 			{
-				return new List<string>
-				{
-					{ "Fair Trade USA" },
-					{ "Fair Trade International" },
-					{ "IMO USA" },
-					{ "Rainforest Alliance" },
-					{ "Whole Foods Market" }
-				};
+			    return new List<string>( traitValidationPatterns );
 			}
 		}
 	}

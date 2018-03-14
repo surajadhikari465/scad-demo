@@ -163,6 +163,21 @@
     <Compile Include="EventType.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="FlexibleTextTraitValidation.cs">
+      <DependentUpon>FlexibleTextTraitValidation.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ShelfLifeTraitValidation.cs">
+      <DependentUpon>ShelfLifeTraitValidation.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SelfCheckoutItemTareGroupTraitValidation.cs">
+      <DependentUpon>SelfCheckoutItemTareGroupTraitValidation.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="FairTradeCertifiedValues.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -861,7 +876,24 @@
       <LastGenOutput>VimEventTypes.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="SelfCheckoutItemTareGroupTraitValidation.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SelfCheckoutItemTareGroupTraitValidation.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ShelfLifeTraitValidation.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ShelfLifeTraitValidation.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FlexibleTextTraitValidation.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FlexibleTextTraitValidation.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

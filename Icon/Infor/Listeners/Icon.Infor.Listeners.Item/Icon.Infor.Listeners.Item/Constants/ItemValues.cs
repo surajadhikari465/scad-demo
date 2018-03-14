@@ -18,5 +18,8 @@ namespace Icon.Infor.Listeners.Item.Constants
         public const int ScanCodeMaxLength = 13;
         public const decimal RetailSizeMax = 99999.9999m; 
         public const int RetailSizeScaleMax = 4;
+        public const int FlexibleTextMaxLength = 60;
+        public const int ShelfLifeMaxDays = 999;
+        public const int SelfCheckoutItemTareGroupMaxLength = 60;
     }
 }
