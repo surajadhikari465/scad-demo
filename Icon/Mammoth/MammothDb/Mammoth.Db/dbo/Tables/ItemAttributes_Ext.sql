@@ -2,7 +2,7 @@
     [ItemAttributeID] INT            IDENTITY (1, 1) NOT NULL,
     [ItemID]          INT            NOT NULL,
     [AttributeID]     INT            NOT NULL,
-    [AttributeValue]  NVARCHAR (255) NULL,
+    [AttributeValue]  NVARCHAR (300) NULL,
     [AddedDate]       DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]    DATETIME       NULL,
     CONSTRAINT [PK_ItemAttributes_Ext] PRIMARY KEY CLUSTERED ([ItemAttributeID] ASC) WITH (FILLFACTOR = 100),

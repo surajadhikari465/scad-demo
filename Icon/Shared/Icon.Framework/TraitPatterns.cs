@@ -150,7 +150,7 @@ namespace Icon.Framework
         public const string TransfatWeight = @"";
         public const string DeliverySystem = @"^[a-zA-z ]+$";
         public const string CaseinFree = @"0|1";
-        public const string FairTradeCertified = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$";
+        public const string FairTradeCertified = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$|^$";
         public const string Hemp = @"0|1";
         public const string OrganicPersonalCare = @"0|1";
         public const string NutritionRequired = @"0|1";
@@ -162,16 +162,16 @@ namespace Icon.Framework
         public const string Paleo = @"0|1";
         public const string LocalLoanProducer = @"0|1";
         public const string CustomerFriendlyDescription = @"^.{0,60}$";
-        public const string GlobalPricingProgram = @"0|1";
-        public const string PercentageTareWeight = @"^\d{1,9}$";
-        public const string FlexibleText = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$";
-        public const string MadeWithOrganicGrapes = @"0|1";
-        public const string PrimeBeef = @"0|1";
-        public const string RainforestAlliance = @"0|1";
-        public const string Refrigerated = @"0|1";
-        public const string SmithsonianBirdFriendly = @"0|1";
-        public const string WicEligible = @"0|1";
-        public const string ShelfLife = @"^\d{1,3}$";
-        public const string SelfCheckoutItemTareGroup = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,60}$";
+        public const string GlobalPricingProgram = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$|^$";
+        public const string PercentageTareWeight = @"^[0-9][0-9]?$|^100$|^$";
+        public const string FlexibleText = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,300}$|^$";
+        public const string MadeWithOrganicGrapes = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$|^$";
+        public const string PrimeBeef = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string RainforestAlliance = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string Refrigerated = @"^[Rr][Ee][Ff][Rr][Ii][Gg][Ee][Rr][Aa][Tt][Ee][Dd]$|^[Ss][Hh][Ee][Ll][Ff][- ]?[Ss][Tt][Aa][Bb][Ll][Ee]$|^$";
+        public const string SmithsonianBirdFriendly = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string WicEligible = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string ShelfLife = @"^[0-9][0-9]?$|^100$|^$";
+        public const string SelfCheckoutItemTareGroup = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,60}$|^$";
 	}
 }

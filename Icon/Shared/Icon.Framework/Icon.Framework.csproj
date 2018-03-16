@@ -163,26 +163,6 @@
     <Compile Include="EventType.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="FlexibleTextTraitValidation.cs">
-      <DependentUpon>FlexibleTextTraitValidation.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="ShelfLifeTraitValidation.cs">
-      <DependentUpon>ShelfLifeTraitValidation.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="SelfCheckoutItemTareGroupTraitValidation.cs">
-      <DependentUpon>SelfCheckoutItemTareGroupTraitValidation.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="FairTradeCertifiedValues.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FairTradeCertifiedValues.tt</DependentUpon>
-    </Compile>
     <Compile Include="GetDefaultTaxClassMismatches_Result.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
@@ -843,10 +823,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EcoScaleRatings.cs</LastGenOutput>
     </None>
-    <None Include="FairTradeCertifiedValues.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>FairTradeCertifiedValues.cs</LastGenOutput>
-    </None>
     <None Include="HealthyEatingRatings.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>HealthyEatingRatings.cs</LastGenOutput>
@@ -874,24 +850,6 @@
     <None Include="VimEventTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VimEventTypes.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SelfCheckoutItemTareGroupTraitValidation.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SelfCheckoutItemTareGroupTraitValidation.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ShelfLifeTraitValidation.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ShelfLifeTraitValidation.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FlexibleTextTraitValidation.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>FlexibleTextTraitValidation.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

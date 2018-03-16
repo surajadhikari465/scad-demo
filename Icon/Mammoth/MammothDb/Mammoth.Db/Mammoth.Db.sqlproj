@@ -763,6 +763,7 @@
     <Build Include="dbo\User Defined Types\IntListType.sql" />
     <Build Include="stage\Stored Procedures\MassInsertToItemStoreKeysEPlum.sql" />
     <Build Include="stage\Stored Procedures\MassInsertToItemStoreKeysEsl.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AlterItemAttributes_ExtAttributeValueColumnSize.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
