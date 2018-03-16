@@ -1,25 +1,27 @@
 Option Strict Off
 Option Explicit On
+Imports System.Linq
+
 Friend Class frmLocationEdit
-	Inherits System.Windows.Forms.Form
-	
-	Private mbChanged As Boolean
-	Private mbLoading As Boolean
-	Private mlLocID As Integer
-	Private mlStoreID As Integer 'Used for setting the default Store.
-	Private mlSubTeamID As Integer 'Used for setting the default Sub-Team.
-	Private mbIsManufacturing As Boolean 'Indicates that the sub-team for this location is a manufacturing sub-team.
-	Private mbUserUpdates As Boolean 'Indicates that the user can update (save) the form.
-	
+    Inherits System.Windows.Forms.Form
+
+    Private mbChanged As Boolean
+    Private mbLoading As Boolean
+    Private mlLocID As Integer
+    Private mlStoreID As Integer 'Used for setting the default Store.
+    Private mlSubTeamID As Integer 'Used for setting the default Sub-Team.
+    Private mbIsManufacturing As Boolean 'Indicates that the sub-team for this location is a manufacturing sub-team.
+    Private mbUserUpdates As Boolean 'Indicates that the user can update (save) the form.
+
     Private mlSubTeamList() As Boolean
 
     Private IsInitializing As Boolean
-	
+
 
     Private Sub frmLocationEdit_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
 
         'Test... UPGRADE_WARNING: Arrays in structure rsLocation may need to be initialized before they can be used. Click for more: 'ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword="814DF224-76BD-4BB4-BFFB-EA359CB9FC48"'
-        Dim rsLocation As dao.Recordset = Nothing
+        Dim rsLocation As DAO.Recordset = Nothing
 
         mbChanged = False
         mbLoading = True
@@ -98,17 +100,17 @@ Friend Class frmLocationEdit
         Me.Close()
 
     End Sub
-	
-	Private Sub cmdLocItems_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdLocItems.Click
-		
-		If mlLocID = 0 Then
-			
+
+    Private Sub cmdLocItems_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdLocItems.Click
+
+        If mlLocID = 0 Then
+
             If Not ValidateData(False) Then
                 'Show msg box and tell them they need to correct info and save before editing items.
                 Call MsgBox("Location must saved before adding items, but cannot be saved until all necessary fields are filled out." & Chr(13) & "Location, sub-team, and location name are required.", MsgBoxStyle.Exclamation, "Cannot add items")
                 Exit Sub
             Else
-                If Not Save Then Exit Sub
+                If Not Save() Then Exit Sub
             End If
 
         End If
@@ -198,7 +200,7 @@ Friend Class frmLocationEdit
     Private Function Save() As Boolean
 
         'Test... UPGRADE_WARNING: Arrays in structure rsLocation may need to be initialized before they can be used. Click for more: 'ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword="814DF224-76BD-4BB4-BFFB-EA359CB9FC48"'
-        Dim rsLocation As dao.Recordset = Nothing
+        Dim rsLocation As DAO.Recordset = Nothing
 
         Save = False
 
@@ -238,30 +240,26 @@ Friend Class frmLocationEdit
         End If
 
     End Function
-	
-	Private Function GetSubTeamRestrictedFlag() As Boolean
-		
-		On Error GoTo ErrExit
-		
+
+    Private Function GetSubTeamRestrictedFlag() As Boolean
+
+        On Error GoTo ErrExit
+
         'Test... UPGRADE_WARNING: Couldn't resolve default property of object mvSubTeamList(). Click for more: 'ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
         GetSubTeamRestrictedFlag = IIf(mlSubTeamList(cboSubTeam.SelectedIndex) = 0, False, True) '1 indicates Un-Restricted.
-		Exit Function
-		
-ErrExit: 
-		
-		'If anything fails better safe to send back restricted.
-		GetSubTeamRestrictedFlag = True
-		
-	End Function
-	
+        Exit Function
+
+ErrExit:
+
+        'If anything fails better safe to send back restricted.
+        GetSubTeamRestrictedFlag = True
+
+    End Function
+
     Private Function ValidateData(Optional ByRef bMsg As Boolean = True) As Boolean
-
         ValidateData = True
-
         If cboStore.SelectedIndex = -1 Or Trim(txtLocName.Text) = "" Or cboSubTeam.SelectedIndex = -1 Then
-
             ValidateData = False
-
             If bMsg Then
                 MsgBox("Store, Sub-Team and Location Name are required.", MsgBoxStyle.Exclamation, "Missing Info!")
                 If cboStore.SelectedIndex = -1 Then
@@ -270,14 +268,16 @@ ErrExit:
                     txtLocName.Focus()
                 End If
             End If
-
+        ElseIf Not txtLocDesc.Text.All(Function(c) Char.IsLetter(c) OrElse Char.IsNumber(c) OrElse Char.IsWhiteSpace(c)) Then
+            ValidateData = False
+            MsgBox("Location description must contain only letters, numbers, or whitespace.", MsgBoxStyle.Exclamation, "Invalid Location Desc!")
+            txtLocDesc.Focus()
         End If
-
     End Function
 
     Private Sub cboSubTeam_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboSubTeam.SelectedIndexChanged
 
-        If isinitializing Then Exit Sub
+        If IsInitializing Then Exit Sub
 
         mlSubTeamID = VB6.GetItemData(cboSubTeam, cboSubTeam.SelectedIndex)
 
@@ -286,87 +286,87 @@ ErrExit:
         Call Changed()
 
     End Sub
-	
+
     Private Sub txtLocDesc_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtLocDesc.TextChanged
 
-        If isinitializing Then Exit Sub
+        If IsInitializing Then Exit Sub
 
         Call Changed()
 
     End Sub
-	
-	Private Sub txtLocDesc_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtLocDesc.KeyPress
-		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-		
-		KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtLocDesc.Tag), txtLocDesc, 0, 0, 0)
-		
-		eventArgs.KeyChar = Chr(KeyAscii)
-		If KeyAscii = 0 Then
-			eventArgs.Handled = True
-		End If
-	End Sub
-	
+
+    Private Sub txtLocDesc_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtLocDesc.KeyPress
+        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+
+        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtLocDesc.Tag), txtLocDesc, 0, 0, 0)
+
+        eventArgs.KeyChar = Chr(KeyAscii)
+        If KeyAscii = 0 Then
+            eventArgs.Handled = True
+        End If
+    End Sub
+
     Private Sub txtLocName_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtLocName.TextChanged
 
-        If isinitializing Then Exit Sub
+        If IsInitializing Then Exit Sub
 
         Call Changed()
 
     End Sub
-	
-	Private Sub txtLocName_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtLocName.KeyPress
-		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-		
-		KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtLocName.Tag), txtLocName, 0, 0, 0)
-		
-		eventArgs.KeyChar = Chr(KeyAscii)
-		If KeyAscii = 0 Then
-			eventArgs.Handled = True
-		End If
-	End Sub
-	
+
+    Private Sub txtLocName_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtLocName.KeyPress
+        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+
+        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtLocName.Tag), txtLocName, 0, 0, 0)
+
+        eventArgs.KeyChar = Chr(KeyAscii)
+        If KeyAscii = 0 Then
+            eventArgs.Handled = True
+        End If
+    End Sub
+
     Private Sub txtNotes_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtNotes.TextChanged
 
-        If isinitializing Then Exit Sub
+        If IsInitializing Then Exit Sub
 
         Call Changed()
 
     End Sub
-	
-	Private Sub Changed(Optional ByRef bChanged As Boolean = True)
-		
-		If mbLoading Or Not mbUserUpdates Then Exit Sub
-		
-		If bChanged = True Then
-			cmdApply.Enabled = True
-			mbChanged = True
-		Else
-			cmdApply.Enabled = False
-			mbChanged = False
-		End If
-		
-	End Sub
-	
-	Private Sub frmLocationEdit_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-		
-		mbChanged = False
-		mbLoading = False
-		mlLocID = 0
-		mlStoreID = 0
-		mlSubTeamID = 0
-		mbIsManufacturing = False
+
+    Private Sub Changed(Optional ByRef bChanged As Boolean = True)
+
+        If mbLoading Or Not mbUserUpdates Then Exit Sub
+
+        If bChanged = True Then
+            cmdApply.Enabled = True
+            mbChanged = True
+        Else
+            cmdApply.Enabled = False
+            mbChanged = False
+        End If
+
+    End Sub
+
+    Private Sub frmLocationEdit_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+
+        mbChanged = False
+        mbLoading = False
+        mlLocID = 0
+        mlStoreID = 0
+        mlSubTeamID = 0
+        mbIsManufacturing = False
         mbUserUpdates = False
 
-	End Sub
-	
-	Private Sub txtNotes_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtNotes.KeyPress
-		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-		
-		KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtNotes.Tag), txtNotes, 0, 0, 0)
-		
-		eventArgs.KeyChar = Chr(KeyAscii)
-		If KeyAscii = 0 Then
-			eventArgs.Handled = True
-		End If
-	End Sub
+    End Sub
+
+    Private Sub txtNotes_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtNotes.KeyPress
+        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+
+        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtNotes.Tag), txtNotes, 0, 0, 0)
+
+        eventArgs.KeyChar = Chr(KeyAscii)
+        If KeyAscii = 0 Then
+            eventArgs.Handled = True
+        End If
+    End Sub
 End Class
