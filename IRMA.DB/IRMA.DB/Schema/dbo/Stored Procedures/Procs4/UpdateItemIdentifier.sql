@@ -62,7 +62,7 @@ AS
 	--
 	IF @NumPluDigitsSentToScaleUpdated  = 1 or @Scale_IdentifierUpdated = 1 or @DefaultIdentifierUpdated = 1
 	BEGIN
-		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemLocaleAddOrUpdate', @Identifier, NULL
+		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemLocaleAddOrUpdate', NULL, NULL
 	END
 
 
