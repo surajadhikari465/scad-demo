@@ -79,7 +79,7 @@
       <HintPath>..\packages\Icon.Esb.Services.2017.10.9.1\lib\net46\Icon.Esb.Services.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.3.13.1\lib\net45\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.3.16.1\lib\net45\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -128,9 +128,9 @@
     <Compile Include="Commands\ItemAddOrUpdateCommand.cs" />
     <Compile Include="Commands\ItemAddOrUpdateCommandHandler.cs" />
     <Compile Include="Constants\ApplicationErrors.cs" />
-    <Compile Include="Constants\ItemValues.cs" />
-    <Compile Include="Constants\CustomRegexPatterns.cs" />
-    <Compile Include="Constants\ValidationErrors.cs" />
+    <Compile Include="Constants\ItemValidation\ItemValidation.cs" />
+    <Compile Include="Constants\ItemValidation\ValidationErrorsCodes.cs" />
+    <Compile Include="Constants\ItemValidation\ValidationErrorMessages.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="ItemListenerSettings.cs" />
     <Compile Include="MessageParsers\ItemMessageParser.cs" />

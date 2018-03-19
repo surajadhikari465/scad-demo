@@ -1,6 +1,7 @@
 ﻿using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Framework;
 using Icon.Infor.Listeners.Item.Constants;
+using Icon.Infor.Listeners.Item.Constants.ItemValidation;
 using Icon.Infor.Listeners.Item.Models;
 using System;
 using System.Collections.Generic;
@@ -118,9 +119,9 @@ namespace Icon.Infor.Listeners.Item.Extensions
 
         private static bool IsScalePlu(string scanCode)
         {
-            return Regex.IsMatch(scanCode, CustomRegexPatterns.ScalePlu)
-                || Regex.IsMatch(scanCode, CustomRegexPatterns.IngredientPlu46)
-                || Regex.IsMatch(scanCode, CustomRegexPatterns.IngredientPlu48);
+            return Regex.IsMatch(scanCode, RegularExpressions.ScalePlu)
+                || Regex.IsMatch(scanCode, RegularExpressions.IngredientPlu46)
+                || Regex.IsMatch(scanCode, RegularExpressions.IngredientPlu48);
         }
 
         private static int GetItemTypeCodeId(string typeCode)

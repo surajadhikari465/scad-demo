@@ -176,7 +176,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
 
                     traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "RFA").traitValue;
                     Assert.AreEqual( testData.Attribs.RainforestAlliance, traitValue,
-                        $"Actual {nameof(testData.Attribs.RainforestAlliance)}  value({traitValue}) did not match expected ({testData.Attribs.RainforestAlliance})");
+                        $"Actual {nameof(testData.Attribs.RainforestAlliance)} value ({traitValue}) did not match expected ({testData.Attribs.RainforestAlliance})");
 
                     traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "RFD").traitValue;
                     Assert.AreEqual( testData.Attribs.Refrigerated, traitValue,

@@ -245,7 +245,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             public string KosherAgency => sampleTrait_kosherAgency;
 
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
-            private string sampleTrait_madeWithOrganicGrapes = "1";
+            private string sampleTrait_madeWithOrganicGrapes = "Agricultural Services Certified Organic (ASCO)";
             public string MadeWithOrganicGrapes => sampleTrait_madeWithOrganicGrapes;
 
             //  source: Infor/Icon | target: SLAW, ESL, OnePlum | level: Item
@@ -277,19 +277,19 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             public string PosDescription => sampleTrait_posDescription;
 
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
-            private string sampleTrait_primeBeef = "0";
+            private string sampleTrait_primeBeef = "Yes";
             public string PrimeBeef => sampleTrait_primeBeef;
 
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
-            private string sampleTrait_rainforestAlliance = "1";
+            private string sampleTrait_rainforestAlliance = "Yes";
             public string RainforestAlliance => sampleTrait_rainforestAlliance;
 
             //  source: Infor/Icon | target: SLAW, ESL, OnePlum | level: Item
-            private string sampleTrait_refrigerated = "0";
+            private string sampleTrait_refrigerated = "Shelf Stable";
             public string Refrigerated => sampleTrait_refrigerated;
 
             //  source: Infor/Icon | target: SLAW, ESL, OnePlum | level: Store
-            private string sampleTrait_regionAbbrev = "test RegionID val";
+            private string sampleTrait_regionAbbrev = "QQ";
             public string RegionAbbrev => sampleTrait_regionAbbrev;
 
             //  source: Infor/Icon | target: SLAW, ESL, OnePlum | level: Item
@@ -301,7 +301,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             public string RetailUOM => sampleTrait_retailUOM;
 
             //  source: Infor/Icon | target: SLAW, ESL, OnePlum | level: Item
-            private string sampleTrait_scanCode = "test Identifier val";
+            private string sampleTrait_scanCode = "94011";
             public string ScanCode => sampleTrait_scanCode;
 
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
@@ -309,7 +309,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             public string SeafoodCatchType => sampleTrait_seafoodCatchType;
 
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
-            private string sampleTrait_smithsonianBirdFriendly = "1";
+            private string sampleTrait_smithsonianBirdFriendly = "No";
             public string SmithsonianBirdFriendly => sampleTrait_smithsonianBirdFriendly;
 
             //  source: Infor/Icon | target: SLAW, ESL, OnePlum | level: Item
@@ -321,7 +321,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             public string VeganAgency => sampleTrait_veganAgency;
 
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
-            private string sampleTrait_wIC = "1";
+            private string sampleTrait_wIC = "No";
             public string WIC => sampleTrait_wIC;
 
             //  source: IRMA/Mammoth | target: SLAW, ESL | level: Item Locale
@@ -409,7 +409,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             public string ScalePLUDigits => sampleTrait_scalePLUDigits;
 
             //  source: IRMA/Mammoth | target: OnePlum | level: Item Locale
-            private string sampleTrait_shelfLife = "180";
+            private string sampleTrait_shelfLife = "88";
             public string ShelfLife => sampleTrait_shelfLife;
 
             //  source: IRMA/Mammoth | target: SLAW, ESL | level: Item Locale
@@ -549,7 +549,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             public DateTime EffectiveDate => sampleTrait_effectiveDate;
 
             //  source:  | target:  | level: 
-            private string sampleTrait_selfCheckoutItemTareGroup = "Self Checkout item tare group has a maximum of sixty chars!";
+            private string sampleTrait_selfCheckoutItemTareGroup = "Prep Foods Container Group";
             public string SelfCheckoutItemTareGroup => sampleTrait_selfCheckoutItemTareGroup;
         }
     }

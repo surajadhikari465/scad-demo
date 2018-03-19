@@ -2,6 +2,7 @@
 using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Infor.Listeners.Item.Constants;
+using Icon.Infor.Listeners.Item.Constants.ItemValidation;
 using Icon.Infor.Listeners.Item.Models;
 using Icon.Infor.Listeners.Item.Queries;
 using System;
@@ -27,338 +28,355 @@ namespace Icon.Infor.Listeners.Item.Validators
 
             RuleFor(i => i.ItemId)
                 .Must(i => i > -1)
-                .WithErrorCode(ValidationErrors.Codes.InvalidItemId)
-                .WithMessage(ValidationErrors.Messages.InvalidItemId);
+                .WithErrorCode(ValidationErrorCodes.InvalidItemId)
+                .WithMessage(ValidationErrorMessages.InvalidItemId);
             RuleFor(i => i.ItemTypeCode)
                 .Must(t => ItemTypes.Ids.ContainsKey(t))
-                .WithErrorCode(ValidationErrors.Codes.InvalidItemTypeCode)
-                .WithMessage(ValidationErrors.Messages.InvalidItemTypeCode);
+                .WithErrorCode(ValidationErrorCodes.InvalidItemTypeCode)
+                .WithMessage(ValidationErrorMessages.InvalidItemTypeCode);
             RuleFor(i => i.AirChilled)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidAirChilled)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidAirChilled)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.AlcoholByVolume)
                 .Matches(TraitPatterns.AlcoholByVolume)
                 .Unless(i => i.AlcoholByVolume == string.Empty)
-                .WithErrorCode(ValidationErrors.Codes.InvalidAlcoholByVolume)
-                .WithMessage(ValidationErrors.Messages.InvalidAlcoholByVolume);
+                .WithErrorCode(ValidationErrorCodes.InvalidAlcoholByVolume)
+                .WithMessage(ValidationErrorMessages.InvalidAlcoholByVolume);
             RuleFor(i => i.AnimalWelfareRating)
                 .Must(r => animalWelfareRatingDescriptions.Contains(r))
                 .Unless(i => i.AnimalWelfareRating == string.Empty)
-                .WithErrorCode(ValidationErrors.Codes.InvalidAnimalWelfareRating)
-                .WithMessage(ValidationErrors.Messages.InvalidAnimalWelfareRating);
+                .WithErrorCode(ValidationErrorCodes.InvalidAnimalWelfareRating)
+                .WithMessage(ValidationErrorMessages.InvalidAnimalWelfareRating);
             RuleFor(i => i.Biodynamic)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidBiodynamic)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidBiodynamic)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.BrandsHierarchyClassId)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidBrand)
-                .WithMessage(ValidationErrors.Messages.InvalidBrand)
-                .Matches(CustomRegexPatterns.NumericHierarchyClassId)
-                .WithErrorCode(ValidationErrors.Codes.InvalidBrand)
-                .WithMessage(ValidationErrors.Messages.InvalidBrand);
+                .WithErrorCode(ValidationErrorCodes.InvalidBrand)
+                .WithMessage(ValidationErrorMessages.InvalidBrand)
+                .Matches(RegularExpressions.NumericHierarchyClassId)
+                .WithErrorCode(ValidationErrorCodes.InvalidBrand)
+                .WithMessage(ValidationErrorMessages.InvalidBrand);
             RuleFor(i => i.CaseinFree)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidCaseinFree)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidCaseinFree)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.CheeseMilkType)
                 .Must(v => MilkTypes.Descriptions.AsArray.Contains(v))
                 .Unless(i => i.CheeseMilkType == string.Empty)
-                .WithErrorCode(ValidationErrors.Codes.InvalidCheeseMilkType)
-                .WithMessage(ValidationErrors.Messages.InvalidCheeseMilkType);
+                .WithErrorCode(ValidationErrorCodes.InvalidCheeseMilkType)
+                .WithMessage(ValidationErrorMessages.InvalidCheeseMilkType);
             RuleFor(i => i.CheeseRaw)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidCheeseRaw)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidCheeseRaw)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.DeliverySystem)
                 .Must(v => DeliverySystems.Descriptions.AsArray.Contains(v))
                 .Unless(i => i.DeliverySystem == string.Empty)
-                .WithErrorCode(ValidationErrors.Codes.InvalidDeliverySystem)
-                .WithMessage(ValidationErrors.Messages.InvalidDeliverySystem);
+                .WithErrorCode(ValidationErrorCodes.InvalidDeliverySystem)
+                .WithMessage(ValidationErrorMessages.InvalidDeliverySystem);
             RuleFor(i => i.ContainesDuplicateMerchandiseClass)
                 .Equal(false)
-                .WithErrorCode(ValidationErrors.Codes.DuplicateMerchandiseHierarchyClass)
-                .WithMessage(ValidationErrors.Messages.DuplicateMerchandiseHierarchyClass);
+                .WithErrorCode(ValidationErrorCodes.DuplicateMerchandiseHierarchyClass)
+                .WithMessage(ValidationErrorMessages.DuplicateMerchandiseHierarchyClass);
             RuleFor(i => i.ContainesDuplicateNationalClass)
                 .Equal(false)
-                .WithErrorCode(ValidationErrors.Codes.DuplicateNationalHierarchyClass)
-                .WithMessage(ValidationErrors.Messages.DuplicateNationalHierarchyClass);
+                .WithErrorCode(ValidationErrorCodes.DuplicateNationalHierarchyClass)
+                .WithMessage(ValidationErrorMessages.DuplicateNationalHierarchyClass);
             RuleFor(i => i.DrainedWeight)
                 .Matches(TraitPatterns.DrainedWeight)
                 .Unless(i => i.DrainedWeight == string.Empty)
-                .WithErrorCode(ValidationErrors.Codes.InvalidDrainedWeight)
-                .WithMessage(ValidationErrors.Messages.InvalidDrainedWeight);
+                .WithErrorCode(ValidationErrorCodes.InvalidDrainedWeight)
+                .WithMessage(ValidationErrorMessages.InvalidDrainedWeight);
             RuleFor(i => i.DrainedWeightUom)
                 .Matches(TraitPatterns.DrainedWeightUom)
                 .Unless(i => i.DrainedWeightUom == string.Empty)
-                .WithErrorCode(ValidationErrors.Codes.InvalidDrainedWeightUom)
-                .WithMessage(ValidationErrors.Messages.InvalidDrainedWeightUom);
+                .WithErrorCode(ValidationErrorCodes.InvalidDrainedWeightUom)
+                .WithMessage(ValidationErrorMessages.InvalidDrainedWeightUom);
             RuleFor(i => i.DryAged)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidDryAged)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidDryAged)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.EcoScaleRating)
                 .Matches(TraitPatterns.EcoScaleRating)
                 .Unless(i => i.EcoScaleRating == string.Empty)
-                .WithErrorCode(ValidationErrors.Codes.InvalidEcoScaleRating)
-                .WithMessage(ValidationErrors.Messages.InvalidEcoScaleRating);
+                .WithErrorCode(ValidationErrorCodes.InvalidEcoScaleRating)
+                .WithMessage(ValidationErrorMessages.InvalidEcoScaleRating);
             RuleFor(i => i.FairTradeCertified)
                 .Matches(TraitPatterns.FairTradeCertified)
                 .Unless(i => i.FairTradeCertified == string.Empty)
-                .WithErrorCode(ValidationErrors.Codes.InvalidFairTradeCertified)
-                .WithMessage(ValidationErrors.Messages.InvalidFairTradeCertified);
+                .WithErrorCode(ValidationErrorCodes.InvalidFairTradeCertified)
+                .WithMessage(ValidationErrorMessages.InvalidFairTradeCertified);
             RuleFor(i => i.FinancialHierarchyClassId)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidFinancialHierarchyClassId)
-                .WithMessage(ValidationErrors.Messages.InvalidFinancialHierarchyClassId)
-                .Matches(CustomRegexPatterns.SubTeamNumber)
-                .WithErrorCode(ValidationErrors.Codes.InvalidFinancialHierarchyClassId)
-                .WithMessage(ValidationErrors.Messages.InvalidFinancialHierarchyClassId);
+                .WithErrorCode(ValidationErrorCodes.InvalidFinancialHierarchyClassId)
+                .WithMessage(ValidationErrorMessages.InvalidFinancialHierarchyClassId)
+                .Matches(RegularExpressions.SubTeamNumber)
+                .WithErrorCode(ValidationErrorCodes.InvalidFinancialHierarchyClassId)
+                .WithMessage(ValidationErrorMessages.InvalidFinancialHierarchyClassId);
             RuleFor(i => i.FoodStampEligible)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidFoodStampEligible)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidFoodStampEligible)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .WithErrorCode(ValidationErrorCodes.InvalidFoodStampEligible)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne)
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidFoodStampEligible)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.FreeRange)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidFreeRange)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidFreeRange)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.FreshOrFrozen)
                 .Must(v => SeafoodFreshOrFrozenTypes.Descriptions.AsArray.Contains(v))
                 .Unless(i => i.FreshOrFrozen == string.Empty)
-                .WithErrorCode(ValidationErrors.Codes.InvalidFreshOrFrozen)
-                .WithMessage(ValidationErrors.Messages.InvalidFreshOrFrozen);
+                .WithErrorCode(ValidationErrorCodes.InvalidFreshOrFrozen)
+                .WithMessage(ValidationErrorMessages.InvalidFreshOrFrozen);
             RuleFor(i => i.GlutenFree)
                 .Length(0, 255)
-                .WithErrorCode(ValidationErrors.Codes.InvalidGlutenFree)
-                .WithMessage(ValidationErrors.Messages.InvalidCertificationAgency);
+                .WithErrorCode(ValidationErrorCodes.InvalidGlutenFree)
+                .WithMessage(ValidationErrorMessages.InvalidCertificationAgency);
             RuleFor(i => i.GrassFed)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidGrassFed)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidGrassFed)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.Hemp)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidHemp)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidHemp)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.HiddenItem)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidHiddenItem)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidHiddenItem)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.InforMessageId)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidInforMessageId)
-                .WithMessage(ValidationErrors.Messages.InvalidInforMessageId);
+                .WithErrorCode(ValidationErrorCodes.InvalidInforMessageId)
+                .WithMessage(ValidationErrorMessages.InvalidInforMessageId);
             RuleFor(i => i.Kosher)
                 .Length(0, 255)
-                .WithErrorCode(ValidationErrors.Codes.InvalidKosher)
-                .WithMessage(ValidationErrors.Messages.InvalidCertificationAgency);
+                .WithErrorCode(ValidationErrorCodes.InvalidKosher)
+                .WithMessage(ValidationErrorMessages.InvalidCertificationAgency);
             RuleFor(i => i.LocalLoanProducer)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidLocalLoanProducer)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidLocalLoanProducer)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.MadeInHouse)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidMadeInHouse)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidMadeInHouse)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.MainProductName)
                 .Matches(TraitPatterns.MainProductName)
-                .WithErrorCode(ValidationErrors.Codes.InvalidMainProductName)
-                .WithMessage(ValidationErrors.Messages.InvalidMainProductName);
+                .WithErrorCode(ValidationErrorCodes.InvalidMainProductName)
+                .WithMessage(ValidationErrorMessages.InvalidMainProductName);
             RuleFor(i => i.MerchandiseHierarchyClassId)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidMerchandiseHierarchyClassId)
-                .WithMessage(ValidationErrors.Messages.InvalidMerchandiseHierarchyClassId)
-                .Matches(CustomRegexPatterns.NumericHierarchyClassId)
-                .WithErrorCode(ValidationErrors.Codes.InvalidMerchandiseHierarchyClassId)
-                .WithMessage(ValidationErrors.Messages.InvalidMerchandiseHierarchyClassId);
+                .WithErrorCode(ValidationErrorCodes.InvalidMerchandiseHierarchyClassId)
+                .WithMessage(ValidationErrorMessages.InvalidMerchandiseHierarchyClassId)
+                .Matches(RegularExpressions.NumericHierarchyClassId)
+                .WithErrorCode(ValidationErrorCodes.InvalidMerchandiseHierarchyClassId)
+                .WithMessage(ValidationErrorMessages.InvalidMerchandiseHierarchyClassId);
             RuleFor(i => i.ModifiedDate)
                 .Must(v => IsDateTime(v))
-                .WithErrorCode(ValidationErrors.Codes.InvalidModifiedDate)
-                .WithMessage(ValidationErrors.Messages.InvalidModifiedDate);
+                .WithErrorCode(ValidationErrorCodes.InvalidModifiedDate)
+                .WithMessage(ValidationErrorMessages.InvalidModifiedDate);
             RuleFor(i => i.ModifiedUser)
-                .Length(0, ItemValues.MaxPropertyStringLength)
-                .WithErrorCode(ValidationErrors.Codes.InvalidModifiedUser)
-                .WithMessage(ValidationErrors.Messages.InvalidModifiedUser);
+                .Length(0, MaxLengths.StandardProperty255)
+                .WithErrorCode(ValidationErrorCodes.InvalidModifiedUser)
+                .WithMessage(ValidationErrorMessages.InvalidModifiedUser);
             RuleFor(i => i.Msc)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidMsc)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidMsc)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.NationalHierarchyClassId)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidNationalHierarchyClassId)
-                .WithMessage(ValidationErrors.Messages.InvalidNationalHierarchyClassId)
-                .Matches(CustomRegexPatterns.NumericHierarchyClassId)
-                .WithErrorCode(ValidationErrors.Codes.InvalidNationalHierarchyClassId)
-                .WithMessage(ValidationErrors.Messages.InvalidNationalHierarchyClassId);
+                .WithErrorCode(ValidationErrorCodes.InvalidNationalHierarchyClassId)
+                .WithMessage(ValidationErrorMessages.InvalidNationalHierarchyClassId)
+                .Matches(RegularExpressions.NumericHierarchyClassId)
+                .WithErrorCode(ValidationErrorCodes.InvalidNationalHierarchyClassId)
+                .WithMessage(ValidationErrorMessages.InvalidNationalHierarchyClassId);
             RuleFor(i => i.NonGmo)
-                .Length(0, ItemValues.MaxPropertyStringLength)
-                .WithErrorCode(ValidationErrors.Codes.InvalidNonGmo)
-                .WithMessage(ValidationErrors.Messages.InvalidCertificationAgency);
+                .Length(0, MaxLengths.StandardProperty255)
+                .WithErrorCode(ValidationErrorCodes.InvalidNonGmo)
+                .WithMessage(ValidationErrorMessages.InvalidCertificationAgency);
             RuleFor(i => i.Notes)
-                .Length(0, ItemValues.MaxPropertyStringLength)
-                .WithErrorCode(ValidationErrors.Codes.InvalidNotes)
-                .WithMessage(ValidationErrors.Messages.InvalidNotes);
+                .Length(0, MaxLengths.StandardProperty255)
+                .WithErrorCode(ValidationErrorCodes.InvalidNotes)
+                .WithMessage(ValidationErrorMessages.InvalidNotes);
             RuleFor(i => i.NutritionRequired)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidNutritionRequired)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidNutritionRequired)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.Organic)
-                .Length(0, ItemValues.MaxPropertyStringLength)
-                .WithErrorCode(ValidationErrors.Codes.InvalidOrganic)
-                .WithMessage(ValidationErrors.Messages.InvalidCertificationAgency);
+                .Length(0, MaxLengths.StandardProperty255)
+                .WithErrorCode(ValidationErrorCodes.InvalidOrganic)
+                .WithMessage(ValidationErrorMessages.InvalidCertificationAgency);
             RuleFor(i => i.OrganicPersonalCare)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidOrganicPersonalCare)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidOrganicPersonalCare)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.PackageUnit)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidPackageUnit)
-                .WithMessage(ValidationErrors.Messages.InvalidPackageUnit)
+                .WithErrorCode(ValidationErrorCodes.InvalidPackageUnit)
+                .WithMessage(ValidationErrorMessages.InvalidPackageUnit)
                 .Matches(TraitPatterns.PackageUnit)
-                .WithErrorCode(ValidationErrors.Codes.InvalidPackageUnit)
-                .WithMessage(ValidationErrors.Messages.InvalidPackageUnit);
+                .WithErrorCode(ValidationErrorCodes.InvalidPackageUnit)
+                .WithMessage(ValidationErrorMessages.InvalidPackageUnit);
             RuleFor(i => i.Paleo)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidPaleo)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidPaleo)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.PastureRaised)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidPastureRaised)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidPastureRaised)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.PosDescription)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidPosDescription)
-                .WithMessage(ValidationErrors.Messages.InvalidPosDescription)
+                .WithErrorCode(ValidationErrorCodes.InvalidPosDescription)
+                .WithMessage(ValidationErrorMessages.InvalidPosDescription)
                 .Matches(TraitPatterns.PosDescription)
-                .WithErrorCode(ValidationErrors.Codes.InvalidPosDescription)
-                .WithMessage(ValidationErrors.Messages.InvalidPosDescription);
+                .WithErrorCode(ValidationErrorCodes.InvalidPosDescription)
+                .WithMessage(ValidationErrorMessages.InvalidPosDescription);
             RuleFor(i => i.PosScaleTare)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidPosScaleTare)
-                .WithMessage(ValidationErrors.Messages.InvalidPosScaleTare)
+                .WithErrorCode(ValidationErrorCodes.InvalidPosScaleTare)
+                .WithMessage(ValidationErrorMessages.InvalidPosScaleTare)
                 .Matches(TraitPatterns.PosScaleTare)
-                .WithErrorCode(ValidationErrors.Codes.InvalidPosScaleTare)
-                .WithMessage(ValidationErrors.Messages.InvalidPosScaleTare);
+                .WithErrorCode(ValidationErrorCodes.InvalidPosScaleTare)
+                .WithMessage(ValidationErrorMessages.InvalidPosScaleTare);
             RuleFor(i => i.PremiumBodyCare)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidPremiumBodyCare)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidPremiumBodyCare)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.ProductDescription)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidProductDescription)
-                .WithMessage(ValidationErrors.Messages.InvalidProductDescription)
+                .WithErrorCode(ValidationErrorCodes.InvalidProductDescription)
+                .WithMessage(ValidationErrorMessages.InvalidProductDescription)
                 .Matches(TraitPatterns.ProductDescription)
-                .WithErrorCode(ValidationErrors.Codes.InvalidProductDescription)
-                .WithMessage(ValidationErrors.Messages.InvalidProductDescription);
+                .WithErrorCode(ValidationErrorCodes.InvalidProductDescription)
+                .WithMessage(ValidationErrorMessages.InvalidProductDescription);
             RuleFor(i => i.CustomerFriendlyDescription)
                 .Matches(TraitPatterns.CustomerFriendlyDescription)
-                .WithErrorCode(ValidationErrors.Codes.InvalidCustomerFriendlyDescription)
-                .WithMessage(ValidationErrors.Messages.InvalidCustomerFriendlyDescription);
+                .WithErrorCode(ValidationErrorCodes.InvalidCustomerFriendlyDescription)
+                .WithMessage(ValidationErrorMessages.InvalidCustomerFriendlyDescription);
             RuleFor(i => i.ProductFlavorType)
                 .Matches(TraitPatterns.ProductFlavorType)
-                .WithErrorCode(ValidationErrors.Codes.InvalidProductFlavorType)
-                .WithMessage(ValidationErrors.Messages.InvalidProductFlavorType);
+                .WithErrorCode(ValidationErrorCodes.InvalidProductFlavorType)
+                .WithMessage(ValidationErrorMessages.InvalidProductFlavorType);
             RuleFor(i => i.ProhibitDiscount)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidProhibitDiscount)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidProhibitDiscount)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .WithErrorCode(ValidationErrorCodes.InvalidProhibitDiscount)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne)
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidProhibitDiscount)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.RetailSize)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidRetailSize)
-                .WithMessage(ValidationErrors.Messages.InvalidRetailSize)
+                .WithErrorCode(ValidationErrorCodes.InvalidRetailSize)
+                .WithMessage(ValidationErrorMessages.InvalidRetailSize)
                 .Must(v => IsValidRetailSize(v))
-                .WithErrorCode(ValidationErrors.Codes.InvalidRetailSize)
-                .WithMessage(ValidationErrors.Messages.InvalidRetailSize);
+                .WithErrorCode(ValidationErrorCodes.InvalidRetailSize)
+                .WithMessage(ValidationErrorMessages.InvalidRetailSize);
             RuleFor(i => i.RetailUom)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidRetailUom)
-                .WithMessage(ValidationErrors.Messages.InvalidRetailUom)
+                .WithErrorCode(ValidationErrorCodes.InvalidRetailUom)
+                .WithMessage(ValidationErrorMessages.InvalidRetailUom)
                 .Must(i => UomCodes.ByName.Values.Contains(i))
-                .WithErrorCode(ValidationErrors.Codes.InvalidRetailUom)
-                .WithMessage(ValidationErrors.Messages.InvalidRetailUom);
+                .WithErrorCode(ValidationErrorCodes.InvalidRetailUom)
+                .WithMessage(ValidationErrorMessages.InvalidRetailUom);
             RuleFor(i => i.ScanCode)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidScanCode)
-                .WithMessage(ValidationErrors.Messages.InvalidScanCode)
+                .WithErrorCode(ValidationErrorCodes.InvalidScanCode)
+                .WithMessage(ValidationErrorMessages.InvalidScanCode)
                 .Must(v => !v.StartsWith("0"))
-                .WithErrorCode(ValidationErrors.Codes.InvalidScanCode)
-                .WithMessage(ValidationErrors.Messages.InvalidScanCode)
-                .Matches(CustomRegexPatterns.ScanCode)
-                .WithErrorCode(ValidationErrors.Codes.InvalidScanCode)
-                .WithMessage(ValidationErrors.Messages.InvalidScanCode);
+                .WithErrorCode(ValidationErrorCodes.InvalidScanCode)
+                .WithMessage(ValidationErrorMessages.InvalidScanCode)
+                .Matches(RegularExpressions.ScanCode)
+                .WithErrorCode(ValidationErrorCodes.InvalidScanCode)
+                .WithMessage(ValidationErrorMessages.InvalidScanCode);
             RuleFor(i => i.ScanCodeType)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidScanCodeType)
-                .WithMessage(ValidationErrors.Messages.InvalidScanCodeType)
+                .WithErrorCode(ValidationErrorCodes.InvalidScanCodeType)
+                .WithMessage(ValidationErrorMessages.InvalidScanCodeType)
                 .Must(v => ScanCodeTypes.Descriptions.AsArray.Contains(v))
-                .WithErrorCode(ValidationErrors.Codes.InvalidScanCodeType)
-                .WithMessage(ValidationErrors.Messages.InvalidScanCodeType);
+                .WithErrorCode(ValidationErrorCodes.InvalidScanCodeType)
+                .WithMessage(ValidationErrorMessages.InvalidScanCodeType);
             RuleFor(i => i.SeafoodCatchType)
                 .Must(v => SeafoodCatchTypes.Descriptions.AsArray.Contains(v))
                 .Unless(i => string.IsNullOrEmpty(i.SeafoodCatchType))
-                .WithErrorCode(ValidationErrors.Codes.InvalidSeafoodCatchType)
-                .WithMessage(ValidationErrors.Messages.InvalidSeafoodCatchType);
+                .WithErrorCode(ValidationErrorCodes.InvalidSeafoodCatchType)
+                .WithMessage(ValidationErrorMessages.InvalidSeafoodCatchType);
             RuleFor(i => i.TaxHierarchyClassId)
                 .NotEmpty()
-                .WithErrorCode(ValidationErrors.Codes.InvalidTaxHierarchyClassId)
-                .WithMessage(ValidationErrors.Messages.InvalidTaxHierarchyClassId)
-                .Matches(CustomRegexPatterns.TaxCode)
-                .WithErrorCode(ValidationErrors.Codes.InvalidTaxHierarchyClassId)
-                .WithMessage(ValidationErrors.Messages.InvalidTaxHierarchyClassId);
+                .WithErrorCode(ValidationErrorCodes.InvalidTaxHierarchyClassId)
+                .WithMessage(ValidationErrorMessages.InvalidTaxHierarchyClassId)
+                .Matches(RegularExpressions.TaxCode)
+                .WithErrorCode(ValidationErrorCodes.InvalidTaxHierarchyClassId)
+                .WithMessage(ValidationErrorMessages.InvalidTaxHierarchyClassId);
             RuleFor(i => i.Vegan)
-                .Length(0, ItemValues.MaxPropertyStringLength)
-                .WithErrorCode(ValidationErrors.Codes.InvalidVegan)
-                .WithMessage(ValidationErrors.Messages.InvalidCertificationAgency);
+                .Length(0, MaxLengths.StandardProperty255)
+                .WithErrorCode(ValidationErrorCodes.InvalidVegan)
+                .WithMessage(ValidationErrorMessages.InvalidCertificationAgency);
             RuleFor(i => i.Vegetarian)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidVegetarian)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidVegetarian)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
             RuleFor(i => i.WholeTrade)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidWholeTrade)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(RegularExpressions.BooleanZeroOrOne)
+                .WithErrorCode(ValidationErrorCodes.InvalidWholeTrade)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringZeroOrOne);
+            RuleFor(i => i.GlobalPricingProgram)
+                .Length(0, MaxLengths.StandardProperty255)
+                .WithErrorCode(ValidationErrorCodes.InvalidGlobalPricingProgram)
+                .WithMessage(ValidationErrorMessages.InvalidGlobalPricingProgram)
+                .Matches(TraitPatterns.GlobalPricingProgram)
+                .WithErrorCode(ValidationErrorCodes.InvalidGlobalPricingProgram)
+                .WithMessage(ValidationErrorMessages.InvalidGlobalPricingProgram);
+            RuleFor(i => i.PercentageTareWeight)
+                .Matches(TraitPatterns.PercentageTareWeight)
+                .WithErrorCode(ValidationErrorCodes.InvalidPercentageTareWeight)
+                .WithMessage(ValidationErrorMessages.InvalidPercentageTareWeight);
             RuleFor(i => i.WicEligible)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidWicEligible)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(TraitPatterns.WicEligible)
+                .WithErrorCode(ValidationErrorCodes.InvalidWicEligible)
+                .WithMessage(ValidationErrorMessages.InvalidWicEligible);
             RuleFor(i => i.SmithsonianBirdFriendly)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidSmithsonianBirdFriendly)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
-            RuleFor(i => i.Refrigerated)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidRefrigerated)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(TraitPatterns.SmithsonianBirdFriendly)
+                .WithErrorCode(ValidationErrorCodes.InvalidSmithsonianBirdFriendly)
+                .WithMessage(ValidationErrorMessages.InvalidSmithsonianBirdFriendly);
             RuleFor(i => i.RainforestAlliance)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidRainforestAlliance)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(TraitPatterns.RainforestAlliance)
+                .WithErrorCode(ValidationErrorCodes.InvalidRainforestAlliance)
+                .WithMessage(ValidationErrorMessages.InvalidRainforestAlliance);
             RuleFor(i => i.PrimeBeef)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidPrimeBeef)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Matches(TraitPatterns.PrimeBeef)
+                .WithErrorCode(ValidationErrorCodes.InvalidPrimeBeef)
+                .WithMessage(ValidationErrorMessages.InvalidPrimeBeef);
+            RuleFor(i => i.Refrigerated)
+                .Matches(TraitPatterns.Refrigerated)
+                .WithErrorCode(ValidationErrorCodes.InvalidRefrigerated)
+                .WithMessage(ValidationErrorMessages.InvalidRefrigerated);
             RuleFor(i => i.MadeWithOrganicGrapes)
-                .Matches(CustomRegexPatterns.BooleanValue)
-                .WithErrorCode(ValidationErrors.Codes.InvalidMadeWithOrganicGrapes)
-                .WithMessage(ValidationErrors.Messages.InvalidBooleanString);
+                .Length(0, MaxLengths.StandardProperty255)
+                .WithErrorCode(ValidationErrorCodes.InvalidMadeWithOrganicGrapes)
+                .WithMessage(ValidationErrorMessages.InvalidMadeWithOrganicGrapes);
             RuleFor(i => i.ShelfLife)
                 .Matches(TraitPatterns.ShelfLife)
-                .WithErrorCode(ValidationErrors.Codes.InvalidShelfLife)
-                .WithMessage(ValidationErrors.Messages.InvalidShelfLife);
+                .WithErrorCode(ValidationErrorCodes.InvalidShelfLife)
+                .WithMessage(ValidationErrorMessages.InvalidShelfLife);
             RuleFor(i => i.FlexibleText)
+                .Length(0, MaxLengths.FlexibleText)
+                .WithErrorCode(ValidationErrorCodes.InvalidFlexibleText)
+                .WithMessage(ValidationErrorMessages.InvalidFlexibleTextLength)
                 .Matches(TraitPatterns.FlexibleText)
-                .WithErrorCode(ValidationErrors.Codes.InvalidFlexibleText)
-                .WithMessage(ValidationErrors.Messages.InvalidFlexibleText);
-            RuleFor(i => i.FlexibleText)
+                .WithErrorCode(ValidationErrorCodes.InvalidFlexibleText)
+                .WithMessage(ValidationErrorMessages.InvalidFlexibleTextPattern);
+            RuleFor(i => i.SelfCheckoutItemTareGroup)
+                .Length(0, MaxLengths.SelfCheckoutItemTareGroup)
+                .WithErrorCode(ValidationErrorCodes.InvalidSelfCheckoutItemTareGroup)
+                .WithMessage(ValidationErrorMessages.InvalidSelfCheckoutItemTareGroupLength)
                 .Matches(TraitPatterns.SelfCheckoutItemTareGroup)
-                .WithErrorCode(ValidationErrors.Codes.InvalidSelfCheckoutItemTareGroup)
-                .WithMessage(ValidationErrors.Messages.InvalidSelfCheckoutItemTareGroup);
+                .WithErrorCode(ValidationErrorCodes.InvalidSelfCheckoutItemTareGroup)
+                .WithMessage(ValidationErrorMessages.InvalidSelfCheckoutItemTareGroupPattern);
 
             this.settings = settings;
             this.getItemValidationPropertiesQueryHandler = getItemValidationPropertiesQueryHandler;
@@ -369,9 +387,9 @@ namespace Icon.Infor.Listeners.Item.Validators
             decimal decimalValue;
             bool isDecimal = decimal.TryParse(retailSize, NumberStyles.Float, CultureInfo.InvariantCulture, out decimalValue);
 
-            if (isDecimal && decimalValue > 0 && decimalValue < ItemValues.RetailSizeMax)
+            if (isDecimal && decimalValue > 0 && decimalValue < MaxValues.RetailSize)
             {
-                if (!retailSize.Contains('.') || (retailSize.Contains('.') && GetNumberOfDigitsPastTheDecimalPoint(retailSize) <= ItemValues.RetailSizeScaleMax))
+                if (!retailSize.Contains('.') || (retailSize.Contains('.') && GetNumberOfDigitsPastTheDecimalPoint(retailSize) <= MaxValues.RetailSizeScale))
                 {
                     return true;
                 }
@@ -438,38 +456,38 @@ namespace Icon.Infor.Listeners.Item.Validators
             {
                 if (!joinedItem.ValidationProperties.BrandId.HasValue)
                 {
-                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentBrand;
-                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentBrand, joinedItem.Item.BrandsHierarchyClassId);
+                    joinedItem.Item.ErrorCode = ValidationErrorCodes.NonExistentBrand;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrorMessages.NonExistentBrand, joinedItem.Item.BrandsHierarchyClassId);
                 }
                 else if (!joinedItem.ValidationProperties.SubTeamId.HasValue)
                 {
-                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentSubTeam;
-                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentSubTeam, joinedItem.Item.FinancialHierarchyClassId);
+                    joinedItem.Item.ErrorCode = ValidationErrorCodes.NonExistentSubTeam;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrorMessages.NonExistentSubTeam, joinedItem.Item.FinancialHierarchyClassId);
                 }
                 else if (!joinedItem.ValidationProperties.SubBrickId.HasValue)
                 {
-                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentSubBrick;
-                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentSubBrick, joinedItem.Item.MerchandiseHierarchyClassId);
+                    joinedItem.Item.ErrorCode = ValidationErrorCodes.NonExistentSubBrick;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrorMessages.NonExistentSubBrick, joinedItem.Item.MerchandiseHierarchyClassId);
                 }
                 else if (!joinedItem.ValidationProperties.NationalClassId.HasValue)
                 {
-                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentNationalClass;
-                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentNationalClass, joinedItem.Item.NationalHierarchyClassId);
+                    joinedItem.Item.ErrorCode = ValidationErrorCodes.NonExistentNationalClass;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrorMessages.NonExistentNationalClass, joinedItem.Item.NationalHierarchyClassId);
                 }
                 else if (!joinedItem.ValidationProperties.TaxClassId.HasValue)
                 {
-                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.NonExistentTax;
-                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.NonExistentTax, joinedItem.Item.TaxHierarchyClassId);
+                    joinedItem.Item.ErrorCode = ValidationErrorCodes.NonExistentTax;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrorMessages.NonExistentTax, joinedItem.Item.TaxHierarchyClassId);
                 }
                 else if (!string.IsNullOrWhiteSpace(joinedItem.ValidationProperties.ModifiedDate) && IsMessageModifiedDateLessThanCurrentModifiedDate(joinedItem.Item.ModifiedDate, joinedItem.ValidationProperties.ModifiedDate))
                 {
-                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode;
-                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.OutOfSyncItemUpdateErrorCode, joinedItem.Item.ModifiedDate, joinedItem.ValidationProperties.ModifiedDate);
+                    joinedItem.Item.ErrorCode = ValidationErrorCodes.OutOfSyncItemUpdateErrorCode;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrorMessages.OutOfSyncItemUpdateErrorCode, joinedItem.Item.ModifiedDate, joinedItem.ValidationProperties.ModifiedDate);
                 }
                 else if(!IsSequenceIdValid(joinedItem.Item.SequenceId, joinedItem.ValidationProperties.SequenceId))
                 {
-                    joinedItem.Item.ErrorCode = ValidationErrors.Codes.OutOfSyncItemUpdateErrorCode;
-                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrors.Messages.OutOfSyncItemUpdateSequenceIdErrorCode, joinedItem.Item.SequenceId, joinedItem.ValidationProperties.SequenceId);
+                    joinedItem.Item.ErrorCode = ValidationErrorCodes.OutOfSyncItemUpdateErrorCode;
+                    joinedItem.Item.ErrorDetails = string.Format(ValidationErrorMessages.OutOfSyncItemUpdateSequenceIdErrorCode, joinedItem.Item.SequenceId, joinedItem.ValidationProperties.SequenceId);
                 }
             }
         }

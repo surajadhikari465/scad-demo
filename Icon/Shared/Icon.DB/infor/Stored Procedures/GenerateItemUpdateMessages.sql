@@ -221,16 +221,16 @@ BEGIN
 				END
 		END									AS RegionAbbrev,
 		LCL_TERR.territoryCode 				AS GeographicalState,
-		itg.traitValue						AS SelfCheckoutItemTareGroup,
+		ftc.traitValue						AS FairTradeCertified,		
 		fxt.traitValue						AS FlexibleText,
+		itg.traitValue						AS SelfCheckoutItemTareGroup,
 		slf.traitValue						AS ShelfLife,
-		ftc.traitValue						AS FairTradeCertified,
 		mog.traitValue						AS MadeWithOrganicGrapes,
-		prb.traitValue						AS PrimeBeef,
-		rfa.traitValue						AS RainforestAlliance,
+		CASE WHEN prb.traitValue = 'Yes' THEN 1 ELSE 0 END AS PrimeBeef,
+		CASE WHEN rfa.traitValue = 'Yes' THEN 1 ELSE 0 END AS RainforestAlliance,
 		rfd.traitValue						AS Refigerated,
-		sbf.traitValue						AS SmithsonianBirdFriendly,
-		wic.traitValue						AS WicEligible
+		CASE WHEN smf.traitValue = 'Yes' THEN 1 ELSE 0 END AS SmithsonianBirdFriendly,
+		CASE WHEN wic.traitValue = 'Yes' THEN 1 ELSE 0 END AS WicEligible
 	from 
 		@updatedItemIDs					ui
 		JOIN Item						i			ON	ui.itemID					= i.itemID
@@ -308,7 +308,7 @@ BEGIN
 		LEFT JOIN ItemTrait				prb			ON prb.traitID					= @prbTraitId AND prb.itemID = i.itemID AND prb.localeID = @localeID							
 		LEFT JOIN ItemTrait				rfa			ON rfa.traitID					= @rfaTraitId AND rfa.itemID = i.itemID AND rfa.localeID = @localeID
 		LEFT JOIN ItemTrait				rfd			ON rfd.traitID					= @rfdTraitId AND rfd.itemID = i.itemID AND rfd.localeID = @localeID
-		LEFT JOIN ItemTrait				sbf			ON sbf.traitID					= @sbfTraitId AND sbf.itemID = i.itemID AND sbf.localeID = @localeID
+		LEFT JOIN ItemTrait				smf			ON smf.traitID					= @sbfTraitId AND smf.itemID = i.itemID AND smf.localeID = @localeID
 		LEFT JOIN ItemTrait				wic			ON wic.traitID					= @wicTraitId AND wic.itemID = i.itemID AND wic.localeID = @localeID
 		LEFT JOIN ItemTrait				slf			ON slf.traitID					= @shelfLife  AND slf.itemID = i.itemID AND slf.localeID = @localeID
 		LEFT JOIN ItemTrait				itg			ON itg.traitID					= @itgTraitId AND itg.itemID = i.itemID AND itg.localeID = @localeID	

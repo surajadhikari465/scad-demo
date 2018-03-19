@@ -496,6 +496,24 @@
             </tra:type>
           </crf:trait>
           <crf:trait>
+            <tra:code>GPP</tra:code>
+            <tra:type>
+              <trt:description>Global Pricing Program</trt:description>
+              <trt:value>
+                <trv:value>Everyday Low Price (NTZ)</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>PTA</tra:code>
+            <tra:type>
+              <trt:description>Percentage Tare Weight</trt:description>
+              <trt:value>
+                <trv:value>25</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
             <tra:code>FXT</tra:code>
             <tra:type>
               <trt:description>Flexible Text</trt:description>
@@ -509,7 +527,7 @@
             <tra:type>
               <trt:description>Made with Organic Grapes</trt:description>
               <trt:value>
-                <trv:value>1</trv:value>
+                <trv:value>Agricultural Services Certified Organic (ASCO)</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -518,7 +536,7 @@
             <tra:type>
               <trt:description>Prime Beef</trt:description>
               <trt:value>
-                <trv:value>0</trv:value>
+                <trv:value>Yes</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -527,7 +545,7 @@
             <tra:type>
               <trt:description>Rainforest Alliance</trt:description>
               <trt:value>
-                <trv:value>1</trv:value>
+                <trv:value>Yes</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -536,7 +554,7 @@
             <tra:type>
               <trt:description>Refrigerated</trt:description>
               <trt:value>
-                <trv:value>0</trv:value>
+                <trv:value>Shelf Stable</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -545,7 +563,7 @@
             <tra:type>
               <trt:description>Smithsonian Bird Friendly</trt:description>
               <trt:value>
-                <trv:value>1</trv:value>
+                <trv:value>No</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -554,7 +572,7 @@
             <tra:type>
               <trt:description>WIC Eligible</trt:description>
               <trt:value>
-                <trv:value>1</trv:value>
+                <trv:value>No</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -563,7 +581,7 @@
             <tra:type>
               <trt:description>Shelf Life</trt:description>
               <trt:value>
-                <trv:value>180</trv:value>
+                <trv:value>88</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -572,7 +590,7 @@
             <tra:type>
               <trt:description>Self Checkout Item Tare Group</trt:description>
               <trt:value>
-                <trv:value>Self Checkout item tare group has a maximum of sixty chars!</trv:value>
+                <trv:value>Prep Foods Container Group</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
