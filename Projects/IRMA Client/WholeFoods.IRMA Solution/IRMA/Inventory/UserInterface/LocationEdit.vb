@@ -268,9 +268,13 @@ ErrExit:
                     txtLocName.Focus()
                 End If
             End If
+        ElseIf Not txtLocName.Text.All(Function(c) Char.IsLetter(c) OrElse Char.IsNumber(c) OrElse Char.IsWhiteSpace(c)) Then
+            ValidateData = False
+            MsgBox("Location Name must contain only letters, numbers, or whitespace.", MsgBoxStyle.Exclamation, "Invalid Location Name!")
+            txtLocName.Focus()
         ElseIf Not txtLocDesc.Text.All(Function(c) Char.IsLetter(c) OrElse Char.IsNumber(c) OrElse Char.IsWhiteSpace(c)) Then
             ValidateData = False
-            MsgBox("Location description must contain only letters, numbers, or whitespace.", MsgBoxStyle.Exclamation, "Invalid Location Desc!")
+            MsgBox("Location Desc must contain only letters, numbers, or whitespace.", MsgBoxStyle.Exclamation, "Invalid Location Desc!")
             txtLocDesc.Focus()
         End If
     End Function
