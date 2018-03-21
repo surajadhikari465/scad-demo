@@ -228,7 +228,7 @@ SET
 	Magnesium = n.Magnesium,
 	Zinc = n.Zinc,
 	Copper = n.Copper,
-	Transfat = n.Transfat,
+	Transfat = n.TransFat,
 	CaloriesFromTransFat = n.CaloriesFromTransFat,
 	Om6Fatty = n.Om6Fatty,
 	Om3Fatty = n.Om3Fatty,
@@ -502,7 +502,7 @@ OPTION (RECOMPILE)
 
 -- Item Locale Attributes
 SELECT
-	ist.Region,
+	CAST(ist.Region as NVARCHAR(2)) as Region,
 	ist.ItemID,
 	ist.BusinessUnitID,
 	ist.LinkedScanCode,
@@ -726,7 +726,7 @@ SET
 	RewardPriceMultiple = rwd.Multiple,
 	RewardPriceSellableUOM = rwd.SellableUOM,
 	RewardPriceStartDate = rwd.StartDate,
-	RewardPriceEndDAte = rwd.EndDate
+	RewardPriceEndDate = rwd.EndDate
 FROM #rewardPriceKeys	rp     
 INNER JOIN gpm.Prices   rwd    ON	rp.Region = rwd.Region
     AND rp.ItemID = rwd.ItemID

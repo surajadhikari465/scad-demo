@@ -12,8 +12,9 @@
     [Multiple]       TINYINT      NOT NULL,
     [AddedDate]      DATETIME     DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]   DATETIME     NULL,
-    CONSTRAINT [PK_Price_MA] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC, [BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC) WITH (FILLFACTOR = 100) ON [FG_MA]
-);
+    CONSTRAINT [PK_Price_MA] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC, [BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC) WITH (FILLFACTOR = 100) ON [FG_MA],
+	CONSTRAINT [CK_Price_MA_Region] CHECK (Region = 'MA')
+) ON [FG_MA]
 
 GO
 CREATE CLUSTERED INDEX [CIX_Price_MA]
@@ -32,4 +33,4 @@ CREATE NONCLUSTERED INDEX [IX_Price_MA_ItemID] ON [dbo].[Price_MA]
        [Region] ASC,
        [PriceID] ASC
 )
-INCLUDE ([AddedDate]) ON [PRIMARY]
+INCLUDE ([AddedDate]) ON [FG_MA]

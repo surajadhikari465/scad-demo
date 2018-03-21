@@ -8,7 +8,8 @@
     [AddedDate]             DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]          DATETIME       NULL,
     CONSTRAINT [PK_ItemAttributes_Locale_SP_Ext] PRIMARY KEY CLUSTERED ([Region] ASC, [ItemAttributeLocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_SP],
-    CONSTRAINT [FK_ItemAttributes_Locale_SP_Ext_ItemID] FOREIGN KEY ([ItemID]) REFERENCES [dbo].[Items] ([ItemID])
+    CONSTRAINT [FK_ItemAttributes_Locale_SP_Ext_ItemID] FOREIGN KEY ([ItemID]) REFERENCES [dbo].[Items] ([ItemID]),
+	CONSTRAINT [CK_ItemAttributes_Locale_SP_Ext_Region] CHECK ([Region] = 'SP')
 );
 GO
 
@@ -20,4 +21,4 @@ CREATE INDEX [IX_ItemAttributesLocaleExtended_SP_AttributeID_ItemID_LocaleID_Reg
 	[Region] ASC,
 	[ItemAttributeLocaleID] ASC
 )
-INCLUDE ([AttributeValue],[AddedDate],[ModifiedDate]) ON [PRIMARY]
+INCLUDE ([AttributeValue],[AddedDate],[ModifiedDate]) ON [FG_SP]

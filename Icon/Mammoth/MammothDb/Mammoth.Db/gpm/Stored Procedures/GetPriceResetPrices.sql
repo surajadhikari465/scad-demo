@@ -44,7 +44,7 @@ BEGIN
 		p.GpmID AS GpmId,
 		it.itemTypeCode AS ItemTypeCode,
 		it.itemTypeDesc AS ItemTypeDesc,
-		p.BusinessUnitId AS BusinessUnitId,
+		p.BusinessUnitID AS BusinessUnitId,
 		l.StoreName AS StoreName ,
 		p.PriceType AS PriceType,
 		p.PriceTypeAttribute AS PriceTypeAttribute,
@@ -59,7 +59,7 @@ BEGIN
 		p.EndDate AS EndDate
 	FROM #TempPrices temp 
 	JOIN gpm.Prices p ON p.Region = @Region
-		AND temp.ItemID = p.ItemID
+		AND temp.ItemId = p.ItemID
 		AND temp.BusinessUnitId = p.BusinessUnitID
 		AND temp.PriceType = p.PriceType
 		AND temp.StartDate = p.StartDate

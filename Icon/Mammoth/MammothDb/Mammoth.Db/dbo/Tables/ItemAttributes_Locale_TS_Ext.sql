@@ -7,10 +7,10 @@ CREATE TABLE [dbo].[ItemAttributes_Locale_TS_Ext](
 	[AttributeValue]		[nvarchar](max)							NULL,
 	[AddedDate]				[datetime]			DEFAULT (getdate()) NOT NULL,
 	[ModifiedDate]			[datetime]								NULL,
-   CONSTRAINT [PK_ItemAttributes_Locale_TS_Ext] PRIMARY KEY CLUSTERED ([Region] ASC, [ItemAttributeLocaleID] ASC) 
-		WITH (FILLFACTOR = 100) ON [FG_RM],
-   CONSTRAINT [FK_ItemAttributes_Locale_TS_Ext_ItemID] FOREIGN KEY ([ItemID]) REFERENCES [dbo].[Items] ([ItemID])
-);
+   CONSTRAINT [PK_ItemAttributes_Locale_TS_Ext] PRIMARY KEY CLUSTERED ([Region] ASC, [ItemAttributeLocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_RM],
+   CONSTRAINT [FK_ItemAttributes_Locale_TS_Ext_ItemID] FOREIGN KEY ([ItemID]) REFERENCES [dbo].[Items] ([ItemID]),
+   CONSTRAINT [CK_ItemAttributes_Locale_TS_Ext_Region] CHECK ([Region] = 'TS')
+) ON [FG_RM]
 GO
 
 CREATE INDEX [IX_ItemAttributesLocaleExtended_TS_AttributeID_ItemID_LocaleID_Region_ItemAttributeLocaleID] ON [dbo].[ItemAttributes_Locale_TS_Ext]
@@ -21,6 +21,6 @@ CREATE INDEX [IX_ItemAttributesLocaleExtended_TS_AttributeID_ItemID_LocaleID_Reg
 	[Region] ASC,
 	[ItemAttributeLocaleID] ASC
 )
-INCLUDE ([AttributeValue],[AddedDate],[ModifiedDate]) ON [PRIMARY]
+INCLUDE ([AttributeValue],[AddedDate],[ModifiedDate]) ON [FG_RM]
 
 

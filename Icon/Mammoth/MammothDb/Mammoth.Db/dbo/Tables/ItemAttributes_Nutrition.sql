@@ -74,5 +74,9 @@
 );
 GO
 
+CREATE NONCLUSTERED INDEX [IX_ItemAttributes_Nutrition_ItemID] ON [dbo].[ItemAttributes_Nutrition] ([ItemID])
+GO
+
 GRANT SELECT, UPDATE, INSERT, DELETE ON dbo.ItemAttributes_Nutrition TO MammothRole
 GO
+

@@ -12,9 +12,9 @@ CREATE TABLE [dbo].[Price_TS](
 	[Multiple]			[tinyint]					NOT NULL,
 	[AddedDate]			[datetime] DEFAULT (getdate()) NOT NULL,
 	[ModifiedDate]		[datetime]					NULL,
- CONSTRAINT [PK_Price_TS] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC,	
-	[BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC)
-WITH (FILLFACTOR = 100) ON [FG_RM]) ON [FG_RM]
+	CONSTRAINT [PK_Price_TS] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC,	[BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC) WITH (FILLFACTOR = 100) ON [FG_RM],
+	CONSTRAINT [CK_Price_TS_Region] CHECK (Region = 'TS')
+) ON [FG_RM]
 GO
 
 CREATE CLUSTERED INDEX [CIX_Price_TS]
@@ -31,5 +31,5 @@ CREATE NONCLUSTERED INDEX [IX_Price_FL_ItemID] ON [dbo].[Price_TS]
        [Region] ASC,
        [PriceID] ASC
 )
-INCLUDE ([AddedDate]) ON [PRIMARY]
+INCLUDE ([AddedDate]) ON [FG_RM]
 
