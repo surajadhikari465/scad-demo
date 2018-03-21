@@ -98,6 +98,7 @@
     <Compile Include="MessageType.cs" />
     <Compile Include="PriceResetMessageHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegionGpmStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
