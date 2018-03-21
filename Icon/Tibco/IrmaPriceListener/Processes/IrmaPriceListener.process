@@ -16,8 +16,8 @@
     <pd:starter name="IrmaPriceMessageReceiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>66</pd:x>
-        <pd:y>35</pd:y>
+        <pd:x>67</pd:x>
+        <pd:y>173</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -37,8 +37,8 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1349</pd:endX>
-    <pd:endY>536</pd:endY>
+    <pd:endX>1326</pd:endX>
+    <pd:endY>605</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables>
         <transactionId>
@@ -49,8 +49,8 @@
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>488</pd:x>
-        <pd:y>1</pd:y>
+        <pd:x>549</pd:x>
+        <pd:y>84</pd:y>
         <pd:width>214</pd:width>
         <pd:height>180</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -83,8 +83,8 @@
         <pd:activity name="Load Prices Into IRMA (Batch Update)">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>589</pd:x>
-            <pd:y>82</pd:y>
+            <pd:x>650</pd:x>
+            <pd:y>165</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -149,7 +149,7 @@
             </config>
             <pd:inputBindings>
                 <jdbcUpdateActivityInput>
-                    <xsl:for-each select="$Parse-Price-Message/pfx10:MammothPrices/pfx10:MammothPrice">
+                    <xsl:for-each select="$Filter-out-RWD-Prices/pfx10:MammothPrices/pfx10:MammothPrice">
                         <Record>
                             <BusinessUnit_ID>
                                 <xsl:value-of select="pfx10:BusinessUnit"/>
@@ -197,8 +197,8 @@
     <pd:group name="Load One By One Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>497</pd:x>
-        <pd:y>233</pd:y>
+        <pd:x>528</pd:x>
+        <pd:y>317</pd:y>
         <pd:width>265</pd:width>
         <pd:height>256</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -208,7 +208,7 @@
         <config>
             <pd:groupType>inputLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
-            <pd:over>$Parse-Price-Message/pfx10:MammothPrices/pfx10:MammothPrice</pd:over>
+            <pd:over>$Filter-out-RWD-Prices/pfx10:MammothPrices/pfx10:MammothPrice</pd:over>
             <pd:iterationElementSlot>SinglePriceLoad</pd:iterationElementSlot>
             <pd:indexSlot>idxSingleLoad</pd:indexSlot>
             <pd:activityOutputName/>
@@ -240,8 +240,8 @@
         <pd:activity name="Load Prices Into IRMA (One-by-One Update)">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>616</pd:x>
-            <pd:y>312</pd:y>
+            <pd:x>646</pd:x>
+            <pd:y>396</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -350,8 +350,8 @@
         <pd:activity name="Catch Single Load Exception">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>626</pd:x>
-            <pd:y>406</pd:y>
+            <pd:x>656</pd:x>
+            <pd:y>490</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <fault>localname=JDBCSQLException namespace=http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions</fault>
@@ -362,8 +362,8 @@
     <pd:activity name="Assign">
         <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
         <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>178</pd:x>
-        <pd:y>36</pd:y>
+        <pd:x>168</pd:x>
+        <pd:y>172</pd:y>
         <config>
             <variableName>transactionId</variableName>
         </config>
@@ -376,8 +376,8 @@
     <pd:activity name="Catch-All-Exceptions">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>91</pd:x>
-        <pd:y>535</pd:y>
+        <pd:x>93</pd:x>
+        <pd:y>601</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -387,8 +387,8 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>1343</pd:x>
-        <pd:y>101</pd:y>
+        <pd:x>1331</pd:x>
+        <pd:y>36</pd:y>
         <config>
             <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
         </config>
@@ -397,8 +397,8 @@
     <pd:activity name="Parse Price Message">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>392</pd:x>
-        <pd:y>45</pd:y>
+        <pd:x>351</pd:x>
+        <pd:y>184</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -414,8 +414,8 @@
     <pd:group name="Irma Price Update Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>757</pd:x>
-        <pd:y>1</pd:y>
+        <pd:x>772</pd:x>
+        <pd:y>91</pd:y>
         <pd:width>217</pd:width>
         <pd:height>174</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -448,8 +448,8 @@
         <pd:activity name="Update IRMA Price">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>854</pd:x>
-            <pd:y>77</pd:y>
+            <pd:x>867</pd:x>
+            <pd:y>167</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -497,8 +497,8 @@
     <pd:activity name="Delete All Staging Price Records (All Failed)">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>991</pd:x>
-        <pd:y>551</pd:y>
+        <pd:x>989</pd:x>
+        <pd:y>621</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -534,8 +534,8 @@ WHERE TransactionId = ?</statement>
     <pd:group name="Delete All Staging (All Good) Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>1075</pd:x>
-        <pd:y>1</pd:y>
+        <pd:x>1081</pd:x>
+        <pd:y>92</pd:y>
         <pd:width>207</pd:width>
         <pd:height>170</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -568,8 +568,8 @@ WHERE TransactionId = ?</statement>
         <pd:activity name="Delete All Staging Price Records (All Good)">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1170</pd:x>
-            <pd:y>80</pd:y>
+            <pd:x>1175</pd:x>
+            <pd:y>171</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -606,8 +606,8 @@ WHERE TransactionId = ?</statement>
     <pd:activity name="Publish Error Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>612</pd:x>
-        <pd:y>549</pd:y>
+        <pd:x>610</pd:x>
+        <pd:y>615</pd:y>
         <config>
             <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
             <spawn>true</spawn>
@@ -669,8 +669,8 @@ WHERE TransactionId = ?</statement>
     <pd:activity name="Log Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>343</pd:x>
-        <pd:y>539</pd:y>
+        <pd:x>345</pd:x>
+        <pd:y>605</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -720,8 +720,8 @@ WHERE TransactionId = ?</statement>
     <pd:activity name="Log Message Received">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>397</pd:x>
-        <pd:y>179</pd:y>
+        <pd:x>256</pd:x>
+        <pd:y>183</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -749,8 +749,8 @@ WHERE TransactionId = ?</statement>
     <pd:activity name="Publish Data Error Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1178</pd:x>
-        <pd:y>287</pd:y>
+        <pd:x>1183</pd:x>
+        <pd:y>385</pd:y>
         <config>
             <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
             <spawn>true</spawn>
@@ -793,8 +793,8 @@ WHERE TransactionId = ?</statement>
     <pd:activity name="Data Issue Query">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>874</pd:x>
-        <pd:y>281</pd:y>
+        <pd:x>879</pd:x>
+        <pd:y>372</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -863,8 +863,8 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:activity name="Call Logger">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1015</pd:x>
-        <pd:y>284</pd:y>
+        <pd:x>1020</pd:x>
+        <pd:y>375</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -901,32 +901,149 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
             </pfx13:AppLog>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Log">
-        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
-        <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>278</pd:x>
-        <pd:y>35</pd:y>
+    <pd:activity name="Filter out RWD Prices">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>450</pd:x>
+        <pd:y>186</pd:y>
         <config>
-            <role>User</role>
+            <element ref="pfx10:MammothPrices"/>
         </config>
         <pd:inputBindings>
-            <pfx11:ActivityInput>
-                <message>
-                    <xsl:value-of select="concat($_processContext/pfx4:ProcessContext/ProjectName, &quot; received price message from Mammoth with TransactionId of &quot;, $transactionId/UID)"/>
-                </message>
-            </pfx11:ActivityInput>
+            <pfx10:MammothPrices>
+                <xsl:for-each select="$Parse-Price-Message/pfx10:MammothPrices/pfx10:MammothPrice[pfx10:PriceType !='RWD']">
+                    <pfx10:MammothPrice>
+                        <pfx10:Region>
+                            <xsl:value-of select="pfx10:Region"/>
+                        </pfx10:Region>
+                        <xsl:if test="pfx10:PriceID">
+                            <pfx10:PriceID>
+                                <xsl:value-of select="pfx10:PriceID"/>
+                            </pfx10:PriceID>
+                        </xsl:if>
+                        <pfx10:BusinessUnit>
+                            <xsl:value-of select="pfx10:BusinessUnit"/>
+                        </pfx10:BusinessUnit>
+                        <pfx10:ItemId>
+                            <xsl:value-of select="pfx10:ItemId"/>
+                        </pfx10:ItemId>
+                        <pfx10:GpmId>
+                            <xsl:value-of select="pfx10:GpmId"/>
+                        </pfx10:GpmId>
+                        <pfx10:Multiple>
+                            <xsl:value-of select="pfx10:Multiple"/>
+                        </pfx10:Multiple>
+                        <pfx10:Price>
+                            <xsl:value-of select="pfx10:Price"/>
+                        </pfx10:Price>
+                        <pfx10:StartDate>
+                            <xsl:value-of select="pfx10:StartDate"/>
+                        </pfx10:StartDate>
+                        <xsl:if test="pfx10:EndDate">
+                            <pfx10:EndDate>
+                                <xsl:value-of select="pfx10:EndDate"/>
+                            </pfx10:EndDate>
+                        </xsl:if>
+                        <pfx10:PriceType>
+                            <xsl:value-of select="pfx10:PriceType"/>
+                        </pfx10:PriceType>
+                        <pfx10:PriceTypeAttribute>
+                            <xsl:value-of select="pfx10:PriceTypeAttribute"/>
+                        </pfx10:PriceTypeAttribute>
+                        <pfx10:SellableUom>
+                            <xsl:value-of select="pfx10:SellableUom"/>
+                        </pfx10:SellableUom>
+                        <pfx10:CurrencyCode>
+                            <xsl:value-of select="pfx10:CurrencyCode"/>
+                        </pfx10:CurrencyCode>
+                        <xsl:if test="pfx10:NewTagExpiration">
+                            <pfx10:NewTagExpiration>
+                                <xsl:value-of select="pfx10:NewTagExpiration"/>
+                            </pfx10:NewTagExpiration>
+                        </xsl:if>
+                        <pfx10:Action>
+                            <xsl:value-of select="pfx10:Action"/>
+                        </pfx10:Action>
+                        <pfx10:ItemTypeCode>
+                            <xsl:value-of select="pfx10:ItemTypeCode"/>
+                        </pfx10:ItemTypeCode>
+                        <pfx10:StoreName>
+                            <xsl:value-of select="pfx10:StoreName"/>
+                        </pfx10:StoreName>
+                        <pfx10:ScanCode>
+                            <xsl:value-of select="pfx10:ScanCode"/>
+                        </pfx10:ScanCode>
+                        <xsl:if test="pfx10:SubTeamNumber">
+                            <pfx10:SubTeamNumber>
+                                <xsl:value-of select="pfx10:SubTeamNumber"/>
+                            </pfx10:SubTeamNumber>
+                        </xsl:if>
+                    </pfx10:MammothPrice>
+                </xsl:for-each>
+            </pfx10:MammothPrices>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log No Prices Exist">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>446</pd:x>
+        <pd:y>43</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx13:AppLog>
+                <pfx13:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                </pfx13:AppId>
+                <pfx13:Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </pfx13:Level>
+                <pfx13:Logger>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx13:Logger>
+                <pfx13:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx13:LogDate>
+                <pfx13:Message>
+                    <xsl:value-of select="concat('{ &quot;TransactionID&quot;:&quot;', '&quot;', $IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID, '&quot;,',&#xA;&#x9;'&quot;Message&quot;:&quot;Filtered all prices out of IRMA update because they were all RWD prices&quot;}')"/>
+                </pfx13:Message>
+            </pfx13:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Number of RWD Prices to Remove">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>353</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx13:AppLog>
+                <pfx13:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                </pfx13:AppId>
+                <pfx13:Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </pfx13:Level>
+                <pfx13:Logger>
+                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
+                </pfx13:Logger>
+                <pfx13:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx13:LogDate>
+                <pfx13:Message>
+                    <xsl:value-of select="concat('{ &quot;TransactionID&quot;:&quot;', '&quot;', $IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID, '&quot;,',&#xA;&#x9;'&quot;Message&quot;:&quot;Filtering RWD prices from message.&quot;',&#x9;&#xA;&#x9;'&quot;NumberOfPrices&quot;:&quot;', count($Parse-Price-Message/pfx10:MammothPrices/pfx10:MammothPrice),&#xA;&#x9;'&quot;NumberOfRwdPrices&quot;:&quot;', count($Parse-Price-Message/pfx10:MammothPrices/pfx10:MammothPrice[pfx10:PriceType = 'RWD']), '&quot;}')"/>
+                </pfx13:Message>
+            </pfx13:AppLog>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
         <pd:from>Confirm</pd:from>
         <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Parse Price Message</pd:from>
-        <pd:to>Log Message Received</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -971,13 +1088,6 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:transition>
         <pd:from>Log Error</pd:from>
         <pd:to>Publish Error Message</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Log Message Received</pd:from>
-        <pd:to>Group</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -1034,22 +1144,61 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Assign</pd:from>
-        <pd:to>Log</pd:to>
+        <pd:from>Delete All Staging Price Records (All Failed)</pd:from>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Log</pd:from>
+        <pd:from>Assign</pd:from>
+        <pd:to>Log Message Received</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Message Received</pd:from>
         <pd:to>Parse Price Message</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Delete All Staging Price Records (All Failed)</pd:from>
-        <pd:to>End</pd:to>
+        <pd:from>Filter out RWD Prices</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:xpathDescription>Prices Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Filter out RWD Prices</pd:from>
+        <pd:to>Log No Prices Exist</pd:to>
+        <pd:xpathDescription>No Prices Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Filter-out-RWD-Prices/pfx10:MammothPrices/pfx10:MammothPrice) = 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log No Prices Exist</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Price Message</pd:from>
+        <pd:to>Log Number of RWD Prices to Remove</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Number of RWD Prices to Remove</pd:from>
+        <pd:to>Filter out RWD Prices</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
