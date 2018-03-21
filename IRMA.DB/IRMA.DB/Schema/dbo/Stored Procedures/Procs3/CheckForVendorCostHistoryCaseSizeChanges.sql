@@ -81,7 +81,7 @@ BEGIN
 	BEGIN
 
 		SELECT TOP 1 @Item_Key = ItemKey, @Store_No = StoreNo, @StoreItemVendorID = StoreItemVendorID
-		FROM #VendorCostHistoryData  WHERE Processed = 0
+		FROM #VendorCostHistoryData  WHERE Processed = 0 AND ISNULL(OldPackage_Desc1,-1) <> Package_Desc1 
 	
 		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, @Store_No, 'ItemLocaleAddOrUpdate', NULL, NULL
 
