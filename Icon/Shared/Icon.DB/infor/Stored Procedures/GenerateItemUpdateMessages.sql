@@ -226,11 +226,23 @@ BEGIN
 		itg.traitValue						AS SelfCheckoutItemTareGroup,
 		slf.traitValue						AS ShelfLife,
 		mog.traitValue						AS MadeWithOrganicGrapes,
-		CASE WHEN prb.traitValue = 'Yes' THEN 1 ELSE 0 END AS PrimeBeef,
-		CASE WHEN rfa.traitValue = 'Yes' THEN 1 ELSE 0 END AS RainforestAlliance,
+		CASE WHEN prb.traitValue = '1'    THEN 1  
+			 WHEN prb.traitValue = 'True' THEN 1  
+			 WHEN prb.traitValue = 'Yes'  THEN 1 
+			 ELSE 0 END						AS PrimeBeef,
+		CASE WHEN rfa.traitValue = '1'    THEN 1  
+			 WHEN rfa.traitValue = 'True' THEN 1  
+			 WHEN rfa.traitValue = 'Yes'  THEN 1 
+			 ELSE 0 END						AS RainforestAlliance,
 		rfd.traitValue						AS Refigerated,
-		CASE WHEN smf.traitValue = 'Yes' THEN 1 ELSE 0 END AS SmithsonianBirdFriendly,
-		CASE WHEN wic.traitValue = 'Yes' THEN 1 ELSE 0 END AS WicEligible
+		CASE WHEN smf.traitValue = '1'    THEN 1  
+			 WHEN smf.traitValue = 'True' THEN 1  
+			 WHEN smf.traitValue = 'Yes'  THEN 1 
+			 ELSE 0 END						AS SmithsonianBirdFriendly,
+		CASE WHEN wic.traitValue = '1'    THEN 1  
+			 WHEN wic.traitValue = 'True' THEN 1  
+			 WHEN wic.traitValue = 'Yes'  THEN 1 
+			 ELSE 0 END					AS WicEligible
 	from 
 		@updatedItemIDs					ui
 		JOIN Item						i			ON	ui.itemID					= i.itemID

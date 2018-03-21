@@ -498,14 +498,16 @@
           <Property Name="PercentageTareWeight" Type="nvarchar" MaxLength="255" />
           <Property Name="FairTradeCertified" Type="bit" />
           <Property Name="FlexibleText" Type="nvarchar" MaxLength="300" />
-          <Property Name="SelfCheckOutItemTareGroup" Type="nvarchar" MaxLength="60" />
+          <Property Name="SelfCheckoutItemTareGroup" Type="nvarchar" MaxLength="60" />
           <Property Name="ShelfLife" Type="int" />
-          <Property Name="MadeWithOrganicGrapes" Type="bit" />
+          <Property Name="MadeWithOrganicGrapes" Type="nvarchar" MaxLength="255" />
           <Property Name="PrimeBeef" Type="bit" />
           <Property Name="RainforestAlliance" Type="bit" />
-          <Property Name="Refrigerated" Type="bit" />
+          <Property Name="Refrigerated" Type="nvarchar" MaxLength="255" />
           <Property Name="SmithsonianBirdFriendly" Type="bit" />
           <Property Name="WicEligible" Type="bit" />
+          <Property Name="RegionAbbrev" Type="nvarchar" MaxLength="2" />
+          <Property Name="GeographicalState" Type="nvarchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="MessageQueueProductSelectionGroup">
           <Key>
@@ -898,7 +900,7 @@
           <Property Name="traitID" Type="int" Nullable="false" />
           <Property Name="itemID" Type="int" Nullable="false" />
           <Property Name="uomID" Type="nvarchar" MaxLength="5" />
-          <Property Name="traitValue" Type="nvarchar" MaxLength="255" />
+          <Property Name="traitValue" Type="nvarchar" MaxLength="300" />
           <Property Name="localeID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ItemType">
@@ -4092,7 +4094,7 @@
           <Property Name="traitID" Type="Int32" Nullable="false" />
           <Property Name="itemID" Type="Int32" Nullable="false" />
           <Property Name="uomID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="traitValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="traitValue" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="localeID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ItemTrait_FK1" FromRole="ItemTrait" ToRole="Item" />
           <NavigationProperty Name="Trait" Relationship="Icon.Framework.Model.Trait_ItemTrait_FK1" FromRole="ItemTrait" ToRole="Trait" />
@@ -5014,15 +5016,17 @@
           <Property Name="PercentageTareWeight" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FairTradeCertified" Type="Boolean" />
           <Property Name="FlexibleText" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="SelfCheckOutItemTareGroup" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="SelfCheckoutItemTareGroup" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="ShelfLife" Type="Int32" />
-          <Property Name="MadeWithOrganicGrapes" Type="Boolean" />
+          <Property Name="MadeWithOrganicGrapes" Type="String" FixedLength="false" MaxLength="255" Unicode="true" />
           <Property Name="PrimeBeef" Type="Boolean" />
           <Property Name="RainforestAlliance" Type="Boolean" />
-          <Property Name="Refrigerated" Type="Boolean" />
+          <Property Name="Refrigerated" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="SmithsonianBirdFriendly" Type="Boolean" />
           <Property Name="WicEligible" Type="Boolean" />
-        </EntityType>
+          <Property Name="RegionAbbrev" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="GeographicalState" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+         </EntityType>
         <Association Name="FK_MessageQueueProduct_MessageHistoryId">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -6926,6 +6930,8 @@
           <EntitySetMapping Name="MessageQueueProduct">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueProduct">
               <MappingFragment StoreEntitySet="MessageQueueProduct">
+                <ScalarProperty Name="GeographicalState" ColumnName="GeographicalState" />
+                <ScalarProperty Name="RegionAbbrev" ColumnName="RegionAbbrev" />
                 <ScalarProperty Name="WicEligible" ColumnName="WicEligible" />
                 <ScalarProperty Name="SmithsonianBirdFriendly" ColumnName="SmithsonianBirdFriendly" />
                 <ScalarProperty Name="Refrigerated" ColumnName="Refrigerated" />
@@ -6933,7 +6939,7 @@
                 <ScalarProperty Name="PrimeBeef" ColumnName="PrimeBeef" />
                 <ScalarProperty Name="MadeWithOrganicGrapes" ColumnName="MadeWithOrganicGrapes" />
                 <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
-                <ScalarProperty Name="SelfCheckOutItemTareGroup" ColumnName="SelfCheckOutItemTareGroup" />
+                <ScalarProperty Name="SelfCheckoutItemTareGroup" ColumnName="SelfCheckoutItemTareGroup" />
                 <ScalarProperty Name="FlexibleText" ColumnName="FlexibleText" />
                 <ScalarProperty Name="FairTradeCertified" ColumnName="FairTradeCertified" />
                 <ScalarProperty Name="PercentageTareWeight" ColumnName="PercentageTareWeight" />
