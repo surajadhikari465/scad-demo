@@ -13,6 +13,7 @@
     using System.Linq;
     using System.Threading;
     using System.Timers;
+
     public class ApiControllerService : IApiControllerService
     {
         private static ILogger<Program> logger = new NLogLogger<Program>();

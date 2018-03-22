@@ -1,6 +1,5 @@
 ﻿using Icon.ApiController.Common;
 using Icon.ApiController.DataAccess.Commands;
-
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;

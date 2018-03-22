@@ -120,7 +120,7 @@ namespace Icon.ApiController.DataAccess.Queries
                             {
                                 LocaleId = metro.localeID,
                                 LocaleName = metro.localeName,
-                                DescendantLocales = new List<LocaleLineageModel>()
+                                DescendantLocales = BuildStoreDescendantLocales(context, metro)
                             }
                         }
                     }
@@ -184,6 +184,29 @@ namespace Icon.ApiController.DataAccess.Queries
             };
 
             return localeLineage;
+        }
+
+        private List<LocaleLineageModel> BuildStoreDescendantLocales(IconContext context, Locale metro)
+        {
+            if (context.Locale.Any(l => l.parentLocaleID == metro.localeID))
+            {
+                return context.Locale.Where(l => l.parentLocaleID == metro.localeID)
+                        .Include(l => l.LocaleTrait.Select(lt => lt.Trait))
+                        .Include(l => l.LocaleAddress)
+                        .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.City))
+                        .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Territory))
+                        .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Country))
+                        .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.PostalCode))
+                        .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Timezone))
+                        .Include(l => l.LocaleAddress.Select(la => la.AddressUsage))
+                        .ToList()
+                        .Select(l => BuildStoreLocaleLineageModel(l))
+                        .ToList();
+            }
+            else
+            {
+                return new List<LocaleLineageModel>();
+            }
         }
 
         private LocaleLineageModel BuildStoreLocaleLineageModel(Locale store)
