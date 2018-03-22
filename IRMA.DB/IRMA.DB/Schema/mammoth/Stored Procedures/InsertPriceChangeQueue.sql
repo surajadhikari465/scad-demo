@@ -33,6 +33,9 @@ BEGIN
 			WHERE ItemChgTypeDesc = 'New'
 			);
 	DECLARE @GlobalPriceManagementIdfKey NVARCHAR(21) = 'GlobalPriceManagement'
+	DECLARE @MammothPriceEventTypeID INT = (SELECT EventTypeID
+											FROM mammoth.ItemChangeEventType(NOLOCK)
+											WHERE EventTypeName = 'Price')
 
 	---- If identifier is passed in insert event for that identifier only(happens usually when alternate identifier gets added and there wont be any PDB information)..
 	-- Otherwise insert events for all identifiers for the passed in PDB Header info (as part of price batching..identifier will be blank)
@@ -66,11 +69,7 @@ BEGIN
 
 			-- Sent status
 			IF @PriceBatchStatusID = 5
-				SET @EventTypeID = (
-						SELECT EventTypeID
-						FROM mammoth.ItemChangeEventType(NOLOCK)
-						WHERE EventTypeName = 'Price'
-						)
+				SET @EventTypeID = @MammothPriceEventTypeID
 
 			IF @PriceBatchStatusID = 5
 				OR (
@@ -78,6 +77,8 @@ BEGIN
 					AND @IsRollback = 1
 					)
 			BEGIN
+				--If rolling back a CancelAllSales PBD then insert a Price Mammoth Event with no Event Reference ID
+				--so that the sale price is sent down to Mammoth
 				INSERT INTO mammoth.PriceChangeQueue (
 					Item_Key
 					,Store_No
@@ -89,8 +90,12 @@ BEGIN
 				SELECT PBD.Item_Key
 					,PBD.Store_No
 					,PBD.Identifier
-					,CASE WHEN PBD.CancelAllSales = 1 THEN @CancelAllSalesEventTypeID ELSE @EventTypeID END AS EventTypeID
-					,PBD.PriceBatchDetailID
+					,CASE 
+						WHEN PBD.CancelAllSales = 1 AND @PriceBatchStatusID = 2 AND @IsRollback = 1 THEN @MammothPriceEventTypeID 
+						WHEN PBD.CancelAllSales = 1 THEN @CancelAllSalesEventTypeID
+						ELSE @EventTypeID 
+					 END AS EventTypeID
+					,CASE WHEN PBD.CancelAllSales = 1 AND @PriceBatchStatusID = 2 AND @IsRollback = 1 THEN NULL ELSE PBD.PriceBatchDetailID END 
 					,GETDATE() AS InsertDate
 				FROM PriceBatchDetail PBD(NOLOCK)
 				INNER JOIN PriceBatchHeader PBH(NOLOCK) ON PBD.PriceBatchHeaderID = PBH.PriceBatchHeaderID
