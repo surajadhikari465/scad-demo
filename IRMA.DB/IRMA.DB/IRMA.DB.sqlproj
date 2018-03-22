@@ -3298,6 +3298,8 @@
     <Build Include="Schema\dbo\Tables\Tables1\SupportRestoreDeletedItemsItemKeys.sql" />
     <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
     <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.rollback.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\CheckForVendorCostHistoryCaseSizeChanges.sql" />
+    <None Include="SQL Agent Job\ItemCatalog - VendorCostHistory Case Size Changes.sql" />
     <None Include="Scripts\PostDeploy\PBI25591-Add CancelAllSales Event to ItemChangeEventType.rollback.sql" />
     <None Include="Scripts\PostDeploy\PBI25591-Add CancelAllSales Event to ItemChangeEventType .sql" />
   </ItemGroup>
