@@ -221,10 +221,10 @@ BEGIN
 				END
 		END									AS RegionAbbrev,
 		LCL_TERR.territoryCode 				AS GeographicalState,
-		ftc.traitValue						AS FairTradeCertified,		
-		fxt.traitValue						AS FlexibleText,
 		itg.traitValue						AS SelfCheckoutItemTareGroup,
+		fxt.traitValue						AS FlexibleText,
 		slf.traitValue						AS ShelfLife,
+		ftc.traitValue						AS FairTradeCertified,		
 		mog.traitValue						AS MadeWithOrganicGrapes,
 		CASE WHEN prb.traitValue = '1'    THEN 1  
 			 WHEN prb.traitValue = 'True' THEN 1  
