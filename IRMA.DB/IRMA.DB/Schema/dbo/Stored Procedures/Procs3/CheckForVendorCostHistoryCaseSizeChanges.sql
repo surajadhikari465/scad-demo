@@ -33,9 +33,9 @@ BEGIN
 	  WHERE VendorCostHistoryID IN( SELECT MAX(VendorCostHistoryID) AS VendorCostHistoryID
 									FROM VendorCostHistory vch
 									JOIN StoreItemVendor siv ON vch.StoreItemVendorID = siv.StoreItemVendorID
-									WHERE StartDate  = CAST(GETDATE() as DATE)
-										  OR (StartDate < CAST(GETDATE() as DATE) 
-											  AND InsertDate = CAST((GETDATE() - 1) as DATE)
+									WHERE StartDate  = CONVERT (date, GETDATE())
+										  OR (StartDate < CONVERT (date, GETDATE())
+											  AND CONVERT(date,InsertDate) = CONVERT(date, GETDATE() - 1)
 											  )
 										  AND siv.DeleteDate IS NULL
 										  AND siv.PrimaryVendor = 1
@@ -52,7 +52,7 @@ BEGIN
 											FROM VendorCostHistory vch
 											JOIN #VendorCostHistoryData vchmd ON vch.StoreItemVendorID = vchmd.StoreItemVendorID 
 											WHERE vch.VendorCostHistoryID < vchmd.VendorCostHistoryID
-											       AND StartDate <= CAST((GETDATE() - 1) as DATE)
+											       AND StartDate <= CONVERT(date, GETDATE() - 1)
 											GROUP BY vch.StoreItemVendorID
 										   )
 	-- Join #VendorCostHistoryData and #tmpPreviousDayVCHData and populate old case size[OldPackage_Desc1]
