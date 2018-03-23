@@ -292,7 +292,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 BuildTrait(TraitCodes.SmithsonianBirdFriendly, TraitDescriptions.SmithsonianBirdFriendly, message.SmithsonianBirdFriendly),
                 BuildTrait(TraitCodes.WicEligible, TraitDescriptions.WicEligible, message.WicEligible),
                 BuildTrait(TraitCodes.ShelfLife, TraitDescriptions.ShelfLife, message.ShelfLife),
-                BuildTrait(TraitCodes.SelfCheckoutItemTareGroup, TraitDescriptions.SelfCheckoutItemTareGroup, message.SelfCheckOutItemTareGroup),
+                BuildTrait(TraitCodes.SelfCheckoutItemTareGroup, TraitDescriptions.SelfCheckoutItemTareGroup, message.SelfCheckoutItemTareGroup),
             };
 
             if (ShouldSendPhysicalCharacteristicTraits(message))

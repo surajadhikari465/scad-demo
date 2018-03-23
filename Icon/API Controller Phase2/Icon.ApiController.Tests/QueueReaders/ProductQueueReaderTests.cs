@@ -48,6 +48,46 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 mockUomMapper.Object);
         }
 
+        private TraitValueType AssertItemHasExpectedTrait(Contracts.EnterpriseItemAttributesType itemAttributes,
+            string expectedTraitCode, string expectedTraitDesc)
+        {
+            TraitType trait = itemAttributes.traits
+                .SingleOrDefault(it => it.code == expectedTraitCode);
+            Assert.IsNotNull(trait, $"product message should have had {expectedTraitDesc} trait");
+            Assert.AreEqual(expectedTraitCode, trait.code);
+            Assert.IsNotNull(trait.type);
+            Assert.AreEqual(expectedTraitDesc, trait.type.description);
+            Assert.IsNotNull(trait.type.value);
+            Assert.AreEqual(1, trait.type.value.Length);
+            TraitValueType traitValue = trait.type.value[0];
+            return traitValue;
+        }
+
+        private void AssertItemHasExpectedTrait(Contracts.EnterpriseItemAttributesType itemAttributes,
+            string expectedTraitCode, string expectedTraitDesc, string expectedTraitVal)
+        {
+            var traitValue = AssertItemHasExpectedTrait(itemAttributes, expectedTraitCode, expectedTraitDesc);
+            Assert.IsNotNull(traitValue.value);
+            Assert.AreEqual(expectedTraitVal, traitValue.value);
+        }
+
+
+        private void AssertItemHasExpectedTrait(Contracts.EnterpriseItemAttributesType itemAttributes,
+            string expectedTraitCode, string expectedTraitDesc, int expectedTraitVal)
+        {
+            var traitValue = AssertItemHasExpectedTrait(itemAttributes, expectedTraitCode, expectedTraitDesc);
+            Assert.IsNotNull(traitValue.value);
+            Assert.AreEqual(expectedTraitVal.ToString(), traitValue.value);
+        }
+
+        private void AssertItemHasExpectedTrait(Contracts.EnterpriseItemAttributesType itemAttributes,
+            string expectedTraitCode, string expectedTraitDesc, bool expectedTraitVal)
+        {
+            var traitValue = AssertItemHasExpectedTrait(itemAttributes, expectedTraitCode, expectedTraitDesc);
+            Assert.IsNotNull(traitValue.value);
+            Assert.AreEqual(expectedTraitVal ? "1" : "0", traitValue.value);
+        }
+
         [TestMethod]
         public void GroupProductMessages_InvalidArgument_ShouldThrowException()
         {
@@ -792,12 +832,15 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithGlobalPricingProgramTrait_ShouldBeParsed()
+        public void GetProductMiniBulk_ProductMessageWithTraitGPPvalueEverydayLowPrice_ShouldBeParsed()
         {
             // Given.
-            var fakeMessage = TestHelpers
-                .GetFakeMessageQueueProductWithNutritionalData(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
-            fakeMessage.GlobalPricingProgram = "GlobalPricingProgramTest";
+            const string expectedTraitCode = "GPP";
+            const string expectedTraitDesc = "Global Pricing Program";
+            const string expectedTraitVal = "Everyday Low Price (ZYZ)";
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.GlobalPricingProgram = expectedTraitVal;
 
             var fakeMessageQueueProducts = new List<MessageQueueProduct>
             {
@@ -808,25 +851,20 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
 
             // Then.
-            var itemTraits = (miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType).traits;
-            TraitType trait = itemTraits.SingleOrDefault(it => it.code == TraitCodes.GlobalPricingProgram);
-            Assert.IsNotNull(trait, "product message should have had GlobalPricingProgram trait");
-            Assert.AreEqual("GPP", trait.code);
-            Assert.IsNotNull(trait.type);
-            Assert.AreEqual("Global Pricing Program", trait.type.description);
-            Assert.IsNotNull(trait.type.value);
-            Assert.AreEqual(1, trait.type.value.Length);
-            TraitValueType traitValue = trait.type.value[0];
-            Assert.IsNotNull(traitValue.value);
-            Assert.AreEqual("GlobalPricingProgramTest", traitValue.value);
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithPercentageTareWeightTrait_ShouldBeParsed()
+        public void GetProductMiniBulk_ProductMessageWithTraitPTAvalue33_ShouldBeParsed()
         {
             // Given.
-            MessageQueueProduct fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
-            fakeMessage.PercentageTareWeight = "PercentageTareWeightTest";
+            const string expectedTraitCode = "PTA";
+            const string expectedTraitDesc = "Percentage Tare Weight";
+            const string expectedTraitVal = "33";
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.PercentageTareWeight = expectedTraitVal;
 
             var fakeMessageQueueProducts = new List<MessageQueueProduct>
             {
@@ -837,17 +875,272 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
 
             // Then.
-            var itemTraits = (miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType).traits;
-            TraitType trait = itemTraits.SingleOrDefault(it => it.code == TraitCodes.PercentageTareWeight);
-            Assert.IsNotNull(trait, "product message should have had PercentageTareWeight trait");
-            Assert.AreEqual("PTA", trait.code);
-            Assert.IsNotNull(trait.type);
-            Assert.AreEqual("Percentage Tare Weight", trait.type.description);
-            Assert.IsNotNull(trait.type.value);
-            Assert.AreEqual(1, trait.type.value.Length);
-            TraitValueType traitValue = trait.type.value[0];
-            Assert.IsNotNull(traitValue.value);
-            Assert.AreEqual("PercentageTareWeightTest", traitValue.value);
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitFTCvalueOn_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "FTC";
+            const string expectedTraitDesc = "Fair Trade Certified";
+            const bool expectedTraitVal = true;
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.FairTradeCertified = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitFXTvalue300Chars_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "FXT";
+            const string expectedTraitDesc = "Flexible Text";
+            const string expectedTraitVal = @" AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 1234567890 `-=[]\\;',./~!@#$%^&*()_+{}|:"" <>?������﷐wC2zBG56D 7gKANBKXgC 2aJpbtBAhl vs2CY3YyjN ufAdgzLHpL sA6Rgp0JhN Mnalk2Kttf lXpOFpsuY2 KHqPghnsA0 89tdyr1FaZ 3GE6YbaHif 1HVjGnLzIo DD3dRobPZd mzOL6eChRI 19J35fJIYQ qDnBBzV8AJ!!!";
+             MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.FlexibleText = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitMOGvalueAgencyName_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "MOG";
+            const string expectedTraitDesc = "Made with Organic Grapes";
+            const string expectedTraitVal = "Acme Grape Certification Agency™";
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.MadeWithOrganicGrapes = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitPRBvalueOn_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "PRB";
+            const string expectedTraitDesc = "Prime Beef";
+            const bool expectedTraitVal = true;
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.PrimeBeef = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitRFAvalueOn_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "RFA";
+            const string expectedTraitDesc = "Rainforest Alliance";
+            const bool expectedTraitVal = true;
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.RainforestAlliance = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitRFDvalueRefrigerated_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "RFD";
+            const string expectedTraitDesc = "Refrigerated";
+            const string expectedTraitVal = "Refrigerated";
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.Refrigerated = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitRFDvalueShelfStable_ShouldBeParsed2()
+        {
+            // Given.
+            const string expectedTraitCode = "RFD";
+            const string expectedTraitDesc = "Refrigerated";
+            const string expectedTraitVal = "SHELF STABLE";
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.Refrigerated = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitSMFvalueOn_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "SMF";
+            const string expectedTraitDesc = "Smithsonian Bird Friendly";
+            const bool expectedTraitVal = true;
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.SmithsonianBirdFriendly = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitWICvalueOn_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "WIC";
+            const string expectedTraitDesc = "WIC Eligible";
+            const bool expectedTraitVal = true;
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.WicEligible = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitSLFvalue100_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "SLF";
+            const string expectedTraitDesc = "Shelf Life";
+            const int expectedTraitVal = 100;
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.ShelfLife = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void GetProductMiniBulk_ProductMessageWithTraitITGvalue60chars_ShouldBeParsed()
+        {
+            // Given.
+            const string expectedTraitCode = "ITG";
+            const string expectedTraitDesc = "Self Checkout Item Tare Group";
+            const string expectedTraitVal = "CONTAINER group A�z 0123456789 `=<[\\;',./~@#$%^*(_+{|:\">?";
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.SelfCheckoutItemTareGroup = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
         }
     }
 }
