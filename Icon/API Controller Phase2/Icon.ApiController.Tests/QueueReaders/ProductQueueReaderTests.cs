@@ -885,7 +885,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             // Given.
             const string expectedTraitCode = "FTC";
             const string expectedTraitDesc = "Fair Trade Certified";
-            const bool expectedTraitVal = true;
+            const string expectedTraitVal = "Bob's Fair Trade Outfit";
             MessageQueueProduct fakeMessage = TestHelpers
                 .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
             fakeMessage.FairTradeCertified = expectedTraitVal;
