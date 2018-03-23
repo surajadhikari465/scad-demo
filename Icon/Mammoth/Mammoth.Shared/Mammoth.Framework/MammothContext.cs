@@ -29,5 +29,6 @@ namespace Mammoth.Framework
         public virtual DbSet<MessageStatus> MessageStatus { get; set; }
         public virtual DbSet<MessageType> MessageTypes { get; set; }
         public virtual DbSet<PriceResetMessageHistory> PriceResetMessageHistories { get; set; }
+        public virtual DbSet<RegionGpmStatus> RegionGpmStatuses { get; set; }
     }
 }
