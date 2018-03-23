@@ -2,6 +2,9 @@
 AS
 BEGIN
 	
+	DECLARE @StartDate Date =  CONVERT (date, GETDATE())
+	DECLARE @Yesterday Date =   CONVERT(date, GETDATE() - 1)
+
 	CREATE TABLE #VendorCostHistoryData
 	  ([VendorCostHistoryID] [int] NOT NULL,
        [StoreItemVendorID] [int] NOT NULL,
@@ -33,9 +36,9 @@ BEGIN
 	  WHERE VendorCostHistoryID IN( SELECT MAX(VendorCostHistoryID) AS VendorCostHistoryID
 									FROM VendorCostHistory vch
 									JOIN StoreItemVendor siv ON vch.StoreItemVendorID = siv.StoreItemVendorID
-									WHERE StartDate  = CONVERT (date, GETDATE())
-										  OR (StartDate < CONVERT (date, GETDATE())
-											  AND CONVERT(date,InsertDate) = CONVERT(date, GETDATE() - 1)
+									WHERE StartDate  = @StartDate
+										  OR (StartDate < @StartDate
+											  AND CONVERT(date,InsertDate) = @Yesterday
 											  )
 										  AND siv.DeleteDate IS NULL
 										  AND siv.PrimaryVendor = 1
@@ -52,7 +55,7 @@ BEGIN
 											FROM VendorCostHistory vch
 											JOIN #VendorCostHistoryData vchmd ON vch.StoreItemVendorID = vchmd.StoreItemVendorID 
 											WHERE vch.VendorCostHistoryID < vchmd.VendorCostHistoryID
-											       AND StartDate <= CONVERT(date, GETDATE() - 1)
+											       AND StartDate <= @Yesterday
 											GROUP BY vch.StoreItemVendorID
 										   )
 	-- Join #VendorCostHistoryData and #tmpPreviousDayVCHData and populate old case size[OldPackage_Desc1]
