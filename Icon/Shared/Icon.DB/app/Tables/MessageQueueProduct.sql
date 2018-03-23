@@ -74,7 +74,7 @@
 	SelfCheckoutItemTareGroup NVARCHAR(60) NULL,
 	FlexibleText			 NVARCHAR(300) NULL,
 	ShelfLife				 INT NULL,
-	FairTradeCertified		 BIT NULL,
+	FairTradeCertified		 NVARCHAR(255) NULL,
 	MadeWithOrganicGrapes	 NVARCHAR(255) NULL,
 	PrimeBeef				 BIT NULL,
 	RainforestAlliance		 BIT NULL,

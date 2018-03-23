@@ -496,18 +496,18 @@
           <Property Name="NutritionRequired" Type="nvarchar" MaxLength="255" />
           <Property Name="GlobalPricingProgram" Type="nvarchar" MaxLength="255" />
           <Property Name="PercentageTareWeight" Type="nvarchar" MaxLength="255" />
-          <Property Name="FairTradeCertified" Type="bit" />
-          <Property Name="FlexibleText" Type="nvarchar" MaxLength="300" />
+          <Property Name="RegionAbbrev" Type="nvarchar" MaxLength="2" />
+          <Property Name="GeographicalState" Type="nvarchar" MaxLength="5" />
           <Property Name="SelfCheckoutItemTareGroup" Type="nvarchar" MaxLength="60" />
+          <Property Name="FlexibleText" Type="nvarchar" MaxLength="300" />
           <Property Name="ShelfLife" Type="int" />
+          <Property Name="FairTradeCertified" Type="nvarchar" MaxLength="255" />
           <Property Name="MadeWithOrganicGrapes" Type="nvarchar" MaxLength="255" />
           <Property Name="PrimeBeef" Type="bit" />
           <Property Name="RainforestAlliance" Type="bit" />
           <Property Name="Refrigerated" Type="nvarchar" MaxLength="255" />
           <Property Name="SmithsonianBirdFriendly" Type="bit" />
           <Property Name="WicEligible" Type="bit" />
-          <Property Name="RegionAbbrev" Type="nvarchar" MaxLength="2" />
-          <Property Name="GeographicalState" Type="nvarchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="MessageQueueProductSelectionGroup">
           <Key>
@@ -5014,7 +5014,7 @@
           <Property Name="NutritionRequired" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="GlobalPricingProgram" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="PercentageTareWeight" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FairTradeCertified" Type="Boolean" />
+          <Property Name="FairTradeCertified" Type="String" />
           <Property Name="FlexibleText" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="SelfCheckoutItemTareGroup" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="ShelfLife" Type="Int32" />

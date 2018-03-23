@@ -89,7 +89,7 @@ namespace Icon.Framework
         public string NutritionRequired { get; set; }
         public string GlobalPricingProgram { get; set; }
         public string PercentageTareWeight { get; set; }
-        public Nullable<bool> FairTradeCertified { get; set; }
+        public string FairTradeCertified { get; set; }
         public string FlexibleText { get; set; }
         public Nullable<int> ShelfLife { get; set; }
         public Nullable<bool> PrimeBeef { get; set; }
@@ -101,7 +101,7 @@ namespace Icon.Framework
         public string SelfCheckoutItemTareGroup { get; set; }
         public string Refrigerated { get; set; }
         public string MadeWithOrganicGrapes { get; set; }
-    
+
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }
