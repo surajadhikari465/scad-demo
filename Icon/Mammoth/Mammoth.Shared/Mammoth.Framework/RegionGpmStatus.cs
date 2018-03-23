@@ -8,6 +8,7 @@
     [Table("dbo.RegionGpmStatus")]
     public partial class RegionGpmStatus
     {
+        [Key]
         [Required]
         [StringLength(2)]
         public string Region { get; set; }

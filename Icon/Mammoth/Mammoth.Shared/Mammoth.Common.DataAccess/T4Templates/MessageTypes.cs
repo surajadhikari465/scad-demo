@@ -14,5 +14,7 @@ namespace Mammoth.Common.DataAccess
         public const int ItemLocale = 1;
         public const int Price = 2;
         public const int PrimePsg = 3;
+        public const int Processbod = 4;
+        public const int Confirmbod = 5;
 	}
 }
