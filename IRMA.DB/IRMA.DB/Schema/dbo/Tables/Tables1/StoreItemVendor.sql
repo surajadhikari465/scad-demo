@@ -174,7 +174,7 @@ BEGIN
 			i.Item_Key, 
 			i.Store_No
 		FROM inserted i
-		JOIN deleted d on i.Item_Key = d.Item_Key AND i.Store_No = d.Store_No
+		JOIN deleted d on i.Item_Key = d.Item_Key AND i.Store_No = d.Store_No AND i.Vendor_ID = d.Vendor_ID
 		WHERE i.PrimaryVendor <> d.PrimaryVendor
 
 		IF EXISTS (SELECT TOP 1 1 FROM @mammothUpdates)
