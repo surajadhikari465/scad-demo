@@ -59,7 +59,7 @@
         <pd:resourceType>ae.process.group</pd:resourceType>
         <pd:x>321</pd:x>
         <pd:y>1</pd:y>
-        <pd:width>294</pd:width>
+        <pd:width>282</pd:width>
         <pd:height>278</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
@@ -91,8 +91,15 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send Expiring Tprs to Queue</pd:from>
+            <pd:from>JMS Topic Publisher</pd:from>
             <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>JMS Topic Publisher</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -100,13 +107,6 @@
         <pd:transition>
             <pd:from>Catch</pd:from>
             <pd:to>ErrorLogPublisher</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Map Data</pd:from>
-            <pd:to>Send Expiring Tprs to Queue</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -126,8 +126,8 @@
         <pd:activity name="Catch">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>368</pd:x>
-            <pd:y>200</pd:y>
+            <pd:x>382</pd:x>
+            <pd:y>196</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <catchAll>true</catchAll>
@@ -137,8 +137,8 @@
         <pd:activity name="ErrorLogPublisher">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>502</pd:x>
-            <pd:y>203</pd:y>
+            <pd:x>504</pd:x>
+            <pd:y>194</pd:y>
             <config>
                 <processName>/SharedResources/Processes/LogPublisher.process</processName>
                 <spawn>true</spawn>
@@ -176,10 +176,10 @@
                 </ns12:AppLog>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Send Expiring Tprs to Queue">
-            <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
-            <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-            <pd:x>501</pd:x>
+        <pd:activity name="JMS Topic Publisher">
+            <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
+            <pd:x>496</pd:x>
             <pd:y>77</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
@@ -187,14 +187,14 @@
                     <transacted>false</transacted>
                     <acknowledgeMode>1</acknowledgeMode>
                     <maxSessions>1</maxSessions>
-                    <destination>%%Destinations/MammothPsgQueue%%</destination>
+                    <destination>%%Destinations/PriceMammothTopic%%</destination>
                 </SessionAttributes>
                 <ConfigurableHeaders>
                     <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
                     <JMSExpiration>0</JMSExpiration>
                     <JMSPriority>4</JMSPriority>
                 </ConfigurableHeaders>
-                <ConnectionReference>/Connections/SB1R10.sharedjmscon</ConnectionReference>
+                <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
                 <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
                 <InDataxsdString ref="pfx:MammothPrice"/>
             </config>
@@ -213,6 +213,9 @@
                         <Source>
                             <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Source"/>
                         </Source>
+                        <nonReceivingSysName>
+                            <xsl:value-of select="&quot;MammothR10&quot;"/>
+                        </nonReceivingSysName>
                         <RegionCode>
                             <xsl:value-of select="$Start/Input/RegionCode"/>
                         </RegionCode>

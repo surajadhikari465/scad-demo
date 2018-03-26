@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd">
+<pd:ProcessDefinition xmlns:ns2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <pd:name>Processes/MainReceiver.process</pd:name>
     <pd:startName>Inactive Tpr Price Starter Queue Receiver</pd:startName>
@@ -9,8 +9,8 @@
     <pd:starter name="Inactive Tpr Price Starter Queue Receiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>84</pd:x>
-        <pd:y>90</pd:y>
+        <pd:x>81</pd:x>
+        <pd:y>64</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -29,16 +29,16 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>729</pd:endX>
-    <pd:endY>193</pd:endY>
+    <pd:endX>712</pd:endX>
+    <pd:endY>143</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1515621798527</pd:targetNamespace>
     <pd:activity name="Parse XML">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>197</pd:x>
-        <pd:y>76</pd:y>
+        <pd:x>194</pd:x>
+        <pd:y>50</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -54,8 +54,8 @@
     <pd:activity name="Call Inactive Tpr Service">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>521</pd:x>
-        <pd:y>86</pd:y>
+        <pd:x>518</pd:x>
+        <pd:y>60</pd:y>
         <config>
             <processName>/Processes/RunInactiveTprService.process</processName>
         </config>
@@ -66,8 +66,8 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>377</pd:x>
-        <pd:y>79</pd:y>
+        <pd:x>374</pd:x>
+        <pd:y>53</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -95,8 +95,8 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>367</pd:x>
-        <pd:y>193</pd:y>
+        <pd:x>369</pd:x>
+        <pd:y>144</pd:y>
         <config>
             <ConfirmEvent>Inactive Tpr Price Starter Queue Receiver</ConfirmEvent>
         </config>
@@ -105,8 +105,8 @@
     <pd:activity name="LogNoExecution">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>511</pd:x>
-        <pd:y>194</pd:y>
+        <pd:x>519</pd:x>
+        <pd:y>143</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -135,7 +135,7 @@
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
         <pd:x>678</pd:x>
-        <pd:y>85</pd:y>
+        <pd:y>52</pd:y>
         <config>
             <ConfirmEvent>Inactive Tpr Price Starter Queue Receiver</ConfirmEvent>
         </config>
@@ -144,8 +144,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>78</pd:x>
-        <pd:y>301</pd:y>
+        <pd:x>64</pd:x>
+        <pd:y>249</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -155,8 +155,8 @@
     <pd:activity name="Log Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>230</pd:x>
-        <pd:y>300</pd:y>
+        <pd:x>216</pd:x>
+        <pd:y>248</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -199,8 +199,8 @@
     <pd:activity name="Confirm-Error">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>512</pd:x>
-        <pd:y>309</pd:y>
+        <pd:x>518</pd:x>
+        <pd:y>248</pd:y>
         <config>
             <ConfirmEvent>Inactive Tpr Price Starter Queue Receiver</ConfirmEvent>
         </config>
@@ -209,8 +209,8 @@
     <pd:activity name="Publish Error Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>403</pd:x>
-        <pd:y>313</pd:y>
+        <pd:x>384</pd:x>
+        <pd:y>257</pd:y>
         <config>
             <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
             <spawn>true</spawn>
@@ -270,8 +270,8 @@
     <pd:activity name="Update-Job-Status-1">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>659</pd:x>
-        <pd:y>303</pd:y>
+        <pd:x>642</pd:x>
+        <pd:y>248</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>

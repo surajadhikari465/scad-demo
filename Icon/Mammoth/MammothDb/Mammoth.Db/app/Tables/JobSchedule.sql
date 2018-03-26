@@ -11,6 +11,7 @@
 	Enabled bit NOT NULL,
 	Status varchar(10) NULL,  
 	XmlObject nvarchar(max) NULL,
+	RunAdHoc bit NULL,
     CONSTRAINT [JobSchedule_PK] PRIMARY KEY CLUSTERED (JobScheduleId ASC) WITH (FILLFACTOR = 80)
 )
 

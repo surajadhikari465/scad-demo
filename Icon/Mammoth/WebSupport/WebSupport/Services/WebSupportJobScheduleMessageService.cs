@@ -1,14 +1,12 @@
 ﻿using Esb.Core.EsbServices;
 using Esb.Core.Serializer;
 using Icon.Esb;
-using Icon.Esb.Factory;
 using Icon.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using TIBCO.EMS;
-using WebSupport.DataAccess.Models;
 using WebSupport.Models;
 using Contracts = Icon.Esb.Schemas.Mammoth.ContractTypes;
 
@@ -95,7 +93,7 @@ namespace WebSupport.Services
 
             Session session = connectionFactory.CreateConnection(Settings.JmsUsername, Settings.JmsPassword)
                 .CreateSession(false, Settings.SessionMode);
-            Destination destination = session.CreateQueue(Settings.QueueName);
+            Destination destination = session.CreateQueue(request.DestinationQueueName);
             MessageProducer producer = session.CreateProducer(destination);
 
             TextMessage textMessage = session.CreateTextMessage(message);

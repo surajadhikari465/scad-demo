@@ -22,7 +22,8 @@ namespace PrimeAffinityController.Commands
                     SET LastScheduledDateTimeUtc = NextScheduledDateTimeUtc,
                         NextScheduledDateTimeUtc = @NextScheduledDateTimeUtc,
                         LastRunEndDateTimeUtc = @LastRunEndDateTimeUtc,
-                        Status = @Status
+                        Status = @Status,
+                        RunAdHoc = 0
                     WHERE JobScheduleId = @JobScheduleId",
                 new
                 {

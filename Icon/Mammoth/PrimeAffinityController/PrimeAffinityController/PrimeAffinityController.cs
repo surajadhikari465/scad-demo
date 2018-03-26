@@ -222,6 +222,10 @@ namespace PrimeAffinityController
 
                 return false;
             }
+            else if (jobSchedule.RunAdHoc.HasValue && jobSchedule.RunAdHoc.Value)
+            {
+                return true;
+            }
             else if (!jobSchedule.Status.Equals(ApplicationConstants.JobScheduleStatuses.Ready, StringComparison.InvariantCultureIgnoreCase))
             {
                 logger.Info(

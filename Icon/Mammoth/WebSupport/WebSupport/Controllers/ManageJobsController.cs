@@ -23,6 +23,7 @@ namespace WebSupport.Controllers
         private ICommandHandler<UpdateJobScheduleCommand> updateJobScheduleCommandHandler;
         private ICommandHandler<DeleteJobScheduleCommand> deleteJobScheduleCommandHandler;
         private ICommandHandler<CreateJobScheduleCommand> createJobScheduleCommandHandler;
+        private ICommandHandler<StartJobAddHocCommand> startJobAdHocCommandHandler;
         private IEsbService<JobScheduleModel> startJobService;
         private ILogger logger;
 
@@ -32,6 +33,7 @@ namespace WebSupport.Controllers
             ICommandHandler<UpdateJobScheduleCommand> updateJobScheduleCommandHandler,
             ICommandHandler<DeleteJobScheduleCommand> deleteJobScheduleCommandHandler,
             ICommandHandler<CreateJobScheduleCommand> createJobScheduleCommandHandler,
+            ICommandHandler<StartJobAddHocCommand> startJobAdHocCommandHandler,
             IEsbService<JobScheduleModel> startJobService,
             ILogger logger)
         {
@@ -40,6 +42,7 @@ namespace WebSupport.Controllers
             this.updateJobScheduleCommandHandler = updateJobScheduleCommandHandler;
             this.deleteJobScheduleCommandHandler = deleteJobScheduleCommandHandler;
             this.createJobScheduleCommandHandler = createJobScheduleCommandHandler;
+            this.startJobAdHocCommandHandler = startJobAdHocCommandHandler;
             this.startJobService = startJobService;
             this.logger = logger;
         }
@@ -152,33 +155,58 @@ namespace WebSupport.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = startJobService.Send(model);
-                if (response.Status == EsbServiceResponseStatus.Failed)
+                if(string.IsNullOrWhiteSpace(model.DestinationQueueName))
                 {
-                    ViewBag.Error = response.ErrorDetails;
-                    LogJobScheduleChange("Start", jobSchedule, response.ErrorDetails);
+                    StartJobAdHoc(jobSchedule, model);
                 }
                 else
                 {
-                    LogJobScheduleChange("Start", jobSchedule);
-
-                    //update next scheduled run datetime if the job scheduler gets stuck, and an adhoc run is kicked off
-                    if (DateTime.UtcNow > jobSchedule.NextScheduledDateTimeUtc)
-                    {
-                        var secondsInDifference = Math.Ceiling((DateTime.UtcNow - jobSchedule.NextScheduledDateTimeUtc).TotalSeconds / jobSchedule.IntervalInSeconds) * jobSchedule.IntervalInSeconds;
-                        jobSchedule.NextScheduledDateTimeUtc = jobSchedule.NextScheduledDateTimeUtc.AddSeconds(secondsInDifference);
-
-                        updateJobScheduleCommandHandler.Execute(new UpdateJobScheduleCommand
-                        {
-                            JobSchedule = jobSchedule
-                        });
-
-                        LogJobScheduleChange("Update", jobSchedule);
-                    }
+                    StartJobFromDestinationQueue(jobSchedule, model);
                 }
             }
 
             return RedirectToAction("Index");
+        }
+
+        private void StartJobAdHoc(JobSchedule jobSchedule, JobScheduleModel model)
+        {
+            try
+            {
+                startJobAdHocCommandHandler.Execute(new StartJobAddHocCommand { JobSchedule = jobSchedule });
+                LogJobScheduleChange("Start", jobSchedule);
+            }
+            catch(Exception ex)
+            {
+                LogJobScheduleChange("Start", jobSchedule, ex.ToString());
+            }
+        }
+
+        private void StartJobFromDestinationQueue(JobSchedule jobSchedule, JobScheduleModel model)
+        {
+            var response = startJobService.Send(model);
+            if (response.Status == EsbServiceResponseStatus.Failed)
+            {
+                ViewBag.Error = response.ErrorDetails;
+                LogJobScheduleChange("Start", jobSchedule, response.ErrorDetails);
+            }
+            else
+            {
+                LogJobScheduleChange("Start", jobSchedule);
+
+                //update next scheduled run datetime if the job scheduler gets stuck, and an adhoc run is kicked off
+                if (DateTime.UtcNow > jobSchedule.NextScheduledDateTimeUtc)
+                {
+                    var secondsInDifference = Math.Ceiling((DateTime.UtcNow - jobSchedule.NextScheduledDateTimeUtc).TotalSeconds / jobSchedule.IntervalInSeconds) * jobSchedule.IntervalInSeconds;
+                    jobSchedule.NextScheduledDateTimeUtc = jobSchedule.NextScheduledDateTimeUtc.AddSeconds(secondsInDifference);
+
+                    updateJobScheduleCommandHandler.Execute(new UpdateJobScheduleCommand
+                    {
+                        JobSchedule = jobSchedule
+                    });
+
+                    LogJobScheduleChange("Update", jobSchedule);
+                }
+            }
         }
 
         private void LogJobScheduleChange(string action, JobSchedule jobSchedule, string error = null)
