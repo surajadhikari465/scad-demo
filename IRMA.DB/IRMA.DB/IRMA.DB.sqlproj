@@ -3291,8 +3291,6 @@
     <None Include="Scripts\PostDeploy\Archive\PBI25134 - PostDeploy Schema PopData - Update And Repopulate Date Table.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI25134 - PostDeploy Schema PopData - Update And Repopulate Date Table.rollback.sql" />
     <None Include="Scripts\PostDeploy\VersionUpdates.sql" />
-    <None Include="Scripts\PostDeploy\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.rollback.sql" />
-    <None Include="Scripts\PostDeploy\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SupportRestoreDeletedItems.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SupportRestoreDeletedItemsValidate.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\SupportRestoreDeletedItemsItemKeys.sql" />
@@ -3302,6 +3300,8 @@
     <None Include="SQL Agent Job\ItemCatalog - VendorCostHistory Case Size Changes.sql" />
     <None Include="Scripts\PostDeploy\PBI25591-Add CancelAllSales Event to ItemChangeEventType.rollback.sql" />
     <None Include="Scripts\PostDeploy\PBI25591-Add CancelAllSales Event to ItemChangeEventType .sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.rollback.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

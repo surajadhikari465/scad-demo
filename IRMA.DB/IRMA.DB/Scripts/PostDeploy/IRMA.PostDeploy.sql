@@ -14,8 +14,8 @@ Post-Deployment Script Template
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 
-:r "PBI22994- PostDeploy SCHEMA PopData - ADD Shrink SubTypes TO Shrink Sub TYPE TABLE.SQL" -- 2018.02.09
 :r "PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.SQL" -- 2018.03.06
 :r "PBI25591-Add CancelAllSales Event to ItemChangeEventType.SQL" -- 2018.03.22
+
 -- *This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
