@@ -747,9 +747,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\Delete365StoresFromLocaleTablesOtherThanTSRegion.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateRetentionPolicyForStagingTables.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\TruncateRetentionPolicyTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddProcessBODConfirmBODMessageType.sql" />
     <Build Include="esb\Tables\MessageArchiveDetailPrimePsg.sql" />
-    <None Include="Scripts\PostDeploymentScripts\UpdateActivePriceSentArchiveInRetentionPolicy.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\UpdateDefaulltScanCodeToNotNull.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddScaleItemAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddVendorRelatedCodesToAttributesTable.sql" />
@@ -757,13 +755,18 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AddPercentageTareWeightToAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddExpiringTprServiceToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddAltRetailSizeUomCodesToAttributesTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddRegionsToRegionGpmStatusTable.sql" />
     <Build Include="dbo\Tables\RegionGpmStatus.sql" />
     <Build Include="dbo\User Defined Types\ItemIdBusinessUnitIdType.sql" />
     <Build Include="dbo\User Defined Types\IntListType.sql" />
     <Build Include="stage\Stored Procedures\MassInsertToItemStoreKeysEPlum.sql" />
     <Build Include="stage\Stored Procedures\MassInsertToItemStoreKeysEsl.sql" />
     <None Include="Scripts\PostDeploymentScripts\AlterItemAttributes_ExtAttributeValueColumnSize.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddMessageArchiveDetailPrimePsgToRetentionPolicy.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddPrimeAffinityControllerToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddPrimePsgMessageType.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddProcessBODConfirmBODMessageType.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddRegionsToRegionGpmStatusTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\UpdateActivePriceSentArchiveInRetentionPolicy.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -776,9 +779,6 @@
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddPrimeAffinityControllerToAppTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddPrimePsgMessageType.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddMessageArchiveDetailPrimePsgToRetentionPolicy.sql" />
     <None Include="Scripts\PreDeploymentScripts\TruncateItemLocaleStagingTable.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -792,7 +792,7 @@
     <PostDeploy Include="Scripts\PostDeploymentScripts\PostDeploymentScript.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PreDeploy Include="Scripts\PreDeploymentScripts\Script.PreDeployment1.sql" />
+    <PreDeploy Include="Scripts\PreDeploymentScripts\Script.PreDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MammothStaging.Db\MammothStaging.Db.sqlproj">

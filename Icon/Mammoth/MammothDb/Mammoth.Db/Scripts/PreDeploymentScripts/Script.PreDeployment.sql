@@ -12,4 +12,4 @@
 
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
-:r .\TruncateItemLocaleStagingTable.sql -- 2018.02.27
+-- EXAMPLE :r .\TruncateItemLocaleStagingTable.sql -- 2018.02.27
