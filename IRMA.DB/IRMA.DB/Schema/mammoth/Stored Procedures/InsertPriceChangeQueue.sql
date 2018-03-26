@@ -16,9 +16,6 @@ BEGIN
 	DECLARE @EventTypeID INT = 0
 	DECLARE @IsRollback BIT = 0
 	DECLARE @PriceConfigValue VARCHAR(350);
-	DECLARE @CancelAllSalesEventTypeID INT;
-
-	SET @CancelAllSalesEventTypeID = (SELECT EventTypeId FROM [mammoth].[ItemChangeEventType] WHERE EventTypeName = 'CancelAllSales')								 
 
 	SET @PriceConfigValue = (
 			SELECT dbo.fn_GetAppConfigValue('MammothPriceChanges', 'IRMA Client')
@@ -92,7 +89,6 @@ BEGIN
 					,PBD.Identifier
 					,CASE 
 						WHEN PBD.CancelAllSales = 1 AND @PriceBatchStatusID = 2 AND @IsRollback = 1 THEN @MammothPriceEventTypeID 
-						WHEN PBD.CancelAllSales = 1 THEN @CancelAllSalesEventTypeID
 						ELSE @EventTypeID 
 					 END AS EventTypeID
 					,CASE WHEN PBD.CancelAllSales = 1 AND @PriceBatchStatusID = 2 AND @IsRollback = 1 THEN NULL ELSE PBD.PriceBatchDetailID END 
