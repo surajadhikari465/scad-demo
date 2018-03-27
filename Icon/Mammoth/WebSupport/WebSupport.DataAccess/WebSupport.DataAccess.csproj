@@ -107,6 +107,8 @@
     <Compile Include="Commands\CreateEventsForRegionCommandHandler.cs" />
     <Compile Include="Commands\CreateJobScheduleCommand.cs" />
     <Compile Include="Commands\CreateJobScheduleCommandHandler.cs" />
+    <Compile Include="Commands\DeleteGpmStatusCommandHandler.cs" />
+    <Compile Include="Commands\DeleteGpmStatusCommandParameters.cs" />
     <Compile Include="Commands\DeleteJobScheduleCommand.cs" />
     <Compile Include="Commands\DeleteJobScheduleCommandHandler.cs" />
     <Compile Include="Commands\MassInsertToEPlumQueueCommand.cs" />
@@ -117,8 +119,12 @@
     <Compile Include="Commands\SaveSentMessageCommandHandler.cs" />
     <Compile Include="Commands\StartJobAddHocCommand.cs" />
     <Compile Include="Commands\StartJobAddHocCommandHandler.cs" />
+    <Compile Include="Commands\UpdateGpmStatusTableCommandHandler.cs" />
+    <Compile Include="Commands\UpdateGpmStatusTableCommandParameters.cs" />
     <Compile Include="Commands\UpdateJobScheduleCommand.cs" />
     <Compile Include="Commands\UpdateJobScheduleCommandHandler.cs" />
+    <Compile Include="Commands\UpsertGpmStatusCommandHandler.cs" />
+    <Compile Include="Commands\UpsertGpmStatusCommandParameters.cs" />
     <Compile Include="DataConstants.cs" />
     <Compile Include="IIrmaContextFactory.cs" />
     <Compile Include="IrmaContextFactory.cs" />
@@ -137,6 +143,8 @@
     <Compile Include="Queries\GetExistingScanCodesQuery.cs" />
     <Compile Include="Queries\GetGpmPricesParameters.cs" />
     <Compile Include="Queries\GetGpmPricesQuery.cs" />
+    <Compile Include="Queries\GetGpmStatusParameters.cs" />
+    <Compile Include="Queries\GetGpmStatusQuery.cs" />
     <Compile Include="Queries\GetJobScheduleParameters.cs" />
     <Compile Include="Queries\GetJobScheduleQuery.cs" />
     <Compile Include="Queries\GetJobSchedulesParameters.cs" />

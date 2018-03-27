@@ -1,0 +1,171 @@
+﻿@model IEnumerable<WebSupport.ViewModels.RegionGpmStatusViewModel>
+
+@{
+    bool canEdit = ViewBag.CanEdit ?? false;
+    string disableToggle = canEdit ? String.Empty : " disabled=\"disabled\" ";
+    int rowIndex = 0;
+}
+
+<style>
+</style>
+
+<div class="row">
+    <div class="col-xs=offset=1 col-xs-10 col-sm-offset-3 col-sm-6">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <table id="gpmStatusTable" class="table table-condensed">
+                <caption>
+
+                    <h3 class="text-center">Region GPM Status</h3>
+                </caption>
+                <thead>
+                    <tr>
+
+                        <th></th>
+                        <th>@Html.DisplayNameFor(model => model.Region)</th>
+                        <th>@Html.DisplayNameFor(model => model.IsGpmEnabled)</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(regionalGpmStatus, arrayIndex) in regionalGpmStatuses">
+                        <td></td>
+                        <td>
+                            <input type="text"
+                                   class="text-box single-line"
+                                   placeholder="--"
+                                   v-model.trim="regionalGpmStatus.region"
+                                   v-bind:name="regionalGpmStatus.regionControlName"
+                                   v-focus
+                                   @@blur="regionalGpmStatus.undergoingEdit=false"
+                                   @@keyup.enter.prevent="regionalGpmStatus.undergoingEdit=false"
+                                   maxlength="2"
+                                   style="width: 60px;"
+                                   @disableToggle>
+                        </td>
+                        <td>
+                            <label class="btn btn-default btn-sm">
+                                <input type="checkbox"
+                                       v-model="regionalGpmStatus.isGpmEnabled"
+                                       v-bind:name="regionalGpmStatus.isEnabledControlName"
+                                       data-toggle="button"
+                                       :value="regionalGpmStatus.isGpmEnabled"
+                                       @disableToggle>
+                                {{regionalGpmStatus.isEnabledText(regionalGpmStatus.isGpmEnabled)}}
+                            </label>
+                        </td>
+                        <td>
+                            @if (canEdit)
+                            {
+                                <button type="button" class="btn btn-danger btn-sm" @@click="deleteRow(arrayIndex)">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            }
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    @if (canEdit)
+                    {
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-info btn-sm" @@click="addRow()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <a href="@Url.Action("Index")" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-cloud-download"></span> Refresh
+                            </a>
+                        </td>
+                        <td colspan="2">
+                            @if (canEdit)
+                            {
+                                <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">
+                                    <span class="glyphicon glyphicon-cloud-upload"></span> Save
+                                </button>
+                            }
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/vue.min.js"></script>
+
+    <script type="text/javascript">
+        const boolToOnOrOff = function (val) {
+            return val ? "On" : "Off";
+        };
+
+        const vueData = new Vue({
+            el: "#gpmStatusTable",
+            data: {
+                regionalGpmStatuses: [
+                    @foreach (var regionGpmStatus in Model)
+                    {
+                        <text>
+                    {
+                        region: "@regionGpmStatus.Region",
+                        isGpmEnabled: @(regionGpmStatus.IsGpmEnabled ? "true" : "false"),
+                        regionControlName: "[@rowIndex].Region",
+                        isEnabledControlName: "[@rowIndex].IsGpmEnabled",
+                        undergoingEdit: false,
+                        isEnabledText: boolToOnOrOff
+                    },
+                        </text>
+                        rowIndex++;
+                    }
+                ]
+            },
+            directives: {
+                focus: {
+                    inserted(el) {
+                        el.focus()
+                    }
+                }
+            },
+            methods: {
+                addRow: function () {
+                    this.regionalGpmStatuses.push({
+                        region: "",
+                        isGpmEnabled: false,
+                        regionControlName: "[" + this.regionalGpmStatuses.length + "].Region",
+                        isEnabledControlName: "[" + this.regionalGpmStatuses.length + "].IsGpmEnabled",
+                        undergoingEdit: true,
+                        isEnabledText: boolToOnOrOff
+                    });
+                },
+                deleteRow: function (arrayIndex) {
+                    // remove the element from the vue data array
+                    this.regionalGpmStatuses.splice(arrayIndex, 1);
+
+                    // iterate the data array and rename the controls so MVC binding will work
+                    var len = this.regionalGpmStatuses.length;
+                    for (var i = 0; i < len; i++) {
+                        this.regionalGpmStatuses[i].regionControlName = "[" + i + "].Region";
+                        this.regionalGpmStatuses[i].isEnabledControlName = "[" + i + "].IsGpmEnabled";
+                    }
+                }
+            },
+        });
+
+    </script>
+}
