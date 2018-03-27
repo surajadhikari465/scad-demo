@@ -34,3 +34,7 @@ GRANT EXECUTE
     ON OBJECT::[dbo].[fn_GetAppConfigValue] TO [MammothRole]
     AS [dbo];
 
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[fn_GetAppConfigValue] TO [IRMAPDXExtractRole]
+    AS [dbo];

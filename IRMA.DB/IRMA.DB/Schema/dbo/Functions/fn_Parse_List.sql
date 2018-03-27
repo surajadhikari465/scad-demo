@@ -78,3 +78,8 @@ GRANT SELECT
     ON OBJECT::[dbo].[fn_Parse_List] TO [MammothRole]
     AS [dbo];
 
+GO
+
+GRANT SELECT
+    ON OBJECT::[dbo].[fn_Parse_List] TO [IRMAPDXExtractRole]
+    AS [dbo];

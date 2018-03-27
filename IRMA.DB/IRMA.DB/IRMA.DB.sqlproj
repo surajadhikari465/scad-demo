@@ -3296,6 +3296,15 @@
     <Build Include="Schema\dbo\Tables\Tables1\SupportRestoreDeletedItemsItemKeys.sql" />
     <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
     <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.rollback.sql" />
+    <None Include="Scripts\PostDeploy\PBI26106 - PostDeploy PopData - AddAppConfigForStoreBUsForAMZExtract.rollback.sql" />
+    <None Include="Scripts\PostDeploy\PBI26106 - PostDeploy PopData - AddAppConfigForStoreBUsForAMZExtract.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_DeletedOrdersFile_ByStore.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_InventoryDataSpoilageFile_ByStore.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_PurchaseOrdersFile_ByStore.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_ReceiptOrdersFile_ByStore.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_TransferOrdersFile_ByStore.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_ItemSubscriptionFile_ByStore.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_ItemVendorLaneFile_ByStore.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\CheckForVendorCostHistoryCaseSizeChanges.sql" />
     <None Include="SQL Agent Job\ItemCatalog - VendorCostHistory Case Size Changes.sql" />
     <None Include="Scripts\PostDeploy\PBI25591-Add CancelAllSales Event to ItemChangeEventType.rollback.sql" />
