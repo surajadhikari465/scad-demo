@@ -8,13 +8,13 @@
   DTS:DelayValidation="True"
   DTS:DTSID="{410EA082-10FB-4A89-A911-5BD042CC5E8D}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="14.0.0600.250"
+  DTS:LastModifiedProductVersion="14.0.3006.16"
   DTS:LocaleID="1033"
   DTS:ObjectName="InforItemLocaleUpdate"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="53"
-  DTS:VersionGUID="{52B573F3-5F7C-4D47-9FCF-D0593D93D00D}">
+  DTS:VersionBuild="54"
+  DTS:VersionGUID="{C6F9F0DC-35A6-47C2-BC95-805C5E612C37}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -40,7 +40,7 @@
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:Retain="True"
-          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=MAMMOTH_DEV;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=MAMMOTH;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -60,7 +60,7 @@
       DTS:CreationName=""
       DTS:DTSID="{A5A88238-E0C1-4CAC-9001-57C7DEE977F4}"
       DTS:EvaluateAsExpression="True"
-      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ? &quot;ItemCatalog_Test&quot; : &quot;ItemCatalog&quot;"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ? &quot;ItemCatalog_Test&quot; : UPPER(@[$Project::Environment])  == &quot;TST&quot;? &quot;ItemCatalog_Test&quot; : &quot;ItemCatalog&quot;"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="IRMAInitialCatalog">
@@ -87,7 +87,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="MammothInitialCatalog">
       <DTS:VariableValue
-        DTS:DataType="8">MAMMOTH_DEV</DTS:VariableValue>
+        DTS:DataType="8">MAMMOTH</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""

@@ -1,0 +1,906 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/21/2018 1:40:29 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="CECEN-H8KBHM2"
+  DTS:CreatorName="WFM\Min.Zhao"
+  DTS:DTSID="{D0B6FC4B-47A3-4EB2-BC2A-11A5A0136D27}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3006.16"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="FullSupplierLoad"
+  DTS:PackageType="5"
+  DTS:VersionBuild="13"
+  DTS:VersionGUID="{E3CF8132-757A-4339-9BEC-49F3A00E129D}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[IRMA.Db]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{8359F0A7-F6C8-4D88-96C1-15CB5527403B}"
+      DTS:ObjectName="IRMA.Db">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Provider=SQLNCLI11.1;Data Source=" + @[User::IRMADataSource] + ";Initial Catalog=" + @[User::IRMAInitialCatalog]  + ";Integrated Security=SSPI;Auto Translate=False;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=IDD-MA\MAD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Mammoth.Db]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+      DTS:ObjectName="Mammoth.Db">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Provider=SQLNCLI11.1;Data Source=" + @[User::MammothDataSource] + ";Initial Catalog=" + @[User::MammothInitialCatalog]  + ";Integrated Security=SSPI;Auto Translate=False;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Retain="True"
+          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=MAMMOTH;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DBFA28E0-130D-410D-B041-D95109DFFB28}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; || UPPER(@[$Project::Environment])  == &quot;TST&quot; ? &quot;ID&quot; + (UPPER(@[$Project::RegionCode]) == &quot;NC&quot; || UPPER(@[$Project::RegionCode]) == &quot;NE&quot; || UPPER(@[$Project::RegionCode]) == &quot;PN&quot; || UPPER(@[$Project::RegionCode]) == &quot;SP&quot; || UPPER(@[$Project::RegionCode]) == &quot;SW&quot; || UPPER(@[$Project::RegionCode]) == &quot;UK&quot; ? &quot;T&quot; : &quot;D&quot;)    + &quot;-&quot; + (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  +&quot;\\&quot; +  (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  + (UPPER(@[$Project::RegionCode]) == &quot;NC&quot; || UPPER(@[$Project::RegionCode]) == &quot;NE&quot; || UPPER(@[$Project::RegionCode]) == &quot;PN&quot; || UPPER(@[$Project::RegionCode]) == &quot;SP&quot; || UPPER(@[$Project::RegionCode]) == &quot;SW&quot; || UPPER(@[$Project::RegionCode]) == &quot;UK&quot; ? &quot;T&quot; : &quot;D&quot;) :UPPER(@[$Project::Environment])  == &quot;QA&quot; ? &quot;IDQ-&quot; +   (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  +&quot;\\&quot; +  (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  + &quot;Q&quot;: &quot;IDP-&quot; +   (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  +&quot;\\&quot; +  (UPPER(@[$Project::RegionCode]) == &quot;TS&quot; ? &quot;RM&quot; : UPPER(@[$Project::RegionCode]))  + &quot;P&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IRMADataSource">
+      <DTS:VariableValue
+        DTS:DataType="8">IDD-MA\MAD</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5DB6F53C-D412-4A62-BE96-37975E8754C3}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ? &quot;ItemCatalog_Test&quot; : UPPER(@[$Project::Environment])  == &quot;TST&quot;? &quot;ItemCatalog_Test&quot; : &quot;ItemCatalog&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IRMAInitialCatalog">
+      <DTS:VariableValue
+        DTS:DataType="8">ItemCatalog_Test</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{BC469340-F294-4072-830F-B28A70D864A2}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ?&quot;MAMMOTH-DB01-DEV&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;:UPPER(@[$Project::Environment])  == &quot;TST&quot; ?&quot;MAMMOTH-DB01-DEV&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;:UPPER(@[$Project::Environment])  == &quot;QA&quot; ?&quot;MAMMOTH-DB01-QA&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;:&quot;MAMMOTH-DB01-PRD&quot; + &quot;\\&quot; + &quot;MAMMOTH&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MammothDataSource">
+      <DTS:VariableValue
+        DTS:DataType="8">MAMMOTH-DB01-DEV\MAMMOTH</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{16CBA14B-65CF-4F2A-B839-367A9CD22DF8}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ?&quot;MAMMOTH_DEV&quot;:&quot;MAMMOTH&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MammothInitialCatalog">
+      <DTS:VariableValue
+        DTS:DataType="8">MAMMOTH</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{937AD19F-5386-4D10-8E71-85FBA2EFACF4}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.ItemLocale_Supplier_&quot; +  @[$Project::RegionCode]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MammothSupplierTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.ItemLocale_Supplier_MA</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{581A0E3C-6BC4-4297-9B82-D63030E71D51}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MammothTempTable">
+      <DTS:VariableValue
+        DTS:DataType="8">##tmpSupplierLoad</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Transfter Store Item Vendor Data"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{CA21F57F-85E8-478F-9C92-E8799E5E7EFE}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Transfter Store Item Vendor Data"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Convert varchar to nvarchar"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[SupplierItemID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="SupplierItemID"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierItemID]" />
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[IrmaVendorKey]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="IrmaVendorKey"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[IrmaVendorKey]" />
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Inputs[Data Conversion Input].Columns[SupplierName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="SupplierName"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierName]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SupplierItemID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="20"
+                      lineageId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SupplierItemID]"
+                      name="Converted SupplierItemID"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierItemID]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted IrmaVendorKey]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="10"
+                      lineageId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted IrmaVendorKey]"
+                      name="Converted IrmaVendorKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[IrmaVendorKey]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SupplierName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SupplierName]"
+                      name="Converted SupplierName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Get IRMA Store Item Vendor Data"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">exec [dbo].[StoreItemVendorExtract] ?</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"@Region:Input",{83783797-2F1E-49D7-A98D-CC67A8CE24A0};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[IRMA.Db]"
+                  connectionManagerRefId="Package.ConnectionManagers[IRMA.Db]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[ItemID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[ItemID]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[ItemID]"
+                      name="ItemID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierCaseSize]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[SupplierCaseSize]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierCaseSize]"
+                      name="SupplierCaseSize"
+                      precision="9"
+                      scale="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[IrmaVendorKey]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[IrmaVendorKey]"
+                      length="10"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[IrmaVendorKey]"
+                      name="IrmaVendorKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[Region]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[Region]"
+                      length="2"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[Region]"
+                      name="Region"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[BusinessUnitID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[BusinessUnitID]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[BusinessUnitID]"
+                      name="BusinessUnitID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[SupplierName]"
+                      length="50"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierName]"
+                      name="SupplierName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierItemID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[SupplierItemID]"
+                      length="20"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierItemID]"
+                      name="SupplierItemID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[AddedDateUtc]"
+                      dataType="dbTimeStamp2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[AddedDateUtc]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[AddedDateUtc]"
+                      name="AddedDateUtc"
+                      scale="7"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[ItemID]"
+                      dataType="i4"
+                      name="ItemID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[SupplierCaseSize]"
+                      dataType="numeric"
+                      name="SupplierCaseSize"
+                      precision="9"
+                      scale="4" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[IrmaVendorKey]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="IrmaVendorKey" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[Region]"
+                      dataType="wstr"
+                      length="2"
+                      name="Region" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[BusinessUnitID]"
+                      dataType="i4"
+                      name="BusinessUnitID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[SupplierName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="SupplierName" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[SupplierItemID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="SupplierItemID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].ExternalColumns[AddedDateUtc]"
+                      dataType="dbTimeStamp2"
+                      name="AddedDateUtc"
+                      scale="7" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[Region]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[Region]"
+                      name="Region" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[ItemID]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[ItemID]"
+                      name="ItemID" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[BusinessUnitID]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[BusinessUnitID]"
+                      name="BusinessUnitID" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[SupplierName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[SupplierName]"
+                      name="SupplierName" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[SupplierItemID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[SupplierItemID]"
+                      name="SupplierItemID" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[SupplierCaseSize]"
+                      dataType="numeric"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[SupplierCaseSize]"
+                      name="SupplierCaseSize"
+                      precision="9"
+                      scale="4" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[IrmaVendorKey]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[IrmaVendorKey]"
+                      name="IrmaVendorKey" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[AddedDateUtc]"
+                      dataType="dbTimeStamp2"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[AddedDateUtc]"
+                      name="AddedDateUtc"
+                      scale="7" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Transfter Store Item Vendor Data\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              validateExternalMetadata="False"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[stage].[ItemLocaleSupplier]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable">User::MammothSupplierTable</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Mammoth.Db]"
+                  connectionManagerRefId="Package.ConnectionManagers[Mammoth.Db]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ItemID]"
+                      cachedDataType="i4"
+                      cachedName="ItemID"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[ItemID]" />
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SupplierCaseSize]"
+                      cachedDataType="numeric"
+                      cachedName="SupplierCaseSize"
+                      cachedPrecision="9"
+                      cachedScale="4"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SupplierCaseSize]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[SupplierCaseSize]" />
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[BusinessUnitID]"
+                      cachedDataType="i4"
+                      cachedName="BusinessUnitID"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitID]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[BusinessUnitID]" />
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Region]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="Region"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[Region]" />
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Converted SupplierItemID]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="Converted SupplierItemID"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SupplierItemID]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SupplierItemID]" />
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Converted IrmaVendorKey]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Converted IrmaVendorKey"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IrmaVendorKey]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted IrmaVendorKey]" />
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Converted SupplierName]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Converted SupplierName"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SupplierName]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted SupplierName]" />
+                    <inputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[AddedDateUtc]"
+                      cachedDataType="dbTimeStamp2"
+                      cachedName="AddedDateUtc"
+                      cachedScale="7"
+                      externalMetadataColumnId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[AddedDateUtc]"
+                      lineageId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output].Columns[AddedDateUtc]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
+                      dataType="wstr"
+                      length="2"
+                      name="Region" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ItemID]"
+                      dataType="i4"
+                      name="ItemID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitID]"
+                      dataType="i4"
+                      name="BusinessUnitID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SupplierName]"
+                      dataType="wstr"
+                      length="255"
+                      name="SupplierName" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SupplierItemID]"
+                      dataType="wstr"
+                      length="20"
+                      name="SupplierItemID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SupplierCaseSize]"
+                      dataType="numeric"
+                      name="SupplierCaseSize"
+                      precision="9"
+                      scale="4" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IrmaVendorKey]"
+                      dataType="wstr"
+                      length="10"
+                      name="IrmaVendorKey" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ItemLocaleSupplierID]"
+                      dataType="i4"
+                      name="ItemLocaleSupplierID" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[AddedDateUtc]"
+                      dataType="dbTimeStamp2"
+                      name="AddedDateUtc"
+                      scale="7" />
+                    <externalMetadataColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDateUtc]"
+                      dataType="dbTimeStamp2"
+                      name="ModifiedDateUtc"
+                      scale="7" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Transfter Store Item Vendor Data.Paths[Data Conversion Output]"
+              endId="Package\Transfter Store Item Vendor Data\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Transfter Store Item Vendor Data.Paths[OLE DB Source Output]"
+              endId="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar.Inputs[Data Conversion Input]"
+              name="OLE DB Source Output"
+              startId="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Mammoth Supplier Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{2E8DCCD9-8D20-4D9D-ADFA-217575B2D95E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Mammoth Supplier Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 CTP2.1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"truncate table dbo.ItemLocale_Supplier_" +  @[$Project::RegionCode]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
+          SQLTask:SqlStatementSource="truncate table dbo.ItemLocale_Supplier_MA" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{C2FA88C4-C87A-4132-976D-B21EDB36CF14}"
+      DTS:From="Package\Truncate Mammoth Supplier Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Transfter Store Item Vendor Data" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql12">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="237,42"
+          Id="Package\Transfter Store Item Vendor Data"
+          TopLeft="314,31" />
+        <NodeLayout
+          Size="242,42"
+          Id="Package\Truncate Mammoth Supplier Table"
+          TopLeft="26,32" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="268,52.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="46,0"
+              Start="0,0"
+              End="38.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="38.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Transfter Store Item Vendor Data">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="240,42"
+          Id="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data"
+          TopLeft="74,41" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Transfter Store Item Vendor Data\OLE DB Destination"
+          TopLeft="100,250" />
+        <NodeLayout
+          Size="211,42"
+          Id="Package\Transfter Store Item Vendor Data\Convert varchar to nvarchar"
+          TopLeft="82,154" />
+        <EdgeLayout
+          Id="Package\Transfter Store Item Vendor Data.Paths[OLE DB Source Output]"
+          TopLeft="190.75,83">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71"
+              Start="0,0"
+              End="0,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Transfter Store Item Vendor Data.Paths[Data Conversion Output]"
+          TopLeft="186.5,196">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,54"
+              Start="0,0"
+              End="0,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transfter Store Item Vendor Data\Get IRMA Store Item Vendor Data">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transfter Store Item Vendor Data\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

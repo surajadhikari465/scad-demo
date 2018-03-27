@@ -7,12 +7,12 @@
   DTS:CreatorName="WFM\Min.Zhao"
   DTS:DTSID="{31712CAD-C3CD-42EF-851A-40800A58E37B}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="14.0.0600.250"
+  DTS:LastModifiedProductVersion="14.0.3006.16"
   DTS:LocaleID="1033"
   DTS:ObjectName="InforItemScaleUpdate"
   DTS:PackageType="5"
-  DTS:VersionBuild="47"
-  DTS:VersionGUID="{10B99F1D-2995-4C4D-B09F-96D2CB14D31E}">
+  DTS:VersionBuild="48"
+  DTS:VersionGUID="{7686569E-1F95-4969-B8F6-16C2F1B06CBF}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -38,7 +38,7 @@
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:Retain="True"
-          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=MAMMOTH_DEV;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=MAMMOTH;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -58,7 +58,7 @@
       DTS:CreationName=""
       DTS:DTSID="{73BCCD9F-685A-4419-ABD2-B583B181454B}"
       DTS:EvaluateAsExpression="True"
-      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ? &quot;ItemCatalog_Test&quot; : &quot;ItemCatalog&quot;"
+      DTS:Expression="UPPER(@[$Project::Environment])  == &quot;DEV&quot; ? &quot;ItemCatalog_Test&quot; : UPPER(@[$Project::Environment])  == &quot;TST&quot;? &quot;ItemCatalog_Test&quot; : &quot;ItemCatalog&quot;"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="IRMAInitialCatalog">
@@ -85,7 +85,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="MammothInitialCatalog">
       <DTS:VariableValue
-        DTS:DataType="8">MAMMOTH_DEV</DTS:VariableValue>
+        DTS:DataType="8">MAMMOTH</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -1091,6 +1091,14 @@ and ial.Region = ill.Region"</DTS:PropertyExpression>
           Size="226,42"
           Id="Package\Transfter Item Scale Attributes"
           TopLeft="428,65" />
+        <NodeLayout
+          Size="296,42"
+          Id="Package\Update Mammoth ItemLocale Extended Table"
+          TopLeft="429,156" />
+        <NodeLayout
+          Size="249,42"
+          Id="Package\Update Mammoth ItemLocale Table"
+          TopLeft="126,156" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="297,87">
@@ -1113,48 +1121,6 @@ and ial.Region = ill.Region"</DTS:PropertyExpression>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="296,42"
-          Id="Package\Update Mammoth ItemLocale Extended Table"
-          TopLeft="429,156" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="577,198">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-365.5,51"
-              Start="0,0"
-              End="-365.5,43.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,21.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,21.5"
-                    Point2="0,25.5"
-                    Point3="-4,25.5" />
-                  <mssgle:LineSegment
-                    End="-361.5,25.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-361.5,25.5"
-                    Point2="-365.5,25.5"
-                    Point3="-365.5,29.5" />
-                  <mssgle:LineSegment
-                    End="-365.5,43.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="249,42"
-          Id="Package\Update Mammoth ItemLocale Table"
-          TopLeft="126,156" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
           TopLeft="541,107">
@@ -1181,6 +1147,40 @@ and ial.Region = ill.Region"</DTS:PropertyExpression>
                     Point3="-290.5,28.5" />
                   <mssgle:LineSegment
                     End="-290.5,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="577,198">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-365.5,51"
+              Start="0,0"
+              End="-365.5,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.5"
+                    Point2="0,25.5"
+                    Point3="-4,25.5" />
+                  <mssgle:LineSegment
+                    End="-361.5,25.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-361.5,25.5"
+                    Point2="-365.5,25.5"
+                    Point3="-365.5,29.5" />
+                  <mssgle:LineSegment
+                    End="-365.5,43.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
