@@ -3309,6 +3309,7 @@
     <None Include="SQL Agent Job\ItemCatalog - VendorCostHistory Case Size Changes.sql" />
     <None Include="Scripts\PostDeploy\PBI25591-Add CancelAllSales Event to ItemChangeEventType.rollback.sql" />
     <None Include="Scripts\PostDeploy\PBI25591-Add CancelAllSales Event to ItemChangeEventType .sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs4\StoreItemVendorExtract.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.rollback.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.sql" />
   </ItemGroup>
