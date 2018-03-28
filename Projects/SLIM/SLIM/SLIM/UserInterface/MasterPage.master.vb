@@ -5,7 +5,7 @@ Partial Class UserInterface_MasterPage
     Inherits System.Web.UI.MasterPage
 
     Dim footer As String
-    Const webqueryConst = "WebQuery"
+    Const webQueryConst = "WebQuery"
     Const logOffConst = "LogOff"
 
     Protected Sub SiteMapPath1_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles SiteMapPath1.Init
@@ -69,7 +69,7 @@ Partial Class UserInterface_MasterPage
             Dim itemList As New List(Of Item)
 
             For Each item As Item In menuitem.Items
-                If (item.Tag = webqueryConst Or item.Tag = logOffConst) Then
+                If (item.Tag = webQueryConst Or item.Tag = logOffConst) Then
                     Continue For
                 Else
                     itemList.Add(item)
