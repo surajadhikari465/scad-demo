@@ -1,5 +1,4 @@
-﻿using Dapper;
-using Icon.Common.DataAccess;
+﻿using Icon.Common.DataAccess;
 using Mammoth.Framework;
 using System;
 using System.Collections.Generic;

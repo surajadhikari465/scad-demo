@@ -1,10 +1,8 @@
-﻿using Dapper;
-using Icon.Common.DataAccess;
+﻿using Icon.Common.DataAccess;
 using Mammoth.Framework;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

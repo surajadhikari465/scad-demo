@@ -95,5 +95,22 @@ namespace WebSupport.Tests.RouteTests
                 controller: controller,
                 action: actionIndex);
         }
+
+        [TestMethod]
+        public void RegionGpmStatusRoute_NoAction_WithNoParameters_ShouldGetRegionGpmStatusRoute()
+        {
+            // Arrange
+            const string controller = "RegionGpmStatus";
+            const string actionIndex = "Index";
+            routeTestHelper.SetupRequestUrl(moqRequest, $"~/{controller}");
+            var routes = routeTestHelper.RegisterRoutesForTest();
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            MvcRoutingTestHelper.AssertExpectedRouteControllerAndAction(
+                routeData: routeData,
+                controller: controller,
+                action: actionIndex);
+        }
     }
 }

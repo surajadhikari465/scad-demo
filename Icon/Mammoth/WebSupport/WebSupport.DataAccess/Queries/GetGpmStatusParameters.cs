@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Mammoth.Framework;
 using System.Collections.Generic;
-using WebSupport.DataAccess.Models;
 
 namespace WebSupport.DataAccess.Queries
 {

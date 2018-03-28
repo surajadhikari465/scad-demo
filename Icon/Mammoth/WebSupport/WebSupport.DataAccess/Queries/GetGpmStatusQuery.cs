@@ -1,11 +1,9 @@
-﻿using Dapper;
-using Icon.Common.DataAccess;
+﻿using Icon.Common.DataAccess;
 using Mammoth.Framework;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using WebSupport.DataAccess.Models;
 
 namespace WebSupport.DataAccess.Queries
 {
