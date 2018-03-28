@@ -1,9 +1,12 @@
 Imports System.Net
+Imports Infragistics.WebUI.UltraWebNavigator
 
 Partial Class UserInterface_MasterPage
     Inherits System.Web.UI.MasterPage
 
     Dim footer As String
+    Const webqueryConst = "WebQuery"
+    Const logOffConst = "LogOff"
 
     Protected Sub SiteMapPath1_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles SiteMapPath1.Init
         ' AddHandler SiteMap.SiteMapResolve, AddressOf ResolveSiteMapNode
@@ -15,6 +18,9 @@ Partial Class UserInterface_MasterPage
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim VersionDAO As New VersionDAO
+
+        Dim disableSlimFunctions As Boolean = Application.Get("HideSlimFunctionality")
+        EnableDisableMenuItems(Me, disableSlimFunctions)
 
         If Not IsPostBack Then
             If Session("Region") = "" Then
@@ -53,6 +59,28 @@ Partial Class UserInterface_MasterPage
                     ' Do Nothing
             End Select
         Next
+
+    End Sub
+
+    Private Sub EnableDisableMenuItems(ByRef page As MasterPage, ByVal flagValue As Boolean)
+
+        If (flagValue) Then
+            Dim menuitem As UltraWebMenu = page.FindControl("UltraWebMenu1")
+            Dim itemList As New List(Of Item)
+
+            For Each item As Item In menuitem.Items
+                If (item.Tag = webqueryConst Or item.Tag = logOffConst) Then
+                    Continue For
+                Else
+                    itemList.Add(item)
+                End If
+            Next
+
+            For Each item As Item In itemList
+                menuitem.Items.Remove(item)
+            Next
+
+        End If
 
     End Sub
 

@@ -16,6 +16,7 @@ Post-Deployment Script Template
 
 :r "PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.SQL" -- 2018.03.06
 :r "PBI25591-Add CancelAllSales Event to ItemChangeEventType.SQL" -- 2018.03.22
+:r "PBI21565 - PostDeploy Schema PopData - AddInstanceDataFlag - HideSlimFunctionality.SQL" -- 2018.03.28
 
 -- *This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
