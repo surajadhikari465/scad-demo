@@ -114,7 +114,8 @@ namespace WebSupport.DataAccess.Test.Commands
         public void DeleteGpmStatus_WhenTheCommandParameterIsBad_ThenTheCommandDoesNothing()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var existingCount = regions.Count;
             deleteCmdParams.Region = null;
 
             //When
@@ -129,7 +130,8 @@ namespace WebSupport.DataAccess.Test.Commands
         public void DeleteGpmStatus_WhenRegionIsUnknown_CommandDoesNothing()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var existingCount = regions.Count;
 
             //When
             deleteCmdParams.Region = RegionGpmStatusTestData.NonExistentRegion;
@@ -144,8 +146,8 @@ namespace WebSupport.DataAccess.Test.Commands
         public void DeleteGpmStatus_WhenRegionHasGpmEnabled_CanBeDeleted()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount - 1;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count - 1;
 
             //When
             deleteCmdParams.Region = RegionGpmStatusTestData.ExistingRegionOnGpm;
@@ -163,8 +165,8 @@ namespace WebSupport.DataAccess.Test.Commands
         public void DeleteGpmStatus_WhenRegionHasGpmDisabled_CanBeDeleted()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount - 1;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count - 1;
 
             //When
             deleteCmdParams.Region = RegionGpmStatusTestData.ExistingRegionNotOnGpm;
@@ -182,14 +184,13 @@ namespace WebSupport.DataAccess.Test.Commands
         public void UpdateGpmStatusTable_WhenAddingSingleRegion_RegionIsAddedWithExpectedData()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount + 1;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count + 1;
             var regionToAddWithGpmOn = new RegionGpmStatus
             {
                 Region = "AB",
                 IsGpmEnabled = RegionGpmStatusTestData.GpmOn
             };
-            var regions = RegionGpmStatusTestData.TestRegions;
             regions.Add(regionToAddWithGpmOn);
 
             //When
@@ -209,8 +210,8 @@ namespace WebSupport.DataAccess.Test.Commands
         public void UpdateGpmStatusTable_WhenAddingMultipleRegions_RegionsAreUpdatedWithExpectedData()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount + 2;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count + 2;
             var regionToAddWithGpmOn = new RegionGpmStatus
             {
                 Region = "AB",
@@ -221,7 +222,6 @@ namespace WebSupport.DataAccess.Test.Commands
                 Region = "CD",
                 IsGpmEnabled = RegionGpmStatusTestData.GpmOff
             };
-            var regions = RegionGpmStatusTestData.TestRegions;
             regions.AddRange(new RegionGpmStatus[] { regionToAddWithGpmOn, regionToAddWithGpmOff });
             updateManyCmdParams = new UpdateGpmStatusTableCommandParameters(regions);
 
@@ -245,23 +245,23 @@ namespace WebSupport.DataAccess.Test.Commands
         public void UpdateGpmStatusTable_WhenUpdatingSingleRegion_RegionCanHaveGpmTurnedOn()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count;
             var updatedStatus = RegionGpmStatusTestData.GpmOn;
             var regionToUpdate = new RegionGpmStatus
             {
                 Region = RegionGpmStatusTestData.ExistingRegionOnGpm,
                 IsGpmEnabled = updatedStatus
             };
-            var regions = RegionGpmStatusTestData.TestRegions;
             regions.Single(r => r.Region == regionToUpdate.Region).IsGpmEnabled = updatedStatus;
 
             //When
             updateManyCmdParams = new UpdateGpmStatusTableCommandParameters(regions);
             updateManyCmd.Execute(updateManyCmdParams);
 
-            //Then
+            //Then 
             var currentData = mammothDbContext.RegionGpmStatuses.ToList();
+
             Assert.AreEqual(expectedCount, currentData.Count);
 
             var updatedRegion = currentData.FirstOrDefault(rgs => rgs.Region == regionToUpdate.Region);
@@ -273,15 +273,14 @@ namespace WebSupport.DataAccess.Test.Commands
         public void UpdateGpmStatusTable_WhenUpdatingSingleRegion_RegionCanHaveGpmTurnedOff()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count;
             var updatedStatus = RegionGpmStatusTestData.GpmOff;
             var regionToUpdate = new RegionGpmStatus
             {
                 Region = RegionGpmStatusTestData.ExistingRegionOnGpm,
                 IsGpmEnabled = updatedStatus
             };
-            var regions = RegionGpmStatusTestData.TestRegions;
             regions.Single(r => r.Region == regionToUpdate.Region).IsGpmEnabled = updatedStatus;
 
             //When
@@ -301,14 +300,13 @@ namespace WebSupport.DataAccess.Test.Commands
         public void UpdateGpmStatusTable_WhenRemovingSingleRegionOnGpm_RegionIsRemoved()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount - 1;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count - 1;
             var regionToRemove = new RegionGpmStatus
             {
                 Region = RegionGpmStatusTestData.ExistingRegionOnGpm,
                 IsGpmEnabled = RegionGpmStatusTestData.GpmOn
             };
-            var regions = RegionGpmStatusTestData.TestRegions;
             regions.Remove(regions.Single(r=>r.Region== regionToRemove.Region));
 
             //When
@@ -327,10 +325,9 @@ namespace WebSupport.DataAccess.Test.Commands
         public void UpdateGpmStatusTable_WhenRemovingSingleRegionNotOnGpm_RegionIsRemoved()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount - 1;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count - 1;
             var regionToRemove = RegionGpmStatusTestData.ExistingRegionNotOnGpm;
-            var regions = RegionGpmStatusTestData.TestRegions;
             regions.Remove(regions.Single(r => r.Region == regionToRemove));
 
             //When
@@ -349,8 +346,8 @@ namespace WebSupport.DataAccess.Test.Commands
         public void UpdateGpmStatusTable_WhenAddingOneRegionAndUpdatingAnother_RegionsAreAddedAndUpdated()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount + 1;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count + 1;
             var regionToAdd = new RegionGpmStatus
             {
                 Region = "AB",
@@ -362,7 +359,6 @@ namespace WebSupport.DataAccess.Test.Commands
                 Region = RegionGpmStatusTestData.ExistingRegionNotOnGpm,
                 IsGpmEnabled = updatedStatus
             };
-            var regions = RegionGpmStatusTestData.TestRegions;
             regions.Add(regionToAdd);
             regions.Single(r => r.Region == regionToUpdate.Region).IsGpmEnabled = regionToUpdate.IsGpmEnabled;
 
@@ -385,8 +381,8 @@ namespace WebSupport.DataAccess.Test.Commands
         public void UpdateGpmStatusTable_WhenAddingOneRegionAndUpdatingAnotherAndDeleteingAnother_RegionsAreAddedAndUpdatedAndDeleted()
         {
             //Given
-            var existingCount = rawSqlConnection.Query<int>(RegionGpmStatusTestData.SqlForCurrentRegionCount).Single();
-            var expectedCount = existingCount + 1 - 1;
+            var regions = mammothDbContext.RegionGpmStatuses.ToList();
+            var expectedCount = regions.Count + 1 - 1;
             var regionToAdd = new RegionGpmStatus
             {
                 Region = "AB",
@@ -404,7 +400,6 @@ namespace WebSupport.DataAccess.Test.Commands
                 IsGpmEnabled = RegionGpmStatusTestData.GpmOn
             };
 
-            var regions = RegionGpmStatusTestData.TestRegions;
             regions.Single(r => r.Region == regionToUpdate.Region).IsGpmEnabled = regionToUpdate.IsGpmEnabled;
             regions.Add(regionToAdd);
             regions.Remove(regions.Single(r => r.Region == regionToDelete.Region));
