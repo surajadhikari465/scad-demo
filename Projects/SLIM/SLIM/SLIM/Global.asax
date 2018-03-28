@@ -2,7 +2,7 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System.Data" %>
 <script runat="server">
-    
+
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Fires when the application is started
         ' if you add any new app config keys, you ADD them here  
@@ -47,7 +47,7 @@
 
     Sub Session_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Code that runs when a new session is started
-        
+
         ' if you add any new app config keys, you SET them here    
         Application.Set("LowMargin", GetAppConfigSetting("LowMargin"))
         Application.Set("HighMargin", GetAppConfigSetting("HighMargin"))
@@ -86,8 +86,9 @@
         Application.Set("Text_ISS_Process_Delay", GetAppConfigSetting("Text_ISS_Process_Delay"))
         Application.Set("Text_ISS_Subteam_Ex", GetAppConfigSetting("Text_ISS_Subteam_Ex"))
         Application.Set("SSI_TitleDescription", GetAppConfigSetting("SSI_TitleDescription"))
+        Application.Set("HideSlimFunctionality", GetInstantDataFlag("HideSlimFunctionality"))
     End Sub
-    
+
     Private Shared ReadOnly Property DatabaseConnectionString() As String
         Get
             Return ConfigurationManager.ConnectionStrings(ConfigurationManager.AppSettings("ConnectionStringName").ToString).ToString
@@ -105,7 +106,52 @@
             Return New Guid(ConfigurationManager.AppSettings("EnvironmentGUID").ToString)
         End Get
     End Property
-    
+
+    Private Shared Function GetInstantDataFlag(ByVal KeyName As String) As String
+        Dim dbConn As SqlConnection = Nothing
+        Dim cmd As SqlCommand = Nothing
+
+        Try
+
+            dbConn = New SqlConnection()
+            dbConn.ConnectionString = DatabaseConnectionString
+
+            cmd = New SqlCommand()
+            cmd.Connection = dbConn
+            cmd.CommandType = CommandType.StoredProcedure
+            cmd.CommandText = "GetInstanceDataFlagValue"
+
+            Dim _flagKeyParam As New SqlParameter("@FlagKey", KeyName)
+            Dim _storeNoParam As New SqlParameter("@Store_No", DBNull.Value)
+
+            cmd.Parameters.Add(_flagKeyParam)
+            cmd.Parameters.Add(_storeNoParam)
+
+            dbConn.Open()
+
+            Dim retVal As String = CStr(cmd.ExecuteScalar)
+
+            If (String.IsNullOrEmpty(retVal)) Then
+                Return "0"
+            Else
+                Return retVal
+            End If
+
+        Catch ex As Exception
+
+            Throw New Exception(KeyName & ex.InnerException.Message)
+
+        Finally
+
+            If Not dbConn Is Nothing Then
+                If dbConn.State <> ConnectionState.Closed Then
+                    dbConn.Close()
+                End If
+            End If
+
+        End Try
+    End Function
+
     Private Shared Function GetAppConfigSetting(ByVal KeyName As String) As String
 
         Dim dbConn As SqlConnection = Nothing
@@ -130,9 +176,9 @@
             cmd.Parameters.Add(_keynameParam)
 
             dbConn.Open()
-            
+
             Dim retVal As String = CStr(cmd.ExecuteScalar)
-          
+
             Return retVal
 
         Catch ex As Exception
@@ -150,5 +196,5 @@
         End Try
 
     End Function
-      
+
 </script>

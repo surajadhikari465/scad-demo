@@ -6,6 +6,7 @@ Imports WholeFoods.Utility.DataAccess
 Imports System.Collections.Generic
 Imports System.Collections.ObjectModel
 Imports WholeFoods.IRMA.ItemHosting.DataAccess
+Imports WholeFoods.IRMA.Replenishment.Common.DataAccess
 Imports System.Net.Mail
 Imports log4net
 Imports System.DirectoryServices
@@ -149,6 +150,8 @@ Public Class Form_EditUser
     End Sub
 
     Private Sub LoadUserDetails()
+        Dim hideSlimFunctionality As Boolean = InstanceDataDAO.IsFlagActive("HideSlimFunctionality")
+
         ' Required data to identify the user
         TextBox_UserName.Text = _userConfig.UserName
         TextBox_FullName.Text = _userConfig.FullName
@@ -207,17 +210,25 @@ Public Class Form_EditUser
         CheckBox_Role_SecurityAdministrator.Checked = _userConfig.SecurityAdministrator
         CheckBox_Role_UserMaintenance.Checked = _userConfig.UserMaintenance
 
-        ' SLIM Access attributes
-        CheckBox_RoleSLIMUserAdmin.Checked = _userConfig.SLIMUserAdmin
-        CheckBox_RoleSLIMVendorRequest.Checked = _userConfig.SLIMVendorRequest
-        CheckBox_RoleSLIMItemRequest.Checked = _userConfig.SLIMItemRequest
-        CheckBox_RoleSLIMStoreSpecials.Checked = _userConfig.SLIMStoreSpecials
+        ' enable/disable and set SLIM Access attributes
+        If hideSlimFunctionality Then
+            Dim location As Point = CheckBox_RoleSLIMItemRequest.Location
+            HideSlimRelatedControls(False)
+            RelocateSecureQueryCheckBox(location)
+        Else
+            CheckBox_RoleSLIMUserAdmin.Checked = _userConfig.SLIMUserAdmin
+            CheckBox_RoleSLIMVendorRequest.Checked = _userConfig.SLIMVendorRequest
+            CheckBox_RoleSLIMItemRequest.Checked = _userConfig.SLIMItemRequest
+            CheckBox_RoleSLIMStoreSpecials.Checked = _userConfig.SLIMStoreSpecials
+
+            CheckBox_RoleSLIMScaleInfo.Checked = _userConfig.SLIMScaleInfo
+            CheckBox_RoleSLIMRetailCost.Checked = _userConfig.SLIMRetailCost
+            CheckBox_RoleSLIMPushToIRMA.Checked = _userConfig.SLIMPushToIRMA
+            CheckBox_RoleSLIMAuthorizations.Checked = _userConfig.SLIMAuthorizations
+            CheckBox_RoleSLIMECommerce.Checked = _userConfig.SLIMECommerce
+        End If
+
         CheckBox_RoleSLIMSecureQuery.Checked = _userConfig.SLIMSecureQuery
-        CheckBox_RoleSLIMScaleInfo.Checked = _userConfig.SLIMScaleInfo
-        CheckBox_RoleSLIMRetailCost.Checked = _userConfig.SLIMRetailCost
-        CheckBox_RoleSLIMPushToIRMA.Checked = _userConfig.SLIMPushToIRMA
-        CheckBox_RoleSLIMAuthorizations.Checked = _userConfig.SLIMAuthorizations
-        CheckBox_RoleSLIMECommerce.Checked = _userConfig.SLIMECommerce
 
         ' Promo Planner access is dependent on values in the UserAccess table.
         ' Store Buyer role for promo planner requires a 1 (Store), Order Admin permissions require a 3 (Region)
@@ -227,6 +238,23 @@ Public Class Form_EditUser
             Radio_RolePromoAdmin.Checked = True
         Else : Radio_RolePromoNone.Checked = True
         End If
+    End Sub
+
+    Private Sub RelocateSecureQueryCheckBox(ByVal location As Point)
+        CheckBox_RoleSLIMSecureQuery.Location = location
+    End Sub
+
+    Private Sub HideSlimRelatedControls(ByVal isVisible As Boolean)
+        CheckBox_RoleSLIMUserAdmin.Visible = isVisible
+        CheckBox_RoleSLIMVendorRequest.Visible = isVisible
+        CheckBox_RoleSLIMItemRequest.Visible = isVisible
+        CheckBox_RoleSLIMStoreSpecials.Visible = isVisible
+
+        CheckBox_RoleSLIMScaleInfo.Visible = isVisible
+        CheckBox_RoleSLIMRetailCost.Visible = isVisible
+        CheckBox_RoleSLIMPushToIRMA.Visible = isVisible
+        CheckBox_RoleSLIMAuthorizations.Visible = isVisible
+        CheckBox_RoleSLIMECommerce.Visible = isVisible
     End Sub
 
     ''' <summary>

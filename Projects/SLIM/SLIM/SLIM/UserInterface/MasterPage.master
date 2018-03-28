@@ -134,7 +134,7 @@
                     </ignav:Item>
                     <ignav:Item TargetUrl="~/UserInterface/ItemVendor/Main.aspx" Text="Edit Item's Vendor" TagString="EditItemVendor">
                     </ignav:Item>
-                    <ignav:Item TargetUrl="~/UserInterface/WebQuery/Main.aspx" Text="Web Query">
+                    <ignav:Item TargetUrl="~/UserInterface/WebQuery/Main.aspx" Text="Web Query" TagString="WebQuery">
                     </ignav:Item>
                     <ignav:Item TagString="LogOff" TargetUrl="~/Default.aspx" Text="Log Off">
                     </ignav:Item>
