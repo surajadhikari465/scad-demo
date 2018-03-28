@@ -42,6 +42,8 @@ DECLARE @percentageTareWeightId INT = (SELECT AttributeID FROM dbo.Attributes WH
 -- Other local variables
 DECLARE @Region NVARCHAR(2) = (SELECT Region FROM Locale WHERE BusinessUnitID = @BusinessUnitID);
 DECLARE @Today datetime = CAST(CAST(GETDATE() as date) as datetime);
+DECLARE @BeginningOfToday DATETIME2 = CAST(CAST(GETDATE() AS DATE) AS datetime2);
+DECLARE @EndOfToday DATETIME2 = CAST(DATEADD(ms, -3, DATEADD(dd, 1, DATEDIFF(dd, 0, GETDATE()))) AS datetime2);
 
 -- Put ItemIDs we need into a temp table
 -- Optional Attributes to avoid a left join on main global item query
@@ -474,6 +476,7 @@ OPTION (RECOMPILE)
 -- ==============================================
 CREATE TABLE #prices
 (
+	Region NCHAR(2),
     ItemID INT,
     BusinessUnitID INT,
     RegularPriceMultiple TINYINT,
@@ -531,6 +534,7 @@ CREATE TABLE #linkedScanCodePriceKeys
 (
 	Region NCHAR(2),
 	ItemID INT,
+	LinkCodeItemID INT,
 	BusinessUnitID INT,
 	StartDate DATETIME2(7),
 	PriceType NVARCHAR(3)
@@ -557,56 +561,8 @@ BEGIN
 		AND st.BusinessUnitID = p.BusinessUnitID	 
 	WHERE 
 		p.Region = @Region
-		AND p.StartDate <= @Today
+		AND p.StartDate <= @BeginningOfToday
 		AND p.PriceType = 'REG'
-	GROUP BY
-		p.Region,
-		p.ItemID,
-		p.BusinessUnitID,
-		p.PriceType
-	OPTION (RECOMPILE)
-
-	-- Sale Price Keys
-	INSERT INTO #salePriceKeys (Region, ItemID, BusinessUnitID, StartDate, PriceType)
-	SELECT
-		p.Region,
-		p.ItemID,
-		p.BusinessUnitID,
-		MAX(StartDate)  as StartDate,
-		p.PriceType
-	FROM #itemExtended		st
-	JOIN gpm.Prices p on st.Region = p.Region
-		AND st.ItemID = p.ItemID
-		AND st.BusinessUnitID = p.BusinessUnitID
-	WHERE
-		p.Region = @Region
-		AND p.StartDate <= @Today
-		AND p.EndDate >= @Today
-		AND p.PriceType = 'TPR'
-	GROUP BY
-		p.Region,
-		p.ItemID,
-		p.BusinessUnitID,
-		p.PriceType
-	OPTION (RECOMPILE)
-
-	-- Rewards Price Keys
-	INSERT INTO #rewardPriceKeys (Region, ItemID, BusinessUnitID, StartDate, PriceType)
-	SELECT
-		p.Region,
-		p.ItemID,
-		p.BusinessUnitID,
-		MAX(StartDate)  as StartDate,
-		p.PriceType
-	FROM #itemExtended st
-	JOIN gpm.Prices p on st.Region = p.Region
-		AND st.ItemID = p.ItemID
-		AND st.BusinessUnitID = p.BusinessUnitID	
-	WHERE
-		p.Region = @Region
-		AND p.StartDate <= @Today
-		AND p.EndDate >= @Today
-		AND p.PriceType = 'RWD'
 	GROUP BY
 		p.Region,
 		p.ItemID,
@@ -615,23 +571,25 @@ BEGIN
 	OPTION (RECOMPILE)
 
 	-- Linked Scan Code Price Keys
-	INSERT INTO #linkedScanCodePriceKeys (Region, ItemID, BusinessUnitID, StartDate, PriceType)
+	INSERT INTO #linkedScanCodePriceKeys (Region, ItemID, LinkCodeItemID, BusinessUnitID, StartDate, PriceType)
 	SELECT
 		p.Region,
-		p.ItemID,
+		st.ItemID,
+		p.ItemID as LinkedCodeItemID,
 		p.BusinessUnitID,
 		MAX(StartDate)  as StartDate,
 		p.PriceType
-	FROM #itemExtended		st
-	JOIN dbo.Items			i	on st.LinkedScanCode = i.ScanCode
-	JOIN gpm.Prices			p	on i.ItemID = p.ItemID
+	FROM #itemExtended st
+	JOIN dbo.Items i on st.LinkedScanCode = i.ScanCode
+	JOIN gpm.Prices p on i.ItemID = p.ItemID
 		AND st.BusinessUnitID = p.BusinessUnitID
 	WHERE
 		p.Region = @Region
-		AND p.StartDate <= @Today
+		AND p.StartDate <= @BeginningOfToday
 		AND p.PriceType = 'REG'
 	GROUP BY
 		p.Region,
+		st.ItemID,
 		p.ItemID,
 		p.BusinessUnitID,
 		p.PriceType
@@ -641,6 +599,7 @@ BEGIN
 	-- REGs
 	INSERT INTO #prices
 	(
+		Region,
 		ItemID,
 		BusinessUnitID,
 		RegularPriceMultiple,
@@ -667,6 +626,7 @@ BEGIN
 		LinkedScanCodePrice
 	)
 	SELECT
+		reg.Region,
 		reg.ItemID,
 		reg.BusinessUnitID,
 		reg.Multiple			AS RegularPriceMultiple,
@@ -700,60 +660,45 @@ BEGIN
 	WHERE reg.Region = @Region
 	OPTION (RECOMPILE)
 
-	-- TPRs
+	-- Sales (TPRs and RWDs)
 	UPDATE p
 	SET
-		TprMultiple = sal.Multiple,     
-		TprPrice = sal.Price,
-		TprPriceType = 'TPR',
-		TprPriceTypeAttribute = sal.PriceType,
-		TprSellableUOM = sal.PriceUOM,
-		TprStartDate = sal.StartDate,
-		TprEndDate = sal.EndDate
+		p.TprMultiple = CASE WHEN sal.PriceType = 'TPR' THEN sal.Multiple ELSE NULL END,     
+		p.TprPrice = CASE WHEN sal.PriceType = 'TPR' THEN sal.Price ELSE NULL END,    
+		p.TprPriceType = CASE WHEN sal.PriceType = 'TPR' THEN sal.PriceType ELSE NULL END,
+		p.TprPriceTypeAttribute = CASE WHEN sal.PriceType = 'TPR' THEN sal.PriceTypeAttribute ELSE NULL END,
+		p.TprSellableUOM = CASE WHEN sal.PriceType = 'TPR' THEN sal.SellableUOM ELSE NULL END,
+		p.TprStartDate = CASE WHEN sal.PriceType = 'TPR' THEN sal.StartDate ELSE NULL END,
+		p.TprEndDate = CASE WHEN sal.PriceType = 'TPR' THEN sal.EndDate ELSE NULL END,
+		p.RewardPrice = CASE WHEN sal.PriceType = 'RWD' THEN sal.Price ELSE NULL END,
+		p.RewardPriceType =  CASE WHEN sal.PriceType = 'RWD' THEN sal.PriceType ELSE NULL END,
+		p.RewardPriceTypeAttribute =  CASE WHEN sal.PriceType = 'RWD' THEN sal.PriceTypeAttribute ELSE NULL END,
+		p.RewardPriceMultiple =  CASE WHEN sal.PriceType = 'RWD' THEN sal.Multiple ELSE NULL END,
+		p.RewardPriceSellableUOM =  CASE WHEN sal.PriceType = 'RWD' THEN sal.SellableUOM ELSE NULL END,
+		p.RewardPriceStartDate = CASE WHEN sal.PriceType = 'RWD' THEN sal.StartDate ELSE NULL END,
+		p.RewardPriceEndDate = CASE WHEN sal.PriceType = 'RWD' THEN sal.EndDate ELSE NULL END
 	FROM #prices p
-	INNER JOIN #salePriceKeys sk ON p.ItemID = sk.ItemID
-		AND p.BusinessUnitID = sk.BusinessUnitID
-	INNER JOIN dbo.Price sal ON	sk.Region = sal.Region
-		AND sk.ItemID = sal.ItemID
-		AND sk.BusinessUnitID = sal.BusinessUnitID
-		AND sk.StartDate = sal.StartDate
-		AND sk.PriceType = sal.PriceType
+	INNER JOIN gpm.Prices sal on p.ItemID = sal.ItemID
+		AND p.BusinessUnitID = sal.BusinessUnitID
 	WHERE sal.Region = @Region
-	OPTION (RECOMPILE)
-
-	-- Reward Price
-	UPDATE p
-	SET
-		RewardPrice = rwd.Price,
-		RewardPriceType = rwd.PriceType,
-		RewardPriceTypeAttribute = rwd.PriceTypeAttribute,
-		RewardPriceMultiple = rwd.Multiple,
-		RewardPriceSellableUOM = rwd.SellableUOM,
-		RewardPriceStartDate = rwd.StartDate,
-		RewardPriceEndDate = rwd.EndDate
-	FROM #prices p
-	INNER JOIN #rewardPriceKeys	rp ON p.ItemID = rp.ItemID
-		AND p.BusinessUnitID = rp.BusinessUnitID
-	INNER JOIN gpm.Prices rwd ON rp.Region = rwd.Region
-		AND rp.ItemID = rwd.ItemID
-		AND rp.BusinessUnitID = rwd.BusinessUnitID
-		AND rp.StartDate = rwd.StartDate
-		AND rp.PriceType = rwd.PriceType
-	WHERE rwd.Region = @Region
+		AND sal.StartDate <= @BeginningOfToday
+		AND sal.EndDate >= @EndOfToday
+		AND (sal.PriceType = 'TPR' OR sal.PriceType = 'RWD')
 	OPTION (RECOMPILE)
 
 	-- Linked ScanCode Price
 	UPDATE p
-	SET LinkedScanCodePrice = prc.Price
+	SET LinkedScanCodePrice = lsp.Price
 	FROM #prices p
-	INNER JOIN #linkedScanCodePriceKeys lk ON p.ItemID = lk.ItemID
-		AND p.BusinessUnitID = lk.BusinessUnitID
-	INNER JOIN dbo.Price prc ON lk.Region = prc.Region
-		AND lk.ItemID = prc.ItemID
-		AND lk.BusinessUnitID = prc.BusinessUnitID
-		AND lk.StartDate = prc.StartDate
-		AND lk.PriceType = prc.PriceType
-	WHERE prc.Region = @Region
+	INNER JOIN #linkedScanCodePriceKeys k on p.Region = k.Region
+		AND p.ItemID = k.ItemID
+		AND p.BusinessUnitID = k.BusinessUnitID
+	INNER JOIN gpm.Prices lsp  ON k.Region = lsp.Region
+		AND k.LinkCodeItemID = lsp.ItemID
+		AND k.BusinessUnitID = lsp.BusinessUnitID
+		AND k.StartDate = lsp.StartDate
+		AND k.PriceType = lsp.PriceType
+	WHERE lsp.Region = @Region
 	OPTION (RECOMPILE)
 
 END -- IF Block
@@ -774,7 +719,7 @@ BEGIN
 		AND st.BusinessUnitID = p.BusinessUnitID	 
 	WHERE 
 		p.Region = @Region
-		AND p.StartDate <= @Today
+		AND p.StartDate <= @BeginningOfToday
 		AND p.PriceType = 'REG'
 	GROUP BY
 		p.Region,
@@ -797,8 +742,8 @@ BEGIN
 		AND st.BusinessUnitID = p.BusinessUnitID	
 	WHERE
 		p.Region = @Region
-		AND p.StartDate <= @Today
-		AND p.EndDate >= @Today
+		AND p.StartDate <= @BeginningOfToday
+		AND p.EndDate >= @EndOfToday
 		AND p.PriceType <> 'REG'
 	GROUP BY
 		p.Region,
@@ -808,10 +753,11 @@ BEGIN
 	OPTION (RECOMPILE)
 
 	-- Linked Scan Code Price Keys
-	INSERT INTO #linkedScanCodePriceKeys (Region, ItemID, BusinessUnitID, StartDate, PriceType)
+	INSERT INTO #linkedScanCodePriceKeys (Region, ItemID, LinkCodeItemID, BusinessUnitID, StartDate, PriceType)
 	SELECT
 		p.Region,
-		p.ItemID,
+		st.ItemID,
+		p.ItemID as LinkCodeItemID,
 		p.BusinessUnitID,
 		MAX(StartDate)  as StartDate,
 		p.PriceType
@@ -821,10 +767,11 @@ BEGIN
 		AND st.BusinessUnitID = p.BusinessUnitID
 	WHERE
 		p.Region = @Region
-		AND p.StartDate <= @Today
+		AND p.StartDate <= @BeginningOfToday
 		AND p.PriceType = 'REG'
 	GROUP BY
 		p.Region,
+		st.ItemID,
 		p.ItemID,
 		p.BusinessUnitID,
 		p.PriceType
@@ -832,6 +779,7 @@ BEGIN
 
 	INSERT INTO #prices
 	(
+		Region,
 		ItemID,
 		BusinessUnitID,
 		RegularPriceMultiple,
@@ -858,10 +806,11 @@ BEGIN
 		LinkedScanCodePrice
 	)
 	SELECT
+		reg.Region,
 		reg.ItemID,
 		reg.BusinessUnitID,
 		reg.Multiple	AS RegularPriceMultiple,
-		CAST(reg.Price as decimal(9,2))	AS RegularPrice,
+		reg.Price		AS RegularPrice,
 		reg.StartDate	AS RegularStartDate,
 		'REG'		    AS RegularPriceType,
 		reg.PriceType	AS RegularPriceTypeAttribute,
@@ -936,16 +885,17 @@ BEGIN
 
 	-- Linked ScanCode Price
 	UPDATE p
-	SET LinkedScanCodePrice = prc.Price
+	SET LinkedScanCodePrice = lsp.Price
 	FROM #prices p
-	INNER JOIN #linkedScanCodePriceKeys lk ON p.ItemID = lk.ItemID
-		AND p.BusinessUnitID = lk.BusinessUnitID
-	INNER JOIN dbo.Price	prc   ON	lk.Region = prc.Region
-		AND lk.ItemID = prc.ItemID
-		AND lk.BusinessUnitID = prc.BusinessUnitID
-		AND lk.StartDate = prc.StartDate
-		AND lk.PriceType = prc.PriceType
-	WHERE prc.Region = @Region
+	INNER JOIN #linkedScanCodePriceKeys k on p.Region = k.Region
+		AND p.ItemID = k.ItemID
+		AND p.BusinessUnitID = k.BusinessUnitID
+	INNER JOIN dbo.Price lsp  ON k.Region = lsp.Region
+		AND k.LinkCodeItemID = lsp.ItemID
+		AND k.BusinessUnitID = lsp.BusinessUnitID
+		AND k.StartDate = lsp.StartDate
+		AND k.PriceType = lsp.PriceType
+	WHERE lsp.Region = @Region
 	OPTION (RECOMPILE)
 
 END -- Else block
@@ -953,7 +903,7 @@ END -- Else block
 CREATE NONCLUSTERED INDEX IX_#regularPriceKeys ON #regularPriceKeys (Region, ItemID, BusinessUnitID, StartDate, PriceType);
 CREATE NONCLUSTERED INDEX IX_#salePriceKeys ON #salePriceKeys (Region, ItemID, BusinessUnitID, StartDate, PriceType);
 CREATE NONCLUSTERED INDEX IX_#rewardPriceKeys ON #rewardPriceKeys (Region, ItemID, BusinessUnitID, StartDate, PriceType);
-CREATE NONCLUSTERED INDEX IX_#linkedScanCodePriceKeys ON #linkedScanCodePriceKeys (Region, ItemID, BusinessUnitID, StartDate, PriceType);
+CREATE NONCLUSTERED INDEX IX_#linkedScanCodePriceKeys ON #linkedScanCodePriceKeys (Region, LinkCodeItemID, BusinessUnitID, StartDate, PriceType);
 
 CREATE NONCLUSTERED INDEX IX_#prices_ItemID_BusinessUnitID ON #prices (ItemID ASC, BusinessUnitID ASC)
 	INCLUDE
@@ -1184,6 +1134,7 @@ DROP TABLE #linkedScanCodePriceKeys
 DROP TABLE #rewardPriceKeys
 
 END
+GO
 
 GRANT EXEC ON [esl].[GetEslAttributes] TO dds_esl_role
 GO
