@@ -255,3 +255,15 @@ paket-files/
 
 # SSDT 
 *.jfm
+/Projects/Reporting Services/StoreOrders - Backup.rdl
+/Projects/Reporting Services/SP_StoreOrdersTotBySKU - Backup.rdl
+/Projects/Reporting Services/SP_StoreOrdersTotBySKU - Backup (2).rdl
+/Projects/Reporting Services/PerpetualMovementReport - Backup.rdl
+/Projects/Reporting Services/FL_StoreOrdersTotBySKU - Backup.rdl
+/Projects/Reporting Services/FillRateReportSummary - Backup.rdl
+/Projects/Reporting Services/FillRateReportFPtD - Backup.rdl
+/Projects/Reporting Services/StoreOrders - Backup (2).rdl
+/Projects/Reporting Services/SP_StoreOrdersTotBySKU - Backup (3).rdl
+/Projects/Reporting Services/PerpetualMovementReport - Backup (2).rdl
+/Projects/Reporting Services/FillRateReportSummary - Backup (2).rdl
+/Projects/Reporting Services/FillRateReportFPtD - Backup (2).rdl

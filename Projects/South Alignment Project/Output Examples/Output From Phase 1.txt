@@ -1,0 +1,91 @@
+Status: BEGIN SO OrderItem - Rebuild (takes about 3 hours in TEST): --- [dbo].[OrderItem] --- Mar 21 2018  7:28:54.2234010AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[OrderItem] --- Mar 21 2018 10:28:54.2321877AM
+Status: 1. Disable SO Change Tracking: --- [dbo].[OrderItem] --- Mar 21 2018  7:28:54.2370692AM
+Status: 2. Drop SO Defaults (Manually Generated): --- [dbo].[OrderItem] --- Mar 21 2018  7:28:54.3122443AM
+Status: 3. Drop SO Extended Properties: --- [dbo].[OrderItem] --- Mar 21 2018  7:28:54.8482330AM
+Status: 4. Drop SO Triggers: --- [dbo].[OrderItem] --- Mar 21 2018  7:28:55.3070940AM
+Status: 5. Drop SO Foreign Keys: --- [dbo].[OrderItem] --- Mar 21 2018  7:28:55.3715298AM
+Status: 6. Drop SO Indexes: --- [dbo].[OrderItem] --- Mar 21 2018  7:28:55.6663724AM
+Status: 7. Rename SO PK: --- [dbo].[OrderItem] --- Mar 21 2018  7:28:55.8079359AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table: --- [dbo].[OrderItem] --- Mar 21 2018  7:28:55.9494994AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table: --- [dbo].[OrderItem] --- Mar 21 2018  7:28:55.9563335AM
+Status: 10. Populate FL Table in Batches of 10000 (takes about 90 minutes in TEST for batches of 10000): --- [dbo].[OrderItem] --- Mar 21 2018  7:28:56.0783710AM
+Status: Approximate Target End Time for this Step to Complete: --- [dbo].[OrderItem] --- Mar 21 2018  8:58:56.0803236AM
+Status: 11. Enable FL Change Tracking: --- [dbo].[OrderItem] --- Mar 21 2018  8:46:45.6207142AM
+Status: 12. Create FL Indexes (takes about 40 minutes in TEST): --- [dbo].[OrderItem] --- Mar 21 2018  8:46:45.6929826AM
+Status: 13. Create FL Foreign Keys: --- [dbo].[OrderItem] --- Mar 21 2018  9:19:42.6897948AM
+Status: 14. Create FL Triggers: --- [dbo].[OrderItem] --- Mar 21 2018  9:34:58.0384194AM
+Status: 15. Grant SO Perms: --- [dbo].[OrderItem] --- Mar 21 2018  9:34:58.3401888AM
+Status: 16. Check FL Checks (takes about 30 minutes in TEST): --- [dbo].[OrderItem] --- Mar 21 2018  9:34:58.4036678AM
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[OrderItem] --- Mar 21 2018 10:06:22.6488716AM
+OrderItem_Unaligned Row Count:	118263425
+OrderItem Aligned Row Count:	118263425
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[OrderItem] --- Mar 21 2018 10:08:49.4367346AM
+
+/******************************************************************************
+-- This output is generated to be run as part of the rollback process.
+Status: SO - Point FKs to Aligned Tables (takes about 15 minutes in TEST): --- Mar 23 2018  8:14:57.3059136AM
+Status: Approximate Target End Time for Script to Complete: --- Mar 23 2018  8:29:57.3166562AM
+Status: 1. Manually Handle FKs with Mulitple Columns --- Mar 23 2018  8:14:57.3215392AM
+******************************************************************************/
+/******************************************************************************
+Status: 2. Dynamically Generate SQL to Point to Aligned Tables --- Mar 23 2018  8:14:57.9651186AM
+Status: Approximate Target End Time for this Step to Complete: --- [dbo].[OrderItem] --- Mar 23 2018  9:00:57.9660952AM
+******************************************************************************/
+/******************************************************************************
+		Altering Table #5 --- Mar 23 2018  8:14:58.7395624AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SuspendedAvgCost_OrderItem_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[SuspendedAvgCost]'))
+ALTER TABLE [dbo].[SuspendedAvgCost] DROP CONSTRAINT [FK_SuspendedAvgCost_OrderItem_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SuspendedAvgCost_OrderItem_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[SuspendedAvgCost]'))
+ALTER TABLE [dbo].[SuspendedAvgCost]  WITH NOCHECK ADD  CONSTRAINT [FK_SuspendedAvgCost_OrderItem_ID] FOREIGN KEY([OrderItem_ID])
+REFERENCES [dbo].[OrderItem] ([OrderItem_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #4 --- Mar 23 2018  8:14:58.8440586AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemCOOL4010Detail_OrderItem]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemCOOL4010Detail]'))
+ALTER TABLE [dbo].[OrderItemCOOL4010Detail] DROP CONSTRAINT [FK_OrderItemCOOL4010Detail_OrderItem]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemCOOL4010Detail_OrderItem]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemCOOL4010Detail]'))
+ALTER TABLE [dbo].[OrderItemCOOL4010Detail]  WITH NOCHECK ADD  CONSTRAINT [FK_OrderItemCOOL4010Detail_OrderItem] FOREIGN KEY([OrderItem_ID])
+REFERENCES [dbo].[OrderItem] ([OrderItem_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #3 --- Mar 23 2018  8:14:58.9358590AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemCOOL4020Detail_OrderItem]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemCOOL4020Detail]'))
+ALTER TABLE [dbo].[OrderItemCOOL4020Detail] DROP CONSTRAINT [FK_OrderItemCOOL4020Detail_OrderItem]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemCOOL4020Detail_OrderItem]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemCOOL4020Detail]'))
+ALTER TABLE [dbo].[OrderItemCOOL4020Detail]  WITH NOCHECK ADD  CONSTRAINT [FK_OrderItemCOOL4020Detail_OrderItem] FOREIGN KEY([OrderItem_ID])
+REFERENCES [dbo].[OrderItem] ([OrderItem_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #2 --- Mar 23 2018  8:14:59.0227764AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemHistory_OrderItem]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemHistory]'))
+ALTER TABLE [dbo].[ItemHistory] DROP CONSTRAINT [FK_ItemHistory_OrderItem]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemHistory_OrderItem]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemHistory]'))
+ALTER TABLE [dbo].[ItemHistory]  WITH NOCHECK ADD  CONSTRAINT [FK_ItemHistory_OrderItem] FOREIGN KEY([OrderItem_ID])
+REFERENCES [dbo].[OrderItem] ([OrderItem_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #1 --- Mar 23 2018  8:14:59.1204364AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemHistoryOther_Hist_OrderItem]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemHistoryQueue]'))
+ALTER TABLE [dbo].[ItemHistoryQueue] DROP CONSTRAINT [FK_ItemHistoryOther_Hist_OrderItem]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemHistoryOther_Hist_OrderItem]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemHistoryQueue]'))
+ALTER TABLE [dbo].[ItemHistoryQueue]  WITH NOCHECK ADD  CONSTRAINT [FK_ItemHistoryOther_Hist_OrderItem] FOREIGN KEY([OrderItem_ID])
+REFERENCES [dbo].[OrderItem] ([OrderItem_ID])
+
+
+GO
