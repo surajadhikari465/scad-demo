@@ -20,7 +20,7 @@ Partial Class UserInterface_MasterPage
         Dim VersionDAO As New VersionDAO
 
         Dim disableSlimFunctions As Boolean = Application.Get("HideSlimFunctionality")
-        EnableDisableMenuItems(Me, disableSlimFunctions)
+        HideMenuItems(Me, disableSlimFunctions)
 
         If Not IsPostBack Then
             If Session("Region") = "" Then
@@ -62,7 +62,7 @@ Partial Class UserInterface_MasterPage
 
     End Sub
 
-    Private Sub EnableDisableMenuItems(ByRef page As MasterPage, ByVal flagValue As Boolean)
+    Private Sub HideMenuItems(ByRef page As MasterPage, ByVal flagValue As Boolean)
 
         If (flagValue) Then
             Dim menuitem As UltraWebMenu = page.FindControl("UltraWebMenu1")
