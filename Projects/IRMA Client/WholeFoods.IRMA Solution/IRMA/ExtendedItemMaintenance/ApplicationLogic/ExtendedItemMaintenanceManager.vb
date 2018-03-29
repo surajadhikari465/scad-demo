@@ -16,6 +16,11 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
     Public Class ExtendedItemMaintenanceManager
 
+#Region "Constant fields"
+        Const slimDealDataConst As String = "SLIM Deal Data"
+#End Region
+
+
 #Region "Fields and Properties"
 
         Private _extendedItemMaintenanceForm As ExtendedItemMaintenanceForm
@@ -61,7 +66,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             Get
                 If IsNothing(_currentUploadSession) Then
                     _currentUploadSession = New UploadSession()
-
+                    _currentUploadSession.SlimDealDataGroupName = slimDealDataConst
                     ' add all UploadTypes by default
                     _currentUploadSession.SetUploadTypes(UploadTypeDAO.Instance.GetAllUploadTypes())
 
@@ -314,15 +319,15 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
 #Region "Public Methods"
 
-        Public Sub BindUploadSessionDataToGrids(ByRef gridCollection As SortableHashlist, ByVal inForImport As Boolean)
-            BindUploadSessionDataToGrids(gridCollection, inForImport, True)
+        Public Sub BindUploadSessionDataToGrids(ByRef gridCollection As SortableHashlist, ByVal inForImport As Boolean, Optional ByVal isSlimFunctionalityEnabled As Boolean = True)
+            BindUploadSessionDataToGrids(gridCollection, inForImport, True, isSlimFunctionalityEnabled)
         End Sub
 
         Public Sub BindUploadSessionDataToGrids(ByRef gridCollection As SortableHashlist,
-                ByVal inForImport As Boolean, ByVal inBuildDataSet As Boolean)
+                ByVal inForImport As Boolean, ByVal inBuildDataSet As Boolean, Optional ByVal isSlimFunctionalityEnabled As Boolean = True)
 
             If inBuildDataSet Then
-                Me.BuildDataSet()
+                Me.BuildDataSet(isSlimFunctionalityEnabled)
             End If
 
             Dim theDataSet As DataSet = Me.CurrentUploadSession.DataSet
@@ -337,7 +342,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
                 theGrid.BeginUpdate()
 
-                BuildGridColumns(theGrid, theUploadType.UploadTypeCode, inForImport)
+                BuildGridColumns(theGrid, theUploadType.UploadTypeCode, inForImport, isSlimFunctionalityEnabled)
 
                 ' bind the data to the grid
                 theGrid.DataSource = theDataSet
@@ -468,8 +473,8 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
         End Sub
 
-        Public Sub BuildDataSet()
-            Me.CurrentUploadRowHolderCollecton = Me.CurrentUploadSession.BuildDataSet()
+        Public Sub BuildDataSet(Optional ByVal isSlimFunctionalityEnabled As Boolean = True)
+            Me.CurrentUploadRowHolderCollecton = Me.CurrentUploadSession.BuildDataSet(isSlimFunctionalityEnabled)
         End Sub
 
         ''' <summary>
@@ -553,7 +558,8 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
         ''' <param name="gridCollection"></param>
         ''' <param name="uploadTypeCollection"></param>
         ''' <remarks></remarks>
-        Public Sub SpreadsheetExport(ByRef gridCollection As SortableHashlist, ByRef uploadTypeCollection As BusinessObjectCollection, ByRef validationErrors As SortableHashlist)
+        Public Sub SpreadsheetExport(ByRef gridCollection As SortableHashlist, ByRef uploadTypeCollection As BusinessObjectCollection,
+                                     ByRef validationErrors As SortableHashlist, Optional ByVal isSlimFunctionalityEnabled As Boolean = True)
 
             Dim tempSelectedFile As String = Me.CurrentFileName
             Dim excelBook As Infragistics.Excel.Workbook = Nothing
@@ -592,7 +598,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                     'only for the provided UploadTypes
                     For Each theUploadType As UploadType In uploadTypeCollection
 
-                        theUploadAttributes = Me.CurrentUploadSession.FindUploadAttributesInFirstUploadRowByUploadTypeCode(theUploadType.UploadTypeCode)
+                        theUploadAttributes = Me.CurrentUploadSession.FindUploadAttributesInFirstUploadRowByUploadTypeCode(theUploadType.UploadTypeCode, isSlimFunctionalityEnabled)
                         theUploadAttributes.SortByPropertyValue("SpreadsheetPosition")
 
                         For Each theUploadAttribute As UploadAttribute In theUploadAttributes
@@ -1378,7 +1384,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
         ''' <param name="inUploadTypeCode"></param>
         ''' <remarks></remarks>
         Private Sub BuildGridColumnGroups(ByRef inGrid As UltraGrid, ByVal inUploadTypeCode As String,
-                ByVal inForImport As Boolean)
+                ByVal inForImport As Boolean, Optional ByVal isSlimFunctionalityEnabled As Boolean = True)
 
             ' create default group
             inGrid.DisplayLayout.Bands(0).Groups.Add(" ")
@@ -1393,12 +1399,17 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                 ' build the bands based on what has been loaded from either a session
                 ' or an item load
                 theUploadTypeAttributes = UploadTypeAttributeDAO.Instance.GetUploadTypeAttributesByUploadTypeCode(inUploadTypeCode)
+
             End If
 
             theUploadTypeAttributes.SortByPropertyValue("GridPosition")
 
             ' create, configure, and add the configured band to the grid
             For Each theUploadTypeAttribute As UploadTypeAttribute In theUploadTypeAttributes
+
+                If (Not isSlimFunctionalityEnabled AndAlso theUploadTypeAttribute.GroupName = slimDealDataConst) Then
+                    Continue For
+                End If
 
                 If theUploadTypeAttribute.UploadAttribute.IsAllowedForRegion() AndAlso
                         Me.CurrentUploadSession.IsAttributeInTemplateForUploadType(inUploadTypeCode, theUploadTypeAttribute.UploadAttribute) Then
@@ -1417,7 +1428,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
         ''' <param name="inUploadTypeCode"></param>
         ''' <remarks></remarks>
         Private Sub BuildGridColumns(ByRef inGrid As UltraGrid, ByVal inUploadTypeCode As String,
-                ByVal inForImport As Boolean)
+                ByVal inForImport As Boolean, Optional ByVal isSlimFunctionalityEnabled As Boolean = True)
 
             ' clear out any existing grid columns
             inGrid.DataSource = Nothing
@@ -1426,7 +1437,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             inGrid.DisplayLayout.AutoFitStyle = Infragistics.Win.UltraWinGrid.AutoFitStyle.None
             Me.AttributeNameToColumnIndexMap.Clear()
 
-            BuildGridColumnGroups(inGrid, inUploadTypeCode, inForImport)
+            BuildGridColumnGroups(inGrid, inUploadTypeCode, inForImport, isSlimFunctionalityEnabled)
             BuildNonAttributeGridColumns(inGrid)
 
             ' get the UploadAttributeTypes and their UploadAttributes for the provided uploadTypeCode
@@ -1448,6 +1459,10 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
             ' create, configure, and add the configured columns to the grid
             For Each theUploadTypeAttribute As UploadTypeAttribute In theUploadTypeAttributes
+
+                If (Not isSlimFunctionalityEnabled AndAlso theUploadTypeAttribute.GroupName = slimDealDataConst) Then
+                    Continue For
+                End If
 
                 If theUploadTypeAttribute.UploadAttribute.IsAllowedForRegion() AndAlso
                         Me.CurrentUploadSession.IsAttributeInTemplateForUploadType(inUploadTypeCode, theUploadTypeAttribute.UploadAttribute) Then

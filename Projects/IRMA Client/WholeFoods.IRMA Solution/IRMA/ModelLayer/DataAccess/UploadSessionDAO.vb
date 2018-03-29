@@ -46,8 +46,8 @@ Namespace WholeFoods.IRMA.ModelLayer.DataAccess
 
 #Region "Public Methods"
 
-        Public Function SessionSearch(ByVal uploadSessionId As Integer, ByVal uploadTypeCode As String, _
-            ByVal sessionName As String, ByVal userId As Integer, ByVal createdDate As DateTime, _
+        Public Function SessionSearch(ByVal uploadSessionId As Integer, ByVal uploadTypeCode As String,
+            ByVal sessionName As String, ByVal userId As Integer, ByVal createdDate As DateTime,
             ByVal savedOnly As Boolean, ByVal uploadedOnly As Boolean, ByVal savedAndUploaded As Boolean) As DataSet
 
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
@@ -130,15 +130,16 @@ Namespace WholeFoods.IRMA.ModelLayer.DataAccess
 
         End Function
 
-        Public Function ItemSearch(ByVal identifier As String, ByVal description As String, _
-            ByVal vendorID As Integer, ByVal brandID As Integer, ByVal storeIDs As String, _
-            ByVal subteamID As Integer, ByVal categoryID As Integer, _
-            ByVal level3ID As Integer, ByVal level4ID As Integer, _
-            ByVal psVendorID As String, ByVal vendorItemID As String, _
-            ByVal distSubteamID As Integer, ByVal itemChainID As Integer, _
-            ByVal isDiscontinued As Boolean, ByVal isNotAvailable As Boolean, _
-            ByVal includeDeletedItems As Boolean, ByVal isFromSLIM As Boolean, _
-            ByVal inIsDefaultJurisdiction As Integer, ByVal inStoreJurisdictionId As Integer _
+        Public Function ItemSearch(ByVal identifier As String, ByVal description As String,
+            ByVal vendorID As Integer, ByVal brandID As Integer, ByVal storeIDs As String,
+            ByVal subteamID As Integer, ByVal categoryID As Integer,
+            ByVal level3ID As Integer, ByVal level4ID As Integer,
+            ByVal psVendorID As String, ByVal vendorItemID As String,
+            ByVal distSubteamID As Integer, ByVal itemChainID As Integer,
+            ByVal isDiscontinued As Boolean, ByVal isNotAvailable As Boolean,
+            ByVal includeDeletedItems As Boolean,
+            ByVal inIsDefaultJurisdiction As Integer, ByVal inStoreJurisdictionId As Integer,
+            Optional ByVal isFromSLIM As Boolean = False
             ) As DataSet
 
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
@@ -321,7 +322,7 @@ Namespace WholeFoods.IRMA.ModelLayer.DataAccess
 
         End Function
 
-        Public Function UploadSession(ByRef inUploadSession As UploadSession, _
+        Public Function UploadSession(ByRef inUploadSession As UploadSession,
                 ByVal inFromSLIM As Boolean) As Boolean
 
             Dim factory As New DataFactory(DataFactory.ItemCatalog)

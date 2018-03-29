@@ -37,7 +37,6 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
     Public Class UploadSession
         Inherits UploadSessionRegen
 
-
 #Region "Overriden Fields and Properties"
 
         ''' <summary>
@@ -210,6 +209,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
         Private _allUploadAttributesByID As BusinessObjectCollection = Nothing
         Private _uploadAttributesByName As BusinessObjectCollection = Nothing
         Private _uploadAttributesByKey As BusinessObjectCollection = Nothing
+        Private _slimDealDataGroupName As String
         Private _progressCounter As Integer
         Private _progressComplete As Boolean
 
@@ -231,6 +231,15 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
 
                 Return _dataSet
             End Get
+        End Property
+
+        Public Property SlimDealDataGroupName() As String
+            Get
+                Return _slimDealDataGroupName
+            End Get
+            Set(ByVal value As String)
+                _slimDealDataGroupName = value
+            End Set
         End Property
 
         Public Property AllUploadAttributesByName() As BusinessObjectCollection
@@ -421,7 +430,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
         ''' <param name="inUploadCode"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function FindUploadTypeAttributesInFirstUploadRowByUploadTypeCode(ByVal inUploadCode As String) As BusinessObjectCollection
+        Public Function FindUploadTypeAttributesInFirstUploadRowByUploadTypeCode(ByVal inUploadCode As String, Optional ByVal isSlimFunctionalityEnabled As Boolean = True) As BusinessObjectCollection
 
             Dim theUploadTypeAttributeCollection As New BusinessObjectCollection()
             Dim theFirstUploadRow As UploadRow = Me.UploadRow
@@ -431,7 +440,11 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                 For Each theUploadValue As UploadValue In theFirstUploadRow.UploadValueCollection
                     For Each theUploadTypeAttribute As UploadTypeAttribute In theUploadValue.UploadAttribute.UploadTypeAttributeCollection
 
-                        If theUploadTypeAttribute.UploadTypeCode.Equals(inUploadCode) AndAlso _
+                        If (Not isSlimFunctionalityEnabled AndAlso theUploadTypeAttribute.GroupName = Me.SlimDealDataGroupName) Then
+                            Continue For
+                        End If
+
+                        If theUploadTypeAttribute.UploadTypeCode.Equals(inUploadCode) AndAlso
                                 Not theUploadTypeAttributeCollection.ContainsKey(theUploadTypeAttribute.PrimaryKey) Then
 
                             theUploadTypeAttributeCollection.Add(theUploadTypeAttribute.PrimaryKey, theUploadTypeAttribute)
@@ -498,7 +511,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
         ''' <param name="inUploadCode"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function FindUploadAttributesInFirstUploadRowByUploadTypeCode(ByVal inUploadCode As String) As BusinessObjectCollection
+        Public Function FindUploadAttributesInFirstUploadRowByUploadTypeCode(ByVal inUploadCode As String, Optional ByVal isSlimFunctionalityEnabled As Boolean = True) As BusinessObjectCollection
 
             Dim theUploadAttributeCollection As New BusinessObjectCollection()
             Dim theFirstUploadRow As UploadRow = Me.UploadRow
@@ -511,6 +524,10 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                     If theUploadValue.ColumnNameOrKey <> "upload_exclusion" Then
 
                         For Each theUploadTypeAttribute As UploadTypeAttribute In theUploadValue.UploadAttribute.UploadTypeAttributeCollection
+
+                            If (Not isSlimFunctionalityEnabled AndAlso theUploadTypeAttribute.GroupName = Me.SlimDealDataGroupName) Then
+                                Continue For
+                            End If
 
                             If theUploadTypeAttribute.UploadTypeCode.Equals(inUploadCode) Then
 
@@ -612,7 +629,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
         ''' Use the DataSet property to get DataSet.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Function BuildDataSet() As UploadRowHolderCollection
+        Public Function BuildDataSet(Optional ByVal isSlimFunctionalityEnabled As Boolean = True) As UploadRowHolderCollection
 
             Dim theUploadRowHolderCollection As New UploadRowHolderCollection()
 
@@ -677,14 +694,19 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                         theDataColumn.DataType = UploadAttribute.MapFromDbDataType("int")
                         theDataTable.Columns.Add(theDataColumn)
 
-                        Dim theUploadTypeAttributes As BusinessObjectCollection = _
-                            FindUploadTypeAttributesInFirstUploadRowByUploadTypeCode(theUploadSessionUploadType.UploadTypeCode)
+                        Dim theUploadTypeAttributes As BusinessObjectCollection =
+                            FindUploadTypeAttributesInFirstUploadRowByUploadTypeCode(theUploadSessionUploadType.UploadTypeCode, isSlimFunctionalityEnabled)
+
 
                         ' now make sure we also have all the required attributes for the UploadType
                         Dim allUploadTypeAttributes As BusinessObjectCollection = UploadTypeAttributeDAO.Instance.GetAllUploadTypeAttributes()
                         For Each theUploadTypeAttribute As UploadTypeAttribute In allUploadTypeAttributes
 
-                            If theUploadTypeAttribute.UploadTypeCode.Equals(theUploadSessionUploadType.UploadTypeCode) AndAlso _
+                            If (Not isSlimFunctionalityEnabled AndAlso theUploadTypeAttribute.GroupName = Me.SlimDealDataGroupName) Then
+                                Continue For
+                            End If
+
+                            If theUploadTypeAttribute.UploadTypeCode.Equals(theUploadSessionUploadType.UploadTypeCode) AndAlso
                                     Me.IsNewItemSessionFlag And theUploadTypeAttribute.UploadAttribute.IsRequiredValue Then
                                 ' don't add it if it is already there
                                 If Not theUploadTypeAttributes.ContainsKey(theUploadTypeAttribute.PrimaryKey) Then
@@ -698,7 +720,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                         For Each theUploadTypeAttribute As UploadTypeAttribute In theUploadTypeAttributes
 
                             If allUploadTypeAttributes.ContainsKey(theUploadTypeAttribute.UploadTypeAttributeID) Then
-                                theUploadAttribute = _
+                                theUploadAttribute =
                                     Me.FindUploadAttributeByID(theUploadTypeAttribute.UploadAttributeID)
 
 
@@ -761,7 +783,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
 
                                         ' if is null or an invalid value for the datatype (unless a string)
                                         ' then set to DBNull
-                                        If (IsNothing(theUploadValue.Value) Or String.IsNullOrEmpty(theUploadValue.Value)) Or _
+                                        If (IsNothing(theUploadValue.Value) Or String.IsNullOrEmpty(theUploadValue.Value)) Or
                                                 (Not isValid And Not theUploadValue.DbDataType.ToLower().Equals("varchar")) Then
                                             theDataRow.Item(theUploadValue.Key) = DBNull.Value
                                         Else
@@ -798,7 +820,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
 
                             If Not IsNothing(thePreviousUploadRow) Then
 
-                                Dim isItemMaintenanceUploadType As Boolean = _
+                                Dim isItemMaintenanceUploadType As Boolean =
                                         theUploadSessionUploadType.UploadTypeCode.Equals(EIM_Constants.ITEM_MAINTENANCE_CODE)
 
                                 ' if the upload type is Item Maintenance then mark rows that have the same item so they can be marked in the UI
@@ -816,7 +838,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                                 theDataTable.Rows.Add(theDataRow)
 
                                 ' we will add the grid row later
-                                theUploadRowHolder.GridAndDataRowList.Add(theUploadSessionUploadType.UploadTypeCode, _
+                                theUploadRowHolder.GridAndDataRowList.Add(theUploadSessionUploadType.UploadTypeCode,
                                     New GridAndDataRowHolder(theUploadRow.UploadRowID, theUploadSessionUploadType.UploadTypeCode, Nothing, theDataRow))
 
                                 rowHasData = False
