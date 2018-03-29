@@ -17,5 +17,5 @@ BEGIN
 END
 
 GO
-GRANT EXEC ON [gpm].[GetCheckPointMessageData] TO TibcoRole
+GRANT EXEC ON [gpm].[GetCheckPointMessageData] TO TibcoRole, MammothRole
 GO
