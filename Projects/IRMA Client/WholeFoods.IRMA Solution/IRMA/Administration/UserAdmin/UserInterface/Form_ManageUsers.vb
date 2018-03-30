@@ -74,11 +74,14 @@ Public Class Form_ManageUsers
         Cursor = Cursors.WaitCursor
         Me._initializing = True
 
-        ' Populate the data grid
-        PopulateUsersConfig()
+        colUserName.HeaderText = ResourcesAdministration.GetString("label_UserName")
+        colFullName.HeaderText = ResourcesAdministration.GetString("label_FullName")
+        colTitle.HeaderText = ResourcesAdministration.GetString("label_Title")
+        colAccountEnabled.HeaderText = ResourcesAdministration.GetString("label_AccountEnabled")
+
         GetTitles()
 
-        Me.DataGridView_ConfigItems.ClearSelection()
+        Me.DataGridView_ManageUsers.ClearSelection()
         Me.TextBox_FilterUserName.Focus()
         Me._initializing = False
         Cursor = Cursors.Arrow
@@ -104,7 +107,7 @@ Public Class Form_ManageUsers
     Private Sub EditUserForm_UpdateCallingForm() Handles editUserForm.UpdateCallingForm
         ' Refresh the data grid
 
-        PopulateUsersConfig()
+        PopulateGrid()
 
         ' if the user had a filter applied before opening the form, reapply it
         If Me._filterApplied Then
@@ -122,7 +125,7 @@ Public Class Form_ManageUsers
     ''' <remarks></remarks>
     Private Sub DeleteUserForm_UpdateCallingForm() Handles deleteUserForm.UpdateCallingForm
         ' Refresh the data grid
-        PopulateUsersConfig()
+        PopulateGrid()
 
         ' if the user had a filter applied before opening the form, reapply it
         If Me._filterApplied Then
@@ -184,7 +187,7 @@ Public Class Form_ManageUsers
             editUserForm = New Form_EditUser()
             editUserForm.CurrentAction = FormAction.Edit
             ' Get the selected row
-            Dim selectedRow As DataGridViewRow = getSelectedRow(DataGridView_ConfigItems)
+            Dim selectedRow As DataGridViewRow = getSelectedRow(DataGridView_ManageUsers)
             If selectedRow IsNot Nothing Then
                 ' Populate the edit form with the values from the selected row
 
@@ -193,22 +196,14 @@ Public Class Form_ManageUsers
                 ' until you actually decide to edit one.
                 'editUserForm.UserConfig = New UserBO(selectedRow)
 
-                editUserForm.UserConfig = New UserBO(CType(selectedRow.Cells("User_ID").Value, Integer))
+                editUserForm.UserConfig = New UserBO(CType(selectedRow.Cells(colUserID.Name).Value, Integer))
 
                 ' Show the form
                 editUserForm.ShowDialog(Me)
                 editUserForm.Dispose()
 
                 If selectedRow IsNot Nothing Then
-                    If CType(selectedRow.Cells(3).Value, Boolean) = True Then
-
-                        Me.Button_Delete.Enabled = True
-
-                    Else
-
-                        Me.Button_Delete.Enabled = False
-
-                    End If
+                    Me.Button_Delete.Enabled = (CType(selectedRow.Cells(colAccountEnabled.Name).Value, Boolean) = True)
                 End If
 
             End If
@@ -226,7 +221,7 @@ Public Class Form_ManageUsers
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub DataGridView_ConfigItems_CellDoubleClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView_ConfigItems.CellDoubleClick
+    Private Sub DataGridView_ConfigItems_CellDoubleClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView_ManageUsers.CellDoubleClick
         Logger.LogDebug("DataGridView_ConfigItems_CellDoubleClick", Me.GetType())
         Me.Cursor = Cursors.WaitCursor
         ProcessEditUser()
@@ -280,7 +275,7 @@ Public Class Form_ManageUsers
         Logger.LogDebug("ProcessDeleteUser entry", Me.GetType())
         Try
             ' Get the selected row
-            Dim selectedRow As DataGridViewRow = getSelectedRow(DataGridView_ConfigItems)
+            Dim selectedRow As DataGridViewRow = getSelectedRow(DataGridView_ManageUsers)
             If selectedRow IsNot Nothing Then
                 '' Populate the delete form with the values from the selected row
                 'deleteUserForm = New Form_DeleteUser()
@@ -291,9 +286,9 @@ Public Class Form_ManageUsers
 
                 ' just disable the account - why do all this extra work?
                 Me.Cursor = Cursors.WaitCursor
-                UserDAO.DeleteUserRecord(CType(selectedRow.Cells("User_ID").Value, Integer))
+                UserDAO.DeleteUserRecord(CType(selectedRow.Cells(colUserID.Name).Value, Integer))
                 'refresh the grid after disabling the account
-                PopulateUsersConfig()
+                PopulateGrid()
                 Me.Cursor = Cursors.Default
                 MessageBox.Show("The user account has been disabled.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
@@ -339,13 +334,7 @@ Public Class Form_ManageUsers
 
         Me.Cursor = Cursors.WaitCursor
 
-        Dim source As New BindingSource()
-        source.DataSource = Me.DataGridView_ConfigItems.DataSource
-
-        ' Set the data source for the DataGridView.
-        Me.DataGridView_ConfigItems.DataSource = source
-
-        source.RemoveFilter()
+        UserDAOBindingSource.RemoveFilter()
 
         Me.TextBox_FilterFullName.Text = String.Empty
         Me.TextBox_FilterUserName.Text = String.Empty
@@ -380,12 +369,6 @@ Public Class Form_ManageUsers
             filterCollection.Add("AccountEnabled", " = False")
         End If
 
-        Dim source As New BindingSource()
-        source.DataSource = Me.DataGridView_ConfigItems.DataSource
-
-        ' Set the data source for the DataGridView.
-        Me.DataGridView_ConfigItems.DataSource = source
-
         Dim filter As String = String.Empty
 
         Dim i As Integer
@@ -396,11 +379,12 @@ Public Class Form_ManageUsers
             End If
         Next i
 
-        source.Filter = filter
+        PopulateGrid()
+        UserDAOBindingSource.Filter = filter
 
         Me.Cursor = Cursors.Default
 
-        If source.Count = 0 Then
+        If UserDAOBindingSource.Count = 0 Then
             MessageBox.Show("No users match that criteria.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
 
@@ -426,90 +410,21 @@ Public Class Form_ManageUsers
 #Region "Populate and format DataGridView objects for the form"
 
     ''' <summary>
-    ''' Populate the DataGridView_ConfigItems with the current data from the database.
+    ''' Populate the DataGridView with the current data from the database.
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub PopulateUsersConfig()
+    Private Sub PopulateGrid()
         Try
-
             ' Read the users data
             Dim _dataSet As DataSet = UserDAO.GetUsers()
 
-            DataGridView_ConfigItems.DataSource = _dataSet.Tables(0)
-            DataGridView_ConfigItems.MultiSelect = False
+            DataGridView_ManageUsers.DataSource = Nothing
+            DataGridView_ManageUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
 
-            ' Format the view
-            ' Make sure at least one entry was returned before configuring the columns
-            If (DataGridView_ConfigItems.Columns.Count > 0) Then
+            UserDAOBindingSource.DataSource = _dataSet.Tables(0)
 
-                DataGridView_ConfigItems.Columns("User_ID").Visible = False
-
-                ' WAY to much processing going on here. Limit to only the fields we are actually displaying
-                ' DO NOT create objects for every user - only create an object for a user if we are going to use it
-                ' otherwise we are slowing this panel way down.
-
-                'DataGridView_ConfigItems.Columns("SuperUser").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_1").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_2").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_3").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_4").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_5").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_6").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_7").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_8").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_9").Visible = False
-                'DataGridView_ConfigItems.Columns("Search_10").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Store_Limit").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Enabled").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Waste").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Cycle_Count").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Distribution").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Transfers").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Price_Check").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Superuser").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Orders").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Receiving").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Reserved_2").Visible = False
-                'DataGridView_ConfigItems.Columns("Telxon_Reserved_3").Visible = False
-                'DataGridView_ConfigItems.Columns("Support_Password").Visible = False
-                'DataGridView_ConfigItems.Columns("Support_Administrator").Visible = False
-                'DataGridView_ConfigItems.Columns("Support_Worker").Visible = False
-                'DataGridView_ConfigItems.Columns("Maintenance_Password").Visible = False
-                'DataGridView_ConfigItems.Columns("Maintenance_Administrator").Visible = False
-                'DataGridView_ConfigItems.Columns("Maintenance_Worker").Visible = False
-                'DataGridView_ConfigItems.Columns("RecvLog_Store_Limit").Visible = False
-                'DataGridView_ConfigItems.Columns("Delete_Access").Visible = False
-                'DataGridView_ConfigItems.Columns("Warehouse").Visible = False
-                'DataGridView_ConfigItems.Columns("Non_PO_Administrator").Visible = False
-                'DataGridView_ConfigItems.Columns("PriceBatchProcessor").Visible = False
-                'DataGridView_ConfigItems.Columns("Inventory_Administrator").Visible = False
-
-                DataGridView_ConfigItems.Columns("UserName").DisplayIndex = 0
-                DataGridView_ConfigItems.Columns("UserName").HeaderText = ResourcesAdministration.GetString("label_UserName")
-                DataGridView_ConfigItems.Columns("UserName").ReadOnly = True
-
-                DataGridView_ConfigItems.Columns("FullName").DisplayIndex = 1
-                DataGridView_ConfigItems.Columns("FullName").HeaderText = ResourcesAdministration.GetString("label_FullName")
-                DataGridView_ConfigItems.Columns("FullName").ReadOnly = True
-
-                'DataGridView_ConfigItems.Columns("EMail").DisplayIndex = 2
-                'DataGridView_ConfigItems.Columns("EMail").HeaderText = ResourcesAdministration.GetString("label_EMail")
-                'DataGridView_ConfigItems.Columns("EMail").ReadOnly = True
-
-                'DataGridView_ConfigItems.Columns("Phone_Number").DisplayIndex = 3
-                'DataGridView_ConfigItems.Columns("Phone_Number").HeaderText = ResourcesAdministration.GetString("label_Phone_Number")
-                'DataGridView_ConfigItems.Columns("Phone_Number").ReadOnly = True
-
-                DataGridView_ConfigItems.Columns("Title").DisplayIndex = 2
-                DataGridView_ConfigItems.Columns("Title").HeaderText = ResourcesAdministration.GetString("label_Title")
-                DataGridView_ConfigItems.Columns("Title").ReadOnly = True
-
-                DataGridView_ConfigItems.Columns("AccountEnabled").DisplayIndex = 3
-                DataGridView_ConfigItems.Columns("AccountEnabled").HeaderText = ResourcesAdministration.GetString("label_AccountEnabled")
-                DataGridView_ConfigItems.Columns("AccountEnabled").ReadOnly = True
-
-                DataGridView_ConfigItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            End If
+            DataGridView_ManageUsers.DataSource = UserDAOBindingSource
+            DataGridView_ManageUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
 
         Catch e As DataFactoryException
             Logger.LogError("Exception: ", Me.GetType(), e)
@@ -522,14 +437,14 @@ Public Class Form_ManageUsers
         End Try
     End Sub
 
-    Private Sub DataGridView_ConfigItems_ColumnHeaderMouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles DataGridView_ConfigItems.ColumnHeaderMouseClick
-        Me.DataGridView_ConfigItems.ClearSelection()
+    Private Sub DataGridView_ConfigItems_ColumnHeaderMouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles DataGridView_ManageUsers.ColumnHeaderMouseClick
+        Me.DataGridView_ManageUsers.ClearSelection()
         '       Me.Button_Delete.Enabled = False
     End Sub
 
-    Private Sub DataGridView_ConfigItems_RowEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView_ConfigItems.RowEnter
+    Private Sub DataGridView_ConfigItems_RowEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView_ManageUsers.RowEnter
 
-        If Not Me._initializing And Me.DataGridView_ConfigItems.SelectedRows.Count = 1 Then
+        If Not Me._initializing And Me.DataGridView_ManageUsers.SelectedRows.Count = 1 Then
 
             Logger.LogDebug("DataGridView_ConfigItems_RowEnter entry", Me.GetType())
 
@@ -538,17 +453,10 @@ Public Class Form_ManageUsers
                 Me.Button_Delete.Enabled = False
 
                 ' Get the selected row
-                Dim selectedRow As DataGridViewRow = getSelectedRow(DataGridView_ConfigItems)
+                Dim selectedRow As DataGridViewRow = getSelectedRow(DataGridView_ManageUsers)
+
                 If selectedRow IsNot Nothing Then
-                    If CType(selectedRow.Cells("AccountEnabled").Value, Boolean) = True Then
-
-                        Me.Button_Delete.Enabled = True
-
-                    Else
-
-                        Me.Button_Delete.Enabled = False
-
-                    End If
+                    Me.Button_Delete.Enabled = (CType(selectedRow.Cells(colAccountEnabled.Name).Value, Boolean) = True)
                 End If
 
                 Me.Button_Edit.Enabled = True

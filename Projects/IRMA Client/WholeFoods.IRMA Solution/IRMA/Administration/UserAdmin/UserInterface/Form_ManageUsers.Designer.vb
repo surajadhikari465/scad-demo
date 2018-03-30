@@ -1,9 +1,9 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form_ManageUsers
     Inherits Form_IRMABase
 
     'UserControl overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -17,31 +17,39 @@ Partial Class Form_ManageUsers
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form_ManageUsers))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Me.Button_Delete = New System.Windows.Forms.Button
-        Me.Button_Edit = New System.Windows.Forms.Button
-        Me.Button_Add = New System.Windows.Forms.Button
-        Me.Button_Close = New System.Windows.Forms.Button
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.DataGridView_ConfigItems = New System.Windows.Forms.DataGridView
-        Me.Group_FilterOptions = New System.Windows.Forms.GroupBox
-        Me.Label_FilterStatus = New System.Windows.Forms.Label
-        Me.Radio_FilterStatusEnabled = New System.Windows.Forms.RadioButton
-        Me.Radio_FilterStatusDisabled = New System.Windows.Forms.RadioButton
-        Me.Radio_FiterStatusAll = New System.Windows.Forms.RadioButton
-        Me.ComboBox_FilterTitle = New System.Windows.Forms.ComboBox
-        Me.Label_FilterTitle = New System.Windows.Forms.Label
-        Me.Button_ApplyFilter = New System.Windows.Forms.Button
-        Me.Button_ClearFilter = New System.Windows.Forms.Button
-        Me.TextBox_FilterFullName = New System.Windows.Forms.TextBox
-        Me.Label_FilterFullName = New System.Windows.Forms.Label
-        Me.TextBox_FilterUserName = New System.Windows.Forms.TextBox
-        Me.Label_FilterWFMUser = New System.Windows.Forms.Label
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Me.Button_Delete = New System.Windows.Forms.Button()
+        Me.Button_Edit = New System.Windows.Forms.Button()
+        Me.Button_Add = New System.Windows.Forms.Button()
+        Me.Button_Close = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.DataGridView_ManageUsers = New System.Windows.Forms.DataGridView()
+        Me.UserDAOBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.Group_FilterOptions = New System.Windows.Forms.GroupBox()
+        Me.Label_FilterStatus = New System.Windows.Forms.Label()
+        Me.Radio_FilterStatusEnabled = New System.Windows.Forms.RadioButton()
+        Me.Radio_FilterStatusDisabled = New System.Windows.Forms.RadioButton()
+        Me.Radio_FiterStatusAll = New System.Windows.Forms.RadioButton()
+        Me.ComboBox_FilterTitle = New System.Windows.Forms.ComboBox()
+        Me.Label_FilterTitle = New System.Windows.Forms.Label()
+        Me.Button_ApplyFilter = New System.Windows.Forms.Button()
+        Me.Button_ClearFilter = New System.Windows.Forms.Button()
+        Me.TextBox_FilterFullName = New System.Windows.Forms.TextBox()
+        Me.Label_FilterFullName = New System.Windows.Forms.Label()
+        Me.TextBox_FilterUserName = New System.Windows.Forms.TextBox()
+        Me.Label_FilterWFMUser = New System.Windows.Forms.Label()
+        Me.colUserName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colFullName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colAccountEnabled = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.colUserID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.GroupBox1.SuspendLayout()
-        CType(Me.DataGridView_ConfigItems, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DataGridView_ManageUsers, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.UserDAOBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Group_FilterOptions.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -99,39 +107,47 @@ Partial Class Form_ManageUsers
         'GroupBox1
         '
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox1.Controls.Add(Me.Button_Delete)
         Me.GroupBox1.Controls.Add(Me.Button_Edit)
         Me.GroupBox1.Controls.Add(Me.Button_Add)
-        Me.GroupBox1.Controls.Add(Me.DataGridView_ConfigItems)
+        Me.GroupBox1.Controls.Add(Me.DataGridView_ManageUsers)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 98)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(689, 449)
         Me.GroupBox1.TabIndex = 15
         Me.GroupBox1.TabStop = False
         '
-        'DataGridView_ConfigItems
+        'DataGridView_ManageUsers
         '
-        Me.DataGridView_ConfigItems.AllowUserToAddRows = False
-        Me.DataGridView_ConfigItems.AllowUserToDeleteRows = False
-        Me.DataGridView_ConfigItems.AllowUserToOrderColumns = True
+        Me.DataGridView_ManageUsers.AllowUserToAddRows = False
+        Me.DataGridView_ManageUsers.AllowUserToDeleteRows = False
+        Me.DataGridView_ManageUsers.AllowUserToOrderColumns = True
         DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.DataGridView_ConfigItems.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
-        Me.DataGridView_ConfigItems.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DataGridView_ConfigItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
-        Me.DataGridView_ConfigItems.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
-        Me.DataGridView_ConfigItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView_ConfigItems.Location = New System.Drawing.Point(6, 16)
-        Me.DataGridView_ConfigItems.MultiSelect = False
-        Me.DataGridView_ConfigItems.Name = "DataGridView_ConfigItems"
-        Me.DataGridView_ConfigItems.ReadOnly = True
-        Me.DataGridView_ConfigItems.RowHeadersVisible = False
-        Me.DataGridView_ConfigItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DataGridView_ConfigItems.Size = New System.Drawing.Size(574, 427)
-        Me.DataGridView_ConfigItems.TabIndex = 10
+        Me.DataGridView_ManageUsers.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        Me.DataGridView_ManageUsers.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridView_ManageUsers.AutoGenerateColumns = False
+        Me.DataGridView_ManageUsers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.DataGridView_ManageUsers.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
+        Me.DataGridView_ManageUsers.CausesValidation = False
+        Me.DataGridView_ManageUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView_ManageUsers.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colUserName, Me.colFullName, Me.colTitle, Me.colAccountEnabled, Me.colUserID})
+        Me.DataGridView_ManageUsers.DataSource = Me.UserDAOBindingSource
+        Me.DataGridView_ManageUsers.Location = New System.Drawing.Point(6, 16)
+        Me.DataGridView_ManageUsers.MultiSelect = False
+        Me.DataGridView_ManageUsers.Name = "DataGridView_ManageUsers"
+        Me.DataGridView_ManageUsers.ReadOnly = True
+        Me.DataGridView_ManageUsers.RowHeadersVisible = False
+        Me.DataGridView_ManageUsers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.DataGridView_ManageUsers.Size = New System.Drawing.Size(574, 427)
+        Me.DataGridView_ManageUsers.TabIndex = 10
+        '
+        'UserDAOBindingSource
+        '
+        Me.UserDAOBindingSource.DataSource = GetType(WholeFoods.IRMA.Administration.Common.DataAccess.UserDAO)
         '
         'Group_FilterOptions
         '
@@ -281,6 +297,51 @@ Partial Class Form_ManageUsers
         Me.Label_FilterWFMUser.TabIndex = 0
         Me.Label_FilterWFMUser.Text = "User ID:"
         '
+        'colUserName
+        '
+        Me.colUserName.DataPropertyName = "UserName"
+        Me.colUserName.FillWeight = 60.0!
+        Me.colUserName.HeaderText = "WFM Login ID"
+        Me.colUserName.MaxInputLength = 25
+        Me.colUserName.Name = "colUserName"
+        Me.colUserName.ReadOnly = True
+        '
+        'colFullName
+        '
+        Me.colFullName.DataPropertyName = "FullName"
+        Me.colFullName.FillWeight = 120.0!
+        Me.colFullName.HeaderText = "Name"
+        Me.colFullName.MaxInputLength = 50
+        Me.colFullName.Name = "colFullName"
+        Me.colFullName.ReadOnly = True
+        '
+        'colTitle
+        '
+        Me.colTitle.DataPropertyName = "Title"
+        Me.colTitle.FillWeight = 120.0!
+        Me.colTitle.HeaderText = "Title"
+        Me.colTitle.MaxInputLength = 50
+        Me.colTitle.Name = "colTitle"
+        Me.colTitle.ReadOnly = True
+        '
+        'colAccountEnabled
+        '
+        Me.colAccountEnabled.DataPropertyName = "AccountEnabled"
+        Me.colAccountEnabled.FillWeight = 80.0!
+        Me.colAccountEnabled.HeaderText = "Account Enabled"
+        Me.colAccountEnabled.Name = "colAccountEnabled"
+        Me.colAccountEnabled.ReadOnly = True
+        '
+        'colUserID
+        '
+        Me.colUserID.DataPropertyName = "User_ID"
+        Me.colUserID.FillWeight = 60.0!
+        Me.colUserID.HeaderText = "_hidden_User_ID"
+        Me.colUserID.MaxInputLength = 10
+        Me.colUserID.Name = "colUserID"
+        Me.colUserID.ReadOnly = True
+        Me.colUserID.Visible = False
+        '
         'Form_ManageUsers
         '
         Me.AcceptButton = Me.Button_ApplyFilter
@@ -298,7 +359,8 @@ Partial Class Form_ManageUsers
         Me.ShowInTaskbar = False
         Me.Text = "Manage Users"
         Me.GroupBox1.ResumeLayout(False)
-        CType(Me.DataGridView_ConfigItems, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DataGridView_ManageUsers, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.UserDAOBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Group_FilterOptions.ResumeLayout(False)
         Me.Group_FilterOptions.PerformLayout()
         Me.ResumeLayout(False)
@@ -309,7 +371,7 @@ Partial Class Form_ManageUsers
     Friend WithEvents Button_Add As System.Windows.Forms.Button
     Friend WithEvents Button_Close As System.Windows.Forms.Button
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Public WithEvents DataGridView_ConfigItems As System.Windows.Forms.DataGridView
+    Public WithEvents DataGridView_ManageUsers As System.Windows.Forms.DataGridView
     Friend WithEvents Group_FilterOptions As System.Windows.Forms.GroupBox
     Friend WithEvents ComboBox_FilterTitle As System.Windows.Forms.ComboBox
     Friend WithEvents Label_FilterTitle As System.Windows.Forms.Label
@@ -323,5 +385,10 @@ Partial Class Form_ManageUsers
     Friend WithEvents Radio_FilterStatusEnabled As System.Windows.Forms.RadioButton
     Friend WithEvents Radio_FilterStatusDisabled As System.Windows.Forms.RadioButton
     Friend WithEvents Radio_FiterStatusAll As System.Windows.Forms.RadioButton
-
+    Friend WithEvents UserDAOBindingSource As BindingSource
+    Friend WithEvents colUserName As DataGridViewTextBoxColumn
+    Friend WithEvents colFullName As DataGridViewTextBoxColumn
+    Friend WithEvents colTitle As DataGridViewTextBoxColumn
+    Friend WithEvents colAccountEnabled As DataGridViewCheckBoxColumn
+    Friend WithEvents colUserID As DataGridViewTextBoxColumn
 End Class
