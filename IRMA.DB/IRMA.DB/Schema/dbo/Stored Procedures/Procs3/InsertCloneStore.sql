@@ -597,16 +597,18 @@ DECLARE
 					([Store_No], [Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation], [DiscontinueItem])
 					SELECT
 							@NewStoreNo, SIV.[Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation], [DiscontinueItem]
-					FROM [StoreItemVendor] SIV (NOLOCK)	
-							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = SIV.Item_Key
+					FROM [StoreItemVendor] SIV (NOLOCK)
+							INNER JOIN [Price] P (NOLOCK) ON P.Item_Key = SIV.Item_Key AND P.Store_No = @NewStoreNo
+							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = P.Item_Key
 							JOIN (SELECT Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
 									AS substores ON substores.Key_Value1 = SIV.Store_No and substores.Key_Value2 = I.Subteam_No
 					WHERE SIV.DeleteDate IS NULL
 							AND NOT EXISTS (SELECT *
 											FROM [StoreItemVendor] (NOLOCK)
-											WHERE Item_Key = SIV.Item_Key
+											WHERE Item_Key = P.Item_Key
 													AND Store_No = @NewStoreNo)
 					ORDER BY SIV.StoreItemVendorID
+
 			END
 			
 		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
