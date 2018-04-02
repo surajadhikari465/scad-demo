@@ -93,6 +93,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                     .WithScanCode(existingItems[i].ScanCode)
                     .WithTimestamp(now)
                     .WithTransactionId(transactionId)
+                    .WithScaleItem(true)
                     .Build());
             }
 
@@ -298,6 +299,9 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
             var stagedItemLocales = new List<StagingItemLocaleModel>();
             const string oldLocality = "Paris";
             const string newLocality = "Austin";
+            bool oldScaleItem = false;
+            bool newScaleItem = true;
+
 
             //re-query for items added during initialize so we have current itemIDs
             List<Item> existingItems = this.db.Connection
@@ -307,12 +311,13 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                 .ToList();
 
             // make one item already set up for the locale (should get updated)
-            preexistingItemLocales.Add( new TestItemAttributeLocaleBuilder()
+            preexistingItemLocales.Add(new TestItemAttributeLocaleBuilder()
                 .WithRegion(this.region)
                 .WithBusinessUnit(this.bizUnitID)
                 .WithItemId(existingItems[1].ItemID)
                 .WithAddedDate(lastWeek)
                 .WithLocality(oldLocality)
+                .WithScaleItem(oldScaleItem)
                 .Build());
 
             // add three items to the staged data: 2 to be inserted, 1 to be updated
@@ -331,6 +336,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                 .WithTimestamp(now)
                 .WithTransactionId(transactionId)
                 .WithLocality(newLocality)
+                .WithScaleItem(newScaleItem)
                 .Build());
             stagedItemLocales.Add(new TestStagingItemLocaleModelBuilder()
                 .WithRegion(this.region)
@@ -430,6 +436,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 	                            Discontinued,
 	                            LabelTypeDesc,
 	                            LocalItem,
+                                ScaleItem,
 	                            Product_Code,
 	                            RetailUnit,
 	                            Sign_Desc,
@@ -457,6 +464,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 	                            @Discontinued,
 	                            @LabelTypeDesc,
 	                            @LocalItem,
+                                @ScaleItem,
 	                            @Product_Code,
 	                            @RetailUnit,
 	                            @Sign_Desc,
@@ -508,6 +516,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 	                            Discontinued,
 	                            LabelTypeDesc,
 	                            LocalItem,
+                                ScaleItem,
 	                            Product_Code,
 	                            RetailUnit,
 	                            Sign_Desc,
@@ -533,6 +542,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
 	                            @Discontinued,
 	                            @LabelTypeDesc,
 	                            @LocalItem,
+                                @ScaleItem,
 	                            @Product_Code,
 	                            @RetailUnit,
 	                            @Sign_Desc,
@@ -567,6 +577,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
             Assert.AreEqual(expected.Restriction_Age, actual.Restriction_Age, "Restriction_Age value did not match expected.");
             Assert.AreEqual(expected.Restriction_Hours, actual.Restriction_Hours, "Restriction_Hours value did not match expected.");
             Assert.AreEqual(expected.RetailUnit, actual.RetailUnit, "RetailUnit value did not match expected.");
+            Assert.AreEqual(expected.ScaleItem, actual.ScaleItem, "ScaleItem value did not match expected.");
             Assert.AreEqual(expected.Sign_Desc, actual.Sign_Desc, "Sign_Desc value did not match expected.");
             Assert.AreEqual(expected.Sign_RomanceText_Long, actual.Sign_RomanceText_Long, "Sign_RomanceText_Long value did not match expected.");
             Assert.AreEqual(expected.Sign_RomanceText_Short, actual.Sign_RomanceText_Short, "Sign_RomanceText_Short value did not match expected.");
@@ -596,6 +607,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
             Assert.AreEqual(expected.Restriction_Age, actual.Restriction_Age, "Restriction_Age value did not match expected.");
             Assert.AreEqual(expected.Restriction_Hours, actual.Restriction_Hours, "Restriction_Hours value did not match expected.");
             Assert.AreEqual(expected.RetailUnit, actual.RetailUnit, "RetailUnit value did not match expected.");
+            Assert.AreEqual(expected.ScaleItem, actual.ScaleItem, "ScaleItem value did not match expected.");
             Assert.AreEqual(expected.Sign_Desc, actual.Sign_Desc, "Sign_Desc value did not match expected.");
             Assert.AreEqual(expected.Sign_RomanceText_Long, actual.Sign_RomanceText_Long, "Sign_RomanceText_Long value did not match expected.");
             Assert.AreEqual(expected.Sign_RomanceText_Short, actual.Sign_RomanceText_Short, "Sign_RomanceText_Short value did not match expected.");

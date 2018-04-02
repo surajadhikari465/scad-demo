@@ -35,6 +35,7 @@ namespace MammothWebApi.DataAccess.Commands
                         nameof(StagingItemLocaleModel.Discontinued),
                         nameof(StagingItemLocaleModel.LabelTypeDesc),
                         nameof(StagingItemLocaleModel.LocalItem),
+                        nameof(StagingItemLocaleModel.ScaleItem),
                         nameof(StagingItemLocaleModel.Product_Code),
                         nameof(StagingItemLocaleModel.RetailUnit),
                         nameof(StagingItemLocaleModel.Sign_Desc),

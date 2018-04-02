@@ -11,6 +11,7 @@
 	[Discontinued]				BIT				NULL,
 	[LabelTypeDesc]				NVARCHAR(4)		NULL,
 	[LocalItem]					BIT				NULL,
+	[ScaleItem]					BIT				NOT NULL,
 	[Product_Code]				NVARCHAR(15)	NULL,
 	[RetailUnit]				NVARCHAR(25)	NULL,
 	[Sign_Desc]					NVARCHAR(60)	NULL,

@@ -29,6 +29,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         private bool defaultScanCode;
         private DateTime timestamp;
         private Guid transactionId;
+        private bool scaleItem;
 
         internal TestStagingItemLocaleModelBuilder()
         {
@@ -55,6 +56,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             defaultScanCode = true;
             timestamp = DateTime.Now;
             transactionId = Guid.NewGuid();
+            scaleItem = true;
         }
 
         internal TestStagingItemLocaleModelBuilder WithRegion(string region)
@@ -195,6 +197,12 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
+        internal TestStagingItemLocaleModelBuilder WithScaleItem(bool scaleItem)
+        {
+            this.scaleItem = scaleItem;
+            return this;
+        }
+
         internal StagingItemLocaleModel Build()
         {
             var itemLocaleStaging = new StagingItemLocaleModel
@@ -221,6 +229,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
                 AltRetailSize = altRetailSize,
                 AltRetailUOM = altRetailUom,
                 DefaultScanCode = defaultScanCode,
+                ScaleItem = scaleItem,
                 Timestamp = timestamp,
                 TransactionId = transactionId
             };

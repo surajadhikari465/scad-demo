@@ -30,6 +30,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         private string altRetailUom;
         private bool defaultScanCode;
         private DateTime addedDate;
+        private bool scaleItem;
 
         internal TestItemAttributeLocaleBuilder()
         {
@@ -51,6 +52,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             this.altRetailUom = "LB";
             this.defaultScanCode = true;
             this.addedDate = DateTime.Now;
+            this.scaleItem = false;
         }
 
         internal TestItemAttributeLocaleBuilder WithItemId(int itemId)
@@ -179,6 +181,12 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
+        internal TestItemAttributeLocaleBuilder WithScaleItem(bool scaleItem)
+        {
+            this.scaleItem = scaleItem;
+            return this;
+        }
+
         internal ItemAttributes_Locale Build()
         {
             ItemAttributes_Locale itemLocale = new ItemAttributes_Locale
@@ -197,6 +205,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
                 Restriction_Hours = this.restrictedHours,
                 RetailUnit = this.retailUnit,
                 Region = this.region,
+                ScaleItem = this.scaleItem,
                 Sign_Desc = this.signDescription,
                 Sign_RomanceText_Long = this.romanceLong,
                 Sign_RomanceText_Short = this.romanceShort,

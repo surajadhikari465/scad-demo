@@ -91,6 +91,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                 Assert.AreEqual(expected[i].AltRetailSize, actual[i].AltRetailSize);
                 Assert.AreEqual(expected[i].AltRetailUOM, actual[i].AltRetailUOM);
                 Assert.AreEqual(expected[i].DefaultScanCode, actual[i].DefaultScanCode);
+                Assert.AreEqual(expected[i].ScaleItem, actual[i].ScaleItem);
                 Assert.AreEqual(expected[i].Timestamp.ToString("dd-MM-yyyy hh:mm:ss"), actual[i].Timestamp.ToString("dd-MM-yyyy hh:mm:ss"),
                     String.Format("actual: {0}, expected: {1}", actual[i].Timestamp.ToString("dd-MM-yyyy hh:mm:ss"),
                         expected[i].Timestamp.ToString("dd-MM-yyyy hh:mm:ss")));
