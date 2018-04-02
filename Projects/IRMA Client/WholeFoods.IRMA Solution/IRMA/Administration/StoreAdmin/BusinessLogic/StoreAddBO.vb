@@ -28,17 +28,20 @@ Public Class StoreAddBO
     Public Property IncFutureSale As Byte              ' Include Future Sale entries in Cloning
     Public Property IncPromoPlanner As Byte            ' Include Promo Planner entries in Cloning
     Public Property GeoCode As String
+    Public Property IsSourceStoreOnGpm As Boolean
+
 #End Region
 #Region "Subs and Functions"
     Public Overloads Shared Function NewStore() As StoreAddBO
         Dim ReturnStore As New StoreAddBO
         Return ReturnStore
     End Function
-    Public Overloads Shared Function NewStore(ByVal nStoreID As Integer, ByVal nStoreAbbr As String, ByVal nStoreName As String, ByVal nStoreJurisdictionID As Integer, _
-    ByVal nZoneID As Integer, ByVal nTaxJurisdictionID As Integer, ByVal nBusinessUnit_Id As Integer, ByVal nPlumStoreNo As Integer, ByVal nPSIStoreNo As Integer, _
-    ByVal nSourceStoreNo As Integer, ByVal nISSPriceChgTypeID As Integer, ByVal nStoreSubTeamSubstitutions As String, _
-    ByVal nVendorName As String, ByVal nVendorAddress As String, ByVal nVendorCity As String, ByVal nVendorState As String, ByVal nVendorZipCode As String, _
-    ByVal nPeopleSoftVendorID As String, ByVal nIncSlim As Byte, ByVal nIncFutureSale As Byte, ByVal nIncPromoPlanner As Byte, ByVal nGeoCode As String) _
+    Public Overloads Shared Function NewStore(ByVal nStoreID As Integer, ByVal nStoreAbbr As String, ByVal nStoreName As String, ByVal nStoreJurisdictionID As Integer,
+    ByVal nZoneID As Integer, ByVal nTaxJurisdictionID As Integer, ByVal nBusinessUnit_Id As Integer, ByVal nPlumStoreNo As Integer, ByVal nPSIStoreNo As Integer,
+    ByVal nSourceStoreNo As Integer, ByVal nISSPriceChgTypeID As Integer, ByVal nStoreSubTeamSubstitutions As String,
+    ByVal nVendorName As String, ByVal nVendorAddress As String, ByVal nVendorCity As String, ByVal nVendorState As String, ByVal nVendorZipCode As String,
+    ByVal nPeopleSoftVendorID As String, ByVal nIncSlim As Byte, ByVal nIncFutureSale As Byte, ByVal nIncPromoPlanner As Byte, ByVal nGeoCode As String,
+    ByVal IsSourceStoreOnGpm As Boolean) _
         As StoreAddBO
 
 
@@ -66,6 +69,7 @@ Public Class StoreAddBO
         ReturnValue.IncPromoPlanner = nIncPromoPlanner
         ReturnValue.StoreStoreCount = 0
         ReturnValue.GeoCode = nGeoCode
+        ReturnValue.IsSourceStoreOnGpm = IsSourceStoreOnGpm
         Return ReturnValue
     End Function
 
