@@ -578,12 +578,14 @@ DECLARE
 					SELECT
 							@NewStoreNo, SIV.[Item_Key], [Vendor_ID], [AverageDelivery], [PrimaryVendor], [DeleteDate], [DeleteWorkStation], DiscontinueItem
 					FROM [StoreItemVendor] SIV (NOLOCK)
-							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = SIV.Item_Key AND SIV.Store_No = @OldStoreNo
+							INNER JOIN [Price] P (NOLOCK) ON P.Item_Key = SIV.Item_Key AND P.Store_No = @NewStoreNo
+							JOIN dbo.Item I (NOLOCK) ON i.Item_Key = P.Item_Key
 					WHERE SIV.DeleteDate IS NULL
+							AND SIV.Store_No = @OldStoreNo
 							AND i.subteam_no not in (SELECT Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
 							AND NOT EXISTS (SELECT *
 											FROM [StoreItemVendor] (NOLOCK)
-											WHERE Item_Key = SIV.Item_Key
+											WHERE Item_Key = P.Item_Key
 													AND Store_No = @NewStoreNo)
 					ORDER BY SIV.StoreItemVendorID
 
@@ -608,7 +610,6 @@ DECLARE
 											WHERE Item_Key = P.Item_Key
 													AND Store_No = @NewStoreNo)
 					ORDER BY SIV.StoreItemVendorID
-
 			END
 			
 		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
