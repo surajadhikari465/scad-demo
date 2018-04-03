@@ -61,7 +61,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                         upload_exclusion = 1
                     End If
 
-                    If Not theUploadRow.IsDeleted And _
+                    If Not theUploadRow.IsDeleted And
                             Not theUploadRow.IsMarkedForDelete And theUploadRow.ValidationLevel <> EIM_Constants.ValidationLevels.Invalid And Not (theUploadRow.ValidationLevel = EIM_Constants.ValidationLevels.Warning And upload_exclusion = 1) Then
                         theItemsProcessedCount = theItemsProcessedCount + 1
                     End If
@@ -86,7 +86,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                 Dim theErrorCount As Integer = 0
 
                 For Each theUploadRow As UploadRow In Me.UploadRowCollection
-                    If Not theUploadRow.IsDeleted And _
+                    If Not theUploadRow.IsDeleted And
                             Not theUploadRow.IsMarkedForDelete And theUploadRow.ValidationLevel = EIM_Constants.ValidationLevels.Invalid Then
                         theErrorCount = theErrorCount + 1
                     End If
@@ -111,7 +111,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                 Dim theWarningCount As Integer = 0
 
                 For Each theUploadRow As UploadRow In Me.UploadRowCollection
-                    If Not theUploadRow.IsDeleted And _
+                    If Not theUploadRow.IsDeleted And
                             Not theUploadRow.IsMarkedForDelete And theUploadRow.ValidationLevel = EIM_Constants.ValidationLevels.Warning Then
                         theWarningCount = theWarningCount + 1
                     End If
@@ -187,7 +187,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                 Dim theCount As Integer = 0
 
                 For Each theUploadRow As UploadRow In Me.UploadRowCollection
-                    If Not theUploadRow.IsDeleted And _
+                    If Not theUploadRow.IsDeleted And
                             Not theUploadRow.IsMarkedForDelete Then
                         theCount = theCount + 1
                     End If
@@ -210,6 +210,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
         Private _uploadAttributesByName As BusinessObjectCollection = Nothing
         Private _uploadAttributesByKey As BusinessObjectCollection = Nothing
         Private _slimDealDataGroupName As String
+        Private _isdealChangeColumnName As String
         Private _progressCounter As Integer
         Private _progressComplete As Boolean
 
@@ -239,6 +240,15 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
             End Get
             Set(ByVal value As String)
                 _slimDealDataGroupName = value
+            End Set
+        End Property
+
+        Public Property IsdealChangeColumnName() As String
+            Get
+                Return _isdealChangeColumnName
+            End Get
+            Set(ByVal value As String)
+                _isdealChangeColumnName = value
             End Set
         End Property
 
@@ -307,7 +317,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                         In Me.UploadSessionUploadTypeCollection
 
                     If Not theUploadSessionUploadType.IsMarkedForDelete Then
-                        theUploadTypeCollection. _
+                        theUploadTypeCollection.
                             Add(theUploadSessionUploadType.UploadTypeCode, theUploadSessionUploadType.UploadType)
                     End If
                 Next
@@ -402,7 +412,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
             Dim theUploadSessionUploadType As UploadSessionUploadType = Nothing
 
             ' find the UploadSessionUploadType for the CurrentUploadTypeCode
-            Dim theSearchResultCollection As BusinessObjectCollection = _
+            Dim theSearchResultCollection As BusinessObjectCollection =
                     Me.UploadSessionUploadTypeCollection.FindByPropertyValue("UploadTypeCode", inUploadTypeCode)
 
             Dim sessionHasCurrentUploadType As Boolean = theSearchResultCollection.Count > 0
@@ -440,7 +450,8 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                 For Each theUploadValue As UploadValue In theFirstUploadRow.UploadValueCollection
                     For Each theUploadTypeAttribute As UploadTypeAttribute In theUploadValue.UploadAttribute.UploadTypeAttributeCollection
 
-                        If (Not isSlimFunctionalityEnabled AndAlso theUploadTypeAttribute.GroupName = Me.SlimDealDataGroupName) Then
+                        If (Not isSlimFunctionalityEnabled AndAlso (theUploadTypeAttribute.GroupName = Me.SlimDealDataGroupName _
+                                                                    OrElse theUploadTypeAttribute.UploadAttribute.ColumnNameOrKey = Me.IsdealChangeColumnName)) Then
                             Continue For
                         End If
 
@@ -525,7 +536,8 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
 
                         For Each theUploadTypeAttribute As UploadTypeAttribute In theUploadValue.UploadAttribute.UploadTypeAttributeCollection
 
-                            If (Not isSlimFunctionalityEnabled AndAlso theUploadTypeAttribute.GroupName = Me.SlimDealDataGroupName) Then
+                            If (Not isSlimFunctionalityEnabled AndAlso (theUploadTypeAttribute.GroupName = Me.SlimDealDataGroupName _
+                                                                         OrElse theUploadTypeAttribute.UploadAttribute.ColumnNameOrKey = Me.IsdealChangeColumnName)) Then
                                 Continue For
                             End If
 
@@ -702,7 +714,8 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                         Dim allUploadTypeAttributes As BusinessObjectCollection = UploadTypeAttributeDAO.Instance.GetAllUploadTypeAttributes()
                         For Each theUploadTypeAttribute As UploadTypeAttribute In allUploadTypeAttributes
 
-                            If (Not isSlimFunctionalityEnabled AndAlso theUploadTypeAttribute.GroupName = Me.SlimDealDataGroupName) Then
+                            If (Not isSlimFunctionalityEnabled AndAlso (theUploadTypeAttribute.GroupName = Me.SlimDealDataGroupName _
+                                                                        OrElse theUploadTypeAttribute.UploadAttribute.ColumnNameOrKey = Me.IsdealChangeColumnName)) Then
                                 Continue For
                             End If
 
@@ -905,10 +918,10 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
 
                             ' the item key column in the DataSet is read only and does
                             ' not need to be loaded back into the data structure
-                            If Not theDataColumn.ColumnName.Equals(EIM_Constants.UPLOADROW_ID_COLUMN_NAME, StringComparison.CurrentCultureIgnoreCase) And _
-                                    Not theDataColumn.ColumnName.Equals(EIM_Constants.ITEM_KEY_ATTR_KEY, StringComparison.CurrentCultureIgnoreCase) And _
-                                    Not theDataColumn.ColumnName.Equals(EIM_Constants.VALIDATION_LEVEL_COLUMN_NAME) And _
-                                    Not theDataColumn.ColumnName.Equals(EIM_Constants.IS_IDENTICAL_ITEM_ROW_COLUMN_NAME) And _
+                            If Not theDataColumn.ColumnName.Equals(EIM_Constants.UPLOADROW_ID_COLUMN_NAME, StringComparison.CurrentCultureIgnoreCase) And
+                                    Not theDataColumn.ColumnName.Equals(EIM_Constants.ITEM_KEY_ATTR_KEY, StringComparison.CurrentCultureIgnoreCase) And
+                                    Not theDataColumn.ColumnName.Equals(EIM_Constants.VALIDATION_LEVEL_COLUMN_NAME) And
+                                    Not theDataColumn.ColumnName.Equals(EIM_Constants.IS_IDENTICAL_ITEM_ROW_COLUMN_NAME) And
                                     Not theDataColumn.ColumnName.Equals(EIM_Constants.IS_HIDDEN_COLUMN_NAME) Then
 
                                 theUploadType = CType(theUploadTypeCollection.ItemByKey(theDataTable.TableName), UploadType)
@@ -921,7 +934,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
 
 
                                 ' force the date time format
-                                If theUploadTypeAttribute.UploadAttribute.DbDataType.ToLower().Equals("datetime") Or _
+                                If theUploadTypeAttribute.UploadAttribute.DbDataType.ToLower().Equals("datetime") Or
                                     theUploadTypeAttribute.UploadAttribute.DbDataType.ToLower().Equals("smalldatetime") Then
 
                                     If Not IsNothing(theDataValue) And Not String.IsNullOrEmpty(theDataValue) Then
@@ -983,7 +996,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                 ' we can pass in Nothing for the UploadTypeTemplate as
                 ' it should always default to the "All" attributes faux template
                 ' and then the user can select the template they want
-                theUploadSessionUploadType = _
+                theUploadSessionUploadType =
                     New UploadSessionUploadType(Nothing, theUploadType, Me)
             Next
 
@@ -1062,7 +1075,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
             Dim theOriginalUploadSessionUploadTypeCollection As New BusinessObjectCollection()
             Dim theUploadSessionUploadTypeCopy As UploadSessionUploadType
 
-            For Each theUploadSessionUploadType As UploadSessionUploadType In _
+            For Each theUploadSessionUploadType As UploadSessionUploadType In
                     Me.UploadSessionUploadTypeCollection
 
                 ' make a copy of the original
@@ -1073,7 +1086,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                 theUploadSessionUploadTypeCopy.UploadType = theUploadSessionUploadType.UploadType
 
                 ' hold on to it to restore later
-                theOriginalUploadSessionUploadTypeCollection. _
+                theOriginalUploadSessionUploadTypeCollection.
                     Add(theUploadSessionUploadTypeCopy.PrimaryKey, theUploadSessionUploadTypeCopy)
 
             Next
@@ -1084,7 +1097,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
 
         Public Function IsRequiredForUploadType(ByVal inUploadTypeAttribute As UploadTypeAttribute) As System.Boolean
 
-            Return (Me.IsNewItemSessionFlag And Not inUploadTypeAttribute.IsReadOnlyForNewItems And inUploadTypeAttribute.IsRequiredForUploadTypeForNewItems) Or _
+            Return (Me.IsNewItemSessionFlag And Not inUploadTypeAttribute.IsReadOnlyForNewItems And inUploadTypeAttribute.IsRequiredForUploadTypeForNewItems) Or
                 (Not Me.IsNewItemSessionFlag And Not inUploadTypeAttribute.IsReadOnlyForExistingItems And inUploadTypeAttribute.IsRequiredForUploadTypeForExistingItems)
 
         End Function
@@ -1092,7 +1105,7 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
 
         Public Function IsReadOnly(ByVal inUploadTypeAttribute As UploadTypeAttribute) As System.Boolean
 
-            Return (Me.IsNewItemSessionFlag And inUploadTypeAttribute.IsReadOnlyForNewItems) Or _
+            Return (Me.IsNewItemSessionFlag And inUploadTypeAttribute.IsReadOnlyForNewItems) Or
                 (Not Me.IsNewItemSessionFlag And inUploadTypeAttribute.IsReadOnlyForExistingItems)
 
         End Function
@@ -1186,12 +1199,12 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                     For Each theUploadTypeAttribute As UploadTypeAttribute _
                            In theUploadSessionUploadType.UploadType.UploadTypeAttributeCollection
 
-                        If Not _uploadAttributesByKey.ContainsKey(theUploadTypeAttribute.UploadAttribute.Key.ToLower()) AndAlso _
+                        If Not _uploadAttributesByKey.ContainsKey(theUploadTypeAttribute.UploadAttribute.Key.ToLower()) AndAlso
                                 Not _uploadAttributesByName.ContainsKey(theUploadTypeAttribute.UploadAttribute.Name.ToLower()) Then
 
-                            _uploadAttributesByKey.Add(theUploadTypeAttribute.UploadAttribute.Key.ToLower(), _
+                            _uploadAttributesByKey.Add(theUploadTypeAttribute.UploadAttribute.Key.ToLower(),
                                 theUploadTypeAttribute.UploadAttribute)
-                            _uploadAttributesByName.Add(theUploadTypeAttribute.UploadAttribute.Name.ToLower(), _
+                            _uploadAttributesByName.Add(theUploadTypeAttribute.UploadAttribute.Name.ToLower(),
                                 theUploadTypeAttribute.UploadAttribute)
                         End If
                     Next
@@ -1208,9 +1221,9 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
                     In UploadAttributeDAO.Instance.GetAllUploadAttributes()
 
                 If Not _allUploadAttributesByName.ContainsKey(theUploadAttribute.Name.ToLower()) Then
-                    _allUploadAttributesByID.Add(theUploadAttribute.UploadAttributeID, _
+                    _allUploadAttributesByID.Add(theUploadAttribute.UploadAttributeID,
                         theUploadAttribute)
-                    _allUploadAttributesByName.Add(theUploadAttribute.Name.ToLower(), _
+                    _allUploadAttributesByName.Add(theUploadAttribute.Name.ToLower(),
                         theUploadAttribute)
                 End If
 

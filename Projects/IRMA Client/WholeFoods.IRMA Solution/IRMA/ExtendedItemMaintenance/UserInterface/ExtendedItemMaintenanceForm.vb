@@ -32,7 +32,7 @@ Public Class ExtendedItemMaintenanceForm
     Private _anErrorHasOccurred As Boolean = False
     Private _allowUpload As Boolean = True
     Private _loadValueListDataProgressComplete As Boolean = True
-    Private _IsSlimFunctionalityEnabled As Boolean = True
+    Private _isSlimFunctionalityEnabled As Boolean = True
     Private _calculatingCellValues As Boolean = False
     Private _isInitializingRow As Boolean = False
     Private _ignoreSessionTypeChange As Boolean = False
@@ -127,10 +127,10 @@ Public Class ExtendedItemMaintenanceForm
 
     Public Property IsSlimFunctionalityEnabled() As Boolean
         Get
-            Return _IsSlimFunctionalityEnabled
+            Return _isSlimFunctionalityEnabled
         End Get
         Set(ByVal value As Boolean)
-            _IsSlimFunctionalityEnabled = value
+            _isSlimFunctionalityEnabled = value
         End Set
     End Property
 
