@@ -1,5 +1,4 @@
-﻿
-CREATE proc [dbo].[OrderLink_ImportOrder]
+﻿CREATE proc [dbo].[OrderLink_ImportOrder]
 	(
 	@OrderORCredit			varchar(10),	-- Flag value from that will be 'Order' or 'Credit'
 	@OrderNumber			varchar(15),	-- Peoplesoft OrderHeader.Order_Number.  Also used for IRMA Invoice Number.
@@ -436,18 +435,16 @@ BEGIN		--Script Start
 				
 				--10.07.10 4.0.1 - No longer partial match on VIN, change order of match to PSID = Identifier first, VIN last
 				SELECT TOP(1)
-					--@Item_Key = ISNULL(ISNULL(IV.Item_Key, IIU.Item_Key),IIP.Item_Key)--Take what you can get.  VIN, UPC, PS_ID in that order.
-					@Item_Key = ISNULL(ISNULL(IIP.Item_Key, IIU.Item_Key),IV.Item_Key)	
+					@Item_Key = COALESCE(IV.Item_Key, IIU.Item_Key,IIP.Item_Key)--Take what you can get.  VIN, UPC, PS_ID in that order.
 				FROM
 					Store S (NoLock)
-					JOIN Vendor V (NoLock) ON ( V.Store_No = S.Store_No )
-					LEFT OUTER JOIN ItemVendor IV (NoLock) ON ( IV.Vendor_Id = V.Vendor_Id
-															--AND RIGHT(IV.Item_Id,LEN(@Item_Code)) = @Item_Code )
-															AND IV.Item_Id = @Item_Code )
-					LEFT OUTER JOIN ItemIdentifier IIU (NoLock) ON ( IIU.Deleted_Identifier = 0
-															AND IIU.Identifier = @UPC_PLU )
-					LEFT OUTER JOIN ItemIdentifier IIP (NoLock) ON ( IIP.Deleted_Identifier = 0
-															AND IIP.Identifier = @Item_Code )
+					JOIN Vendor V (NoLock)						ON V.Store_No = S.Store_No
+					LEFT OUTER JOIN ItemVendor IV (NoLock)		ON IV.Vendor_Id = V.Vendor_Id
+																	AND IV.Item_Id = @Item_Code
+					LEFT OUTER JOIN ItemIdentifier IIU (NoLock) ON IIU.Deleted_Identifier = 0
+																	AND IIU.Identifier = @UPC_PLU
+					LEFT OUTER JOIN ItemIdentifier IIP (NoLock) ON IIP.Deleted_Identifier = 0
+																	AND IIP.Identifier = @Item_Code
 				WHERE
 					RIGHT(S.BusinessUnit_Id, LEN(@DC_Business_Unit)) = @DC_Business_Unit
 					AND (IV.DeleteDate is NULL OR GETDATE()< IV.DeleteDate) 
