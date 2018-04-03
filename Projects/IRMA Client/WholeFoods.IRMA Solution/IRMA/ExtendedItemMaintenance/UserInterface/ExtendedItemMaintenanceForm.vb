@@ -1962,7 +1962,6 @@ Public Class ExtendedItemMaintenanceForm
                 Dim isNotAvailable As Boolean = Me.chkNotAvailable.Checked
                 Dim includeDeletedItems As Boolean = Me.chkIncludeDeletedItems.Checked
 
-
                 Dim theIsDefaultJurisdiction As Integer = UIUtilities.GetComboBoxIntegerValue(Me.ComboBoxIsDefaultJurisdiction)
                 Dim theStoreJurisdictionId As Integer = UIUtilities.GetComboBoxIntegerValue(Me.ComboBoxJurisdiction)
 
@@ -1973,16 +1972,12 @@ Public Class ExtendedItemMaintenanceForm
                     theVendorID, theBrandID, theStoreIDs, theSubteamID, theCategoryID, theLevel3ID, theLevel4ID,
                     thePSVendorID, theVendorItemID, theDistSubteamID, theItemChainID, isDiscontinued, isNotAvailable,
                     includeDeletedItems, theIsDefaultJurisdiction, theStoreJurisdictionId, fromSLIM)
-
                 Else
-
                     Me.ItemLoadDataSet = UploadSessionDAO.Instance.ItemSearch(theIdentifier, theDescription,
                     theVendorID, theBrandID, theStoreIDs, theSubteamID, theCategoryID, theLevel3ID, theLevel4ID,
                     thePSVendorID, theVendorItemID, theDistSubteamID, theItemChainID, isDiscontinued, isNotAvailable,
                     includeDeletedItems, theIsDefaultJurisdiction, theStoreJurisdictionId)
                 End If
-
-
 
                 Me.ItemLoadDataSet.AcceptChanges()
 
