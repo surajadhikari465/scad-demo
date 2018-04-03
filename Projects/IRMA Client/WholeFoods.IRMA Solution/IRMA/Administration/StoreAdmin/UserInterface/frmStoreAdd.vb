@@ -1,6 +1,7 @@
 Imports System.Text
 Imports WholeFoods.IRMA.Administration.POSPush.DataAccess
 Imports WholeFoods.IRMA.Administration.StoreAdmin.DataAccess
+Imports WholeFoods.IRMA.Common.DataAccess
 Imports WholeFoods.IRMA.ItemHosting.DataAccess
 
 Public Class StoreAdd
@@ -281,11 +282,14 @@ Public Class StoreAdd
             varPeopleSoftID = CInt(Me.txtPeopleSoftID.Text)
         End If
 
+        Dim isSourceStoreOnGpm As Boolean
+        isSourceStoreOnGpm = InstanceDataDAO.IsFlagActive("GlobalPriceManagement", varSourceStoreNo)
+
         mStoreAdd = StoreAddBO.NewStore(varStoreNumber, Me.txtStoreAbbrev.Text, Me.txtStoreName.Text, CInt(Me.cboStoreJurisdiction.SelectedValue),
         CInt(Me.cboZone.SelectedValue), CInt(Me.cboTaxJurisdiction.SelectedValue), varBusinessUnitID, varPlumStoreNo,
         varPSIStoreNo, varSourceStoreNo, CInt(Me.cboISSPriceChgType.SelectedValue), varStoreSubTeamSubstitutions,
         Me.txtVendorName.Text, Me.txtVendorAddress.Text, Me.txtVendorCity.Text, Me.txtVendorState.Text, Me.txtVendorZip.Text, varPeopleSoftID,
-        CByte(Me.chkIncSlim.Checked), CByte(Me.chkIncFutureSale.Checked), CByte(Me.chkIncPromoPlanner.Checked), txtGeoCode.Text)
+        CByte(Me.chkIncSlim.Checked), CByte(Me.chkIncFutureSale.Checked), CByte(Me.chkIncPromoPlanner.Checked), txtGeoCode.Text, isSourceStoreOnGpm)
 
         btnRemoveStoreSub.Enabled = False
         btnAddSubStore.Enabled = False

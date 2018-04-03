@@ -193,10 +193,14 @@ Namespace WholeFoods.IRMA.Administration.StoreAdmin.DataAccess
             currentParam.Type = DBParamType.String
             paramList.Add(currentParam)
 
+            currentParam = New DBParam
+            currentParam.Name = "IsSourceStoreOnGpm"
+            currentParam.Value = store.IsSourceStoreOnGpm
+            currentParam.Type = DBParamType.Bit
+            paramList.Add(currentParam)
+
             factory.ExecuteStoredProcedure("InsertCloneStore", paramList)
         End Sub
     End Class
-
-
 
 End Namespace

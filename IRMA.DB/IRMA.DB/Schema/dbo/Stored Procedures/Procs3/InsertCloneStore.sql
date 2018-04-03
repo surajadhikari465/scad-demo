@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[InsertCloneStore] 
+﻿CREATE PROCEDURE [dbo].[InsertCloneStore] 
 		@NewStoreNo int,				-- The new store no
         @StoreAbbr varchar(5),			-- Store Abbreviation
         @NewStoreName varchar(50),		-- Name of new store
@@ -21,7 +20,8 @@ CREATE PROCEDURE [dbo].[InsertCloneStore]
 		@IncSlim As Bit,				-- Include Slim Entries
 		@IncFutureSale As Bit, 			-- Include Future Sale Items
 		@IncPromoPlanner As Bit,		-- Include Promo Planner
-		@GeoCode varchar(15)
+		@GeoCode varchar(15),
+		@IsSourceStoreOnGpm Bit 
 AS
 BEGIN
 
@@ -342,14 +342,56 @@ DECLARE
 		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
-         ----------------------------------------------------------------------
+		  SELECT @CodeLocation = 'INSERT INTO [Price]...'
+		  SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+
+	-------------------------------------------------------------
          -- copy Price information for the new store from main source store
          ----------------------------------------------------------------------
-        SELECT @CodeLocation = 'INSERT INTO [Price]...'
-		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+        If @IsSourceStoreOnGpm = 0
+		BEGIN 
+		  
+				IF @OldStoreNo > 0
+					BEGIN
+						INSERT INTO [dbo].[Price]
+								(
+						Item_Key,Store_No,Multiple,Price,MSRPPrice,MSRPMultiple,PricingMethod_ID,
+						Sale_Multiple,Sale_Price,Sale_Start_Date,Sale_End_Date,Sale_Max_Quantity,
+						Sale_Earned_Disc1,Sale_Earned_Disc2,Sale_Earned_Disc3,Restricted_Hours,
+						AvgCostUpdated,IBM_Discount,POSPrice,POSSale_Price,NotAuthorizedForSale,
+						CompFlag,PosTare,LinkedItem,GrillPrint,AgeCode,VisualVerify,SrCitizenDiscount,
+						PriceChgTypeId,ExceptionSubteam_No,POSLinkCode,KitchenRoute_ID,Routing_Priority,
+						Consolidate_Price_To_Prev_Item,Print_Condiment_On_Receipt,Age_Restrict,
+						CompetitivePriceTypeID,BandwidthPercentageHigh,BandwidthPercentageLow,MixMatch,
+						LocalItem,ItemSurcharge)
+						SELECT P.Item_Key, @NewStoreNo, Multiple,Price,MSRPPrice,MSRPMultiple,PricingMethod_ID,
+						Sale_Multiple,Sale_Price,Sale_Start_Date,Sale_End_Date,Sale_Max_Quantity,
+						Sale_Earned_Disc1,Sale_Earned_Disc2,Sale_Earned_Disc3,Restricted_Hours,
+						AvgCostUpdated,IBM_Discount,POSPrice,POSSale_Price,NotAuthorizedForSale,
+						CompFlag,PosTare,LinkedItem,GrillPrint,AgeCode,VisualVerify,SrCitizenDiscount,
+						PriceChgTypeId,ExceptionSubteam_No,POSLinkCode,KitchenRoute_ID,Routing_Priority,
+						Consolidate_Price_To_Prev_Item,Print_Condiment_On_Receipt,Age_Restrict,
+						CompetitivePriceTypeID,BandwidthPercentageHigh,BandwidthPercentageLow,MixMatch,
+						P.LocalItem,P.ItemSurcharge
+						FROM [dbo].[Price] P (NOLOCK)
+								INNER JOIN Item I (NOLOCK) ON I.Item_Key = P.Item_Key
+						WHERE I.Deleted_Item = 0
+								AND P.Store_No = @OldStoreNo
+								AND i.subteam_no not in (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
+								AND NOT EXISTS (SELECT Item_Key
+												FROM [Price] (NOLOCK)
+												WHERE Item_Key = P.Item_Key
+														AND Store_No = @NewStoreNo)
 
-			IF @OldStoreNo > 0
-				BEGIN
+			SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
+
+					SELECT @CodeLocation = 'INSERT INTO [Price] alt store-subteams...'
+					select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+					 ---------------------------------------------------------------------------------
+					 -- copy Price information for the new store from substitute subteam store(s)
+					 ---------------------------------------------------------------------------------
 					INSERT INTO [dbo].[Price]
 							(
 					Item_Key,Store_No,Multiple,Price,MSRPPrice,MSRPMultiple,PricingMethod_ID,
@@ -372,52 +414,90 @@ DECLARE
 					P.LocalItem,P.ItemSurcharge
 					FROM [dbo].[Price] P (NOLOCK)
 							INNER JOIN Item I (NOLOCK) ON I.Item_Key = P.Item_Key
+							JOIN (select Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
+									as substores ON substores.Key_Value1 = P.Store_No and substores.Key_Value2 = I.Subteam_No
 					WHERE I.Deleted_Item = 0
-							AND P.Store_No = @OldStoreNo
-							AND i.subteam_no not in (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
 							AND NOT EXISTS (SELECT Item_Key
 											FROM [Price] (NOLOCK)
 											WHERE Item_Key = P.Item_Key
 													AND Store_No = @NewStoreNo)
+			END		
+		END
+		ELSE
+		BEGIN
+			DECLARE @ZeroPrice smallMoney = 0.00
 
-		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
-		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
+				IF @OldStoreNo > 0
+					BEGIN
+						INSERT INTO [dbo].[Price]
+								(
+						Item_Key,Store_No,Multiple,Price,MSRPPrice,MSRPMultiple,PricingMethod_ID,
+						Sale_Multiple,Sale_Price,Sale_Start_Date,Sale_End_Date,Sale_Max_Quantity,
+						Sale_Earned_Disc1,Sale_Earned_Disc2,Sale_Earned_Disc3,Restricted_Hours,
+						AvgCostUpdated,IBM_Discount,POSPrice,POSSale_Price,NotAuthorizedForSale,
+						CompFlag,PosTare,LinkedItem,GrillPrint,AgeCode,VisualVerify,SrCitizenDiscount,
+						PriceChgTypeId,ExceptionSubteam_No,POSLinkCode,KitchenRoute_ID,Routing_Priority,
+						Consolidate_Price_To_Prev_Item,Print_Condiment_On_Receipt,Age_Restrict,
+						CompetitivePriceTypeID,BandwidthPercentageHigh,BandwidthPercentageLow,MixMatch,
+						LocalItem,ItemSurcharge)
+						SELECT P.Item_Key, @NewStoreNo, Multiple,@ZeroPrice,@ZeroPrice,MSRPMultiple,PricingMethod_ID,
+						Sale_Multiple,@ZeroPrice,Sale_Start_Date,Sale_End_Date,Sale_Max_Quantity,
+						Sale_Earned_Disc1,Sale_Earned_Disc2,Sale_Earned_Disc3,Restricted_Hours,
+						AvgCostUpdated,IBM_Discount,@ZeroPrice,@ZeroPrice,NotAuthorizedForSale,
+						CompFlag,PosTare,LinkedItem,GrillPrint,AgeCode,VisualVerify,SrCitizenDiscount,
+						PriceChgTypeId,ExceptionSubteam_No,POSLinkCode,KitchenRoute_ID,Routing_Priority,
+						Consolidate_Price_To_Prev_Item,Print_Condiment_On_Receipt,Age_Restrict,
+						CompetitivePriceTypeID,BandwidthPercentageHigh,BandwidthPercentageLow,MixMatch,
+						P.LocalItem,P.ItemSurcharge
+						FROM [dbo].[Price] P (NOLOCK)
+								INNER JOIN Item I (NOLOCK) ON I.Item_Key = P.Item_Key
+						WHERE I.Deleted_Item = 0
+								AND P.Store_No = @OldStoreNo
+								AND i.subteam_no not in (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
+								AND NOT EXISTS (SELECT Item_Key
+												FROM [Price] (NOLOCK)
+												WHERE Item_Key = P.Item_Key
+														AND Store_No = @NewStoreNo)
 
-				SELECT @CodeLocation = 'INSERT INTO [Price] alt store-subteams...'
-				select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
-				 ---------------------------------------------------------------------------------
-				 -- copy Price information for the new store from substitute subteam store(s)
-				 ---------------------------------------------------------------------------------
-				INSERT INTO [dbo].[Price]
-						(
-				Item_Key,Store_No,Multiple,Price,MSRPPrice,MSRPMultiple,PricingMethod_ID,
-				Sale_Multiple,Sale_Price,Sale_Start_Date,Sale_End_Date,Sale_Max_Quantity,
-				Sale_Earned_Disc1,Sale_Earned_Disc2,Sale_Earned_Disc3,Restricted_Hours,
-				AvgCostUpdated,IBM_Discount,POSPrice,POSSale_Price,NotAuthorizedForSale,
-				CompFlag,PosTare,LinkedItem,GrillPrint,AgeCode,VisualVerify,SrCitizenDiscount,
-				PriceChgTypeId,ExceptionSubteam_No,POSLinkCode,KitchenRoute_ID,Routing_Priority,
-				Consolidate_Price_To_Prev_Item,Print_Condiment_On_Receipt,Age_Restrict,
-				CompetitivePriceTypeID,BandwidthPercentageHigh,BandwidthPercentageLow,MixMatch,
-				LocalItem,ItemSurcharge)
-				SELECT P.Item_Key, @NewStoreNo, Multiple,Price,MSRPPrice,MSRPMultiple,PricingMethod_ID,
-				Sale_Multiple,Sale_Price,Sale_Start_Date,Sale_End_Date,Sale_Max_Quantity,
-				Sale_Earned_Disc1,Sale_Earned_Disc2,Sale_Earned_Disc3,Restricted_Hours,
-				AvgCostUpdated,IBM_Discount,POSPrice,POSSale_Price,NotAuthorizedForSale,
-				CompFlag,PosTare,LinkedItem,GrillPrint,AgeCode,VisualVerify,SrCitizenDiscount,
-				PriceChgTypeId,ExceptionSubteam_No,POSLinkCode,KitchenRoute_ID,Routing_Priority,
-				Consolidate_Price_To_Prev_Item,Print_Condiment_On_Receipt,Age_Restrict,
-				CompetitivePriceTypeID,BandwidthPercentageHigh,BandwidthPercentageLow,MixMatch,
-				P.LocalItem,P.ItemSurcharge
-				FROM [dbo].[Price] P (NOLOCK)
-						INNER JOIN Item I (NOLOCK) ON I.Item_Key = P.Item_Key
-						JOIN (select Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
-								as substores ON substores.Key_Value1 = P.Store_No and substores.Key_Value2 = I.Subteam_No
-				WHERE I.Deleted_Item = 0
-						AND NOT EXISTS (SELECT Item_Key
-										FROM [Price] (NOLOCK)
-										WHERE Item_Key = P.Item_Key
-												AND Store_No = @NewStoreNo)
+			SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
+
+					SELECT @CodeLocation = 'INSERT INTO [Price] alt store-subteams...'
+					select @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
+					 ---------------------------------------------------------------------------------
+					 -- copy Price information for the new store from substitute subteam store(s)
+					 ---------------------------------------------------------------------------------
+					INSERT INTO [dbo].[Price]
+							(
+					Item_Key,Store_No,Multiple,Price,MSRPPrice,MSRPMultiple,PricingMethod_ID,
+					Sale_Multiple,Sale_Price,Sale_Start_Date,Sale_End_Date,Sale_Max_Quantity,
+					Sale_Earned_Disc1,Sale_Earned_Disc2,Sale_Earned_Disc3,Restricted_Hours,
+					AvgCostUpdated,IBM_Discount,POSPrice,POSSale_Price,NotAuthorizedForSale,
+					CompFlag,PosTare,LinkedItem,GrillPrint,AgeCode,VisualVerify,SrCitizenDiscount,
+					PriceChgTypeId,ExceptionSubteam_No,POSLinkCode,KitchenRoute_ID,Routing_Priority,
+					Consolidate_Price_To_Prev_Item,Print_Condiment_On_Receipt,Age_Restrict,
+					CompetitivePriceTypeID,BandwidthPercentageHigh,BandwidthPercentageLow,MixMatch,
+					LocalItem,ItemSurcharge)
+					SELECT P.Item_Key, @NewStoreNo, Multiple,@ZeroPrice,@ZeroPrice,MSRPMultiple,PricingMethod_ID,
+					Sale_Multiple,@ZeroPrice,Sale_Start_Date,Sale_End_Date,Sale_Max_Quantity,
+					Sale_Earned_Disc1,Sale_Earned_Disc2,Sale_Earned_Disc3,Restricted_Hours,
+					AvgCostUpdated,IBM_Discount,@ZeroPrice,@ZeroPrice,NotAuthorizedForSale,
+					CompFlag,PosTare,LinkedItem,GrillPrint,AgeCode,VisualVerify,SrCitizenDiscount,
+					PriceChgTypeId,ExceptionSubteam_No,POSLinkCode,KitchenRoute_ID,Routing_Priority,
+					Consolidate_Price_To_Prev_Item,Print_Condiment_On_Receipt,Age_Restrict,
+					CompetitivePriceTypeID,BandwidthPercentageHigh,BandwidthPercentageLow,MixMatch,
+					P.LocalItem,P.ItemSurcharge
+					FROM [dbo].[Price] P (NOLOCK)
+							INNER JOIN Item I (NOLOCK) ON I.Item_Key = P.Item_Key
+							JOIN (select Key_Value1, Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value1, Key_Value2) 
+									as substores ON substores.Key_Value1 = P.Store_No and substores.Key_Value2 = I.Subteam_No
+					WHERE I.Deleted_Item = 0
+							AND NOT EXISTS (SELECT Item_Key
+											FROM [Price] (NOLOCK)
+											WHERE Item_Key = P.Item_Key
+													AND Store_No = @NewStoreNo)
+			END		
 		END
 
 		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
@@ -849,176 +929,176 @@ DECLARE
 		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
-
 		----------------------------------------------------------------------
 		-- Delete all the triggered dbo.pricebatchdetail records
 		----------------------------------------------------------------------
 		SELECT @CodeLocation = 'DELETE [PriceBatchDetail]...'
 		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
-			DELETE [dbo].[PriceBatchDetail]
-			WHERE store_no = @NewStoreNo
+		DELETE [dbo].[PriceBatchDetail]
+		WHERE store_no = @NewStoreNo
 
 		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
 		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
 
+			----------------------------------------------
+			-- Copy PriceBatchDetailRecords for ON/OFF Sales
+			----------------------------------------------
+			
+		If @IsSourceStoreOnGpm = 0
+		BEGIN 
+			SELECT @CodeLocation = 'INSERT INTO [PriceBatchdetail]...'
+			SELECT @now = getdate(); EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
 
-		----------------------------------------------
-		-- Copy PriceBatchDetailRecords for ON/OFF Sales
-		----------------------------------------------
+			IF @OldStoreNo > 0
+				BEGIN
+					DECLARE @REG_PCT INT
+					SELECT @REG_PCT= PriceChgTypeID FROM dbo.PriceChgType (NOLOCK) WHERE On_Sale = 0
 
-		SELECT @CodeLocation = 'INSERT INTO [PriceBatchdetail]...'
-		SELECT @now = getdate(); EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @CodeLocation, @LogExceptionMsg;
-
-		IF @OldStoreNo > 0
-			BEGIN
-				DECLARE @REG_PCT INT
-				SELECT @REG_PCT= PriceChgTypeID FROM dbo.PriceChgType (NOLOCK) WHERE On_Sale = 0
-
-				/*
-					Notes:
-					The UNION below is to handle the case where we need to pull data from a different store-subteam.
-					The differences are:
-						WHERE PB.[Store_No] = @OldStoreNo
-						vs.
-						WHERE PB.[Store_No] <> @OldStoreNo
-					in the top and bottom pieces of the UNION respectively,
-					and
-						AND PB.subteam_no not in (select Key_Value2 FROM fn_Parse_List_Two
-						vs.
-						AND PB.subteam_no in (select Key_Value2 FROM fn_Parse_List_Two
-					in the top and bottom pieces of the UNION respectively.
-				*/
-				/*
-					TFS 11641
-					3.5.9
-					Tom Lux
-					2/18/10
-					[Problem]
-					The alt store-subteam code was not handling null PBD.subteam_no values
-					when alt store-subteam pairs were passed in (select by user).
-					Here's example for top query: "AND PB.subteam_no not in (%alt store-subteam list%)"
-					The issue did not manifest itself if no alt store-subteam list was passed because
-					it ended up being a "and null = null" statement.
-					[Fixes]
-					1) Added join to item table so when PBD.subteam_no is null, we can take item.subteam_no.
-					2) Changed condition in alt store-subteam lines to be "isnull(PB.subteam_no, i.subteam_no)"
-					so that items with null PBD.subteam_no fields are not unconditionally excluded.
-					3) Changed (in both top and bottom queries) all selected fields to include explicit table reference,
-					since item has many of the same columns.
+					/*
+						Notes:
+						The UNION below is to handle the case where we need to pull data from a different store-subteam.
+						The differences are:
+							WHERE PB.[Store_No] = @OldStoreNo
+							vs.
+							WHERE PB.[Store_No] <> @OldStoreNo
+						in the top and bottom pieces of the UNION respectively,
+						and
+							AND PB.subteam_no not in (select Key_Value2 FROM fn_Parse_List_Two
+							vs.
+							AND PB.subteam_no in (select Key_Value2 FROM fn_Parse_List_Two
+						in the top and bottom pieces of the UNION respectively.
+					*/
+					/*
+						TFS 11641
+						3.5.9
+						Tom Lux
+						2/18/10
+						[Problem]
+						The alt store-subteam code was not handling null PBD.subteam_no values
+						when alt store-subteam pairs were passed in (select by user).
+						Here's example for top query: "AND PB.subteam_no not in (%alt store-subteam list%)"
+						The issue did not manifest itself if no alt store-subteam list was passed because
+						it ended up being a "and null = null" statement.
+						[Fixes]
+						1) Added join to item table so when PBD.subteam_no is null, we can take item.subteam_no.
+						2) Changed condition in alt store-subteam lines to be "isnull(PB.subteam_no, i.subteam_no)"
+						so that items with null PBD.subteam_no fields are not unconditionally excluded.
+						3) Changed (in both top and bottom queries) all selected fields to include explicit table reference,
+						since item has many of the same columns.
 					
 
-				*/
-				INSERT INTO [dbo].[PriceBatchDetail]
-					([Item_Key], [Store_No], [ItemChgTypeID],[PriceChgTypeID],[StartDate],[Multiple],[Price],[MSRPPrice],
-					 [MSRPMultiple],[PricingMethod_ID],[Sale_Multiple],[Sale_Price],[Sale_End_Date],[Sale_Max_Quantity],[Sale_Mix_Match],[Sale_Earned_Disc1],
-					 [Sale_Earned_Disc2],[Sale_Earned_Disc3],[Case_Price],[Sign_Description],[Ingredients],[Identifier],[Sold_By_Weight],[SubTeam_No],[Origin_Name],
-					 [Brand_Name],[Retail_Unit_Abbr],[Retail_Unit_Full],[Package_Unit],[Package_Desc1],[Package_Desc2],[Organic],[Vendor_Id],[ItemType_ID],
-					 [ScaleDesc1],[ScaleDesc2],[POS_Description],[Restricted_Hours],[Quantity_Required],[Price_Required],[Retail_Sale],[Discountable],
-					 [Food_Stamps],[IBM_Discount],[Hobart_Item],[PrintSign],[LineDrive],[POSPrice],[POSSale_Price],[Offer_ID],[AvgCostUpdated],
-					  [NotAuthorizedForSale],[Deleted_Item],[User_ID], [User_ID_Date],[LabelType_ID],[OfferChgTypeID],[QtyProhibit],[GroupList],[PosTare],
-					 [LinkedItem],[GrillPrint],[AgeCode],[VisualVerify],[SrCitizenDiscount],[AsOfDate],[AutoGenerated],[Expired],[POSLinkCode],
-					 [InsertApplication],[RetailUnit_WeightUnit],[TagTypeID],[TagTypeID2], [LocalItem], [ItemSurcharge])
-				SELECT 
-					 pb.[Item_Key], @NewStoreNo, pb.[ItemChgTypeID],pb.[PriceChgTypeID],pb.[StartDate],pb.[Multiple],pb.[Price],pb.[MSRPPrice],
-					 pb.[MSRPMultiple],pb.[PricingMethod_ID],pb.[Sale_Multiple],pb.[Sale_Price],pb.[Sale_End_Date],pb.[Sale_Max_Quantity],pb.[Sale_Mix_Match],pb.[Sale_Earned_Disc1],
-					 pb.[Sale_Earned_Disc2],pb.[Sale_Earned_Disc3],pb.[Case_Price],pb.[Sign_Description],pb.[Ingredients],pb.[Identifier],pb.[Sold_By_Weight],pb.[SubTeam_No],pb.[Origin_Name],
-					 pb.[Brand_Name],pb.[Retail_Unit_Abbr],pb.[Retail_Unit_Full],pb.[Package_Unit],pb.[Package_Desc1],pb.[Package_Desc2],pb.[Organic],pb.[Vendor_Id],pb.[ItemType_ID],
-					 pb.[ScaleDesc1],pb.[ScaleDesc2],pb.[POS_Description],pb.[Restricted_Hours],pb.[Quantity_Required],pb.[Price_Required],pb.[Retail_Sale],pb.[Discountable],
-					 pb.[Food_Stamps],pb.[IBM_Discount],pb.[Hobart_Item],pb.[PrintSign],pb.[LineDrive],pb.[POSPrice],pb.[POSSale_Price],pb.[Offer_ID],pb.[AvgCostUpdated],
-					  pb.[NotAuthorizedForSale],pb.[Deleted_Item],pb.[User_ID],pb.[User_ID_Date],pb.[LabelType_ID],pb.[OfferChgTypeID],pb.[QtyProhibit],pb.[GroupList],pb.[PosTare],
-					 pb.[LinkedItem],pb.[GrillPrint],pb.[AgeCode],pb.[VisualVerify],pb.[SrCitizenDiscount],pb.[AsOfDate],pb.[AutoGenerated],pb.[Expired],pb.[POSLinkCode],
-					 'NEW STORE SCRIPT',pb.[RetailUnit_WeightUnit],pb.[TagTypeID],pb.[TagTypeID2], pb.[LocalItem], pb.[ItemSurcharge]
-				FROM [PriceBatchDetail] PB (NOLOCK)
-				-- TFS 11641, Tom Lux, 2/18/10, Added join to item so PBD rows with null subteam are not excluded when alt store-subteams are passed.  See other comments herein for full details.
-				join [item] i (nolock)
-					on pb.item_key = i.item_key
-				-- The following line differs from the one in the next query.
-				WHERE PB.[Store_No] = @OldStoreNo 
-					AND ((@IncFutureSale = 1 AND StartDate > dateadd(day,1, getdate())) OR	--bring in upcoming sale end records
-							(@IncFutureSale = 0 AND StartDate < dateadd(day,1, getdate()) AND Sale_End_Date > dateadd(day,1, getdate())) OR	
-						(pb.pricebatchdetailid in (																	-- bring in last known regs
-							SELECT TOP 1 pb2.pricebatchdetailid	
-							FROM PriceBatchDetail pb2 (NOLOCK)
-							WHERE pb.pricechgtypeid = @REG_PCT 
-								AND pb2.item_key = pb.item_key 
-								AND pb2.store_no = pb.store_no
-							ORDER BY pb2.pricebatchdetailid DESC)))
-					AND NOT EXISTS (SELECT *
-									  FROM dbo.PriceBatchDetail (NOLOCK)
-									  WHERE [Store_No] = @NewStoreNo
-											  AND [Item_Key] = PB.[Item_Key]
-											  AND ISNULL([PriceChgTypeID],0) = ISNULL(PB.[PriceChgTypeID],0)
-											  AND ISNULL([ItemChgTypeID],0) = ISNULL(PB.[ItemChgTypeID],0)
-											  AND startdate > dateadd(day, 1 , getdate()))
-					-- TFS 11641, Tom Lux, 2/18/10, Added isnull() check on next line so null subteam are not excluded when alt store-subteams are passed.  See other comments herein for full details.
-					-- The following line differs from the one in the next query.
-					AND isnull(PB.subteam_no, i.subteam_no) not in (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
-					/*
-						*** NOTE: This change is replicated in the next query as well (bottom/2nd-piece of the UNION).
-						TFS 11641: New Store Creation tool does not copy over pending off sale records
-						IRMA v3.5.9
-						2010.01.22
-						Tom Lux
-						Fixed issue with the next line of code to conditionally include ISS price changes.
-						Regarding the bug/TFS title, this PBD query DOES pull over the most recent REG/Sale-Off for all items,
-						but the "bug" with the @IncSlim caused NO (zero) PBD rows to be pulled over to the new store when @IncSlim = 1.
-						The new logic handles this option correctly.
-						The -1 is used if we want to include them (@IncSlim=1) because 'PB.PriceChgTypeID <> -1' should then always be TRUE.
 					*/
-					AND PB.PriceChgTypeID <> CASE WHEN @IncSlim = 0 then @ISSPriceChgTypeID ELSE -1 END
-					AND PB.InsertApplication <> CASE WHEN @IncPromoPlanner = 1 THEN 'PROMO PLANNER' ELSE 'NOT PROMO PLANNER' END
-			UNION
-				-- TFS 11641, Tom Lux, 2/18/10, Added explicit table reference for all fields due to new item-table join.  See other comments herein for full details.
-				SELECT 
-					 pb.[Item_Key], @NewStoreNo, pb.[ItemChgTypeID],pb.[PriceChgTypeID],pb.[StartDate],pb.[Multiple],pb.[Price],pb.[MSRPPrice],
-					 pb.[MSRPMultiple],pb.[PricingMethod_ID],pb.[Sale_Multiple],pb.[Sale_Price],pb.[Sale_End_Date],pb.[Sale_Max_Quantity],pb.[Sale_Mix_Match],pb.[Sale_Earned_Disc1],
-					 pb.[Sale_Earned_Disc2],pb.[Sale_Earned_Disc3],pb.[Case_Price],pb.[Sign_Description],pb.[Ingredients],pb.[Identifier],pb.[Sold_By_Weight],pb.[SubTeam_No],pb.[Origin_Name],
-					 pb.[Brand_Name],pb.[Retail_Unit_Abbr],pb.[Retail_Unit_Full],pb.[Package_Unit],pb.[Package_Desc1],pb.[Package_Desc2],pb.[Organic],pb.[Vendor_Id],pb.[ItemType_ID],
-					 pb.[ScaleDesc1],pb.[ScaleDesc2],pb.[POS_Description],pb.[Restricted_Hours],pb.[Quantity_Required],pb.[Price_Required],pb.[Retail_Sale],pb.[Discountable],
-					 pb.[Food_Stamps],pb.[IBM_Discount],pb.[Hobart_Item],pb.[PrintSign],pb.[LineDrive],pb.[POSPrice],pb.[POSSale_Price],pb.[Offer_ID],pb.[AvgCostUpdated],
-					  pb.[NotAuthorizedForSale],pb.[Deleted_Item],pb.[User_ID],pb.[User_ID_Date],pb.[LabelType_ID],pb.[OfferChgTypeID],pb.[QtyProhibit],pb.[GroupList],pb.[PosTare],
-					 pb.[LinkedItem],pb.[GrillPrint],pb.[AgeCode],pb.[VisualVerify],pb.[SrCitizenDiscount],pb.[AsOfDate],pb.[AutoGenerated],pb.[Expired],pb.[POSLinkCode],
-					 'NEW STORE SCRIPT',pb.[RetailUnit_WeightUnit],pb.[TagTypeID],pb.[TagTypeID2],pb.[LocalItem],pb.[ItemSurcharge]
-				FROM [PriceBatchDetail] PB (NOLOCK)
-				-- TFS 11641, Tom Lux, 2/18/10, Added join to item so PBD rows with null subteam are not excluded when alt store-subteams are passed.  See other comments herein for full details.
-				join [item] i (nolock)
-					on pb.item_key = i.item_key
-				inner join 
-					(SELECT Key_Value1 AS Store_No, Key_Value2 AS Subteam_No 
-					FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2)
-					) SUB on SUB.Subteam_No = isnull(PB.subteam_no, i.subteam_no) and SUB.Store_No = PB.Store_No
+					INSERT INTO [dbo].[PriceBatchDetail]
+						([Item_Key], [Store_No], [ItemChgTypeID],[PriceChgTypeID],[StartDate],[Multiple],[Price],[MSRPPrice],
+						 [MSRPMultiple],[PricingMethod_ID],[Sale_Multiple],[Sale_Price],[Sale_End_Date],[Sale_Max_Quantity],[Sale_Mix_Match],[Sale_Earned_Disc1],
+						 [Sale_Earned_Disc2],[Sale_Earned_Disc3],[Case_Price],[Sign_Description],[Ingredients],[Identifier],[Sold_By_Weight],[SubTeam_No],[Origin_Name],
+						 [Brand_Name],[Retail_Unit_Abbr],[Retail_Unit_Full],[Package_Unit],[Package_Desc1],[Package_Desc2],[Organic],[Vendor_Id],[ItemType_ID],
+						 [ScaleDesc1],[ScaleDesc2],[POS_Description],[Restricted_Hours],[Quantity_Required],[Price_Required],[Retail_Sale],[Discountable],
+						 [Food_Stamps],[IBM_Discount],[Hobart_Item],[PrintSign],[LineDrive],[POSPrice],[POSSale_Price],[Offer_ID],[AvgCostUpdated],
+						  [NotAuthorizedForSale],[Deleted_Item],[User_ID], [User_ID_Date],[LabelType_ID],[OfferChgTypeID],[QtyProhibit],[GroupList],[PosTare],
+						 [LinkedItem],[GrillPrint],[AgeCode],[VisualVerify],[SrCitizenDiscount],[AsOfDate],[AutoGenerated],[Expired],[POSLinkCode],
+						 [InsertApplication],[RetailUnit_WeightUnit],[TagTypeID],[TagTypeID2], [LocalItem], [ItemSurcharge])
+					SELECT 
+						 pb.[Item_Key], @NewStoreNo, pb.[ItemChgTypeID],pb.[PriceChgTypeID],pb.[StartDate],pb.[Multiple],pb.[Price],pb.[MSRPPrice],
+						 pb.[MSRPMultiple],pb.[PricingMethod_ID],pb.[Sale_Multiple],pb.[Sale_Price],pb.[Sale_End_Date],pb.[Sale_Max_Quantity],pb.[Sale_Mix_Match],pb.[Sale_Earned_Disc1],
+						 pb.[Sale_Earned_Disc2],pb.[Sale_Earned_Disc3],pb.[Case_Price],pb.[Sign_Description],pb.[Ingredients],pb.[Identifier],pb.[Sold_By_Weight],pb.[SubTeam_No],pb.[Origin_Name],
+						 pb.[Brand_Name],pb.[Retail_Unit_Abbr],pb.[Retail_Unit_Full],pb.[Package_Unit],pb.[Package_Desc1],pb.[Package_Desc2],pb.[Organic],pb.[Vendor_Id],pb.[ItemType_ID],
+						 pb.[ScaleDesc1],pb.[ScaleDesc2],pb.[POS_Description],pb.[Restricted_Hours],pb.[Quantity_Required],pb.[Price_Required],pb.[Retail_Sale],pb.[Discountable],
+						 pb.[Food_Stamps],pb.[IBM_Discount],pb.[Hobart_Item],pb.[PrintSign],pb.[LineDrive],pb.[POSPrice],pb.[POSSale_Price],pb.[Offer_ID],pb.[AvgCostUpdated],
+						  pb.[NotAuthorizedForSale],pb.[Deleted_Item],pb.[User_ID],pb.[User_ID_Date],pb.[LabelType_ID],pb.[OfferChgTypeID],pb.[QtyProhibit],pb.[GroupList],pb.[PosTare],
+						 pb.[LinkedItem],pb.[GrillPrint],pb.[AgeCode],pb.[VisualVerify],pb.[SrCitizenDiscount],pb.[AsOfDate],pb.[AutoGenerated],pb.[Expired],pb.[POSLinkCode],
+						 'NEW STORE SCRIPT',pb.[RetailUnit_WeightUnit],pb.[TagTypeID],pb.[TagTypeID2], pb.[LocalItem], pb.[ItemSurcharge]
+					FROM [PriceBatchDetail] PB (NOLOCK)
+					-- TFS 11641, Tom Lux, 2/18/10, Added join to item so PBD rows with null subteam are not excluded when alt store-subteams are passed.  See other comments herein for full details.
+					join [item] i (nolock)
+						on pb.item_key = i.item_key
+					-- The following line differs from the one in the next query.
+					WHERE PB.[Store_No] = @OldStoreNo 
+						AND ((@IncFutureSale = 1 AND StartDate > dateadd(day,1, getdate())) OR	--bring in upcoming sale end records
+								(@IncFutureSale = 0 AND StartDate < dateadd(day,1, getdate()) AND Sale_End_Date > dateadd(day,1, getdate())) OR	
+							(pb.pricebatchdetailid in (																	-- bring in last known regs
+								SELECT TOP 1 pb2.pricebatchdetailid	
+								FROM PriceBatchDetail pb2 (NOLOCK)
+								WHERE pb.pricechgtypeid = @REG_PCT 
+									AND pb2.item_key = pb.item_key 
+									AND pb2.store_no = pb.store_no
+								ORDER BY pb2.pricebatchdetailid DESC)))
+						AND NOT EXISTS (SELECT *
+										  FROM dbo.PriceBatchDetail (NOLOCK)
+										  WHERE [Store_No] = @NewStoreNo
+												  AND [Item_Key] = PB.[Item_Key]
+												  AND ISNULL([PriceChgTypeID],0) = ISNULL(PB.[PriceChgTypeID],0)
+												  AND ISNULL([ItemChgTypeID],0) = ISNULL(PB.[ItemChgTypeID],0)
+												  AND startdate > dateadd(day, 1 , getdate()))
+						-- TFS 11641, Tom Lux, 2/18/10, Added isnull() check on next line so null subteam are not excluded when alt store-subteams are passed.  See other comments herein for full details.
+						-- The following line differs from the one in the next query.
+						AND isnull(PB.subteam_no, i.subteam_no) not in (select Key_Value2 FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2) IL GROUP BY Key_Value2)
+						/*
+							*** NOTE: This change is replicated in the next query as well (bottom/2nd-piece of the UNION).
+							TFS 11641: New Store Creation tool does not copy over pending off sale records
+							IRMA v3.5.9
+							2010.01.22
+							Tom Lux
+							Fixed issue with the next line of code to conditionally include ISS price changes.
+							Regarding the bug/TFS title, this PBD query DOES pull over the most recent REG/Sale-Off for all items,
+							but the "bug" with the @IncSlim caused NO (zero) PBD rows to be pulled over to the new store when @IncSlim = 1.
+							The new logic handles this option correctly.
+							The -1 is used if we want to include them (@IncSlim=1) because 'PB.PriceChgTypeID <> -1' should then always be TRUE.
+						*/
+						AND PB.PriceChgTypeID <> CASE WHEN @IncSlim = 0 then @ISSPriceChgTypeID ELSE -1 END
+						AND PB.InsertApplication <> CASE WHEN @IncPromoPlanner = 1 THEN 'PROMO PLANNER' ELSE 'NOT PROMO PLANNER' END
+				UNION
+					-- TFS 11641, Tom Lux, 2/18/10, Added explicit table reference for all fields due to new item-table join.  See other comments herein for full details.
+					SELECT 
+						 pb.[Item_Key], @NewStoreNo, pb.[ItemChgTypeID],pb.[PriceChgTypeID],pb.[StartDate],pb.[Multiple],pb.[Price],pb.[MSRPPrice],
+						 pb.[MSRPMultiple],pb.[PricingMethod_ID],pb.[Sale_Multiple],pb.[Sale_Price],pb.[Sale_End_Date],pb.[Sale_Max_Quantity],pb.[Sale_Mix_Match],pb.[Sale_Earned_Disc1],
+						 pb.[Sale_Earned_Disc2],pb.[Sale_Earned_Disc3],pb.[Case_Price],pb.[Sign_Description],pb.[Ingredients],pb.[Identifier],pb.[Sold_By_Weight],pb.[SubTeam_No],pb.[Origin_Name],
+						 pb.[Brand_Name],pb.[Retail_Unit_Abbr],pb.[Retail_Unit_Full],pb.[Package_Unit],pb.[Package_Desc1],pb.[Package_Desc2],pb.[Organic],pb.[Vendor_Id],pb.[ItemType_ID],
+						 pb.[ScaleDesc1],pb.[ScaleDesc2],pb.[POS_Description],pb.[Restricted_Hours],pb.[Quantity_Required],pb.[Price_Required],pb.[Retail_Sale],pb.[Discountable],
+						 pb.[Food_Stamps],pb.[IBM_Discount],pb.[Hobart_Item],pb.[PrintSign],pb.[LineDrive],pb.[POSPrice],pb.[POSSale_Price],pb.[Offer_ID],pb.[AvgCostUpdated],
+						  pb.[NotAuthorizedForSale],pb.[Deleted_Item],pb.[User_ID],pb.[User_ID_Date],pb.[LabelType_ID],pb.[OfferChgTypeID],pb.[QtyProhibit],pb.[GroupList],pb.[PosTare],
+						 pb.[LinkedItem],pb.[GrillPrint],pb.[AgeCode],pb.[VisualVerify],pb.[SrCitizenDiscount],pb.[AsOfDate],pb.[AutoGenerated],pb.[Expired],pb.[POSLinkCode],
+						 'NEW STORE SCRIPT',pb.[RetailUnit_WeightUnit],pb.[TagTypeID],pb.[TagTypeID2],pb.[LocalItem],pb.[ItemSurcharge]
+					FROM [PriceBatchDetail] PB (NOLOCK)
+					-- TFS 11641, Tom Lux, 2/18/10, Added join to item so PBD rows with null subteam are not excluded when alt store-subteams are passed.  See other comments herein for full details.
+					join [item] i (nolock)
+						on pb.item_key = i.item_key
+					inner join 
+						(SELECT Key_Value1 AS Store_No, Key_Value2 AS Subteam_No 
+						FROM fn_Parse_List_Two(@StoreSubTeamSubstitutions, @StoreSubTeamSubstitutionsSeparator1, @StoreSubTeamSubstitutionsSeparator2)
+						) SUB on SUB.Subteam_No = isnull(PB.subteam_no, i.subteam_no) and SUB.Store_No = PB.Store_No
 
-				WHERE PB.[Store_No] <> @OldStoreNo 
+					WHERE PB.[Store_No] <> @OldStoreNo 
 				
-					AND ((@IncFutureSale = 1 AND StartDate > dateadd(day,1, getdate())) OR	--bring in upcoming sale end records
-							(@IncFutureSale = 0 AND StartDate < dateadd(day,1, getdate()) AND Sale_End_Date > dateadd(day,1, getdate())) OR	
-						(pb.pricebatchdetailid in (																	-- bring in last known regs
-							SELECT TOP 1 pb2.pricebatchdetailid	
-							FROM PriceBatchDetail pb2 (NOLOCK)
-							WHERE pb.pricechgtypeid = @REG_PCT 
-								AND pb2.item_key = pb.item_key 
-								AND pb2.store_no = pb.store_no
-							ORDER BY pb2.pricebatchdetailid DESC)))
-					AND NOT EXISTS (SELECT *
-									  FROM dbo.PriceBatchDetail (NOLOCK)
-									  WHERE [Store_No] = @NewStoreNo
-											  AND [Item_Key] = PB.[Item_Key]
-											  AND ISNULL([PriceChgTypeID],0) = ISNULL(PB.[PriceChgTypeID],0)
-											  AND ISNULL([ItemChgTypeID],0) = ISNULL(PB.[ItemChgTypeID],0)
-											  AND startdate > dateadd(day, 1 , getdate()))
-					-- @IncSlim fix.  See comment in top query of the above UNION.
-					AND PB.PriceChgTypeID <> CASE WHEN @IncSlim = 0 THEN @ISSPriceChgTypeID ELSE -1 END
-					AND PB.InsertApplication <> CASE WHEN @IncPromoPlanner = 1 THEN 'PROMO PLANNER' ELSE 'NOT PROMO PLANNER' END
-				ORDER BY PB.Item_Key, PB.SubTeam_No
-				OPTION (RECOMPILE)
-		END
+						AND ((@IncFutureSale = 1 AND StartDate > dateadd(day,1, getdate())) OR	--bring in upcoming sale end records
+								(@IncFutureSale = 0 AND StartDate < dateadd(day,1, getdate()) AND Sale_End_Date > dateadd(day,1, getdate())) OR	
+							(pb.pricebatchdetailid in (																	-- bring in last known regs
+								SELECT TOP 1 pb2.pricebatchdetailid	
+								FROM PriceBatchDetail pb2 (NOLOCK)
+								WHERE pb.pricechgtypeid = @REG_PCT 
+									AND pb2.item_key = pb.item_key 
+									AND pb2.store_no = pb.store_no
+								ORDER BY pb2.pricebatchdetailid DESC)))
+						AND NOT EXISTS (SELECT *
+										  FROM dbo.PriceBatchDetail (NOLOCK)
+										  WHERE [Store_No] = @NewStoreNo
+												  AND [Item_Key] = PB.[Item_Key]
+												  AND ISNULL([PriceChgTypeID],0) = ISNULL(PB.[PriceChgTypeID],0)
+												  AND ISNULL([ItemChgTypeID],0) = ISNULL(PB.[ItemChgTypeID],0)
+												  AND startdate > dateadd(day, 1 , getdate()))
+						-- @IncSlim fix.  See comment in top query of the above UNION.
+						AND PB.PriceChgTypeID <> CASE WHEN @IncSlim = 0 THEN @ISSPriceChgTypeID ELSE -1 END
+						AND PB.InsertApplication <> CASE WHEN @IncPromoPlanner = 1 THEN 'PROMO PLANNER' ELSE 'NOT PROMO PLANNER' END
+					ORDER BY PB.Item_Key, PB.SubTeam_No
+					OPTION (RECOMPILE)
+			END
 
-		SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
-		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
-		PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
-
+			SELECT @RowsAffected = @@ROWCOUNT, @now = getdate(), @LogMsg = @CodeLocation + ' Rows Affected: ' + cast(@@ROWCOUNT as varchar);
+			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @LogMsg
+	END
 
         ----------------------------------------------------------------------
         -- add a default SLIM e-mail entries
