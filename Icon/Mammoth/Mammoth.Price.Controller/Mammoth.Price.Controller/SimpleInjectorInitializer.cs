@@ -14,6 +14,7 @@ using Mammoth.Price.Controller.ApplicationModules;
 using Mammoth.Price.Controller.DataAccess.Commands;
 using Mammoth.Price.Controller.DataAccess.Models;
 using Mammoth.Price.Controller.DataAccess.Queries;
+using Mammoth.Price.Controller.EventProcessors;
 using Mammoth.Price.Controller.Services;
 using SimpleInjector;
 using System.Collections.Generic;
@@ -31,8 +32,12 @@ namespace Mammoth.Price.Controller
             container.RegisterSingleton<ILogger>(() => new NLoggerInstance(typeof(NLoggerInstance),
                 AppSettingsAccessor.GetStringSetting("InstanceID")));
             container.RegisterSingleton<IControllerApplication, ControllerApplication>();
-            container.RegisterSingleton<IQueueManager<PriceEventModel>, PriceQueueManager>();
+            container.RegisterSingleton<IQueueManager, PriceQueueManager>();
             container.RegisterSingleton<IService<PriceEventModel>, PriceService>();
+            container.RegisterSingleton<IService<CancelAllSalesEventModel>, CancelAllSalesService>();
+            container.RegisterSingleton<IEventProcessor<PriceEventModel>, PriceEventProcessor>();
+            container.RegisterSingleton<IEventProcessor<CancelAllSalesEventModel>, CancelAllSalesEventProcessor>();
+            container.RegisterSingleton<IErrorAlerter, ErrorAlerter>();
             container.RegisterSingleton<IDbProvider, SqlDbProvider>();
             container.RegisterSingleton<IHttpClientWrapper, HttpClientWrapper>();
             container.RegisterSingleton<HttpClientSettings>(() => HttpClientSettings.CreateFromConfig());

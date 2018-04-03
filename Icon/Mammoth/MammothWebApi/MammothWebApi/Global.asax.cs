@@ -66,10 +66,10 @@ namespace MammothWebApi
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString), Lifestyle.Scoped);
             container.Register<ISerializer<items>, Serializer<items>>();
 
-            // Decorators
-            container.RegisterDecorator(typeof(IUpdateService<AddUpdatePrice>), typeof(CancelAllSalesAddUpdatePriceServiceDecorator));
+            // Decorators  
             container.RegisterDecorator(typeof(IUpdateService<AddUpdatePrice>), typeof(PrimeAffinityPsgAddPriceServiceDecorator));
             container.RegisterDecorator(typeof(IUpdateService<DeletePrice>), typeof(PrimeAffinityPsgDeletePriceServiceDecorator));
+            container.RegisterDecorator(typeof(IUpdateService<CancelAllSales>), typeof(PrimeAffinityPsgCancelAllSalesPriceServiceDecorator));
             container.RegisterDecorator(typeof(IUpdateService<>), typeof(DbConnectionServiceDecorator<>));
             container.RegisterDecorator<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>, DbConnectionQueryHandlerDecorator<GetAllBusinessUnitsQuery, List<int>>>();
             container.RegisterDecorator<IQueryHandler<GetLocalesByBusinessUnitsQuery, IEnumerable<Locales>>,

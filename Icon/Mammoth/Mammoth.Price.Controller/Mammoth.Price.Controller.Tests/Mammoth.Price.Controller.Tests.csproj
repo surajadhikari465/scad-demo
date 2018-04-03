@@ -56,16 +56,16 @@
       <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.2017.11.28.3\lib\net461\Mammoth.Common.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.2018.3.23.1\lib\net46\Mammoth.Common.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.ControllerApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.ControllerApplication.2017.11.28.6\lib\net461\Mammoth.Common.ControllerApplication.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.ControllerApplication.2018.3.23.1\lib\net46\Mammoth.Common.ControllerApplication.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2017.11.28.6\lib\net461\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.3.23.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Logging.2017.11.28.5\lib\net461\Mammoth.Logging.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Logging.2018.3.13.2\lib\net46\Mammoth.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.7.10.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.7.10\lib\net45\Moq.dll</HintPath>
@@ -107,11 +107,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ControllerApplicationTests.cs" />
+    <Compile Include="EventProcessors\CancelAllSalesEventProcessorTests.cs" />
+    <Compile Include="EventProcessors\PriceEventProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CancelAllSalesServiceTests.cs" />
     <Compile Include="Services\PriceServiceTests.cs" />
     <Compile Include="SimpleInjectorInitializerTests.cs" />
     <Compile Include="PriceEventModelExtensionsTest.cs" />
-    <Compile Include="PriceQueueManagerTests.cs" />
+    <Compile Include="ApplicationModules\PriceQueueManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mammoth.Price.Controller.DataAccess\Mammoth.Price.Controller.DataAccess.csproj">

@@ -17,11 +17,8 @@ namespace Mammoth.Price.Controller.DataAccess.Commands
         {
             dbProvider.Connection.Execute(
                 @"delete mammoth.PriceChangeQueue
-                  where QueueId in @EventQueueIds",
-                new
-                {
-                    EventQueueIds = data.QueueIds
-                },
+                  where InProcessBy = @Instance",
+                new { data.Instance },
                 dbProvider.Transaction);
         }
     }

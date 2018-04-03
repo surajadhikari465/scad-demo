@@ -182,8 +182,10 @@
     <Compile Include="Extensions\ServiceModelMappingExtensions.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Models\BusinessUnitScanCode.cs" />
+    <Compile Include="Models\CancelAllSalesModel.cs" />
     <Compile Include="Models\DeauthorizeModel.cs" />
     <Compile Include="Models\ErrorResponseModel.cs" />
+    <Compile Include="Models\EventQueueModel.cs" />
     <Compile Include="Models\HierarchyClassModel.cs" />
     <Compile Include="Models\ItemLocaleModel.cs" />
     <Compile Include="Models\ItemModel.cs" />

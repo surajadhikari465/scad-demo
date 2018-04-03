@@ -127,6 +127,7 @@
   <ItemGroup>
     <Compile Include="Commands\AddEsbMessageQueuePriceCommandHandlerTests.cs" />
     <Compile Include="Commands\AddOrUpdateItemLocaleSupplierCommandHandlerTests.cs" />
+    <Compile Include="Commands\CancelAllSalesCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteItemLocaleSupplierCommandHandlerTests.cs" />
     <Compile Include="Commands\StagingItemLocaleCommandHandlerTests.cs" />
     <Compile Include="Commands\AddOrUpdateItemLocaleCommandHandlerTests.cs" />

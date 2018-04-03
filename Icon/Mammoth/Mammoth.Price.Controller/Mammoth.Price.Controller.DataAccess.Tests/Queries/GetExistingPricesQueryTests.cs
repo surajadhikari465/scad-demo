@@ -1,16 +1,12 @@
 ﻿namespace Mammoth.Price.Controller.DataAccess.Tests.Queries
 {
     using Dapper;
-
     using Irma.Framework;
     using Irma.Testing;
-
     using Mammoth.Common.DataAccess;
     using Mammoth.Common.DataAccess.DbProviders;
     using Mammoth.Price.Controller.DataAccess.Queries;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -138,7 +134,6 @@
             Assert.IsNull(actual.NewSaleEndDate);
             Assert.IsNull(actual.NewSalePrice);
             Assert.IsNull(actual.NewSaleMultiple);
-            Assert.IsNull(actual.CancelAllSales);
             Assert.IsNull(actual.CurrentSalePrice);
             Assert.IsNull(actual.CurrentSaleMultiple);
             Assert.IsNull(actual.CurrentSaleStartDate);
@@ -249,7 +244,6 @@
             Assert.IsNull(actual.NewSaleEndDate);
             Assert.IsNull(actual.NewSalePrice);
             Assert.IsNull(actual.NewSaleMultiple);
-            Assert.IsNull(actual.CancelAllSales);
             Assert.IsNull(actual.CurrentSalePrice);
             Assert.IsNull(actual.CurrentSaleMultiple);
             Assert.IsNull(actual.CurrentSaleStartDate);
@@ -368,7 +362,6 @@
             Assert.IsNull(actual.NewSaleEndDate);
             Assert.IsNull(actual.NewSalePrice);
             Assert.IsNull(actual.NewSaleMultiple);
-            Assert.IsNull(actual.CancelAllSales);
             Assert.IsNull(actual.CurrentSalePrice);
             Assert.IsNull(actual.CurrentSaleMultiple);
             Assert.IsNull(actual.CurrentSaleStartDate);
@@ -490,7 +483,6 @@
             Assert.AreEqual(null, results.First().NewSaleEndDate);
             Assert.AreEqual(null, results.First().NewSalePrice);
             Assert.AreEqual(null, results.First().NewSaleMultiple);
-            Assert.IsNull(results.First().CancelAllSales);
             Assert.IsNull(results.First().CurrentSalePrice);
             Assert.IsNull(results.First().CurrentSaleMultiple);
             Assert.IsNull(results.First().CurrentSaleStartDate);
@@ -511,7 +503,6 @@
             Assert.AreEqual(expectedSaleEndDate, results[1].NewSaleEndDate);
             Assert.AreEqual(expectedSalePrice, results[1].NewSalePrice);
             Assert.AreEqual(expectedSaleMultiple, results[1].NewSaleMultiple);
-            Assert.IsNull(results[1].CancelAllSales);
             Assert.IsNull(results[1].CurrentSalePrice);
             Assert.IsNull(results[1].CurrentSaleMultiple);
             Assert.IsNull(results[1].CurrentSaleStartDate);
@@ -669,7 +660,6 @@
             Assert.AreEqual(null, results.First().NewSaleEndDate);
             Assert.AreEqual(null, results.First().NewSalePrice);
             Assert.AreEqual(null, results.First().NewSaleMultiple);
-            Assert.IsNull(results.First().CancelAllSales);
             Assert.IsNull(results.First().CurrentSalePrice);
             Assert.IsNull(results.First().CurrentSaleMultiple);
             Assert.IsNull(results.First().CurrentSaleStartDate);
@@ -690,7 +680,6 @@
             Assert.AreEqual(null, results[1].NewSaleEndDate);
             Assert.AreEqual(null, results[1].NewSalePrice);
             Assert.AreEqual(null, results[1].NewSaleMultiple);
-            Assert.IsNull(results[1].CancelAllSales);
             Assert.IsNull(results[1].CurrentSalePrice);
             Assert.IsNull(results[1].CurrentSaleMultiple);
             Assert.IsNull(results[1].CurrentSaleStartDate);
@@ -711,7 +700,6 @@
             Assert.AreEqual(expectedSaleEndDate, results[2].NewSaleEndDate);
             Assert.AreEqual(expectedSalePrice, results[2].NewSalePrice);
             Assert.AreEqual(expectedSaleMultiple, results[2].NewSaleMultiple);
-            Assert.IsNull(results[2].CancelAllSales);
             Assert.IsNull(results[2].CurrentSalePrice);
             Assert.IsNull(results[2].CurrentSaleMultiple);
             Assert.IsNull(results[2].CurrentSaleStartDate);
@@ -813,7 +801,6 @@
             Assert.IsNull(results.First().NewSaleEndDate);
             Assert.IsNull(results.First().NewSalePrice);
             Assert.IsNull(results.First().NewSaleMultiple);
-            Assert.IsNull(results.First().CancelAllSales);
             Assert.IsNull(results.First().CurrentSalePrice);
             Assert.IsNull(results.First().CurrentSaleMultiple);
             Assert.IsNull(results.First().CurrentSaleStartDate);
@@ -951,7 +938,6 @@
             Assert.IsNull(results.First().NewSaleEndDate);
             Assert.IsNull(results.First().NewSalePrice);
             Assert.IsNull(results.First().NewSaleMultiple);
-            Assert.IsNull(results.First().CancelAllSales);
             Assert.IsNull(results.First().CurrentSalePrice);
             Assert.IsNull(results.First().CurrentSaleMultiple);
             Assert.IsNull(results.First().CurrentSaleStartDate);
@@ -972,7 +958,6 @@
             Assert.IsNull(results[1].NewSaleEndDate);
             Assert.IsNull(results[1].NewSalePrice);
             Assert.IsNull(results[1].NewSaleMultiple);
-            Assert.IsNull(results[1].CancelAllSales);
             Assert.IsNull(results[1].CurrentSalePrice);
             Assert.IsNull(results[1].CurrentSaleMultiple);
             Assert.IsNull(results[1].CurrentSaleStartDate);
@@ -1027,7 +1012,6 @@
 
         private class TestItemsForPriceEvents
         {
-            public int IdentifierCount { get; set; }
             public int? PriceBatchDetailID { get; set; }
             public string Identifier { get; set; }
             public int Item_Key { get; set; }

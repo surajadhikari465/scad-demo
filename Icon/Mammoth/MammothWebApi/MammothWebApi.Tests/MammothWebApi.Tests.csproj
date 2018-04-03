@@ -119,6 +119,7 @@
     <Compile Include="Helpers\PriceTestData.cs" />
     <Compile Include="Helpers\ViewModelValidationHelper.cs" />
     <Compile Include="Models\PriceRequestModelUnitTests.cs" />
+    <Compile Include="Services\CancelsAllSalesServiceTest.cs" />
     <Compile Include="Services\ExtensionsTests.cs" />
     <Compile Include="Services\DbConnectionServiceDecoratorTests.cs" />
     <Compile Include="Services\TransactionServiceDecoratorTests.cs" />
@@ -127,12 +128,10 @@
     <Compile Include="Services\AddUpdateItemLocaleServiceTests.cs" />
     <Compile Include="Services\AddUpdatePriceServiceTests.cs" />
     <Compile Include="Services\DeletePriceServiceTests.cs" />
-    <Compile Include="Services\CancelAllSalesAddUpdatePriceServiceDecoratorTests.cs" />
     <Compile Include="ModelBuilders\TestItemLocaleModelBuilder.cs" />
     <Compile Include="ModelBuilders\TestItemLocaleServiceModelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ModelBuilders\TestItemModelBuilder.cs" />
-    <Compile Include="ServiceModelMappingExtensionsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

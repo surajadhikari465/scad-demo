@@ -21,6 +21,9 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
         {
             string sql = @" SET TRANSACTION ISOLATION LEVEL SNAPSHOT;
 
+                            DECLARE @PriceEventTypeID INT = (SELECT EventTypeID FROM mammoth.ItemChangeEventType WHERE EventTypeName = 'Price')
+                            DECLARE @PriceRollbackEventTypeID INT = (SELECT EventTypeID FROM mammoth.ItemChangeEventType WHERE EventTypeName = 'PriceRollback')
+
                             -- Main Query
                             -- For rows that have EventReferenceID populated with PriceBatchDetailID
                             SELECT	
@@ -42,7 +45,6 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 		                            ELSE 'EA'
 	                            END						as PriceUom,
 	                            c.CurrencyCode			as CurrencyCode,
-                                pbd.CancelAllSales      as CancelAllSales,
                                 p.Price					as CurrentRegularPrice,
                                 p.Multiple              as CurrentRegularMultiple,
 	                            p.Sale_Price			as CurrentSalePrice,
@@ -71,7 +73,8 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 	                            LEFT JOIN ItemUnit			ovu	on	ov.Retail_Unit_ID = ovu.Unit_ID
                             WHERE
 	                            q.InProcessBy = @Instance
-	                            AND q.EventReferenceID IS NOT NULL;";
+	                            AND q.EventReferenceID IS NOT NULL
+                                AND q.EventTypeID IN (@PriceEventTypeID, @PriceRollbackEventTypeID);";
 
             List<PriceEventModel> priceData = provider.Connection
                 .Query<PriceEventModel>(sql,

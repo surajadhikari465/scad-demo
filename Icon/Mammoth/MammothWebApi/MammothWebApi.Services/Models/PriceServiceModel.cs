@@ -14,6 +14,5 @@ namespace MammothWebApi.Service.Models
         public string PriceType { get; set; }
         public string PriceUom { get; set; }
         public string CurrencyCode { get; set; }
-        public bool CancelAllSales { get; set; }
     }
 }

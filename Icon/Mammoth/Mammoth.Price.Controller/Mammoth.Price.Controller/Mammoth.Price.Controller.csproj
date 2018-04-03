@@ -57,16 +57,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mammoth.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.2017.11.28.3\lib\net461\Mammoth.Common.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.2018.3.23.1\lib\net46\Mammoth.Common.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.ControllerApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.ControllerApplication.2017.11.28.6\lib\net461\Mammoth.Common.ControllerApplication.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.ControllerApplication.2018.3.23.1\lib\net46\Mammoth.Common.ControllerApplication.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2017.11.28.6\lib\net461\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.3.23.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Logging.2017.11.28.5\lib\net461\Mammoth.Logging.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Logging.2018.3.13.2\lib\net46\Mammoth.Logging.dll</HintPath>
     </Reference>
     <Reference Include="MoreLinq, Version=2.4.20801.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
@@ -104,14 +104,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationModules\ErrorAlerter.cs" />
+    <Compile Include="ApplicationModules\IErrorAlerter.cs" />
+    <Compile Include="ApplicationModules\IQueueManager.cs" />
     <Compile Include="ApplicationModules\PriceQueueManager.cs" />
     <Compile Include="ControllerApplication.cs" />
+    <Compile Include="EventProcessors\CancelAllSalesEventProcessor.cs" />
+    <Compile Include="EventProcessors\IEventProcessor.cs" />
+    <Compile Include="EventProcessors\PriceEventProcessor.cs" />
     <Compile Include="ITopShelfService.cs" />
+    <Compile Include="LoggingExtensions.cs" />
     <Compile Include="PriceEventModelExtensions.cs" />
     <Compile Include="PriceControllerApplicationSettings.cs" />
     <Compile Include="PriceTopShelfService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CancelAllSalesModel.cs" />
+    <Compile Include="Services\CancelAllSalesService.cs" />
     <Compile Include="Services\PriceModel.cs" />
     <Compile Include="Services\PriceService.cs" />
     <Compile Include="SimpleInjectorInitializer.cs" />

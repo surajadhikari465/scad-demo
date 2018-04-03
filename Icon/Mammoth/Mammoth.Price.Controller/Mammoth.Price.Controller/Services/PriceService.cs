@@ -28,12 +28,8 @@ namespace Mammoth.Price.Controller.Services
         public void Process(List<PriceEventModel> data)
         {
             logger.Info(String.Format("Processing {0} Mammoth Price Events.", data.Count));
-
-            if (data.Any())
-            {
-                SendData(data, Uris.PriceUpdate, IrmaEventTypes.Price);
-                SendData(data, Uris.PriceRollback, IrmaEventTypes.PriceRollback);
-            }
+            SendData(data, Uris.PriceUpdate, IrmaEventTypes.Price);
+            SendData(data, Uris.PriceRollback, IrmaEventTypes.PriceRollback);
         }
 
         private void SendData(List<PriceEventModel> data, string uri, int eventTypeId)

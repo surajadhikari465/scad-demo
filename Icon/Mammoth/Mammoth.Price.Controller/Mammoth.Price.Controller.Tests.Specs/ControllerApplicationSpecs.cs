@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Mammoth.Common.ControllerApplication;
 using Mammoth.Common.ControllerApplication.Http;
 using Mammoth.Common.DataAccess;
 using Mammoth.Common.Email;

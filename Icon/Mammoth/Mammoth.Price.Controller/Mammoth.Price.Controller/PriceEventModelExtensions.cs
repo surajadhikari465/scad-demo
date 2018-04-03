@@ -1,9 +1,7 @@
-﻿using Mammoth.Common;
-using Mammoth.Price.Controller.DataAccess.Models;
+﻿using Mammoth.Price.Controller.DataAccess.Models;
 using Mammoth.Price.Controller.Services;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mammoth.Price.Controller
 {
@@ -14,35 +12,17 @@ namespace Mammoth.Price.Controller
             var prices = new List<PriceModel>();
 
             foreach (var priceEvent in priceEventData)
-            {
-                //if cancelled sale
-                if (priceEvent.CancelAllSales.HasValue && priceEvent.CancelAllSales.Value)
-                {
-                    // Cancelled Sale Update row
-                    PriceModel updatedCancelledSalePrice = BuildCancelledSalePrice(priceEvent);
-                    prices.Add(updatedCancelledSalePrice);
+            {              
+                PriceModel price = BuildPrice(priceEvent);
+                prices.Add(price);
 
-                    // add regular price change row if the cancelled sale change the off-sale reg
-                    if (priceEvent.NewRegularPrice != priceEvent.CurrentRegularPrice)
-                    {
-                        PriceModel regPriceChangeForCancelledSale = BuildRegularPrice(priceEvent);
-                        prices.Add(regPriceChangeForCancelledSale);
-                    }
-                }
-                //else a new reg or tpr
-                else
-                {
-                    PriceModel price = BuildPrice(priceEvent);
-                    prices.Add(price);
-
-                    // add regular price row if the reg price is changing with a sale
-                    if (priceEvent.NewSalePrice != null && 
-                        (priceEvent.CurrentRegularPrice != priceEvent.NewRegularPrice
+                // add regular price row if the reg price is changing with a sale
+                if (priceEvent.NewSalePrice != null 
+                    && (priceEvent.CurrentRegularPrice != priceEvent.NewRegularPrice
                         || priceEvent.CurrentRegularMultiple != priceEvent.NewRegularMultiple))
-                    {
-                        PriceModel regPrice = BuildRegularPrice(priceEvent);
-                        prices.Add(regPrice);
-                    }
+                {
+                    PriceModel regPrice = BuildRegularPrice(priceEvent);
+                    prices.Add(regPrice);
                 }
             }
 
@@ -68,8 +48,7 @@ namespace Mammoth.Price.Controller
                 EndDate = priceEventModel.NewSaleEndDate,
                 PriceType = priceEventModel.NewPriceType,
                 CurrencyCode = priceEventModel.CurrencyCode,
-                PriceUom = priceEventModel.PriceUom,
-                CancelAllSales = false
+                PriceUom = priceEventModel.PriceUom
             };
 
             return price;
@@ -94,57 +73,21 @@ namespace Mammoth.Price.Controller
                 EndDate = null,
                 PriceType = "REG",
                 CurrencyCode = priceEventModel.CurrencyCode,
-                PriceUom = priceEventModel.PriceUom,
-                CancelAllSales = false
+                PriceUom = priceEventModel.PriceUom
             };
 
             return regPrice;
         }
 
-        /// <summary>
-        /// Builds a TPR for a sale that is cancelled.
-        /// The start date of the TPR is the current Sale Start Date.
-        /// </summary>
-        /// <param name="priceEventModel"></param>
-        /// <returns></returns>
-        private static PriceModel BuildCancelledSalePrice(PriceEventModel priceEventModel)
+        public static IEnumerable<CancelAllSalesModel> MapToCancelAllSalesModel(this IEnumerable<CancelAllSalesEventModel> data)
         {
-            string missingCancelledSaleProperty = ValidateCancelledSalePrice(priceEventModel);
-            if (!String.IsNullOrEmpty(missingCancelledSaleProperty))
+            return data.Select(m => new CancelAllSalesModel
             {
-                ArgumentException argumentException = new ArgumentException(String.Format("Missing a property for the Cancelled Sale: {0}", missingCancelledSaleProperty));
-                priceEventModel.ErrorMessage = "ArgumentException";
-                priceEventModel.ErrorDetails = argumentException.ToString();
-                priceEventModel.ErrorSource = Constants.SourceSystem.MammothPriceController;
-                throw argumentException;
-            }   
-
-            var updatedCancelledSalePrice = new PriceModel();
-            updatedCancelledSalePrice.BusinessUnitId = priceEventModel.BusinessUnitId;
-            updatedCancelledSalePrice.ScanCode = priceEventModel.ScanCode;
-            updatedCancelledSalePrice.Region = priceEventModel.Region;
-            updatedCancelledSalePrice.Multiple = priceEventModel.CurrentSaleMultiple.Value;
-            updatedCancelledSalePrice.Price = priceEventModel.CurrentSalePrice.Value;
-            updatedCancelledSalePrice.StartDate = priceEventModel.CurrentSaleStartDate.Value;
-            updatedCancelledSalePrice.EndDate = priceEventModel.NewStartDate; // confusing but this is how IRMA cancels a sale
-            updatedCancelledSalePrice.PriceType = priceEventModel.CurrentPriceType;
-            updatedCancelledSalePrice.CurrencyCode = priceEventModel.CurrencyCode;
-            updatedCancelledSalePrice.PriceUom = priceEventModel.PriceUom;
-            updatedCancelledSalePrice.CancelAllSales = priceEventModel.CancelAllSales ?? false;
-
-            return updatedCancelledSalePrice;
-        }
-
-        private static string ValidateCancelledSalePrice(PriceEventModel priceEventModel)
-        {
-            if (!priceEventModel.CurrentSaleMultiple.HasValue)
-                return "CurrentSaleMultiple is null";
-            if (!priceEventModel.CurrentSalePrice.HasValue)
-                return "CurrentSalePrice is null";
-            if (!priceEventModel.CurrentSaleStartDate.HasValue)
-                return "CurrentSaleStartDate is null";
-
-            return String.Empty;
+                BusinessUnitId = m.BusinessUnitId,
+                Region = m.Region,
+                ScanCode = m.ScanCode,
+                EndDate = m.EndDate
+            });
         }
     }
 }

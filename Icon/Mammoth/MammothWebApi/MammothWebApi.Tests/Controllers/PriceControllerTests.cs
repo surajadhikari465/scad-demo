@@ -3,6 +3,7 @@ using Mammoth.Logging;
 using MammothWebApi.Controllers;
 using MammothWebApi.DataAccess.Models;
 using MammothWebApi.DataAccess.Queries;
+using MammothWebApi.Models;
 using MammothWebApi.Service.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,6 +23,7 @@ namespace MammothWebApi.Tests.Controllers
         private PriceController controller;
         private Mock<IUpdateService<AddUpdatePrice>> mockAddUpdatePriceService;
         private Mock<IUpdateService<DeletePrice>> mockDeletePriceService;
+        private Mock<IUpdateService<CancelAllSales>> mockCancelAllSalesService;
         private Mock<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>> mockGetAllBusinessUnitsQueryHandler;
         private Mock<IQueryService<GetItemStorePriceAttributes, IEnumerable<ItemStorePriceModel>>> mockGetItemStorePriceService;
         private Mock<ILogger> mockLogger;
@@ -32,11 +34,14 @@ namespace MammothWebApi.Tests.Controllers
             this.mockLogger = new Mock<ILogger>();
             this.mockAddUpdatePriceService = new Mock<IUpdateService<AddUpdatePrice>>();
             this.mockDeletePriceService = new Mock<IUpdateService<DeletePrice>>();
+            this.mockCancelAllSalesService = new Mock<IUpdateService<CancelAllSales>>();
+
             this.mockGetAllBusinessUnitsQueryHandler = new Mock<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>>();
             this.mockGetItemStorePriceService = new Mock<IQueryService<GetItemStorePriceAttributes, IEnumerable<ItemStorePriceModel>>>();
             this.controller = new PriceController(
-                this.mockAddUpdatePriceService.Object, 
-                this.mockDeletePriceService.Object, 
+                this.mockAddUpdatePriceService.Object,
+                this.mockDeletePriceService.Object,
+                this.mockCancelAllSalesService.Object,
                 this.mockGetAllBusinessUnitsQueryHandler.Object,
                 this.mockGetItemStorePriceService.Object,
                 this.mockLogger.Object);
@@ -258,6 +263,78 @@ namespace MammothWebApi.Tests.Controllers
                 "Logger Warn was not called properly.");
         }
 
+        [TestMethod]
+        public void PriceControllerCancelAllSales_CancelAllSalesModelListIsNull_ReturnsBadRequest()
+        {
+            // Given
+            List<MammothWebApi.Models.CancelAllSalesModel> cancelAllSalesList = null;
+            var expectedMessage = "There were no cancel all sales submitted or the format of the data could not be read.";
+
+            // When
+            var result = this.controller.CancelAllSales(cancelAllSalesList) as BadRequestErrorMessageResult;
+
+            // Then
+            Assert.IsNotNull(result, "The request did not return a BadRequestErrorMessageResult.");
+            Assert.AreEqual(expectedMessage, result.Message, "The actual message did not match the expected message.");
+        }
+
+        [TestMethod]
+        public void PriceControllerCancelAllSales_CancelAllSalesModelListZeroCount_ReturnsBadRequest()
+        {
+            // Given
+            List<MammothWebApi.Models.CancelAllSalesModel> cancelAllSalesList = new List<MammothWebApi.Models.CancelAllSalesModel>();
+            var expectedMessage = "There were no cancel all sales submitted or the format of the data could not be read.";
+
+            // When
+            var result = this.controller.CancelAllSales(cancelAllSalesList) as BadRequestErrorMessageResult;
+
+            // Then
+            Assert.IsNotNull(result, "The request did not return a BadRequestErrorMessageResult.");
+            Assert.AreEqual(expectedMessage, result.Message, "The actual message did not match the expected message.");
+        }
+
+        [TestMethod]
+        public void PriceControllerCancelAllSales_CancelAllSalesModelListZeroCount_LoggerCalled()
+        {
+            // Given
+            List<MammothWebApi.Models.CancelAllSalesModel> cancelAllSalesList = new List<MammothWebApi.Models.CancelAllSalesModel>();
+
+            // When
+            var result = this.controller.CancelAllSales(cancelAllSalesList) as BadRequestErrorMessageResult;
+
+            // Then
+            this.mockLogger.Verify(l => l.Warn(It.Is<string>(s => s == "Did not receive any cancel all sale data.")),
+                "Logger Warn was not called properly.");
+        }
+
+        [TestMethod]
+        public void PriceControllerCancelAllSales_ValidCancelAllSalesModelList_ReturnsOKResponse()
+        {
+            // Given
+            List<MammothWebApi.Models.CancelAllSalesModel> cancelAllSalesList = BuildCancelAllSalesModel();
+
+            // When
+            var result = this.controller.CancelAllSales(cancelAllSalesList) as OkResult;
+
+            // Then
+            Assert.IsNotNull(result, "An Ok (Http 200) response was not returned as expected.");
+        }
+
+        private List<MammothWebApi.Models.CancelAllSalesModel> BuildCancelAllSalesModel()
+        {
+            List<MammothWebApi.Models.CancelAllSalesModel> cancelAllSalesList = new List<MammothWebApi.Models.CancelAllSalesModel>();
+            MammothWebApi.Models.CancelAllSalesModel cancelAllSalesEventModel = new MammothWebApi.Models.CancelAllSalesModel()
+            {
+                BusinessUnitId = 1,
+                Region = "FL",
+                ScanCode = "7777777771"
+            };
+
+            cancelAllSalesList.Add(cancelAllSalesEventModel);
+
+            return cancelAllSalesList;
+        }
+
         private List<MammothWebApi.Models.PriceModel> BuildPriceModel(int numberOfItems)
         {
             var prices = new List<MammothWebApi.Models.PriceModel>();
@@ -334,7 +411,6 @@ namespace MammothWebApi.Tests.Controllers
                     PriceUom = "EA",
                     CurrencyCode = "USD",
                     Region = "FL",
-                    CancelAllSales = false
                 };
 
                 prices.Add(price);
@@ -362,5 +438,6 @@ namespace MammothWebApi.Tests.Controllers
 
             return exception;
         }
+
     }
 }

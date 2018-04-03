@@ -6,12 +6,10 @@ using Mammoth.Price.Controller.DataAccess.Models;
 using Mammoth.Price.Controller.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mammoth.Price.Controller.Tests.Services
@@ -188,39 +186,6 @@ namespace Mammoth.Price.Controller.Tests.Services
         }
 
         [TestMethod]
-        public void PriceServiceProcess_OneRecordExceptionThrownDuringPriceModelMapping_ShouldSetErrorDetailsAndHttpPutNotCalled()
-        {
-            //Given
-            string expectedErrorMessage = "ArgumentException";
-            string expectedErrorDetails = "Missing a property for the Cancelled Sale: {0}";
-            string expectedErrorSource = Constants.SourceSystem.MammothPriceController;
-
-            data = new List<PriceEventModel>
-                {
-                    new PriceEventModel { ScanCode = "1", EventTypeId = IrmaEventTypes.Price, CancelAllSales = true, CurrentSaleStartDate = null }
-                };
-
-            // Mapping throws exception before bulk call and call with first item.
-            mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
-
-            //When
-            service.Process(data);
-
-            //Then
-            var actual = data.First();
-
-            Assert.AreEqual(expectedErrorMessage, actual.ErrorMessage, "ErrorMessage property incorrect");
-            Assert.IsTrue(actual.ErrorDetails.Contains(expectedErrorMessage), "ErrorDetails property incorrect");
-            Assert.AreEqual(expectedErrorSource, actual.ErrorSource, "ErrorSource property incorrect");
-
-            mockClientWrapper.Verify(m => m.PostAsJsonAsync(Uris.PriceUpdate,
-                It.Is<IEnumerable<PriceModel>>(e => e.Count() == 1
-                    && e.Select(p => p.ScanCode).Contains("1"))), Times.Never);
-        }
-
-        [TestMethod]
         public void PriceServiceProcess_MessageFailedWithPostCallForPriceRollback_ShouldReprocessMessagesInBatches()
         {
             //Given
@@ -263,58 +228,6 @@ namespace Mammoth.Price.Controller.Tests.Services
                     && e.Select(p => p.ScanCode).Contains("2"))), Times.Exactly(1));
 
             mockClientWrapper.Verify(m => m.PostAsJsonAsync(Uris.PriceRollback,
-                It.Is<IEnumerable<PriceModel>>(e => e.Count() == 2
-                    && e.Select(p => p.ScanCode).Contains("3")
-                    && e.Select(p => p.ScanCode).Contains("4"))), Times.Exactly(1));
-        }
-
-        [TestMethod]
-        public void PriceServiceProcess_ExceptionThrownDuringPriceModelMapping_ShouldReprocessMessagesInBatches()
-        {
-            //Given
-            data = new List<PriceEventModel>
-                {
-                    new PriceEventModel { ScanCode = "1", EventTypeId = IrmaEventTypes.Price, CancelAllSales = true, CurrentSaleStartDate = null },
-                    new PriceEventModel { ScanCode = "2", EventTypeId = IrmaEventTypes.Price },
-                    new PriceEventModel { ScanCode = "3", EventTypeId = IrmaEventTypes.Price },
-                    new PriceEventModel { ScanCode = "4", EventTypeId = IrmaEventTypes.Price },
-                };
-
-            // Mapping throws exception before bulk call and call with first item.
-            mockClientWrapper.SetupSequence(m => m.PutAsJsonAsync(It.IsAny<string>(), It.IsAny<IEnumerable<PriceModel>>()))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)))
-                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
-
-            //When
-            service.Process(data);
-
-            //Then
-            Assert.IsNotNull(data.First().ErrorMessage);
-            Assert.IsNotNull(data.First().ErrorDetails);
-            Assert.IsNotNull(data.First().ErrorSource);
-            data.Skip(1).Select(d => d.ErrorMessage).ToList().ForEach(Assert.IsNull);
-
-            mockClientWrapper.Verify(m => m.PostAsJsonAsync(Uris.PriceUpdate,
-                It.Is<IEnumerable<PriceModel>>(e => e.Count() == 4
-                    && e.Select(p => p.ScanCode).Contains("1")
-                    && e.Select(p => p.ScanCode).Contains("2")
-                    && e.Select(p => p.ScanCode).Contains("3")
-                    && e.Select(p => p.ScanCode).Contains("4"))), Times.Never);
-
-            mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.PriceUpdate,
-                It.Is<IEnumerable<PriceModel>>(e => e.Count() == 2
-                    && e.Select(p => p.ScanCode).Contains("1")
-                    && e.Select(p => p.ScanCode).Contains("2"))), Times.Never);
-
-            mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.PriceUpdate,
-                It.Is<IEnumerable<PriceModel>>(e => e.Count() == 1
-                    && e.Select(p => p.ScanCode).Contains("1"))), Times.Never);
-
-            mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.PriceUpdate,
-                It.Is<IEnumerable<PriceModel>>(e => e.Count() == 1
-                    && e.Select(p => p.ScanCode).Contains("2"))), Times.Exactly(1));
-
-            mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.PriceUpdate,
                 It.Is<IEnumerable<PriceModel>>(e => e.Count() == 2
                     && e.Select(p => p.ScanCode).Contains("3")
                     && e.Select(p => p.ScanCode).Contains("4"))), Times.Exactly(1));

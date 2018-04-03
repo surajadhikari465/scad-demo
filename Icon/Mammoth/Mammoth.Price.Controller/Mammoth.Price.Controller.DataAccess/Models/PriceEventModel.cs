@@ -18,7 +18,6 @@ namespace Mammoth.Price.Controller.DataAccess.Models
         public string NewPriceType { get; set; }
         public string PriceUom { get; set; }
         public string CurrencyCode { get; set; }
-        public bool? CancelAllSales { get; set; }
         public decimal CurrentRegularPrice { get; set; }
         public int CurrentRegularMultiple { get; set; }
         public decimal? CurrentSalePrice { get; set; }

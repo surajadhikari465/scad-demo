@@ -15,6 +15,7 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Commands
     {
         private DeleteEventQueueCommandHandler commandHandler;
         private SqlDbProvider dbProvider;
+        private int testInstance = 99;
 
         [TestInitialize]
         public void Initialize()
@@ -41,28 +42,32 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Commands
             //Given
             int testEventReferenceId = 1234567;
             var item = dbProvider.Connection.Query<dynamic>("select top 1 Item_Key, Identifier from ItemIdentifier", transaction: dbProvider.Transaction).First();
-            var queueIds = dbProvider.Connection.Query<int>(@"
-                declare @QueueIds table(QueueId int)
-
-                insert into mammoth.PriceChangeQueue(Item_Key, Identifier, EventTypeID, EventReferenceID, InsertDate)
-                    output inserted.QueueId 
-                        into @QueueIds
-                values (@Item_Key, @Identifier, @EventTypeId, @EventReferenceId, @InsertDate)
-                
-                select * from @QueueIds",
-                new { Item_Key = item.Item_Key, Identifier = item.Identifier, EventTypeId = IrmaEventTypes.Price, EventReferenceId = testEventReferenceId, InsertDate = DateTime.Now },
+            dbProvider.Connection.Query<int>(@"
+                insert into mammoth.PriceChangeQueue(Item_Key, Identifier, EventTypeID, EventReferenceID, InProcessBy, InsertDate)
+                values (@Item_Key, @Identifier, @EventTypeId, @EventReferenceId, @InProcessBy, @InsertDate)",
+                new
+                {
+                    item.Item_Key,
+                    item.Identifier,
+                    EventTypeId = IrmaEventTypes.Price,
+                    EventReferenceId = testEventReferenceId,
+                    InProcessBy = testInstance,
+                    InsertDate = DateTime.Now
+                },
                 dbProvider.Transaction);
-
-            Assert.AreEqual(1, dbProvider.Connection.Query<int>(@"select count(*) from mammoth.PriceChangeQueue where EventReferenceID = @Id", new { Id = testEventReferenceId }, transaction: dbProvider.Transaction).First());
 
             //When
             commandHandler.Execute(new DeleteEventQueueCommand
             {
-                QueueIds = queueIds.ToList()
+                Instance = testInstance
             });
 
             //Then
-            Assert.AreEqual(0, dbProvider.Connection.Query<int>(@"select count(*) from mammoth.PriceChangeQueue where EventReferenceID = @Id", new { Id = testEventReferenceId }, transaction: dbProvider.Transaction).First());
+            var eventCount = dbProvider.Connection.QueryFirst<int>(
+                @"select count(*) from mammoth.PriceChangeQueue where InProcessBy = @Instance",
+                new { Instance = testInstance },
+                transaction: dbProvider.Transaction);
+            Assert.AreEqual(0, eventCount);
         }
     }
 }

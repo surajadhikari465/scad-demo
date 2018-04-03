@@ -18,12 +18,14 @@ namespace MammothWebApi.Controllers
     {
         private IUpdateService<AddUpdatePrice> addUpdatePriceService;
         private IUpdateService<DeletePrice> deletePriceService;
+        private IUpdateService<CancelAllSales> cancelAllSalesService;
         private IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler;
         private IQueryService<GetItemStorePriceAttributes, IEnumerable<ItemStorePriceModel>> itemStorePriceQueryService;
         private ILogger logger;
 
         public PriceController(IUpdateService<AddUpdatePrice> addUpdatePriceService,
             IUpdateService<DeletePrice> deletePriceService,
+            IUpdateService<CancelAllSales> cancelAllSalesService,
             IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler,
             IQueryService<GetItemStorePriceAttributes, IEnumerable<ItemStorePriceModel>> itemStorePriceQueryService,
             ILogger logger)
@@ -33,6 +35,7 @@ namespace MammothWebApi.Controllers
             this.getAllBusinessUnitsQueryHandler = getAllBusinessUnitsQueryHandler;
             this.itemStorePriceQueryService = itemStorePriceQueryService;
             this.logger = logger;
+            this.cancelAllSalesService = cancelAllSalesService;
         }
 
         [HttpPut]
@@ -90,6 +93,36 @@ namespace MammothWebApi.Controllers
                     logger.Debug("Returning OK for Price AddOrUpdate.");
                     return Ok();
                 }
+            }
+            catch (SqlException sqlException)
+            {
+                logger.Error("Sql Exception occurred.", sqlException);
+                return InternalServerError(sqlException);
+            }
+            catch (Exception exception)
+            {
+                logger.Error("An unexpected exception occurred.", exception);
+                return InternalServerError(exception);
+            }
+        }
+
+        [HttpPut]
+        [Route("api/prices/cancelAllSales")]
+        public IHttpActionResult CancelAllSales([FromBody] List<Models.CancelAllSalesModel> data)
+        {
+            if (data == null || data.Count == 0)
+            {
+                this.logger.Warn("Did not receive any cancel all sale data.");
+                return BadRequest("There were no cancel all sales submitted or the format of the data could not be read.");
+            }
+
+            try
+            {  
+                // call the service, update database
+                CancelAllSales cancelAllSales = new CancelAllSales();
+                cancelAllSales.CancelAllSalesData = data.ToCancelAllSalesServiceModel();
+                this.cancelAllSalesService.Handle(cancelAllSales);
+                return Ok();
             }
             catch (SqlException sqlException)
             {

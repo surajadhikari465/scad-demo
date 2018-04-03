@@ -1,9 +1,6 @@
-﻿using Mammoth.Common;
+﻿using MammothWebApi.Models;
 using MammothWebApi.Service.Models;
-using MammothWebApi.Models;
 using System.Collections.Generic;
-using Mammoth.Common.DataAccess;
-using System;
 using System.Linq;
 
 namespace MammothWebApi.Extensions
@@ -67,15 +64,29 @@ namespace MammothWebApi.Extensions
             return itemLocaleServiceModels;
         }
 
+        public static List<CancelAllSalesServiceModel> ToCancelAllSalesServiceModel(this List<CancelAllSalesModel> cancelAllSales)
+        {
+            List<CancelAllSalesServiceModel> cancelAllSalesServiceModelList = new List<CancelAllSalesServiceModel>();
+            foreach (var cancelAllSale in cancelAllSales)
+            {
+                var cancelAllSalesServiceModel = new CancelAllSalesServiceModel 
+                {
+                    Region = cancelAllSale.Region,
+                    BusinessUnitId = cancelAllSale.BusinessUnitId,
+                    ScanCode = cancelAllSale.ScanCode,
+                    EndDate = cancelAllSale.EndDate
+                };
+
+                cancelAllSalesServiceModelList.Add(cancelAllSalesServiceModel);
+            }
+            return cancelAllSalesServiceModelList;
+        }
+
         public static List<PriceServiceModel> ToPriceServiceModel(this List<PriceModel> prices)
         {
             List<PriceServiceModel> priceServiceList = new List<PriceServiceModel>();
             foreach (var price in prices)
             {
-                var endDate = price.CancelAllSales
-                    ? price.EndDate?.Date // defaults to 00:00:00
-                    : price.EndDate?.Date.AddDays(1).AddMilliseconds(-3); // Gets 23:59:59
-
                 var serviceModel = new PriceServiceModel
                 {
                     Region = price.Region,
@@ -84,11 +95,10 @@ namespace MammothWebApi.Extensions
                     Multiple = price.Multiple,
                     Price = price.Price,
                     StartDate = price.StartDate,
-                    EndDate = endDate,
+                    EndDate = price.EndDate?.Date.AddDays(1).AddMilliseconds(-3),
                     PriceType = price.PriceType,
                     PriceUom = price.PriceUom,
-                    CurrencyCode = price.CurrencyCode,
-                    CancelAllSales = price.CancelAllSales
+                    CurrencyCode = price.CurrencyCode
                 };
 
                 priceServiceList.Add(serviceModel);

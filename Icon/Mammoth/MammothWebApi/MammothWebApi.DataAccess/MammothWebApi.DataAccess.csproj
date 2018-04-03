@@ -105,6 +105,8 @@
     <Compile Include="Commands\AddOrUpdatePricesCommandHandler.cs" />
     <Compile Include="Commands\AddOrUpdateItemLocaleSupplierCommand.cs" />
     <Compile Include="Commands\AddOrUpdateItemLocaleSupplierCommandHandler.cs" />
+    <Compile Include="Commands\CancelAllSalesCommand.cs" />
+    <Compile Include="Commands\CancelAllSalesCommandHandler.cs" />
     <Compile Include="Commands\DeleteItemLocaleSupplierCommand.cs" />
     <Compile Include="Commands\DeleteItemLocaleSupplierCommandHandler.cs" />
     <Compile Include="Commands\DeletePricesCommand.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="Models\Attribute.cs" />
     <Compile Include="Models\AttributeGroup.cs" />
     <Compile Include="Models\AttributeMetaData.cs" />
+    <Compile Include="Models\CancelAllSalesModel.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Financial_SubTeam.cs" />
     <Compile Include="Models\PrimePsgItemDataModel.cs" />

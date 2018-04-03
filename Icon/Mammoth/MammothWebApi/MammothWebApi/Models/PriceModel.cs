@@ -28,7 +28,5 @@ namespace MammothWebApi.Models
         public string PriceUom { get; set; }
         [Required]
         public string CurrencyCode { get; set; }
-        [Required]
-        public bool CancelAllSales { get; set; }
     }
 }

@@ -22,7 +22,11 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
             // For rows without EventReferenceID (e.g. PriceBatchDetalID)
             // Need to get latest REG start date since it does not live in the Price table
             string sql = @" SET TRANSACTION ISOLATION LEVEL SNAPSHOT;
-                            WITH QueueTable AS
+
+                            DECLARE @PriceEventTypeID INT = (SELECT EventTypeID FROM mammoth.ItemChangeEventType WHERE EventTypeName = 'Price')
+                            DECLARE @PriceRollbackEventTypeID INT = (SELECT EventTypeID FROM mammoth.ItemChangeEventType WHERE EventTypeName = 'PriceRollback')
+
+                            ;WITH QueueTable AS
                             (
 	                            SELECT
 		                            q.QueueID,
@@ -35,6 +39,7 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 	                            WHERE
 		                            q.EventReferenceID IS NULL
 		                            AND q.InProcessBy = @Instance
+                                    AND (q.EventTypeID  = @PriceEventTypeID or q.EventTypeID = @PriceRollbackEventTypeID)
                             )
 
                             -- REGs
@@ -60,7 +65,6 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 		                            ELSE 'EA'
 	                            END						as PriceUom,
 	                            c.CurrencyCode			as CurrencyCode,
-	                            NULL					as CancelAllSales,
 	                            p.Price					as CurrentRegularPrice,
                                 p.Multiple              as CurrentRegularMultiple,
 	                            NULL					as CurrentSalePrice,
@@ -104,7 +108,6 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 		                            ELSE 'EA'
 	                            END						as PriceUom,
 	                            c.CurrencyCode			as CurrencyCode,
-	                            NULL					as CancelAllSales,
 	                            p.Price					as CurrentRegularPrice,
                                 p.Multiple              as CurrentRegularMultiple,
 	                            NULL					as CurrentSalePrice,

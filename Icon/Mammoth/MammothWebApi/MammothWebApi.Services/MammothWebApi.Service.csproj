@@ -148,11 +148,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Decorators\CancelAllSalesAddUpdatePriceServiceDecorator.cs" />
     <Compile Include="Decorators\DbConnectionCommandHandlerDecorator.cs" />
     <Compile Include="Decorators\DbConnectionQueryHandlerDecorator.cs" />
+    <Compile Include="Decorators\PrimeAffinityPsgCancelAllSalesPriceServiceDecorator.cs" />
     <Compile Include="Decorators\PrimeAffinityPsgDeletePriceServiceDecorator.cs" />
     <Compile Include="Decorators\PrimeAffinityPsgAddPriceServiceDecorator.cs" />
+    <Compile Include="Models\CancelAllSalesServiceModel.cs" />
     <Compile Include="Models\ItemLocaleServiceModel.cs" />
     <Compile Include="Models\ItemStorePriceServiceModel.cs" />
     <Compile Include="Models\PriceServiceModel.cs" />
@@ -167,6 +168,8 @@
     <Compile Include="Services\AddUpdateItemLocaleService.cs" />
     <Compile Include="Services\AddUpdatePrice.cs" />
     <Compile Include="Services\AddUpdatePriceService.cs" />
+    <Compile Include="Services\CancelAllSales.cs" />
+    <Compile Include="Services\CancelAllSalesService.cs" />
     <Compile Include="Services\DeletePrice.cs" />
     <Compile Include="Services\DeletePriceService.cs" />
     <Compile Include="Services\GetItemStorePriceAttributes.cs" />

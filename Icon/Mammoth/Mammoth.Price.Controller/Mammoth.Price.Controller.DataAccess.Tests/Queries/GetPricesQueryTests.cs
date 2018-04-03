@@ -5,7 +5,6 @@
     using Irma.Testing.Builders;
     using Mammoth.Common.DataAccess;
     using Mammoth.Common.DataAccess.DbProviders;
-    using Mammoth.Price.Controller.DataAccess.Models;
     using Mammoth.Price.Controller.DataAccess.Queries;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
@@ -205,7 +204,6 @@
             Assert.IsNull(actualRm.NewSaleEndDate);
             Assert.IsNull(actualRm.NewSaleMultiple);
             Assert.IsNull(actualRm.NewSalePrice);
-            Assert.IsNull(actualRm.CancelAllSales);
             Assert.IsNull(actualRm.ErrorMessage);
             Assert.AreEqual(this.region, actualRm.Region);
 
@@ -226,7 +224,6 @@
             Assert.IsNull(actualTs.NewSaleEndDate);
             Assert.IsNull(actualTs.NewSaleMultiple);
             Assert.IsNull(actualTs.NewSalePrice);
-            Assert.IsNull(actualTs.CancelAllSales);
             Assert.IsNull(actualTs.ErrorMessage);
             Assert.AreEqual("TS", actualTs.Region);
         }
@@ -339,7 +336,6 @@
             Assert.IsNull(actual.NewSaleEndDate);
             Assert.IsNull(actual.NewSaleMultiple);
             Assert.IsNull(actual.NewSalePrice);
-            Assert.IsNull(actual.CancelAllSales);
             Assert.IsNull(actual.ErrorMessage);
             Assert.AreEqual("TS", actual.Region);
         }
@@ -465,7 +461,6 @@
             Assert.AreEqual(expectedSaleEndDate, actual.NewSaleEndDate);
             Assert.AreEqual(expectedSaleMultiple, actual.NewSaleMultiple);
             Assert.AreEqual(expectedSalePrice, actual.NewSalePrice);
-            Assert.IsNull(actual.CancelAllSales);
             Assert.IsNull(actual.ErrorMessage);
             Assert.AreEqual(this.region, actual.Region);
         }
@@ -586,7 +581,6 @@
             Assert.IsNull(actual.NewSaleEndDate);
             Assert.IsNull(actual.NewSaleMultiple);
             Assert.IsNull(actual.NewSalePrice);
-            Assert.IsNull(actual.CancelAllSales);
             Assert.IsNull(actual.ErrorMessage);
             Assert.AreEqual(this.region, actual.Region);
         }
@@ -812,7 +806,6 @@
             Assert.AreEqual(expectedSaleEndDate, results[0].NewSaleEndDate);
             Assert.AreEqual(expectedSaleMultiple, results[0].NewSaleMultiple);
             Assert.AreEqual(expectedSalePrice, results[0].NewSalePrice);
-            Assert.IsNull(results[0].CancelAllSales);
             Assert.IsNull(results[0].ErrorMessage);
             Assert.AreEqual(this.region, results[0].Region);
 
@@ -833,7 +826,6 @@
             Assert.AreEqual(expectedSaleEndDate, results[1].NewSaleEndDate);
             Assert.AreEqual(expectedSaleMultiple, results[1].NewSaleMultiple);
             Assert.AreEqual(expectedSalePrice, results[1].NewSalePrice);
-            Assert.IsNull(results[1].CancelAllSales);
             Assert.IsNull(results[1].ErrorMessage);
             Assert.AreEqual(this.region, results[1].Region);
 
@@ -1010,7 +1002,6 @@
             Assert.IsNull(regular.NewSaleEndDate);
             Assert.IsNull(regular.NewSaleMultiple);
             Assert.IsNull(regular.NewSalePrice);
-            Assert.IsNull(regular.CancelAllSales);
             Assert.IsNull(regular.ErrorMessage);
             Assert.AreEqual(this.region, regular.Region);
 
@@ -1031,7 +1022,6 @@
             Assert.AreEqual(expectedSaleEndDate, promo.NewSaleEndDate);
             Assert.AreEqual(expectedSaleMultiple, promo.NewSaleMultiple);
             Assert.AreEqual(expectedNewSalePrice, promo.NewSalePrice);
-            Assert.IsNull(promo.CancelAllSales);
             Assert.IsNull(promo.ErrorMessage);
             Assert.AreEqual(this.region, promo.Region);
         }
@@ -1574,8 +1564,7 @@
 	                    ,[SLIMRequestID]
 	                    ,[LocalItem]
 	                    ,[FSA_Eligible]
-	                    ,[ItemSurcharge]
-	                    ,[CancelAllSales])
+	                    ,[ItemSurcharge])
                     VALUES
                         (@Item_Key,
                         @Store_No,
@@ -1676,8 +1665,7 @@
                         @SLIMRequestID,
                         @LocalItem,
                         @FSA_Eligible,
-                        @ItemSurcharge,
-                        @CancelAllSales)
+                        @ItemSurcharge)
 
                     SELECT SCOPE_IDENTITY();";
 

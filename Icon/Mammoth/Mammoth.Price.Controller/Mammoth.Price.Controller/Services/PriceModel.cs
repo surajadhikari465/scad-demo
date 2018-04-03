@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mammoth.Price.Controller.Services
 {
@@ -18,6 +14,5 @@ namespace Mammoth.Price.Controller.Services
         public string PriceType { get; set; }
         public string PriceUom { get; set; }
         public string CurrencyCode { get; set; }
-        public bool CancelAllSales { get; set; }
     }
 }

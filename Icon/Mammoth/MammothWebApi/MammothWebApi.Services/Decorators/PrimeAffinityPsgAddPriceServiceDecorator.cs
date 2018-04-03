@@ -51,19 +51,17 @@ namespace MammothWebApi.Service.Decorators
                         (p.PriceType == "SAL"
                             || p.PriceType == "FRZ"
                             || p.PriceType == "ISS")
-                        && p.StartDate == DateTime.Today
-                        && !p.CancelAllSales)
+                        && p.StartDate == DateTime.Today)
                     .Select(p => new StoreScanCode { ScanCode = p.ScanCode, BusinessUnitID = p.BusinessUnitId })
                     .Distinct()
                     .ToList();
 
                 List<StoreScanCode> psgDeleteItemStoreKeys = data.Prices.Where(p =>
-                        ((p.CancelAllSales && p.EndDate == DateTime.Today)
-                        || (p.PriceType != "SAL"
+                        (p.PriceType != "SAL"
                             && p.PriceType != "FRZ"
                             && p.PriceType != "ISS"
                             && p.PriceType != "REG"
-                            && p.StartDate == DateTime.Today)))
+                            && p.StartDate == DateTime.Today))
                     .Select(p => new StoreScanCode { ScanCode = p.ScanCode, BusinessUnitID = p.BusinessUnitId })
                     .Distinct()
                     .ToList();
