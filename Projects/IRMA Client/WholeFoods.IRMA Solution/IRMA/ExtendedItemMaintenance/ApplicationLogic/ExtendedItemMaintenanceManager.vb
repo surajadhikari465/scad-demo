@@ -18,7 +18,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
 
 #Region "Constant fields"
         Const slimDealDataConst As String = "SLIM Deal Data"
-        Const isdealChangeConst As String = "isdealchange"
+        Const isDealChangeConst As String = "isdealchange"
 #End Region
 
 #Region "Fields and Properties"
@@ -67,9 +67,9 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                 If IsNothing(_currentUploadSession) Then
                     _currentUploadSession = New UploadSession()
                     _currentUploadSession.SlimDealDataGroupName = slimDealDataConst
-                    _currentUploadSession.IsdealChangeColumnName = isdealChangeConst
+                    _currentUploadSession.IsdealChangeColumnName = isDealChangeConst
 
-                    ' add all  by default
+                    ' add all UploadTypes by default
                     _currentUploadSession.SetUploadTypes(UploadTypeDAO.Instance.GetAllUploadTypes())
 
                     ' default the flag
@@ -1410,7 +1410,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             For Each theUploadTypeAttribute As UploadTypeAttribute In theUploadTypeAttributes
 
                 If (Not isSlimFunctionalityEnabled AndAlso (theUploadTypeAttribute.GroupName = slimDealDataConst _
-                                                            OrElse theUploadTypeAttribute.UploadAttribute.ColumnNameOrKey = isdealChangeConst)) Then
+                                                            OrElse theUploadTypeAttribute.UploadAttribute.ColumnNameOrKey = isDealChangeConst)) Then
                     Continue For
                 End If
 
@@ -1464,7 +1464,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
             For Each theUploadTypeAttribute As UploadTypeAttribute In theUploadTypeAttributes
 
                 If (Not isSlimFunctionalityEnabled AndAlso (theUploadTypeAttribute.GroupName = slimDealDataConst _
-                                                            OrElse theUploadTypeAttribute.UploadAttribute.ColumnNameOrKey = isdealChangeConst)) Then
+                                                            OrElse theUploadTypeAttribute.UploadAttribute.ColumnNameOrKey = isDealChangeConst)) Then
                     Continue For
                 End If
 
