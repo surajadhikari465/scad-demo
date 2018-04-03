@@ -21,7 +21,6 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
         Const isdealChangeConst As String = "isdealchange"
 #End Region
 
-
 #Region "Fields and Properties"
 
         Private _extendedItemMaintenanceForm As ExtendedItemMaintenanceForm
