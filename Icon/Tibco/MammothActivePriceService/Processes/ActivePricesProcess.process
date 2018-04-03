@@ -41,8 +41,8 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>1143</pd:x>
-        <pd:y>407</pd:y>
+        <pd:x>1135</pd:x>
+        <pd:y>456</pd:y>
         <config>
             <ConfirmEvent>Publisher Queue Receiver</ConfirmEvent>
         </config>
@@ -91,9 +91,9 @@
                 <ns3:LogDate>
                     <xsl:value-of select="current-dateTime()"/>
                 </ns3:LogDate>
-                <xsl:if test="$_error/ns4:ErrorReport/Msg">
+                <xsl:if test="concat('Region: ',$Parse-XML/pfx4:JobSchedule/pfx4:Region, '. Mammoth Active Price Service error occurred: ', $_error/ns4:ErrorReport/Msg)">
                     <ns3:Message>
-                        <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                        <xsl:value-of select="concat('Region: ',$Parse-XML/pfx4:JobSchedule/pfx4:Region, '. Expiring TPR Service error occurred: ', $_error/ns4:ErrorReport/Msg)"/>
                     </ns3:Message>
                 </xsl:if>
                 <xsl:if test="$_error/ns4:ErrorReport/MsgCode">
@@ -525,7 +525,7 @@ WHERE p.Region = ?
                             <xsl:value-of select="current-dateTime()"/>
                         </ns3:LogDate>
                         <ns3:Message>
-                            <xsl:value-of select="concat(&quot;Number of Records Send to EMS:&quot;, $_globalVariables/ns1:GlobalVariables/Application/EMSPriceBatchsize)"/>
+                            <xsl:value-of select="concat('Region: ', $Parse-XML/pfx4:JobSchedule/pfx4:Region,&quot;. Number of Records Send to EMS: &quot;, $_globalVariables/ns1:GlobalVariables/Application/EMSPriceBatchsize)"/>
                         </ns3:Message>
                     </ns3:AppLog>
                 </pd:inputBindings>
@@ -710,7 +710,7 @@ WHERE p.Region = ?
                     <xsl:value-of select="current-dateTime()"/>
                 </ns3:LogDate>
                 <ns3:Message>
-                    <xsl:value-of select="concat(&quot;Starting &quot;, $_processContext/ns4:ProcessContext/ProjectName, &quot; for region &quot;, $Parse-XML/pfx4:JobSchedule/pfx4:Region)"/>
+                    <xsl:value-of select="concat(&quot;Region: &quot;, $Parse-XML/pfx4:JobSchedule/pfx4:Region, &quot;. Starting Mammoth Active Price Service.&quot;)"/>
                 </ns3:Message>
             </ns3:AppLog>
         </pd:inputBindings>
@@ -835,6 +835,35 @@ where JobScheduleId  = ?</statement>
             </jdbcUpdateActivityInput>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Log End">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1137</pd:x>
+        <pd:y>377</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:AppLog>
+                <ns3:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                </ns3:AppId>
+                <ns3:Level>
+                    <xsl:value-of select="'Info'"/>
+                </ns3:Level>
+                <ns3:Logger>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                </ns3:Logger>
+                <ns3:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns3:LogDate>
+                <ns3:Message>
+                    <xsl:value-of select="concat(&quot;Region: &quot;, $Parse-XML/pfx4:JobSchedule/pfx4:Region, &quot;. Ending Mammoth Active Price Service successfully.&quot;)"/>
+                </ns3:Message>
+            </ns3:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Confirm</pd:from>
         <pd:to>End</pd:to>
@@ -914,6 +943,13 @@ where JobScheduleId  = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Update Status To Ready</pd:from>
+        <pd:to>Log End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log End</pd:from>
         <pd:to>Confirm</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

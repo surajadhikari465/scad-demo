@@ -19,11 +19,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>EMSPriceBatchsize</name>
-			<value>2</value>
+			<value>100</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1510615671883</modTime>
+			<modTime>1522696518937</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

@@ -11,11 +11,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>PublisherTimerInMilliseconds</name>
-			<value>3000</value>
+			<value>10000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1510614536974</modTime>
+			<modTime>1522777530742</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SendToJobQueueMaxRetryCount</name>

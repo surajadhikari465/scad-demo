@@ -29,8 +29,8 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>712</pd:endX>
-    <pd:endY>143</pd:endY>
+    <pd:endX>780</pd:endX>
+    <pd:endY>147</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1515621798527</pd:targetNamespace>
@@ -54,7 +54,7 @@
     <pd:activity name="Call Inactive Tpr Service">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>518</pd:x>
+        <pd:x>513</pd:x>
         <pd:y>60</pd:y>
         <config>
             <processName>/Processes/RunInactiveTprService.process</processName>
@@ -63,7 +63,7 @@
             <xsl:copy-of select="$Parse-XML/pfx:JobSchedule"/>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Log">
+    <pd:activity name="Log Start">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>374</pd:x>
@@ -87,7 +87,7 @@
                     <xsl:value-of select="current-dateTime()"/>
                 </ns2:LogDate>
                 <ns2:Message>
-                    <xsl:value-of select="&quot; Tpr Service Will start reading  expiring Tprs now.&quot;"/>
+                    <xsl:value-of select="concat(&quot;Region: &quot;, $Parse-XML/pfx:JobSchedule/pfx:Region, &quot;. Starting Expiring TPR service.&quot;)"/>
                 </ns2:Message>
             </ns2:AppLog>
         </pd:inputBindings>
@@ -95,8 +95,8 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>369</pd:x>
-        <pd:y>144</pd:y>
+        <pd:x>375</pd:x>
+        <pd:y>148</pd:y>
         <config>
             <ConfirmEvent>Inactive Tpr Price Starter Queue Receiver</ConfirmEvent>
         </config>
@@ -105,8 +105,8 @@
     <pd:activity name="LogNoExecution">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>519</pd:x>
-        <pd:y>143</pd:y>
+        <pd:x>524</pd:x>
+        <pd:y>148</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -126,7 +126,7 @@
                     <xsl:value-of select="current-dateTime()"/>
                 </ns2:LogDate>
                 <ns2:Message>
-                    <xsl:value-of select="&quot;Tpr Service Already running So Service will not run.&quot;"/>
+                    <xsl:value-of select="concat(&quot;Region:&quot;, $Parse-XML/pfx:JobSchedule/pfx:Region, &quot;. Tpr Service Already running So Service will not run.&quot;)"/>
                 </ns2:Message>
             </ns2:AppLog>
         </pd:inputBindings>
@@ -134,8 +134,8 @@
     <pd:activity name="Confirm-1">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>678</pd:x>
-        <pd:y>52</pd:y>
+        <pd:x>731</pd:x>
+        <pd:y>59</pd:y>
         <config>
             <ConfirmEvent>Inactive Tpr Price Starter Queue Receiver</ConfirmEvent>
         </config>
@@ -178,11 +178,9 @@
                 <ns2:LogDate>
                     <xsl:value-of select="current-dateTime()"/>
                 </ns2:LogDate>
-                <xsl:if test="$_error/ns3:ErrorReport/Msg">
-                    <ns2:Message>
-                        <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
-                    </ns2:Message>
-                </xsl:if>
+                <ns2:Message>
+                    <xsl:value-of select="concat('Region: ',$Parse-XML/pfx:JobSchedule/pfx:Region, '. Expiring TPR Service error occurred: ', $_error/ns3:ErrorReport/Msg)"/>
+                </ns2:Message>
                 <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
                     <ns2:Exception>
                         <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
@@ -278,7 +276,8 @@
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
             <statement>update [app].[JobSchedule]
-set status = 'ready'
+set status = 'ready',
+      LastRunEndDateTimeUtc = GETUTCDATE()
 where JobScheduleId  = ?</statement>
             <Prepared_Param_DataType>
                 <parameter>
@@ -295,6 +294,35 @@ where JobScheduleId  = ?</statement>
             </jdbcUpdateActivityInput>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Log End">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>633</pd:x>
+        <pd:y>54</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns2:AppLog>
+                <ns2:AppId>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                </ns2:AppId>
+                <ns2:Level>
+                    <xsl:value-of select="'Info'"/>
+                </ns2:Level>
+                <ns2:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns3:ProcessContext/ProcessId)"/>
+                </ns2:Logger>
+                <ns2:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns2:LogDate>
+                <ns2:Message>
+                    <xsl:value-of select="concat(&quot;Region: &quot;, $Parse-XML/pfx:JobSchedule/pfx:Region, &quot;. Ending Expiring TPR service successfully.&quot;)"/>
+                </ns2:Message>
+            </ns2:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Inactive Tpr Price Starter Queue Receiver</pd:from>
         <pd:to>Parse XML</pd:to>
@@ -304,14 +332,14 @@ where JobScheduleId  = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Parse XML</pd:from>
-        <pd:to>Log</pd:to>
+        <pd:to>Log Start</pd:to>
         <pd:xpathDescription>Status=Ready</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Log</pd:from>
+        <pd:from>Log Start</pd:from>
         <pd:to>Call Inactive Tpr Service</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -342,7 +370,7 @@ where JobScheduleId  = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Call Inactive Tpr Service</pd:from>
-        <pd:to>Confirm-1</pd:to>
+        <pd:to>Log End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -385,6 +413,13 @@ where JobScheduleId  = ?</statement>
     <pd:transition>
         <pd:from>Update-Job-Status-1</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log End</pd:from>
+        <pd:to>Confirm-1</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

@@ -11,11 +11,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>EMSPriceBatchsize</name>
-			<value>2</value>
+			<value>100</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1515621478449</modTime>
+			<modTime>1522696496097</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>QueryExpiringTprSubsetSize</name>

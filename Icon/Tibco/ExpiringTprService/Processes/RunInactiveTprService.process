@@ -96,7 +96,7 @@ where JobScheduleId  = ?</statement>
         <pd:activity name="GetExpiringTprs">
             <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-            <pd:x>348</pd:x>
+            <pd:x>349</pd:x>
             <pd:y>85</pd:y>
             <config>
                 <timeout>10</timeout>
@@ -104,44 +104,43 @@ where JobScheduleId  = ?</statement>
                 <maxRows>10000000</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <statement>SELECT
-	CAST(t_end.Region AS NVARCHAR(2)) AS Region,
-	t_end.PriceID,
-	t_end.GpmID,
-	t_end.ItemID,
-	t_end.BusinessUnitID,
-	t_end.StartDate,
-	t_end.EndDate,
-	t_end.Price,
-	t_end.PriceType,
-	t_end.PriceTypeAttribute,
-	t_end.SellableUOM,
-	t_end.CurrencyCode,
-	t_end.Multiple,
-	t_end.NewTagExpiration,
-	t_end.InsertDateUtc,
-	t_end.ModifiedDateUtc,
+	CAST(endingPrice.Region AS NVARCHAR(2)) AS Region,
+	endingPrice.PriceID,
+	endingPrice.GpmID,
+	endingPrice.ItemID,
+	endingPrice.BusinessUnitID,
+	endingPrice.StartDate,
+	endingPrice.EndDate,
+	endingPrice.Price,
+	endingPrice.PriceType,
+	endingPrice.PriceTypeAttribute,
+	endingPrice.SellableUOM,
+	endingPrice.CurrencyCode,
+	endingPrice.Multiple,
+	endingPrice.NewTagExpiration,
+	endingPrice.InsertDateUtc,
+	endingPrice.ModifiedDateUtc,
 	it.itemTypeCode as itemTypeCode,
-	Items.ScanCode as ScanCode,
+	i.ScanCode as ScanCode,
 	lc.StoreName as StoreName,
 	PSNumber as SubTeamNumber
-FROM gpm.Prices t_end
-INNER JOIN Items on Items.ItemID = t_end.ItemID
-INNER JOIN ItemTypes it on Items.ItemTypeID = it.itemTypeID
-INNER JOIN Locale lc on t_end.BusinessUnitID = lc.BusinessUnitID
-
-WHERE t_end.Region = ?
-AND t_end.PriceType = 'TPR'
-AND t_end.EndDate = CAST(DATEADD(s, -1, CAST(CAST(SYSDATETIME() AS DATE) AS datetime2)) as datetime2)
+FROM gpm.Prices endingPrice
+INNER JOIN Items i on i.ItemID = endingPrice.ItemID
+INNER JOIN ItemTypes it on i.ItemTypeID = it.itemTypeID
+INNER JOIN Locale lc on endingPrice.BusinessUnitID = lc.BusinessUnitID
+WHERE endingPrice.Region = ?
+AND endingPrice.PriceType = 'TPR'
+AND endingPrice.EndDate = CAST(DATEADD(s, -1, CAST(CAST(SYSDATETIME() AS DATE) AS datetime2)) as datetime2)
 AND NOT EXISTS
 	(SELECT 1
-	FROM gpm.Prices t_on 
-	WHERE t_on.Region = ?
-		AND t_on.StartDate = CAST(CAST(SYSDATETIME() AS DATE) AS datetime2)
-		AND t_on.PriceType = 'TPR'
-		AND t_end.Region = t_on.Region
-		AND t_end.ItemID = t_on.ItemID
-		AND t_end.BusinessUnitID = t_on.BusinessUnitID
-		AND t_end.PriceType = t_on.PriceType)</statement>
+	FROM gpm.Prices activePrice 
+	WHERE activePrice.Region = ?
+		AND activePrice.StartDate = CAST(CAST(SYSDATETIME() AS DATE) AS datetime2)
+		AND activePrice.PriceType = 'TPR'
+		AND endingPrice.Region = activePrice.Region
+		AND endingPrice.ItemID = activePrice.ItemID
+		AND endingPrice.BusinessUnitID = activePrice.BusinessUnitID
+		AND endingPrice.PriceType = activePrice.PriceType)</statement>
                 <Prepared_Param_DataType>
                     <parameter>
                         <parameterName>Region1</parameterName>
@@ -268,8 +267,8 @@ AND NOT EXISTS
         <pd:group name="BatchAndSendExpiringTprs">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>279</pd:x>
-            <pd:y>252</pd:y>
+            <pd:x>280</pd:x>
+            <pd:y>254</pd:y>
             <pd:width>581</pd:width>
             <pd:height>255</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -333,7 +332,7 @@ AND NOT EXISTS
                 <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
                 <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
                 <pd:x>392</pd:x>
-                <pd:y>324</pd:y>
+                <pd:y>325</pd:y>
                 <config>
                     <element ref="pfx2:MammothPrices"/>
                 </config>
@@ -413,7 +412,7 @@ AND NOT EXISTS
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
                 <pd:x>680</pd:x>
-                <pd:y>325</pd:y>
+                <pd:y>326</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/LogPublisher.process</processName>
                     <spawn>true</spawn>
@@ -436,7 +435,7 @@ AND NOT EXISTS
                             <xsl:value-of select="current-dateTime()"/>
                         </ns02:LogDate>
                         <ns02:Message>
-                            <xsl:value-of select="concat(&quot;Number of expiring Tpr Records Send to EMS:&quot;, $_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize)"/>
+                            <xsl:value-of select="concat(&quot;Region: &quot;,$Start/pfx:JobSchedule/pfx:Region, &quot;. Number of expiring TPR Records Send to EMS: &quot;, count($Map-Data/pfx2:MammothPrices/pfx2:MammothPrice))"/>
                         </ns02:Message>
                     </ns02:AppLog>
                 </pd:inputBindings>
@@ -445,7 +444,7 @@ AND NOT EXISTS
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
                 <pd:x>389</pd:x>
-                <pd:y>420</pd:y>
+                <pd:y>421</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <catchAll>true</catchAll>
@@ -456,7 +455,7 @@ AND NOT EXISTS
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
                 <pd:x>566</pd:x>
-                <pd:y>419</pd:y>
+                <pd:y>420</pd:y>
                 <config>
                     <processName>/Processes/ProcessRowByRow.process</processName>
                 </config>
@@ -538,7 +537,7 @@ AND NOT EXISTS
                 <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
                 <pd:x>550</pd:x>
-                <pd:y>331</pd:y>
+                <pd:y>332</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -599,7 +598,8 @@ AND NOT EXISTS
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
             <statement>update [app].[JobSchedule]
-set status = 'ready'
+set status = 'ready',
+      LastRunEndDateTimeUtc = GETUTCDATE()
 where JobScheduleId  = ?</statement>
             <Prepared_Param_DataType>
                 <parameter>

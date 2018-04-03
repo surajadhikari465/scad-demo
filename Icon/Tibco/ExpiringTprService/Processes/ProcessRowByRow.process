@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:WFM.UID="java://UID">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:WFM.UID="java://UID">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/ProcessRowByRow.process</pd:name>
     <pd:startName>Start</pd:startName>
@@ -49,7 +49,7 @@
                     <xsl:value-of select="current-dateTime()"/>
                 </ns12:LogDate>
                 <ns12:Message>
-                    <xsl:value-of select="concat( &quot;Started sending Row By Row Expiring Tprs&quot;,&quot;for Region:&quot;,$Start/Input/RegionCode)"/>
+                    <xsl:value-of select="concat('Region: ',$Start/Input/RegionCode, &quot;. Started sending Row By Row Expiring Tprs.&quot;)"/>
                 </ns12:Message>
             </ns12:AppLog>
         </pd:inputBindings>
@@ -161,7 +161,7 @@
                         <xsl:value-of select="current-dateTime()"/>
                     </ns12:LogDate>
                     <ns12:Message>
-                        <xsl:value-of select="concat(&quot;Error while sending expiring Tpr for Item ID:&quot;,$CurrentExpiringTpr/pfx:MammothPrice/pfx:ItemId  ,&quot; Business Unit ID:&quot;,$CurrentExpiringTpr/pfx:MammothPrice/pfx:BusinessUnit ,&quot; Error is:&quot;, $_error/ns1:ErrorReport/Msg)"/>
+                        <xsl:value-of select="concat('Region: ',$Start/Input/RegionCode, &quot;. Error while sending expiring Tpr for Item ID:&quot;,$CurrentExpiringTpr/pfx:MammothPrice/pfx:ItemId  ,&quot; Business Unit ID:&quot;,$CurrentExpiringTpr/pfx:MammothPrice/pfx:BusinessUnit ,&quot; Error is:&quot;, $_error/ns1:ErrorReport/Msg)"/>
                     </ns12:Message>
                     <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
                         <ns12:Exception>
