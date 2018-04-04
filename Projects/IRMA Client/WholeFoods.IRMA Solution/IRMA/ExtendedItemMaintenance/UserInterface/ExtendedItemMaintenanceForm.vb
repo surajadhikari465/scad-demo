@@ -32,7 +32,7 @@ Public Class ExtendedItemMaintenanceForm
     Private _anErrorHasOccurred As Boolean = False
     Private _allowUpload As Boolean = True
     Private _loadValueListDataProgressComplete As Boolean = True
-
+    Private _isSlimFunctionalityEnabled As Boolean = True
     Private _calculatingCellValues As Boolean = False
     Private _isInitializingRow As Boolean = False
     Private _ignoreSessionTypeChange As Boolean = False
@@ -125,6 +125,15 @@ Public Class ExtendedItemMaintenanceForm
         End Set
     End Property
 
+    Public Property IsSlimFunctionalityEnabled() As Boolean
+        Get
+            Return _isSlimFunctionalityEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _isSlimFunctionalityEnabled = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Event Handlers"
@@ -164,6 +173,9 @@ Public Class ExtendedItemMaintenanceForm
 
             Me.PanelJurisdiction.Visible = useStoreJurisdictions
 
+            Dim hideSlimFunctionality As Boolean = InstanceDataDAO.IsFlagActive("HideSlimFunctionality")
+            Me.IsSlimFunctionalityEnabled = Not hideSlimFunctionality
+            CheckBoxLoadFromSLIM.Visible = Me.IsSlimFunctionalityEnabled
             Me.HasChanged = False
 
         Catch ex As Exception
@@ -1009,7 +1021,7 @@ Public Class ExtendedItemMaintenanceForm
 
                                 LoadValueListData(True)
 
-                                Me.EIMManager.BindUploadSessionDataToGrids(GetGridsByUploadTypeCollection(), True, True)
+                                Me.EIMManager.BindUploadSessionDataToGrids(GetGridsByUploadTypeCollection(), True, True, Me.IsSlimFunctionalityEnabled)
 
                                 ' validate data
                                 ValidateSessionData(ValidationTypes.UploadValue)
@@ -1144,7 +1156,7 @@ Public Class ExtendedItemMaintenanceForm
 
         Try
             Dim gridsByUploadTypeCollection As SortableHashlist = GetGridsByUploadTypeCollection()
-            Me.EIMManager.SpreadsheetExport(gridsByUploadTypeCollection, Me.EIMManager.CurrentUploadSession.UploadTypeCollection, Me.EIMManager.CurrentUploadRowHolderCollecton.UploadRowHolderList)
+            Me.EIMManager.SpreadsheetExport(gridsByUploadTypeCollection, Me.EIMManager.CurrentUploadSession.UploadTypeCollection, Me.EIMManager.CurrentUploadRowHolderCollecton.UploadRowHolderList, Me.IsSlimFunctionalityEnabled)
         Catch ex As IOException
 
             MessageBox.Show("The spreadsheet you are overwriting is currently open in another program. " + _
@@ -1466,7 +1478,7 @@ Public Class ExtendedItemMaintenanceForm
 
                                         ' update the grids
                                         ClearAllGrids()
-                                        Me.EIMManager.BindUploadSessionDataToGrids(GetGridsByUploadTypeCollection(), False)
+                                        Me.EIMManager.BindUploadSessionDataToGrids(GetGridsByUploadTypeCollection(), False, Me.IsSlimFunctionalityEnabled)
                                         Me.EIMManager.Validate(ValidationTypes.GridCell, False)
                                         ValidateForUploadNonThreaded()
 
@@ -1761,7 +1773,7 @@ Public Class ExtendedItemMaintenanceForm
 
                             LoadValueListData(False)
 
-                            Me.EIMManager.BindUploadSessionDataToGrids(GetGridsByUploadTypeCollection(), False, False)
+                            Me.EIMManager.BindUploadSessionDataToGrids(GetGridsByUploadTypeCollection(), False, False, Me.IsSlimFunctionalityEnabled)
 
                             Me.Cursor = Cursors.WaitCursor
 
@@ -1920,9 +1932,9 @@ Public Class ExtendedItemMaintenanceForm
 
     Private Sub ItemSearch()
 
-        If Me.CheckBoxLoadFromSLIM.Checked And Not Me.StoreSelectorItemLoad.HasStoreSelection Then
+        If Me.IsSlimFunctionalityEnabled And Me.CheckBoxLoadFromSLIM.Checked And Not Me.StoreSelectorItemLoad.HasStoreSelection Then
 
-            MessageBox.Show("You must select at least one store when loading items from SLIM.", _
+            MessageBox.Show("You must select at least one store when loading items from SLIM.",
                     "EIM - Load from SLIM", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
         Else
@@ -1949,15 +1961,23 @@ Public Class ExtendedItemMaintenanceForm
                 Dim isDiscontinued As Boolean = Me.chkDiscontinued.Checked
                 Dim isNotAvailable As Boolean = Me.chkNotAvailable.Checked
                 Dim includeDeletedItems As Boolean = Me.chkIncludeDeletedItems.Checked
-                Dim fromSLIM As Boolean = Me.CheckBoxLoadFromSLIM.Checked
 
                 Dim theIsDefaultJurisdiction As Integer = UIUtilities.GetComboBoxIntegerValue(Me.ComboBoxIsDefaultJurisdiction)
                 Dim theStoreJurisdictionId As Integer = UIUtilities.GetComboBoxIntegerValue(Me.ComboBoxJurisdiction)
 
-                Me.ItemLoadDataSet = UploadSessionDAO.Instance.ItemSearch(theIdentifier, theDescription, _
-                    theVendorID, theBrandID, theStoreIDs, theSubteamID, theCategoryID, theLevel3ID, theLevel4ID, _
-                    thePSVendorID, theVendorItemID, theDistSubteamID, theItemChainID, isDiscontinued, isNotAvailable, _
-                    includeDeletedItems, fromSLIM, theIsDefaultJurisdiction, theStoreJurisdictionId)
+                If (Me.IsSlimFunctionalityEnabled) Then
+                    Dim fromSLIM As Boolean = Me.CheckBoxLoadFromSLIM.Checked
+
+                    Me.ItemLoadDataSet = UploadSessionDAO.Instance.ItemSearch(theIdentifier, theDescription,
+                    theVendorID, theBrandID, theStoreIDs, theSubteamID, theCategoryID, theLevel3ID, theLevel4ID,
+                    thePSVendorID, theVendorItemID, theDistSubteamID, theItemChainID, isDiscontinued, isNotAvailable,
+                    includeDeletedItems, theIsDefaultJurisdiction, theStoreJurisdictionId, fromSLIM)
+                Else
+                    Me.ItemLoadDataSet = UploadSessionDAO.Instance.ItemSearch(theIdentifier, theDescription,
+                    theVendorID, theBrandID, theStoreIDs, theSubteamID, theCategoryID, theLevel3ID, theLevel4ID,
+                    thePSVendorID, theVendorItemID, theDistSubteamID, theItemChainID, isDiscontinued, isNotAvailable,
+                    includeDeletedItems, theIsDefaultJurisdiction, theStoreJurisdictionId)
+                End If
 
                 Me.ItemLoadDataSet.AcceptChanges()
 
@@ -2129,7 +2149,7 @@ Public Class ExtendedItemMaintenanceForm
 
                         LoadValueListData(False)
 
-                        Me.EIMManager.BindUploadSessionDataToGrids(GetGridsByUploadTypeCollection(), False, True)
+                        Me.EIMManager.BindUploadSessionDataToGrids(GetGridsByUploadTypeCollection(), False, True, Me.IsSlimFunctionalityEnabled)
 
                         ValidateSessionData(ValidationTypes.UploadValue)
                         SetTopTab()
