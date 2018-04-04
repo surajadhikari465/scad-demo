@@ -22,7 +22,7 @@ using Icon.Common.DataAccess;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class FinancialControllerTests
     {
         private FinancialController controller;

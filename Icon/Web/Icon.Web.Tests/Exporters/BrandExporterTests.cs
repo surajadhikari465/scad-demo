@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class BrandExporterTests
     {
         private WorkbookFormat excelFormat;

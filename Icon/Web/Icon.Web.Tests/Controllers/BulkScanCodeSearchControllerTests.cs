@@ -19,7 +19,7 @@ using Icon.Web.Tests.Common.Builders;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class BulkScanCodeSearchControllerTests
     {
         private BulkScanCodeSearchController controller;

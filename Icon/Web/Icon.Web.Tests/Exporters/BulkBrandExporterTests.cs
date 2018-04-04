@@ -8,7 +8,7 @@ using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class BulkBrandExporterTests
     {
         private WorkbookFormat excelFormat;

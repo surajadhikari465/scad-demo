@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class GetItemsBySearchQueryTests
     {
         private GetItemsBySearchQuery getItemsBySearchQuery;

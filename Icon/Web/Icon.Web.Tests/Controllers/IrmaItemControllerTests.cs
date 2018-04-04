@@ -25,7 +25,7 @@ using System.Web.Script.Serialization;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class IrmaItemControllerTests
     {
         private Mock<ILogger> logger;

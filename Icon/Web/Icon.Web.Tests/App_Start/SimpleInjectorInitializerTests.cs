@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Icon.Web.Tests.Unit.App_Start
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class SimpleInjectorInitializerTests
     {
         [TestMethod]

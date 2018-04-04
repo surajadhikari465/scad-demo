@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Unit.Importers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class PluSpreadsheetImporterTests
     {
         private Workbook workbook;

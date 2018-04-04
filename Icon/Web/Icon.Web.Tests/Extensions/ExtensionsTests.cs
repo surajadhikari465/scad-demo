@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.Extensions
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class ExtensionsTests
     {
         ItemSearchViewModel viewModel;

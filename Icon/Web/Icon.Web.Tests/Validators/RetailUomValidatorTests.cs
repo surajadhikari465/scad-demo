@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class RetailUomValidatorTests
     {
         [TestMethod]

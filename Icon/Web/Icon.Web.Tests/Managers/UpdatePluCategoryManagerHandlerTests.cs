@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class UpdatePluCategoryManagerHandlerTests
     {
         private UpdatePluCategoryManagerHandler managerHandler;

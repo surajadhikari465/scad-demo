@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class PluExporterTests
     {
         private WorkbookFormat excelFormat;

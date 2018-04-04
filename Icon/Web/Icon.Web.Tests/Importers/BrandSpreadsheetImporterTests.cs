@@ -11,7 +11,7 @@ using Icon.Common.DataAccess;
 
 namespace Icon.Web.Tests.Unit.Importers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class BrandSpreadsheetImporterTests
     {
         private BrandSpreadsheetImporter importer;

@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Importers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class NewItemSpreadsheetImporterTests
     {
         private NewItemSpreadsheetImporter importer;

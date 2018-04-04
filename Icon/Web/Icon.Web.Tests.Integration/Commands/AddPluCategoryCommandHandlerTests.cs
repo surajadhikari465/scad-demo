@@ -10,7 +10,7 @@ using Icon.Web.Tests.Common.Builders;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class AddPluCategoryCommandHandlerTests
     {
         private AddPluCategoryCommandHandler commandHandler;

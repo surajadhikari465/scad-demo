@@ -6,7 +6,7 @@ using Icon.Web.Attributes;
 using System.ComponentModel.DataAnnotations;
 namespace Icon.Web.Tests.Unit.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class IconPropertyValidationAttributeTests
     {
         private IconPropertyValidationAttribute validator;

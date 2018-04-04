@@ -9,7 +9,7 @@ using Icon.Web.Tests.Common.Builders;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class GetPluCategoryByIdQueryTests
     {
         private GetPluCategoryByIdQuery query;

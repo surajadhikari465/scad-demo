@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class AddHierarchyClassMessageCommandHandlerTests
     {
         private AddHierarchyClassMessageCommandHandler commandHandler;

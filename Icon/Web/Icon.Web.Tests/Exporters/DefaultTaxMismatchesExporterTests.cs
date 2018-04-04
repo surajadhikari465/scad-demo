@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class DefaultTaxMismatchesExporterTests
     {
         private WorkbookFormat excelFormat;

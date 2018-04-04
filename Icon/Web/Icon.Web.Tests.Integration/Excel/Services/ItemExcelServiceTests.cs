@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Excel.Services
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class ItemExcelServiceTests
     {
         private ItemExcelService excelService;

@@ -5,7 +5,7 @@ using Icon.Web.Mvc.Utility;
 
 namespace Icon.Web.Tests.Unit.Utility
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class ViewModelHelpersTests
     {
         [TestMethod]

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class GetEwicAgenciesWithExclusionQueryTests
     {
         private GetEwicAgenciesWithExclusionQuery query;

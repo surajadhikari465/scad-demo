@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class BulkImportPluCommandHandlerTests
     {
         private IconContext context;

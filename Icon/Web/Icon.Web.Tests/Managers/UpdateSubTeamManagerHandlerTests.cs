@@ -18,7 +18,7 @@ using Icon.Common.DataAccess;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class UpdateSubTeamManagerHandlerTests
     {
         private UpdateSubTeamManagerHandler managerHandler;

@@ -11,7 +11,7 @@ using Icon.Web.Mvc.App_Start;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class UpdateCertificationAgencyManagerHandlerTests
     {
         private UpdateCertificationAgencyManagerHandler managerHandler;

@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class BrandTemplateExporterTests
     {
         private WorkbookFormat excelFormat;

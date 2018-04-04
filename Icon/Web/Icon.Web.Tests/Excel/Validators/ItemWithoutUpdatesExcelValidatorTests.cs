@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.Excel.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class ItemWithoutUpdatesExcelValidatorTests
     {
         private ItemWithoutUpdatesExcelValidator<ItemExcelModel> validator;

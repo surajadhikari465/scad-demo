@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.Importers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class CertificationAgencyImporterTests
     {
         private CertificationAgencyImporter importer;

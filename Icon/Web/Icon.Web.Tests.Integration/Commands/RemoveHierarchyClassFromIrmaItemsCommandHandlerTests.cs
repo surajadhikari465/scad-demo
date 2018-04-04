@@ -7,7 +7,7 @@ using System.Data.Entity;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class RemoveHierarchyClassFromIrmaItemsCommandHandlerTests
     {
         private RemoveHierarchyClassFromIrmaItemsCommandHandler commandHandler;

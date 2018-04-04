@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class GetAvailableScanCodesByCategoryQueryTests
     {
         private GetAvailableScanCodesByCategoryQuery queryHandler;

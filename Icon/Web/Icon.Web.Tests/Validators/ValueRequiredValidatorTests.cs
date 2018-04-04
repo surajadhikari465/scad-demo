@@ -4,7 +4,7 @@ using Icon.Web.Common.Validators;
 
 namespace Icon.Web.Tests.Unit.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class ValueRequiredValidatorTests
     {
         [TestCategory("Validator")]

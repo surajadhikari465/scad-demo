@@ -12,7 +12,7 @@ using System;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class UpdateHierarchyClassManagerHandlerTests
     {
         private UpdateHierarchyClassManagerHandler managerHandler;

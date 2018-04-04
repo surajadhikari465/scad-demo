@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class AddCertificationAgencyManagerHandlerTests
     {
         private AddCertificationAgencyManagerHandler managerHandler;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.AutoMapperConverters
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class LocaleToMessageQueueLocaleConverterTests
     {
         [TestMethod]

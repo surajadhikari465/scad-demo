@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Excel.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class CertificationAgencyValidatorTests
     {
         private CertificationAgencyValidator<ItemExcelModel> validator;

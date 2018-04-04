@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.Excel.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class RegexItemModelValidatorTests
     {
         public RegexItemModelValidator<ItemExcelModel> validator;

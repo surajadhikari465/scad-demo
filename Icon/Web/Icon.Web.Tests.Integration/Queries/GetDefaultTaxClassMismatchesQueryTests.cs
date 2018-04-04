@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class GetDefaultTaxClassMismatchesQueryTests
     {
         private GetDefaultTaxClassMismatchesQuery query;

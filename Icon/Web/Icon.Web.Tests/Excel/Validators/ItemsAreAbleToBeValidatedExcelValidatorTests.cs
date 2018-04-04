@@ -12,7 +12,7 @@ using Icon.Web.Mvc.Excel.Models;
 
 namespace Icon.Web.Tests.Unit.Excel.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class ItemsAreAbleToBeValidatedExcelValidatorTests
     {
         private Mock<IQueryHandler<GetScanCodesNotReadyToValidateParameters, List<string>>> mockGetScanCodesNotReadyToValidateQuery;

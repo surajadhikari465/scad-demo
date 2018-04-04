@@ -5,7 +5,7 @@ using System;
 
 namespace Icon.Web.Tests.Unit.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class EcoScaleRatingValidatorTests
     {
         private EcoScaleRatingValidator validator;

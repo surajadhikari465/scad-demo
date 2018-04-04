@@ -16,7 +16,7 @@ using System.Drawing;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class IrmaItemExporterTests
     {
         private IrmaItemExporter exporter;

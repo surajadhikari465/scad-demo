@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Decorators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class AddProductMammothEventDecoratorTests
     {
         private IconContext context;

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class AddEwicMappingCommandHandlerTests
     {
         private AddEwicMappingCommandHandler commandHandler;

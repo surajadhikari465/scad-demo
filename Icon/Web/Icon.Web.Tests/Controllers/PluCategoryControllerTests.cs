@@ -22,7 +22,7 @@ using System.Web.Script.Serialization;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class PluCategoryControllerTests
     {
         private Mock<ILogger> logger;

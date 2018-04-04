@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class BulkImportNewItemCommandHandlerTests
     {
         private BulkImportNewItemCommandHandler commandHandler;

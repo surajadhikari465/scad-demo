@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Icon.Tests.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class BusinessUnitValidatorTests
     {
         [TestMethod]

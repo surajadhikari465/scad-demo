@@ -7,7 +7,7 @@ using System.Data.Entity;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class GetBrandAbbreviationsThatExistQueryTests
     {
         private GetBrandAbbreviationsThatExistQuery query;

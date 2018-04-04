@@ -10,7 +10,7 @@ using Icon.Testing.Builders;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class SaveToMessageHistoryCommandHandlerTests
     {
         private SaveToMessageHistoryCommandHandler commandHandler;

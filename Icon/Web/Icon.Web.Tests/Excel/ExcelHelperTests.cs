@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Excel
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class ExcelHelperTests
     {
         [TestMethod]

@@ -5,7 +5,7 @@ using System;
 
 namespace Icon.Web.Tests.Unit.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class AnimalWelfareRatingValidatorTests
     {
         private AnimalWelfareRatingValidator validator;

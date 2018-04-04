@@ -5,7 +5,7 @@ using Icon.Web.Common;
 
 namespace Icon.Web.Tests.Unit.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class IconPropertyValidationRulesTests
     {
         private IconPropertyValidationRules validator;

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class UpdateCertificationAgencyCommandHandlerTests
     {
         private UpdateCertificationAgencyCommandHandler commandHandler;

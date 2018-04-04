@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class UpdateItemManagerHandlerTests
     {
         private UpdateItemManagerHandler managerHandler;

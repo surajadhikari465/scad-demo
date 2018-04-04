@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Unit.Validators
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class AddEwicExclusionManagerValidatorTests
     {
         private AddEwicExclusionManagerValidator validator;
