@@ -735,7 +735,6 @@ SELECT
 	p.RewardPriceEndDate,
 	p.LinkedScanCodePrice,
 	sa.TerritoryAbbrev				AS GeographicalState,
-	ist.CfsSendToScale				AS SendToCFS,
 	il.Authorized					AS IsAuthorized 
 FROM #itemExtended ist
 INNER JOIN dbo.Items i on ist.ItemID = i.ItemID
