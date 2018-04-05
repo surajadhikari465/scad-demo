@@ -202,6 +202,7 @@ Public Class Form_ManageUsers
                 editUserForm.ShowDialog(Me)
                 editUserForm.Dispose()
 
+                selectedRow = getSelectedRow(DataGridView_ManageUsers)
                 If selectedRow IsNot Nothing Then
                     Me.Button_Delete.Enabled = (CType(selectedRow.Cells(colAccountEnabled.Name).Value, Boolean) = True)
                 End If
