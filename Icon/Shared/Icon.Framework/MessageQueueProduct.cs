@@ -91,17 +91,15 @@ namespace Icon.Framework
         public string PercentageTareWeight { get; set; }
         public string FairTradeCertified { get; set; }
         public string FlexibleText { get; set; }
+        public string SelfCheckoutItemTareGroup { get; set; }
         public Nullable<int> ShelfLife { get; set; }
+        public string MadeWithOrganicGrapes { get; set; }
         public Nullable<bool> PrimeBeef { get; set; }
         public Nullable<bool> RainforestAlliance { get; set; }
+        public string Refrigerated { get; set; }
         public Nullable<bool> SmithsonianBirdFriendly { get; set; }
         public Nullable<bool> WicEligible { get; set; }
-        public string RegionAbbrev { get; set; }
-        public string GeographicalState { get; set; }
-        public string SelfCheckoutItemTareGroup { get; set; }
-        public string Refrigerated { get; set; }
-        public string MadeWithOrganicGrapes { get; set; }
-
+    
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }

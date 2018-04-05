@@ -1,16 +1,10 @@
 ﻿using FastMember;
-using Icon.Common;
 using Icon.Common.DataAccess;
 using Icon.DbContextFactory;
 using Icon.Framework;
 using Icon.Infor.Listeners.Item.Models;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.Item.Commands
 {
@@ -39,7 +33,6 @@ namespace Icon.Infor.Listeners.Item.Commands
                         nameof(MessageArchiveProductModel.ErrorCode),
                         nameof(MessageArchiveProductModel.ErrorDetails)))
                     {
-
                         sqlBulkCopy.DestinationTableName = "infor.MessageArchiveProduct";
                         sqlBulkCopy.WriteToServer(reader);
                     }

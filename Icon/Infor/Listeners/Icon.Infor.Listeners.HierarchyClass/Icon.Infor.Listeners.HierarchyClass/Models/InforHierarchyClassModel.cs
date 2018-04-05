@@ -1,11 +1,14 @@
 ﻿using Icon.Esb.Schemas.Wfm.Contracts;
 using System.Collections.Generic;
 using System;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Models
 {
     public class InforHierarchyClassModel
     {
+        [JsonConverter(typeof(StringEnumConverter))]
         public ActionEnum Action { get; set; }
         public int HierarchyClassId { get; set; }
         public string HierarchyClassName { get; set; }

@@ -1,5 +1,4 @@
-﻿using Icon.Common.Context;
-using Icon.Common.DataAccess;
+﻿using Icon.Common.DataAccess;
 using Icon.DbContextFactory;
 using Icon.Framework;
 using System;

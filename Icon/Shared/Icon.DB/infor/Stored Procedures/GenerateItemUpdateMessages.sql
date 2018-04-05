@@ -114,7 +114,7 @@ BEGIN
 		rsz.traitValue						as RetailSize,
 		rum.traitValue						as RetailUom,
 		fse.traitValue						as FoodStampEligible,
-		isnull(merchhctprh.traitValue, 0)	as ProhibitDiscount,	
+		isnull(prh.traitValue, 0)			as ProhibitDiscount,	
 		isnull(ds.traitValue, '0')			as DepartmentSale,
 		brandhc.hierarchyClassID			as BrandId,
 		brandhc.hierarchyClassName			as BrandName,
@@ -166,61 +166,10 @@ BEGIN
 		ia.[AirChilled]						AS [AirChilled],
 		ia.[MadeInHouse]					AS [MadeInHouse],
 		CASE WHEN ISNULL(ia.CustomerFriendlyDescription,'') = '' THEN prd.traitValue	
-		            ELSE ia.CustomerFriendlyDescription END AS CustomerFriendlyDescription,
+			 ELSE ia.CustomerFriendlyDescription END AS CustomerFriendlyDescription,
 		nr.traitValue						AS NutritionRequired,
 		gpp.traitValue						AS GlobalPricingProgram,
 		pta.traitValue						AS PercentageTareWeight,
-		CASE 
-			WHEN LCL_TYPE.localeTypeCode = 'RG' THEN 
-				CASE 
-					WHEN LCL.localeName='Florida' THEN 'FL'
-					WHEN LCL.localeName='Mid Atlantic' THEN 'MA'
-					WHEN LCL.localeName='Mid West' THEN 'MW'
-					WHEN LCL.localeName='North Atlantic' THEN 'NA'
-					WHEN LCL.localeName='Northern California' THEN 'NC'
-					WHEN LCL.localeName='North East' THEN 'NE'
-					WHEN LCL.localeName='Pacific Northwest' THEN 'PN'
-					WHEN LCL.localeName='Rocky Mountain' THEN 'RM'
-					WHEN LCL.localeName='South' THEN 'SO'
-					WHEN LCL.localeName='Southern Pacific' THEN 'SP'
-					WHEN LCL.localeName='Southwest' THEN 'SW'
-					WHEN LCL.localeName='United Kingdom' THEN 'UK'
-					WHEN LCL.localeName like '365%' THEN 'TS'
-				END
-			WHEN PRNT_TYPE.localeTypeCode = 'RG' THEN 
-				CASE 
-					WHEN PRNT_LCL.localeName='Florida' THEN 'FL'
-					WHEN PRNT_LCL.localeName='Mid Atlantic' THEN 'MA'
-					WHEN PRNT_LCL.localeName='Mid West' THEN 'MW'
-					WHEN PRNT_LCL.localeName='North Atlantic' THEN 'NA'
-					WHEN PRNT_LCL.localeName='Northern California' THEN 'NC'
-					WHEN PRNT_LCL.localeName='North East' THEN 'NE'
-					WHEN PRNT_LCL.localeName='Pacific Northwest' THEN 'PN'
-					WHEN PRNT_LCL.localeName='Rocky Mountain' THEN 'RM'
-					WHEN PRNT_LCL.localeName='South' THEN 'SO'
-					WHEN PRNT_LCL.localeName='Southern Pacific' THEN 'SP'
-					WHEN PRNT_LCL.localeName='Southwest' THEN 'SW'
-					WHEN PRNT_LCL.localeName='United Kingdom' THEN 'UK'
-					WHEN PRNT_LCL.localeName like '365%' THEN 'TS'
-				END
-			WHEN GPRNT_TYPE.localeTypeCode = 'RG' THEN 
-				CASE 
-					WHEN GPRNT_LCL.localeName='Florida' THEN 'FL'
-					WHEN GPRNT_LCL.localeName='Mid Atlantic' THEN 'MA'
-					WHEN GPRNT_LCL.localeName='Mid West' THEN 'MW'
-					WHEN GPRNT_LCL.localeName='North Atlantic' THEN 'NA'
-					WHEN GPRNT_LCL.localeName='Northern California' THEN 'NC'
-					WHEN GPRNT_LCL.localeName='North East' THEN 'NE'
-					WHEN GPRNT_LCL.localeName='Pacific Northwest' THEN 'PN'
-					WHEN GPRNT_LCL.localeName='Rocky Mountain' THEN 'RM'
-					WHEN GPRNT_LCL.localeName='South' THEN 'SO'
-					WHEN GPRNT_LCL.localeName='Southern Pacific' THEN 'SP'
-					WHEN GPRNT_LCL.localeName='Southwest' THEN 'SW'
-					WHEN GPRNT_LCL.localeName='United Kingdom' THEN 'UK'
-					WHEN GPRNT_LCL.localeName like '365%' THEN 'TS'
-				END
-		END									AS RegionAbbrev,
-		LCL_TERR.territoryCode 				AS GeographicalState,
 		itg.traitValue						AS SelfCheckoutItemTareGroup,
 		fxt.traitValue						AS FlexibleText,
 		slf.traitValue						AS ShelfLife,
@@ -249,15 +198,6 @@ BEGIN
 		JOIN ItemType					it			ON	i.itemTypeID				= it.itemTypeID
 		JOIN ScanCode					sc			ON	i.itemID					= sc.itemID
 		JOIN ScanCodeType				sct			ON	sc.scanCodeTypeID			= sct.scanCodeTypeID
-		JOIN dbo.Locale					LCL			ON  LCL.localeID			    = @localeID
-		JOIN dbo.LocaleType				LCL_TYPE	ON  LCL_TYPE.localeTypeID		= LCL.localeTypeID
-		LEFT JOIN dbo.LocaleAddress		LCL_ADDR	ON  LCL_ADDR.localeID			= LCL.localeID
-		LEFT JOIN dbo.PhysicalAddress	LCL_PHYS	ON  LCL_PHYS.addressID			= LCL_ADDR.addressID
-		LEFT JOIN dbo.Territory			LCL_TERR	ON  LCL_TERR.territoryID		= LCL_PHYS.territoryID
-		LEFT JOIN dbo.Locale			PRNT_LCL	ON  PRNT_LCL.localeID			= LCL.parentLocaleID
-		LEFT JOIN dbo.LocaleType		PRNT_TYPE	ON  PRNT_TYPE.localeTypeID		= PRNT_LCL.localeTypeID
-		LEFT JOIN dbo.Locale			GPRNT_LCL	ON  GPRNT_LCL.localeID			= PRNT_LCL.parentLocaleID
-		LEFT JOIN dbo.LocaleType		GPRNT_TYPE	ON  GPRNT_TYPE.localeTypeID		= GPRNT_LCL.localeTypeID
 		JOIN ItemTrait					val			ON	i.itemID					= val.itemID
 														AND val.traitID				= @validationDateTraitID
 														AND val.localeID			= @localeID
@@ -279,6 +219,9 @@ BEGIN
 		JOIN ItemTrait					fse			ON	i.itemID					= fse.itemID
 														AND fse.traitID				= @foodStampEligibleTraitID
 														AND fse.localeID			= @localeID
+		LEFT JOIN ItemTrait				prh			ON	i.itemID					= prh.itemID
+														AND prh.traitID				= @prohibitDiscountTraitID
+														AND prh.localeID			= @localeID
 		JOIN ItemHierarchyClass			brandihc	ON	i.itemID					= brandihc.itemID
 		JOIN HierarchyClass				brandhc		ON	brandihc.hierarchyClassID	= brandhc.hierarchyClassID
 														AND brandhc.hierarchyID		= @brandHierarchyID
@@ -289,8 +232,7 @@ BEGIN
 														AND merchhc.hierarchyID		= @merchandiseClassID
 		LEFT JOIN HierarchyClassTrait	merchhctesb	ON	merchhc.hierarchyClassID	= merchhctesb.hierarchyClassID
 														AND merchhctesb.traitID		= @sentToEsbTraitID
-		LEFT JOIN HierarchyClassTrait	merchhctprh	ON	merchhc.hierarchyClassID	= merchhctprh.hierarchyClassID
-														AND merchhctprh.traitID		= @prohibitDiscountTraitID
+		
 		JOIN ItemHierarchyClass			finihc		ON	i.itemID					= finihc.itemID
 		JOIN HierarchyClass				finhc		ON	finihc.hierarchyClassID		= finhc.hierarchyClassID
 														AND finhc.hierarchyID		= @financialClassID	

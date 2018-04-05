@@ -1,26 +1,25 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Infor.Listeners.Item.MessageParsers;
-using Icon.Infor.Listeners.Item.Services;
-using Icon.Infor.Listeners.Item.Commands;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb;
-using Icon.Esb.Subscriber;
+﻿using Esb.Core.EsbServices;
 using Icon.Common.Email;
-using Icon.Logging;
+using Icon.Esb;
+using Icon.Esb.ListenerApplication;
+using Icon.Esb.Services.ConfirmationBod;
+using Icon.Esb.Subscriber;
 using Icon.Framework;
-using Icon.Common.Context;
+using Icon.Infor.Listeners.Item.Commands;
+using Icon.Infor.Listeners.Item.MessageParsers;
+using Icon.Infor.Listeners.Item.Notifiers;
+using Icon.Infor.Listeners.Item.Queries;
+using Icon.Infor.Listeners.Item.Services;
+using Icon.Infor.Listeners.Item.Validators;
+using Icon.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Icon.Infor.Listeners.Item.Validators;
-using Icon.Infor.Listeners.Item.Notifiers;
-using System.Xml.Linq;
-using Icon.Infor.Listeners.Item.Queries;
 using System.Transactions;
-using Esb.Core.EsbServices;
-using Icon.Esb.Services.ConfirmationBod;
-using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Icon.Infor.Listeners.Item.Tests.Integration
 {
@@ -28,6 +27,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
     public class ItemListenerTests
     {
         protected const string xmlFilePath = @"TestMessages/ProductMessageFromInfor2.xml";
+        protected const string xmlFilePathVersion1Dot3 = @"TestMessages/ProductMessageFromInfor3.xml";
         protected IconDbContextFactory contextFactory = new IconDbContextFactory();
         protected ItemListenerSettings settings = ItemListenerSettings.CreateFromConfig();
         protected ItemListenerTestData testData = new ItemListenerTestData();
@@ -293,8 +293,44 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
                     traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "SLF").traitValue;
                     Assert.AreEqual(testData.Attribs.ShelfLife, traitValue,
                         $"Actual {nameof(testData.Attribs.ShelfLife)} ({traitValue}) value did not match expected ({testData.Attribs.ShelfLife})");
+                }
+            }
+        }
 
+        [TestMethod]
+        public void HandleMessage_ProductmessageFromInforVersion1Dot3_GeneratesMessageWithPtaAndGpp()
+        {
+            //Given
+            using (var transaction = new TransactionScope())
+            {
+                //load the test message as an xml doc
+                var xmlData = XDocument.Load(xmlFilePathVersion1Dot3);
+                var mockMessageObj = testData.GetMockEsbMessage(xmlData.ToString());
+                string traitValue = String.Empty;
 
+                //When
+                itemListener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessageObj });
+
+                //Then
+                using (var context = new IconContext())
+                {
+                    Framework.Item item = context.ScanCode.AsNoTracking()
+                        .FirstOrDefault(sc => sc.scanCode == testData.Item_A_ScanCode && sc.itemID == testData.Item_A_ItemID)
+                        .Item;
+
+                    Assert.IsNotNull(item, "Item was not successfully saved to the database.");
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "GPP").traitValue;
+                    Assert.AreEqual("Walnut 1B", traitValue);
+
+                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "PTA").traitValue;
+                    Assert.AreEqual("4", traitValue);
+
+                    MessageQueueProduct messageQueueProduct = context.MessageQueueProduct.AsNoTracking()
+                        .Single(q => q.ItemId == 999999999);
+
+                    Assert.AreEqual("Walnut 1B", messageQueueProduct.GlobalPricingProgram);
+                    Assert.AreEqual("4", messageQueueProduct.PercentageTareWeight);
                 }
             }
         }

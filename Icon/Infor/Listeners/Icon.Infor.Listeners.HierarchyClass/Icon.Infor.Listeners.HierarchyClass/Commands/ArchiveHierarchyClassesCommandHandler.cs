@@ -1,16 +1,10 @@
 ﻿using FastMember;
-using Icon.Common;
 using Icon.Common.DataAccess;
 using Icon.DbContextFactory;
 using Icon.Framework;
 using Icon.Infor.Listeners.HierarchyClass.Models;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Commands
 {

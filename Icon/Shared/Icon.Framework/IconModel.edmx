@@ -496,8 +496,6 @@
           <Property Name="NutritionRequired" Type="nvarchar" MaxLength="255" />
           <Property Name="GlobalPricingProgram" Type="nvarchar" MaxLength="255" />
           <Property Name="PercentageTareWeight" Type="nvarchar" MaxLength="255" />
-          <Property Name="RegionAbbrev" Type="nvarchar" MaxLength="2" />
-          <Property Name="GeographicalState" Type="nvarchar" MaxLength="5" />
           <Property Name="SelfCheckoutItemTareGroup" Type="nvarchar" MaxLength="60" />
           <Property Name="FlexibleText" Type="nvarchar" MaxLength="300" />
           <Property Name="ShelfLife" Type="int" />
@@ -5014,7 +5012,7 @@
           <Property Name="NutritionRequired" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="GlobalPricingProgram" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="PercentageTareWeight" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FairTradeCertified" Type="String" />
+          <Property Name="FairTradeCertified" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
           <Property Name="FlexibleText" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="SelfCheckoutItemTareGroup" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="ShelfLife" Type="Int32" />
@@ -5024,8 +5022,6 @@
           <Property Name="Refrigerated" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="SmithsonianBirdFriendly" Type="Boolean" />
           <Property Name="WicEligible" Type="Boolean" />
-          <Property Name="RegionAbbrev" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="GeographicalState" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
          </EntityType>
         <Association Name="FK_MessageQueueProduct_MessageHistoryId">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
@@ -6930,8 +6926,6 @@
           <EntitySetMapping Name="MessageQueueProduct">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueProduct">
               <MappingFragment StoreEntitySet="MessageQueueProduct">
-                <ScalarProperty Name="GeographicalState" ColumnName="GeographicalState" />
-                <ScalarProperty Name="RegionAbbrev" ColumnName="RegionAbbrev" />
                 <ScalarProperty Name="WicEligible" ColumnName="WicEligible" />
                 <ScalarProperty Name="SmithsonianBirdFriendly" ColumnName="SmithsonianBirdFriendly" />
                 <ScalarProperty Name="Refrigerated" ColumnName="Refrigerated" />

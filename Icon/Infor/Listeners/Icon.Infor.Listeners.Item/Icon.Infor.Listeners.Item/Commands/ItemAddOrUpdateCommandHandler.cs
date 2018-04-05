@@ -47,15 +47,15 @@ namespace Icon.Infor.Listeners.Item.Commands
         private void AddOrUpdateItems(IconContext context, IEnumerable<ItemModel> data)
         {
             var items = data
-                            .Select(i => new
-                            {
-                                ItemId = i.ItemId,
-                                ItemTypeId = ItemTypes.Ids[i.ItemTypeCode],
-                                ScanCode = i.ScanCode,
-                                ScanCodeTypeId = ScanCodeTypes.Ids[i.ScanCodeType],
-                                InforMessageId = i.InforMessageId,
-                                SequenceId = i.SequenceId
-                            }).ToTvp("items", "infor.ItemAddOrUpdateType");
+                .Select(i => new
+                {
+                    ItemId = i.ItemId,
+                    ItemTypeId = ItemTypes.Ids[i.ItemTypeCode],
+                    ScanCode = i.ScanCode,
+                    ScanCodeTypeId = ScanCodeTypes.Ids[i.ScanCodeType],
+                    InforMessageId = i.InforMessageId,
+                    SequenceId = i.SequenceId
+                }).ToTvp("items", "infor.ItemAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemAddOrUpdate @items", items);
         }
@@ -98,6 +98,8 @@ namespace Icon.Infor.Listeners.Item.Commands
                 new ItemTraitModel(i.ItemId, Traits.WicEligible, i.WicEligible, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.ShelfLife, i.ShelfLife, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.SelfCheckoutItemTareGroup, i.SelfCheckoutItemTareGroup, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.GlobalPricingProgram, i.GlobalPricingProgram, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.PercentageTareWeight, i.PercentageTareWeight, Locales.WholeFoods)
             }).ToTvp("itemTraits", "infor.ItemTraitAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemTraitAddOrUpdate @itemTraits", itemTraits);
@@ -106,13 +108,13 @@ namespace Icon.Infor.Listeners.Item.Commands
         private void AddOrUpdateItemHierarchyClasses(IconContext context, IEnumerable<ItemModel> data)
         {
             var itemHierarchies = data
-                         .SelectMany(i => new[] {
-                                new ItemHierarchyClassModel(i.ItemId, Hierarchies.Brands, i.BrandsHierarchyClassId),
-                                new ItemHierarchyClassModel(i.ItemId, Hierarchies.Merchandise, i.MerchandiseHierarchyClassId),
-                                new ItemHierarchyClassModel(i.ItemId, Hierarchies.Tax, i.TaxHierarchyClassId),
-                                new ItemHierarchyClassModel(i.ItemId, Hierarchies.Financial, i.FinancialHierarchyClassId),
-                                new ItemHierarchyClassModel(i.ItemId, Hierarchies.National, i.NationalHierarchyClassId)
-                         }).ToTvp("itemHierarchyClasses", "infor.ItemHierarchyClassAddOrUpdateType");
+                .SelectMany(i => new[] {
+                    new ItemHierarchyClassModel(i.ItemId, Hierarchies.Brands, i.BrandsHierarchyClassId),
+                    new ItemHierarchyClassModel(i.ItemId, Hierarchies.Merchandise, i.MerchandiseHierarchyClassId),
+                    new ItemHierarchyClassModel(i.ItemId, Hierarchies.Tax, i.TaxHierarchyClassId),
+                    new ItemHierarchyClassModel(i.ItemId, Hierarchies.Financial, i.FinancialHierarchyClassId),
+                    new ItemHierarchyClassModel(i.ItemId, Hierarchies.National, i.NationalHierarchyClassId)
+                }).ToTvp("itemHierarchyClasses", "infor.ItemHierarchyClassAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemHierarchyClassAddOrUpdate @itemHierarchyClasses", itemHierarchies);
         }
@@ -120,33 +122,33 @@ namespace Icon.Infor.Listeners.Item.Commands
         private void AddOrUpdateItemSignAttributes(IconContext context, IEnumerable<ItemModel> data)
         {
             var itemSignAttributes = data
-                     .Select(i => new ItemSignAttributeModel
-                     (
-                         i.ItemId, 
-                         AnimalWelfareRatings.Ids.GetIdFromDescription(i.AnimalWelfareRating), 
-                         i.Biodynamic.ToBool(), 
-                         MilkTypes.Ids.GetIdFromDescription(i.CheeseMilkType), 
-                         i.CheeseRaw.ToBool(),
-                         EcoScaleRatings.Ids.GetIdFromDescription(i.EcoScaleRating),
-                         i.GlutenFree,
-                         i.Kosher,
-                         i.Msc.ToBool(),
-                         i.NonGmo,
-                         i.Organic,
-                         i.PremiumBodyCare.ToBool(),
-                         SeafoodFreshOrFrozenTypes.Ids.GetIdFromDescription(i.FreshOrFrozen),
-                         SeafoodCatchTypes.Ids.GetIdFromDescription(i.SeafoodCatchType),
-                         i.Vegan,
-                         i.Vegetarian.ToBool(),
-                         i.WholeTrade.ToBool(),
-                         i.GrassFed.ToBool(),
-                         i.PastureRaised.ToBool(),
-                         i.FreeRange.ToBool(),
-                         i.DryAged.ToBool(),
-                         i.AirChilled.ToBool(),
-                         i.MadeInHouse.ToBool(),
-                         i.CustomerFriendlyDescription
-                     )).ToTvp("itemSignAttributes", "infor.ItemSignAttributeAddOrUpdateType");
+                .Select(i => new ItemSignAttributeModel
+                (
+                    i.ItemId, 
+                    AnimalWelfareRatings.Ids.GetIdFromDescription(i.AnimalWelfareRating), 
+                    i.Biodynamic.ToBool(), 
+                    MilkTypes.Ids.GetIdFromDescription(i.CheeseMilkType), 
+                    i.CheeseRaw.ToBool(),
+                    EcoScaleRatings.Ids.GetIdFromDescription(i.EcoScaleRating),
+                    i.GlutenFree,
+                    i.Kosher,
+                    i.Msc.ToBool(),
+                    i.NonGmo,
+                    i.Organic,
+                    i.PremiumBodyCare.ToBool(),
+                    SeafoodFreshOrFrozenTypes.Ids.GetIdFromDescription(i.FreshOrFrozen),
+                    SeafoodCatchTypes.Ids.GetIdFromDescription(i.SeafoodCatchType),
+                    i.Vegan,
+                    i.Vegetarian.ToBool(),
+                    i.WholeTrade.ToBool(),
+                    i.GrassFed.ToBool(),
+                    i.PastureRaised.ToBool(),
+                    i.FreeRange.ToBool(),
+                    i.DryAged.ToBool(),
+                    i.AirChilled.ToBool(),
+                    i.MadeInHouse.ToBool(),
+                    i.CustomerFriendlyDescription
+                )).ToTvp("itemSignAttributes", "infor.ItemSignAttributeAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemSignAttributeAddOrUpdate @itemSignAttributes", itemSignAttributes);
         }

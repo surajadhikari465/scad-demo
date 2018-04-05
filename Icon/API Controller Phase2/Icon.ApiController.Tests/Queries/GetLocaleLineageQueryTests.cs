@@ -158,31 +158,6 @@ namespace Icon.ApiController.Tests.Queries
         }
 
         [TestMethod]
-        public void GetLocaleLineage_Metro_ResultShouldIncludeRegionButNotStores()
-        {
-            // Given.
-            localeId = context.Locale.Single(l => l.localeName == testMetroName).localeID;
-
-            var parameters = new GetLocaleLineageParameters
-            {
-                LocaleTypeId = LocaleTypes.Metro,
-                LocaleId = localeId
-            };
-
-            // When.
-            var localeLineage = getLocaleLineageQuery.Search(parameters);
-
-            // Then.
-            string regionName = localeLineage.DescendantLocales[0].LocaleName;
-            var metro = localeLineage.DescendantLocales[0].DescendantLocales[0];
-            var stores = metro.DescendantLocales;
-            
-            Assert.AreEqual(testRegionName, regionName);
-            Assert.AreEqual(testMetroName, metro.LocaleName);
-            Assert.AreEqual(0, stores.Count);
-        }
-
-        [TestMethod]
         public void GetLocaleLineage_Store_ResultShouldIncludeRegionAndMetro()
         {
             // Given.

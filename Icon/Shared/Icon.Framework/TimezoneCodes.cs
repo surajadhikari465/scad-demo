@@ -18,7 +18,8 @@ namespace Icon.Framework
         public const string Cst = "CST";
         public const string Est = "EST";
         public const string Adt = "ADT";
-        public const string Nst = "NST";
         public const string Gmt = "GMT";
+        public const string Estin = "ESTIN";
+        public const string Mstaz = "MSTAZ";
 	}
 }

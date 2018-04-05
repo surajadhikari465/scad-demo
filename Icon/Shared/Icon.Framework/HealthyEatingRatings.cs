@@ -12,12 +12,14 @@ namespace Icon.Framework
     [GeneratedCode("TextTemplatingFileGenerator", "10")]
     public static class HealthyEatingRatings
     {
+        public const int None = 0;
         public const int Good = 1;
         public const int Better = 2;
         public const int Best = 3;
 
 		private static Dictionary<string, int> descriptionToIdDictionary = new Dictionary<string, int>
 			{
+				{ "None", 0 },
 				{ "Good", 1 },
 				{ "Better", 2 },
 				{ "Best", 3 }
@@ -26,12 +28,14 @@ namespace Icon.Framework
 		
 		public class Descriptions
 		{
+			public const string None = "None";
 			public const string Good = "Good";
 			public const string Better = "Better";
 			public const string Best = "Best";
 
 			private static string[] descriptions = new string[]
 				{
+					"None",
 					"Good",
 					"Better",
 					"Best"
@@ -41,6 +45,7 @@ namespace Icon.Framework
 		
 		private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
+				{ 0, "None" },
 				{ 1, "Good" },
 				{ 2, "Better" },
 				{ 3, "Best" }

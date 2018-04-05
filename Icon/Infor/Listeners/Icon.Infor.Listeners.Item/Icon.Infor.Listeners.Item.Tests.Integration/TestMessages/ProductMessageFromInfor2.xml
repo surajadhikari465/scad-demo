@@ -356,7 +356,7 @@
             <tra:type>
               <trt:description>Fair Trade Certified</trt:description>
               <trt:value>
-                <trv:value/>
+                <trv:value>test Fair Trade val</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>

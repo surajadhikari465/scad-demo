@@ -660,12 +660,12 @@ namespace Icon.ApiController.Tests.QueueReaders
         public void GetLocaleMiniBulk_MetroMessage_MetroElementShouldContainAllRequiredInformation()
         {
             // Given.
+            var metroLocaleId = metros[0].localeID;
             var fakeMessageQueueLocales = new List<MessageQueueLocale>
             {
                 new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Metro)
             };
-
-            fakeMessageQueueLocales[0].LocaleId = metros[0].localeID;
+            fakeMessageQueueLocales[0].LocaleId = metroLocaleId;
 
             // When.
             var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
@@ -682,6 +682,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             var localeTraits = metro.traits;
             var localeAddress = metro.addresses;
             var locales = metro.locales;
+            var storeCount = context.Locale.Count(l => l.parentLocaleID == metroLocaleId);
 
             Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate.ToString(), action.ToString());
             Assert.IsTrue(actionSpecified);
@@ -692,7 +693,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             Assert.AreEqual(Contracts.LocaleDescType.Metro, localeTypeDesc);
             Assert.IsNull(localeTraits);
             Assert.IsNull(localeAddress);
-            Assert.AreEqual(0, locales.Length);
+            Assert.AreEqual(storeCount, locales.Length);
         }
 
         [TestMethod]
