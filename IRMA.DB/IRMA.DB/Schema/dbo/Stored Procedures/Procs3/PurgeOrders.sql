@@ -22,6 +22,8 @@ AS
 --                          Hopefully in the next round of the order purge, some of the OrderHeader and OrderItem rows can be deleted after the 
 --                          corresponding ItemHistory and or ItemHistoryQueue records were deleted.
 --                   25179  Added Disable TRIGGER [dbo].[OrderHeaderDel] ON [dbo].[OrderHeader] when deleting OrderHeader records. 
+--                   25990  Per DW team's request, added the the key information of certain purged tables identifed by the DW team to the corresponding 
+--                          newly created tables, all starting with the name of 'Purged_'.
 --****************************************************************************************************************************************************
 BEGIN
 	DECLARE @RunTime INT
@@ -207,8 +209,9 @@ BEGIN
 			WHILE (@Count = @batchVolume)
 			BEGIN
 				DELETE TOP (@batchVolume) oi
+				  OUTPUT DELETED.OrderItem_ID, getdate() INTO Purged_OrderItem
 				  FROM OrderItem oi
-				  JOIN #OrderItemId oii ON oi.OrderItem_ID = oii.OrderItemID 
+				  JOIN #OrderItemId oii ON oi.OrderItem_ID = oii.OrderItemID 		
 		
 				SELECT @Count = @@rowcount
 				SELECT @RecordDeletedCount = @RecordDeletedCount + @Count
@@ -252,6 +255,7 @@ BEGIN
 			WHILE (@Count = @batchVolume)
 			BEGIN
 				DELETE TOP (@batchVolume) oi
+				  OUTPUT DELETED.OrderHeader_ID, DELETED.SubTeam_No, getdate() INTO Purged_OrderInvoice
 				  FROM OrderInvoice oi
 				  JOIN #OrderHeaderId ohi ON oi.OrderHeader_ID = ohi.OrderHeaderID 
 		
@@ -354,6 +358,7 @@ BEGIN
 			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 
 			DELETE eh
+			  OUTPUT DELETED.Einvoice_id, getdate() INTO Purged_Einvoicing_Header
 			  FROM Einvoicing_Header eh
 			  JOIN #EnvoiceId ei ON eh.Einvoice_id = ei.EnvoiceID
 			
@@ -382,6 +387,7 @@ BEGIN
 			WHILE (@Count = @batchVolume)
 			BEGIN
 				DELETE TOP (@batchVolume) eit
+				  OUTPUT DELETED.Einvoice_id, DELETED.line_num, getdate() INTO Purged_EInvoicing_Item
 				  FROM EInvoicing_Item eit
 				  JOIN #EnvoiceId ei ON eit.Einvoice_id = ei.EnvoiceID
 			
@@ -424,7 +430,7 @@ BEGIN
 			SELECT @RecordDeletedCount = 0
 		
 			DELETE oh
-			--SELECT oh.*
+			    OUTPUT DELETED.OrderHeader_ID, getdate() into Purged_OrderHeader
 				FROM OrderHeader oh
 				JOIN #OrderHeaderId ohi ON oh.OrderHeader_ID = ohi.OrderHeaderID 
 		

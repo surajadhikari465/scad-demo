@@ -1,6 +1,3 @@
-use ItemCatalog_Test
-go
-
 BEGIN
     DECLARE @Result					INT
     DECLARE @KeyName				VARCHAR(50)
@@ -25,10 +22,13 @@ BEGIN
     SELECT @KeyID = (SELECT KeyID from AppConfigKey where Name = @KeyName)
 
 	IF @RegionCode = 'PN' 
-		SET @Value = '10275'
+		SET @Value = '10275|10103'
 	ELSE
 	IF @RegionCode = 'RM' 
 		SET @Value = '10654'
+	ELSE
+	IF @RegionCode = 'NC' 
+		SET @Value = '10396'
 	ELSE
 		SET @Value = ''
 

@@ -3,6 +3,13 @@
     @batchVolume	INT
 
 AS 
+--****************************************************************************************************************************************************
+-- Procedure: PurgeItemHistoryDaily
+--
+-- Revision:
+-- 04/03/2018        25990  Per DW team's request, added the the key information of certain purged tables identifed by the DW team to the corresponding 
+--                          newly created tables, all starting with the name of 'Purged_'.
+--****************************************************************************************************************************************************
 BEGIN
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
@@ -110,6 +117,7 @@ BEGIN
 	SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 
 	DELETE ih
+	    OUTPUT DELETED.ItemHistoryId, DELETED.DateStamp, getdate() INTO Purged_ItemHistory
 		FROM ItemHistory ih
 		JOIN #ItemHistoryId ihi on ih.ItemHistoryID = ihi.ItemHistoryID
 	
@@ -241,6 +249,7 @@ BEGIN
 		SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 
 		DELETE ih
+		    OUTPUT DELETED.ItemHistoryId, DELETED.DateStamp, getdate() INTO Purged_ItemHistory
 			FROM ItemHistory ih
 			JOIN #ItemHistoryId ihi on ih.ItemHistoryID = ihi.ItemHistoryID
 		

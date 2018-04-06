@@ -1998,7 +1998,7 @@
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurchasesToSalesCompSubTeamDetail.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurchasesToSalesCompSubTeamSummary.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurchToSalesComp.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\PurgeItemHistoryDaily.sql" />
+    <None Include="schema\dbo\Stored Procedures\Procs3\PurgeItemHistoryDaily.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurgeLog.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurgePriceHistoryDaily.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurgeStraight.sql" />
@@ -3202,8 +3202,8 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_InsertUpdateStorageData.sql" />
     <Build Include="Schema\infor\Tables\tmpGpmLatestPbd.sql" />
     <Build Include="Schema\infor\Tables\tmpGpmFuturePbd.sql" />
-    <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorCostHistory.sql" />
-    <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorDealHistory.sql" />
+    <None Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorCostHistory.sql" />
+    <None Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorDealHistory.sql" />
     <None Include="SQL Agent Job\ItemCatalog - VendorCostDealHistory Purge.sql" />
     <Build Include="Schema\dbo\Functions\fn_GetInstanceDataFlagStoreValues.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeEIM.sql" />
@@ -3314,6 +3314,16 @@
     <None Include="Scripts\PostDeploy\Archive\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.sql" />
     <None Include="Scripts\PostDeploy\PBI21565 - PostDeploy Schema PopData - AddInstanceDataFlag - HideSlimFunctionality.sql" />
     <None Include="Scripts\PostDeploy\PBI21565 - PostDeploy Schema PopData - AddInstanceDataFlag - HideSlimFunctionality.rollback.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_OrderHeader.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_Einvoicing_Header.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_EInvoicing_Item.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_ItemHistory.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_OrderInvoice.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_OrderItem.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_VendorCostHistory.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_VendorDealHistory.sql" />
+    <None Include="Scripts\PostDeploy\PBI25990 - AddPurgedTablesToRetentionPolicyTable.sql" />
+    <None Include="Scripts\PostDeploy\PBI25990 - AddPurgedTablesToRetentionPolicyTable.rollback.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

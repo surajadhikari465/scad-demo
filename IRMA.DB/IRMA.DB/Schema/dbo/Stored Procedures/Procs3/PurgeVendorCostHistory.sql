@@ -1,6 +1,13 @@
 CREATE PROCEDURE [dbo].[PurgeVendorCostHistory]
     @batchVolume	 INT
 AS 
+--****************************************************************************************************************************************************
+-- Procedure: PurgeVendorCostHistory
+--
+-- Revision:
+-- 04/03/2018        25990  Per DW team's request, added the the key information of certain purged tables identifed by the DW team to the corresponding 
+--                          newly created tables, all starting with the name of 'Purged_'.
+--****************************************************************************************************************************************************
 BEGIN
 	DECLARE @RunTime INT
 	       ,@Count   INT 
@@ -99,6 +106,7 @@ BEGIN
 		EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
 
 		DELETE vch
+		  OUTPUT DELETED.VendorCostHistoryID, getdate() INTO Purged_VendorCostHistory
 		  FROM VendorCostHistory vch
 		  JOIN #PurgedVendorCostHistoryId pvch on vch.VendorCostHistoryID = pvch.VendorCostHistoryID
 		
@@ -217,6 +225,7 @@ BEGIN
 			   ON pvch.VendorCostHistoryID = vchf.VendorCostHistoryID
 
 			DELETE vch
+			  OUTPUT DELETED.VendorCostHistoryID, getdate() INTO Purged_VendorCostHistory
 			  FROM VendorCostHistory vch
 			  JOIN #PurgedVendorCostHistoryId pvch on vch.VendorCostHistoryID = pvch.VendorCostHistoryID
 			

@@ -1,6 +1,13 @@
 CREATE PROCEDURE [dbo].[PurgeVendorDealHistory]
     @batchVolume	 INT
 AS 
+--****************************************************************************************************************************************************
+-- Procedure: PurgeVendorDealHistory
+--
+-- Revision:
+-- 04/03/2018        25990  Per DW team's request, added the the key information of certain purged tables identifed by the DW team to the corresponding 
+--                          newly created tables, all starting with the name of 'Purged_'.
+--****************************************************************************************************************************************************
 BEGIN
 	
 	DECLARE @RunTime INT
@@ -108,6 +115,7 @@ BEGIN
 			END
 
 			DELETE vch
+				OUTPUT DELETED.VendorDealHistoryID, getdate() INTO Purged_VendorDealHistory
 				FROM VendorDealHistory vch
 				JOIN #PurgedVendorDealHistoryId pvch on vch.VendorDealHistoryID = pvch.VendorDealHistoryID
 			
@@ -266,6 +274,7 @@ BEGIN
 					END
 
 					DELETE vdh
+					    OUTPUT DELETED.VendorDealHistoryID, getdate() INTO Purged_VendorDealHistory
 						FROM VendorDealHistory vdh
 						JOIN #PurgedVendorDealHistoryId pvdh on vdh.VendorDealHistoryID = pvdh.VendorDealHistoryID
 					
