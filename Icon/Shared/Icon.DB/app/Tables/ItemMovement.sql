@@ -28,3 +28,7 @@ GO
 
 CREATE NONCLUSTERED INDEX [IX_InProcessBy] ON app.ItemMovement (InProcessBy)
 GO
+
+CREATE NONCLUSTERED INDEX [IX_ItemMovement_ESBMessageID] ON [app].[ItemMovement] ([ESBMessageID] ASC)
+	INCLUDE ([BusinessUnitID], [RegisterNumber], [TransactionSequenceNumber], [TransDate])
+GO
