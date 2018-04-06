@@ -734,7 +734,8 @@ SELECT
 	p.RewardPriceStartDate,
 	p.RewardPriceEndDate,
 	p.LinkedScanCodePrice,
-	sa.TerritoryAbbrev				AS GeographicalState
+	sa.TerritoryAbbrev				AS GeographicalState,
+	il.Authorized					AS IsAuthorized 
 FROM #itemExtended ist
 INNER JOIN dbo.Items i on ist.ItemID = i.ItemID
 INNER JOIN dbo.Hierarchy_Merchandise m on i.HierarchyMerchandiseID = m.HierarchyMerchandiseID
@@ -746,7 +747,7 @@ INNER JOIN #prices p on ist.Region = p.Region
 	AND ist.ItemID = p.ItemID
 	AND ist.BusinessUnitID = p.BusinessUnitID
 INNER JOIN StoreAddress sa on il.BusinessUnitID = sa.BusinessUnitID
-WHERE il.ScaleItem = 1
+WHERE (il.ScaleItem = 1 OR ist.CfsSendToScale = 1)
 	AND il.Region = @Region
 OPTION (RECOMPILE)
 
