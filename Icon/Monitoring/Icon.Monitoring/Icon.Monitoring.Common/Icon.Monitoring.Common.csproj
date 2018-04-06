@@ -91,6 +91,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiController\MammothMessageQueueCache.cs" />
+    <Compile Include="ApiController\MessageQueueCache.cs" />
     <Compile Include="AppSettingsAccessor.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="Constants\IrmaJobClassNames.cs" />

@@ -51,7 +51,7 @@ namespace Icon.Monitoring.Tests.Monitors
             var posPushJobStatusFirstRegionShouldPage = this.allRegions.Select((r, i) => new JobStatus
             {
                 Classname = IrmaJobClassNames.POSPushJob,
-                LastRun = DateTime.Now.Subtract(TimeSpan.FromMinutes(120)),
+                LastRun = DateTime.Now.Subtract(TimeSpan.FromMinutes(240)),
                 Region = r,
                 Status = i > 0 ? CompletedStatus : RunningStatus
             }).ToList();
@@ -205,7 +205,7 @@ namespace Icon.Monitoring.Tests.Monitors
         public void CheckStatusAndNotifyWhenTwoRunningTooLongNotPaged_ThenPage()
         {
             // Given
-            var runTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(120));
+            var runTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(240));
             var posPushJobStatusFirstRegionShouldPage = this.allRegions.Select((r, i) => new JobStatus
             {
                 Classname = IrmaJobClassNames.POSPushJob,

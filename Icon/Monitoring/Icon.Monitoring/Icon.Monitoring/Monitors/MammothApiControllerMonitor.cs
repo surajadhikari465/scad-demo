@@ -5,6 +5,7 @@
 
     using Icon.Logging;
     using Icon.Monitoring.Common;
+    using Icon.Monitoring.Common.ApiController;
     using Icon.Monitoring.Common.PagerDuty;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.DataAccess.Queries;
@@ -13,17 +14,20 @@
     {
         private readonly IQueryHandlerMammoth<GetApiMessageQueueIdParameters, int> messageQueueQuery;
         private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private MammothMessageQueueCache messageQueueCache;
 
         public MammothApiControllerMonitor(
             IMonitorSettings settings,
             IQueryHandlerMammoth<GetApiMessageQueueIdParameters, int> messageQueueQuery,
             IPagerDutyTrigger pagerDutyTrigger,
-            ILogger logger)
+            ILogger logger,
+            MammothMessageQueueCache messageQueueCache)
         {
             this.settings = settings;
             this.logger = logger;
             this.messageQueueQuery = messageQueueQuery;
             this.pagerDutyTrigger = pagerDutyTrigger;
+            this.messageQueueCache = messageQueueCache;
         }
 
         protected override void TimedCheckStatusAndNotify()
@@ -39,25 +43,25 @@
             queryParameters.MessageQueueType = queueType;
             int id = this.messageQueueQuery.Search(queryParameters);
 
-            if (MammothMessageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId == id
-                && MammothMessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched == 0
+            if (messageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId == id
+                && messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched == 0
                 && id != 0)
             {
                 string description = BuildTriggerDescription(queueType);
                 Dictionary<string, string> details = BuildTriggerDetails(id);
                 TriggerPagerDutyIncident(description, details);
 
-                MammothMessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
+                messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
             }
-            else if (MammothMessageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId == id
-                && MammothMessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched > 0)
+            else if (messageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId == id
+                && messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched > 0)
             {
-                MammothMessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
+                messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
             }
             else
             {
-                MammothMessageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId = id;
-                MammothMessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched = 0;
+                messageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId = id;
+                messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched = 0;
             }
         }
 

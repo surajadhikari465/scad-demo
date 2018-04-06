@@ -21,6 +21,7 @@
     using System.Linq;
     using System.Configuration;
     using Icon.Monitoring.Common;
+    using Icon.Monitoring.Common.ApiController;
 
     public class SimpleInjectorInitializer
     {
@@ -29,7 +30,7 @@
             var dataAccessAssembly = Assembly.Load("Icon.Monitoring.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
 
             var container = new Container();
-            container.RegisterSingleton<IConnectionBuilder, ConnectionBuilder>();           
+            container.RegisterSingleton<IConnectionBuilder, ConnectionBuilder>();
             container.RegisterSingleton<ILogger>(() => new NLogLoggerSingleton(typeof(IMonitorService)));
             container.RegisterSingleton<IDbProvider, SqlDbProvider>();
             container.RegisterSingleton<IPagerDutyTrigger, PagerDutyTrigger>();
@@ -60,6 +61,9 @@
             var monitors = GetMonitorsRegisteredInAppConfig();
             container.RegisterCollection(typeof(IMonitor), monitors);
 
+            container.Register<MessageQueueCache>();
+            container.Register<MammothMessageQueueCache>();
+
             container.Verify();
             return container;
         }
@@ -80,4 +84,3 @@
         }
     }
 }
-

@@ -1,7 +1,6 @@
 ﻿using Icon.Monitoring.Common.Enums;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Caching;
 
 namespace Icon.Monitoring.Common
 {
@@ -24,28 +23,6 @@ namespace Icon.Monitoring.Common
     public static class JobStatusCache
     {
         public static Dictionary<string, DateTime> PagerDutyTracker = new Dictionary<string, DateTime>();
-    }
-
-    public static class MessageQueueCache
-    {
-        public static Dictionary<string, QueueData> QueueTypeToIdMapper = new Dictionary<string, QueueData>
-        {
-            { MessageQueueTypes.Product,    new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
-            { MessageQueueTypes.Price,      new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
-            { MessageQueueTypes.ItemLocale, new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
-            { MessageQueueTypes.Hierarchy,  new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
-            { MessageQueueTypes.Locale,     new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
-            { MessageQueueTypes.ProductSelectionGroup,     new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } }
-        };
-    }
-
-    public static class MammothMessageQueueCache
-    {
-        public static Dictionary<string, QueueData> QueueTypeToIdMapper = new Dictionary<string, QueueData>
-        {
-            { MessageQueueTypes.Price,      new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
-            { MessageQueueTypes.ItemLocale, new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } }
-        };
     }
 
     public static class MammothPriceChangeQueueCache

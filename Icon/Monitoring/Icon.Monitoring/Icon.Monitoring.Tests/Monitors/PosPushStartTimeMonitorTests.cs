@@ -66,7 +66,7 @@ namespace Icon.Monitoring.Tests.Monitors
             // Given
             AppLog appLogAllOtherRegions = BuildAppLog(DateTime.Now);
             this.settings.PosPushStartTime_FL = LocalTime.FromHourMinuteSecondTick(0, 10, 0, 0); // 00:10:00
-            
+
             this.mockAppLogQuery.SetupSequence(q => q.Search(It.IsAny<GetAppLogByAppAndMessageParameters>()))
                 .Returns(null)
                 .Returns(appLogAllOtherRegions)

@@ -11,6 +11,7 @@
     using System;
     using NodaTime;
     using System.Linq;
+    using Icon.Monitoring.Common.ApiController;
 
     public class ApiControllerMonitor : TimedControllerMonitor
     {
@@ -22,6 +23,7 @@
         private readonly IPagerDutyTrigger pagerDutyTrigger;
         private IClock clock;
         private IDateTimeZoneProvider dateTimeZoneProvider;
+        private MessageQueueCache messageQueueCache;
 
         public ApiControllerMonitor(
             IMonitorSettings settings,
@@ -30,7 +32,8 @@
             IPagerDutyTrigger pagerDutyTrigger,
             IDateTimeZoneProvider dateTimeZoneProvider,
             IClock clock,
-            ILogger logger)
+            ILogger logger,
+            MessageQueueCache messageQueueCache)
         {
             this.settings = settings;
             this.logger = logger;
@@ -39,6 +42,7 @@
             this.clock = clock;
             this.messageQueueUnprocessedRowCountQuery = messageQueueUnprocessedRowCountQuery;
             this.pagerDutyTrigger = pagerDutyTrigger;
+            this.messageQueueCache = messageQueueCache;
         }
 
         protected override void TimedCheckStatusAndNotify()
@@ -145,25 +149,25 @@
             queryParameters.MessageQueueType = queueType;
             int id = this.messageQueueQuery.Search(queryParameters);
 
-            if (MessageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId == id
-                && MessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched == 0
+            if (messageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId == id
+                && messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched == 0
                 && id != 0)
             {
                 string description = BuildTriggerDescription(queueType);
                 Dictionary<string, string> details = BuildTriggerDetails(id);
                 TriggerPagerDutyIncident(description, details);
 
-                MessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
+                messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
             }
-            else if (MessageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId == id
-                && MessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched > 0)
+            else if (messageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId == id
+                && messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched > 0)
             {
-                MessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
+                messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
             }
             else
             {
-                MessageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId = id;
-                MessageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched = 0;
+                messageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId = id;
+                messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched = 0;
             }
         }
 

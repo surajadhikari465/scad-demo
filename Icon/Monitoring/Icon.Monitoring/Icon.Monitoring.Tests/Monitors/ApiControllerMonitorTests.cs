@@ -1,21 +1,16 @@
-﻿using Icon.Common.DataAccess;
-using Icon.Logging;
+﻿using Icon.Logging;
 using Icon.Monitoring.Common;
+using Icon.Monitoring.Common.ApiController;
 using Icon.Monitoring.Common.PagerDuty;
 using Icon.Monitoring.Common.Settings;
-using Icon.Monitoring.DataAccess;
 using Icon.Monitoring.DataAccess.Queries;
 using Icon.Monitoring.Monitors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NodaTime;
 using NodaTime.Testing;
-using ServiceStack.Text;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Threading;
 
 namespace Icon.Monitoring.Tests.Monitors
 {
@@ -30,6 +25,8 @@ namespace Icon.Monitoring.Tests.Monitors
         private ApiControllerMonitor apiControllerMonitor;
         private IClock fakeClock;
         private IDateTimeZoneProvider dateTimeZoneProvider;
+        private MessageQueueCache messageQueueCache;
+
         [TestInitialize]
         public void Initialize()
         {
@@ -39,21 +36,21 @@ namespace Icon.Monitoring.Tests.Monitors
             this.fakeClock = new FakeClock(Instant.FromDateTimeUtc(DateTime.UtcNow));
             this.dateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
             this.mockSettings = new Mock<IMonitorSettings>();
+            this.messageQueueCache = new MessageQueueCache();
 
             this.apiControllerMonitor = new ApiControllerMonitor(
                 this.mockSettings.Object,
                 this.mockMessageQueueQuery.Object,
-                 this.mockMessageUnprocessedRowCountQuery.Object,
+                this.mockMessageUnprocessedRowCountQuery.Object,
                 this.mockPagerDutyTrigger.Object,
-                  this.dateTimeZoneProvider,
+                this.dateTimeZoneProvider,
                 this.fakeClock,
-                new Mock<ILogger>().Object);
+                new Mock<ILogger>().Object,
+                messageQueueCache);
             testRegions = new List<string> { "FL" };
             SetUpApiControllerMonitorSettings();
             apiControllerMonitor.ByPassConfiguredRunInterval = true;
-            SetMessageQueueToIdMapperToZeroValues();
         }
-
 
         private void SetUpApiControllerMonitorSettings()
         {
@@ -65,7 +62,6 @@ namespace Icon.Monitoring.Tests.Monitors
             MonitorTimers.Add("ApiControllerMonitorTimer", TimeSpan.FromMilliseconds(900000));
             mockSettings.SetupGet(m => m.MonitorTimers).Returns(MonitorTimers);
         }
-
 
         private string BuildTriggerDescription(string queueType)
         {
@@ -79,23 +75,6 @@ namespace Icon.Monitoring.Tests.Monitors
                 { "Stuck MessageQueueId", messageQueueId.ToString() }
             };
             return details;
-        }
-
-        private void SetMessageQueueToIdMapperToZeroValues()
-        {
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.Product].LastMessageQueueId = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.Product].NumberOfTimesMatched = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.Price].LastMessageQueueId = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.Price].NumberOfTimesMatched = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.ItemLocale].LastMessageQueueId = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.ItemLocale].NumberOfTimesMatched = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.Hierarchy].LastMessageQueueId = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.Hierarchy].NumberOfTimesMatched = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.Locale].LastMessageQueueId = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.Locale].NumberOfTimesMatched = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.ProductSelectionGroup].LastMessageQueueId = 0;
-            MessageQueueCache.QueueTypeToIdMapper[MessageQueueTypes.ProductSelectionGroup].NumberOfTimesMatched = 0;
-
         }
 
         #region MessageQueueIdMatchesCacheFirstTime
@@ -140,7 +119,7 @@ namespace Icon.Monitoring.Tests.Monitors
         {
             // Given
             int expectedQueueId = new Random(1).Next(27000);
-            MessageQueueCache.QueueTypeToIdMapper[messagQueueType] = new QueueData { LastMessageQueueId = expectedQueueId, NumberOfTimesMatched = 0 };
+            this.messageQueueCache.QueueTypeToIdMapper[messagQueueType] = new QueueData { LastMessageQueueId = expectedQueueId, NumberOfTimesMatched = 0 };
             this.mockMessageQueueQuery.Setup(q => q.Search(It.Is<GetApiMessageQueueIdParameters>(v => v.MessageQueueType == messagQueueType))).Returns(expectedQueueId);
             this.mockPagerDutyTrigger.Setup(pd => pd.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new PagerDutyResponse());
 
@@ -155,8 +134,8 @@ namespace Icon.Monitoring.Tests.Monitors
                 t.TriggerIncident(It.Is<string>(d => d == expectedDescription),
                     It.Is<Dictionary<string, string>>(d => d[expectedDetailKey] == expectedQueueId.ToString())),
                 Times.Once);
-            Assert.AreEqual(expectedQueueId, MessageQueueCache.QueueTypeToIdMapper[messagQueueType].LastMessageQueueId);
-            Assert.AreEqual(1, MessageQueueCache.QueueTypeToIdMapper[messagQueueType].NumberOfTimesMatched);
+            Assert.AreEqual(expectedQueueId, this.messageQueueCache.QueueTypeToIdMapper[messagQueueType].LastMessageQueueId);
+            Assert.AreEqual(1, this.messageQueueCache.QueueTypeToIdMapper[messagQueueType].NumberOfTimesMatched);
         }
 
         #endregion MessageQueueIdMatchesCacheFirstTime
@@ -204,7 +183,7 @@ namespace Icon.Monitoring.Tests.Monitors
             // Given
             int expectedQueueId = new Random(1).Next(27000);
             int expectedNumberOfTimesMatched = 2;
-            MessageQueueCache.QueueTypeToIdMapper[messageQueueType] = new QueueData { LastMessageQueueId = expectedQueueId, NumberOfTimesMatched = 1 };
+            this.messageQueueCache.QueueTypeToIdMapper[messageQueueType] = new QueueData { LastMessageQueueId = expectedQueueId, NumberOfTimesMatched = 1 };
             this.mockMessageQueueQuery.Setup(q => q.Search(It.Is<GetApiMessageQueueIdParameters>(v => v.MessageQueueType == messageQueueType))).Returns(expectedQueueId);
             this.mockPagerDutyTrigger.Setup(pd => pd.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new PagerDutyResponse());
 
@@ -219,8 +198,8 @@ namespace Icon.Monitoring.Tests.Monitors
                 t.TriggerIncident(It.Is<string>(d => d == expectedDescription),
                     It.Is<Dictionary<string, string>>(d => d[expectedDetailKey] == expectedQueueId.ToString())),
                 Times.Never);
-            Assert.AreEqual(expectedQueueId, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
-            Assert.AreEqual(expectedNumberOfTimesMatched, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].NumberOfTimesMatched);
+            Assert.AreEqual(expectedQueueId, this.messageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
+            Assert.AreEqual(expectedNumberOfTimesMatched, this.messageQueueCache.QueueTypeToIdMapper[messageQueueType].NumberOfTimesMatched);
         }
 
         #endregion MessageQueueIdMatchesCacheASecondTime
@@ -262,7 +241,7 @@ namespace Icon.Monitoring.Tests.Monitors
             //Given
             int expectedQueueId = 0;
             int expectedNumberOfTimesMatched = 0;
-            MessageQueueCache.QueueTypeToIdMapper[messageQueueType] = new QueueData { LastMessageQueueId = expectedQueueId, NumberOfTimesMatched = 0 };
+            this.messageQueueCache.QueueTypeToIdMapper[messageQueueType] = new QueueData { LastMessageQueueId = expectedQueueId, NumberOfTimesMatched = 0 };
             this.mockMessageQueueQuery.Setup(q => q.Search(It.Is<GetApiMessageQueueIdParameters>(v => v.MessageQueueType == messageQueueType))).Returns(expectedQueueId);
             this.mockPagerDutyTrigger.Setup(pd => pd.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new PagerDutyResponse());
 
@@ -277,8 +256,8 @@ namespace Icon.Monitoring.Tests.Monitors
                 t.TriggerIncident(It.Is<string>(d => d == expectedDescription),
                     It.Is<Dictionary<string, string>>(d => d[expectedDetailKey] == expectedQueueId.ToString())),
                 Times.Never);
-            Assert.AreEqual(expectedQueueId, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
-            Assert.AreEqual(expectedNumberOfTimesMatched, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].NumberOfTimesMatched);
+            Assert.AreEqual(expectedQueueId, this.messageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
+            Assert.AreEqual(expectedNumberOfTimesMatched, this.messageQueueCache.QueueTypeToIdMapper[messageQueueType].NumberOfTimesMatched);
         }
 
         #endregion MessageQueueIdIsZeroAndCacheIdIsZero
@@ -330,7 +309,7 @@ namespace Icon.Monitoring.Tests.Monitors
             //Given
             int expectedQueueId = queueId;
             int expectedNumberOfTimesMatched = 0;
-            MessageQueueCache.QueueTypeToIdMapper[messageQueueType] = new QueueData { LastMessageQueueId = cacheId, NumberOfTimesMatched = 0 };
+            this.messageQueueCache.QueueTypeToIdMapper[messageQueueType] = new QueueData { LastMessageQueueId = cacheId, NumberOfTimesMatched = 0 };
             this.mockMessageQueueQuery.Setup(q => q.Search(It.Is<GetApiMessageQueueIdParameters>(v => v.MessageQueueType == messageQueueType))).Returns(queueId);
             this.mockPagerDutyTrigger.Setup(pd => pd.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new PagerDutyResponse());
 
@@ -345,10 +324,9 @@ namespace Icon.Monitoring.Tests.Monitors
                 t.TriggerIncident(It.Is<string>(d => d == expectedDescription),
                     It.Is<Dictionary<string, string>>(d => d[expectedDetailKey] == expectedQueueId.ToString())),
                 Times.Never);
-            Assert.AreEqual(expectedQueueId, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
-            Assert.AreEqual(expectedNumberOfTimesMatched, MessageQueueCache.QueueTypeToIdMapper[messageQueueType].NumberOfTimesMatched);
+            Assert.AreEqual(expectedQueueId, this.messageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
+            Assert.AreEqual(expectedNumberOfTimesMatched, this.messageQueueCache.QueueTypeToIdMapper[messageQueueType].NumberOfTimesMatched);
         }
-
 
         private void SetUpSettingsValue()
         {
@@ -388,7 +366,4 @@ namespace Icon.Monitoring.Tests.Monitors
 
         #endregion MessageQueueIdAndCacheIdAreDifferent
     }
-
-
-
 }
