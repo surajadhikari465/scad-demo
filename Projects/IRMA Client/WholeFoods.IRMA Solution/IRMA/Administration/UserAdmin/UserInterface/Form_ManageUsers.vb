@@ -336,7 +336,6 @@ Public Class Form_ManageUsers
         Me.Cursor = Cursors.WaitCursor
 
         DataGridView_ManageUsers.DataSource = Nothing
-        DataGridView_ManageUsers.Rows.Clear()
 
         Me.TextBox_FilterFullName.Text = String.Empty
         Me.TextBox_FilterUserName.Text = String.Empty
