@@ -244,7 +244,7 @@ Partial Class Form_ManageUsers
         Me.Button_ApplyFilter.Name = "Button_ApplyFilter"
         Me.Button_ApplyFilter.Size = New System.Drawing.Size(97, 30)
         Me.Button_ApplyFilter.TabIndex = 6
-        Me.Button_ApplyFilter.Text = "Apply Filter"
+        Me.Button_ApplyFilter.Text = "Load Data"
         Me.Button_ApplyFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button_ApplyFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button_ApplyFilter.UseVisualStyleBackColor = True
@@ -256,7 +256,7 @@ Partial Class Form_ManageUsers
         Me.Button_ClearFilter.Name = "Button_ClearFilter"
         Me.Button_ClearFilter.Size = New System.Drawing.Size(97, 30)
         Me.Button_ClearFilter.TabIndex = 7
-        Me.Button_ClearFilter.Text = "Clear Filter"
+        Me.Button_ClearFilter.Text = "Clear Data"
         Me.Button_ClearFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button_ClearFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button_ClearFilter.UseVisualStyleBackColor = True
