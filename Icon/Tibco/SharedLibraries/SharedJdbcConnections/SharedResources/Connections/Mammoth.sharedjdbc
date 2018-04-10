@@ -4,8 +4,8 @@
     <resourceType>ae.shared.JDBCSharedResource</resourceType>
     <config>
         <driver>%%Connections/JDBC/Mammoth/SqlDBDriver%%</driver>
-        <maxConnections>10</maxConnections>
-        <loginTimeout>0</loginTimeout>
+        <maxConnections>40</maxConnections>
+        <loginTimeout>10</loginTimeout>
         <connectionType>JDBC</connectionType>
         <UseSharedJndiConfig>false</UseSharedJndiConfig>
         <location>%%Connections/JDBC/Mammoth/ConnectionString%%</location>

@@ -99,7 +99,7 @@ where JobScheduleId  = ?</statement>
             <pd:x>349</pd:x>
             <pd:y>85</pd:y>
             <config>
-                <timeout>10</timeout>
+                <timeout>30</timeout>
                 <commit>false</commit>
                 <maxRows>10000000</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
@@ -127,7 +127,8 @@ where JobScheduleId  = ?</statement>
 FROM gpm.Prices endingPrice
 INNER JOIN Items i on i.ItemID = endingPrice.ItemID
 INNER JOIN ItemTypes it on i.ItemTypeID = it.itemTypeID
-INNER JOIN Locale lc on endingPrice.BusinessUnitID = lc.BusinessUnitID
+INNER JOIN Locale lc on lc.Region = ? 
+	AND endingPrice.BusinessUnitID = lc.BusinessUnitID
 WHERE endingPrice.Region = ?
 AND endingPrice.PriceType = 'TPR'
 AND endingPrice.EndDate = CAST(DATEADD(s, -1, CAST(CAST(SYSDATETIME() AS DATE) AS datetime2)) as datetime2)
@@ -141,6 +142,8 @@ AND NOT EXISTS
 		AND endingPrice.ItemID = activePrice.ItemID
 		AND endingPrice.BusinessUnitID = activePrice.BusinessUnitID
 		AND endingPrice.PriceType = activePrice.PriceType)</statement>
+                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <processInSubsets>true</processInSubsets>
                 <Prepared_Param_DataType>
                     <parameter>
                         <parameterName>Region1</parameterName>
@@ -150,9 +153,11 @@ AND NOT EXISTS
                         <parameterName>Region2</parameterName>
                         <dataType>VARCHAR</dataType>
                     </parameter>
+                    <parameter>
+                        <parameterName>Region3</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
                 </Prepared_Param_DataType>
-                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
-                <processInSubsets>true</processInSubsets>
                 <oraObjects/>
                 <oraTables/>
                 <QueryOutputCachedSchemaColumns>Region</QueryOutputCachedSchemaColumns>
@@ -258,6 +263,9 @@ AND NOT EXISTS
                             </xsl:otherwise>
                         </xsl:choose>
                     </Region2>
+                    <Region3>
+                        <xsl:value-of select="$Start/pfx:JobSchedule/pfx:Region"/>
+                    </Region3>
                     <subsetSize>
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/QueryExpiringTprSubsetSize"/>
                     </subsetSize>
@@ -434,9 +442,15 @@ AND NOT EXISTS
                         <ns02:LogDate>
                             <xsl:value-of select="current-dateTime()"/>
                         </ns02:LogDate>
+                        <ns02:Thread>
+                            <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
+                        </ns02:Thread>
                         <ns02:Message>
                             <xsl:value-of select="concat(&quot;Region: &quot;,$Start/pfx:JobSchedule/pfx:Region, &quot;. Number of expiring TPR Records Send to EMS: &quot;, count($Map-Data/pfx2:MammothPrices/pfx2:MammothPrice))"/>
                         </ns02:Message>
+                        <ns02:CallSite>
+                            <xsl:value-of select="BW:getCurrentActivityName($_processContext/ns1:ProcessContext/ProcessId)"/>
+                        </ns02:CallSite>
                     </ns02:AppLog>
                 </pd:inputBindings>
             </pd:activity>
