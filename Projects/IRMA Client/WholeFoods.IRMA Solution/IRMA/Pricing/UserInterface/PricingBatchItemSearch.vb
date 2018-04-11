@@ -198,12 +198,12 @@ Friend Class frmPricingBatchItemSearch
         ugrdList.DisplayLayout.Bands(0).Columns("Id").Hidden = True
 
         For rowCounter = 0 To totalRows - 1
-            If IsDBNull(ugrdList.Rows(rowCounter).Cells("Id").Value) Then
+            If IsRowBatchable(rowCounter) Then
+                rowsFound += 1
+            Else
                 ugrdList.Rows(rowCounter).Appearance.ForeColorDisabled = Color.Red
                 ugrdList.Rows(rowCounter).Appearance.BackColor = Color.LightGray
                 ugrdList.Rows(rowCounter).Activation = Activation.Disabled
-            Else
-                rowsFound += 1
             End If
         Next
 
@@ -235,6 +235,10 @@ Friend Class frmPricingBatchItemSearch
         End If
         logger.Debug("LoadDataTable Exit")
     End Sub
+
+    Private Function IsRowBatchable(rowCounter As Integer) As Boolean
+        Return ugrdList.Rows(rowCounter).Cells("ItemChgTypeDesc").Value.Equals("DEL") OrElse Not IsDBNull(ugrdList.Rows(rowCounter).Cells("Id").Value)
+    End Function
 
     Public Sub SetExistingBatchInfo(ByRef PriceBatchHeaderID As Integer)
         logger.Debug("SetExistingBatchInfo Enter")
