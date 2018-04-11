@@ -331,10 +331,6 @@ namespace Icon.Infor.Listeners.Item.Validators
                 .Matches(TraitPatterns.GlobalPricingProgram)
                 .WithErrorCode(ValidationErrorCodes.InvalidGlobalPricingProgram)
                 .WithMessage(ValidationErrorMessages.InvalidGlobalPricingProgram);
-            RuleFor(i => i.PercentageTareWeight)
-                .Matches(TraitPatterns.PercentageTareWeight)
-                .WithErrorCode(ValidationErrorCodes.InvalidPercentageTareWeight)
-                .WithMessage(ValidationErrorMessages.InvalidPercentageTareWeight);
             RuleFor(i => i.WicEligible)
                 .Matches(TraitPatterns.WicEligible)
                 .WithErrorCode(ValidationErrorCodes.InvalidWicEligible)

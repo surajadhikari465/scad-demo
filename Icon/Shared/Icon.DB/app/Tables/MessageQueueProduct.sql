@@ -68,7 +68,6 @@
 	CustomerFriendlyDescription NVARCHAR (60) NULL,
 	NutritionRequired			NVARCHAR(255) NULL,
 	GlobalPricingProgram		NVARCHAR(255) NULL,
-	PercentageTareWeight		NVARCHAR(255) NULL,
 	SelfCheckoutItemTareGroup	NVARCHAR(60) NULL,
 	FlexibleText				NVARCHAR(300) NULL,
 	ShelfLife					INT NULL,

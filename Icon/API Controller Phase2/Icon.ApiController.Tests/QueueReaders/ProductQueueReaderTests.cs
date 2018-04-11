@@ -856,30 +856,6 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitPTAvalue33_ShouldBeParsed()
-        {
-            // Given.
-            const string expectedTraitCode = "PTA";
-            const string expectedTraitDesc = "Percentage Tare Weight";
-            const string expectedTraitVal = "33";
-            MessageQueueProduct fakeMessage = TestHelpers
-                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
-            fakeMessage.PercentageTareWeight = expectedTraitVal;
-
-            var fakeMessageQueueProducts = new List<MessageQueueProduct>
-            {
-                fakeMessage
-            };
-
-            // When.
-            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
-
-            // Then.
-            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
-                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
-        }
-
-        [TestMethod]
         public void GetProductMiniBulk_ProductMessageWithTraitFTCvalueOn_ShouldBeParsed()
         {
             // Given.

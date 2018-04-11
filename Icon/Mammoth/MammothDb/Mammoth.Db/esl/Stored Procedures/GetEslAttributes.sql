@@ -37,7 +37,6 @@ DECLARE @numDigitsScaleId INT = (SELECT AttributeID FROM dbo.Attributes WHERE At
 DECLARE @originId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'ORN');
 DECLARE @scaleExtraTextId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'SET');
 DECLARE @tagUomId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'TU');
-DECLARE @percentageTareWeightId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'PTA');
 
 -- Other local variables
 DECLARE @Region NVARCHAR(2) = (SELECT Region FROM Locale WHERE BusinessUnitID = @BusinessUnitID);
@@ -71,7 +70,6 @@ CREATE TABLE #itemExtended
 	LinkedScanCodeBrand NVARCHAR(255) NULL,
 	NumberOfDigitsSentToScale NVARCHAR(MAX) NULL,
 	Origin NVARCHAR(MAX) NULL,
-	PercentageTareWeight NVARCHAR(255) NULL,
 	ScaleExtraText NVARCHAR(MAX) NULL,
 	TagUOM NVARCHAR(MAX) NULL,
 	CheeseMilkType nvarchar(255) NULL,
@@ -237,12 +235,6 @@ SET GlobalPricingProgram = AttributeValue
 FROM #itemExtended ist
 JOIN ItemAttributes_Ext ia	on ist.ItemID = ia.ItemID
 	AND ia.AttributeID = @globalPricingProgramId
-
-UPDATE ist
-SET PercentageTareWeight = AttributeValue
-FROM #itemExtended ist
-JOIN ItemAttributes_Ext ia	on ist.ItemID = ia.ItemID
-	AND ia.AttributeID = @percentageTareWeightId
 
 --sign attributes
 UPDATE ist
@@ -961,7 +953,6 @@ SELECT
 	ist.SmithsonianBirdFriendly,
 	ist.NutritionRequired,
 	ist.GlobalPricingProgram,
-	ist.PercentageTareWeight,
 	ist.Agency_GlutenFree		AS GlutenFreeAgency,
 	ist.Agency_Kosher			AS KosherAgency,
 	ist.Agency_NonGMO			AS NonGmoAgency,

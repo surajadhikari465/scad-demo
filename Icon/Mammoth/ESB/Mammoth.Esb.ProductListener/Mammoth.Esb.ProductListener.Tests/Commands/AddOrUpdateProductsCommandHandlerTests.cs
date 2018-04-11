@@ -434,7 +434,6 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     MadeWithBiodynamicGrapes = "Test MadeWithBiodynamicGrapes",
                     MadeWithOrganicGrapes = "Test MadeWithOrganicGrapes",
                     NutritionRequired = "Test NutritionRequired",
-                    PercentageTareWeight = "PercentageTareWeight",
                     PrimeBeef = "Test PrimeBeef",
                     RainforestAlliance = "Test RainforestAlliance",
                     RefrigeratedOrShelfStable = "Test RefrigeratedOrShelfStable",

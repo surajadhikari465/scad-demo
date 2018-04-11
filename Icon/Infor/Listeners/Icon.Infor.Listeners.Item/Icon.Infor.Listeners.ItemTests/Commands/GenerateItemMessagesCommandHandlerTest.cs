@@ -119,7 +119,6 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(traits.First(it => it.traitID == Traits.SelfCheckoutItemTareGroup).traitValue, messageQueueProduct.SelfCheckoutItemTareGroup);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.GlobalPricingProgram).traitValue, messageQueueProduct.GlobalPricingProgram);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.ProductDescription).traitValue, messageQueueProduct.ProductDescription);
-            Assert.AreEqual(traits.First(it => it.traitID == Traits.PercentageTareWeight).traitValue, messageQueueProduct.PercentageTareWeight);
 
             Assert.AreEqual(brand.hierarchyClassID, messageQueueProduct.BrandId);
             Assert.AreEqual(brand.hierarchyLevel, messageQueueProduct.BrandLevel);
@@ -213,7 +212,6 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                     new ItemTrait { traitID = Traits.ShelfLife, traitValue = "44", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.SelfCheckoutItemTareGroup, traitValue = "Test SelfCheckoutItemTareGroup", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.GlobalPricingProgram, traitValue = "Test GlobalPricingProgram", localeID = Locales.WholeFoods },
-                    new ItemTrait { traitID = Traits.PercentageTareWeight, traitValue = "Test PercentageTareWeight", localeID = Locales.WholeFoods },
                 },
                 ItemSignAttribute = new List<ItemSignAttribute>
                 {

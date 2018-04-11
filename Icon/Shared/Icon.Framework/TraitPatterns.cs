@@ -163,7 +163,6 @@ namespace Icon.Framework
         public const string LocalLoanProducer = @"0|1";
         public const string CustomerFriendlyDescription = @"^.{0,60}$";
         public const string GlobalPricingProgram = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$|^$";
-        public const string PercentageTareWeight = @"^[0-9][0-9]?$|^100$|^$";
         public const string FlexibleText = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,300}$|^$";
         public const string MadeWithOrganicGrapes = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,255}$|^$";
         public const string PrimeBeef = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";

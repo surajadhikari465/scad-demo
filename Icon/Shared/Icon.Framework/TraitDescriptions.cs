@@ -163,7 +163,6 @@ namespace Icon.Framework
         public const string LocalLoanProducer = "Local Loan Producer";
         public const string CustomerFriendlyDescription = "Customer Friendly Description";
         public const string GlobalPricingProgram = "Global Pricing Program";
-        public const string PercentageTareWeight = "Percentage Tare Weight";
         public const string FlexibleText = "Flexible Text";
         public const string MadeWithOrganicGrapes = "Made with Organic Grapes";
         public const string PrimeBeef = "Prime Beef";

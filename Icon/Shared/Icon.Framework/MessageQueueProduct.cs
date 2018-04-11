@@ -88,7 +88,6 @@ namespace Icon.Framework
         public string CustomerFriendlyDescription { get; set; }
         public string NutritionRequired { get; set; }
         public string GlobalPricingProgram { get; set; }
-        public string PercentageTareWeight { get; set; }
         public string FairTradeCertified { get; set; }
         public string FlexibleText { get; set; }
         public string SelfCheckoutItemTareGroup { get; set; }

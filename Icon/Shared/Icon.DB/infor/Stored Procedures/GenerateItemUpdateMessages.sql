@@ -36,7 +36,6 @@ BEGIN
 		@cfdTraitId int,
 		@nrTraitId int,
 		@gppTraitId int,
-		@ptaTraitId int,
 		@ftcTraitId int,
 		@fxtTraitId int,
 		@mogTraitId int,
@@ -75,7 +74,6 @@ BEGIN
 	SET @cfdTraitId					= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'CFD')
 	SET @nrTraitId					= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'NR')
 	SET @gppTraitId					= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'GPP')
-	SET @ptaTraitId					= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'PTA')
 	SET	@ftcTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'FTC')
     SET @fxtTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'FXT')
     SET @mogTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'MOG')
@@ -169,7 +167,6 @@ BEGIN
 			 ELSE ia.CustomerFriendlyDescription END AS CustomerFriendlyDescription,
 		nr.traitValue						AS NutritionRequired,
 		gpp.traitValue						AS GlobalPricingProgram,
-		pta.traitValue						AS PercentageTareWeight,
 		itg.traitValue						AS SelfCheckoutItemTareGroup,
 		fxt.traitValue						AS FlexibleText,
 		slf.traitValue						AS ShelfLife,
@@ -255,7 +252,6 @@ BEGIN
 		LEFT JOIN SeafoodFreshOrFrozen	sff			ON ia.SeafoodFreshOrFrozenID	= sff.SeafoodFreshOrFrozenID
 		LEFT JOIN ItemTrait				nr			ON nr.traitID					= @nrTraitId  AND nr.itemID = i.itemID  AND nr.localeID = @localeID
 		LEFT JOIN ItemTrait				gpp			ON gpp.traitID					= @gppTraitId AND gpp.itemID = i.itemID AND gpp.localeID = @localeID
-		LEFT JOIN ItemTrait				pta			ON pta.traitID					= @ptaTraitId AND pta.itemID = i.itemID AND pta.localeID = @localeID
 		LEFT JOIN ItemTrait				ftc			ON ftc.traitID					= @ftcTraitId AND ftc.itemID = i.itemID AND ftc.localeID = @localeID
 		LEFT JOIN ItemTrait				fxt			ON fxt.traitID					= @fxtTraitId AND fxt.itemID = i.itemID AND fxt.localeID = @localeID
 		LEFT JOIN ItemTrait				mog			ON mog.traitID					= @mogTraitId AND mog.itemID = i.itemID AND mog.localeID = @localeID

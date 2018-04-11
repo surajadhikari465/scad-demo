@@ -17,7 +17,6 @@ DECLARE @unwrappedTareWeightId INT = (SELECT AttributeID FROM dbo.Attributes WHE
 DECLARE @wrappedTareWeightId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'WTA');
 DECLARE @useByEabId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'EAB');
 DECLARE @cfsSendToScaleId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'CFS');
-DECLARE @percentageTareWeightId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'PTA');
 DECLARE @scaleExtraTextId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'SET');
 DECLARE @numberOfDigitsSentToScale INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'NDS');
 DECLARE @colorAddedId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'CLA');
@@ -46,7 +45,6 @@ CREATE TABLE #itemExtended
 	WrappedTareWeight NVARCHAR(255) NULL,
 	UseByEab NVARCHAR(255) NULL,
 	CfsSendToScale NVARCHAR(255) NULL,
-	PercentageTareWeight NVARCHAR(255) NULL,
 	ScaleExtraText NVARCHAR(MAX) NULL,
 	ColorAdded NVARCHAR(MAX) NULL,
 	CountryOfProcessing NVARCHAR(MAX) NULL,
@@ -154,12 +152,6 @@ SET Refrigerated = AttributeValue
 FROM #itemExtended ist
 JOIN ItemAttributes_Ext ia	on ist.ItemID = ia.ItemID
 	AND ia.AttributeID = @refrigerateId
-
-UPDATE ist
-SET PercentageTareWeight = AttributeValue
-FROM #itemExtended ist
-JOIN ItemAttributes_Ext ia	on ist.ItemID = ia.ItemID
-	AND ia.AttributeID = @percentageTareWeightId
 
 --Update Sign Attributes
 UPDATE ist
@@ -700,7 +692,6 @@ SELECT
 	ist.LinkedScanCodeBrand,
 	ist.UseByEab					AS UseBy,
 	ist.ForceTare,
-	ist.PercentageTareWeight,
 	ist.ShelfLife,
 	ist.UnwrappedTareWeight,
 	ist.CfsSendToScale,

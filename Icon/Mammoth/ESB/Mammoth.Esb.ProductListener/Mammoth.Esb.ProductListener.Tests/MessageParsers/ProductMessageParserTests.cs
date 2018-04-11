@@ -135,7 +135,6 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
             Assert.AreEqual("Smithsonian Bird Friendly Test", extAttributes.SmithsonianBirdFriendly);
             Assert.AreEqual("WIC Test", extAttributes.Wic);
             Assert.AreEqual("Global Pricing Program Test", extAttributes.GlobalPricingProgram);
-            Assert.AreEqual("Percentage Tare Weight Test", extAttributes.PercentageTareWeight);
         }
 
         [TestMethod]

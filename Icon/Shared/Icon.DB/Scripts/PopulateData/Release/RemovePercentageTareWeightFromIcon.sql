@@ -1,0 +1,17 @@
+﻿DECLARE @scriptKey VARCHAR(128)
+
+SET @scriptKey = 'RemovePercentageTareWeightFromIcon'
+
+IF(NOT EXISTS(SELECT 1 FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @scriptKey))
+BEGIN
+	print '[' + convert(nvarchar, getdate(), 121) + '] ' + @scriptKey
+	DELETE FROM dbo.Trait 
+	WHERE traitCode = 'PTA'
+
+	insert into app.PostDeploymentScriptHistory (ScriptKey, RunTime) values (@scriptKey, GETDATE())
+END
+ELSE
+BEGIN
+	print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Pop-data already applied: ' + @scriptKey
+END
+go

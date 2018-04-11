@@ -108,15 +108,6 @@
             </tra:type>
           </crf:trait>
           <crf:trait>
-            <tra:code>PTA</tra:code>
-            <tra:type>
-              <trt:description>% Tare Weight</trt:description>
-              <trt:value>
-                <trv:value>4</trv:value>
-              </trt:value>
-            </tra:type>
-          </crf:trait>
-          <crf:trait>
             <tra:code>NR</tra:code>
             <tra:type>
               <trt:description>Nutrition Required</trt:description>

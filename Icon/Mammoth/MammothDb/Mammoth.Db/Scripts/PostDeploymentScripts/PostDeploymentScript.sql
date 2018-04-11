@@ -13,6 +13,7 @@ Post-Deployment Script Template
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
 :r AlterItemAttributes_ExtAttributeValueColumnSize.sql --2018.03.16 PBI 25777
+:r RemovePercentageTareWeightFromAttributesTable.sql --2018.04.11 PBI 26526
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql
