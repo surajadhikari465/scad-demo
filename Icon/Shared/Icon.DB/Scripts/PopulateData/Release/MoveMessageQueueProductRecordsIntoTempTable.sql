@@ -215,7 +215,6 @@ SELECT [MessageQueueId]
       ,[CustomerFriendlyDescription]
       ,[NutritionRequired]
       ,[GlobalPricingProgram]
-      ,[PercentageTareWeight]
   FROM [app].[MessageQueueProduct]
 GO
 
