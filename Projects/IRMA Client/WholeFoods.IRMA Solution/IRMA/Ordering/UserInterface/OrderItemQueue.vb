@@ -33,6 +33,7 @@ Friend Class frmOrderItemQueue
     Private bSeafoodMissingCountryInfo As Boolean
     Private Const iALL As Short = 0
     Private Const iNONE As Short = 1
+    Private Const packagingSupplies = "Packaging Supplies"
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
 
     Private Sub frmOrderItemQueue_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -251,7 +252,7 @@ Friend Class frmOrderItemQueue
             SQLExecute("COMMIT TRAN", DAO.RecordsetOptionEnum.dbSQLPassThrough)
             logger.Info("cmdCreateOrder_Click " & " A new order has been created with PO Number: " & CStr(m_lOrderHeader_ID) & ".")
 
-            If MessageBox.Show("A new order has been created with PO Number: " & CStr(m_lOrderHeader_ID) & "." & vbNewLine & vbNewLine & _
+            If MessageBox.Show("A new order has been created with PO Number: " & CStr(m_lOrderHeader_ID) & "." & vbNewLine & vbNewLine &
                                 "Would you like to send the order now?", Me.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
 
                 ' set the global order header if
@@ -387,7 +388,7 @@ Friend Class frmOrderItemQueue
                         '20101123 Dave Stacey  TFS 13734 - Skip Order Items which don't have Cost Units after warning message
                         'instead of disallowing entire order
                         logger.Warn("SaveOrderItems - Unable to add the selected item to the order because it does not have a Cost Unit ID assigned: Item_Key=" + dr("Item_Key").ToString + ", m_lOrderHeader_ID=" + m_lOrderHeader_ID.ToString)
-                        MsgBox("Item [" + dr("Identifier").ToString + "] has no Cost Unit ID assigned to it.  This value must be assigned to add the item to the order." & _
+                        MsgBox("Item [" + dr("Identifier").ToString + "] has no Cost Unit ID assigned to it.  This value must be assigned to add the item to the order." &
                                 vbCrLf & vbCrLf & "Please close the empty Line Item Information screen that follows.", MsgBoxStyle.Exclamation, "Missing Data")
                         Continue For
                     Else
@@ -436,35 +437,35 @@ Friend Class frmOrderItemQueue
                     lIgnoreErrNum(0) = 50002
 
                     On Error Resume Next
-                    SQLExecute3("EXEC InsertOrderItemCredit " & _
-                                            m_lOrderHeader_ID & _
-                                            ", " & dr("Item_Key") & _
-                                            ", " & .Fields("Units_Per_Pallet").Value & _
-                                            ", " & dr("Unit_ID") & _
-                                            ", " & dr("Quantity") & _
-                                            ", " & sCost & _
-                                            ", " & iCost_Unit & _
-                                            ", 0, NULL, " & sFreight & _
-                                            ", " & iFreight_Unit & _
-                                            ", " & .Fields("AdjustedCost").Value & _
-                                            ", " & .Fields("QuantityDiscount").Value & _
-                                            ", " & .Fields("DiscountType").Value & _
-                                            ", " & sLandedCost & _
-                                            ", " & sLineItemCost & _
-                                            ", " & sLineItemFreight & _
-                                            ", " & 0 & _
-                                            ", " & sUnitCost & _
-                                            ", " & sUnitExtCost & _
-                                            ", " & .Fields("Package_Desc1").Value & _
-                                            ", " & .Fields("Package_Desc2").Value & _
-                                            ", " & .Fields("Package_Unit_ID").Value & _
-                                            ", " & .Fields("MarkupPercent").Value & _
-                                            ", " & sMarkupCost & _
-                                            ", " & .Fields("Retail_Unit_ID").Value & _
-                                            ", " & IIf(IsDBNull(dr("CreditReason_ID")), "NULL", dr("CreditReason_ID")) & _
-                                            "," & giUserID & _
-                                            ", " & m_VendorDiscountAmt & _
-                                            ", " & IIf(IsDBNull(.Fields("HandlingCharge").Value), 0, .Fields("HandlingCharge").Value), _
+                    SQLExecute3("EXEC InsertOrderItemCredit " &
+                                            m_lOrderHeader_ID &
+                                            ", " & dr("Item_Key") &
+                                            ", " & .Fields("Units_Per_Pallet").Value &
+                                            ", " & dr("Unit_ID") &
+                                            ", " & dr("Quantity") &
+                                            ", " & sCost &
+                                            ", " & iCost_Unit &
+                                            ", 0, NULL, " & sFreight &
+                                            ", " & iFreight_Unit &
+                                            ", " & .Fields("AdjustedCost").Value &
+                                            ", " & .Fields("QuantityDiscount").Value &
+                                            ", " & .Fields("DiscountType").Value &
+                                            ", " & sLandedCost &
+                                            ", " & sLineItemCost &
+                                            ", " & sLineItemFreight &
+                                            ", " & 0 &
+                                            ", " & sUnitCost &
+                                            ", " & sUnitExtCost &
+                                            ", " & .Fields("Package_Desc1").Value &
+                                            ", " & .Fields("Package_Desc2").Value &
+                                            ", " & .Fields("Package_Unit_ID").Value &
+                                            ", " & .Fields("MarkupPercent").Value &
+                                            ", " & sMarkupCost &
+                                            ", " & .Fields("Retail_Unit_ID").Value &
+                                            ", " & IIf(IsDBNull(dr("CreditReason_ID")), "NULL", dr("CreditReason_ID")) &
+                                            "," & giUserID &
+                                            ", " & m_VendorDiscountAmt &
+                                            ", " & IIf(IsDBNull(.Fields("HandlingCharge").Value), 0, .Fields("HandlingCharge").Value),
                                             DAO.RecordsetOptionEnum.dbSQLPassThrough, lIgnoreErrNum)
                     If Err.Number <> 0 Then
                         logger.Error("SaveOrderItems - Error in EXEC InsertOrderItemCredit " & Err.Description)
@@ -1600,4 +1601,13 @@ Friend Class frmOrderItemQueue
         End If
 
     End Sub
+
+    Private Sub cmbProductType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbProductType.SelectedIndexChanged
+        Dim productTypeSelected As String = cmbProductType.Text
+
+        If (productTypeSelected = packagingSupplies) Then
+            geProductType = enumProductType.PackagingSupplies
+        End If
+    End Sub
+
 End Class
