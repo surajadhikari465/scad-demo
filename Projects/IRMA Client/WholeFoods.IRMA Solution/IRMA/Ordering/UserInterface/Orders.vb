@@ -1,22 +1,21 @@
 Option Strict Off
 Option Explicit On
 
-Imports VB = Microsoft.VisualBasic
+Imports System.ComponentModel
+Imports System.Linq
+Imports System.Security.SecurityElement
+Imports System.Text.RegularExpressions
+Imports Infragistics.Win
+Imports Infragistics.Win.UltraWinGrid
+Imports log4net
+Imports WholeFoods.IRMA.Administration.Common.DataAccess
 Imports WholeFoods.IRMA.Common.DataAccess
 Imports WholeFoods.IRMA.Ordering.BusinessLogic
 Imports WholeFoods.IRMA.Ordering.BusinessLogic.OrderingFunctions
 Imports WholeFoods.IRMA.Ordering.DataAccess
-Imports WholeFoods.IRMA.Replenishment.SendOrders.BusinessLogic
-Imports WholeFoods.Utility.DataAccess
 Imports WholeFoods.Utility
-Imports WholeFoods.IRMA.Administration.Common.DataAccess
-Imports log4net
-Imports System.ComponentModel
-Imports System.Text.RegularExpressions
-Imports System.Linq
-Imports Infragistics.Win.UltraWinGrid
-Imports Infragistics.Win
-Imports System.Security.SecurityElement
+Imports WholeFoods.Utility.DataAccess
+Imports VB = Microsoft.VisualBasic
 
 
 Friend Class frmOrders
@@ -2429,7 +2428,7 @@ me_exit:
                 SetActive(cmdAddOrder, gbBuyer And Not bSpecificOrder)
                 SetActive(cmdCopyPO, gbBuyer And Not bSpecificOrder And Not m_IsDSDOrder)
 
-                If gbDeletePO And UserDAO.IsUserAssignedToTeam(giUserID, m_lTransferToSubTeam) Then
+                If gbDeletePO Then
                     SetActive(cmdDeleteOrder, (Not lblReadOnly.Visible) And m_bAllowPOEdit And Not m_bOrderUploaded And (((Not m_bItemsReceived)) Or gbPOAccountant) And blnIsMyStore)
                 Else
                     ' Can delete if order is not received and user is Coordinator or if order belongs to logged on user or if it is the PO Accountant (who can delete any order)
