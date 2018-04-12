@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx12="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx10="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx7="http://www.tibco.com/schemas/IrmaQueueListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx6="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:WFM.UID="java://UID" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pfx14="http://schemas.wfm.com/Mammoth/MammothPricesWithError.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx12="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx10="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx5="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:pfx7="http://www.tibco.com/schemas/IrmaQueueListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx6="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns6="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:ns7="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:WFM.UID="java://UID" xmlns:ns2="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Item/Item.xsd"/>
@@ -8,6 +8,7 @@
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/IrmaPrice.xsd"/>
     <xsd:import namespace="http://services.wfm.com/Enterprise/DeadLetterException/V1" schemaLocation="/SharedResources/Schemas/Public/Exception/DeadLetterException.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPricesWithError.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPricesWithError.xsd"/>
     <pd:name>Processes/IrmaPriceListener.process</pd:name>
     <pd:startName>IrmaPriceMessageReceiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -37,8 +38,8 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1326</pd:endX>
-    <pd:endY>605</pd:endY>
+    <pd:endX>1346</pd:endX>
+    <pd:endY>611</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables>
         <transactionId>
@@ -211,8 +212,9 @@
             <pd:over>$Filter-out-RWD-Prices/pfx10:MammothPrices/pfx10:MammothPrice</pd:over>
             <pd:iterationElementSlot>SinglePriceLoad</pd:iterationElementSlot>
             <pd:indexSlot>idxSingleLoad</pd:indexSlot>
-            <pd:activityOutputName/>
-            <pd:accumulateOutput>false</pd:accumulateOutput>
+            <pd:outSlot>MammothPricesWithError</pd:outSlot>
+            <pd:activityOutputName>Map Mammoth Prices With Error</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
         </config>
         <pd:inputBindings/>
         <pd:expanded>true</pd:expanded>
@@ -224,7 +226,7 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Catch Single Load Exception</pd:from>
+            <pd:from>Map Mammoth Prices With Error</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -233,6 +235,13 @@
         <pd:transition>
             <pd:from>Load Prices Into IRMA (One-by-One Update)</pd:from>
             <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch Single Load Exception</pd:from>
+            <pd:to>Map Mammoth Prices With Error</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -350,13 +359,39 @@
         <pd:activity name="Catch Single Load Exception">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>656</pd:x>
-            <pd:y>490</pd:y>
+            <pd:x>592</pd:x>
+            <pd:y>494</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <fault>localname=JDBCSQLException namespace=http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions</fault>
             </config>
             <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Map Mammoth Prices With Error">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>717</pd:x>
+            <pd:y>500</pd:y>
+            <config>
+                <element ref="pfx14:MammothPriceWithErrorInfo"/>
+            </config>
+            <pd:inputBindings>
+                <pfx14:MammothPriceWithErrorInfo>
+                    <pfx14:MammothPrice>
+                        <xsl:copy-of select="$SinglePriceLoad/pfx10:MammothPrice/ancestor-or-self::*/namespace::node()"/>
+                        <xsl:copy-of select="$SinglePriceLoad/pfx10:MammothPrice/@*"/>
+                        <xsl:copy-of select="$SinglePriceLoad/pfx10:MammothPrice/node()"/>
+                    </pfx14:MammothPrice>
+                    <xsl:if test="$Catch-Single-Load-Exception/ns7:JDBCSQLException/msgCode">
+                        <pfx14:ErrorCode>
+                            <xsl:value-of select="$Catch-Single-Load-Exception/ns7:JDBCSQLException/msgCode"/>
+                        </pfx14:ErrorCode>
+                    </xsl:if>
+                    <pfx14:ErrorDetails>
+                        <xsl:value-of select="$Catch-Single-Load-Exception/ns7:JDBCSQLException/msg"/>
+                    </pfx14:ErrorDetails>
+                </pfx14:MammothPriceWithErrorInfo>
+            </pd:inputBindings>
         </pd:activity>
     </pd:group>
     <pd:activity name="Assign">
@@ -387,8 +422,8 @@
     <pd:activity name="Confirm">
         <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
         <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>1331</pd:x>
-        <pd:y>36</pd:y>
+        <pd:x>1348</pd:x>
+        <pd:y>35</pd:y>
         <config>
             <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
         </config>
@@ -414,8 +449,8 @@
     <pd:group name="Irma Price Update Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>772</pd:x>
-        <pd:y>91</pd:y>
+        <pd:x>844</pd:x>
+        <pd:y>90</pd:y>
         <pd:width>217</pd:width>
         <pd:height>174</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -448,8 +483,8 @@
         <pd:activity name="Update IRMA Price">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>867</pd:x>
-            <pd:y>167</pd:y>
+            <pd:x>938</pd:x>
+            <pd:y>166</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -1041,13 +1076,143 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
             </pfx13:AppLog>
         </pd:inputBindings>
     </pd:activity>
-    <pd:transition>
-        <pd:from>Confirm</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
+    <pd:activity name="Archive Price Message">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1354</pd:x>
+        <pd:y>474</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/Archive Price Message.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <MessageBody>
+                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
+                </MessageBody>
+                <MessageTypeName>
+                    <xsl:value-of select="&quot;Irma Price&quot;"/>
+                </MessageTypeName>
+                <ns6:MessageHeaders>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID">
+                        <ns6:TransactionID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                        </ns6:TransactionID>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID">
+                        <ns6:MammothMessageID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                        </ns6:MammothMessageID>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID">
+                        <ns6:CorrelationID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                        </ns6:CorrelationID>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID">
+                        <ns6:SequenceID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
+                        </ns6:SequenceID>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType">
+                        <ns6:TransactionType>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType"/>
+                        </ns6:TransactionType>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source">
+                        <ns6:Source>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source"/>
+                        </ns6:Source>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName">
+                        <ns6:nonReceivingSysName>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName"/>
+                        </ns6:nonReceivingSysName>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag">
+                        <ns6:ResetFlag>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag"/>
+                        </ns6:ResetFlag>
+                    </xsl:if>
+                </ns6:MessageHeaders>
+                <MessageID>
+                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                </MessageID>
+                <pfx14:MammothPricesWithErrorInfo>
+                    <pfx14:MammothPriceWithErrorType>
+                        <xsl:copy-of select="$Map-Mammoth-Prices-With-Error/pfx14:MammothPriceWithErrorInfo/ancestor-or-self::*/namespace::node()"/>
+                        <xsl:copy-of select="$Map-Mammoth-Prices-With-Error/pfx14:MammothPriceWithErrorInfo/@*"/>
+                        <xsl:copy-of select="$Map-Mammoth-Prices-With-Error/pfx14:MammothPriceWithErrorInfo/node()"/>
+                    </pfx14:MammothPriceWithErrorType>
+                </pfx14:MammothPricesWithErrorInfo>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Archive Price Message On Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1170</pd:x>
+        <pd:y>618</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/Archive Price Message.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <MessageBody>
+                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
+                </MessageBody>
+                <MessageTypeName>
+                    <xsl:value-of select="&quot;Irma Price&quot;"/>
+                </MessageTypeName>
+                <ns6:MessageHeaders>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID">
+                        <ns6:TransactionID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                        </ns6:TransactionID>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID">
+                        <ns6:MammothMessageID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                        </ns6:MammothMessageID>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID">
+                        <ns6:CorrelationID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                        </ns6:CorrelationID>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID">
+                        <ns6:SequenceID>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
+                        </ns6:SequenceID>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType">
+                        <ns6:TransactionType>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionType"/>
+                        </ns6:TransactionType>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source">
+                        <ns6:Source>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/Source"/>
+                        </ns6:Source>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName">
+                        <ns6:nonReceivingSysName>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/nonReceivingSysName"/>
+                        </ns6:nonReceivingSysName>
+                    </xsl:if>
+                    <xsl:if test="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag">
+                        <ns6:ResetFlag>
+                            <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag"/>
+                        </ns6:ResetFlag>
+                    </xsl:if>
+                </ns6:MessageHeaders>
+                <MessageID>
+                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                </MessageID>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Group</pd:from>
         <pd:to>Load One By One Group</pd:to>
@@ -1144,13 +1309,6 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Delete All Staging Price Records (All Failed)</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Assign</pd:from>
         <pd:to>Log Message Received</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -1199,6 +1357,34 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:transition>
         <pd:from>Log Number of RWD Prices to Remove</pd:from>
         <pd:to>Filter out RWD Prices</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>Archive Price Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Archive Price Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Delete All Staging Price Records (All Failed)</pd:from>
+        <pd:to>Archive Price Message On Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Archive Price Message On Error</pd:from>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

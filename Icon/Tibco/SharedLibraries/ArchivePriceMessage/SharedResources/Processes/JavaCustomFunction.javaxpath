@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:java-xpath xmlns:ns0="http://www.tibco.com/bw/javaxpath/2003">
+    <ns0:suggestedPrefix>Mammoth</ns0:suggestedPrefix>
+    <ns0:loadedFromLocation>C:\GIT\Icon\Icon\Tibco\SharedLibraries\Libraries\Java\WfmSharedFunctions.class</ns0:loadedFromLocation>
+    <ns0:bytecode>yv66vgAAADMAFAoABAANCgAOAA8HABAHABEBAAY8aW5pdD4BAAMoKVYBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAHcmVwbGFjZQEASihMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmc7AQAKU291cmNlRmlsZQEAF1dmbVNoYXJlZEZ1bmN0aW9ucy5qYXZhDAAFAAYHABIMAAkAEwEAEldmbVNoYXJlZEZ1bmN0aW9ucwEAEGphdmEvbGFuZy9PYmplY3QBABBqYXZhL2xhbmcvU3RyaW5nAQBEKExqYXZhL2xhbmcvQ2hhclNlcXVlbmNlO0xqYXZhL2xhbmcvQ2hhclNlcXVlbmNlOylMamF2YS9sYW5nL1N0cmluZzsAIQADAAQAAAAAAAIAAQAFAAYAAQAHAAAAHQABAAEAAAAFKrcAAbEAAAABAAgAAAAGAAEAAAABAAkACQAKAAEABwAAAB8AAwADAAAAByorLLYAArAAAAABAAgAAAAGAAEAAAAEAAEACwAAAAIADA==</ns0:bytecode>
+</ns0:java-xpath>
