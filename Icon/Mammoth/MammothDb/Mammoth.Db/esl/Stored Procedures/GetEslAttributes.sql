@@ -953,6 +953,7 @@ SELECT
 	ist.SmithsonianBirdFriendly,
 	ist.NutritionRequired,
 	ist.GlobalPricingProgram,
+	NULL AS PercentageTareWeight, -- We are returning NULL for PercentageTareWeight because Informatica which consumes this SPROC needs a column for it. Even though there is no value we can provide.
 	ist.Agency_GlutenFree		AS GlutenFreeAgency,
 	ist.Agency_Kosher			AS KosherAgency,
 	ist.Agency_NonGMO			AS NonGmoAgency,

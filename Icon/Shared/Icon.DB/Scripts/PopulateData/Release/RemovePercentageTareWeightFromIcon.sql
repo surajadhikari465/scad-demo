@@ -5,8 +5,14 @@ SET @scriptKey = 'RemovePercentageTareWeightFromIcon'
 IF(NOT EXISTS(SELECT 1 FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @scriptKey))
 BEGIN
 	print '[' + convert(nvarchar, getdate(), 121) + '] ' + @scriptKey
+
+	DECLARE @ptaTraitId INT = (SELECT TraitID FROM Trait WHERE traitCode = 'PTA')
+
+	DELETE FROM ItemTrait
+	WHERE traitID = @ptaTraitId
+
 	DELETE FROM dbo.Trait 
-	WHERE traitCode = 'PTA'
+	WHERE traitID = @ptaTraitId
 
 	insert into app.PostDeploymentScriptHistory (ScriptKey, RunTime) values (@scriptKey, GETDATE())
 END

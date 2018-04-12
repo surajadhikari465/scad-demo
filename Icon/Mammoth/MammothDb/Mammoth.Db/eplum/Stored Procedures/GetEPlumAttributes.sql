@@ -692,6 +692,7 @@ SELECT
 	ist.LinkedScanCodeBrand,
 	ist.UseByEab					AS UseBy,
 	ist.ForceTare,
+	NULL AS PercentageTareWeight, -- We are returning NULL for PercentageTareWeight because Informatica which consumes this SPROC needs a column for it. Even though there is no value we can provide.
 	ist.ShelfLife,
 	ist.UnwrappedTareWeight,
 	ist.CfsSendToScale,

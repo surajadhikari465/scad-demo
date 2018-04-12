@@ -100,7 +100,7 @@ namespace Mammoth.Esb.ProductListener.Commands
                                 AttributeValue = i.ExtendedAttributes.FlexibleText },
                             new { ItemID = i.ExtendedAttributes.ItemId,
                                 AttributeCode = Attributes.Codes.GlobalPricingProgram,
-                                AttributeValue = i.ExtendedAttributes.FlexibleText },
+                                AttributeValue = i.ExtendedAttributes.GlobalPricingProgram },
                             new { ItemID = i.ExtendedAttributes.ItemId,
                                 AttributeCode = Attributes.Codes.MadeWithBiodynamicGrapes,
                                 AttributeValue = i.ExtendedAttributes.MadeWithBiodynamicGrapes },
