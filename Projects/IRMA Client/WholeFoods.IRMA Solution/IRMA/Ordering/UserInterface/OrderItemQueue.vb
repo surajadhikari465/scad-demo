@@ -34,6 +34,9 @@ Friend Class frmOrderItemQueue
     Private Const iALL As Short = 0
     Private Const iNONE As Short = 1
     Private Const packagingSupplies = "Packaging Supplies"
+    Private Const product = "Product"
+    Private Const otherSupplies = "Other Supplies"
+
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
 
     Private Sub frmOrderItemQueue_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -1603,11 +1606,21 @@ Friend Class frmOrderItemQueue
     End Sub
 
     Private Sub cmbProductType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbProductType.SelectedIndexChanged
+        setproductType()
+    End Sub
+
+    Private Sub setproductType()
         Dim productTypeSelected As String = cmbProductType.Text
 
-        If (productTypeSelected = packagingSupplies) Then
-            geProductType = enumProductType.PackagingSupplies
-        End If
+        Select Case productTypeSelected
+            Case packagingSupplies
+                geProductType = enumProductType.PackagingSupplies
+            Case otherSupplies
+                geProductType = enumProductType.OtherSupplies
+            Case Else
+                geProductType = enumProductType.Product
+        End Select
+
     End Sub
 
 End Class
