@@ -19,7 +19,7 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>51</pd:startX>
+    <pd:startX>53</pd:startX>
     <pd:startY>66</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
@@ -126,9 +126,9 @@
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
             <batchUpdate>true</batchUpdate>
-            <statement>INSERT INTO esb.MessageArchiveDetail(
+            <statement>INSERT INTO esb.PriceMessageArchiveDetail(
 	MessageAction
-	,Region,
+	,Region
 	,GpmID
 	,ItemID
 	,BusinessUnitID
@@ -170,18 +170,9 @@ VALUES(?, ?,?, ?, ?, ?, ?)</statement>
             <jdbcUpdateActivityInput>
                 <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$MammothPrices/AccumulatedOutput/MammothPrices/pfx2:MammothPrice">
                     <Record>
-                        <xsl:choose>
-                            <xsl:when test="tib:compare-time(current()/pfx2:EndDate, current-date())">
-                                <MessageAction>
-                                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ArchivePriceMessageSettings/ActionDelete"/>
-                                </MessageAction>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <MessageAction>
-                                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ArchivePriceMessageSettings/ActionAddOrUpdate"/>
-                                </MessageAction>
-                            </xsl:otherwise>
-                        </xsl:choose>
+                        <MessageAction>
+                            <xsl:value-of select="pfx2:Action"/>
+                        </MessageAction>
                         <Region>
                             <xsl:value-of select="pfx2:Region"/>
                         </Region>
@@ -296,7 +287,7 @@ SELECT
             </xmlString>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Update Message Details With Error Info">
+    <pd:activity name="Update Price Message Archive Details With Error Info">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
         <pd:x>757</pd:x>
@@ -307,7 +298,7 @@ SELECT
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
             <batchUpdate>true</batchUpdate>
-            <statement>UPDATE esb.MessageArchiveDetail
+            <statement>UPDATE esb.PriceMessageArchiveDetail
 SET ErrorCode =?,
         ErrorDetails =?
 WHERE MessageID = ?
@@ -397,13 +388,13 @@ AND BusinessUnitID = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Archive Price Message Details</pd:from>
-        <pd:to>Update Message Details With Error Info</pd:to>
+        <pd:to>Update Price Message Archive Details With Error Info</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Update Message Details With Error Info</pd:from>
+        <pd:from>Update Price Message Archive Details With Error Info</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
