@@ -25,7 +25,9 @@ BEGIN
 			('Mammoth_Dev', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 			('Mammoth_Dev', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 			('Mammoth_Dev', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
-			('Mammoth_Dev', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+			('Mammoth_Dev', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+			('Mammoth_Dev', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+			('Mammoth_Dev', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
 
@@ -42,7 +44,9 @@ BEGIN
 			('Mammoth', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 			('Mammoth', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 			('Mammoth', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
-			('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+			('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+			('Mammoth', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+			('Mammoth', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
 	END
@@ -61,7 +65,9 @@ BEGIN
 		('Mammoth', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
-		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
 	END
@@ -80,7 +86,9 @@ BEGIN
 		('Mammoth', 'esb', 'MessageQueuePrice', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueueItemLocaleArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
-		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+		('Mammoth', 'gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
+		('Mammoth', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 	END
 
 	insert into app.PostDeploymentScriptHistory values(@scriptKey, getdate())
