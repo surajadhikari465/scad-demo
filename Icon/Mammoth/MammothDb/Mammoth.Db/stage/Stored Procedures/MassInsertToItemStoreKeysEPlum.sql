@@ -53,3 +53,6 @@ BEGIN
 	EXECUTE sp_executesql @sql
 END
 GO
+
+GRANT EXECUTE on [stage].[MassInsertToItemStoreKeysEPlum] to [MammothRole]
+GO
