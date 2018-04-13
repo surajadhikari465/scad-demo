@@ -20,7 +20,6 @@ BEGIN
 
 		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 			VALUES 
-			('Mammoth_Dev', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 			('Mammoth_Dev', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
@@ -33,7 +32,6 @@ BEGIN
 
 			INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 			VALUES 		
-			('Mammoth', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 			('Mammoth', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
@@ -48,7 +46,6 @@ BEGIN
 
 		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 		VALUES 
-		('Mammoth', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
@@ -63,7 +60,6 @@ BEGIN
 
 		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 		VALUES 
-		('Mammoth', 'esb', 'MessageArchive', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('Mammoth', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 	END
 
