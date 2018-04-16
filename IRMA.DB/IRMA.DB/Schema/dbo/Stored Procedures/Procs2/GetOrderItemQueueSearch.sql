@@ -35,7 +35,6 @@ BEGIN
 	DECLARE @Transfer				bit
 	
 	DECLARE @PackagingSubteam int = (SELECT TOP 1 SubTeam_NO FROM SubTeam where SubTeam_Name = 'Packaging')
-	DECLARE @OtherSuppliesSubteam int = (SELECT TOP 1 SubTeam_NO FROM SubTeam where SubTeam_Name = 'Supplies')
 
 	IF @PurchasingVendor_ID > 0 BEGIN SELECT @Store_No = Store_No FROM Vendor WHERE Vendor_ID = @PurchasingVendor_ID END
 	IF @OrderType_ID = 3 SET @Transfer = 1 ELSE SET @Transfer = 0
@@ -145,17 +144,11 @@ BEGIN
 	IF(@ProductType_ID = 2)
 	BEGIN
 		SELECT @SQL = @SQL + 'AND Item.SubTeam_No = ' +  CAST(@PackagingSubteam as varchar(10))  + ' '
-	END
-	ELSE IF(@ProductType_ID = 3)
-
-	BEGIN
-		SELECT @SQL = @SQL + 'AND Item.SubTeam_No = ' +  CAST(@OtherSuppliesSubteam as varchar(10)) + ' '
-	END
+	END	
 	ELSE 
 	BEGIN
-		SELECT @SQL = @SQL + 'AND Item.SubTeam_No NOT IN (' +  CAST(@PackagingSubteam as varchar(10))  +',' + CAST(@OtherSuppliesSubteam as varchar(10)) +') ' 
+		SELECT @SQL = @SQL + 'AND Item.SubTeam_No NOT IN (' +  CAST(@PackagingSubteam as varchar(10)) +') ' 
 	END
-
 
 	IF (@Discontinue_Item = 0) SELECT @SQL = @SQL + 'AND dbo.fn_GetDiscontinueStatus(Item.Item_Key, NULL, NULL) = 0 '
     SELECT @SQL = @SQL + 'AND Item.Deleted_Item = 0 AND Item.Remove_Item = 0 '
