@@ -43,7 +43,8 @@ AS
 	--
 	-- Modification History (Recent at Top):
 	-- Date			Init	Comment
-	-- -2/29/2016	MU		[PBI 13587] Added Predictix Order Number
+	-- 4/13/2018    MZ      [PBI 24427] Map DateReceived on OrderItem to @FilterDate sent from OrderLink as Billed Date
+	-- 2/29/2016	MU		[PBI 13587] Added Predictix Order Number
 	-- 08/26/2013   MZ      [TFS 13159] Updated the INSERT statement to the OrderImportExceptionLog table due to the table expansion to log more info for reporting
 	-- 04/09/2013	Lux		[TFS 11908, v4.7.1] Updated logic for insert into ExternalOrderInformation table for new IRMA orders to include 'OrderLink' system/source in the filter
 	--                      and it doesn't reference OH external source PO # at all, since we don't care what's in OH fields, we just need to insert an OL entry in EOI as long as one does not yet exist.
@@ -110,7 +111,7 @@ BEGIN		--Script Start
 	DECLARE @Log				AS table ( err bit, msg varchar(MAX) );
 	DECLARE @OrderHeader_id		AS int;
 	DECLARE @OrderItem_id		AS int;
- 	DECLARE @Item_Key			AS int;
+	DECLARE @Item_Key			AS int;
 	DECLARE @Buy_Store			AS int;
 	DECLARE @Rec_Store			AS int;
 	DECLARE @SubTeam_No			AS int;
@@ -676,7 +677,8 @@ BEGIN		--Script Start
 									WeightShipped,
 									InvoiceCost,
 									QuantityShipped,
-									Units_Per_Pallet
+									Units_Per_Pallet,
+									DateReceived
 									)
 								SELECT TOP(1)
 									oh.OrderHeader_Id               AS OrderHeader_ID,
@@ -745,7 +747,13 @@ BEGIN		--Script Start
 														END 
 													END,
 									ABS(CONVERT(decimal(18,4),@Qty_Ship))	AS QuantityShipped,
-									0										AS Units_Per_Pallet
+									0										AS Units_Per_Pallet,
+									CASE 
+										WHEN LEN(@filterDate) > 1
+											THEN CAST(@filterDate as datetime)
+										ELSE
+											NULL
+									END AS DateReceived
 								FROM
 									OrderHeader OH (NoLock)
 									JOIN Item I (NoLock) ON ( I.Item_Key = @Item_Key )
@@ -841,7 +849,13 @@ BEGIN		--Script Start
 														ELSE 1 
 														END 
 													END,
-									QuantityShipped		= ABS(CONVERT(decimal(18,4),@Qty_Ship))
+									QuantityShipped		= ABS(CONVERT(decimal(18,4),@Qty_Ship)),
+									DateReceived        = CASE 
+															WHEN LEN(@filterDate) > 1
+																THEN CAST(@filterDate as datetime)
+															ELSE
+																NULL
+														   END  
 								FROM
 									OrderItem OI (NoLock)
 									JOIN OrderHeader OH (NoLock) ON ( OI.OrderHeader_ID = OH.OrderHeader_ID )
@@ -1089,4 +1103,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[OrderLink_ImportOrder] TO [IRMASchedJobsRole]
     AS [dbo];
-
