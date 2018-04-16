@@ -282,7 +282,6 @@ namespace Icon.ApiController.Controller.QueueReaders
                 BuildTrait(TraitCodes.FoodStampEligible, TraitDescriptions.FoodStampEligible, message.FoodStampEligible),
                 BuildTrait(TraitCodes.ProhibitDiscount, TraitDescriptions.ProhibitDiscount, message.ProhibitDiscount),
                 BuildTrait(TraitCodes.GlobalPricingProgram, TraitDescriptions.GlobalPricingProgram, message.GlobalPricingProgram),
-                BuildTrait(TraitCodes.PercentageTareWeight, TraitDescriptions.PercentageTareWeight, message.PercentageTareWeight),
                 BuildTrait(TraitCodes.FairTradeCertified, TraitDescriptions.FairTradeCertified, message.FairTradeCertified),
                 BuildTrait(TraitCodes.FlexibleText, TraitDescriptions.FlexibleText, message.FlexibleText),
                 BuildTrait(TraitCodes.MadeWithOrganicGrapes, TraitDescriptions.MadeWithOrganicGrapes, message.MadeWithOrganicGrapes),

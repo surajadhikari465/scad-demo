@@ -434,7 +434,6 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     MadeWithBiodynamicGrapes = "Test MadeWithBiodynamicGrapes",
                     MadeWithOrganicGrapes = "Test MadeWithOrganicGrapes",
                     NutritionRequired = "Test NutritionRequired",
-                    PercentageTareWeight = "PercentageTareWeight",
                     PrimeBeef = "Test PrimeBeef",
                     RainforestAlliance = "Test RainforestAlliance",
                     RefrigeratedOrShelfStable = "Test RefrigeratedOrShelfStable",
@@ -827,6 +826,9 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             Assert.AreEqual(
                 expectedExtendedAttributes.FlexibleText,
                 actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.FlexibleText).AttributeValue);
+            Assert.AreEqual(
+                expectedExtendedAttributes.GlobalPricingProgram,
+                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.GlobalPricingProgram).AttributeValue);
             Assert.AreEqual(
                 expectedExtendedAttributes.MadeWithBiodynamicGrapes,
                 actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.MadeWithBiodynamicGrapes).AttributeValue);

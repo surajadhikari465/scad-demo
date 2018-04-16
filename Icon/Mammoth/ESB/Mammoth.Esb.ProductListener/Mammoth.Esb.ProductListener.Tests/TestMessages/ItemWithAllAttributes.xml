@@ -899,15 +899,6 @@
               </trt:value>
             </tra:type>
           </crf:trait>
-          <crf:trait>
-            <tra:code>PTA</tra:code>
-            <tra:type>
-              <trt:description>Percentage Tare Weight</trt:description>
-              <trt:value>
-                <trv:value>Percentage Tare Weight Test</trv:value>
-              </trt:value>
-            </tra:type>
-          </crf:trait>
         </iea:traits>
         <iea:selectionGroups>
           <psg:group crf:Action="Delete">

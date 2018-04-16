@@ -99,7 +99,6 @@ namespace Icon.Infor.Listeners.Item.Commands
                 new ItemTraitModel(i.ItemId, Traits.ShelfLife, i.ShelfLife, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.SelfCheckoutItemTareGroup, i.SelfCheckoutItemTareGroup, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.GlobalPricingProgram, i.GlobalPricingProgram, Locales.WholeFoods),
-                new ItemTraitModel(i.ItemId, Traits.PercentageTareWeight, i.PercentageTareWeight, Locales.WholeFoods)
             }).ToTvp("itemTraits", "infor.ItemTraitAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemTraitAddOrUpdate @itemTraits", itemTraits);

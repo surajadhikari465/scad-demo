@@ -151,7 +151,6 @@
     <Folder Include="Server Objects\" />
     <Folder Include="Scripts\PostDeploymentScripts" />
     <Folder Include="Scripts\PopulateScripts" />
-    <Folder Include="Scripts\PopulateScripts\DevBuild" />
     <Folder Include="Scripts\ETL" />
     <Folder Include="Jobs" />
     <Folder Include="app\Stored Procedures" />
@@ -779,12 +778,11 @@
     </None>
     <Build Include="dbo\Tables\ItemPriceType.sql" />
     <Build Include="dbo\Tables\Uom.sql" />
-    <None Include="Scripts\PopulateScripts\DevBuild\PopulateLocales.sql" />
-    <None Include="Scripts\PopulateScripts\DevBuild\PopulateItems.sql" />
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
     <None Include="Scripts\PreDeploymentScripts\TruncateItemLocaleStagingTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\RemovePercentageTareWeightFromAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

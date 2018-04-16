@@ -3075,52 +3075,6 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateCollection_PercentageTareWeightIsValid_NoError()
-        {
-            //Given
-            testItem.PercentageTareWeight = "0";
-            testItems.Add(CopyTestItem(i => i.FlexibleText = "25"));
-            testItems.Add(CopyTestItem(i => i.FlexibleText = "09"));
-            testItems.Add(CopyTestItem(i => i.FlexibleText = "100"));
-
-            //When
-            validator.ValidateCollection(testItems);
-
-            //Then
-            AssertExpectedErrors(null, null);
-        }
-
-        [TestMethod]
-        public void ValidateCollection_PercentageTareWeightIsEmpty_NoError()
-        {
-            //Given
-            testItem.PercentageTareWeight = string.Empty;
-
-            //When
-            validator.ValidateCollection(testItems);
-
-            //Then
-            AssertExpectedErrors(null, null);
-        }
-
-        [TestMethod]
-        public void ValidateCollection_PercentageTareWeightIsInvalid_PercentageTareWeightError()
-        {
-            //Given
-            testItem.PercentageTareWeight = "101";
-
-            //When
-            validator.ValidateCollection(testItems);
-
-            //Then
-            AssertExpectedErrorsWithExpectedMessages(
-                ValidationErrorCodes.InvalidPercentageTareWeight,
-                ValidationErrorMessages.InvalidPercentageTareWeight,
-                nameof(testItem.PercentageTareWeight),
-                (i) => i.PercentageTareWeight);
-        }
-
-        [TestMethod]
         public void ValidateCollection_FlexibleTextIsValid_NoError()
         {
             //Given

@@ -164,7 +164,6 @@ namespace Icon.Framework
         public const int LocalLoanProducer = 150;
         public const int CustomerFriendlyDescription = 151;
         public const int GlobalPricingProgram = 154;
-        public const int PercentageTareWeight = 155;
         public const int FlexibleText = 158;
         public const int MadeWithOrganicGrapes = 159;
         public const int PrimeBeef = 160;
@@ -329,7 +328,6 @@ namespace Icon.Framework
 				{ "LLP", 150 },
 				{ "CFD", 151 },
 				{ "GPP", 154 },
-				{ "PTA", 155 },
 				{ "FXT", 158 },
 				{ "MOG", 159 },
 				{ "PRB", 160 },
@@ -496,7 +494,6 @@ namespace Icon.Framework
 			public const string LocalLoanProducer = "Local Loan Producer";
 			public const string CustomerFriendlyDescription = "Customer Friendly Description";
 			public const string GlobalPricingProgram = "Global Pricing Program";
-			public const string PercentageTareWeight = "Percentage Tare Weight";
 			public const string FlexibleText = "Flexible Text";
 			public const string MadeWithOrganicGrapes = "Made with Organic Grapes";
 			public const string PrimeBeef = "Prime Beef";
@@ -661,7 +658,6 @@ namespace Icon.Framework
 				{ 150, "Local Loan Producer" },
 				{ 151, "Customer Friendly Description" },
 				{ 154, "Global Pricing Program" },
-				{ 155, "Percentage Tare Weight" },
 				{ 158, "Flexible Text" },
 				{ 159, "Made with Organic Grapes" },
 				{ 160, "Prime Beef" },
@@ -829,7 +825,6 @@ namespace Icon.Framework
 			public const string LocalLoanProducer = "LLP";
 			public const string CustomerFriendlyDescription = "CFD";
 			public const string GlobalPricingProgram = "GPP";
-			public const string PercentageTareWeight = "PTA";
 			public const string FlexibleText = "FXT";
 			public const string MadeWithOrganicGrapes = "MOG";
 			public const string PrimeBeef = "PRB";
@@ -994,7 +989,6 @@ namespace Icon.Framework
 				{ 150, "LLP" },
 				{ 151, "CFD" },
 				{ 154, "GPP" },
-				{ 155, "PTA" },
 				{ 158, "FXT" },
 				{ 159, "MOG" },
 				{ 160, "PRB" },

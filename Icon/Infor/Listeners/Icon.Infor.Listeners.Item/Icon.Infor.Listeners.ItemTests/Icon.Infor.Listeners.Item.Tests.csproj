@@ -78,7 +78,7 @@
       <HintPath>..\packages\Icon.Esb.Services.2017.10.9.1\lib\net46\Icon.Esb.Services.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.4.4.1\lib\net45\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.4.11.1\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -93,10 +93,10 @@
       <HintPath>..\packages\Moq.4.8.2\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.1\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.2\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.Extended.4.5.1\lib\net45\NLog.Extended.dll</HintPath>
+      <HintPath>..\packages\NLog.Extended.4.5.2\lib\net45\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

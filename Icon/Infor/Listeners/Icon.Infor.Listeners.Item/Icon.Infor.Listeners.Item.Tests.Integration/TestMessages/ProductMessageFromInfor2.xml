@@ -505,15 +505,6 @@
             </tra:type>
           </crf:trait>
           <crf:trait>
-            <tra:code>PTA</tra:code>
-            <tra:type>
-              <trt:description>Percentage Tare Weight</trt:description>
-              <trt:value>
-                <trv:value>25</trv:value>
-              </trt:value>
-            </tra:type>
-          </crf:trait>
-          <crf:trait>
             <tra:code>FXT</tra:code>
             <tra:type>
               <trt:description>Flexible Text</trt:description>

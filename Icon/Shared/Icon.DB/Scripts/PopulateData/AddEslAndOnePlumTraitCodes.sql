@@ -28,10 +28,6 @@ BEGIN
 	INSERT dbo.Trait (traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
 			VALUES  (154, @TraitGroupID, N'GPP', N'Global Pricing Program', @patternAnyText255);
 
-	IF NOT EXISTS (SELECT 1 FROM dbo.Trait WHERE traitCode= 'PTA')
-	INSERT dbo.Trait (traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
-			VALUES  (155, @TraitGroupID, N'PTA', N'Percentage Tare Weight', @patternIntZeroTo100);
-
 	IF NOT EXISTS (SELECT 1 FROM dbo.Trait WHERE traitCode= 'FXT')
 	INSERT dbo.Trait (traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
 			VALUES  (158, @TraitGroupID, N'FXT', N'Flexible Text', @patternAnyText300);

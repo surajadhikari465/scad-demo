@@ -189,7 +189,6 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
             extendedAttributes.MadeWithBiodynamicGrapes = GetTraitValue(Attributes.Codes.MadeWithBiodynamicGrapes, traits);
             extendedAttributes.MadeWithOrganicGrapes = GetTraitValue(Attributes.Codes.MadeWithOrganicGrapes, traits);
             extendedAttributes.NutritionRequired = GetTraitValue(Attributes.Codes.NutritionRequired, traits);
-            extendedAttributes.PercentageTareWeight = GetTraitValue(Attributes.Codes.PercentageTareWeight, traits);
             extendedAttributes.PrimeBeef = GetTraitValue(Attributes.Codes.PrimeBeef, traits);
             extendedAttributes.RainforestAlliance = GetTraitValue(Attributes.Codes.RainforestAlliance, traits);
             extendedAttributes.RefrigeratedOrShelfStable = GetTraitValue(Attributes.Codes.RefrigeratedOrShelfStable, traits);

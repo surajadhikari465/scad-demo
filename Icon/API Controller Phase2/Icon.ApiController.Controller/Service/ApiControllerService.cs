@@ -4,9 +4,7 @@
     using Icon.ApiController.Controller;
     using Icon.ApiController.Controller.ControllerBuilders;
     using Icon.Common;
-    using Icon.Framework;
     using Icon.Logging;
-    using RenewableContext;
     using System;
     using System.Configuration;
     using System.Diagnostics;
@@ -17,7 +15,6 @@
     public class ApiControllerService : IApiControllerService
     {
         private static ILogger<Program> logger = new NLogLogger<Program>();
-        private static IRenewableContext<IconContext> iconContextFactory;
         private System.Timers.Timer timer;
         private string controllerInstanceIdArgs;
         private string controllerType;

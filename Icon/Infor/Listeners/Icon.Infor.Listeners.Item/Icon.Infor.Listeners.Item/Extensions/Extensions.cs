@@ -87,7 +87,6 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 SequenceId = sequenceId,
                 CustomerFriendlyDescription = GetTraitValue(enterpriseAttributes, TraitCodes.CustomerFriendlyDescription),
                 GlobalPricingProgram = GetTraitValue(enterpriseAttributes, TraitCodes.GlobalPricingProgram),
-                PercentageTareWeight = GetTraitValue(enterpriseAttributes, TraitCodes.PercentageTareWeight),
                 FlexibleText = GetTraitValue(enterpriseAttributes, TraitCodes.FlexibleText),
                 MadeWithOrganicGrapes = GetTraitValue(enterpriseAttributes, TraitCodes.MadeWithOrganicGrapes),
                 PrimeBeef = GetTraitValue(enterpriseAttributes, TraitCodes.PrimeBeef),

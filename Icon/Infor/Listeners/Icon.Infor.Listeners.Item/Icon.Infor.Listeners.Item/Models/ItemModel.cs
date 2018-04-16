@@ -74,7 +74,6 @@ namespace Icon.Infor.Listeners.Item.Models
         public decimal? SequenceId { get; set; }
         public string CustomerFriendlyDescription { get; set; }
         public string GlobalPricingProgram { get; set; }
-        public string PercentageTareWeight { get; set; }
         
         public string FlexibleText { get; set; }
         public string MadeWithOrganicGrapes { get; set; }

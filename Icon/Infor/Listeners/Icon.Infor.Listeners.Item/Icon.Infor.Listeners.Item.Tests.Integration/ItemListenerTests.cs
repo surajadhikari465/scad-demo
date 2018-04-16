@@ -298,7 +298,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
         }
 
         [TestMethod]
-        public void HandleMessage_ProductmessageFromInforVersion1Dot3_GeneratesMessageWithPtaAndGpp()
+        public void HandleMessage_ProductmessageFromInforVersion1Dot3_GeneratesMessageWithGpp()
         {
             //Given
             using (var transaction = new TransactionScope())
@@ -323,14 +323,10 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
                     traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "GPP").traitValue;
                     Assert.AreEqual("Walnut 1B", traitValue);
 
-                    traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "PTA").traitValue;
-                    Assert.AreEqual("4", traitValue);
-
                     MessageQueueProduct messageQueueProduct = context.MessageQueueProduct.AsNoTracking()
                         .Single(q => q.ItemId == 999999999);
 
                     Assert.AreEqual("Walnut 1B", messageQueueProduct.GlobalPricingProgram);
-                    Assert.AreEqual("4", messageQueueProduct.PercentageTareWeight);
                 }
             }
         }

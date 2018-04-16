@@ -38,3 +38,6 @@ AS
 
 	EXECUTE sp_executesql @sql
 GO
+
+GRANT EXECUTE on [stage].[MassInsertToItemStoreKeysEsl] to [MammothRole]
+GO

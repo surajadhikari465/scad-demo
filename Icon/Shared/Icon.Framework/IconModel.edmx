@@ -5011,7 +5011,6 @@
           <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="NutritionRequired" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="GlobalPricingProgram" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PercentageTareWeight" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FairTradeCertified" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
           <Property Name="FlexibleText" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="SelfCheckoutItemTareGroup" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
@@ -6936,7 +6935,6 @@
                 <ScalarProperty Name="SelfCheckoutItemTareGroup" ColumnName="SelfCheckoutItemTareGroup" />
                 <ScalarProperty Name="FlexibleText" ColumnName="FlexibleText" />
                 <ScalarProperty Name="FairTradeCertified" ColumnName="FairTradeCertified" />
-                <ScalarProperty Name="PercentageTareWeight" ColumnName="PercentageTareWeight" />
                 <ScalarProperty Name="GlobalPricingProgram" ColumnName="GlobalPricingProgram" />
                 <ScalarProperty Name="NutritionRequired" ColumnName="NutritionRequired" />
                 <ScalarProperty Name="CustomerFriendlyDescription" ColumnName="CustomerFriendlyDescription" />
