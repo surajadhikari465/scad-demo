@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[Replenishment_TagPush_GetElectronicShelfTagBatchFile]
+﻿CREATE PROCEDURE [dbo].[Replenishment_TagPush_GetElectronicShelfTagBatchFile]
 AS
  --**************************************************************************************
 -- Procedure: Replenishment_TagPush_GetElectronicShelfTagBatchFile
@@ -399,7 +398,7 @@ BEGIN
 			IA.Check_Box_17, 
 			IA.Check_Box_18,
 			IA.Check_Box_19, 
-			IA.Check_Box_20, 
+			SIE.OrderedByInfor as Ordered_By_Infor,
 			IA.Text_1, 
 			IA.Text_2,
 			IA.Text_3, 
@@ -481,6 +480,7 @@ BEGIN
 			#ItemIdentifier ii
 			INNER JOIN dbo.Item i 				 ON	i.Item_Key					= ii.Item_Key		
 			INNER JOIN dbo.StoreItem si ON	si.Item_Key					= ii.Item_Key AND (si.Authorized = 1 OR (si.Authorized = 0 AND si.POSDeAuth = 1))
+			INNER JOIN dbo.StoreItemExtended SIE ON SIE.Store_No = SI.Store_No AND SIE.Item_Key = SI.Item_Key
 			INNER JOIN dbo.Store 							s 	 ON	si.Store_No					= s.Store_No
 			INNER JOIN dbo.StoreJurisdiction				sj 	 ON	s.StoreJurisdictionID		= sj.StoreJurisdictionID
 			INNER JOIN dbo.StoreElectronicShelfTagConfig 	est   ON	s.Store_No					= est.Store_No
@@ -555,4 +555,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[Replenishment_TagPush_GetElectronicShelfTagBatchFile] TO [IRMAClientRole]
     AS [dbo];
-
