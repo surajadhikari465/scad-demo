@@ -265,7 +265,7 @@ BEGIN
 			INNER JOIN dbo.Store S  ON S.Store_No = PBD.Store_No --
 			INNER JOIN dbo.StoreElectronicShelfTagConfig EST ON EST.Store_No = S.Store_No
 			INNER JOIN dbo.Item I ON I.Item_Key = PBD.Item_Key -- 
-			INNER JOIN dbo.StoreItem SI  ON SI.Store_No = S.Store_No AND SI.Item_Key = I.Item_Key AND SI.Authorized = 1
+			LEFT  JOIN dbo.StoreItem SI  ON SI.Store_No = S.Store_No AND SI.Item_Key = I.Item_Key AND SI.Authorized = 1
 			INNER JOIN dbo.StoreItemExtended SIE ON SIE.Store_No = SI.Store_No AND SIE.Item_Key = SI.Item_Key
 			INNER JOIN dbo.SubTeam ST  ON ST.SubTeam_No = PBD.SubTeam_No
 			INNER JOIN dbo.ItemUnit IU  ON IU.Unit_ID = I.Package_Unit_ID
@@ -480,7 +480,7 @@ BEGIN
 			#ItemIdentifier ii
 			INNER JOIN dbo.Item i 				 ON	i.Item_Key					= ii.Item_Key		
 			INNER JOIN dbo.StoreItem si ON	si.Item_Key					= ii.Item_Key AND (si.Authorized = 1 OR (si.Authorized = 0 AND si.POSDeAuth = 1))
-			INNER JOIN dbo.StoreItemExtended SIE ON SIE.Store_No = SI.Store_No AND SIE.Item_Key = SI.Item_Key
+			LEFT  JOIN dbo.StoreItemExtended SIE ON SIE.Store_No = SI.Store_No AND SIE.Item_Key = SI.Item_Key
 			INNER JOIN dbo.Store 							s 	 ON	si.Store_No					= s.Store_No
 			INNER JOIN dbo.StoreJurisdiction				sj 	 ON	s.StoreJurisdictionID		= sj.StoreJurisdictionID
 			INNER JOIN dbo.StoreElectronicShelfTagConfig 	est   ON	s.Store_No					= est.Store_No
