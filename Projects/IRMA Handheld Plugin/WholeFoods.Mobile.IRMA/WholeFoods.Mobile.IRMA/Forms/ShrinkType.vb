@@ -178,6 +178,6 @@ Public Class ShrinkType
     End Sub
     
     Private Sub btnReasonCode14_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReasonCode14.Click
-        goToNextScreen(btnReasonCode13.Text, btnReasonCode13.Tag.ToString())
+        goToNextScreen(btnReasonCode14.Text, btnReasonCode14.Tag.ToString())
     End Sub
 End Class
