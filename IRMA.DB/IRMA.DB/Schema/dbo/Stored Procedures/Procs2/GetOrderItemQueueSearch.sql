@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[GetOrderItemQueueSearch]
+﻿CREATE PROCEDURE [dbo].[GetOrderItemQueueSearch]
 	@OrderType_ID			int,
 	@VendorID				int,
 	@PurchasingVendor_ID	int,
@@ -35,6 +34,8 @@ BEGIN
 	DECLARE @Store_No				int
 	DECLARE @Transfer				bit
 	
+	DECLARE @PackagingSubteam int = (SELECT TOP 1 SubTeam_NO FROM SubTeam where SubTeam_Name = 'Packaging')
+
 	IF @PurchasingVendor_ID > 0 BEGIN SELECT @Store_No = Store_No FROM Vendor WHERE Vendor_ID = @PurchasingVendor_ID END
 	IF @OrderType_ID = 3 SET @Transfer = 1 ELSE SET @Transfer = 0
 
@@ -139,6 +140,15 @@ BEGIN
 					SELECT @SQL = @SQL + 'AND Item.SubTeam_No = ' + CONVERT(VARCHAR(10), @SearchSubTeam_No) + ' '	
 				END
 		END
+    
+	IF(@ProductType_ID = 2)
+	BEGIN
+		SELECT @SQL = @SQL + 'AND Item.SubTeam_No = ' +  CAST(@PackagingSubteam as varchar(10))  + ' '
+	END	
+	ELSE 
+	BEGIN
+		SELECT @SQL = @SQL + 'AND Item.SubTeam_No NOT IN (' +  CAST(@PackagingSubteam as varchar(10)) +') ' 
+	END
 
 	IF (@Discontinue_Item = 0) SELECT @SQL = @SQL + 'AND dbo.fn_GetDiscontinueStatus(Item.Item_Key, NULL, NULL) = 0 '
     SELECT @SQL = @SQL + 'AND Item.Deleted_Item = 0 AND Item.Remove_Item = 0 '
@@ -254,4 +264,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[GetOrderItemQueueSearch] TO [IRMAReportsRole]
     AS [dbo];
-
