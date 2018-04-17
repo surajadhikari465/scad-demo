@@ -15,3 +15,7 @@ CREATE INDEX [IX_tmpGpmFuturePbd_StoreNoItemKey] ON [infor].[tmpGpmFuturePbd]
 		[Store_No] ASC,
 		[Item_Key] ASC
 	)
+GO
+
+GRANT INSERT, UPDATE, SELECT, ALTER on [infor].[tmpGpmFuturePbd] to [MammothRole]
+GO
