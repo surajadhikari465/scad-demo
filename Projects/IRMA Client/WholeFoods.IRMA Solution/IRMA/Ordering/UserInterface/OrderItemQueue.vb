@@ -1606,10 +1606,10 @@ Friend Class frmOrderItemQueue
     End Sub
 
     Private Sub cmbProductType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbProductType.SelectedIndexChanged
-        setproductType()
+        setProductType()
     End Sub
 
-    Private Sub setproductType()
+    Private Sub setProductType()
         Dim productTypeSelected As String = cmbProductType.Text
 
         Select Case productTypeSelected
