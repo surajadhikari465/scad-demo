@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[Replenishment_TagPush_GetFullElectronicShelfTagFile]
+﻿CREATE PROCEDURE [dbo].[Replenishment_TagPush_GetFullElectronicShelfTagFile]
 	@StoreNo int
 AS
 
@@ -193,7 +192,7 @@ BEGIN
 		INNER JOIN dbo.Store S (NOLOCK) ON S.Store_No = @StoreNo
 		INNER JOIN dbo.StoreElectronicShelfTagConfig EST ON EST.Store_No = S.Store_No
 		INNER JOIN dbo.StoreItem SI (NOLOCK) ON SI.Store_No = @StoreNo AND SI.Item_Key = I.Item_Key AND SI.Authorized = 1
-        INNER JOIN dbo.StoreItemExtended SIE (NOLOCK) ON SIE.Store_No = SI.Store_No AND SIE.Item_Key = SI.Item_Key
+        LEFT  JOIN dbo.StoreItemExtended SIE (NOLOCK) ON SIE.Store_No = SI.Store_No AND SIE.Item_Key = SI.Item_Key
 		INNER JOIN dbo.SubTeam ST (NOLOCK) ON ST.SubTeam_No = I.SubTeam_No
         INNER JOIN dbo.ItemUnit IU (NOLOCK) ON IU.Unit_ID = I.Package_Unit_ID
 		INNER JOIN dbo.ItemUnit IUR (NOLOCK) ON IUR.Unit_ID = I.Retail_Unit_ID
