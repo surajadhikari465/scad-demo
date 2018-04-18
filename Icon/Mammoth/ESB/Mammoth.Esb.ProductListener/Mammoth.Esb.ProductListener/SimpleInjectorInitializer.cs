@@ -54,6 +54,7 @@ namespace Mammoth.Esb.ProductListener
             container.Register<IEsbConnectionFactory>(() => new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10") });
             container.Register<ISerializer<items>, Serializer<items>>();
             container.Register<ILogger<PrimeAffinityPsgProcessor>, NLogLogger<PrimeAffinityPsgProcessor>>();
+            container.Register(() => PrimeAffinityMessageBuilderSettings.Load());
 
             //Data Access
             container.RegisterSingleton<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
