@@ -585,7 +585,7 @@ AND NOT EXISTS
                                 <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Source"/>
                             </Source>
                             <nonReceivingSysName>
-                                <xsl:value-of select="&quot;MammothR10&quot;"/>
+                                <xsl:value-of select="&quot;ExpiredPriceReductionToPOS&quot;"/>
                             </nonReceivingSysName>
                             <xsl:if test="$Start/pfx:JobSchedule/pfx:Region">
                                 <RegionCode>
