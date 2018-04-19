@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx8="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx6="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns12="http://schema.infor.com/InforOAGIS/2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:ns8="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx5="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/POC/Schemas/mammothPrice.xsd" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx9="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:WFM.Encrypter="java://com.wfm.aes.CryptoLib" xmlns:pfx8="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx6="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns12="http://schema.infor.com/InforOAGIS/2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:ns8="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
@@ -18,12 +18,12 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>45</pd:startX>
-    <pd:startY>283</pd:startY>
+    <pd:startX>41</pd:startX>
+    <pd:startY>300</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>1026</pd:endX>
-    <pd:endY>284</pd:endY>
+    <pd:endX>1025</pd:endX>
+    <pd:endY>299</pd:endY>
     <pd:errorSchemas>
         <Error ref="pfx9:ExceptionRequest"/>
     </pd:errorSchemas>
@@ -51,15 +51,6 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>DeleteAllPrices</pd:to>
-            <pd:xpathDescription>Reset Flag is True</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/Input/ResetFlag = $_globalVariables/pfx2:GlobalVariables/Application/ResetFlagTrueValue</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>start</pd:from>
             <pd:to>DeletePrice</pd:to>
             <pd:xpathDescription>Delete</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
@@ -83,14 +74,7 @@
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Add" and $Start/Input/ResetFlag = $_globalVariables/pfx2:GlobalVariables/Application/ResetFlagFalseValue</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>DeletePrice</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>otherwise</pd:conditionType>
+            <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Add"</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>Update Price</pd:from>
@@ -100,9 +84,8 @@
             <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>AddPrice</pd:from>
+            <pd:from>DeletePrice</pd:from>
             <pd:to>end</pd:to>
-            <pd:xpathDescription/>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>otherwise</pd:conditionType>
@@ -113,6 +96,14 @@
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AddPrice</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>MapZeroRowsImpactedError</pd:from>
@@ -190,13 +181,6 @@ or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
             <pd:xpath>$DeletePrice/resultSet/outputSet/NumberOfRowsDeleted=0</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>DeleteAllPrices</pd:from>
-            <pd:to>AddPrice</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:activity name="Update Price">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
@@ -797,34 +781,12 @@ result=Math.pow(2,retryCount)*100L;
                 </pfx9:ExceptionRequest>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="DeleteAllPrices">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>408</pd:x>
-            <pd:y>83</pd:y>
-            <config>
-                <processName>/Processes/DeleteAllPricesForStoreAndItem.process</processName>
-            </config>
-            <pd:inputBindings>
-                <Input>
-                    <ItemID>
-                        <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:ItemId"/>
-                    </ItemID>
-                    <BusinessUnitID>
-                        <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit"/>
-                    </BusinessUnitID>
-                    <Region>
-                        <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Region"/>
-                    </Region>
-                </Input>
-            </pd:inputBindings>
-        </pd:activity>
     </pd:group>
     <pd:activity name="Generate-DataError">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
         <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>980</pd:x>
-        <pd:y>94</pd:y>
+        <pd:x>1020</pd:x>
+        <pd:y>197</pd:y>
         <config>
             <faultName>Error</faultName>
         </config>
@@ -862,8 +824,8 @@ result=Math.pow(2,retryCount)*100L;
     <pd:activity name="ValidatePriceData">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>190</pd:x>
-        <pd:y>282</pd:y>
+        <pd:x>186</pd:x>
+        <pd:y>301</pd:y>
         <config>
             <processName>/Processes/ValidatePriceData.process</processName>
         </config>
