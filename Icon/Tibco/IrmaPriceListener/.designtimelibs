@@ -1,6 +1,6 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Fri Apr 13 10:36:55 CDT 2018
+#Thu Apr 19 09:02:18 CDT 2018
 6=SharedArchivePriceMessage.projlib\=
 5=SharedSchemas.projlib\=
 4=SharedJmsConnections.projlib\=

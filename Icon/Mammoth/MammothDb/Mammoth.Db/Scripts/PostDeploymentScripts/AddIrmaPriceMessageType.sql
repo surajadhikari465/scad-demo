@@ -8,7 +8,7 @@ BEGIN
 
 	SET IDENTITY_INSERT esb.MessageType ON
 
-	IF NOT EXISTS (SELECT 1 FROM esb.MessageType WHERE MessageTypeName = 'Irma Price' AND MessageTypeId = 3)
+	IF NOT EXISTS (SELECT 1 FROM esb.MessageType WHERE MessageTypeName = 'Irma Price' AND MessageTypeId = 6)
 		INSERT INTO esb.MessageType(MessageTypeId, MessageTypeName)
 		VALUES (6, 'Irma Price')
 		

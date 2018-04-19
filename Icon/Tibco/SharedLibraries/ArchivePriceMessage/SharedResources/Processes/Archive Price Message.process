@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://schema.infor.com/InforOAGIS/2" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MammothPricesWithError.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:Mammoth="java://WfmSharedFunctions">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://schema.infor.com/InforOAGIS/2" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MammothPricesWithError.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:Mammoth="java://WfmSharedFunctions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schema.infor.com/InforOAGIS/2" schemaLocation="/SharedResources/Schemas/Infor/ConfirmBOD.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/JMS Message/MessageHeaders.xsd"/>
@@ -19,12 +19,12 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>53</pd:startX>
-    <pd:startY>66</pd:startY>
+    <pd:startX>52</pd:startX>
+    <pd:startY>67</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>925</pd:endX>
-    <pd:endY>282</pd:endY>
+    <pd:endX>921</pd:endX>
+    <pd:endY>299</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1507744635415</pd:targetNamespace>
@@ -91,14 +91,14 @@
         <pd:activity name="Associate Mammoth Price to JSON">
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>300</pd:x>
+            <pd:x>302</pd:x>
             <pd:y>287</pd:y>
             <config>
                 <element>
                     <xsd:element name="MammothPrices">
                         <xsd:complexType>
                             <xsd:sequence>
-                                <xsd:element ref="pfx2:MammothPrice"/>
+                                <xsd:element ref="pfx4:MammothPriceWithErrorInfo"/>
                                 <xsd:element name="MammothPriceJson" type="xsd:string"/>
                             </xsd:sequence>
                         </xsd:complexType>
@@ -107,7 +107,43 @@
             </config>
             <pd:inputBindings>
                 <MammothPrices>
-                    <xsl:copy-of select="$MammothPrice/pfx2:MammothPrice"/>
+                    <pfx4:MammothPriceWithErrorInfo>
+                        <pfx4:MammothPrice>
+                            <xsl:copy-of select="$MammothPrice/pfx2:MammothPrice/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$MammothPrice/pfx2:MammothPrice/@*"/>
+                            <xsl:copy-of select="$MammothPrice/pfx2:MammothPrice/node()"/>
+                        </pfx4:MammothPrice>
+                        <xsl:variable name="var5" select="$MammothPrice/pfx2:MammothPrice/pfx2:Region"/>
+                        <xsl:variable name="var6" select="$MammothPrice/pfx2:MammothPrice/pfx2:ItemId"/>
+                        <xsl:variable name="var7" select="$MammothPrice/pfx2:MammothPrice/pfx2:BusinessUnit "/>
+                        <xsl:variable name="var8" select="$MammothPrice/pfx2:MammothPrice/pfx2:GpmId"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/pfx4:MammothPricesWithErrorInfo)&#xA;and exists($Start/Input/pfx4:MammothPricesWithErrorInfo/pfx4:MammothPriceWithErrorType[&#xA;(pfx4:MammothPrice/pfx2:Region = $var5)&#xA;and  ( pfx4:MammothPrice/pfx2:ItemId =$var6)&#xA;and ( pfx4:MammothPrice/pfx2:BusinessUnit = $var7 )&#xA;and  (pfx4:MammothPrice/pfx2:GpmId = $var8)&#xA; ]/pfx4:ErrorCode)">
+                                <xsl:variable name="var" select="$MammothPrice/pfx2:MammothPrice/pfx2:Region"/>
+                                <xsl:variable name="var2" select="$MammothPrice/pfx2:MammothPrice/pfx2:ItemId"/>
+                                <xsl:variable name="var3" select="$MammothPrice/pfx2:MammothPrice/pfx2:BusinessUnit "/>
+                                <xsl:variable name="var4" select="$MammothPrice/pfx2:MammothPrice/pfx2:GpmId"/>
+                                <pfx4:ErrorCode>
+                                    <xsl:value-of select="$Start/Input/pfx4:MammothPricesWithErrorInfo/pfx4:MammothPriceWithErrorType[&#xA;(pfx4:MammothPrice/pfx2:Region = $var)&#xA;and  ( pfx4:MammothPrice/pfx2:ItemId =$var2)&#xA;and ( pfx4:MammothPrice/pfx2:BusinessUnit = $var3 )&#xA;and  (pfx4:MammothPrice/pfx2:GpmId = $var4)&#xA; ]/pfx4:ErrorCode"/>
+                                </pfx4:ErrorCode>
+                            </xsl:when>
+                        </xsl:choose>
+                        <xsl:variable name="var13" select="$MammothPrice/pfx2:MammothPrice/pfx2:Region"/>
+                        <xsl:variable name="var14" select="$MammothPrice/pfx2:MammothPrice/pfx2:ItemId"/>
+                        <xsl:variable name="var15" select="$MammothPrice/pfx2:MammothPrice/pfx2:BusinessUnit "/>
+                        <xsl:variable name="var16" select="$MammothPrice/pfx2:MammothPrice/pfx2:GpmId"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/pfx4:MammothPricesWithErrorInfo)&#xA;and exists($Start/Input/pfx4:MammothPricesWithErrorInfo/pfx4:MammothPriceWithErrorType[&#xA;(pfx4:MammothPrice/pfx2:Region = $var13)&#xA;and  ( pfx4:MammothPrice/pfx2:ItemId =$var14)&#xA;and ( pfx4:MammothPrice/pfx2:BusinessUnit = $var15 )&#xA;and  (pfx4:MammothPrice/pfx2:GpmId = $var16)&#xA; ]/pfx4:ErrorDetails)">
+                                <xsl:variable name="var9" select="$MammothPrice/pfx2:MammothPrice/pfx2:Region"/>
+                                <xsl:variable name="var10" select="$MammothPrice/pfx2:MammothPrice/pfx2:ItemId"/>
+                                <xsl:variable name="var11" select="$MammothPrice/pfx2:MammothPrice/pfx2:BusinessUnit "/>
+                                <xsl:variable name="var12" select="$MammothPrice/pfx2:MammothPrice/pfx2:GpmId"/>
+                                <pfx4:ErrorDetails>
+                                    <xsl:value-of select="$Start/Input/pfx4:MammothPricesWithErrorInfo/pfx4:MammothPriceWithErrorType[&#xA;(pfx4:MammothPrice/pfx2:Region = $var9)&#xA;and  ( pfx4:MammothPrice/pfx2:ItemId =$var10)&#xA;and ( pfx4:MammothPrice/pfx2:BusinessUnit = $var11 )&#xA;and  (pfx4:MammothPrice/pfx2:GpmId = $var12)&#xA; ]/pfx4:ErrorDetails"/>
+                                </pfx4:ErrorDetails>
+                            </xsl:when>
+                        </xsl:choose>
+                    </pfx4:MammothPriceWithErrorInfo>
                     <MammothPriceJson>
                         <xsl:value-of select="$Render-Mammoth-Price-JSON/ns14:ActivityOutputClass/jsonString"/>
                     </MammothPriceJson>
@@ -118,8 +154,8 @@
     <pd:activity name="Archive Price Message Details">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>582</pd:x>
-        <pd:y>288</pd:y>
+        <pd:x>576</pd:x>
+        <pd:y>309</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -133,8 +169,10 @@
 	,ItemID
 	,BusinessUnitID
 	,MessageID
-	,JsonObject)
-VALUES(?, ?,?, ?, ?, ?, ?)</statement>
+	,JsonObject
+        ,ErrorCode
+        ,ErrorDetails)
+VALUES(?, ?,?, ?, ?, ?, ?,?,?)</statement>
             <Prepared_Param_DataType>
                 <parameter>
                     <parameterName>MessageAction</parameterName>
@@ -164,26 +202,34 @@ VALUES(?, ?,?, ?, ?, ?, ?)</statement>
                     <parameterName>JsonObject</parameterName>
                     <dataType>VARCHAR</dataType>
                 </parameter>
+                <parameter>
+                    <parameterName>ErrorCode</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ErrorDetails</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
             </Prepared_Param_DataType>
         </config>
         <pd:inputBindings>
             <jdbcUpdateActivityInput>
-                <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$MammothPrices/AccumulatedOutput/MammothPrices/pfx2:MammothPrice">
+                <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$MammothPrices/AccumulatedOutput/MammothPrices/pfx4:MammothPriceWithErrorInfo">
                     <Record>
                         <MessageAction>
-                            <xsl:value-of select="pfx2:Action"/>
+                            <xsl:value-of select="pfx4:MammothPrice/pfx2:Action"/>
                         </MessageAction>
                         <Region>
-                            <xsl:value-of select="pfx2:Region"/>
+                            <xsl:value-of select="pfx4:MammothPrice/pfx2:Region"/>
                         </Region>
                         <GpmID>
-                            <xsl:value-of select="pfx2:GpmId"/>
+                            <xsl:value-of select="pfx4:MammothPrice/pfx2:GpmId"/>
                         </GpmID>
                         <ItemID>
-                            <xsl:value-of select="pfx2:ItemId"/>
+                            <xsl:value-of select="pfx4:MammothPrice/pfx2:ItemId"/>
                         </ItemID>
                         <BusinessUnitID>
-                            <xsl:value-of select="pfx2:BusinessUnit"/>
+                            <xsl:value-of select="pfx4:MammothPrice/pfx2:BusinessUnit"/>
                         </BusinessUnitID>
                         <MessageID>
                             <xsl:value-of select="$Start/Input/MessageID"/>
@@ -191,6 +237,26 @@ VALUES(?, ?,?, ?, ?, ?, ?)</statement>
                         <JsonObject>
                             <xsl:value-of select="../MammothPriceJson"/>
                         </JsonObject>
+                        <ErrorCode>
+                            <xsl:choose>
+                                <xsl:when test="exists(pfx4:ErrorCode)">
+                                    <xsl:value-of select="pfx4:ErrorCode"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </ErrorCode>
+                        <ErrorDetails>
+                            <xsl:choose>
+                                <xsl:when test="exists(pfx4:ErrorDetails)">
+                                    <xsl:value-of select="pfx4:ErrorDetails"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </ErrorDetails>
                     </Record>
                 </xsl:for-each>
             </jdbcUpdateActivityInput>
@@ -287,70 +353,6 @@ SELECT
             </xmlString>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Update Price Message Archive Details With Error Info">
-        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>757</pd:x>
-        <pd:y>297</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
-            <batchUpdate>true</batchUpdate>
-            <statement>UPDATE esb.PriceMessageArchiveDetail
-SET ErrorCode =?,
-        ErrorDetails =?
-WHERE MessageID = ?
-AND ItemID =?
-AND BusinessUnitID = ?</statement>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>ErrorCode</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>ErrorDetails</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>MessageID</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>ItemID</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>BusinessUnitID</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-        </config>
-        <pd:inputBindings>
-            <jdbcUpdateActivityInput>
-                <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/Input/pfx4:MammothPricesWithErrorInfo/pfx4:MammothPriceWithErrorType">
-                    <Record>
-                        <ErrorCode>
-                            <xsl:value-of select="pfx4:ErrorCode"/>
-                        </ErrorCode>
-                        <ErrorDetails>
-                            <xsl:value-of select="pfx4:ErrorDetails"/>
-                        </ErrorDetails>
-                        <MessageID>
-                            <xsl:value-of select="../../MessageID"/>
-                        </MessageID>
-                        <ItemID>
-                            <xsl:value-of select="pfx4:MammothPrice/pfx2:ItemId"/>
-                        </ItemID>
-                        <BusinessUnitID>
-                            <xsl:value-of select="pfx4:MammothPrice/pfx2:BusinessUnit"/>
-                        </BusinessUnitID>
-                    </Record>
-                </xsl:for-each>
-            </jdbcUpdateActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:transition>
         <pd:from>Render Message Headers JSON</pd:from>
         <pd:to>Archive Price Message</pd:to>
@@ -388,13 +390,6 @@ AND BusinessUnitID = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Archive Price Message Details</pd:from>
-        <pd:to>Update Price Message Archive Details With Error Info</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Update Price Message Archive Details With Error Info</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
