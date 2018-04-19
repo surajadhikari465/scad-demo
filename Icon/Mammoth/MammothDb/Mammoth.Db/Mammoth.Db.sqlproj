@@ -768,6 +768,9 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AddRegionsToRegionGpmStatusTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateActivePriceSentArchiveInRetentionPolicy.sql" />
     <Build Include="app\User Defined Types\CancelAllSalesTypes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddIrmaPriceMessageType.sql" />
+    <Build Include="esb\Tables\PriceMessageArchiveDetail.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddPriceArchiveTablesToRetentionPolicyTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
