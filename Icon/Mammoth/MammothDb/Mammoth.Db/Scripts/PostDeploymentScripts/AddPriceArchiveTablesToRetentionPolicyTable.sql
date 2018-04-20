@@ -18,9 +18,9 @@ BEGIN
 		-- DEV DB
 		TRUNCATE TABLE [app].[RetentionPolicy]
 
-		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
+		INSERT INTO [app].[RetentionPolicy]([Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 			VALUES 
-			('Mammoth_Dev', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+			('esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
 
@@ -30,9 +30,9 @@ BEGIN
 
 		TRUNCATE TABLE [app].[RetentionPolicy]
 
-			INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
+			INSERT INTO [app].[RetentionPolicy]([Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 			VALUES 		
-			('Mammoth', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+			('esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
 	END
@@ -44,9 +44,9 @@ BEGIN
 		SET IDENTITY_INSERT [app].[RetentionPolicy] ON
 		TRUNCATE TABLE [app].[RetentionPolicy]
 
-		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
+		INSERT INTO [app].[RetentionPolicy]([Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 		VALUES 
-		('Mammoth', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+		('esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
 		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
 	END
@@ -58,9 +58,9 @@ BEGIN
 		SET IDENTITY_INSERT [app].[RetentionPolicy] ON
 		TRUNCATE TABLE [app].[RetentionPolicy]
 
-		INSERT INTO [app].[RetentionPolicy]([Database], [Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
+		INSERT INTO [app].[RetentionPolicy]([Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
 		VALUES 
-		('Mammoth', 'esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
+		('esb', 'PriceMessageArchiveDetail', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 	END
 
 	insert into app.PostDeploymentScriptHistory values(@scriptKey, getdate())
