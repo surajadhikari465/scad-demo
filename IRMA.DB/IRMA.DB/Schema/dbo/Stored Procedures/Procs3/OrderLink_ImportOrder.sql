@@ -43,8 +43,10 @@ AS
 	--
 	-- Modification History (Recent at Top):
 	-- Date			Init	Comment
-	-- 4/13/2018    MZ      [PBI 24427] Map DateReceived on OrderItem to @FilterDate sent from OrderLink as Billed Date
-	-- 2/29/2016	MU		[PBI 13587] Added Predictix Order Number
+	-- 4/13/2018    MZ      [PBI 24427] Map DateReceived on OrderItem to @FilterDate sent from OrderLink for OrderLink orders in Billed status.
+	--                      @FilterDate is set to an OL order's Last Status Update date. So, @FilterDate will be populated as an OL order's Bill Date
+	--                      once the order is set to the Billed status.
+  	-- 2/29/2016	MU		[PBI 13587] Added Predictix Order Number
 	-- 08/26/2013   MZ      [TFS 13159] Updated the INSERT statement to the OrderImportExceptionLog table due to the table expansion to log more info for reporting
 	-- 04/09/2013	Lux		[TFS 11908, v4.7.1] Updated logic for insert into ExternalOrderInformation table for new IRMA orders to include 'OrderLink' system/source in the filter
 	--                      and it doesn't reference OH external source PO # at all, since we don't care what's in OH fields, we just need to insert an OL entry in EOI as long as one does not yet exist.
@@ -749,7 +751,7 @@ BEGIN		--Script Start
 									ABS(CONVERT(decimal(18,4),@Qty_Ship))	AS QuantityShipped,
 									0										AS Units_Per_Pallet,
 									CASE 
-										WHEN LEN(@filterDate) > 1
+										WHEN LEN(@filterDate) > 1 AND @Order_Status = 'B'
 											THEN CAST(@filterDate as datetime)
 										ELSE
 											NULL
@@ -851,7 +853,7 @@ BEGIN		--Script Start
 													END,
 									QuantityShipped		= ABS(CONVERT(decimal(18,4),@Qty_Ship)),
 									DateReceived        = CASE 
-															WHEN LEN(@filterDate) > 1
+															WHEN LEN(@filterDate) > 1 AND @Order_Status = 'B'
 																THEN CAST(@filterDate as datetime)
 															ELSE
 																NULL
