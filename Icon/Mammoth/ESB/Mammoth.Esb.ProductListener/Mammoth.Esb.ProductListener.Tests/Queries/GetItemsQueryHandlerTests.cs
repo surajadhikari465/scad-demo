@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Mammoth.Common.DataAccess.Models;
 using Mammoth.Esb.ProductListener.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -41,7 +42,9 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
         {
             //Given
             List<int> itemIds = new List<int> { 99999999, 88888888, 77777777 };
-            CreateItems(itemIds);
+            string expectedRetailSize = "8";
+            string expectedPackageUnit = "9";
+            CreateItems(itemIds, expectedRetailSize);
             parameters.ItemIds = itemIds;
 
             //When
@@ -63,8 +66,46 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                 Assert.AreEqual(TestItemTypeCode, item.ItemTypeCode);
                 Assert.AreEqual(testItemTypeId, item.ItemTypeID);
                 Assert.IsNotNull(item.ModifiedDate);
-                Assert.AreEqual(9, item.PackageUnit);
-                Assert.AreEqual(8, item.RetailSize);
+                Assert.AreEqual(expectedPackageUnit, item.PackageUnit);
+                Assert.AreEqual(expectedRetailSize, item.RetailSize);
+                Assert.AreEqual("EA", item.RetailUOM);
+                Assert.AreEqual("sc" + itemId, item.ScanCode);
+                Assert.AreEqual(13, item.TaxClassHCID);
+                Assert.IsNotNull(item.AddedDate);
+            }
+        }
+
+        [TestMethod]
+        public void GetItems_ItemsExistRetailSizeHasDecimal_ReturnsItems()
+        {
+            //Given
+            List<int> itemIds = new List<int> { 99999999, 88888888, 77777777 };
+            string expectedRetailSize = "4.8";
+            string expectedPackageUnit = "9";
+            CreateItems(itemIds, expectedRetailSize);
+            parameters.ItemIds = itemIds;
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(3, results.Count());
+            foreach (var itemId in itemIds)
+            {
+                var item = results.Single(i => i.ItemID == itemId);
+                Assert.IsNotNull(item.AddedDate);
+                Assert.AreEqual(12, item.BrandHCID);
+                Assert.AreEqual("Desc_CustomerFriendly" + item.ScanCode, item.Desc_CustomerFriendly);
+                Assert.AreEqual("Desc_POS" + item.ScanCode, item.Desc_POS);
+                Assert.AreEqual("Desc_Product" + item.ScanCode, item.Desc_Product);
+                Assert.AreEqual(true, item.FoodStampEligible);
+                Assert.AreEqual(12345, item.HierarchyMerchandiseID);
+                Assert.AreEqual(6789, item.HierarchyNationalClassID);
+                Assert.AreEqual(TestItemTypeCode, item.ItemTypeCode);
+                Assert.AreEqual(testItemTypeId, item.ItemTypeID);
+                Assert.IsNotNull(item.ModifiedDate);
+                Assert.AreEqual(expectedPackageUnit, item.PackageUnit);
+                Assert.AreEqual(expectedRetailSize, item.RetailSize);
                 Assert.AreEqual("EA", item.RetailUOM);
                 Assert.AreEqual("sc" + itemId, item.ScanCode);
                 Assert.AreEqual(13, item.TaxClassHCID);
@@ -85,7 +126,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
             Assert.IsFalse(results.Any());
         }
 
-        private void CreateItems(List<int> itemIds)
+        private void CreateItems(List<int> itemIds, string retailSize)
         {
             foreach (int itemId in itemIds)
             {
@@ -118,14 +159,14 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                             'Desc_Product' + @ScanCode,
                             'Desc_POS' + @ScanCode,
                             9,
-                            8,
+                            @RetailSize,
                             'EA',
                             1,
                             'Desc_CustomerFriendly' + @ScanCode,
                             GETDATE()
                         FROM dbo.ItemTypes 
                         WHERE itemTypeCode = @ItemTypeCode",
-                 new { ItemId = itemId, ScanCode = "sc" + itemId, ItemTypeCode = TestItemTypeCode });
+                 new { ItemId = itemId, ScanCode = "sc" + itemId, ItemTypeCode = TestItemTypeCode, RetailSize = retailSize });
             }   
         }
 

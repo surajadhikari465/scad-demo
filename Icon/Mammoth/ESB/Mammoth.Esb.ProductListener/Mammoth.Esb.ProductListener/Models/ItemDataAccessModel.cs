@@ -15,8 +15,8 @@ namespace Mammoth.Esb.ProductListener.Models
         public int PSNumber { get; set; }
         public string Desc_Product { get; set; }
         public string Desc_POS { get; set; }
-        public int PackageUnit { get; set; }
-        public int RetailSize { get; set; }
+        public string PackageUnit { get; set; }
+        public string RetailSize { get; set; }
         public string RetailUOM { get; set; }
         public bool FoodStampEligible { get; set; }
         public string Desc_CustomerFriendly { get; set; }

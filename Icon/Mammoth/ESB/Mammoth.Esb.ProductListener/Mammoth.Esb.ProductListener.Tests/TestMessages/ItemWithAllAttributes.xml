@@ -135,7 +135,7 @@
             <tra:type>
               <trt:description>Retail Size</trt:description>
               <trt:value>
-                <trv:value>1</trv:value>
+                <trv:value>1.3</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>

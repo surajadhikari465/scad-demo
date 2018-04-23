@@ -45,7 +45,7 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
             Assert.AreEqual("INGREDIENT", globalAttributes.Desc_POS);
             Assert.AreEqual(false, globalAttributes.FoodStampEligible);
             Assert.AreEqual("1", globalAttributes.PackageUnit);
-            Assert.AreEqual("1", globalAttributes.RetailSize);
+            Assert.AreEqual("1.3", globalAttributes.RetailSize);
             Assert.AreEqual("LB", globalAttributes.RetailUOM);
             Assert.AreEqual("CHICKEN TANDOORI HB CFD", globalAttributes.Desc_CustomerFriendly);
 
