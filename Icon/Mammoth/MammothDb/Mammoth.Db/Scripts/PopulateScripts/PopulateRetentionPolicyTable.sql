@@ -13,7 +13,6 @@ BEGIN
 	IF @serverName = 'CEWD6587\MAMMOTH'
 	BEGIN
 		USE Mammoth_Dev
-		SET IDENTITY_INSERT [app].[RetentionPolicy] ON
 
 		-- DEV DB
 		TRUNCATE TABLE [app].[RetentionPolicy]
@@ -27,11 +26,8 @@ BEGIN
 			('esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 			('gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
-		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
-
 		-- TEST DB
 		USE Mammoth
-		SET IDENTITY_INSERT [app].[RetentionPolicy] ON
 
 		TRUNCATE TABLE [app].[RetentionPolicy]
 
@@ -44,14 +40,13 @@ BEGIN
 			('esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 			('gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
-		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
 	END
 
 	-- QA Instance
 	IF @serverName = 'QA-01-MAMMOTH\MAMMOTH'
 	BEGIN
 		USE Mammoth
-		SET IDENTITY_INSERT [app].[RetentionPolicy] ON
+
 		TRUNCATE TABLE [app].[RetentionPolicy]
 
 		INSERT INTO [app].[RetentionPolicy]([Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
@@ -63,14 +58,13 @@ BEGIN
 		('esb', 'MessageQueuePriceArchive', 'InsertDate', 10, 21, 24, 1, 0, 'Data History Purge', NULL),
 		('gpm', 'MessageArchivePrice', 'InsertDateUtc', 10, 21, 24, 1, 0, 'Data History Purge', NULL)
 
-		SET IDENTITY_INSERT [app].[RetentionPolicy] OFF
 	END
 
 	-- PRD Instance
 	IF @serverName = 'PRD-01-MAMMOTH\MAMMOTH'
 	BEGIN
 		USE Mammoth
-		SET IDENTITY_INSERT [app].[RetentionPolicy] ON
+
 		TRUNCATE TABLE [app].[RetentionPolicy]
 
 		INSERT INTO [app].[RetentionPolicy]([Schema], [Table], [ReferenceColumn], [DaysToKeep], [TimeToStart], [TimeToEnd], [IncludedInDailyPurge], [DailyPurgeCompleted], [PurgeJobName], [LastPurgedDateTime])
