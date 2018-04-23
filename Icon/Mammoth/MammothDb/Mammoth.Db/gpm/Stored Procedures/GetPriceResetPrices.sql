@@ -85,3 +85,7 @@ BEGIN
 	DROP TABLE #ScanCodes
 	DROP TABLE #TempPrices
 END
+GO
+
+GRANT EXECUTE on [gpm].[GetPriceResetPrices] to [MammothRole]
+GO

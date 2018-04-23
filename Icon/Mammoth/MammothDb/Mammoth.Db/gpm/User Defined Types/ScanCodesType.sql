@@ -2,3 +2,7 @@
 (
 	ScanCode nvarchar(13)
 )
+GO
+
+GRANT EXEC ON TYPE::[gpm].[ScanCodesType] TO [MammothRole]
+GO
