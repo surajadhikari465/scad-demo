@@ -67,7 +67,6 @@ namespace MammothWebApi.Service.Decorators
                     .ToList();
 
                 PsgHelpers.SendPsgsForStoreScanCodes(psgDeleteItemStoreKeys, psgAddItemStoreKeys, getPsgItemDataQuery, primeAffinityPsgProcessor);
-
             }
         }
     }

@@ -12,7 +12,7 @@ namespace MammothWebApi.Service
     public static class PsgHelpers
     {
         public static void SendPsgsForStoreScanCodes(
-            List<StoreScanCode> psgDeleteItemStoreKeys, 
+            List<StoreScanCode> psgDeleteItemStoreKeys,
             List<StoreScanCode> psgAddItemStoreKeys,
             IQueryHandler<GetPrimePsgItemDataByScanCodeQuery, IEnumerable<PrimePsgItemStoreDataModel>> getPsgItemDataQuery,
             IPrimeAffinityPsgProcessor<PrimeAffinityPsgProcessorParameters> primeAffinityPsgProcessor)
@@ -26,23 +26,23 @@ namespace MammothWebApi.Service
                 });
 
                 // psg Adds
-                if (psgAddItemStoreKeys.Count > 0)
-                {
-                    var primePsgAddData = psgAddItemStoreKeys.Join(
-                        primePsgData,
-                        k => new { BusinessUnitID = k.BusinessUnitID, ScanCode = k.ScanCode },
-                        d => new { BusinessUnitID = d.BusinessUnitId, ScanCode = d.ScanCode },
-                        (k, d) => new PrimePsgItemStoreDataModel
-                        {
-                            BusinessUnitId = d.BusinessUnitId,
-                            ItemId = d.ItemId,
-                            ItemTypeCode = d.ItemTypeCode,
-                            PsSubTeamNumber = d.PsSubTeamNumber,
-                            ScanCode = d.ScanCode,
-                            StoreName = d.StoreName,
-                            Region = d.Region
-                        });
+                var primePsgAddData = psgAddItemStoreKeys.Join(
+                    primePsgData,
+                    k => new { BusinessUnitID = k.BusinessUnitID, ScanCode = k.ScanCode },
+                    d => new { BusinessUnitID = d.BusinessUnitId, ScanCode = d.ScanCode },
+                    (k, d) => new PrimePsgItemStoreDataModel
+                    {
+                        BusinessUnitId = d.BusinessUnitId,
+                        ItemId = d.ItemId,
+                        ItemTypeCode = d.ItemTypeCode,
+                        PsSubTeamNumber = d.PsSubTeamNumber,
+                        ScanCode = d.ScanCode,
+                        StoreName = d.StoreName,
+                        Region = d.Region
+                    });
 
+                if (primePsgAddData.Any())
+                {
                     var primeAffinityMessageModels = BuildPrimeAffinityPsgMessage(primePsgAddData, ActionEnum.AddOrUpdate);
                     primeAffinityPsgProcessor.SendPsgs(new PrimeAffinityPsgProcessorParameters
                     {
@@ -53,23 +53,23 @@ namespace MammothWebApi.Service
                 }
 
                 // psg Deletes
-                if (psgDeleteItemStoreKeys.Count > 0)
-                {
-                    var primePsgDeletes = psgDeleteItemStoreKeys.Join(
-                        primePsgData,
-                        k => new { BusinessUnitID = k.BusinessUnitID, ScanCode = k.ScanCode, },
-                        d => new { BusinessUnitID = d.BusinessUnitId, ScanCode = d.ScanCode },
-                        (k, d) => new PrimePsgItemStoreDataModel
-                        {
-                            BusinessUnitId = d.BusinessUnitId,
-                            ItemId = d.ItemId,
-                            ItemTypeCode = d.ItemTypeCode,
-                            PsSubTeamNumber = d.PsSubTeamNumber,
-                            ScanCode = d.ScanCode,
-                            StoreName = d.StoreName,
-                            Region = d.Region
-                        });
+                var primePsgDeletes = psgDeleteItemStoreKeys.Join(
+                    primePsgData,
+                    k => new { BusinessUnitID = k.BusinessUnitID, ScanCode = k.ScanCode, },
+                    d => new { BusinessUnitID = d.BusinessUnitId, ScanCode = d.ScanCode },
+                    (k, d) => new PrimePsgItemStoreDataModel
+                    {
+                        BusinessUnitId = d.BusinessUnitId,
+                        ItemId = d.ItemId,
+                        ItemTypeCode = d.ItemTypeCode,
+                        PsSubTeamNumber = d.PsSubTeamNumber,
+                        ScanCode = d.ScanCode,
+                        StoreName = d.StoreName,
+                        Region = d.Region
+                    });
 
+                if (primePsgDeletes.Any())
+                {
                     var primeAffinityMessageModels = BuildPrimeAffinityPsgMessage(primePsgDeletes, ActionEnum.Delete);
                     primeAffinityPsgProcessor.SendPsgs(new PrimeAffinityPsgProcessorParameters
                     {
