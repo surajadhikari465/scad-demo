@@ -1,0 +1,6 @@
+﻿/* additional custom CSS for use with the dataTables.net bundle */
+
+/* remove some unneeded whitespace from the container for the body content*/
+div.body-content {
+    margin-left: 10px;
+}

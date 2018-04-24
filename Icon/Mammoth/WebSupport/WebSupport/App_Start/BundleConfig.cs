@@ -30,6 +30,15 @@
                  "~/Content/bootstrap.css",
                  "~/Content/bootstrap-datetimepicker.css",
                  "~/Content/site.css"));
+
+            // include script & style bundles for datatables.net interactive table
+            bundles.Add(new StyleBundle("~/bundles/datatableStyles")
+                .Include("~/Content/datatables.css")
+                .Include("~/Content/jquery.dataTables.css")
+                .Include("~/Content/custom-dataTables.css"));
+            bundles.Add(new ScriptBundle("~/bundles/datatableScripts")
+                .Include("~/Scripts/datatables.js")
+                .Include("~/Scripts/jquery.dataTables.js"));
         }
     }
 }
