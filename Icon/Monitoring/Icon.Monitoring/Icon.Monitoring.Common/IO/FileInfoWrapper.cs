@@ -10,7 +10,6 @@ namespace Icon.Monitoring.Common.IO
     public class FileInfoWrapper : IFileInfo
     {
         private FileInfo fileInfo;
-        private string path;
 
         public string Name => fileInfo.Name;
         public DateTime CreationTime => fileInfo.CreationTime;

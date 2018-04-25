@@ -242,7 +242,6 @@ namespace MammothWebApi.Tests.Services
                 case Attributes.IrmaVendorKey: return Attributes.Codes.IrmaVendorKey;
                 case Attributes.OrderedByInfor: return Attributes.Codes.OrderedByInfor;
                 case Attributes.GlobalPricingProgram: return Attributes.Codes.GlobalPricingProgram;
-                case Attributes.PercentageTareWeight: return Attributes.Codes.PercentageTareWeight;
                 case Attributes.AltRetailSize: return Attributes.Codes.AltRetailSize;
                 case Attributes.AltRetailUom: return Attributes.Codes.AltRetailUom;
                 case Attributes.FlexibleText : return Attributes.Codes.FlexibleText;

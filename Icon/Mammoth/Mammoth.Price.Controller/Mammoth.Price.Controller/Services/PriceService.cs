@@ -114,7 +114,7 @@ namespace Mammoth.Price.Controller.Services
                         break;
                 }
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
