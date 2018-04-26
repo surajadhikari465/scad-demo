@@ -156,7 +156,7 @@ BEGIN
 		,vsc.inforItemId AS 'ITEM_ID'
 		,s.BusinessUnit_ID AS 'STORE_NUMBER'
 		,CAST(p.POSSale_Price AS DECIMAL(9, 2)) AS 'PRICE'
-		,p.Multiple AS 'MULTIPLE'
+		,p.Sale_Multiple AS 'MULTIPLE'
 		,CASE 
 			WHEN ISNULL(rounit.Unit_Abbreviation, runit.Unit_Abbreviation) in ('LB', 'KG')
 				THEN 'LB'
