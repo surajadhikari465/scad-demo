@@ -25,8 +25,7 @@ BEGIN
       [merchandiseClassID],
       [insertDate],
 	  [irmaSubTeamName],
-	  [nationalClassID],
-	  [OrganicAgencyId])
+	  [nationalClassID])
 	select 
 		[RegionCode],
 		[Identifier],
@@ -45,8 +44,7 @@ BEGIN
 		[MerchandiseClassID],
 		GetDate(),
 		[IrmaSubTeamName],
-		[NationalClassID],
-		[OrganicAgencyId]  
+		[NationalClassID]  
 	from @IRMAItems
 END
 GO

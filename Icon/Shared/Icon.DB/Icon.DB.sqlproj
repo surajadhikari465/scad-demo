@@ -184,14 +184,12 @@
     <Build Include="app\Stored Procedures\UpdateItemListByTrait.sql" />
     <Build Include="app\Stored Procedures\PLUMapImportTEST.sql" />
     <Build Include="app\Stored Procedures\PLUMapImport.sql" />
-    <Build Include="app\Stored Procedures\ItemImport.sql" />
     <Build Include="app\Stored Procedures\HierarchyClassUpdate.sql" />
     <Build Include="app\Stored Procedures\ELMAH_LogError.sql" />
     <Build Include="app\Stored Procedures\ELMAH_GetErrorXml.sql" />
     <Build Include="app\Stored Procedures\ELMAH_GetErrorsXml.sql" />
     <Build Include="app\User Defined Types\PLUMapImportType.sql" />
     <Build Include="app\User Defined Types\ItemListByTraitType.sql" />
-    <Build Include="app\User Defined Types\ItemImportType.sql" />
     <Build Include="app\User Defined Types\ItemListByHierarchyClassType.sql" />
     <Build Include="app\User Defined Types\ScanCodeListType.sql" />
     <Build Include="app\Stored Procedures\UpdateItemHierarchyClass.sql" />
@@ -223,7 +221,6 @@
     <Build Include="app\Tables\MessageQueueProduct.sql" />
     <Build Include="app\Tables\MessageQueueHierarchy.sql" />
     <Build Include="app\Tables\MessageAction.sql" />
-    <Build Include="app\Stored Procedures\BulkItemAdd.sql" />
     <Build Include="app\Tables\MessageQueueLocale.sql" />
     <Build Include="app\Stored Procedures\GetExistingScanCodesImportValidation.sql" />
     <Build Include="app\Stored Procedures\GetNewScanCodesImportValidation.sql" />
@@ -678,7 +675,6 @@
   <ItemGroup>
     <None Include="Project_Readme.txt" />
     <Build Include="app\User Defined Types\TaxHierarchyClassUpdateType.sql" />
-    <Build Include="app\User Defined Types\ItemAddType.sql" />
     <None Include="Scripts\Projects\DataMonkey\VIMLoad\iCon_Connection.txt" />
     <None Include="Scripts\Projects\DataMonkey\VIMLoad\VIM_Item_iCon_Load.cfg" />
     <None Include="Scripts\Projects\DataMonkey\VIMJob\iCon_Connection.txt" />

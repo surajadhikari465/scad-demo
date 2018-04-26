@@ -27,7 +27,6 @@ namespace Icon.Testing.Builders
         private Nullable<int> merchandiseClassId;
         private System.DateTime insertDate;
         private Nullable<int> nationalClassId;
-        private Nullable<int> organicAgencyId;
 
         public TestIrmaItemBuilder()
         {
@@ -49,7 +48,6 @@ namespace Icon.Testing.Builders
             this.merchandiseClassId = null;
             this.insertDate = DateTime.Now;
             this.nationalClassId = null;
-            this.organicAgencyId = null;
         }
 
         public TestIrmaItemBuilder WithIrmaItemId(int irmaItemId)
@@ -159,12 +157,6 @@ namespace Icon.Testing.Builders
             return this;
         }
 
-        public TestIrmaItemBuilder WithOrganicAgencyId(int organicAgencyId)
-        {
-            this.organicAgencyId = organicAgencyId;
-            return this;
-        }
-
         public IRMAItem Build()
         {
             IRMAItem irmaItem = new IRMAItem();
@@ -186,7 +178,6 @@ namespace Icon.Testing.Builders
             irmaItem.merchandiseClassID = this.merchandiseClassId;
             irmaItem.insertDate = this.insertDate;
             irmaItem.nationalClassID = this.nationalClassId;
-            irmaItem.OrganicAgencyId = this.organicAgencyId;
 
             return irmaItem;
         }

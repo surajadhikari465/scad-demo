@@ -20,11 +20,6 @@ namespace Icon.Framework
             this.ItemHierarchyClass = new HashSet<ItemHierarchyClass>();
             this.HierarchyClassTrait = new HashSet<HierarchyClassTrait>();
             this.ProductSelectionGroup = new HashSet<ProductSelectionGroup>();
-            this.ItemSignAttribute = new HashSet<ItemSignAttribute>();
-            this.ItemSignAttribute1 = new HashSet<ItemSignAttribute>();
-            this.ItemSignAttribute2 = new HashSet<ItemSignAttribute>();
-            this.ItemSignAttribute3 = new HashSet<ItemSignAttribute>();
-            this.ItemSignAttribute4 = new HashSet<ItemSignAttribute>();
         }
     
         public int hierarchyClassID { get; set; }
@@ -40,10 +35,5 @@ namespace Icon.Framework
         public virtual HierarchyPrototype HierarchyPrototype { get; set; }
         public virtual ICollection<HierarchyClassTrait> HierarchyClassTrait { get; set; }
         public virtual ICollection<ProductSelectionGroup> ProductSelectionGroup { get; set; }
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute { get; set; }
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute1 { get; set; }
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute2 { get; set; }
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute3 { get; set; }
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute4 { get; set; }
     }
 }

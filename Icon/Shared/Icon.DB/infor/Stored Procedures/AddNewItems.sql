@@ -33,8 +33,7 @@ BEGIN
       merchandiseClassID,
       insertDate,
 	  irmaSubTeamName,
-	  nationalClassID,
-	  OrganicAgencyId)
+	  nationalClassID)
 	SELECT 
 		RegionCode,
 		Identifier,
@@ -53,8 +52,7 @@ BEGIN
 		MerchandiseClassID,
 		GetDate(),
 		IrmaSubTeamName,
-		NationalClassID,
-		OrganicAgencyId  
+		NationalClassID  
 	FROM @items i
 	WHERE NOT EXISTS
 	(

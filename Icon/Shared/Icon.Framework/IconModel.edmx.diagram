@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2a5f4ff7231f42409271498aab8ca17b" Name="Icon" ZoomLevel="108" DisplayType="false">
+      <Diagram DiagramId="2a5f4ff7231f42409271498aab8ca17b" Name="Icon" ZoomLevel="47" DisplayType="false">
         <EntityTypeShape EntityType="Icon.Framework.Model.Item" Width="1.5" PointX="3" PointY="4.875" />
         <EntityTypeShape EntityType="Icon.Framework.Model.ItemType" Width="1.5" PointX="0.75" PointY="5" />
         <EntityTypeShape EntityType="Icon.Framework.Model.ScanCode" Width="1.5" PointX="5.25" PointY="7.75" />
@@ -164,21 +164,8 @@
         <EntityTypeShape EntityType="Icon.Framework.Model.VimEventQueue" Width="1.5" PointX="29.625" PointY="28.25" />
         <EntityTypeShape EntityType="Icon.Framework.Model.VimEventType" Width="1.5" PointX="27.375" PointY="28.875" />
         <AssociationConnector Association="Icon.Framework.Model.FK_EventQueue_EventType2" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.IRMAItem" Width="1.5" PointX="7.375" PointY="28.75" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueNutrition" Width="1.5" PointX="27.875" PointY="31.75" />
         <AssociationConnector Association="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.ItemSignAttribute" Width="1.5" PointX="21.625" PointY="28.125" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_AnimalWelfareRatingId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_EcoScaleRatingId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_GlutenFreeAgencyId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_KosherAgencyId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_NonGmoAgencyId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_OrganicAgencyId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_VeganAgencyId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_CheeseMilkTypeId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodCatchTypeId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodFreshOrFrozenId" />
         <EntityTypeShape EntityType="Icon.Framework.Model.AuthorizedProductList" Width="1.5" PointX="4.25" PointY="46.625" />
         <AssociationConnector Association="Icon.Framework.Model.FK_ewic_AuthorizedProductList_Agency" />
         <AssociationConnector Association="Icon.Framework.Model.FK_ewic_Mapping_AuthorizedProductList" />
@@ -195,6 +182,14 @@
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageArchiveProduct" Width="1.5" PointX="11.375" PointY="4.75" />
         <EntityTypeShape EntityType="Icon.Framework.Model.InforMessageHistory" Width="1.5" PointX="19.375" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageArchiveHierarchy" Width="1.5" PointX="20.375" PointY="3.75" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.ItemSignAttribute" Width="1.5" PointX="21.625" PointY="28.5" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_AnimalWelfareRatingId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_EcoScaleRatingId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_CheeseMilkTypeId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodCatchTypeId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodFreshOrFrozenId" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.IRMAItem" Width="1.5" PointX="7.375" PointY="29.375" />
         </Diagram>
       <Diagram DiagramId="0eb77304f12b49cabc6727652309682d" Name="Item" ZoomLevel="62" >
         </Diagram>

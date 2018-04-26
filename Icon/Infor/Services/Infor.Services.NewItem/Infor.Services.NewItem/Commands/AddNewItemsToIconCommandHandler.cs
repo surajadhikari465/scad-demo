@@ -47,8 +47,7 @@ namespace Infor.Services.NewItem.Commands
                         TaxClassID = GetTaxClassId(i, taxClassCodesToIdDictionary),
                         MerchandiseClassID = (int?)null,
                         IrmaSubTeamName = i.SubTeamName,
-                        NationalClassID = GetNationalClassId(i, nationalClassCodesToIdDictionary),
-                        OrganicAgencyId = (int?)null
+                        NationalClassID = GetNationalClassId(i, nationalClassCodesToIdDictionary)
                     })
                     .ToTvp("items", "app.IRMAItemType");
 

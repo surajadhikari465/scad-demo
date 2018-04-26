@@ -338,32 +338,7 @@ AS (
 	FROM itemtrait OG
 	JOIN trait t ON OG.traitid = t.traitid
 		AND t.traitCode = 'NTS'
-	),
-ORG
-AS (
-
-SELECT
-	hc.hierarchyClassID			as HierarchyClassID,
-	hc.hierarchyClassName		as HierarchyClassName
-FROM
-	HierarchyClass hc
-	LEFT JOIN HierarchyClassTrait hctg on hc.hierarchyClassID = hctg.hierarchyClassID
-										 AND hctg.traitID = 31
-	LEFT JOIN HierarchyClassTrait hctk on hc.hierarchyClassID = hctk.hierarchyClassID
-										 AND hctk.traitID = 40
-	LEFT JOIN HierarchyClassTrait hctn on hc.hierarchyClassID = hctn.hierarchyClassID
-										 AND hctn.traitID = 35
-	LEFT JOIN HierarchyClassTrait hcto on hc.hierarchyClassID = hcto.hierarchyClassID
-										 AND hcto.traitID = 42
-	LEFT JOIN HierarchyClassTrait hctv on hc.hierarchyClassID = hctv.hierarchyClassID
-										 AND hctv.traitID = 38
-	LEFT JOIN HierarchyClassTrait htdo on hc.hierarchyClassID = htdo.hierarchyClassID
-										 AND htdo.traitID = 75
-										 AND htdo.traitValue = 42
-
-WHERE
-	hc.hierarchyID = 7
-)
+	)
 
 --Main Query Begins
 SELECT 
@@ -465,11 +440,11 @@ SELECT
 		ELSE '"Yes"'
 	END AS [Cheese Attribute: Raw],
 	CASE WHEN LTRIM(RTRIM(esr.Description)) IS NULL THEN 'NULL' ELSE esr.Description END as 'Eco-Scale Rating',
-	CASE WHEN LTRIM(RTRIM(GLU.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(GLU.HierarchyClassName)) + '"' END AS 'Gluten Free',
-	CASE WHEN LTRIM(RTRIM(KOS.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(KOS.HierarchyClassName)) + '"' END AS 'Kosher',
-	CASE WHEN LTRIM(RTRIM(GMO.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(GMO.HierarchyClassName)) + '"' END AS 'Non-GMO',
-	CASE WHEN LTRIM(RTRIM(ORG.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ORG.HierarchyClassName)) + '"' END AS 'Organic',
-	CASE WHEN LTRIM(RTRIM(VEG.HierarchyClassName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(VEG.HierarchyClassName)) + '"' END AS 'Vegan',
+	CASE WHEN LTRIM(RTRIM(ISA.GlutenFreeAgencyName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ISA.GlutenFreeAgencyName)) + '"' END AS 'Gluten Free',
+	CASE WHEN LTRIM(RTRIM(ISA.KosherAgencyName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ISA.KosherAgencyName)) + '"' END AS 'Kosher',
+	CASE WHEN LTRIM(RTRIM(ISA.NonGmoAgencyName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ISA.NonGmoAgencyName)) + '"' END AS 'Non-GMO',
+	CASE WHEN LTRIM(RTRIM(ISA.OrganicAgencyName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ISA.OrganicAgencyName)) + '"' END AS 'Organic',
+	CASE WHEN LTRIM(RTRIM(ISA.VeganAgencyName)) IS NULL THEN 'NULL' ELSE '"' + LTRIM(RTRIM(ISA.VeganAgencyName)) + '"' END AS 'Vegan',
 	CASE 
 		WHEN ISNULL(isa.Vegetarian, 0) = 0
 			THEN '"No"'
@@ -570,11 +545,6 @@ SELECT
 	END AS [Local Loan Producer]
 FROM scancode sc
 LEFT JOIN ItemSignAttribute ISA ON sc.itemID = isa.ItemID
-LEFT JOIN ORG ON isa.OrganicAgencyId = org.HierarchyClassID
-LEFT JOIN ORG GMO ON isa.NonGmoAgencyId = GMO.HierarchyClassID
-LEFT JOIN ORG VEG ON isa.VeganAgencyId = VEG.HierarchyClassID
-LEFT JOIN ORG GLU ON isa.GlutenFreeAgencyId = GLU.HierarchyClassID
-LEFT JOIN ORG KOS ON isa.KosherAgencyId = KOS.HierarchyClassID
 LEFT JOIN dpt on sc.itemid = dpt.itemid
 LEFT JOIN ds on sc.itemid = ds.itemid
 LEFT JOIN prh on sc.itemid = prh.itemid

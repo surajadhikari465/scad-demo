@@ -15,7 +15,6 @@ CREATE TYPE [app].[IRMAItemType] AS TABLE(
 	[TaxClassID] [int] NULL,
 	[MerchandiseClassID] [int] NULL,
 	[IrmaSubTeamName] [varchar](100) NULL,
-	[NationalClassID] [int] NULL,
-	[OrganicAgencyId] [int] NULL
+	[NationalClassID] [int] NULL
 )
 GO
