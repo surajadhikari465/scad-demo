@@ -760,7 +760,6 @@
     <Build Include="dbo\User Defined Types\IntListType.sql" />
     <Build Include="stage\Stored Procedures\MassInsertToItemStoreKeysEPlum.sql" />
     <Build Include="stage\Stored Procedures\MassInsertToItemStoreKeysEsl.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AlterItemAttributes_ExtAttributeValueColumnSize.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddMessageArchiveDetailPrimePsgToRetentionPolicy.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddPrimeAffinityControllerToAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddPrimePsgMessageType.sql" />
@@ -771,6 +770,8 @@
     <None Include="Scripts\PostDeploymentScripts\AddIrmaPriceMessageType.sql" />
     <Build Include="esb\Tables\PriceMessageArchiveDetail.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddPriceArchiveTablesToRetentionPolicyTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AlterItemAttributes_ExtAttributeValueColumnSize.sql" />
+    <None Include="Scripts\PreDeploymentScripts\Archive\TruncateItemLocaleStagingTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -781,7 +782,6 @@
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
-    <None Include="Scripts\PreDeploymentScripts\TruncateItemLocaleStagingTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\RemovePercentageTareWeightFromAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
