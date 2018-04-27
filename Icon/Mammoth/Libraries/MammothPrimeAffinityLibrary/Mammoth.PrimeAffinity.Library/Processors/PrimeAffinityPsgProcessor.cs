@@ -5,6 +5,7 @@ using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.PrimeAffinity.Library.Commands;
 using Mammoth.PrimeAffinity.Library.Constants;
+using Mammoth.PrimeAffinity.Library.Esb;
 using Mammoth.PrimeAffinity.Library.MessageBuilders;
 using MoreLinq;
 using System;
@@ -38,9 +39,8 @@ namespace Mammoth.PrimeAffinity.Library.Processors
         public void SendPsgs(PrimeAffinityPsgProcessorParameters parameters)
         {
             logger.Info(new { Message = "Sending Prime Affinity PSGs.", Region = parameters.Region, MessageAction = parameters.MessageAction.ToString() }.ToJson());
-            using (var producer = esbConnectionFactory.CreateProducer())
+            using (var producer = EsbConnectionCache.CreateProducer())
             {
-                producer.OpenConnection();
                 foreach (var psgBatch in parameters.PrimeAffinityMessageModels.Batch(100))
                 {
                     foreach (var psgBatchGroup in psgBatch.GroupBy(b => b.BusinessUnitID))

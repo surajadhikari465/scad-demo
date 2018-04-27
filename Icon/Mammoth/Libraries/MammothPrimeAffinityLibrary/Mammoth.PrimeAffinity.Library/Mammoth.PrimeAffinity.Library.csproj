@@ -103,6 +103,7 @@
     </Reference>
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -127,6 +128,9 @@
     <Compile Include="Commands\ArchivePrimeAffinityMessageCommand.cs" />
     <Compile Include="Commands\ArchivePrimeAffinityMessageCommandHandler.cs" />
     <Compile Include="Constants\PrimeAffinityConstants.cs" />
+    <Compile Include="Esb\CacheEsbProducer.cs" />
+    <Compile Include="Esb\EsbConnectionCache.cs" />
+    <Compile Include="Esb\ICacheEsbProducer.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="MessageBuilders\PrimeAffinityMessageBuilder.cs" />
     <Compile Include="MessageBuilders\PrimeAffinityMessageBuilderParameters.cs" />

@@ -8,14 +8,18 @@ using Mammoth.Common.DataAccess.DbProviders;
 using Mammoth.Common.Email;
 using Mammoth.Logging;
 using Mammoth.PrimeAffinity.Library.Commands;
+using Mammoth.PrimeAffinity.Library.Esb;
 using Mammoth.PrimeAffinity.Library.MessageBuilders;
 using Mammoth.PrimeAffinity.Library.Processors;
+using MammothWebApi.BackgroundJobs;
 using MammothWebApi.Common;
 using MammothWebApi.DataAccess.Models;
 using MammothWebApi.DataAccess.Queries;
 using MammothWebApi.Email;
 using MammothWebApi.Service.Decorators;
 using MammothWebApi.Service.Services;
+using Quartz;
+using Quartz.Impl;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
 using SimpleInjector.Lifestyles;
@@ -49,7 +53,7 @@ namespace MammothWebApi
             // Services
             container.Register(typeof(IUpdateService<>), new[] { typeof(IUpdateService<>).Assembly }, Lifestyle.Scoped);
             container.Register(typeof(IQueryService<,>), new[] { typeof(IQueryService<,>).Assembly }, Lifestyle.Scoped);
-            
+
             // Email Builders
             container.Register(typeof(IEmailMessageBuilder<>), typeof(EmailMessageBuilder<>), Lifestyle.Scoped);
 
@@ -76,12 +80,34 @@ namespace MammothWebApi
                 DbConnectionQueryHandlerDecorator<GetLocalesByBusinessUnitsQuery, IEnumerable<Locales>>>(Lifestyle.Scoped);
             container.RegisterDecorator<IQueryHandler<GetItemPriceAttributesByStoreAndScanCodeQuery, IEnumerable<ItemStorePriceModel>>,
                 DbConnectionQueryHandlerDecorator<GetItemPriceAttributesByStoreAndScanCodeQuery, IEnumerable<ItemStorePriceModel>>>(Lifestyle.Scoped);
+            container.Register<ReconnectToEsbJob>();
 
             container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
             container.Verify();
 
             GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            EsbConnectionCache.EsbConnectionSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10");
+            EsbConnectionCache.InitializeConnectionFactoryAndConnection();
+            ScheduleEsbReconnectJob(container);
+        }
+
+        private void ScheduleEsbReconnectJob(Container container)
+        {
+            IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
+            scheduler.JobFactory = new JobFactory(container);
+            scheduler.Start();
+
+            IJobDetail job = JobBuilder.Create<ReconnectToEsbJob>().Build();
+
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithSimpleSchedule(
+                    s => s.WithIntervalInSeconds(3)
+                        .RepeatForever())
+                .Build();
+
+            scheduler.ScheduleJob(job, trigger);
         }
     }
 }
