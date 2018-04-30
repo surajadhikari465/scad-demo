@@ -31,8 +31,9 @@ FROM dbo.Price_SP
 UNION ALL 
 SELECT PriceID, Region, ItemID, BusinessUnitID, StartDate, EndDate, Price, PriceType, PriceUOM, CurrencyID, Multiple, AddedDate, ModifiedDate
 FROM dbo.Price_SW
+UNION ALL
+SELECT PriceID, Region, ItemID, BusinessUnitID, StartDate, EndDate, Price, PriceType, PriceUOM, CurrencyID, Multiple, AddedDate, ModifiedDate
+FROM dbo.Price_TS
 UNION ALL 
 SELECT PriceID, Region, ItemID, BusinessUnitID, StartDate, EndDate, Price, PriceType, PriceUOM, CurrencyID, Multiple, AddedDate, ModifiedDate
 FROM dbo.Price_UK
-
-
