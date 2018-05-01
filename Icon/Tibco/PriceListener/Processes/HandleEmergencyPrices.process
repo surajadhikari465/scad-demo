@@ -122,7 +122,7 @@
         </config>
         <pd:inputBindings>
             <pfx:MammothPrices>
-                <xsl:for-each select="$Start/root/pfx:MammothPrices/pfx:MammothPrice[&#xA;tib:compare-date(tib:parse-date(&quot;yyyy-MM-dd&quot;, pfx:StartDate), tib:parse-date(&quot;yyyy-MM-dd&quot;, current-date())) = 0&#xA;or (upper-case(pfx:Action) = &quot;UPDATE&quot;&#xA;&#x9;and upper-case(pfx:PriceType) = &quot;TPR&quot;&#xA; &#x9;and (tib:compare-date(tib:parse-date(&quot;yyyy-MM-dd&quot;, pfx:StartDate), tib:parse-date(&quot;yyyy-MM-dd&quot;, current-date())) = -1 ))]">
+                <xsl:for-each select="$Start/root/pfx:MammothPrices/pfx:MammothPrice[&#xA;tib:compare-date(tib:parse-date(&quot;yyyy-MM-dd&quot;, pfx:StartDate), tib:parse-date(&quot;yyyy-MM-dd&quot;, current-date())) = 0&#xA;or ((upper-case(pfx:Action) = &quot;UPDATE&quot; or upper-case(pfx:Action) = &quot;DELETE&quot;)&#xA;&#x9;and upper-case(pfx:PriceType) = &quot;TPR&quot;&#xA; &#x9;and (tib:compare-date(tib:parse-date(&quot;yyyy-MM-dd&quot;, pfx:StartDate), tib:parse-date(&quot;yyyy-MM-dd&quot;, current-date())) = -1 ))]">
                     <pfx:MammothPrice>
                         <pfx:Region>
                             <xsl:value-of select="pfx:Region"/>
