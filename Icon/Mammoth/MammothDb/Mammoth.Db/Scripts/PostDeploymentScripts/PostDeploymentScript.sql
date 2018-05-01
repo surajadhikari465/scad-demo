@@ -15,6 +15,7 @@ Post-Deployment Script Template
 :r AddIrmaPriceMessageType.sql --2018.04.11 PBI 25853
 :r AddPriceArchiveTablesToRetentionPolicyTable.sql --2018.04.13 PBI 25853
 :r RemovePercentageTareWeightFromAttributesTable.sql --2018.04.11 PBI 26526
+:r UpdateFairTradeCertifiedAttribute.sql --2018.04.27 PBI 26696
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql

@@ -17,7 +17,7 @@ WHERE l.BusinessUnitID = @BusinessUnitID
 
 -- Set Attribute IDs
 DECLARE @flexTextId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'FXT');
-DECLARE @fairTradeId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'FT');
+DECLARE @fairTradeId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'FTC');
 DECLARE @madeOrgGrapes INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'MOG');
 DECLARE @madeBiodynamicGrapes INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'MBG');
 DECLARE @nutritionRequiredId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'NR');

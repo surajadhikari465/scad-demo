@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Mammoth.Db", "Mammoth.Db\Mammoth.Db.sqlproj", "{02A2C5E5-1AB1-4624-8760-F41C738A1E73}"
 EndProject
@@ -12,6 +12,7 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		QA|Any CPU = QA|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{02A2C5E5-1AB1-4624-8760-F41C738A1E73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -23,6 +24,9 @@ Global
 		{02A2C5E5-1AB1-4624-8760-F41C738A1E73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02A2C5E5-1AB1-4624-8760-F41C738A1E73}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02A2C5E5-1AB1-4624-8760-F41C738A1E73}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{02A2C5E5-1AB1-4624-8760-F41C738A1E73}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{02A2C5E5-1AB1-4624-8760-F41C738A1E73}.Test|Any CPU.Build.0 = Test|Any CPU
+		{02A2C5E5-1AB1-4624-8760-F41C738A1E73}.Test|Any CPU.Deploy.0 = Test|Any CPU
 		{8E1CB515-6B88-43C8-8178-2D6102EA4DDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E1CB515-6B88-43C8-8178-2D6102EA4DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E1CB515-6B88-43C8-8178-2D6102EA4DDA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -32,20 +36,14 @@ Global
 		{8E1CB515-6B88-43C8-8178-2D6102EA4DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E1CB515-6B88-43C8-8178-2D6102EA4DDA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E1CB515-6B88-43C8-8178-2D6102EA4DDA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8E1CB515-6B88-43C8-8178-2D6102EA4DDA}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{8E1CB515-6B88-43C8-8178-2D6102EA4DDA}.Test|Any CPU.Build.0 = Test|Any CPU
+		{8E1CB515-6B88-43C8-8178-2D6102EA4DDA}.Test|Any CPU.Deploy.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Mammoth.Db\\Mammoth.Db.sqlproj
-		SccProjectName1 = Mammoth.Db
-		SccLocalPath1 = Mammoth.Db
-		SccProjectUniqueName2 = MammothStaging.Db\\MammothStaging.Db.sqlproj
-		SccProjectName2 = MammothStaging.Db
-		SccLocalPath2 = MammothStaging.Db
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {93C2BB89-EAF1-4052-B2D6-3D8E76B74508}
 	EndGlobalSection
 EndGlobal
