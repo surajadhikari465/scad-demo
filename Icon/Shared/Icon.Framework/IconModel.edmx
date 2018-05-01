@@ -74,16 +74,11 @@
           <Property Name="CheeseMilkTypeId" Type="int" />
           <Property Name="CheeseRaw" Type="bit" />
           <Property Name="EcoScaleRatingId" Type="int" />
-          <Property Name="GlutenFreeAgencyId" Type="int" />
           <Property Name="HealthyEatingRatingId" Type="int" />
-          <Property Name="KosherAgencyId" Type="int" />
           <Property Name="Msc" Type="bit" />
-          <Property Name="NonGmoAgencyId" Type="int" />
-          <Property Name="OrganicAgencyId" Type="int" />
           <Property Name="PremiumBodyCare" Type="bit" />
           <Property Name="SeafoodFreshOrFrozenId" Type="int" />
           <Property Name="SeafoodCatchTypeId" Type="int" />
-          <Property Name="VeganAgencyId" Type="int" />
           <Property Name="Vegetarian" Type="bit" />
           <Property Name="WholeTrade" Type="bit" />
           <Property Name="GrassFed" Type="bit" />
@@ -495,7 +490,6 @@
           <Property Name="CustomerFriendlyDescription" Type="nvarchar" MaxLength="60" />
           <Property Name="NutritionRequired" Type="nvarchar" MaxLength="255" />
           <Property Name="GlobalPricingProgram" Type="nvarchar" MaxLength="255" />
-          <Property Name="PercentageTareWeight" Type="nvarchar" MaxLength="255" />
           <Property Name="SelfCheckoutItemTareGroup" Type="nvarchar" MaxLength="60" />
           <Property Name="FlexibleText" Type="nvarchar" MaxLength="300" />
           <Property Name="ShelfLife" Type="int" />
@@ -864,20 +858,15 @@
           <Property Name="CheeseMilkTypeId" Type="int" />
           <Property Name="CheeseRaw" Type="bit" Nullable="false" />
           <Property Name="EcoScaleRatingId" Type="int" />
-          <Property Name="GlutenFreeAgencyId" Type="int" />
           <Property Name="GlutenFreeAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="HealthyEatingRatingId" Type="int" />
-          <Property Name="KosherAgencyId" Type="int" />
           <Property Name="KosherAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="Msc" Type="bit" Nullable="false" />
-          <Property Name="NonGmoAgencyId" Type="int" />
           <Property Name="NonGmoAgencyName" Type="nvarchar" MaxLength="255" />
-          <Property Name="OrganicAgencyId" Type="int" />
           <Property Name="OrganicAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="PremiumBodyCare" Type="bit" Nullable="false" />
           <Property Name="SeafoodFreshOrFrozenId" Type="int" />
           <Property Name="SeafoodCatchTypeId" Type="int" />
-          <Property Name="VeganAgencyId" Type="int" />
           <Property Name="VeganAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="Vegetarian" Type="bit" Nullable="false" />
           <Property Name="WholeTrade" Type="bit" Nullable="false" />
@@ -1677,18 +1666,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ItemSignAttribute_GlutenFreeAgencyId">
-          <End Role="HierarchyClass" Type="Self.HierarchyClass" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="GlutenFreeAgencyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ItemSignAttribute_ItemId">
           <End Role="Item" Type="Self.Item" Multiplicity="1" />
           <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
@@ -1698,42 +1675,6 @@
             </Principal>
             <Dependent Role="ItemSignAttribute">
               <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_KosherAgencyId">
-          <End Role="HierarchyClass" Type="Self.HierarchyClass" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="KosherAgencyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_NonGmoAgencyId">
-          <End Role="HierarchyClass" Type="Self.HierarchyClass" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="NonGmoAgencyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_OrganicAgencyId">
-          <End Role="HierarchyClass" Type="Self.HierarchyClass" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="OrganicAgencyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1758,18 +1699,6 @@
             </Principal>
             <Dependent Role="ItemSignAttribute">
               <PropertyRef Name="SeafoodFreshOrFrozenId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_VeganAgencyId">
-          <End Role="HierarchyClass" Type="Self.HierarchyClass" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="VeganAgencyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2868,24 +2797,8 @@
             <End Role="EcoScaleRating" EntitySet="EcoScaleRating" />
             <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
           </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_GlutenFreeAgencyId" Association="Self.FK_ItemSignAttribute_GlutenFreeAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
           <AssociationSet Name="FK_ItemSignAttribute_ItemId" Association="Self.FK_ItemSignAttribute_ItemId">
             <End Role="Item" EntitySet="Item" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_KosherAgencyId" Association="Self.FK_ItemSignAttribute_KosherAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_NonGmoAgencyId" Association="Self.FK_ItemSignAttribute_NonGmoAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_OrganicAgencyId" Association="Self.FK_ItemSignAttribute_OrganicAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
             <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
           </AssociationSet>
           <AssociationSet Name="FK_ItemSignAttribute_SeafoodCatchTypeId" Association="Self.FK_ItemSignAttribute_SeafoodCatchTypeId">
@@ -2894,10 +2807,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_ItemSignAttribute_SeafoodFreshOrFrozenId" Association="Self.FK_ItemSignAttribute_SeafoodFreshOrFrozenId">
             <End Role="SeafoodFreshOrFrozen" EntitySet="SeafoodFreshOrFrozen" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_VeganAgencyId" Association="Self.FK_ItemSignAttribute_VeganAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
             <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
           </AssociationSet>
           <AssociationSet Name="FK_MessageHistory_MessageStatus" Association="Self.FK_MessageHistory_MessageStatus">
@@ -3622,7 +3531,6 @@
             <End Role="EventType2" EntitySet="VimEventType" />
             <End Role="EventQueue2" EntitySet="VimEventQueue" />
           </AssociationSet>
-          <EntitySet Name="IRMAItem" EntityType="Icon.Framework.Model.IRMAItem" />
           <FunctionImport Name="ApplyMerchTaxMappingToItems">
             <Parameter Name="MerchandiseClassId" Mode="In" Type="Int32" />
             <Parameter Name="TaxClassId" Mode="In" Type="Int32" />
@@ -3632,51 +3540,6 @@
           <AssociationSet Name="FK_app__MessageQueueNutrition_MessageQueueId" Association="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId">
             <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
             <End Role="MessageQueueNutrition" EntitySet="MessageQueueNutrition" />
-          </AssociationSet>
-          <EntitySet Name="ItemSignAttribute" EntityType="Icon.Framework.Model.ItemSignAttribute" />
-          <AssociationSet Name="FK_ItemSignAttribute_AnimalWelfareRatingId" Association="Icon.Framework.Model.FK_ItemSignAttribute_AnimalWelfareRatingId">
-            <End Role="AnimalWelfareRating" EntitySet="AnimalWelfareRating" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_EcoScaleRatingId" Association="Icon.Framework.Model.FK_ItemSignAttribute_EcoScaleRatingId">
-            <End Role="EcoScaleRating" EntitySet="EcoScaleRating" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_GlutenFreeAgencyId" Association="Icon.Framework.Model.FK_ItemSignAttribute_GlutenFreeAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_KosherAgencyId" Association="Icon.Framework.Model.FK_ItemSignAttribute_KosherAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_NonGmoAgencyId" Association="Icon.Framework.Model.FK_ItemSignAttribute_NonGmoAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_OrganicAgencyId" Association="Icon.Framework.Model.FK_ItemSignAttribute_OrganicAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_VeganAgencyId" Association="Icon.Framework.Model.FK_ItemSignAttribute_VeganAgencyId">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_ItemId" Association="Icon.Framework.Model.FK_ItemSignAttribute_ItemId">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_CheeseMilkTypeId" Association="Icon.Framework.Model.FK_ItemSignAttribute_CheeseMilkTypeId">
-            <End Role="MilkType" EntitySet="MilkType" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_SeafoodCatchTypeId" Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodCatchTypeId">
-            <End Role="SeafoodCatchType" EntitySet="SeafoodCatchType" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_SeafoodFreshOrFrozenId" Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodFreshOrFrozenId">
-            <End Role="SeafoodFreshOrFrozen" EntitySet="SeafoodFreshOrFrozen" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
           </AssociationSet>
           <EntitySet Name="AuthorizedProductList" EntityType="Icon.Framework.Model.AuthorizedProductList" />
           <AssociationSet Name="FK_ewic_AuthorizedProductList_Agency" Association="Icon.Framework.Model.FK_ewic_AuthorizedProductList_Agency">
@@ -3724,6 +3587,32 @@
           <EntitySet Name="MessageArchiveProduct" EntityType="Icon.Framework.Model.MessageArchiveProduct" />
           <EntitySet Name="InforMessageHistory" EntityType="Icon.Framework.Model.InforMessageHistory" />
           <EntitySet Name="MessageArchiveHierarchy" EntityType="Icon.Framework.Model.MessageArchiveHierarchy" />
+          <EntitySet Name="ItemSignAttribute" EntityType="Icon.Framework.Model.ItemSignAttribute" />
+          <AssociationSet Name="FK_ItemSignAttribute_AnimalWelfareRatingId" Association="Icon.Framework.Model.FK_ItemSignAttribute_AnimalWelfareRatingId">
+            <End Role="AnimalWelfareRating" EntitySet="AnimalWelfareRating" />
+            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSignAttribute_EcoScaleRatingId" Association="Icon.Framework.Model.FK_ItemSignAttribute_EcoScaleRatingId">
+            <End Role="EcoScaleRating" EntitySet="EcoScaleRating" />
+            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSignAttribute_ItemId" Association="Icon.Framework.Model.FK_ItemSignAttribute_ItemId">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSignAttribute_CheeseMilkTypeId" Association="Icon.Framework.Model.FK_ItemSignAttribute_CheeseMilkTypeId">
+            <End Role="MilkType" EntitySet="MilkType" />
+            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSignAttribute_SeafoodCatchTypeId" Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodCatchTypeId">
+            <End Role="SeafoodCatchType" EntitySet="SeafoodCatchType" />
+            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSignAttribute_SeafoodFreshOrFrozenId" Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodFreshOrFrozenId">
+            <End Role="SeafoodFreshOrFrozen" EntitySet="SeafoodFreshOrFrozen" />
+            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
+          </AssociationSet>
+          <EntitySet Name="IRMAItem" EntityType="Icon.Framework.Model.IRMAItem" />
           </EntityContainer>
         <EnumType Name="HierarchyName" a:ExternalTypeName="Icon.Framework.Enums.HierarchyName" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="TraitDescription" a:ExternalTypeName="Icon.Framework.Enums.TraitDescription" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -3740,9 +3629,9 @@
           <NavigationProperty Name="ItemTrait" Relationship="Icon.Framework.Model.Item_ItemTrait_FK1" FromRole="Item" ToRole="ItemTrait" />
           <NavigationProperty Name="ItemPrice" Relationship="Icon.Framework.Model.Item_ItemPrice_FK1" FromRole="Item" ToRole="ItemPrice" />
           <Property Name="productKey" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" FromRole="Item" ToRole="ItemSignAttribute" />
           <NavigationProperty Name="ItemLink" Relationship="Icon.Framework.Model.Item_ItemLink_FK1" FromRole="Item" ToRole="ItemLink" />
           <NavigationProperty Name="ItemLink1" Relationship="Icon.Framework.Model.Item_ItemLink_FK2" FromRole="Item" ToRole="ItemLink" />
+          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" FromRole="Item" ToRole="ItemSignAttribute" />
         </EntityType>
         <EntityType Name="ItemType">
           <Key>
@@ -3853,11 +3742,6 @@
           <NavigationProperty Name="HierarchyPrototype" Relationship="Icon.Framework.Model.HierarchyPrototype_HierarchyClass_FK1" FromRole="HierarchyClass" ToRole="HierarchyPrototype" />
           <NavigationProperty Name="HierarchyClassTrait" Relationship="Icon.Framework.Model.HierarchyClass_HierarchyClassTrait_FK1" FromRole="HierarchyClass" ToRole="HierarchyClassTrait" />
           <NavigationProperty Name="ProductSelectionGroup" Relationship="Icon.Framework.Model.FK__ProductSelectionGroup_MerchandiseHierarchyClass" FromRole="HierarchyClass" ToRole="ProductSelectionGroup" />
-          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_GlutenFreeAgencyId" FromRole="HierarchyClass" ToRole="ItemSignAttribute" />
-          <NavigationProperty Name="ItemSignAttribute1" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_KosherAgencyId" FromRole="HierarchyClass" ToRole="ItemSignAttribute" />
-          <NavigationProperty Name="ItemSignAttribute2" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_NonGmoAgencyId" FromRole="HierarchyClass" ToRole="ItemSignAttribute" />
-          <NavigationProperty Name="ItemSignAttribute3" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_OrganicAgencyId" FromRole="HierarchyClass" ToRole="ItemSignAttribute" />
-          <NavigationProperty Name="ItemSignAttribute4" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_VeganAgencyId" FromRole="HierarchyClass" ToRole="ItemSignAttribute" />
           </EntityType>
         <EntityType Name="HierarchyPrototype">
           <Key>
@@ -5950,55 +5834,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="IRMAItem">
-          <Key>
-            <PropertyRef Name="irmaItemID" />
-          </Key>
-          <Property Name="irmaItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="regioncode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="identifier" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
-          <Property Name="defaultIdentifier" Type="Boolean" Nullable="false" />
-          <Property Name="brandName" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="itemDescription" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="posDescription" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="packageUnit" Type="Int32" Nullable="false" />
-          <Property Name="retailSize" Type="Decimal" Precision="9" Scale="4" />
-          <Property Name="retailUom" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="foodStamp" Type="Boolean" Nullable="false" />
-          <Property Name="posScaleTare" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="departmentSale" Type="Boolean" Nullable="false" />
-          <Property Name="giftCard" Type="Boolean" />
-          <Property Name="taxClassID" Type="Int32" />
-          <Property Name="irmaSubTeamName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="merchandiseClassID" Type="Int32" />
-          <Property Name="nationalClassID" Type="Int32" />
-          <Property Name="insertDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AnimalWelfareRatingId" Type="Int32" />
-          <Property Name="Biodynamic" Type="Boolean" />
-          <Property Name="CheeseMilkTypeId" Type="Int32" />
-          <Property Name="CheeseRaw" Type="Boolean" />
-          <Property Name="EcoScaleRatingId" Type="Int32" />
-          <Property Name="GlutenFreeAgencyId" Type="Int32" />
-          <Property Name="HealthyEatingRatingId" Type="Int32" />
-          <Property Name="KosherAgencyId" Type="Int32" />
-          <Property Name="NonGmoAgencyId" Type="Int32" />
-          <Property Name="OrganicAgencyId" Type="Int32" />
-          <Property Name="PremiumBodyCare" Type="Boolean" />
-          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" />
-          <Property Name="SeafoodCatchTypeId" Type="Int32" />
-          <Property Name="VeganAgencyId" Type="Int32" />
-          <Property Name="Vegetarian" Type="Boolean" />
-          <Property Name="WholeTrade" Type="Boolean" />
-          <Property Name="GrassFed" Type="Boolean" />
-          <Property Name="PastureRaised" Type="Boolean" />
-          <Property Name="FreeRange" Type="Boolean" />
-          <Property Name="DryAged" Type="Boolean" />
-          <Property Name="AirChilled" Type="Boolean" />
-          <Property Name="MadeInHouse" Type="Boolean" />
-          <Property Name="Msc" Type="Boolean" />
-          <Property Name="DeliverySystem" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="AlcoholByVolume" Type="Decimal" Precision="5" Scale="2" />
-        </EntityType>
         <ComplexType Name="GetDefaultTaxClassMismatches_Result">
           <Property Type="String" Name="ScanCode" Nullable="false" MaxLength="13" />
           <Property Type="String" Name="Brand" Nullable="true" MaxLength="255" />
@@ -6090,185 +5925,6 @@
             <OnDelete Action="Cascade" />
           </End>
           <End Type="Icon.Framework.Model.MessageQueueNutrition" Role="MessageQueueNutrition" Multiplicity="*" />
-        </Association>
-        <EntityType Name="ItemSignAttribute">
-          <Key>
-            <PropertyRef Name="ItemSignAttributeID" />
-          </Key>
-          <Property Name="ItemSignAttributeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ItemID" Type="Int32" Nullable="false" />
-          <Property Name="AnimalWelfareRatingId" Type="Int32" />
-          <Property Name="Biodynamic" Type="Boolean" Nullable="false" />
-          <Property Name="CheeseMilkTypeId" Type="Int32" />
-          <Property Name="CheeseRaw" Type="Boolean" Nullable="false" />
-          <Property Name="EcoScaleRatingId" Type="Int32" />
-          <Property Name="GlutenFreeAgencyId" Type="Int32" />
-          <Property Name="HealthyEatingRatingId" Type="Int32" />
-          <Property Name="KosherAgencyId" Type="Int32" />
-          <Property Name="Msc" Type="Boolean" Nullable="false" />
-          <Property Name="NonGmoAgencyId" Type="Int32" />
-          <Property Name="OrganicAgencyId" Type="Int32" />
-          <Property Name="PremiumBodyCare" Type="Boolean" Nullable="false" />
-          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" />
-          <Property Name="SeafoodCatchTypeId" Type="Int32" />
-          <Property Name="VeganAgencyId" Type="Int32" />
-          <Property Name="Vegetarian" Type="Boolean" Nullable="false" />
-          <Property Name="WholeTrade" Type="Boolean" Nullable="false" />
-          <Property Name="GrassFed" Type="Boolean" Nullable="false" />
-          <Property Name="PastureRaised" Type="Boolean" Nullable="false" />
-          <Property Name="FreeRange" Type="Boolean" Nullable="false" />
-          <Property Name="DryAged" Type="Boolean" Nullable="false" />
-          <Property Name="AirChilled" Type="Boolean" Nullable="false" />
-          <Property Name="MadeInHouse" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="AnimalWelfareRating" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_AnimalWelfareRatingId" FromRole="ItemSignAttribute" ToRole="AnimalWelfareRating" />
-          <NavigationProperty Name="EcoScaleRating" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_EcoScaleRatingId" FromRole="ItemSignAttribute" ToRole="EcoScaleRating" />
-          <NavigationProperty Name="HierarchyClass" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_GlutenFreeAgencyId" FromRole="ItemSignAttribute" ToRole="HierarchyClass" />
-          <NavigationProperty Name="HierarchyClass1" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_KosherAgencyId" FromRole="ItemSignAttribute" ToRole="HierarchyClass" />
-          <NavigationProperty Name="HierarchyClass2" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_NonGmoAgencyId" FromRole="ItemSignAttribute" ToRole="HierarchyClass" />
-          <NavigationProperty Name="HierarchyClass3" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_OrganicAgencyId" FromRole="ItemSignAttribute" ToRole="HierarchyClass" />
-          <NavigationProperty Name="HierarchyClass4" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_VeganAgencyId" FromRole="ItemSignAttribute" ToRole="HierarchyClass" />
-          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" FromRole="ItemSignAttribute" ToRole="Item" />
-          <NavigationProperty Name="MilkType" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_CheeseMilkTypeId" FromRole="ItemSignAttribute" ToRole="MilkType" />
-          <NavigationProperty Name="SeafoodCatchType" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodCatchTypeId" FromRole="ItemSignAttribute" ToRole="SeafoodCatchType" />
-          <NavigationProperty Name="SeafoodFreshOrFrozen" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodFreshOrFrozenId" FromRole="ItemSignAttribute" ToRole="SeafoodFreshOrFrozen" />
-          <Property Name="GlutenFreeAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="KosherAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="NonGmoAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="OrganicAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="VeganAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_ItemSignAttribute_AnimalWelfareRatingId">
-          <End Type="Icon.Framework.Model.AnimalWelfareRating" Role="AnimalWelfareRating" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AnimalWelfareRating">
-              <PropertyRef Name="AnimalWelfareRatingId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="AnimalWelfareRatingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_EcoScaleRatingId">
-          <End Type="Icon.Framework.Model.EcoScaleRating" Role="EcoScaleRating" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EcoScaleRating">
-              <PropertyRef Name="EcoScaleRatingId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="EcoScaleRatingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_GlutenFreeAgencyId">
-          <End Type="Icon.Framework.Model.HierarchyClass" Role="HierarchyClass" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="GlutenFreeAgencyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_KosherAgencyId">
-          <End Type="Icon.Framework.Model.HierarchyClass" Role="HierarchyClass" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="KosherAgencyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_NonGmoAgencyId">
-          <End Type="Icon.Framework.Model.HierarchyClass" Role="HierarchyClass" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="NonGmoAgencyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_OrganicAgencyId">
-          <End Type="Icon.Framework.Model.HierarchyClass" Role="HierarchyClass" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="OrganicAgencyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_VeganAgencyId">
-          <End Type="Icon.Framework.Model.HierarchyClass" Role="HierarchyClass" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HierarchyClass">
-              <PropertyRef Name="hierarchyClassID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="VeganAgencyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_ItemId">
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="itemID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_CheeseMilkTypeId">
-          <End Type="Icon.Framework.Model.MilkType" Role="MilkType" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MilkType">
-              <PropertyRef Name="MilkTypeId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="CheeseMilkTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_SeafoodCatchTypeId">
-          <End Type="Icon.Framework.Model.SeafoodCatchType" Role="SeafoodCatchType" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SeafoodCatchType">
-              <PropertyRef Name="SeafoodCatchTypeId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="SeafoodCatchTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_SeafoodFreshOrFrozenId">
-          <End Type="Icon.Framework.Model.SeafoodFreshOrFrozen" Role="SeafoodFreshOrFrozen" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SeafoodFreshOrFrozen">
-              <PropertyRef Name="SeafoodFreshOrFrozenId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="SeafoodFreshOrFrozenId" />
-            </Dependent>
-          </ReferentialConstraint>
         </Association>
         <EntityType Name="AuthorizedProductList">
           <Key>
@@ -6470,6 +6126,159 @@
           <Property Name="ErrorCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ErrorDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="ItemSignAttribute">
+          <Key>
+            <PropertyRef Name="ItemSignAttributeID" />
+          </Key>
+          <Property Name="ItemSignAttributeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="AnimalWelfareRatingId" Type="Int32" />
+          <Property Name="Biodynamic" Type="Boolean" Nullable="false" />
+          <Property Name="CheeseMilkTypeId" Type="Int32" />
+          <Property Name="CheeseRaw" Type="Boolean" Nullable="false" />
+          <Property Name="EcoScaleRatingId" Type="Int32" />
+          <Property Name="GlutenFreeAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HealthyEatingRatingId" Type="Int32" />
+          <Property Name="KosherAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Msc" Type="Boolean" Nullable="false" />
+          <Property Name="NonGmoAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OrganicAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PremiumBodyCare" Type="Boolean" Nullable="false" />
+          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" />
+          <Property Name="SeafoodCatchTypeId" Type="Int32" />
+          <Property Name="VeganAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Vegetarian" Type="Boolean" Nullable="false" />
+          <Property Name="WholeTrade" Type="Boolean" Nullable="false" />
+          <Property Name="GrassFed" Type="Boolean" Nullable="false" />
+          <Property Name="PastureRaised" Type="Boolean" Nullable="false" />
+          <Property Name="FreeRange" Type="Boolean" Nullable="false" />
+          <Property Name="DryAged" Type="Boolean" Nullable="false" />
+          <Property Name="AirChilled" Type="Boolean" Nullable="false" />
+          <Property Name="MadeInHouse" Type="Boolean" Nullable="false" />
+          <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AnimalWelfareRating" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_AnimalWelfareRatingId" FromRole="ItemSignAttribute" ToRole="AnimalWelfareRating" />
+          <NavigationProperty Name="EcoScaleRating" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_EcoScaleRatingId" FromRole="ItemSignAttribute" ToRole="EcoScaleRating" />
+          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" FromRole="ItemSignAttribute" ToRole="Item" />
+          <NavigationProperty Name="MilkType" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_CheeseMilkTypeId" FromRole="ItemSignAttribute" ToRole="MilkType" />
+          <NavigationProperty Name="SeafoodCatchType" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodCatchTypeId" FromRole="ItemSignAttribute" ToRole="SeafoodCatchType" />
+          <NavigationProperty Name="SeafoodFreshOrFrozen" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodFreshOrFrozenId" FromRole="ItemSignAttribute" ToRole="SeafoodFreshOrFrozen" />
+        </EntityType>
+        <Association Name="FK_ItemSignAttribute_AnimalWelfareRatingId">
+          <End Type="Icon.Framework.Model.AnimalWelfareRating" Role="AnimalWelfareRating" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnimalWelfareRating">
+              <PropertyRef Name="AnimalWelfareRatingId" />
+            </Principal>
+            <Dependent Role="ItemSignAttribute">
+              <PropertyRef Name="AnimalWelfareRatingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSignAttribute_EcoScaleRatingId">
+          <End Type="Icon.Framework.Model.EcoScaleRating" Role="EcoScaleRating" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EcoScaleRating">
+              <PropertyRef Name="EcoScaleRatingId" />
+            </Principal>
+            <Dependent Role="ItemSignAttribute">
+              <PropertyRef Name="EcoScaleRatingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSignAttribute_ItemId">
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="itemID" />
+            </Principal>
+            <Dependent Role="ItemSignAttribute">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSignAttribute_CheeseMilkTypeId">
+          <End Type="Icon.Framework.Model.MilkType" Role="MilkType" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MilkType">
+              <PropertyRef Name="MilkTypeId" />
+            </Principal>
+            <Dependent Role="ItemSignAttribute">
+              <PropertyRef Name="CheeseMilkTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSignAttribute_SeafoodCatchTypeId">
+          <End Type="Icon.Framework.Model.SeafoodCatchType" Role="SeafoodCatchType" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SeafoodCatchType">
+              <PropertyRef Name="SeafoodCatchTypeId" />
+            </Principal>
+            <Dependent Role="ItemSignAttribute">
+              <PropertyRef Name="SeafoodCatchTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSignAttribute_SeafoodFreshOrFrozenId">
+          <End Type="Icon.Framework.Model.SeafoodFreshOrFrozen" Role="SeafoodFreshOrFrozen" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SeafoodFreshOrFrozen">
+              <PropertyRef Name="SeafoodFreshOrFrozenId" />
+            </Principal>
+            <Dependent Role="ItemSignAttribute">
+              <PropertyRef Name="SeafoodFreshOrFrozenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="IRMAItem">
+          <Key>
+            <PropertyRef Name="irmaItemID" />
+          </Key>
+          <Property Name="irmaItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="regioncode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="identifier" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="defaultIdentifier" Type="Boolean" Nullable="false" />
+          <Property Name="brandName" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="itemDescription" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="posDescription" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="packageUnit" Type="Int32" Nullable="false" />
+          <Property Name="retailSize" Type="Decimal" Precision="9" Scale="4" />
+          <Property Name="retailUom" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="foodStamp" Type="Boolean" Nullable="false" />
+          <Property Name="posScaleTare" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="departmentSale" Type="Boolean" Nullable="false" />
+          <Property Name="giftCard" Type="Boolean" />
+          <Property Name="taxClassID" Type="Int32" />
+          <Property Name="irmaSubTeamName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="merchandiseClassID" Type="Int32" />
+          <Property Name="nationalClassID" Type="Int32" />
+          <Property Name="insertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AnimalWelfareRatingId" Type="Int32" />
+          <Property Name="Biodynamic" Type="Boolean" />
+          <Property Name="CheeseMilkTypeId" Type="Int32" />
+          <Property Name="CheeseRaw" Type="Boolean" />
+          <Property Name="EcoScaleRatingId" Type="Int32" />
+          <Property Name="HealthyEatingRatingId" Type="Int32" />
+          <Property Name="Msc" Type="Boolean" />
+          <Property Name="PremiumBodyCare" Type="Boolean" />
+          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" />
+          <Property Name="SeafoodCatchTypeId" Type="Int32" />
+          <Property Name="Vegetarian" Type="Boolean" />
+          <Property Name="WholeTrade" Type="Boolean" />
+          <Property Name="GrassFed" Type="Boolean" />
+          <Property Name="PastureRaised" Type="Boolean" />
+          <Property Name="FreeRange" Type="Boolean" />
+          <Property Name="DryAged" Type="Boolean" />
+          <Property Name="AirChilled" Type="Boolean" />
+          <Property Name="MadeInHouse" Type="Boolean" />
+          <Property Name="DeliverySystem" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AlcoholByVolume" Type="Decimal" Precision="5" Scale="2" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7525,56 +7334,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="IRMAItem">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.IRMAItem">
-              <MappingFragment StoreEntitySet="IRMAItem">
-                <ScalarProperty Name="AlcoholByVolume" ColumnName="AlcoholByVolume" />
-                <ScalarProperty Name="DeliverySystem" ColumnName="DeliverySystem" />
-                <ScalarProperty Name="Msc" ColumnName="Msc" />
-                <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
-                <ScalarProperty Name="AirChilled" ColumnName="AirChilled" />
-                <ScalarProperty Name="DryAged" ColumnName="DryAged" />
-                <ScalarProperty Name="FreeRange" ColumnName="FreeRange" />
-                <ScalarProperty Name="PastureRaised" ColumnName="PastureRaised" />
-                <ScalarProperty Name="GrassFed" ColumnName="GrassFed" />
-                <ScalarProperty Name="WholeTrade" ColumnName="WholeTrade" />
-                <ScalarProperty Name="Vegetarian" ColumnName="Vegetarian" />
-                <ScalarProperty Name="VeganAgencyId" ColumnName="VeganAgencyId" />
-                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
-                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
-                <ScalarProperty Name="PremiumBodyCare" ColumnName="PremiumBodyCare" />
-                <ScalarProperty Name="OrganicAgencyId" ColumnName="OrganicAgencyId" />
-                <ScalarProperty Name="NonGmoAgencyId" ColumnName="NonGmoAgencyId" />
-                <ScalarProperty Name="KosherAgencyId" ColumnName="KosherAgencyId" />
-                <ScalarProperty Name="HealthyEatingRatingId" ColumnName="HealthyEatingRatingId" />
-                <ScalarProperty Name="GlutenFreeAgencyId" ColumnName="GlutenFreeAgencyId" />
-                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
-                <ScalarProperty Name="CheeseRaw" ColumnName="CheeseRaw" />
-                <ScalarProperty Name="CheeseMilkTypeId" ColumnName="CheeseMilkTypeId" />
-                <ScalarProperty Name="Biodynamic" ColumnName="Biodynamic" />
-                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
-                <ScalarProperty Name="insertDate" ColumnName="insertDate" />
-                <ScalarProperty Name="nationalClassID" ColumnName="nationalClassID" />
-                <ScalarProperty Name="merchandiseClassID" ColumnName="merchandiseClassID" />
-                <ScalarProperty Name="irmaSubTeamName" ColumnName="irmaSubTeamName" />
-                <ScalarProperty Name="taxClassID" ColumnName="taxClassID" />
-                <ScalarProperty Name="giftCard" ColumnName="giftCard" />
-                <ScalarProperty Name="departmentSale" ColumnName="departmentSale" />
-                <ScalarProperty Name="posScaleTare" ColumnName="posScaleTare" />
-                <ScalarProperty Name="foodStamp" ColumnName="foodStamp" />
-                <ScalarProperty Name="retailUom" ColumnName="retailUom" />
-                <ScalarProperty Name="retailSize" ColumnName="retailSize" />
-                <ScalarProperty Name="packageUnit" ColumnName="packageUnit" />
-                <ScalarProperty Name="posDescription" ColumnName="posDescription" />
-                <ScalarProperty Name="itemDescription" ColumnName="itemDescription" />
-                <ScalarProperty Name="brandName" ColumnName="brandName" />
-                <ScalarProperty Name="defaultIdentifier" ColumnName="defaultIdentifier" />
-                <ScalarProperty Name="identifier" ColumnName="identifier" />
-                <ScalarProperty Name="regioncode" ColumnName="regioncode" />
-                <ScalarProperty Name="irmaItemID" ColumnName="irmaItemID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="ApplyMerchTaxMappingToItems" FunctionName="Icon.Framework.Model.Store.ApplyMerchTaxMappingToItems" />
           <FunctionImportMapping FunctionImportName="GetDefaultTaxClassMismatches" FunctionName="Icon.Framework.Model.Store.GetDefaultTaxClassMismatches">
             <ResultMapping>
@@ -7674,43 +7433,6 @@
               <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="ItemSignAttribute">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.ItemSignAttribute">
-              <MappingFragment StoreEntitySet="ItemSignAttribute">
-                <ScalarProperty Name="CustomerFriendlyDescription" ColumnName="CustomerFriendlyDescription" />
-                <ScalarProperty Name="VeganAgencyName" ColumnName="VeganAgencyName" />
-                <ScalarProperty Name="OrganicAgencyName" ColumnName="OrganicAgencyName" />
-                <ScalarProperty Name="NonGmoAgencyName" ColumnName="NonGmoAgencyName" />
-                <ScalarProperty Name="KosherAgencyName" ColumnName="KosherAgencyName" />
-                <ScalarProperty Name="GlutenFreeAgencyName" ColumnName="GlutenFreeAgencyName" />
-                <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
-                <ScalarProperty Name="AirChilled" ColumnName="AirChilled" />
-                <ScalarProperty Name="DryAged" ColumnName="DryAged" />
-                <ScalarProperty Name="FreeRange" ColumnName="FreeRange" />
-                <ScalarProperty Name="PastureRaised" ColumnName="PastureRaised" />
-                <ScalarProperty Name="GrassFed" ColumnName="GrassFed" />
-                <ScalarProperty Name="WholeTrade" ColumnName="WholeTrade" />
-                <ScalarProperty Name="Vegetarian" ColumnName="Vegetarian" />
-                <ScalarProperty Name="VeganAgencyId" ColumnName="VeganAgencyId" />
-                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
-                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
-                <ScalarProperty Name="PremiumBodyCare" ColumnName="PremiumBodyCare" />
-                <ScalarProperty Name="OrganicAgencyId" ColumnName="OrganicAgencyId" />
-                <ScalarProperty Name="NonGmoAgencyId" ColumnName="NonGmoAgencyId" />
-                <ScalarProperty Name="Msc" ColumnName="Msc" />
-                <ScalarProperty Name="KosherAgencyId" ColumnName="KosherAgencyId" />
-                <ScalarProperty Name="HealthyEatingRatingId" ColumnName="HealthyEatingRatingId" />
-                <ScalarProperty Name="GlutenFreeAgencyId" ColumnName="GlutenFreeAgencyId" />
-                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
-                <ScalarProperty Name="CheeseRaw" ColumnName="CheeseRaw" />
-                <ScalarProperty Name="CheeseMilkTypeId" ColumnName="CheeseMilkTypeId" />
-                <ScalarProperty Name="Biodynamic" ColumnName="Biodynamic" />
-                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="ItemSignAttributeID" ColumnName="ItemSignAttributeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AuthorizedProductList">
             <EntityTypeMapping TypeName="Icon.Framework.Model.AuthorizedProductList">
               <MappingFragment StoreEntitySet="AuthorizedProductList">
@@ -7823,6 +7545,83 @@
                 <ScalarProperty Name="HierarchyClassName" ColumnName="HierarchyClassName" />
                 <ScalarProperty Name="HierarchyClassId" ColumnName="HierarchyClassId" />
                 <ScalarProperty Name="MessageArchiveId" ColumnName="MessageArchiveId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemSignAttribute">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.ItemSignAttribute">
+              <MappingFragment StoreEntitySet="ItemSignAttribute">
+                <ScalarProperty Name="CustomerFriendlyDescription" ColumnName="CustomerFriendlyDescription" />
+                <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
+                <ScalarProperty Name="AirChilled" ColumnName="AirChilled" />
+                <ScalarProperty Name="DryAged" ColumnName="DryAged" />
+                <ScalarProperty Name="FreeRange" ColumnName="FreeRange" />
+                <ScalarProperty Name="PastureRaised" ColumnName="PastureRaised" />
+                <ScalarProperty Name="GrassFed" ColumnName="GrassFed" />
+                <ScalarProperty Name="WholeTrade" ColumnName="WholeTrade" />
+                <ScalarProperty Name="Vegetarian" ColumnName="Vegetarian" />
+                <ScalarProperty Name="VeganAgencyName" ColumnName="VeganAgencyName" />
+                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
+                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
+                <ScalarProperty Name="PremiumBodyCare" ColumnName="PremiumBodyCare" />
+                <ScalarProperty Name="OrganicAgencyName" ColumnName="OrganicAgencyName" />
+                <ScalarProperty Name="NonGmoAgencyName" ColumnName="NonGmoAgencyName" />
+                <ScalarProperty Name="Msc" ColumnName="Msc" />
+                <ScalarProperty Name="KosherAgencyName" ColumnName="KosherAgencyName" />
+                <ScalarProperty Name="HealthyEatingRatingId" ColumnName="HealthyEatingRatingId" />
+                <ScalarProperty Name="GlutenFreeAgencyName" ColumnName="GlutenFreeAgencyName" />
+                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
+                <ScalarProperty Name="CheeseRaw" ColumnName="CheeseRaw" />
+                <ScalarProperty Name="CheeseMilkTypeId" ColumnName="CheeseMilkTypeId" />
+                <ScalarProperty Name="Biodynamic" ColumnName="Biodynamic" />
+                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ItemSignAttributeID" ColumnName="ItemSignAttributeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IRMAItem">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.IRMAItem">
+              <MappingFragment StoreEntitySet="IRMAItem">
+                <ScalarProperty Name="AlcoholByVolume" ColumnName="AlcoholByVolume" />
+                <ScalarProperty Name="DeliverySystem" ColumnName="DeliverySystem" />
+                <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
+                <ScalarProperty Name="AirChilled" ColumnName="AirChilled" />
+                <ScalarProperty Name="DryAged" ColumnName="DryAged" />
+                <ScalarProperty Name="FreeRange" ColumnName="FreeRange" />
+                <ScalarProperty Name="PastureRaised" ColumnName="PastureRaised" />
+                <ScalarProperty Name="GrassFed" ColumnName="GrassFed" />
+                <ScalarProperty Name="WholeTrade" ColumnName="WholeTrade" />
+                <ScalarProperty Name="Vegetarian" ColumnName="Vegetarian" />
+                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
+                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
+                <ScalarProperty Name="PremiumBodyCare" ColumnName="PremiumBodyCare" />
+                <ScalarProperty Name="Msc" ColumnName="Msc" />
+                <ScalarProperty Name="HealthyEatingRatingId" ColumnName="HealthyEatingRatingId" />
+                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
+                <ScalarProperty Name="CheeseRaw" ColumnName="CheeseRaw" />
+                <ScalarProperty Name="CheeseMilkTypeId" ColumnName="CheeseMilkTypeId" />
+                <ScalarProperty Name="Biodynamic" ColumnName="Biodynamic" />
+                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
+                <ScalarProperty Name="insertDate" ColumnName="insertDate" />
+                <ScalarProperty Name="nationalClassID" ColumnName="nationalClassID" />
+                <ScalarProperty Name="merchandiseClassID" ColumnName="merchandiseClassID" />
+                <ScalarProperty Name="irmaSubTeamName" ColumnName="irmaSubTeamName" />
+                <ScalarProperty Name="taxClassID" ColumnName="taxClassID" />
+                <ScalarProperty Name="giftCard" ColumnName="giftCard" />
+                <ScalarProperty Name="departmentSale" ColumnName="departmentSale" />
+                <ScalarProperty Name="posScaleTare" ColumnName="posScaleTare" />
+                <ScalarProperty Name="foodStamp" ColumnName="foodStamp" />
+                <ScalarProperty Name="retailUom" ColumnName="retailUom" />
+                <ScalarProperty Name="retailSize" ColumnName="retailSize" />
+                <ScalarProperty Name="packageUnit" ColumnName="packageUnit" />
+                <ScalarProperty Name="posDescription" ColumnName="posDescription" />
+                <ScalarProperty Name="itemDescription" ColumnName="itemDescription" />
+                <ScalarProperty Name="brandName" ColumnName="brandName" />
+                <ScalarProperty Name="defaultIdentifier" ColumnName="defaultIdentifier" />
+                <ScalarProperty Name="identifier" ColumnName="identifier" />
+                <ScalarProperty Name="regioncode" ColumnName="regioncode" />
+                <ScalarProperty Name="irmaItemID" ColumnName="irmaItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -38,15 +38,11 @@ namespace Icon.Framework
         public Nullable<int> CheeseMilkTypeId { get; set; }
         public Nullable<bool> CheeseRaw { get; set; }
         public Nullable<int> EcoScaleRatingId { get; set; }
-        public Nullable<int> GlutenFreeAgencyId { get; set; }
         public Nullable<int> HealthyEatingRatingId { get; set; }
-        public Nullable<int> KosherAgencyId { get; set; }
-        public Nullable<int> NonGmoAgencyId { get; set; }
-        public Nullable<int> OrganicAgencyId { get; set; }
+        public Nullable<bool> Msc { get; set; }
         public Nullable<bool> PremiumBodyCare { get; set; }
         public Nullable<int> SeafoodFreshOrFrozenId { get; set; }
         public Nullable<int> SeafoodCatchTypeId { get; set; }
-        public Nullable<int> VeganAgencyId { get; set; }
         public Nullable<bool> Vegetarian { get; set; }
         public Nullable<bool> WholeTrade { get; set; }
         public Nullable<bool> GrassFed { get; set; }
@@ -55,7 +51,6 @@ namespace Icon.Framework
         public Nullable<bool> DryAged { get; set; }
         public Nullable<bool> AirChilled { get; set; }
         public Nullable<bool> MadeInHouse { get; set; }
-        public Nullable<bool> Msc { get; set; }
         public string DeliverySystem { get; set; }
         public Nullable<decimal> AlcoholByVolume { get; set; }
     }

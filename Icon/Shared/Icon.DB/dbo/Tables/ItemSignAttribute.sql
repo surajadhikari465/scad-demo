@@ -6,20 +6,15 @@
 	[CheeseMilkTypeId] [int] NULL,
 	[CheeseRaw] [bit] NOT NULL DEFAULT 0,
 	[EcoScaleRatingId] [int] NULL,
-	[GlutenFreeAgencyId] [int] NULL,
 	[GlutenFreeAgencyName] [nvarchar](255) NULL,
 	[HealthyEatingRatingId] [int] NULL,
-	[KosherAgencyId] [int] NULL,
 	[KosherAgencyName] [nvarchar](255) NULL,
 	[Msc] [bit] NOT NULL DEFAULT 0,
-	[NonGmoAgencyId] [int] NULL,
 	[NonGmoAgencyName] [nvarchar](255) NULL,
-	[OrganicAgencyId] [int],
 	[OrganicAgencyName] [nvarchar](255) NULL,
 	[PremiumBodyCare] [bit] NOT NULL DEFAULT 0,
 	[SeafoodFreshOrFrozenId] [int],
 	[SeafoodCatchTypeId] [int],
-	[VeganAgencyId] [int],
 	[VeganAgencyName] [nvarchar](255) NULL,
 	[Vegetarian] [bit] NOT NULL DEFAULT 0,
 	[WholeTrade] [bit] NOT NULL DEFAULT 0,
@@ -69,24 +64,4 @@ GO
 
 ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_SeafoodCatchTypeId] FOREIGN KEY([SeafoodCatchTypeId])
 REFERENCES dbo.SeafoodCatchType ([SeafoodCatchTypeId])
-GO
-
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_GlutenFreeAgencyId] FOREIGN KEY([GlutenFreeAgencyId])
-REFERENCES [dbo].[HierarchyClass] ([hierarchyClassID])
-GO
-
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_KosherAgencyId] FOREIGN KEY([KosherAgencyId])
-REFERENCES [dbo].[HierarchyClass] ([hierarchyClassID])
-GO
-
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_NonGmoAgencyId] FOREIGN KEY([NonGmoAgencyId])
-REFERENCES [dbo].[HierarchyClass] ([hierarchyClassID])
-GO
-
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_OrganicAgencyId] FOREIGN KEY([OrganicAgencyId])
-REFERENCES [dbo].[HierarchyClass] ([hierarchyClassID])
-GO
-
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_VeganAgencyId] FOREIGN KEY([VeganAgencyId])
-REFERENCES [dbo].[HierarchyClass] ([hierarchyClassID])
 GO

@@ -20,9 +20,9 @@ namespace Icon.Framework
             this.ItemHierarchyClass = new HashSet<ItemHierarchyClass>();
             this.ItemTrait = new HashSet<ItemTrait>();
             this.ItemPrice = new HashSet<ItemPrice>();
-            this.ItemSignAttribute = new HashSet<ItemSignAttribute>();
             this.ItemLink = new HashSet<ItemLink>();
             this.ItemLink1 = new HashSet<ItemLink>();
+            this.ItemSignAttribute = new HashSet<ItemSignAttribute>();
         }
     
         public int itemID { get; set; }
@@ -35,8 +35,8 @@ namespace Icon.Framework
         public virtual PLUMap PLUMap { get; set; }
         public virtual ICollection<ItemTrait> ItemTrait { get; set; }
         public virtual ICollection<ItemPrice> ItemPrice { get; set; }
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute { get; set; }
         public virtual ICollection<ItemLink> ItemLink { get; set; }
         public virtual ICollection<ItemLink> ItemLink1 { get; set; }
+        public virtual ICollection<ItemSignAttribute> ItemSignAttribute { get; set; }
     }
 }

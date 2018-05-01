@@ -21,16 +21,16 @@ namespace Icon.Framework
         public Nullable<int> CheeseMilkTypeId { get; set; }
         public bool CheeseRaw { get; set; }
         public Nullable<int> EcoScaleRatingId { get; set; }
-        public Nullable<int> GlutenFreeAgencyId { get; set; }
+        public string GlutenFreeAgencyName { get; set; }
         public Nullable<int> HealthyEatingRatingId { get; set; }
-        public Nullable<int> KosherAgencyId { get; set; }
+        public string KosherAgencyName { get; set; }
         public bool Msc { get; set; }
-        public Nullable<int> NonGmoAgencyId { get; set; }
-        public Nullable<int> OrganicAgencyId { get; set; }
+        public string NonGmoAgencyName { get; set; }
+        public string OrganicAgencyName { get; set; }
         public bool PremiumBodyCare { get; set; }
         public Nullable<int> SeafoodFreshOrFrozenId { get; set; }
         public Nullable<int> SeafoodCatchTypeId { get; set; }
-        public Nullable<int> VeganAgencyId { get; set; }
+        public string VeganAgencyName { get; set; }
         public bool Vegetarian { get; set; }
         public bool WholeTrade { get; set; }
         public bool GrassFed { get; set; }
@@ -39,20 +39,10 @@ namespace Icon.Framework
         public bool DryAged { get; set; }
         public bool AirChilled { get; set; }
         public bool MadeInHouse { get; set; }
-        public string GlutenFreeAgencyName { get; set; }
-        public string KosherAgencyName { get; set; }
-        public string NonGmoAgencyName { get; set; }
-        public string OrganicAgencyName { get; set; }
-        public string VeganAgencyName { get; set; }
         public string CustomerFriendlyDescription { get; set; }
     
         public virtual AnimalWelfareRating AnimalWelfareRating { get; set; }
         public virtual EcoScaleRating EcoScaleRating { get; set; }
-        public virtual HierarchyClass HierarchyClass { get; set; }
-        public virtual HierarchyClass HierarchyClass1 { get; set; }
-        public virtual HierarchyClass HierarchyClass2 { get; set; }
-        public virtual HierarchyClass HierarchyClass3 { get; set; }
-        public virtual HierarchyClass HierarchyClass4 { get; set; }
         public virtual Item Item { get; set; }
         public virtual MilkType MilkType { get; set; }
         public virtual SeafoodCatchType SeafoodCatchType { get; set; }

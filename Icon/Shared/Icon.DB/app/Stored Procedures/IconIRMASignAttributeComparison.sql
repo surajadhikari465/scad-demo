@@ -87,14 +87,14 @@ BEGIN
 		ISNULL(mt.Description, '0') AS 'Milk Type',
 		ISNULL(isa.CheeseRaw, '0') AS CheeseRaw,
 		ISNULL(esr.Description, '0') AS 'Eco Scale Rating',
-		ISNULL(CONVERT(BIT, isa.GlutenFreeAgencyId), '0') AS GlutenFreeAgencyName, --GLU.HierarchyClassName, '0') AS GlutenFreeAgencyName,
-		ISNULL(CONVERT(BIT, isa.KosherAgencyId), '0') AS KosherAgencyName, -- KOS.HierarchyClassName, '0') AS KosherAgencyName,
-		ISNULL(CONVERT(BIT, isa.NonGmoAgencyId), '0') AS NonGmoAgencyName, --gmo.HierarchyClassName, '0') AS NonGmoAgencyName,
-		ISNULL(CONVERT(BIT, isa.OrganicAgencyId), '0') AS OrganicAgencyName, --org.HierarchyClassName, '0') AS OrganicAgencyName,
+		CASE WHEN ISNULL(isa.GlutenFreeAgencyName, '') = '' THEN '0' ELSE '1' END AS GlutenFreeAgencyName,
+		CASE WHEN ISNULL(isa.KosherAgencyName, '') = '' THEN '0' ELSE '1' END AS KosherAgencyName,
+		CASE WHEN ISNULL(isa.NonGmoAgencyName, '') = '' THEN '0' ELSE '1' END AS NonGmoAgencyName,
+		CASE WHEN ISNULL(isa.OrganicAgencyName, '') = '' THEN '0' ELSE '1' END AS OrganicAgencyName,	
 		ISNULL(isa.PremiumBodyCare, '0') AS PremiumBodyCare,
 		ISNULL(sff.Description, '0') AS 'Fresh Or Frozen',
 		ISNULL(sfct.Description, '0') AS 'Seafood Catch Type',
-		ISNULL(CONVERT(BIT, isa.VeganAgencyId), '0') AS VeganAgencyName, --veg.HierarchyClassName, '0') AS VeganAgencyName,
+		CASE WHEN ISNULL(isa.VeganAgencyName, '') = '' THEN '0' ELSE '1' END AS VeganAgencyName,
 		ISNULL(isa.Vegetarian, '0') AS Vegetarian,
 		ISNULL(isa.WholeTrade, '0') AS WholeTrade,
 		ISNULL(isa.Msc, '0') AS Msc,
@@ -302,5 +302,3 @@ WHERE i.Deleted_Item = 0
 END
 
 GO
-
-

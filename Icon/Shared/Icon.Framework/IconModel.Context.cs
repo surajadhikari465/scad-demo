@@ -98,9 +98,7 @@ namespace Icon.Framework
         public virtual DbSet<MammothEventType> MammothEventType { get; set; }
         public virtual DbSet<VimEventQueue> VimEventQueue { get; set; }
         public virtual DbSet<VimEventType> VimEventType { get; set; }
-        public virtual DbSet<IRMAItem> IRMAItem { get; set; }
         public virtual DbSet<MessageQueueNutrition> MessageQueueNutrition { get; set; }
-        public virtual DbSet<ItemSignAttribute> ItemSignAttribute { get; set; }
         public virtual DbSet<AuthorizedProductList> AuthorizedProductList { get; set; }
         public virtual DbSet<DeliverySystem> DeliverySystem { get; set; }
         public virtual DbSet<MessageQueueBusinessUnitInProcess> MessageQueueBusinessUnitInProcess { get; set; }
@@ -110,6 +108,8 @@ namespace Icon.Framework
         public virtual DbSet<MessageArchiveProduct> MessageArchiveProduct { get; set; }
         public virtual DbSet<InforMessageHistory> InforMessageHistory { get; set; }
         public virtual DbSet<MessageArchiveHierarchy> MessageArchiveHierarchy { get; set; }
+        public virtual DbSet<ItemSignAttribute> ItemSignAttribute { get; set; }
+        public virtual DbSet<IRMAItem> IRMAItem { get; set; }
     
         public virtual int MarkStagingTableEntriesAsInProcessForEsb(Nullable<int> numberOfRows, Nullable<int> jobInstance)
         {

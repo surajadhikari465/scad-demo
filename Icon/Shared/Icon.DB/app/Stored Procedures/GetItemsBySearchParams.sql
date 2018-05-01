@@ -94,11 +94,6 @@ BEGIN
 	DECLARE @nationalHierarchyID int;	
 	DECLARE @nationalClassCodeTraitID int;
 	DECLARE @certificationAgencyHierarchyID int;
-	DECLARE @glutenFreeTraitID int;
-	DECLARE @kosherTraitID int;
-	DECLARE @nonGmoTraitID int;
-	DECLARE @organicTraitID int;
-	DECLARE @veganTraitID int;
 	DECLARE @notesTraitId int;
 	DECLARE @createdDateTraitID int;
 	DECLARE @modifiedDateTraitID int;
@@ -133,11 +128,6 @@ BEGIN
 	SET @taxRomanceTraitID			= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'TRM');
 	SET @hiddenItemTraitID			= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'HID');
 	SET @notesTraitId				= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'NTS');
-	SET @glutenFreeTraitID			= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'GF');
-	SET @kosherTraitID				= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'KSH');
-	SET @nonGmoTraitID				= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'NGM');
-	SET @organicTraitID				= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'OG');
-	SET @veganTraitID				= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'VGN');
 	SET @createdDateTraitID			= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'INS');
 	SET @modifiedDateTraitID		= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'MOD');
 	SET @modifiedUserTraitID		= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'USR');
@@ -204,62 +194,8 @@ BEGIN
 					and hct.traitID  = @nationalClassCodeTraitID
 		WHERE
 			hc.hierarchyID = @nationalHierarchyID
-	),
-	GlutenFreeAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @glutenFreeTraitID
-	),
-	KosherAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @kosherTraitID
-	),
-	NonGmoAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @nonGmoTraitID
-	),
-	OrganicAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @organicTraitID
-	),
-	VeganAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @veganTraitID
-	)'
+	)
+	'
 	
 	-- ====================================================
 	-- Set SELECT Items statement
@@ -305,15 +241,15 @@ BEGIN
 		isa.CheeseMilkTypeId		as CheeseMilkTypeId,
 		isa.CheeseRaw				as CheeseRaw,
 		isa.EcoScaleRatingId		as EcoScaleRatingId,
-		isa.GlutenFreeAgencyId		as GlutenFreeAgencyId,
-		isa.KosherAgencyId			as KosherAgencyId,
+		isa.GlutenFreeAgencyName	as GlutenFreeAgencyName,
+		isa.KosherAgencyName		as KosherAgencyName,
 		isa.Msc						as Msc,
-		isa.NonGmoAgencyId			as NonGmoAgencyId,
-		isa.OrganicAgencyId			as OrganicAgencyId,
+		isa.NonGmoAgencyName		as NonGmoAgencyName,
+		isa.OrganicAgencyName		as OrganicAgencyName,
 		isa.PremiumBodyCare			as PremiumBodyCare,
 		isa.SeafoodFreshOrFrozenId	as SeafoodFreshOrFrozenId,
 		isa.SeafoodCatchTypeId		as SeafoodCatchTypeId,
-		isa.VeganAgencyId			as VeganAgencyId,
+		isa.VeganAgencyName			as VeganAgencyName,
 		isa.Vegetarian			    as Vegetarian,
 		isa.WholeTrade				as WholeTrade,
 		isa.GrassFed				as GrassFed,
@@ -424,12 +360,7 @@ BEGIN
 	LEFT JOIN Tax_CTE	tax				on	i.itemID = tax.itemID
 	LEFT JOIN Merch_CTE	merch			on	i.itemID = merch.itemID
 	LEFT JOIN National_CTE nat			on	i.itemID = nat.itemID		
-	LEFT JOIN ItemSignAttribute isa		on	i.itemID = isa.ItemID
-	LEFT JOIN GlutenFreeAgency_CTE gf	ON	isa.GlutenFreeAgencyId = gf.hierarchyClassID
-	LEFT JOIN KosherAgency_CTE ksh	 	ON	isa.KosherAgencyId = ksh.hierarchyClassID
-	LEFT JOIN NonGmoAgency_CTE ngm	 	ON	isa.NonGmoAgencyId = ngm.hierarchyClassID
-	LEFT JOIN OrganicAgency_CTE og	 	ON	isa.OrganicAgencyId = og.hierarchyClassID
-	LEFT JOIN VeganAgency_CTE vgn	 	ON	isa.VeganAgencyId = vgn.hierarchyClassID '
+	LEFT JOIN ItemSignAttribute isa		on	i.itemID = isa.ItemID'
 		
 	-- ====================================================
 	-- Set WHERE statement
@@ -549,13 +480,13 @@ BEGIN
 	IF NOT ISNULL(@ecoScaleRatingId, '') = ''
 		SET @whereSql = @whereSql + 'and @ecoScaleRatingId = isa.EcoScaleRatingId '
 	IF NOT ISNULL(@glutenFreeAgency, '') = ''
-		SET @whereSql = @whereSql + 'and @glutenFreeAgency = gf.hierarchyClassName '
+		SET @whereSql = @whereSql + 'and @glutenFreeAgency = ISA.GlutenFreeAgencyName '
 	IF NOT ISNULL(@kosherAgency, '') = ''
-		SET @whereSql = @whereSql + 'and @kosherAgency = ksh.hierarchyClassName '
+		SET @whereSql = @whereSql + 'and @kosherAgency = ISA.KosherAgencyName '
 	IF NOT ISNULL(@nonGmoAgency, '') = ''
-		SET @whereSql = @whereSql + 'and @nonGmoAgency = ngm.hierarchyClassName '
+		SET @whereSql = @whereSql + 'and @nonGmoAgency = ISA.NonGmoAgencyName '
 	IF NOT ISNULL(@organicAgency, '') = ''
-		SET @whereSql = @whereSql + 'and @organicAgency = og.hierarchyClassName '
+		SET @whereSql = @whereSql + 'and @organicAgency = ISA.OrganicAgencyName '
 	IF NOT ISNULL(@premiumBodyCare, '') = ''
 	BEGIN
 		IF @premiumBodyCare = 'yes'
@@ -568,7 +499,7 @@ BEGIN
 	IF NOT ISNULL(@seafoodCatchTypeId, '') = ''
 		SET @whereSql = @whereSql + 'and @seafoodCatchTypeId = isa.SeafoodCatchTypeId '
 	IF NOT ISNULL(@veganAgency, '') = ''
-		SET @whereSql = @whereSql + 'and @veganAgency = vgn.hierarchyClassName '
+		SET @whereSql = @whereSql + 'and @veganAgency = ISA.VeganAgencyName '
 	IF NOT ISNULL(@vegetarian, '') = ''
 	BEGIN
 		IF @vegetarian = 'yes'
@@ -683,11 +614,6 @@ BEGIN
 		@taxRomanceTraitID int,
 		@hiddenItemTraitID int,
 		@notesTraitId int,
-		@glutenFreeTraitID int,
-		@kosherTraitID int,
-		@nonGmoTraitID int,
-		@organicTraitID int,
-		@veganTraitID int,		
 		@dwuTraitID int,
 		@cfTraitID int,
 		@ftcTraitID int,
@@ -790,12 +716,7 @@ BEGIN
 		@scaleTareID, 
 		@taxRomanceTraitID, 
 		@hiddenItemTraitID, 
-		@notesTraitId,
-		@glutenFreeTraitID, 
-		@kosherTraitID, 
-		@nonGmoTraitID, 
-		@organicTraitID, 
-		@veganTraitID, 			
+		@notesTraitId,	
 		@dwuTraitID,
 		@cfTraitID,
 		@ftcTraitID,

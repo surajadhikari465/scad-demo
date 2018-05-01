@@ -145,28 +145,28 @@ BEGIN
 			  isa.CheeseRaw						as CheeseRaw,
 			  esr.Description					as EcoScaleRating,
 			  CASE 
-					WHEN isa.GlutenFreeAgencyId IS NULL THEN NULL
+					WHEN ISNull(isa.GlutenFreeAgencyName,'') = '' THEN NULL
 					ELSE CAST(1 AS BIT)
 			  END								as GlutenFree,
 			  CASE 
-					WHEN isa.KosherAgencyId IS NULL THEN NULL
+					WHEN ISNull(isa.KosherAgencyName,'') = '' THEN NULL
 					ELSE CAST(1 AS BIT)
 			  END								as Kosher,
 			  her.Description as HealthyEatingRating,
 			  isa.Msc							as Msc,
 			  CASE 
-					WHEN isa.OrganicAgencyId IS NULL THEN NULL
+					WHEN ISNull(isa.OrganicAgencyName,'') = '' THEN NULL
 					ELSE CAST(1 AS BIT)
 			  END								as Organic,
 			  CASE 
-					WHEN isa.NonGmoAgencyId IS NULL THEN NULL
+					WHEN ISNull(isa.NonGmoAgencyName,'') = '' THEN NULL
 					ELSE CAST(1 AS BIT)
 			  END								as NonGmo,
 			  isa.PremiumBodyCare				as PremiumBodyCare,
 			  sff.Description					as FreshOrFrozen,
 			  sfct.Description					as SeafoodCatchType,
 			  CASE 
-					WHEN isa.VeganAgencyId IS NULL THEN NULL
+					WHEN ISNull(isa.VeganAgencyName,'') = '' THEN NULL
 					ELSE CAST(1 AS BIT)
 			  END								as Vegan,
 			  isa.Vegetarian					as Vegetarian,

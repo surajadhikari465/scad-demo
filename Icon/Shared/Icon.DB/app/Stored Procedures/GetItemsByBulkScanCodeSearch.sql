@@ -44,11 +44,6 @@ BEGIN
 		@nationalHierarchyID		int = (SELECT h.hierarchyID from Hierarchy h where h.hierarchyName = 'National'),
 		@notesTraitId				int = (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'NTS'),
 		@certificationAgencyHierarchyID int = (SELECT h.hierarchyID from Hierarchy h where h.hierarchyName = 'Certification Agency Management'),
-		@glutenFreeTraitID int = (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'GF'),
-		@kosherTraitID int= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'KSH'),
-		@nonGmoTraitID int = (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'NGM'),
-		@organicTraitID int = (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'OG'),
-		@veganTraitID int = (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'VGN'),
 		@createdDateTraitID		    int	= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'INS'),
 		@modifiedDateTraitID		int	= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'MOD'),
 		@modifiedUserTraitID		int = (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'USR');
@@ -97,62 +92,7 @@ BEGIN
 			JOIN HierarchyClass hc	on ihc.hierarchyClassID = hc.hierarchyClassID
 		WHERE
 			hc.hierarchyID = @nationalHierarchyID
-	),
-	GlutenFreeAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @glutenFreeTraitID
-	),
-	KosherAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @kosherTraitID
-	),
-	NonGmoAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @nonGmoTraitID
-	),
-	OrganicAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @organicTraitID
-	),
-	VeganAgency_CTE (hierarchyClassID, hierarchyClassName)
-	AS
-	(
-		SELECT hc.hierarchyClassID, hc.hierarchyClassName
-		FROM 
-			HierarchyClass				hc
-			JOIN HierarchyClassTrait	hct on	hc.hierarchyClassID = hct.hierarchyClassID
-		WHERE
-			hc.hierarchyID = @certificationAgencyHierarchyID
-			and hct.traitID = @veganTraitID
-	)
+	)	
 
     select
 		i.itemID					as ItemId,
@@ -194,15 +134,15 @@ BEGIN
 		isa.CheeseMilkTypeId		as CheeseMilkTypeId,
 		isa.CheeseRaw				as CheeseRaw,
 		isa.EcoScaleRatingId		as EcoScaleRatingId,
-		isa.GlutenFreeAgencyId		as GlutenFreeAgencyId,
-		isa.KosherAgencyId			as KosherAgencyId,
+		isa.GlutenFreeAgencyName	as GlutenFreeAgencyName,
+		isa.KosherAgencyName		as KosherAgencyName,
 		isa.Msc						as Msc,
-		isa.NonGmoAgencyId			as NonGmoAgencyId,
-		isa.OrganicAgencyId			as OrganicAgencyId,
+		isa.NonGmoAgencyName		as NonGmoAgencyName,
+		isa.OrganicAgencyName		as OrganicAgencyName,
 		isa.PremiumBodyCare			as PremiumBodyCare,
 		isa.SeafoodFreshOrFrozenId	as SeafoodFreshOrFrozenId,
 		isa.SeafoodCatchTypeId		as SeafoodCatchTypeId,
-		isa.VeganAgencyId			as VeganAgencyId,
+		isa.VeganAgencyName			as VeganAgencyName,
 		isa.Vegetarian			    as Vegetarian,
 		isa.WholeTrade				as WholeTrade,
 		isa.GrassFed				as GrassFed,
@@ -305,10 +245,4 @@ BEGIN
 		left join Merchandise	merch	on	i.itemID = merch.itemID
 		LEFT JOIN National_CTE nat		on i.itemID = nat.itemID		
 		LEFT JOIN ItemSignAttribute isa		on	i.itemID = isa.ItemID
-		LEFT JOIN GlutenFreeAgency_CTE gf	ON	isa.GlutenFreeAgencyId = gf.hierarchyClassID
-		LEFT JOIN KosherAgency_CTE ksh	 	ON	isa.KosherAgencyId = ksh.hierarchyClassID
-		LEFT JOIN NonGmoAgency_CTE ngm	 	ON	isa.NonGmoAgencyId = ngm.hierarchyClassID
-		LEFT JOIN OrganicAgency_CTE og	 	ON	isa.OrganicAgencyId = og.hierarchyClassID
-		LEFT JOIN VeganAgency_CTE vgn	 	ON	isa.VeganAgencyId = vgn.hierarchyClassID		
-
 END
