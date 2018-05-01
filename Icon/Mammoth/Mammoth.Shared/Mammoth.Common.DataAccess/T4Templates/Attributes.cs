@@ -39,7 +39,7 @@ namespace Mammoth.Common.DataAccess
 		public const int SignRomanceLong = 25;
 		public const int RetailUnit = 26;
 		public const int CustomerFriendlyDescription = 27;
-		public const int FairTradeCertifed = 28;
+		public const int FairTradeCertified = 28;
 		public const int FlexibleText = 29;
 		public const int MadeWithOrganicGrapes = 30;
 		public const int MadeWithBiodynamicGrapes = 31;
@@ -93,7 +93,7 @@ namespace Mammoth.Common.DataAccess
 			public const string SignRomanceLong = "Sign Romance Long";
 			public const string RetailUnit = "Retail Unit";
 			public const string CustomerFriendlyDescription = "Customer Friendly Description";
-			public const string FairTradeCertifed = "Fair Trade Certifed";
+			public const string FairTradeCertified = "Fair Trade Certified";
 			public const string FlexibleText = "Flexible Text";
 			public const string MadeWithOrganicGrapes = "Made With Organic Grapes";
 			public const string MadeWithBiodynamicGrapes = "Made with Biodynamic Grapes";
@@ -147,7 +147,7 @@ namespace Mammoth.Common.DataAccess
 				{ "LNG", "Sign Romance Long" },
 				{ "RTU", "Retail Unit" },
 				{ "CFD", "Customer Friendly Description" },
-				{ "FTC", "Fair Trade Certifed" },
+				{ "FTC", "Fair Trade Certified" },
 				{ "FXT", "Flexible Text" },
 				{ "MOG", "Made With Organic Grapes" },
 				{ "MBG", "Made with Biodynamic Grapes" },
@@ -204,7 +204,7 @@ namespace Mammoth.Common.DataAccess
 			public const string SignRomanceLong = "LNG";
 			public const string RetailUnit = "RTU";
 			public const string CustomerFriendlyDescription = "CFD";
-			public const string FairTradeCertifed = "FTC";
+			public const string FairTradeCertified = "FTC";
 			public const string FlexibleText = "FXT";
 			public const string MadeWithOrganicGrapes = "MOG";
 			public const string MadeWithBiodynamicGrapes = "MBG";

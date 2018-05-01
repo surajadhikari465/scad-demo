@@ -5,7 +5,7 @@ BEGIN
     PRINT 'running script ' + @scriptKey
 
     UPDATE dbo.Attributes
-    SET AttributeCode = 'FTC', AttributeDesc = 'Fair Trade Certifed', ModifiedDate = GETDATE()
+    SET AttributeCode = 'FTC', AttributeDesc = 'Fair Trade Certified', ModifiedDate = GETDATE()
     WHERE AttributeCode = 'FT'
 
     INSERT INTO app.PostDeploymentScriptHistory
@@ -16,3 +16,4 @@ BEGIN
     PRINT 'Skipping script ' + @scriptKey
 END
 GO
+
