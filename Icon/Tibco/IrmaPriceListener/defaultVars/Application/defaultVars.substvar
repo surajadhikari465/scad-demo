@@ -19,11 +19,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaQueue</name>
-			<value>WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1</value>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MA.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510345906177</modTime>
+			<modTime>1524855650307</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
