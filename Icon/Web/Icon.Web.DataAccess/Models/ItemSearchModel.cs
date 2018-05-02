@@ -121,20 +121,20 @@ namespace Icon.Web.DataAccess.Models
         [SqlResult(SqlSortValue = "isa.EcoScaleRatingId")]
         public int? EcoScaleRatingId { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.GlutenFreeAgencyId")]
-        public int? GlutenFreeAgencyId { get; set; }
+        [SqlResult(SqlSortValue = "isa.GlutenFreeAgency")]
+        public string GlutenFreeAgency { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.KosherAgencyId")]
-        public int? KosherAgencyId { get; set; }
+        [SqlResult(SqlSortValue = "isa.KosherAgency")]
+        public string KosherAgency { get; set; }
 
         [SqlResult(SqlSortValue = "isa.Msc")]
         public bool? Msc { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.NonGmoAgencyId")]
-        public int? NonGmoAgencyId { get; set; }
+        [SqlResult(SqlSortValue = "isa.NonGmoAgency")]
+        public string NonGmoAgency { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.OrganicAgencyId")]
-        public int? OrganicAgencyId { get; set; }
+        [SqlResult(SqlSortValue = "isa.OrganicAgency")]
+        public string OrganicAgency { get; set; }
 
         [SqlResult(SqlSortValue = "isa.PremiumBodyCare")]
         public bool? PremiumBodyCare { get; set; }
@@ -145,8 +145,8 @@ namespace Icon.Web.DataAccess.Models
         [SqlResult(SqlSortValue = "isa.SeafoodCatchTypeId")]
         public int? SeafoodCatchTypeId { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.VeganAgencyId")]
-        public int? VeganAgencyId { get; set; }
+        [SqlResult(SqlSortValue = "isa.VeganAgency")]
+        public string VeganAgency { get; set; }
 
         [SqlResult(SqlSortValue = "isa.Vegetarian")]
         public bool? Vegetarian { get; set; }

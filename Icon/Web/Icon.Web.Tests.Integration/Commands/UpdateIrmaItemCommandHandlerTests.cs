@@ -460,14 +460,9 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(updatedItem.CheeseMilkTypeId, verifyUpdateItem.CheeseMilkTypeId);
             Assert.IsTrue(verifyUpdateItem.CheeseRaw.Value);
             Assert.AreEqual(updatedItem.EcoScaleRatingId, verifyUpdateItem.EcoScaleRatingId);
-            Assert.AreEqual(updatedItem.GlutenFreeAgencyId, verifyUpdateItem.GlutenFreeAgencyId);
-            Assert.AreEqual(updatedItem.KosherAgencyId, verifyUpdateItem.KosherAgencyId);
-            Assert.AreEqual(updatedItem.NonGmoAgencyId, verifyUpdateItem.NonGmoAgencyId);
-            Assert.AreEqual(updatedItem.OrganicAgencyId, verifyUpdateItem.OrganicAgencyId);
             Assert.IsTrue(verifyUpdateItem.PremiumBodyCare.Value);
             Assert.AreEqual(updatedItem.SeafoodFreshOrFrozenId, verifyUpdateItem.SeafoodFreshOrFrozenId);
             Assert.AreEqual(updatedItem.SeafoodCatchTypeId, verifyUpdateItem.SeafoodCatchTypeId);
-            Assert.AreEqual(updatedItem.VeganAgencyId, verifyUpdateItem.VeganAgencyId);
             Assert.IsTrue(verifyUpdateItem.Vegetarian.Value);
             Assert.IsTrue(verifyUpdateItem.WholeTrade.Value);
         }

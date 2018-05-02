@@ -36,7 +36,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetMerchTaxMappingsParameters, List<MerchTaxMappingModel>>> mockGetMerchTaxMappingsQueryHandler;
         private Mock<IQueryHandler<GetCertificationAgenciesByTraitParameters, List<HierarchyClass>>> mockGetCertificationAgenciesByTraitQueryHandler;
         private Mock<IQueryHandler<GetBrandsParameters, List<BrandModel>>> mockGetBrandsQueryHandler;
-        private Mock<IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>>> mockGetCertificationAgenciesQueryHandler;
         private Mock<IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>>> mockBulkScanCodeSearchQueryHandler;
         private Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>> mockGetItemsBySearchQueryHandler;
         private Mock<IQueryHandler<GetDefaultTaxClassMismatchesParameters, List<DefaultTaxClassMismatchModel>>> mockGetDefaultTaxClassMismatchesQuery;
@@ -57,8 +56,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGetHierarchyClassQuery = new Mock<IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass>>();
             mockGetHierarchyLineageQueryHandler = new Mock<IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel>>();
             mockGetMerchTaxMappingsQueryHandler = new Mock<IQueryHandler<GetMerchTaxMappingsParameters, List<MerchTaxMappingModel>>>();
-            mockGetCertificationAgenciesByTraitQueryHandler = new Mock<IQueryHandler<GetCertificationAgenciesByTraitParameters, List<HierarchyClass>>>();
-            mockGetCertificationAgenciesQueryHandler = new Mock<IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>>>();
+            mockGetCertificationAgenciesByTraitQueryHandler = new Mock<IQueryHandler<GetCertificationAgenciesByTraitParameters, List<HierarchyClass>>>();       
             mockGetBrandsQueryHandler = new Mock<IQueryHandler<GetBrandsParameters, List<BrandModel>>>();
             mockBulkScanCodeSearchQueryHandler = new Mock<IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>>>();
             mockGetItemsBySearchQueryHandler = new Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>>();
@@ -73,7 +71,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             controller = new ExcelController(
                 mockExcelExporterService.Object,
                 mockGetHierarchyClassQuery.Object,
-                mockGetCertificationAgenciesQueryHandler.Object,
                 mockBulkScanCodeSearchQueryHandler.Object,
                 mockGetItemsBySearchQueryHandler.Object,
                 mockGetDefaultTaxClassMismatchesQuery.Object,

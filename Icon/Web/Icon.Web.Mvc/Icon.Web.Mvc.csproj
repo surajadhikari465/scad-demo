@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Icon.Web.Mvc</RootNamespace>
     <AssemblyName>Icon.Web.Mvc</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -28,6 +28,7 @@
     <UseGlobalApplicationHostFile />
     <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
     <Use64BitIISExpress />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,7 +90,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.1.18.1\lib\net45\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.5.1.2\lib\net46\Icon.Framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -155,14 +157,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -191,9 +193,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -208,6 +208,7 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="TIBCO.EMS, Version=1.0.800.9, Culture=neutral, PublicKeyToken=5b83db8ff05c64ba, processorArchitecture=MSIL">
       <HintPath>..\packages\TIBCO.EMS.2016.10.21.1\lib\TIBCO.EMS.dll</HintPath>
       <Private>True</Private>
@@ -255,15 +256,11 @@
     <Compile Include="Attributes\WriteAccessAuthorizeAttribute.cs" />
     <Compile Include="AutoMapperConverters\IconItemChangeQueueToFailedRegionalItemUpdateViewModelConverter.cs" />
     <Compile Include="AutoMapperConverters\LocaleToMessageQueueLocaleConverter.cs" />
-    <Compile Include="Controllers\BulkCertificationAgencyImportController.cs" />
-    <Compile Include="Controllers\CertificationAgencyController.cs" />
     <Compile Include="Controllers\EwicController.cs" />
     <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\PluRequestController.cs" />
     <Compile Include="Controllers\MerchTaxMappingController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
-    <Compile Include="Controllers\BulkBrandImportController.cs" />
-    <Compile Include="Controllers\BulkScanCodeSearchController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\FailedHierarchyMessageController.cs" />
     <Compile Include="Controllers\FailedItemLocaleMessageController.cs" />
@@ -280,8 +277,6 @@
     <Compile Include="Controllers\ProductSelectionGroupController.cs" />
     <Compile Include="Controllers\RefreshDataController.cs" />
     <Compile Include="Controllers\RegionalEventController.cs" />
-    <Compile Include="Controllers\BulkItemAddController.cs" />
-    <Compile Include="Controllers\BulkPluMappingController.cs" />
     <Compile Include="Controllers\FinancialController.cs" />
     <Compile Include="Controllers\HierarchyClassController.cs" />
     <Compile Include="Controllers\RegionalPosPushController.cs" />
@@ -379,7 +374,6 @@
     <Compile Include="Helpers\IgGridHelpers.cs" />
     <Compile Include="Importers\BaseItemSpreadsheetImporter.cs" />
     <Compile Include="Importers\BrandSpreadsheetImporter.cs" />
-    <Compile Include="Importers\CertificationAgencyImporter.cs" />
     <Compile Include="Importers\IPluSpreadsheetImporter.cs" />
     <Compile Include="Models\BooleanComboBoxValuesViewModel.cs" />
     <Compile Include="Models\BrandExportViewModel.cs" />
@@ -481,7 +475,6 @@
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IrmaItemController.cs" />
-    <Compile Include="Controllers\BulkItemImportController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Attributes\AtLeastOneRequiredAttribute.cs" />
     <Compile Include="Attributes\ExcelAttachmentAttribute.cs" />

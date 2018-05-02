@@ -141,12 +141,7 @@ namespace Icon.Web.Mvc.Exporters
             base.CreateHierarchyExcelValidationRule(HierarchyNames.Merchandise, base.merchandiseHierarchyClassDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.MerchandiseColumnIndex, base.ExportData.Count);
             base.CreateHierarchyExcelValidationRule(HierarchyNames.Tax, base.taxHierarchyClassesDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.TaxColumnIndex, base.ExportData.Count);
             base.CreateHierarchyExcelValidationRule(HierarchyNames.Browsing, base.browsingHierarchyClassDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.BrowsingColumnIndex, base.ExportData.Count);
-            base.CreateHierarchyExcelValidationRule(HierarchyNames.National, base.nationalHierarchyClassDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.NationalColumnIndex, base.ExportData.Count);
-            base.CreateHierarchyExcelValidationRule("Gluten-Free", base.glutenFreeHierarchyClassDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.GlutenFreeColumnIndex, base.ExportData.Count);
-            base.CreateHierarchyExcelValidationRule("Kosher", base.kosherHierarchyClassDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.KosherColumnIndex, base.ExportData.Count);
-            base.CreateHierarchyExcelValidationRule("Non-GMO", base.nonGmoHierarchyClassDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.NonGmoColumnIndex, base.ExportData.Count);
-            base.CreateHierarchyExcelValidationRule("Organic", base.organicHierarchyClassDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.OrganicColumnIndex, base.ExportData.Count);
-            base.CreateHierarchyExcelValidationRule("Vegan", base.veganHierarchyClassDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.VeganColumnIndex, base.ExportData.Count);
+            base.CreateHierarchyExcelValidationRule(HierarchyNames.National, base.nationalHierarchyClassDictionary.Values.Count, firstRow, ExcelHelper.IrmaItemColumnIndexes.NationalColumnIndex, base.ExportData.Count);          
         }
 
         protected override void CreateCustomExcelValidationRules()
@@ -330,41 +325,6 @@ namespace Icon.Web.Mvc.Exporters
                 (row, item) => row.Cells[ExcelHelper.IrmaItemColumnIndexes.EcoScaleRatingColumnIndex].Value = item.EcoScaleRating);
 
             AddSpreadsheetColumn(
-                ExcelHelper.IrmaItemColumnIndexes.GlutenFreeColumnIndex,
-                ExcelHelper.ExcelExportColumnNames.GlutenFree,
-                ExcelHelper.ExcelExportColumnWidths.GlutenFree,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[ExcelHelper.IrmaItemColumnIndexes.GlutenFreeColumnIndex].Value = item.GlutenFree);
-
-            AddSpreadsheetColumn(
-                ExcelHelper.IrmaItemColumnIndexes.KosherColumnIndex,
-                ExcelHelper.ExcelExportColumnNames.Kosher,
-                ExcelHelper.ExcelExportColumnWidths.Kosher,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[ExcelHelper.IrmaItemColumnIndexes.KosherColumnIndex].Value = item.Kosher);
-
-            AddSpreadsheetColumn(
-                ExcelHelper.IrmaItemColumnIndexes.MscColumnIndex,
-                ExcelHelper.ExcelExportColumnNames.Msc,
-                ExcelHelper.ExcelExportColumnWidths.Msc,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[ExcelHelper.IrmaItemColumnIndexes.MscColumnIndex].Value = item.Msc);
-
-            AddSpreadsheetColumn(
-                ExcelHelper.IrmaItemColumnIndexes.NonGmoColumnIndex,
-                ExcelHelper.ExcelExportColumnNames.NonGmo,
-                ExcelHelper.ExcelExportColumnWidths.NonGmo,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[ExcelHelper.IrmaItemColumnIndexes.NonGmoColumnIndex].Value = item.NonGmo);
-
-            AddSpreadsheetColumn(
-                ExcelHelper.IrmaItemColumnIndexes.OrganicColumnIndex,
-                ExcelHelper.ExcelExportColumnNames.Organic,
-                ExcelHelper.ExcelExportColumnWidths.Organic,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[ExcelHelper.IrmaItemColumnIndexes.OrganicColumnIndex].Value = item.Organic);
-
-            AddSpreadsheetColumn(
                 ExcelHelper.IrmaItemColumnIndexes.PremiumBodyCareColumnIndex,
                 ExcelHelper.ExcelExportColumnNames.PremiumBodyCare,
                 ExcelHelper.ExcelExportColumnWidths.PremiumBodyCare,
@@ -386,13 +346,7 @@ namespace Icon.Web.Mvc.Exporters
                 HorizontalCellAlignment.Left,
                 (row, item) => row.Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value = item.SeafoodWildOrFarmRaised);
 
-            AddSpreadsheetColumn(
-                ExcelHelper.IrmaItemColumnIndexes.VeganColumnIndex,
-                ExcelHelper.ExcelExportColumnNames.Vegan,
-                ExcelHelper.ExcelExportColumnWidths.Vegan,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[ExcelHelper.IrmaItemColumnIndexes.VeganColumnIndex].Value = item.Vegan);
-
+           
             AddSpreadsheetColumn(
                 ExcelHelper.IrmaItemColumnIndexes.VegetarianColumnIndex,
                 ExcelHelper.ExcelExportColumnNames.Vegetarian,

@@ -31,7 +31,6 @@ namespace Icon.Web.Mvc.Models
             AirChilledOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             MadeInHouseOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             DrainedWeightUomOptions = new SelectList(DrainedWeightUoms.Values);
-            FairTradeCertifiedOptions = new SelectList(FairTradeCertifiedValues.Values);
         }
 
         [Display(Name = "Scan Code")]
@@ -126,20 +125,20 @@ namespace Icon.Web.Mvc.Models
         public SelectList EcoScaleRatings { get; set; }
 
         [Display(Name = "Gluten Free")]
-        public int? GlutenFreeAgencyId { get; set; }
+        public string GlutenFreeAgency { get; set; }
 
         [Display(Name = "Kosher")]
-        public int? KosherAgencyId { get; set; }
+        public string KosherAgency { get; set; }
 
         [Display(Name = "MSC")]
         public string SelectedMscOption { get; set; }
         public SelectList MscOptions { get; set; }
 
         [Display(Name = "Non-GMO")]
-        public int? NonGmoAgencyId { get; set; }
+        public string NonGmoAgency { get; set; }
 
         [Display(Name = "Organic")]
-        public int? OrganicAgencyId { get; set; }
+        public string OrganicAgency { get; set; }
 
         [Display(Name = "Premium Body Care")]
         public string SelectedPremiumBodyCareOption { get; set; }
@@ -154,7 +153,7 @@ namespace Icon.Web.Mvc.Models
         public SelectList SeafoodCatchTypes { get; set; }
 
         [Display(Name = "Vegan")]
-        public int? VeganAgencyId { get; set; }
+        public string VeganAgency { get; set; }
 
         [Display(Name = "Vegetarian")]
         public string SelectedVegetarianOption { get; set; }

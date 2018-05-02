@@ -205,11 +205,11 @@ namespace Icon.Web.Tests.Integration.Commands
             newItemData.EcoScaleRatingId = EcoScaleRatings.AsDictionary.Single(e => e.Value == newItemData.EcoScaleRating).Key.ToString();
             newItemData.SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.AsDictionary.Single(e => e.Value == newItemData.SeafoodFreshOrFrozen).Key.ToString();
             newItemData.SeafoodWildOrFarmRaisedId = SeafoodCatchTypes.AsDictionary.Single(e => e.Value == newItemData.SeafoodWildOrFarmRaised).Key.ToString();
-            newItemData.GlutenFreeAgencyId = testGlutenFree.hierarchyClassID.ToString();
-            newItemData.KosherAgencyId = testKosher.hierarchyClassID.ToString();
-            newItemData.NonGmoAgencyId = testNonGmo.hierarchyClassID.ToString();
-            newItemData.OrganicAgencyId = testOrganic.hierarchyClassID.ToString();
-            newItemData.VeganAgencyId = testVegan.hierarchyClassID.ToString();
+            newItemData.GlutenFreeAgency = testGlutenFree.hierarchyClassID.ToString();
+            newItemData.KosherAgency = testKosher.hierarchyClassID.ToString();
+            newItemData.NonGmoAgency = testNonGmo.hierarchyClassID.ToString();
+            newItemData.OrganicAgency = testOrganic.hierarchyClassID.ToString();
+            newItemData.VeganAgency = testVegan.hierarchyClassID.ToString();
 
             var command = new BulkImportCommand<BulkImportNewItemModel>
             {
@@ -250,14 +250,14 @@ namespace Icon.Web.Tests.Integration.Commands
             string cheeseMilkType = signAttributes.MilkType.Description;
             bool cheeseRaw = signAttributes.CheeseRaw;
             string ecoScaleRating = signAttributes.EcoScaleRating.Description;
-            int glutenFreeId = signAttributes.GlutenFreeAgencyId.Value;
-            int kosherId = signAttributes.KosherAgencyId.Value;
-            int nonGmoId = signAttributes.NonGmoAgencyId.Value;
-            int organicId = signAttributes.OrganicAgencyId.Value;
+            string glutenFree= signAttributes.GlutenFreeAgencyName;
+            string kosher = signAttributes.KosherAgencyName;
+            string nonGmo = signAttributes.NonGmoAgencyName;
+            string organic = signAttributes.OrganicAgencyName;
             bool premiumBodyCare = signAttributes.PremiumBodyCare;
             string seafoodFreshOrFrozen = signAttributes.SeafoodFreshOrFrozen.Description;
             string seafoodCatchType = signAttributes.SeafoodCatchType.Description;
-            int veganId = signAttributes.VeganAgencyId.Value;
+            string vegan = signAttributes.VeganAgencyName;
             bool vegetarian = signAttributes.Vegetarian;
             bool wholeTrade = signAttributes.WholeTrade;
             bool msc = signAttributes.Msc;
@@ -286,14 +286,14 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(newItemData.CheeseAttributeMilkType, cheeseMilkType);
             Assert.IsFalse(cheeseRaw);
             Assert.AreEqual(newItemData.EcoScaleRating, ecoScaleRating);
-            Assert.AreEqual(newItemData.GlutenFreeAgencyId, glutenFreeId.ToString());
-            Assert.AreEqual(newItemData.KosherAgencyId, kosherId.ToString());
-            Assert.AreEqual(newItemData.NonGmoAgencyId, nonGmoId.ToString());
-            Assert.AreEqual(newItemData.OrganicAgencyId, organicId.ToString());
+            Assert.AreEqual(newItemData.GlutenFreeAgency, glutenFree.ToString());
+            Assert.AreEqual(newItemData.KosherAgency, kosher.ToString());
+            Assert.AreEqual(newItemData.NonGmoAgency, nonGmo.ToString());
+            Assert.AreEqual(newItemData.OrganicAgency, organic.ToString());
             Assert.IsTrue(premiumBodyCare);
             Assert.AreEqual(newItemData.SeafoodFreshOrFrozen, seafoodFreshOrFrozen);
             Assert.AreEqual(newItemData.SeafoodWildOrFarmRaised, seafoodCatchType);
-            Assert.AreEqual(newItemData.VeganAgencyId, veganId.ToString());
+            Assert.AreEqual(newItemData.VeganAgency, vegan);
             Assert.IsTrue(vegetarian);
             Assert.IsFalse(wholeTrade);
             Assert.AreEqual(DateTime.Today.Date, DateTime.Parse(insertedDate).Date);

@@ -40,8 +40,7 @@ namespace Icon.Web.Mvc.App_Start
             Mapper.CreateMap<AddHierarchyClassCommand, AddHierarchyClassMessageCommand>();
             Mapper.CreateMap<DeleteHierarchyClassManager, DeleteHierarchyClassCommand>();
             Mapper.CreateMap<UpdateSubTeamManager, UpdateSubTeamCommand>();
-            Mapper.CreateMap<AddCertificationAgencyManager, AddCertificationAgencyCommand>();
-            Mapper.CreateMap<UpdateCertificationAgencyManager, UpdateCertificationAgencyCommand>();
+            Mapper.CreateMap<AddCertificationAgencyManager, AddCertificationAgencyCommand>();        
             Mapper.CreateMap<AddMerchTaxAssociationManager, AddMerchTaxMappingCommand>();
             Mapper.CreateMap<AddMerchTaxAssociationManager, ApplyMerchTaxAssociationToItemsCommand>();
             Mapper.CreateMap<UpdateMerchTaxAssociationManager, UpdateMerchTaxMappingCommand>();

@@ -197,27 +197,7 @@ namespace Icon.Web.Mvc.Importers
             if (ValidRows.Count > 0)
             {
                 ValidateEcoScaleRating();
-            }
-
-            if (ValidRows.Count > 0)
-            {
-                ValidateGlutenFree();
-            }
-
-            if (ValidRows.Count > 0)
-            {
-                ValidateKosher();
-            }
-
-            if (ValidRows.Count > 0)
-            {
-                ValidateNonGmo();
-            }
-
-            if (ValidRows.Count > 0)
-            {
-                ValidateOrganic();
-            }
+            }        
 
             if (ValidRows.Count > 0)
             {
@@ -262,11 +242,6 @@ namespace Icon.Web.Mvc.Importers
             if (ValidRows.Count > 0)
             {
                 ValidateSeafoodWildOrFarmRaised();
-            }
-
-            if (ValidRows.Count > 0)
-            {
-                ValidateVegan();
             }
 
             if (ValidRows.Count > 0)
@@ -516,82 +491,7 @@ namespace Icon.Web.Mvc.Importers
                 AddErrorRows(error, invalidRows);
             }
         }
-
-        protected void ValidateGlutenFree()
-        {
-            var parameters = new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = TraitCodes.GlutenFree };
-
-            var validAgencyHierarchyClasses = getCertificationAgencyQuery.Search(parameters);
-
-            var validAgencies = validAgencyHierarchyClasses.Select(a => a.hierarchyClassID.ToString()).ToList();
-            validAgencies.Add(String.Empty);
-            validAgencies.Add(Constants.ExcelRemoveFieldIndicator);
-
-            var invalidRows = ValidRows.Where(row => !validAgencies.Contains(row.GlutenFreeAgencyId)).ToList();
-
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Gluten-Free agency is not recognized.  Valid entries are {0}.", String.Join(", ", validAgencyHierarchyClasses.Select(a => a.hierarchyClassName)));
-                AddErrorRows(error, invalidRows);
-            }
-        }
-
-        protected void ValidateKosher()
-        {
-            var parameters = new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = TraitCodes.Kosher };
-
-            var validAgencyHierarchyClasses = getCertificationAgencyQuery.Search(parameters);
-
-            var validAgencies = validAgencyHierarchyClasses.Select(a => a.hierarchyClassID.ToString()).ToList();
-            validAgencies.Add(String.Empty);
-            validAgencies.Add(Constants.ExcelRemoveFieldIndicator);
-
-            var invalidRows = ValidRows.Where(row => !validAgencies.Contains(row.KosherAgencyId)).ToList();
-
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Kosher agency is not recognized.  Valid entries are {0}.", String.Join(", ", validAgencyHierarchyClasses.Select(a => a.hierarchyClassName)));
-                AddErrorRows(error, invalidRows);
-            }
-        }
-
-        protected void ValidateNonGmo()
-        {
-            var parameters = new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = TraitCodes.NonGmo };
-
-            var validAgencyHierarchyClasses = getCertificationAgencyQuery.Search(parameters);
-
-            var validAgencies = validAgencyHierarchyClasses.Select(a => a.hierarchyClassID.ToString()).ToList();
-            validAgencies.Add(String.Empty);
-            validAgencies.Add(Constants.ExcelRemoveFieldIndicator);
-
-            var invalidRows = ValidRows.Where(row => !validAgencies.Contains(row.NonGmoAgencyId)).ToList();
-
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Non-GMO agency is not recognized.  Valid entries are {0}.", String.Join(", ", validAgencyHierarchyClasses.Select(a => a.hierarchyClassName)));
-                AddErrorRows(error, invalidRows);
-            }
-        }
-
-        protected void ValidateOrganic()
-        {
-            var parameters = new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = TraitCodes.Organic };
-
-            var validAgencyHierarchyClasses = getCertificationAgencyQuery.Search(parameters);
-
-            var validAgencies = validAgencyHierarchyClasses.Select(a => a.hierarchyClassID.ToString()).ToList();
-            validAgencies.Add(String.Empty);
-            validAgencies.Add(Constants.ExcelRemoveFieldIndicator);
-
-            var invalidRows = ValidRows.Where(row => !validAgencies.Contains(row.OrganicAgencyId)).ToList();
-
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Organic agency is not recognized.  Valid entries are {0}.", String.Join(", ", validAgencyHierarchyClasses.Select(a => a.hierarchyClassName)));
-                AddErrorRows(error, invalidRows);
-            }
-        }
+     
 
         protected void ValidatePremiumBodyCare()
         {
@@ -708,26 +608,7 @@ namespace Icon.Web.Mvc.Importers
                 AddErrorRows(error, invalidRows);
             }
         }
-
-        protected void ValidateVegan()
-        {
-            var parameters = new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = TraitCodes.Vegan };
-
-            var validAgencyHierarchyClasses = getCertificationAgencyQuery.Search(parameters);
-
-            var validAgencies = validAgencyHierarchyClasses.Select(a => a.hierarchyClassID.ToString()).ToList();
-            validAgencies.Add(String.Empty);
-            validAgencies.Add(Constants.ExcelRemoveFieldIndicator);
-
-            var invalidRows = ValidRows.Where(row => !validAgencies.Contains(row.VeganAgencyId)).ToList();
-
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Vegan agency is not recognized.  Valid entries are {0}.", String.Join(", ", validAgencyHierarchyClasses.Select(a => a.hierarchyClassName)));
-                AddErrorRows(error, invalidRows);
-            }
-        }
-
+     
         protected void ValidateVegetarian()
         {
             Validator = new YesNoValidator();

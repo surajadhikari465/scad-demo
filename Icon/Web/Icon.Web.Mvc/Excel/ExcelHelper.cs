@@ -186,26 +186,7 @@ namespace Icon.Web.Mvc.Excel
                         }
 
                         return validValues;
-                    }
-                case "Fair Trade Certified":
-                    {
-                        string[] validValues;
-                        if (includeRemoveOption)
-                        {
-                            validValues = new string[FairTradeCertifiedValues.AsArray.Length + 2];
-                            validValues[0] = null;
-                            FairTradeCertifiedValues.AsArray.CopyTo(validValues, 1);
-                            validValues[validValues.Length - 1] = Constants.ExcelImportRemoveValueKeyword;
-                        }
-                        else
-                        {
-                            validValues = new string[FairTradeCertifiedValues.AsArray.Length + 1];
-                            validValues[0] = null;
-                            FairTradeCertifiedValues.AsArray.CopyTo(validValues, 1);
-                        }
-
-                        return validValues;
-                    }
+                    }                
                 default:
                     throw new ArgumentException(String.Format("{0} is not a known trait.", trait));
             }
@@ -240,21 +221,16 @@ namespace Icon.Web.Mvc.Excel
             public const int EcoScaleRatingColumnIndex = 24;
             public const int FreeRangeColumnIndex = 25;
             public const int SeafoodFreshOrFrozenColumnIndex = 26;
-            public const int GlutenFreeColumnIndex = 27;
-            public const int GrassFedColumnIndex = 28;
-            public const int KosherColumnIndex = 29;
-            public const int MadeInHouseColumnIndex = 30;
-            public const int MscColumnIndex = 31;
-            public const int NonGmoColumnIndex = 32;
-            public const int NutritionRequiredIndex = 33;
-            public const int OrganicColumnIndex = 34;
-            public const int PastureRaisedColumnIndex = 35;
-            public const int PremiumBodyCareColumnIndex = 36;           
-            public const int SeafoodWildOrFarmRaisedColumnIndex = 37;
-            public const int VeganColumnIndex = 38;
-            public const int VegetarianColumnIndex = 39;
-            public const int WholeTradeColumnIndex = 40;
-            public const int ErrorColumnIndex = 41;
+            public const int GrassFedColumnIndex = 27;
+            public const int MadeInHouseColumnIndex = 28;
+            public const int MscColumnIndex = 29;
+            public const int NutritionRequiredIndex = 30;
+            public const int PastureRaisedColumnIndex = 31;
+            public const int PremiumBodyCareColumnIndex = 32;           
+            public const int SeafoodWildOrFarmRaisedColumnIndex = 33;
+            public const int VegetarianColumnIndex = 34;
+            public const int WholeTradeColumnIndex = 35;
+            public const int ErrorColumnIndex = 36;
         }
 
         public static class ExcelExportColumnNames
@@ -519,7 +495,7 @@ namespace Icon.Web.Mvc.Excel
 
         public static string GetIdFromCellText(this string cellText)
         {
-            return cellText.Split('|').Last().Trim();
+            return cellText.Split('|').First().Trim();
         }
 
         public static bool IsDigitsOnly(this string value)

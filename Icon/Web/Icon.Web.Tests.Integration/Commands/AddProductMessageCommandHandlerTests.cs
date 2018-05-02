@@ -586,8 +586,7 @@ namespace Icon.Web.Tests.Integration.Commands
                     DryAged = true,
                     FreeRange = false,
                     PastureRaised = true,
-                    WholeTrade = true,
-                    KosherAgencyId = testKosherClass.hierarchyClassID
+                    WholeTrade = true
                 };
 
                 context.ItemSignAttribute.Add(itemSignAttribute);
@@ -696,8 +695,7 @@ namespace Icon.Web.Tests.Integration.Commands
                     DryAged = true,
                     FreeRange = false,
                     PastureRaised = true,
-                    WholeTrade = true,
-                    KosherAgencyId = testKosherClass.hierarchyClassID
+                    WholeTrade = true
                 };
 
                 context.ItemSignAttribute.Add(itemSignAttribute);

@@ -145,12 +145,7 @@ namespace Icon.Web.Mvc.Excel.Validators.Factories
                     x => x.DrainedWeightUom,
                     TraitPatterns.DrainedWeightUom,
                     string.Format("Drained Weight UOM is not recognized. Valid entries are {0}", string.Join(", ", DrainedWeightUoms.AsArray))),
-
-                new RegexOrEmptyStringItemModelValidator<NewItemExcelModel>(
-                    x => x.FairTradeCertified,
-                    TraitPatterns.FairTradeCertified,
-                    string.Format("Fair Trade Certified is not recognized.  Valid entries are {0}.", string.Join(", ", FairTradeCertifiedValues.AsArray))),
-
+           
                 new RegexOrEmptyStringItemModelValidator<NewItemExcelModel>(
                     x => x.MainProductName,
                     TraitPatterns.MainProductName,

@@ -1779,9 +1779,9 @@ namespace Icon.Web.Tests.Integration.Queries
             context.HierarchyClass.Add(hierarchyClass);
             context.SaveChanges();
 
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithGlutenFreeAgencyId(hierarchyClass.hierarchyClassID));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithGlutenFreeAgencyId(hierarchyClass.hierarchyClassID));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithGlutenFreeAgencyId(null));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithGlutenFreeAgencyName("TestGLutenFreeAgency"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithGlutenFreeAgencyName("TestGlutenGreeAgrncy1"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithGlutenFreeAgencyName(null));
 
             context.SaveChanges();
 
@@ -1809,9 +1809,9 @@ namespace Icon.Web.Tests.Integration.Queries
             context.HierarchyClass.Add(hierarchyClass);
             context.SaveChanges();
 
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithKosherAgencyId(hierarchyClass.hierarchyClassID));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithKosherAgencyId(hierarchyClass.hierarchyClassID));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithKosherAgencyId(null));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithKosherAgencyName("TestKosherAgency"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithKosherAgencyName("TestKosherAgency"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithKosherAgencyName(null));
 
             context.SaveChanges();
 
@@ -1839,9 +1839,9 @@ namespace Icon.Web.Tests.Integration.Queries
             context.HierarchyClass.Add(hierarchyClass);
             context.SaveChanges();
 
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithNonGmoAgencyId(hierarchyClass.hierarchyClassID));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithNonGmoAgencyId(hierarchyClass.hierarchyClassID));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithNonGmoAgencyId(null));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithNonGmoAgencyName("TestNonGmoAgency"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithNonGmoAgencyName("TestNonGmoAgency"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithNonGmoAgencyName(null));
 
             context.SaveChanges();
 
@@ -1869,9 +1869,9 @@ namespace Icon.Web.Tests.Integration.Queries
             context.HierarchyClass.Add(hierarchyClass);
             context.SaveChanges();
 
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithOrganicAgencyId(hierarchyClass.hierarchyClassID));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithOrganicAgencyId(hierarchyClass.hierarchyClassID));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithOrganicAgencyId(null));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithOrganicAgencyName("TestOrganicAgency"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithOrganicAgencyName("TestOrganicAgency"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithOrganicAgencyName(null));
 
             context.SaveChanges();
 
@@ -1899,9 +1899,9 @@ namespace Icon.Web.Tests.Integration.Queries
             context.HierarchyClass.Add(hierarchyClass);
             context.SaveChanges();
 
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithVeganAgencyId(hierarchyClass.hierarchyClassID));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithVeganAgencyId(hierarchyClass.hierarchyClassID));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithVeganAgencyId(null));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithVeganAgencyName("TestVeganAgency"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithVeganAgencyName("TestVeganAgency"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithVeganAgencyName(null));
 
             context.SaveChanges();
 

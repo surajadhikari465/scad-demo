@@ -22,12 +22,6 @@ namespace Icon.Web.Mvc.Excel.ExcelValidationRuleBuilders.Factories
                 new HierarchyClassExcelValidationRuleBuilder("Browsing", itemColumns.IndexOf(ExcelExportColumnNames.Browsing)),
                 new HierarchyClassExcelValidationRuleBuilder("National", itemColumns.IndexOf(ExcelExportColumnNames.NationalClass)),
 
-                new HierarchyClassExcelValidationRuleBuilder("GlutenFree", itemColumns.IndexOf(ExcelExportColumnNames.GlutenFree)),
-                new HierarchyClassExcelValidationRuleBuilder("Kosher", itemColumns.IndexOf(ExcelExportColumnNames.Kosher)),
-                new HierarchyClassExcelValidationRuleBuilder("NonGMO", itemColumns.IndexOf(ExcelExportColumnNames.NonGmo)),
-                new HierarchyClassExcelValidationRuleBuilder("Organic", itemColumns.IndexOf(ExcelExportColumnNames.Organic)),
-                new HierarchyClassExcelValidationRuleBuilder("Vegan", itemColumns.IndexOf(ExcelExportColumnNames.Vegan)),
-
                 new YesOrNoExcelValidationRuleBuilder(itemColumns.IndexOf(ExcelExportColumnNames.FoodStampEligible)),
                 new YesOrNoExcelValidationRuleBuilder(itemColumns.IndexOf(ExcelExportColumnNames.DepartmentSale)),
                 new YesOrNoExcelValidationRuleBuilder(itemColumns.IndexOf(ExcelExportColumnNames.Validated)),
@@ -56,8 +50,7 @@ namespace Icon.Web.Mvc.Excel.ExcelValidationRuleBuilders.Factories
                 new RemovableValueCollectionExcelValidationRuleBuilder(EcoScaleRatings.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.EcoScaleRating)),
                 new RemovableValueCollectionExcelValidationRuleBuilder(SeafoodFreshOrFrozenTypes.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.SeafoodFreshOrFrozen)),
                 new RemovableValueCollectionExcelValidationRuleBuilder(SeafoodCatchTypes.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.SeafoodWildOrFarmRaised)),
-                new RemovableValueCollectionExcelValidationRuleBuilder(DrainedWeightUoms.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.DrainedWeightUom)),
-                new RemovableValueCollectionExcelValidationRuleBuilder(FairTradeCertifiedValues.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.FairTradeCertified)),
+                new RemovableValueCollectionExcelValidationRuleBuilder(DrainedWeightUoms.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.DrainedWeightUom)),         
             };
         }
     }

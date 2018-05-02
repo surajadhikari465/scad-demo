@@ -44,8 +44,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private string testUser = "TestUser";
         private Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>> mockGetItemsBySearchQueryHandler;
         private Mock<IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel>> mockGetHierarchyLineageQueryHandler;
-        private Mock<ICommandHandler<AddProductMessageCommand>> mockAddProductMessageCommandHandler;
-        private Mock<IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>>> mockGetCertificationAgenciesQuery;
+        private Mock<ICommandHandler<AddProductMessageCommand>> mockAddProductMessageCommandHandler;     
         private Mock<IInfragisticsHelper> mockInfragisticsHelper;
         private Mock<UrlHelper> mockUrlHelper;
         private Mock<IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>>> mockGetItemsByBulkScanCodeSearcParameters;
@@ -59,8 +58,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             this.mockAddItemManagerHandler = new Mock<IManagerHandler<AddItemManager>>();
             this.mockItemViewModelValidator = new Mock<IObjectValidator<ItemViewModel>>();
             this.mockGetItemsBySearchQueryHandler = new Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>>();
-            this.mockGetHierarchyLineageQueryHandler = new Mock<IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel>>();
-            this.mockGetCertificationAgenciesQuery = new Mock<IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>>>();
+            this.mockGetHierarchyLineageQueryHandler = new Mock<IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel>>();         
             this.mockAddProductMessageCommandHandler = new Mock<ICommandHandler<AddProductMessageCommand>>();
             this.mockInfragisticsHelper = new Mock<IInfragisticsHelper>();
             this.mockUrlHelper = new Mock<UrlHelper>();
@@ -77,12 +75,10 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockItemViewModelValidator.Object,
                 mockGetItemsBySearchQueryHandler.Object,
                 mockGetHierarchyLineageQueryHandler.Object,
-                mockGetCertificationAgenciesQuery.Object,
                 mockAddProductMessageCommandHandler.Object,
                 mockInfragisticsHelper.Object, 
                 mockGetItemsByBulkScanCodeSearcParameters.Object);
-
-            mockGetCertificationAgenciesQuery.Setup(q => q.Search(It.IsAny<GetCertificationAgenciesParameters>())).Returns(BuildFakeAgencies());
+      
             mockContext.SetupGet(c => c.HttpContext.User.Identity.Name).Returns(testUser);
             controller.ControllerContext = mockContext.Object;
 

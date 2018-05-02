@@ -25,12 +25,7 @@ namespace Icon.Web.Mvc.Models
         public List<HierarchyClassViewModel> MilkTypes { get; set; }
         public List<HierarchyClassViewModel> EcoScaleRatings { get; set; }
         public List<HierarchyClassViewModel> SeafoodFreshOrFrozenTypes { get; set; }
-        public List<HierarchyClassViewModel> SeafoodCatchTypes { get; set; }
-        public List<CertificationAgencyModel> GlutenFreeAgencies { get; set; }
-        public List<CertificationAgencyModel> KosherAgencies { get; set; }
-        public List<CertificationAgencyModel> NonGmoAgencies { get; set; }
-        public List<CertificationAgencyModel> OrganicAgencies { get; set; }
-        public List<CertificationAgencyModel> VeganAgencies { get; set; }
+        public List<HierarchyClassViewModel> SeafoodCatchTypes { get; set; }   
         public BooleanComboBoxValuesViewModel BooleanComboBoxValues { get; set; }
         public NullableBooleanComboBoxValuesViewModel NullableBooleanComboBoxValues { get; set; }
     }

@@ -97,11 +97,6 @@ namespace Icon.Web.Mvc.Exporters
             browsingWorksheet = ExportModel.ExcelWorkbook.Worksheets.Add(HierarchyNames.Browsing);
             merchTaxMapWorksheet = ExportModel.ExcelWorkbook.Worksheets.Add("MerchTaxMapping");
             nationalWorksheet = ExportModel.ExcelWorkbook.Worksheets.Add(HierarchyNames.National);
-            glutenFreeWorksheet = ExportModel.ExcelWorkbook.Worksheets.Add("Gluten-Free");
-            kosherWorksheet = ExportModel.ExcelWorkbook.Worksheets.Add("Kosher");
-            nonGmoWorksheet = ExportModel.ExcelWorkbook.Worksheets.Add("Non-GMO");
-            organicWorksheet = ExportModel.ExcelWorkbook.Worksheets.Add("Organic");
-            veganWorksheet = ExportModel.ExcelWorkbook.Worksheets.Add("Vegan");
 
             BuildHierarchyClassDictionaries();
             CreateHierarchyWorksheets();
@@ -308,12 +303,7 @@ namespace Icon.Web.Mvc.Exporters
             CreateHierarchyWorksheet(taxHierarchyClassesDictionary, taxWorksheet);
             CreateHierarchyWorksheet(browsingHierarchyClassDictionary, browsingWorksheet);
             CreateHierarchyMappingWorksheet(merchandiseTaxHierarchyMappingDictionary, merchTaxMapWorksheet);
-            CreateHierarchyWorksheet(nationalHierarchyClassDictionary, nationalWorksheet);
-            CreateHierarchyWorksheet(glutenFreeHierarchyClassDictionary, glutenFreeWorksheet);
-            CreateHierarchyWorksheet(kosherHierarchyClassDictionary, kosherWorksheet);
-            CreateHierarchyWorksheet(nonGmoHierarchyClassDictionary, nonGmoWorksheet);
-            CreateHierarchyWorksheet(organicHierarchyClassDictionary, organicWorksheet);
-            CreateHierarchyWorksheet(veganHierarchyClassDictionary, veganWorksheet);
+            CreateHierarchyWorksheet(nationalHierarchyClassDictionary, nationalWorksheet);            
         }
 
         private void CreateHierarchyWorksheet(Dictionary<string, string> hierarchyClassDictionary, Worksheet hierarchyClassWorksheet)

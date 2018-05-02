@@ -137,11 +137,7 @@
                 new RegexOrEmptyStringItemModelValidator<ItemExcelModel>(
                     x => x.DrainedWeightUom,
                     TraitPatterns.DrainedWeightUom + "|" + Constants.ExcelImportRemoveValueKeyword,
-                    string.Format("Drained Weight UOM is not recognized. Valid entries are {0}", string.Join(", ", DrainedWeightUoms.AsArray))),
-                new RegexOrEmptyStringItemModelValidator<ItemExcelModel>(
-                    x => x.FairTradeCertified,
-                    TraitPatterns.FairTradeCertified + "|" + Constants.ExcelImportRemoveValueKeyword,
-                    string.Format("Fair Trade Certified is not recognized.  Valid entries are {0}.", string.Join(", ", FairTradeCertifiedValues.AsArray))),
+                    string.Format("Drained Weight UOM is not recognized. Valid entries are {0}", string.Join(", ", DrainedWeightUoms.AsArray))),             
                 new RegexOrEmptyStringItemModelValidator<ItemExcelModel>(
                     x => x.MainProductName,
                     TraitPatterns.MainProductName,

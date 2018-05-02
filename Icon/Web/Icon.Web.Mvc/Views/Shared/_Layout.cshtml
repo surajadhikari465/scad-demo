@@ -28,10 +28,8 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Item Search <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Consolidated Items", "Index", "Item")</li>
+                        <ul class="dropdown-menu">         
                             <li>@Html.ActionLink("New Items", "Index", "IrmaItem")</li>
-                            <li>@Html.ActionLink("Bulk Scan Code", "Index", "BulkScanCodeSearch")</li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -41,22 +39,20 @@
                             <li>@Html.ActionLink("Financial", "Index", "Financial")</li>
                             <li>@Html.ActionLink("National Class", "Index", "NationalClass")</li>
                             <li>@Html.ActionLink("Merchandise to Tax Association", "Index", "MerchTaxMapping")</li>
-                            <li>@Html.ActionLink("Certification Agency Management", "Index", "CertificationAgency")</li>
                             <li>@Html.ActionLink("Others", "Index", "Hierarchy")</li>
                             <li>@Html.ActionLink("Clear Hierarchy Class Cache", "ClearCache", "HierarchyClass")</li>
                         </ul>
                     </li>
                     <li>@Html.ActionLink("Stores", "Index", "Store")</li>
-                    <li class="dropdown">
+                    @*<li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bulk Import <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Item Import", "Index", "BulkItemImport")</li>
                             <li>@Html.ActionLink("New Item Import", "Index", "BulkItemAdd")</li>
                             <li>@Html.ActionLink("PLU Import", "Index", "BulkPluMapping")</li>
-                            <li>@Html.ActionLink("Brand Import", "Index", "BulkBrandImport")</li>
-                            <li>@Html.ActionLink("Certification Agency Import", "Index", "BulkCertificationAgencyImport")</li>
+                            <li>@Html.ActionLink("Brand Import", "Index", "BulkBrandImport")</li>                      
                         </ul>
-                    </li>
+                    </li>*@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">PLU <b class="caret"></b></a>
                         <ul class="dropdown-menu">

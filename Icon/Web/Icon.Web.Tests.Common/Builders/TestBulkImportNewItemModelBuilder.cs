@@ -36,16 +36,16 @@ namespace Icon.Web.Tests.Common.Builders
         private string cheeseAttributeRaw;
         private string ecoScaleRatingId;
         private string ecoScaleRating;
-        private string glutenFreeAgencyId;
-        private string kosherAgencyId;
-        private string nonGmoAgencyId;
-        private string organicAgencyId;
+        private string glutenFreeAgency;
+        private string kosherAgency;
+        private string nonGmoAgency;
+        private string organicAgency;
         private string premiumBodyCare;
         private string seafoodFreshOrFrozenId;
         private string seafoodFreshOrFrozen;
         private string seafoodWildOrFarmRaisedId;
         private string seafoodWildOrFarmRaised;
-        private string veganAgencyId;
+        private string veganAgency;
         private string vegetarian;
         private string wholeTrade;
         private string grassFed;
@@ -86,14 +86,14 @@ namespace Icon.Web.Tests.Common.Builders
             milkType = MilkTypes.Descriptions.AsArray[0];
             cheeseAttributeRaw = "0";
             ecoScaleRating = EcoScaleRatings.Descriptions.AsArray[0];
-            glutenFreeAgencyId = String.Empty;
-            kosherAgencyId = String.Empty;
-            nonGmoAgencyId = String.Empty;
-            organicAgencyId = String.Empty;
+            glutenFreeAgency = String.Empty;
+            kosherAgency = String.Empty;
+            nonGmoAgency = String.Empty;
+            organicAgency = String.Empty;
             premiumBodyCare = "1";
             seafoodFreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.AsArray[0];
             seafoodWildOrFarmRaised = SeafoodCatchTypes.Descriptions.AsArray[0];
-            veganAgencyId = String.Empty;
+            veganAgency = String.Empty;
             vegetarian = "1";
             wholeTrade = "0";
             msc = String.Empty;
@@ -379,16 +379,16 @@ namespace Icon.Web.Tests.Common.Builders
                 CheeseAttributeRaw = cheeseAttributeRaw,
                 EcoScaleRatingId = ecoScaleRatingId,
                 EcoScaleRating = ecoScaleRating,
-                GlutenFreeAgencyId = glutenFreeAgencyId,
-                KosherAgencyId = kosherAgencyId,
-                NonGmoAgencyId = nonGmoAgencyId,
-                OrganicAgencyId = organicAgencyId,
+                GlutenFreeAgency = glutenFreeAgency,
+                KosherAgency = kosherAgency,
+                NonGmoAgency = nonGmoAgency,
+                OrganicAgency = organicAgency,
                 PremiumBodyCare = premiumBodyCare,
                 SeafoodFreshOrFrozenId = seafoodFreshOrFrozenId,
                 SeafoodFreshOrFrozen = seafoodFreshOrFrozen,
                 SeafoodWildOrFarmRaisedId = seafoodWildOrFarmRaisedId,
                 SeafoodWildOrFarmRaised = seafoodWildOrFarmRaised,
-                VeganAgencyId = veganAgencyId,
+                VeganAgency = veganAgency,
                 Vegetarian = vegetarian,
                 WholeTrade = wholeTrade,
                 GrassFed = grassFed,

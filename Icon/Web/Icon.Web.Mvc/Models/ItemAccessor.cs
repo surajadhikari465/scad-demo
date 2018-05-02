@@ -139,30 +139,6 @@ namespace Icon.Web.Mvc.Models
             return signAttributes == null ? (int?) null : signAttributes.EcoScaleRatingId;
         }
 
-        public static int? GetGlutenFreeAgencyId(Item item)
-        {
-            var signAttributes = item.ItemSignAttribute.FirstOrDefault();
-            return signAttributes == null ? (int?) null : signAttributes.GlutenFreeAgencyId;
-        }
-
-        public static int? GetKosherAgencyId(Item item)
-        {
-            var signAttributes = item.ItemSignAttribute.FirstOrDefault();
-            return signAttributes == null ? (int?) null : signAttributes.KosherAgencyId;
-        }
-
-        public static int? GetNonGmoAgencyId(Item item)
-        {
-            var signAttributes = item.ItemSignAttribute.FirstOrDefault();
-            return signAttributes == null ? (int?) null : signAttributes.NonGmoAgencyId;
-        }
-
-        public static int? GetOrganicAgencyId(Item item)
-        {
-            var signAttributes = item.ItemSignAttribute.FirstOrDefault();
-            return signAttributes == null ? (int?) null : signAttributes.OrganicAgencyId;
-        }
-
         public static string GetPremiumBodyCare(Item item)
         {
             var signAttributes = item.ItemSignAttribute.FirstOrDefault();
@@ -185,12 +161,6 @@ namespace Icon.Web.Mvc.Models
         {
             var signAttributes = item.ItemSignAttribute.FirstOrDefault();
             return signAttributes == null ? (int?) null : signAttributes.SeafoodCatchTypeId;
-        }
-
-        public static int? GetVeganAgencyId(Item item)
-        {
-            var signAttributes = item.ItemSignAttribute.FirstOrDefault();
-            return signAttributes == null ? (int?) null : signAttributes.VeganAgencyId;
         }
         
         public static string GetVegetarian(Item item)

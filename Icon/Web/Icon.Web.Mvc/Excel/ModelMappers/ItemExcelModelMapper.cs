@@ -32,13 +32,7 @@ namespace Icon.Web.Mvc.Excel.ModelMappers
             var taxHierarchyClasses = GetHierarchyClassDictionary(hierarchyClasses.TaxHierarchyList);
             var nationalHierarchyClasses = GetHierarchyClassDictionary(hierarchyClasses.NationalHierarchyList);
             var browsingHierarchyClasses = GetHierarchyClassDictionary(hierarchyClasses.BrowsingHierarchyList);
-
-            var glutenFreeAgencies = GetAgencyDictionary(getCertificationAgenciesByTraitQuery.Search(new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = Traits.Codes.GlutenFree }));
-            var kosherAgencies = GetAgencyDictionary(getCertificationAgenciesByTraitQuery.Search(new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = Traits.Codes.Kosher }));
-            var nonGmoAgencies = GetAgencyDictionary(getCertificationAgenciesByTraitQuery.Search(new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = Traits.Codes.NonGmo }));
-            var organicAgencies = GetAgencyDictionary(getCertificationAgenciesByTraitQuery.Search(new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = Traits.Codes.Organic }));
-            var veganAgencies = GetAgencyDictionary(getCertificationAgenciesByTraitQuery.Search(new GetCertificationAgenciesByTraitParameters { AgencyTypeTraitCode = Traits.Codes.Vegan }));
-
+           
             return models.Select(model => new ItemExcelModel
             {
                 ScanCode = model.ScanCode,
@@ -64,15 +58,15 @@ namespace Icon.Web.Mvc.Excel.ModelMappers
                 CheeseAttributeMilkType = GetDescription(MilkTypes.AsDictionary, model.CheeseMilkTypeId),
                 CheeseAttributeRaw = ConversionUtility.ConvertNullableBoolToYesNo(model.CheeseRaw),
                 EcoScaleRating = GetDescription(EcoScaleRatings.AsDictionary, model.EcoScaleRatingId),
-                GlutenFree = model.GlutenFreeAgencyId.HasValue ? glutenFreeAgencies[model.GlutenFreeAgencyId.Value] : null,
-                Kosher = model.KosherAgencyId.HasValue ? kosherAgencies[model.KosherAgencyId.Value] : null,
+                GlutenFree = model.GlutenFreeAgency,
+                Kosher = model.KosherAgency,
                 Msc = ConversionUtility.ConvertNullableBoolToYesNo(model.Msc),
-                NonGmo = model.NonGmoAgencyId.HasValue ? nonGmoAgencies[model.NonGmoAgencyId.Value] : null,
-                Organic = model.OrganicAgencyId.HasValue ? organicAgencies[model.OrganicAgencyId.Value] : null,
+                NonGmo = model.NonGmoAgency,
+                Organic = model.OrganicAgency,
                 PremiumBodyCare = ConversionUtility.ConvertNullableBoolToYesNo(model.PremiumBodyCare),
                 SeafoodFreshOrFrozen = GetDescription(SeafoodFreshOrFrozenTypes.AsDictionary, model.SeafoodFreshOrFrozenId),
                 SeafoodWildOrFarmRaised = GetDescription(SeafoodCatchTypes.AsDictionary, model.SeafoodCatchTypeId),
-                Vegan = model.VeganAgencyId.HasValue ? veganAgencies[model.VeganAgencyId.Value] : null,
+                Vegan = model.VeganAgency,
                 Vegetarian = ConversionUtility.ConvertNullableBoolToYesNo(model.Vegetarian),
                 WholeTrade = ConversionUtility.ConvertNullableBoolToYesNo(model.WholeTrade),
                 GrassFed = ConversionUtility.ConvertNullableBoolToYesNo(model.GrassFed),

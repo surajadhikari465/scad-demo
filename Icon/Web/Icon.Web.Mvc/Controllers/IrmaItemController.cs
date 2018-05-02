@@ -32,15 +32,13 @@ namespace Icon.Web.Controllers
         private IQueryHandler<GetIrmaItemsParameters, List<IRMAItem>> getIrmaItemsQuery;
         private ICommandHandler<DeleteIrmaItemCommand> deleteIrmaItemHandler;
         private IExcelExporterService excelExporterService;
-        private IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>> getCertificationAgenciesQuery;
 
         public IrmaItemController(
             ILogger logger,
             IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel> getHierarchyClassesQuery,
             ICommandHandler<UpdateIrmaItemCommand> updateIrmaItemHandler,
             IManagerHandler<AddItemManager> addItemDeleteIrmaItemHandler,
-            IQueryHandler<GetIrmaItemsParameters, List<IRMAItem>> getIrmaItemsQuery,
-            IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>> getCertificationAgenciesQuery,
+            IQueryHandler<GetIrmaItemsParameters, List<IRMAItem>> getIrmaItemsQuery,          
             ICommandHandler<DeleteIrmaItemCommand> deleteIrmaItemHandler,
             IExcelExporterService excelExporterService)
         {
@@ -51,7 +49,6 @@ namespace Icon.Web.Controllers
             this.getIrmaItemsQuery = getIrmaItemsQuery;
             this.deleteIrmaItemHandler = deleteIrmaItemHandler;
             this.excelExporterService = excelExporterService;
-            this.getCertificationAgenciesQuery = getCertificationAgenciesQuery;
         }
 
         //
@@ -121,12 +118,12 @@ namespace Icon.Web.Controllers
             viewModel.SeafoodFreshOrFrozenTypes = SeafoodFreshOrFrozenTypes.AsDictionary.OrderBy(kvp => kvp.Value).Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
             viewModel.SeafoodCatchTypes = SeafoodCatchTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
 
-            var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
-            viewModel.GlutenFreeAgencies = certificationAgencies.Where(ca => ca.GlutenFree == "1").ToList();
-            viewModel.KosherAgencies = certificationAgencies.Where(ca => ca.Kosher == "1").ToList();
-            viewModel.NonGmoAgencies = certificationAgencies.Where(ca => ca.NonGMO == "1").ToList();
-            viewModel.OrganicAgencies = certificationAgencies.Where(ca => ca.Organic == "1").ToList();
-            viewModel.VeganAgencies = certificationAgencies.Where(ca => ca.Vegan == "1").ToList();
+            //var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
+            //viewModel.GlutenFreeAgencies = certificationAgencies.Where(ca => ca.GlutenFree == "1").ToList();
+            //viewModel.KosherAgencies = certificationAgencies.Where(ca => ca.Kosher == "1").ToList();
+            //viewModel.NonGmoAgencies = certificationAgencies.Where(ca => ca.NonGMO == "1").ToList();
+            //viewModel.OrganicAgencies = certificationAgencies.Where(ca => ca.Organic == "1").ToList();
+            //viewModel.VeganAgencies = certificationAgencies.Where(ca => ca.Vegan == "1").ToList();
             viewModel.NullableBooleanComboBoxValues = new NullableBooleanComboBoxValuesViewModel();
 
            
@@ -263,15 +260,10 @@ namespace Icon.Web.Controllers
                 update.CheeseMilkTypeId = item.row.CheeseMilkTypeId;
                 update.CheeseRaw = item.row.CheeseRaw;
                 update.EcoScaleRatingId = item.row.EcoScaleRatingId;
-                update.GlutenFreeAgencyId = item.row.GlutenFreeAgencyId;
-                update.KosherAgencyId = item.row.KosherAgencyId;
                 update.Msc = item.row.Msc;
-                update.NonGmoAgencyId = item.row.NonGmoAgencyId;
-                update.OrganicAgencyId = item.row.OrganicAgencyId;
                 update.PremiumBodyCare = item.row.PremiumBodyCare;
                 update.SeafoodFreshOrFrozenId = item.row.SeafoodFreshOrFrozenId;
                 update.SeafoodCatchTypeId = item.row.SeafoodCatchTypeId;
-                update.VeganAgencyId = item.row.VeganAgencyId;
                 update.Vegetarian = item.row.Vegetarian;
                 update.WholeTrade = item.row.WholeTrade;
                 update.GrassFed = item.row.GrassFed;
@@ -411,15 +403,10 @@ namespace Icon.Web.Controllers
                     CheeseMilkTypeId = b.CheeseMilkTypeId,
                     CheeseRaw = b.CheeseRaw,
                     EcoScaleRatingId = b.EcoScaleRatingId,
-                    GlutenFreeAgencyId = b.GlutenFreeAgencyId,
-                    KosherAgencyId = b.KosherAgencyId,
                     Msc = b.Msc,
-                    NonGmoAgencyId = b.NonGmoAgencyId,
-                    OrganicAgencyId = b.OrganicAgencyId,
                     PremiumBodyCare = b.PremiumBodyCare,
                     SeafoodFreshOrFrozenId = b.SeafoodFreshOrFrozenId,
                     SeafoodCatchTypeId = b.SeafoodCatchTypeId,
-                    VeganAgencyId = b.VeganAgencyId,
                     Vegetarian = b.Vegetarian,
                     WholeTrade = b.WholeTrade,
                     GrassFed = b.GrassFed,

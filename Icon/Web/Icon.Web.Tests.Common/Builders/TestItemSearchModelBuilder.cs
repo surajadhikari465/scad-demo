@@ -33,15 +33,15 @@ namespace Icon.Web.Tests.Common.Builders
         private int? cheeseMilkTypeId;
         private bool? cheeseRaw;
         private int? ecoScaleRatingId;
-        private int? glutenFreeAgencyId;
-        private int? kosherAgencyId;
-        private int? nonGmoAgencyId;
-        private int? organicAgencyId;
+        private string glutenFreeAgency;
+        private string kosherAgency;
+        private string nonGmoAgency;
+        private string organicAgency;
         private bool? premiumBodyCare;
         private int? productionClaimsId;
         private int? seafoodFreshOrFrozenId;
         private int? seafoodCatchTypeId;
-        private int? veganAgencyId;
+        private string veganAgency;
         private bool? vegetarian;
         private bool? wholeTrade;
         private string createdDate;
@@ -77,16 +77,16 @@ namespace Icon.Web.Tests.Common.Builders
             this.biodynamic = null;
             this.cheeseMilkTypeId = null;
             this.cheeseRaw = null;
-            this.ecoScaleRatingId = null;
-            this.glutenFreeAgencyId = null;
-            this.kosherAgencyId = null;
-            this.nonGmoAgencyId = null;
-            this.organicAgencyId = null;
+            this.ecoScaleRatingId= null;
+            this.glutenFreeAgency = null;
+            this.kosherAgency = null;
+            this.nonGmoAgency = null;
+            this.organicAgency = null;
             this.premiumBodyCare = null;
             this.productionClaimsId = null;
             this.seafoodFreshOrFrozenId = null;
             this.seafoodCatchTypeId = null;
-            this.veganAgencyId = null;
+            this.veganAgency = null;
             this.vegetarian = null;
             this.wholeTrade = null;
             this.createdDate = DateTime.Now.ToString();
@@ -262,27 +262,27 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSearchModelBuilder WithGlutenFreeAgencyId(int? glutenFreeAgencyId)
+        public TestItemSearchModelBuilder WithGlutenFreeAgencyId(string glutenFreeAgency)
         {
-            this.glutenFreeAgencyId = glutenFreeAgencyId;
+            this.glutenFreeAgency = glutenFreeAgency;
             return this;
         }
 
-        public TestItemSearchModelBuilder WithKosherAgencyId(int? kosherAgencyId)
+        public TestItemSearchModelBuilder WithKosherAgencyId(string kosherAgency)
         {
-            this.kosherAgencyId = kosherAgencyId;
+            this.kosherAgency = kosherAgency;
             return this;
         }
 
         public TestItemSearchModelBuilder WithNonGmoAgencyId(int? nonGmoAgencyId)
         {
-            this.nonGmoAgencyId = nonGmoAgencyId;
+            this.nonGmoAgency = nonGmoAgency;
             return this;
         }
 
-        public TestItemSearchModelBuilder WithOrganicAgencyId(int? organicAgencyId)
+        public TestItemSearchModelBuilder WithOrganicAgencyId(string organicAgency)
         {
-            this.organicAgencyId = organicAgencyId;
+            this.organicAgency = organicAgency;
             return this;
         }
 
@@ -310,9 +310,9 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSearchModelBuilder WithVeganAgencyId(int? veganAgencyId)
+        public TestItemSearchModelBuilder WithVeganAgencyId(string veganAgencyId)
         {
-            this.veganAgencyId = veganAgencyId;
+            this.veganAgency = veganAgency;
             return this;
         }
 
@@ -378,14 +378,14 @@ namespace Icon.Web.Tests.Common.Builders
             itemSearchModel.CheeseMilkTypeId = this.cheeseMilkTypeId;
             itemSearchModel.CheeseRaw = this.cheeseRaw;
             itemSearchModel.EcoScaleRatingId = this.ecoScaleRatingId;
-            itemSearchModel.GlutenFreeAgencyId = this.glutenFreeAgencyId;
-            itemSearchModel.KosherAgencyId = this.kosherAgencyId;
-            itemSearchModel.NonGmoAgencyId = this.nonGmoAgencyId;
-            itemSearchModel.OrganicAgencyId = this.organicAgencyId;
+            itemSearchModel.GlutenFreeAgency = this.glutenFreeAgency;
+            itemSearchModel.KosherAgency = this.kosherAgency;
+            itemSearchModel.NonGmoAgency = this.nonGmoAgency;
+            itemSearchModel.OrganicAgency = this.organicAgency;
             itemSearchModel.PremiumBodyCare = this.premiumBodyCare;
             itemSearchModel.SeafoodFreshOrFrozenId = this.seafoodFreshOrFrozenId;
             itemSearchModel.SeafoodCatchTypeId = this.seafoodCatchTypeId;
-            itemSearchModel.VeganAgencyId = this.veganAgencyId;
+            itemSearchModel.VeganAgency = this.veganAgency;
             itemSearchModel.Vegetarian = this.vegetarian;
             itemSearchModel.WholeTrade = this.wholeTrade;
             itemSearchModel.CreatedDate = this.createdDate;

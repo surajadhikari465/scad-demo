@@ -33,8 +33,7 @@ namespace Icon.Web.Controllers
         private IManagerHandler<AddItemManager> addItemManagerHandler;
         private IObjectValidator<ItemViewModel> itemViewModelValidator;
         private IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel> getItemsBySearchQueryHandler;
-        private IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel> getHierarchyLineageQueryHandler;
-        private IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>> getCertificationAgenciesQuery;
+        private IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel> getHierarchyLineageQueryHandler;  
         private ICommandHandler<AddProductMessageCommand> addProductMessageCommandHandler;
         private IInfragisticsHelper infragisticsHelper;
         private IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>> getItemsByBulkScanCodeSearcParameters;
@@ -47,7 +46,6 @@ namespace Icon.Web.Controllers
             IObjectValidator<ItemViewModel> itemViewModelValidator,
             IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel> getItemsBySearchQueryHandler,
             IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel> getHierarchyLineageQueryHandler,
-            IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>> getCertificationAgenciesQuery,
             ICommandHandler<AddProductMessageCommand> addProductMessageHandler,
             IInfragisticsHelper infragisticsHelper,
             IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>> getItemsByBulkScanCodeSearcParameters)
@@ -59,7 +57,6 @@ namespace Icon.Web.Controllers
             this.itemViewModelValidator = itemViewModelValidator;
             this.getItemsBySearchQueryHandler = getItemsBySearchQueryHandler;
             this.getHierarchyLineageQueryHandler = getHierarchyLineageQueryHandler;
-            this.getCertificationAgenciesQuery = getCertificationAgenciesQuery;
             this.addProductMessageCommandHandler = addProductMessageHandler;
             this.infragisticsHelper = infragisticsHelper;
             this.getItemsByBulkScanCodeSearcParameters = getItemsByBulkScanCodeSearcParameters;
@@ -72,7 +69,7 @@ namespace Icon.Web.Controllers
                 RetailUoms = GetRetailUomSelectList(string.Empty, includeInitialBlank: true),
                 DeliverySystems = GetDeliverySystemSelectList(string.Empty, includeInitialBlank: true),
                 DrainedWeightUomOptions = GetDrainedWeightUomSelectList(string.Empty, includeInitialBlank: true),
-                FairTradeCertifiedOptions = GetFairTradeCertifiedSelectList(string.Empty, includeInitialBlank: true)
+                //FairTradeCertifiedOptions = GetFairTradeCertifiedSelectList(string.Empty, includeInitialBlank: true)
             }; 
 
             ViewData["CreateItemMessage"] = TempData["CreateItemMessage"];
@@ -89,7 +86,7 @@ namespace Icon.Web.Controllers
                 viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, includeInitialBlank: true);
                 viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, includeInitialBlank: true);
                 viewModel.DrainedWeightUomOptions = GetDrainedWeightUomSelectList(string.Empty, includeInitialBlank: true);
-                viewModel.FairTradeCertifiedOptions = GetFairTradeCertifiedSelectList(string.Empty, includeInitialBlank: true);
+                //viewModel.FairTradeCertifiedOptions = GetFairTradeCertifiedSelectList(string.Empty, includeInitialBlank: true);
                 return PartialView("_ItemSearchOptionsPartial", viewModel);
             }
 
@@ -103,13 +100,7 @@ namespace Icon.Web.Controllers
             viewModel.ItemSearchResults.SeafoodFreshOrFrozenTypes = SeafoodFreshOrFrozenTypes.AsDictionary.OrderBy(kvp => kvp.Value).Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
             viewModel.ItemSearchResults.SeafoodCatchTypes = SeafoodCatchTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
 
-            var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
-            viewModel.ItemSearchResults.GlutenFreeAgencies = certificationAgencies.Where(ca => ca.GlutenFree == "1").ToList();
-            viewModel.ItemSearchResults.KosherAgencies = certificationAgencies.Where(ca => ca.Kosher == "1").ToList();
-            viewModel.ItemSearchResults.NonGmoAgencies = certificationAgencies.Where(ca => ca.NonGMO == "1").ToList();
-            viewModel.ItemSearchResults.OrganicAgencies = certificationAgencies.Where(ca => ca.Organic == "1").ToList();
-            viewModel.ItemSearchResults.VeganAgencies = certificationAgencies.Where(ca => ca.Vegan == "1").ToList();
-
+           
             HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
             viewModel.ItemSearchResults.BrandHierarchyClasses = GetHierarchyLineage(hierarchyListModel.BrandHierarchyList);
             viewModel.ItemSearchResults.TaxHierarchyClasses = GetHierarchyLineage(hierarchyListModel.TaxHierarchyList);
@@ -456,14 +447,6 @@ namespace Icon.Web.Controllers
             viewModel.BrowsingHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.BrowsingHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
             viewModel.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
 
-            var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
-            viewModel.GlutenFreeAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.GlutenFree == "1").ToList());
-            viewModel.KosherAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.Kosher == "1").ToList());
-            viewModel.NonGmoAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.NonGMO == "1").ToList());
-            viewModel.OrganicAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.Organic == "1").ToList());
-            viewModel.VeganAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.Vegan == "1").ToList());
-
-
             viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);
             viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, true);
 
@@ -483,12 +466,6 @@ namespace Icon.Web.Controllers
                 viewModel.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
                 viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);
                 viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, true);
-                var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
-                viewModel.GlutenFreeAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.GlutenFree == "1").ToList());
-                viewModel.KosherAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.Kosher == "1").ToList());
-                viewModel.NonGmoAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.NonGMO == "1").ToList());
-                viewModel.OrganicAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.Organic == "1").ToList());
-                viewModel.VeganAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.Vegan == "1").ToList());
 
                 return View(viewModel);
             }
@@ -515,13 +492,7 @@ namespace Icon.Web.Controllers
                 viewModel.BrowsingHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.BrowsingHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
                 viewModel.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
                 viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);
-                viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, true);
-                var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
-                viewModel.GlutenFreeAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.GlutenFree == "1").ToList());
-                viewModel.KosherAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.Kosher == "1").ToList());
-                viewModel.NonGmoAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.NonGMO == "1").ToList());
-                viewModel.OrganicAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.Organic == "1").ToList());
-                viewModel.VeganAgencies = GetAgencySelectList(certificationAgencies.Where(ca => ca.Vegan == "1").ToList());
+                viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, true);        
 
                 return View(viewModel);
             }
@@ -545,13 +516,6 @@ namespace Icon.Web.Controllers
             viewModel.TaxHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.TaxHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
             viewModel.BrowsingHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.BrowsingHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
             viewModel.NationalHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.NationalHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
-
-            var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
-            viewModel.GlutenFreeAgencies = new SelectList(certificationAgencies.Where(ca => ca.GlutenFree == "1"), "HierarchyClassId", "HierarchyClassName");
-            viewModel.KosherAgencies = new SelectList(certificationAgencies.Where(ca => ca.Kosher == "1"), "HierarchyClassId", "HierarchyClassName");
-            viewModel.NonGmoAgencies = new SelectList(certificationAgencies.Where(ca => ca.NonGMO == "1"), "HierarchyClassId", "HierarchyClassName");
-            viewModel.OrganicAgencies = new SelectList(certificationAgencies.Where(ca => ca.Organic == "1"), "HierarchyClassId", "HierarchyClassName");
-            viewModel.VeganAgencies = new SelectList(certificationAgencies.Where(ca => ca.Vegan == "1"), "HierarchyClassId", "HierarchyClassName");
 
             return viewModel;
         }
@@ -582,18 +546,18 @@ namespace Icon.Web.Controllers
             return new SelectList(values, selectedValue);
         }
 
-        private SelectList GetFairTradeCertifiedSelectList(string selectedValue, bool includeInitialBlank)
-        {
-            var values = FairTradeCertifiedValues.Values.ToList();
+        //private SelectList GetFairTradeCertifiedSelectList(string selectedValue, bool includeInitialBlank)
+        //{
+        //    var values = FairTradeCertifiedValues.Values.ToList();
 
-            if (includeInitialBlank)
-            {
-                // Insert empty value at the beginning of the list to allow for an un-selected state.
-                values.Insert(0, string.Empty);
-            }
+        //    if (includeInitialBlank)
+        //    {
+        //        // Insert empty value at the beginning of the list to allow for an un-selected state.
+        //        values.Insert(0, string.Empty);
+        //    }
 
-            return new SelectList(values, selectedValue);
-        }
+        //    return new SelectList(values, selectedValue);
+        //}
 
 
         private SelectList GetDeliverySystemSelectList(string selectedDeliverySystem, bool includeInitialBlank)

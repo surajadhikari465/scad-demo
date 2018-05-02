@@ -35,15 +35,10 @@ namespace Icon.Web.DataAccess.Commands
             updatedItem.CheeseMilkTypeId = data.CheeseMilkTypeId;
             updatedItem.CheeseRaw = data.CheeseRaw;
             updatedItem.EcoScaleRatingId = data.EcoScaleRatingId;
-            updatedItem.GlutenFreeAgencyId = data.GlutenFreeAgencyId;
-            updatedItem.KosherAgencyId = data.KosherAgencyId;
             updatedItem.Msc = data.Msc;
-            updatedItem.NonGmoAgencyId = data.NonGmoAgencyId;
-            updatedItem.OrganicAgencyId = data.OrganicAgencyId;
             updatedItem.PremiumBodyCare = data.PremiumBodyCare;
             updatedItem.SeafoodFreshOrFrozenId = data.SeafoodFreshOrFrozenId;
             updatedItem.SeafoodCatchTypeId = data.SeafoodCatchTypeId;
-            updatedItem.VeganAgencyId = data.VeganAgencyId;
             updatedItem.Vegetarian = data.Vegetarian;
             updatedItem.WholeTrade = data.WholeTrade;
             updatedItem.GrassFed = data.GrassFed;
