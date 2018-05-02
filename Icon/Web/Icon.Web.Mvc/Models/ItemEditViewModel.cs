@@ -123,20 +123,20 @@ namespace Icon.Web.Mvc.Models
         public SelectList EcoScaleRatings { get; set; }
 
         [Display(Name = "Gluten Free")]
-        public int? GlutenFreeAgencyId { get; set; }
+        public string GlutenFreeAgency { get; set; }
 
         [Display(Name = "Kosher")]
-        public int? KosherAgencyId { get; set; }
+        public string KosherAgency { get; set; }
 
         [Display(Name = "MSC")]
         public string SelectedMscOption { get; set; }
         public SelectList MscOptions { get; set; }
 
         [Display(Name = "Non-GMO")]
-        public int? NonGmoAgencyId { get; set; }
+        public string NonGmoAgency { get; set; }
 
         [Display(Name = "Organic")]
-        public int? OrganicAgencyId { get; set; }
+        public string OrganicAgency { get; set; }
 
         [Display(Name = "Premium Body Care")]
         public string SelectedPremiumBodyCareOption { get; set; }
@@ -151,7 +151,7 @@ namespace Icon.Web.Mvc.Models
         public SelectList SeafoodCatchTypes { get; set; }
 
         [Display(Name = "Vegan")]
-        public int? VeganAgencyId { get; set; }
+        public string VeganAgency { get; set; }
 
         [Display(Name = "Vegetarian")]
         public string SelectedVegetarianOption { get; set; }
@@ -185,12 +185,6 @@ namespace Icon.Web.Mvc.Models
         public SelectList MadeInHouseOptions { get; set; }
 
         public SelectList WholeTradeOptions { get; set; }
-
-        public SelectList GlutenFreeAgencies { get; set; }
-        public SelectList KosherAgencies { get; set; }
-        public SelectList NonGmoAgencies { get; set; }
-        public SelectList OrganicAgencies { get; set; }
-        public SelectList VeganAgencies { get; set; }
 
         [Display(Name = "Drained Weight UOM")]
         [IconPropertyValidation(ValidatorPropertyNames.DrainedWeightUom, CanBeNullOrEmprty = true)]
@@ -262,15 +256,15 @@ namespace Icon.Web.Mvc.Models
             SelectedCheeseMilkTypeId = item.CheeseMilkTypeId;
             SelectedCheeseRawOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.CheeseRaw);
             SelectedEcoScaleRatingId = item.EcoScaleRatingId;
-            GlutenFreeAgencyId = item.GlutenFreeAgencyId;
-            KosherAgencyId = item.KosherAgencyId;
+            GlutenFreeAgency = item.GlutenFreeAgency;
+            KosherAgency = item.KosherAgency;
             SelectedMscOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.Msc);
-            NonGmoAgencyId = item.NonGmoAgencyId;
-            OrganicAgencyId = item.OrganicAgencyId;
+            NonGmoAgency = item.NonGmoAgency;
+            OrganicAgency = item.OrganicAgency;
             SelectedPremiumBodyCareOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.PremiumBodyCare);
             SelectedSeafoodFreshOrFrozenId = item.SeafoodFreshOrFrozenId;
             SelectedSeafoodCatchTypeId = item.SeafoodCatchTypeId;
-            VeganAgencyId = item.VeganAgencyId;
+            VeganAgency = item.VeganAgency;
             SelectedVegetarianOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.Vegetarian);
             SelectedWholeTradeOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.WholeTrade);
             SelectedGrassFedOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.GrassFed);
@@ -330,7 +324,6 @@ namespace Icon.Web.Mvc.Models
             AirChilledOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             MadeInHouseOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             DrainedWeightUomOptions = new SelectList(DrainedWeightUoms.Values);
-            FairTradeCertifiedOptions = new SelectList(FairTradeCertifiedValues.Values);
         }
     }
 }

@@ -41,15 +41,15 @@ namespace Icon.Web.Mvc.Models
         public int? CheeseMilkTypeId { get; set; }
         public bool? CheeseRaw { get; set; }
         public int? EcoScaleRatingId { get; set; }
-        public int? GlutenFreeAgencyId { get; set; }
-        public int? KosherAgencyId { get; set; }
+        public string GlutenFreeAgency { get; set; }
+        public string KosherAgency { get; set; }
         public bool? Msc { get; set; }
-        public int? NonGmoAgencyId { get; set; }
-        public int? OrganicAgencyId { get; set; }
+        public string NonGmoAgency { get; set; }
+        public string OrganicAgency { get; set; }
         public bool? PremiumBodyCare { get; set; }
         public int? SeafoodFreshOrFrozenId { get; set; }
         public int? SeafoodCatchTypeId { get; set; }
-        public int? VeganAgencyId { get; set; }
+        public string VeganAgency { get; set; }
         public bool? Vegetarian { get; set; }
         public bool? WholeTrade { get; set; }
         public bool? GrassFed { get; set; }
@@ -115,15 +115,15 @@ namespace Icon.Web.Mvc.Models
             CheeseMilkTypeId = item.CheeseMilkTypeId;
             CheeseRaw = item.CheeseRaw;
             EcoScaleRatingId = item.EcoScaleRatingId;
-            GlutenFreeAgencyId = item.GlutenFreeAgencyId;
-            KosherAgencyId = item.KosherAgencyId;
+            GlutenFreeAgency = item.GlutenFreeAgency;
+            KosherAgency = item.KosherAgency;
             Msc = item.Msc;
-            NonGmoAgencyId = item.NonGmoAgencyId;
-            OrganicAgencyId = item.OrganicAgencyId;
+            NonGmoAgency = item.NonGmoAgency;
+            OrganicAgency = item.OrganicAgency;
             PremiumBodyCare = item.PremiumBodyCare;
             SeafoodFreshOrFrozenId = item.SeafoodFreshOrFrozenId;
             SeafoodCatchTypeId = item.SeafoodCatchTypeId;
-            VeganAgencyId = item.VeganAgencyId;
+            VeganAgency = item.VeganAgency;
             Vegetarian = item.Vegetarian;
             WholeTrade = item.WholeTrade;
             GrassFed = item.GrassFed;

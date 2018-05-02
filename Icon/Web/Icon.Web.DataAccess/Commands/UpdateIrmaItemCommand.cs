@@ -26,23 +26,13 @@ namespace Icon.Web.DataAccess.Commands
 
         public int? EcoScaleRatingId { get; set; }
 
-        public int? GlutenFreeAgencyId { get; set; }
-
-        public int? KosherAgencyId { get; set; }
-
         public bool? Msc { get; set; }
-
-        public int? NonGmoAgencyId { get; set; }
-
-        public int? OrganicAgencyId { get; set; }
 
         public bool? PremiumBodyCare { get; set; }
 
         public int? SeafoodFreshOrFrozenId { get; set; }
 
         public int? SeafoodCatchTypeId { get; set; }
-
-        public int? VeganAgencyId { get; set; }
 
         public bool? Vegetarian { get; set; }
 

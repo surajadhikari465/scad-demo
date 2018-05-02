@@ -90,14 +90,9 @@ namespace Icon.Web.Tests.Unit.Exporters
             Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.CheeseAttributeMilkType, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.CheeseAttributeRaw, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeRawColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.EcoScaleRating, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.EcoScaleRatingColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.GlutenFree, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.GlutenFreeColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.Kosher, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.KosherColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.NonGmo, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.NonGmoColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.Organic, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.OrganicColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.PremiumBodyCare, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.PremiumBodyCareColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.SeafoodFreshOrFrozen, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.SeafoodWildOrFarmRaised, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.Vegan, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.VeganColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.Vegetarian, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.VegetarianColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.WholeTrade, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.WholeTradeColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.ExcelExportColumnNames.GrassFed, firstWorksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.GrassFedColumnIndex].Value);
@@ -180,14 +175,9 @@ namespace Icon.Web.Tests.Unit.Exporters
             Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex].Value);
             Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeRawColumnIndex].Value);
             Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.EcoScaleRatingColumnIndex].Value);
-            Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.GlutenFreeColumnIndex].Value);
-            Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.KosherColumnIndex].Value);
-            Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.NonGmoColumnIndex].Value);
-            Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.OrganicColumnIndex].Value);
             Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.PremiumBodyCareColumnIndex].Value);
             Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex].Value);
             Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value);
-            Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.VeganColumnIndex].Value);
             Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.VegetarianColumnIndex].Value);
             Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.WholeTradeColumnIndex].Value);
             Assert.IsNotNull(firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.GrassFedColumnIndex].Value);
@@ -231,14 +221,9 @@ namespace Icon.Web.Tests.Unit.Exporters
             int milkTypeId = MilkTypes.BuffaloMilk;
             string cheeseRaw = "Y";
             int ecoScaleRatingId = EcoScaleRatings.BaselineOrange;
-            int glutenFreeAgencyId = 1;
-            int kosherAgencyId = 1;
-            int nonGmoAgencyId = 1;
-            int organicAgencyId = 1;
             string premiumBodyCare = "Y";
             int seafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.Fresh;
             int seafoodCatchTypeId = SeafoodCatchTypes.FarmRaised;
-            int veganAgencyId = 1;
             string vegetarian = "Y";
             string wholeTrade = "Y";
             string grassFed = "Y";
@@ -275,14 +260,9 @@ namespace Icon.Web.Tests.Unit.Exporters
                     CheeseMilkTypeId = milkTypeId,
                     CheeseRaw = true,
                     EcoScaleRatingId = ecoScaleRatingId,
-                    GlutenFreeAgencyId = glutenFreeAgencyId,
-                    KosherAgencyId = kosherAgencyId,
-                    NonGmoAgencyId = nonGmoAgencyId,
-                    OrganicAgencyId = organicAgencyId,
                     PremiumBodyCare = true,
                     SeafoodFreshOrFrozenId = seafoodFreshOrFrozenId,
                     SeafoodCatchTypeId = seafoodCatchTypeId,
-                    VeganAgencyId = veganAgencyId,
                     Vegetarian = true,
                     WholeTrade = true,
                     GrassFed = true,
@@ -321,14 +301,9 @@ namespace Icon.Web.Tests.Unit.Exporters
             Assert.AreEqual(ExcelHelper.GetValueFromDictionary(MilkTypes.AsDictionary, milkTypeId), firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex].Value);
             Assert.AreEqual(cheeseRaw, firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeRawColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.GetValueFromDictionary(EcoScaleRatings.AsDictionary, ecoScaleRatingId), firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.EcoScaleRatingColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.GetValueFromDictionary(certificationAgencies, glutenFreeAgencyId), firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.GlutenFreeColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.GetValueFromDictionary(certificationAgencies, kosherAgencyId), firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.KosherColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.GetValueFromDictionary(certificationAgencies, nonGmoAgencyId), firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.NonGmoColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.GetValueFromDictionary(certificationAgencies, organicAgencyId), firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.OrganicColumnIndex].Value);
             Assert.AreEqual(premiumBodyCare, firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.PremiumBodyCareColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.GetValueFromDictionary(SeafoodFreshOrFrozenTypes.AsDictionary, seafoodFreshOrFrozenId), firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex].Value);
             Assert.AreEqual(ExcelHelper.GetValueFromDictionary(SeafoodCatchTypes.AsDictionary, seafoodCatchTypeId), firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value);
-            Assert.AreEqual(ExcelHelper.GetValueFromDictionary(certificationAgencies, veganAgencyId), firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.VeganColumnIndex].Value);
             Assert.AreEqual(vegetarian, firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.VegetarianColumnIndex].Value);
             Assert.AreEqual(wholeTrade, firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.WholeTradeColumnIndex].Value);
             Assert.AreEqual(grassFed, firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.GrassFedColumnIndex].Value);

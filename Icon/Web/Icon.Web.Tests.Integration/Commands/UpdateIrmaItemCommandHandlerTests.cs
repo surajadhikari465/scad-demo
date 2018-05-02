@@ -435,12 +435,6 @@ namespace Icon.Web.Tests.Integration.Commands
             updatedItem.EcoScaleRatingId = EcoScaleRatings.AsDictionary.First().Key;
             updatedItem.SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.AsDictionary.First().Key;
             updatedItem.SeafoodCatchTypeId = SeafoodCatchTypes.AsDictionary.First().Key;
-            
-            updatedItem.GlutenFreeAgencyId = testGlutenFree.hierarchyClassID;
-            updatedItem.KosherAgencyId = testKosher.hierarchyClassID;
-            updatedItem.NonGmoAgencyId = testNonGmo.hierarchyClassID;
-            updatedItem.OrganicAgencyId = testOrganic.hierarchyClassID;
-            updatedItem.VeganAgencyId = testVegan.hierarchyClassID;
             updatedItem.Biodynamic = true;
             updatedItem.Vegetarian = true;
             updatedItem.WholeTrade = true;
@@ -460,14 +454,9 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(updatedItem.CheeseMilkTypeId, verifyUpdateItem.CheeseMilkTypeId);
             Assert.IsTrue(verifyUpdateItem.CheeseRaw.Value);
             Assert.AreEqual(updatedItem.EcoScaleRatingId, verifyUpdateItem.EcoScaleRatingId);
-            Assert.AreEqual(updatedItem.GlutenFreeAgencyId, verifyUpdateItem.GlutenFreeAgencyId);
-            Assert.AreEqual(updatedItem.KosherAgencyId, verifyUpdateItem.KosherAgencyId);
-            Assert.AreEqual(updatedItem.NonGmoAgencyId, verifyUpdateItem.NonGmoAgencyId);
-            Assert.AreEqual(updatedItem.OrganicAgencyId, verifyUpdateItem.OrganicAgencyId);
             Assert.IsTrue(verifyUpdateItem.PremiumBodyCare.Value);
             Assert.AreEqual(updatedItem.SeafoodFreshOrFrozenId, verifyUpdateItem.SeafoodFreshOrFrozenId);
             Assert.AreEqual(updatedItem.SeafoodCatchTypeId, verifyUpdateItem.SeafoodCatchTypeId);
-            Assert.AreEqual(updatedItem.VeganAgencyId, verifyUpdateItem.VeganAgencyId);
             Assert.IsTrue(verifyUpdateItem.Vegetarian.Value);
             Assert.IsTrue(verifyUpdateItem.WholeTrade.Value);
         }

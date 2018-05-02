@@ -26,7 +26,6 @@ namespace Icon.Web.Controllers
         private const int MaxNumberOfItemsToExportFromSearch = 10000;
         private IExcelExporterService exporterService;
         private IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> queryHandler;
-        private IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>> getCertificationAgenciesQuery;
         private IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>> bulkScanCodeSearchQuery;
         private IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel> getItemsBySearchQueryHandler;
         private IQueryHandler<GetDefaultTaxClassMismatchesParameters, List<DefaultTaxClassMismatchModel>> getDefaultTaxClassMismatchesQuery;
@@ -35,8 +34,7 @@ namespace Icon.Web.Controllers
         private IExcelModelMapper<ItemSearchModel, ItemExcelModel> itemModelMapper;
 
         public ExcelController(IExcelExporterService exporterService,
-            IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> queryHandler,
-            IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>> getCertificationAgenciesQuery,
+            IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> queryHandler,        
             IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>> bulkScanCodeSearchQuery,
             IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel> getItemsBySearchQueryHandler,
             IQueryHandler<GetDefaultTaxClassMismatchesParameters, List<DefaultTaxClassMismatchModel>> getDefaultTaxClassMismatchesQuery,
@@ -46,7 +44,6 @@ namespace Icon.Web.Controllers
         {
             this.exporterService = exporterService;
             this.queryHandler = queryHandler;
-            this.getCertificationAgenciesQuery = getCertificationAgenciesQuery;
             this.bulkScanCodeSearchQuery = bulkScanCodeSearchQuery;
             this.getItemsBySearchQueryHandler = getItemsBySearchQueryHandler;
             this.getDefaultTaxClassMismatchesQuery = getDefaultTaxClassMismatchesQuery;
@@ -293,30 +290,7 @@ namespace Icon.Web.Controllers
             exporter.Export();
 
             SendForDownload(exporter.ExportModel.ExcelWorkbook, exporter.ExportModel.ExcelWorkbook.CurrentFormat, "CertificationAgencies");
-        }
-
-        [HttpGet]
-        public void CertificationAgencyExport()
-        {
-            var exportData = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters())
-                .Select(ca => new BulkImportCertificationAgencyModel
-                {
-                    CertificationAgencyNameAndId = ca.HierarchyClassName + "|" + ca.HierarchyClassId,
-                    GlutenFree = ca.GlutenFree,
-                    Kosher = ca.Kosher,
-                    NonGmo = ca.NonGMO,
-                    Organic = ca.Organic,
-                    DefaultOrganic = ca.DefaultOrganic,
-                    Vegan = ca.Vegan
-                })
-                .ToList();
-
-            var exporter = exporterService.GetCertificationAgencyExporter();
-            exporter.ExportData = exportData;
-            exporter.Export();
-
-            SendForDownload(exporter.ExportModel.ExcelWorkbook, exporter.ExportModel.ExcelWorkbook.CurrentFormat, "CertificationAgencies");
-        }
+        }       
 
         [HttpGet]
         public void BrandTemplateExport()

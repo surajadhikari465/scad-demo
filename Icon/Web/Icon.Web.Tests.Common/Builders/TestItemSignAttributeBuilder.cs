@@ -12,15 +12,15 @@ namespace Icon.Web.Tests.Common.Builders
         private int? cheeseMilkTypeId;
         private bool cheeseRaw;
         private int? ecoScaleRatingId;
-        private int? glutenFreeAgencyId;
+        private string glutenFreeAgencyName;
         private int? healthyEatingRatingId;
-        private int? kosherAgencyId;
-        private int? nonGmoAgencyId;
-        private int? organicAgencyId;
+        private string kosherAgencyName;
+        private string nonGmoAgencyName;
+        private string organicAgencyName;
         private bool premiumBodyCare;
         private int? seafoodFreshOrFrozenId;
         private int? seafoodWildOrFarmRaisedId;
-        private int? veganAgencyId;
+        private string veganAgencyName;
         private bool vegetarian;
         private bool wholeTrade;
         private bool grassFed;
@@ -39,15 +39,15 @@ namespace Icon.Web.Tests.Common.Builders
             cheeseMilkTypeId = null;
             cheeseRaw = false;
             ecoScaleRatingId = null;
-            glutenFreeAgencyId = null;
+            glutenFreeAgencyName = null;
             healthyEatingRatingId = null;
-            kosherAgencyId = null;
-            nonGmoAgencyId = null;
-            organicAgencyId = null;
+            kosherAgencyName = null;
+            nonGmoAgencyName = null;
+            organicAgencyName = null;
             premiumBodyCare = false;
             seafoodFreshOrFrozenId = null;
             seafoodWildOrFarmRaisedId = null;
-            veganAgencyId = null;
+            veganAgencyName = null;
             vegetarian = false;
             wholeTrade = false;
             msc = false;
@@ -104,25 +104,25 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSignAttributeBuilder WithOrganicAgencyId(int? organicAgencyId)
+        public TestItemSignAttributeBuilder WithOrganicAgencyName(string organicAgencyName)
         {
-            this.organicAgencyId = organicAgencyId;
+            this.organicAgencyName = organicAgencyName;
             return this;
         }
-        public TestItemSignAttributeBuilder WithGlutenFreeAgencyId(int? glutenFreeAgencyId)
+        public TestItemSignAttributeBuilder WithGlutenFreeAgencyName(string glutenFreeAgencyName)
         {
-            this.glutenFreeAgencyId = glutenFreeAgencyId;
+            this.glutenFreeAgencyName = glutenFreeAgencyName;
             return this;
         }
-        public TestItemSignAttributeBuilder WithKosherAgencyId(int? kosherAgencyId)
+        public TestItemSignAttributeBuilder WithKosherAgencyName(string kosherAgencyName)
         {
-            this.kosherAgencyId = kosherAgencyId;
+            this.kosherAgencyName = kosherAgencyName;
             return this;
         }
 
-        public TestItemSignAttributeBuilder WithNonGmoAgencyId(int? nonGmoAgencyId)
+        public TestItemSignAttributeBuilder WithNonGmoAgencyName(string nonGmoAgencyName)
         {
-            this.nonGmoAgencyId = nonGmoAgencyId;
+            this.nonGmoAgencyName = nonGmoAgencyName;
             return this;
         }
         public TestItemSignAttributeBuilder WithHealthyEatingRatingId(int? healthyEatingRatingId)
@@ -146,9 +146,9 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSignAttributeBuilder WithVeganAgencyId(int? veganAgencyId)
+        public TestItemSignAttributeBuilder WithVeganAgencyName(string veganAgencyName)
         {
-            this.veganAgencyId = veganAgencyId;
+            this.veganAgencyName = veganAgencyName;
             return this;
         }
 
@@ -209,14 +209,14 @@ namespace Icon.Web.Tests.Common.Builders
                 CheeseMilkTypeId = cheeseMilkTypeId,
                 CheeseRaw = cheeseRaw,
                 EcoScaleRatingId = ecoScaleRatingId,
-                GlutenFreeAgencyId = glutenFreeAgencyId,
-                KosherAgencyId = kosherAgencyId,
-                NonGmoAgencyId = nonGmoAgencyId,
-                OrganicAgencyId = organicAgencyId,
+                GlutenFreeAgencyName = glutenFreeAgencyName,
+                KosherAgencyName = kosherAgencyName,
+                NonGmoAgencyName = nonGmoAgencyName,
+                OrganicAgencyName = organicAgencyName,
                 PremiumBodyCare = premiumBodyCare,
                 SeafoodFreshOrFrozenId = seafoodFreshOrFrozenId,
                 SeafoodCatchTypeId = seafoodWildOrFarmRaisedId,
-                VeganAgencyId = veganAgencyId,
+                VeganAgencyName = veganAgencyName,
                 Vegetarian = vegetarian,
                 WholeTrade = wholeTrade,
                 GrassFed = grassFed,

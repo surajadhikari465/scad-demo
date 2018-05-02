@@ -223,14 +223,9 @@ namespace Icon.Web.Tests.Unit.Importers
             worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex].Value = cheeseAttributeMilkType;
             worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeRawColumnIndex].Value = cheeseAttributeRaw;
             worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.EcoScaleRatingColumnIndex].Value = ecoScaleRating;
-            worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.GlutenFreeColumnIndex].Value = glutenFree;
-            worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.KosherColumnIndex].Value = kosher;
-            worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.NonGmoColumnIndex].Value = nonGmo;
-            worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.OrganicColumnIndex].Value = organic;
             worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.PremiumBodyCareColumnIndex].Value = premiumBodyCare;
             worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex].Value = seafoodFreshOrFrozen;
             worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value = seafoodWildOrFarmRaised;
-            worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.VeganColumnIndex].Value = vegan;
             worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.VegetarianColumnIndex].Value = vegetarian;
             worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.WholeTradeColumnIndex].Value = wholeTrade;
             worksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.GrassFedColumnIndex].Value = grassFed;
@@ -371,14 +366,9 @@ namespace Icon.Web.Tests.Unit.Importers
             worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex].Value = cheeseAttributeMilkType;
             worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.CheeseAttributeRawColumnIndex].Value = cheeseAttributeRaw;
             worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.EcoScaleRatingColumnIndex].Value = ecoScaleRating;
-            worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.GlutenFreeColumnIndex].Value = glutenFree;
-            worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.KosherColumnIndex].Value = kosher;
-            worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.NonGmoColumnIndex].Value = nonGmo;
-            worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.OrganicColumnIndex].Value = organic;
             worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.PremiumBodyCareColumnIndex].Value = premiumBodyCare;
             worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex].Value = seafoodFreshOrFrozen;
             worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value = seafoodWildOrFarmRaised;
-            worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.VeganColumnIndex].Value = vegan;
             worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.VegetarianColumnIndex].Value = vegetarian;
             worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.WholeTradeColumnIndex].Value = wholeTrade;
             worksheet.Rows[1].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.GrassFedColumnIndex].Value = grassFed;
@@ -495,14 +485,14 @@ namespace Icon.Web.Tests.Unit.Importers
             Assert.AreEqual(String.Empty, parsedRow.CheeseAttributeMilkType);
             Assert.AreEqual(String.Empty, parsedRow.CheeseAttributeRaw);
             Assert.AreEqual(String.Empty, parsedRow.EcoScaleRating);
-            Assert.AreEqual(String.Empty, parsedRow.GlutenFreeAgencyId);
-            Assert.AreEqual(String.Empty, parsedRow.KosherAgencyId);
-            Assert.AreEqual(String.Empty, parsedRow.OrganicAgencyId);
-            Assert.AreEqual(String.Empty, parsedRow.NonGmoAgencyId);
+            Assert.AreEqual(String.Empty, parsedRow.GlutenFreeAgency);
+            Assert.AreEqual(String.Empty, parsedRow.KosherAgency);
+            Assert.AreEqual(String.Empty, parsedRow.OrganicAgency);
+            Assert.AreEqual(String.Empty, parsedRow.NonGmoAgency);
             Assert.AreEqual(String.Empty, parsedRow.PremiumBodyCare);
             Assert.AreEqual(String.Empty, parsedRow.SeafoodFreshOrFrozen);
             Assert.AreEqual(String.Empty, parsedRow.SeafoodWildOrFarmRaised);
-            Assert.AreEqual(String.Empty, parsedRow.VeganAgencyId);
+            Assert.AreEqual(String.Empty, parsedRow.VeganAgency);
             Assert.AreEqual(String.Empty, parsedRow.Vegetarian);
             Assert.AreEqual(String.Empty, parsedRow.WholeTrade);
             Assert.AreEqual(String.Empty, parsedRow.Error);
@@ -1003,7 +993,7 @@ namespace Icon.Web.Tests.Unit.Importers
             mockGetCertificationAgenciesQuery.Setup(q => q.Search(It.IsAny<GetCertificationAgenciesByTraitParameters>())).Returns(mockHierarchyClasses);
 
             importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].GlutenFreeAgencyId = invalidValue;
+            importItems[0].GlutenFreeAgency = invalidValue;
 
             AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
 
@@ -1033,7 +1023,7 @@ namespace Icon.Web.Tests.Unit.Importers
             mockGetCertificationAgenciesQuery.Setup(q => q.Search(It.IsAny<GetCertificationAgenciesByTraitParameters>())).Returns(mockHierarchyClasses);
 
             importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].KosherAgencyId = invalidValue;
+            importItems[0].KosherAgency = invalidValue;
 
             AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
 
@@ -1063,7 +1053,7 @@ namespace Icon.Web.Tests.Unit.Importers
             mockGetCertificationAgenciesQuery.Setup(q => q.Search(It.IsAny<GetCertificationAgenciesByTraitParameters>())).Returns(mockHierarchyClasses);
 
             importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].NonGmoAgencyId = invalidValue;
+            importItems[0].NonGmoAgency = invalidValue;
 
             AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
 
@@ -1093,7 +1083,7 @@ namespace Icon.Web.Tests.Unit.Importers
             mockGetCertificationAgenciesQuery.Setup(q => q.Search(It.IsAny<GetCertificationAgenciesByTraitParameters>())).Returns(mockHierarchyClasses);
 
             importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].OrganicAgencyId = invalidValue;
+            importItems[0].OrganicAgency = invalidValue;
 
             AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
 
@@ -1320,7 +1310,7 @@ namespace Icon.Web.Tests.Unit.Importers
             mockGetCertificationAgenciesQuery.Setup(q => q.Search(It.IsAny<GetCertificationAgenciesByTraitParameters>())).Returns(mockHierarchyClasses);
 
             importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].VeganAgencyId = invalidValue;
+            importItems[0].VeganAgency = invalidValue;
 
             AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
 
@@ -1778,15 +1768,10 @@ namespace Icon.Web.Tests.Unit.Importers
             worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.BiodynamicColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.Biodynamic;
             worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.CheeseAttributeMilkType;
             worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.CheeseAttributeRawColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.CheeseAttributeRaw;
-            worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.EcoScaleRatingColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.EcoScaleRating;
-            worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.GlutenFreeColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.GlutenFree;
-            worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.KosherColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.Kosher;
-            worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.NonGmoColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.NonGmo;
-            worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.OrganicColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.Organic;
+            worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.EcoScaleRatingColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.EcoScaleRating;    
             worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.PremiumBodyCareColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.PremiumBodyCare;
             worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.SeafoodFreshOrFrozen;
             worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.SeafoodWildOrFarmRaised;
-            worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.VeganColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.Vegan;
             worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.VegetarianColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.Vegetarian;
             worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.WholeTradeColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.WholeTrade;
             worksheet.Rows[0].Cells[ExcelHelper.ConsolidatedItemColumnIndexes.GrassFedColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.GrassFed;
@@ -1823,15 +1808,10 @@ namespace Icon.Web.Tests.Unit.Importers
             worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.CheeseAttributeMilkType;
             worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeRawColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.CheeseAttributeRaw;
             worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.EcoScaleRatingColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.EcoScaleRating;
-            worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.GlutenFreeColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.GlutenFree;
-            worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.KosherColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.Kosher;
-            worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.NonGmoColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.NonGmo;
-            worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.NutritionRequiredIndex].Value = ExcelHelper.ExcelExportColumnNames.NutritionRequired;
-            worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.OrganicColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.Organic;
+            worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.NutritionRequiredIndex].Value = ExcelHelper.ExcelExportColumnNames.NutritionRequired;         
             worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.PremiumBodyCareColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.PremiumBodyCare;
             worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.SeafoodFreshOrFrozen;
-            worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.SeafoodWildOrFarmRaised;
-            worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.VeganColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.Vegan;
+            worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.SeafoodWildOrFarmRaised;        
             worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.VegetarianColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.Vegetarian;
             worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.WholeTradeColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.WholeTrade;
             worksheet.Rows[0].Cells[ExcelHelper.IrmaItemColumnIndexes.GrassFedColumnIndex].Value = ExcelHelper.ExcelExportColumnNames.GrassFed;

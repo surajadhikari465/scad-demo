@@ -45,7 +45,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetIrmaItemsParameters, List<IRMAItem>>> mockIrmaStoreProcQuery;
         private Mock<ICommandHandler<DeleteIrmaItemCommand>> mockDeleteIrmaItemHandler;
         private Mock<IExcelExporterService> mockExcelExporterService;
-        private Mock<IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>>> mockGetCertificationAgenciesQuery;
 
         [TestInitialize]
         public void InitializeData()
@@ -60,13 +59,12 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockDeleteIrmaItemHandler = new Mock<ICommandHandler<DeleteIrmaItemCommand>>();
             mockIrmaStoreProcQuery = new Mock<IQueryHandler<GetIrmaItemsParameters, List<IRMAItem>>>();
             mockExcelExporterService = new Mock<IExcelExporterService>();
-            this.mockGetCertificationAgenciesQuery = new Mock<IQueryHandler<GetCertificationAgenciesParameters, List<CertificationAgencyModel>>>();
+           
             controller = new IrmaItemController(logger.Object, 
                 mockHierarchyClassQuery.Object,
                 mockUpdateCommand.Object, 
                 mockAddItemManager.Object, 
-                mockIrmaStoreProcQuery.Object,
-                mockGetCertificationAgenciesQuery.Object,
+                mockIrmaStoreProcQuery.Object,          
                 mockDeleteIrmaItemHandler.Object,
                 mockExcelExporterService.Object);
 
@@ -102,8 +100,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             mockIrmaQuery.Setup(iq => iq.Search(It.IsAny<GetIrmaItemsParameters>())).Returns(irmaItems);
             mockIrmaStoreProcQuery.Setup(iq => iq.Search(It.IsAny<GetIrmaItemsParameters>())).Returns(irmaItems);
-            mockHierarchyClassQuery.Setup(hq => hq.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(hierarchyClassLists);
-            mockGetCertificationAgenciesQuery.Setup(q => q.Search(It.IsAny<GetCertificationAgenciesParameters>())).Returns(BuildFakeAgencies());
+            mockHierarchyClassQuery.Setup(hq => hq.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(hierarchyClassLists);       
         }
 
         [TestMethod]
@@ -245,7 +242,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockIrmaStoreProcQuery.Setup(iq => iq.Search(It.IsAny<GetIrmaItemsParameters>())).Returns(irmaItems);
 
             controller = new IrmaItemController(this.logger.Object,
-                this.mockHierarchyClassQuery.Object, this.mockUpdateCommand.Object, this.mockAddItemManager.Object, mockIrmaStoreProcQuery.Object, mockGetCertificationAgenciesQuery.Object, mockDeleteIrmaItemHandler.Object, mockExcelExporterService.Object);
+                this.mockHierarchyClassQuery.Object, this.mockUpdateCommand.Object, this.mockAddItemManager.Object, mockIrmaStoreProcQuery.Object, mockDeleteIrmaItemHandler.Object, mockExcelExporterService.Object);
 
             // When
             var result = controller.Search(viewModel) as PartialViewResult;

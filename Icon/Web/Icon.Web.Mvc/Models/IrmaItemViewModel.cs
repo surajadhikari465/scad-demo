@@ -38,15 +38,15 @@ namespace Icon.Web.Mvc.Models
 
         public int? EcoScaleRatingId { get; set; }
 
-        public int? GlutenFreeAgencyId { get; set; }
+        public string GlutenFreeAgency { get; set; }
 
-        public int? KosherAgencyId { get; set; }
+        public string KosherAgency { get; set; }
 
         public bool? Msc { get; set; }
 
-        public int? NonGmoAgencyId { get; set; }
+        public string NonGmoAgency { get; set; }
 
-        public int? OrganicAgencyId { get; set; }
+        public string OrganicAgency { get; set; }
 
         public bool? PremiumBodyCare { get; set; }
 
@@ -54,7 +54,7 @@ namespace Icon.Web.Mvc.Models
 
         public int? SeafoodCatchTypeId { get; set; }
 
-        public int? VeganAgencyId { get; set; }
+        public string VeganAgency { get; set; }
 
         public bool? Vegetarian { get; set; }
 
@@ -94,15 +94,10 @@ namespace Icon.Web.Mvc.Models
             CheeseMilkTypeId = irmaItem.CheeseMilkTypeId;
             CheeseRaw = irmaItem.CheeseRaw;
             EcoScaleRatingId = irmaItem.EcoScaleRatingId;
-            GlutenFreeAgencyId = irmaItem.GlutenFreeAgencyId;
-            KosherAgencyId = irmaItem.KosherAgencyId;
             Msc = irmaItem.Msc;
-            NonGmoAgencyId = irmaItem.NonGmoAgencyId;
-            OrganicAgencyId = irmaItem.OrganicAgencyId;
             PremiumBodyCare = irmaItem.PremiumBodyCare;
             SeafoodFreshOrFrozenId = irmaItem.SeafoodFreshOrFrozenId;
             SeafoodCatchTypeId = irmaItem.SeafoodCatchTypeId;
-            VeganAgencyId = irmaItem.VeganAgencyId;
             Vegetarian = irmaItem.Vegetarian;
             WholeTrade = irmaItem.WholeTrade;
             GrassFed = irmaItem.GrassFed;

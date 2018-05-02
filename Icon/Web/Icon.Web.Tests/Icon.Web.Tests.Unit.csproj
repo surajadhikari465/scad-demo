@@ -2,6 +2,7 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -14,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Icon.Web.Tests.Unit</RootNamespace>
     <AssemblyName>Icon.Web.Tests.Unit</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SccProjectName>SAK</SccProjectName>
@@ -98,7 +99,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.1.18.1\lib\net45\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.5.1.2\lib\net46\Icon.Framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -206,10 +208,6 @@
     <Compile Include="Attributes\AtLeastOneRequiredSpecifiedAttributeTests.cs" />
     <Compile Include="Attributes\IconPropertyValidationAttributeTests.cs" />
     <Compile Include="AutoMapperConverters\LocaleToMessageQueueLocaleConverterTests.cs" />
-    <Compile Include="Controllers\BulkBrandImportControllerTests.cs" />
-    <Compile Include="Controllers\BulkCertificationAgencyImportControllerTests.cs" />
-    <Compile Include="Controllers\BulkItemAddControllerTests.cs" />
-    <Compile Include="Controllers\CertificationAgencyControllerTests.cs" />
     <Compile Include="Controllers\NationalClassControllerTests.cs" />
     <Compile Include="Controllers\MerchTaxMappingControllerTests.cs" />
     <Compile Include="Controllers\PluAssignmentControllerTests.cs" />
@@ -219,7 +217,6 @@
     <Compile Include="Controllers\IrmaItemControllerTests.cs" />
     <Compile Include="Controllers\FinancialControllerTests.cs" />
     <Compile Include="Controllers\HierarchyControllerTests.cs" />
-    <Compile Include="Controllers\BulkScanCodeSearchControllerTests.cs" />
     <Compile Include="Controllers\BrandControllerTests.cs" />
     <Compile Include="Controllers\EwicControllerTests.cs" />
     <Compile Include="Controllers\MessageHistoryControllerTests.cs" />
@@ -250,7 +247,6 @@
     <Compile Include="Extensions\ExtensionsTests.cs" />
     <Compile Include="Extensions\WebExtensionsTests.cs" />
     <Compile Include="Framework\NonMerchandiseTraitTests.cs" />
-    <Compile Include="Importers\CertificationAgencyImporterTests.cs" />
     <Compile Include="Importers\NewItemSpreadsheetImporterTests.cs" />
     <Compile Include="Importers\PluSpreadsheetImporterTests.cs" />
     <Compile Include="Controllers\PluMappingControllerTests.cs" />
@@ -264,11 +260,8 @@
     <Compile Include="Managers\AddPluCategoryManagerHandlerTests.cs" />
     <Compile Include="Controllers\ItemControllerTests.cs" />
     <Compile Include="Controllers\ExcelControllerTests.cs" />
-    <Compile Include="Controllers\BulkPluMappingControllerTests.cs" />
-    <Compile Include="Controllers\BulkItemImportControllerTests.cs" />
     <Compile Include="Managers\AddMerchTaxAssociationManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdateMerchTaxAssociationManagerHandlerTests.cs" />
-    <Compile Include="Managers\UpdateCertificationAgencyManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdateBrandManagerHandlerTests.cs" />
     <Compile Include="Managers\AddHierarchyClassManagerHandlerTests.cs" />
     <Compile Include="Managers\AddItemManagerHandlerTests.cs" />

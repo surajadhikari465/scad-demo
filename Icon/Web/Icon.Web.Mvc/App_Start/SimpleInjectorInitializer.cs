@@ -103,7 +103,6 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetUomParameters, List<UOM>>));
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetHierarchyLineageParameters, HierarchyClassListModel>));
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetBrandsParameters, List<BrandModel>>));
-            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetCertificationAgenciesParameters, List<CertificationAgencyModel>>));
 
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddBrandManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateBrandManager>));
@@ -114,7 +113,6 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateMerchTaxAssociationManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddMerchTaxAssociationManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddCertificationAgencyManager>));
-            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateCertificationAgencyManager>));
 
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportBrandModel>>));
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportItemModel>>));
@@ -132,9 +130,7 @@ namespace Icon.Web.Mvc.App_Start
 
             var brandPolicy = SetupCachePolicy<GetBrandsParameters>(appSetting: "GetBrandsQueryCacheExpirationInMinutes", defaultExpiry: 5);
             container.RegisterSingle<ICachePolicy<GetBrandsParameters>>(brandPolicy);   
-
-            var certificationAgencyPolicy = SetupCachePolicy<GetCertificationAgenciesParameters>(appSetting: "CertificationAgencyQueryCacheExpirationInMinutes", defaultExpiry: 5);
-            container.RegisterSingle<ICachePolicy<GetCertificationAgenciesParameters>>(certificationAgencyPolicy); 
+           
         }
 
         private static IconContext GetIconContext()

@@ -73,17 +73,12 @@
             column.For(item => item.EcoScaleRatingId).HeaderText("Eco Scale Rating").Width("200px").FormatterFunction("formatEcoScaleRating");
             column.For(item => item.FreeRange).HeaderText("Free Range").Width("200px").FormatterFunction("boolFormatter");
             column.For(item => item.SeafoodFreshOrFrozenId).HeaderText("Fresh or Frozen").Width("200px").FormatterFunction("formatSeafoodFreshOrFrozenType");
-            column.For(item => item.GlutenFreeAgencyId).HeaderText("Gluten Free").Width("200px").FormatterFunction("formatGlutenFreeAgency");
-            column.For(item => item.GrassFed).HeaderText("Grass Fed").Width("200px").FormatterFunction("boolFormatter");
-            column.For(item => item.KosherAgencyId).HeaderText("Kosher").Width("200px").FormatterFunction("formatKosherAgency");
+            column.For(item => item.GrassFed).HeaderText("Grass Fed").Width("200px").FormatterFunction("boolFormatter");   
             column.For(item => item.MadeInHouse).HeaderText("Made In House").Width("200px").FormatterFunction("boolFormatter");
-            column.For(item => item.Msc).HeaderText("MSC").Width("100px").FormatterFunction("boolFormatter");
-            column.For(item => item.NonGmoAgencyId).HeaderText("Non-GMO").Width("200px").FormatterFunction("formatNonGmoAgency");
-            column.For(item => item.OrganicAgencyId).HeaderText("Organic").Width("200px").FormatterFunction("formatOrganicAgency");
+            column.For(item => item.Msc).HeaderText("MSC").Width("100px").FormatterFunction("boolFormatter");          
             column.For(item => item.PastureRaised).HeaderText("Pasture Raised").Width("200px").FormatterFunction("boolFormatter");
             column.For(item => item.PremiumBodyCare).HeaderText("Premium Body Care").Width("200px").FormatterFunction("boolFormatter");
-            column.For(item => item.SeafoodCatchTypeId).HeaderText("Seafood: Wild or Farm Raised").Width("200px").FormatterFunction("formatSeafoodCatchType");
-            column.For(item => item.VeganAgencyId).HeaderText("Vegan").Width("200px").FormatterFunction("formatVeganAgency");
+            column.For(item => item.SeafoodCatchTypeId).HeaderText("Seafood: Wild or Farm Raised").Width("200px").FormatterFunction("formatSeafoodCatchType");        
             column.For(item => item.Vegetarian).HeaderText("Vegetarian").Width("100px").FormatterFunction("boolFormatter");
             column.For(item => item.WholeTrade).HeaderText("Whole Trade").Width("100px").FormatterFunction("boolFormatter");
         })
@@ -246,33 +241,7 @@
                                 .Virtualization(true)
                                 .DropDownWidth(300)
                                 .FilteringType(ComboFilteringType.Local)
-                        );
-                    settings.ColumnSetting().ColumnKey("GlutenFreeAgencyId")
-                        .EditorType(ColumnEditorType.Combo)
-                        .ComboEditorOptions(taxOptions =>
-                            taxOptions.DataSource(Model.GlutenFreeAgencies.AsQueryable())
-                                .ValueKey("HierarchyClassId")
-                                .TextKey("HierarchyClassName")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                .AllowCustomValue(false)
-                                .Virtualization(true)
-                                .DropDownWidth(600)
-                                .FilteringType(ComboFilteringType.Local)
-                        );
-                    settings.ColumnSetting().ColumnKey("KosherAgencyId")
-                        .EditorType(ColumnEditorType.Combo)
-                        .ComboEditorOptions(taxOptions =>
-                            taxOptions.DataSource(Model.KosherAgencies.AsQueryable())
-                                .ValueKey("HierarchyClassId")
-                                .TextKey("HierarchyClassName")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                .AllowCustomValue(false)
-                                .Virtualization(true)
-                                .DropDownWidth(600)
-                                .FilteringType(ComboFilteringType.Local)
-                        );
+                        );                
                     settings.ColumnSetting().ColumnKey("Msc")
                         .EditorType(ColumnEditorType.Combo)
                         .ComboEditorOptions(options =>
@@ -284,33 +253,7 @@
                                 .Virtualization(true)
                                 .DropDownWidth(300)
                                 .FilteringType(ComboFilteringType.Local)
-                        );
-                    settings.ColumnSetting().ColumnKey("NonGmoAgencyId")
-                        .EditorType(ColumnEditorType.Combo)
-                        .ComboEditorOptions(taxOptions =>
-                            taxOptions.DataSource(Model.NonGmoAgencies.AsQueryable())
-                                .ValueKey("HierarchyClassId")
-                                .TextKey("HierarchyClassName")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                .AllowCustomValue(false)
-                                .Virtualization(true)
-                                .DropDownWidth(600)
-                                .FilteringType(ComboFilteringType.Local)
-                        );
-                    settings.ColumnSetting().ColumnKey("OrganicAgencyId")
-                        .EditorType(ColumnEditorType.Combo)
-                        .ComboEditorOptions(taxOptions =>
-                            taxOptions.DataSource(Model.OrganicAgencies.AsQueryable())
-                                .ValueKey("HierarchyClassId")
-                                .TextKey("HierarchyClassName")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                .AllowCustomValue(false)
-                                .Virtualization(true)
-                                .DropDownWidth(600)
-                                .FilteringType(ComboFilteringType.Local)
-                        );
+                        );                
                     settings.ColumnSetting().ColumnKey("PremiumBodyCare")
                         .EditorType(ColumnEditorType.Combo)
                         .ComboEditorOptions(options =>
@@ -348,20 +291,7 @@
                                 .Virtualization(true)
                                 .DropDownWidth(300)
                                 .FilteringType(ComboFilteringType.Local)
-                        );
-                    settings.ColumnSetting().ColumnKey("VeganAgencyId")
-                        .EditorType(ColumnEditorType.Combo)
-                        .ComboEditorOptions(taxOptions =>
-                            taxOptions.DataSource(Model.VeganAgencies.AsQueryable())
-                                .ValueKey("HierarchyClassId")
-                                .TextKey("HierarchyClassName")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                .AllowCustomValue(false)
-                                .Virtualization(true)
-                                .DropDownWidth(600)
-                                .FilteringType(ComboFilteringType.Local)
-                        );
+                        );                   
                     settings.ColumnSetting().ColumnKey("Vegetarian")
                         .EditorType(ColumnEditorType.Combo)
                         .ComboEditorOptions(options =>

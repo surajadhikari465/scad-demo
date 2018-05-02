@@ -264,9 +264,9 @@
                 </div>
 
                 <div class="row">
-                    @Html.LabelFor(model => model.GlutenFreeAgencyId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.GlutenFreeAgency, new { @class = "col-md-3 form-label" })
                     <div>
-                       @Html.DropDownListFor(model => model.GlutenFreeAgencyId, Model.GlutenFreeAgencies, "", new { @class = "col-md-6 form-input" })
+                       @Html.TextBoxFor(model => model.GlutenFreeAgency, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
 
@@ -278,9 +278,9 @@
                 </div> 
 
                     <div class="row">
-                        @Html.LabelFor(model => model.KosherAgencyId, new { @class = "col-md-3 form-label" })
+                        @Html.LabelFor(model => model.KosherAgency, new { @class = "col-md-3 form-label" })
                         <div>
-                            @Html.DropDownListFor(model => model.KosherAgencyId, Model.KosherAgencies, "", new { @class = "col-md-6 form-input" })
+                            @Html.TextBoxFor(model => model.KosherAgency, new { @class = "col-md-6 form-input" })
                         </div>
                     </div>
 
@@ -299,16 +299,16 @@
                 </div>
 
                 <div class="row">
-                        @Html.LabelFor(model => model.NonGmoAgencyId, new { @class = "col-md-3 form-label" })
+                        @Html.LabelFor(model => model.NonGmoAgency, new { @class = "col-md-3 form-label" })
                         <div>
-                            @Html.DropDownListFor(model => model.NonGmoAgencyId, Model.NonGmoAgencies, "", new { @class = "col-md-6 form-input" })
+                            @Html.TextBoxFor(model => model.NonGmoAgency,new { @class = "col-md-6 form-input" })
                         </div>
                     </div>
 
                     <div class="row">
-                        @Html.LabelFor(model => model.OrganicAgencyId, new { @class = "col-md-3 form-label" })
+                        @Html.LabelFor(model => model.OrganicAgency, new { @class = "col-md-3 form-label" })
                         <div>
-                            @Html.DropDownListFor(model => model.OrganicAgencyId, Model.OrganicAgencies, "", new { @class = "col-md-6 form-input" })
+                            @Html.TextBoxFor(model => model.OrganicAgency, new { @class = "col-md-6 form-input" })
                         </div>
                     </div>
 
@@ -334,9 +334,9 @@
                     </div>
 
                     <div class="row">
-                        @Html.LabelFor(model => model.VeganAgencyId, new { @class = "col-md-3 form-label" })
+                        @Html.LabelFor(model => model.VeganAgency, new { @class = "col-md-3 form-label" })
                         <div>
-                            @Html.DropDownListFor(model => model.VeganAgencyId, Model.VeganAgencies, "", new { @class = "col-md-6 form-input" })
+                            @Html.TextBoxFor(model => model.VeganAgency, new { @class = "col-md-6 form-input" })
                         </div>
                     </div>
 

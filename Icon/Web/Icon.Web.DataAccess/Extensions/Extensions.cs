@@ -138,26 +138,6 @@ namespace Icon.Web.DataAccess.Extensions
             return duplicates.Any();
         }
 
-
-        public static bool InItemSignAttribute(this IQueryable<ItemSignAttribute> items, string traitCode, int hierarchyClassId)
-        {
-            switch (traitCode)
-            {
-                case TraitCodes.GlutenFree:
-                    return items.Any(isa => isa.GlutenFreeAgencyId == hierarchyClassId);
-                case TraitCodes.Kosher:
-                    return items.Any(isa => isa.KosherAgencyId == hierarchyClassId);
-                case TraitCodes.NonGmo:
-                    return items.Any(isa => isa.NonGmoAgencyId == hierarchyClassId);
-                case TraitCodes.Organic:
-                    return items.Any(isa => isa.OrganicAgencyId == hierarchyClassId);
-                case TraitCodes.Vegan:
-                    return items.Any(isa => isa.VeganAgencyId == hierarchyClassId);
-                default:
-                    return false;
-            }
-        }
-
         public static bool ContainsDuplicateBrandAbbreviation(this IEnumerable<HierarchyClassTrait> hierarchyClassTraits, string brandAbbreviation)
         {
             return hierarchyClassTraits.Any(hct => hct.Trait.traitCode == TraitCodes.BrandAbbreviation && hct.traitValue.ToLower() == brandAbbreviation.ToLower());

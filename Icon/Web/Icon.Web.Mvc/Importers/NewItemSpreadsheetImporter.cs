@@ -165,15 +165,10 @@ namespace Icon.Web.Mvc.Importers
             int cheeseAttributeMilkTypeColumnIndex;
             int cheeseAttributeRawColumnIndex;
             int ecoScaleRatingColumnIndex;
-            int glutenFreeColumnIndex;
-            int kosherColumnIndex;
             int mscColumnIndex;
-            int nonGmoColumnIndex;
-            int organicColumnIndex;
             int premiumBodyCareColumnIndex;
             int seafoodFreshOrFrozenColumnIndex;
             int seafoodWildOrFarmRaisedColumnIndex;
-            int veganColumnIndex;
             int vegetarianColumnIndex;
             int wholeTradeColumnIndex;
             int grassFedColumnIndex;
@@ -199,15 +194,10 @@ namespace Icon.Web.Mvc.Importers
                 cheeseAttributeMilkTypeColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex;
                 cheeseAttributeRawColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.CheeseAttributeRawColumnIndex;
                 ecoScaleRatingColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.EcoScaleRatingColumnIndex;
-                glutenFreeColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.GlutenFreeColumnIndex;
-                kosherColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.KosherColumnIndex;
-                mscColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.MscColumnIndex;
-                nonGmoColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.NonGmoColumnIndex;
-                organicColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.OrganicColumnIndex;
+                mscColumnIndex = ExcelHelper.IrmaItemColumnIndexes.MscColumnIndex;           
                 premiumBodyCareColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.PremiumBodyCareColumnIndex;
                 seafoodFreshOrFrozenColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex;
                 seafoodWildOrFarmRaisedColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex;
-                veganColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.VeganColumnIndex;
                 vegetarianColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.VegetarianColumnIndex;
                 wholeTradeColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.WholeTradeColumnIndex;
                 grassFedColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.GrassFedColumnIndex;
@@ -233,15 +223,10 @@ namespace Icon.Web.Mvc.Importers
                 cheeseAttributeMilkTypeColumnIndex = ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex;
                 cheeseAttributeRawColumnIndex = ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeRawColumnIndex;
                 ecoScaleRatingColumnIndex = ExcelHelper.IrmaItemColumnIndexes.EcoScaleRatingColumnIndex;
-                glutenFreeColumnIndex = ExcelHelper.IrmaItemColumnIndexes.GlutenFreeColumnIndex;
-                kosherColumnIndex = ExcelHelper.IrmaItemColumnIndexes.KosherColumnIndex;
-                mscColumnIndex = ExcelHelper.IrmaItemColumnIndexes.MscColumnIndex;
-                nonGmoColumnIndex = ExcelHelper.IrmaItemColumnIndexes.NonGmoColumnIndex;
-                organicColumnIndex = ExcelHelper.IrmaItemColumnIndexes.OrganicColumnIndex;
+                mscColumnIndex = ExcelHelper.ConsolidatedItemColumnIndexes.MscColumnIndex;
                 premiumBodyCareColumnIndex = ExcelHelper.IrmaItemColumnIndexes.PremiumBodyCareColumnIndex;
                 seafoodFreshOrFrozenColumnIndex = ExcelHelper.IrmaItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex;
                 seafoodWildOrFarmRaisedColumnIndex = ExcelHelper.IrmaItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex;
-                veganColumnIndex = ExcelHelper.IrmaItemColumnIndexes.VeganColumnIndex;
                 vegetarianColumnIndex = ExcelHelper.IrmaItemColumnIndexes.VegetarianColumnIndex;
                 wholeTradeColumnIndex = ExcelHelper.IrmaItemColumnIndexes.WholeTradeColumnIndex;
                 grassFedColumnIndex = ExcelHelper.IrmaItemColumnIndexes.GrassFedColumnIndex;
@@ -285,15 +270,11 @@ namespace Icon.Web.Mvc.Importers
                 string cheeseAttributeMilkType = ExcelHelper.GetCellStringValue(row.Cells[cheeseAttributeMilkTypeColumnIndex].Value);
                 string cheeseAttributeRaw = ExcelHelper.GetCellStringValue(row.Cells[cheeseAttributeRawColumnIndex].Value).GetBoolStringFromCellText();
                 string ecoScaleRating = ExcelHelper.GetCellStringValue(row.Cells[ecoScaleRatingColumnIndex].Value);
-                string glutenFree = ExcelHelper.GetCellStringValue(row.Cells[glutenFreeColumnIndex].Value);
-                string kosher = ExcelHelper.GetCellStringValue(row.Cells[kosherColumnIndex].Value);
                 string msc = ExcelHelper.GetCellStringValue(row.Cells[mscColumnIndex].Value).GetBoolStringFromCellText();
-                string nonGmo = ExcelHelper.GetCellStringValue(row.Cells[nonGmoColumnIndex].Value);
-                string organic = ExcelHelper.GetCellStringValue(row.Cells[organicColumnIndex].Value);
+      
                 string premiumBodyCare = ExcelHelper.GetCellStringValue(row.Cells[premiumBodyCareColumnIndex].Value).GetBoolStringFromCellText();
                 string seafoodFreshOrFrozen = ExcelHelper.GetCellStringValue(row.Cells[seafoodFreshOrFrozenColumnIndex].Value);
                 string seafoodWildOrFarmRaised = ExcelHelper.GetCellStringValue(row.Cells[seafoodWildOrFarmRaisedColumnIndex].Value);
-                string vegan = ExcelHelper.GetCellStringValue(row.Cells[veganColumnIndex].Value);
                 string vegetarian = ExcelHelper.GetCellStringValue(row.Cells[vegetarianColumnIndex].Value).GetBoolStringFromCellText();
                 string wholeTrade = ExcelHelper.GetCellStringValue(row.Cells[wholeTradeColumnIndex].Value).GetBoolStringFromCellText();
                 string grassFed = ExcelHelper.GetCellStringValue(row.Cells[grassFedColumnIndex].Value).GetBoolStringFromCellText();
@@ -337,23 +318,13 @@ namespace Icon.Web.Mvc.Importers
                     CheeseAttributeMilkTypeId = base.GetIdFromDescription(MilkTypes.AsDictionary, cheeseAttributeMilkType),
                     CheeseAttributeRaw = cheeseAttributeRaw,
                     EcoScaleRating = ecoScaleRating,
-                    EcoScaleRatingId = base.GetIdFromDescription(EcoScaleRatings.AsDictionary, ecoScaleRating),
-                    GlutenFreeAgencyLineage = glutenFree,
-                    GlutenFreeAgencyId = glutenFree.GetIdFromCellText(),
-                    KosherAgencyLineage = kosher,
-                    KosherAgencyId = kosher.GetIdFromCellText(),
+                    EcoScaleRatingId = base.GetIdFromDescription(EcoScaleRatings.AsDictionary, ecoScaleRating),      
                     Msc = msc,
-                    NonGmoAgencyLineage = nonGmo,
-                    NonGmoAgencyId = nonGmo.GetIdFromCellText(),
-                    OrganicAgencyLineage = organic,
-                    OrganicAgencyId = organic.GetIdFromCellText(),
                     PremiumBodyCare = premiumBodyCare,
                     SeafoodFreshOrFrozen = seafoodFreshOrFrozen,
                     SeafoodFreshOrFrozenId = base.GetIdFromDescription(SeafoodFreshOrFrozenTypes.AsDictionary, seafoodFreshOrFrozen),
                     SeafoodWildOrFarmRaised = seafoodWildOrFarmRaised,
                     SeafoodWildOrFarmRaisedId = base.GetIdFromDescription(SeafoodCatchTypes.AsDictionary, seafoodWildOrFarmRaised),
-                    VeganAgencyLineage = vegan,
-                    VeganAgencyId = vegan.GetIdFromCellText(),
                     Vegetarian = vegetarian,
                     WholeTrade = wholeTrade,
                     GrassFed = grassFed,

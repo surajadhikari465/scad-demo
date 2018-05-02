@@ -32,12 +32,7 @@ namespace Icon.Web.Mvc.Excel.WorksheetBuilders.Factories
                 new TaxWorksheetBuilder(getHierarchyLineageQuery),
                 new BrowsingWorksheetBuilder(getHierarchyLineageQuery),
                 new MerchTaxMappingWorksheetBuilder(getMerchTaxMappingsQueryHandler),
-                new NationalWorksheetBuilder(getHierarchyLineageQuery),
-                new GlutenFreeWorksheetBuilder(getCertificationAgenciesQueryHandler),
-                new KosherWorksheetBuilder(getCertificationAgenciesQueryHandler),
-                new NonGmoWorksheetBuilder(getCertificationAgenciesQueryHandler),
-                new OrganicWorksheetBuilder(getCertificationAgenciesQueryHandler),
-                new VeganWorksheetBuilder(getCertificationAgenciesQueryHandler)
+                new NationalWorksheetBuilder(getHierarchyLineageQuery)
             };
         }
     }

@@ -80,10 +80,7 @@ namespace Icon.Web.Common.Validators
 
                 case ValidatorPropertyNames.DrainedWeight:
                     return new IconPropertyValidationRules(TraitPatterns.DrainedWeight, ValidatorErrorMessages.DrainedWeightError);
-
-                case ValidatorPropertyNames.FairTradeCertified:
-                    return new IconPropertyValidationRules(TraitPatterns.FairTradeCertified, ValidatorErrorMessages.FairTradeCertifiedError);
-
+              
                 case ValidatorPropertyNames.MainProductName:
                     return new IconPropertyValidationRules(TraitPatterns.MainProductName, ValidatorErrorMessages.MainProductNameError);
 
