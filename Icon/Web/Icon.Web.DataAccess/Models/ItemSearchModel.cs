@@ -121,19 +121,19 @@ namespace Icon.Web.DataAccess.Models
         [SqlResult(SqlSortValue = "isa.EcoScaleRatingId")]
         public int? EcoScaleRatingId { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.GlutenFreeAgency")]
+        [SqlResult(SqlSortValue = "isa.GlutenFreeAgencyName")]
         public string GlutenFreeAgency { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.KosherAgency")]
+        [SqlResult(SqlSortValue = "isa.KosherAgencyName")]
         public string KosherAgency { get; set; }
 
         [SqlResult(SqlSortValue = "isa.Msc")]
         public bool? Msc { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.NonGmoAgency")]
+        [SqlResult(SqlSortValue = "isa.NonGmoAgencyName")]
         public string NonGmoAgency { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.OrganicAgency")]
+        [SqlResult(SqlSortValue = "isa.OrganicAgencyName")]
         public string OrganicAgency { get; set; }
 
         [SqlResult(SqlSortValue = "isa.PremiumBodyCare")]
@@ -145,7 +145,7 @@ namespace Icon.Web.DataAccess.Models
         [SqlResult(SqlSortValue = "isa.SeafoodCatchTypeId")]
         public int? SeafoodCatchTypeId { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.VeganAgency")]
+        [SqlResult(SqlSortValue = "isa.VeganAgencyName")]
         public string VeganAgency { get; set; }
 
         [SqlResult(SqlSortValue = "isa.Vegetarian")]
