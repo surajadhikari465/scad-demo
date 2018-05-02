@@ -49,14 +49,14 @@
         public int? CheeseMilkTypeId { get; set; }
         public bool? CheeseRaw { get; set; }
         public int? EcoScaleRatingId { get; set; }
-        public int? GlutenFreeAgencyId { get; set; }
-        public int? KosherAgencyId { get; set; }
-        public int? NonGmoAgencyId { get; set; }
-        public int? OrganicAgencyId { get; set; }
+        public string GlutenFreeAgency { get; set; }
+        public string KosherAgency { get; set; }
+        public string NonGmoAgency { get; set; }
+        public string OrganicAgency { get; set; }
         public bool? PremiumBodyCare { get; set; }
         public int? SeafoodFreshOrFrozenId { get; set; }
         public int? SeafoodCatchTypeId { get; set; }
-        public int? VeganAgencyId { get; set; }
+        public string VeganAgency { get; set; }
         public bool? Vegetarian { get; set; }
         public bool? WholeTrade { get; set; }
         public bool? GrassFed { get; set; }

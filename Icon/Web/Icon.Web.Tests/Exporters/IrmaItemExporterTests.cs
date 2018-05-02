@@ -221,14 +221,9 @@ namespace Icon.Web.Tests.Unit.Exporters
             int milkTypeId = MilkTypes.BuffaloMilk;
             string cheeseRaw = "Y";
             int ecoScaleRatingId = EcoScaleRatings.BaselineOrange;
-            int glutenFreeAgencyId = 1;
-            int kosherAgencyId = 1;
-            int nonGmoAgencyId = 1;
-            int organicAgencyId = 1;
             string premiumBodyCare = "Y";
             int seafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.Fresh;
             int seafoodCatchTypeId = SeafoodCatchTypes.FarmRaised;
-            int veganAgencyId = 1;
             string vegetarian = "Y";
             string wholeTrade = "Y";
             string grassFed = "Y";

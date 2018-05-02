@@ -435,12 +435,6 @@ namespace Icon.Web.Tests.Integration.Commands
             updatedItem.EcoScaleRatingId = EcoScaleRatings.AsDictionary.First().Key;
             updatedItem.SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.AsDictionary.First().Key;
             updatedItem.SeafoodCatchTypeId = SeafoodCatchTypes.AsDictionary.First().Key;
-            
-            updatedItem.GlutenFreeAgencyId = testGlutenFree.hierarchyClassID;
-            updatedItem.KosherAgencyId = testKosher.hierarchyClassID;
-            updatedItem.NonGmoAgencyId = testNonGmo.hierarchyClassID;
-            updatedItem.OrganicAgencyId = testOrganic.hierarchyClassID;
-            updatedItem.VeganAgencyId = testVegan.hierarchyClassID;
             updatedItem.Biodynamic = true;
             updatedItem.Vegetarian = true;
             updatedItem.WholeTrade = true;
