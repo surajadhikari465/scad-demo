@@ -428,7 +428,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                 ExtendedAttributes = new ExtendedAttributesModel
                 {
                     ItemId = itemId,
-                    FairTrade = "Test FairTrade",
+                    FairTradeCertified = "Test FairTradeCertified",
                     FlexibleText = "Test FlexibleText",
                     GlobalPricingProgram = "GlobalPricingProgram",
                     MadeWithBiodynamicGrapes = "Test MadeWithBiodynamicGrapes",
@@ -575,7 +575,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             #endregion
 
             #region extended attributes
-            const string fairTrade = "Test";
+            const string fairTradeCertified = "Test";
             const string flexibleText = "Test";
             const string madeWithBiodynamicGrapes = "Test";
             const string madeWithOrganicGrapes = "Test";
@@ -644,7 +644,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 		            {transFatWeight})
 
                 INSERT INTO dbo.ItemAttributes_Ext(ItemID, AttributeID, AttributeValue, AddedDate)
-                VALUES  (@itemID, {Attributes.FairTrade}, '{fairTrade}', GETDATE()),
+                VALUES  (@itemID, {Attributes.FairTradeCertified}, '{fairTradeCertified}', GETDATE()),
                         (@itemID, {Attributes.FlexibleText}, '{flexibleText}', GETDATE()),
                         (@itemID, {Attributes.MadeWithBiodynamicGrapes}, '{madeWithBiodynamicGrapes}', GETDATE()),
                         (@itemID, {Attributes.MadeWithOrganicGrapes}, '{madeWithOrganicGrapes}', GETDATE()),
@@ -821,8 +821,8 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             IEnumerable<dynamic> actualItemAttributes_ExtRows)
         {
             Assert.AreEqual(
-                expectedExtendedAttributes.FairTrade,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.FairTrade).AttributeValue);
+                expectedExtendedAttributes.FairTradeCertified,
+                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.FairTradeCertified).AttributeValue);
             Assert.AreEqual(
                 expectedExtendedAttributes.FlexibleText,
                 actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.FlexibleText).AttributeValue);

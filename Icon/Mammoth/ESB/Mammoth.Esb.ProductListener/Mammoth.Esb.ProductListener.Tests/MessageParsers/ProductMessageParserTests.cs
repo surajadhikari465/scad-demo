@@ -124,7 +124,7 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
             Assert.AreEqual(1, nutritionAttributes.SizeWeight);
 
             var extAttributes = item.ExtendedAttributes;
-            Assert.AreEqual("Fair Trade Test", extAttributes.FairTrade);
+            Assert.AreEqual("Fair Trade Certified Test", extAttributes.FairTradeCertified);
             Assert.AreEqual("Flexible Text Test", extAttributes.FlexibleText);
             Assert.AreEqual("Made With Organic Grapes Test", extAttributes.MadeWithOrganicGrapes);
             Assert.AreEqual("Made with Biodynamic Grapes Test", extAttributes.MadeWithBiodynamicGrapes);

@@ -3,7 +3,7 @@
     public class ExtendedAttributesModel
     {
         public int ItemId { get; set; }
-        public string FairTrade { get; set; }
+        public string FairTradeCertified { get; set; }
         public string FlexibleText { get; set; }
         public string GlobalPricingProgram { get; set; }
         public string MadeWithOrganicGrapes { get; set; }

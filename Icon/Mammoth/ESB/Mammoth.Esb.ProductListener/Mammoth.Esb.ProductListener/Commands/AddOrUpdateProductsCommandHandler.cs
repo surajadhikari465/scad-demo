@@ -93,8 +93,8 @@ namespace Mammoth.Esb.ProductListener.Commands
                         i => new[]
                         {
                             new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.FairTrade,
-                                AttributeValue = i.ExtendedAttributes.FairTrade },
+                                AttributeCode = Attributes.Codes.FairTradeCertified,
+                                AttributeValue = i.ExtendedAttributes.FairTradeCertified },
                             new { ItemID = i.ExtendedAttributes.ItemId,
                                 AttributeCode = Attributes.Codes.FlexibleText,
                                 AttributeValue = i.ExtendedAttributes.FlexibleText },

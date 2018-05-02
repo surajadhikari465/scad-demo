@@ -157,8 +157,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             public string EcoScaleRating => sampleTrait_ecoScaleRating;
 
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
-            private string sampleTrait_fairTrade = "test Fair Trade val";
-            public string FairTrade => sampleTrait_fairTrade;
+            private string sampleTrait_fairTradeCertified = "test Fair Trade Certified val";
+            public string FairTradeCertified => sampleTrait_fairTradeCertified;
 
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
             private string sampleTrait_flexibleText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse =300";

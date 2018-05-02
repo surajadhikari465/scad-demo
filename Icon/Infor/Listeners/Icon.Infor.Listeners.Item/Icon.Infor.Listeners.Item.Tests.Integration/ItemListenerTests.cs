@@ -195,8 +195,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
                         $"Actual {nameof(testData.Attribs.SelfCheckoutItemTareGroup)} value ({traitValue}) did not match expected ({testData.Attribs.SelfCheckoutItemTareGroup})");
 
                     traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "FTC").traitValue;
-                    Assert.AreEqual(testData.Attribs.FairTrade, traitValue,
-                        $"Actual {nameof(testData.Attribs.FairTrade)} value ({traitValue}) did not match expected ({testData.Attribs.FairTrade})");
+                    Assert.AreEqual(testData.Attribs.FairTradeCertified, traitValue,
+                        $"Actual {nameof(testData.Attribs.FairTradeCertified)} value ({traitValue}) did not match expected ({testData.Attribs.FairTradeCertified})");
                 }
             }
         }
@@ -257,8 +257,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
                         $"Actual {nameof(testData.Attribs.SelfCheckoutItemTareGroup)} value ({traitValue}) did not match expected ({testData.Attribs.SelfCheckoutItemTareGroup})");
 
                     traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "FTC").traitValue;
-                    Assert.AreEqual(testData.Attribs.FairTrade, traitValue,
-                        $"Actual {nameof(testData.Attribs.FairTrade)} value ({traitValue}) did not match expected ({testData.Attribs.FairTrade})");
+                    Assert.AreEqual(testData.Attribs.FairTradeCertified, traitValue,
+                        $"Actual {nameof(testData.Attribs.FairTradeCertified)} value ({traitValue}) did not match expected ({testData.Attribs.FairTradeCertified})");
                 }
             }
         }

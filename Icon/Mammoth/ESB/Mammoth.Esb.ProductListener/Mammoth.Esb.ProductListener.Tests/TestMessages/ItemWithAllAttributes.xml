@@ -812,9 +812,9 @@
           <crf:trait>
             <tra:code>FTC</tra:code>
             <tra:type>
-              <trt:description>Fair Trade Certifed</trt:description>
+              <trt:description>Fair Trade Certified</trt:description>
               <trt:value>
-                <trv:value>Fair Trade Test</trv:value>
+                <trv:value>Fair Trade Certified Test</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>

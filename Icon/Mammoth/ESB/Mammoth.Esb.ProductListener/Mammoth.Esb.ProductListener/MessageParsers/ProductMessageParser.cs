@@ -183,7 +183,7 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
         {
             var extendedAttributes = new ExtendedAttributesModel();
             extendedAttributes.ItemId = item.id;
-            extendedAttributes.FairTrade = GetTraitValue(Attributes.Codes.FairTrade, traits);
+            extendedAttributes.FairTradeCertified = GetTraitValue(Attributes.Codes.FairTradeCertified, traits);
             extendedAttributes.FlexibleText = GetTraitValue(Attributes.Codes.FlexibleText, traits);
             extendedAttributes.GlobalPricingProgram = GetTraitValue(Attributes.Codes.GlobalPricingProgram, traits);
             extendedAttributes.MadeWithBiodynamicGrapes = GetTraitValue(Attributes.Codes.MadeWithBiodynamicGrapes, traits);

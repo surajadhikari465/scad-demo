@@ -94,7 +94,7 @@
       <HintPath>..\packages\Irma.Framework.2017.8.31.1\lib\net45\Irma.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.3.23.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.5.1.2\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Framework.2018.3.23.3\lib\net46\Mammoth.Framework.dll</HintPath>
@@ -128,7 +128,7 @@
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.SqlClient, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SqlClient.4.4.2\lib\net46\System.Data.SqlClient.dll</HintPath>
+      <HintPath>..\packages\System.Data.SqlClient.4.4.3\lib\net46\System.Data.SqlClient.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />

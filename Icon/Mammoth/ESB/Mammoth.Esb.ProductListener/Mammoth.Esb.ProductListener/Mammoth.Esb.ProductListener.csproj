@@ -105,7 +105,7 @@
       <HintPath>..\packages\Mammoth.Common.2018.3.23.1\lib\net46\Mammoth.Common.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.4.11.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.5.1.2\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.4.25.1\lib\net46\Mammoth.PrimeAffinity.Library.dll</HintPath>

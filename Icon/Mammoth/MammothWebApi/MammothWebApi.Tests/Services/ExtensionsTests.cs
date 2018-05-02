@@ -245,7 +245,7 @@ namespace MammothWebApi.Tests.Services
                 case Attributes.AltRetailSize: return Attributes.Codes.AltRetailSize;
                 case Attributes.AltRetailUom: return Attributes.Codes.AltRetailUom;
                 case Attributes.FlexibleText : return Attributes.Codes.FlexibleText;
-                case Attributes.FairTrade: return Attributes.Codes.FairTrade;
+                case Attributes.FairTradeCertified: return Attributes.Codes.FairTradeCertified;
                 case Attributes.CustomerFriendlyDescription: return Attributes.Codes.CustomerFriendlyDescription;
                 case Attributes.RetailUnit: return Attributes.Codes.RetailUnit;
                 case Attributes.AuthorizedForSale: return Attributes.Codes.AuthorizedForSale;
