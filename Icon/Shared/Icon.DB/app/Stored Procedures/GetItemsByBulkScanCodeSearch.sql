@@ -137,7 +137,7 @@ BEGIN
 		isa.GlutenFreeAgencyName	as GlutenFreeAgency,
 		isa.KosherAgencyName		as KosherAgency,
 		isa.Msc						as Msc,
-		isa.NonGmoAgencyName		as NonGmoAgencyN,
+		isa.NonGmoAgencyName		as NonGmoAgency,
 		isa.OrganicAgencyName		as OrganicAgency,
 		isa.PremiumBodyCare			as PremiumBodyCare,
 		isa.SeafoodFreshOrFrozenId	as SeafoodFreshOrFrozenId,
