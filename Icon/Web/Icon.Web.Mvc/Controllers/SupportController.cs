@@ -55,8 +55,10 @@ namespace Icon.Web.Controllers
             //validate parameter for positive value
             if (hierarchyClassId.GetValueOrDefault(0) < 1)
             {
-                TempData["ErrorMessage"] = "Error: invalid Hierarchy Class ID parameter submitted (" +
+                var invalidHierarchyMsg = "Error: invalid Hierarchy Class ID parameter submitted (" +
                     (hierarchyClassId.HasValue ? hierarchyClassId.Value.ToString() : "null") + ")";
+                TempData["ErrorMessage"] = invalidHierarchyMsg;
+                logger.Warn(invalidHierarchyMsg);
                 return RedirectToAction("ChooseHierarchyClass");
             }
 
@@ -67,9 +69,11 @@ namespace Icon.Web.Controllers
             // verify that the query found good data
             if (hierarchyClass?.hierarchyClassID == null )
             {
-                TempData["ErrorMessage"] = "Error: The requested Hierarchy Class ID could not be found (ID: " +
+                var unknownHierarchyMsg = "Error: The requested Hierarchy Class ID could not be found (ID: " +
                     hierarchyClassId.Value.ToString() + "). " +
                     "Be sure to use the internal Icon database ID, not the infor class code";
+                TempData["ErrorMessage"] = unknownHierarchyMsg;
+                logger.Warn(unknownHierarchyMsg);
                 return RedirectToAction("ChooseHierarchyClass");
             }
 
@@ -119,20 +123,26 @@ namespace Icon.Web.Controllers
                 return View(viewModel);
             }
 
-            GetHierarchyClassByIdParameters hierarchyClassParameters = new GetHierarchyClassByIdParameters { HierarchyClassId = viewModel.HierarchyClassId };
+            var hierarchyClassParameters = new GetHierarchyClassByIdParameters { HierarchyClassId = viewModel.HierarchyClassId };
             HierarchyClass deletedHierarchyClass = hierarchyClassQuery.Search(hierarchyClassParameters);
 
             // Make sure the node is not attached to any items.
             if (deletedHierarchyClass.ItemHierarchyClass.Count > 0)
             {
-                ViewData["ErrorMessage"] = "Error: This hierarchy class is linked to items, so it cannot be deleted.";
+                var linkedHierarchyMsg = "Error: This hierarchy class is linked to items, so it cannot be deleted. (" +
+                    deletedHierarchyClass.hierarchyClassName + ")";
+                TempData["ErrorMessage"] = linkedHierarchyMsg;
+                logger.Warn(linkedHierarchyMsg);
                 return View(viewModel);
             }
 
             // Make sure the node does not have any children.
             if (deletedHierarchyClass.HierarchyClass1.Count > 0)
             {
-                ViewData["ErrorMessage"] = "Error: This hierarchy class contains subclasses, so it cannot be deleted.";
+                var hierarchyWithSubclassesMsg = "Error: This hierarchy class contains subclasses, so it cannot be deleted. (" +
+                    deletedHierarchyClass.hierarchyClassName + ")";
+                TempData["ErrorMessage"] = hierarchyWithSubclassesMsg;
+                logger.Warn(hierarchyWithSubclassesMsg);
                 return View(viewModel);
             }
 

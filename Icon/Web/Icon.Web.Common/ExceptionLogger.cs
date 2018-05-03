@@ -15,13 +15,23 @@ namespace Icon.Web.Common
             this.logger = logger;
         }
 
+        public Exception GetInnermostException(Exception ex)
+        {
+            while (ex.InnerException != null) ex = ex.InnerException;
+            return ex;
+        }
+
         public void LogException(Exception ex, Type callingClass, MethodBase callingMethod)
         {
-            logger.Error(String.Format("Exception in Method: {0}  Class: {1}.  Exception: {2}",
+            string errorMsg = String.Format("Exception in Method: {0}  Class: {1}. Exception: {2}",
                 callingMethod.Name,
                 callingClass.Name,
-                ex.ToString()
-            ));
+                ex.ToString());
+            if (ex.InnerException != null)
+            {
+                errorMsg += ". Innermost Exception: " + GetInnermostException(ex).Message;
+            }
+            logger.Error(errorMsg);
         }
 
         public void LogException(DbEntityValidationException ex, Type callingClass, MethodBase callingMethod)

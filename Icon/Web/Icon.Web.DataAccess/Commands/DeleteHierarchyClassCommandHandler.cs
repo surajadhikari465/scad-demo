@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.Common;
-using Icon.Web.DataAccess.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -40,9 +39,6 @@ namespace Icon.Web.DataAccess.Commands
                         break;
                     case Hierarchies.National:
                         eventName = EventTypeNames.NationalClassDelete;
-                        break;
-                    case Hierarchies.Merchandise:
-                        eventName = "Hierarchy Class Delete";
                         break;
                     default:
                         break;
