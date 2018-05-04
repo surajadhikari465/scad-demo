@@ -167,6 +167,10 @@ DECLARE @dot NVARCHAR(1) = '.'
 DECLARE @go NVARCHAR(10) = CHAR(10) --+ 'GO' + CHAR(10) + CHAR(10)
 DECLARE @open_paren NVARCHAR(10) = ' ('
 DECLARE @close_paren NVARCHAR(10) = ')'
+DECLARE @alterTable NVARCHAR(MAX) = 'ALTER TABLE '
+DECLARE @nocheck_constraint NVARCHAR(20) = ' NOCHECK CONSTRAINT '
+DECLARE @update_cascade NVARCHAR(MAX) = CHAR(10) + 'ON UPDATE CASCADE'
+DECLARE @delete_cascade NVARCHAR(MAX) = CHAR(10) + 'ON DELETE CASCADE'
 
 WHILE EXISTS (
 	SELECT 1
@@ -203,6 +207,11 @@ BEGIN
 			@foreign_key + QUOTENAME(CONVERT(SYSNAME, C2.NAME)) +
 		--@references + QUOTENAME(CONVERT(SYSNAME, SCHEMA_NAME(O1.SCHEMA_ID))) + @dot + QUOTENAME(CONVERT(SYSNAME, O1.NAME)) + @open_paren + QUOTENAME(CONVERT(SYSNAME, C1.NAME)) + @close_paren +
 			@references + QUOTENAME(CONVERT(SYSNAME, SCHEMA_NAME(O1.SCHEMA_ID))) + @dot + REPLACE(QUOTENAME(CONVERT(SYSNAME, O1.NAME)), '_Unaligned', '') + @open_paren + QUOTENAME(CONVERT(SYSNAME, C1.NAME)) + @close_paren + 
+			(CASE WHEN f.delete_referential_action_desc IS NOT NULL AND f.delete_referential_action_desc = 'CASCADE' THEN @delete_cascade ELSE '' END) +
+			(CASE WHEN f.update_referential_action_desc IS NOT NULL AND f.update_referential_action_desc = 'CASCADE' THEN @update_cascade ELSE '' END) +
+			@go +
+			(CASE WHEN f.is_disabled = 1 THEN +
+			@alterTable + QUOTENAME(CONVERT(SYSNAME, SCHEMA_NAME(O2.SCHEMA_ID))) + @dot + QUOTENAME(CONVERT(SYSNAME, O2.NAME)) + @nocheck_constraint + QUOTENAME(CONVERT(SYSNAME, OBJECT_NAME(F.OBJECT_ID))) ELSE '' END) +
 			@go
 	FROM SYS.ALL_OBJECTS O1,
 		SYS.ALL_OBJECTS O2,
@@ -251,4 +260,4 @@ BEGIN
 	PRINT CHAR(10) + 'GO'
 	EXEC sp_executesql @sql
 END
-GO 
+GO

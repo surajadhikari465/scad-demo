@@ -3,7 +3,7 @@
 ******************************************************************************/
 PRINT N'Status: 1. Rebuild Users Table and Drop Extraneous Columns --- [dbo].[Users] --- ' + CONVERT(NVARCHAR(MAX), SYSDATETIME(), 9)
 GO	
-PRINT N'Status: Approximate Target End Time for Script to Complete: --- [dbo].[OrderItem] --- ' + CONVERT(NVARCHAR(MAX), DATEADD(MINUTE, 1, SYSDATETIME()), 9)
+PRINT N'Status: Approximate Target End Time for Script to Complete: --- [dbo].[Users] --- ' + CONVERT(NVARCHAR(MAX), DATEADD(MINUTE, 1, SYSDATETIME()), 9)
 GO
 USE ItemCatalog
 --USE ItemCatalog_Test

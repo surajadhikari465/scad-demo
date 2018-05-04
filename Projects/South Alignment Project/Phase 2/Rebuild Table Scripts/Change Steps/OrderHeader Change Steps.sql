@@ -792,7 +792,11 @@ AS
 -- 08/17/2017   MZ      20620   Register an order for a WFM ordering banner store to
 --                              the [infor].[OrderExpectedDateChangeQueue] table when
 --                              its expected date changes before the order is closed.
+-- 03/20/2017   MZ		26106   Register an order for a Amazon Extract store to
+--                              the [infor].[OrderExpectedDateChangeQueue] table when
+--                              its expected date changes before the order is closed.
 -- **************************************************************************
+
 BEGIN
 	DECLARE @Error_No int
 	SELECT @Error_No = 0
@@ -834,7 +838,9 @@ BEGIN
 				OR Inserted.PayByAgreedCost <> Deleted.PayByAgreedCost
 				OR Inserted.OrderRefreshCostSource_ID <> Deleted.OrderRefreshCostSource_ID
 				)
+				
 	SELECT @Error_No = @@ERROR
+	
 	--
 	-- StoreOps Export 
 	--
@@ -892,7 +898,9 @@ BEGIN
 		AND         Inserted.OrderType_ID <> 3
 		AND         Inserted.OriginalCloseDate is null
 		AND         (s.mega_store = 1 
-		 OR			 s.BusinessUnit_ID in (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue](''WFMBannerStoresForOrdering'', ''IRMA CLIENT''), ''|'')))	
+		 OR			 s.BusinessUnit_ID in (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue](''WFMBannerStoresForOrdering'', ''IRMA CLIENT''), ''|''))
+		 OR          s.BusinessUnit_ID in (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue](''StoreBUsForAMZExtract'', ''IRMA CLIENT''), ''|'')))	
+
 		SELECT @Error_No = @@ERROR
 	END
 	IF @Error_No <> 0
