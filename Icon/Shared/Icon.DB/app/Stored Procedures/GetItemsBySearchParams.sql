@@ -360,7 +360,7 @@ BEGIN
 	LEFT JOIN Tax_CTE	tax				on	i.itemID = tax.itemID
 	LEFT JOIN Merch_CTE	merch			on	i.itemID = merch.itemID
 	LEFT JOIN National_CTE nat			on	i.itemID = nat.itemID		
-	LEFT JOIN ItemSignAttribute isa		on	i.itemID = isa.ItemID'
+	LEFT JOIN ItemSignAttribute isa		on	i.itemID = isa.ItemID '
 		
 	-- ====================================================
 	-- Set WHERE statement
