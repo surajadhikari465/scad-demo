@@ -1014,6 +1014,7 @@
     </Compile>
     <Compile Include="Pricing\BusinessLogic\GlobalPriceManagementBO.vb" />
     <Compile Include="Pricing\BusinessLogic\PriceBatchFailedPrintRequestsBO.vb" />
+    <Compile Include="Pricing\BusinessLogic\ItemForAdHocPrint.vb" />
     <Compile Include="Pricing\BusinessLogic\PricingPrintSignsBO.vb" />
     <Compile Include="Pricing\DataAccess\ItemPriceBatchDetailDAO.vb" />
     <Compile Include="Pricing\DataAccess\SlawPrintBatchConfigurationDAO.vb" />

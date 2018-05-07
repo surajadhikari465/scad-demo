@@ -256,7 +256,7 @@
   </data>
   <data name="_cmdPrintLabel_0.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
-  </data>
+  </data>		
   <data name="_cmdPrintLabel_0.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

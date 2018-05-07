@@ -4,6 +4,7 @@ Imports System.Net
 Imports Infragistics.Win.UltraWinGrid
 Imports log4net
 Imports WholeFoods.IRMA.Common.DataAccess
+Imports WholeFoods.IRMA.Pricing.BusinessLogic
 Imports WholeFoods.IRMA.Pricing.DataAccess
 
 Friend Class frmPricingPrintSigns
@@ -26,6 +27,8 @@ Friend Class frmPricingPrintSigns
         Dim resultsTable As New DataTable()
 
         resultsTable = PriceBatchSearchDAO.PricingPrintSignsSearch(storeNumber, subteamNumber, categoryId, signDescription, identifiers, brandId)
+
+        AddOrderingColumnBasedOnProvidedIdentifiers(identifiers, resultsTable)
 
         If resultsTable.Rows.Count > 0 Then
             ugrdSearchResults.DataSource = resultsTable
@@ -118,22 +121,24 @@ Friend Class frmPricingPrintSigns
     Private Sub cmdPrintLabel_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdPrintLabel.Click
         logger.Debug("cmdPrintLabel_Click Enter")
 
-        Dim totalSelectedRows As Integer = ugrdSearchResults.Selected.Rows.Count
-        If totalSelectedRows = 0 Then Exit Sub
+        If ugrdSearchResults.Selected.Rows.Count = 0 Then Exit Sub
 
         Dim selectedStoreNumber As Integer = VB6.GetItemData(cmbStore, cmbStore.SelectedIndex)
         Dim businessUnitsToSend As List(Of Integer) = New List(Of Integer)
         Dim applyNoTagLogic As Boolean
         Dim selectedSubteamName As String = If(ugrdSearchResults.Selected.Rows.Count > 0, "MultipleSubteams", ugrdSearchResults.Selected.Rows.Item(0).Cells("SubTeam_Name").Value)
-        Dim selectedItems As List(Of Object) = New List(Of Object)
+        Dim selectedItems As List(Of ItemForAdHocPrint) = New List(Of ItemForAdHocPrint)
         Dim itemsExcluded As Boolean
 
         For Each selectedRow As UltraGridRow In ugrdSearchResults.Selected.Rows
-            selectedItems.Add(New With {
+            selectedItems.Add(New ItemForAdHocPrint() With {
                               .Identifier = selectedRow.Cells("Identifier").Value,
                               .ItemKey = selectedRow.Cells("Item_Key").Value,
                               .SubteamNumber = selectedRow.Cells("SubTeam_No").Value,
-                              .SubteamName = selectedRow.Cells("SubTeam_Name").Value})
+                              .SubteamName = selectedRow.Cells("SubTeam_Name").Value,
+                              .RequestedOrder = selectedRow.Cells("RequestedOrder").Value,
+                              .IdentifierIsValid = False,
+                              .ExcludedByNoTagLogic = False})
         Next
 
         If SlawPrintBatchConfigurationDAO.SlawPrintRequestsEnabledForRegion() Then
@@ -166,52 +171,57 @@ Friend Class frmPricingPrintSigns
 
             For Each businessUnit As Integer In businessUnitsToSend
                 Dim storeNumber As Integer = storeNumberToBusinessUnit.Single(Function(sn) sn.Value = businessUnit).Key
-                Dim validIdentifiers As List(Of String) = pricingPrintSignsBusinessLogic.GetValidTagReprintIdentifiers(storeNumber, selectedItems.Select(Function(i) i.Identifier.ToString()).ToList())
-                Dim validSelectedItems As List(Of Object) = selectedItems.Where(Function(i) validIdentifiers.Contains(i.Identifier)).ToList()
+                Dim validIdentifiers As List(Of String) = pricingPrintSignsBusinessLogic.GetValidTagReprintIdentifiers(storeNumber, selectedItems.Select(Function(i) i.Identifier).ToList())
 
-                If validSelectedItems.Count <> selectedItems.Count Then
-                    itemsExcluded = True
-                End If
+                ' flag the selected items collection to indicate validated identifiers
+                For Each selectedItemWithValidIdentifier As ItemForAdHocPrint In selectedItems.Where(Function(i) validIdentifiers.Contains(i.Identifier))
+                    selectedItemWithValidIdentifier.IdentifierIsValid = True
+                Next
 
-                If validSelectedItems.Count > 0 Then
+                itemsExcluded = selectedItems.Any(Function(i) i.IdentifierIsValid = False)
+
+                If selectedItems.Any(Function(i) i.IdentifierIsValid = True) Then
                     If applyNoTagLogic Then
                         Cursor = Cursors.WaitCursor
 
-                        Dim distinctSubteams As List(Of Integer) = validSelectedItems.Select(Function(i) CInt(i.SubteamNumber)).Distinct().ToList()
+                        Dim distinctSubteams As List(Of Integer) = selectedItems.Where(Function(i) i.IdentifierIsValid = True).Select(Function(i) i.SubteamNumber).Distinct().ToList()
 
                         For Each subteamNumber As Integer In distinctSubteams
-                            Dim selectedItemsBySubteam As List(Of Object) = validSelectedItems.Where(Function(i) i.SubteamNumber = subteamNumber).ToList()
+                            Dim selectedItemsBySubteam As List(Of ItemForAdHocPrint) = selectedItems.Where(Function(i) i.SubteamNumber = subteamNumber).ToList()
                             Dim subteamName As String = selectedItemsBySubteam.First().SubteamName.ToString()
 
                             Dim excludedNoTagItemKeys As List(Of Integer) = pricingPrintSignsBusinessLogic.GetNoTagLogicExcludedItems(
-                                selectedItemsBySubteam.Select(Function(i) New ItemKeyIdentifierModel() With {.ItemKey = CInt(i.ItemKey), .Identifier = i.Identifier.ToString()}).ToList(),
+                                selectedItemsBySubteam.Select(Function(i) New ItemKeyIdentifierModel() With {.ItemKey = i.ItemKey, .Identifier = i.Identifier}).ToList(),
                                 subteamNumber,
                                 subteamName,
                                 storeNumber)
 
-                            If excludedNoTagItemKeys.Count > 0 Then
-                                itemsExcluded = True
-                            End If
+                            itemsExcluded = excludedNoTagItemKeys.Any()
 
-                            validSelectedItems = validSelectedItems.Where(Function(i) Not excludedNoTagItemKeys.Contains(i.ItemKey)).ToList()
+                            ' flag the selected items collection to indicate any excluded by NoTag logic
+                            For Each selectedItemExcludedByNoTag As ItemForAdHocPrint In selectedItems.Where(Function(i) excludedNoTagItemKeys.Contains(i.ItemKey))
+                                selectedItemExcludedByNoTag.ExcludedByNoTagLogic = True
+                            Next
                         Next
 
                         Cursor = Cursors.Default
 
-                        If validSelectedItems.Count = 0 Then
+                        If Not selectedItems.Any(Function(i) i.ExcludedByNoTagLogic = False And i.IdentifierIsValid = True) Then
                             logger.Info(String.Format("All items were excluded from the entire print request by no-tag logic for store {0}.", storeNumber))
                             Continue For
                         End If
                     End If
 
+                    ' gather the identifers for valid, non-excluded items, preserving the user's submitted ordering
+                    Dim identifiersToReprint As List(Of String) = selectedItems _
+                        .Where(Function(i) i.IdentifierIsValid = True And i.ExcludedByNoTagLogic = False) _
+                        .OrderBy(Function(i) i.RequestedOrder) _
+                        .Select(Function(i) i.Identifier).ToList()
+
                     Cursor = Cursors.WaitCursor
 
-                    If validIdentifiers.Count <> validSelectedItems.Count Then
-                        validIdentifiers = validSelectedItems.Select(Function(i) i.Identifier.ToString()).ToList()
-                    End If
-
                     Try
-                        pricingPrintSignsBusinessLogic.SendTagReprintPrintBatchRequests(businessUnit, printRequestBatchName, validIdentifiers)
+                        pricingPrintSignsBusinessLogic.SendTagReprintPrintBatchRequests(businessUnit, printRequestBatchName, identifiersToReprint)
                         logger.Info(String.Format("Successfully sent ad-hoc print batch request to the SLAW API for store number {0}.", storeNumber))
                     Catch ex As Exception
                         Dim slawJsonResponseText As String = Nothing
@@ -223,11 +233,11 @@ Friend Class frmPricingPrintSigns
                                 slawJsonResponseText = responseReader.ReadToEnd()
                             End Using
                             logger.Info(String.Format("Error in sending sign reprint, print batch to SLAW API: Error: {0}. Slaw Response: {1}",
-                                       ex.Message, slawJsonResponseText))
+                                   ex.Message, slawJsonResponseText))
                         End If
                         logger.Info(String.Format("Error in sending ad-hoc print batch request to the SLAW API for store number {0}: {1}", storeNumber, ex.ToString()))
                         MessageBox.Show(String.Format("An error occurred while transmitting the print request to SLAW for store number {0}: {1}", storeNumber, ex.Message),
-                                Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     Finally
                         Cursor = Cursors.Default
                     End Try
@@ -439,5 +449,40 @@ Friend Class frmPricingPrintSigns
 
     Private Sub ugrdSearchResults_AfterRowActivate(ByVal sender As Object, ByVal e As System.EventArgs) Handles ugrdSearchResults.AfterRowActivate
         chkSelectAll.Checked = False
+    End Sub
+
+    Private Sub AddOrderingColumnBasedOnProvidedIdentifiers(ByVal identifiers As String, ByRef resultsTable As DataTable)
+        ' PBI 25130: if the user entered a list of identifiers, provide results in the same order that they were presented 
+
+        ' add a column to the data table (results) to keep track of the order of the identifiers provided by the user
+        resultsTable.Columns.Add("RequestedOrder", GetType(Integer))
+
+        If identifiers <> String.Empty Then
+            ' split the user-provided identifiers (a comma-delimited string) into an array
+            Dim identifiersArray As String() = identifiers.Split(New Char() {","c})
+            '.Select(Function(s) s.Trim())
+
+            If (identifiersArray.Length > 0) Then
+                ' build a dictionary to associate an order value with each identifier
+                Dim identifiersDictionary As New Dictionary(Of String, Integer)
+                For i As Integer = 0 To identifiersArray.Length - 1
+                    identifiersDictionary.Add(identifiersArray(i).Trim(), i + 1)
+                Next
+
+                Dim sortColumnCellValue As Integer = 0
+                ' iterate the results data and populate values for the ordering column
+                For Each dataRow As DataRow In resultsTable.Rows
+                    ' assign the ordering cell value by looking up the identifier cell value in the dictionary
+                    If identifiersDictionary.TryGetValue(dataRow("Identifier"), sortColumnCellValue) Then
+                        dataRow("RequestedOrder") = sortColumnCellValue
+                    End If
+                Next
+            End If
+        End If
+    End Sub
+
+    Private Sub ugrdSearchResults_InitializeLayout(ByVal sender As Object, ByVal e As Infragistics.Win.UltraWinGrid.InitializeLayoutEventArgs) Handles ugrdSearchResults.InitializeLayout
+        ' tell the grid control to include sorting by the hidden column which tracks the order of submitted identifiers
+        e.Layout.Bands(0).SortedColumns.Add(e.Layout.Bands(0).Columns("RequestedOrder"), False, False)
     End Sub
 End Class
