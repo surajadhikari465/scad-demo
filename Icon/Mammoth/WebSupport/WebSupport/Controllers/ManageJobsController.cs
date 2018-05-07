@@ -172,8 +172,15 @@ namespace WebSupport.Controllers
         {
             try
             {
-                startJobAdHocCommandHandler.Execute(new StartJobAddHocCommand { JobSchedule = jobSchedule });
-                LogJobScheduleChange("Start", jobSchedule);
+                if (jobSchedule.Status != "running")
+                {
+                    startJobAdHocCommandHandler.Execute(new StartJobAddHocCommand { JobSchedule = jobSchedule });
+                    LogJobScheduleChange("Start", jobSchedule);
+                }
+                else
+                {
+                    LogJobScheduleRunning(jobSchedule);
+                }
             }
             catch(Exception ex)
             {
@@ -216,6 +223,15 @@ namespace WebSupport.Controllers
                 Action = action,
                 JobSchedule = jobSchedule,
                 Error = error
+            }));
+        }
+
+        private void LogJobScheduleRunning(JobSchedule jobSchedule)
+        {
+            logger.Info(JsonConvert.SerializeObject(new
+            {
+                Message = "Unable to start job because job is already running.",
+                JobSchedule = jobSchedule
             }));
         }
     }

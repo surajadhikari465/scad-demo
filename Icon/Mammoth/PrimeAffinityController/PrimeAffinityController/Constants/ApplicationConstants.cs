@@ -3,6 +3,8 @@
     public static class ApplicationConstants
     {
         public const int MessageBatchSize = 100;
+        public const int SqlTimeoutExceptionNumber = 2;
+
         public static class Errors
         {
             public static class Codes

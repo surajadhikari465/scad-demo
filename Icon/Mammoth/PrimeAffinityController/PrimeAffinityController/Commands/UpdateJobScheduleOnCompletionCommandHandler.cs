@@ -17,21 +17,41 @@ namespace PrimeAffinityController.Commands
 
         public void Execute(UpdateJobScheduleOnCompletionCommand data)
         {
-            dbConnection.Execute(
-                @"  UPDATE app.JobSchedule
-                    SET LastScheduledDateTimeUtc = NextScheduledDateTimeUtc,
-                        NextScheduledDateTimeUtc = @NextScheduledDateTimeUtc,
-                        LastRunEndDateTimeUtc = @LastRunEndDateTimeUtc,
-                        Status = @Status,
-                        RunAdHoc = 0
-                    WHERE JobScheduleId = @JobScheduleId",
-                new
-                {
-                    NextScheduledDateTimeUtc = CalculateNextScheduledDateTimeUtc(data),
-                    LastRunEndDateTimeUtc = DateTime.UtcNow,
-                    Status = data.Status,
-                    JobScheduleId = data.JobSchedule.JobScheduleId
-                });
+            if (data.JobSchedule.RunAdHoc.HasValue && data.JobSchedule.RunAdHoc.Value)
+            {
+                dbConnection.Execute(
+                    @"  UPDATE app.JobSchedule
+                        SET LastRunEndDateTimeUtc = @LastRunEndDateTimeUtc,
+                            Status = @Status,
+                            RunAdHoc = 0,
+                            InstanceId = NULL
+                        WHERE JobScheduleId = @JobScheduleId",
+                    new
+                    {
+                        LastRunEndDateTimeUtc = DateTime.UtcNow,
+                        Status = data.Status,
+                        JobScheduleId = data.JobSchedule.JobScheduleId,
+                    });
+            }
+            else
+            {
+                dbConnection.Execute(
+                    @"  UPDATE app.JobSchedule
+                        SET LastScheduledDateTimeUtc = NextScheduledDateTimeUtc,
+                            NextScheduledDateTimeUtc = @NextScheduledDateTimeUtc,
+                            LastRunEndDateTimeUtc = @LastRunEndDateTimeUtc,
+                            Status = @Status,
+                            RunAdHoc = 0,
+                            InstanceId = NULL
+                        WHERE JobScheduleId = @JobScheduleId",
+                    new
+                    {
+                        NextScheduledDateTimeUtc = CalculateNextScheduledDateTimeUtc(data),
+                        LastRunEndDateTimeUtc = DateTime.UtcNow,
+                        Status = data.Status,
+                        JobScheduleId = data.JobSchedule.JobScheduleId,
+                    });
+            }
         }
 
         private static DateTime CalculateNextScheduledDateTimeUtc(UpdateJobScheduleOnCompletionCommand data)

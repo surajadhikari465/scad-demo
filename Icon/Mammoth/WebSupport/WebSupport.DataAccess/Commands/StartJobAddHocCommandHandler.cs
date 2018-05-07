@@ -17,8 +17,10 @@ namespace WebSupport.DataAccess.Commands
         {
             connection.Execute(@"
                 UPDATE app.JobSchedule
-                   SET RunAdHoc = 1
-                WHERE JobScheduleId = @JobScheduleId",
+                   SET RunAdHoc = 1,
+                       Status = 'ready'
+                WHERE JobScheduleId = @JobScheduleId
+                    AND Status <> 'running'",
                 data.JobSchedule);
         }
     }

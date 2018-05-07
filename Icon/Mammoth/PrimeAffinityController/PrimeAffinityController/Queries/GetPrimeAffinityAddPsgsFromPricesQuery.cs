@@ -1,24 +1,36 @@
 ﻿using Dapper;
+using Icon.Logging;
 using Mammoth.Common.DataAccess.CommandQuery;
+using PrimeAffinityController.Constants;
 using PrimeAffinityController.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace PrimeAffinityController.Queries
 {
     public class GetPrimeAffinityAddPsgsFromPricesQuery : IQueryHandler<GetPrimeAffinityAddPsgsFromPricesParameters, IEnumerable<PrimeAffinityPsgPriceModel>>
     {
         private IDbConnection connection;
+        private ILogger<GetPrimeAffinityAddPsgsFromPricesQuery> logger;
 
-        public GetPrimeAffinityAddPsgsFromPricesQuery(IDbConnection connection)
+        public GetPrimeAffinityAddPsgsFromPricesQuery(IDbConnection connection, ILogger<GetPrimeAffinityAddPsgsFromPricesQuery> logger)
         {
             this.connection = connection;
+            this.logger = logger;
         }
 
         public IEnumerable<PrimeAffinityPsgPriceModel> Search(GetPrimeAffinityAddPsgsFromPricesParameters parameters)
         {
-            return connection.Query<PrimeAffinityPsgPriceModel>(
+            return SearchWithTimeoutCheck(parameters, 0);
+        }
+
+        private IEnumerable<PrimeAffinityPsgPriceModel> SearchWithTimeoutCheck(GetPrimeAffinityAddPsgsFromPricesParameters parameters, int timeoutOccurrences)
+        {
+            try
+            {
+                return connection.Query<PrimeAffinityPsgPriceModel>(
                 $@" SELECT 
                         'AddOrUpdate' AS MessageAction,
                         p.Region,
@@ -51,7 +63,34 @@ namespace PrimeAffinityController.Queries
                     PriceTypes = parameters.PriceTypes,
                     Today = DateTime.Today
                 },
-                buffered: false);
+                buffered: false,
+                commandTimeout: 60);
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == ApplicationConstants.SqlTimeoutExceptionNumber && timeoutOccurrences < 3)
+                {
+                    logger.Error(
+                        new
+                        {
+                            Message = "Timeout exception occurred. Retrying query for add PSGs.",
+                            Region = parameters.Region,
+                            TimeoutOccurrences = timeoutOccurrences
+                        }.ToJson());
+                    return SearchWithTimeoutCheck(parameters, timeoutOccurrences + 1);
+                }
+                else
+                {
+                    logger.Error(
+                        new
+                        {
+                            Message = "Timeout exception occurred. Timeout occurrences has exceeded max number of tries. Throwing error.",
+                            Region = parameters.Region,
+                            TimeoutOccurrences = timeoutOccurrences
+                        }.ToJson());
+                    throw;
+                }
+            }
         }
     }
 }

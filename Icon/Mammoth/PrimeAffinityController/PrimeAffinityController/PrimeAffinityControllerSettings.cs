@@ -15,6 +15,7 @@ namespace PrimeAffinityController
         public TimeSpan MaintenanceStartTime { get; set; }
         public TimeSpan MaintenanceEndTime { get; set; }
         public string JobName { get; set; }
+        public int InstanceId { get; set; }
 
         public static PrimeAffinityControllerSettings Load()
         {
@@ -28,6 +29,7 @@ namespace PrimeAffinityController
                 MaintenanceStartTime = TimeSpan.Parse(AppSettingsAccessor.GetStringSetting(nameof(MaintenanceStartTime))),
                 MaintenanceEndTime = TimeSpan.Parse(AppSettingsAccessor.GetStringSetting(nameof(MaintenanceEndTime))),
                 JobName = AppSettingsAccessor.GetStringSetting("ServiceDisplayName"),
+                InstanceId = AppSettingsAccessor.GetIntSetting("InstanceId")
             };
         }
     }

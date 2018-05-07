@@ -15,6 +15,7 @@ namespace PrimeAffinityController.Tests.Queries
     {
         private GetJobScheduleQuery query;
         private GetJobScheduleParameters parameters;
+        private PrimeAffinityControllerSettings settings;
         private SqlConnection sqlConnection;
         private TransactionScope transaction;
 
@@ -23,8 +24,9 @@ namespace PrimeAffinityController.Tests.Queries
         {
             transaction = new TransactionScope();
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString);
+            settings = new PrimeAffinityControllerSettings();
 
-            query = new GetJobScheduleQuery(sqlConnection);
+            query = new GetJobScheduleQuery(sqlConnection, settings);
             parameters = new GetJobScheduleParameters();
         }
 

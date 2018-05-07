@@ -12,6 +12,7 @@
 	Status varchar(10) NULL,  
 	XmlObject nvarchar(max) NULL,
 	RunAdHoc bit NULL,
+	InstanceId INT NULL,
     CONSTRAINT [JobSchedule_PK] PRIMARY KEY CLUSTERED (JobScheduleId ASC) WITH (FILLFACTOR = 80)
 )
 
@@ -21,5 +22,5 @@ ALTER TABLE [app].[JobSchedule] WITH CHECK ADD CONSTRAINT [CK_JobSchedule_Status
 	CHECK (([Status]='failed' OR [Status]='running' OR [Status]='ready'))
 GO
 
-GRANT SELECT,UPDATE on [app].[JobSchedule] to [TibcoRole]
+GRANT SELECT,UPDATE on [app].[JobSchedule] to [TibcoRole], [MammothRole]
 GO

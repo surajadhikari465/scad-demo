@@ -17,5 +17,6 @@ namespace PrimeAffinityController.Models
         public string Status { get; set; }
         public string XmlObject { get; set; }
         public bool? RunAdHoc { get; set; }
+        public int InstanceId { get; set; }
     }
 }

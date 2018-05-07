@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using PrimeAffinityController.Queries;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,7 @@ namespace PrimeAffinityController.Tests.Queries
 
         private GetPrimeAffinityAddPsgsFromPricesQuery query;
         private GetPrimeAffinityAddPsgsFromPricesParameters parameters;
+        private Mock<ILogger<GetPrimeAffinityAddPsgsFromPricesQuery>> logger;
         private SqlConnection sqlConnection;
         private TransactionScope transaction;
         private string testRegion = "FL";
@@ -33,7 +36,8 @@ namespace PrimeAffinityController.Tests.Queries
         {
             transaction = new TransactionScope();
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString);
-            query = new GetPrimeAffinityAddPsgsFromPricesQuery(sqlConnection);
+            logger = new Mock<ILogger<GetPrimeAffinityAddPsgsFromPricesQuery>>();
+            query = new GetPrimeAffinityAddPsgsFromPricesQuery(sqlConnection, logger.Object);
 
             testItemIds = new List<int> { 99999990, 99999991, 99999992 };
             testBusinessUnitIds = new List<int> { 77777770, 77777771, 77777772 };

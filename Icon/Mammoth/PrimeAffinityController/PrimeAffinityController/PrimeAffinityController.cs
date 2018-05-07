@@ -22,6 +22,7 @@ namespace PrimeAffinityController
         private IQueryHandler<GetJobScheduleParameters, JobScheduleModel> getJobScheduleQuery;
         private ICommandHandler<UpdateJobStatusCommand> updateJobStatusCommandHandler;
         private ICommandHandler<UpdateJobScheduleOnCompletionCommand> updateJobScheduleOnCompletionCommandHandler;
+        private ICommandHandler<ClearInstanceIdFromJobScheduleCommand> clearInstanceIdFromJobScheduleCommandHandler;
         private ILogger<PrimeAffinityController> logger;
         private Timer timer;
         private string currentRegion;
@@ -34,6 +35,7 @@ namespace PrimeAffinityController
             IQueryHandler<GetJobScheduleParameters, JobScheduleModel> getJobScheduleQuery,
             ICommandHandler<UpdateJobStatusCommand> updateJobStatusCommandHandler,
             ICommandHandler<UpdateJobScheduleOnCompletionCommand> updateJobScheduleOnCompletionCommandHandler,
+            ICommandHandler<ClearInstanceIdFromJobScheduleCommand> clearInstanceIdFromJobScheduleCommandHandler,
             ILogger<PrimeAffinityController> logger)
         {
             this.settings = settings;
@@ -43,6 +45,7 @@ namespace PrimeAffinityController
             this.getJobScheduleQuery = getJobScheduleQuery;
             this.updateJobStatusCommandHandler = updateJobStatusCommandHandler;
             this.updateJobScheduleOnCompletionCommandHandler = updateJobScheduleOnCompletionCommandHandler;
+            this.clearInstanceIdFromJobScheduleCommandHandler = clearInstanceIdFromJobScheduleCommandHandler;
             this.logger = logger;
         }
 
@@ -51,6 +54,7 @@ namespace PrimeAffinityController
             logger.Info(
                 new
                 {
+                    InstanceId = settings.InstanceId,
                     Message = "Controller starting.",
                 }.ToJson());
             timer = new Timer(settings.RunInterval);
@@ -66,6 +70,7 @@ namespace PrimeAffinityController
                 logger.Info(
                     new
                     {
+                        InstanceId = settings.InstanceId,
                         Message = "Checking if scheduled to process PSGs for all regions.",
                     }.ToJson());
                 currentRegion = null;
@@ -87,10 +92,10 @@ namespace PrimeAffinityController
                                 logger.Info(
                                     new
                                     {
+                                        InstanceId = settings.InstanceId,
+                                        Region = currentRegion,
                                         Message = "Processing PSGs for region.",
-                                        Region = region
                                     }.ToJson());
-
                                 UpdateJobStatus(jobSchedule, ApplicationConstants.JobScheduleStatuses.Running);
                                 SendAddPsgs(region);
                                 SendDeletePsgs(region);
@@ -98,12 +103,7 @@ namespace PrimeAffinityController
                             }
                             else
                             {
-                                logger.Info(
-                                    new
-                                    {
-                                        Message = "Not scheduled to process PSGs for region.",
-                                        Region = region
-                                    }.ToJson());
+                                ClearInstanceIdFromJobSchedule(jobSchedule);
                             }
                         }
                         catch (Exception ex)
@@ -111,8 +111,9 @@ namespace PrimeAffinityController
                             logger.Error(
                                 new
                                 {
+                                    InstanceId = settings.InstanceId,
+                                    Region = currentRegion,
                                     Message = "Unexpected error occurred while processing PSGs for region.",
-                                    Region = region,
                                     Error = ex
                                 }.ToJson());
                             UpdateJobScheduleOnCompletion(jobSchedule, ApplicationConstants.JobScheduleStatuses.Failed);
@@ -124,6 +125,7 @@ namespace PrimeAffinityController
                     logger.Info(
                         new
                         {
+                            InstanceId = settings.InstanceId,
                             Message = "In Maintenance time window. Skipping processing PSGs.",
                             MaintenanceDay = settings.MaintenanceDay,
                             MaintenanceStartTime = settings.MaintenanceStartTime,
@@ -136,8 +138,9 @@ namespace PrimeAffinityController
                 logger.Error(
                     new
                     {
-                        Message = "Fatal unexpected error occurred. Further regions will not be processed. Will continue to run controller again.",
+                        InstanceId = settings.InstanceId,
                         Region = currentRegion,
+                        Message = "Fatal unexpected error occurred. Further regions will not be processed. Will continue to run controller again.",
                         Error = ex
                     }.ToJson());
             }
@@ -145,6 +148,11 @@ namespace PrimeAffinityController
             {
                 timer.Start();
             }
+        }
+
+        private void ClearInstanceIdFromJobSchedule(JobScheduleModel jobSchedule)
+        {
+            clearInstanceIdFromJobScheduleCommandHandler.Execute(new ClearInstanceIdFromJobScheduleCommand { JobSchedule = jobSchedule });
         }
 
         private void SendAddPsgs(string region)
@@ -163,7 +171,15 @@ namespace PrimeAffinityController
                 MessageAction = ActionEnum.AddOrUpdate
             });
 
-            logger.Info(new { Message = "Finished processing Prime Affinity PSGs", Region = region, MessageAction = ActionEnum.AddOrUpdate, NumberOfPrimeAffinityMessagesSent = primeAffinityPsgPriceModels.Count() }.ToJson());
+            logger.Info(
+                new
+                {
+                    InstanceId = settings.InstanceId,
+                    Region = region,
+                    Message = "Finished processing Prime Affinity PSGs",
+                    MessageAction = ActionEnum.AddOrUpdate.ToString(),
+                    NumberOfPrimeAffinityMessagesSent = primeAffinityPsgPriceModels.Count()
+                }.ToJson());
         }
 
         private void SendDeletePsgs(string region)
@@ -182,7 +198,15 @@ namespace PrimeAffinityController
                 MessageAction = ActionEnum.Delete
             });
 
-            logger.Info(new { Message = "Finished processing Prime Affinity PSGs", Region = region, MessageAction = ActionEnum.Delete, NumberOfPrimeAffinityMessagesSent = primeAffinityPsgPriceModels.Count() }.ToJson());
+            logger.Info(
+                new
+                {
+                    InstanceId = settings.InstanceId,
+                    Region = region,
+                    Message = "Finished processing Prime Affinity PSGs",
+                    MessageAction = ActionEnum.Delete.ToString(),
+                    NumberOfPrimeAffinityMessagesSent = primeAffinityPsgPriceModels.Count()
+                }.ToJson());
         }
 
         private void UpdateJobScheduleOnCompletion(JobScheduleModel jobSchedule, string status)
@@ -202,9 +226,10 @@ namespace PrimeAffinityController
                 logger.Error(
                     new
                     {
+                        InstanceId = settings.InstanceId,
+                        Region = region,
                         Message = "No job schedule found. Unable to run job for given region.",
-                        JobName = jobName,
-                        Region = region
+                        JobName = jobName
                     }.ToJson());
 
                 return false;
@@ -214,16 +239,40 @@ namespace PrimeAffinityController
                 logger.Info(
                     new
                     {
+                        InstanceId = settings.InstanceId,
+                        Region = region,
                         Message = "Job is disabled. Unable to run job for given region.",
                         JobName = jobName,
-                        Region = region,
                         JobSchedule = jobSchedule
                     }.ToJson());
 
                 return false;
             }
-            else if (jobSchedule.RunAdHoc.HasValue && jobSchedule.RunAdHoc.Value)
+            else if (jobSchedule.InstanceId != settings.InstanceId)
             {
+                logger.Info(
+                    new
+                    {
+                        InstanceId = settings.InstanceId,
+                        Region = region,
+                        Message = "Job schedule is locked by another instance. Other instance will attempt to run job for given region.",
+                        JobName = jobName,
+                        JobSchedule = jobSchedule
+                    }.ToJson());
+
+                return false;
+            }
+            else if (jobSchedule.RunAdHoc.HasValue && jobSchedule.RunAdHoc.Value && !jobSchedule.Status.Equals(ApplicationConstants.JobScheduleStatuses.Running, StringComparison.InvariantCultureIgnoreCase))
+            {
+                logger.Info(
+                    new
+                    {
+                        InstanceId = settings.InstanceId,
+                        Region = region,
+                        Message = "Running job Ad Hoc.",
+                        JobName = jobName,
+                        JobSchedule = jobSchedule
+                    }.ToJson());
                 return true;
             }
             else if (!jobSchedule.Status.Equals(ApplicationConstants.JobScheduleStatuses.Ready, StringComparison.InvariantCultureIgnoreCase))
@@ -231,9 +280,10 @@ namespace PrimeAffinityController
                 logger.Info(
                     new
                     {
+                        InstanceId = settings.InstanceId,
+                        Region = region,
                         Message = "Job status is not in 'READY' status. Unable to run job for given region.",
                         JobName = jobName,
-                        Region = region,
                         JobSchedule = jobSchedule
                     }.ToJson());
 
@@ -244,9 +294,10 @@ namespace PrimeAffinityController
                 logger.Info(
                     new
                     {
+                        InstanceId = settings.InstanceId,
+                        Region = region,
                         Message = "StartDateTimeUtc is in the future. Will run job when current UTC time is equal to or greater than StartDateTimeUtc.",
                         JobName = jobName,
-                        Region = region,
                         CurrentUtcTime = DateTime.UtcNow,
                         JobSchedule = jobSchedule
                     }.ToJson());
@@ -258,9 +309,10 @@ namespace PrimeAffinityController
                 logger.Info(
                     new
                     {
+                        InstanceId = settings.InstanceId,
+                        Region = region,
                         Message = "NextScheduledDateTimeUtc is in the future. Will run job when current UTC time is equal to or greater than NextScheduledDateTimeUtc.",
                         JobName = jobName,
-                        Region = region,
                         CurrentUtcTime = DateTime.UtcNow,
                         JobSchedule = jobSchedule
                     }.ToJson());

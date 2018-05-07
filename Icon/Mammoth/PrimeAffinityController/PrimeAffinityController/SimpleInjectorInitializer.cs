@@ -24,7 +24,7 @@ namespace PrimeAffinityController
             Container container = new Container();
 
             container.Register<PrimeAffinityController>();
-            container.Register(() => PrimeAffinityControllerSettings.Load());
+            container.Register(() => PrimeAffinityControllerSettings.Load(), Lifestyle.Singleton);
             container.Register(() => PrimeAffinityPsgProcessorSettings.Load());
             container.Register(() => PrimeAffinityMessageBuilderSettings.Load());
             container.Register<IMessageBuilder<PrimeAffinityMessageBuilderParameters>, PrimeAffinityMessageBuilder>();
