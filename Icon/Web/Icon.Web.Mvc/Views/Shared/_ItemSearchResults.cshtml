@@ -18,14 +18,7 @@
         <hr />
 
         <span class="search-alert page-subsection"></span>
-
-        if (displayAddItemLink)
-        {
-            <div>
-                @Html.ActionLink("Add New Item", "Create", "Item", null, new { @class = "btn btn-default form-submit" })
-            </div>
-        }
-
+        
         <input type="button" name="validate-button" class="btn btn-default form-submit" value="Validate" />
         <input type="button" name="export-button" class="btn btn-default form-submit" value="Export" />
 
