@@ -136,7 +136,7 @@ Friend Class frmPricingPrintSigns
                               .ItemKey = selectedRow.Cells("Item_Key").Value,
                               .SubteamNumber = selectedRow.Cells("SubTeam_No").Value,
                               .SubteamName = selectedRow.Cells("SubTeam_Name").Value,
-                              .RequestedOrder = selectedRow.Cells("RequestedOrder").Value,
+                              .RequestedOrder = If(selectedRow.Cells("RequestedOrder").Value Is DBNull.Value, 0, selectedRow.Cells("RequestedOrder").Value),
                               .IdentifierIsValid = False,
                               .ExcludedByNoTagLogic = False})
         Next
