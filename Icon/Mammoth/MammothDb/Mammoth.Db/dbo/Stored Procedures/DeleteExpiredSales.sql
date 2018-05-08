@@ -16,14 +16,14 @@ BEGIN
 		DECLARE @DefaultDeleteCount int = 100000
 		SET @MaxDeleteCount = COALESCE(@MaxDeleteCount, @DefaultDeleteCount)
 
-		DECLARE @Today datetime2 = CONVERT(date, GETDATE())
+		DECLARE @ExpiryDate datetime2 = CONVERT(date, GETDATE() - 2)
 
 		--Get count of expired prices to delete
 		DECLARE @DeleteCount int = (
 			SELECT COUNT(*)
 			FROM Price_' + @RegionCode + '
 			WHERE PriceType <> ''REG'' 
-				AND EndDate < @Today)
+				AND EndDate < @ExpiryDate)
 
 		IF @DeleteCount > @MaxDeleteCount
 			SET @DeleteCount = @MaxDeleteCount
@@ -39,7 +39,7 @@ BEGIN
 		BEGIN
 			DELETE TOP(@BatchSize) Price_' + @RegionCode +'
 			WHERE PriceType <> ''REG'' 
-				AND EndDate < @Today
+				AND EndDate < @ExpiryDate
 			
 			SET @BatchDeletedCount = @@ROWCOUNT
 			SET @TotalDeletedCount += @BatchDeletedCount
