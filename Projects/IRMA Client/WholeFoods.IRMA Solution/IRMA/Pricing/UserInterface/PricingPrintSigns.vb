@@ -485,4 +485,11 @@ Friend Class frmPricingPrintSigns
         ' tell the grid control to include sorting by the hidden column which tracks the order of submitted identifiers
         e.Layout.Bands(0).SortedColumns.Add(e.Layout.Bands(0).Columns("RequestedOrder"), False, False)
     End Sub
+
+    Private Sub ugrdSearchResults_AfterSortChange(ByVal sender As Object, ByVal e As Infragistics.Win.UltraWinGrid.BandEventArgs) Handles ugrdSearchResults.AfterSortChange
+        ' if the user has manually sorted the columns, disregard the initial sort order column values
+        For Each row As UltraGridRow In ugrdSearchResults.Rows
+            row.Cells("RequestedOrder").Value = 0
+        Next
+    End Sub
 End Class
