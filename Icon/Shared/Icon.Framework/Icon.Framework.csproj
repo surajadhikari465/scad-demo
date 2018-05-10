@@ -851,10 +851,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CurrencyTypes.tt">
+    <None Include="CurrencyTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CurrencyTypes.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
