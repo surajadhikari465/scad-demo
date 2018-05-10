@@ -31,6 +31,14 @@ namespace WebSupport.App_Start
     using MessageBuilders;
     using WebSupport.Controllers;
     using WebSupport.EsbProducerFactory;
+    using Mammoth.PrimeAffinity.Library.Esb;
+    using Quartz.Impl;
+    using Quartz;
+    using WebSupport.BackgroundJobs;
+    using WebSupport.PrimeAffinity;
+    using Mammoth.PrimeAffinity.Library.Processors;
+    using Mammoth.PrimeAffinity.Library.MessageBuilders;
+    using Mammoth.PrimeAffinity.Library.Commands;
 
     public class SimpleInjectorInitializer
     {
@@ -42,6 +50,8 @@ namespace WebSupport.App_Start
             InitializeContainer(container);
 
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
+
+            ScheduleEsbReconnectJob(container);
 
             container.Verify();
 
@@ -69,6 +79,17 @@ namespace WebSupport.App_Start
             container.Register<IRefreshPriceService, RefreshPriceService>();
             container.Register<IPriceRefreshEsbProducerFactory, PriceRefreshEsbProducerFactory>();
             container.Register<IPriceRefreshMessageBuilderFactory, PriceRefreshMessageBuilderFactory>();
+            container.Register<ReconnectToEsbJob>();
+            container.Register(() => PrimeAffinitySettings.Load());
+            container.Register(() => PrimeAffinityPsgProcessorSettings.Load());
+            container.Register(() => PrimeAffinityMessageBuilderSettings.Load());
+            container.Register<IMessageBuilder<PrimeAffinityMessageBuilderParameters>, PrimeAffinityMessageBuilder>();
+            container.Register<IPrimeAffinityPsgProcessor<PrimeAffinityPsgProcessorParameters>, PrimeAffinityPsgProcessor>();
+            container.Register(typeof(ILogger<>), typeof(NLogLogger<>));
+            container.Register(typeof(Mammoth.Common.DataAccess.CommandQuery.ICommandHandler<>), new[] { Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(ArchivePrimeAffinityMessageCommandHandler)) });
+
+            EsbConnectionCache.EsbConnectionSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("PrimeAffinityPsg");
+            EsbConnectionCache.InitializeConnectionFactoryAndConnection();
         }
 
         private static WebSupportPriceMessageService CreatePriceResetMessageService(Container container)
@@ -98,6 +119,23 @@ namespace WebSupport.App_Start
             {
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Sb1EmsConnection")
             };
+        }
+
+        private static void ScheduleEsbReconnectJob(Container container)
+        {
+            IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
+            scheduler.JobFactory = new JobFactory(container);
+            scheduler.Start();
+
+            IJobDetail job = JobBuilder.Create<ReconnectToEsbJob>().Build();
+
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithSimpleSchedule(
+                    s => s.WithIntervalInSeconds(3)
+                        .RepeatForever())
+                .Build();
+
+            scheduler.ScheduleJob(job, trigger);
         }
     }
 }
