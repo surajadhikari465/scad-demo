@@ -63,6 +63,7 @@ namespace Mammoth.Common.DataAccess
 		public const int IrmaVendorKey = 49;
 		public const int AltRetailSize = 51;
 		public const int AltRetailUom = 52;
+		public const int CurrencyCode = 53;
 		
 		public class Descriptions
 		{
@@ -117,6 +118,7 @@ namespace Mammoth.Common.DataAccess
 			public const string IrmaVendorKey = "IRMA Vendor Key";
 			public const string AltRetailSize = "Alt Retail Size";
 			public const string AltRetailUom = "Alt Retail Uom";
+			public const string CurrencyCode = "Currency Code";
 		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
@@ -170,7 +172,8 @@ namespace Mammoth.Common.DataAccess
 				{ "VIN", "Vendor Item ID" },
 				{ "VNK", "IRMA Vendor Key" },
 				{ "ASZ", "Alt Retail Size" },
-				{ "AUM", "Alt Retail Uom" }
+				{ "AUM", "Alt Retail Uom" },
+				{ "CUR", "Currency Code" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -228,6 +231,7 @@ namespace Mammoth.Common.DataAccess
 			public const string IrmaVendorKey = "VNK";
 			public const string AltRetailSize = "ASZ";
 			public const string AltRetailUom = "AUM";
+			public const string CurrencyCode = "CUR";
 		}
 	}
 }

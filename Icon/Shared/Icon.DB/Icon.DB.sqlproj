@@ -671,6 +671,7 @@
     <None Include="Scripts\PopulateData\Archive\UpdatePOSScaleTare.sql" />
     <None Include="Scripts\PopulateData\FixTraitLength.sql" />
     <None Include="Scripts\PopulateData\Archive\AddEslAndOnePlumTraitCodes.sql" />
+    <None Include="Scripts\PopulateData\AddCurrencyCodeTrait.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

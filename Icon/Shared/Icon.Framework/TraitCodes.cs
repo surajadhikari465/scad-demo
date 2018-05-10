@@ -172,5 +172,6 @@ namespace Icon.Framework
         public const string WicEligible = "WIC";
         public const string ShelfLife = "SLF";
         public const string SelfCheckoutItemTareGroup = "ITG";
+        public const string Currency = "CUR";
 	}
 }

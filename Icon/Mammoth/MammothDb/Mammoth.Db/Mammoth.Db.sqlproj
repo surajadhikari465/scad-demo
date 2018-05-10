@@ -773,6 +773,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AlterItemAttributes_ExtAttributeValueColumnSize.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\TruncateItemLocaleStagingTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\UpdateFairTradeCertifiedAttribute.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddCurrencyCodeAttribute.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

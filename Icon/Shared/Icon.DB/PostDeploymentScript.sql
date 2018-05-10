@@ -16,3 +16,4 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\Release\RemovePercentageTareWeightFromIcon.sql -- 2018.04.11 PBI 26526
 :r .\Scripts\PopulateData\Release\MoveMessageQueueProductRecordsOutOfTempTable.sql -- 2018.04.11 PBI 26526
 :r .\Scripts\PopulateData\FixTraitLength.sql -- 2018.04.16 PBI 26623
+:r .\Scripts\PopulateData\AddCurrencyCodeTrait.sql -- 2018.05.09 PBI 26623

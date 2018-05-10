@@ -173,6 +173,7 @@ namespace Icon.Framework
         public const int WicEligible = 164;
         public const int ShelfLife = 165;
         public const int SelfCheckoutItemTareGroup = 166;
+        public const int Currency = 167;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -336,7 +337,8 @@ namespace Icon.Framework
 				{ "SMF", 163 },
 				{ "WIC", 164 },
 				{ "SLF", 165 },
-				{ "ITG", 166 }
+				{ "ITG", 166 },
+				{ "CUR", 167 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -503,6 +505,7 @@ namespace Icon.Framework
 			public const string WicEligible = "WIC Eligible";
 			public const string ShelfLife = "Shelf Life";
 			public const string SelfCheckoutItemTareGroup = "Self Checkout Item Tare Group";
+			public const string Currency = "Currency";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -666,7 +669,8 @@ namespace Icon.Framework
 				{ 163, "Smithsonian Bird Friendly" },
 				{ 164, "WIC Eligible" },
 				{ 165, "Shelf Life" },
-				{ 166, "Self Checkout Item Tare Group" }
+				{ 166, "Self Checkout Item Tare Group" },
+				{ 167, "Currency" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -834,6 +838,7 @@ namespace Icon.Framework
 			public const string WicEligible = "WIC";
 			public const string ShelfLife = "SLF";
 			public const string SelfCheckoutItemTareGroup = "ITG";
+			public const string Currency = "CUR";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -997,7 +1002,8 @@ namespace Icon.Framework
 				{ 163, "SMF" },
 				{ 164, "WIC" },
 				{ 165, "SLF" },
-				{ 166, "ITG" }
+				{ 166, "ITG" },
+				{ 167, "CUR" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}
