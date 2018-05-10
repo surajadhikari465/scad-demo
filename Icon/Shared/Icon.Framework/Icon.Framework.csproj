@@ -135,10 +135,18 @@
     <Compile Include="County.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Currency.cs">
+      <DependentUpon>IconModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="CurrencyCodes.cs">
       <DependentUpon>CurrencyCodes.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CurrencyTypes.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CurrencyTypes.tt</DependentUpon>
     </Compile>
     <Compile Include="DeliverySystem.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
@@ -473,11 +481,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="CurrencyTypes.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CurrencyTypes.tt</DependentUpon>
-    </Compile>
     <Compile Include="MessageActionTypes.cs">
       <DependentUpon>MessageActionTypes.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -673,10 +676,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ItemPriceTypes.cs</LastGenOutput>
     </None>
-    <None Include="CurrencyTypes.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CurrencyTypes.cs</LastGenOutput>
-    </None>
     <None Include="AddressTypeCodes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AddressTypeCodes.cs</LastGenOutput>
@@ -850,6 +849,12 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VimEventTypes.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CurrencyTypes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CurrencyTypes.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />

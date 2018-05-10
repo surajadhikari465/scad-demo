@@ -15,6 +15,7 @@ namespace Mammoth.Framework
 
         public virtual DbSet<AttributeGroup> AttributeGroups { get; set; }
         public virtual DbSet<Attribute> Attributes { get; set; }
+        public virtual DbSet<Currency> Currencies { get; set; }
         public virtual DbSet<Financial_SubTeam> Financial_SubTeam { get; set; }
         public virtual DbSet<Hierarchy> Hierarchies { get; set; }
         public virtual DbSet<Hierarchy_Merchandise> Hierarchy_Merchandise { get; set; }

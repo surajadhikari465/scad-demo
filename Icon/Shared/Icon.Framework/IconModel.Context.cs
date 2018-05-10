@@ -110,6 +110,7 @@ namespace Icon.Framework
         public virtual DbSet<MessageArchiveHierarchy> MessageArchiveHierarchy { get; set; }
         public virtual DbSet<ItemSignAttribute> ItemSignAttribute { get; set; }
         public virtual DbSet<IRMAItem> IRMAItem { get; set; }
+        public virtual DbSet<Currency> Currencies { get; set; }
     
         public virtual int MarkStagingTableEntriesAsInProcessForEsb(Nullable<int> numberOfRows, Nullable<int> jobInstance)
         {

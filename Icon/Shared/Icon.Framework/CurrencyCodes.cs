@@ -12,5 +12,7 @@ namespace Icon.Framework
     public static class CurrencyCodes
     {
         public const string Usd = "USD";
+        public const string Cad = "CAD";
+        public const string Gbp = "GBP";
 	}
 }

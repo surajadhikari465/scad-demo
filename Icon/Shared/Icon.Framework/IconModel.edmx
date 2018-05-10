@@ -744,6 +744,18 @@
           <Property Name="countyName" Type="nvarchar" MaxLength="255" />
           <Property Name="territoryID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CurrencyType">
+          <Key>
+            <PropertyRef Name="currencyTypeID" />
+          </Key>
+          <Property Name="currencyTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="currencyTypeCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="currencyTypeDesc" Type="nvarchar" MaxLength="255" />
+          <Property Name="issuingEntity" Type="nvarchar" MaxLength="255" />
+          <Property Name="numericCode" Type="int" />
+          <Property Name="minorUnit" Type="int" />
+          <Property Name="symbol" Type="nvarchar" MaxLength="3" />
+        </EntityType>
         <EntityType Name="DeliverySystem">
           <Key>
             <PropertyRef Name="DeliverySystemID" />
@@ -1369,6 +1381,18 @@
             </Principal>
             <Dependent Role="PostalCode">
               <PropertyRef Name="countyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CurrencyType_ItemPrice_FK1">
+          <End Role="CurrencyType" Type="Self.CurrencyType" Multiplicity="1" />
+          <End Role="ItemPrice" Type="Self.ItemPrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrencyType">
+              <PropertyRef Name="currencyTypeID" />
+            </Principal>
+            <Dependent Role="ItemPrice">
+              <PropertyRef Name="currencyTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2618,6 +2642,7 @@
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="County" EntityType="Self.County" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CurrencyType" EntityType="Self.CurrencyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeliverySystem" EntityType="Self.DeliverySystem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EcoScaleRating" EntityType="Self.EcoScaleRating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hierarchy" EntityType="Self.Hierarchy" Schema="dbo" store:Type="Tables" />
@@ -2700,6 +2725,10 @@
           <AssociationSet Name="County_PostalCode_FK1" Association="Self.County_PostalCode_FK1">
             <End Role="County" EntitySet="County" />
             <End Role="PostalCode" EntitySet="PostalCode" />
+          </AssociationSet>
+          <AssociationSet Name="CurrencyType_ItemPrice_FK1" Association="Self.CurrencyType_ItemPrice_FK1">
+            <End Role="CurrencyType" EntitySet="CurrencyType" />
+            <End Role="ItemPrice" EntitySet="ItemPrice" />
           </AssociationSet>
           <AssociationSet Name="FK__ProductSelectionGroup_MerchandiseHierarchyClass" Association="Self.FK__ProductSelectionGroup_MerchandiseHierarchyClass">
             <End Role="HierarchyClass" EntitySet="HierarchyClass" />
@@ -3613,6 +3642,11 @@
             <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
           </AssociationSet>
           <EntitySet Name="IRMAItem" EntityType="Icon.Framework.Model.IRMAItem" />
+          <EntitySet Name="Currencies" EntityType="Icon.Framework.Model.Currency" />
+          <AssociationSet Name="CurrencyType_ItemPrice_FK1" Association="Icon.Framework.Model.CurrencyType_ItemPrice_FK1">
+            <End Role="CurrencyType" EntitySet="Currencies" />
+            <End Role="ItemPrice" EntitySet="ItemPrice" />
+          </AssociationSet>
           </EntityContainer>
         <EnumType Name="HierarchyName" a:ExternalTypeName="Icon.Framework.Enums.HierarchyName" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="TraitDescription" a:ExternalTypeName="Icon.Framework.Enums.TraitDescription" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -4025,6 +4059,7 @@
           <NavigationProperty Name="ItemPriceType" Relationship="Icon.Framework.Model.ItemPriceType_ItemPrice_FK1" FromRole="ItemPrice" ToRole="ItemPriceType" />
           <NavigationProperty Name="UOM" Relationship="Icon.Framework.Model.UOM_ItemPrice_FK1" FromRole="ItemPrice" ToRole="UOM" />
           <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ItemPrice_FK1" FromRole="ItemPrice" ToRole="Locale" />
+          <NavigationProperty Name="CurrencyType" Relationship="Icon.Framework.Model.CurrencyType_ItemPrice_FK1" FromRole="ItemPrice" ToRole="CurrencyType" />
         </EntityType>
         <EntityType Name="ItemPriceType">
           <Key>
@@ -6280,6 +6315,31 @@
           <Property Name="DeliverySystem" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="AlcoholByVolume" Type="Decimal" Precision="5" Scale="2" />
         </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="currencyTypeID" />
+          </Key>
+          <Property Name="currencyTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="currencyTypeCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="currencyTypeDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="issuingEntity" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="numericCode" Type="Int32" />
+          <Property Name="minorUnit" Type="Int32" />
+          <Property Name="symbol" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ItemPrices" Relationship="Icon.Framework.Model.CurrencyType_ItemPrice_FK1" FromRole="CurrencyType" ToRole="ItemPrice" />
+        </EntityType>
+        <Association Name="CurrencyType_ItemPrice_FK1">
+          <End Type="Icon.Framework.Model.Currency" Role="CurrencyType" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrencyType">
+              <PropertyRef Name="currencyTypeID" />
+            </Principal>
+            <Dependent Role="ItemPrice">
+              <PropertyRef Name="currencyTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7625,6 +7685,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Currencies">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.Currency">
+              <MappingFragment StoreEntitySet="CurrencyType">
+                <ScalarProperty Name="symbol" ColumnName="symbol" />
+                <ScalarProperty Name="minorUnit" ColumnName="minorUnit" />
+                <ScalarProperty Name="numericCode" ColumnName="numericCode" />
+                <ScalarProperty Name="issuingEntity" ColumnName="issuingEntity" />
+                <ScalarProperty Name="currencyTypeDesc" ColumnName="currencyTypeDesc" />
+                <ScalarProperty Name="currencyTypeCode" ColumnName="currencyTypeCode" />
+                <ScalarProperty Name="currencyTypeID" ColumnName="currencyTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -7639,7 +7712,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

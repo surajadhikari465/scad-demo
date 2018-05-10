@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Currency.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="AttributeGroup.cs" />
     <Compile Include="Financial_SubTeam.cs" />

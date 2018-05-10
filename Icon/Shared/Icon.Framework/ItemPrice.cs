@@ -30,5 +30,6 @@ namespace Icon.Framework
         public virtual ItemPriceType ItemPriceType { get; set; }
         public virtual UOM UOM { get; set; }
         public virtual Locale Locale { get; set; }
+        public virtual Currency CurrencyType { get; set; }
     }
 }
