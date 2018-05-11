@@ -541,14 +541,7 @@ SET
 	p.TprPriceTypeAttribute = CASE WHEN sal.PriceType = 'TPR' THEN sal.PriceTypeAttribute ELSE NULL END,
 	p.TprSellableUOM = CASE WHEN sal.PriceType = 'TPR' THEN sal.SellableUOM ELSE NULL END,
 	p.TprStartDate = CASE WHEN sal.PriceType = 'TPR' THEN sal.StartDate ELSE NULL END,
-	p.TprEndDate = CASE WHEN sal.PriceType = 'TPR' THEN sal.EndDate ELSE NULL END,
-	p.RewardPrice = CASE WHEN sal.PriceType = 'RWD' THEN sal.Price ELSE NULL END,
-	p.RewardPriceType =  CASE WHEN sal.PriceType = 'RWD' THEN sal.PriceType ELSE NULL END,
-	p.RewardPriceTypeAttribute =  CASE WHEN sal.PriceType = 'RWD' THEN sal.PriceTypeAttribute ELSE NULL END,
-	p.RewardPriceMultiple =  CASE WHEN sal.PriceType = 'RWD' THEN sal.Multiple ELSE NULL END,
-	p.RewardPriceSellableUOM =  CASE WHEN sal.PriceType = 'RWD' THEN sal.SellableUOM ELSE NULL END,
-	p.RewardPriceStartDate = CASE WHEN sal.PriceType = 'RWD' THEN sal.StartDate ELSE NULL END,
-	p.RewardPriceEndDate = CASE WHEN sal.PriceType = 'RWD' THEN sal.EndDate ELSE NULL END
+	p.TprEndDate = CASE WHEN sal.PriceType = 'TPR' THEN sal.EndDate ELSE NULL END
 FROM #prices p
 INNER JOIN gpm.Prices sal on p.ItemID = sal.ItemID
 	AND p.BusinessUnitID = sal.BusinessUnitID
