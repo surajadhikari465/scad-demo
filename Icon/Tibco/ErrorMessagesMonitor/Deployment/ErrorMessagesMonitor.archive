@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/Process Error Messages.process</processProperty>
         </processArchive>
-        <versionProperty>8</versionProperty>
+        <versionProperty>9</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>ErrorMessagesMonitor</name>
@@ -22,7 +22,7 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\VSTS\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\ErrorMessagesMonitor.ear</fileLocationProperty>
+        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\ErrorMessagesMonitor.ear</fileLocationProperty>
         <description>Monitors error messages and sends notifications for them.</description>
     </enterpriseArchive>
 </Repository:repository>

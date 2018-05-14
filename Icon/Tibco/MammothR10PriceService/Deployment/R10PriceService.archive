@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/MammothPriceR10QueueReceiver.process</processProperty>
         </processArchive>
-        <versionProperty>27</versionProperty>
+        <versionProperty>28</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>R10PriceService</name>

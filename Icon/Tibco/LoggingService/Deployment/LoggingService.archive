@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/LoggingListener.process</processProperty>
         </processArchive>
-        <versionProperty>12</versionProperty>
+        <versionProperty>13</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>LoggingService</name>
