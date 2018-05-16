@@ -55,6 +55,7 @@ namespace Mammoth.Esb.ProductListener
             container.Register<ISerializer<items>, Serializer<items>>();
             container.Register<ILogger<PrimeAffinityPsgProcessor>, NLogLogger<PrimeAffinityPsgProcessor>>();
             container.Register(() => PrimeAffinityMessageBuilderSettings.Load());
+            container.Register(() => PrimeAffinityPsgProcessorSettings.Load());
 
             //Data Access
             container.RegisterSingleton<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
@@ -70,6 +71,7 @@ namespace Mammoth.Esb.ProductListener
             Registration dbConnectionRegistration = container.GetRegistration(typeof(IDbConnection)).Registration;
             dbConnectionRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing IDbConnection is taken care of by the application.");
 
+            container.Verify();
             return container;
         }
     }
