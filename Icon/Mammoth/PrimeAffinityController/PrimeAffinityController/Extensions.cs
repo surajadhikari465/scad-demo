@@ -21,7 +21,7 @@ namespace PrimeAffinityController
                 .Select(p => new PrimeAffinityMessageModel
                 {
                     BusinessUnitID = p.BusinessUnitID,
-                    InternalPriceObject = p,
+                    InternalPriceObject = new { Source = "Mammoth Prime Affinity Controller", SourceObject = p },
                     ItemID = p.ItemID,
                     ItemTypeCode = p.ItemTypeCode,
                     MessageAction = (ActionEnum) Enum.Parse(typeof(ActionEnum), p.MessageAction, true),

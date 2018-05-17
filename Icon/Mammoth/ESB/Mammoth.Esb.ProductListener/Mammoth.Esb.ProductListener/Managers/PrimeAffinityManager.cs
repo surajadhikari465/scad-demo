@@ -118,7 +118,7 @@ namespace Mammoth.Esb.ProductListener.Managers
                 Region = m.Region,
                 ScanCode = m.ScanCode,
                 StoreName = m.StoreName,
-                InternalPriceObject = m
+                InternalPriceObject = new { Source = "Mammoth Product Listener", SourceObject = m }
             });
         }
 

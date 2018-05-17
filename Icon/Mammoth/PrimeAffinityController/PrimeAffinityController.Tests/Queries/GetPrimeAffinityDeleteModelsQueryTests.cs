@@ -68,7 +68,7 @@ namespace PrimeAffinityController.Tests.Queries
         }
 
         [TestMethod]
-        public void GetPrimeAffinityDeletePsgsFromPrices_SalesAreEndingYesterday_ShouldReturnSales()
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSalesAreEndingYesterday_ShouldReturnForPrimeEligibleSales()
         {
             //Given
             List<dynamic> prices = new List<dynamic>();
@@ -98,7 +98,7 @@ namespace PrimeAffinityController.Tests.Queries
         }
 
         [TestMethod]
-        public void GetPrimeAffinityDeletePsgsFromPrices_SalesAreEndingEndOfYesterdayAndBeginningOfToday_ShouldReturnSales()
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSalesAreEndingAtTheEndOfYesterdayAndAtTheBeginningOfToday_ShouldReturnSales()
         {
             //Given
             var addSeconds = DateTime.Today.AddMilliseconds(-3);
@@ -172,9 +172,9 @@ namespace PrimeAffinityController.Tests.Queries
             //Given
             List<dynamic> prices = new List<dynamic>();
             prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[1]));
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), "TS3"));
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), "TS4"));
+            prices.Add(InsertTestPrices(testItemIds[1], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[1]));
+            prices.Add(InsertTestPrices(testItemIds[2], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), "TS3"));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[1], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), "TS4"));
 
             //When
             var results = query.Search(parameters);
@@ -194,7 +194,7 @@ namespace PrimeAffinityController.Tests.Queries
         }
 
         [TestMethod]
-        public void GetPrimeAffinityDeletePsgsFromPrices_SalesAssociatedToItemsThatHaveExcludedPSNumbers_ShouldOnlyReturnSalesNotInExcludedPSNumbers()
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSalesAssociatedToItemsThatHaveExcludedPSNumbers_ShouldOnlyReturnSalesNotInExcludedPSNumbers()
         {
             //Given
             var invalidItemId = 1234567;
@@ -204,7 +204,6 @@ namespace PrimeAffinityController.Tests.Queries
 
             List<dynamic> prices = new List<dynamic>();
             prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[1]));
             prices.Add(InsertTestPrices(invalidItemId, testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
             prices.Add(InsertTestPrices(invalidItemId2, testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
 
@@ -212,35 +211,8 @@ namespace PrimeAffinityController.Tests.Queries
             var results = query.Search(parameters);
 
             //Then
-            Assert.AreEqual(2, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
-            Assert.IsFalse(results.Any(p => p.ItemID == invalidItemId && p.ItemID == invalidItemId2));
-            foreach (var result in results)
-            {
-                var price = prices.First(p => p.PriceID == result.PriceID);
-                Assert.AreEqual(Delete, result.MessageAction);
-                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
-                Assert.AreEqual(price.ItemID, result.ItemID);
-                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
-                Assert.AreEqual(TestStoreName, result.StoreName);
-                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
-            }
-        }
-
-        [TestMethod]
-        public void GetPrimeAffinityDeletePsgsFromPrices_NewSalesAreStartingToday_ShouldOnlyReturnSalesThatHaveNoOtherSalesForTheSameItemAndStoreStartingToday()
-        {
-            //Given
-            List<dynamic> prices = new List<dynamic>();
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(testItemIds[1], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
-            prices.Add(InsertTestPrices(testItemIds[2], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddMilliseconds(-3), testPriceTypes[0]));
-
-            //When
-            var results = query.Search(parameters);
-
-            //Then
-            Assert.AreEqual(2, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
+            Assert.AreEqual(1, results.Where(r => testItemIds.Contains(r.ItemID)).Count());
+            Assert.IsFalse(results.Any(p => (p.ItemID == invalidItemId || p.ItemID == invalidItemId2)));
             foreach (var result in results)
             {
                 var price = prices.First(p => p.PriceID == result.PriceID);
@@ -281,6 +253,317 @@ namespace PrimeAffinityController.Tests.Queries
                 Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
             }
         }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingTodayAndPrimeEligibleSaleIsStartingToday_ShouldNotReturnDeletes()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), testPriceTypes[1]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(0, results.Count());
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingTodayAndNonPrimeEligibleSaleIsStartingToday_ShouldReturnDeletes()
+        {
+            //Given
+            string nonPrimeEligiblePriceType = "NPE";
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), nonPrimeEligiblePriceType));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(2, results.Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingAndSaleHasAnOverlappingPrimeEligibleSale_ShouldNotReturnDeletes()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddDays(10), testPriceTypes[0]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(0, results.Count());
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingAndItemHasAFutureSale_ShouldSendDeleteForEndingSale()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(5), DateTime.Today.AddDays(10), testPriceTypes[0]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(1, results.Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingAndItemHasAnExpiredSale_ShouldSendDeleteForEndingSale()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddDays(-8), testPriceTypes[0]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(1, results.Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_NonPrimeEligibleSaleIsStarting_ShouldSendDeleteForStartingSale()
+        {
+            //Given
+            string nonPrimeEligiblePriceType = "NPE";
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), nonPrimeEligiblePriceType));
+            prices.Add(InsertTestPrices(testItemIds[1], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), nonPrimeEligiblePriceType));
+            prices.Add(InsertTestPrices(testItemIds[2], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), nonPrimeEligiblePriceType));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[1], DateTime.Today, DateTime.Today.AddDays(10), nonPrimeEligiblePriceType));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(4, results.Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingTodayAndAnotherPrimeEligibleSaleIsAlsoEndingToday_ShouldSendDeleteForEndingSale()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[1]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(2, results.Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingTodayAndANonPrimeEligibleSaleIsAlsoEndingToday_ShouldSendDeleteForEndingSale()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, "NPE"));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(1, results.Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingTodayAndThereIsAStackedNonPrimeEligibleSale_ShouldSendDeleteForEndingSale()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today.AddDays(1), "NPE"));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-6), DateTime.Today.AddDays(2), testPriceTypes[0]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(1, results.Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingTodayAndThereIsAStackedPrimeEligibleSale_ShouldNotSendDeleteForEndingSale()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today.AddDays(1), testPriceTypes[1]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-6), DateTime.Today.AddDays(2), testPriceTypes[0]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(0, results.Count());
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_NonPrimeEligibleSaleIsEndingTodayAndThereIsAStackedPrimeEligibleSale_ShouldNotSendDeleteForEndingSale()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, "NPE"));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today.AddDays(1), testPriceTypes[1]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-6), DateTime.Today.AddDays(2), testPriceTypes[0]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(0, results.Count());
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingTodayAndThereIsAStackedPrimeEligibleSaleAndNonPrimeEligibleSale_ShouldNotSendDeleteForEndingSaleBecauseAddedDateOfPrimeEligibleSaleIsMoreRecent()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddDays(1), "NPE"));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddDays(1), testPriceTypes[0]));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(0, results.Count());
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingTodayAndThereIsAStackedPrimeEligibleSaleAndNonPrimeEligibleSale_ShouldSendDeleteForEndingSaleBecauseAddedDateOfNonPrimeEligibleSaleIsMoreRecent()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddDays(1), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddDays(1), "NPE"));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(1, results.Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityDeletePsgsFromPrices_PrimeEligibleSaleIsEndingTodayAndThereIsAStackedPrimeEligibleSaleAndNonPrimeEligibleSale_ShouldSendDeleteForEndingSaleBecauseStartDateForNonPrimeEligibleSaleIsMoreRecent()
+        {
+            //Given
+            List<dynamic> prices = new List<dynamic>();
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today, testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-10), DateTime.Today.AddDays(1), testPriceTypes[0]));
+            prices.Add(InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-6), DateTime.Today.AddDays(1), "NPE"));
+
+            //When
+            var results = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(1, results.Count());
+            foreach (var result in results)
+            {
+                var price = prices.First(p => p.PriceID == result.PriceID);
+                Assert.AreEqual(Delete, result.MessageAction);
+                Assert.AreEqual(price.BusinessUnitID, result.BusinessUnitID);
+                Assert.AreEqual(price.ItemID, result.ItemID);
+                Assert.AreEqual("sc" + result.ItemID, result.ScanCode);
+                Assert.AreEqual(TestStoreName, result.StoreName);
+                Assert.AreEqual(TestItemTypeCode, result.ItemTypeCode);
+            }
+        }
+
 
         private void InsertTestData()
         {

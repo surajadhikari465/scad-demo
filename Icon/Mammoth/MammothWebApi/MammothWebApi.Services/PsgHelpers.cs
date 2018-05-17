@@ -92,7 +92,7 @@ namespace MammothWebApi.Service
                 ScanCode = p.ScanCode,
                 StoreName = p.StoreName,
                 Region = p.Region,
-                InternalPriceObject = p
+                InternalPriceObject = new { Source = "Mammoth Web API", SourceObject = p }
             });
 
             return primeAffinityPsgModels;

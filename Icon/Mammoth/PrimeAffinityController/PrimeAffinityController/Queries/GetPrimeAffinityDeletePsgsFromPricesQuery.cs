@@ -53,18 +53,20 @@ namespace PrimeAffinityController.Queries
                     JOIN dbo.Items i ON p.ItemID = i.ItemID
                     JOIN dbo.ItemTypes it ON i.itemTypeID = it.itemTypeID
                     JOIN dbo.Locales_{parameters.Region} l ON p.BusinessUnitID = l.BusinessUnitID
-                    WHERE PriceType IN @PriceTypes 
-                        AND (EndDate = @Today OR EndDate = @EndOfYesterday)
+                    OUTER APPLY 
+	                    (SELECT TOP 1 *
+	                     FROM Price_{parameters.Region} p2
+	                     WHERE p2.Region = p.Region
+		                     AND p2.ItemID = p.ItemID
+		                     AND p2.BusinessUnitID = p.BusinessUnitID
+		                     AND p2.PriceType <> 'REG'
+		                     AND p2.StartDate <= @Today
+		                     AND p2.EndDate > @Today
+	                     ORDER BY p2.StartDate DESC, p2.AddedDate DESC) AS p2
+                    WHERE p.PriceType IN @PriceTypes 
+                        AND (p.EndDate = @Today OR p.EndDate = @EndOfYesterday)
                         AND i.PSNumber NOT IN @ExcludedPSNumbers
-                        AND NOT EXISTS 
-                        (
-                            SELECT 1
-                            FROM dbo.Price_{parameters.Region} p2
-                            WHERE p2.ItemID = p.ItemID
-                                AND p2.BusinessUnitID = p.BusinessUnitID
-                                AND p2.StartDate = @Today
-                                AND p2.PriceType IN @PriceTypes
-                        )
+                        AND (p2.PriceType IS NULL OR p2.PriceType NOT IN @PriceTypes)
                     UNION
                     SELECT 
                         'Delete' AS MessageAction,
@@ -105,26 +107,33 @@ namespace PrimeAffinityController.Queries
             }
             catch (SqlException ex)
             {
-                if (ex.Number == ApplicationConstants.SqlTimeoutExceptionNumber && timeoutOccurrences < 3)
+                if (ex.Number == ApplicationConstants.SqlTimeoutExceptionNumber)
                 {
-                    logger.Error(
-                        new
-                        {
-                            Message = "Timeout exception occurred. Retrying query for delete PSGs.",
-                            Region = parameters.Region,
-                            TimeoutOccurrences = timeoutOccurrences
-                        }.ToJson());
-                    return SearchWithTimeoutCheck(parameters, timeoutOccurrences + 1);
+                    if (timeoutOccurrences < 3)
+                    {
+                        logger.Error(
+                            new
+                            {
+                                Message = "Timeout exception occurred. Retrying query for delete PSGs.",
+                                Region = parameters.Region,
+                                TimeoutOccurrences = timeoutOccurrences
+                            }.ToJson());
+                        return SearchWithTimeoutCheck(parameters, timeoutOccurrences + 1);
+                    }
+                    else
+                    {
+                        logger.Error(
+                            new
+                            {
+                                Message = "Timeout exception occurred. Timeout occurrences has exceeded max number of tries. Throwing error.",
+                                Region = parameters.Region,
+                                TimeoutOccurrences = timeoutOccurrences
+                            }.ToJson());
+                        throw;
+                    }
                 }
                 else
                 {
-                    logger.Error(
-                        new
-                        {
-                            Message = "Timeout exception occurred. Timeout occurrences has exceeded max number of tries. Throwing error.",
-                            Region = parameters.Region,
-                            TimeoutOccurrences = timeoutOccurrences
-                        }.ToJson());
                     throw;
                 }
             }
