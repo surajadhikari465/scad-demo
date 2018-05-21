@@ -33,5 +33,6 @@ namespace Icon.Web.DataAccess.Managers
         public string StorePosType { get; set; }
 
         public string UserName { get; set; }
+        public string CurrencyCode { get; set; }
     }
 }

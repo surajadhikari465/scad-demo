@@ -155,5 +155,11 @@ namespace Icon.Web.Mvc.Models
             LocaleTrait trait = locale.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.Fax);
             return trait == null ? String.Empty : trait.traitValue;
         }
+
+        public static string GetCurrencyCode(Locale locale)
+        {
+            LocaleTrait trait = locale.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.Currency);
+            return trait == null ? String.Empty : trait.traitValue;
+        }
     }
 }

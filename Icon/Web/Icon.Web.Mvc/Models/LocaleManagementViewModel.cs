@@ -136,5 +136,9 @@ namespace Icon.Web.Mvc.Models
         public string SelectedStorePosType { get; set; }
         [Display(Name = "POS Type")]
         public IEnumerable<SelectListItem> StorePosTypes { get; set; }
+
+        public string SelectedCurrency { get; set; }
+        [Display(Name = "Currency")]
+        public IEnumerable<SelectListItem> CurrencyTypes { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateLocaleCommandHandlerTests
     {
         private IconContext context;
@@ -727,6 +727,95 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(command.TerritoryId, address.City.County.territoryID);
             Assert.AreEqual(command.TerritoryId, address.City.territoryID);
             Assert.AreEqual(command.CountryId, address.PostalCode.countryID);
+        }
+
+        [TestMethod]
+        public void UpdateLocale_CurrencyCodeTraitIsAdded_LocaleShouldHaveExpectedValue()
+        {
+            // Given.
+            var address = testLocale.LocaleAddress.First().Address.PhysicalAddress;
+            var originalCityId = address.cityID;
+            var originalCountyId = address.City.countyID;
+            var originalPostalCodeId = address.postalCodeID;
+
+            UpdateLocaleCommand command = new UpdateLocaleCommand
+            {
+                LocaleId = testLocale.localeID,
+                LocaleName = testLocale.localeName,
+                OpenDate = testLocale.localeOpenDate,
+                CloseDate = testLocale.localeCloseDate,
+                BusinessUnitId = testLocale.LocaleTrait.First(lt => lt.traitID == Traits.PsBusinessUnitId).traitValue,
+                AddressId = address.addressID,
+                CityName = testLocale.LocaleAddress.First().Address.PhysicalAddress.City.cityName,
+                PostalCode = address.PostalCode.postalCode,
+                CountryId = address.countryID.Value,
+                TerritoryId = address.territoryID.Value,
+                TimezoneId = address.timezoneID.Value,
+                CurrencyCode = CurrencyCodes.Usd
+            };
+            var existing = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.Currency);
+
+            // When.
+            updateLocaleCommandHandler.Execute(command);
+
+            // Then.
+            Assert.IsNull(existing, "locale should not have had the currency trait yet");
+            var updatedLocale = context.Locale
+                .Include(l => l.LocaleTrait )
+                .FirstOrDefault(l => l.localeID == testLocale.localeID);
+            var updated = updatedLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.Currency);
+
+            Assert.AreEqual(CurrencyCodes.Usd, updated.traitValue, "locale should have a currency trait value");
+        }
+
+        [TestMethod]
+        public void UpdateLocale_CurrencyCodeTraitIsUpdated_LocaleShouldHaveExpectedValue()
+        {
+            // Given.
+            var address = testLocale.LocaleAddress.First().Address.PhysicalAddress;
+            var originalCityId = address.cityID;
+            var originalCountyId = address.City.countyID;
+            var originalPostalCodeId = address.postalCodeID;
+            
+            UpdateLocaleCommand setupCommand = new UpdateLocaleCommand
+            {
+                LocaleId = testLocale.localeID,
+                LocaleName = testLocale.localeName,
+                OpenDate = testLocale.localeOpenDate,
+                CloseDate = testLocale.localeCloseDate,
+                BusinessUnitId = testLocale.LocaleTrait.First(lt => lt.traitID == Traits.PsBusinessUnitId).traitValue,
+                AddressId = address.addressID,
+                CityName = testLocale.LocaleAddress.First().Address.PhysicalAddress.City.cityName,
+                PostalCode = address.PostalCode.postalCode,
+                CountryId = address.countryID.Value,
+                TerritoryId = address.territoryID.Value,
+                TimezoneId = address.timezoneID.Value,
+                CurrencyCode = CurrencyCodes.Cad
+            };
+            updateLocaleCommandHandler.Execute(setupCommand);
+            var existing = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.Currency);
+            Assert.AreEqual(CurrencyCodes.Cad, existing.traitValue, "locale should have initially had expected currency trait value");
+
+            // When.
+            UpdateLocaleCommand updateCommand = new UpdateLocaleCommand
+            {
+                LocaleId = testLocale.localeID,
+                LocaleName = testLocale.localeName,
+                OpenDate = testLocale.localeOpenDate,
+                CloseDate = testLocale.localeCloseDate,
+                BusinessUnitId = testLocale.LocaleTrait.First(lt => lt.traitID == Traits.PsBusinessUnitId).traitValue,
+                AddressId = address.addressID,
+                PostalCode = address.PostalCode.postalCode,
+                CountryId = address.countryID.Value,
+                TerritoryId = address.territoryID.Value,
+                TimezoneId = address.timezoneID.Value,
+                CurrencyCode = CurrencyCodes.Usd
+            };
+            updateLocaleCommandHandler.Execute(updateCommand);
+
+            // Then.
+            var updated = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.Currency);
+            Assert.AreEqual(CurrencyCodes.Usd, updated.traitValue, "locale should have updated currency trait value");
         }
     }
 }

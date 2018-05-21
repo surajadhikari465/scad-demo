@@ -2,6 +2,7 @@
 using Icon.Web.DataAccess.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.Mvc;
 
 namespace Icon.Web.Tests
@@ -104,7 +105,28 @@ namespace Icon.Web.Tests
             PhysicalAddress physicalAddress = new PhysicalAddress()
             {
                 Address = a1,
-                Timezone = tz
+                Timezone = tz,
+                City = new City
+                {
+                    cityName = "Springfield",
+                    County = new County
+                    {
+                        countyName = "Springfield"
+                    }
+                },
+                PostalCode = new PostalCode
+                {
+                    postalCode = "78746"
+                },
+                Territory = new Territory
+                {
+                    territoryName = "territory",
+                    territoryCode = "TT"
+                },
+                Country = new Country
+                {
+                    countryCode = "USA"
+                }
             };
             Address a2 = new Address() { PhysicalAddress = physicalAddress };
             LocaleAddress localeAddress = new LocaleAddress() { Address = a2 };
@@ -249,6 +271,33 @@ namespace Icon.Web.Tests
                 hierarchyLevel = 1,
                 hierarchyParentClassID = null
             };
+        }
+
+        public static LocaleTrait MakeTrait(int traitId, string traitCode, string traitValue)
+        {
+            return new LocaleTrait
+            {
+                traitID = traitId,
+                traitValue = traitValue,
+                Trait = new Trait { traitID = traitId, traitCode = traitCode }
+            };
+        }
+
+        public static List<LocaleTrait> MakeLocaleTraitsForLocale()
+        {
+            var localeTraits = new List<LocaleTrait>
+            {
+                MakeTrait(Traits.PsBusinessUnitId, TraitCodes.PsBusinessUnitId, "11111"),
+                MakeTrait(Traits.PhoneNumber, TraitCodes.PhoneNumber, "5551234565"),
+                MakeTrait(Traits.ContactPerson, TraitCodes.ContactPerson, "A. Person"),
+                MakeTrait(Traits.StoreAbbreviation, TraitCodes.StoreAbbreviation, "XXX"),
+                MakeTrait(Traits.IrmaStoreId, TraitCodes.IrmaStoreId, "44444"),
+                MakeTrait(Traits.StorePosType, TraitCodes.StorePosType, "1"),
+                MakeTrait(Traits.Fax, TraitCodes.Fax, "11111111"),
+                MakeTrait(Traits.InsertDate, TraitCodes.InsertDate, new DateTime(2014, 4, 24, 18, 30, 30).ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture)),
+                MakeTrait(Traits.ModifiedUser, TraitCodes.ModifiedUser, "test person")
+            };
+            return localeTraits;
         }
     }
 }

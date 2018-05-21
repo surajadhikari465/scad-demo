@@ -99,8 +99,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.5.1.2\lib\net46\Icon.Framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Framework.2018.5.10.4\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -275,6 +274,8 @@
     <Compile Include="Managers\UpdateLocaleManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdateSubTeamManagerHandlerTests.cs" />
     <Compile Include="Managers\ValidateItemManagerHandlerTests.cs" />
+    <Compile Include="Models\LocaleGridRowViewModelTests.cs" />
+    <Compile Include="Models\LocaleAccessorTests.cs" />
     <Compile Include="Models\ItemSignAttributesSearchViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />

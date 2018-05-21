@@ -18,6 +18,7 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Controllers
 {
+
     public class StoreController : Controller
     {
         private ILogger logger;
@@ -30,6 +31,7 @@ namespace Icon.Web.Controllers
         private List<Country> countries;
         private List<Timezone> timeZones;
         private List<Agency> eWicAgencies;
+        private List<Currency> currencies;
 
         public StoreController(
             ILogger logger,
@@ -50,6 +52,7 @@ namespace Icon.Web.Controllers
             this.countries = genericQuery.GetAll<Country>();
             this.timeZones = genericQuery.GetAll<Timezone>();
             this.eWicAgencies = genericQuery.GetAll<Agency>();
+            this.currencies = genericQuery.GetAll<Currency>();
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -92,6 +95,7 @@ namespace Icon.Web.Controllers
             model.TimeZones = this.timeZones.Select(t => new TimeZoneViewModel { TimeZoneId = t.timezoneID, TimeZoneCode = t.timezoneCode, TimeZoneName = t.timezoneName });
             model.EwicAgencies = this.eWicAgencies;
             model.StorePosTypes = StorePosTypes.AsDictionary.Values.ToList();
+            model.Currencies = this.currencies.Select(c => new CurrencyViewModel { CurrencyTypeID  = c.currencyTypeID, CurrencyTypeCode  = c.currencyTypeCode,  CurrencyTypeDesc  = c.currencyTypeDesc, IssuingEntity  = c.issuingEntity, NumericCode  = c.numericCode, MinorUnit  = c.minorUnit, Symbol  = c.symbol});
 
             return model;
         }
@@ -149,7 +153,8 @@ namespace Icon.Web.Controllers
                     EwicAgencyId = locale.EwicAgencyId,
                     Fax = locale.Fax,
                     IrmaStoreId = locale.IrmaStoreId,
-                    StorePosType = locale.StorePosType
+                    StorePosType = locale.StorePosType,
+                    CurrencyCode = locale.CurrencyCode
                 };
 
                 storeHierarchy.Add(gridViewModel);
@@ -312,7 +317,8 @@ namespace Icon.Web.Controllers
                             EwicAgencyId = localeRow.EwicAgencyId,
                             IrmaStoreId = localeRow.IrmaStoreId,
                             StorePosType = localeRow.StorePosType,
-                            UserName = User.Identity.Name
+                            UserName = User.Identity.Name,
+                            CurrencyCode = localeRow.CurrencyCode
                         };
 
                         try
@@ -344,6 +350,7 @@ namespace Icon.Web.Controllers
             viewModel.StorePosTypes = StorePosTypes.AsDictionary.Values.Select(t => new SelectListItem { Value = t, Text = t });
             viewModel.StorePosTypes.First().Selected = true;
             viewModel.EwicAgencies = this.eWicAgencies.Select(a => new SelectListItem { Value = a.AgencyId, Text = a.AgencyId });
+            viewModel.CurrencyTypes = this.currencies.Select(c => new SelectListItem { Value = c.currencyTypeID.ToString(), Text = c.currencyTypeCode });
 
             return viewModel;
         }

@@ -29,5 +29,6 @@ namespace Icon.Web.DataAccess.Commands
         public string IrmaStoreId { get; set; }
         public string StorePosType { get; set; }
         public string UserName { get; set; }
+        public string CurrencyCode { get; set; }
     }
 }

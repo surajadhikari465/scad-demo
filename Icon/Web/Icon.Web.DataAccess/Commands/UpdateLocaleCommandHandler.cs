@@ -43,6 +43,7 @@ namespace Icon.Web.DataAccess.Commands
             AddOrUpdateTraitValue(TraitCodes.IrmaStoreId, existingLocale, data.IrmaStoreId);
             AddOrUpdateTraitValue(TraitCodes.StorePosType, existingLocale, data.StorePosType);
             AddOrUpdateTraitValue(TraitCodes.ModifiedUser, existingLocale, data.UserName);
+            AddOrUpdateTraitValue(TraitCodes.Currency, existingLocale, data.CurrencyCode);
 
             UpdateAddress(existingLocale, data);
 

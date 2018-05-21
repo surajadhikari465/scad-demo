@@ -54,6 +54,7 @@ namespace Icon.Web.Mvc.Models
         public string IrmaStoreId { get; set; }
         public string StorePosType { get; set; }
         public string Fax { get; set; }
+        public string CurrencyCode { get; set; }
 
         public LocaleGridRowViewModel() { }
 
@@ -93,6 +94,7 @@ namespace Icon.Web.Mvc.Models
             IrmaStoreId = LocaleAccessor.GetIrmaStoreId(locale);
             StorePosType = LocaleAccessor.GetStorePosType(locale);
             Fax = LocaleAccessor.GetFax(locale);
+            CurrencyCode = LocaleAccessor.GetCurrencyCode(locale);
 
             Locales = new List<LocaleGridRowViewModel>();
         }

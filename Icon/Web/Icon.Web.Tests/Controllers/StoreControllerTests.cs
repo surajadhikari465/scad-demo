@@ -17,7 +17,7 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class StoreControllerTests
     {
         StoreController controller;
@@ -170,5 +170,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             Assert.AreEqual("error", message);
         }
+
     }
 }
