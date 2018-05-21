@@ -54,7 +54,7 @@ BEGIN
 
 	PRINT '----------------------------------------';
 	PRINT 'INSERTING into the app.MessageQueueProduct and app.MessageQueueNutrition tables...';
-	EXEC [app].[GenerateItemUpdateMessages] @items;
+	EXEC [infor].[GenerateItemUpdateMessages] @items;
 	PRINT 'Successfully completed INSERT into the app.MessageQueueProduct and app.MessageQueueNutrition tables.';
 END
 GO

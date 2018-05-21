@@ -1,12 +1,11 @@
 ﻿using Icon.ApiController.Common;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
+using Icon.DbContextFactory;
 using Icon.Framework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Icon.DbContextFactory;
 
 namespace Icon.ApiController.DataAccess.Queries
 {
@@ -27,6 +26,11 @@ namespace Icon.ApiController.DataAccess.Queries
             {
                 switch (parameters.LocaleTypeId)
                 {
+                    case (LocaleTypes.Chain):
+                        {
+                            localeLineage = BuildLineageFromChain(context, parameters.LocaleId);
+                            break;
+                        }
                     case (LocaleTypes.Region):
                         {
                             localeLineage = BuildLineageFromRegion(context, parameters.LocaleId);
@@ -52,80 +56,62 @@ namespace Icon.ApiController.DataAccess.Queries
             return localeLineage;
         }
 
-        private LocaleLineageModel BuildLineageFromStore(IconContext context, int localeId)
+        private LocaleLineageModel BuildLineageFromChain(IconContext context, int localeId)
         {
-            var store = context.Locale
-                .Include(l => l.LocaleTrait.Select(lt => lt.Trait))
-                .Include(l => l.LocaleAddress)
-                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.City))
-                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Territory))
-                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Country))
-                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.PostalCode))
-                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Timezone))
-                .Include(l => l.LocaleAddress.Select(la => la.AddressUsage))
-                .Single(l => l.localeID == localeId);
-
-            var metro = store.Locale2;
-            var region = metro.Locale2;
-            var chain = region.Locale2;
+            var chain = context.Locale.Single(l => l.localeID == localeId);
 
             var localeLineage = new LocaleLineageModel
             {
                 LocaleId = chain.localeID,
                 LocaleName = chain.localeName,
-                DescendantLocales = new List<LocaleLineageModel>
-                {
-                    new LocaleLineageModel
-                    {
-                        LocaleId = region.localeID,
-                        LocaleName = region.localeName,
-                        DescendantLocales = new List<LocaleLineageModel>
-                        {
-                            new LocaleLineageModel
-                            {
-                                LocaleId = metro.localeID,
-                                LocaleName = metro.localeName,
-                                DescendantLocales = new List<LocaleLineageModel>
-                                {
-                                    BuildStoreLocaleLineageModel(store)
-                                }
-                            }
-                        }
-                    }
-                }
+                DescendantLocales = new List<LocaleLineageModel>()
             };
+            var regions = chain.Locale1.ToList();
 
-            return localeLineage;
-        }
-
-        private LocaleLineageModel BuildLineageFromMetro(IconContext context, int localeId)
-        {
-            var metro = context.Locale.Single(l => l.localeID == localeId);
-            var region = metro.Locale2;
-            var chain = region.Locale2;
-
-            var localeLineage = new LocaleLineageModel
+            foreach (var region in regions)
             {
-                LocaleId = chain.localeID,
-                LocaleName = chain.localeName,
-                DescendantLocales = new List<LocaleLineageModel>
+                var regionLocaleLineage = new LocaleLineageModel
                 {
-                    new LocaleLineageModel
+                    LocaleId = region.localeID,
+                    LocaleName = region.localeName,
+                    DescendantLocales = new List<LocaleLineageModel>()
+                };
+
+                var metros = region.Locale1.ToList();
+
+                foreach (var metro in metros)
+                {
+                    bool metroContainsStores = context.Locale.Any(l => l.parentLocaleID == metro.localeID);
+
+                    if (metroContainsStores)
                     {
-                        LocaleId = region.localeID,
-                        LocaleName = region.localeName,
-                        DescendantLocales = new List<LocaleLineageModel>
+                        regionLocaleLineage.DescendantLocales.Add(new LocaleLineageModel
                         {
-                            new LocaleLineageModel
-                            {
-                                LocaleId = metro.localeID,
-                                LocaleName = metro.localeName,
-                                DescendantLocales = BuildStoreDescendantLocales(context, metro)
-                            }
+                            LocaleId = metro.localeID,
+                            LocaleName = metro.localeName,
+                            DescendantLocales = new List<LocaleLineageModel>()
+                        });
+
+                        var stores = context.Locale.Where(l => l.parentLocaleID == metro.localeID)
+                            .Include(l => l.LocaleTrait.Select(lt => lt.Trait))
+                            .Include(l => l.LocaleAddress)
+                            .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.City))
+                            .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Territory))
+                            .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Country))
+                            .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.PostalCode))
+                            .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Timezone))
+                            .Include(l => l.LocaleAddress.Select(la => la.AddressUsage))
+                            .ToList();
+
+                        foreach (var store in stores)
+                        {
+                            regionLocaleLineage.DescendantLocales.Single(l => l.LocaleId == metro.localeID).DescendantLocales.Add(BuildStoreLocaleLineageModel(store));
                         }
                     }
                 }
-            };
+
+                localeLineage.DescendantLocales.Add(regionLocaleLineage);
+            }
 
             return localeLineage;
         }
@@ -181,6 +167,84 @@ namespace Icon.ApiController.DataAccess.Queries
                 LocaleId = chain.localeID,
                 LocaleName = chain.localeName,
                 DescendantLocales = new List<LocaleLineageModel> { regionLocaleLineage }
+            };
+
+            return localeLineage;
+        }
+
+        private LocaleLineageModel BuildLineageFromMetro(IconContext context, int localeId)
+        {
+            var metro = context.Locale.Single(l => l.localeID == localeId);
+            var region = metro.Locale2;
+            var chain = region.Locale2;
+
+            var localeLineage = new LocaleLineageModel
+            {
+                LocaleId = chain.localeID,
+                LocaleName = chain.localeName,
+                DescendantLocales = new List<LocaleLineageModel>
+                {
+                    new LocaleLineageModel
+                    {
+                        LocaleId = region.localeID,
+                        LocaleName = region.localeName,
+                        DescendantLocales = new List<LocaleLineageModel>
+                        {
+                            new LocaleLineageModel
+                            {
+                                LocaleId = metro.localeID,
+                                LocaleName = metro.localeName,
+                                DescendantLocales = BuildStoreDescendantLocales(context, metro)
+                            }
+                        }
+                    }
+                }
+            };
+
+            return localeLineage;
+        }
+
+        private LocaleLineageModel BuildLineageFromStore(IconContext context, int localeId)
+        {
+            var store = context.Locale
+                .Include(l => l.LocaleTrait.Select(lt => lt.Trait))
+                .Include(l => l.LocaleAddress)
+                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.City))
+                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Territory))
+                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Country))
+                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.PostalCode))
+                .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Timezone))
+                .Include(l => l.LocaleAddress.Select(la => la.AddressUsage))
+                .Single(l => l.localeID == localeId);
+
+            var metro = store.Locale2;
+            var region = metro.Locale2;
+            var chain = region.Locale2;
+
+            var localeLineage = new LocaleLineageModel
+            {
+                LocaleId = chain.localeID,
+                LocaleName = chain.localeName,
+                DescendantLocales = new List<LocaleLineageModel>
+                {
+                    new LocaleLineageModel
+                    {
+                        LocaleId = region.localeID,
+                        LocaleName = region.localeName,
+                        DescendantLocales = new List<LocaleLineageModel>
+                        {
+                            new LocaleLineageModel
+                            {
+                                LocaleId = metro.localeID,
+                                LocaleName = metro.localeName,
+                                DescendantLocales = new List<LocaleLineageModel>
+                                {
+                                    BuildStoreLocaleLineageModel(store)
+                                }
+                            }
+                        }
+                    }
+                }
             };
 
             return localeLineage;
