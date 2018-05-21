@@ -1,11 +1,21 @@
 ﻿IF DATABASE_PRINCIPAL_ID('MammothRole') IS NULL
 	CREATE Role [MammothRole]
 
+/*
+-- General Security Guidelines --
+1) Grant access to DB roles, not specific accounts/users/AD groups.
+2) Blanket grants, such as exec at schema level, are okay to service accounts (not real people/users).
+3) Grants to TMs and/or User Teams should be focused, meaning to specific objects (stored procedures), 
+so access is controlled and more difficult to "abuse" (start reading/using other data that wasn't originally in scope).
+4) Explicit grants are needed for user-defined types.
+5) DB_Owner or DDL_Admin only under special exception (approved by DBA Team).
+*/
+
 -- SELECT, UPDATE, INSERT, DELETE
-GRANT SELECT, UPDATE, INSERT on SCHEMA::[app]			to [MammothRole];
-GRANT SELECT, UPDATE, INSERT on SCHEMA::[esb]			to [MammothRole];
-GRANT SELECT, UPDATE, INSERT, DELETE on SCHEMA::[dbo]	to [MammothRole];
-GRANT SELECT, UPDATE, INSERT, DELETE on SCHEMA::[stage] to [MammothRole];
+GRANT EXECUTE, SELECT, UPDATE, INSERT on SCHEMA::[app]			to [MammothRole];
+GRANT EXECUTE, SELECT, UPDATE, INSERT on SCHEMA::[esb]			to [MammothRole];
+GRANT EXECUTE, SELECT, UPDATE, INSERT, DELETE on SCHEMA::[dbo]	to [MammothRole];
+GRANT EXECUTE, SELECT, UPDATE, INSERT, DELETE on SCHEMA::[stage] to [MammothRole];
 
 -- Stored Procedures
 GRANT EXECUTE on [dbo].[AddOrUpdateHierarchyClass_FromStaging]			to [MammothRole];
