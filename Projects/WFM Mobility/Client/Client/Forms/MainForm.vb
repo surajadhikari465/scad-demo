@@ -490,7 +490,8 @@ Public Class MainForm
         regKey = Registry.CurrentUser.OpenSubKey("Software\WFM Mobile", True)
         Dim region As String = regKey.GetValue("Region")
 
-        If region = "TS" Then region = ""
+		' commented out for pbi 21590
+        'If region = "TS" Then region = ""
 
         regKey.Close()
 
