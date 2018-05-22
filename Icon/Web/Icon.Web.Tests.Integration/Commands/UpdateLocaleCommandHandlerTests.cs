@@ -1,6 +1,7 @@
 ﻿using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
+using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -29,12 +30,14 @@ namespace Icon.Web.Tests.Integration.Commands
         private PhysicalAddress physicalAddress;
         Locale testLocale;
         DbContextTransaction transaction;
+        private GetCurrencyForCountryQuery getCurrencyQuery;
 
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
-            updateLocaleCommandHandler = new UpdateLocaleCommandHandler(this.context);
+            getCurrencyQuery = new GetCurrencyForCountryQuery(context);
+            updateLocaleCommandHandler = new UpdateLocaleCommandHandler(this.context, getCurrencyQuery);
 
             localeName = "Integration Test Store";
             storeAbbreviation = "TST";

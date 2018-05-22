@@ -246,14 +246,13 @@
                                                    .EditorType(ColumnEditorType.Text)
                                                    .EditorOptions(@"validatorOptions: {errorMessage: '" + IconResources.Store.IrmaStoreId + @"', regExp:/^$|^([0-9]){1,5}$/}");
                                                colSetting.ColumnSetting().ColumnKey("CurrencyCode")
+                                                   .ReadOnly(true)
                                                    .Required(false)
-                                                   .EditorType(ColumnEditorType.Combo)
+                                                   .EditorType(ColumnEditorType.Text)
                                                    .ComboEditorOptions(currencyOptions =>
                                                        currencyOptions.DataSource(Model.Currencies.AsQueryable())
                                                            .ValueKey("CurrencyTypeCode")
-                                                           //.TextKey("CurrencyTypeCode")
                                                            .ShowDropDownButton(true)
-                                                           //.RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
                                                            .AllowCustomValue(false)
                                                            .Virtualization(true)
                                                            .DropDownWidth(500));

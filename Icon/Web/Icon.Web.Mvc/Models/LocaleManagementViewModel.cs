@@ -139,6 +139,7 @@ namespace Icon.Web.Mvc.Models
 
         public string SelectedCurrency { get; set; }
         [Display(Name = "Currency")]
+        [Editable(false)]
         public IEnumerable<SelectListItem> CurrencyTypes { get; set; }
     }
 }

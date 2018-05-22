@@ -397,9 +397,11 @@
     <Compile Include="Queries\GetBrandAbbreviationsThatExistQuery.cs" />
     <Compile Include="Queries\GetAplScanCodesQuery.cs" />
     <Compile Include="Queries\GetAplScanCodesParameters.cs" />
+    <Compile Include="Queries\GetCurrencyForCountryQuery.cs" />
     <Compile Include="Queries\GetCertificationAgencyIdsAssociatedToItemsParameters.cs" />
     <Compile Include="Queries\GetCertificationAgenciesByTraitParameters.cs" />
     <Compile Include="Queries\GetCertificationAgenciesByTraitQuery.cs" />
+    <Compile Include="Queries\GetCurrencyForCountryParameters.cs" />
     <Compile Include="Queries\GetCurrentEwicMappingParameters.cs" />
     <Compile Include="Queries\GetDefaultTaxClassMismatchesParameters.cs" />
     <Compile Include="Queries\GetDefaultTaxClassMismatchesQuery.cs" />

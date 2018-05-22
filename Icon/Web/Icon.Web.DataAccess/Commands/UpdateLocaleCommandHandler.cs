@@ -1,6 +1,7 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.DataAccess.Infrastructure;
+using Icon.Web.DataAccess.Queries;
 using System;
 using System.Data.Entity;
 using System.Globalization;
@@ -11,10 +12,12 @@ namespace Icon.Web.DataAccess.Commands
     public class UpdateLocaleCommandHandler : ICommandHandler<UpdateLocaleCommand>
     {
         private IconContext context;
+        private IQueryHandler<GetCurrencyForCountryParameters, Currency> currencyQuery;
 
-        public UpdateLocaleCommandHandler(IconContext context)
+        public UpdateLocaleCommandHandler(IconContext context, IQueryHandler<GetCurrencyForCountryParameters, Currency> currencyQuery)
         {
             this.context = context;
+            this.currencyQuery = currencyQuery;
         }
 
         public void Execute(UpdateLocaleCommand data)
@@ -43,7 +46,12 @@ namespace Icon.Web.DataAccess.Commands
             AddOrUpdateTraitValue(TraitCodes.IrmaStoreId, existingLocale, data.IrmaStoreId);
             AddOrUpdateTraitValue(TraitCodes.StorePosType, existingLocale, data.StorePosType);
             AddOrUpdateTraitValue(TraitCodes.ModifiedUser, existingLocale, data.UserName);
-            AddOrUpdateTraitValue(TraitCodes.Currency, existingLocale, data.CurrencyCode);
+            // set the currency code trait based on the country set for the Locale
+            var currencyCode = GetCurrencyCodeForCountry(data.CountryId);
+            if (!String.IsNullOrWhiteSpace(currencyCode))
+            {
+                AddOrUpdateTraitValue(TraitCodes.Currency, existingLocale, currencyCode);
+            }
 
             UpdateAddress(existingLocale, data);
 
@@ -186,6 +194,13 @@ namespace Icon.Web.DataAccess.Commands
             address.timezoneID = command.TimezoneId;
             address.cityID = city.cityID;
             address.postalCodeID = postalCode.postalCodeID;
+        }
+
+        private string GetCurrencyCodeForCountry(int countryId)
+        {
+            var currencyForCountry = currencyQuery.Search(new GetCurrencyForCountryParameters { CountryId = countryId });
+            if (currencyForCountry == default(Currency)) return "USD";
+            return currencyForCountry.currencyTypeCode;
         }
     }
 }

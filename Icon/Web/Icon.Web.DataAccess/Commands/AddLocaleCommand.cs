@@ -21,5 +21,6 @@ namespace Icon.Web.DataAccess.Commands
         public string StorePosType { get; set; }
 
         public string UserName { get; set; }
+        public int CountryId { get; set; }
     }
 }

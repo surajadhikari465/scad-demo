@@ -7,10 +7,11 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using Icon.Web.DataAccess.Queries;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddLocaleCommandHandlerTests
     {
         private AddLocaleCommandHandler addLocaleCommandHandler;
@@ -20,12 +21,14 @@ namespace Icon.Web.Tests.Integration.Commands
         private string localeName;
         private Agency testAgency;
         private string testAgencyId;
+        private GetCurrencyForCountryQuery getCurrencyQuery;
 
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
-            addLocaleCommandHandler = new AddLocaleCommandHandler(context);
+            getCurrencyQuery = new GetCurrencyForCountryQuery(context);
+            addLocaleCommandHandler = new AddLocaleCommandHandler(context, getCurrencyQuery);
 
             localeName = "Integration Test Store";
 
@@ -35,7 +38,8 @@ namespace Icon.Web.Tests.Integration.Commands
                 LocaleParentId = 1,
                 OpenDate = DateTime.Now,
                 OwnerOrgPartyId = 1,
-                LocaleTypeId = LocaleTypes.Store
+                LocaleTypeId = LocaleTypes.Store,
+                CountryId = 1
             };
 
             transaction = context.Database.BeginTransaction();

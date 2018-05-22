@@ -6,12 +6,13 @@ BEGIN
 	print '[' + convert(nvarchar, getdate(), 121) + '] ' + @scriptKey;	
 	SET IDENTITY_INSERT dbo.Trait ON;
 
-	--regular expressions for validation (trait patterns)
+	DECLARE @currencyTraitId int = 167;
 	DECLARE @patternCurrency nvarchar(255) = N'^[C][A][D]$|^[G][B][P]$|^[U][S][D]$';
 
+	-- add trait for currency
 	IF NOT EXISTS (SELECT 1 FROM dbo.Trait WHERE traitCode= 'CUR')
 	INSERT dbo.Trait (traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
-			VALUES  (167, 1, N'CUR', N'Currency Code', @patternCurrency);
+			VALUES  (@currencyTraitId, 1, N'CUR', N'Currency Code', @patternCurrency);
 
 	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@scriptKey, GETDATE())
 	SET IDENTITY_INSERT dbo.Trait OFF
@@ -33,6 +34,32 @@ BEGIN
 		 VALUES
 			   ('GBP', 'Pound Sterling', 'UNITED KINGDOM OF GREAT BRITAIN AND NORTHERN IRELAND (THE)', 826, 2, '£')
 		   
+	-- populate currency trait for existing locales
+	INSERT INTO dbo.LocaleTrait
+	SELECT 
+		@currencyTraitId AS traitID
+		, L.localeID AS localeID
+		, NULL AS uomID
+		, CASE 
+			WHEN C.countryCode = 'CAN' THEN 'CAD'
+			WHEN C.countryCode = 'GBR' THEN 'GBP'
+			ELSE 'USD'
+		END AS traitValue
+	FROM dbo.Locale L
+		INNER JOIN dbo.LocaleType LTY ON LTY.localeTypeID = L.localeTypeID
+		INNER JOIN dbo.LocaleAddress LA ON LA.localeID = L.localeID
+		INNER JOIN dbo.Address A ON A.addressID = LA.addressID
+		INNER JOIN dbo.PhysicalAddress PA ON PA.addressID = A.addressID
+		INNER JOIN dbo.Country C ON C.countryID = PA.countryID
+	WHERE L.localeID NOT IN (
+		SELECT L.localeID
+		FROM dbo.Locale L
+			INNER JOIN dbo.LocaleType LTY ON LTY.localeTypeID = L.localeTypeID
+			INNER JOIN dbo.LocaleTrait LT ON LT.localeID = L.localeID
+			INNER JOIN dbo.Trait T ON T.traitID = LT.traitID
+		WHERE LTY.localeTypeDesc = 'Store' AND T.traitCode = 'CUR'
+	)
+
 END
 ELSE
 BEGIN

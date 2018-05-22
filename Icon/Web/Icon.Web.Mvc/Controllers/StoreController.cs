@@ -317,8 +317,7 @@ namespace Icon.Web.Controllers
                             EwicAgencyId = localeRow.EwicAgencyId,
                             IrmaStoreId = localeRow.IrmaStoreId,
                             StorePosType = localeRow.StorePosType,
-                            UserName = User.Identity.Name,
-                            CurrencyCode = localeRow.CurrencyCode
+                            UserName = User.Identity.Name
                         };
 
                         try
