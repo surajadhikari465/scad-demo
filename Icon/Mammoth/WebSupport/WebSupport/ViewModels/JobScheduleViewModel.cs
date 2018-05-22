@@ -54,62 +54,62 @@ namespace WebSupport.ViewModels
     internal class JobScheduleMetaData
     {
         [Display(Name = "Job Schedule Id")]
-        public object JobScheduleId;
+        public object JobScheduleId { get; set; }
 
         [Required]
         [Display(Name = "Job Name")]
-        public object JobName;
+        public object JobName { get; set; }
 
         [Display(Name = "Region")]
         [MaxLength(2)]
-        public object Region;
+        public object Region { get; set; }
 
         [Display(Name = "Destination Queue Name")]
         [DataType(DataType.MultilineText)]
-        public object DestinationQueueName;
+        public object DestinationQueueName { get; set; }
 
         [Required]
         [Display(Name = "Start DateTime UTC")]
         [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
-        public object StartDateTimeUtc;
+        public object StartDateTimeUtc { get; set; }
 
         [Required]
         [Display(Name = "Start DateTime")]
-        public object StartDateTime;
+        public object StartDateTime { get; set; }
 
         [Display(Name = "Last Scheduled DateTime UTC")]
         [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
-        public object LastScheduledDateTimeUtc;
+        public object LastScheduledDateTimeUtc { get; set; }
 
         [Display(Name = "Last Scheduled DateTime")]
-        public object LastScheduledDateTime;
+        public object LastScheduledDateTime { get; set; }
 
         [Display(Name = "Last Run End DateTime UTC")]
-        public object LastRunEndDateTimeUtc;
+        public object LastRunEndDateTimeUtc { get; set; }
 
         [Display(Name = "Last Run End DateTime")]
-        public object LastRunEndDateTime;
+        public object LastRunEndDateTime { get; set; }
 
         [Required]
         [Display(Name = "Next Scheduled DateTime UTC")]
         [DisplayFormat(DataFormatString = "{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'}", ApplyFormatInEditMode = true)]
-        public object NextScheduledDateTimeUtc;
+        public object NextScheduledDateTimeUtc { get; set; }
 
         [Required]
         [Display(Name = "Next Scheduled DateTime")]
-        public object NextScheduledDateTime;
+        public object NextScheduledDateTime { get; set; }
 
         [Display(Name = "Interval (In Seconds)")]
         [Range(0, Int32.MaxValue)]
-        public object IntervalInSeconds;
+        public object IntervalInSeconds { get; set; }
 
         [Required]
         [Display(Name = "Enabled?")]
-        public object Enabled;
+        public object Enabled { get; set; }
 
         [Required]
         [Display(Name = "Status")]
-        public object Status;
+        public object Status { get; set; }
 
         [Display(Name = "Xml Object (Parameter)")]
         [AllowHtml]

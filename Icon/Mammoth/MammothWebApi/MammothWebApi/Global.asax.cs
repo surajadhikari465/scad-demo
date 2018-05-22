@@ -69,6 +69,7 @@ namespace MammothWebApi
             container.Register<IEsbConnectionFactory>(() => new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10") });
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString), Lifestyle.Scoped);
             container.Register<ISerializer<items>, Serializer<items>>();
+            container.Register<IEsbConnectionCacheFactory, EsbConnectionCacheFactory>();
 
             // Decorators  
             container.RegisterDecorator(typeof(IUpdateService<AddUpdatePrice>), typeof(PrimeAffinityPsgAddPriceServiceDecorator));

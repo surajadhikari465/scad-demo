@@ -6,6 +6,7 @@ using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.PrimeAffinity.Library.Commands;
+using Mammoth.PrimeAffinity.Library.Esb;
 using Mammoth.PrimeAffinity.Library.MessageBuilders;
 using Mammoth.PrimeAffinity.Library.Processors;
 using SimpleInjector;
@@ -30,6 +31,7 @@ namespace PrimeAffinityController
             container.Register<IMessageBuilder<PrimeAffinityMessageBuilderParameters>, PrimeAffinityMessageBuilder>();
             container.Register<IPrimeAffinityPsgProcessor<PrimeAffinityPsgProcessorParameters>, PrimeAffinityPsgProcessor>();
             container.Register<IEsbConnectionFactory>(() => new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10") });
+            container.Register<IEsbConnectionCacheFactory, EsbConnectionCacheFactory>();
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
             container.Register<ISerializer<items>, Serializer<items>>();
             container.Register(typeof(ILogger<>), typeof(NLogLogger<>));
@@ -37,7 +39,10 @@ namespace PrimeAffinityController
             container.Register(typeof(ICommandHandler<>), new[] { Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(ArchivePrimeAffinityMessageCommandHandler)) });
 
             Registration registration = container.GetRegistration(typeof(IDbConnection)).Registration;
-            registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,"DbConnection does not need to be disposed.");
+            registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "DbConnection does not need to be disposed.");
+
+            EsbConnectionCache.EsbConnectionSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10");
+            EsbConnectionCache.InitializeConnectionFactoryAndConnection();
 
             return container;
         }

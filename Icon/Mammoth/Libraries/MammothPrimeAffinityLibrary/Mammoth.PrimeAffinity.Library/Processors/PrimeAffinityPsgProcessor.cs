@@ -1,5 +1,4 @@
 ﻿using Esb.Core.MessageBuilders;
-using Icon.Esb.Factory;
 using Icon.Logging;
 using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.CommandQuery;
@@ -18,30 +17,30 @@ namespace Mammoth.PrimeAffinity.Library.Processors
     {
         private PrimeAffinityPsgProcessorSettings settings;
         private IMessageBuilder<PrimeAffinityMessageBuilderParameters> messageBuilder;
-        private IEsbConnectionFactory esbConnectionFactory;
         private ICommandHandler<ArchivePrimeAffinityMessageCommand> archivePrimeAffinityMessagesCommandHandler;
+        private IEsbConnectionCacheFactory connectionCacheFactory;
         private ILogger<PrimeAffinityPsgProcessor> logger;
 
         public PrimeAffinityPsgProcessor(
             PrimeAffinityPsgProcessorSettings settings,
             IMessageBuilder<PrimeAffinityMessageBuilderParameters> messageBuilder,
-            IEsbConnectionFactory esbConnectionFactory,
             ICommandHandler<ArchivePrimeAffinityMessageCommand> archivePrimeAffinityMessagesCommandHandler,
+            IEsbConnectionCacheFactory connectionCacheFactory,
             ILogger<PrimeAffinityPsgProcessor> logger)
         {
             this.settings = settings;
             this.messageBuilder = messageBuilder;
-            this.esbConnectionFactory = esbConnectionFactory;
             this.archivePrimeAffinityMessagesCommandHandler = archivePrimeAffinityMessagesCommandHandler;
+            this.connectionCacheFactory = connectionCacheFactory;
             this.logger = logger;
         }
 
         public void SendPsgs(PrimeAffinityPsgProcessorParameters parameters)
         {
             logger.Info(new { Message = "Sending Prime Affinity PSGs.", Region = parameters.Region, MessageAction = parameters.MessageAction.ToString() }.ToJson());
-            using (var producer = EsbConnectionCache.CreateProducer())
+            using (var producer = connectionCacheFactory.CreateProducer())
             {
-                foreach (var psgBatch in parameters.PrimeAffinityMessageModels.Batch(100))
+                foreach (var psgBatch in parameters.PrimeAffinityMessageModels.DistinctBy(p => new { p.BusinessUnitID, p.ItemID, p.MessageAction }).Batch(100))
                 {
                     foreach (var psgBatchGroup in psgBatch.GroupBy(b => b.BusinessUnitID))
                     {

@@ -87,6 +87,7 @@ namespace WebSupport.App_Start
             container.Register<IPrimeAffinityPsgProcessor<PrimeAffinityPsgProcessorParameters>, PrimeAffinityPsgProcessor>();
             container.Register(typeof(ILogger<>), typeof(NLogLogger<>));
             container.Register(typeof(Mammoth.Common.DataAccess.CommandQuery.ICommandHandler<>), new[] { Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(ArchivePrimeAffinityMessageCommandHandler)) });
+            container.Register<IEsbConnectionCacheFactory, EsbConnectionCacheFactory>();
 
             EsbConnectionCache.EsbConnectionSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("PrimeAffinityPsg");
             EsbConnectionCache.InitializeConnectionFactoryAndConnection();

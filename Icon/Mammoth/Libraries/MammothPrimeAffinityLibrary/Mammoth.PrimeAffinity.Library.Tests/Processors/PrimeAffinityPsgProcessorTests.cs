@@ -1,10 +1,9 @@
 ﻿using Esb.Core.MessageBuilders;
-using Icon.Esb.Factory;
-using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.PrimeAffinity.Library.Commands;
+using Mammoth.PrimeAffinity.Library.Esb;
 using Mammoth.PrimeAffinity.Library.MessageBuilders;
 using Mammoth.PrimeAffinity.Library.Processors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,31 +20,30 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
         private PrimeAffinityPsgProcessor processor;
         private PrimeAffinityPsgProcessorSettings settings;
         private Mock<IMessageBuilder<PrimeAffinityMessageBuilderParameters>> messageBuilder;
-        private Mock<IEsbConnectionFactory> esbConnectionFactory;
         private Mock<ICommandHandler<ArchivePrimeAffinityMessageCommand>> archivePrimeAffinityMessagesCommandHandler;
         private Mock<ILogger<PrimeAffinityPsgProcessor>> logger;
         private PrimeAffinityPsgProcessorParameters parameters;
-        private Mock<IEsbProducer> producer;
+        private Mock<ICacheEsbProducer> producer;
+        private Mock<IEsbConnectionCacheFactory> esbConnectionCacheFactory;
 
         [TestInitialize]
         public void Initialize()
         {
             settings = new PrimeAffinityPsgProcessorSettings();
             messageBuilder = new Mock<IMessageBuilder<PrimeAffinityMessageBuilderParameters>>();
-            esbConnectionFactory = new Mock<IEsbConnectionFactory>();
             archivePrimeAffinityMessagesCommandHandler = new Mock<ICommandHandler<ArchivePrimeAffinityMessageCommand>>();
             logger = new Mock<ILogger<PrimeAffinityPsgProcessor>>();
+            esbConnectionCacheFactory = new Mock<IEsbConnectionCacheFactory>();
 
             processor = new PrimeAffinityPsgProcessor(
                 settings,
                 messageBuilder.Object,
-                esbConnectionFactory.Object,
                 archivePrimeAffinityMessagesCommandHandler.Object,
+                esbConnectionCacheFactory.Object,
                 logger.Object);
             parameters = new PrimeAffinityPsgProcessorParameters { Region = "FL" };
-            producer = new Mock<IEsbProducer>();
-            esbConnectionFactory.Setup(m => m.CreateProducer(true))
-                .Returns(producer.Object);
+            producer = new Mock<ICacheEsbProducer>();
+            esbConnectionCacheFactory.Setup(f => f.CreateProducer()).Returns(producer.Object);
             messageBuilder.Setup(m => m.BuildMessage(It.IsAny<PrimeAffinityMessageBuilderParameters>()))
                 .Returns("Test");
         }
@@ -68,7 +66,7 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
 
             //Then
             messageBuilder.Verify(m => m.BuildMessage(It.IsAny<PrimeAffinityMessageBuilderParameters>()), Times.Once);
-            esbConnectionFactory.Verify(m => m.CreateProducer(true), Times.Once);
+            esbConnectionCacheFactory.Verify(m => m.CreateProducer(), Times.Once);
             archivePrimeAffinityMessagesCommandHandler.Verify(m => m.Execute(It.IsAny<ArchivePrimeAffinityMessageCommand>()), Times.Once);
             producer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
@@ -84,7 +82,7 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
 
             //Then
             messageBuilder.Verify(m => m.BuildMessage(It.IsAny<PrimeAffinityMessageBuilderParameters>()), Times.Never);
-            esbConnectionFactory.Verify(m => m.CreateProducer(true), Times.Once);
+            esbConnectionCacheFactory.Verify(m => m.CreateProducer(), Times.Once);
             archivePrimeAffinityMessagesCommandHandler.Verify(m => m.Execute(It.IsAny<ArchivePrimeAffinityMessageCommand>()), Times.Never);
             producer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
         }
@@ -109,7 +107,7 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
 
             //Then
             messageBuilder.Verify(m => m.BuildMessage(It.IsAny<PrimeAffinityMessageBuilderParameters>()), Times.Once);
-            esbConnectionFactory.Verify(m => m.CreateProducer(true), Times.Once);
+            esbConnectionCacheFactory.Verify(m => m.CreateProducer(), Times.Once);
             archivePrimeAffinityMessagesCommandHandler.Verify(m => m.Execute(It.IsAny<ArchivePrimeAffinityMessageCommand>()), Times.Once);
             producer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             logger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
@@ -133,7 +131,7 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
 
             //Then
             messageBuilder.Verify(m => m.BuildMessage(It.IsAny<PrimeAffinityMessageBuilderParameters>()), Times.Exactly(2));
-            esbConnectionFactory.Verify(m => m.CreateProducer(true), Times.Once);
+            esbConnectionCacheFactory.Verify(m => m.CreateProducer(), Times.Once);
             archivePrimeAffinityMessagesCommandHandler.Verify(m => m.Execute(It.IsAny<ArchivePrimeAffinityMessageCommand>()), Times.Exactly(2));
             producer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(2));
             logger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
@@ -146,7 +144,7 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
             var primeAffinityModels = new List<PrimeAffinityMessageModel>();
             for (int i = 0; i < 350; i++)
             {
-                primeAffinityModels.Add(new PrimeAffinityMessageModel { BusinessUnitID = 1, MessageAction = ActionEnum.AddOrUpdate });
+                primeAffinityModels.Add(new PrimeAffinityMessageModel { ItemID = i, BusinessUnitID = 1, MessageAction = ActionEnum.AddOrUpdate });
             }
             parameters.PrimeAffinityMessageModels = primeAffinityModels.AsEnumerable();
 
@@ -155,7 +153,7 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
 
             //Then
             messageBuilder.Verify(m => m.BuildMessage(It.IsAny<PrimeAffinityMessageBuilderParameters>()), Times.Exactly(4));
-            esbConnectionFactory.Verify(m => m.CreateProducer(true), Times.Once);
+            esbConnectionCacheFactory.Verify(m => m.CreateProducer(), Times.Once);
             archivePrimeAffinityMessagesCommandHandler.Verify(m => m.Execute(It.IsAny<ArchivePrimeAffinityMessageCommand>()), Times.Exactly(4));
             producer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(4));
             logger.Verify(m => m.Error(It.IsAny<string>()), Times.Never);
@@ -177,7 +175,7 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
 
             //Then
             messageBuilder.Verify(m => m.BuildMessage(It.IsAny<PrimeAffinityMessageBuilderParameters>()), Times.Exactly(4));
-            esbConnectionFactory.Verify(m => m.CreateProducer(true), Times.Once);
+            esbConnectionCacheFactory.Verify(m => m.CreateProducer(), Times.Once);
             archivePrimeAffinityMessagesCommandHandler.Verify(m => m.Execute(It.IsAny<ArchivePrimeAffinityMessageCommand>()), Times.Exactly(4));
             producer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(4));
             logger.Verify(m => m.Error(It.IsAny<string>()), Times.Never);
@@ -190,15 +188,15 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
             var primeAffinityModels = new List<PrimeAffinityMessageModel>();
             for (int i = 0; i < 201; i++)
             {
-                primeAffinityModels.Add(new PrimeAffinityMessageModel { BusinessUnitID = 1, MessageAction = ActionEnum.AddOrUpdate });
+                primeAffinityModels.Add(new PrimeAffinityMessageModel { ItemID = i, BusinessUnitID = 1, MessageAction = ActionEnum.AddOrUpdate });
             }
             for (int i = 0; i < 202; i++)
             {
-                primeAffinityModels.Add(new PrimeAffinityMessageModel { BusinessUnitID = 2, MessageAction = ActionEnum.AddOrUpdate });
+                primeAffinityModels.Add(new PrimeAffinityMessageModel { ItemID = i, BusinessUnitID = 2, MessageAction = ActionEnum.AddOrUpdate });
             }
             for (int i = 0; i < 203; i++)
             {
-                primeAffinityModels.Add(new PrimeAffinityMessageModel { BusinessUnitID = 3, MessageAction = ActionEnum.AddOrUpdate });
+                primeAffinityModels.Add(new PrimeAffinityMessageModel { ItemID = i, BusinessUnitID = 3, MessageAction = ActionEnum.AddOrUpdate });
             }
             parameters.PrimeAffinityMessageModels = primeAffinityModels.AsEnumerable();
 
@@ -212,11 +210,43 @@ namespace Mammoth.PrimeAffinity.Library.Tests.Processors
                         (p) => p.PrimeAffinityMessageModels
                             .All(pam => pam.BusinessUnitID == p.PrimeAffinityMessageModels.First().BusinessUnitID))),
                 Times.Exactly(9));
-            esbConnectionFactory.Verify(m => m.CreateProducer(true), Times.Once);
+            esbConnectionCacheFactory.Verify(m => m.CreateProducer(), Times.Once);
             archivePrimeAffinityMessagesCommandHandler.Verify(m => m.Execute(It.IsAny<ArchivePrimeAffinityMessageCommand>()), Times.Exactly(9));
             producer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(9));
             logger.Verify(m => m.Error(It.IsAny<string>()), Times.Never);
         }
+
+        [TestMethod]
+        public void Process_DuplicateItemBusinessUnitAndAction_ShouldOnlySendOneMessagePerItemStoreAction()
+        {
+            // Given
+            var expectedMessageCount = 1000;
+            var primeAffinityModels = new List<PrimeAffinityMessageModel>();
+
+            for (int i = 0; i < 100000; i++)
+            {
+                primeAffinityModels.Add(new PrimeAffinityMessageModel { ItemID = i, BusinessUnitID = 1, MessageAction = ActionEnum.AddOrUpdate });
+            }
+            for (int i = 0; i < 100000; i++)
+            {
+                primeAffinityModels.Add(new PrimeAffinityMessageModel { ItemID = i, BusinessUnitID = 1, MessageAction = ActionEnum.AddOrUpdate });
+            }
+            for (int i = 0; i < 100000; i++)
+            {
+                primeAffinityModels.Add(new PrimeAffinityMessageModel { ItemID = i, BusinessUnitID = 1, MessageAction = ActionEnum.AddOrUpdate });
+            }
+            parameters.PrimeAffinityMessageModels = primeAffinityModels.AsEnumerable();
+
+            // When
+            processor.SendPsgs(parameters);
+
+            // Then
+            messageBuilder.Verify(
+                m => m.BuildMessage(
+                    It.Is<PrimeAffinityMessageBuilderParameters>(
+                        (p) => p.PrimeAffinityMessageModels
+                            .All(pam => pam.BusinessUnitID == p.PrimeAffinityMessageModels.First().BusinessUnitID))),
+                Times.Exactly(expectedMessageCount));
+        }
     }
 }
-

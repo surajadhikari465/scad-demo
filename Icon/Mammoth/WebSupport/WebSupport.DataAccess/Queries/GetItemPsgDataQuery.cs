@@ -62,7 +62,7 @@ namespace WebSupport.DataAccess.Queries
                         AND p.BusinessUnitID = ssc.BusinessUnitID
                         AND (p.PriceType = 'REG'
 	                        OR (p.EndDate >= @Today
-		                        OR p.StartDate <= @Today
+		                        AND p.StartDate <= @Today
 		                    ))",
                       new
                       {
