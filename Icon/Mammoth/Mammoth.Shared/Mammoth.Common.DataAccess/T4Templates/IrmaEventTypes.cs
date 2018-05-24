@@ -10,5 +10,6 @@ namespace Mammoth.Common.DataAccess
 		public const int Price = 3;
 		public const int PriceRollback = 4;
 		public const int CancelAllSales = 5;
+		public const int ItemDeauthorization = 6;
 	}
 }
