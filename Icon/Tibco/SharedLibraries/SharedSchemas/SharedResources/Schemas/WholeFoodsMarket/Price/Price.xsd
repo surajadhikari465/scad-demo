@@ -22,7 +22,6 @@
 	<xs:complexType name="PriceType">
 		<xs:sequence>
 			<xs:element name="id" type="crf:PriceIdType" minOccurs="0"/>
-			<xs:element name="gpmId" type="crf:GPMIdType" minOccurs="0"/>
 			<xs:element name="type" type="prt:PriceTypeType" minOccurs="0"/>
 			<xs:element name="uom" type="uom:UomType" minOccurs="0"/>
 			<xs:element name="currencyTypeCode" type="erf:CurrencyTypeCodeEnum"/>
@@ -35,5 +34,6 @@
 			<xs:element name="traits" type="crf:TraitsType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute ref="crf:Action"/>
+		<xs:attribute ref="crf:Id"/>
 	</xs:complexType>
 </xs:schema>

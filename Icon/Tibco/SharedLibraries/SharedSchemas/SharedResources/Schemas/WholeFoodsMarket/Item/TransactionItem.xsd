@@ -26,12 +26,12 @@
 			<xs:element name="extendedAmount" type="amt:AmountType" minOccurs="0"/>
 			<xs:element name="extendedDiscountAmount" type="amt:AmountType" minOccurs="0"/>
 			<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
-			<xs:element name="retailPriceModifiers" type="irf:RetailPriceModifiersType" minOccurs="0"/>
+			<xs:element name="retailPriceModifiers" type="irf:RetailPriceModifiersType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="groupIndicators" type="irf:GroupIndicatorType" minOccurs="0"/>
 			<xs:element name="promotionTenderRewards" type="prf:PromotionRewards" minOccurs="0"/>
 			<xs:element name="promotionDeferredRewards" type="prf:PromotionDeferredRewards" minOccurs="0"/>
 			<xs:element name="taxes" type="yrf:TransactionTaxesType" minOccurs="0"/>
-			<xs:element name="wic" type="irf:WICType" minOccurs="0" />			
+			<xs:element name="wic" type="irf:WICType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

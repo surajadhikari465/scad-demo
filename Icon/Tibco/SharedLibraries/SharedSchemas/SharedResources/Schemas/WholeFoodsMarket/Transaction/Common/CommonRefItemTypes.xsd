@@ -148,7 +148,7 @@
 			<xs:element name="itemLinks" type="crf:LinksType" minOccurs="0"/>
 			<xs:element name="quantity" type="txf:QuantityType" minOccurs="0"/>
 			<xs:element name="reasonCode" type="crf:ReasonCodeType" minOccurs="0"/>
-			<xs:element name="lineItemRewardPromotion" type="ppf:LineItemRewardPromotionType" minOccurs="0"/>
+			<xs:element name="lineItemRewardPromotions" type="ppf:LineItemRewardPromotionsType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ApportionmentAmountType">
