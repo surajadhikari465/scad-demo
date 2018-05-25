@@ -130,6 +130,7 @@
     <Compile Include="Helpers\ViewModelValidationHelper.cs" />
     <Compile Include="Models\PriceRequestModelUnitTests.cs" />
     <Compile Include="Services\CancelsAllSalesServiceTest.cs" />
+    <Compile Include="Services\DeauthorizeItemLocaleServiceTests.cs" />
     <Compile Include="Services\ExtensionsTests.cs" />
     <Compile Include="Services\DbConnectionServiceDecoratorTests.cs" />
     <Compile Include="Services\TransactionServiceDecoratorTests.cs" />

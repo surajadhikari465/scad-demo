@@ -185,6 +185,8 @@
     <Compile Include="Services\AddUpdatePriceService.cs" />
     <Compile Include="Services\CancelAllSales.cs" />
     <Compile Include="Services\CancelAllSalesService.cs" />
+    <Compile Include="Services\DeauthorizeItemLocale.cs" />
+    <Compile Include="Services\DeauthorizeItemLocaleService.cs" />
     <Compile Include="Services\DeletePrice.cs" />
     <Compile Include="Services\DeletePriceService.cs" />
     <Compile Include="Services\GetItemStorePriceAttributes.cs" />

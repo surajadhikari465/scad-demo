@@ -117,6 +117,8 @@
     <Compile Include="Commands\CancelAllSalesCommandHandler.cs" />
     <Compile Include="Commands\DeleteItemLocaleSupplierCommand.cs" />
     <Compile Include="Commands\DeleteItemLocaleSupplierCommandHandler.cs" />
+    <Compile Include="Commands\DeleteItemLocalePriceCommand.cs" />
+    <Compile Include="Commands\DeleteItemLocalePriceCommandHandler.cs" />
     <Compile Include="Commands\DeletePricesCommand.cs" />
     <Compile Include="Commands\DeletePricesCommandHandler.cs" />
     <Compile Include="Commands\DeleteStagingCommand.cs" />
