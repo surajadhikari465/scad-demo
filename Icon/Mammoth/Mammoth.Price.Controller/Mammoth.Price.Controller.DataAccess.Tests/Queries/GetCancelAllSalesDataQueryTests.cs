@@ -8,11 +8,7 @@ using Mammoth.Price.Controller.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mammoth.Price.Controller.DataAccess.Tests.Queries
 {
@@ -75,6 +71,11 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Queries
                         .ToObject(),
                     x => x.Identifier_ID));
 
+            this.dbProvider.Connection.Execute(
+                $@"INSERT INTO dbo.ValidatedScanCode(ScanCode, InsertDate, InforItemId)
+                  VALUES ({expectedIdentifier}, GETDATE(), -1)",
+                transaction: dbProvider.Transaction);
+
             // Insert New Store
             this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
                 .With(x => x.Store_No, storeNo)
@@ -87,7 +88,6 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Queries
                 .With(x => x.Store_No, storeNo)
                 .With(x => x.Region_Code, "FL")
                 .ToObject());
-
 
             PriceBatchDetail newPriceBatchDetail = new TestPriceBatchDetailBuilder()
                 .WithItem_Key(itemKey)
@@ -117,6 +117,141 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Queries
             //Then
             Assert.AreEqual(1, events.Count);
             var cancelAllSalesEvent = events.First();
+            AssertEventIsEqualToExpectedData(cancelAllSalesEvent, expectedIdentifier, expectedBusinessUnitId, priceBatchDetailStartDate);
+        }
+
+        [TestMethod]
+        public void GetCancelAllSalesData_ItemHasAlternateIdentifiers_ShouldReturnAnEventForEachIdentifier()
+        {
+            //Given
+            var expectedDefaultIdentifier = "9988776630";
+            var expectedAlternateIdentifier1 = "9988776631";
+            var expectedAlternateIdentifier2 = "9988776632";
+            var expectedAlternateIdentifier3 = "9988776633";
+            var expectedAlternateIdentifier4 = "9988776634";
+            var storeNo = 123421;
+            var expectedBusinessUnitId = 999999;
+            var subTeamNo = 1234567;
+            var priceBatchDetailStartDate = DateTime.Today.AddDays(10);
+
+            dbProvider.Connection.Execute(
+                "insert into dbo.SubTeam(SubTeam_No) values(@SubTeamNo)",
+                new { SubTeamNo = subTeamNo },
+                dbProvider.Transaction);
+
+            // Insert New Item
+            var itemKey = this.dbProvider.Insert(
+                new IrmaQueryParams<Item, int>(
+                    IrmaTestObjectFactory.BuildItem()
+                        .With(x => x.Retail_Unit_ID, GetUnitId("EA"))
+                        .With(x => x.SubTeam_No, subTeamNo)
+                        .ToObject(),
+                x => x.Item_Key));
+
+            // Insert New Item Identifiers
+            this.dbProvider.Insert(
+                new IrmaQueryParams<ItemIdentifier, int>(
+                    IrmaTestObjectFactory.BuildItemIdentifier()
+                        .With(x => x.Item_Key, itemKey)
+                        .With(x => x.Identifier, expectedDefaultIdentifier)
+                        .With(x => x.Default_Identifier, (byte)1)
+                        .ToObject(),
+                    x => x.Identifier_ID));
+
+            this.dbProvider.Insert(
+                new IrmaQueryParams<ItemIdentifier, int>(
+                    IrmaTestObjectFactory.BuildItemIdentifier()
+                        .With(x => x.Item_Key, itemKey)
+                        .With(x => x.Identifier, expectedAlternateIdentifier1)
+                        .With(x => x.Default_Identifier, (byte)0)
+                        .ToObject(),
+                    x => x.Identifier_ID));
+
+            this.dbProvider.Insert(
+                new IrmaQueryParams<ItemIdentifier, int>(
+                    IrmaTestObjectFactory.BuildItemIdentifier()
+                        .With(x => x.Item_Key, itemKey)
+                        .With(x => x.Identifier, expectedAlternateIdentifier2)
+                        .With(x => x.Default_Identifier, (byte)0)
+                        .ToObject(),
+                    x => x.Identifier_ID));
+
+            this.dbProvider.Insert(
+                new IrmaQueryParams<ItemIdentifier, int>(
+                    IrmaTestObjectFactory.BuildItemIdentifier()
+                        .With(x => x.Item_Key, itemKey)
+                        .With(x => x.Identifier, expectedAlternateIdentifier3)
+                        .With(x => x.Default_Identifier, (byte)0)
+                        .ToObject(),
+                    x => x.Identifier_ID));
+
+            this.dbProvider.Insert(
+                new IrmaQueryParams<ItemIdentifier, int>(
+                    IrmaTestObjectFactory.BuildItemIdentifier()
+                        .With(x => x.Item_Key, itemKey)
+                        .With(x => x.Identifier, expectedAlternateIdentifier4)
+                        .With(x => x.Default_Identifier, (byte)0)
+                        .ToObject(),
+                    x => x.Identifier_ID));
+
+            this.dbProvider.Connection.Execute(
+                $@"INSERT INTO dbo.ValidatedScanCode(ScanCode, InsertDate, InforItemId)
+                  VALUES ({expectedDefaultIdentifier}, GETDATE(), -1),
+                         ({expectedAlternateIdentifier1}, GETDATE(), -2),
+                         ({expectedAlternateIdentifier2}, GETDATE(), -3),
+                         ({expectedAlternateIdentifier3}, GETDATE(), -4),
+                         ({expectedAlternateIdentifier4}, GETDATE(), -5)",
+                transaction: dbProvider.Transaction);
+
+            // Insert New Store
+            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
+                .With(x => x.Store_No, storeNo)
+                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
+                .With(x => x.StoreJurisdictionID, 1)
+                .ToObject());
+
+            // Insert New Store Region Mapping
+            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
+                .With(x => x.Store_No, storeNo)
+                .With(x => x.Region_Code, "FL")
+                .ToObject());
+
+            PriceBatchDetail newPriceBatchDetail = new TestPriceBatchDetailBuilder()
+                .WithItem_Key(itemKey)
+                .WithIdentifier(expectedDefaultIdentifier)
+                .WithPrice(1)
+                .WithMultiple(1)
+                .WithPriceChgTypeID(1)
+                .WithStore_No(storeNo)
+                .WithStartDate(priceBatchDetailStartDate)
+                .WithCancelAllSales(true);
+            int priceBatchDetailId = this.AddPriceBatchDetail(newPriceBatchDetail);
+
+            InsertIntoEventQueue(new List<TestItemsForPriceEvents>
+            {
+                new TestItemsForPriceEvents
+                {
+                    Identifier = expectedDefaultIdentifier,
+                    Item_Key = itemKey,
+                    Store_No = storeNo,
+                    PriceBatchDetailID = priceBatchDetailId
+                }
+            });
+
+            //When
+            var events = query.Search(parameters).OrderBy(e => e.ScanCode).ToList();
+
+            //Then
+            Assert.AreEqual(5, events.Count);
+            AssertEventIsEqualToExpectedData(events[0], expectedDefaultIdentifier, expectedBusinessUnitId, priceBatchDetailStartDate);
+            AssertEventIsEqualToExpectedData(events[1], expectedAlternateIdentifier1, expectedBusinessUnitId, priceBatchDetailStartDate);
+            AssertEventIsEqualToExpectedData(events[2], expectedAlternateIdentifier2, expectedBusinessUnitId, priceBatchDetailStartDate);
+            AssertEventIsEqualToExpectedData(events[3], expectedAlternateIdentifier3, expectedBusinessUnitId, priceBatchDetailStartDate);
+            AssertEventIsEqualToExpectedData(events[4], expectedAlternateIdentifier4, expectedBusinessUnitId, priceBatchDetailStartDate);
+        }
+
+        private static void AssertEventIsEqualToExpectedData(Models.CancelAllSalesEventModel cancelAllSalesEvent, string expectedIdentifier, int expectedBusinessUnitId, DateTime priceBatchDetailStartDate)
+        {
             Assert.AreEqual(expectedBusinessUnitId, cancelAllSalesEvent.BusinessUnitId);
             Assert.AreEqual(IrmaEventTypes.CancelAllSales, cancelAllSalesEvent.EventTypeId);
             Assert.AreEqual("FL", cancelAllSalesEvent.Region);
