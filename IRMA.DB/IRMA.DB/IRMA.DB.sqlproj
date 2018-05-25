@@ -3324,6 +3324,7 @@
     <None Include="Scripts\PostDeploy\Archive\PBI26106 - PostDeploy PopData - AddAppConfigForStoreBUsForAMZExtract.rollback.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI25990 - AddPurgedTablesToRetentionPolicyTable.rollback.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI25990 - AddPurgedTablesToRetentionPolicyTable.sql" />
+    <None Include="Scripts\PostDeploy\PBI27183-AddItemDeauthorization Event to ItemChangeEventType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

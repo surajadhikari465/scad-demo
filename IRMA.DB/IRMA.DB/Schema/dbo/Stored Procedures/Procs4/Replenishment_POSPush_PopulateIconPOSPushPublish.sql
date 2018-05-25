@@ -394,6 +394,26 @@ BEGIN TRY
 			AND  i.Remove_Item = 1
 			AND s.PriceBatchHeaderId > 0
 
+	SELECT IDENTITY(INT,1,1) as RowNumber, 
+		   ips.Item_Key as Item_Key
+	INTO #tmpData
+	FROM IconPOSPushStaging ips
+		INNER JOIN  @ScanCodeDeleteTable Scdt ON ips.PriceBatchHeaderID  = scdt.PriceBatchHeaderID
+
+	DECLARE @RowCount INT = (SELECT COUNT(*) FROM #tmpData)
+	DECLARE @CurrentRowNumber INT = 1
+	DECLARE @Item_Key INT
+
+	WHILE (@CurrentRowNumber <= @RowCount)
+	BEGIN
+	    SELECT @Item_Key= Item_Key FROM #tmpData WHERE RowNumber = @CurrentRowNumber
+	  	EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemDeauthorization'
+
+		SET @CurrentRowNumber = @CurrentRowNumber + 1
+	END
+    
+	DROP Table #tmpData        
+
 		IF EXISTS (SELECT 1 FROM @ScanCodeDeleteTable)
 		BEGIN
 			EXEC dbo.Replenishment_POSPush_UpdatePriceBatchProcessedDel @PriceBatchHeaderIds = @ScanCodeDeleteTable
