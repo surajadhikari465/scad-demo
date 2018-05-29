@@ -1,6 +1,7 @@
 ﻿using Mammoth.Common;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Logging;
+using MammothWebApi.DataAccess.Commands;
 using MammothWebApi.DataAccess.Queries;
 using MammothWebApi.Extensions;
 using MammothWebApi.Models;
@@ -19,15 +20,49 @@ namespace MammothWebApi.Controllers
     {
         private IUpdateService<AddUpdateItemLocale> itemLocaleService;
         private IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler;
+        private IUpdateService<DeauthorizeItemLocale> deauthorizeItemLocaleService;
         private ILogger logger;
 
         public ItemLocaleController(IUpdateService<AddUpdateItemLocale> itemLocaleService,
             IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler,
+            IUpdateService<DeauthorizeItemLocale> deauthorizeItemLocaleService,
             ILogger logger)
         {
             this.itemLocaleService = itemLocaleService;
             this.getAllBusinessUnitsQueryHandler = getAllBusinessUnitsQueryHandler;
+            this.deauthorizeItemLocaleService = deauthorizeItemLocaleService;
             this.logger = logger;
+        }
+
+        [HttpPut]
+        [Route("api/DeauthorizeItemLocale")]
+        public IHttpActionResult DeauthorizeItemLocale(List<ItemLocaleModel> itemLocales)
+        {
+            if (itemLocales == null || itemLocales.Count == 0)
+            {
+                logger.Warn("The object passed is either null or does not contain any rows.");
+                return BadRequest("The object sent is either null or does not contain any rows.");
+            }
+
+            try
+            {        // Map to Service Model
+                List<ItemLocaleServiceModel> itemLocaleServiceModels = itemLocales.ToItemLocaleServiceModel();
+                DeauthorizeItemLocale deauthorizeItemLocaleData = new DeauthorizeItemLocale { ItemLocaleServiceModelList = itemLocaleServiceModels };
+                deauthorizeItemLocaleService.Handle(deauthorizeItemLocaleData);
+
+                return Ok();
+            }
+
+            catch (SqlException sqlException)
+            {
+                logger.Error("Sql Exception occurred.", sqlException);
+                return InternalServerError(sqlException);
+            }
+            catch (Exception exception)
+            {
+                logger.Error("Error occurred in DeleteItemLocalePrice.", exception);
+                return InternalServerError(exception);
+            }
         }
 
         [HttpPut]

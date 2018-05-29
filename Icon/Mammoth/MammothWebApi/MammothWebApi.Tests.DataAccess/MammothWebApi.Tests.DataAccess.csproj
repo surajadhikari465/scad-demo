@@ -138,6 +138,7 @@
     <Compile Include="Commands\AddOrUpdateItemLocaleSupplierCommandHandlerTests.cs" />
     <Compile Include="Commands\CancelAllSalesCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteItemLocaleSupplierCommandHandlerTests.cs" />
+    <Compile Include="Commands\DeleteItemLocalPriceCommandHandlerTests.cs" />
     <Compile Include="Commands\StagingItemLocaleCommandHandlerTests.cs" />
     <Compile Include="Commands\AddOrUpdateItemLocaleCommandHandlerTests.cs" />
     <Compile Include="Commands\StagingItemLocaleSupplierCommandHandlerTests.cs" />

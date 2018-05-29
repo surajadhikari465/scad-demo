@@ -15,6 +15,7 @@ using System.Linq;
 using System.Web.Http.Results;
 using Dapper;
 using System.Data.SqlClient;
+using MammothWebApi.DataAccess.Commands;
 
 namespace MammothWebApi.Tests.Controllers
 {
@@ -23,6 +24,7 @@ namespace MammothWebApi.Tests.Controllers
     {
         private Mock<IUpdateService<AddUpdateItemLocale>> mockItemLocaleService;
         private Mock<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>> mockGetAllBusinessUnitsQueryHandler;
+        private Mock<IUpdateService<DeauthorizeItemLocale>> mockDeauthorizeItemLocaleService;
         private Mock<ILogger> mockLogger;
         private ItemLocaleController itemLocaleController;
 
@@ -31,9 +33,11 @@ namespace MammothWebApi.Tests.Controllers
         {
             this.mockItemLocaleService = new Mock<IUpdateService<AddUpdateItemLocale>>();
             this.mockGetAllBusinessUnitsQueryHandler = new Mock<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>>();
+            this.mockDeauthorizeItemLocaleService = new Mock<IUpdateService<DeauthorizeItemLocale>>();
             this.mockLogger = new Mock<ILogger>();
             this.itemLocaleController = new ItemLocaleController(this.mockItemLocaleService.Object, 
                 this.mockGetAllBusinessUnitsQueryHandler.Object, 
+                this.mockDeauthorizeItemLocaleService.Object,
                 this.mockLogger.Object);
         }
 
@@ -166,6 +170,68 @@ namespace MammothWebApi.Tests.Controllers
 
             // Then
             this.mockItemLocaleService.Verify(s => s.Handle(It.IsAny<AddUpdateItemLocale>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void ItemLocaleController_ItemLocaleListIsNullDuringDeauthorizeItemLocale_ShouldLogWarning()
+        {
+            // Given
+            List<ItemLocaleModel> itemLocales = null;
+
+            // When
+            var response = this.itemLocaleController.DeauthorizeItemLocale(itemLocales);
+
+            // Then
+            this.mockLogger.Verify(l => l.Warn(It.Is<string>(s => s == "The object passed is either null or does not contain any rows.")),
+                Times.Once);
+            this.mockDeauthorizeItemLocaleService.Verify(s => s.Handle(It.IsAny<DeauthorizeItemLocale>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void ItemLocaleController_ItemLocaleListCountIsZeroDuringDeauthorizeItemLocale_ShouldLogWarning()
+        {
+            // Given
+            List<ItemLocaleModel> itemLocales = null;
+
+            // When
+            var response = this.itemLocaleController.DeauthorizeItemLocale(itemLocales);
+
+            // Then
+            this.mockLogger.Verify(l => l.Warn(It.Is<string>(s => s == "The object passed is either null or does not contain any rows.")),
+                Times.Once);
+            this.mockDeauthorizeItemLocaleService.Verify(s => s.Handle(It.IsAny<DeauthorizeItemLocale>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void ItemLocaleController_ItemLocaleListISValidDuringDeauthorizeItemLocale_ShouldCallService()
+        {
+            // Given
+            List<ItemLocaleModel> itemLocales = new List<ItemLocaleModel>();
+            itemLocales.Add(new TestItemLocaleModelBuilder().Build());
+
+            // When
+            var response = this.itemLocaleController.DeauthorizeItemLocale(itemLocales);
+
+            // Then
+            this.mockDeauthorizeItemLocaleService.Verify(s => s.Handle(It.IsAny<DeauthorizeItemLocale>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void ItemLocaleController_SqlExceptionsDuringDeauthorizeItemLocale_ReturnsInternalServerErrorWithExceptionResponse()
+        {
+            // Given
+            List<ItemLocaleModel> itemLocales = new List<ItemLocaleModel>();
+            itemLocales.Add(new TestItemLocaleModelBuilder().Build());        
+            SqlException sqlException = CreateSqlException();
+            this.mockDeauthorizeItemLocaleService.Setup(s => s.Handle(It.IsAny<DeauthorizeItemLocale>())).Throws(sqlException);
+
+            // When
+            var response = this.itemLocaleController.DeauthorizeItemLocale(itemLocales) as ExceptionResult;
+
+            // Then
+            Assert.IsNotNull(response, "The InternalServerError with Sql Exception response is null.");
+            Assert.AreEqual(sqlException.Message, response.Exception.Message);
+            Assert.AreEqual(sqlException.InnerException, response.Exception.InnerException);
         }
 
         //[TestMethod]

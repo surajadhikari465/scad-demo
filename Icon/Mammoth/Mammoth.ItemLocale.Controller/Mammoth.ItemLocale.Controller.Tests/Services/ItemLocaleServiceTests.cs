@@ -386,5 +386,27 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
             mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.ItemLocaleUpdate,
                 It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 10)), Times.Exactly(3));
         }
+
+        [TestMethod]
+        public void ItemLocaleServiceProcess_ItemDeauthorizedEvent_ShouldPostToDeauthorizeItemURIOnce()
+        {
+            // Given
+            data = new List<ItemLocaleEventModel>
+                {
+                    new ItemLocaleEventModel { ScanCode = "4", EventTypeId = IrmaEventTypes.ItemDeauthorization, Region = "MW" },
+                    new ItemLocaleEventModel { ScanCode = "5", EventTypeId = IrmaEventTypes.ItemDeauthorization, Region = "MW" }
+                };
+
+            mockClientWrapper.Setup(m => m.PutAsJsonAsync(It.Is<string>(s => s == Uris.DeauthorizeItemLocale), It.IsAny<IEnumerable<ItemLocaleEventModel>>()))
+                   .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+
+            // When
+            service.Process(data);
+
+            //then
+            mockClientWrapper.Verify(m => m.PutAsJsonAsync(Uris.DeauthorizeItemLocale,
+               It.Is<IEnumerable<ItemLocaleEventModel>>(e => e.Count() == 2)), Times.Exactly(1));
+
+        }
     }
 }
