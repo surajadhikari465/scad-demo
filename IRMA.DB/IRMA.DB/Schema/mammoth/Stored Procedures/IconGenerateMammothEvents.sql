@@ -22,7 +22,7 @@ BEGIN
 
 	DECLARE @eventTypeId INT = (SELECT EventTypeID FROM mammoth.ItemChangeEventType WHERE EventTypeName = @EventTypeName)
 
-	If @EventTypeName = 'ItemLocaleAddOrUpdate'
+	If (@EventTypeName = 'ItemLocaleAddOrUpdate' OR  @EventTypeName = 'ItemDeauthorization')
 		BEGIN
 	IF @StoreJurisdictionID is NULL
 	BEGIN
