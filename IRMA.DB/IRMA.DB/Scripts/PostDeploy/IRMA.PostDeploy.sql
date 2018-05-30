@@ -14,8 +14,7 @@ Post-Deployment Script Template
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 
-:r "PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.SQL" -- 2018.03.06 Keep for IRMA v10.0 because it was rolled back from v9.9.
-:r "PBI21565 - PostDeploy Schema PopData - AddInstanceDataFlag - HideSlimFunctionality.SQL" -- 2018.03.28
+
 
 -- *This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
