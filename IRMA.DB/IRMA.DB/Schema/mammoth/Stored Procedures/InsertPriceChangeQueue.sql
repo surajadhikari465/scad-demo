@@ -93,7 +93,7 @@ BEGIN
 						WHEN PBD.CancelAllSales = 1 THEN @CancelAllSalesEventTypeID
 						ELSE @EventTypeID 
 					 END AS EventTypeID
-					,PBD.PriceBatchDetailID 
+					,CASE WHEN PBD.CancelAllSales = 1 AND @PriceBatchStatusID = 2 AND @IsRollback = 1 THEN  NULL ELSE PBD.PriceBatchDetailID END 
 					,GETDATE() AS InsertDate
 				FROM PriceBatchDetail PBD(NOLOCK)
 				INNER JOIN PriceBatchHeader PBH(NOLOCK) ON PBD.PriceBatchHeaderID = PBH.PriceBatchHeaderID

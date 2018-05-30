@@ -24,6 +24,8 @@ AS
 --                   25179  Added Disable TRIGGER [dbo].[OrderHeaderDel] ON [dbo].[OrderHeader] when deleting OrderHeader records. 
 --                   25990  Per DW team's request, added the the key information of certain purged tables identifed by the DW team to the corresponding 
 --                          newly created tables, all starting with the name of 'Purged_'.
+--                   26995  Modify the way the RetentionPolicy records to be retrieved, so that more than one purge window can be opened daily for
+--                          order purge.
 --****************************************************************************************************************************************************
 BEGIN
 	DECLARE @RunTime INT
@@ -43,12 +45,25 @@ BEGIN
 		  ,@RecordDeletedCount = 0
 		  ,@UploadValueDeletedCount = 0
 		  
-    SELECT @DailyPurgeStartTime = TimeToStart,
-		   @DailyPurgeEndTime = TimeToEnd,
+    SELECT @DailyPurgeStartTime = ISNULL(TimeToStart, 0),
+		   @DailyPurgeEndTime = ISNULL(TimeToEnd, 0),
 		   @RetentionPolicyId = RetentionPolicyId, 
 		   @cutOffDate = CAST(DATEADD(d, -DaysToKeep, GETDATE()) AS DATE)
 	  FROM RetentionPolicy
 	 WHERE [Table] = 'OrderHeader'
+	   AND TimeToStart <= @RunTime
+	   AND TimeToEnd > @RunTime
+
+	IF @RetentionPolicyId IS NULL
+	BEGIN
+		SELECT TOP 1
+				@DailyPurgeStartTime = ISNULL(TimeToStart, 0),
+				@DailyPurgeEndTime = ISNULL(TimeToEnd, 0),
+				@RetentionPolicyId = RetentionPolicyId, 
+				@cutOffDate = CAST(DATEADD(d, -DaysToKeep, GETDATE()) AS DATE)
+		  FROM RetentionPolicy
+	     WHERE [Table] = 'OrderHeader'
+	END
 
 	DECLARE  @CodeLocation varchar(128)
 			,@DBEnv varchar(8)

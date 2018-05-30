@@ -3294,8 +3294,6 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SupportRestoreDeletedItems.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SupportRestoreDeletedItemsValidate.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\SupportRestoreDeletedItemsItemKeys.sql" />
-    <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
-    <None Include="Scripts\PostDeploy\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.rollback.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_DeletedOrdersFile_ByStore.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_InventoryDataSpoilageFile_ByStore.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_PurchaseOrdersFile_ByStore.sql" />
@@ -3308,8 +3306,6 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\StoreItemVendorExtract.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.rollback.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22994- PostDeploy Schema PopData - Add Shrink SubTypes To Shrink Sub Type Table.sql" />
-    <None Include="Scripts\PostDeploy\PBI21565 - PostDeploy Schema PopData - AddInstanceDataFlag - HideSlimFunctionality.sql" />
-    <None Include="Scripts\PostDeploy\PBI21565 - PostDeploy Schema PopData - AddInstanceDataFlag - HideSlimFunctionality.rollback.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\Purged_OrderHeader.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\Purged_Einvoicing_Header.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\Purged_EInvoicing_Item.sql" />
@@ -3324,6 +3320,10 @@
     <None Include="Scripts\PostDeploy\Archive\PBI26106 - PostDeploy PopData - AddAppConfigForStoreBUsForAMZExtract.rollback.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI25990 - AddPurgedTablesToRetentionPolicyTable.rollback.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI25990 - AddPurgedTablesToRetentionPolicyTable.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI21565 - PostDeploy Schema PopData - AddInstanceDataFlag - HideSlimFunctionality.rollback.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI21565 - PostDeploy Schema PopData - AddInstanceDataFlag - HideSlimFunctionality.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.rollback.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
     <None Include="Scripts\PostDeploy\PBI27183-AddItemDeauthorization Event to ItemChangeEventType.sql" />
   </ItemGroup>
   <ItemGroup>
