@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE dbo.UpdateStoreItemECom
+﻿CREATE PROCEDURE dbo.UpdateStoreItemECom
     @Item_Key		int, 
     @Store_No		int, 
 	@AuthorizedItem bit,
@@ -58,9 +57,6 @@ BEGIN TRAN
 				ECommerce	=	@ECommerce
 			WHERE Item_Key = @Item_Key AND Store_No = @Store_No
 		END
-
-	IF (@AuthorizedItem = 0)
-    EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, @Store_No, 'ItemDeauthorization'
 
 	IF @Error_No = 0    
 		BEGIN    

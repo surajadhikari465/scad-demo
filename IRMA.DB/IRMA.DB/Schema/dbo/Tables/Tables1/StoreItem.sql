@@ -246,6 +246,23 @@ BEGIN
 				StoreItem.Item_Key = Inserted.Item_Key 
 				AND StoreItem.Store_No = Inserted.Store_No
 			WHERE Inserted.Authorized = 0					-- the item is de-authorized
+
+   DECLARE @StoreNoItemIdentiferType dbo.StoreNoItemIdentiferType
+   DECLARE @IdentifiersType dbo.IdentifiersType
+
+   INSERT INTO @StoreNoItemIdentiferType(StoreNo, ItemIdentifier)
+    SELECT 
+		   Inserted.Store_No as Store_No, 
+		   Inserted.Item_Key as Item_Key
+	FROM Inserted
+		INNER JOIN Deleted ON
+		Deleted.Item_Key = Inserted.Item_Key 
+		AND Deleted.Store_No = Inserted.Store_No
+		WHERE Inserted.Authorized <> Deleted.Authorized	
+			  AND Inserted.Authorized = 0		 -- item got Deauthorized
+	
+   EXEC [mammoth].[GenerateEvents] @IdentifiersType, 'ItemDeauthorization',Null, @StoreNoItemIdentiferType
+
     END TRY
 	BEGIN CATCH
 		IF @@TRANCOUNT <> 0 ROLLBACK TRAN
