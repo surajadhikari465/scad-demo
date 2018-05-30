@@ -157,6 +157,21 @@ namespace WebSupport.DataAccess.Test.Queries
         }
 
         [TestMethod]
+        public void GetItemPsgData_SaleJustCanceledAndIsPrimeEligible_ReturnsDelete()
+        {
+            //Given
+            InsertPrice(1, PriceTypes.Codes.Reg, DateTime.Today, null);
+            InsertPrice(1, testPriceTypes.First(), DateTime.Today.AddDays(-10), DateTime.Today);
+
+            //When
+            var result = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual("Delete", result.Single().MessageAction);
+        }
+
+        [TestMethod]
         public void GetItemPsgData_RegExistsAndIsInTheFuture_ReturnsDelete()
         {
             //Given

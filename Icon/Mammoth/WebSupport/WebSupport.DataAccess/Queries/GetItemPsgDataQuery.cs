@@ -61,7 +61,7 @@ namespace WebSupport.DataAccess.Queries
                     LEFT JOIN Price p ON i.ItemID = p.ItemID
                         AND p.BusinessUnitID = ssc.BusinessUnitID
                         AND (p.PriceType = 'REG'
-	                        OR (p.EndDate >= @Today
+	                        OR (p.EndDate > @Today
 		                        AND p.StartDate <= @Today
 		                    ))",
                       new
