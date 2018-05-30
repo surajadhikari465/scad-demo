@@ -130,6 +130,8 @@ BEGIN
 			   SET Authorized = 0
 			 WHERE Item_Key = @itemkey
 		END
+	   
+	   EXEC [mammoth].[InsertItemLocaleChangeQueue] Item_Key, Null, 'ItemDeauthorization'
 
 		SELECT @Error_No = @@ERROR
 		

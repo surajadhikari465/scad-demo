@@ -59,6 +59,9 @@ BEGIN TRAN
 			WHERE Item_Key = @Item_Key AND Store_No = @Store_No
 		END
 
+	IF (@AuthorizedItem = 0)
+    EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, @Store_No, 'ItemDeauthorization'
+
 	IF @Error_No = 0    
 		BEGIN    
 			

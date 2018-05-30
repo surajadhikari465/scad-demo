@@ -397,7 +397,7 @@ BEGIN TRY
 	DECLARE @IdentifiersType dbo.IdentifiersType
 
 	INSERT INTO  @IdentifiersType(Identifier)
-	SELECT id.Identifier
+	SELECT Distinct id.Identifier
 	FROM IconPOSPushStaging ips
 		INNER JOIN  @ScanCodeDeleteTable Scdt ON ips.PriceBatchHeaderID  = scdt.PriceBatchHeaderID
 		JOIN ItemIdentifier id ON ips.Item_Key = id.Item_Key

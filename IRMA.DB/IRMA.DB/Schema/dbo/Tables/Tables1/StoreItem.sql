@@ -246,35 +246,6 @@ BEGIN
 				StoreItem.Item_Key = Inserted.Item_Key 
 				AND StoreItem.Store_No = Inserted.Store_No
 			WHERE Inserted.Authorized = 0					-- the item is de-authorized
-
-    SELECT IDENTITY(INT,1,1) as RowNumber, 
-		   Inserted.Store_No as Store_No, 
-		   Inserted.Item_Key as Item_Key
-	INTO #tmpData
-	FROM Inserted
-		INNER JOIN Deleted ON
-		Deleted.Item_Key = Inserted.Item_Key 
-		AND Deleted.Store_No = Inserted.Store_No
-		WHERE Inserted.Authorized <> Deleted.Authorized	
-			  AND Inserted.Authorized = 0		 -- item got Deauthorized
-	
-	DECLARE @RowCount INT = (SELECT COUNT(*) FROM #tmpData)
-
-	DECLARE @CurrentRowNumber INT = 1
-	DECLARE @Item_Key INT
-	DECLARE @Store_No INT
-
-	WHILE (@CurrentRowNumber <= @RowCount)
-	BEGIN
-	    SELECT @Item_Key= Item_Key, @Store_No = Store_No FROM #tmpData WHERE RowNumber = @CurrentRowNumber
-	  	EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, @Store_No, 'ItemDeauthorization'
-
-		SET @CurrentRowNumber = @CurrentRowNumber + 1
-	END
-
-	DROP Table #tmpData
-   
-
     END TRY
 	BEGIN CATCH
 		IF @@TRANCOUNT <> 0 ROLLBACK TRAN
@@ -410,4 +381,3 @@ GRANT SELECT
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'This flag is set to 1 when a user selects the Refresh checkbox from the UI or the refresh function in SLIM.  It is set to 0 when the batching process sends the refresh message.', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'StoreItem', @level2type = N'COLUMN', @level2name = N'Refresh';
-
