@@ -253,13 +253,16 @@ BEGIN
    INSERT INTO @StoreNoItemIdentiferType(StoreNo, ItemIdentifier)
     SELECT 
 		   Inserted.Store_No as Store_No, 
-		   Inserted.Item_Key as Item_Key
+		   ii.Identifier as Identifier
 	FROM Inserted
 		INNER JOIN Deleted ON
 		Deleted.Item_Key = Inserted.Item_Key 
 		AND Deleted.Store_No = Inserted.Store_No
+		JOIN ItemIdentifier ii ON Inserted.Item_Key = ii.Item_Key
 		WHERE Inserted.Authorized <> Deleted.Authorized	
 			  AND Inserted.Authorized = 0		 -- item got Deauthorized
+			  AND ii.Remove_Identifier = 0
+			  AND ii.Deleted_Identifier = 0
 	
    EXEC [mammoth].[GenerateEvents] @IdentifiersType, 'ItemDeauthorization',Null, @StoreNoItemIdentiferType
 

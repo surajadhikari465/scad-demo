@@ -76,7 +76,7 @@ BEGIN
 
 	DECLARE @eventTypeId INT = (SELECT EventTypeID FROM mammoth.ItemChangeEventType WHERE EventTypeName = @EventTypeName)
 
-	If (@EventTypeName = 'ItemLocaleAddOrUpdate'OR ( @EventTypeName = 'ItemDeauthorization' AND NOT EXISTS(SELECT 1 FROM @StoreNoItemIdentiferType)))
+	If (@EventTypeName = 'ItemLocaleAddOrUpdate' OR ( @EventTypeName = 'ItemDeauthorization' AND NOT EXISTS(SELECT 1 FROM @StoreNoItemIdentiferType)))
 		BEGIN
 			INSERT INTO mammoth.ItemLocaleChangeQueue(Item_Key, Store_No, Identifier, EventTypeID)
 			SELECT 
