@@ -767,13 +767,14 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AddRegionsToRegionGpmStatusTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateActivePriceSentArchiveInRetentionPolicy.sql" />
     <Build Include="app\User Defined Types\CancelAllSalesTypes.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddIrmaPriceMessageType.sql" />
     <Build Include="esb\Tables\PriceMessageArchiveDetail.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddPriceArchiveTablesToRetentionPolicyTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AlterItemAttributes_ExtAttributeValueColumnSize.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\TruncateItemLocaleStagingTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\UpdateFairTradeCertifiedAttribute.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddCurrencyCodeAttribute.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddIrmaPriceMessageType.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddPriceArchiveTablesToRetentionPolicyTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\RemovePercentageTareWeightFromAttributesTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\UpdateFairTradeCertifiedAttribute.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -784,7 +785,6 @@
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
-    <None Include="Scripts\PostDeploymentScripts\RemovePercentageTareWeightFromAttributesTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

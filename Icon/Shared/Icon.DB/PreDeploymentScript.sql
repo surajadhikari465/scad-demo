@@ -15,4 +15,3 @@
 See template script for hints:
 :r .\Scripts\PopulateData\Release\IconPredeploymentScript.sql
 */
-:r .\Scripts\PopulateData\Release\MoveMessageQueueProductRecordsIntoTempTable.sql -- 2018.04.11 PBI 26526

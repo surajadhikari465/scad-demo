@@ -12,10 +12,7 @@ Post-Deployment Script Template
 
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
-:r AddIrmaPriceMessageType.sql --2018.04.11 PBI 25853
-:r AddPriceArchiveTablesToRetentionPolicyTable.sql --2018.04.13 PBI 25853
-:r RemovePercentageTareWeightFromAttributesTable.sql --2018.04.11 PBI 26526
-:r UpdateFairTradeCertifiedAttribute.sql --2018.04.27 PBI 26696
+--[Deployed 5/25 with PSG fixes]  :r UpdateFairTradeCertifiedAttribute.sql --2018.04.27 PBI 26696
 :r AddCurrencyCodeAttribute.sql --2018.05.09 PBI 26341
 
 -- Run every time

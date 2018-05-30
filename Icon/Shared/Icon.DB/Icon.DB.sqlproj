@@ -669,9 +669,12 @@
     <None Include="Scripts\PopulateData\Archive\SeedNonGreenFieldScripts.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdateCustomerFriendlyDescriptionTraitPattern.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdatePOSScaleTare.sql" />
-    <None Include="Scripts\PopulateData\FixTraitLength.sql" />
     <None Include="Scripts\PopulateData\Archive\AddEslAndOnePlumTraitCodes.sql" />
-    <None Include="Scripts\PopulateData\AddCurrencyCodeTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\RemovePercentageTareWeightFromIcon.sql" />
+    <None Include="Scripts\PopulateData\Archive\MoveMessageQueueProductRecordsOutOfTempTable.sql" />
+    <None Include="Scripts\PopulateData\Archive\MoveMessageQueueProductRecordsIntoTempTable.sql" />
+    <None Include="Scripts\PopulateData\Release\AddCurrencyCodeTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\FixTraitLength.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -706,9 +709,6 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
-    <None Include="Scripts\PopulateData\Release\RemovePercentageTareWeightFromIcon.sql" />
-    <None Include="Scripts\PopulateData\Release\MoveMessageQueueProductRecordsIntoTempTable.sql" />
-    <None Include="Scripts\PopulateData\Release\MoveMessageQueueProductRecordsOutOfTempTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

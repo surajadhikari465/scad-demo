@@ -8,7 +8,7 @@
     <ProfileVersionNumber>1</ProfileVersionNumber>
 
     <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
-    <DoNotAlterReplicatedObjects>True</DoNotAlterReplicatedObjects>
+    <DoNotAlterReplicatedObjects>False</DoNotAlterReplicatedObjects>
     <DropConstraintsNotInSource>True</DropConstraintsNotInSource>
     <DropDmlTriggersNotInSource>False</DropDmlTriggersNotInSource>
     <DropExtendedPropertiesNotInSource>False</DropExtendedPropertiesNotInSource>
