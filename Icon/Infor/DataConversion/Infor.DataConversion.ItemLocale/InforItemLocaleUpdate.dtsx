@@ -13,8 +13,8 @@
   DTS:ObjectName="InforItemLocaleUpdate"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="54"
-  DTS:VersionGUID="{C6F9F0DC-35A6-47C2-BC95-805C5E612C37}">
+  DTS:VersionBuild="55"
+  DTS:VersionGUID="{41CC05D3-ACEE-406B-A62C-03C8131B7F92}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -27,7 +27,7 @@
         DTS:Name="ConnectionString">"Provider=SQLNCLI11.1;Data Source=" + @[User::IRMADataSource] + ";Initial Catalog=" + @[User::IRMAInitialCatalog]  + ";Integrated Security=SSPI;Auto Translate=False;"</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=IDD-RM\RMD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=IDD-MW\MWD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -40,7 +40,7 @@
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:Retain="True"
-          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=MAMMOTH;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=MAMMOTH_DEV;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -54,7 +54,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="IRMADataSource">
       <DTS:VariableValue
-        DTS:DataType="8">IDD-RM\RMD</DTS:VariableValue>
+        DTS:DataType="8">IDD-MW\MWD</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -87,7 +87,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="MammothInitialCatalog">
       <DTS:VariableValue
-        DTS:DataType="8">MAMMOTH</DTS:VariableValue>
+        DTS:DataType="8">MAMMOTH_DEV</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -278,7 +278,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select  srm.Region_Code as RegionCode, InforItemId, ScanCode, s.businessUnit_Id, ii.Default_Identifier, ISNULL(OrderedByInfor, 0) as OrderedByInfor, ior.Package_Desc2 as AltSize, iu.Unit_Name as AltUnit
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select  srm.Region_Code as RegionCode, InforItemId, ScanCode, s.businessUnit_Id, ii.Default_Identifier, ISNULL(OrderedByInfor, 0) as OrderedByInfor, ior.Package_Desc2 as AltSize, iu.Unit_Abbreviation as AltUnit
 from ValidatedScanCode vsc
 join ItemIdentifier ii on vsc.ScanCode = ii.Identifier
 join Item i on i.Item_key = ii.Item_key
@@ -444,7 +444,7 @@ and srm.Region_Code = ?</property>
                       refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[AltUnit]"
                       codePage="1252"
                       dataType="str"
-                      length="25"
+                      length="5"
                       name="AltUnit" />
                     <externalMetadataColumn
                       refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Output].ExternalColumns[RegionCode]"
@@ -504,7 +504,7 @@ and srm.Region_Code = ?</property>
                       refId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[AltUnit]"
                       codePage="1252"
                       dataType="str"
-                      length="25"
+                      length="5"
                       lineageId="Package\Transfter Item Locale Attributes\Get IRMA Item Locale Attributes.Outputs[OLE DB Source Error Output].Columns[AltUnit]"
                       name="AltUnit" />
                     <outputColumn
@@ -757,7 +757,7 @@ and ial.Region = ill.Region"</DTS:PropertyExpression>
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{9C80A5F7-3CF1-469C-8F8D-421BF25FD514}"
-          SQLTask:SqlStatementSource="update ial&#xA;set ial.DefaultScanCode = ill.DefaultScanCode,&#xA;&#x9;ial.OrderedByInfor = ill.OrderedByInfor,&#xA;&#x9;ial.AltRetailUOM = ill.AltRetailUOM,&#xA;&#x9;ial.AltRetailSize = ill.AltRetailSize&#xA;from dbo.ItemAttributes_Locale_RM ial&#xA;join ##tmpItemLocaleLoad ill on ial.ItemID = ill.ItemID&#xA;and ial.BusinessUnitID = ill.BusinessUnitID&#xA;and ial.Region = ill.Region" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="update ial&#xA;set ial.DefaultScanCode = ill.DefaultScanCode,&#xA;&#x9;ial.OrderedByInfor = ill.OrderedByInfor,&#xA;&#x9;ial.AltRetailUOM = ill.AltRetailUOM,&#xA;&#x9;ial.AltRetailSize = ill.AltRetailSize&#xA;from dbo.ItemAttributes_Locale_MW ial&#xA;join ##tmpItemLocaleLoad ill on ial.ItemID = ill.ItemID&#xA;and ial.BusinessUnitID = ill.BusinessUnitID&#xA;and ial.Region = ill.Region" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -810,7 +810,7 @@ and ial.Region = ill.Region"</DTS:PropertyExpression>
         <NodeLayout
           Size="231,42"
           Id="Package\Transfter Item Locale Attributes"
-          TopLeft="74,160" />
+          TopLeft="73,161" />
         <NodeLayout
           Size="249,42"
           Id="Package\Update Mammoth ItemLocale Table"
@@ -821,26 +821,26 @@ and ial.Region = ill.Region"</DTS:PropertyExpression>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="28,43"
+              EndConnector="27,44"
               Start="0,0"
-              End="28,35.5">
+              End="27,36.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,17.5" />
+                    End="0,18" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,17.5"
-                    Point2="0,21.5"
-                    Point3="4,21.5" />
+                    Point1="0,18"
+                    Point2="0,22"
+                    Point3="4,22" />
                   <mssgle:LineSegment
-                    End="24,21.5" />
+                    End="23,22" />
                   <mssgle:CubicBezierSegment
-                    Point1="24,21.5"
-                    Point2="28,21.5"
-                    Point3="28,25.5" />
+                    Point1="23,22"
+                    Point2="27,22"
+                    Point3="27,26" />
                   <mssgle:LineSegment
-                    End="28,35.5" />
+                    End="27,36.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -851,18 +851,18 @@ and ial.Region = ill.Region"</DTS:PropertyExpression>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="305,179.5">
+          TopLeft="304,180">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="76,0"
+              EndConnector="77,0"
               Start="0,0"
-              End="68.5,0">
+              End="69.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="68.5,0" />
+                    End="69.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
