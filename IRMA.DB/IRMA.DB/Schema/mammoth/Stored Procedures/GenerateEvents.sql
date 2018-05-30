@@ -1,7 +1,8 @@
 ﻿CREATE PROCEDURE [mammoth].[GenerateEvents]
 	@IdentifiersType dbo.IdentifiersType READONLY,
 	@EventTypeName varchar(100),
-	@StoreJurisdictionID int = NULL
+	@StoreJurisdictionID int = NULL,   
+	@StoreNoItemIdentiferType [dbo].[StoreNoItemIdentiferType] READONLY
 AS
 BEGIN
 
@@ -75,7 +76,7 @@ BEGIN
 
 	DECLARE @eventTypeId INT = (SELECT EventTypeID FROM mammoth.ItemChangeEventType WHERE EventTypeName = @EventTypeName)
 
-	If @EventTypeName = 'ItemLocaleAddOrUpdate'
+	If (@EventTypeName = 'ItemLocaleAddOrUpdate'OR ( @EventTypeName = 'ItemDeauthorization' AND NOT EXISTS(SELECT 1 FROM @StoreNoItemIdentiferType)))
 		BEGIN
 			INSERT INTO mammoth.ItemLocaleChangeQueue(Item_Key, Store_No, Identifier, EventTypeID)
 			SELECT 
@@ -106,6 +107,39 @@ BEGIN
 						AND q.InProcessBy IS NULL
 						AND q.ProcessFailedDate IS NULL)
 		END
+
+    ELSE If (@EventTypeName = 'ItemDeauthorization' AND EXISTS(SELECT 1 FROM @StoreNoItemIdentiferType))
+		BEGIN
+			INSERT INTO mammoth.ItemLocaleChangeQueue(Item_Key, Store_No, Identifier, EventTypeID)
+			SELECT 
+				ii.Item_Key,
+				s.Store_No,
+				it.ItemIdentifier,
+				@eventTypeId
+			FROM 
+				@StoreNoItemIdentiferType it
+				JOIN ValidatedScanCode vsc ON vsc.ScanCode = it.ItemIdentifier
+				JOIN ItemIdentifier ii ON it.ItemIdentifier = ii.Identifier
+				JOIN Item i ON ii.Item_Key = i.Item_Key
+				JOIN Price p ON i.Item_Key = p.Item_Key AND p.Store_No = it.StoreNo
+				JOIN #ActiveStores s ON p.Store_No = s.Store_No 
+				JOIN StoreItem si ON p.Item_Key = si.Item_Key
+									AND p.Store_No = si.Store_No
+			WHERE
+				ii.Remove_Identifier = 0
+				AND ii.Deleted_Identifier = 0
+				AND i.Deleted_Item = 0
+				AND NOT EXISTS 
+					(SELECT 1 
+					FROM mammoth.ItemLocaleChangeQueue q (nolock)
+					WHERE q.Item_Key = ii.Item_Key 
+						AND (q.Store_No IS NULL OR q.Store_No = s.Store_No)
+						AND q.Identifier = ii.Identifier 
+						AND q.EventTypeID = @eventTypeId
+						AND q.InProcessBy IS NULL
+						AND q.ProcessFailedDate IS NULL)
+		END
+
 	ELSE If @EventTypeName = 'Price'
 		BEGIN
 			DECLARE @sentPriceBatchStatus INT = (SELECT PriceBatchStatusID FROM PriceBatchStatus WHERE PriceBatchStatusDesc = 'Sent')

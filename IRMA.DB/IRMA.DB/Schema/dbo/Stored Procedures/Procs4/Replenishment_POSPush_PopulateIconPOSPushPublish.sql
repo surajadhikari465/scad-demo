@@ -394,7 +394,17 @@ BEGIN TRY
 			AND  i.Remove_Item = 1
 			AND s.PriceBatchHeaderId > 0
 
-		IF EXISTS (SELECT 1 FROM @ScanCodeDeleteTable)
+	DECLARE @IdentifiersType dbo.IdentifiersType
+
+	INSERT INTO  @IdentifiersType(Identifier)
+	SELECT Distinct id.Identifier
+	FROM IconPOSPushStaging ips
+		INNER JOIN  @ScanCodeDeleteTable Scdt ON ips.PriceBatchHeaderID  = scdt.PriceBatchHeaderID
+		JOIN ItemIdentifier id ON ips.Item_Key = id.Item_Key
+
+	EXEC [mammoth].[GenerateEvents] @IdentifiersType, 'ItemDeauthorization'
+
+	IF EXISTS (SELECT 1 FROM @ScanCodeDeleteTable)
 		BEGIN
 			EXEC dbo.Replenishment_POSPush_UpdatePriceBatchProcessedDel @PriceBatchHeaderIds = @ScanCodeDeleteTable
 		END
@@ -453,4 +463,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[Replenishment_POSPush_PopulateIconPOSPushPublish] TO [IRSUser]
     AS [dbo];
-

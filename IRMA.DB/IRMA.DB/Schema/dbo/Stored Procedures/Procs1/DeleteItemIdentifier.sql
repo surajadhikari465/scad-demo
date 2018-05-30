@@ -21,7 +21,8 @@ BEGIN
     IF @Error_No = 0
     BEGIN
 		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemDelete', @Identifier
-
+		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemDeauthorization', @Identifier
+		
 		SELECT @Error_No = @@ERROR
     END
     

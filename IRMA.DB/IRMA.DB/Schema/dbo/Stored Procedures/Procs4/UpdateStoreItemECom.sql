@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE dbo.UpdateStoreItemECom
+﻿CREATE PROCEDURE dbo.UpdateStoreItemECom
     @Item_Key		int, 
     @Store_No		int, 
 	@AuthorizedItem bit,
