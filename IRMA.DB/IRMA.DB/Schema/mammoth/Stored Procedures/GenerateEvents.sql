@@ -140,8 +140,6 @@ BEGIN
 						AND q.ProcessFailedDate IS NULL)
 		END
 
-
-
 	ELSE If @EventTypeName = 'Price'
 		BEGIN
 			DECLARE @sentPriceBatchStatus INT = (SELECT PriceBatchStatusID FROM PriceBatchStatus WHERE PriceBatchStatusDesc = 'Sent')
