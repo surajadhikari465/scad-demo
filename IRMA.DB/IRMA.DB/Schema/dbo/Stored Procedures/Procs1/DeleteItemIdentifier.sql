@@ -21,8 +21,14 @@ BEGIN
     IF @Error_No = 0
     BEGIN
 		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemDelete', @Identifier
-		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemDeauthorization', @Identifier
-		
+			
+	DECLARE @IdentifiersType dbo.IdentifiersType
+
+	INSERT INTO  @IdentifiersType(Identifier)
+	SELECT @Identifier
+	
+	EXEC [mammoth].[GenerateEvents] @IdentifiersType, 'ItemDeauthorization'
+
 		SELECT @Error_No = @@ERROR
     END
     
