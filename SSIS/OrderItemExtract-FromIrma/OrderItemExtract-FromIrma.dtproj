@@ -26,7 +26,7 @@
           <SSIS:Property SSIS:Name="CreatorComputerName">CECEN-H8KBHM2</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdQWkyZAF30e4GxcOAj4xkwAAAAACAAAAAAADZgAAwAAAABAAAAA7B0tdCCGgvgUT+wG8xEqUAAAAAASAAACgAAAAEAAAAClj3pnOnCPXfDDUCUw8YSOIAAAA1OZ0zUU14xjbw7I/T6KpFCl6ks/zs/gDOr7DSCCbDLEqIjmp2lh9BhSrXBI6fpjCKD9ubZlSKrYoJZZ03hOVn+VxgHROQNTVoXCTpRDNcgmpkT3Bd967wgvcvJ9dxXa5A3YtSV9uO5hMUJero+SYY92geh/8lJQHtTlZYlzWcrFKOswFnaX3VRQAAABo3VxVRIFdvMW+0ssGBK87gDmVAA==</SSIS:Property>
+          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAmtlsuVsokU+ha/lZjSZGXQAAAAACAAAAAAADZgAAwAAAABAAAACmb9WNENaVwMvCn8G6bLHTAAAAAASAAACgAAAAEAAAAPOQotbHC+1h0D9/ambs/iyIAAAADotKVnCaY2sL6fEoMBI9/oc9Gg6wwFkH01AjTWNHfBBlLmbwu8TktBkNiy5eVijWq8kX3R2uvLNqefmmUQFoUyu4zppDHE+1rioTwzd+R3a0eMvug2VYE8pr0/RqpkwQl84FOidzU1XvtfyCwR0hA+RwahyCPEpIj8l1RWlNp/C+lZJDPeNSwRQAAABoKqMhuhci8DuSIGvkT2xze703rA==</SSIS:Property>
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
@@ -43,10 +43,10 @@
                 <SSIS:Property SSIS:Name="Name">ItemFullExtract-FromIrma</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">113</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">118</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{B7F61DBA-2AA0-4B2E-BC97-67EBF7CB535D}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{C32859C8-CB9B-4DF6-9727-935248FE8127}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -120,6 +120,20 @@
                     <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Value">iconUser</SSIS:Property>
+                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+                  </SSIS:Properties>
+                </SSIS:Parameter>
+                <SSIS:Parameter SSIS:Name="esbMessageType">
+                  <SSIS:Properties>
+                    <SSIS:Property SSIS:Name="ID">{358B9C2D-98B6-48E7-ACD8-7C85FA7A3230}</SSIS:Property>
+                    <SSIS:Property SSIS:Name="CreationName">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="Description">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">ByteMessage</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
@@ -243,7 +257,7 @@
                     <SSIS:Property SSIS:Name="Description">
                     </SSIS:Property>
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Value">C:\Data</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
@@ -740,10 +754,10 @@
                 <SSIS:Property SSIS:Name="Name">OrderDeltaExtract-FromIrma</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">144</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">147</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{ECB00BDA-1601-45B3-A403-A8BCE175F00D}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{54CF74C6-B5B2-44A3-A0A7-5353029062DE}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -817,6 +831,20 @@
                     <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Value">iconUser</SSIS:Property>
+                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+                  </SSIS:Properties>
+                </SSIS:Parameter>
+                <SSIS:Parameter SSIS:Name="esbMessageType">
+                  <SSIS:Properties>
+                    <SSIS:Property SSIS:Name="ID">{9878E29D-2237-41F0-B47F-7E4C2EC4BC4A}</SSIS:Property>
+                    <SSIS:Property SSIS:Name="CreationName">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="Description">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">ByteMessage</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
