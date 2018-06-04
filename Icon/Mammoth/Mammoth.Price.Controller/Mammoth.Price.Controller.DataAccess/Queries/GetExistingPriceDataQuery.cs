@@ -71,7 +71,8 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 	                            NULL					as CurrentSaleMultiple,
 	                            NULL					as CurrentSaleStartDate,
 	                            NULL					as CurrentSaleEndDate,
-	                            NULL					as CurrentPriceType
+	                            NULL					as CurrentPriceType,
+                                NULL                    as ItemChangeTypeID
                             FROM 
 	                            QueueTable              	q
 	                            JOIN Price					p	on	q.Item_Key = p.Item_Key
@@ -114,7 +115,8 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 	                            NULL					as CurrentSaleMultiple,
 	                            NULL					as CurrentSaleStartDate,
 	                            NULL					as CurrentSaleEndDate,
-	                            NULL					as CurrentPriceType
+	                            NULL					as CurrentPriceType,
+                                NULL                    as ItemChangeTypeID
                             FROM 
 	                            QueueTable                  q	
 	                            JOIN Price					p	on	q.Item_Key = p.Item_Key

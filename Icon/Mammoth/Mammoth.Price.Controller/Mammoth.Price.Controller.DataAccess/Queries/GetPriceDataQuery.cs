@@ -51,7 +51,8 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 	                            p.Sale_Multiple			as CurrentSaleMultiple,
 	                            p.Sale_Start_Date		as CurrentSaleStartDate,
 	                            p.Sale_End_Date			as CurrentSaleEndDate,
-	                            pt.PriceChgTypeDesc		as CurrentPriceType
+	                            pt.PriceChgTypeDesc		as CurrentPriceType,
+                                pbd.ItemChgTypeID       as ItemChangeTypeID
                             FROM 
 	                            mammoth.PriceChangeQueue	q
 	                            JOIN PriceBatchDetail		pbd on	q.EventReferenceID = pbd.PriceBatchDetailID

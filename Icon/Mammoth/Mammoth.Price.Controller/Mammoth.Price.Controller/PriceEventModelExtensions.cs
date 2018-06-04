@@ -16,10 +16,11 @@ namespace Mammoth.Price.Controller
                 PriceModel price = BuildPrice(priceEvent);
                 prices.Add(price);
 
-                // add regular price row if the reg price is changing with a sale
-                if (priceEvent.NewSalePrice != null 
+                // add regular price row if the reg price is changing with a sale or ItemChangeTypeID has value
+                // when a item is deauthorized and then authorized again for store, we need to add reg price to mammoth
+                if (priceEvent.ItemChangeTypeID !=null || ( priceEvent.NewSalePrice != null 
                     && (priceEvent.CurrentRegularPrice != priceEvent.NewRegularPrice
-                        || priceEvent.CurrentRegularMultiple != priceEvent.NewRegularMultiple))
+                        || priceEvent.CurrentRegularMultiple != priceEvent.NewRegularMultiple)))
                 {
                     PriceModel regPrice = BuildRegularPrice(priceEvent);
                     prices.Add(regPrice);

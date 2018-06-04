@@ -180,5 +180,112 @@ namespace Mammoth.Price.Controller.Tests
             Assert.AreEqual(priceEvent.PriceUom, regPrice.PriceUom, "Price Uoms didn't match");
             Assert.AreEqual(priceEvent.CurrencyCode, regPrice.CurrencyCode, "Currency Code didn't match");
         }
+
+        [TestMethod]
+        public void MapToPriceModel_PriceEventModelHasItemChangeTypeIdNotNull_ShouldReturnRowForRegAndSale()
+        {
+            //Given
+            this.priceEventList.Clear();
+            PriceEventModel priceEvent = new PriceEventModel();
+            priceEvent.Region = "NC";
+            priceEvent.BusinessUnitId = 3;
+            priceEvent.ScanCode = "333";
+            priceEvent.CurrentRegularPrice = 6.99M;
+            priceEvent.CurrentRegularMultiple = 3;
+            priceEvent.CurrentSalePrice = null;
+            priceEvent.CurrentPriceType = "REG";
+            priceEvent.CurrentSaleStartDate = null;
+            priceEvent.CurrentSaleEndDate = null;
+            priceEvent.NewRegularPrice = 6.99M;
+            priceEvent.NewRegularMultiple = 3;
+            priceEvent.NewSalePrice = 4.99M;
+            priceEvent.NewSaleMultiple = 3;
+            priceEvent.NewPriceType = "SAL";
+            priceEvent.NewStartDate = DateTime.Today.AddDays(4);
+            priceEvent.NewSaleEndDate = priceEvent.NewStartDate.AddDays(5);
+            priceEvent.CurrencyCode = "USD";
+            priceEvent.PriceUom = "EA";
+            priceEvent.ItemChangeTypeID = 1;
+            this.priceEventList.Add(priceEvent);
+            int expectedPriceCount = this.priceEventList.Count + 1; // Expecting REG and TPR rows
+
+            //When
+            List<PriceModel> prices = this.priceEventList.MapToPriceModel().ToList();
+
+            //Then
+            Assert.AreEqual(expectedPriceCount, prices.Count(), "Count didn't match");
+            Assert.IsTrue(prices.Any(p => p.PriceType == "REG") && prices.Any(p => p.PriceType == "SAL"));
+
+            PriceModel regPrice = prices.Single(p => p.PriceType == "REG");
+            PriceModel salPrice = prices.Single(p => p.PriceType == "SAL");
+
+            Assert.AreEqual(priceEvent.BusinessUnitId, salPrice.BusinessUnitId, "Business Units didn't match");
+            Assert.AreEqual(priceEvent.ScanCode, salPrice.ScanCode, "Scan Codes didn't match");
+            Assert.AreEqual(priceEvent.NewSalePrice, salPrice.Price, "Prices didn't match");
+            Assert.AreEqual(priceEvent.NewSaleMultiple, salPrice.Multiple, "Multiples didn't match");
+            Assert.AreEqual(priceEvent.NewStartDate, salPrice.StartDate, "Start Dates didn't match");
+            Assert.AreEqual(priceEvent.NewSaleEndDate, salPrice.EndDate, "End Dates didn't match");
+            Assert.AreEqual(priceEvent.NewPriceType, salPrice.PriceType, "Price Types didn't match");
+            Assert.AreEqual(priceEvent.PriceUom, salPrice.PriceUom, "Price Uoms didn't match");
+            Assert.AreEqual(priceEvent.CurrencyCode, salPrice.CurrencyCode, "Currency Code didn't match");
+
+            Assert.AreEqual(priceEvent.BusinessUnitId, regPrice.BusinessUnitId, "Business Units didn't match");
+            Assert.AreEqual(priceEvent.ScanCode, regPrice.ScanCode, "Scan Codes didn't match");
+            Assert.AreEqual(priceEvent.NewRegularPrice, regPrice.Price, "Prices didn't match");
+            Assert.AreEqual(priceEvent.NewRegularMultiple, regPrice.Multiple, "Multiples didn't match");
+            Assert.AreEqual(priceEvent.NewStartDate, regPrice.StartDate, "Start Dates didn't match");
+            Assert.AreEqual(null, regPrice.EndDate, "End Dates didn't match");
+            Assert.AreEqual("REG", regPrice.PriceType, "Price Types didn't match");
+            Assert.AreEqual(priceEvent.PriceUom, regPrice.PriceUom, "Price Uoms didn't match");
+            Assert.AreEqual(priceEvent.CurrencyCode, regPrice.CurrencyCode, "Currency Code didn't match");
+        }
+
+        [TestMethod]
+        public void MapToPriceModel_PriceEventModelHasItemChangeTypeIdNull_ShouldReturnRowForSaleChangesOnly()
+        {
+            //Given
+            this.priceEventList.Clear();
+            PriceEventModel priceEvent = new PriceEventModel();
+            priceEvent.Region = "NC";
+            priceEvent.BusinessUnitId = 3;
+            priceEvent.ScanCode = "333";
+            priceEvent.CurrentRegularPrice = 6.99M;
+            priceEvent.CurrentRegularMultiple = 3;
+            priceEvent.CurrentSalePrice = null;
+            priceEvent.CurrentPriceType = "REG";
+            priceEvent.CurrentSaleStartDate = null;
+            priceEvent.CurrentSaleEndDate = null;
+            priceEvent.NewRegularPrice = 6.99M;
+            priceEvent.NewRegularMultiple = 3;
+            priceEvent.NewSalePrice = 4.99M;
+            priceEvent.NewSaleMultiple = 3;
+            priceEvent.NewPriceType = "SAL";
+            priceEvent.NewStartDate = DateTime.Today.AddDays(4);
+            priceEvent.NewSaleEndDate = priceEvent.NewStartDate.AddDays(5);
+            priceEvent.CurrencyCode = "USD";
+            priceEvent.PriceUom = "EA";
+            priceEvent.ItemChangeTypeID = null;
+            this.priceEventList.Add(priceEvent);
+            int expectedPriceCount = this.priceEventList.Count ; // Expecting TPR rows
+
+            //When
+            List<PriceModel> prices = this.priceEventList.MapToPriceModel().ToList();
+
+            //Then
+            Assert.AreEqual(expectedPriceCount, prices.Count(), "Count didn't match");
+            Assert.IsTrue(prices.Any(p => p.PriceType == "SAL"));
+
+            PriceModel salPrice = prices.Single(p => p.PriceType == "SAL");
+
+            Assert.AreEqual(priceEvent.BusinessUnitId, salPrice.BusinessUnitId, "Business Units didn't match");
+            Assert.AreEqual(priceEvent.ScanCode, salPrice.ScanCode, "Scan Codes didn't match");
+            Assert.AreEqual(priceEvent.NewSalePrice, salPrice.Price, "Prices didn't match");
+            Assert.AreEqual(priceEvent.NewSaleMultiple, salPrice.Multiple, "Multiples didn't match");
+            Assert.AreEqual(priceEvent.NewStartDate, salPrice.StartDate, "Start Dates didn't match");
+            Assert.AreEqual(priceEvent.NewSaleEndDate, salPrice.EndDate, "End Dates didn't match");
+            Assert.AreEqual(priceEvent.NewPriceType, salPrice.PriceType, "Price Types didn't match");
+            Assert.AreEqual(priceEvent.PriceUom, salPrice.PriceUom, "Price Uoms didn't match");
+            Assert.AreEqual(priceEvent.CurrencyCode, salPrice.CurrencyCode, "Currency Code didn't match");
+        }
     }
 }
