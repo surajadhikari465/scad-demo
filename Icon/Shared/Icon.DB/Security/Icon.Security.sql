@@ -48,6 +48,9 @@ GO
 grant execute on [app].[IconItemSubTeamExceptions]	 to iConReports 
 GO
 grant execute on [app].[IconItemTaxExceptions]	 to iConReports
+
+grant execute on [app].[IconIRMASignAttributeComparison] to iConReports
+
 GO
 
 -- PDX Extract

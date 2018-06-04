@@ -28,5 +28,6 @@ namespace Mammoth.Price.Controller.DataAccess.Models
         public string ErrorMessage { get; set; }
         public string ErrorDetails { get; set; }
         public string ErrorSource { get; set; }
+        public int? ItemChangeTypeID { get; set; }
     }
 }
