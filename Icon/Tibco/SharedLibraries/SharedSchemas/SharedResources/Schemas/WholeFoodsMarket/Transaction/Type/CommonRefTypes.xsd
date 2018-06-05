@@ -388,7 +388,7 @@
 			<xs:element name="paidIn" type="ControlPOSLogTotalsBase" minOccurs="0"/>
 			<xs:element name="paidOut" type="ControlPOSLogTotalsBase" minOccurs="0"/>
 			<xs:element name="pickup" type="ControlPOSLogTotalsBase" minOccurs="0"/>
-			<xs:element name="reasonCode" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
+			<xs:element name="reasons" type="crf:ReasonsCodeType" minOccurs="0"/>
 			<xs:element name="overShort" type="ControlOverShortType" minOccurs="0"/>
 			<xs:element name="accounts" type="ControlAccountsType" minOccurs="0"/>
 		</xs:sequence>

@@ -114,8 +114,13 @@
 			<xs:element name="value" type="crf:WfmDecimalType"/>
 			<xs:element name="promotionID" type="crf:PromotionIdType"/>
 			<xs:element name="description" type="txf:DescriptionCommonData"/>
-			<xs:element name="lineItemRewardPromotion" type="LineItemRewardPromotionType" minOccurs="0"/>
+			<xs:element name="lineItemRewardPromotions" type="LineItemRewardPromotionsType" minOccurs="0"/>
 			<xs:element name="sequenceNumber" type="crf:SequenceNumberType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LineItemRewardPromotionsType">
+		<xs:sequence>
+			<xs:element name="lineItemRewardPromotion" type="LineItemRewardPromotionType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="LineItemRewardPromotionType">

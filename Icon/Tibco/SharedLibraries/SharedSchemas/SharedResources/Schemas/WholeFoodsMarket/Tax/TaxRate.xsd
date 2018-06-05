@@ -44,6 +44,7 @@
 			<xs:element name="taxZone" type="tzr:TaxZoneType" minOccurs="0"/>
 			<xs:element name="taxIndicator" type="taf:TaxIndicatorType"/>
 			<xs:element name="dependenceRateID" type="taf:DependenceRateIDType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="impositionId" type="crf:WfmStrType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="unitType" type="taf:UnitType" minOccurs="0"/>
 			<xs:element name="roundingType" type="taf:RoundingTypeEnum"/>
 			<xs:element name="couponReducesTaxation" type="taf:CouponReducesTaxationType" minOccurs="0"/>

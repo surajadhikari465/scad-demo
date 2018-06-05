@@ -37,8 +37,9 @@
 					<xs:element name="isBadPassword" type="crf:WfmBoolType" minOccurs="0"/>
 					<xs:element name="passwordAuthorization" type="tpf:POSLogPasswordAuthorization" minOccurs="0"/>
 				</xs:sequence>
+				<xs:element name="openLane" type="tmz:DateTimezoneType"/>
 			</xs:choice>
-			<xs:element name="reason" type="crf:ReasonCodeType" minOccurs="0"/>
+			<xs:element name="reasons" type="crf:ReasonsCodeType" minOccurs="0"/>
 			<xs:choice minOccurs="0">
 				<xs:element name="blindPickup" type="tpf:BlindPickupType"/>
 				<xs:element name="operatorAction" type="tpf:OperatorControlActionType"/>

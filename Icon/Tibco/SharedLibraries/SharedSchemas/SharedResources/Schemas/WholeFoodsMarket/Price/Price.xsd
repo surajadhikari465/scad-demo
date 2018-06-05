@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!-- edited with XMLSpy v2016 sp1 (x64) (http://www.altova.com) by Arun Purushothaman (Whole Foods) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:prf="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.1">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"
+	 xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+	 xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1"
+	 xmlns:prf="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1"
+	 xmlns:prt="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1"
+	 xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2"
+	 targetNamespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"
+	 version="2.1"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
@@ -9,6 +21,7 @@
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" schemaLocation="PriceType.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../Uom/UnitOfMeasure.xsd"/>
+
 	<!-- ================== -->
 	<!-- Global Elements             -->
 	<!-- ================== -->
@@ -35,5 +48,6 @@
 			<xs:element name="traits" type="crf:TraitsType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute ref="crf:Action"/>
+		<xs:attribute ref="crf:Id"/>
 	</xs:complexType>
 </xs:schema>

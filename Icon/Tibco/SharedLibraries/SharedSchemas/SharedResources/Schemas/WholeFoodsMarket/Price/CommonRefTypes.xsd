@@ -43,6 +43,8 @@
 			<xs:enumeration value="ISS"/>
 			<xs:enumeration value="SAL"/>
 			<xs:enumeration value="TPR"/>
+			<xs:enumeration value="RWD"/>
+			<xs:enumeration value="GSP"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="PriceTypeDescTypeEnum">
@@ -59,6 +61,7 @@
 			<xs:enumeration value="Special Sale"/>
 			<xs:enumeration value="In Store Special"/>
 			<xs:enumeration value="Temporary Price Reduction"/>
+			<xs:enumeration value="Reward"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="BreakPointStartQty">
