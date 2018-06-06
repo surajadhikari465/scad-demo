@@ -39,7 +39,7 @@ namespace WebSupport.Tests.MessageBuilders
                     ItemTypeCode = "Test",
                     ModifiedDateUtc = DateTime.Now,
                     Multiple = 1,
-                    NewTagExpiration = DateTime.Now,
+                    TagExpirationDate = DateTime.Now,
                     PatchFamilyId = "1-123",
                     Price = 1m,
                     PriceId = 12345,

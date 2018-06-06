@@ -369,6 +369,15 @@
     <None Include="Schemas\Promotion\TransactionPromotion.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Schemas\Rewards\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Rewards\Rewards.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Rewards\RewardsType.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Schemas\SelectionGroup\SelectionGroup.xsd">
       <SubType>Designer</SubType>
     </None>

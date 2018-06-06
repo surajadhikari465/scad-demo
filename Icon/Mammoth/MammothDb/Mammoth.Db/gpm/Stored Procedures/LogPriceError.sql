@@ -11,7 +11,7 @@
 	@SellableUOM nvarchar(3),
 	@CurrencyCode nvarchar(3),
 	@Multiple int,
-	@NewTagExpiration datetime2 = NULL,
+	@TagExpirationDate datetime2 = NULL,
 	@ErrorMessage nvarchar(500) ,
 	@ErrorCode nvarchar(100)
 AS
@@ -30,7 +30,7 @@ BEGIN
            ,[SellableUOM]
            ,[CurrencyCode]
            ,[Multiple]
-           ,[NewTagExpiration]
+           ,[TagExpirationDate]
            ,[InsertDateUtc] 
            ,[ErrorMessage]
            ,[ErrorCode])
@@ -48,7 +48,7 @@ BEGIN
 			  @SellableUOM,
 			  @CurrencyCode,
 			  @Multiple,
-			  @NewTagExpiration,
+			  @TagExpirationDate,
 			  SYSUTCDATETIME(),
 			  @ErrorMessage,
 			  @ErrorCode 

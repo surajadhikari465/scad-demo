@@ -1,19 +1,20 @@
 ﻿CREATE TABLE [gpm].[Price_PN](
-       [Region] [nchar](2) NOT NULL DEFAULT ('PN'),
+       [Region] [nchar](2) NOT NULL CONSTRAINT [DF_Gpm_Price_PN_Region] DEFAULT ('PN'),
        [PriceID] [bigint] IDENTITY(1,1) NOT NULL,
-       [GpmID] [uniqueidentifier] NOT NULL,
+	   [GpmID] [uniqueidentifier] NULL,
        [ItemID] [int] NOT NULL,
        [BusinessUnitID] [int] NOT NULL,
-       [StartDate] [datetime2](7) NOT NULL,
-       [EndDate] [datetime2](7) NULL,
+       [StartDate] [datetime2](0) NOT NULL,
+       [EndDate] [datetime2](0) NULL,
        [Price] DECIMAL(9,2) NOT NULL,
+	   [PercentOff] DECIMAL(3,2) NULL,
        [PriceType] [nvarchar](3) NOT NULL,
        [PriceTypeAttribute] [nvarchar](10) NOT NULL,
        [SellableUOM] [nvarchar](3) NOT NULL,
        [CurrencyCode] [nvarchar](3) NOT NULL,
        [Multiple] [tinyint] NOT NULL,
-       [NewTagExpiration] [datetime2](7) NULL,
-       [InsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME()),
+       [TagExpirationDate] [datetime2](0) NULL,
+       [InsertDateUtc] [datetime2](7) NOT NULL CONSTRAINT [DF_Gpm_Price_PN_InsertDateUtc] DEFAULT (SYSUTCDATETIME()),
 	   [ModifiedDateUtc] [datetime2](7) NULL
 	   CONSTRAINT [PK_GpmPrice_PN] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC, [BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC) WITH (FILLFACTOR = 100) ON [FG_PN]
 	   CONSTRAINT [CK_Gpm_Price_PN_Region] CHECK (Region = 'PN')
@@ -46,7 +47,7 @@ CREATE TRIGGER [gpm].[Trigger_Price_PN]
 			SellableUOM,
 			CurrencyCode,
 			Multiple,
-			NewTagExpiration,
+			TagExpirationDate,
 			InsertDateUtc,
 			ModifiedDateUtc
 		)
@@ -64,18 +65,17 @@ CREATE TRIGGER [gpm].[Trigger_Price_PN]
 			SellableUOM,
 			CurrencyCode,
 			Multiple,
-			NewTagExpiration,
+			TagExpirationDate,
 			InsertDateUtc,
 			ModifiedDateUtc
 		FROM deleted
-		
-        SET NoCount ON
+
+		SET NOCOUNT ON
     END
 GO
 
 CREATE INDEX [IX_Price_PN_StartDate] ON [gpm].[Price_PN] ([StartDate])
-	INCLUDE (Region, PriceID, GpmID, ItemID, BusinessUnitID, EndDate, Price, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, NewTagExpiration, InsertDateUtc, ModifiedDateUtc)
-	WITH (FILLFACTOR = 100)
+	INCLUDE (Region, PriceID, ItemID, BusinessUnitID, EndDate, Price, PercentOff, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, TagExpirationDate, InsertDateUtc, ModifiedDateUtc) WITH (FILLFACTOR = 100)
     ON [FG_PN];
 GO
 

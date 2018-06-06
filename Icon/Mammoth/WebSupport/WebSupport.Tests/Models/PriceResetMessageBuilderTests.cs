@@ -112,13 +112,13 @@ namespace WebSupport.Tests.Models
 
             Contracts.TraitType newTagExpiration = traits[0];
             Assert.IsFalse(newTagExpiration.ActionSpecified);
-            Assert.AreEqual(EsbConstants.NewTagExpirationTraitCode, newTagExpiration.code);
-            Assert.AreEqual(EsbConstants.NewTagExpirationTraitDescription, newTagExpiration.type.description);
+            Assert.AreEqual(EsbConstants.TagExpirationDateTraitCode, newTagExpiration.code);
+            Assert.AreEqual(EsbConstants.TagExpirationDateTraitDescription, newTagExpiration.type.description);
             Assert.AreEqual(string.Empty, newTagExpiration.type.value.First().value);
         }
 
         [TestMethod]
-        public void BuildMessage_PriceHasNewTagExpiration_ShouldAddNewTagExpirationTrait()
+        public void BuildMessage_PriceHasTagExpirationDate_ShouldAddNewTagExpirationTrait()
         {
             //Given
             PriceResetPrice priceResetPrice = new PriceResetPrice
@@ -138,7 +138,7 @@ namespace WebSupport.Tests.Models
                 SellableUom = "EA",
                 StartDate = DateTime.Now,
                 StoreName = "TEST STORE",
-                NewTagExpiration = DateTime.Today
+                TagExpirationDate = DateTime.Today
             };
             request.PriceResetPrices = new List<PriceResetPrice>
             {
@@ -200,8 +200,8 @@ namespace WebSupport.Tests.Models
 
             Contracts.TraitType newTagExpiration = traits[0];
             Assert.IsFalse(newTagExpiration.ActionSpecified);
-            Assert.AreEqual(EsbConstants.NewTagExpirationTraitCode, newTagExpiration.code);
-            Assert.AreEqual(EsbConstants.NewTagExpirationTraitDescription, newTagExpiration.type.description);
+            Assert.AreEqual(EsbConstants.TagExpirationDateTraitCode, newTagExpiration.code);
+            Assert.AreEqual(EsbConstants.TagExpirationDateTraitDescription, newTagExpiration.type.description);
             Assert.AreEqual(DateTime.Today, DateTime.Parse(newTagExpiration.type.value.First().value));
         }
     }

@@ -94,7 +94,7 @@ namespace WebSupport.DataAccess.Test.Queries
             Assert.AreEqual(testItemTypeCode, priceModel.ItemTypeCode);
             Assert.IsNull(priceModel.ModifiedDateUtc);
             Assert.AreEqual(1, priceModel.Multiple);
-            Assert.IsNull(priceModel.NewTagExpiration);
+            Assert.IsNull(priceModel.TagExpirationDate);
             Assert.AreEqual(testItemId + "-" + testBusinessUnitId, priceModel.PatchFamilyId);
             Assert.AreEqual(price, priceModel.Price);
             Assert.AreEqual(priceId, priceModel.PriceId);
@@ -192,7 +192,7 @@ namespace WebSupport.DataAccess.Test.Queries
             Assert.AreEqual(testItemTypeCode, priceModelReg.ItemTypeCode);
             Assert.IsNull(priceModelReg.ModifiedDateUtc);
             Assert.AreEqual(1, priceModelReg.Multiple);
-            Assert.IsNull(priceModelReg.NewTagExpiration);
+            Assert.IsNull(priceModelReg.TagExpirationDate);
             Assert.AreEqual(testItemId + "-" + testBusinessUnitId, priceModelReg.PatchFamilyId);
             Assert.AreEqual(priceReg, priceModelReg.Price);
             Assert.AreEqual(activeRegPriceId, priceModelReg.PriceId);
@@ -215,7 +215,7 @@ namespace WebSupport.DataAccess.Test.Queries
             Assert.AreEqual(testItemTypeCode, priceModelTpr.ItemTypeCode);
             Assert.IsNull(priceModelTpr.ModifiedDateUtc);
             Assert.AreEqual(1, priceModelTpr.Multiple);
-            Assert.IsNull(priceModelTpr.NewTagExpiration);
+            Assert.IsNull(priceModelTpr.TagExpirationDate);
             Assert.AreEqual(testItemId + "-" + testBusinessUnitId, priceModelTpr.PatchFamilyId);
             Assert.AreEqual(priceTpr, priceModelTpr.Price);
             Assert.AreEqual(activeTprPriceId, priceModelTpr.PriceId);
@@ -300,7 +300,7 @@ namespace WebSupport.DataAccess.Test.Queries
             Assert.AreEqual(testItemTypeCode, priceModelReg.ItemTypeCode);
             Assert.IsNull(priceModelReg.ModifiedDateUtc);
             Assert.AreEqual(1, priceModelReg.Multiple);
-            Assert.IsNull(priceModelReg.NewTagExpiration);
+            Assert.IsNull(priceModelReg.TagExpirationDate);
             Assert.AreEqual(testItemId + "-" + testBusinessUnitId, priceModelReg.PatchFamilyId);
             Assert.AreEqual(priceReg, priceModelReg.Price);
             Assert.AreEqual(activeRegPriceId, priceModelReg.PriceId);
@@ -330,7 +330,7 @@ namespace WebSupport.DataAccess.Test.Queries
                        ,SellableUOM
                        ,CurrencyCode
                        ,Multiple
-                       ,NewTagExpiration
+                       ,TagExpirationDate
                        ,InsertDateUtc
                        ,ModifiedDateUtc)
                  VALUES

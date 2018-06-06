@@ -33,7 +33,7 @@ namespace WebSupport.DataAccess.Queries
                           ,p.SellableUOM
                           ,p.CurrencyCode
                           ,p.Multiple
-                          ,p.NewTagExpiration
+                          ,p.TagExpirationDate
                           ,p.InsertDateUtc
                           ,p.ModifiedDateUtc
                           ,it.itemTypeCode AS ItemTypeCode

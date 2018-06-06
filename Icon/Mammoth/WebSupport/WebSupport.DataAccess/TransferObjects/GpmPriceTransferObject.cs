@@ -14,7 +14,7 @@ namespace WebSupport.DataAccess.TransferObjects
         public int ItemID { get; set; }
         public int BusinessUnit { get; set; }
         public string CurrencyCode { get; set; }
-        public DateTime NewTagExpiration { get; set; }
+        public DateTime? TagExpirationDate { get; set; }
         PriceTransferObject RegPrice { get; set; }
         PriceTransferObject SalePrice { get; set; }
     }

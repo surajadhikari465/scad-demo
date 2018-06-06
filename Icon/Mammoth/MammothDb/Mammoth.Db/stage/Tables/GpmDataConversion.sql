@@ -5,15 +5,15 @@
     [GpmID] [uniqueidentifier] NOT NULL,
     [ItemID] [int] NOT NULL,
     [BusinessUnitID] [int] NOT NULL,
-    [StartDate] [datetime2](7) NOT NULL,
-    [EndDate] [datetime2](7) NULL,
+    [StartDate] [datetime2](0) NOT NULL,
+    [EndDate] [datetime2](0) NULL,
     [Price] [smallmoney] NOT NULL,
     [PriceType] [nvarchar](3) NOT NULL,
     [PriceTypeAttribute] [nvarchar](10) NOT NULL,
     [SellableUOM] [nvarchar](3) NOT NULL,
     [CurrencyCode] [nvarchar](3) NOT NULL,
     [Multiple] [tinyint] NOT NULL,
-    [NewTagExpiration] [datetime2](7) NULL,
+    [NewTagExpiration] [datetime2](0) NULL,
     [InsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME())
 )
 GO

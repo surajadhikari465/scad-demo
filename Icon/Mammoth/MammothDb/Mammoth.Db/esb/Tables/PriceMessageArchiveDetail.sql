@@ -2,7 +2,7 @@
 (
 	MessageAction NVARCHAR(20) NOT NULL,
 	Region NVARCHAR(2) NOT NULL,
-	GpmID  uniqueidentifier NOT NULL,
+	GpmID  uniqueidentifier NULL,
 	ItemID INT NOT NULL,
 	BusinessUnitID INT NOT NULL,
 	MessageID NVARCHAR(50) NOT NULL,
@@ -14,7 +14,7 @@
 GO
 
 CREATE NONCLUSTERED INDEX [IX_PriceMessageArchiveDetail_MessageID] ON [esb].[PriceMessageArchiveDetail] (MessageID ASC)
-	INCLUDE ([ItemID], [BusinessUnitId],[GpmID])
+	INCLUDE ([ItemID], [BusinessUnitId])
 GO
 
 GRANT UPDATE,INSERT on [esb].[PriceMessageArchiveDetail] to [TibcoRole]

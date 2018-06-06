@@ -43,7 +43,7 @@ BEGIN
 			[SellableUOM],
 			[CurrencyCode],
 			[Multiple],
-			[NewTagExpiration],
+			[TagExpirationDate],
 			[InsertDateUtc]
 		)
 		SELECT TOP(@BatchSize)
