@@ -68,7 +68,7 @@
     [APUploadedCost]               MONEY           NULL,
     [QtyShippedProvided]           BIT             NULL,
     [POCostDate]                   DATETIME        NULL,
-    [AdminNotes]                   VARCHAR (128)   NULL,
+    [AdminNotes]                   VARCHAR (5000)  NULL,
     [ResolutionCodeID]             INT             NULL,
     [InReview]                     BIT             NULL,
     [InReviewUser]                 INT             NULL,
