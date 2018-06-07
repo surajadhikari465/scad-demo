@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class DeleteHierarchyClassManagerHandlerTests
     {
         private DeleteHierarchyClassManagerHandler managerHandler;

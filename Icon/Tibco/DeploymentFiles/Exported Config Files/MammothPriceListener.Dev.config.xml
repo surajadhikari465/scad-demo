@@ -65,6 +65,14 @@
             <value>3</value>
         </NameValuePair>
         <NameValuePair>
+            <name>Application/MessageTypeNames/ConfirmBOD</name>
+            <value>ConfirmBOD</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Application/MessageTypeNames/ProcessBod</name>
+            <value>ProcessBOD</value>
+        </NameValuePair>
+        <NameValuePair>
             <name>Application/ProcessBODLogicalID</name>
             <value>WFM</value>
         </NameValuePair>
@@ -75,6 +83,14 @@
         <NameValuePair>
             <name>Application/ProcessBODVersionID</name>
             <value>9.2</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Application/ResetFlagFalseValue</name>
+            <value>0</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Application/ResetFlagTrueValue</name>
+            <value>1</value>
         </NameValuePair>
         <NameValuePairInteger>
             <name>Application/SendMessageRetrySleepInMilliseconds</name>
@@ -89,16 +105,40 @@
             <value>file:///C:/Certs</value>
         </NameValuePair>
         <NameValuePairPassword>
-            <name>ConfirmBODSettings/Connections/JMS/SB1/Password</name>
-            <value>#!8yhvVaM8XR8LYyyFy2hQ+Dyx2IlkpfcVWvrqzCMKRwTXDtMCVCAzDA==</value>
+            <name>ConfirmBODSettings/Connections/JMS/ESB/JmsPassword</name>
+            <value>#!bWVXjhTtT4qANEvikS+eiBY6X1cu61biQ7Aae5xkBDsyGnPYiDEp7g==</value>
         </NameValuePairPassword>
         <NameValuePair>
-            <name>ConfirmBODSettings/Connections/JMS/SB1/Url</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
+            <name>ConfirmBODSettings/Connections/JMS/ESB/JmsUsername</name>
+            <value>mammothUser</value>
         </NameValuePair>
         <NameValuePair>
-            <name>ConfirmBODSettings/Connections/JMS/SB1/Username</name>
-            <value>mammothUser</value>
+            <name>ConfirmBODSettings/Connections/JMS/ESB/JndiContextFactory</name>
+            <value>com.tibco.tibjms.naming.TibjmsInitialContextFactory</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ConfirmBODSettings/Connections/JMS/ESB/JndiContextUrl</name>
+            <value>ssl://cerd1616.wfm.pvt:7233</value>
+        </NameValuePair>
+        <NameValuePairPassword>
+            <name>ConfirmBODSettings/Connections/JMS/ESB/JndiPassword</name>
+            <value>#!sXNo5Ht8EltwWKtWWVHpC5tw+d2d2c8OXHJQwIz0YQI=</value>
+        </NameValuePairPassword>
+        <NameValuePair>
+            <name>ConfirmBODSettings/Connections/JMS/ESB/JndiUsername</name>
+            <value>jndiMammothUser</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ConfirmBODSettings/Connections/JMS/ESB/QueueConnectionFactory</name>
+            <value>ItemQueueConnectionFactory</value>
+        </NameValuePair>
+        <NameValuePairPassword>
+            <name>ConfirmBODSettings/Connections/JMS/ESB/SslPassword</name>
+            <value>#!ZVGjrgTtcTB8gmg2cnrqjA==</value>
+        </NameValuePairPassword>
+        <NameValuePair>
+            <name>ConfirmBODSettings/Connections/JMS/ESB/TopicConnectionFactory</name>
+            <value>ItemTopicConnectionFactory</value>
         </NameValuePair>
         <NameValuePair>
             <name>ConfirmBODSettings/Destinations/ConfirmBODQueue</name>
@@ -118,7 +158,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/IRMA/Password</name>
-            <value>#!D5vJnWrUXThyv+geedijEN0OgNEiS2w6edPtFeUmHlj6XUYJt2DDAQ==</value>
+            <value>#!n50otEo8nUIBqqvOmFaFlGqeh03u1v716/YJnTSQshHg2aFVdtA9Rg==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/IRMA/SqlDBDriver</name>
@@ -134,7 +174,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/Mammoth/Password</name>
-            <value>#!7xxIQ8t7sM+FtNGFcOv+dNipmrwO0QTeJHJo+ksHlvmlVDCHXjxUxA==</value>
+            <value>#!oCGes39NWcpjL55X5ZXEIPfN2VXmztleagNwt2eR4LIyE0QLxRG7ZA==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/Mammoth/SqlDBDriver</name>
@@ -190,7 +230,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/JndiPassword</name>
-            <value>#!peUZlBZyzNl9PLW+iGrb8RNLoNJmzlBCDanLgOW3dco=</value>
+            <value>#!xYZwc6qLXjR+T1aL1UiAHdnM8f8KWqfTP1jPJ+7g/6c=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiUsername</name>
@@ -198,7 +238,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/Password</name>
-            <value>#!1/Br6VSi23rvW8biO+5kU2FRo+RB6/YzF1Q8da6p9Llv7QLUshsqlQ==</value>
+            <value>#!b/Jpn3DAhAT9BAd4+cCDOV3ngdA4kJrPCWkWrJOGd7qymUjSwCfK8Q==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/QueueConnectionFactory</name>
@@ -206,7 +246,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/SslPassword</name>
-            <value>#!jyczgInqm6sAPnfAzzdSXw==</value>
+            <value>#!qixVSeX4jBgEAhq+EgYRfA==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/TopicConnectionFactory</name>
@@ -218,7 +258,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/SB1/Password</name>
-            <value>#!IY+lP3Bry2WBBIajKiWMcvxWv/vO3gWBwVFIRnokNxvfqX/ElZF2HThsNL66J+nsHYonfsOXCE8=</value>
+            <value>#!NfJVvVPgo1hUu0k5Bgltg34vnjfVPNaFK5C1otvgpIPovRPcBb6c79Ha71700Fp8nFLo+Pw33wE=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/SB1/Url</name>
@@ -230,7 +270,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/SB1PriceArchive/Password</name>
-            <value>#!Jn2KUL1i/73Svd0mFM1Tya3ayaMyCjFiEOUnbwpHABwxiuLHVt+X5xtmgM2SaZY+K+qM486PTMcterjioKfwQA==</value>
+            <value>#!WTH7xsvusGMA9bLEhnC01A8Lt2+/kqPK+wJubyfrXxR6ebgzWCFV6FJu+hr5RnIT0cD5gi+X8Dm4e3tLD/FLGg==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/SB1PriceArchive/Url</name>
@@ -254,7 +294,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLE/MIG_JNDIPassword</name>
-            <value>#!f8I0vsTjnC3tkZesbCoeOMbB6jSvK0Nk8mYSeM8rFGY=</value>
+            <value>#!Wo70D+eftWPTVVCxbh3Vkm4dP+uUZfCYrbH5ivxXvYY=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLE/MIG_JNDIUser</name>
@@ -262,7 +302,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLE/MIG_Password</name>
-            <value>#!pqYx2oUmwFB+5rByMgE4J4HyG2Kja1YQu1eYhiIy94A=</value>
+            <value>#!v/2Bypgiok3QNngz5psoqH9EuCXnnawUwax3yFYevh0=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLE/MIG_QueueConnectionFactory</name>
@@ -286,7 +326,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIPassword</name>
-            <value>#!e2EIdg7RJln2J8cHL0KTsFnHFtjbJLREHgLpBwpA1ug=</value>
+            <value>#!YxUDG5d2ncsc3O2uIfUHDFz2DgdyLtSQNxQ9D4svkvU=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIUser</name>
@@ -294,7 +334,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_Password</name>
-            <value>#!NjpqtU2k0bMrVqVahBQ8A042VRC/L9k7sgB7x358jhg=</value>
+            <value>#!RJ/IfoAaX7kLTUz1utt8JIScsOyUauKLZ34I+fVxoiI=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_QueueConnectionFactory</name>
@@ -302,7 +342,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_SSLConnectionFactoryPwd</name>
-            <value>#!Kc7YTTawD4VqMWw2BN9xxA==</value>
+            <value>#!rpjwChR7ygA3L6k6qNBt6g==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_TopicConnectionFactory</name>
@@ -361,8 +401,16 @@
             <value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
         </NameValuePair>
         <NameValuePair>
+            <name>Destinations/InactiveTprPriceStarterQueue</name>
+            <value>WFMSB1.Mammoth.Retail.JustInTime.InactiveTprPriceStarter.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
             <name>Destinations/MammothErrorMessageQueue</name>
             <value>WFMSB1.Mammoth.Retail.Errors.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Destinations/MammothPsgQueue</name>
+            <value>WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1</value>
         </NameValuePair>
         <NameValuePair>
             <name>Destinations/PriceInforQueue</name>
@@ -522,7 +570,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Password</name>
-            <value>#!EG7V7rVBrOsfaaPE6vEPBfQAukN4xBSk1TWjlMXIZoYX4z1fTLRXLwt7408v6523vbKMfir4fQA=</value>
+            <value>#!RbZ+yJvwFThmQIw/frTfgg1CmJAE4MoAXM5iVimrwoNnbUurz81aKdklw8pWf/xHLI1g4mLmbPg=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Url</name>
@@ -586,7 +634,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>LoggerSettings/Connections/JMS/SB1/Password</name>
-            <value>#!9husydfLaFWdpBgEJ/06PgZUjktZzGQ3BVqTpKzzH0M=</value>
+            <value>#!ILLPtcdmlRb+9K5QZa09YCVT5MbIORrJszkPYbNw5gk=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>LoggerSettings/Connections/JMS/SB1/Url</name>
@@ -707,6 +755,34 @@
                         <timeout>0</timeout>
                     </shutdown>
                 </binding>
+                <binding name="MammothPriceListenerProcessArchive-3">
+                    <machine>%%MammothPriceListenerProcessArchive.par-3-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
+                <binding name="MammothPriceListenerProcessArchive-4">
+                    <machine>%%MammothPriceListenerProcessArchive.par-4-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
             </bindings>
             <NVPairs name="Adapter SDK Properties">
                 <NameValuePair>
@@ -793,9 +869,8 @@
                 <checkpoint>Local File</checkpoint>
                 <checkpoint>/SharedResources/Connections/IRMA</checkpoint>
                 <checkpoint>/SharedResources/Connections/Mammoth</checkpoint>
-                <tablePrefix>MammothPri_52962293</tablePrefix>
+                <tablePrefix>MammothPri_30101626</tablePrefix>
             </checkpoints>
-            <isFt>false</isFt>
         </bw>
     </services>
 </application>

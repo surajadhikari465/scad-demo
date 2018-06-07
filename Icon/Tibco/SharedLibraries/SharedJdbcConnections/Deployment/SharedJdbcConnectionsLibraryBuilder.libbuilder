@@ -3,7 +3,7 @@
     <name name="SharedJdbcConnectionsLibraryBuilder">
         <version>9</version>
         <author>2130356</author>
-        <fileLocation>C:\dev\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedJdbcConnections.projlib</fileLocation>
+        <fileLocation>C:\VSTS\Source\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedJdbcConnections.projlib</fileLocation>
         <resources>/SharedResources/Connections/IRMA.sharedjdbc,/SharedResources/Connections/Mammoth.sharedjdbc</resources>
     </name>
 </Repository:repository>

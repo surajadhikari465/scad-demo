@@ -8,10 +8,6 @@
             <name>Application/ApplicationID</name>
             <value>18</value>
         </NameValuePairInteger>
-        <NameValuePair>
-            <name>Application/JobName</name>
-            <value>JustInTimePricePush</value>
-        </NameValuePair>
         <NameValuePairInteger>
             <name>Application/PublisherTimerInMilliseconds</name>
             <value>3000</value>
@@ -38,7 +34,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/IRMA/Password</name>
-            <value>#!cOsW6G0zlHLbnVK0RFr0cAPCtdIRCAjZB/qLa8Nwm3NtRNIkZyh8+Q==</value>
+            <value>#!FtYHmjjGKd5V9bEZkyBoMcd2abr1tfgGc38tbEElAXp9JW03Qv0+IA==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/IRMA/SqlDBDriver</name>
@@ -54,7 +50,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/Mammoth/Password</name>
-            <value>#!RHmJbmVlm38kEIsm0pmjCqjmavUyHPYNg1QRaf6uXO1trl4m7CgJmg==</value>
+            <value>#!DDPKWBa8Cka31g4LT6aWmSDmrgtHI5Q4FzcbMQGzHX6+vgX9hrbN4g==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/Mammoth/SqlDBDriver</name>
@@ -74,7 +70,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/JndiPassword</name>
-            <value>#!X8LQOxjYHDuInV7dbg40ZEZNcibZXu1vL5RPVVq3+n8=</value>
+            <value>#!HDoh3MKR2x/WVDCAaxUMmlaH7MW7jP4gP5YvefHiBxs=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiUsername</name>
@@ -82,7 +78,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/Password</name>
-            <value>#!u6U5zlMTRk6nmwsU3PS2bwMI9nK0IMV3XXyYGlBX6Y2v88R7FLzaYA==</value>
+            <value>#!TmpDN1PkhVgCg7fk/DXobgv55MDWxrMaZULNKY9ofOrAhV14Yj6BtA==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/QueueConnectionFactory</name>
@@ -90,7 +86,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/SslPassword</name>
-            <value>#!HjeEmW3BtHdVQ1NHaQ0Y8A==</value>
+            <value>#!2fjXDU19kyT7RILuzcWpNg==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/TopicConnectionFactory</name>
@@ -129,8 +125,16 @@
             <value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
         </NameValuePair>
         <NameValuePair>
+            <name>Destinations/InactiveTprPriceStarterQueue</name>
+            <value>WFMSB1.Mammoth.Retail.JustInTime.InactiveTprPriceStarter.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
             <name>Destinations/MammothErrorMessageQueue</name>
             <value>WFMSB1.Mammoth.Retail.Errors.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Destinations/MammothPsgQueue</name>
+            <value>WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1</value>
         </NameValuePair>
         <NameValuePair>
             <name>Destinations/PriceInforQueue</name>
@@ -210,7 +214,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Password</name>
-            <value>#!+7Hv8fE9g1FwyIwbYHaoUvhX+qZXbu/srpFvNdSeJB6qYMNZCV7/SVoM7qMf5jjgz8Wjtngx5Cs=</value>
+            <value>#!RIaTcaJ4Mn3IHEmqq0YLNIxC/miSadYZwyM07uO2yx/ZUM09APL+mEnCK5v71HrcrdOYd5VPtcU=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Url</name>
@@ -274,7 +278,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>LoggerSettings/Connections/JMS/SB1/Password</name>
-            <value>#!URJFwtJIT5tr2OXEcVoeP/WGV0BTxaqg1p8rCniTVFM=</value>
+            <value>#!UQW8dA0freugfNjQJe+R7+WhkzPuxhFBlPX8gQhv2Aw=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>LoggerSettings/Connections/JMS/SB1/Url</name>
@@ -368,6 +372,7 @@
                     </product>
                     <description></description>
                     <contact></contact>
+                    <ftWeight>200</ftWeight>
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>
@@ -382,6 +387,37 @@
                     </product>
                     <description></description>
                     <contact></contact>
+                    <ftWeight>200</ftWeight>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
+                <binding name="Job Scheduler Archive-3">
+                    <machine>%%Job Scheduler Archive.par-3-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <ftWeight>200</ftWeight>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
+                <binding name="Job Scheduler Archive-4">
+                    <machine>%%Job Scheduler Archive.par-4-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <ftWeight>200</ftWeight>
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>
@@ -473,9 +509,14 @@
                 <checkpoint>Local File</checkpoint>
                 <checkpoint>/SharedResources/Connections/IRMA</checkpoint>
                 <checkpoint>/SharedResources/Connections/Mammoth</checkpoint>
-                <tablePrefix>Job_Schedu_19708332</tablePrefix>
+                <tablePrefix>Job_Schedu_22258508</tablePrefix>
             </checkpoints>
-            <isFt>false</isFt>
+			<isFt>true</isFt> 
+            <faultTolerant>
+                <hbInterval>10000</hbInterval>
+                <activationInterval>35000</activationInterval>
+                <preparationDelay>0</preparationDelay>
+            </faultTolerant>
         </bw>
     </services>
 </application>

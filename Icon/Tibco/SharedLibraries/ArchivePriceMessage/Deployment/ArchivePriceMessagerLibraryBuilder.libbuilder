@@ -3,7 +3,7 @@
     <name name="ArchivePriceMessagerLibraryBuilder">
         <version>24</version>
         <author>Amit.Uppal</author>
-        <fileLocation>C:\dev\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedArchivePriceMessage.projlib</fileLocation>
+        <fileLocation>C:\VSTS\Source\Repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedArchivePriceMessage.projlib</fileLocation>
         <resources>/SharedResources/Processes/Archive Price Message.process</resources>
     </name>
 </Repository:repository>

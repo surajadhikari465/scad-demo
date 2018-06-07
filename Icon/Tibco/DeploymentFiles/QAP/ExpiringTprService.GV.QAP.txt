@@ -1,0 +1,45 @@
+// ----------------------------------------------------------------------------------
+// Global Variables --- EAR level
+// ----------------------------------------------------------------------------------
+BW_GLOBAL_HOSTNAME=*.wfm.pvt
+BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
+
+Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://MAMMOTH-DB01-QA\MAMMOTH;DatabaseName=Mammoth;
+Connections/JDBC/Mammoth/Username=Mammoth.tibco.qa
+Connections/JDBC/Mammoth/Password=#!wuEyIMdg8VvyItjGyEI1BMHkUO5WqrENDHy6mYa3f9l2uE9zDPxbuQ==
+
+Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+Connections/JMS/SB1/Username=sb1_mammothPriceUser
+Connections/JMS/SB1/Password=#!R90iR26UxllJAkBezovzOmDMs3SBV5WsaES01phvnMw=
+
+Connections/JMS/SB1R10/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+Connections/JMS/SB1R10/Username=sb1_mammothPriceR10User
+Connections/JMS/SB1R10/Password=#!nAlWajMwtWjA3SZX2meWMuDiLsU09eS2kFESD1oJqfk=
+
+ErrorMessageSettings/Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+ErrorMessageSettings/Connections/JMS/SB1/Username=sb1_mammothPriceUser
+ErrorMessageSettings/Connections/JMS/SB1/Password=#!R90iR26UxllJAkBezovzOmDMs3SBV5WsaES01phvnMw=
+
+LoggerSettings/Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+LoggerSettings/Connections/JMS/SB1/Username=sb1_cleUser
+LoggerSettings/Connections/JMS/SB1/Password=#!zDF3kXDB5lpIO0NHtsvTwcGKo7VwLDxW1fMRh4o5/XU=
+
+// ----------------------------------------------------------------------------------
+// Machine #1 --- ExpiringTprService Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,ExpiringTprService Process Archive,ExpiringTprService Process Archive-1,machine=cerd1662
+
+// ----------------------------------------------------------------------------------
+// Machine #2 --- ExpiringTprService Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,ExpiringTprService Process Archive,ExpiringTprService Process Archive-2,machine=cerd1663
+
+// ----------------------------------------------------------------------------------
+// Machine #3 --- ExpiringTprService Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,ExpiringTprService Process Archive,ExpiringTprService Process Archive-3,machine=cerd1664
+
+// ----------------------------------------------------------------------------------
+// Machine #4 --- ExpiringTprService Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,ExpiringTprService Process Archive,ExpiringTprService Process Archive-4,machine=cerd1665

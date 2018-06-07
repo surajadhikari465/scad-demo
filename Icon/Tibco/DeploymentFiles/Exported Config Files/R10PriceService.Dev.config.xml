@@ -32,37 +32,13 @@
             <name>BW_GLOBAL_TRUSTED_CA_STORE</name>
             <value>file:///C:/Certs</value>
         </NameValuePair>
-        <NameValuePairPassword>
-            <name>ConfirmBODSettings/Connections/JMS/SB1/Password</name>
-            <value>#!YSNYlglOL2Aj7RbwP8eWtmeT70n7Ua/VaEl3VysG4bqzv7/Aj5wJMw==</value>
-        </NameValuePairPassword>
-        <NameValuePair>
-            <name>ConfirmBODSettings/Connections/JMS/SB1/Url</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
-        </NameValuePair>
-        <NameValuePair>
-            <name>ConfirmBODSettings/Connections/JMS/SB1/Username</name>
-            <value>mammothUser</value>
-        </NameValuePair>
-        <NameValuePair>
-            <name>ConfirmBODSettings/Destinations/ConfirmBODQueue</name>
-            <value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
-        </NameValuePair>
-        <NameValuePairInteger>
-            <name>ConfirmBODSettings/SendRetryDelayInMillisec</name>
-            <value>5000</value>
-        </NameValuePairInteger>
-        <NameValuePairInteger>
-            <name>ConfirmBODSettings/SendRetryMaxCount</name>
-            <value>3</value>
-        </NameValuePairInteger>
         <NameValuePair>
             <name>Connections/JDBC/IRMA/ConnectionString</name>
             <value>jdbc:sqlserver://idd-fl\fld;DatabaseName=ItemCatalog_Test;</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/IRMA/Password</name>
-            <value>#!szGEsTmRKijF/a5DjtuOGcfCdT2mtueXv5TxAoeZkh7GC/scVs5XnA==</value>
+            <value>#!pIPcIfXgp4jImk2/weXyAFpscnu7KaH4R6pGsl6oCMWQtOurh+rxYg==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/IRMA/SqlDBDriver</name>
@@ -78,7 +54,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/Mammoth/Password</name>
-            <value>#!koTBeVvUjyWG1pznQ+7epxlIe5Bh8fL9X1hlcWj3E2bFb//voTMl3Q==</value>
+            <value>#!1A0oqX1aIETBZSEGtSBfSqzqCpubvCiAIHxzAU4UbwbxK+pZm7WS8w==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/Mammoth/SqlDBDriver</name>
@@ -134,7 +110,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/JndiPassword</name>
-            <value>#!YRL3oKA0J+8kjQG527eyY4KCJAKTLCE8hHApfPLt0oI=</value>
+            <value>#!KHU6+oQo2u27/7quGofCbXhVYf1s9nBLSiltM3B9Iyk=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiUsername</name>
@@ -142,7 +118,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/Password</name>
-            <value>#!gZBdMIMwG8Gc8I4yePNyMwekyIN4tOmubCMTH9MpoK154Zsep1rKnw==</value>
+            <value>#!Yhr9lHx2i5UVicu9xzW1hFk76ryUXsbmLmWDuosUxh+9GVGEIu/nSg==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/QueueConnectionFactory</name>
@@ -150,7 +126,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/SslPassword</name>
-            <value>#!yqtsIcfSJDFHDTx1Q+/VNQ==</value>
+            <value>#!l/+vxR1aJK5ygWqvtzgivg==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/TopicConnectionFactory</name>
@@ -162,7 +138,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/SB1/Password</name>
-            <value>#!aqEQYgqq6Ql7MtTqxI8CJl4+KKmf8nfI9O0eMg2CIAMb2QP/UcA6xHITOQqF318DYiPsLVY/BHM=</value>
+            <value>#!OkqXTq+faf70U/9mL/vwCWxvdaJ5nm7LnaQU/ud+pCjc6WMZwwhcPESPaWBzcOKyqJoNaOf8M4o=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/SB1/Url</name>
@@ -186,7 +162,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLE/MIG_JNDIPassword</name>
-            <value>#!rA36slmCQL6cieIG8WV4ZkVQQkNBFS7Tju0eklMqw94=</value>
+            <value>#!PRQQll5zIm/f6Ga4DUp0MmDesxN+1E6rpxdUZT2ncPs=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLE/MIG_JNDIUser</name>
@@ -194,7 +170,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLE/MIG_Password</name>
-            <value>#!Pk0guMG0Zx726kLbqapdsx+Av3JgbJ8VO4KvhYQPOEU=</value>
+            <value>#!RoVWMs0oAAFaxhVmG2N5YhKzNDyLY4xmEtshNlFPkm0=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLE/MIG_QueueConnectionFactory</name>
@@ -218,7 +194,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIPassword</name>
-            <value>#!NKXakfp9Ewax/KXmVTGAj+H/4KCf9NC+vOZYfY47kKU=</value>
+            <value>#!bGF3D5PZI0dBt/Xag7c/+oTdXNIr3hjSZSE97hTvWyo=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIUser</name>
@@ -226,7 +202,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_Password</name>
-            <value>#!qFVwNsJyOEsRsaAykw2FaIY+khuUZIVBGu/IH1T2jcc=</value>
+            <value>#!7Okht+cGlh0nlwY+rkH0mOf0cYJDneaWN2oC9NV3uzs=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_QueueConnectionFactory</name>
@@ -234,7 +210,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_SSLConnectionFactoryPwd</name>
-            <value>#!eRYXmDqNtgmVbdKD244fTA==</value>
+            <value>#!pxioOTfGQBXWsA61KF4Scw==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_TopicConnectionFactory</name>
@@ -293,8 +269,16 @@
             <value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
         </NameValuePair>
         <NameValuePair>
+            <name>Destinations/InactiveTprPriceStarterQueue</name>
+            <value>WFMSB1.Mammoth.Retail.JustInTime.InactiveTprPriceStarter.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
             <name>Destinations/MammothErrorMessageQueue</name>
             <value>WFMSB1.Mammoth.Retail.Errors.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Destinations/MammothPsgQueue</name>
+            <value>WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1</value>
         </NameValuePair>
         <NameValuePair>
             <name>Destinations/PriceInforQueue</name>
@@ -454,7 +438,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Password</name>
-            <value>#!CN5T0OJedC4uyPJKJ9/tKOh3QtrhPOX3IQuoBnloihPWGQHdRsKoiWAHi019ClaqSV2dy7ZPTws=</value>
+            <value>#!jZ5zJfX5jdzWqbfjTFH0VjnzZDqtLlF1r8LXq5FMXIFVuvtmHEiscq3dp/+gq27HfPx0xR7dVe4=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Url</name>
@@ -518,7 +502,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>LoggerSettings/Connections/JMS/SB1/Password</name>
-            <value>#!/iGMq0u+TFU7pZIUkFVF1u0sLtD5GQI7SVl4SSFqfLY=</value>
+            <value>#!MxRuSHUF7l3EdVU60L9yijjtKXXeObm3H7N+Z79bsjk=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>LoggerSettings/Connections/JMS/SB1/Url</name>
@@ -639,6 +623,34 @@
                         <timeout>0</timeout>
                     </shutdown>
                 </binding>
+                <binding name="R10PriceServiceProcessArchive-3">
+                    <machine>%%R10PriceServiceProcessArchive.par-3-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
+                <binding name="R10PriceServiceProcessArchive-4">
+                    <machine>%%R10PriceServiceProcessArchive.par-4-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
             </bindings>
             <NVPairs name="Adapter SDK Properties">
                 <NameValuePair>
@@ -725,9 +737,8 @@
                 <checkpoint>Local File</checkpoint>
                 <checkpoint>/SharedResources/Connections/IRMA</checkpoint>
                 <checkpoint>/SharedResources/Connections/Mammoth</checkpoint>
-                <tablePrefix>R10PriceSe_91198964</tablePrefix>
+                <tablePrefix>R10PriceSe_5515639</tablePrefix>
             </checkpoints>
-            <isFt>false</isFt>
         </bw>
     </services>
 </application>

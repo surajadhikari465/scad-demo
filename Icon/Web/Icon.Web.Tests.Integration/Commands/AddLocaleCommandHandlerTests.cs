@@ -11,7 +11,7 @@ using Icon.Web.DataAccess.Queries;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class AddLocaleCommandHandlerTests
     {
         private AddLocaleCommandHandler addLocaleCommandHandler;

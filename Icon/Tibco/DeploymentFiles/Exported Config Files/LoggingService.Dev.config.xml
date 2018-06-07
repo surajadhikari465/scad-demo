@@ -10,7 +10,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Application/DbRetrySleepInMillis</name>
-            <value>no value</value>
+            <value>3000</value>
         </NameValuePair>
         <NameValuePair>
             <name>BW_GLOBAL_HOSTNAME</name>
@@ -26,7 +26,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/IRMA/Password</name>
-            <value>#!KydF4mo3D7QGWOeyiQt+B/bmA1lOFQoWF14uzamO+YTpGq6yAKkQsA==</value>
+            <value>#!5mk3eZwic7Zee6Yrrd4WcJV1TfJ61f6NuWtbW6WP5GgnifsJ1Wv0KA==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/IRMA/SqlDBDriver</name>
@@ -42,7 +42,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/Mammoth/Password</name>
-            <value>#!xnB/NU6FDdpaOo9MrPIQYXf6XaTa8FAeueV0X2tBBFrdLxkrOQog7g==</value>
+            <value>#!OgarZh0Y7F4VIWwkVhXwY0pOFVdEqVn/WHxtRhyRWyjVQHpSUF2T2w==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/Mammoth/SqlDBDriver</name>
@@ -62,7 +62,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/JndiPassword</name>
-            <value>#!UTapNqqSEgLoR4T1kujQk/nfWt2pjTALH2FEWtnvHiw=</value>
+            <value>#!f0o2yk6vNYEVOIwInXD5NtyXzgsNBTb2n8Vt4M6bgYA=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiUsername</name>
@@ -70,7 +70,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/Password</name>
-            <value>#!UzpXO4VfH9k0rODGRHpVDuCY+lKtNIWT/xg6bCSbTnY0lVecPMFh9w==</value>
+            <value>#!Tq/v/PX/2ctsiI47NO5MxfoxF5JbodsRgGjFRrfhcBhPOASW0toB1g==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/QueueConnectionFactory</name>
@@ -78,7 +78,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/SslPassword</name>
-            <value>#!+/f1un+VhqMv+TRzSGH/uA==</value>
+            <value>#!IRaYKiFYAGFHb/I62nDb4Q==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/TopicConnectionFactory</name>
@@ -117,8 +117,16 @@
             <value>WFMESB.Technical.ErrorBOD.Error.Queue.V2</value>
         </NameValuePair>
         <NameValuePair>
+            <name>Destinations/InactiveTprPriceStarterQueue</name>
+            <value>WFMSB1.Mammoth.Retail.JustInTime.InactiveTprPriceStarter.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
             <name>Destinations/MammothErrorMessageQueue</name>
-            <value>Test2</value>
+            <value>WFMSB1.Mammoth.Retail.Errors.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Destinations/MammothPsgQueue</name>
+            <value>WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1</value>
         </NameValuePair>
         <NameValuePair>
             <name>Destinations/PriceInforQueue</name>
@@ -291,6 +299,34 @@
                         <timeout>0</timeout>
                     </shutdown>
                 </binding>
+                <binding name="Logging Service Process Archive-3">
+                    <machine>%%Logging Service Process Archive.par-3-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
+                <binding name="Logging Service Process Archive-4">
+                    <machine>%%Logging Service Process Archive.par-4-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
             </bindings>
             <NVPairs name="Adapter SDK Properties">
                 <NameValuePair>
@@ -377,9 +413,8 @@
                 <checkpoint>Local File</checkpoint>
                 <checkpoint>/SharedResources/Connections/IRMA</checkpoint>
                 <checkpoint>/SharedResources/Connections/Mammoth</checkpoint>
-                <tablePrefix>Logging_Se_75228537</tablePrefix>
+                <tablePrefix>Logging_Se_39595357</tablePrefix>
             </checkpoints>
-            <isFt>false</isFt>
         </bw>
     </services>
 </application>

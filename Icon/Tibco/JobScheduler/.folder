@@ -23,7 +23,7 @@
             <property key="ae.palette.JDBCpalette.version" value="5.13.0"/>
             <property key="ae.palette.parsepalette.version" value="5.13.0"/>
             <property key="ae.designerapp.version" value="5.10.0.19"/>
-            <property key="ae.palette.jsonpalette.version" value="2.0.0.13"/>
+            <property key="ae.palette.jsonpalette.version" value="2.1.0.7"/>
             <property key="ae.repo.palette.version" value="5.3.0"/>
             <property key="turbo.palette.version" value="5.6.1"/>
             <property key="ae.aepalette.ae.palette.version" value="5.13.0"/>
