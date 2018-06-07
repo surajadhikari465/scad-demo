@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [gpm].[AddPrice] 
 	@Region nvarchar(2),
-	@GpmID uniqueidentifier,
+	@GpmID uniqueidentifier = NULL,
 	@ItemID int,
 	@BusinessUnitID int,
 	@Price decimal(9,2),
@@ -11,7 +11,8 @@
 	@SellableUOM nvarchar(3),
 	@CurrencyCode nvarchar(3),
 	@Multiple int,
-	@NewTagExpiration datetime2 = NULL,
+	@TagExpirationDate datetime2 = NULL,
+	@PercentOff DECIMAL(3,2)  = NULL,
 	@NumberOfRowsAdded INT OUTPUT
 AS
 BEGIN
@@ -34,7 +35,8 @@ BEGIN
 			SellableUOM,
 			CurrencyCode,
 			Multiple,
-			NewTagExpiration
+			TagExpirationDate,
+			PercentOff
 		)
 		VALUES
 		(
@@ -50,7 +52,8 @@ BEGIN
 			@SellableUOM,
 			@CurrencyCode,
 			@Multiple,
-			@NewTagExpiration
+			@TagExpirationDate,
+			@PercentOff
 		)';
 
 	DECLARE @params NVARCHAR(500);
@@ -67,7 +70,8 @@ BEGIN
 		@SellableUOM nvarchar(3),
 		@CurrencyCode nvarchar(3),
 		@Multiple int,
-		@NewTagExpiration datetime2';
+		@TagExpirationDate datetime2,
+		@PercentOff DECIMAL(3,2)  ';
 
 	EXEC sp_executesql
 		@sql,
@@ -84,7 +88,8 @@ BEGIN
 		@SellableUOM = @SellableUOM,
 		@CurrencyCode = @CurrencyCode,
 		@Multiple = @Multiple,
-		@NewTagExpiration = @NewTagExpiration;
+		@TagExpirationDate = @TagExpirationDate,
+		@PercentOff = @PercentOff;
 
 	   SELECT @NumberOfRowsAdded = @@ROWCOUNT
 

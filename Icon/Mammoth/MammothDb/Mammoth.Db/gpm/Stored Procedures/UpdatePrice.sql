@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [gpm].[UpdatePrice]
 	@Region nvarchar(2),
-	@GpmID uniqueidentifier,
+	@GpmID uniqueidentifier = NULL,
 	@ItemID int,
 	@BusinessUnitID int,
 	@Price decimal(9,2),
@@ -11,8 +11,10 @@
 	@SellableUOM nvarchar(3),
 	@CurrencyCode nvarchar(3),
 	@Multiple int,
-	@NewTagExpiration datetime2 = NULL,
+	@TagExpirationDate datetime2 = NULL,
+	@PercentOff DECIMAL(3,2)  = NULL,
 	@NumberOfRowsUpdated INT OUTPUT
+
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -28,7 +30,8 @@ BEGIN
 			SellableUOM = @SellableUOM,
 			CurrencyCode = @CurrencyCode, 
 			Multiple = @Multiple,
-			NewTagExpiration = ISNULL(@NewTagExpiration, NewTagExpiration),
+			PercentOff = @PercentOff,
+			TagExpirationDate = ISNULL(@TagExpirationDate, TagExpirationDate),
 			ModifiedDateUtc = SYSUTCDATETIME()
 		WHERE 
 			Region = @Region
@@ -51,7 +54,8 @@ BEGIN
 		@SellableUOM nvarchar(3),
 		@CurrencyCode nvarchar(3),
 		@Multiple int,
-		@NewTagExpiration datetime2';
+		@TagExpirationDate datetime2,
+		@PercentOff DECIMAL(3,2) ';
 
 	EXEC sp_executesql
 		@sql,
@@ -68,7 +72,8 @@ BEGIN
 		@SellableUOM = @SellableUOM,
 		@CurrencyCode = @CurrencyCode,
 		@Multiple = @Multiple,
-		@NewTagExpiration = @NewTagExpiration;
+		@TagExpirationDate = @TagExpirationDate,
+		@PercentOff = @PercentOff;
 
 		SELECT @NumberOfRowsUpdated = @@ROWCOUNT
 END

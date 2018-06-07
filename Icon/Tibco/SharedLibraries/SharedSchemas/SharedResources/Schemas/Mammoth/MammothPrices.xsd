@@ -18,7 +18,7 @@
 			<xs:element name="PriceID" type="xs:long" minOccurs="0"/>
 			<xs:element name="BusinessUnit" type="xs:int"/>
 			<xs:element name="ItemId" type="xs:int"/>
-			<xs:element name="GpmId" type="xs:string"/>
+			<xs:element name="GpmId" type="xs:string" minOccurs="0"/>
 			<xs:element name="Multiple" type="xs:int"/>
 			<xs:element name="Price" type="xs:decimal"/>
 			<xs:element name="StartDate" type="xs:dateTime"/>
@@ -27,12 +27,13 @@
 			<xs:element name="PriceTypeAttribute" type="xs:string"/>
 			<xs:element name="SellableUom" type="xs:string"/>
 			<xs:element name="CurrencyCode" type="xs:string"/>
-			<xs:element name="NewTagExpiration" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="TagExpirationDate" type="xs:dateTime" minOccurs="0"/>
 			<xs:element name="Action" type="xs:string"/>
 			<xs:element name="ItemTypeCode" type="xs:string"/>
 			<xs:element name="StoreName" type="xs:string"/>
 			<xs:element name="ScanCode" type="xs:string"/>
 			<xs:element name="SubTeamNumber" type="xs:int" minOccurs="0"/>
+			<xs:element name="PercentOff" type="xs:decimal" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
