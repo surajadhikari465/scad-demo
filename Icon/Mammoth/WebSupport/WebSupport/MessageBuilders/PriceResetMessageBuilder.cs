@@ -82,7 +82,7 @@ namespace WebSupport.MessageBuilders
             {
                 Action = ActionEnum.Add,
                 ActionSpecified = true,
-                gpmId = price.GpmId.ToString(),
+                gpmId = price.GpmId?.ToString(),
                 type = new Contracts.PriceTypeType
                 {
                     description = ItemPriceTypes.Descriptions.ByCode[price.PriceType],
@@ -128,16 +128,16 @@ namespace WebSupport.MessageBuilders
                 new TraitType
                 {
                     ActionSpecified = false,
-                    code = EsbConstants.NewTagExpirationTraitCode,
+                    code = EsbConstants.TagExpirationDateTraitCode,
                     type = new TraitTypeType
                     {
-                        description = EsbConstants.NewTagExpirationTraitDescription,
+                        description = EsbConstants.TagExpirationDateTraitDescription,
                         value = new TraitValueType[]
                         {
                             new TraitValueType
                             {
-                                value = price.NewTagExpiration.HasValue
-                                    ? price.NewTagExpiration.Value.ToString(DateTimeFormat, CultureInfo.InvariantCulture)
+                                value = price.TagExpirationDate.HasValue
+                                    ? price.TagExpirationDate.Value.ToString(DateTimeFormat, CultureInfo.InvariantCulture)
                                     : string.Empty
                             }
                         }

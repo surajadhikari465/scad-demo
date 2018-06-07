@@ -52,7 +52,7 @@ BEGIN
 		p.CurrencyCode AS CurrencyCode,
 		p.Price AS Price,
 		p.Multiple AS Multiple,
-		p.NewTagExpiration AS NewTagExpiration,
+		p.TagExpirationDate AS TagExpirationDate,
 		ms.PatchFamilySequenceID AS SequenceId,
 		ms.PatchFamilyID AS PatchFamilyId,
 		p.StartDate AS StartDate,

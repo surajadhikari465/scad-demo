@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by sridhar (Whole Foods) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" targetNamespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="5.4">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
@@ -17,6 +16,13 @@
 		<xs:annotation>
 			<xs:documentation>
 				Type of event/action the element should take. Add, Inactivate, Update, Archive, Insert, Inherit, Delete, Reset etc.
+			  </xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="Id" type="WfmStrType">
+		<xs:annotation>
+			<xs:documentation>
+				This attribute will be used to capture identifier metadata, for eg: GPMID
 			  </xs:documentation>
 		</xs:annotation>
 	</xs:attribute>
@@ -236,7 +242,10 @@
 	<xs:simpleType name="PriceIdType">
 		<xs:restriction base="IdStrType"/>
 	</xs:simpleType>
-		<xs:simpleType name="GPMIdType">
+	<xs:simpleType name="RewardIdType">
+		<xs:restriction base="IdStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="GPMIdType">
 		<xs:restriction base="IdStrType"/>
 	</xs:simpleType>
 	<xs:simpleType name="PromotionIdType">

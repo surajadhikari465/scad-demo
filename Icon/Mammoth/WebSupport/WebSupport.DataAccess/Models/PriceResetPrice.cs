@@ -10,7 +10,7 @@ namespace WebSupport.DataAccess.Models
     {
         public int ItemId { get; set; }
         public string ScanCode { get; set; }
-        public Guid GpmId { get; set; }
+        public Guid? GpmId { get; set; }
         public string ItemTypeCode { get; set; }
         public string ItemTypeDesc { get; set; }
         public int BusinessUnitId { get; set; }
@@ -21,7 +21,7 @@ namespace WebSupport.DataAccess.Models
         public string CurrencyCode { get; set; }
         public decimal Price { get; set; }
         public byte Multiple { get; set; }
-        public DateTime? NewTagExpiration { get; set; }
+        public DateTime? TagExpirationDate { get; set; }
         public string SequenceId { get; set; }
         public string PatchFamilyId { get; set; }
         public DateTime StartDate { get; set; }

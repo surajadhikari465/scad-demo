@@ -1,18 +1,19 @@
 ﻿CREATE TABLE [gpm].[PriceHistory](
 	[Region] [nchar](2) NOT NULL,
 	[PriceID] [bigint] NOT NULL,
-	[GpmID] [uniqueidentifier] NOT NULL,
+	[GpmID] [uniqueidentifier] NULL,
 	[ItemID] [int] NOT NULL,
 	[BusinessUnitID] [int] NOT NULL,
-	[StartDate] [datetime2](7) NOT NULL,
-	[EndDate] [datetime2](7) NULL,
+	[StartDate] [datetime2](0) NOT NULL,
+	[EndDate] [datetime2](0) NULL,
 	[Price] DECIMAL(9, 2) NOT NULL,
+	[PercentOff] DECIMAL(3,2) NULL,
 	[PriceType] [nvarchar](3) NOT NULL,
 	[PriceTypeAttribute] [nvarchar](10) NOT NULL,
 	[SellableUOM] [nvarchar](3) NOT NULL,
 	[CurrencyCode] [nvarchar](3) NOT NULL,
 	[Multiple] [tinyint] NOT NULL,
-	[NewTagExpiration] [datetime2](7) NULL,
+	[TagExpirationDate] [datetime2](0) NULL,
 	[InsertDateUtc] [datetime2](7) NOT NULL, -- to hold when price was initially created.
 	[ModifiedDateUtc] [datetime2](7) NULL, -- to hold modified date of Price_XX table
 	[PriceHistoryInsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME()), -- to hold the datetime it was inserted into PriceHistory table

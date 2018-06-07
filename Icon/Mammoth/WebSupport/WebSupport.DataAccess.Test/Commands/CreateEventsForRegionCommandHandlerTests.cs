@@ -46,7 +46,7 @@
             // When
             commandHandler.Execute(new CreateEventsForRegionCommand
             {
-                Region = "FL",
+                Region = "MA",
                 EventType = eventType,
                 ScanCodes = new[] { scanCode }
             });
@@ -103,7 +103,7 @@
             // When
             commandHandler.Execute(new CreateEventsForRegionCommand
             {
-                Region = "FL",
+                Region = "MA",
                 EventType = eventType,
                 ScanCodes = scanCodes
             });
@@ -164,7 +164,7 @@
             // When
             commandHandler.Execute(new CreateEventsForRegionCommand
             {
-                Region = "FL",
+                Region = "MA",
                 EventType = eventType,
                 ScanCodes = scanCodes
             });

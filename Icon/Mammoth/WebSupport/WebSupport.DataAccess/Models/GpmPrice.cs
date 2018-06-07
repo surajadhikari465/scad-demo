@@ -9,8 +9,8 @@ namespace WebSupport.DataAccess.Models
     public class GpmPrice
     {
         public string Region { get; set; }
+        public Guid? GpmId { get; set; }
         public int PriceId { get; set; }
-        public Guid GpmId { get; set; }
         public int ItemId { get; set; }
         public int BusinessUnitId { get; set; }
         public DateTime StartDate { get; set; }
@@ -21,7 +21,7 @@ namespace WebSupport.DataAccess.Models
         public string SellableUOM { get; set; }
         public string CurrencyCode { get; set; }
         public int Multiple { get; set; }
-        public DateTime? NewTagExpiration { get; set; }
+        public DateTime? TagExpirationDate { get; set; }
         public DateTime InsertDateUtc { get; set; }
         public DateTime? ModifiedDateUtc { get; set; }
         public string ItemTypeCode { get; set; }
