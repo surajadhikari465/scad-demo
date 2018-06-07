@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eplum.Session
 (
-	SessionID NVARCHAR(2) NULL
+	SessionID NVARCHAR(30) NULL
 )
 GO
 
