@@ -135,6 +135,9 @@ Global
 		{83E129BF-0B0A-4816-8573-639F794299FA} = {99FE227F-EF06-40DA-B83C-453D67675F3E}
 		{BE9E41C4-6289-4789-B02B-2C4AF481A560} = {DF951614-2504-489F-832B-52226CBDE7B0}
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78B8CF21-4730-489E-853B-76412540A2E0}
+	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
 	EndGlobalSection
