@@ -9,7 +9,7 @@
 
     <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
     <DoNotAlterReplicatedObjects>True</DoNotAlterReplicatedObjects>
-    <DropConstraintsNotInSource>False</DropConstraintsNotInSource>
+    <DropConstraintsNotInSource>True</DropConstraintsNotInSource>
     <DropDmlTriggersNotInSource>False</DropDmlTriggersNotInSource>
     <DropExtendedPropertiesNotInSource>False</DropExtendedPropertiesNotInSource>
     <DropIndexesNotInSource>False</DropIndexesNotInSource>
