@@ -159,7 +159,7 @@ namespace Icon.Web.Controllers
             {
                 var exceptionLogger = new ExceptionLogger(logger);
                 exceptionLogger.LogException(exception, this.GetType(), MethodBase.GetCurrentMethod());
-                ViewData["ErrorMessage"] = "Error: There was a problem with applying this delete on the database.";
+                TempData["ErrorMessage"] = "Error: There was a problem with applying this delete on the database.";
                 return View(viewModel);
             }
 
