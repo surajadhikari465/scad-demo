@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns9="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns8="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pfx8="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx7="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd">
+<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx7="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx8="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pfx2="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns8="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns9="http://www.tibco.com/pe/DeployedVarsType">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
@@ -53,19 +53,19 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
+            <pd:to>IteratePrices</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
             <pd:to>Delete All Prices</pd:to>
             <pd:xpathDescription>Reset Flag is True</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
             <pd:xpath>$Start/root/ResetFlag = $_globalVariables/ns9:GlobalVariables/Application/ResetFlagTrueValue</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>start</pd:from>
-            <pd:to>IteratePrices</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>AddUpdateMessageSequence</pd:from>
@@ -128,8 +128,8 @@
             <pd:activity name="Call Price Command">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>449</pd:x>
-                <pd:y>275</pd:y>
+                <pd:x>450</pd:x>
+                <pd:y>268</pd:y>
                 <config>
                     <processName>/Processes/PriceCommand.process</processName>
                 </config>

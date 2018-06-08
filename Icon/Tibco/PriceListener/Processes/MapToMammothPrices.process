@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pfx3="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns9="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns13="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:ns10="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns8="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns11="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx7="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns8="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:ns13="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" xmlns:ns9="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns11="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns10="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns16="http://schemas.wfm.com/Enterprise/RewardMgmt/RewardType/V1" xmlns:ns15="http://schemas.wfm.com/Enterprise/RewardMgmt/Reward/V2" xmlns:ns14="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
     <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Item/Item.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
@@ -123,7 +123,7 @@
                 </config>
                 <pd:inputBindings>
                     <pfx2:MammothPrices>
-                        <xsl:for-each select="$currentLocale/pfx:locale/pfx5:storeItemAttributes/pfx4:prices/pfx3:price">
+                        <xsl:for-each select="$currentLocale/pfx:locale/pfx5:storeItemAttributes/pfx4:prices/pfx3:price[pfx3:priceAmount/ns1:amount > 0]">
                             <pfx2:MammothPrice>
                                 <pfx2:Region>
                                     <xsl:value-of select="$Get-RegionCode/Locale/Region"/>
@@ -134,9 +134,23 @@
                                 <pfx2:ItemId>
                                     <xsl:value-of select="$currentItem/pfx:item/pfx:id"/>
                                 </pfx2:ItemId>
-                                <pfx2:GpmId>
-                                    <xsl:value-of select="pfx3:gpmId"/>
-                                </pfx2:GpmId>
+                                <xsl:choose>
+                                    <xsl:when test="exists(pfx3:gpmId)">
+                                        <xsl:if test="pfx3:gpmId">
+                                            <pfx2:GpmId>
+                                                <xsl:value-of select="pfx3:gpmId"/>
+                                            </pfx2:GpmId>
+                                        </xsl:if>
+                                    </xsl:when>
+                                    <xsl:when test="exists(current()/@ns:Id)">
+                                        <xsl:if test="current()/@ns:Id">
+                                            <pfx2:GpmId>
+                                                <xsl:value-of select="current()/@ns:Id"/>
+                                            </pfx2:GpmId>
+                                        </xsl:if>
+                                    </xsl:when>
+                                    <xsl:otherwise/>
+                                </xsl:choose>
                                 <pfx2:Multiple>
                                     <xsl:value-of select="pfx3:priceMultiple"/>
                                 </pfx2:Multiple>
@@ -164,9 +178,11 @@
                                     <xsl:value-of select="pfx3:currencyTypeCode"/>
                                 </pfx2:CurrencyCode>
                                 <xsl:if test="exists(pfx3:traits/ns:trait[ns6:code=&quot;NTE&quot;]/ns6:type/ns5:value[1]/ns4:value)&#xA;and pfx3:traits/ns:trait[ns6:code=&quot;NTE&quot;]/ns6:type/ns5:value[1]/ns4:value !=&quot;&quot;">
-                                    <pfx2:NewTagExpiration>
-                                        <xsl:value-of select="pfx3:traits/ns:trait[ns6:code=&quot;NTE&quot;]/ns6:type/ns5:value[1]/ns4:value"/>
-                                    </pfx2:NewTagExpiration>
+                                    <xsl:if test="pfx3:traits/ns:trait[ns6:code=&quot;NTE&quot;]/ns6:type/ns5:value[1]/ns4:value">
+                                        <pfx2:TagExpirationDate>
+                                            <xsl:value-of select="pfx3:traits/ns:trait[ns6:code=&quot;NTE&quot;]/ns6:type/ns5:value[1]/ns4:value"/>
+                                        </pfx2:TagExpirationDate>
+                                    </xsl:if>
                                 </xsl:if>
                                 <pfx2:Action>
                                     <xsl:value-of select="@ns:Action"/>
@@ -180,6 +196,94 @@
                                 <pfx2:ScanCode>
                                     <xsl:value-of select="../../pfx4:scanCode[1]/ns14:code"/>
                                 </pfx2:ScanCode>
+                            </pfx2:MammothPrice>
+                        </xsl:for-each>
+                        <xsl:for-each select="$currentLocale/pfx:locale/pfx5:storeItemAttributes/pfx4:rewards/ns15:reward[(ns15:rewardAmount/ns1:amount >0) or( ns15:rewardPercentage >0)]">
+                            <xsl:variable name="RewardStartDate" select="current()/ns15:rewardStartDate"/>
+                            <xsl:variable name="var" select="current()/ns15:type/ns16:id"/>
+                            <xsl:variable name="price" select="../../pfx4:prices/pfx3:price[pfx3:priceStartDate = $RewardStartDate&#xA;and pfx3:type/ns2:id = $var and  pfx3:priceAmount/ns1:amount = 0] &#xA;"/>
+                            <pfx2:MammothPrice>
+                                <pfx2:Region>
+                                    <xsl:value-of select="$Get-RegionCode/Locale/Region"/>
+                                </pfx2:Region>
+                                <pfx2:BusinessUnit>
+                                    <xsl:value-of select="$Get-RegionCode/Locale/BusinessUnitId"/>
+                                </pfx2:BusinessUnit>
+                                <pfx2:ItemId>
+                                    <xsl:value-of select="$currentItem/pfx:item/pfx:id"/>
+                                </pfx2:ItemId>
+                                <xsl:variable name="var2" select="current()/ns15:rewardStartDate"/>
+                                <xsl:choose>
+                                    <xsl:when test="exists($price/pfx3:gpmId)">
+                                        <xsl:if test="$price/pfx3:gpmId">
+                                            <pfx2:GpmId>
+                                                <xsl:value-of select="$price/pfx3:gpmId"/>
+                                            </pfx2:GpmId>
+                                        </xsl:if>
+                                    </xsl:when>
+                                    <xsl:when test="exists($price/@ns:Id)">
+                                        <xsl:if test="$price/@ns:Id">
+                                            <pfx2:GpmId>
+                                                <xsl:value-of select="$price/@ns:Id"/>
+                                            </pfx2:GpmId>
+                                        </xsl:if>
+                                    </xsl:when>
+                                    <xsl:otherwise/>
+                                </xsl:choose>
+                                <pfx2:Multiple>
+                                    <xsl:value-of select="ns15:rewardMultiple"/>
+                                </pfx2:Multiple>
+                                <xsl:choose>
+                                    <xsl:when test="exists(ns15:rewardAmount/ns1:amount)">
+                                        <pfx2:Price>
+                                            <xsl:value-of select="ns15:rewardAmount/ns1:amount"/>
+                                        </pfx2:Price>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <pfx2:Price>
+                                            <xsl:value-of select="0"/>
+                                        </pfx2:Price>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <pfx2:StartDate>
+                                    <xsl:value-of select="ns15:rewardStartDate"/>
+                                </pfx2:StartDate>
+                                <xsl:if test="ns15:rewardEndDate">
+                                    <pfx2:EndDate>
+                                        <xsl:value-of select="ns15:rewardEndDate"/>
+                                    </pfx2:EndDate>
+                                </xsl:if>
+                                <pfx2:PriceType>
+                                    <xsl:value-of select="ns15:type/ns16:id"/>
+                                </pfx2:PriceType>
+                                <pfx2:PriceTypeAttribute>
+                                    <xsl:value-of select="ns15:uom/ns3:code"/>
+                                </pfx2:PriceTypeAttribute>
+                                <pfx2:SellableUom>
+                                    <xsl:value-of select="ns15:uom/ns3:code"/>
+                                </pfx2:SellableUom>
+                                <pfx2:CurrencyCode>
+                                    <xsl:value-of select="$price/pfx3:currencyTypeCode"/>
+                                </pfx2:CurrencyCode>
+                                <pfx2:Action>
+                                    <xsl:value-of select="@ns:Action"/>
+                                </pfx2:Action>
+                                <pfx2:ItemTypeCode>
+                                    <xsl:value-of select="$currentItem/pfx:item/pfx:base/ns12:type/ns11:code"/>
+                                </pfx2:ItemTypeCode>
+                                <pfx2:StoreName>
+                                    <xsl:value-of select="../../../pfx5:name"/>
+                                </pfx2:StoreName>
+                                <pfx2:ScanCode>
+                                    <xsl:value-of select="../../pfx4:scanCode[1]/ns14:code"/>
+                                </pfx2:ScanCode>
+                                <xsl:if test="exists(ns15:rewardPercentage)">
+                                    <xsl:if test="ns15:rewardPercentage">
+                                        <pfx2:PercentOff>
+                                            <xsl:value-of select="ns15:rewardPercentage"/>
+                                        </pfx2:PercentOff>
+                                    </xsl:if>
+                                </xsl:if>
                             </pfx2:MammothPrice>
                         </xsl:for-each>
                     </pfx2:MammothPrices>

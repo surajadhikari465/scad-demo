@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [gpm].[LogPriceError] 
 	@Region nvarchar(2),
-	@GpmID uniqueidentifier,
+	@GpmID uniqueidentifier = NULL,
 	@ItemID int,
 	@BusinessUnitID int,
 	@Price decimal(19,4),
@@ -12,6 +12,7 @@
 	@CurrencyCode nvarchar(3),
 	@Multiple int,
 	@TagExpirationDate datetime2 = NULL,
+	@PercentOff DECIMAL(3,2)  = NULL,
 	@ErrorMessage nvarchar(500) ,
 	@ErrorCode nvarchar(100)
 AS
@@ -31,6 +32,7 @@ BEGIN
            ,[CurrencyCode]
            ,[Multiple]
            ,[TagExpirationDate]
+		   ,[PercentOff]
            ,[InsertDateUtc] 
            ,[ErrorMessage]
            ,[ErrorCode])
@@ -49,6 +51,7 @@ BEGIN
 			  @CurrencyCode,
 			  @Multiple,
 			  @TagExpirationDate,
+			  @PercentOff,
 			  SYSUTCDATETIME(),
 			  @ErrorMessage,
 			  @ErrorCode 

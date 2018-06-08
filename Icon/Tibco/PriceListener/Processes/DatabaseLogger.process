@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/Shared Resources/Schemas/Application/Error.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothPrices.xsd"/>
@@ -116,10 +116,16 @@
                     <typeName>int</typeName>
                 </parameter>
                 <parameter>
-                    <colName>@NewTagExpiration</colName>
+                    <colName>@TagExpirationDate</colName>
                     <colType>1</colType>
                     <dataType>93</dataType>
                     <typeName>datetime2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@PercentOff</colName>
+                    <colType>1</colType>
+                    <dataType>3</dataType>
+                    <typeName>decimal</typeName>
                 </parameter>
                 <parameter>
                     <colName>@ErrorMessage</colName>
@@ -181,16 +187,12 @@
                     <Multiple>
                         <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:Multiple"/>
                     </Multiple>
-                    <NewTagExpiration>
-                        <xsl:choose>
-                            <xsl:when test="exists($Start/Input/pfx3:MammothPrice/pfx3:NewTagExpiration)">
-                                <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:NewTagExpiration"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </NewTagExpiration>
+                    <TagExpirationDate>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:TagExpirationDate"/>
+                    </TagExpirationDate>
+                    <PercentOff>
+                        <xsl:value-of select="$Start/Input/pfx3:MammothPrice/pfx3:PercentOff"/>
+                    </PercentOff>
                     <ErrorMessage>
                         <xsl:value-of select="$Start/Input/pfx2:Error/pfx2:Message"/>
                     </ErrorMessage>
