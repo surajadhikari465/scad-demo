@@ -11,11 +11,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>DbRetrySleepInMillis</name>
-			<value>no value</value>
+			<value>3000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510701694593</modTime>
+			<modTime>1521655582582</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

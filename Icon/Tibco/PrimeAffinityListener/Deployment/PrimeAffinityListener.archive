@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/PriceAffinityListener.process</processProperty>
         </processArchive>
-        <versionProperty>10</versionProperty>
+        <versionProperty>14</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PrimeAffinityListener</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\PrimeAffinityListener.ear</fileLocationProperty>
+        <fileLocationProperty>C:\VSTS\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\PrimeAffinityListener.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/ActivePriceArchiverListener.process</processProperty>
         </processArchive>
-        <versionProperty>19</versionProperty>
+        <versionProperty>22</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>ActivePriceArchiver</name>
@@ -22,7 +22,7 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\ActivePriceArchiver.ear</fileLocationProperty>
+        <fileLocationProperty>C:\VSTS\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\ActivePriceArchiver.ear</fileLocationProperty>
         <description>Archives active prices sent through the Active Price Topic</description>
     </enterpriseArchive>
 </Repository:repository>

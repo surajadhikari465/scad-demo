@@ -22,7 +22,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/IRMA/Password</name>
-            <value>#!F0lBEz2DHqcdrdZkVpOmyhGO8r/IcnFZLOQT6AYGhVgssKoBWmDAQA==</value>
+            <value>#!vG0S865wGg4RUnF8jv+WpWdOzSz6G4olzT0FQr8MaOnJepOYixh/WQ==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/IRMA/SqlDBDriver</name>
@@ -38,7 +38,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/Mammoth/Password</name>
-            <value>#!F7lEs92pw+JI3pndRfN28ZigyWdAczAGbcUIYPMxAHpJAyQikiOC3A==</value>
+            <value>#!shcdQJ0EO4Cs3yDT0nPYOrq3xhJk8R28q40fGaO9N5aFke+dxjJNWA==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/Mammoth/SqlDBDriver</name>
@@ -58,7 +58,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/JndiPassword</name>
-            <value>#!jyLvdnaYpoRSZt9CKp18Uh/xa/I+mgeaiBb5Al60xGc=</value>
+            <value>#!3ywy8PwfTNC2QA4l9Jhpagwoh7ao2LjKmqoCZgvVASQ=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiUsername</name>
@@ -66,7 +66,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/Password</name>
-            <value>#!ZL7vR2veLS/S90ZqZsukaFA71+0+Tetl6cvwk7ROFrgLM1TMBXqdPA==</value>
+            <value>#!MBZVBzlB2+y3CLaF22TXyGeJaAZzQ2OLzBrrmcnnMtxrTMQ1DlEUvA==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/QueueConnectionFactory</name>
@@ -74,7 +74,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/SslPassword</name>
-            <value>#!o0igHxZ7C0gHkF3GvATlQw==</value>
+            <value>#!Ux1Yp4apsOWNTgLQLafFQA==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/TopicConnectionFactory</name>
@@ -84,10 +84,10 @@
             <name>Connections/JMS/ESB/Username</name>
             <value>mammothUser</value>
         </NameValuePair>
-        <NameValuePair>
+        <NameValuePairPassword>
             <name>Connections/JMS/SB1/Password</name>
-            <value>sb1_mammothPriceArchiveUser</value>
-        </NameValuePair>
+            <value>#!NwbBkCPPCw4cwUmaCxEvvPlj12ukyrpJ12mxNGsT4BMDf3sV7bFGLPrgRiVkYkZyK4BnxtNmgNbrlI6Mpj/zDQ==</value>
+        </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/SB1/Url</name>
             <value>ssl://cerd1616.wfm.pvt:7233</value>
@@ -202,7 +202,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Password</name>
-            <value>#!PMzXAR4zlV5K1cP9F/SU9DIVcZflgU8zRxPBa+lUm+HOtPit0KZL8rUs+vRuIUhPy357OjSQw+o=</value>
+            <value>#!yIN8S7lckFvD+LQ693Omhlxm8p95feHa54HTFUl+y0dw+NzhP3matk1ovLPbD/T63V4UmFOJsVA=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Url</name>
@@ -258,7 +258,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>LoggerSettings/Connections/JMS/SB1/Password</name>
-            <value>#!4XdEhcPK3LgrPRi0AL3ulCjOZt2k3OqSP43RW4bQXR4=</value>
+            <value>#!M+wfIvdgM43LtsTxEliltmxrf4rwZh7Y67CFeCcpqME=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>LoggerSettings/Connections/JMS/SB1/Url</name>
@@ -335,6 +335,34 @@
                 </binding>
                 <binding name="Price Message Archiver Process Archive-2">
                     <machine>%%Price Message Archiver Process Archive.par-2-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
+                <binding name="Price Message Archiver Process Archive-3">
+                    <machine>%%Price Message Archiver Process Archive.par-3-machine%%</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
+                <binding name="Price Message Archiver Process Archive-4">
+                    <machine>%%Price Message Archiver Process Archive.par-4-machine%%</machine>
                     <product>
                         <type>bwengine</type>
                         <version></version>
@@ -433,9 +461,8 @@
                 <checkpoint>Local File</checkpoint>
                 <checkpoint>/SharedResources/Connections/IRMA</checkpoint>
                 <checkpoint>/SharedResources/Connections/Mammoth</checkpoint>
-                <tablePrefix>Price_Mess_97919546</tablePrefix>
+                <tablePrefix>Price_Mess_1361376</tablePrefix>
             </checkpoints>
-            <isFt>false</isFt>
         </bw>
     </services>
 </application>

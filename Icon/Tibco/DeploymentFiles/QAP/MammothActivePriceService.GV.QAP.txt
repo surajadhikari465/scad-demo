@@ -1,0 +1,41 @@
+// ----------------------------------------------------------------------------------
+// Global Variables --- EAR level
+// ----------------------------------------------------------------------------------
+BW_GLOBAL_HOSTNAME=*.wfm.pvt
+BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
+
+Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://MAMMOTH-DB01-QA\MAMMOTH;DatabaseName=Mammoth;
+Connections/JDBC/Mammoth/Username=Mammoth.tibco.qa
+Connections/JDBC/Mammoth/Password=#!wuEyIMdg8VvyItjGyEI1BMHkUO5WqrENDHy6mYa3f9l2uE9zDPxbuQ==
+
+Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+Connections/JMS/SB1/Username=sb1_mammothPriceUser
+Connections/JMS/SB1/Password=#!R90iR26UxllJAkBezovzOmDMs3SBV5WsaES01phvnMw=
+
+ErrorMessageSettings/Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+ErrorMessageSettings/Connections/JMS/SB1/Username=sb1_mammothPriceUser
+ErrorMessageSettings/Connections/JMS/SB1/Password=#!R90iR26UxllJAkBezovzOmDMs3SBV5WsaES01phvnMw=
+
+LoggerSettings/Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+LoggerSettings/Connections/JMS/SB1/Username=sb1_cleUser
+LoggerSettings/Connections/JMS/SB1/Password=#!zDF3kXDB5lpIO0NHtsvTwcGKo7VwLDxW1fMRh4o5/XU=
+
+// ----------------------------------------------------------------------------------
+// Machine #1 --- MammothActivePriceService Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,MammothActivePriceService Process Archive,MammothActivePriceService Process Archive-1,machine=cerd1662
+
+// ----------------------------------------------------------------------------------
+// Machine #2 --- MammothActivePriceService Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,MammothActivePriceService Process Archive,MammothActivePriceService Process Archive-2,machine=cerd1663
+
+// ----------------------------------------------------------------------------------
+// Machine #3 --- MammothActivePriceService Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,MammothActivePriceService Process Archive,MammothActivePriceService Process Archive-3,machine=cerd1664
+
+// ----------------------------------------------------------------------------------
+// Machine #4 --- MammothActivePriceService Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,MammothActivePriceService Process Archive,MammothActivePriceService Process Archive-4,machine=cerd1665
