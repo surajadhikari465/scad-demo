@@ -41,10 +41,10 @@
                 <SSIS:Property SSIS:Name="Name">InforGpmDataConversion</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">256</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">265</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{F0A9DC75-D63D-4812-B7A8-945918BFB9EF}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{73D5DAF4-7F4E-4C5A-8AA0-2A5D314DD9F3}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
