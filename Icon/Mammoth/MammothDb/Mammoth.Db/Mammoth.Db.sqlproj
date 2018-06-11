@@ -777,6 +777,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\RemovePercentageTareWeightFromAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateFairTradeCertifiedAttribute.sql" />
     <Build Include="eplum\Tables\Session.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddDefaultValueToEplumSessionTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

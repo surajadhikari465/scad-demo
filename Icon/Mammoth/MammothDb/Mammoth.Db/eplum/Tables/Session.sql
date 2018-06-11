@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eplum.Session
 (
-	SessionID NVARCHAR(30) NULL
+	SessionID NVARCHAR(30) CONSTRAINT [Session_SessionID_DF] DEFAULT ('00000') NULL
 )
 GO
 
