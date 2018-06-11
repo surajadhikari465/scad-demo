@@ -3,7 +3,7 @@ AS
 BEGIN
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-	DECLARE @today DATETIME = CONVERT(DATE, getdate())
+	DECLARE @today DATETIME2(0) = CONVERT(DATE, getdate())
 
 	IF EXISTS (
 			SELECT COUNT(1)
@@ -61,7 +61,7 @@ BEGIN
 	SELECT pbd.Item_Key
 		,pbd.Store_No
 		,pbd.PriceBatchDetailID
-		,pbd.StartDate
+		,CONVERT(DATETIME,CONVERT(VARCHAR(20),pbd.StartDate,120)) 
 		,pct.PriceChgTypeDesc
 	FROM PriceBatchDetail pbd
 	JOIN PriceChgType pct ON pbd.PriceChgTypeID = pct.PriceChgTypeID
@@ -102,12 +102,13 @@ BEGIN
 		END AS 'SELLING_UOM'
 		,'REG' AS 'PRICE_TYPE_CODE'
 		,'REG' AS 'PRICE_ATTRIBUTE_CODE'
-		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
+		,NULL AS 'TAG_EXPIRATION_DATE'
 		,@today AS 'START_DATE'
 		,NULL AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code AS 'REGION_CODE'
 		,c.CurrencyCode AS 'CURRENCY_CODE'
+		,ii.Identifier as 'SCAN_CODE'
 	FROM Price p
 	JOIN PriceChgType pct ON p.PriceChgTypeId = pct.PriceChgTypeID
 	JOIN Item i ON p.Item_Key = i.Item_Key
@@ -174,12 +175,13 @@ BEGIN
 			WHEN pct.PriceChgTypeDesc = 'NEW'
 				THEN DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1))
 			ELSE NULL
-		 END AS 'NEW_TAG_EXPIRATION_DATE'
+		 END AS 'TAG_EXPIRATION_DATE'
 		,@today AS 'START_DATE'
 		,NULL AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code AS 'REGION_CODE'
 		,c.CurrencyCode AS 'CURRENCY_CODE'
+		,ii.Identifier as 'SCAN_CODE'
 	FROM Price p
 	JOIN Item i ON p.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON p.Item_Key = ii.Item_Key
@@ -235,18 +237,17 @@ BEGIN
 		 END AS 'SELLING_UOM'
 		,'TPR' AS 'PRICE_TYPE_CODE'
 		,CASE 
-			WHEN pct.PriceChgTypeDesc = 'SAL'
-				THEN 'SSAL'
-			WHEN pct.PriceChgTypeDesc = 'FRZ'
+			WHEN pct.PriceChgTypeDesc IN ( 'SAL','FRZ')
 				THEN 'MSAL'
 			ELSE pct.PriceChgTypeDesc
 			END AS 'PRICE_ATTRIBUTE_CODE'
-		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
+		,NULL AS 'TAG_EXPIRATION_DATE'
 		,@today AS 'START_DATE'
 		,DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1)) AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code AS 'REGION_CODE'
 		,c.CurrencyCode AS 'CURRENCY_CODE'
+		,ii.Identifier as 'SCAN_CODE'
 	FROM Price p
 	JOIN Item i ON p.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON p.Item_Key = ii.Item_Key
@@ -302,12 +303,13 @@ BEGIN
 		 END AS 'SELLING_UOM'
 		,'REG' AS 'PRICE_TYPE_CODE'
 		,'REG' AS 'PRICE_ATTRIBUTE_CODE'
-		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
+		,NULL AS 'TAG_EXPIRATION_DATE'
 		,pbd.StartDate AS 'START_DATE'
 		,NULL AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
+		,ii.Identifier as 'SCAN_CODE'
 	FROM infor.tmpGpmFuturePbd l
 	JOIN Item i ON l.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON l.Item_Key = ii.Item_Key
@@ -365,12 +367,13 @@ BEGIN
 			WHEN pct.PriceChgTypeDesc = 'NEW'
 				THEN DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, pbd.Sale_End_Date), 1))
 			ELSE NULL
-		 END AS 'NEW_TAG_EXPIRATION_DATE'
+		 END AS 'TAG_EXPIRATION_DATE'
 		,pbd.StartDate AS 'START_DATE'
 		,NULL AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
+	    ,ii.Identifier as 'SCAN_CODE'
 	FROM infor.tmpGpmFuturePbd l
 	JOIN Item i ON l.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON l.Item_Key = ii.Item_Key
@@ -414,18 +417,17 @@ BEGIN
 		 END AS 'SELLING_UOM'
 		,'TPR' AS 'PRICE_TYPE_CODE'
 		,CASE 
-			WHEN pct.PriceChgTypeDesc = 'SAL'
-				THEN 'SSAL'
-			WHEN pct.PriceChgTypeDesc = 'FRZ'
+			WHEN pct.PriceChgTypeDesc IN ('SAL','FRZ')
 				THEN 'MSAL'
 			ELSE pct.PriceChgTypeDesc
 		 END AS 'PRICE_ATTRIBUTE_CODE'
-		,NULL AS 'NEW_TAG_EXPIRATION_DATE'
+		,NULL AS 'TAG_EXPIRATION_DATE'
 		,pbd.StartDate AS 'START_DATE'
 		,DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, pbd.Sale_End_Date), 1)) AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
+		,ii.Identifier as 'SCAN_CODE'
 	FROM infor.tmpGpmFuturePbd l
 	JOIN Item i ON l.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON l.Item_Key = ii.Item_Key
