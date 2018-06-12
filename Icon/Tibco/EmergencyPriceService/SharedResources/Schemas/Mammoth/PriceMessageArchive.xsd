@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:tns="http://schemas.wfm.com/Mammoth/PriceMessageArchive.xsd"
+	 targetNamespace="http://schemas.wfm.com/Mammoth/PriceMessageArchive.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="PriceMessageArchive" type="tns:PriceMessageArchiveType"/>
+	<xs:complexType name="PriceMessageArchiveType">
+		<xs:sequence>
+			<xs:element name="ItemID" type="xs:int"/>
+			<xs:element name="BusinessUnitID" type="xs:int"/>
+			<xs:element name="MessageID" type="xs:string"/>
+			<xs:element name="MessageHeaders" type="xs:string"/>
+			<xs:element name="MessageBody" type="xs:string"/>
+			<xs:element name="ErrorCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorDetails" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

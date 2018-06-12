@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2015 rel. 3 (x64) (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InvoiceMgmt/Invoice/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:imf="http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1" xmlns:itp="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceType/V1" xmlns:idp="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceDescriptionType/V1" xmlns:idf="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceDescriptionType/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ilf="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceLineType/V1" xmlns:srf="http://schemas.wfm.com/Enterprise/StatusMgmt/Status/V2" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/Invoice/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/StatusMgmt/Status/V2" schemaLocation="../Status/Status.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../Uom/UnitOfMeasure.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceType/V1" schemaLocation="InvoiceType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceDescriptionType/V1" schemaLocation="InvoiceDescriptionType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceLineType/V1" schemaLocation="InvoiceLineType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InvoiceMgmt/InvoiceDescriptionType/V1" schemaLocation="InvoiceDescriptionType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../Amount/Amount.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="../Item/Item.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="invoices">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="invoice" type="InvoiceType" maxOccurs="unbounded"/>
+				<xs:element name="totalInvoicesAmount" type="amt:AmountType" minOccurs="0"/>
+				<xs:element name="invoicesCount" type="crf:WfmIntType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="invoice" type="InvoiceType"/>
+	<xs:complexType name="InvoiceType">
+		<xs:annotation>
+			<xs:documentation>THIS SCHEMA IS STILL UNDER DEVELOPMENT UNTIL REQUIREMENT SIGN OFF</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="invoiceNumber" type="imf:InvoiceIdType" minOccurs="1"/>
+			<xs:element name="originalInvoiceNumber" type="imf:InvoiceIdType" minOccurs="0"/>
+			<xs:element name="originalInvoiceAmount" type="amt:AmountType" minOccurs="0"/>
+			<xs:element name="grossInvoiceAmount" type="amt:AmountType" minOccurs="0"/>
+			<xs:element name="netInvoiceAmount" type="amt:AmountType" minOccurs="0"/>
+			<xs:element name="invoiceStatus" type="srf:StatusType" minOccurs="1"/>
+			<xs:element name="invoicingPartyId" type="imf:PartyIdType" minOccurs="1"/>
+			<xs:element name="invoicedPartyId" type="imf:PartyIdType" minOccurs="1"/>
+			<xs:element name="invoiceDescription" type="idp:InvoiceDescriptionType" minOccurs="1"/>
+			<xs:element name="invoiceDate" type="crf:WfmDateType" minOccurs="1"/>
+			<xs:element name="paymentDueDate" type="crf:WfmDateType" minOccurs="1"/>
+			<xs:element name="invoiceTypeType" type="itp:InvoiceTypeType" minOccurs="0"/>
+			<xs:element name="invoiceItem" type="itm:ItemType" minOccurs="0"/>
+			<xs:element name="invoiceAdjustment" type="imf:AdjustmentsInvoiceType" minOccurs="0"/>
+			<xs:element name="invoiceLine" type="ilf:InvoiceLineType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="approverLogin" type="imf:ApprovalsBase" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

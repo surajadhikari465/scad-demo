@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaType/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:psf="http://schemas.wfm.com/Enterprise/PersonaMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/PersonaMgmt/PersonaType/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PersonaMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="personaType" type="PersonaTypeType"/>
+	<xs:complexType name="PersonaTypeType">
+		<xs:sequence>
+			<xs:element name="code" type="psf:PersonaCodeType" minOccurs="0"/>
+			<xs:element name="description" type="psf:PersonaDescriptionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Type of Persona Individual takes on: eg: Team Member, Customer, Contingent Worker</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

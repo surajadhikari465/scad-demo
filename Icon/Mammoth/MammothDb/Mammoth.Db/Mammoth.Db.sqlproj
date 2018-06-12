@@ -772,6 +772,8 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AlterItemAttributes_ExtAttributeValueColumnSize.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\TruncateItemLocaleStagingTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddCurrencyCodeAttribute.sql" />
+    <Build Include="gpm\Tables\MessageQueueEmergencyPrice.sql" />
+    <Build Include="gpm\Stored Procedures\DequeueEmergencyPrices.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddIrmaPriceMessageType.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddPriceArchiveTablesToRetentionPolicyTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\RemovePercentageTareWeightFromAttributesTable.sql" />
@@ -788,6 +790,7 @@
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddEmergencyPriceServiceToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

@@ -14,6 +14,7 @@ Post-Deployment Script Template
 
 --[Deployed 5/25 with PSG fixes]  :r UpdateFairTradeCertifiedAttribute.sql --2018.04.27 PBI 26696
 :r AddCurrencyCodeAttribute.sql --2018.05.09 PBI 26341
+:r AddEmergencyPriceServiceToAppTable.sql --2018.06.12 PBI 27201
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql
