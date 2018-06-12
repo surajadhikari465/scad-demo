@@ -478,10 +478,12 @@ WHERE p.Region = ?
                                 <pfx3:CurrencyCode>
                                     <xsl:value-of select="CurrencyCode"/>
                                 </pfx3:CurrencyCode>
-                                <xsl:if test="TagExpirationDate">
-                                    <pfx3:TagExpirationDate>
-                                        <xsl:value-of select="TagExpirationDate"/>
-                                    </pfx3:TagExpirationDate>
+                                <xsl:if test="exists(TagExpirationDate)">
+                                    <xsl:if test="TagExpirationDate">
+                                        <pfx3:TagExpirationDate>
+                                            <xsl:value-of select="TagExpirationDate"/>
+                                        </pfx3:TagExpirationDate>
+                                    </xsl:if>
                                 </xsl:if>
                                 <pfx3:Action>
                                     <xsl:value-of select="&quot;AddOrUpdate&quot;"/>
@@ -498,10 +500,12 @@ WHERE p.Region = ?
                                 <pfx3:SubTeamNumber>
                                     <xsl:value-of select="SubTeamNumber"/>
                                 </pfx3:SubTeamNumber>
-                                <xsl:if test="PercentOff">
-                                    <pfx3:PercentOff>
-                                        <xsl:value-of select="PercentOff"/>
-                                    </pfx3:PercentOff>
+                                <xsl:if test="exists(PercentOff)">
+                                    <xsl:if test="PercentOff">
+                                        <pfx3:PercentOff>
+                                            <xsl:value-of select="PercentOff"/>
+                                        </pfx3:PercentOff>
+                                    </xsl:if>
                                 </xsl:if>
                             </pfx3:MammothPrice>
                         </xsl:for-each>
