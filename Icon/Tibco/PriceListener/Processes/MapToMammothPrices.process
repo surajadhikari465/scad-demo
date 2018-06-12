@@ -135,13 +135,6 @@
                                     <xsl:value-of select="$currentItem/pfx:item/pfx:id"/>
                                 </pfx2:ItemId>
                                 <xsl:choose>
-                                    <xsl:when test="exists(pfx3:gpmId)">
-                                        <xsl:if test="pfx3:gpmId">
-                                            <pfx2:GpmId>
-                                                <xsl:value-of select="pfx3:gpmId"/>
-                                            </pfx2:GpmId>
-                                        </xsl:if>
-                                    </xsl:when>
                                     <xsl:when test="exists(current()/@ns:Id)">
                                         <xsl:if test="current()/@ns:Id">
                                             <pfx2:GpmId>
@@ -214,13 +207,6 @@
                                 </pfx2:ItemId>
                                 <xsl:variable name="var2" select="current()/ns15:rewardStartDate"/>
                                 <xsl:choose>
-                                    <xsl:when test="exists($price/pfx3:gpmId)">
-                                        <xsl:if test="$price/pfx3:gpmId">
-                                            <pfx2:GpmId>
-                                                <xsl:value-of select="$price/pfx3:gpmId"/>
-                                            </pfx2:GpmId>
-                                        </xsl:if>
-                                    </xsl:when>
                                     <xsl:when test="exists($price/@ns:Id)">
                                         <xsl:if test="$price/@ns:Id">
                                             <pfx2:GpmId>

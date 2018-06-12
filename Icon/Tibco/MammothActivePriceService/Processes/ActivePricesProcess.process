@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd" xmlns:WFM.UID="java://UID" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx4="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx2="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pfx="http://www.tibco.com/schemas/MammothActivePriceService/SharedResources/Schemas/Schema.xsd" xmlns:WFM.UID="java://UID" xmlns:pfx2="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx4="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:pfx5="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms">
     <xsd:import namespace="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" schemaLocation="/SharedResources/Schemas/JobSchedule.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
@@ -222,13 +222,14 @@
 	SellableUOM, 
 	CurrencyCode, 
 	Multiple, 
-	NewTagExpiration, 
+	TagExpirationDate,
 	InsertDateUtc, 
 	ModifiedDateUtc,
 	it.itemTypeCode as itemTypeCode,
 	Items.ScanCode as ScanCode,
 	lc.StoreName as StoreName,
-	PSNumber as SubTeamNumber
+	PSNumber as SubTeamNumber,
+       PercentOff as PercentOff
 FROM gpm.Prices p
 INNER JOIN Items on Items.ItemID = p.ItemID
 INNER JOIN ItemTypes it on Items.ItemTypeID = it.itemTypeID
@@ -311,7 +312,7 @@ WHERE p.Region = ?
                 <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-                <QueryOutputCachedSchemaColumns>NewTagExpiration</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaColumns>TagExpirationDate</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
@@ -338,6 +339,10 @@ WHERE p.Region = ?
                 <QueryOutputCachedSchemaColumns>SubTeamNumber</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PercentOff</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
@@ -444,9 +449,11 @@ WHERE p.Region = ?
                                 <pfx3:ItemId>
                                     <xsl:value-of select="ItemID"/>
                                 </pfx3:ItemId>
-                                <pfx3:GpmId>
-                                    <xsl:value-of select="GpmID"/>
-                                </pfx3:GpmId>
+                                <xsl:if test="GpmID">
+                                    <pfx3:GpmId>
+                                        <xsl:value-of select="GpmID"/>
+                                    </pfx3:GpmId>
+                                </xsl:if>
                                 <pfx3:Multiple>
                                     <xsl:value-of select="Multiple"/>
                                 </pfx3:Multiple>
@@ -473,10 +480,12 @@ WHERE p.Region = ?
                                 <pfx3:CurrencyCode>
                                     <xsl:value-of select="CurrencyCode"/>
                                 </pfx3:CurrencyCode>
-                                <xsl:if test="NewTagExpiration">
-                                    <pfx3:NewTagExpiration>
-                                        <xsl:value-of select="NewTagExpiration"/>
-                                    </pfx3:NewTagExpiration>
+                                <xsl:if test="exists(TagExpirationDate)">
+                                    <xsl:if test="TagExpirationDate">
+                                        <pfx3:TagExpirationDate>
+                                            <xsl:value-of select="TagExpirationDate"/>
+                                        </pfx3:TagExpirationDate>
+                                    </xsl:if>
                                 </xsl:if>
                                 <pfx3:Action>
                                     <xsl:value-of select="&quot;AddOrUpdate&quot;"/>
@@ -493,6 +502,13 @@ WHERE p.Region = ?
                                 <pfx3:SubTeamNumber>
                                     <xsl:value-of select="SubTeamNumber"/>
                                 </pfx3:SubTeamNumber>
+                                <xsl:if test="exists(PercentOff)">
+                                    <xsl:if test="PercentOff">
+                                        <pfx3:PercentOff>
+                                            <xsl:value-of select="PercentOff"/>
+                                        </pfx3:PercentOff>
+                                    </xsl:if>
+                                </xsl:if>
                             </pfx3:MammothPrice>
                         </xsl:for-each>
                     </pfx3:MammothPrices>
@@ -568,9 +584,11 @@ WHERE p.Region = ?
                                     <pfx3:ItemId>
                                         <xsl:value-of select="ItemID"/>
                                     </pfx3:ItemId>
-                                    <pfx3:GpmId>
-                                        <xsl:value-of select="GpmID"/>
-                                    </pfx3:GpmId>
+                                    <xsl:if test="GpmID">
+                                        <pfx3:GpmId>
+                                            <xsl:value-of select="GpmID"/>
+                                        </pfx3:GpmId>
+                                    </xsl:if>
                                     <pfx3:Multiple>
                                         <xsl:value-of select="Multiple"/>
                                     </pfx3:Multiple>
@@ -597,10 +615,10 @@ WHERE p.Region = ?
                                     <pfx3:CurrencyCode>
                                         <xsl:value-of select="CurrencyCode"/>
                                     </pfx3:CurrencyCode>
-                                    <xsl:if test="NewTagExpiration">
-                                        <pfx3:NewTagExpiration>
-                                            <xsl:value-of select="NewTagExpiration"/>
-                                        </pfx3:NewTagExpiration>
+                                    <xsl:if test="TagExpirationDate">
+                                        <pfx3:TagExpirationDate>
+                                            <xsl:value-of select="TagExpirationDate"/>
+                                        </pfx3:TagExpirationDate>
                                     </xsl:if>
                                     <pfx3:Action>
                                         <xsl:value-of select="&quot;AddOrUpdate&quot;"/>
@@ -617,6 +635,11 @@ WHERE p.Region = ?
                                     <pfx3:SubTeamNumber>
                                         <xsl:value-of select="SubTeamNumber"/>
                                     </pfx3:SubTeamNumber>
+                                    <xsl:if test="PercentOff">
+                                        <pfx3:PercentOff>
+                                            <xsl:value-of select="PercentOff"/>
+                                        </pfx3:PercentOff>
+                                    </xsl:if>
                                 </pfx3:MammothPrice>
                             </xsl:for-each>
                         </pfx3:MammothPrices>

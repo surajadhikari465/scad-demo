@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:WFM.UID="java://UID" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:WFM.UID="java://UID" xmlns:ns02="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" schemaLocation="/SharedResources/Schemas/Job Scheduler/JobSchedule.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/RunInactiveTprService.process</pd:name>
@@ -117,13 +117,14 @@ where JobScheduleId  = ?</statement>
 	endingPrice.SellableUOM,
 	endingPrice.CurrencyCode,
 	endingPrice.Multiple,
-	endingPrice.NewTagExpiration,
+	endingPrice.TagExpirationDate,
 	endingPrice.InsertDateUtc,
 	endingPrice.ModifiedDateUtc,
 	it.itemTypeCode as itemTypeCode,
 	i.ScanCode as ScanCode,
 	lc.StoreName as StoreName,
-	PSNumber as SubTeamNumber
+	PSNumber as SubTeamNumber,
+	PercentOff as PercentOff
 FROM gpm.Prices endingPrice
 INNER JOIN Items i on i.ItemID = endingPrice.ItemID
 INNER JOIN ItemTypes it on i.ItemTypeID = it.itemTypeID
@@ -171,7 +172,7 @@ AND NOT EXISTS
                 <QueryOutputCachedSchemaColumns>GpmID</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>ItemID</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
@@ -212,7 +213,7 @@ AND NOT EXISTS
                 <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-                <QueryOutputCachedSchemaColumns>NewTagExpiration</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaColumns>TagExpirationDate</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>datetime2</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
@@ -239,6 +240,10 @@ AND NOT EXISTS
                 <QueryOutputCachedSchemaColumns>SubTeamNumber</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PercentOff</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
@@ -302,14 +307,14 @@ AND NOT EXISTS
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>RowByRowProcess</pd:from>
+                <pd:from>LogBatchSuccess</pd:from>
                 <pd:to>end</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>LogBatchSuccess</pd:from>
+                <pd:from>RowByRowProcess</pd:from>
                 <pd:to>end</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
@@ -362,9 +367,11 @@ AND NOT EXISTS
                                 <pfx2:ItemId>
                                     <xsl:value-of select="ItemID"/>
                                 </pfx2:ItemId>
-                                <pfx2:GpmId>
-                                    <xsl:value-of select="GpmID"/>
-                                </pfx2:GpmId>
+                                <xsl:if test="GpmID">
+                                    <pfx2:GpmId>
+                                        <xsl:value-of select="GpmID"/>
+                                    </pfx2:GpmId>
+                                </xsl:if>
                                 <pfx2:Multiple>
                                     <xsl:value-of select="Multiple"/>
                                 </pfx2:Multiple>
@@ -391,10 +398,10 @@ AND NOT EXISTS
                                 <pfx2:CurrencyCode>
                                     <xsl:value-of select="CurrencyCode"/>
                                 </pfx2:CurrencyCode>
-                                <xsl:if test="NewTagExpiration">
-                                    <pfx2:NewTagExpiration>
-                                        <xsl:value-of select="NewTagExpiration"/>
-                                    </pfx2:NewTagExpiration>
+                                <xsl:if test="TagExpirationDate">
+                                    <pfx2:TagExpirationDate>
+                                        <xsl:value-of select="TagExpirationDate"/>
+                                    </pfx2:TagExpirationDate>
                                 </xsl:if>
                                 <pfx2:Action>
                                     <xsl:value-of select="&quot;Delete&quot;"/>
@@ -411,6 +418,13 @@ AND NOT EXISTS
                                 <pfx2:SubTeamNumber>
                                     <xsl:value-of select="SubTeamNumber"/>
                                 </pfx2:SubTeamNumber>
+                                <xsl:if test="exists(PercentOff)">
+                                    <xsl:if test="PercentOff">
+                                        <pfx2:PercentOff>
+                                            <xsl:value-of select="PercentOff"/>
+                                        </pfx2:PercentOff>
+                                    </xsl:if>
+                                </xsl:if>
                             </pfx2:MammothPrice>
                         </xsl:for-each>
                     </pfx2:MammothPrices>
@@ -492,9 +506,11 @@ AND NOT EXISTS
                                     <pfx2:ItemId>
                                         <xsl:value-of select="ItemID"/>
                                     </pfx2:ItemId>
-                                    <pfx2:GpmId>
-                                        <xsl:value-of select="GpmID"/>
-                                    </pfx2:GpmId>
+                                    <xsl:if test="GpmID">
+                                        <pfx2:GpmId>
+                                            <xsl:value-of select="GpmID"/>
+                                        </pfx2:GpmId>
+                                    </xsl:if>
                                     <pfx2:Multiple>
                                         <xsl:value-of select="Multiple"/>
                                     </pfx2:Multiple>
@@ -521,10 +537,10 @@ AND NOT EXISTS
                                     <pfx2:CurrencyCode>
                                         <xsl:value-of select="CurrencyCode"/>
                                     </pfx2:CurrencyCode>
-                                    <xsl:if test="NewTagExpiration">
-                                        <pfx2:NewTagExpiration>
-                                            <xsl:value-of select="NewTagExpiration"/>
-                                        </pfx2:NewTagExpiration>
+                                    <xsl:if test="TagExpirationDate">
+                                        <pfx2:TagExpirationDate>
+                                            <xsl:value-of select="TagExpirationDate"/>
+                                        </pfx2:TagExpirationDate>
                                     </xsl:if>
                                     <pfx2:Action>
                                         <xsl:value-of select="&quot;Row By Row Processing Epxpiring Tpr&quot;"/>
@@ -538,6 +554,13 @@ AND NOT EXISTS
                                     <pfx2:ScanCode>
                                         <xsl:value-of select="ScanCode"/>
                                     </pfx2:ScanCode>
+                                    <xsl:if test="exists(PercentOff)">
+                                        <xsl:if test="PercentOff">
+                                            <pfx2:PercentOff>
+                                                <xsl:value-of select="PercentOff"/>
+                                            </pfx2:PercentOff>
+                                        </xsl:if>
+                                    </xsl:if>
                                 </pfx2:MammothPrice>
                             </xsl:for-each>
                         </pfx2:MammothPrices>
