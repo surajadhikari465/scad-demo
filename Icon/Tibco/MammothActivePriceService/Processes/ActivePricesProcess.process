@@ -449,9 +449,11 @@ WHERE p.Region = ?
                                 <pfx3:ItemId>
                                     <xsl:value-of select="ItemID"/>
                                 </pfx3:ItemId>
-                                <pfx3:GpmId>
-                                    <xsl:value-of select="GpmID"/>
-                                </pfx3:GpmId>
+                                <xsl:if test="GpmID">
+                                    <pfx3:GpmId>
+                                        <xsl:value-of select="GpmID"/>
+                                    </pfx3:GpmId>
+                                </xsl:if>
                                 <pfx3:Multiple>
                                     <xsl:value-of select="Multiple"/>
                                 </pfx3:Multiple>
@@ -582,9 +584,11 @@ WHERE p.Region = ?
                                     <pfx3:ItemId>
                                         <xsl:value-of select="ItemID"/>
                                     </pfx3:ItemId>
-                                    <pfx3:GpmId>
-                                        <xsl:value-of select="GpmID"/>
-                                    </pfx3:GpmId>
+                                    <xsl:if test="GpmID">
+                                        <pfx3:GpmId>
+                                            <xsl:value-of select="GpmID"/>
+                                        </pfx3:GpmId>
+                                    </xsl:if>
                                     <pfx3:Multiple>
                                         <xsl:value-of select="Multiple"/>
                                     </pfx3:Multiple>
