@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:WFM.UID="java://UID" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:WFM.UID="java://UID" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <pd:name>Processes/SendEmergencyPrices.process</pd:name>
     <pd:startName>Start</pd:startName>
@@ -96,15 +96,15 @@
         </pd:activity>
     </pd:group>
     <pd:transition>
-        <pd:from>Start</pd:from>
-        <pd:to>Group</pd:to>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Group</pd:from>
-        <pd:to>End</pd:to>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

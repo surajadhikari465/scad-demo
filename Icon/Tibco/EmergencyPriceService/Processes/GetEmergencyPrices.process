@@ -171,7 +171,7 @@
                 <inputs>
                     <inputSet>
                         <emergencyPriceCount>
-                            <xsl:value-of select="100"/>
+                            <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/PriceBundleSize"/>
                         </emergencyPriceCount>
                     </inputSet>
                 </inputs>

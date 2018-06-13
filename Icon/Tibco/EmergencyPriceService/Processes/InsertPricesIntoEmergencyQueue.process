@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
+    <pd:name>Processes/InsertPricesIntoEmergencyQueue.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:MammothPrices"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>65</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>643</pd:endX>
+    <pd:endY>78</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1528829372302</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>256</pd:x>
+        <pd:y>26</pd:y>
+        <pd:width>303</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>errorCount</pd:indexSlot>
+            <pd:errorCondition>$errorCount &lt; $_globalVariables/pfx2:GlobalVariables/Application/MaxDatabaseRetryCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Insert Mammoth Prices</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Insert Mammoth Prices</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Insert Mammoth Prices">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>388</pd:x>
+            <pd:y>104</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <statement>INSERT INTO gpm.MessageQueueEmergencyPrice(ItemId, BusinessUnitId, PriceType, MammothPriceXml)
+SELECT ?, ?, ?, ?
+WHERE NOT EXISTS (
+	SELECT 1
+	FROM gpm.MessageQueueEmergencyPrice q
+	WHERE q.ItemId = ?
+		AND q.BusinessUnitId = ?
+		AND q.PriceType = ?)</statement>
+                <batchUpdate>true</batchUpdate>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>ItemId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>BusinessUnitId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceType</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>MammothPriceXml</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ItemId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>BusinessUnitId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>PriceType</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <xsl:for-each select="$Start/pfx:MammothPrices/pfx:MammothPrice">
+                        <Record>
+                            <ItemId>
+                                <xsl:value-of select="pfx:ItemId"/>
+                            </ItemId>
+                            <BusinessUnitId>
+                                <xsl:value-of select="pfx:BusinessUnit"/>
+                            </BusinessUnitId>
+                            <PriceType>
+                                <xsl:value-of select="pfx:PriceType"/>
+                            </PriceType>
+                            <MammothPriceXml>
+                                <xsl:value-of select="tib:render-xml(current())"/>
+                            </MammothPriceXml>
+                            <ItemId>
+                                <xsl:value-of select="pfx:ItemId"/>
+                            </ItemId>
+                            <BusinessUnitId>
+                                <xsl:value-of select="pfx:BusinessUnit"/>
+                            </BusinessUnitId>
+                            <PriceType>
+                                <xsl:value-of select="pfx:PriceType"/>
+                            </PriceType>
+                        </Record>
+                    </xsl:for-each>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -42,12 +42,20 @@
 			<modTime>1528191733182</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>PriceBundleSize</name>
+			<value>100</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1528838994708</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>StartTime</name>
-			<value>2018 May 30 3:30:00 CST</value>
+			<value>2018 June 12 3:43:00 CST</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527712565198</modTime>
+			<modTime>1528836145034</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TimeInterval</name>

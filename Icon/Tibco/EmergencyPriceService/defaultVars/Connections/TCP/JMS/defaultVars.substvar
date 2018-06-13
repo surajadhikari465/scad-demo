@@ -3,7 +3,7 @@
 	<globalVariables>
 		<globalVariable>
 			<name>EMSPwd</name>
-			<value>#!KzU7jiPRT1hfK6zcCWSwvw==</value>
+			<value>#!z14t+XCmdYCBSx4i7GGFQQ==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -35,7 +35,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JNDIPwd</name>
-			<value>#!DGTRxglXSLtbnsGIU6IimA==</value>
+			<value>#!CrI8ZKkD94nWqI+fwNHADA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

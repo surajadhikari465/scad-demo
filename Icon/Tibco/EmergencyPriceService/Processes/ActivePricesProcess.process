@@ -11,8 +11,8 @@
     <pd:starter name="Timer">
         <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
         <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>49</pd:x>
-        <pd:y>52</pd:y>
+        <pd:x>47</pd:x>
+        <pd:y>47</pd:y>
         <config>
             <StartTime>%%Application/StartTime%%</StartTime>
             <Frequency>false</Frequency>
@@ -22,20 +22,23 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1013</pd:endX>
-    <pd:endY>334</pd:endY>
+    <pd:endX>1128</pd:endX>
+    <pd:endY>450</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables>
         <EmergencyPrices>
             <xsd:element name="DoExist" type="xsd:boolean"/>
         </EmergencyPrices>
+        <SendErrorCount>
+            <xsd:element name="Count" type="xsd:int"/>
+        </SendErrorCount>
     </pd:processVariables>
     <pd:targetNamespace>http://xmlns.example.com/1499373839783</pd:targetNamespace>
     <pd:activity name="Log Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>227</pd:x>
-        <pd:y>331</pd:y>
+        <pd:x>232</pd:x>
+        <pd:y>454</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -77,7 +80,7 @@
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
         <pd:x>53</pd:x>
-        <pd:y>328</pd:y>
+        <pd:y>451</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -116,8 +119,8 @@
     <pd:activity name="Log End">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1012</pd:x>
-        <pd:y>201</pd:y>
+        <pd:x>1127</pd:x>
+        <pd:y>218</pd:y>
         <config>
             <spawn>true</spawn>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -145,10 +148,10 @@
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>359</pd:x>
-        <pd:y>101</pd:y>
-        <pd:width>593</pd:width>
-        <pd:height>180</pd:height>
+        <pd:x>352</pd:x>
+        <pd:y>67</pd:y>
+        <pd:width>708</pd:width>
+        <pd:height>318</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -170,7 +173,14 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Assign-1</pd:from>
+            <pd:from>Assign Emergency Price Exist as False</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign Emergency Prices Exist 2</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -185,23 +195,74 @@
         </pd:transition>
         <pd:transition>
             <pd:from>Send Emergency Prices</pd:from>
-            <pd:to>Check If Emergency Prices Exist In Loop</pd:to>
+            <pd:to>Clear out Send Error Count</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>Check If Emergency Prices Exist In Loop</pd:from>
-            <pd:to>Assign-1</pd:to>
+            <pd:to>Assign Emergency Prices Exist 2</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
-        <pd:activity name="Assign-1">
+        <pd:transition>
+            <pd:from>Send Emergency Prices</pd:from>
+            <pd:to>Increment Send Error Count</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-52429</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Insert Prices into Emergency Queue</pd:from>
+            <pd:to>Check If Emergency Prices Exist In Loop</pd:to>
+            <pd:xpathDescription>If Send Error Count Is Less Than Retry</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$SendErrorCount/Count &lt; $_globalVariables/ns1:GlobalVariables/Application/MaxSendToEsbRetryCount</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Increment Send Error Count</pd:from>
+            <pd:to>Log Send Emergency Price Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Clear out Send Error Count</pd:from>
+            <pd:to>Check If Emergency Prices Exist In Loop</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Insert Prices into Emergency Queue</pd:from>
+            <pd:to>Log Send Emergency Prices Exceeded Max Retry</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log Send Emergency Price Error</pd:from>
+            <pd:to>Insert Prices into Emergency Queue</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log Send Emergency Prices Exceeded Max Retry</pd:from>
+            <pd:to>Assign Emergency Price Exist as False</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Assign Emergency Prices Exist 2">
             <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
             <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-            <pd:x>856</pd:x>
-            <pd:y>198</pd:y>
+            <pd:x>947</pd:x>
+            <pd:y>158</pd:y>
             <config>
                 <variableName>EmergencyPrices</variableName>
             </config>
@@ -214,8 +275,8 @@
         <pd:activity name="Get Emergency Prices">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>464</pd:x>
-            <pd:y>205</pd:y>
+            <pd:x>449</pd:x>
+            <pd:y>152</pd:y>
             <config>
                 <processName>/Processes/GetEmergencyPrices.process</processName>
             </config>
@@ -224,8 +285,8 @@
         <pd:activity name="Send Emergency Prices">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>599</pd:x>
-            <pd:y>208</pd:y>
+            <pd:x>569</pd:x>
+            <pd:y>151</pd:y>
             <config>
                 <processName>/Processes/SendEmergencyPrices.process</processName>
             </config>
@@ -236,19 +297,148 @@
         <pd:activity name="Check If Emergency Prices Exist In Loop">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>728</pd:x>
-            <pd:y>212</pd:y>
+            <pd:x>807</pd:x>
+            <pd:y>163</pd:y>
             <config>
                 <processName>/Processes/CheckIfEmergencyPricesExist.process</processName>
             </config>
             <pd:inputBindings/>
         </pd:activity>
+        <pd:activity name="Insert Prices into Emergency Queue">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>696</pd:x>
+            <pd:y>298</pd:y>
+            <config>
+                <processName>/Processes/InsertPricesIntoEmergencyQueue.process</processName>
+            </config>
+            <pd:inputBindings>
+                <xsl:copy-of select="$Get-Emergency-Prices/pfx3:MammothPrices"/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Increment Send Error Count">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>456</pd:x>
+            <pd:y>300</pd:y>
+            <config>
+                <variableName>SendErrorCount</variableName>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose>
+                    <xsl:when test="$SendErrorCount/Count > 0">
+                        <Count>
+                            <xsl:value-of select="$SendErrorCount/Count + 1"/>
+                        </Count>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Count>
+                            <xsl:value-of select="1"/>
+                        </Count>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Clear out Send Error Count">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>675</pd:x>
+            <pd:y>154</pd:y>
+            <config>
+                <variableName>SendErrorCount</variableName>
+            </config>
+            <pd:inputBindings>
+                <Count>
+                    <xsl:value-of select="0"/>
+                </Count>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Log Send Emergency Price Error">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>571</pd:x>
+            <pd:y>300</pd:y>
+            <config>
+                <spawn>true</spawn>
+                <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            </config>
+            <pd:inputBindings>
+                <ns3:AppLog>
+                    <ns3:AppId>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                    </ns3:AppId>
+                    <ns3:Level>
+                        <xsl:value-of select="'Error'"/>
+                    </ns3:Level>
+                    <ns3:Logger>
+                        <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                    </ns3:Logger>
+                    <ns3:LogDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns3:LogDate>
+                    <ns3:Message>
+                        <xsl:value-of select="'Error occurred when attempting to send prices to ESB. Will attempt to requeue emergency prices.'"/>
+                    </ns3:Message>
+                    <xsl:if test="$_error/ns4:ErrorReport/MsgCode">
+                        <ns3:Exception>
+                            <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                        </ns3:Exception>
+                    </xsl:if>
+                    <ns3:StackTrace>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                    </ns3:StackTrace>
+                </ns3:AppLog>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Log Send Emergency Prices Exceeded Max Retry">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>827</pd:x>
+            <pd:y>307</pd:y>
+            <config>
+                <spawn>true</spawn>
+                <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            </config>
+            <pd:inputBindings>
+                <ns3:AppLog>
+                    <ns3:AppId>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
+                    </ns3:AppId>
+                    <ns3:Level>
+                        <xsl:value-of select="'Error'"/>
+                    </ns3:Level>
+                    <ns3:Logger>
+                        <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                    </ns3:Logger>
+                    <ns3:LogDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns3:LogDate>
+                    <ns3:Message>
+                        <xsl:value-of select="'Exceeded max number of send errors. Will retry sending emergency prices on next run.'"/>
+                    </ns3:Message>
+                </ns3:AppLog>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign Emergency Price Exist as False">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>967</pd:x>
+            <pd:y>306</pd:y>
+            <config>
+                <variableName>EmergencyPrices</variableName>
+            </config>
+            <pd:inputBindings>
+                <DoExist>
+                    <xsl:value-of select="0"/>
+                </DoExist>
+            </pd:inputBindings>
+        </pd:activity>
     </pd:group>
-    <pd:activity name="Assign">
+    <pd:activity name="Assign Emergency Prices Exist">
         <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
         <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>264</pd:x>
-        <pd:y>177</pd:y>
+        <pd:x>257</pd:x>
+        <pd:y>224</pd:y>
         <config>
             <variableName>EmergencyPrices</variableName>
         </config>
@@ -261,8 +451,8 @@
     <pd:activity name="Check If Emergency Prices Exist">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>261</pd:x>
-        <pd:y>63</pd:y>
+        <pd:x>256</pd:x>
+        <pd:y>60</pd:y>
         <config>
             <processName>/Processes/CheckIfEmergencyPricesExist.process</processName>
         </config>
@@ -276,7 +466,7 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Assign</pd:from>
+        <pd:from>Assign Emergency Prices Exist</pd:from>
         <pd:to>Group</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -297,13 +487,6 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Timer</pd:from>
-        <pd:to>Log Start</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Log Start</pd:from>
         <pd:to>Check If Emergency Prices Exist</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -312,7 +495,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Check If Emergency Prices Exist</pd:from>
-        <pd:to>Assign</pd:to>
+        <pd:to>Assign Emergency Prices Exist</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -320,6 +503,13 @@
     <pd:transition>
         <pd:from>Log Error</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>Log Start</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
