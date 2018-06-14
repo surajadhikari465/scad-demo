@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns32="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns33="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns6="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns7="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:WFM.UID="java://UID" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns42="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns53="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns52="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx2="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:ns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns53="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns52="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns8="http://schemas.wfm.com/Enterprise/RewardMgmt/Reward/V2" xmlns:ns7="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns9="http://schemas.wfm.com/Enterprise/RewardMgmt/RewardType/V1" xmlns:ns33="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns32="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:WFM.UID="java://UID" xmlns:ns42="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns22="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd"/>
@@ -239,9 +239,6 @@
                                         </ns33:scanCode>
                                         <ns33:prices>
                                             <ns42:price>
-                                                <ns42:gpmId>
-                                                    <xsl:value-of select="pfx:GpmId"/>
-                                                </ns42:gpmId>
                                                 <ns42:type>
                                                     <ns5:id>
                                                         <xsl:value-of select="pfx:PriceType"/>
@@ -303,6 +300,53 @@
                                                 </xsl:choose>
                                             </ns42:price>
                                         </ns33:prices>
+                                        <xsl:choose>
+                                            <xsl:when test="current()/pfx:PriceType = 'REW'">
+                                                <ns33:rewards>
+                                                    <ns8:reward>
+                                                        <ns8:type>
+                                                            <ns9:id>
+                                                                <xsl:value-of select="pfx:PriceType"/>
+                                                            </ns9:id>
+                                                            <ns9:description>
+                                                                <xsl:value-of select="'Rewards'"/>
+                                                            </ns9:description>
+                                                        </ns8:type>
+                                                        <ns8:uom>
+                                                            <ns52:code>
+                                                                <xsl:value-of select="pfx:SellableUom"/>
+                                                            </ns52:code>
+                                                        </ns8:uom>
+                                                        <ns8:rewardMultiple>
+                                                            <xsl:value-of select="pfx:Multiple"/>
+                                                        </ns8:rewardMultiple>
+                                                        <ns8:rewardAmount>
+                                                            <ns53:amount>
+                                                                <xsl:value-of select="pfx:Price"/>
+                                                            </ns53:amount>
+                                                            <ns53:currency>
+                                                                <xsl:value-of select="pfx:CurrencyCode"/>
+                                                            </ns53:currency>
+                                                        </ns8:rewardAmount>
+                                                        <xsl:if test="exists(pfx:PercentOff)">
+                                                            <xsl:if test="pfx:PercentOff">
+                                                                <ns8:rewardPercentage>
+                                                                    <xsl:value-of select="pfx:PercentOff"/>
+                                                                </ns8:rewardPercentage>
+                                                            </xsl:if>
+                                                        </xsl:if>
+                                                        <ns8:rewardStartDate>
+                                                            <xsl:value-of select="pfx:StartDate"/>
+                                                        </ns8:rewardStartDate>
+                                                        <xsl:if test="pfx:EndDate">
+                                                            <ns8:rewardEndDate>
+                                                                <xsl:value-of select="pfx:EndDate"/>
+                                                            </ns8:rewardEndDate>
+                                                        </xsl:if>
+                                                    </ns8:reward>
+                                                </ns33:rewards>
+                                            </xsl:when>
+                                        </xsl:choose>
                                     </ns22:storeItemAttributes>
                                 </pfx2:locale>
                             </pfx2:item>
@@ -479,10 +523,10 @@
                                     <pfx:CurrencyCode>
                                         <xsl:value-of select="pfx:CurrencyCode"/>
                                     </pfx:CurrencyCode>
-                                    <xsl:if test="pfx:NewTagExpiration">
-                                        <pfx:NewTagExpiration>
-                                            <xsl:value-of select="pfx:NewTagExpiration"/>
-                                        </pfx:NewTagExpiration>
+                                    <xsl:if test="pfx:TagExpirationDate">
+                                        <pfx:TagExpirationDate>
+                                            <xsl:value-of select="pfx:TagExpirationDate"/>
+                                        </pfx:TagExpirationDate>
                                     </xsl:if>
                                     <pfx:Action>
                                         <xsl:value-of select="pfx:Action"/>

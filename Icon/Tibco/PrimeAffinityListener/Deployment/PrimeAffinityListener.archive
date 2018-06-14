@@ -11,9 +11,9 @@
         <processArchive name="Process Archive">
             <resourceType>process.archive.resource</resourceType>
             <authorProperty>Blake Jones</authorProperty>
-            <processProperty>/Processes/PriceAffinityListener.process</processProperty>
+            <processProperty>/Processes/PrimeAffinityListener.process</processProperty>
         </processArchive>
-        <versionProperty>14</versionProperty>
+        <versionProperty>16</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PrimeAffinityListener</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\VSTS\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\PrimeAffinityListener.ear</fileLocationProperty>
+        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\PrimeAffinityListener.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

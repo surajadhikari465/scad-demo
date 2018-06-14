@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns9="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:ns5="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:pfx="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns8="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx6="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2">
+<pd:ProcessDefinition xmlns:pfx6="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns8="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns9="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Item/Item.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Item/ItemAttributesStore.xsd"/>
-    <pd:name>Processes/PriceAffinityListener.process</pd:name>
+    <pd:name>Processes/PrimeAffinityListener.process</pd:name>
     <pd:startName>JMS Queue Receiver</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
@@ -394,10 +394,10 @@
                         <pfx2:CurrencyCode>
                             <xsl:value-of select="pfx2:CurrencyCode"/>
                         </pfx2:CurrencyCode>
-                        <xsl:if test="pfx2:NewTagExpiration">
-                            <pfx2:NewTagExpiration>
-                                <xsl:value-of select="pfx2:NewTagExpiration"/>
-                            </pfx2:NewTagExpiration>
+                        <xsl:if test="pfx2:TagExpirationDate">
+                            <pfx2:TagExpirationDate>
+                                <xsl:value-of select="pfx2:TagExpirationDate"/>
+                            </pfx2:TagExpirationDate>
                         </xsl:if>
                         <pfx2:Action>
                             <xsl:value-of select="pfx2:Action"/>
