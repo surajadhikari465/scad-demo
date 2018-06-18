@@ -243,7 +243,7 @@
                                     <xsl:value-of select="ns15:type/ns16:id"/>
                                 </pfx2:PriceType>
                                 <pfx2:PriceTypeAttribute>
-                                    <xsl:value-of select="ns15:uom/ns3:code"/>
+                                    <xsl:value-of select="ns15:type/ns16:description"/>
                                 </pfx2:PriceTypeAttribute>
                                 <pfx2:SellableUom>
                                     <xsl:value-of select="ns15:uom/ns3:code"/>
