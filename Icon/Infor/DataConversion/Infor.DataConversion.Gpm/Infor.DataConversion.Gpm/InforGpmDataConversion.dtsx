@@ -7,13 +7,13 @@
   DTS:CreatorName="WFM\Ben.Sims"
   DTS:DTSID="{E6A2F4FF-94CA-4763-BF6C-F62C27AAB42B}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="13.0.4451.0"
+  DTS:LastModifiedProductVersion="14.0.3002.92"
   DTS:LocaleID="1033"
   DTS:ObjectName="InforGpmDataConversion"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="284"
-  DTS:VersionGUID="{02596F82-591E-4A27-87CA-FADE044B62ED}">
+  DTS:VersionBuild="287"
+  DTS:VersionGUID="{5E39C1B1-4C6B-4E7A-B295-743000D1B4AC}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -33,7 +33,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_ConvertedDataReport_20180611.csv">
+          DTS:ConnectionString="C:\dev\temp\PriceExtract\PN_ConvertedDataReport_20180619.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -166,7 +166,7 @@
         DTS:Name="ConnectionString">@[$Package::IRMADb_ConnectionString]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=IDD-FL\FLD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=IDT-PN\PNT;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -197,7 +197,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_Prices_20180611.csv">
+          DTS:ConnectionString="C:\dev\temp\PriceExtract\PN_Prices_20180619.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -358,7 +358,7 @@
       DTS:Required="True">
       <DTS:Property
         DTS:DataType="8"
-        DTS:Name="ParameterValue">Data Source=IDD-FL\FLD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:Property>
+        DTS:Name="ParameterValue">Data Source=IDT-PN\PNT;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:Property>
     </DTS:PackageParameter>
     <DTS:PackageParameter
       DTS:CreationName=""
@@ -380,7 +380,7 @@
       DTS:Required="True">
       <DTS:Property
         DTS:DataType="8"
-        DTS:Name="ParameterValue">FL</DTS:Property>
+        DTS:Name="ParameterValue">PN</DTS:Property>
     </DTS:PackageParameter>
     <DTS:PackageParameter
       DTS:CreationName=""
@@ -404,7 +404,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ConvertedDataReportName">
       <DTS:VariableValue
-        DTS:DataType="8">FL_ConvertedDataReport_20180611.csv</DTS:VariableValue>
+        DTS:DataType="8">PN_ConvertedDataReport_20180619.csv</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -415,7 +415,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="NowDateTimeUtc">
       <DTS:VariableValue
-        DTS:DataType="7">6/11/2018 6:33:50 PM</DTS:VariableValue>
+        DTS:DataType="7">6/19/2018 4:30:38 PM</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -426,7 +426,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="PriceExtractFlatFileName">
       <DTS:VariableValue
-        DTS:DataType="8">FL_Prices_20180611.csv</DTS:VariableValue>
+        DTS:DataType="8">PN_Prices_20180619.csv</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -673,7 +673,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXEC infor.PriceExtractDataConversionReport</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXEC infor.PriceExtractDataConversionReport</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1523,19 +1523,19 @@
                       lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted PRICE_ATTRIBUTE_CODE]" />
                     <inputColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[START_DATE]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="dbTimeStamp2"
                       cachedName="START_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[START_DATE]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[START_DATE]" />
                     <inputColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[END_DATE]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="dbTimeStamp2"
                       cachedName="END_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[END_DATE]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[END_DATE]" />
                     <inputColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[CREATED_DATE]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="dbTimeStamp2"
                       cachedName="CREATED_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[CREATED_DATE]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[CREATED_DATE]" />
@@ -1548,7 +1548,7 @@
                       lineageId="Package\Transfer Price\REG, TPR, and InsertDateUtc.Outputs[Derived Column Output].Columns[GUIDNoBraces]" />
                     <inputColumn
                       refId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].Columns[TAG_EXPIRATION_DATE]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="dbTimeStamp2"
                       cachedName="TAG_EXPIRATION_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[TAG_EXPIRATION_DATE]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[TAG_EXPIRATION_DATE]" />
@@ -1660,7 +1660,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXEC infor.PriceExtractQuery</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXEC infor.PriceExtractQuery</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1747,7 +1747,7 @@
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[START_DATE]"
-                      dataType="dbTimeStamp"
+                      dataType="dbTimeStamp2"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[START_DATE]"
@@ -1756,7 +1756,7 @@
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[END_DATE]"
-                      dataType="dbTimeStamp"
+                      dataType="dbTimeStamp2"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[END_DATE]"
@@ -1796,7 +1796,7 @@
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[CREATED_DATE]"
-                      dataType="dbTimeStamp"
+                      dataType="dbTimeStamp2"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[CREATED_DATE]"
@@ -1816,7 +1816,7 @@
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[TAG_EXPIRATION_DATE]"
-                      dataType="dbTimeStamp"
+                      dataType="dbTimeStamp2"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       externalMetadataColumnId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[TAG_EXPIRATION_DATE]"
@@ -1878,7 +1878,7 @@
                       name="START_DATE" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[END_DATE]"
-                      dataType="dbTimeStamp"
+                      dataType="dbTimeStamp2"
                       name="END_DATE" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[GUID]"
@@ -1908,7 +1908,7 @@
                       name="REGION_CODE" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[TAG_EXPIRATION_DATE]"
-                      dataType="dbTimeStamp"
+                      dataType="dbTimeStamp2"
                       name="TAG_EXPIRATION_DATE" />
                     <externalMetadataColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].ExternalColumns[SCAN_CODE]"
@@ -1979,7 +1979,7 @@
                       name="PRICE_ATTRIBUTE_CODE" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[TAG_EXPIRATION_DATE]"
-                      dataType="dbTimeStamp"
+                      dataType="dbTimeStamp2"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[TAG_EXPIRATION_DATE]"
                       name="TAG_EXPIRATION_DATE" />
                     <outputColumn
@@ -1989,7 +1989,7 @@
                       name="START_DATE" />
                     <outputColumn
                       refId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[END_DATE]"
-                      dataType="dbTimeStamp"
+                      dataType="dbTimeStamp2"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Error Output].Columns[END_DATE]"
                       name="END_DATE" />
                     <outputColumn
@@ -2060,7 +2060,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2134,13 +2134,13 @@
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[STORE_NUMBER]" />
                     <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[START_DATE]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="dbTimeStamp2"
                       cachedName="START_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[StartDate]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[START_DATE]" />
                     <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[END_DATE]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="dbTimeStamp2"
                       cachedName="END_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[EndDate]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[END_DATE]" />
@@ -2167,13 +2167,13 @@
                       lineageId="Package\Transfer Price\Convert varchar to nvarchar.Outputs[Data Conversion Output].Columns[Converted PRICE_ATTRIBUTE_CODE]" />
                     <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[TAG_EXPIRATION_DATE]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="dbTimeStamp2"
                       cachedName="TAG_EXPIRATION_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[NewTagExpiration]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[TAG_EXPIRATION_DATE]" />
                     <inputColumn
                       refId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].Columns[CREATED_DATE]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="dbTimeStamp2"
                       cachedName="CREATED_DATE"
                       externalMetadataColumnId="Package\Transfer Price\Insert Into Mammoth.Inputs[OLE DB Destination Input].ExternalColumns[InsertDateUtc]"
                       lineageId="Package\Transfer Price\Get IRMA Prices.Outputs[OLE DB Source Output].Columns[CREATED_DATE]" />
@@ -2308,7 +2308,7 @@
                   description="Specifies the SQL statement that generates the lookup table."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select convert(varchar(13),scanCode) as  scanCode from dbo.items i
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select convert(varchar(13),scanCode) as  scanCode from dbo.items i
 inner join dbo.ItemTypes it on i.ItemTypeID = it.itemTypeID
 WHERE it.itemTypeCode in ('RTL','FEE', 'DEP')</property>
                 <property
@@ -2316,7 +2316,7 @@ WHERE it.itemTypeCode in ('RTL','FEE', 'DEP')</property>
                   description="Specifies a SQL statement that uses parameters to generate the lookup table."
                   expressionType="Notify"
                   name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select * from (select convert(varchar(13),scanCode) as  scanCode from dbo.items i
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select * from (select convert(varchar(13),scanCode) as  scanCode from dbo.items i
 inner join dbo.ItemTypes it on i.ItemTypeID = it.itemTypeID
 WHERE it.itemTypeCode in ('RTL','FEE', 'DEP')) [refTable]
 where [refTable].[scanCode] = ?</property>
@@ -2994,6 +2994,10 @@ where [refTable].[scanCode] = ?</property>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
+          Size="216,41.6"
+          Id="Package\Create Converted Data Report\REG, TPR, and InsertDateUtc"
+          TopLeft="172.000002929143,116.235295747803" />
+        <NodeLayout
           Size="174.4,41.6"
           Id="Package\Create Converted Data Report\Flat File Destination"
           TopLeft="166.714286152197,204.094118882546" />
@@ -3001,10 +3005,6 @@ where [refTable].[scanCode] = ?</property>
           Size="222.4,41.6"
           Id="Package\Create Converted Data Report\Get Converted Price And UOM"
           TopLeft="138,28" />
-        <NodeLayout
-          Size="216,41.6"
-          Id="Package\Create Converted Data Report\REG, TPR, and InsertDateUtc"
-          TopLeft="172.000002929143,116.235295747803" />
         <EdgeLayout
           Id="Package\Create Converted Data Report.Paths[OLE DB Source Output]"
           TopLeft="249.2,69.6">
@@ -3090,9 +3090,9 @@ where [refTable].[scanCode] = ?</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="123.2,41.6"
-          Id="Package\Transfer Price\Multicast"
-          TopLeft="347.6,414" />
+          Size="112.8,41.6"
+          Id="Package\Transfer Price\Lookup"
+          TopLeft="363.2,103.2" />
         <NodeLayout
           Size="171.2,41.6"
           Id="Package\Transfer Price\Flat File Destination"
@@ -3102,17 +3102,77 @@ where [refTable].[scanCode] = ?</property>
           Id="Package\Transfer Price\Get IRMA Prices"
           TopLeft="337.8,22.4" />
         <NodeLayout
-          Size="216,41.6"
-          Id="Package\Transfer Price\REG, TPR, and InsertDateUtc"
-          TopLeft="312.8,199.2" />
+          Size="123.2,41.6"
+          Id="Package\Transfer Price\Multicast"
+          TopLeft="347.6,414" />
         <NodeLayout
           Size="179.2,41.6"
           Id="Package\Transfer Price\Insert Into Mammoth"
           TopLeft="61.4,424" />
         <NodeLayout
+          Size="216,41.6"
+          Id="Package\Transfer Price\REG, TPR, and InsertDateUtc"
+          TopLeft="312.8,199.2" />
+        <NodeLayout
           Size="210.4,41.6"
           Id="Package\Transfer Price\Convert varchar to nvarchar"
           TopLeft="319.5428570942,278.094117861553" />
+        <EdgeLayout
+          Id="Package\Transfer Price.Paths[Data Conversion Output]"
+          TopLeft="424.7428570942,319.694117861553">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-15.5428570941999,94.305882138447"
+              Start="0,0"
+              End="-15.5428570941999,86.805882138447">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,43.1529410692235" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,43.1529410692235"
+                    Point2="0,47.1529410692235"
+                    Point3="-4,47.1529410692235" />
+                  <mssgle:LineSegment
+                    End="-11.5428570941999,47.1529410692235" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-11.5428570941999,47.1529410692235"
+                    Point2="-15.5428570941999,47.1529410692235"
+                    Point3="-15.5428570941999,51.1529410692235" />
+                  <mssgle:LineSegment
+                    End="-15.5428570941999,86.805882138447" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Transfer Price.Paths[OLE DB Source Output]"
+          TopLeft="417.3,64">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39.2"
+              Start="0,0"
+              End="0,31.7">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.7" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\Transfer Price.Paths[Multicast Output 2]"
           TopLeft="347.6,434.8">
@@ -3170,88 +3230,6 @@ where [refTable].[scanCode] = ?</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Transfer Price.Paths[Derived Column Output]"
-          TopLeft="422.7714285471,240.8">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,37.294117861553"
-              Start="0,0"
-              End="0,29.794117861553">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,29.794117861553" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Transfer Price.Paths[Data Conversion Output]"
-          TopLeft="424.7428570942,319.694117861553">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-15.5428570941999,94.305882138447"
-              Start="0,0"
-              End="-15.5428570941999,86.805882138447">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,43.1529410692235" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,43.1529410692235"
-                    Point2="0,47.1529410692235"
-                    Point3="-4,47.1529410692235" />
-                  <mssgle:LineSegment
-                    End="-11.5428570941999,47.1529410692235" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-11.5428570941999,47.1529410692235"
-                    Point2="-15.5428570941999,47.1529410692235"
-                    Point3="-15.5428570941999,51.1529410692235" />
-                  <mssgle:LineSegment
-                    End="-15.5428570941999,86.805882138447" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="112.8,41.6"
-          Id="Package\Transfer Price\Lookup"
-          TopLeft="363.2,103.2" />
-        <EdgeLayout
-          Id="Package\Transfer Price.Paths[OLE DB Source Output]"
-          TopLeft="417.3,64">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,39.2"
-              Start="0,0"
-              End="0,31.7">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,31.7" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
           Id="Package\Transfer Price.Paths[Lookup Match Output]"
           TopLeft="420.2,144.8">
           <EdgeLayout.Curve>
@@ -3275,9 +3253,54 @@ where [refTable].[scanCode] = ?</property>
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Transfer Price.Paths[Derived Column Output]"
+          TopLeft="422.7714285471,240.8">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,37.294117861553"
+              Start="0,0"
+              End="0,29.794117861553">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.794117861553" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transfer Price\Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Transfer Price\Get IRMA Prices">
     <Properties>
@@ -3296,29 +3319,6 @@ where [refTable].[scanCode] = ?</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Transfer Price\Lookup">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string"></Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
