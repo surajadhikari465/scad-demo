@@ -173,7 +173,7 @@ BEGIN
 		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
-				THEN DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1))
+				THEN CONVERT(DateTime2(0),DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1)))
 			ELSE NULL
 		 END AS 'TAG_EXPIRATION_DATE'
 		,@today AS 'START_DATE'
@@ -243,7 +243,7 @@ BEGIN
 			END AS 'PRICE_ATTRIBUTE_CODE'
 		,NULL AS 'TAG_EXPIRATION_DATE'
 		,@today AS 'START_DATE'
-		,DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1)) AS 'END_DATE'
+		,CONVERT(DateTime2(0),DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1))) AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code AS 'REGION_CODE'
 		,c.CurrencyCode AS 'CURRENCY_CODE'
@@ -304,7 +304,7 @@ BEGIN
 		,'REG' AS 'PRICE_TYPE_CODE'
 		,'REG' AS 'PRICE_ATTRIBUTE_CODE'
 		,NULL AS 'TAG_EXPIRATION_DATE'
-		,pbd.StartDate AS 'START_DATE'
+		,CONVERT(DateTime2(0),pbd.StartDate) AS 'START_DATE'
 		,NULL AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code
@@ -365,10 +365,10 @@ BEGIN
 		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,CASE 
 			WHEN pct.PriceChgTypeDesc = 'NEW'
-				THEN DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, pbd.Sale_End_Date), 1))
+				THEN CONVERT(DateTime2(0),DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, pbd.Sale_End_Date), 1)))
 			ELSE NULL
 		 END AS 'TAG_EXPIRATION_DATE'
-		,pbd.StartDate AS 'START_DATE'
+		,Convert(Datetime2(0),pbd.StartDate) AS 'START_DATE'
 		,NULL AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code
@@ -422,8 +422,8 @@ BEGIN
 			ELSE pct.PriceChgTypeDesc
 		 END AS 'PRICE_ATTRIBUTE_CODE'
 		,NULL AS 'TAG_EXPIRATION_DATE'
-		,pbd.StartDate AS 'START_DATE'
-		,DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, pbd.Sale_End_Date), 1)) AS 'END_DATE'
+		,Convert(Datetime2(0),pbd.StartDate) AS 'START_DATE'
+		,Convert(Datetime2(0),DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, pbd.Sale_End_Date), 1))) AS 'END_DATE'
 		,@today AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
