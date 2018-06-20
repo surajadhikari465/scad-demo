@@ -207,6 +207,7 @@
     <Compile Include="Attributes\AtLeastOneRequiredSpecifiedAttributeTests.cs" />
     <Compile Include="Attributes\IconPropertyValidationAttributeTests.cs" />
     <Compile Include="AutoMapperConverters\LocaleToMessageQueueLocaleConverterTests.cs" />
+    <Compile Include="Controllers\BulkScanCodeSearchControllerTests.cs" />
     <Compile Include="Controllers\NationalClassControllerTests.cs" />
     <Compile Include="Controllers\MerchTaxMappingControllerTests.cs" />
     <Compile Include="Controllers\PluAssignmentControllerTests.cs" />

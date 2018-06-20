@@ -225,6 +225,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\themes\base\minified\images\" />
+    <Folder Include="Views\BulkScanCode\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperWebConfiguration.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Attributes\WriteAccessAuthorizeAttribute.cs" />
     <Compile Include="AutoMapperConverters\IconItemChangeQueueToFailedRegionalItemUpdateViewModelConverter.cs" />
     <Compile Include="AutoMapperConverters\LocaleToMessageQueueLocaleConverter.cs" />
+    <Compile Include="Controllers\BulkScanCodeController.cs" />
     <Compile Include="Controllers\EwicController.cs" />
     <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\PluRequestController.cs" />
