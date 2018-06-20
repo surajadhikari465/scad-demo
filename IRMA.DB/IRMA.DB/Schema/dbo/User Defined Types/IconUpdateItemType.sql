@@ -43,6 +43,7 @@
     [HasItemSignAttributes] BIT            NULL,
     [RetailSize]            DECIMAL (9, 4) NULL,
     [RetailUom]             VARCHAR (5)    NULL,
+	[ItemTypeCode]          VARCHAR (3)    NULL,
     PRIMARY KEY CLUSTERED ([ItemId] ASC));
 
 

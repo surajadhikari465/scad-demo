@@ -18,11 +18,12 @@ BEGIN
 
 	BEGIN TRY
 
-		INSERT INTO ValidatedScanCode (ScanCode, InsertDate, InforItemId)
+		INSERT INTO ValidatedScanCode (ScanCode, InsertDate, InforItemId, ItemTypeCode)
 		SELECT
 			vi.ScanCode as ScanCode,
 			@now		as InsertDate,
-			vi.ItemID	as InforItemId
+			vi.ItemID	as InforItemId,
+			vi.ItemTypeCode as ItemTypeCode
 		FROM
 			#ValidatedItems vi
 		WHERE NOT EXISTS (SELECT 1 FROM ValidatedScanCode vsc WHERE vsc.ScanCode = vi.ScanCode)
