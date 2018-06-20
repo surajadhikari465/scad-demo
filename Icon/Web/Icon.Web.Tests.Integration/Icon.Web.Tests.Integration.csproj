@@ -167,6 +167,7 @@
     <Compile Include="Excel\Services\ItemExcelServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetAvailableScanCodesByCategoryQueryTests.cs" />
+    <Compile Include="Queries\GetCertificationAgenciesQueryTests.cs" />
     <Compile Include="Queries\GetCurrentEwicMappingParametersQueryTests.cs" />
     <Compile Include="Queries\GetAvailablePlusByCategoryQueryTests.cs" />
     <Compile Include="Queries\GetBrandAbbreviationsThatExistQueryTests.cs" />
