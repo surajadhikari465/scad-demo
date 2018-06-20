@@ -1,6 +1,5 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb.Factory;
 using Icon.Esb.ListenerApplication;
 using Icon.Esb.R10Listener.Commands;
 using Icon.Esb.R10Listener.Constants;
@@ -11,8 +10,6 @@ using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.IO;
-using System.Linq;
 using TIBCO.EMS;
 
 namespace Icon.Esb.R10Listener.Tests
@@ -23,7 +20,7 @@ namespace Icon.Esb.R10Listener.Tests
         private R10Listener r10Listener;
         private ListenerApplicationSettings applicationSettings;
         private EsbConnectionSettings connectionSettings;
-        private Mock<ICommandHandler<ProcessR10MessageResponseCommand>> mockProcessR10MessageResponseCommandHandler;
+        private Mock<ICommandHandler<SaveR10MessageResponseCommand>> mockSaveR10MessageResponseCommandHandler;
         private Mock<IMessageParser<R10MessageResponseModel>> mockMessageParser;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<ILogger<R10Listener>> mockLogger;
@@ -37,7 +34,7 @@ namespace Icon.Esb.R10Listener.Tests
             applicationSettings = new ListenerApplicationSettings();
             connectionSettings = new EsbConnectionSettings();
             mockEsbSubscriber = new Mock<IEsbSubscriber>();
-            mockProcessR10MessageResponseCommandHandler = new Mock<ICommandHandler<ProcessR10MessageResponseCommand>>();
+            mockSaveR10MessageResponseCommandHandler = new Mock<ICommandHandler<SaveR10MessageResponseCommand>>();
             mockMessageParser = new Mock<IMessageParser<R10MessageResponseModel>>();
             mockEmailClient = new Mock<IEmailClient>();
             mockLogger = new Mock<ILogger<R10Listener>>();
@@ -47,7 +44,7 @@ namespace Icon.Esb.R10Listener.Tests
             r10Listener = new R10Listener(applicationSettings,
                 connectionSettings,
                 mockEsbSubscriber.Object,
-                mockProcessR10MessageResponseCommandHandler.Object,
+                mockSaveR10MessageResponseCommandHandler.Object,
                 mockMessageParser.Object,
                 mockEmailClient.Object,
                 mockLogger.Object);
@@ -67,14 +64,14 @@ namespace Icon.Esb.R10Listener.Tests
 
             //Then
             mockMessageParser.Verify();
-            mockProcessR10MessageResponseCommandHandler.Verify(m => m.Execute(It.IsAny<ProcessR10MessageResponseCommand>()), Times.Once);
+            mockSaveR10MessageResponseCommandHandler.Verify(m => m.Execute(It.IsAny<SaveR10MessageResponseCommand>()), Times.Once);
 
             mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Never);
             mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
-        public void HandleMessage_RequestSuccessIsFalse_ShouldMarkMessageAsFailedAndNotifyError()
+        public void HandleMessage_RequestSuccessIsFalse_ShouldLogError()
         {
             //Given
             r10MessageResponse.RequestSuccess = false;
@@ -87,14 +84,13 @@ namespace Icon.Esb.R10Listener.Tests
 
             //Then
             mockMessageParser.Verify();
-            mockProcessR10MessageResponseCommandHandler.Verify(m => m.Execute(It.IsAny<ProcessR10MessageResponseCommand>()), Times.Once);
+            mockSaveR10MessageResponseCommandHandler.Verify(m => m.Execute(It.IsAny<SaveR10MessageResponseCommand>()), Times.Once);
             
             mockLogger.Verify(m => m.Error(It.Is<string>(s => s.Contains(NotificationConstants.UnsuccessfulRequest))), Times.Once);
-            mockEmailClient.Verify(m => m.Send(It.Is<string>(s => s.Contains(NotificationConstants.UnsuccessfulRequest)), It.IsAny<string>()), Times.Once);
         }
 
         [TestMethod]
-        public void HandleMessage_UnsuccessfulMessageParse_ShouldNotifyError()
+        public void HandleMessage_UnsuccessfulMessageParse_ShouldLogError()
         {
             //Given
             r10MessageResponse = null;
@@ -107,22 +103,25 @@ namespace Icon.Esb.R10Listener.Tests
 
             //Then
             mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockProcessR10MessageResponseCommandHandler.Verify(m => m.Execute(It.IsAny<ProcessR10MessageResponseCommand>()), Times.Never);
+            mockSaveR10MessageResponseCommandHandler.Verify(m => m.Execute(It.IsAny<SaveR10MessageResponseCommand>()), Times.Never);
 
             mockLogger.Verify(m => m.Error(It.Is<string>(s => s.Contains(NotificationConstants.UnsuccessfulParse))), Times.Once);
-            mockEmailClient.Verify(m => m.Send(It.Is<string>(s => s.Contains(NotificationConstants.UnsuccessfulParse)), It.IsAny<string>()), Times.Once);
         }
 
         [TestMethod]
-        public void HandleMessage_UnsuccessfulMessageProcessing_ShouldNotifyError()
+        public void HandleMessage_UnsuccessfulMessageProcessing_ShouldLogError()
         {
             //Given
-            r10MessageResponse.MessageHistoryId = 123;
+            r10MessageResponse = new R10MessageResponseModel
+            {
+                MessageId = "123",
+                RequestSuccess = true
+            };
             mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
                 .Returns(r10MessageResponse)
                 .Verifiable();
-            mockProcessR10MessageResponseCommandHandler
-                .Setup(m => m.Execute(It.IsAny<ProcessR10MessageResponseCommand>()))
+            mockSaveR10MessageResponseCommandHandler
+                .Setup(m => m.Execute(It.IsAny<SaveR10MessageResponseCommand>()))
                 .Throws(new Exception("Test Exception"))
                 .Verifiable();
 
@@ -131,18 +130,12 @@ namespace Icon.Esb.R10Listener.Tests
 
             //Then
             mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockProcessR10MessageResponseCommandHandler.Verify();
+            mockSaveR10MessageResponseCommandHandler.Verify();
 
             mockLogger.Verify(m => m.Error(It.Is<string>(s =>
                     s.Contains(NotificationConstants.UnsuccessfulMessageProcessing) &&
                     s.Contains("123") &&
                     s.Contains("Test Exception"))),
-                Times.Once);
-
-            mockEmailClient.Verify(m => m.Send(It.Is<string>(s =>
-                    s.Contains(NotificationConstants.UnsuccessfulMessageProcessing) &&
-                    s.Contains("123") &&
-                    s.Contains("Test Exception")), It.IsAny<string>()),
                 Times.Once);
         }
 

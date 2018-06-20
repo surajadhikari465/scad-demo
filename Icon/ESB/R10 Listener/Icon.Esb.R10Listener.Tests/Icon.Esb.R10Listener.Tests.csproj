@@ -70,6 +70,9 @@
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -147,12 +150,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CommandHandlerTestBase.cs" />
-    <Compile Include="Commands\AddMessageResponseCommandHandlerTests.cs" />
-    <Compile Include="Commands\ResendMessageCommandHandlerTests.cs" />
-    <Compile Include="Commands\ProcessR10MessageResponseCommandHandlerTests.cs" />
-    <Compile Include="Commands\ProcessFailedR10MessageResponseCommandHandlerTests.cs" />
-    <Compile Include="Commands\ResendMessageQueueEntriesCommandHandlerTests.cs" />
-    <Compile Include="Infrastructure\Cache\MessageQueueResendStatusCacheTests.cs" />
+    <Compile Include="Commands\SaveR10MessageResponseCommandHandlerTests.cs" />
     <Compile Include="Integration\R10ListenerTests.cs" />
     <Compile Include="MessageParsers\R10MessageResponseParserTests.cs" />
     <Compile Include="R10ListenerTests.cs" />
@@ -178,6 +176,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestMessages\fail_unsuccessful_parse_from_prod.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestMessages\fail_unsuccessful_parse_from_prod_mammoth.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestMessages\success_BU.xml" />

@@ -13,6 +13,7 @@ namespace Icon.Esb.R10Listener.MessageParsers
 {
     public class R10MessageResponseParser : IMessageParser<R10MessageResponseModel>
     {
+        private const string MessageIdPropertyName = "TransactionID";
         private XmlSerializer serializer;
         private TextReader textReader;
 
@@ -23,14 +24,14 @@ namespace Icon.Esb.R10Listener.MessageParsers
 
         public R10MessageResponseModel ParseMessage(IEsbMessage message)
         {
-            int messageHistoryId;
+            string messageId;
             try
             {
-                messageHistoryId = Utility.GetMessageHistoryId(message);
+                messageId = message.GetProperty(MessageIdPropertyName);
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Unable to parse TransactionID of message.", ex);
+                throw new ArgumentException("Unable to parse Message ID of message.", ex);
             }
 
             Contracts.R10ResponseType r10Response;
@@ -41,7 +42,7 @@ namespace Icon.Esb.R10Listener.MessageParsers
 
             R10MessageResponseModel messageModel = new R10MessageResponseModel
             {
-                MessageHistoryId = messageHistoryId,
+                MessageId = messageId,
                 RequestSuccess = r10Response.requestSuccess,
 
                 // This will encode the xml correctly so that it saves to the database.

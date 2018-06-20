@@ -333,7 +333,6 @@
     <None Include="Scripts\Projects\ItemSubTeam Alignment\OnBoarding_Script_2a_DropHierarchyBackupTablesForMARegion.sql" />
     <None Include="Scripts\Projects\ItemSubTeam Alignment\OnBoarding_Script_3_LoadSubTeamPOSDeptValuesAndUpdateSubTeamTable.sql" />
     <None Include="Scripts\Projects\ItemSubTeam Alignment\OnBoarding_Script_4_LoadScanCodesInIrmaAndUpdateItemSubTeam.sql" />
-    <Build Include="app\Tables\R10MessageResponse.sql" />
     <Build Include="app\Tables\MessageResendStatus.sql" />
     <Build Include="app\Stored Procedures\GetItemPrices.sql" />
     <Build Include="app\Stored Procedures\GetRegionalConfigurationForSettingName.sql" />
@@ -675,6 +674,7 @@
     <None Include="Scripts\PopulateData\Archive\MoveMessageQueueProductRecordsIntoTempTable.sql" />
     <None Include="Scripts\PopulateData\Release\AddCurrencyCodeTrait.sql" />
     <None Include="Scripts\PopulateData\Archive\FixTraitLength.sql" />
+    <Build Include="app\Tables\MessageResponseR10.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

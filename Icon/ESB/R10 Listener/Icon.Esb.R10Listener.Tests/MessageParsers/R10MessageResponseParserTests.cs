@@ -1,14 +1,10 @@
-﻿using Icon.Esb.R10Listener.Constants;
-using Icon.Esb.R10Listener.MessageParsers;
+﻿using Icon.Esb.R10Listener.MessageParsers;
 using Icon.Esb.Subscriber;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Icon.Esb.R10Listener.Tests.MessageParsers
@@ -38,7 +34,7 @@ namespace Icon.Esb.R10Listener.Tests.MessageParsers
             var result = parser.ParseMessage(esbMessage.Object);
 
             //Then
-            Assert.AreEqual(1, result.MessageHistoryId);
+            Assert.AreEqual("1", result.MessageId);
             Assert.IsTrue(result.RequestSuccess);
             Assert.IsFalse(result.SystemError);
             Assert.AreEqual(XElement.Parse(message).ToString(), result.ResponseText); 
@@ -58,7 +54,7 @@ namespace Icon.Esb.R10Listener.Tests.MessageParsers
             var result = parser.ParseMessage(esbMessage.Object);
 
             //Then
-            Assert.AreEqual(1, result.MessageHistoryId);
+            Assert.AreEqual("1", result.MessageId);
             Assert.IsFalse(result.RequestSuccess);
             Assert.IsFalse(result.SystemError);
             Assert.AreEqual(XElement.Parse(message).ToString(), result.ResponseText);
@@ -80,7 +76,7 @@ namespace Icon.Esb.R10Listener.Tests.MessageParsers
             var result = parser.ParseMessage(esbMessage.Object);
 
             //Then
-            Assert.AreEqual(1, result.MessageHistoryId);
+            Assert.AreEqual("1", result.MessageId);
             Assert.IsFalse(result.RequestSuccess);
             Assert.IsTrue(result.SystemError);
             Assert.AreEqual(XElement.Parse(message).ToString(), result.ResponseText);
@@ -100,7 +96,7 @@ namespace Icon.Esb.R10Listener.Tests.MessageParsers
             var result = parser.ParseMessage(esbMessage.Object);
 
             //Then
-            Assert.AreEqual(1, result.MessageHistoryId);
+            Assert.AreEqual("1", result.MessageId);
             Assert.IsFalse(result.RequestSuccess);
             Assert.IsFalse(result.SystemError);
             Assert.AreEqual(XElement.Parse(message).ToString(), result.ResponseText);
@@ -135,7 +131,49 @@ namespace Icon.Esb.R10Listener.Tests.MessageParsers
             var result = parser.ParseMessage(esbMessage.Object);
 
             //Then
-            Assert.AreEqual(1, result.MessageHistoryId);
+            Assert.AreEqual("Icon_1", result.MessageId);
+            Assert.IsTrue(result.RequestSuccess);
+            Assert.IsFalse(result.SystemError);
+            Assert.AreEqual(XElement.Parse(message).ToString(), result.ResponseText);
+            Assert.IsNull(result.FailureReasonCode);
+            Assert.IsNull(result.BusinessErrors);
+        }
+
+        [TestMethod]
+        public void ParseMessage_MessageIdIsGuid_ShouldSuccessfullyParseMessage()
+        {
+            //Given
+            var messageId = Guid.NewGuid();
+            var message = File.ReadAllText(@"TestMessages/fail_unsuccessful_parse_from_prod.xml");
+            esbMessage.SetupGet(m => m.MessageText).Returns(message);
+            esbMessage.Setup(m => m.GetProperty(It.Is<string>(s => s == "TransactionID"))).Returns(messageId.ToString());
+
+            //When
+            var result = parser.ParseMessage(esbMessage.Object);
+
+            //Then
+            Assert.AreEqual(messageId.ToString(), result.MessageId);
+            Assert.IsTrue(result.RequestSuccess);
+            Assert.IsFalse(result.SystemError);
+            Assert.AreEqual(XElement.Parse(message).ToString(), result.ResponseText);
+            Assert.IsNull(result.FailureReasonCode);
+            Assert.IsNull(result.BusinessErrors);
+        }
+
+        [TestMethod]
+        public void HandleMessage_MessageIsGeneratedFromMammoth_ShouldAcknowledgeMessage()
+        {
+            //Given
+            var messageId = "Mammoth_1b9f134a-ba82-4f34-bfe3-b9bf7b187b93";
+            var message = File.ReadAllText(@"TestMessages/fail_unsuccessful_parse_from_prod_mammoth.xml");
+            esbMessage.SetupGet(m => m.MessageText).Returns(message);
+            esbMessage.Setup(m => m.GetProperty(It.Is<string>(s => s == "TransactionID"))).Returns(messageId);
+
+            //When
+            var result = parser.ParseMessage(esbMessage.Object);
+
+            //Then
+            Assert.AreEqual(messageId, result.MessageId);
             Assert.IsTrue(result.RequestSuccess);
             Assert.IsFalse(result.SystemError);
             Assert.AreEqual(XElement.Parse(message).ToString(), result.ResponseText);

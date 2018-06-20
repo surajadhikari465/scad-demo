@@ -1,7 +1,9 @@
-﻿using Icon.Esb.R10Listener.Context;
-using Icon.Framework;
+﻿using Icon.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Configuration;
 using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Transactions;
 
 namespace Icon.Esb.R10Listener.Tests
 {
@@ -10,24 +12,22 @@ namespace Icon.Esb.R10Listener.Tests
     {
         protected CommandHandlerType commandHandler;
         protected CommandType command;
-        protected GlobalContext context;
-        protected DbContextTransaction transaction;
+        protected TransactionScope transaction;
+        protected SqlConnection sqlConnection;
 
         [TestInitialize]
         public void BaseInitialize()
         {
-            context = new GlobalContext(new IconContext());
-            transaction = context.Context.Database.BeginTransaction();
+            transaction = new TransactionScope();
             Initialize();
+            sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
         }
 
         [TestCleanup]
         public void BaseCleanup()
         {
             Cleanup();
-            transaction.Rollback();
             transaction.Dispose();
-            context.Context.Dispose();
         }
 
         protected virtual void Initialize() { }

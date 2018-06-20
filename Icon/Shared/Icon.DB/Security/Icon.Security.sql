@@ -29,6 +29,8 @@ GRANT insert, select, delete, update on app.ItemMovementErrorQueue to [IconUser]
 GO
 GRANT insert, select, delete on app.ItemMovementTransactionHistory to [IconUser],[WFM\IConInterfaceUser] 
 GO
+GRANT SELECT, INSERT, DELETE, UPDATE ON app.MessageResponseR10 TO [IconUser],[WFM\IConInterfaceUser] 
+GO
 
 -- Stored Procedures
 GRANT EXEC ON [app].[InsertIRMAItemSubscriptions] to [IconUser],[WFM\IConInterfaceUser]
