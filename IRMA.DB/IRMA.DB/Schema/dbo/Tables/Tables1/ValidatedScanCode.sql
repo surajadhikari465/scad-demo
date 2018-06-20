@@ -3,7 +3,7 @@
     [ScanCode]   VARCHAR (13) NOT NULL,
     [InsertDate] DATETIME     NOT NULL,
 	[InforItemId] INT		  NOT NULL,
-	[ItemTypeCode] Varchar(3) NULL,
+	[ItemTypeCode] VARCHAR(3) NULL,
     CONSTRAINT [PK_ValidatedScanCode] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (FILLFACTOR = 80),
     CONSTRAINT [ScanCodeExistsConstraint] CHECK ([dbo].[fn_DoesScanCodeExist]([ScanCode])<>(0)),
     CONSTRAINT [UniqueScanCodeConstraint] UNIQUE NONCLUSTERED ([ScanCode] ASC) WITH (FILLFACTOR = 80)
