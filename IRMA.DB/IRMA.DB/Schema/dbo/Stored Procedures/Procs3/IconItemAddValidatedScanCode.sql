@@ -28,6 +28,11 @@ BEGIN
 			#ValidatedItems vi
 		WHERE NOT EXISTS (SELECT 1 FROM ValidatedScanCode vsc WHERE vsc.ScanCode = vi.ScanCode)
 
+		UPDATE VSC
+		SET ItemTypeCode = vil.ItemTypeCode
+		FROM ValidatedScanCode vsc
+		inner join @ValidatedItemList vil ON vsc.ScanCode = vil.ScanCode And vsc.ItemTypeCode != vil.ItemTypeCode
+
 	END TRY
 	BEGIN CATCH
 		DECLARE @err_no int, @err_sev int, @err_msg varchar(MAX)
