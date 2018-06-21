@@ -339,15 +339,10 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     CheeseMilkTypeId = MilkTypes.CowGoatSheepMilk,
                     CheeseRaw = true,
                     EcoScaleRatingId = EcoScaleRatings.PremiumYellow,
-                    GlutenFreeAgencyId = glutenAgency.hierarchyClassID,
-                    KosherAgencyId = kosherAgency.hierarchyClassID,
                     Msc = true,
-                    NonGmoAgencyId = nonGmoAgency.hierarchyClassID,
-                    OrganicAgencyId = organicAgency.hierarchyClassID,
                     PremiumBodyCare = true,
                     SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.Frozen,
                     SeafoodCatchTypeId = SeafoodCatchTypes.Wild,
-                    VeganAgencyId = veganAgency.hierarchyClassID,
                     Vegetarian = true,
                     WholeTrade = true,
                     GrassFed = true,
@@ -355,7 +350,12 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     FreeRange = true,
                     DryAged = true,
                     AirChilled = true,
-                    MadeInHouse = true
+                    MadeInHouse = true,
+                    GlutenFreeAgencyName = glutenAgency.hierarchyClassName,
+                    KosherAgencyName = kosherAgency.hierarchyClassName,
+                    OrganicAgencyName = organicAgency.hierarchyClassName,
+                    VeganAgencyName = veganAgency.hierarchyClassName,
+                    NonGmoAgencyName = nonGmoAgency.hierarchyClassName
                 };
                 scanCode.Item.ItemSignAttribute.Add(signAttributes);
             }
@@ -375,15 +375,10 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 CheeseMilkTypeId = null,
                 CheeseRaw = false,
                 EcoScaleRatingId = null,
-                GlutenFreeAgencyId = null,
-                KosherAgencyId = null,
                 Msc = false,
-                NonGmoAgencyId = null,
-                OrganicAgencyId = null,
                 PremiumBodyCare = false,
                 SeafoodFreshOrFrozenId = null,
                 SeafoodCatchTypeId = null,
-                VeganAgencyId = null,
                 Vegetarian = false,
                 WholeTrade = false,
                 GrassFed = false,
@@ -391,7 +386,12 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 FreeRange = false,
                 DryAged = false,
                 AirChilled = false,
-                MadeInHouse = false
+                MadeInHouse = false,
+                GlutenFreeAgencyName = null,
+                KosherAgencyName = null,
+                OrganicAgencyName = null,
+                VeganAgencyName = null,
+                NonGmoAgencyName = null
             };
         }
     }

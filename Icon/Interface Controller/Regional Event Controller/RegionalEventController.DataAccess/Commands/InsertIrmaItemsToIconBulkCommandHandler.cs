@@ -49,8 +49,7 @@ namespace RegionalEventController.DataAccess.Commands
                 TaxClassID = i.taxClassID,
                 MerchandiseClassID = i.merchandiseClassID,
                 IrmaSubTeamName = i.irmaSubTeamName,
-                NationalClassId = i.nationalClassID,
-                OrganicAgencyId = i.OrganicAgencyId
+                NationalClassId = i.nationalClassID
             }).ToDataTable();
 
             string sql = "EXEC app.InsertIRMAItems @IRMAItems ";

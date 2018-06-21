@@ -71,8 +71,7 @@ namespace RegionalEventController.DataAccess.Queries
                                            departmentSale = false,
                                            posScaleTare = 0.0m,
                                            giftCard = i.GiftCard,
-                                           irmaSubTeamName = s.SubTeam_Name,
-                                           OrganicAgencyId = i.Organic ? defaultOrganicAgencyId : (int?)null
+                                           irmaSubTeamName = s.SubTeam_Name
                                        }
                                    }).ToList());
 
