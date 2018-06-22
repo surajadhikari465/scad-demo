@@ -51,6 +51,7 @@ namespace GlobalEventController.Testing.Common
         private bool hasItemSignAttributes;
         private decimal retailSize;
         private string retailUom;
+        private string itemTypeCode;
 
         public TestValidatedItemModelBuilder()
         {
@@ -72,11 +73,18 @@ namespace GlobalEventController.Testing.Common
             this.hasItemSignAttributes = false;
             this.retailSize = 13.1M;
             this.retailUom = "OZ";
+            this.itemTypeCode = "Rtl";
         }
 
         public TestValidatedItemModelBuilder WithItemId(int itemId)
         {
             this.itemId = itemId;
+            return this;
+        }
+
+        public TestValidatedItemModelBuilder WithItemTypeCode(string itemTypeCode)
+        {
+            this.itemTypeCode = itemTypeCode;
             return this;
         }
         public TestValidatedItemModelBuilder WithDeptNo(int deptNo)

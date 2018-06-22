@@ -61,6 +61,10 @@
       <HintPath>..\..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Icon.Framework.2018.5.10.4\lib\net46\Icon.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
       <Private>True</Private>

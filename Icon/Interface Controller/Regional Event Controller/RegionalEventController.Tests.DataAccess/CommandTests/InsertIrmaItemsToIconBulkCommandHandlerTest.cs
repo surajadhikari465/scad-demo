@@ -52,7 +52,7 @@ namespace RegionalEventController.Tests.DataAccess.CommandTests
                 .WithRegionCode("MW").Build());
             irmaItemEntries.Add(new TestIrmaItemBuilder()
                 .WithIdentifier("1112223335".ToString())
-                .WithRegionCode("MW").Build());
+                .WithRegionCode("MW").Build());               
             irmaItemEntries.Add(new TestIrmaItemBuilder()
                 .WithIdentifier("1112223336".ToString())
                 .WithRegionCode("MW").WithOrganicAgencyId(11127).Build());
@@ -104,9 +104,7 @@ namespace RegionalEventController.Tests.DataAccess.CommandTests
                 Assert.AreEqual(irmaItemEntry.irmaSubTeamName, actualIrmaItem.irmaSubTeamName,
                     $"actual {nameof(actualIrmaItem.irmaSubTeamName)} ({actualIrmaItem.irmaSubTeamName}) did not match expected ({irmaItemEntry.irmaSubTeamName})");
                 Assert.AreEqual(irmaItemEntry.nationalClassID, actualIrmaItem.nationalClassID,
-                    $"actual {nameof(actualIrmaItem.nationalClassID)} ({actualIrmaItem.nationalClassID}) did not match expected ({irmaItemEntry.nationalClassID})");
-                Assert.AreEqual(irmaItemEntry.OrganicAgencyId, actualIrmaItem.OrganicAgencyId,
-                    $"actual {nameof(actualIrmaItem.OrganicAgencyId)} ({actualIrmaItem.OrganicAgencyId}) did not match expected ({irmaItemEntry.OrganicAgencyId})"); ;
+                    $"actual {nameof(actualIrmaItem.nationalClassID)} ({actualIrmaItem.nationalClassID}) did not match expected ({irmaItemEntry.nationalClassID})");              
             }
         }
     }

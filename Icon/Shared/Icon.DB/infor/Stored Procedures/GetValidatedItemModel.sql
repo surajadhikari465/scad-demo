@@ -185,10 +185,13 @@ BEGIN
 			  END								as HasItemSignAttributes,
 			  CAST(rsz.TraitValue as decimal(9,4)) as RetailSize,
 			  rum.TraitValue					as RetailUom,
-			  0									as EventTypeId
+			  0									as EventTypeId,
+			  it.itemTypeCode                   as ItemTypeCode
        FROM
               @ScanCodes			codes
               JOIN ScanCode			sc          on  codes.ScanCode = sc.scanCode
+			  JOIN Item             i           on  i.itemID = sc.itemID
+			  JOIN ItemType         it          on  it.itemTypeID = i.itemTypeID
               JOIN ScanCodeType		sct         on	sc.scanCodeTypeID = sct.scanCodeTypeID
               JOIN ItemTrait_CTE	vdat		on  sc.itemID     = vdat.itemID
                                                         and vdat.traitID = @validationDate

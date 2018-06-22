@@ -104,8 +104,7 @@ namespace RegionalEventController.Tests.DataAccess.QueryTests
                                                   giftCard = false,
                                                   departmentSale = false,
                                                   insertDate = DateTime.Now,
-                                                  nationalClassID = nc.ClassID,
-                                                  OrganicAgencyId = i.Organic ? defaultOrganicAgencyId : (int?)null
+                                                  nationalClassID = nc.ClassID
                                               }
                                           }).ToList();
 
@@ -136,7 +135,7 @@ namespace RegionalEventController.Tests.DataAccess.QueryTests
                 Assert.AreEqual(expected[i].IrmaItem.giftCard, actual[i].IrmaItem.giftCard, "The IrmaItem.giftCard does not match the expected value.");
                 Assert.AreEqual(expected[i].IrmaItem.departmentSale, actual[i].IrmaItem.departmentSale, "The IrmaItem.departmentSale does not match the expected value.");
                 Assert.AreEqual(expected[i].IrmaItem.nationalClassID, actual[i].IrmaNationalClass, "The NationalClassName does not match the expected value.");
-                Assert.AreEqual(expected[i].IrmaItem.OrganicAgencyId, actual[i].IrmaItem.OrganicAgencyId, "The IrmaItem.OrganicAgencyId does not match the expected value.");
+                //Assert.AreEqual(expected[i].IrmaItem.OrganicAgencyId, actual[i].IrmaItem.OrganicAgencyId, "The IrmaItem.OrganicAgencyId does not match the expected value.");
             }
         }
 

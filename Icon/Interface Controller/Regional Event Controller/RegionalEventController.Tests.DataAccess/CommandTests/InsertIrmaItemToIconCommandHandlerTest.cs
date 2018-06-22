@@ -69,7 +69,7 @@ namespace RegionalEventController.Tests.DataAccess.CommandTests
             this.handler.Execute(this.command);
 
             // Then
-            Assert.IsTrue(context.IRMAItem.Any(ii => ii.identifier == irmaItemEntry.identifier && ii.regioncode == irmaItemEntry.regioncode && ii.OrganicAgencyId == defaultOrganicAgencyId));
+            Assert.IsTrue(context.IRMAItem.Any(ii => ii.identifier == irmaItemEntry.identifier && ii.regioncode == irmaItemEntry.regioncode));
         }
     }
 }

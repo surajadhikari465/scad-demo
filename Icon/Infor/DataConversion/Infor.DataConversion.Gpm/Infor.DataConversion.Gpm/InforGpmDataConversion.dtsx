@@ -13,7 +13,7 @@
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
   DTS:VersionBuild="289"
-  DTS:VersionGUID="{2944992E-40F6-485C-BFFF-B3309BB48B4F}">
+  DTS:VersionGUID="{4B392013-3125-4155-A8B3-79874FD40A19}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -33,7 +33,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_ConvertedDataReport_20180619.csv">
+          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_ConvertedDataReport_20180621.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -197,7 +197,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_Prices_20180619.csv">
+          DTS:ConnectionString="C:\dev\temp\PriceExtract\FL_Prices_20180621.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -404,7 +404,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ConvertedDataReportName">
       <DTS:VariableValue
-        DTS:DataType="8">FL_ConvertedDataReport_20180619.csv</DTS:VariableValue>
+        DTS:DataType="8">FL_ConvertedDataReport_20180621.csv</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -415,7 +415,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="NowDateTimeUtc">
       <DTS:VariableValue
-        DTS:DataType="7">6/19/2018 4:52:28 PM</DTS:VariableValue>
+        DTS:DataType="7">6/21/2018 7:08:25 PM</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -426,7 +426,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="PriceExtractFlatFileName">
       <DTS:VariableValue
-        DTS:DataType="8">FL_Prices_20180619.csv</DTS:VariableValue>
+        DTS:DataType="8">FL_Prices_20180621.csv</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -2818,7 +2818,7 @@ where [refTable].[scanCode] = ?</property>
           Id="Package\Create Converted Data Report"
           TopLeft="349,164" />
         <NodeLayout
-          Size="223.2,41.6"
+          Size="220.8,41.6"
           Id="Package\Insert Into Price From Staging"
           TopLeft="641,165" />
         <NodeLayout
@@ -2887,30 +2887,30 @@ where [refTable].[scanCode] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="752.5,207">
+          TopLeft="751.4,206.6">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="25,91"
+              EndConnector="26.2,91.4"
               Start="0,0"
-              End="25,83.5">
+              End="26.2,83.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,41.5" />
+                    End="0,41.7" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,41.5"
-                    Point2="0,45.5"
-                    Point3="4,45.5" />
+                    Point1="0,41.7"
+                    Point2="0,45.7"
+                    Point3="4,45.7" />
                   <mssgle:LineSegment
-                    End="21,45.5" />
+                    End="22.2,45.7" />
                   <mssgle:CubicBezierSegment
-                    Point1="21,45.5"
-                    Point2="25,45.5"
-                    Point3="25,49.5" />
+                    Point1="22.2,45.7"
+                    Point2="26.2,45.7"
+                    Point3="26.2,49.7" />
                   <mssgle:LineSegment
-                    End="25,83.5" />
+                    End="26.2,83.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
