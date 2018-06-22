@@ -65,7 +65,6 @@ BEGIN
 		,pct.PriceChgTypeDesc
 	FROM PriceBatchDetail pbd
 	JOIN PriceChgType pct ON pbd.PriceChgTypeID = pct.PriceChgTypeID
-	JOIN PriceBatchHeader pbh ON pbd.PriceBatchHeaderID = pbh.PriceBatchHeaderID
 	JOIN infor.tmpGpmLatestPbd lpbd ON lpbd.Item_key = pbd.Item_key
 		AND lpbd.Store_No = pbd.Store_No
 	JOIN Price p ON p.Store_No = lpbd.Store_No
