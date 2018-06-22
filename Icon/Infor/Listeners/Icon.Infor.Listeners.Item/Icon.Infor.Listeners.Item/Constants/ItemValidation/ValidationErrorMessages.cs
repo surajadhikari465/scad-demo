@@ -67,7 +67,6 @@ namespace Icon.Infor.Listeners.Item.Constants.ItemValidation
         public const string OutOfSyncItemUpdateSequenceIdErrorCode = "Item update rejected: message Sequence ID was '{0}' but the item has a larger Sequence ID of '{1}'.";
         public static readonly string InvalidCustomerFriendlyDescription = InvalidValue + InvalidLengthOrPattern(MaxLengths.CFD, TraitPatterns.CustomerFriendlyDescription);
         public static readonly string InvalidGlobalPricingProgram = InvalidValue + InvalidLengthOrPattern(MaxLengths.StandardProperty255, TraitPatterns.GlobalPricingProgram);
-        public static readonly string InvalidPercentageTareWeight = InvalidValue + " {PropertyName} value must be between 0 and " + MaxValues.PercentageTareWeight;
         public static readonly string InvalidMadeWithOrganicGrapes = InvalidValue + InvalidLengthOrPattern(MaxLengths.StandardProperty255, TraitPatterns.MadeWithOrganicGrapes);
         public static readonly string InvalidPrimeBeef = InvalidValue + InvalidLengthOrPattern(MaxLengths.StandardProperty255, TraitPatterns.PrimeBeef);
         public static readonly string InvalidRainforestAlliance = InvalidValue + InvalidLengthOrPattern(MaxLengths.StandardProperty255, TraitPatterns.RainforestAlliance);

@@ -75,7 +75,6 @@ namespace Icon.Infor.Listeners.Item.Constants.ItemValidation
         public const string OutOfSyncItemUpdateErrorCode = "OutOfSyncItemUpdateErrorCode";
         public const string InvalidCustomerFriendlyDescription = "InvalidCustomerFriendlyDescription";
         public const string InvalidGlobalPricingProgram = "InvalidGlobalPricingProgram";
-        public const string InvalidPercentageTareWeight = "InvalidPercentageTareWeight";
         public const string InvalidWicEligible = "InvalidWicEligible";
         public const string InvalidSmithsonianBirdFriendly = "InvalidSmithsonianBirdFriendly";
         public const string InvalidRefrigerated = "InvalidRefrigerated";

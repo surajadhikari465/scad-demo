@@ -10,7 +10,6 @@ namespace Icon.Infor.Listeners.Item.Constants.ItemValidation
     {
         public const decimal RetailSize         = 99999.9999m;
         public const int RetailSizeScale        =     4;
-        public const int PercentageTareWeight   =   100;
         public const int ShelfLife              =   100;
     }
 

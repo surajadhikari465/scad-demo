@@ -267,11 +267,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
             private string sampleTrait_packageUnit = "test PackageSize val";
             public string PackageUnit => sampleTrait_packageUnit;
-
-            //  source: Infor/Icon | target: OnePlum | level: Item Locale
-            private string sampleTrait_percentageTareWeight = "25";
-            public string PercentageTareWeight => sampleTrait_percentageTareWeight;
-
+            
             //  source: Infor/Icon | target: SLAW, ESL | level: Item
             private string sampleTrait_posDescription = "test POS_Desc val";
             public string PosDescription => sampleTrait_posDescription;

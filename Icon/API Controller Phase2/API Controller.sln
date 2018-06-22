@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.Tests", "Icon.ApiController.Tests\Icon.ApiController.Tests.csproj", "{436FE772-9141-4F76-B242-01D49FF02CD5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E072200C-5EC6-4DD5-AFA1-B11A1B963E61} = {E072200C-5EC6-4DD5-AFA1-B11A1B963E61}
+		{FF85E818-177C-48FC-9765-47B0804668EC} = {FF85E818-177C-48FC-9765-47B0804668EC}
+		{693B3840-E93C-4FC6-931E-CA9334E3B6C0} = {693B3840-E93C-4FC6-931E-CA9334E3B6C0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.ApiController.DataAccess", "Icon.ApiController.DataAccess\Icon.ApiController.DataAccess.csproj", "{E072200C-5EC6-4DD5-AFA1-B11A1B963E61}"
 EndProject
@@ -54,5 +59,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9A72AACA-EAA7-41FF-82C5-93980089B262}
 	EndGlobalSection
 EndGlobal
