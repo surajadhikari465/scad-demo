@@ -85,7 +85,7 @@
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.5.1.2\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.5.24.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.5.21.2\lib\net46\Mammoth.PrimeAffinity.Library.dll</HintPath>

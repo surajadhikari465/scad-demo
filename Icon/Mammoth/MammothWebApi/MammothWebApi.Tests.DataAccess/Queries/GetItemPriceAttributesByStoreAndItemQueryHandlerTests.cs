@@ -732,7 +732,6 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         public void GetPricesGpmQuery_EffectiveDateInTheFuture_ReturnsFutureRegularPriceInsteadOfCurrentRegularPrice()
         {
             // Given
-            // Given
             DateTime expectedRegularStartDate = DateTime.UtcNow.Date.AddDays(-3);
             DateTime expectedFutureRegStartDate = DateTime.UtcNow.Date.AddDays(5);
 
@@ -834,8 +833,8 @@ namespace MammothWebApi.Tests.DataAccess.Queries
                                            @MSRP,
                                            @AddedDate)";
             this.insertItemSql = @"INSERT INTO dbo.Items (ItemID, ScanCode, BrandHCID, PSNumber, Desc_Product, AddedDate, RetailSize, RetailUOM, FoodStampEligible, PackageUnit) VALUES (@ItemID, @ScanCode, @BrandHCID, @PSNumber, @Desc_Product, @AddedDate, @RetailSize, @RetailUOM, @FoodStampEligible, @PackageUnit) SELECT SCOPE_IDENTITY()";
-            this.insertPriceSql = @"INSERT INTO gpm.Price_FL (Region, GpmID, ItemID, BusinessUnitID, StartDate, EndDate, Price, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, NewTagExpiration, InsertDateUtc, ModifiedDateUtc)
-                                    VALUES(@Region, @GpmID, @ItemID, @BusinessUnitID, @StartDate, @EndDate, @Price, @PriceType, @PriceTypeAttribute, @SellableUOM, @CurrencyCode, @Multiple, @NewTagExpiration, @InsertDateUtc, @ModifiedDateUtc)";
+            this.insertPriceSql = @"INSERT INTO gpm.Price_FL (Region, GpmID, ItemID, BusinessUnitID, StartDate, EndDate, Price, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, TagExpirationDate, PercentOff, InsertDateUtc, ModifiedDateUtc)
+                                    VALUES(@Region, @GpmID, @ItemID, @BusinessUnitID, @StartDate, @EndDate, @Price, @PriceType, @PriceTypeAttribute, @SellableUOM, @CurrencyCode, @Multiple, @TagExpirationDate, @PercentOff, @InsertDateUtc, @ModifiedDateUtc)";
         }
 
         private void InsertItemAttributeData()

@@ -109,7 +109,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.4.11.1\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.5.10.4\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -119,7 +119,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.5.1.2\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.5.24.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.4.25.1\lib\net46\Mammoth.PrimeAffinity.Library.dll</HintPath>
