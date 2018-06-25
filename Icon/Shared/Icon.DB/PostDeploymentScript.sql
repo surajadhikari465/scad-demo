@@ -14,3 +14,4 @@ EXAMPLE (showing Icon-DB scripts path):
 */
 
 :r .\Scripts\PopulateData\Release\AddCurrencyCodeTrait.sql -- 2018.05.09 PBI 26623
+:r .\Scripts\PopulateData\Release\DeleteR10MessageResponseTable.sql

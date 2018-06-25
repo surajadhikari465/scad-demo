@@ -709,6 +709,8 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
+    <None Include="Scripts\PopulateData\Release\DeleteR10MessageResponseTable.sql" />
+    <None Include="Scripts\PopulateData\Release\AddMessageResponseR10TableToRetentionPolicy.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
