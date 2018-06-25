@@ -42,20 +42,35 @@ namespace WebSupport.Controllers
         // POST: PriceReset
         public ActionResult Index(PriceResetRequestViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                LogPriceResetRequest("Log PriceResetRequest Start", viewModel);
-                var response = priceMessageService.Send(viewModel);
-                LogPriceResetRequest("Log PriceResetRequest Result", viewModel, response);
-                if(response.Status == EsbServiceResponseStatus.Failed)
+                if (ModelState.IsValid)
                 {
-                    ViewBag.Error = response.ErrorDetails;
+                    LogPriceResetRequest("Log PriceResetRequest Start", viewModel);
+                    var response = priceMessageService.Send(viewModel);
+                    LogPriceResetRequest("Log PriceResetRequest Result", viewModel, response);
+                    if (response.Status == EsbServiceResponseStatus.Failed)
+                    {
+                        TempData["Error"] = response.ErrorDetails;
+                        return HandleErrorForPriceReset(viewModel);
+                    }
+                }
+                else
+                {
                     return HandleErrorForPriceReset(viewModel);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return HandleErrorForPriceReset(viewModel);
+                logger.Error(JsonConvert.SerializeObject(
+                    new
+                    {
+                        Message = "Unexpected error occurred",
+                        Controller = nameof(PriceResetController),
+                        ViewModel = viewModel,
+                        Exception = ex
+                    }));
+                TempData["Error"] = "Unexpected error occurred. Error:" + ex.ToString();
             }
 
             return RedirectToAction("Index");

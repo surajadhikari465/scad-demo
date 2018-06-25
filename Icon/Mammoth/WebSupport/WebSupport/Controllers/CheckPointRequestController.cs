@@ -9,6 +9,7 @@ using WebSupport.ViewModels;
 using WebSupport.DataAccess.TransferObjects;
 using WebSupport.Models;
 using Esb.Core.EsbServices;
+using Newtonsoft.Json;
 
 namespace WebSupport.Controllers
 {
@@ -41,20 +42,35 @@ namespace WebSupport.Controllers
         [HttpPost]
         public ActionResult Index(CheckPointRequestViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var response = checkPointRequestMessageService.Send(viewModel);
-                if (response.Status == EsbServiceResponseStatus.Failed)
+                if (ModelState.IsValid)
                 {
-                    ViewBag.Error = response.ErrorDetails;
+                    var response = checkPointRequestMessageService.Send(viewModel);
+                    if (response.Status == EsbServiceResponseStatus.Failed)
+                    {
+                        TempData["Error"] = response.ErrorDetails;
+                        return HandleErrorForCheckPointMessage(viewModel);
+                    }
+
+                    this.logger.Info("CheckPoint Request sent to GPM for ScanCode:" + viewModel.ScanCode + " Business Unit:" + viewModel.Store);
+                }
+                else
+                {
                     return HandleErrorForCheckPointMessage(viewModel);
                 }
-
-                this.logger.Info("CheckPoint Request sent to GPM for ScanCode:" + viewModel.ScanCode + " Business Unit:"+ viewModel.Store);
             }
-            else
+            catch(Exception ex)
             {
-                return HandleErrorForCheckPointMessage(viewModel);
+                logger.Error(JsonConvert.SerializeObject(
+                    new
+                    {
+                        Message="Unexpected error occurred",
+                        Controller = nameof(PriceResetController),
+                        ViewModel = viewModel,
+                        Exception = ex
+                    }));
+                TempData["Error"] = "Unexpected error occurred. Error:" + ex.ToString();
             }
 
             return RedirectToAction("Index");
