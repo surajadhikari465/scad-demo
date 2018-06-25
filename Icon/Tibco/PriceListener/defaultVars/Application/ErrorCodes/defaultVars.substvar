@@ -26,6 +26,14 @@
 			<modTime>1510681986664</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>InvalidMessageHeaderError</name>
+			<value>InvalidMessageHeader</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1529679759817</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>MappingError</name>
 			<value>Error In Mapping</value>
 			<deploymentSettable>true</deploymentSettable>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx4="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2"/>
     <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" schemaLocation="/SharedResources/Schemas/Public/Exception/ExceptionRequest.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/Error.xsd"/>
@@ -16,8 +16,8 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>73</pd:startX>
-    <pd:startY>61</pd:startY>
+    <pd:startX>89</pd:startX>
+    <pd:startY>66</pd:startY>
     <pd:returnBindings>
         <root>
             <PatchFamilyID>
@@ -139,12 +139,44 @@
             </root>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>313</pd:x>
+        <pd:y>223</pd:y>
+        <config>
+            <faultName>ErrorSchemas</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Message SequenceID is less than 1 or CorrelationID (PatchFamilyID) is empty&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;InvalidMessageHeader&quot;"/>
+                </messageCode>
+                <data>
+                    <pfx4:Error>
+                        <pfx4:StackTrace>
+                            <xsl:value-of select="&quot;Called From GetLastMessageSequenceQuery Process&quot;"/>
+                        </pfx4:StackTrace>
+                        <pfx4:Code>
+                            <xsl:value-of select="&quot;InvalidMessageHeader&quot;"/>
+                        </pfx4:Code>
+                        <pfx4:Message>
+                            <xsl:value-of select="concat(&quot;Message Sequence ID or CorrelationID is invalid.  SequenceID must be greater than 0 or CorrelationID must not be empty. MessageID: &quot;,$Start/root/MessageID,&quot;, CorrelationID (PatchFamilyID): &quot;, $Start/root/PatchFamilyID, &quot;, SequenceID:  &quot;, $Start/root/SequenceID, &quot;.&quot;)"/>
+                        </pfx4:Message>
+                    </pfx4:Error>
+                </data>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>GetLastSequenceQuery</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
+        <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>GetLastSequenceQuery</pd:from>
@@ -157,8 +189,20 @@
     <pd:transition>
         <pd:from>Map Data</pd:from>
         <pd:to>End</pd:to>
+        <pd:xpathDescription/>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>Invalid Message Header</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/SequenceID &lt; 1
+or
+$Start/root/PatchFamilyID = ""</pd:xpath>
     </pd:transition>
 </pd:ProcessDefinition>

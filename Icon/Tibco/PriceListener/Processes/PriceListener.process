@@ -35,7 +35,7 @@
     </pd:starter>
     <pd:endName>End</pd:endName>
     <pd:endX>897</pd:endX>
-    <pd:endY>538</pd:endY>
+    <pd:endY>545</pd:endY>
     <pd:errorSchemas>
         <OutOfSequence ref="pfx3:Error"/>
     </pd:errorSchemas>
@@ -127,7 +127,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>232</pd:x>
-        <pd:y>189</pd:y>
+        <pd:y>190</pd:y>
         <config>
             <processName>/Processes/GetLastMessageSequenceQuery.process</processName>
         </config>
@@ -145,12 +145,30 @@
                         </MessageID>
                     </xsl:otherwise>
                 </xsl:choose>
-                <PatchFamilyID>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
-                </PatchFamilyID>
-                <SequenceID>
-                    <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID"/>
-                </SequenceID>
+                <xsl:choose>
+                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID)">
+                        <PatchFamilyID>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/CorrelationID"/>
+                        </PatchFamilyID>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <PatchFamilyID>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </PatchFamilyID>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID)&#xA;and $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID !=&quot;&quot;">
+                        <SequenceID>
+                            <xsl:value-of select="number($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/SequenceID)"/>
+                        </SequenceID>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <SequenceID>
+                            <xsl:value-of select="0"/>
+                        </SequenceID>
+                    </xsl:otherwise>
+                </xsl:choose>
             </root>
         </pd:inputBindings>
     </pd:activity>
@@ -443,15 +461,15 @@
         <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
         <pd:resourceType>ae.activities.null</pd:resourceType>
         <pd:x>462</pd:x>
-        <pd:y>549</pd:y>
+        <pd:y>550</pd:y>
         <config/>
         <pd:inputBindings/>
     </pd:activity>
     <pd:activity name="Log Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>565</pd:x>
-        <pd:y>529</pd:y>
+        <pd:x>567</pd:x>
+        <pd:y>546</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -544,8 +562,8 @@
     <pd:activity name="Archive Message With Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>784</pd:x>
-        <pd:y>540</pd:y>
+        <pd:x>786</pd:x>
+        <pd:y>555</pd:y>
         <config>
             <processName>/Processes/ArchiveMessage.process</processName>
             <spawn>true</spawn>
@@ -619,7 +637,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>670</pd:x>
-        <pd:y>539</pd:y>
+        <pd:y>554</pd:y>
         <config>
             <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
             <spawn>true</spawn>
@@ -681,7 +699,7 @@
     <pd:activity name="LogProcessBODSent">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>310</pd:x>
+        <pd:x>315</pd:x>
         <pd:y>425</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -1128,8 +1146,7 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>exists($_error_Map-Prices/pfx6:ExceptionRequest/ExceptionCode)
 or
-(
-exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)
+(exists($_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode)
 and (
 $_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode =$_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted
 or
@@ -1137,9 +1154,10 @@ $_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariab
 or
 $_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/DatabaseError
 or
-$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ActionNotSupplied 
-)
-)</pd:xpath>
+$_error_ProcessPriceMessage/pfx6:ExceptionRequest/ExceptionCode = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/ActionNotSupplied))
+or
+(exists($_error_Call-Message-Sequence-Validation/pfx3:Error)
+and ($_error_Call-Message-Sequence-Validation/pfx3:Error/pfx3:Code = $_globalVariables/ns1:GlobalVariables/Application/ErrorCodes/InvalidMessageHeaderError))</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Map Confirm BOD Data</pd:from>
