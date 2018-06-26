@@ -27,8 +27,15 @@ namespace Mammoth.ApiController.QueueProcessors
         protected int messageReadyStatusId;
         protected int messageSentStatusId;
         protected int messageFailedStatusId;
-        protected int messageTypeId;
         protected ApiControllerSettings settings;
+
+        /// <summary>
+        /// MessageTypeId (Mammoth.Common.DataAccess.MessageTypes)
+        /// ItemLocale=1,Price=2,PrimePsg=3,Processbod=4,Confirmbod=5
+        /// Deriving classes will set this value 
+        /// (1 for ItemLocaleProcessor, 2 for PriceProcessor...)
+        /// </summary>
+        internal abstract int MessageType { get; }
 
         public QueueProcessorBase(ILogger logger,
             IQueueReader<TMessageQueue, TContract> queueReader,

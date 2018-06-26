@@ -43,7 +43,6 @@ namespace Mammoth.ApiController.QueueProcessors
                   producer,
                   settings)
         {
-            messageTypeId = MessageTypes.ItemLocale;
             esbMessageProperties = new Dictionary<string, string>
             {
                 { "IconMessageID", "" },
@@ -51,6 +50,8 @@ namespace Mammoth.ApiController.QueueProcessors
                 { "nonReceivingSysName", settings.NonReceivingSystemsItemLocale }
             };
         }
+
+        internal override int MessageType => MessageTypes.ItemLocale;
 
         protected override List<MessageQueueItemLocale> GetMessagesReadyToSerialize(List<MessageQueueItemLocale> messagesReadyForMiniBulk, Contracts.items miniBulk)
         {

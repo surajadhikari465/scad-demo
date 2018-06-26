@@ -6,6 +6,7 @@ using Icon.Common.DataAccess;
 using Icon.Esb.Producer;
 using Icon.Logging;
 using Mammoth.ApiController.QueueProcessors;
+using Mammoth.Common.DataAccess;
 using Mammoth.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -60,7 +61,7 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
         }
 
         [TestMethod]
-        public void ProcessMessageQueue_QueueRecordsExist_ShouldPublishMessagesForQueueRecords()
+        public void ProcessMessageQueueItemLocale_QueueRecordsExist_ShouldPublishMessagesForQueueRecords()
         {
             //Given
             mockQueueReader.SetupSequence(m => m.GetQueuedMessages())
@@ -91,7 +92,7 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
         }
 
         [TestMethod]
-        public void ProcessMessageQueue_SaveToMessageHistoryCommandHandlerThrowsException_ShouldFailQueuedMessages()
+        public void ProcessMessageQueueItemLocale_SaveToMessageHistoryCommandHandlerThrowsException_ShouldFailQueuedMessages()
         {
             //Given
             mockQueueReader.SetupSequence(m => m.GetQueuedMessages())
@@ -119,6 +120,37 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
             mockSetProcessedDataCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageQueueProcessedDateCommand<MessageQueueItemLocale>>()), Times.Once);
             mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             mockProducer.Verify(m => m.Dispose(), Times.Once);
+            mockSaveToMessageHistoryCommandHandler.Verify(m =>
+                m.Execute(It.Is<SaveToMessageHistoryCommand<MessageHistory>>(data =>
+                            data.Message.MessageTypeId == MessageTypes.ItemLocale)),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void ProcessMessageQueueItemLocale_QueueRecordsExist_ShouldPublishMessage_WithExpectedMessageType()
+        {
+            //Given
+            mockQueueReader.SetupSequence(m => m.GetQueuedMessages())
+                .Returns(new List<MessageQueueItemLocale> { new MessageQueueItemLocale() })
+                .Returns(new List<MessageQueueItemLocale>());
+            mockQueueReader.Setup(m => m.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueItemLocale>>()))
+                .Returns(new List<MessageQueueItemLocale> { new MessageQueueItemLocale { ItemId = 1 } });
+            mockQueueReader.Setup(m => m.BuildMiniBulk(It.IsAny<List<MessageQueueItemLocale>>()))
+                .Returns(new Contracts.items { item = new Contracts.ItemType[] { new Contracts.ItemType { id = 1 } } });
+            mockSerializer.Setup(m => m.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>()))
+                .Returns("test message");
+
+            //When
+            queueProcessor.ProcessMessageQueue();
+
+            //Then
+            mockUpdateMessageHistoryCommandHandler.Verify(m => 
+                m.Execute(
+                    It.Is<UpdateMessageHistoryStatusCommand<MessageHistory>>(data =>
+                    data.MessageStatusId == MessageStatusTypes.Sent && 
+                    data.Message.MessageTypeId == MessageTypes.ItemLocale)
+                    ),
+                Times.Once);
         }
     }
 }

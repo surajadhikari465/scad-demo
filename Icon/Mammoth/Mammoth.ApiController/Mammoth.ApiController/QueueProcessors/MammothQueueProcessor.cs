@@ -52,7 +52,7 @@ namespace Mammoth.ApiController.QueueProcessors
             return new MessageHistory
             {
                 MessageStatusId = MessageStatusTypes.Ready,
-                MessageTypeId = MessageTypes.ItemLocale,
+                MessageTypeId = MessageType,
                 Message = xml,
                 InsertDate = DateTime.Now,
                 InProcessBy = settings.Instance,
