@@ -672,9 +672,9 @@
     <None Include="Scripts\PopulateData\Archive\RemovePercentageTareWeightFromIcon.sql" />
     <None Include="Scripts\PopulateData\Archive\MoveMessageQueueProductRecordsOutOfTempTable.sql" />
     <None Include="Scripts\PopulateData\Archive\MoveMessageQueueProductRecordsIntoTempTable.sql" />
-    <None Include="Scripts\PopulateData\Release\AddCurrencyCodeTrait.sql" />
     <None Include="Scripts\PopulateData\Archive\FixTraitLength.sql" />
     <Build Include="app\Tables\MessageResponseR10.sql" />
+    <None Include="Scripts\PopulateData\Archive\AddCurrencyCodeTrait.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

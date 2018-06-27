@@ -771,7 +771,6 @@
     <Build Include="esb\Tables\PriceMessageArchiveDetail.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AlterItemAttributes_ExtAttributeValueColumnSize.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\TruncateItemLocaleStagingTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddCurrencyCodeAttribute.sql" />
     <Build Include="gpm\Tables\MessageQueueEmergencyPrice.sql" />
     <Build Include="gpm\Stored Procedures\DequeueEmergencyPrices.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddIrmaPriceMessageType.sql" />
@@ -780,6 +779,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateFairTradeCertifiedAttribute.sql" />
     <Build Include="eplum\Tables\Session.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddDefaultValueToEplumSessionTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddCurrencyCodeAttribute.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
