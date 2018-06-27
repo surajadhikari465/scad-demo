@@ -544,7 +544,7 @@ ExitSub:
                 End If
 
                 Dim errorMessageStringBuilder As StringBuilder = New StringBuilder(_slawApiErrorMessage).Append(apiException.GetBaseException().Message + " ").Append(mlBatchHeader.StoreNumber.ToString() + " ").Append(mlBatchHeader.BatchDescription).AppendLine()
-                If slawJsonResponse IsNot Nothing AndAlso slawJsonResponse.ItemErrors.Any() Then
+                If slawJsonResponse IsNot Nothing AndAlso slawJsonResponse.ItemErrors IsNot Nothing AndAlso slawJsonResponse.ItemErrors.Any() Then
                     For Each itemError As String In slawJsonResponse.ItemErrors
                         errorMessageStringBuilder.AppendLine(itemError)
                     Next itemError
