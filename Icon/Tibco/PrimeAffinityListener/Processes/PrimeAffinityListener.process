@@ -96,7 +96,7 @@
                 <xsl:for-each select="$Filter-Prices-By-Excluded-SubTeams/pfx2:MammothPrices/pfx2:MammothPrice">
                     <pfx3:item>
                         <xsl:attribute name="ns4:Action">
-                            <xsl:value-of select="pfx2:Action"/>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ActionAddOrUpdate"/>
                         </xsl:attribute>
                         <pfx3:id>
                             <xsl:value-of select="pfx2:ItemId"/>
@@ -110,7 +110,7 @@
                         </pfx3:base>
                         <pfx3:locale>
                             <xsl:attribute name="ns4:Action">
-                                <xsl:value-of select="&quot;AddOrUpdate&quot;"/>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ActionAddOrUpdate"/>
                             </xsl:attribute>
                             <pfx5:id>
                                 <xsl:value-of select="pfx2:BusinessUnit"/>
@@ -135,7 +135,7 @@
                                 <ns6:selectionGroups>
                                     <ns7:group>
                                         <xsl:choose>
-                                            <xsl:when test="tib:compare-date(current()/pfx2:EndDate, current-date()) = -1">
+                                            <xsl:when test="(tib:compare-date(current()/pfx2:EndDate, current-date()) = -1 or upper-case(current()/pfx2:Action) = upper-case($_globalVariables/ns1:GlobalVariables/Application/ActionDelete))">
                                                 <xsl:attribute name="ns4:Action">
                                                     <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ActionDelete"/>
                                                 </xsl:attribute>

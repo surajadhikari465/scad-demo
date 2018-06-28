@@ -268,8 +268,8 @@
     <pd:group name="Iterate SQL Results">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>650</pd:x>
-        <pd:y>170</pd:y>
+        <pd:x>640</pd:x>
+        <pd:y>173</pd:y>
         <pd:width>157</pd:width>
         <pd:height>162</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -305,8 +305,8 @@
         <pd:activity name="Filter SQL Prices By Excluded Sub Teams">
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>723</pd:x>
-            <pd:y>255</pd:y>
+            <pd:x>712</pd:x>
+            <pd:y>258</pd:y>
             <config>
                 <element ref="pfx:MammothPrices"/>
             </config>

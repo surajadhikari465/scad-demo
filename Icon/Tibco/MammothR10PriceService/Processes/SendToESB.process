@@ -284,20 +284,11 @@
                                                         </ns42:priceStartDate>
                                                     </xsl:otherwise>
                                                 </xsl:choose>
-                                                <xsl:choose>
-                                                    <xsl:when test="upper-case(current()/pfx:Action) = 'DELETE'">
-                                                        <ns42:priceEndDate>
-                                                            <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-date(current-date()), &#xA;&#x9;tib:get-month-from-date(current-date()), &#xA;&#x9;tib:get-day-from-date(current-date()), &#xA;&#x9;0, &#xA;&#x9;0,&#xA;&#x9;1)"/>
-                                                        </ns42:priceEndDate>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <xsl:if test="pfx:EndDate">
-                                                            <ns42:priceEndDate>
-                                                                <xsl:value-of select="pfx:EndDate"/>
-                                                            </ns42:priceEndDate>
-                                                        </xsl:if>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
+                                                <xsl:if test="pfx:EndDate">
+                                                    <ns42:priceEndDate>
+                                                        <xsl:value-of select="pfx:EndDate"/>
+                                                    </ns42:priceEndDate>
+                                                </xsl:if>
                                             </ns42:price>
                                         </ns33:prices>
                                         <xsl:choose>
