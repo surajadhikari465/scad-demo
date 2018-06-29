@@ -203,7 +203,7 @@ namespace MammothWebApi.Tests.Controllers
         }
 
         [TestMethod]
-        public void ItemLocaleController_ItemLocaleListISValidDuringDeauthorizeItemLocale_ShouldCallService()
+        public void ItemLocaleController_ItemLocaleListIsValidDuringDeauthorizeItemLocale_ShouldCallService()
         {
             // Given
             List<ItemLocaleModel> itemLocales = new List<ItemLocaleModel>();
@@ -214,6 +214,7 @@ namespace MammothWebApi.Tests.Controllers
 
             // Then
             this.mockDeauthorizeItemLocaleService.Verify(s => s.Handle(It.IsAny<DeauthorizeItemLocale>()), Times.Once);
+            this.mockItemLocaleService.Verify(s => s.Handle(It.IsAny<AddUpdateItemLocale>()), Times.Once);
         }
 
         [TestMethod]

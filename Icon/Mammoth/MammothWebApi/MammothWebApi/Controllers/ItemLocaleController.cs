@@ -45,10 +45,15 @@ namespace MammothWebApi.Controllers
             }
 
             try
-            {        // Map to Service Model
+            {
+                // Run Deauthorization Service
                 List<ItemLocaleServiceModel> itemLocaleServiceModels = itemLocales.ToItemLocaleServiceModel();
                 DeauthorizeItemLocale deauthorizeItemLocaleData = new DeauthorizeItemLocale { ItemLocaleServiceModelList = itemLocaleServiceModels };
                 deauthorizeItemLocaleService.Handle(deauthorizeItemLocaleData);
+
+                // Run Add/Update Service
+                AddUpdateItemLocale itemLocaleServiceData = new AddUpdateItemLocale { ItemLocales = itemLocaleServiceModels };
+                this.itemLocaleService.Handle(itemLocaleServiceData);
 
                 return Ok();
             }
