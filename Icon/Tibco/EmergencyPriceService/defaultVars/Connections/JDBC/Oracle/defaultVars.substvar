@@ -4,74 +4,74 @@
 		<globalVariable>
 			<name>OraDBDriver</name>
 			<value>oracle.jdbc.driver.OracleDriver</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651928</modTime>
+			<modTime>1530583790975</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>OraDBHost</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652006</modTime>
+			<modTime>1530583791021</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>OraDBInstance</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652119</modTime>
+			<modTime>1530583791053</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>OraDBPort</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651334</modTime>
+			<modTime>1530583791084</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>OraDBPwd</name>
-			<value>#!rBycnKcJzLqZXmzwZ/9mag==</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>#!bW3Hu9QVhIQF4gH7RmjGdg==</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1527187652068</modTime>
+			<modTime>1530583791136</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>OraDBUrl</name>
 			<value>jdbc:oracle:thin:</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651818</modTime>
+			<modTime>1530583791183</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>OraDBUser</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652318</modTime>
+			<modTime>1530583791214</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>OraLoginTimeout</name>
 			<value>0</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651865</modTime>
+			<modTime>1530583791245</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>OraMaxConn</name>
 			<value>10</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651599</modTime>
+			<modTime>1530583791276</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

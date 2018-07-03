@@ -63,16 +63,12 @@
                 <ns3:Message>
                     <xsl:value-of select="'Error occurred in the Mammoth Emergency Price Service'"/>
                 </ns3:Message>
-                <xsl:if test="$_error/ns4:ErrorReport/MsgCode">
-                    <ns3:Exception>
-                        <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
-                    </ns3:Exception>
-                </xsl:if>
-                <xsl:if test="$_error/ns4:ErrorReport/ProcessStack">
-                    <ns3:StackTrace>
-                        <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
-                    </ns3:StackTrace>
-                </xsl:if>
+                <ns3:Exception>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/FullClass"/>
+                </ns3:Exception>
+                <ns3:StackTrace>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                </ns3:StackTrace>
             </ns3:AppLog>
         </pd:inputBindings>
     </pd:activity>

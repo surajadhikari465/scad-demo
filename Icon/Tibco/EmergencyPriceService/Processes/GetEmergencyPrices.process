@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/StoredProcedureResults.xsd" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/StoredProcedureResults.xsd" schemaLocation="/Schemas/StoredProcedureResults.xsd"/>
     <pd:name>Processes/GetEmergencyPrices.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>88</pd:startX>
@@ -19,7 +20,7 @@
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
         <pd:x>796</pd:x>
-        <pd:y>115</pd:y>
+        <pd:y>114</pd:y>
         <config>
             <element ref="pfx3:MammothPrices"/>
         </config>
@@ -38,7 +39,7 @@
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
             <validateOutput>true</validateOutput>
-            <term ref="Resultsets"/>
+            <term ref="pfx2:Resultsets"/>
         </config>
         <pd:inputBindings>
             <xmlString>

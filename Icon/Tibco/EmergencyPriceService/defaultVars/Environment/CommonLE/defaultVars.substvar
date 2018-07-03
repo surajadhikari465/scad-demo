@@ -4,10 +4,10 @@
 		<globalVariable>
 			<name>ApplicationID</name>
 			<value>System</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651584</modTime>
+			<modTime>1530583792156</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ExceptionFileExtention</name>
@@ -20,10 +20,10 @@
 		<globalVariable>
 			<name>FilePollingInterval</name>
 			<value>30000</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1527187652084</modTime>
+			<modTime>1530583792187</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JMSSendErrorCode</name>
@@ -84,18 +84,18 @@
 		<globalVariable>
 			<name>MIG_ExceptionDir</name>
 			<value>C:\temp\Exception\</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652053</modTime>
+			<modTime>1530583792218</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_LogDir</name>
 			<value>C:\temp\Log\</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651334</modTime>
+			<modTime>1530583792250</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

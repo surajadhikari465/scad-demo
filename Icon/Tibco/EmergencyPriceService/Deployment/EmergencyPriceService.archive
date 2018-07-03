@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/ActivePricesProcess.process</processProperty>
         </processArchive>
-        <versionProperty>27</versionProperty>
+        <versionProperty>28</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>EmergencyPriceService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\EmergencyPriceService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\VSTS\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\EmergencyPriceService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

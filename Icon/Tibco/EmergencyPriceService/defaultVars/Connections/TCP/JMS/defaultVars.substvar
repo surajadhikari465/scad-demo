@@ -3,67 +3,67 @@
 	<globalVariables>
 		<globalVariable>
 			<name>EMSPwd</name>
-			<value>#!z14t+XCmdYCBSx4i7GGFQQ==</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>#!qbd8/k6gx11TzlrM5zO6Bw==</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1527187652334</modTime>
+			<modTime>1530583791854</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>EMSUser</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651881</modTime>
+			<modTime>1530583791886</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JNDIContextFactory</name>
 			<value>com.tibco.tibjms.naming.TibjmsInitialContextFactory</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651818</modTime>
+			<modTime>1530583791917</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JNDIContextUrl</name>
 			<value>tibjmsnaming://localhost:7222</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651240</modTime>
+			<modTime>1530583791948</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JNDIPwd</name>
-			<value>#!CrI8ZKkD94nWqI+fwNHADA==</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>#!gNLkFzaJtmPZ8298G0KDYA==</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1527187651928</modTime>
+			<modTime>1530583791979</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JNDIUser</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652053</modTime>
+			<modTime>1530583792011</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>QueueConnectionFactory</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651521</modTime>
+			<modTime>1530583792042</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TopicConnectionFactory</name>
 			<value></value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651678</modTime>
+			<modTime>1530583792073</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

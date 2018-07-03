@@ -4,18 +4,18 @@
 		<globalVariable>
 			<name>JmsSendRetryDelayMillis</name>
 			<value>1000</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652146</modTime>
+			<modTime>1530583792864</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsSendRetryMaxCount</name>
 			<value>5</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651631</modTime>
+			<modTime>1530583792879</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

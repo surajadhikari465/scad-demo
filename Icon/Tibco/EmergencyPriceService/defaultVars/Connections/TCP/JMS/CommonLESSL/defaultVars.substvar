@@ -4,74 +4,74 @@
 		<globalVariable>
 			<name>MIG_JMSExpiration</name>
 			<value>0</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651631</modTime>
+			<modTime>1530583791573</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIContextURL</name>
 			<value>ssl://cerd1616.wfm.pvt:7273</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651771</modTime>
+			<modTime>1530583791604</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIPassword</name>
-			<value>#!bZRVY6WqEwfSCT1U8UYcGPUtr5KxbaIwgmJt2WnK2ic=</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>#!bz2H99SQ+6//dKgP1NXHmjpVa5S/q6BwcZ7v4w6JblM=</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1527187651787</modTime>
+			<modTime>1530583791636</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIUser</name>
 			<value>admin</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651349</modTime>
+			<modTime>1530583791667</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_Password</name>
-			<value>#!3ZsqicbjF9T0efALpv6yaKVcuSLtRyxeD50PdNuS4OA=</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>#!98dUVTDoVGWSBpELQo4kOdZ6LrZ7obxRKeIFZQYbIPw=</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1527187651912</modTime>
+			<modTime>1530583791698</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_QueueConnectionFactory</name>
 			<value>SSLQueueConnectionFactory</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652287</modTime>
+			<modTime>1530583791729</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_SSLConnectionFactoryPwd</name>
-			<value>#!R1U2VM7pxf9iwn265PgouA==</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>#!SmuvEB7g1UGArUk7UWb1bw==</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1527187651334</modTime>
+			<modTime>1530583791761</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_TopicConnectionFactory</name>
 			<value>SSLTopicConnectionFactory</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651709</modTime>
+			<modTime>1530583791792</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_UserName</name>
 			<value>admin</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651646</modTime>
+			<modTime>1530583791823</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

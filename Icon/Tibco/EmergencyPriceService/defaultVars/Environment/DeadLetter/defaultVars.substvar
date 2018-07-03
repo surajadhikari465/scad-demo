@@ -4,34 +4,34 @@
 		<globalVariable>
 			<name>CountSeperator</name>
 			<value>##</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651896</modTime>
+			<modTime>1530583792281</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DeliveryMode</name>
 			<value>PERSISTENT</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651365</modTime>
+			<modTime>1530583792312</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JMSExpiration</name>
 			<value>0</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652240</modTime>
+			<modTime>1530583792328</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JMSPriority</name>
 			<value>4</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652240</modTime>
+			<modTime>1530583792364</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

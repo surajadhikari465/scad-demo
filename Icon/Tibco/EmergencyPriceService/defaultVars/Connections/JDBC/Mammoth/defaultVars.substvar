@@ -11,7 +11,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!hE564fveETYz5kv8nsYhX7Zw1E7GPKnyZKH4vvSUNJSgA6v8wgmwFg==</value>
+			<value>#!JxZ+JF1Jr1LPSqNQk2RThF8CcGkDFDC07ReO1kOuEds1ROLx+n74CQ==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

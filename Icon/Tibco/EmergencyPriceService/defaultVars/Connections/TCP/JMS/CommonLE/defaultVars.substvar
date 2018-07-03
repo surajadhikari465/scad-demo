@@ -4,66 +4,66 @@
 		<globalVariable>
 			<name>MIG_JMSExpiration</name>
 			<value>0</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187652209</modTime>
+			<modTime>1530583791339</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIContextURL</name>
 			<value>tibjmsnaming://cerd1616.wfm.pvt:7272</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651428</modTime>
+			<modTime>1530583791370</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIPassword</name>
-			<value>#!IIRUn3sR7zjfBV5+NbVDg4DV1AFdObmrqalBrB8xFys=</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>#!q0EGB2OqO3+tbjceYpoEcneSZj7rM9q/F4o77WGxIMA=</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1527187651412</modTime>
+			<modTime>1530583791401</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIUser</name>
 			<value>admin</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651349</modTime>
+			<modTime>1530583791433</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_Password</name>
-			<value>#!JeKdA7P7cLWp2FvqgwSQzwjik9TWLVxsQYYUyA9lZo4=</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>#!jOzL70TdBZ4WnVI5ilNMqsjt75LVtQJ/mUGUG+434SE=</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1527187651428</modTime>
+			<modTime>1530583791464</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_QueueConnectionFactory</name>
 			<value>QueueConnectionFactory</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651787</modTime>
+			<modTime>1530583791495</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_TopicConnectionFactory</name>
 			<value>TopicConnectionFactory</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651537</modTime>
+			<modTime>1530583791526</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_UserName</name>
 			<value>admin</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651693</modTime>
+			<modTime>1530583791542</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

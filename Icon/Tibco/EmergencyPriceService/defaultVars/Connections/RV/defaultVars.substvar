@@ -4,10 +4,10 @@
 		<globalVariable>
 			<name>LogLevelSubject</name>
 			<value>set.log.level</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1527187651584</modTime>
+			<modTime>1530583791308</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
