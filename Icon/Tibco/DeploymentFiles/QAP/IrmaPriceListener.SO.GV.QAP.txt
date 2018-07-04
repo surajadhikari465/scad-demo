@@ -10,7 +10,7 @@ Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idq-so\soq;DatabaseName=
 Connections/JDBC/IRMA/Username=TibcoDataWriter
 Connections/JDBC/IRMA/Password=#!Au7uqiI62/LDe3aF8jfOwK1jWdfv0lEPxbQmJOt40JKRW8YO2Br0OA==
 
-Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://MAMMOTH-DB01-QA\MAMMOTH;DatabaseName=Mammoth;
+Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://QA-01-MAMMOTH02\MAMMOTH02;DatabaseName=Mammoth;
 Connections/JDBC/Mammoth/Username=Mammoth.tibco.qa
 Connections/JDBC/Mammoth/Password=#!wuEyIMdg8VvyItjGyEI1BMHkUO5WqrENDHy6mYa3f9l2uE9zDPxbuQ==
 

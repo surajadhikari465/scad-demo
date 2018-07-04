@@ -4,7 +4,7 @@
 BW_GLOBAL_HOSTNAME=*.wfm.pvt
 BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
 
-Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://MAMMOTH-DB01-QA\MAMMOTH;DatabaseName=Mammoth;
+Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://QA-01-MAMMOTH02\MAMMOTH02;DatabaseName=Mammoth;
 Connections/JDBC/Mammoth/Username=Mammoth.tibco.qa
 Connections/JDBC/Mammoth/Password=#!wuEyIMdg8VvyItjGyEI1BMHkUO5WqrENDHy6mYa3f9l2uE9zDPxbuQ==
 
@@ -13,7 +13,7 @@ Connections/JMS/ESB/JndiUsername=jndiMammothUser
 Connections/JMS/ESB/JndiPassword=#!HBiGAaA2XYfpWsOaZ+T23oHxuE5DEVow+a4+0pTPnNN5e+SZEYU3NA==
 Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
 Connections/JMS/ESB/Username=mammothUser
-Connections/JMS/ESB/Password=#!oe3NzLuZMhzS6OrujmoQ0/3mSlzPlbPffu+zgJ3XfNClzx7LIvCNbQ==
+Connections/JMS/ESB/Password=#!pWFvsBxKY/2i0LTTlUvVkpLPqTtkS5eir6faHZZYHMY=
 
 Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
 Connections/JMS/SB1/Username=sb1_mammothPriceR10User

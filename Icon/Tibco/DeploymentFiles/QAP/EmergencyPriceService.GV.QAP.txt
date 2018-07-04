@@ -12,30 +12,26 @@ Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:2723
 Connections/JMS/SB1/Username=sb1_mammothPriceUser
 Connections/JMS/SB1/Password=#!R90iR26UxllJAkBezovzOmDMs3SBV5WsaES01phvnMw=
 
-ErrorMessageSettings/Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
-ErrorMessageSettings/Connections/JMS/SB1/Username=sb1_mammothPriceUser
-ErrorMessageSettings/Connections/JMS/SB1/Password=#!R90iR26UxllJAkBezovzOmDMs3SBV5WsaES01phvnMw=
-
 LoggerSettings/Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
 LoggerSettings/Connections/JMS/SB1/Username=sb1_cleUser
 LoggerSettings/Connections/JMS/SB1/Password=#!zDF3kXDB5lpIO0NHtsvTwcGKo7VwLDxW1fMRh4o5/XU=
 
 // ----------------------------------------------------------------------------------
-// Machine #1 --- MammothActivePriceService Process Archive.par --- Service Instance settings --- Service level
+// Machine #1 --- EmergencyPriceService Process Archive.par --- Service Instance settings --- Service level
 // ----------------------------------------------------------------------------------
-_TAG,Machine,MammothActivePriceService Process Archive,MammothActivePriceService Process Archive-1,machine=cerd1662
+_TAG,Machine,EmergencyPriceService Process Archive,EmergencyPriceService Process Archive-1,machine=cerd1662
 
 // ----------------------------------------------------------------------------------
-// Machine #2 --- MammothActivePriceService Process Archive.par --- Service Instance settings --- Service level
+// Machine #2 --- EmergencyPriceService Process Archive.par --- Service Instance settings --- Service level
 // ----------------------------------------------------------------------------------
-_TAG,Machine,MammothActivePriceService Process Archive,MammothActivePriceService Process Archive-2,machine=cerd1663
+_TAG,Machine,EmergencyPriceService Process Archive,EmergencyPriceService Process Archive-2,machine=cerd1663
 
 // ----------------------------------------------------------------------------------
-// Machine #3 --- MammothActivePriceService Process Archive.par --- Service Instance settings --- Service level
+// Machine #3 --- EmergencyPriceService Process Archive.par --- Service Instance settings --- Service level
 // ----------------------------------------------------------------------------------
-_TAG,Machine,MammothActivePriceService Process Archive,MammothActivePriceService Process Archive-3,machine=cerd1664
+_TAG,Machine,EmergencyPriceService Process Archive,EmergencyPriceService Process Archive-3,machine=cerd1664
 
 // ----------------------------------------------------------------------------------
-// Machine #4 --- MammothActivePriceService Process Archive.par --- Service Instance settings --- Service level
+// Machine #4 --- EmergencyPriceService Process Archive.par --- Service Instance settings --- Service level
 // ----------------------------------------------------------------------------------
-_TAG,Machine,MammothActivePriceService Process Archive,MammothActivePriceService Process Archive-4,machine=cerd1665
+_TAG,Machine,EmergencyPriceService Process Archive,EmergencyPriceService Process Archive-4,machine=cerd1665

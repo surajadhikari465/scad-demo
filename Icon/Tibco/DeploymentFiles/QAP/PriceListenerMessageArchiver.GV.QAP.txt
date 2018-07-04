@@ -4,7 +4,7 @@
 BW_GLOBAL_HOSTNAME=*.wfm.pvt
 BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
 
-Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://MAMMOTH-DB01-QA\MAMMOTH;DatabaseName=Mammoth;
+Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://QA-01-MAMMOTH02\MAMMOTH02;DatabaseName=Mammoth;
 Connections/JDBC/Mammoth/Username=Mammoth.tibco.qa
 Connections/JDBC/Mammoth/Password=#!wuEyIMdg8VvyItjGyEI1BMHkUO5WqrENDHy6mYa3f9l2uE9zDPxbuQ==
 
