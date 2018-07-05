@@ -242,7 +242,7 @@ namespace MammothWebApi.Tests.Service.Decorators
                 new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "ISS", StartDate = today.AddDays(-2), EndDate = today.AddDays(2) },
                 new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "FRZ", StartDate = today.AddDays(-3), EndDate = today.AddDays(3) },
                 new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "SAL", StartDate = DateTime.Today, EndDate = today.AddDays(1)  },
-                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "SAL", StartDate = today.AddDays(-4), EndDate = today.AddDays(4) },
+                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "SAL", StartDate = today.AddDays(-4), EndDate = today },
             };
             var primePsgItemStoreDataModels = data.Prices
                 .Select(p => new PrimePsgItemStoreDataModel
@@ -285,7 +285,7 @@ namespace MammothWebApi.Tests.Service.Decorators
                 new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "TST", StartDate = today.AddDays(-2), EndDate = today.AddDays(2) },
                 new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "TST", StartDate = today.AddDays(-3), EndDate = today.AddDays(3) },
                 new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "TST", StartDate = today, EndDate = today.AddDays(1) },
-                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "TST", StartDate = today.AddDays(-4), EndDate = today.AddDays(2) },
+                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "TST", StartDate = today.AddDays(-4), EndDate = today },
             };
             var primePsgItemStoreDataModels = data.Prices
                 .Select(p => new PrimePsgItemStoreDataModel
