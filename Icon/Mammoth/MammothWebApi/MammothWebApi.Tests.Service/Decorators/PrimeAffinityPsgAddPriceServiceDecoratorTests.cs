@@ -87,12 +87,14 @@ namespace MammothWebApi.Tests.Service.Decorators
         {
             //Given
             var region = "FL";
+            var today = DateTime.Today;
+
             data.Prices = new List<PriceServiceModel>
             {
-                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "ISS", StartDate = DateTime.Today },
-                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "FRZ", StartDate = DateTime.Today  },
-                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "SAL", StartDate = DateTime.Today  },
-                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "SAL", StartDate = DateTime.Today  },
+                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "ISS", StartDate = today, EndDate =  today.AddDays(1) },
+                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "FRZ", StartDate = today, EndDate =  today.AddDays(1) },
+                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "SAL", StartDate = today, EndDate =  today.AddDays(1) },
+                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "SAL", StartDate = today, EndDate =  today.AddDays(1)  },
             };
             var primePsgItemStoreDataModels = data.Prices
                 .Select(p => new PrimePsgItemStoreDataModel
@@ -168,10 +170,10 @@ namespace MammothWebApi.Tests.Service.Decorators
             var region = "FL";
             data.Prices = new List<PriceServiceModel>
             {
-                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "TST", StartDate = DateTime.Today },
-                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "TST", StartDate = DateTime.Today },
-                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "TST", StartDate = DateTime.Today },
-                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "TST", StartDate = DateTime.Today },
+                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "TST", StartDate = DateTime.Today, EndDate =  DateTime.Today },
+                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "TST", StartDate = DateTime.Today, EndDate =  DateTime.Today },
+                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "TST", StartDate = DateTime.Today, EndDate =  DateTime.Today },
+                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "TST", StartDate = DateTime.Today, EndDate =  DateTime.Today },
             };
             var primePsgItemStoreDataModels = data.Prices
                 .Select(p => new PrimePsgItemStoreDataModel
