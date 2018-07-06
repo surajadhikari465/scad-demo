@@ -8,6 +8,7 @@
     [InsertDate]        DATETIME2 (7) CONSTRAINT [DF_PriceChangeQueue_InsertDate] DEFAULT (sysdatetime()) NOT NULL,
     [ProcessFailedDate] DATETIME2 (7) NULL,
     [InProcessBy]       INT           NULL,
+	[ReprocessCount]	INT			  NULL,
     CONSTRAINT [PK_PriceChangeQueue_QueueID] PRIMARY KEY CLUSTERED ([QueueID] ASC) WITH (FILLFACTOR = 80),
     CONSTRAINT [FK_PriceChangeQueue_Item] FOREIGN KEY ([Item_Key]) REFERENCES [dbo].[Item] ([Item_Key]),
     CONSTRAINT [FK_PriceChangeQueue_ItemChangeEventType] FOREIGN KEY ([EventTypeID]) REFERENCES [mammoth].[ItemChangeEventType] ([EventTypeID]),
