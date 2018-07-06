@@ -51,7 +51,9 @@ namespace MammothWebApi.Service.Decorators
                         (p.PriceType == "SAL"
                             || p.PriceType == "FRZ"
                             || p.PriceType == "ISS")
-                        && p.StartDate == DateTime.Today)
+                        && (p.StartDate <= DateTime.Today
+                            && p.EndDate >= DateTime.Today
+                            ))
                     .Select(p => new StoreScanCode { ScanCode = p.ScanCode, BusinessUnitID = p.BusinessUnitId })
                     .Distinct()
                     .ToList();
@@ -61,7 +63,9 @@ namespace MammothWebApi.Service.Decorators
                             && p.PriceType != "FRZ"
                             && p.PriceType != "ISS"
                             && p.PriceType != "REG"
-                            && p.StartDate == DateTime.Today))
+                            && (p.StartDate <= DateTime.Today
+                                && p.EndDate >= DateTime.Today)
+                         ))
                     .Select(p => new StoreScanCode { ScanCode = p.ScanCode, BusinessUnitID = p.BusinessUnitId })
                     .Distinct()
                     .ToList();
